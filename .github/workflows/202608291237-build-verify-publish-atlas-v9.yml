@@ -55,7 +55,7 @@ jobs:
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
           ref: ${{ inputs.expected_main_sha || github.sha }}
-          fetch-depth: 3
+          fetch-depth: 0
           persist-credentials: false
 
       - name: Require exact linear main and classify tree
@@ -66,7 +66,7 @@ jobs:
           set -euo pipefail
           test "$GITHUB_REF" = refs/heads/main
           test "$(git rev-parse HEAD)" = "$EXPECTED_MAIN_SHA"
-          git fetch --no-tags --depth=3 origin main:refs/remotes/origin/main
+          git fetch --no-tags origin main:refs/remotes/origin/main
           test "$(git rev-parse origin/main)" = "$EXPECTED_MAIN_SHA"
           release=0
           live_pointer=0
@@ -79,13 +79,12 @@ jobs:
             source_commit="$EXPECTED_MAIN_SHA"
             release_commit=''
             test "$(git rev-list --parents -n 1 HEAD | wc -w)" = 2
-            test "$(git rev-parse HEAD^)" = f941d118f8109fcf8c27b3aef69e372f53486952
+            test "$(git rev-parse HEAD^)" = efeb473c1908498d138c4ede8e27291a5484569c
             mapfile -t refinement < <(git diff --name-only HEAD^ HEAD | sort)
             expected_refinement=(
               .github/workflows/202608291237-build-verify-publish-atlas-v9.yml
-              atman/202608291237-rendered-browser-audit.mjs
             )
-            test "${#refinement[@]}" = 2
+            test "${#refinement[@]}" = 1
             test "${refinement[*]}" = "${expected_refinement[*]}"
             mapfile -t changed < <(git diff --name-only 514fce2f3605ae53267c5ee955b301604a91b2fd HEAD | sort)
             expected=(
