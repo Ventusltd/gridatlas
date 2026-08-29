@@ -1,0 +1,126 @@
+name: 202608291818 Prove public V8 product mirror
+run-name: Prove public V8 mirror ${{ github.sha }}
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/202608291818-prove-v8-product-mirror.yml'
+      - 'atman/202608291818-prove-v8-product-mirror.mjs'
+  workflow_dispatch:
+
+permissions: {}
+
+concurrency:
+  group: gridatlas-202608291818-prove-public-v8-mirror
+  cancel-in-progress: false
+
+env:
+  V8_REPOSITORY: Ventusltd/globalgrid2050
+  V8_COMMIT: f2f343a92ee972cc74ed23b4b99d8a22896791ad
+  V8_INDEX_BLOB: 278c3f55d3b61af9d13417c99bfb558374131143
+  V8_CSS_BLOB: 29a2edb490407f489c29433d84e329b1038e0657
+  V8_ENGINE_BLOB: 0a647c32c346770851704727bbf86fb7167e2596
+  MIRROR_URL: https://ventusltd.github.io/gridatlas/202608291758-atlas-v9/
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: 'true'
+
+jobs:
+  prove_mirror:
+    name: Byte, DOM, geometry, interaction and pixel mirror proof
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout exact source without credentials
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 2
+          persist-credentials: false
+
+      - name: Bind proof to exact current main
+        run: |
+          set -euo pipefail
+          test "$GITHUB_REF" = refs/heads/main
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          git fetch --no-tags origin main:refs/remotes/origin/main
+          test "$(git rev-parse origin/main)" = "$GITHUB_SHA"
+          test -f atman/202608291818-prove-v8-product-mirror.mjs
+
+      - name: Fetch pinned V8 product oracle by exact Git identity
+        run: |
+          set -euo pipefail
+          mkdir -p work/oracle
+          base="https://raw.githubusercontent.com/$V8_REPOSITORY/$V8_COMMIT/repd_grid_atlasv8"
+          curl --fail --location --retry 5 --retry-all-errors --max-time 90 "$base/index.html" -o work/oracle/index.html
+          curl --fail --location --retry 5 --retry-all-errors --max-time 90 "$base/ventusv8.css" -o work/oracle/ventusv8.css
+          curl --fail --location --retry 5 --retry-all-errors --max-time 90 "$base/ventus-corev8engine.js" -o work/oracle/ventus-corev8engine.js
+          test "$(git hash-object work/oracle/index.html)" = "$V8_INDEX_BLOB"
+          test "$(git hash-object work/oracle/ventusv8.css)" = "$V8_CSS_BLOB"
+          test "$(git hash-object work/oracle/ventus-corev8engine.js)" = "$V8_ENGINE_BLOB"
+
+      - name: Configure exact Node
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020
+        with:
+          node-version: '22.18.0'
+          cache: npm
+
+      - name: Install pinned browser runtime
+        run: |
+          set -euo pipefail
+          npm ci --ignore-scripts
+          npx playwright install --with-deps chromium
+
+      - name: Serve pinned V8 oracle locally
+        run: |
+          set -euo pipefail
+          python -m http.server 4174 --bind 127.0.0.1 --directory work/oracle >work/oracle-http.log 2>&1 &
+          echo $! > work/oracle-http.pid
+          for i in $(seq 1 30); do
+            curl --fail --silent http://127.0.0.1:4174/ >/dev/null && exit 0
+            sleep 1
+          done
+          cat work/oracle-http.log
+          exit 1
+
+      - name: Prove the deployed 202608291758 release is the V8 product mirror
+        env:
+          ORACLE_URL: http://127.0.0.1:4174/
+          OUTPUT: work/202608291818-v8-mirror-proof.json
+        run: |
+          set -euo pipefail
+          node atman/202608291818-prove-v8-product-mirror.mjs
+          test "$(jq -r .classification work/202608291818-v8-mirror-proof.json)" = VERIFIED_PUBLIC_V8_PRODUCT_MIRROR
+          test "$(jq -r .bytes.css_byte_identical work/202608291818-v8-mirror-proof.json)" = true
+          test "$(jq -r .bytes.engine_byte_identical work/202608291818-v8-mirror-proof.json)" = true
+          test "$(jq -r .viewports.desktop.pixels.identical work/202608291818-v8-mirror-proof.json)" = true
+          test "$(jq -r .viewports.mobile.pixels.identical work/202608291818-v8-mirror-proof.json)" = true
+          test "$(jq '.bridge.failures | length' work/202608291818-v8-mirror-proof.json)" = 0
+
+      - name: Stop oracle server
+        if: ${{ always() }}
+        run: |
+          if test -f work/oracle-http.pid; then kill "$(cat work/oracle-http.pid)" 2>/dev/null || true; fi
+
+      - name: Retain mirror proof
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: gridatlas-202608291758-public-v8-mirror-proof-${{ github.sha }}
+          path: work/202608291818-v8-mirror-proof.json
+          if-no-files-found: error
+          retention-days: 90
+          compression-level: 0
+
+      - name: Publish proof summary
+        run: |
+          set -euo pipefail
+          echo '### VERIFIED PUBLIC V8 PRODUCT MIRROR' >> "$GITHUB_STEP_SUMMARY"
+          echo '- Release: 202608291758-atlas-v9' >> "$GITHUB_STEP_SUMMARY"
+          echo '- V8 HTML: byte-identical after removing the one permitted bridge script tag' >> "$GITHUB_STEP_SUMMARY"
+          echo '- V8 CSS: byte-identical' >> "$GITHUB_STEP_SUMMARY"
+          echo '- V8 engine: byte-identical' >> "$GITHUB_STEP_SUMMARY"
+          echo '- Desktop rendered pixels: identical after deterministic masking of volatile map/time content' >> "$GITHUB_STEP_SUMMARY"
+          echo '- Mobile rendered pixels: identical after deterministic masking of volatile map/time content' >> "$GITHUB_STEP_SUMMARY"
+          echo '- Control interaction states: identical' >> "$GITHUB_STEP_SUMMARY"
+          echo '- V9 Parquet hydration: 400kV + Data Centres + Solar sentinel layers verified' >> "$GITHUB_STEP_SUMMARY"

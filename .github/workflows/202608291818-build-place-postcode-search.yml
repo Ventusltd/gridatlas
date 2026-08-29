@@ -1,0 +1,260 @@
+name: 202608291818 Build V8 mirror place postcode successor
+run-name: Build place/postcode successor from mirror proof ${{ github.event.workflow_run.id }}
+
+on:
+  workflow_run:
+    workflows: ['202608291818 Prove public V8 product mirror']
+    types: [completed]
+
+permissions: {}
+
+concurrency:
+  group: gridatlas-202608291818-place-postcode-successor
+  cancel-in-progress: false
+
+env:
+  RELEASE_ID: 202608291818-atlas-v9
+  PARENT_RELEASE_ID: 202608291758-atlas-v9
+  V8_REPOSITORY: Ventusltd/globalgrid2050
+  V8_COMMIT: f2f343a92ee972cc74ed23b4b99d8a22896791ad
+  V8_INDEX_BLOB: 278c3f55d3b61af9d13417c99bfb558374131143
+  V8_CSS_BLOB: 29a2edb490407f489c29433d84e329b1038e0657
+  V8_ENGINE_BLOB: 0a647c32c346770851704727bbf86fb7167e2596
+  REPD_PARQUET_SHA256: 174040c37f3d63742d6fdd7af722a8cfdf3fb53de3ff85ff1142d22fdac4866b
+  REPD_MANIFEST_SHA256: 8850567ff9f1d2b6996b4e0d9707320030f3466a0b821cdcfc5325322b8be8c8
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: 'true'
+
+jobs:
+  build_verify_publish:
+    if: ${{ github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.head_branch == 'main' }}
+    name: Preserve V8 product and add official REPD place/postcode search
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    permissions:
+      contents: write
+      actions: read
+    steps:
+      - name: Checkout exact mirror-proof source commit with bounded publication credential
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          ref: ${{ github.event.workflow_run.head_sha }}
+          fetch-depth: 3
+          persist-credentials: true
+
+      - name: Require proof commit is still exact current main
+        env:
+          PROOF_SHA: ${{ github.event.workflow_run.head_sha }}
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$PROOF_SHA"
+          git fetch --no-tags origin main:refs/remotes/origin/main
+          test "$(git rev-parse origin/main)" = "$PROOF_SHA"
+          test -d "$PARENT_RELEASE_ID"
+          test ! -e "$RELEASE_ID"
+          test -f ui/v8-mirror/v9-parquet-fetch-bridge.js
+          test -f ui/v8-mirror/202608291818-place-postcode-search.js
+          test -f atman/202608291818-verify-place-postcode-release.mjs
+          test "$(sha256sum data/repd_projects_202608290716.parquet | cut -d' ' -f1)" = "$REPD_PARQUET_SHA256"
+          test "$(sha256sum data/repd_v9_manifest_202608290716.json | cut -d' ' -f1)" = "$REPD_MANIFEST_SHA256"
+
+      - name: Download exact green public mirror proof
+        uses: actions/download-artifact@37930b1c2abaa49bbe596cd826c3c89aef350131
+        with:
+          name: gridatlas-202608291758-public-v8-mirror-proof-${{ github.event.workflow_run.head_sha }}
+          path: work/mirror-proof
+          github-token: ${{ github.token }}
+          run-id: ${{ github.event.workflow_run.id }}
+
+      - name: Refuse successor unless mirror proof is exact and green
+        run: |
+          set -euo pipefail
+          proof=work/mirror-proof/202608291818-v8-mirror-proof.json
+          test -f "$proof"
+          test "$(jq -r .classification "$proof")" = VERIFIED_PUBLIC_V8_PRODUCT_MIRROR
+          test "$(jq -r .bytes.index_blob "$proof")" = "$V8_INDEX_BLOB"
+          test "$(jq -r .bytes.css_blob "$proof")" = "$V8_CSS_BLOB"
+          test "$(jq -r .bytes.engine_blob "$proof")" = "$V8_ENGINE_BLOB"
+          test "$(jq -r .viewports.desktop.pixels.identical "$proof")" = true
+          test "$(jq -r .viewports.mobile.pixels.identical "$proof")" = true
+
+      - name: Fetch pinned V8 product oracle and verify exact Git blobs
+        run: |
+          set -euo pipefail
+          mkdir -p work/oracle
+          base="https://raw.githubusercontent.com/$V8_REPOSITORY/$V8_COMMIT/repd_grid_atlasv8"
+          curl --fail --location --retry 5 --retry-all-errors --max-time 90 "$base/index.html" -o work/oracle/index.html
+          curl --fail --location --retry 5 --retry-all-errors --max-time 90 "$base/ventusv8.css" -o work/oracle/ventusv8.css
+          curl --fail --location --retry 5 --retry-all-errors --max-time 90 "$base/ventus-corev8engine.js" -o work/oracle/ventus-corev8engine.js
+          test "$(git hash-object work/oracle/index.html)" = "$V8_INDEX_BLOB"
+          test "$(git hash-object work/oracle/ventusv8.css)" = "$V8_CSS_BLOB"
+          test "$(git hash-object work/oracle/ventus-corev8engine.js)" = "$V8_ENGINE_BLOB"
+
+      - name: Compile timestamped successor with two invisible adapters only
+        env:
+          PROOF_RUN_ID: ${{ github.event.workflow_run.id }}
+          PROOF_SHA: ${{ github.event.workflow_run.head_sha }}
+        run: |
+          set -euo pipefail
+          mkdir -p "work/release/$RELEASE_ID"
+          cp work/oracle/index.html "work/release/$RELEASE_ID/index.html"
+          cp work/oracle/ventusv8.css "work/release/$RELEASE_ID/ventusv8.css"
+          cp work/oracle/ventus-corev8engine.js "work/release/$RELEASE_ID/ventus-corev8engine.js"
+          cp ui/v8-mirror/v9-parquet-fetch-bridge.js "work/release/$RELEASE_ID/v9-parquet-fetch-bridge.js"
+          cp ui/v8-mirror/202608291818-place-postcode-search.js "work/release/$RELEASE_ID/202608291818-place-postcode-search.js"
+          python - <<'PY'
+          from pathlib import Path
+          release = Path('work/release/202608291818-atlas-v9/index.html')
+          text = release.read_text(encoding='utf-8')
+          needle = '<script src="ventus-corev8engine.js"></script>'
+          assert text.count(needle) == 1
+          injection = '<script src="v9-parquet-fetch-bridge.js"></script>\n<script src="202608291818-place-postcode-search.js"></script>\n\n'
+          release.write_text(text.replace(needle, injection + needle), encoding='utf-8')
+          PY
+          jq -n \
+            --arg release_id "$RELEASE_ID" \
+            --arg parent "$PARENT_RELEASE_ID" \
+            --arg source_commit "$PROOF_SHA" \
+            --arg proof_run "$PROOF_RUN_ID" \
+            --arg v8_commit "$V8_COMMIT" \
+            --arg v8_index "$V8_INDEX_BLOB" \
+            --arg v8_css "$V8_CSS_BLOB" \
+            --arg v8_engine "$V8_ENGINE_BLOB" \
+            --arg repd_parquet "$REPD_PARQUET_SHA256" \
+            --arg repd_manifest "$REPD_MANIFEST_SHA256" \
+            '{
+              schema:"gridatlas.v8-mirror-place-postcode-candidate.v1",
+              classification:"V8_MIRROR_PLACE_POSTCODE_CANDIDATE",
+              generation:"202608291818",
+              release_id:$release_id,
+              parent_release:$parent,
+              source_commit:$source_commit,
+              immutable_after_publication:true,
+              product_oracle:{repository:"Ventusltd/globalgrid2050",commit:$v8_commit,index_blob:$v8_index,css_blob:$v8_css,engine_blob:$v8_engine},
+              mirror_proof:{workflow_run_id:($proof_run|tonumber),classification:"VERIFIED_PUBLIC_V8_PRODUCT_MIRROR"},
+              permitted_product_delta:["insert v9-parquet-fetch-bridge.js before unchanged V8 engine","insert 202608291818-place-postcode-search.js before unchanged V8 engine","change search placeholder at runtime only"],
+              search:{source:"DESNZ REPD Q2 2026",parquet:"/gridatlas/data/repd_projects_202608290716.parquet",parquet_sha256:$repd_parquet,manifest_sha256:$repd_manifest,fields:["project name","official address","postcode","county","planning authority","REPD reference"],duckdb_wasm:true,external_geocoder:false},
+              promotion_policy:"IMMUTABLE_CANDIDATE_ONLY_UNTIL_USER_VISUAL_CHECK"
+            }' > "work/release/$RELEASE_ID/release-manifest.json"
+
+      - name: Prove V8 product bytes remain unchanged except explicit adapters
+        run: |
+          set -euo pipefail
+          cmp work/oracle/ventusv8.css "work/release/$RELEASE_ID/ventusv8.css"
+          cmp work/oracle/ventus-corev8engine.js "work/release/$RELEASE_ID/ventus-corev8engine.js"
+          test "$(git hash-object "work/release/$RELEASE_ID/ventusv8.css")" = "$V8_CSS_BLOB"
+          test "$(git hash-object "work/release/$RELEASE_ID/ventus-corev8engine.js")" = "$V8_ENGINE_BLOB"
+          python - <<'PY'
+          from pathlib import Path
+          oracle = Path('work/oracle/index.html').read_text(encoding='utf-8')
+          candidate = Path('work/release/202608291818-atlas-v9/index.html').read_text(encoding='utf-8')
+          injection = '<script src="v9-parquet-fetch-bridge.js"></script>\n<script src="202608291818-place-postcode-search.js"></script>\n\n'
+          assert candidate.count(injection) == 1
+          assert candidate.replace(injection, '') == oracle
+          PY
+
+      - name: Configure exact Node
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020
+        with:
+          node-version: '22.18.0'
+          cache: npm
+
+      - name: Install pinned browser test runtime
+        run: |
+          set -euo pipefail
+          npm ci --ignore-scripts
+          npx playwright install --with-deps chromium
+
+      - name: Serve pinned oracle and successor locally
+        run: |
+          set -euo pipefail
+          cp -R "work/release/$RELEASE_ID" "$RELEASE_ID"
+          python -m http.server 4173 --bind 127.0.0.1 >work/candidate-http.log 2>&1 & echo $! > work/candidate-http.pid
+          python -m http.server 4174 --bind 127.0.0.1 --directory work/oracle >work/oracle-http.log 2>&1 & echo $! > work/oracle-http.pid
+          for url in "http://127.0.0.1:4173/$RELEASE_ID/" 'http://127.0.0.1:4174/'; do
+            ok=0
+            for i in $(seq 1 30); do curl --fail --silent "$url" >/dev/null && { ok=1; break; }; sleep 1; done
+            test "$ok" = 1
+          done
+
+      - name: Prove mirror geometry plus place and postcode behaviour
+        env:
+          CANDIDATE_URL: http://127.0.0.1:4173/202608291818-atlas-v9/
+          ORACLE_URL: http://127.0.0.1:4174/
+          OUTPUT: work/202608291818-place-postcode-proof.json
+        run: |
+          set -euo pipefail
+          node atman/202608291818-verify-place-postcode-release.mjs
+          proof=work/202608291818-place-postcode-proof.json
+          test "$(jq -r .classification "$proof")" = VERIFIED_V8_MIRROR_WITH_PLACE_POSTCODE_SEARCH
+          test "$(jq -r .viewports.desktop.v8_structure_and_geometry_preserved "$proof")" = true
+          test "$(jq -r .viewports.mobile.v8_structure_and_geometry_preserved "$proof")" = true
+          test "$(jq -r .search.search.last_selection.repd_ref "$proof")" = 16135
+          test "$(jq -r .search.search.last_selection.postcode "$proof")" = 'MK43 0ZY'
+          test "$(jq -r .search.search.last_selection.mapped "$proof")" = true
+          test "$(jq '.search.search.failures | length' "$proof")" = 0
+          test "$(jq '.bridge.failures | length' "$proof")" = 0
+
+      - name: Stop local servers and restore source-only tree
+        if: ${{ always() }}
+        run: |
+          for pidfile in work/candidate-http.pid work/oracle-http.pid; do if test -f "$pidfile"; then kill "$(cat "$pidfile")" 2>/dev/null || true; fi; done
+          rm -rf "$RELEASE_ID"
+
+      - name: Retain successor browser proof
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: gridatlas-202608291818-place-postcode-proof-${{ github.event.workflow_run.head_sha }}
+          path: work/202608291818-place-postcode-proof.json
+          if-no-files-found: error
+          retention-days: 90
+          compression-level: 0
+
+      - name: Compare-and-swap immutable successor onto main
+        env:
+          PROOF_SHA: ${{ github.event.workflow_run.head_sha }}
+        run: |
+          set -euo pipefail
+          git fetch --no-tags origin main:refs/remotes/origin/main
+          test "$(git rev-parse origin/main)" = "$PROOF_SHA"
+          test ! -e "$RELEASE_ID"
+          cp -R "work/release/$RELEASE_ID" "$RELEASE_ID"
+          git add "$RELEASE_ID"
+          test "$(git diff --cached --name-only | grep -vc "^$RELEASE_ID/")" = 0
+          git config user.name gridatlas-v9-place-search-bot
+          git config user.email actions@users.noreply.github.com
+          git commit -m "202608291818: stage V8 mirror with place and postcode search"
+          publication_commit="$(git rev-parse HEAD)"
+          git push origin HEAD:main
+          echo "PUBLICATION_COMMIT=$publication_commit" >> "$GITHUB_ENV"
+
+      - name: Verify exact Pages deployment and public successor bytes
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          api="https://api.github.com/repos/$GITHUB_REPOSITORY/actions/runs?head_sha=$PUBLICATION_COMMIT&per_page=30"
+          pages_run=''; status=''; conclusion=''
+          for i in $(seq 1 60); do
+            payload="$(curl --fail --silent --show-error -H "Authorization: Bearer $GH_TOKEN" -H 'Accept: application/vnd.github+json' "$api")"
+            pages_run="$(printf '%s' "$payload" | jq -r '[.workflow_runs[] | select(.name == "pages build and deployment")][0].id // empty')"
+            status="$(printf '%s' "$payload" | jq -r '[.workflow_runs[] | select(.name == "pages build and deployment")][0].status // empty')"
+            conclusion="$(printf '%s' "$payload" | jq -r '[.workflow_runs[] | select(.name == "pages build and deployment")][0].conclusion // empty')"
+            if test "$status" = completed; then test "$conclusion" = success; break; fi
+            sleep 5
+          done
+          test -n "$pages_run"; test "$status" = completed; test "$conclusion" = success
+          public="https://ventusltd.github.io/gridatlas/$RELEASE_ID"
+          for i in $(seq 1 30); do
+            curl --fail --location --silent "$public/index.html" -o work/public-index.html && grep -q '202608291818-place-postcode-search.js' work/public-index.html && break
+            sleep 3
+          done
+          curl --fail --location --silent "$public/ventusv8.css" -o work/public.css
+          curl --fail --location --silent "$public/ventus-corev8engine.js" -o work/public-engine.js
+          test "$(git hash-object work/public.css)" = "$V8_CSS_BLOB"
+          test "$(git hash-object work/public-engine.js)" = "$V8_ENGINE_BLOB"
+          echo '### V8 mirror + place/postcode candidate published' >> "$GITHUB_STEP_SUMMARY"
+          echo "- Candidate: $public/" >> "$GITHUB_STEP_SUMMARY"
+          echo '- V8 CSS and engine remain byte-identical.' >> "$GITHUB_STEP_SUMMARY"
+          echo '- Searches project name, official REPD address, postcode, county, planning authority and REPD Ref.' >> "$GITHUB_STEP_SUMMARY"
+          echo '- No external geocoder.' >> "$GITHUB_STEP_SUMMARY"
+          echo '- Root pointer intentionally unchanged pending visual check.' >> "$GITHUB_STEP_SUMMARY"
