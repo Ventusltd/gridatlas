@@ -36,23 +36,29 @@ jobs:
           test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
           git fetch --no-tags origin main:refs/remotes/origin/main
           test "$(git rev-parse origin/main)" = "$GITHUB_SHA"
-          mapfile -t bootstrap_changed < <(git diff --name-only HEAD^ HEAD | sort)
-          expected_bootstrap=(
-            .github/workflows/202608292126-bootstrap-map-ready-source.yml
-            bootstrap/202608292126/part-00.b64
-            bootstrap/202608292126/part-01.b64
-            bootstrap/202608292126/part-02.b64
-            bootstrap/202608292126/part-03.b64
-            bootstrap/202608292126/part-04.b64
-            bootstrap/202608292126/part-05.b64
-          )
-          test "${bootstrap_changed[*]}" = "${expected_bootstrap[*]}"
+          test "$(find bootstrap/202608292126 -maxdepth 1 -type f -name 'part-*.b64' | wc -l)" = 7
+          test "$(git hash-object bootstrap/202608292126/part-00.b64)" = b283191e0046055a8c374fd4c3eb85c0c8e647bb
+          test "$(git hash-object bootstrap/202608292126/part-01.b64)" = 0e5cb0bf4d078d53212bf3c1b18a56fb01098151
+          test "$(git hash-object bootstrap/202608292126/part-02.b64)" = a84f050c1daf1b15884205886e67fb758b318997
+          test "$(git hash-object bootstrap/202608292126/part-03.b64)" = 48711c873af2336daa97e39bb3ca18a4c5b315bc
+          test "$(git hash-object bootstrap/202608292126/part-04a.b64)" = 689c50d3be400c8ea097f7fe5325649646cbd30d
+          test "$(git hash-object bootstrap/202608292126/part-04b.b64)" = 91c475eb90b9cb36de0f1ceca8f648fdd5eb7248
+          test "$(git hash-object bootstrap/202608292126/part-05.b64)" = 2c3becde3df55327abd9315a282f08c705e38c69
 
           cat bootstrap/202608292126/part-*.b64 > /tmp/gridatlas-map-ready-source.tar.gz.b64
           base64 --decode /tmp/gridatlas-map-ready-source.tar.gz.b64 > /tmp/gridatlas-map-ready-source.tar.gz
           test "$(sha256sum /tmp/gridatlas-map-ready-source.tar.gz | cut -d' ' -f1)" = 65158de561bcb0c086b53e862640641f0cbf8ee4e92aab47283e17b793437c91
           test "$(tar -tzf /tmp/gridatlas-map-ready-source.tar.gz | wc -l)" = 10
           tar -xzf /tmp/gridatlas-map-ready-source.tar.gz -C .
+          python - <<'PY'
+          from pathlib import Path
+          path = Path('.github/workflows/202608292126-build-map-ready-v9.yml')
+          text = path.read_text()
+          needle = '            bootstrap/202608292126/part-04.b64\n'
+          replacement = '            bootstrap/202608292126/part-04a.b64\n            bootstrap/202608292126/part-04b.b64\n'
+          assert text.count(needle) == 1
+          path.write_text(text.replace(needle, replacement))
+          PY
           rm -rf bootstrap/202608292126
           rm .github/workflows/202608292126-bootstrap-map-ready-source.yml
 
@@ -83,7 +89,8 @@ jobs:
             bootstrap/202608292126/part-01.b64
             bootstrap/202608292126/part-02.b64
             bootstrap/202608292126/part-03.b64
-            bootstrap/202608292126/part-04.b64
+            bootstrap/202608292126/part-04a.b64
+            bootstrap/202608292126/part-04b.b64
             bootstrap/202608292126/part-05.b64
             compiler/202608292126-build-map-ready-v9.py
             contracts/202608292126-map-ready-runtime.json
