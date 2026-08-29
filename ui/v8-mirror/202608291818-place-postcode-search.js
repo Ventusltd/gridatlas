@@ -122,8 +122,18 @@
     const groups = parseGroups(query);
     invariant(groups.length > 0, 'empty search query');
     const searchable = `lower(concat_ws(' ', coalesce(name,''), coalesce(repd_address_display,''), coalesce(repd_postcode,''), coalesce(county,''), coalesce(planning_authority,''), coalesce(repd_ref,'')))`;
+    const compactPostcode = `regexp_replace(upper(coalesce(repd_postcode,'')), '[^A-Z0-9]', '', 'g')`;
+    const compactRef = `regexp_replace(upper(coalesce(repd_ref,'')), '[^A-Z0-9]', '', 'g')`;
     return groups.map(group => {
-      const alternatives = group.map(term => `${searchable} LIKE ${sqlString(`%${term}%`)}`);
+      const alternatives = [];
+      for (const term of group) {
+        const compact = normaliseCompact(term);
+        alternatives.push(`${searchable} LIKE ${sqlString(`%${term}%`)}`);
+        if (compact) {
+          alternatives.push(`${compactPostcode} LIKE ${sqlString(`%${compact}%`)}`);
+          alternatives.push(`${compactRef} = ${sqlString(compact)}`);
+        }
+      }
       return `(${alternatives.join(' OR ')})`;
     }).join(' AND ');
   }
