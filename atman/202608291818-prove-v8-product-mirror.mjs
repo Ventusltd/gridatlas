@@ -19,7 +19,12 @@ const selectors = [
   '#radius-popup', '#radius-area-popup', '#zonedraw-display', '#measure-display',
   '#polyzone-display', '#fs-curtain', '#fs-letterhead', '#btn-fullscreen', '#btn-fullscreen-exit'
 ];
-const pixelSelectors = ['.hud-header', '.search-bar-wrapper', '.map-controls', '.scada-wrapper'];
+const pixelRegions = [
+  { selector: '.hud-header', masks: [] },
+  { selector: '.search-bar-wrapper', masks: [] },
+  { selector: '.map-controls', masks: [] },
+  { selector: '.scada-wrapper', masks: ['#scada-ui-container'] }
+];
 const styleProps = [
   'display','position','font-family','font-size','font-weight','color','background-color',
   'border-top-width','border-right-width','border-bottom-width','border-left-width','border-radius',
@@ -80,6 +85,7 @@ async function snapshot(page) {
       boxes, styles,
       controls: [...document.querySelectorAll('.map-ctrl-btn')].map(el => ({ id: el.id, text: el.textContent.trim() })),
       groups: [...document.querySelectorAll('#scada-ui-container .key-title')].map(el => el.textContent.trim()),
+      layer_labels: [...document.querySelectorAll('#scada-ui-container span[data-base-label]')].map(el => ({ id: el.id, base: el.getAttribute('data-base-label'), color: getComputedStyle(el).color })),
       checkboxes: document.querySelectorAll('#scada-ui-container input[type="checkbox"]').length,
       radios: document.querySelectorAll('#scada-ui-container input[type="radio"]').length,
       placeholder: document.querySelector('#search-input')?.getAttribute('placeholder') || '',
@@ -92,6 +98,7 @@ function compareSnapshots(a, b, viewport) {
   const errors = [], same = (x, y) => JSON.stringify(x) === JSON.stringify(y);
   if (!same(a.controls, b.controls)) errors.push(`${viewport}: map controls differ`);
   if (!same(a.groups, b.groups)) errors.push(`${viewport}: layer groups differ`);
+  if (!same(a.layer_labels, b.layer_labels)) errors.push(`${viewport}: layer labels/order/colours differ`);
   if (a.checkboxes !== b.checkboxes) errors.push(`${viewport}: checkbox count differs`);
   if (a.radios !== b.radios) errors.push(`${viewport}: radio count differs`);
   if (a.placeholder !== b.placeholder) errors.push(`${viewport}: search placeholder differs`);
@@ -111,7 +118,6 @@ async function normaliseStableUi(page) {
   await page.evaluate(() => {
     const set = (id, text) => { const el = document.getElementById(id); if (el) el.textContent = text; };
     set('clock','12:34:56'); set('date','29/08/2026'); set('days','8526 DAYS');
-    document.querySelectorAll('span[data-base-label]').forEach(el => el.textContent = `${el.getAttribute('data-base-label')} [WAIT]`);
     document.querySelectorAll('input[type="checkbox"]').forEach(el => el.checked = false);
     document.querySelectorAll('input[type="radio"][value="dark"]').forEach(el => el.checked = true);
     const input = document.getElementById('search-input'); if (input) { input.value = ''; input.blur(); }
@@ -124,20 +130,28 @@ async function normaliseStableUi(page) {
   await page.waitForTimeout(80);
 }
 
+async function regionScreenshot(page, region) {
+  const masks = region.masks.map(selector => page.locator(selector));
+  return page.locator(region.selector).screenshot({ animations: 'disabled', mask: masks, maskColor: '#000000' });
+}
+
 async function pixelProof(oraclePage, mirrorPage, viewport) {
   await Promise.all([normaliseStableUi(oraclePage), normaliseStableUi(mirrorPage)]);
   const regions = {};
-  for (const selector of pixelSelectors) {
-    const [a, b] = await Promise.all([
-      oraclePage.locator(selector).screenshot({ animations: 'disabled' }),
-      mirrorPage.locator(selector).screenshot({ animations: 'disabled' })
-    ]);
+  for (const region of pixelRegions) {
+    const [a, b] = await Promise.all([regionScreenshot(oraclePage, region), regionScreenshot(mirrorPage, region)]);
     const ah = crypto.createHash('sha256').update(a).digest('hex');
     const bh = crypto.createHash('sha256').update(b).digest('hex');
-    requireCondition(a.equals(b), `${viewport}: stable UI pixels differ for ${selector}`);
-    regions[selector] = { identical: true, sha256: ah, mirror_sha256: bh, bytes: a.length };
+    requireCondition(a.equals(b), `${viewport}: stable UI pixels differ for ${region.selector}`);
+    regions[region.selector] = { identical: true, sha256: ah, mirror_sha256: bh, bytes: a.length, masks: region.masks };
   }
-  return { identical: true, method: 'EXACT_STABLE_REGION_PNG_BYTES', volatile_map_canvas_excluded: true, regions };
+  return {
+    identical: true,
+    method: 'EXACT_STABLE_REGION_PNG_BYTES_WITH_DYNAMIC_STATUS_MASK',
+    volatile_map_canvas_excluded: true,
+    asynchronous_scada_status_text_masked: true,
+    regions
+  };
 }
 
 async function stateForControl(page, id) {
@@ -180,7 +194,7 @@ async function bridgeProof(page) {
 }
 
 const proof = {
-  schema: 'gridatlas.v8-public-product-mirror-proof.v3', classification: 'REJECTED',
+  schema: 'gridatlas.v8-public-product-mirror-proof.v4', classification: 'REJECTED',
   oracle: oracleUrl, mirror: mirrorUrl, bytes: null, viewports: {}, interactions: null, bridge: null, errors: []
 };
 const browser = await chromium.launch({ headless: true });
