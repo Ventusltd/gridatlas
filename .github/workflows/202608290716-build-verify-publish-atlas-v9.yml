@@ -1,6 +1,16 @@
 name: 202608290716 Build verify and publish Atlas V9
 
 on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/202608290716-build-verify-publish-atlas-v9.yml'
+      - 'requirements.lock'
+      - 'contracts/202608290716-atlas-v9-source.json'
+      - 'compiler/202608290716-compile-atlas-v9.py'
+      - 'atman/202608290716-verify-atlas-v9.py'
+      - 'ui/cartridges/202608290716-repd-address-flyto.mjs'
+      - 'ui/site/**'
   workflow_dispatch:
     inputs:
       expected_source_sha:
@@ -24,12 +34,12 @@ jobs:
       - name: Checkout exact source
         uses: actions/checkout@v4
         with:
-          ref: ${{ inputs.expected_source_sha }}
+          ref: ${{ inputs.expected_source_sha || github.sha }}
           fetch-depth: 2
 
       - name: Enforce source boundary
         env:
-          EXPECTED_SOURCE_SHA: ${{ inputs.expected_source_sha }}
+          EXPECTED_SOURCE_SHA: ${{ inputs.expected_source_sha || github.sha }}
         run: |
           test "$(git rev-parse HEAD)" = "$EXPECTED_SOURCE_SHA"
           test "$(git rev-parse origin/main)" = "$EXPECTED_SOURCE_SHA"
@@ -111,7 +121,7 @@ jobs:
 
       - name: CAS publish verified V9 closure to main
         env:
-          EXPECTED_SOURCE_SHA: ${{ inputs.expected_source_sha }}
+          EXPECTED_SOURCE_SHA: ${{ inputs.expected_source_sha || github.sha }}
         run: |
           git fetch origin main
           test "$(git rev-parse HEAD)" = "$EXPECTED_SOURCE_SHA"
