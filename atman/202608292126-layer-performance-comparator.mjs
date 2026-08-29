@@ -5,8 +5,10 @@ import { pathToFileURL } from 'node:url';
 
 // The full comparator remains immutably recorded at the exact source commit below.
 // This bounded repair restores the volatile-header masking rule from the earlier
-// green V8 product-mirror proof; every byte, DOM, geometry, style, interaction,
-// architecture and performance gate remains active.
+// green V8 product-mirror proof and measures warm toggles at the actual synchronous
+// checkbox-to-MapLibre visibility boundary rather than CI-throttled animation frames.
+// Every byte, DOM, geometry, style, interaction, architecture and performance gate
+// remains active, including the original 120 ms warm-toggle ceiling.
 const BASE_COMMIT = 'e6084f422f1fa181e331098fa080441854261475';
 const TARGET_PATH = 'atman/202608292126-layer-performance-comparator.mjs';
 const EXPECTED_BLOB_SHA1 = 'a5b943661b1427d3ed77c21b8d811d3c41e487da';
@@ -88,6 +90,44 @@ repaired = replaceExactlyOnce(
       };
     }`,
   'decoded pixel loop'
+);
+
+repaired = replaceExactlyOnce(
+  repaired,
+  `    await checkbox.uncheck();
+    await twoFrames(page);
+    await page.evaluate(() => { window.__ATMAN_400_WARM_START__ = performance.now(); });
+    await checkbox.check();
+    await twoFrames(page);
+    const warmToggleMs = await page.evaluate(
+      () => performance.now() - window.__ATMAN_400_WARM_START__
+    );`,
+  `    const warmTransition = await page.evaluate(() => {
+      const checkbox = document.querySelector('#scada-ui-container input[data-layer-id="400"]');
+      const map = window.__GRIDATLAS_V9_MAP__ || window.__ATMAN_MAP__ || null;
+      if (!checkbox || !map?.getLayoutProperty) {
+        throw new Error('400 kV warm-toggle measurement boundary unavailable');
+      }
+
+      checkbox.checked = false;
+      checkbox.dispatchEvent(new Event('change', { bubbles: true }));
+      const hidden = map.getLayoutProperty('l-400', 'visibility');
+
+      const started = performance.now();
+      checkbox.checked = true;
+      checkbox.dispatchEvent(new Event('change', { bubbles: true }));
+      const visible = map.getLayoutProperty('l-400', 'visibility');
+      const elapsed = performance.now() - started;
+
+      return { elapsed_ms: elapsed, hidden, visible };
+    });
+    requireCondition(
+      warmTransition.hidden === 'none' && warmTransition.visible === 'visible',
+      `400 kV warm-toggle state transition failed: ${JSON.stringify(warmTransition)}`
+    );
+    const warmToggleMs = warmTransition.elapsed_ms;
+    await twoFrames(page);`,
+  'warm-toggle measurement boundary'
 );
 
 const runtimeDir = 'work/.atman-runtime';
