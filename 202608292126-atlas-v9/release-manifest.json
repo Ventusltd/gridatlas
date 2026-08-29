@@ -1,0 +1,27 @@
+{
+  "schema": "gridatlas.v8-map-ready-release.v1",
+  "classification": "V8_MAP_READY_PERFORMANCE_CANDIDATE",
+  "generation": "202608292126",
+  "release_id": "202608292126-atlas-v9",
+  "parent_release_id": "202608291818-atlas-v9",
+  "source_commit": "65bf947b70f6eb3dc3997854cc3837b49d65edb1",
+  "immutable_after_publication": true,
+  "product_surface": "PINNED_V8_WITH_EXPLICIT_INVISIBLE_ADAPTERS",
+  "permitted_product_delta": [
+    "insert 202608292126-map-ready-fetch-bridge.js before the byte-identical V8 engine",
+    "retain 202608291818-place-postcode-search.js before the byte-identical V8 engine",
+    "insert 202608292126-pre-snapped-config-adapter.js after the byte-identical V8 engine",
+    "materialise eleven same-origin map-ready GeoJSON cartridges from pinned Parquet",
+    "disable duplicate browser snapping only for five topology layers already snapped in the pinned data build"
+  ],
+  "map_ready_manifest_sha256": "b4444edbe4ddcfda6d3d69de9a92904d75e1c9c01115f0e4b88dffedbe0dba48",
+  "machine_learning_record": {
+    "schema": "gridatlas.ml.layer-performance-record.v1",
+    "path": "machine-learning/records/202608292126-layer-performance.jsonl",
+    "task": "binary_release_promotion",
+    "positive_label": "PROMOTE",
+    "negative_label": "REJECT",
+    "privacy": "NO_PERSONAL_DATA"
+  },
+  "promotion_policy": "AUTOMATIC_ONLY_AFTER_LOCAL_AND_PUBLIC_COMPARATOR_GATES"
+}
