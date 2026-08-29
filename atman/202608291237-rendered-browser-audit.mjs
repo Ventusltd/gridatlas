@@ -283,7 +283,7 @@ try {
 
   await page.evaluate(() => { globalThis.__atlasDuckFailLayerId = "dc"; });
   const dataCentresControl = await openLayerControl(page, "dc");
-  await dataCentresControl.check();
+  await dataCentresControl.click();
   await page.waitForFunction(() => document.querySelector("[data-data-status]")?.textContent.includes("Data Ctrs failed closed"));
   assert.equal(await dataCentresControl.isChecked(), false, "failed layer remained active");
   assert.equal(await page.evaluate(() => Boolean(globalThis.__atlasAudit.map.getSource("v8-dc"))), false, "failed query leaked a source");
