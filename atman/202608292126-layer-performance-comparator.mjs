@@ -123,7 +123,7 @@ repaired = replaceExactlyOnce(
     });
     requireCondition(
       warmTransition.hidden === 'none' && warmTransition.visible === 'visible',
-      `400 kV warm-toggle state transition failed: ${JSON.stringify(warmTransition)}`
+      '400 kV warm-toggle state transition failed: ' + JSON.stringify(warmTransition)
     );
     const warmToggleMs = warmTransition.elapsed_ms;
     await twoFrames(page);`,
