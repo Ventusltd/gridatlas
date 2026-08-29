@@ -26,7 +26,7 @@ env:
 
 jobs:
   prove_mirror:
-    name: Byte, DOM, geometry, interaction and pixel mirror proof
+    name: Byte, DOM, geometry, interaction and decoded-pixel mirror proof
     runs-on: ubuntu-24.04
     timeout-minutes: 20
     permissions:
@@ -66,11 +66,13 @@ jobs:
           node-version: '22.18.0'
           cache: npm
 
-      - name: Install pinned browser runtime
+      - name: Install pinned browser and PNG decoder runtime
         run: |
           set -euo pipefail
           npm ci --ignore-scripts
+          npm install --no-save --ignore-scripts pngjs@7.0.0
           npx playwright install --with-deps chromium
+          node -e "import('pngjs').then(m => { if (!m.PNG) process.exit(1) })"
 
       - name: Serve pinned V8 oracle locally
         run: |
@@ -96,6 +98,8 @@ jobs:
           test "$(jq -r .bytes.engine_byte_identical work/202608291818-v8-mirror-proof.json)" = true
           test "$(jq -r .viewports.desktop.pixels.identical work/202608291818-v8-mirror-proof.json)" = true
           test "$(jq -r .viewports.mobile.pixels.identical work/202608291818-v8-mirror-proof.json)" = true
+          test "$(jq -r .viewports.desktop.pixels.comparison work/202608291818-v8-mirror-proof.json)" = EXACT_DECODED_RGBA
+          test "$(jq -r .viewports.mobile.pixels.comparison work/202608291818-v8-mirror-proof.json)" = EXACT_DECODED_RGBA
           test "$(jq '.bridge.failures | length' work/202608291818-v8-mirror-proof.json)" = 0
 
       - name: Stop oracle server
@@ -120,7 +124,8 @@ jobs:
           echo '- V8 HTML: byte-identical after removing the one permitted bridge script tag' >> "$GITHUB_STEP_SUMMARY"
           echo '- V8 CSS: byte-identical' >> "$GITHUB_STEP_SUMMARY"
           echo '- V8 engine: byte-identical' >> "$GITHUB_STEP_SUMMARY"
-          echo '- Desktop rendered pixels: identical after deterministic masking of volatile map/time content' >> "$GITHUB_STEP_SUMMARY"
-          echo '- Mobile rendered pixels: identical after deterministic masking of volatile map/time content' >> "$GITHUB_STEP_SUMMARY"
+          echo '- Desktop/mobile DOM geometry and computed styles: identical' >> "$GITHUB_STEP_SUMMARY"
+          echo '- Stable rendered UI components: exact decoded RGBA equality (PNG encoding metadata ignored)' >> "$GITHUB_STEP_SUMMARY"
+          echo '- Volatile map canvas/live clock/asynchronous status text are separately structure/style gated' >> "$GITHUB_STEP_SUMMARY"
           echo '- Control interaction states: identical' >> "$GITHUB_STEP_SUMMARY"
           echo '- V9 Parquet hydration: 400kV + Data Centres + Solar sentinel layers verified' >> "$GITHUB_STEP_SUMMARY"
