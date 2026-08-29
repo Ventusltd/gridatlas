@@ -3,38 +3,23 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="description" content="Grid Atlas V9 — official REPD address and postcode search with deterministic project fly-to.">
-  <title>Grid Atlas V9 · REPD Address Search</title>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/maplibre-gl@3.6.2/dist/maplibre-gl.css">
-  <link rel="stylesheet" href="assets/atlas-v9.css">
+  <meta name="description" content="Grid Atlas V9 current verified release pointer.">
+  <meta name="gridatlas-current-release" content="202608291430-atlas-v9">
+  <title>Grid Atlas V9 · Current verified release</title>
+  <link rel="canonical" href="https://ventusltd.github.io/gridatlas/202608291430-atlas-v9/">
+  <script>
+    (() => {
+      const target = "./202608291430-atlas-v9/";
+      window.location.replace(target + window.location.search + window.location.hash);
+    })();
+  </script>
+  <noscript><meta http-equiv="refresh" content="0; url=./202608291430-atlas-v9/"></noscript>
 </head>
-<body>
-  <header class="topbar">
-    <div><strong>GRID ATLAS V9</strong><span>OFFICIAL REPD LOCATION INTELLIGENCE</span></div>
-    <a href="data/repd_v9_manifest_202608290716.json">BUILD PROOF</a>
-  </header>
+<body data-gridatlas-current-release="202608291430-atlas-v9">
   <main>
-    <section class="search-panel" data-atlas-search-root>
-      <div class="version-line">LIVE CANDIDATE · 202608290716 · V8 PRESERVED</div>
-      <h1>Find a UK energy project by place</h1>
-      <p class="intro">Search the Official REPD address, project name, postcode, county, planning authority or REPD reference. Fly-to uses the published project coordinates.</p>
-      <label for="atlas-query">Project, address, postcode or county</label>
-      <div class="search-row">
-        <input id="atlas-query" data-atlas-query autocomplete="off" placeholder="e.g. solar being built Cranfield/Marston Bedfordshire" aria-describedby="search-help">
-        <button type="button" data-atlas-search>SEARCH REPD</button>
-      </div>
-      <p id="search-help" class="help">Slash means OR: <code>cranfield/marston bedfordshire</code>. No query is sent to an external geocoder.</p>
-      <div class="status-row"><span data-registry-status>Loading authenticated REPD registry…</span><span data-atlas-live aria-live="polite"></span></div>
-      <div class="results" data-atlas-results></div>
-      <aside class="truth-note">“Operator or applicant” is the REPD role label—not proof of current ownership. A location or nearby project never establishes involvement.</aside>
-    </section>
-    <section class="map-panel" aria-label="Grid Atlas V9 map">
-      <div id="map"></div>
-      <div class="map-legend" data-map-status data-map-state="initialising" aria-live="polite">MAP INITIALISING · OFFICIAL REPD ADDRESS SEARCH LOADS INDEPENDENTLY</div>
-    </section>
+    <h1>Grid Atlas V9</h1>
+    <p>Opening the current verified immutable release.</p>
+    <p><a href="./202608291430-atlas-v9/">Open 202608291430-atlas-v9</a></p>
   </main>
-  <footer>DESNZ REPD Q2 2026 · ZSTD Parquet · DuckDB 1.3.2 typed readback · V8 immutable oracle</footer>
-  <script src="https://cdn.jsdelivr.net/npm/maplibre-gl@3.6.2/dist/maplibre-gl.js"></script>
-  <script type="module" src="assets/atlas-v9.mjs"></script>
 </body>
 </html>
