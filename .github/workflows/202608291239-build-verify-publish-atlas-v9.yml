@@ -1,6 +1,20 @@
-name: 202608291237 Stage and verify timestamped Atlas V9
+name: 202608291239 Stage and verify timestamped Atlas V9
 
 on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/202608291239-build-verify-publish-atlas-v9.yml'
+      - 'contracts/202608291239-atlas-v9-live-release.json'
+      - 'compiler/202608291239-compile-atlas-v9-live.py'
+      - 'atman/202608291239-verify-live-release.mjs'
+      - 'atman/202608291239-compare-incumbent-successor.py'
+      - 'atman/202608291239-rendered-browser-audit.mjs'
+      - 'atman/202608291239-public-browser-readback.mjs'
+      - 'ui/successor-202608291239/**'
+      - '202608291239-atlas-v9/**'
+      - 'state/live-set.json'
+      - 'releases/current-v3.json'
   workflow_dispatch:
     inputs:
       expected_main_sha:
@@ -13,16 +27,16 @@ permissions:
   actions: read
 
 concurrency:
-  group: gridatlas-202608291237-staged-publication
+  group: gridatlas-202608291239-staged-publication
   cancel-in-progress: false
 
 env:
-  RELEASE_ID: 202608291237-atlas-v9
+  RELEASE_ID: 202608291239-atlas-v9
   DATA_RELEASE_ID: 202608291237-data-gridatlas
   DATA_BASE_URL: https://ventusltd.github.io/data-gridatlas/202608291237-data-gridatlas/
-  LIVE_URL: https://ventusltd.github.io/gridatlas/202608291237-atlas-v9/
-  RELEASE_STAGE_BRANCH: ci/202608291237-atlas-v9
-  POINTER_STAGE_BRANCH: ci/202608291237-pointer
+  LIVE_URL: https://ventusltd.github.io/gridatlas/202608291239-atlas-v9/
+  RELEASE_STAGE_BRANCH: ci/202608291239-atlas-v9
+  POINTER_STAGE_BRANCH: ci/202608291239-pointer
 
 jobs:
   classify:
@@ -65,29 +79,24 @@ jobs:
             source_commit="$EXPECTED_MAIN_SHA"
             release_commit=''
             test "$(git rev-list --parents -n 1 HEAD | wc -w)" = 2
-            test "$(git rev-parse HEAD^)" = efeb473c1908498d138c4ede8e27291a5484569c
-            mapfile -t refinement < <(git diff --name-only HEAD^ HEAD | sort)
-            expected_refinement=(
-              .github/workflows/202608291237-build-verify-publish-atlas-v9.yml
-            )
-            test "${#refinement[@]}" = 1
-            test "${refinement[*]}" = "${expected_refinement[*]}"
-            mapfile -t changed < <(git diff --name-only 514fce2f3605ae53267c5ee955b301604a91b2fd HEAD | sort)
+            test "$(git rev-parse HEAD^)" = ce88cd8fdba9c60411cd91c419d43f3bfff38b4c
+            mapfile -t changed < <(git diff --name-only HEAD^ HEAD | sort)
             expected=(
               .github/workflows/202608291237-build-verify-publish-atlas-v9.yml
-              atman/202608291237-compare-incumbent-successor.py
-              atman/202608291237-public-browser-readback.mjs
-              atman/202608291237-rendered-browser-audit.mjs
-              atman/202608291237-verify-live-release.mjs
-              compiler/202608291237-compile-atlas-v9-live.py
-              contracts/202608291237-atlas-v9-live-release.json
-              ui/successor/assets/atlas-v9.css
-              ui/successor/assets/atlas-v9.mjs
-              ui/successor/assets/data-gridatlas-client.mjs
-              ui/successor/cartridges/202608290716-repd-address-flyto.mjs
-              ui/successor/index.html
+              .github/workflows/202608291239-build-verify-publish-atlas-v9.yml
+              atman/202608291239-compare-incumbent-successor.py
+              atman/202608291239-public-browser-readback.mjs
+              atman/202608291239-rendered-browser-audit.mjs
+              atman/202608291239-verify-live-release.mjs
+              compiler/202608291239-compile-atlas-v9-live.py
+              contracts/202608291239-atlas-v9-live-release.json
+              ui/successor-202608291239/assets/atlas-v9.css
+              ui/successor-202608291239/assets/atlas-v9.mjs
+              ui/successor-202608291239/assets/data-gridatlas-client.mjs
+              ui/successor-202608291239/cartridges/202608290716-repd-address-flyto.mjs
+              ui/successor-202608291239/index.html
             )
-            test "${#changed[@]}" = 12
+            test "${#changed[@]}" = 13
             test "${changed[*]}" = "${expected[*]}"
           elif test "$release:$live_pointer:$current_pointer" = 1:0:0; then
             mode=release
@@ -146,16 +155,16 @@ jobs:
           test "$(git rev-parse HEAD)" = "$CURRENT_COMMIT"
           git fetch --no-tags --depth=3 origin main:refs/remotes/origin/main
           test "$(git rev-parse origin/main)" = "$CURRENT_COMMIT"
-          test -f contracts/202608291237-atlas-v9-live-release.json
-          test -f compiler/202608291237-compile-atlas-v9-live.py
-          test -f atman/202608291237-verify-live-release.mjs
-          test -f atman/202608291237-compare-incumbent-successor.py
-          test -f atman/202608291237-rendered-browser-audit.mjs
-          test -f atman/202608291237-public-browser-readback.mjs
-          test -f ui/successor/index.html
+          test -f contracts/202608291239-atlas-v9-live-release.json
+          test -f compiler/202608291239-compile-atlas-v9-live.py
+          test -f atman/202608291239-verify-live-release.mjs
+          test -f atman/202608291239-compare-incumbent-successor.py
+          test -f atman/202608291239-rendered-browser-audit.mjs
+          test -f atman/202608291239-public-browser-readback.mjs
+          test -f ui/successor-202608291239/index.html
           test "$(sha256sum index.html | cut -d' ' -f1)" = 4d059a6963ee73378b21bf378a3590292bbced0bba6f3cacf4acd9c6bc695533
-          ! rg -n '__DATA_RELEASE_' contracts/202608291237-atlas-v9-live-release.json
-          test "$(jq -r .data_release.source_commit contracts/202608291237-atlas-v9-live-release.json)" = 32459230b958ff6ddbdb24365f56da83ab1cdc93
+          ! rg -n '__DATA_RELEASE_' contracts/202608291239-atlas-v9-live-release.json
+          test "$(jq -r .data_release.source_commit contracts/202608291239-atlas-v9-live-release.json)" = 32459230b958ff6ddbdb24365f56da83ab1cdc93
           if test "$MODE" = source; then
             test "$CURRENT_COMMIT" = "$SOURCE_COMMIT"
             test ! -e "$RELEASE_ID"
@@ -189,7 +198,7 @@ jobs:
           python - <<'PY'
           import hashlib, json, pathlib, re, urllib.request
           root = pathlib.Path('work/data-release/202608291237-data-gridatlas')
-          contract = json.loads(pathlib.Path('contracts/202608291237-atlas-v9-live-release.json').read_text())
+          contract = json.loads(pathlib.Path('contracts/202608291239-atlas-v9-live-release.json').read_text())
           data = contract['data_release']
           digest = lambda path: hashlib.sha256(path.read_bytes()).hexdigest()
           assert data['source_commit'] == '32459230b958ff6ddbdb24365f56da83ab1cdc93'
@@ -246,7 +255,7 @@ jobs:
           committed_at="$(git show -s --format=%cI "$SOURCE_COMMIT")"
           for build in a b; do
             mkdir -p "work/build-$build"
-            python compiler/202608291237-compile-atlas-v9-live.py \
+            python compiler/202608291239-compile-atlas-v9-live.py \
               --repository . \
               --output "work/build-$build/$RELEASE_ID" \
               --source-commit "$SOURCE_COMMIT" \
@@ -261,7 +270,7 @@ jobs:
       - name: Verify source, data and last-green closure independently
         run: |
           set -euo pipefail
-          node atman/202608291237-verify-live-release.mjs \
+          node atman/202608291239-verify-live-release.mjs \
             --root . \
             --release-directory "work/build-a/$RELEASE_ID" \
             --data-release "work/data-release/$DATA_RELEASE_ID" \
@@ -286,7 +295,7 @@ jobs:
         id: rendered
         continue-on-error: true
         run: |
-          node atman/202608291237-rendered-browser-audit.mjs \
+          node atman/202608291239-rendered-browser-audit.mjs \
             . \
             "work/build-a/$RELEASE_ID" \
             "work/data-release/$DATA_RELEASE_ID" \
@@ -295,12 +304,12 @@ jobs:
       - name: Compare incumbent, successor and rendered behaviour
         if: always()
         run: |
-          python atman/202608291237-compare-incumbent-successor.py \
+          python atman/202608291239-compare-incumbent-successor.py \
             --repository . \
             --build-a "work/build-a/$RELEASE_ID" \
             --build-b "work/build-b/$RELEASE_ID" \
             --data-release "work/data-release/$DATA_RELEASE_ID" \
-            --browser-proof work/rendered/202608291237-browser-audit.json \
+            --browser-proof work/rendered/202608291239-browser-audit.json \
             --output work/incumbent-successor.json
           test "$(jq -r .classification work/incumbent-successor.json)" = VERIFIED_LIVE_ATLAS_V9
           test "$(jq -r .failed work/incumbent-successor.json)" = 0
@@ -313,12 +322,15 @@ jobs:
         run: |
           set -euo pipefail
           test "$RENDERED_OUTCOME" = success
-          proof=work/rendered/202608291237-browser-audit.json
+          proof=work/rendered/202608291239-browser-audit.json
           test "$(jq -r .classification "$proof")" = VERIFIED_RENDERED_BROWSER
           test "$(jq -r .failed "$proof")" = 0
           test "$(jq -r .initial_v8_parquet_requests "$proof")" = 0
           test "$(jq -r .layer_controls "$proof")" = 60
           test "$(jq -r .quarantined_visible_badges "$proof")" = 5
+          test "$(jq -r .glyphless_style_symbol_guard "$proof")" = true
+          test "$(jq -r .repd_cluster_expand_click "$proof")" = true
+          test "$(jq -r '.repd_cluster_layers | join(",")' "$proof")" = repd-clusters,repd-points,repd-selected
           test "$(jq -r .heavy_layer_zoom_gate "$proof")" = true
           test "$(jq -r .failed_query_isolated "$proof")" = true
           test "$(jq -r .unload_released_render_and_handlers "$proof")" = true
@@ -332,8 +344,8 @@ jobs:
           cp -a "work/build-a/$RELEASE_ID/." work/accepted-bundle/release/
           cp work/build-a.sha256 work/build-b.sha256 work/build-ab.diff work/accepted-bundle/proof/
           cp work/atman-live-release.json work/incumbent-successor.json work/accepted-bundle/proof/
-          cp work/rendered/202608291237-browser-audit.json work/accepted-bundle/proof/
-          cp work/rendered/202608291237-browser-desktop.png work/rendered/202608291237-browser-mobile.png work/accepted-bundle/proof/
+          cp work/rendered/202608291239-browser-audit.json work/accepted-bundle/proof/
+          cp work/rendered/202608291239-browser-desktop.png work/rendered/202608291239-browser-mobile.png work/accepted-bundle/proof/
           cp work/data-range.headers work/data-range.bin work/accepted-bundle/proof/
           test "$(find work/accepted-bundle/release -type f | wc -l)" = 7
 
@@ -389,7 +401,7 @@ jobs:
           git config user.name gridatlas-v9-stage-bot
           git config user.email actions@users.noreply.github.com
           stage_date="$(git show -s --format=%cI "$SOURCE_COMMIT")"
-          GIT_AUTHOR_DATE="$stage_date" GIT_COMMITTER_DATE="$stage_date" git commit -m '202608291237: stage immutable Atlas V9 folder for App promotion'
+          GIT_AUTHOR_DATE="$stage_date" GIT_COMMITTER_DATE="$stage_date" git commit -m '202608291239: stage immutable Atlas V9 folder for App promotion'
           stage_commit="$(git rev-parse HEAD)"
           test "$(git rev-parse HEAD^)" = "$SOURCE_COMMIT"
           remote_old="$(git ls-remote --heads origin "refs/heads/$RELEASE_STAGE_BRANCH" | awk '{print $1}')"
@@ -406,14 +418,14 @@ jobs:
             --arg stage_commit "$stage_commit" \
             --arg app_promotion_required true \
             '{classification:$classification,branch:$branch,source_commit:$source_commit,stage_commit:$stage_commit,main_unchanged:true,github_app_promotion_required:($app_promotion_required=="true")}' \
-            > work/stage/202608291237-release-stage.json
+            > work/stage/202608291239-release-stage.json
           echo "Staged $stage_commit on $RELEASE_STAGE_BRANCH; main remains $SOURCE_COMMIT" >> "$GITHUB_STEP_SUMMARY"
 
       - name: Upload release staging ledger
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
         with:
           name: atlas-v9-${{ needs.classify.outputs.current_commit }}-release-stage
-          path: work/stage/202608291237-release-stage.json
+          path: work/stage/202608291239-release-stage.json
           if-no-files-found: error
           retention-days: 90
 
@@ -510,15 +522,18 @@ jobs:
         id: public
         run: |
           set -euo pipefail
-          node atman/202608291237-public-browser-readback.mjs "$LIVE_URL" work/public/browser
-          proof=work/public/browser/202608291237-public-browser-readback.json
+          node atman/202608291239-public-browser-readback.mjs "$LIVE_URL" work/public/browser
+          proof=work/public/browser/202608291239-public-browser-readback.json
           test "$(jq -r .classification "$proof")" = VERIFIED_PUBLIC_DUCKDB_BROWSER
           test "$(jq -r .failed "$proof")" = 0
           test "$(jq -r .duckdb_mode "$proof")" = real
+          test "$(jq -r .map_state_ready "$proof")" = true
           test "$(jq -r .initial_v8_parquet_requests "$proof")" = 0
           test "$(jq -r .real_visible_features "$proof")" -gt 0
-          claim=work/public/browser/202608291237-public-browser-claim.json
+          claim=work/public/browser/202608291239-public-browser-claim.json
           test "$(jq -r .classification "$claim")" = VERIFIED_PUBLIC_DUCKDB_BROWSER
+          test "$(jq -r .map_state_ready "$claim")" = true
+          test "$(jq -r .console_errors "$claim")" = 0
           public_browser_claim_sha256="$(sha256sum "$claim" | cut -d' ' -f1)"
           echo "public_browser_claim_sha256=$public_browser_claim_sha256" >> "$GITHUB_OUTPUT"
 
@@ -539,7 +554,7 @@ jobs:
             --arg pages_verified_at "$PAGES_VERIFIED_AT" \
             --arg public_browser_claim_sha256 '${{ steps.public.outputs.public_browser_claim_sha256 }}' \
             '{schema:$schema,classification:$classification,release_commit:$release_commit,source_commit:$source_commit,pages_run_id:($pages_run_id|tonumber),pages_verified_at:$pages_verified_at,public_browser_claim_sha256:$public_browser_claim_sha256,real_duckdb_wasm:true,initial_v8_parquet_requests:0}' \
-            > work/public/202608291237-public-release-attestation.json
+            > work/public/202608291239-public-release-attestation.json
 
       - name: Upload public timestamp-release attestation
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
@@ -583,19 +598,19 @@ jobs:
           mkdir -p state releases work/stage
           python - <<'PY'
           import hashlib, json, os, pathlib
-          contract = json.loads(pathlib.Path('contracts/202608291237-atlas-v9-live-release.json').read_text())
-          release = pathlib.Path('202608291237-atlas-v9/release-manifest.json')
-          build = pathlib.Path('202608291237-atlas-v9/build-manifest.json')
+          contract = json.loads(pathlib.Path('contracts/202608291239-atlas-v9-live-release.json').read_text())
+          release = pathlib.Path('202608291239-atlas-v9/release-manifest.json')
+          build = pathlib.Path('202608291239-atlas-v9/build-manifest.json')
           digest = lambda path: hashlib.sha256(path.read_bytes()).hexdigest()
           pointer = {
             'schema': 'gridatlas.live-set.v3',
             'classification': 'VERIFIED_LIVE_ATLAS_V9',
-            'generation': '202608291237',
+            'generation': '202608291239',
             'current': {
-              'release_id': '202608291237-atlas-v9',
-              'route': '/gridatlas/202608291237-atlas-v9/',
+              'release_id': '202608291239-atlas-v9',
+              'route': '/gridatlas/202608291239-atlas-v9/',
               'query_contract': {'parameter': 'repd_ref', 'golden_value': '16135'},
-              'live_url': 'https://ventusltd.github.io/gridatlas/202608291237-atlas-v9/',
+              'live_url': 'https://ventusltd.github.io/gridatlas/202608291239-atlas-v9/',
               'source_commit': os.environ['SOURCE_COMMIT'],
               'publication_commit': os.environ['RELEASE_COMMIT'],
               'release_manifest_sha256': digest(release),
@@ -611,6 +626,7 @@ jobs:
               'live_url': 'https://ventusltd.github.io/gridatlas/',
               'root_index_sha256': '4d059a6963ee73378b21bf378a3590292bbced0bba6f3cacf4acd9c6bc695533',
             },
+            'supersedes_candidate': contract['supersedes_candidate'],
             'verification': {
               'release_pages_run_id': int(os.environ['PAGES_RUN_ID']),
               'release_pages_verified_at': os.environ['PAGES_VERIFIED_AT'],
@@ -620,6 +636,9 @@ jobs:
               'initial_v8_parquet_requests': 0,
               'real_duckdb_wasm': True,
               'real_parquet_range_206': True,
+              'map_state_ready': True,
+              'repd_cluster_expand_click': True,
+              'glyphless_style_no_console_errors': True,
               'promotion_eligible': True,
             },
             'rollback': {
@@ -635,6 +654,10 @@ jobs:
           cmp state/live-set.json releases/current-v3.json
           test "$(jq -r .classification state/live-set.json)" = VERIFIED_LIVE_ATLAS_V9
           test "$(jq -r .verification.real_duckdb_wasm state/live-set.json)" = true
+          test "$(jq -r .verification.map_state_ready state/live-set.json)" = true
+          test "$(jq -r .verification.repd_cluster_expand_click state/live-set.json)" = true
+          test "$(jq -r .verification.glyphless_style_no_console_errors state/live-set.json)" = true
+          test "$(jq -r .supersedes_candidate.classification state/live-set.json)" = PUBLIC_PROOF_REJECTED_NO_POINTER
           git add -- state/live-set.json releases/current-v3.json
           mapfile -t changed < <(git diff --cached --name-only | sort)
           test "${#changed[@]}" = 2
@@ -643,7 +666,7 @@ jobs:
           git config user.name gridatlas-v9-stage-bot
           git config user.email actions@users.noreply.github.com
           stage_date="$(git show -s --format=%cI "$RELEASE_COMMIT")"
-          GIT_AUTHOR_DATE="$stage_date" GIT_COMMITTER_DATE="$stage_date" git commit -m '202608291237: stage verified Atlas V9 pointer for App promotion'
+          GIT_AUTHOR_DATE="$stage_date" GIT_COMMITTER_DATE="$stage_date" git commit -m '202608291239: stage verified Atlas V9 pointer for App promotion'
           pointer_stage_commit="$(git rev-parse HEAD)"
           test "$(git rev-parse HEAD^)" = "$RELEASE_COMMIT"
           remote_old="$(git ls-remote --heads origin "refs/heads/$POINTER_STAGE_BRANCH" | awk '{print $1}')"
@@ -658,7 +681,7 @@ jobs:
             --arg release_commit "$RELEASE_COMMIT" \
             --arg pointer_stage_commit "$pointer_stage_commit" \
             '{classification:$classification,branch:$branch,release_commit:$release_commit,pointer_stage_commit:$pointer_stage_commit,main_unchanged:true,github_app_promotion_required:true}' \
-            > work/stage/202608291237-pointer-stage.json
+            > work/stage/202608291239-pointer-stage.json
           echo "Staged $pointer_stage_commit on $POINTER_STAGE_BRANCH; main remains $RELEASE_COMMIT" >> "$GITHUB_STEP_SUMMARY"
 
       - name: Upload pointer staging ledger
@@ -704,6 +727,10 @@ jobs:
           test "$(jq -r .current.source_commit state/live-set.json)" = "$SOURCE_COMMIT"
           test "$(jq -r .verification.real_duckdb_wasm state/live-set.json)" = true
           test "$(jq -r .verification.real_parquet_range_206 state/live-set.json)" = true
+          test "$(jq -r .verification.map_state_ready state/live-set.json)" = true
+          test "$(jq -r .verification.repd_cluster_expand_click state/live-set.json)" = true
+          test "$(jq -r .verification.glyphless_style_no_console_errors state/live-set.json)" = true
+          test "$(jq -r .supersedes_candidate.classification state/live-set.json)" = PUBLIC_PROOF_REJECTED_NO_POINTER
 
       - name: Poll exact pointer dynamic Pages run
         id: pages

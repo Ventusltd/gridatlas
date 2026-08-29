@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="Timestamped Grid Atlas V9 live release with official REPD address search and 60 lazy Parquet layers.">
+  <title>Grid Atlas V9 · 202608291239 Live Release</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/maplibre-gl@3.6.2/dist/maplibre-gl.css">
+  <link rel="stylesheet" href="assets/atlas-v9.css">
+</head>
+<body>
+  <header class="topbar">
+    <div><strong>GRID ATLAS V9</strong><span>202608291239 LIVE · REPD + FULL V8 PARITY DATA</span></div>
+    <nav><a href="release-manifest.json">RELEASE PROOF</a><a href="../">LAST-GREEN ROOT</a></nav>
+  </header>
+  <main>
+    <section class="search-panel" data-atlas-search-root>
+      <div class="version-line">LIVE RELEASE · 202608291239 · V8 IMMUTABLE</div>
+      <h1>Find a UK energy project by place</h1>
+      <p class="intro">Search the Official REPD address, project name, postcode, county, planning authority or REPD reference. Fly-to uses the published project coordinates.</p>
+      <label for="atlas-query">Project, address, postcode or county</label>
+      <div class="search-row">
+        <input id="atlas-query" data-atlas-query autocomplete="off" placeholder="e.g. solar being built Cranfield/Marston Bedfordshire" aria-describedby="search-help">
+        <button type="button" data-atlas-search>SEARCH REPD</button>
+      </div>
+      <p id="search-help" class="help">Slash means OR: <code>cranfield/marston bedfordshire</code>. No query is sent to an external geocoder.</p>
+      <div class="status-row"><span data-registry-status>CORE READY · loading authenticated REPD search projection…</span><span data-atlas-live aria-live="polite"></span></div>
+      <div class="results" data-atlas-results></div>
+      <aside class="truth-note">“Operator or applicant” is the REPD role label—not proof of current ownership. A location or nearby project never establishes involvement.</aside>
+
+      <section class="layer-panel" aria-labelledby="layer-heading">
+        <div class="layer-heading-row">
+          <div><h2 id="layer-heading">Atlas V8 data layers</h2><p>60 layers are live from the immutable data release. Parquet is queried in your browser only after you select a layer.</p></div>
+          <button type="button" data-load-defaults disabled>LOAD V8 DEFAULTS</button>
+        </div>
+        <p class="data-status" data-data-status aria-live="polite">Authenticating timestamped data release…</p>
+        <div class="layer-controls" data-layer-controls></div>
+        <aside class="truth-note layer-truth">V8 parity data is shown with its provenance disposition. Synthetic, unreproducible and geometry-mismatch sources remain visibly labelled in the proof; display does not upgrade their authority.</aside>
+      </section>
+    </section>
+    <section class="map-panel" aria-label="Grid Atlas V9 map">
+      <div id="map"></div>
+      <div class="map-legend" data-map-status data-map-state="initialising" aria-live="polite">MAP INITIALISING · OFFICIAL REPD ADDRESS SEARCH LOADS INDEPENDENTLY</div>
+    </section>
+  </main>
+  <footer>202608291239 timestamped release · DESNZ REPD Q2 2026 · DuckDB-WASM lazy Parquet · MapLibre · V8 immutable oracle</footer>
+  <script src="https://cdn.jsdelivr.net/npm/maplibre-gl@3.6.2/dist/maplibre-gl.js"></script>
+  <script type="module" src="assets/atlas-v9.mjs"></script>
+</body>
+</html>
