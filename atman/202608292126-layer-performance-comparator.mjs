@@ -4,10 +4,11 @@ import { execFileSync } from 'node:child_process';
 import { pathToFileURL } from 'node:url';
 
 // The full comparator remains immutably recorded at the exact source commit below.
-// This bounded repair freezes V8 live timers and hides only their fixed values during
-// pixel capture, avoiding nondeterministic Playwright mask geometry. Real DOM geometry
-// and computed styles are compared before normalisation. Warm toggles are measured at
-// the actual checkbox-to-MapLibre visibility boundary; all original ceilings remain.
+// This bounded repair freezes V8 live timers, keeps the entire header under real DOM
+// geometry and computed-style comparison, and applies exact pixel comparison to its
+// stable labels and branding rather than the continuously changing clock/countdown.
+// Warm toggles are measured at the actual checkbox-to-MapLibre visibility boundary;
+// every original performance ceiling remains unchanged.
 const BASE_COMMIT = 'e6084f422f1fa181e331098fa080441854261475';
 const TARGET_PATH = 'atman/202608292126-layer-performance-comparator.mjs';
 const EXPECTED_BLOB_SHA1 = 'a5b943661b1427d3ed77c21b8d811d3c41e487da';
@@ -73,6 +74,29 @@ repaired = replaceExactlyOnce(
   '      #map{visibility:hidden!important}\n',
   '      #map{visibility:hidden!important}\n      #clock,#date,#days{visibility:hidden!important;text-shadow:none!important}\n',
   'hide fixed volatile values without changing layout'
+);
+
+repaired = replaceExactlyOnce(
+  repaired,
+  `const pixelRegions = [
+  '.hud-header',
+  '.search-bar-wrapper',
+  '.map-controls',
+  '.scada-brand',
+  '.status-legend',
+  '.disclaimer-box'
+];`,
+  `const pixelRegions = [
+  '.hud-header .ventus-brand',
+  '.hud-header > div:first-child > small',
+  '.hud-header > div:last-child > small',
+  '.search-bar-wrapper',
+  '.map-controls',
+  '.scada-brand',
+  '.status-legend',
+  '.disclaimer-box'
+];`,
+  'stable header pixel regions'
 );
 
 repaired = replaceExactlyOnce(
