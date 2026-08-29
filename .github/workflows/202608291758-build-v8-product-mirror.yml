@@ -1,0 +1,227 @@
+name: 202608291758 Build V8 product mirror on V9 data plane
+run-name: V8 product mirror ${{ github.sha }}
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/202608291758-build-v8-product-mirror.yml'
+      - 'ui/v8-mirror/v9-parquet-fetch-bridge.js'
+      - 'atman/202608291758-v8-product-parity.mjs'
+  workflow_dispatch:
+
+permissions: {}
+
+concurrency:
+  group: gridatlas-202608291758-v8-product-mirror
+  cancel-in-progress: false
+
+env:
+  RELEASE_ID: 202608291758-atlas-v9
+  V8_REPOSITORY: Ventusltd/globalgrid2050
+  V8_COMMIT: f2f343a92ee972cc74ed23b4b99d8a22896791ad
+  V8_INDEX_BLOB: 278c3f55d3b61af9d13417c99bfb558374131143
+  V8_CSS_BLOB: 29a2edb490407f489c29433d84e329b1038e0657
+  V8_ENGINE_BLOB: 0a647c32c346770851704727bbf86fb7167e2596
+  DATA_RELEASE_ID: 202608291237-data-gridatlas
+  DATA_MANIFEST_SHA256: 3246dbdaa042ae8352ec9b7128cb6c2fe65e4f1aba0534302510661828df2526
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: 'true'
+
+jobs:
+  build_verify_publish:
+    name: Mirror V8 product, bridge V9 data, prove parity, stage immutable candidate
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    permissions:
+      contents: write
+      actions: read
+    steps:
+      - name: Checkout exact main commit with bounded publication credential
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 3
+          persist-credentials: true
+
+      - name: Require exact linear main boundary and unused timestamp
+        run: |
+          set -euo pipefail
+          test "$GITHUB_REF" = refs/heads/main
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          git fetch --no-tags origin main:refs/remotes/origin/main
+          test "$(git rev-parse origin/main)" = "$GITHUB_SHA"
+          test ! -e "$RELEASE_ID"
+          test -f ui/v8-mirror/v9-parquet-fetch-bridge.js
+          test -f atman/202608291758-v8-product-parity.mjs
+          test "$(jq -r .current.release_id state/live-set.json)" = 202608291430-atlas-v9
+          test "$(jq -r .verification.promotion_eligible state/live-set.json)" = true
+
+      - name: Fetch the pinned V8 product oracle and verify Git blob identity
+        run: |
+          set -euo pipefail
+          mkdir -p work/v8-oracle
+          base="https://raw.githubusercontent.com/$V8_REPOSITORY/$V8_COMMIT/repd_grid_atlasv8"
+          curl --fail --location --retry 5 --retry-all-errors --max-time 90 "$base/index.html" -o work/v8-oracle/index.html
+          curl --fail --location --retry 5 --retry-all-errors --max-time 90 "$base/ventusv8.css" -o work/v8-oracle/ventusv8.css
+          curl --fail --location --retry 5 --retry-all-errors --max-time 90 "$base/ventus-corev8engine.js" -o work/v8-oracle/ventus-corev8engine.js
+          test "$(git hash-object work/v8-oracle/index.html)" = "$V8_INDEX_BLOB"
+          test "$(git hash-object work/v8-oracle/ventusv8.css)" = "$V8_CSS_BLOB"
+          test "$(git hash-object work/v8-oracle/ventus-corev8engine.js)" = "$V8_ENGINE_BLOB"
+
+      - name: Compile V9 as the V8 product with only an invisible data-plane bridge
+        run: |
+          set -euo pipefail
+          mkdir -p "work/release/$RELEASE_ID"
+          cp work/v8-oracle/index.html "work/release/$RELEASE_ID/index.html"
+          cp work/v8-oracle/ventusv8.css "work/release/$RELEASE_ID/ventusv8.css"
+          cp work/v8-oracle/ventus-corev8engine.js "work/release/$RELEASE_ID/ventus-corev8engine.js"
+          cp ui/v8-mirror/v9-parquet-fetch-bridge.js "work/release/$RELEASE_ID/v9-parquet-fetch-bridge.js"
+          python - <<'PY'
+          from pathlib import Path
+          path = Path('work/release') / '202608291758-atlas-v9' / 'index.html'
+          text = path.read_text(encoding='utf-8')
+          needle = '<script src="ventus-corev8engine.js"></script>'
+          assert text.count(needle) == 1
+          text = text.replace(needle, '<script src="v9-parquet-fetch-bridge.js"></script>\n\n' + needle)
+          path.write_text(text, encoding='utf-8')
+          PY
+          jq -n \
+            --arg release_id "$RELEASE_ID" \
+            --arg source_commit "$GITHUB_SHA" \
+            --arg v8_commit "$V8_COMMIT" \
+            --arg v8_index_blob "$V8_INDEX_BLOB" \
+            --arg v8_css_blob "$V8_CSS_BLOB" \
+            --arg v8_engine_blob "$V8_ENGINE_BLOB" \
+            --arg data_release "$DATA_RELEASE_ID" \
+            --arg data_manifest "$DATA_MANIFEST_SHA256" \
+            '{
+              schema:"gridatlas.v8-product-mirror-candidate.v1",
+              classification:"V8_PRODUCT_MIRROR_CANDIDATE",
+              release_id:$release_id,
+              source_commit:$source_commit,
+              immutable_after_publication:true,
+              product_oracle:{repository:"Ventusltd/globalgrid2050",commit:$v8_commit,index_blob:$v8_index_blob,css_blob:$v8_css_blob,engine_blob:$v8_engine_blob},
+              permitted_product_delta:["insert v9-parquet-fetch-bridge.js immediately before the unchanged V8 engine"],
+              data_plane:{repository:"Ventusltd/data-gridatlas",release_id:$data_release,manifest_sha256:$data_manifest,format:"ZSTD_PARQUET",browser_query:"DUCKDB_WASM"},
+              promotion_policy:"NO_ROOT_PROMOTION_UNTIL_USER_VISIBLE_V8_PARITY_AND_BROWSER_GATE_PASS"
+            }' > "work/release/$RELEASE_ID/release-manifest.json"
+
+      - name: Prove HTML/CSS/engine product fidelity before browser execution
+        run: |
+          set -euo pipefail
+          cmp work/v8-oracle/ventusv8.css "work/release/$RELEASE_ID/ventusv8.css"
+          cmp work/v8-oracle/ventus-corev8engine.js "work/release/$RELEASE_ID/ventus-corev8engine.js"
+          python - <<'PY'
+          from pathlib import Path
+          oracle = Path('work/v8-oracle/index.html').read_text(encoding='utf-8')
+          candidate = (Path('work/release') / '202608291758-atlas-v9' / 'index.html').read_text(encoding='utf-8')
+          bridge = '<script src="v9-parquet-fetch-bridge.js"></script>\n\n'
+          assert candidate.count(bridge) == 1
+          assert candidate.replace(bridge, '') == oracle
+          PY
+          test "$(git hash-object "work/release/$RELEASE_ID/ventusv8.css")" = "$V8_CSS_BLOB"
+          test "$(git hash-object "work/release/$RELEASE_ID/ventus-corev8engine.js")" = "$V8_ENGINE_BLOB"
+
+      - name: Configure exact Node
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020
+        with:
+          node-version: '22.18.0'
+          cache: npm
+
+      - name: Install pinned browser test runtime
+        run: |
+          set -euo pipefail
+          npm ci --ignore-scripts
+          npx playwright install --with-deps chromium
+
+      - name: Serve the candidate locally
+        run: |
+          set -euo pipefail
+          cp -R "work/release/$RELEASE_ID" "$RELEASE_ID"
+          python -m http.server 4173 --bind 127.0.0.1 >work/http.log 2>&1 &
+          echo $! > work/http.pid
+          for i in $(seq 1 30); do
+            curl --fail --silent "http://127.0.0.1:4173/$RELEASE_ID/" >/dev/null && exit 0
+            sleep 1
+          done
+          cat work/http.log
+          exit 1
+
+      - name: Compare rendered V8 product geometry and prove real V9 Parquet hydration
+        env:
+          CANDIDATE_URL: http://127.0.0.1:4173/202608291758-atlas-v9/
+          ORACLE_URL: https://globalgrid2050.com/repd_grid_atlasv8/
+          OUTPUT: work/202608291758-v8-product-parity.json
+        run: |
+          set -euo pipefail
+          node atman/202608291758-v8-product-parity.mjs
+          test "$(jq -r .classification work/202608291758-v8-product-parity.json)" = VERIFIED_V8_PRODUCT_MIRROR_ON_V9_DATA_PLANE
+          test "$(jq '.errors | length' work/202608291758-v8-product-parity.json)" = 0
+
+      - name: Stop local server and restore source-only worktree
+        if: ${{ always() }}
+        run: |
+          set -euo pipefail
+          if test -f work/http.pid; then kill "$(cat work/http.pid)" 2>/dev/null || true; fi
+          rm -rf "$RELEASE_ID"
+
+      - name: Retain parity evidence before publication
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: gridatlas-202608291758-v8-product-parity-${{ github.sha }}
+          path: work/202608291758-v8-product-parity.json
+          if-no-files-found: error
+          retention-days: 90
+          compression-level: 0
+
+      - name: Compare-and-swap immutable timestamp candidate onto main
+        run: |
+          set -euo pipefail
+          git fetch --no-tags origin main:refs/remotes/origin/main
+          test "$(git rev-parse origin/main)" = "$GITHUB_SHA"
+          test ! -e "$RELEASE_ID"
+          cp -R "work/release/$RELEASE_ID" "$RELEASE_ID"
+          git add "$RELEASE_ID"
+          test "$(git diff --cached --name-only | grep -vc "^$RELEASE_ID/")" = 0
+          git config user.name gridatlas-v9-mirror-bot
+          git config user.email actions@users.noreply.github.com
+          git commit -m "202608291758: stage V8 product mirror on V9 data plane"
+          publication_commit="$(git rev-parse HEAD)"
+          git push origin HEAD:main
+          echo "PUBLICATION_COMMIT=$publication_commit" >> "$GITHUB_ENV"
+
+      - name: Verify exact Pages deployment and public mirror bytes
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          api="https://api.github.com/repos/$GITHUB_REPOSITORY/actions/runs?head_sha=$PUBLICATION_COMMIT&per_page=30"
+          pages_run=''
+          for i in $(seq 1 60); do
+            payload="$(curl --fail --silent --show-error -H "Authorization: Bearer $GH_TOKEN" -H 'Accept: application/vnd.github+json' "$api")"
+            pages_run="$(printf '%s' "$payload" | jq -r '[.workflow_runs[] | select(.name == "pages build and deployment")][0].id // empty')"
+            status="$(printf '%s' "$payload" | jq -r '[.workflow_runs[] | select(.name == "pages build and deployment")][0].status // empty')"
+            conclusion="$(printf '%s' "$payload" | jq -r '[.workflow_runs[] | select(.name == "pages build and deployment")][0].conclusion // empty')"
+            if test "$status" = completed; then test "$conclusion" = success; break; fi
+            sleep 5
+          done
+          test -n "$pages_run"
+          test "$status" = completed
+          test "$conclusion" = success
+          public="https://ventusltd.github.io/gridatlas/$RELEASE_ID"
+          for i in $(seq 1 30); do
+            if curl --fail --location --silent --show-error "$public/index.html" -o work/public-index.html; then
+              grep -q 'v9-parquet-fetch-bridge.js' work/public-index.html && break
+            fi
+            sleep 3
+          done
+          curl --fail --location --silent --show-error "$public/ventusv8.css" -o work/public.css
+          curl --fail --location --silent --show-error "$public/ventus-corev8engine.js" -o work/public-engine.js
+          test "$(git hash-object work/public.css)" = "$V8_CSS_BLOB"
+          test "$(git hash-object work/public-engine.js)" = "$V8_ENGINE_BLOB"
+          echo "### V8 product mirror published" >> "$GITHUB_STEP_SUMMARY"
+          echo "- Candidate: $public/" >> "$GITHUB_STEP_SUMMARY"
+          echo "- V8 CSS blob: $V8_CSS_BLOB" >> "$GITHUB_STEP_SUMMARY"
+          echo "- V8 engine blob: $V8_ENGINE_BLOB" >> "$GITHUB_STEP_SUMMARY"
+          echo "- Data plane: $DATA_RELEASE_ID" >> "$GITHUB_STEP_SUMMARY"
+          echo "- Root pointer intentionally unchanged pending human visual check." >> "$GITHUB_STEP_SUMMARY"
