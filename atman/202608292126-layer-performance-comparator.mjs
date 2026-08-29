@@ -4,8 +4,8 @@ import { execFileSync } from 'node:child_process';
 import { pathToFileURL } from 'node:url';
 
 // The full comparator remains immutably recorded at the exact source commit below.
-// This bounded repair restores the volatile-header masking rule from the earlier
-// green V8 product-mirror proof and measures warm toggles at the actual synchronous
+// This bounded repair freezes the V8 live-clock timer only during pixel capture,
+// restores the earlier volatile-header mask, and measures warm toggles at the actual
 // checkbox-to-MapLibre visibility boundary rather than CI-throttled animation frames.
 // Every byte, DOM, geometry, style, interaction, architecture and performance gate
 // remains active, including the original 120 ms warm-toggle ceiling.
@@ -40,6 +40,35 @@ if (gitBlobSha1(originalBytes) !== EXPECTED_BLOB_SHA1) {
 }
 
 let repaired = originalBytes.toString('utf8');
+repaired = replaceExactlyOnce(
+  repaired,
+  `  await page.addInitScript(() => {
+    let assigned;`,
+  `  await page.addInitScript(() => {
+    const nativeSetInterval = window.setInterval.bind(window);
+    window.__ATMAN_INTERVAL_IDS__ = [];
+    window.setInterval = (...args) => {
+      const timerId = nativeSetInterval(...args);
+      window.__ATMAN_INTERVAL_IDS__.push(timerId);
+      return timerId;
+    };
+    let assigned;`,
+  'capture page intervals'
+);
+
+repaired = replaceExactlyOnce(
+  repaired,
+  `  await page.evaluate(() => {
+    for (const [id, value] of [['clock', '12:34:56'], ['date', '29/08/2026'], ['days', '8525 DAYS']]) {`,
+  `  await page.evaluate(() => {
+    for (const timerId of window.__ATMAN_INTERVAL_IDS__ || []) {
+      window.clearInterval(timerId);
+    }
+    window.__ATMAN_INTERVAL_IDS__ = [];
+    for (const [id, value] of [['clock', '12:34:56'], ['date', '29/08/2026'], ['days', '8525 DAYS']]) {`,
+  'freeze volatile page intervals before pixel capture'
+);
+
 repaired = replaceExactlyOnce(
   repaired,
   `const pixelRegions = [
