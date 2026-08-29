@@ -1,0 +1,185 @@
+{
+  "browser_registry": {
+    "bytes": 9328402,
+    "path": "repd_browser_registry_202608290716.json",
+    "sha256": "c8a5c59be878c52014a272eb0e4d09af06a0d301d10a8d6b5d0b116b5d1bb6bc"
+  },
+  "classification": "LIVE_CANDIDATE",
+  "closure": {
+    "addresses": 11059,
+    "postcodes": 9505,
+    "rows": 11069,
+    "status_counts": {
+      "application submitted": 1539,
+      "awaiting construction": 5942,
+      "operational": 3132,
+      "under construction": 456
+    },
+    "unique_repd_refs": 11069,
+    "valid_postcodes": 9060
+  },
+  "generation": "202608290716",
+  "golden_case": {
+    "county": "Bedfordshire",
+    "name": "Prologis DC4 Marston Gate, Brockley Way - Solar Panels",
+    "query": "solar being built cranfield/marston bedfordshire",
+    "repd_operator_or_applicant": "Prologis UK Limited",
+    "repd_postcode": "MK43 0ZY",
+    "repd_ref": "16135",
+    "status": "awaiting construction"
+  },
+  "parquet": {
+    "bytes": 1454200,
+    "path": "repd_projects_202608290716.parquet",
+    "schema": [
+      {
+        "name": "repd_ref",
+        "nullable": "YES",
+        "type": "VARCHAR"
+      },
+      {
+        "name": "name",
+        "nullable": "YES",
+        "type": "VARCHAR"
+      },
+      {
+        "name": "repd_address_raw",
+        "nullable": "YES",
+        "type": "VARCHAR"
+      },
+      {
+        "name": "repd_address_display",
+        "nullable": "YES",
+        "type": "VARCHAR"
+      },
+      {
+        "name": "repd_postcode_raw",
+        "nullable": "YES",
+        "type": "VARCHAR"
+      },
+      {
+        "name": "repd_postcode",
+        "nullable": "YES",
+        "type": "VARCHAR"
+      },
+      {
+        "name": "postcode_valid",
+        "nullable": "YES",
+        "type": "BOOLEAN"
+      },
+      {
+        "name": "county",
+        "nullable": "YES",
+        "type": "VARCHAR"
+      },
+      {
+        "name": "region",
+        "nullable": "YES",
+        "type": "VARCHAR"
+      },
+      {
+        "name": "country",
+        "nullable": "YES",
+        "type": "VARCHAR"
+      },
+      {
+        "name": "planning_authority",
+        "nullable": "YES",
+        "type": "VARCHAR"
+      },
+      {
+        "name": "planning_application_reference",
+        "nullable": "YES",
+        "type": "VARCHAR"
+      },
+      {
+        "name": "repd_operator_or_applicant",
+        "nullable": "YES",
+        "type": "VARCHAR"
+      },
+      {
+        "name": "applicant_publication_state",
+        "nullable": "YES",
+        "type": "VARCHAR"
+      },
+      {
+        "name": "technology",
+        "nullable": "YES",
+        "type": "VARCHAR"
+      },
+      {
+        "name": "repd_technology",
+        "nullable": "YES",
+        "type": "VARCHAR"
+      },
+      {
+        "name": "status",
+        "nullable": "YES",
+        "type": "VARCHAR"
+      },
+      {
+        "name": "capacity_mw",
+        "nullable": "YES",
+        "type": "DOUBLE"
+      },
+      {
+        "name": "longitude",
+        "nullable": "YES",
+        "type": "DOUBLE"
+      },
+      {
+        "name": "latitude",
+        "nullable": "YES",
+        "type": "DOUBLE"
+      },
+      {
+        "name": "source_record_updated",
+        "nullable": "YES",
+        "type": "VARCHAR"
+      },
+      {
+        "name": "source_row",
+        "nullable": "YES",
+        "type": "INTEGER"
+      },
+      {
+        "name": "source_row_sha256",
+        "nullable": "YES",
+        "type": "VARCHAR"
+      }
+    ],
+    "sha256": "174040c37f3d63742d6fdd7af722a8cfdf3fb53de3ff85ff1142d22fdac4866b",
+    "typed_readback": [
+      11069,
+      11069,
+      49.766807,
+      60.704105,
+      -8.093027,
+      2.329999
+    ]
+  },
+  "privacy": {
+    "possible_individual_applicants_withheld": 1729
+  },
+  "runtime": {
+    "duckdb": "1.3.2",
+    "parquet_compression": "ZSTD",
+    "threads": 1
+  },
+  "schema": "gridatlas.build-manifest.v1",
+  "source": {
+    "bytes": 5087389,
+    "published": "2026-08-03",
+    "sha256": "84c1b5f958a934d8b4b86ec88f50bdcf43830ded7ff2efc27bffca0c98695035",
+    "url": "https://assets.publishing.service.gov.uk/media/6a6cbdc00c36759b5ccaa305/REPD_Publication_Q2_2026.csv"
+  },
+  "v8_oracle": {
+    "bytes": 4256963,
+    "commit": "f2f343a92ee972cc74ed23b4b99d8a22896791ad",
+    "match_ratio": 0.983865,
+    "matched_by_name_and_rounded_coordinate": 10610,
+    "oracle_features": 10784,
+    "sha256": "ca5da437ddb832f7e4e8d84bba1f2f6d40df6285089a43156452fdda7eebe0fe"
+  },
+  "v8_untouched": true
+}
