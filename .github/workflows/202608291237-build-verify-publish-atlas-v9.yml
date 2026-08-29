@@ -79,8 +79,15 @@ jobs:
             source_commit="$EXPECTED_MAIN_SHA"
             release_commit=''
             test "$(git rev-list --parents -n 1 HEAD | wc -w)" = 2
-            test "$(git rev-parse HEAD^)" = 514fce2f3605ae53267c5ee955b301604a91b2fd
-            mapfile -t changed < <(git diff --name-only HEAD^ HEAD | sort)
+            test "$(git rev-parse HEAD^)" = 9579636922a7ffa1a58fc413e1654ea2c3bbb928
+            mapfile -t refinement < <(git diff --name-only HEAD^ HEAD | sort)
+            expected_refinement=(
+              .github/workflows/202608291237-build-verify-publish-atlas-v9.yml
+              atman/202608291237-rendered-browser-audit.mjs
+            )
+            test "${#refinement[@]}" = 2
+            test "${refinement[*]}" = "${expected_refinement[*]}"
+            mapfile -t changed < <(git diff --name-only 514fce2f3605ae53267c5ee955b301604a91b2fd HEAD | sort)
             expected=(
               .github/workflows/202608291237-build-verify-publish-atlas-v9.yml
               atman/202608291237-compare-incumbent-successor.py

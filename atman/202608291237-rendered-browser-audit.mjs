@@ -236,6 +236,15 @@ async function waitReady(page) {
   await page.waitForFunction(() => document.querySelectorAll("[data-layer-id]").length === 60);
 }
 
+async function openLayerControl(page, layerId) {
+  const control = page.locator(`[data-layer-id="${layerId}"]`);
+  const group = page.locator(`details:has([data-layer-id="${layerId}"])`);
+  assert.equal(await group.count(), 1, `layer ${layerId} must belong to one visible control group`);
+  if (!await group.evaluate(element => element.open)) await group.locator("summary").click();
+  await control.waitFor({ state: "visible" });
+  return control;
+}
+
 let browser;
 try {
   await new Promise(resolve => server.listen(0, "127.0.0.1", resolve));
@@ -266,29 +275,32 @@ try {
   await page.locator(".result-card").first().locator("button.fly-button").click();
   assert.equal(new URL(page.url()).searchParams.get("repd_ref"), "16135");
 
-  await page.locator('[data-layer-id="primary_roads"]').check();
+  const primaryRoadsControl = await openLayerControl(page, "primary_roads");
+  await primaryRoadsControl.check();
   await page.waitForFunction(() => document.querySelector("[data-data-status]")?.textContent.includes("zoom to 8+"));
   assert.equal(desktopRequests.filter(item => item.url.endsWith(".parquet")).length, 0, "heavy null-minzoom layer bypassed zoom floor");
-  await page.locator('[data-layer-id="primary_roads"]').uncheck();
+  await primaryRoadsControl.uncheck();
 
   await page.evaluate(() => { globalThis.__atlasDuckFailLayerId = "dc"; });
-  await page.locator('[data-layer-id="dc"]').check();
+  const dataCentresControl = await openLayerControl(page, "dc");
+  await dataCentresControl.check();
   await page.waitForFunction(() => document.querySelector("[data-data-status]")?.textContent.includes("Data Ctrs failed closed"));
-  assert.equal(await page.locator('[data-layer-id="dc"]').isChecked(), false, "failed layer remained active");
+  assert.equal(await dataCentresControl.isChecked(), false, "failed layer remained active");
   assert.equal(await page.evaluate(() => Boolean(globalThis.__atlasAudit.map.getSource("v8-dc"))), false, "failed query leaked a source");
   await page.evaluate(() => { globalThis.__atlasDuckFailLayerId = null; });
   await page.locator("[data-atlas-query]").fill("MK430ZY");
   await page.locator("[data-atlas-query]").press("Enter");
   assert.match(await page.locator(".result-card").first().innerText(), /REPD 16135/, "REPD search failed after isolated layer error");
 
-  await page.locator('[data-layer-id="400"]').check();
+  const grid400Control = await openLayerControl(page, "400");
+  await grid400Control.check();
   await page.waitForFunction(() => document.querySelector("[data-data-status]")?.textContent.includes("400kV: 1 visible features"));
   const lazyParquet = desktopRequests.filter(item => item.url.endsWith(".parquet"));
   assert.equal(lazyParquet.length, 2, "one layer must range-read one partition and membership file");
   assert(lazyParquet.every(item => item.status === 206 && item.range === "bytes=0-1023"), "lazy Parquet requests were not ranged");
   assert.match(await page.evaluate(() => globalThis.__atlasDuckSql), /m\.layer_id = '400'/);
   assert.equal(await page.evaluate(() => globalThis.__GRIDATLAS_DUCKDB_MODE__), "test");
-  await page.locator('[data-layer-id="400"]').uncheck();
+  await grid400Control.uncheck();
   await page.waitForFunction(() => document.querySelector("[data-data-status]")?.textContent.includes("400kV unloaded"));
   const unloaded = await page.evaluate(() => ({
     source: Boolean(globalThis.__atlasAudit.map.getSource("v8-400")),
