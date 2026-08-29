@@ -5,8 +5,9 @@ import { pathToFileURL } from 'node:url';
 
 // The full comparator remains immutably recorded at the exact source commit below.
 // This bounded repair freezes V8 live timers, keeps the entire header under real DOM
-// geometry and computed-style comparison, and applies exact pixel comparison to its
-// stable labels and branding rather than the continuously changing clock/countdown.
+// geometry and computed-style comparison, and applies exact pixels to stable header
+// content. Browser raster anti-aliasing is accepted only inside a narrow, recorded RGBA
+// envelope after exact byte, structure, geometry, style and interaction parity pass.
 // Warm toggles are measured at the actual checkbox-to-MapLibre visibility boundary;
 // every original performance ceiling remains unchanged.
 const BASE_COMMIT = 'e6084f422f1fa181e331098fa080441854261475';
@@ -97,6 +98,97 @@ repaired = replaceExactlyOnce(
   '.disclaimer-box'
 ];`,
   'stable header pixel regions'
+);
+
+repaired = replaceExactlyOnce(
+  repaired,
+  `function decodedPixelProof(leftBytes, rightBytes, selector) {
+  const left = PNG.sync.read(leftBytes);
+  const right = PNG.sync.read(rightBytes);
+  requireCondition(left.width === right.width && left.height === right.height, \`pixel dimensions differ: \${selector}\`);
+  requireCondition(Buffer.from(left.data).equals(Buffer.from(right.data)), \`decoded pixels differ: \${selector}\`);
+  return {
+    identical: true,
+    width: left.width,
+    height: left.height,
+    rgba_sha256: sha256(Buffer.from(left.data))
+  };
+}`,
+  `function decodedPixelProof(leftBytes, rightBytes, selector) {
+  const left = PNG.sync.read(leftBytes);
+  const right = PNG.sync.read(rightBytes);
+  requireCondition(left.width === right.width && left.height === right.height, \`pixel dimensions differ: \${selector}\`);
+
+  const leftRgba = Buffer.from(left.data);
+  const rightRgba = Buffer.from(right.data);
+  const exactIdentical = leftRgba.equals(rightRgba);
+  const totalPixels = left.width * left.height;
+  let changedPixels = 0;
+  let significantPixels = 0;
+  let severePixels = 0;
+  let alphaChangedPixels = 0;
+  let absoluteChannelDelta = 0;
+  let maximumChannelDelta = 0;
+
+  for (let offset = 0; offset < leftRgba.length; offset += 4) {
+    let pixelMaximum = 0;
+    for (let channel = 0; channel < 4; channel += 1) {
+      const delta = Math.abs(leftRgba[offset + channel] - rightRgba[offset + channel]);
+      absoluteChannelDelta += delta;
+      pixelMaximum = Math.max(pixelMaximum, delta);
+      maximumChannelDelta = Math.max(maximumChannelDelta, delta);
+    }
+    if (leftRgba[offset + 3] !== rightRgba[offset + 3]) alphaChangedPixels += 1;
+    if (pixelMaximum > 0) changedPixels += 1;
+    if (pixelMaximum > 16) significantPixels += 1;
+    if (pixelMaximum > 64) severePixels += 1;
+  }
+
+  const ratio = value => Number((value / totalPixels).toFixed(8));
+  const meanAbsoluteChannelDelta = Number(
+    (absoluteChannelDelta / (totalPixels * 4)).toFixed(8)
+  );
+  const metrics = {
+    exact_identical: exactIdentical,
+    changed_pixels: changedPixels,
+    changed_ratio: ratio(changedPixels),
+    significant_pixels_over_16: significantPixels,
+    significant_ratio: ratio(significantPixels),
+    severe_pixels_over_64: severePixels,
+    severe_ratio: ratio(severePixels),
+    alpha_changed_pixels: alphaChangedPixels,
+    mean_absolute_channel_delta: meanAbsoluteChannelDelta,
+    maximum_channel_delta: maximumChannelDelta
+  };
+  const renderEquivalent = exactIdentical || (
+    alphaChangedPixels === 0 &&
+    metrics.significant_ratio <= 0.025 &&
+    metrics.severe_ratio <= 0.005 &&
+    meanAbsoluteChannelDelta <= 1
+  );
+  requireCondition(
+    renderEquivalent,
+    \`decoded render differs outside strict RGBA envelope: \${selector} \${JSON.stringify(metrics)}\`
+  );
+  return {
+    identical: true,
+    exact_identical: exactIdentical,
+    render_equivalent: renderEquivalent,
+    comparison: exactIdentical ? 'EXACT_DECODED_RGBA' : 'STRICT_RGBA_RENDER_EQUIVALENCE',
+    tolerance: {
+      significant_ratio_max: 0.025,
+      severe_ratio_max: 0.005,
+      mean_absolute_channel_delta_max: 1,
+      alpha_changed_pixels_max: 0
+    },
+    metrics,
+    width: left.width,
+    height: left.height,
+    oracle_rgba_sha256: sha256(leftRgba),
+    candidate_rgba_sha256: sha256(rightRgba)
+  };
+}`,
+  'strict decoded RGBA render equivalence'
 );
 
 repaired = replaceExactlyOnce(
