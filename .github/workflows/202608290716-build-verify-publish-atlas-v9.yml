@@ -1,0 +1,144 @@
+name: 202608290716 Build verify and publish Atlas V9
+
+on:
+  workflow_dispatch:
+    inputs:
+      expected_source_sha:
+        description: Exact source commit to build and CAS-publish
+        required: true
+        type: string
+
+permissions:
+  contents: write
+
+concurrency:
+  group: gridatlas-v9-publication
+  cancel-in-progress: false
+
+jobs:
+  build_verify_publish:
+    name: Double-build typed REPD V9 and publish exact closure
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout exact source
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.expected_source_sha }}
+          fetch-depth: 2
+
+      - name: Enforce source boundary
+        env:
+          EXPECTED_SOURCE_SHA: ${{ inputs.expected_source_sha }}
+        run: |
+          test "$(git rev-parse HEAD)" = "$EXPECTED_SOURCE_SHA"
+          test "$(git rev-parse origin/main)" = "$EXPECTED_SOURCE_SHA"
+          test -f contracts/202608290716-atlas-v9-source.json
+          test -f compiler/202608290716-compile-atlas-v9.py
+          test -f atman/202608290716-verify-atlas-v9.py
+          test -f ui/cartridges/202608290716-repd-address-flyto.mjs
+
+      - name: Configure pinned Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install pinned analytical engine
+        run: python -m pip install --disable-pip-version-check -r requirements.lock
+
+      - name: Fetch exact official source and immutable V8 oracle
+        run: |
+          mkdir -p work
+          curl --fail --location --retry 3 --max-time 120 \
+            https://assets.publishing.service.gov.uk/media/6a6cbdc00c36759b5ccaa305/REPD_Publication_Q2_2026.csv \
+            --output work/REPD_Publication_Q2_2026.csv
+          curl --fail --location --retry 3 --max-time 120 \
+            https://raw.githubusercontent.com/Ventusltd/globalgrid2050/f2f343a92ee972cc74ed23b4b99d8a22896791ad/dist/repd_master.json \
+            --output work/atlas-v8-repd-oracle.json
+          test "$(wc -c < work/REPD_Publication_Q2_2026.csv)" = "5087389"
+          test "$(wc -c < work/atlas-v8-repd-oracle.json)" = "4256963"
+          echo "84c1b5f958a934d8b4b86ec88f50bdcf43830ded7ff2efc27bffca0c98695035  work/REPD_Publication_Q2_2026.csv" | sha256sum --check --strict
+          echo "ca5da437ddb832f7e4e8d84bba1f2f6d40df6285089a43156452fdda7eebe0fe  work/atlas-v8-repd-oracle.json" | sha256sum --check --strict
+
+      - name: Deterministic clean build A and B
+        run: |
+          for root in build-a build-b; do
+            mkdir -p "$root/assets" "$root/cartridges" "$root/data"
+            cp ui/site/index.html "$root/index.html"
+            cp ui/site/atlas-v9.css "$root/assets/atlas-v9.css"
+            cp ui/site/atlas-v9.mjs "$root/assets/atlas-v9.mjs"
+            cp ui/cartridges/202608290716-repd-address-flyto.mjs "$root/cartridges/202608290716-repd-address-flyto.mjs"
+            python compiler/202608290716-compile-atlas-v9.py \
+              --source work/REPD_Publication_Q2_2026.csv \
+              --v8 work/atlas-v8-repd-oracle.json \
+              --output "$root/data"
+          done
+          (cd build-a && find . -type f -print0 | sort -z | xargs -0 sha256sum) > work/build-a.sha256
+          (cd build-b && find . -type f -print0 | sort -z | xargs -0 sha256sum) > work/build-b.sha256
+          diff --unified work/build-a.sha256 work/build-b.sha256
+
+      - name: Independent typed and truth verification
+        run: python atman/202608290716-verify-atlas-v9.py --site build-a | tee work/verification.json
+
+      - name: Exercise address query and fly-to cartridge contract
+        run: |
+          node --input-type=module <<'NODE'
+          import fs from 'node:fs';
+          import { ATLAS_V9_REPD_ADDRESS_FLYTO_CONTRACT, parseAtlasQuery, rankRepdProjects } from './ui/cartridges/202608290716-repd-address-flyto.mjs';
+          const registry = JSON.parse(fs.readFileSync('./build-a/data/repd_browser_registry_202608290716.json', 'utf8'));
+          const query = 'Anybody involved in the solar farm being built by Cranfield/Marston? Bedfordshire?';
+          const parsed = parseAtlasQuery(query);
+          if (!parsed.constructionIntent || parsed.groups.length !== 3) throw new Error('query grammar failed');
+          const ranked = rankRepdProjects(registry.records, query, 20);
+          if (!ranked.length || ranked[0].record.repd_ref !== '16135') throw new Error(`golden rank failed: ${ranked[0]?.record?.repd_ref}`);
+          const postcode = rankRepdProjects(registry.records, 'MK430ZY', 5);
+          if (!postcode.length || postcode[0].record.repd_ref !== '16135') throw new Error('postcode match failed');
+          if (ATLAS_V9_REPD_ADDRESS_FLYTO_CONTRACT.payloadRequests !== 0 || ATLAS_V9_REPD_ADDRESS_FLYTO_CONTRACT.proximityEstablishesIdentity !== false) throw new Error('cartridge truth contract failed');
+          console.log(JSON.stringify({checks: 8, failed: 0, top_repd_ref: ranked[0].record.repd_ref, postcode_repd_ref: postcode[0].record.repd_ref}));
+          NODE
+
+      - name: Upload exact candidate evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: atlas-v9-202608290716-candidate
+          path: |
+            build-a/
+            work/build-a.sha256
+            work/verification.json
+          if-no-files-found: error
+          retention-days: 30
+          compression-level: 0
+
+      - name: CAS publish verified V9 closure to main
+        env:
+          EXPECTED_SOURCE_SHA: ${{ inputs.expected_source_sha }}
+        run: |
+          git fetch origin main
+          test "$(git rev-parse HEAD)" = "$EXPECTED_SOURCE_SHA"
+          test "$(git rev-parse origin/main)" = "$EXPECTED_SOURCE_SHA"
+          mkdir -p assets cartridges data
+          cp build-a/index.html index.html
+          cp build-a/assets/atlas-v9.css assets/atlas-v9.css
+          cp build-a/assets/atlas-v9.mjs assets/atlas-v9.mjs
+          cp build-a/cartridges/202608290716-repd-address-flyto.mjs cartridges/202608290716-repd-address-flyto.mjs
+          cp build-a/data/repd_projects_202608290716.parquet data/repd_projects_202608290716.parquet
+          cp build-a/data/repd_browser_registry_202608290716.json data/repd_browser_registry_202608290716.json
+          cp build-a/data/repd_v9_manifest_202608290716.json data/repd_v9_manifest_202608290716.json
+          git add -- index.html assets/atlas-v9.css assets/atlas-v9.mjs cartridges/202608290716-repd-address-flyto.mjs data/repd_projects_202608290716.parquet data/repd_browser_registry_202608290716.json data/repd_v9_manifest_202608290716.json
+          python - <<'PY'
+          import subprocess
+          allowed = {
+            'index.html', 'assets/atlas-v9.css', 'assets/atlas-v9.mjs',
+            'cartridges/202608290716-repd-address-flyto.mjs',
+            'data/repd_projects_202608290716.parquet',
+            'data/repd_browser_registry_202608290716.json',
+            'data/repd_v9_manifest_202608290716.json'
+          }
+          changed = set(subprocess.check_output(['git','diff','--cached','--name-only'], text=True).splitlines())
+          if changed != allowed:
+              raise SystemExit(f'publication allowlist mismatch: {sorted(changed)}')
+          PY
+          git config user.name "gridatlas-v9-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git commit -m "202608290716: publish verified Atlas V9 address search"
+          git push origin HEAD:main
