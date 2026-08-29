@@ -29,10 +29,7 @@ async function ready(page) {
   await page.waitForSelector('#map canvas', { timeout: 45000 });
 }
 
-async function snapshot(page, normaliseSearchPlaceholder = false) {
-  if (normaliseSearchPlaceholder) {
-    await page.evaluate(() => document.getElementById('search-input')?.setAttribute('placeholder', 'Search project name...'));
-  }
+async function snapshot(page) {
   return page.evaluate(({ selectors, styleProps }) => {
     const clean = value => Math.round(Number(value) * 10) / 10;
     const boxes = {};
@@ -176,8 +173,9 @@ try {
         candidatePage.goto(candidateUrl, { waitUntil: 'domcontentloaded', timeout: 60000 })
       ]);
       await Promise.all([ready(oraclePage), ready(candidatePage)]);
+      requireCondition(await candidatePage.getAttribute('#search-input', 'placeholder') === 'Search project, place or postcode...', `${viewport.name}: new search placeholder missing`);
       const [oracleSnapshot, candidateSnapshot] = await Promise.all([
-        snapshot(oraclePage), snapshot(candidatePage, true)
+        snapshot(oraclePage), snapshot(candidatePage)
       ]);
       assertStructuralParity(oracleSnapshot, candidateSnapshot, viewport.name);
       proof.viewports[viewport.name] = { v8_structure_and_geometry_preserved: true };
