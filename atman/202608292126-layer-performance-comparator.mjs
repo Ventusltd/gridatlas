@@ -4,11 +4,10 @@ import { execFileSync } from 'node:child_process';
 import { pathToFileURL } from 'node:url';
 
 // The full comparator remains immutably recorded at the exact source commit below.
-// This bounded repair freezes the V8 live-clock timer only during pixel capture,
-// restores the earlier volatile-header mask, and measures warm toggles at the actual
-// checkbox-to-MapLibre visibility boundary rather than CI-throttled animation frames.
-// Every byte, DOM, geometry, style, interaction, architecture and performance gate
-// remains active, including the original 120 ms warm-toggle ceiling.
+// This bounded repair freezes V8 live timers and hides only their fixed values during
+// pixel capture, avoiding nondeterministic Playwright mask geometry. Real DOM geometry
+// and computed styles are compared before normalisation. Warm toggles are measured at
+// the actual checkbox-to-MapLibre visibility boundary; all original ceilings remain.
 const BASE_COMMIT = 'e6084f422f1fa181e331098fa080441854261475';
 const TARGET_PATH = 'atman/202608292126-layer-performance-comparator.mjs';
 const EXPECTED_BLOB_SHA1 = 'a5b943661b1427d3ed77c21b8d811d3c41e487da';
@@ -71,54 +70,9 @@ repaired = replaceExactlyOnce(
 
 repaired = replaceExactlyOnce(
   repaired,
-  `const pixelRegions = [
-  '.hud-header',
-  '.search-bar-wrapper',
-  '.map-controls',
-  '.scada-brand',
-  '.status-legend',
-  '.disclaimer-box'
-];`,
-  `const pixelRegions = [
-  { selector: '.hud-header', masks: ['#clock', '#date', '#days'] },
-  { selector: '.search-bar-wrapper', masks: [] },
-  { selector: '.map-controls', masks: [] },
-  { selector: '.scada-brand', masks: [] },
-  { selector: '.status-legend', masks: [] },
-  { selector: '.disclaimer-box', masks: [] }
-];`,
-  'pixel region contract'
-);
-
-repaired = replaceExactlyOnce(
-  repaired,
-  `    for (const selector of pixelRegions) {
-      const [left, right] = await Promise.all([
-        oraclePage.locator(selector).screenshot({ animations: 'disabled' }),
-        candidatePage.locator(selector).screenshot({ animations: 'disabled' })
-      ]);
-      pixels[selector] = decodedPixelProof(left, right, selector);
-    }`,
-  `    for (const region of pixelRegions) {
-      const [left, right] = await Promise.all([
-        oraclePage.locator(region.selector).screenshot({
-          animations: 'disabled',
-          mask: region.masks.map(selector => oraclePage.locator(selector)),
-          maskColor: '#000000'
-        }),
-        candidatePage.locator(region.selector).screenshot({
-          animations: 'disabled',
-          mask: region.masks.map(selector => candidatePage.locator(selector)),
-          maskColor: '#000000'
-        })
-      ]);
-      pixels[region.selector] = {
-        ...decodedPixelProof(left, right, region.selector),
-        masks: region.masks,
-        volatile_live_clock_masked: region.selector === '.hud-header'
-      };
-    }`,
-  'decoded pixel loop'
+  '      #map{visibility:hidden!important}\n',
+  '      #map{visibility:hidden!important}\n      #clock,#date,#days{visibility:hidden!important;text-shadow:none!important}\n',
+  'hide fixed volatile values without changing layout'
 );
 
 repaired = replaceExactlyOnce(
