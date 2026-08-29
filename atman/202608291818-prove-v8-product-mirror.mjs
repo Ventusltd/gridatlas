@@ -12,7 +12,7 @@ const expected = Object.freeze({
   bridge: '<script src="v9-parquet-fetch-bridge.js"></script>\n\n'
 });
 const selectors = [
-  '.dashboard','.hud-header','.map-container','.scada-wrapper','.scada-brand','.status-legend',
+  '.dashboard','.hud-header','.map-container','.scada-wrapper','.scada-brand','.status-legend','.disclaimer-box',
   '#scada-ui-container','.search-bar-wrapper','.map-controls','#radius-popup','#radius-area-popup',
   '#zonedraw-display','#measure-display','#polyzone-display','#fs-curtain','#fs-letterhead',
   '#btn-fullscreen','#btn-fullscreen-exit'
@@ -27,7 +27,9 @@ const pixelRegions = [
   { selector: '.hud-header', masks: ['#clock','#date','#days'] },
   { selector: '.search-bar-wrapper', masks: [] },
   { selector: '.map-controls', masks: [] },
-  { selector: '.scada-wrapper', masks: ['#scada-ui-container'] }
+  { selector: '.scada-brand', masks: [] },
+  { selector: '.status-legend', masks: [] },
+  { selector: '.disclaimer-box', masks: [] }
 ];
 
 const requireCondition = (ok, message) => { if (!ok) throw new Error(message); };
@@ -82,7 +84,8 @@ async function snapshot(page) {
       checkboxes:document.querySelectorAll('#scada-ui-container input[type="checkbox"]').length,
       radios:document.querySelectorAll('#scada-ui-container input[type="radio"]').length,
       placeholder:document.querySelector('#search-input')?.getAttribute('placeholder')||'',
-      brand:document.querySelector('.ventus-main')?.textContent.trim()||''
+      brand:document.querySelector('.ventus-main')?.textContent.trim()||'',
+      disclaimer:document.querySelector('.disclaimer-box')?.textContent.trim()||''
     };
   }, { selectors, styles });
 }
@@ -96,6 +99,7 @@ function compare(a,b,viewport) {
   if (a.radios!==b.radios) errors.push(`${viewport}: radio count differs`);
   if (a.placeholder!==b.placeholder) errors.push(`${viewport}: search placeholder differs`);
   if (a.brand!==b.brand) errors.push(`${viewport}: brand differs`);
+  if (a.disclaimer!==b.disclaimer) errors.push(`${viewport}: disclaimer differs`);
   for (const selector of selectors) {
     const x=a.boxes[selector], y=b.boxes[selector];
     if ((x===null)!==(y===null)) { errors.push(`${viewport}: presence differs ${selector}`); continue; }
@@ -138,8 +142,8 @@ async function pixelProof(aPage,bPage,viewport) {
     requireCondition(a.equals(b),`${viewport}: stable UI pixels differ for ${region.selector}`);
     regions[region.selector]={identical:true,sha256:ah,mirror_sha256:bh,bytes:a.length,masks:region.masks};
   }
-  return { identical:true, method:'EXACT_STABLE_REGION_PNG_BYTES', volatile_map_pixels_excluded:true,
-    live_clock_text_masked:true, asynchronous_scada_status_text_masked:true, regions };
+  return { identical:true, method:'EXACT_STABLE_COMPONENT_PNG_BYTES', volatile_map_pixels_excluded:true,
+    live_clock_text_masked:true, async_scada_grid_excluded_from_bitmap_but_exact_dom_gated:true, regions };
 }
 
 async function controlState(page,id){
@@ -172,7 +176,7 @@ async function bridgeProof(page){
   return b;
 }
 
-const proof={schema:'gridatlas.v8-public-product-mirror-proof.v5',classification:'REJECTED',oracle:oracleUrl,mirror:mirrorUrl,bytes:null,viewports:{},interactions:null,bridge:null,errors:[]};
+const proof={schema:'gridatlas.v8-public-product-mirror-proof.v6',classification:'REJECTED',oracle:oracleUrl,mirror:mirrorUrl,bytes:null,viewports:{},interactions:null,bridge:null,errors:[]};
 const browser=await chromium.launch({headless:true});
 try{
   proof.bytes=await byteProof();
