@@ -1,0 +1,91 @@
+{
+  "base_release_source": "202608291239-atlas-v9",
+  "deterministic": true,
+  "files": [
+    {
+      "bytes": 4750,
+      "path": "assets/atlas-v9.css",
+      "sha256": "d244988cb255fb13e2fee2897edd8c8ee709c88dd52043c70762ff3e9f1cbe58"
+    },
+    {
+      "bytes": 19490,
+      "path": "assets/atlas-v9.mjs",
+      "sha256": "2fdcf848103767d3c0a48d702561cc8be0cd69d88ff66a489c6456631dba52cb"
+    },
+    {
+      "bytes": 17317,
+      "path": "assets/data-gridatlas-client.mjs",
+      "sha256": "a939f125eab40a5d67340cd870b73b35cfb036a60a88fca30fa8d9b36d07f3df"
+    },
+    {
+      "bytes": 8314,
+      "path": "assets/repd-routing-client.mjs",
+      "sha256": "697fd4401c5ccfe53e15656d4cd2e2c0269925f419d94012150e4afa8c66abeb"
+    },
+    {
+      "bytes": 6672,
+      "path": "cartridges/202608290716-repd-address-flyto.mjs",
+      "sha256": "b4dcfcb9cf815012dab6cc634c099179a155ea2f0120f6c61797087fbef1f64a"
+    },
+    {
+      "bytes": 3488,
+      "path": "index.html",
+      "sha256": "4735604760cd3e69acac50c407f4920ff9be8ff5ba0773a67b9c9fc6cad58dc0"
+    },
+    {
+      "bytes": 6037,
+      "path": "release-manifest.json",
+      "sha256": "d0b26eb4d773108bcf39417130ebf0441da78881dbf0f9bfe3e8bd0809552026"
+    }
+  ],
+  "release_id": "202608291430-atlas-v9",
+  "schema": "gridatlas.timestamped-live-build.v2",
+  "source_commit": "5c97f34eef0d426de5c3534676317d0fa51f4ccc",
+  "source_committed_at": "2026-08-29T15:54:39+01:00",
+  "source_inputs": [
+    {
+      "bytes": 4750,
+      "path": "ui/successor-202608291239/assets/atlas-v9.css",
+      "sha256": "d244988cb255fb13e2fee2897edd8c8ee709c88dd52043c70762ff3e9f1cbe58"
+    },
+    {
+      "bytes": 16244,
+      "path": "ui/successor-202608291239/assets/atlas-v9.mjs",
+      "sha256": "95a9880263afc0ee05b68ec149952b4d1f90de17cfcf13087f4c71074c1d0495"
+    },
+    {
+      "bytes": 15211,
+      "path": "ui/successor-202608291239/assets/data-gridatlas-client.mjs",
+      "sha256": "08c9e9cf03b12288ff88c13a53bb92920912c43cbdcb9efa4c6ba77a80e4b66f"
+    },
+    {
+      "bytes": 6672,
+      "path": "ui/successor-202608291239/cartridges/202608290716-repd-address-flyto.mjs",
+      "sha256": "b4dcfcb9cf815012dab6cc634c099179a155ea2f0120f6c61797087fbef1f64a"
+    },
+    {
+      "bytes": 8314,
+      "path": "ui/successor-202608291430/assets/repd-routing-client.mjs",
+      "sha256": "697fd4401c5ccfe53e15656d4cd2e2c0269925f419d94012150e4afa8c66abeb"
+    },
+    {
+      "bytes": 3488,
+      "path": "ui/successor-202608291430/index.html",
+      "sha256": "4735604760cd3e69acac50c407f4920ff9be8ff5ba0773a67b9c9fc6cad58dc0"
+    },
+    {
+      "bytes": 5976,
+      "path": "contracts/202608291430-atlas-v9-live-release.json",
+      "sha256": "b574dc84d1b4ee62e9608430662438c20295e82427679f350190f5b0b3923546"
+    }
+  ],
+  "transformations": [
+    "release_identity",
+    "routing_contract_validation",
+    "safe_normal_registry_false_origin_exclusion",
+    "normal_first_exact_repd_ref_fallback",
+    "explicit_authoritative_route_coordinates",
+    "null_before_number_guard",
+    "zero_initial_routing_and_parquet_fetch"
+  ]
+}

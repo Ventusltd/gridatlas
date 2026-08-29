@@ -1,0 +1,145 @@
+{
+  "classification": "LIVE_RELEASE",
+  "committed_at": "2026-08-29T15:54:39+01:00",
+  "created_at": "2026-08-29T14:30:00Z",
+  "current": true,
+  "data_release": {
+    "base_url": "https://ventusltd.github.io/data-gridatlas/202608291237-data-gridatlas/",
+    "browser_registry_path": "browser-layer-registry.json",
+    "browser_registry_sha256": "9b2169bcfd47bf51f0aaf8350487de19578e32358e191b961385a149a4637e1b",
+    "candidate_manifest_path": "data/manifest.json",
+    "data_root": "data/",
+    "features": 541282,
+    "layers": 60,
+    "membership_path": "layer_membership.parquet",
+    "release_id": "202608291237-data-gridatlas",
+    "release_path": "release.json",
+    "release_sha256": "19684ac3e86fac4346fab121a948bab0aa857108564fec5be242484d2baefd06",
+    "repository": "Ventusltd/data-gridatlas",
+    "source_commit": "32459230b958ff6ddbdb24365f56da83ab1cdc93",
+    "source_generation": "202608291015",
+    "sources": 56
+  },
+  "generation": "202608291430",
+  "immutable": true,
+  "incepted_at": "2026-08-29T14:30:00Z",
+  "live_url": "https://ventusltd.github.io/gridatlas/202608291430-atlas-v9/",
+  "loading_contract": {
+    "activation": "EXPLICIT_USER_LAYER_TOGGLE",
+    "automatic_v8_layer_loads": 0,
+    "browser_compute": true,
+    "parquet_on_boot": 0,
+    "query_scope": "ACTIVE_MAP_BOUNDS",
+    "routing_activation": "UNKNOWN_EXACT_REPD_REF_DEEP_LINK_ONLY",
+    "routing_projects_without_deep_link": 0,
+    "unload_releases_geojson": true
+  },
+  "parent_release": {
+    "generation": "202608291239",
+    "live_url": "https://ventusltd.github.io/gridatlas/202608291239-atlas-v9/",
+    "pointer_commit": "936a31f703d31bd975af22d7349708d68a143d56",
+    "publication_commit": "1898184ccbf52ca836cf1482362fc5933baf3e8d",
+    "release_id": "202608291239-atlas-v9",
+    "role": "CURRENT_VERIFIED_TIMESTAMP_PREDECESSOR"
+  },
+  "release_id": "202608291430-atlas-v9",
+  "repd": {
+    "excluded_false_origin_rows": 36,
+    "excluded_set_sha256": "acdee510ef7f29855ea07b376cdc1519835d498184c5d14ea2a8a06d756365d9",
+    "false_origin": {
+      "latitude": 49.766807,
+      "longitude": -7.55716
+    },
+    "generation": "202608290716",
+    "manifest_sha256": "8850567ff9f1d2b6996b4e0d9707320030f3466a0b821cdcfc5325322b8be8c8",
+    "manifest_url": "../data/repd_v9_manifest_202608290716.json",
+    "registry_bytes": 9328402,
+    "registry_sha256": "c8a5c59be878c52014a272eb0e4d09af06a0d301d10a8d6b5d0b116b5d1bb6bc",
+    "registry_url": "../data/repd_browser_registry_202608290716.json",
+    "role": "NORMAL_SEARCH_AND_BASE_MAP",
+    "rows": 11069,
+    "selectable_rows": 11033,
+    "selectable_set_sha256": "fc8b3bedf4f39c2eaa534d45a30806053cc931fdf7ced4a703f7275e43d27b21"
+  },
+  "repd_routing": {
+    "base_url": "https://ventusltd.github.io/data-gridatlas/202608291410-repd-routing/",
+    "index_sha256": "2623b9a6b4033cee8a95d582e9f1f709367b9773756a8d9874dbcb2f395a6eaa",
+    "invalid_geometry_identities": 2,
+    "map_identities": 7652,
+    "map_set_sha256": "4199f74165ed049c382ae322c5b5577a06a01c72dde0df9711a0bc368a918834",
+    "missing_geometry_identities": 26,
+    "missing_map_identities": 0,
+    "no_map_identities": 28,
+    "no_map_selectable_intersection": 0,
+    "no_map_set_sha256": "4e172523b8b352c73f98e7533cbb814559dd5d1dd9c2c04d1ee3904df26303e6",
+    "normal_map_overlap": 5233,
+    "normal_plus_fallback_union": 13452,
+    "normal_plus_fallback_union_set_sha256": "1ed30d2eef18b75d4b4064f971d2b1ea3fd41ef618fc585b3a3ff0723462ac5f",
+    "projects": 7680,
+    "projects_bytes": 979338,
+    "projects_path": "projects.json",
+    "projects_sha256": "c06aedef176d2d38fd135806306a8ef81b4af9994c7be31e8bd760304149f862",
+    "publication_commit": "b8668b4d5f34880158aeed2eab5c4a1e678a467d",
+    "release_id": "202608291410-repd-routing",
+    "release_path": "release.json",
+    "release_sha256": "7b6936713e83afc52b9a897eb33cbeffc36d2e0fbf9a40fe782d05f6c7943704",
+    "repository": "Ventusltd/data-gridatlas",
+    "role": "LAZY_EXACT_DEEP_LINK_FALLBACK_ONLY",
+    "routing_only_map_fallbacks": 2419,
+    "routing_only_map_fallbacks_set_sha256": "5cbd8e6fc2f24f9fab897e9fb558c01e5886d0868db405f73260713ae3542a3b",
+    "source_commit": "0d3af65d69592340d14acf5be2af5ead123f324a",
+    "unique_numeric_repd_refs": 7680
+  },
+  "route_contract": {
+    "browser_sentinels": [
+      "17494",
+      "13599",
+      "12453",
+      "2484",
+      "12780",
+      "2535",
+      "13429"
+    ],
+    "consumer_rule": "READ_EXACT_IMMUTABLE_ROUTE_FROM_RELEASE_POINTER",
+    "identity_rule": "EXACT_REPD_REF_ONLY",
+    "normal_registry_precedence": true,
+    "query_coordinates_ignored": true,
+    "query_parameter": "repd_ref",
+    "route": "/gridatlas/202608291430-atlas-v9/"
+  },
+  "runtime_dependencies": [
+    {
+      "id": "maplibre-gl",
+      "javascript": "https://cdn.jsdelivr.net/npm/maplibre-gl@3.6.2/dist/maplibre-gl.js",
+      "stylesheet": "https://cdn.jsdelivr.net/npm/maplibre-gl@3.6.2/dist/maplibre-gl.css",
+      "version": "3.6.2"
+    },
+    {
+      "id": "duckdb-wasm",
+      "module": "https://cdn.jsdelivr.net/npm/@duckdb/duckdb-wasm@1.29.0/+esm",
+      "role": "USER_INITIATED_BROWSER_PARQUET_QUERY",
+      "version": "1.29.0"
+    },
+    {
+      "attribution": "© OpenStreetMap contributors",
+      "id": "openstreetmap-standard-tiles",
+      "url_pattern": "https://tile.openstreetmap.org/{z}/{x}/{y}.png"
+    }
+  ],
+  "schema": "gridatlas.timestamped-live-release.v1",
+  "source_commit": "5c97f34eef0d426de5c3534676317d0fa51f4ccc",
+  "source_parent_commit": "936a31f703d31bd975af22d7349708d68a143d56",
+  "truth_contract": {
+    "literal_zero_origin_rejected": true,
+    "no_map_is_nonselectable": true,
+    "normal_registry_precedes_routing": true,
+    "null_coordinates_never_coerced": true,
+    "operator_or_applicant_is_current_owner_claim": false,
+    "proximity_establishes_identity": false,
+    "repd_address_search_preserved": true,
+    "routing_identity_is_exact_repd_ref": true,
+    "transformed_false_origin_rejected": true,
+    "unverified_provenance_is_disclosed": true,
+    "v8_untouched": true
+  }
+}
