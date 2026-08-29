@@ -1,0 +1,813 @@
+name: 202608291430 Stage and verify exact-routing Atlas V9
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/202608291239-build-verify-publish-atlas-v9.yml'
+      - '.github/workflows/202608291430-build-verify-publish-atlas-v9.yml'
+      - 'contracts/202608291430-atlas-v9-live-release.json'
+      - 'compiler/202608291430-compile-atlas-v9-live.py'
+      - 'atman/202608291430-verify-live-release.mjs'
+      - 'atman/202608291430-compare-repd-coverage.mjs'
+      - 'atman/202608291430-rendered-browser-audit.mjs'
+      - 'atman/202608291430-public-browser-readback.mjs'
+      - 'ui/successor-202608291430/**'
+      - '202608291430-atlas-v9/**'
+      - 'state/live-set.json'
+      - 'releases/current-v3.json'
+  workflow_dispatch:
+    inputs:
+      expected_main_sha:
+        description: Optional exact current main commit; defaults to the event commit
+        required: false
+        type: string
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: gridatlas-202608291430-staged-publication
+  cancel-in-progress: false
+
+env:
+  RELEASE_ID: 202608291430-atlas-v9
+  PREDECESSOR_RELEASE_ID: 202608291239-atlas-v9
+  DATA_RELEASE_ID: 202608291237-data-gridatlas
+  DATA_BASE_URL: https://ventusltd.github.io/data-gridatlas/202608291237-data-gridatlas/
+  ROUTING_RELEASE_ID: 202608291410-repd-routing
+  ROUTING_BASE_URL: https://ventusltd.github.io/data-gridatlas/202608291410-repd-routing/
+  ROUTING_PUBLICATION_COMMIT: b8668b4d5f34880158aeed2eab5c4a1e678a467d
+  LIVE_URL: https://ventusltd.github.io/gridatlas/202608291430-atlas-v9/
+  RELEASE_STAGE_BRANCH: ci/202608291430-atlas-v9
+  POINTER_STAGE_BRANCH: ci/202608291430-pointer
+
+jobs:
+  classify:
+    name: Classify immutable source, release or pointer phase
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    permissions:
+      contents: read
+    outputs:
+      mode: ${{ steps.phase.outputs.mode }}
+      current_commit: ${{ steps.phase.outputs.current_commit }}
+      source_commit: ${{ steps.phase.outputs.source_commit }}
+      release_commit: ${{ steps.phase.outputs.release_commit }}
+    steps:
+      - name: Checkout exact current main without credentials
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          ref: ${{ inputs.expected_main_sha || github.sha }}
+          fetch-depth: 4
+          persist-credentials: false
+
+      - name: Require a linear append-only phase and exact source boundary
+        id: phase
+        env:
+          EXPECTED_MAIN_SHA: ${{ inputs.expected_main_sha || github.sha }}
+          WORKFLOW_SHA: ${{ github.workflow_sha }}
+        run: |
+          set -euo pipefail
+          test "$GITHUB_REF" = refs/heads/main
+          test "$(git rev-parse HEAD)" = "$EXPECTED_MAIN_SHA"
+          test "$WORKFLOW_SHA" = "$EXPECTED_MAIN_SHA"
+          git fetch --no-tags --depth=4 origin main:refs/remotes/origin/main
+          test "$(git rev-parse origin/main)" = "$EXPECTED_MAIN_SHA"
+          test -f state/live-set.json
+          test -f releases/current-v3.json
+          cmp state/live-set.json releases/current-v3.json
+          test "$(git rev-list --parents -n 1 HEAD | wc -w)" = 2
+          pointer_release="$(jq -r .current.release_id state/live-set.json)"
+          if test ! -e "$RELEASE_ID" && test "$pointer_release" = "$PREDECESSOR_RELEASE_ID"; then
+            mode=source
+            source_commit="$EXPECTED_MAIN_SHA"
+            release_commit=''
+            test "$(git rev-parse HEAD^)" = 936a31f703d31bd975af22d7349708d68a143d56
+            mapfile -t changed < <(git diff --name-only HEAD^ HEAD | sort)
+            expected=(
+              .github/workflows/202608291239-build-verify-publish-atlas-v9.yml
+              .github/workflows/202608291430-build-verify-publish-atlas-v9.yml
+              atman/202608291430-compare-repd-coverage.mjs
+              atman/202608291430-public-browser-readback.mjs
+              atman/202608291430-rendered-browser-audit.mjs
+              atman/202608291430-verify-live-release.mjs
+              compiler/202608291430-compile-atlas-v9-live.py
+              contracts/202608291430-atlas-v9-live-release.json
+              ui/successor-202608291430/assets/repd-routing-client.mjs
+              ui/successor-202608291430/index.html
+            )
+            test "${#changed[@]}" = "${#expected[@]}"
+            test "${changed[*]}" = "${expected[*]}"
+          elif test -d "$RELEASE_ID" && test "$pointer_release" = "$PREDECESSOR_RELEASE_ID"; then
+            mode=release
+            source_commit="$(git rev-parse HEAD^)"
+            release_commit="$EXPECTED_MAIN_SHA"
+            git fetch --no-tags origin "refs/heads/$RELEASE_STAGE_BRANCH:refs/remotes/origin/$RELEASE_STAGE_BRANCH"
+            test "$(git rev-parse "refs/remotes/origin/$RELEASE_STAGE_BRANCH")" = "$EXPECTED_MAIN_SHA"
+            test "$(git rev-parse "$source_commit^")" = 936a31f703d31bd975af22d7349708d68a143d56
+            test "$(jq -r .source_commit "$RELEASE_ID/release-manifest.json")" = "$source_commit"
+            mapfile -t changed < <(git diff --name-only "$source_commit" "$release_commit" | sort)
+            test "${#changed[@]}" = 8
+            for changed_path in "${changed[@]}"; do case "$changed_path" in "$RELEASE_ID"/*) ;; *) exit 1 ;; esac; done
+          elif test -d "$RELEASE_ID" && test "$pointer_release" = "$RELEASE_ID"; then
+            mode=pointer
+            release_commit="$(git rev-parse HEAD^)"
+            source_commit="$(git rev-parse HEAD^^)"
+            git fetch --no-tags origin "refs/heads/$POINTER_STAGE_BRANCH:refs/remotes/origin/$POINTER_STAGE_BRANCH"
+            test "$(git rev-parse "refs/remotes/origin/$POINTER_STAGE_BRANCH")" = "$EXPECTED_MAIN_SHA"
+            test "$(git rev-parse "$source_commit^")" = 936a31f703d31bd975af22d7349708d68a143d56
+            test "$(jq -r .current.publication_commit state/live-set.json)" = "$release_commit"
+            test "$(jq -r .current.source_commit state/live-set.json)" = "$source_commit"
+            test "$(jq -r .current.release_id state/live-set.json)" = "$RELEASE_ID"
+            mapfile -t changed < <(git diff --name-only "$release_commit" "$EXPECTED_MAIN_SHA" | sort)
+            test "${#changed[@]}" = 2
+            test "${changed[0]}" = releases/current-v3.json
+            test "${changed[1]}" = state/live-set.json
+          else
+            echo "Malformed immutable promotion phase: release_dir=$(test -d "$RELEASE_ID" && echo yes || echo no), pointer=$pointer_release" >&2
+            exit 1
+          fi
+          echo "mode=$mode" >> "$GITHUB_OUTPUT"
+          echo "current_commit=$EXPECTED_MAIN_SHA" >> "$GITHUB_OUTPUT"
+          echo "source_commit=$source_commit" >> "$GITHUB_OUTPUT"
+          echo "release_commit=$release_commit" >> "$GITHUB_OUTPUT"
+          printf 'mode=%s\ncurrent=%s\nsource=%s\nrelease=%s\n' "$mode" "$EXPECTED_MAIN_SHA" "$source_commit" "$release_commit"
+
+  verify_candidate:
+    name: Deterministic compile, exhaustive closure and rendered sentinels
+    needs: classify
+    if: ${{ needs.classify.outputs.mode != 'pointer' }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout exact phase commit without credentials
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          ref: ${{ needs.classify.outputs.current_commit }}
+          fetch-depth: 4
+          persist-credentials: false
+
+      - name: Enforce sealed successor and predecessor boundaries
+        env:
+          MODE: ${{ needs.classify.outputs.mode }}
+          CURRENT_COMMIT: ${{ needs.classify.outputs.current_commit }}
+          SOURCE_COMMIT: ${{ needs.classify.outputs.source_commit }}
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$CURRENT_COMMIT"
+          git fetch --no-tags --depth=4 origin main:refs/remotes/origin/main
+          test "$(git rev-parse origin/main)" = "$CURRENT_COMMIT"
+          for file in \
+            contracts/202608291430-atlas-v9-live-release.json \
+            compiler/202608291430-compile-atlas-v9-live.py \
+            atman/202608291430-verify-live-release.mjs \
+            atman/202608291430-compare-repd-coverage.mjs \
+            atman/202608291430-rendered-browser-audit.mjs \
+            atman/202608291430-public-browser-readback.mjs \
+            ui/successor-202608291430/assets/repd-routing-client.mjs \
+            ui/successor-202608291430/index.html; do test -f "$file"; done
+          test "$(sha256sum index.html | cut -d' ' -f1)" = 4d059a6963ee73378b21bf378a3590292bbced0bba6f3cacf4acd9c6bc695533
+          cmp state/live-set.json releases/current-v3.json
+          test "$(jq -r .current.release_id state/live-set.json)" = "$PREDECESSOR_RELEASE_ID"
+          test "$(jq -r .current.publication_commit state/live-set.json)" = 1898184ccbf52ca836cf1482362fc5933baf3e8d
+          ! rg -n '__ROUTING_RELEASE_|__RELEASE_COMMIT_|__SOURCE_COMMIT_' contracts/202608291430-atlas-v9-live-release.json
+          test "$(jq -r .source_parent_commit contracts/202608291430-atlas-v9-live-release.json)" = 936a31f703d31bd975af22d7349708d68a143d56
+          test "$(jq -r .repd_routing.publication_commit contracts/202608291430-atlas-v9-live-release.json)" = "$ROUTING_PUBLICATION_COMMIT"
+          test "$(jq -r .repd_routing.source_commit contracts/202608291430-atlas-v9-live-release.json)" = 0d3af65d69592340d14acf5be2af5ead123f324a
+          test "$(jq -r .repd_routing.projects_sha256 contracts/202608291430-atlas-v9-live-release.json)" = c06aedef176d2d38fd135806306a8ef81b4af9994c7be31e8bd760304149f862
+          test "$(jq -r .repd.selectable_rows contracts/202608291430-atlas-v9-live-release.json)" = 11033
+          test "$(jq -r .repd.excluded_false_origin_rows contracts/202608291430-atlas-v9-live-release.json)" = 36
+          test "$(jq -r .repd_routing.normal_plus_fallback_union contracts/202608291430-atlas-v9-live-release.json)" = 13452
+          test "$(jq -r .repd_routing.normal_plus_fallback_union_set_sha256 contracts/202608291430-atlas-v9-live-release.json)" = 1ed30d2eef18b75d4b4064f971d2b1ea3fd41ef618fc585b3a3ff0723462ac5f
+          if test "$MODE" = source; then
+            test "$CURRENT_COMMIT" = "$SOURCE_COMMIT"
+            test ! -e "$RELEASE_ID"
+          else
+            test "$CURRENT_COMMIT" != "$SOURCE_COMMIT"
+            test -f "$RELEASE_ID/index.html"
+          fi
+
+      - name: Configure exact Python and Node
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97
+        with:
+          python-version: '3.12.13'
+
+      - name: Configure exact Node
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020
+        with:
+          node-version: '22.18.0'
+          cache: npm
+
+      - name: Fetch and bind the exact public routing and data dependencies
+        run: |
+          set -euo pipefail
+          mkdir -p work/routing/public work/routing/raw "work/data-release/$DATA_RELEASE_ID"
+          for relative in release.json projects.json index.html; do
+            curl --fail --location --retry 5 --retry-all-errors --retry-delay 3 --max-time 90 \
+              --header 'Accept-Encoding: identity' --header 'Origin: https://ventusltd.github.io' \
+              --dump-header "work/routing/public/$relative.headers" \
+              "$ROUTING_BASE_URL$relative" -o "work/routing/public/$relative"
+            curl --fail --location --retry 5 --retry-all-errors --retry-delay 3 --max-time 90 \
+              "https://raw.githubusercontent.com/Ventusltd/data-gridatlas/$ROUTING_PUBLICATION_COMMIT/$ROUTING_RELEASE_ID/$relative" \
+              -o "work/routing/raw/$relative"
+            cmp "work/routing/public/$relative" "work/routing/raw/$relative"
+          done
+          test "$(wc -c < work/routing/public/projects.json)" = 979338
+          test "$(sha256sum work/routing/public/projects.json | cut -d' ' -f1)" = c06aedef176d2d38fd135806306a8ef81b4af9994c7be31e8bd760304149f862
+          test "$(sha256sum work/routing/public/release.json | cut -d' ' -f1)" = 7b6936713e83afc52b9a897eb33cbeffc36d2e0fbf9a40fe782d05f6c7943704
+          test "$(sha256sum work/routing/public/index.html | cut -d' ' -f1)" = 2623b9a6b4033cee8a95d582e9f1f709367b9773756a8d9874dbcb2f395a6eaa
+          for relative in release.json projects.json; do
+            tr -d '\r' < "work/routing/public/$relative.headers" | grep -Eiq '^access-control-allow-origin: \*$'
+            ! tr -d '\r' < "work/routing/public/$relative.headers" | grep -Eiq '^content-encoding:'
+          done
+          curl --fail --location --retry 5 --retry-all-errors --retry-delay 3 --max-time 90 "$DATA_BASE_URL/release.json" -o "work/data-release/$DATA_RELEASE_ID/release.json"
+          curl --fail --location --retry 5 --retry-all-errors --retry-delay 3 --max-time 90 "$DATA_BASE_URL/browser-layer-registry.json" -o "work/data-release/$DATA_RELEASE_ID/browser-layer-registry.json"
+          test "$(sha256sum "work/data-release/$DATA_RELEASE_ID/release.json" | cut -d' ' -f1)" = 19684ac3e86fac4346fab121a948bab0aa857108564fec5be242484d2baefd06
+          test "$(sha256sum "work/data-release/$DATA_RELEASE_ID/browser-layer-registry.json" | cut -d' ' -f1)" = 9b2169bcfd47bf51f0aaf8350487de19578e32358e191b961385a149a4637e1b
+
+      - name: Verify dependency receipts, closures and public range support
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json, pathlib
+          contract = json.loads(pathlib.Path('contracts/202608291430-atlas-v9-live-release.json').read_text())
+          routing = json.loads(pathlib.Path('work/routing/public/release.json').read_text())
+          assert routing['schema'] == 'data-gridatlas.repd-routing-release.v1'
+          assert routing['release_id'] == contract['repd_routing']['release_id']
+          assert routing['source_commit'] == contract['repd_routing']['source_commit']
+          assert routing['classification'] == 'IMMUTABLE_REPD_ROUTING_RELEASE' and routing['immutable'] is True
+          assert routing['public_url'] == contract['repd_routing']['base_url']
+          assert {key: routing['coverage'][key] for key in ('projects','unique_numeric_repd_refs','map_identities','no_map_identities','map_set_sha256','no_map_set_sha256')} == {
+              'projects': 7680, 'unique_numeric_repd_refs': 7680, 'map_identities': 7652, 'no_map_identities': 28,
+              'map_set_sha256': '4199f74165ed049c382ae322c5b5577a06a01c72dde0df9711a0bc368a918834',
+              'no_map_set_sha256': '4e172523b8b352c73f98e7533cbb814559dd5d1dd9c2c04d1ee3904df26303e6'}
+          assert routing['files']['projects'] == {'path':'projects.json','bytes':979338,'sha256':'c06aedef176d2d38fd135806306a8ef81b4af9994c7be31e8bd760304149f862'}
+          data = json.loads(pathlib.Path('work/data-release/202608291237-data-gridatlas/release.json').read_text())
+          registry = json.loads(pathlib.Path('work/data-release/202608291237-data-gridatlas/browser-layer-registry.json').read_text())
+          assert data['classification'] == 'LIVE_IMMUTABLE_DATA_RELEASE' and data['immutable'] is True and data['v8_untouched'] is True
+          assert {key:data['candidate_closure'][key] for key in ('features','layer_membership_rows','layers','sources')} == {'features':541282,'layer_membership_rows':526388,'layers':60,'sources':56}
+          assert registry['load_policy'] == {'default_visible_layers': [], 'fetch_on_user_enable_only': True, 'initial_fetches': 0}
+          layers = [layer for group in registry['groups'] for layer in group['layers']]
+          assert len(layers) == len({layer['id'] for layer in layers}) == 60
+          assert all(layer['available'] and layer['publishable'] and layer['enabled'] for layer in layers)
+          assert all(not layer['default_visible'] and not layer['preload'] for layer in layers)
+          assert sum(layer['v9_data']['disposition'].startswith('QUARANTINED_') for layer in layers) == 5
+          PY
+          range_url="${DATA_BASE_URL}data/derived/grid_400kv_snapped.parquet"
+          status="$(curl --silent --show-error --location --max-time 90 --range 0-1023 --header 'Accept-Encoding: identity' --header 'Origin: https://ventusltd.github.io' --dump-header work/data-range.headers --output work/data-range.bin --write-out '%{http_code}' "$range_url")"
+          test "$status" = 206
+          test "$(wc -c < work/data-range.bin)" = 1024
+          tr -d '\r' < work/data-range.headers | grep -Eiq '^access-control-allow-origin: \*$'
+          tr -d '\r' < work/data-range.headers | grep -Eiq '^accept-ranges: bytes$'
+          tr -d '\r' < work/data-range.headers | grep -Eiq '^content-range: bytes 0-1023/[0-9]+$'
+          ! tr -d '\r' < work/data-range.headers | grep -Eiq '^content-encoding:'
+
+      - name: Deterministic clean A/B compile and checked-in comparison
+        env:
+          MODE: ${{ needs.classify.outputs.mode }}
+          SOURCE_COMMIT: ${{ needs.classify.outputs.source_commit }}
+        run: |
+          set -euo pipefail
+          committed_at="$(git show -s --format=%cI "$SOURCE_COMMIT")"
+          for build in a b; do
+            mkdir -p "work/build-$build"
+            python -B compiler/202608291430-compile-atlas-v9-live.py \
+              --repository . \
+              --output "work/build-$build/$RELEASE_ID" \
+              --source-commit "$SOURCE_COMMIT" \
+              --source-committed-at "$committed_at"
+            (cd "work/build-$build" && find . -type f -print0 | sort -z | xargs -0 sha256sum) > "work/build-$build.sha256"
+          done
+          diff --unified work/build-a.sha256 work/build-b.sha256 | tee work/build-ab.diff
+          if test "$MODE" = release; then diff --recursive --no-dereference "work/build-a/$RELEASE_ID" "$RELEASE_ID"; fi
+
+      - name: Verify exact identities, exhaustive coverage and deterministic outputs
+        run: |
+          set -euo pipefail
+          node atman/202608291430-verify-live-release.mjs \
+            --root . \
+            --release-directory "work/build-a/$RELEASE_ID" \
+            --routing-projects work/routing/public/projects.json \
+            --data-release "work/data-release/$DATA_RELEASE_ID" \
+            > work/atman-live-release.json
+          node atman/202608291430-compare-repd-coverage.mjs \
+            --repository . \
+            --build-a "work/build-a/$RELEASE_ID" \
+            --build-b "work/build-b/$RELEASE_ID" \
+            --routing-projects work/routing/public/projects.json \
+            --output work/exhaustive-coverage.json
+          test "$(jq -r .classification work/atman-live-release.json)" = VERIFIED_LIVE_ROUTING_RELEASE_SOURCE
+          test "$(jq -r .normal_registry.selectable_rows work/atman-live-release.json)" = 11033
+          test "$(jq -r .normal_registry.excluded_false_origin_rows work/atman-live-release.json)" = 36
+          test "$(jq -r .classification work/exhaustive-coverage.json)" = VERIFIED_EXHAUSTIVE_REPD_ROUTING_COVERAGE
+          test "$(jq -r .promotion_eligible work/exhaustive-coverage.json)" = true
+          test "$(jq -r .routing.routing_only_map_fallbacks work/exhaustive-coverage.json)" = 2419
+          test "$(jq -r .routing.normal_plus_fallback_union work/exhaustive-coverage.json)" = 13452
+          test "$(jq -r .routing.missing_map_identities work/exhaustive-coverage.json)" = 0
+          test "$(jq -r .routing.no_map_selectable_intersection work/exhaustive-coverage.json)" = 0
+
+      - name: Install locked rendered-browser harness
+        run: |
+          npm ci --ignore-scripts
+          npx playwright install --with-deps chromium
+
+      - name: Render zero-fetch base and all exact deep-link sentinels
+        id: rendered
+        continue-on-error: true
+        run: |
+          node atman/202608291430-rendered-browser-audit.mjs \
+            . \
+            "work/build-a/$RELEASE_ID" \
+            "work/data-release/$DATA_RELEASE_ID" \
+            work/routing/public/projects.json \
+            work/rendered
+
+      - name: Enforce rendered browser proof
+        if: always()
+        env:
+          RENDERED_OUTCOME: ${{ steps.rendered.outcome }}
+        run: |
+          set -euo pipefail
+          test "$RENDERED_OUTCOME" = success
+          proof=work/rendered/202608291430-browser-audit.json
+          test "$(jq -r .classification "$proof")" = VERIFIED_RENDERED_ROUTING_BROWSER
+          test "$(jq -r .failed "$proof")" = 0
+          test "$(jq -r .normal_registry_selectable_rows "$proof")" = 11033
+          test "$(jq -r .excluded_false_origin_rows "$proof")" = 36
+          test "$(jq -r .routing_without_deep_link_requests "$proof")" = 0
+          test "$(jq -r .initial_v8_parquet_requests "$proof")" = 0
+          test "$(jq -r .layer_controls "$proof")" = 60
+          test "$(jq -r '.sentinels["12780"].selectable' "$proof")" = false
+          test "$(jq -r '.sentinels["13429"].selectable' "$proof")" = false
+          test "$(jq -r '.sentinels["2535"].selectable' "$proof")" = true
+
+      - name: Assemble accepted immutable release and proof
+        if: success()
+        run: |
+          set -euo pipefail
+          mkdir -p work/accepted-bundle/release work/accepted-bundle/proof
+          cp -a "work/build-a/$RELEASE_ID/." work/accepted-bundle/release/
+          cp work/build-a.sha256 work/build-b.sha256 work/build-ab.diff work/accepted-bundle/proof/
+          cp work/atman-live-release.json work/exhaustive-coverage.json work/data-range.headers work/data-range.bin work/accepted-bundle/proof/
+          cp work/rendered/202608291430-browser-audit.json work/accepted-bundle/proof/
+          cp work/rendered/202608291430-browser-desktop.png work/rendered/202608291430-browser-mobile.png work/accepted-bundle/proof/
+          cp work/routing/public/release.json work/routing/public/projects.json work/routing/public/index.html work/accepted-bundle/proof/
+          test "$(find work/accepted-bundle/release -type f | wc -l)" = 8
+
+      - name: Upload accepted build and proof
+        if: success()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: atlas-v9-${{ needs.classify.outputs.current_commit }}-${{ github.run_id }}-${{ github.run_attempt }}-accepted
+          path: work/accepted-bundle/
+          if-no-files-found: error
+          compression-level: 0
+          retention-days: 90
+
+  stage_release:
+    name: Stage the immutable timestamp-folder child for App promotion
+    needs: [classify, verify_candidate]
+    if: ${{ needs.classify.outputs.mode == 'source' }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout exact source with staging credentials
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          ref: ${{ needs.classify.outputs.source_commit }}
+          fetch-depth: 4
+
+      - name: Download accepted release bundle
+        uses: actions/download-artifact@37930b1c2abaa49bbe596cd826c3c89aef350131
+        with:
+          name: atlas-v9-${{ needs.classify.outputs.current_commit }}-${{ github.run_id }}-${{ github.run_attempt }}-accepted
+          path: work/accepted
+
+      - name: CAS-stage only the immutable release child
+        env:
+          SOURCE_COMMIT: ${{ needs.classify.outputs.source_commit }}
+        run: |
+          set -euo pipefail
+          git fetch --no-tags --depth=4 origin main:refs/remotes/origin/main
+          test "$(git rev-parse HEAD)" = "$SOURCE_COMMIT"
+          test "$(git rev-parse origin/main)" = "$SOURCE_COMMIT"
+          test ! -e "$RELEASE_ID"
+          test "$(jq -r .classification work/accepted/proof/exhaustive-coverage.json)" = VERIFIED_EXHAUSTIVE_REPD_ROUTING_COVERAGE
+          test "$(jq -r .promotion_eligible work/accepted/proof/exhaustive-coverage.json)" = true
+          cp -a work/accepted/release "$RELEASE_ID"
+          test "$(find "$RELEASE_ID" -type f | wc -l)" = 8
+          test "$(jq -r .source_commit "$RELEASE_ID/release-manifest.json")" = "$SOURCE_COMMIT"
+          git add -- "$RELEASE_ID"
+          mapfile -t changed < <(git diff --cached --name-only)
+          test "${#changed[@]}" = 8
+          for changed_path in "${changed[@]}"; do case "$changed_path" in "$RELEASE_ID"/*) ;; *) exit 1 ;; esac; done
+          git config user.name gridatlas-v9-stage-bot
+          git config user.email actions@users.noreply.github.com
+          source_date="$(git show -s --format=%cI "$SOURCE_COMMIT")"
+          GIT_AUTHOR_DATE="$source_date" GIT_COMMITTER_DATE="$source_date" git commit -m '202608291430: stage immutable exact-routing Atlas V9 for App promotion'
+          stage_commit="$(git rev-parse HEAD)"
+          test "$(git rev-parse HEAD^)" = "$SOURCE_COMMIT"
+          remote_old="$(git ls-remote --heads origin "refs/heads/$RELEASE_STAGE_BRANCH" | awk '{print $1}')"
+          if test -n "$remote_old"; then
+            test "$remote_old" = "$stage_commit"
+          else
+            git push origin "HEAD:refs/heads/$RELEASE_STAGE_BRANCH"
+          fi
+          mkdir -p work/stage
+          jq -n --arg branch "$RELEASE_STAGE_BRANCH" --arg source_commit "$SOURCE_COMMIT" --arg stage_commit "$stage_commit" \
+            '{schema:"gridatlas.staged-release.v1",classification:"STAGED_ATLAS_V9_RELEASE",branch:$branch,source_commit:$source_commit,stage_commit:$stage_commit,main_unchanged:true,github_app_promotion_required:true}' \
+            > work/stage/202608291430-release-stage.json
+          echo "Staged $stage_commit on $RELEASE_STAGE_BRANCH; main remains $SOURCE_COMMIT" >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Upload immutable release staging ledger
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: atlas-v9-${{ needs.classify.outputs.source_commit }}-release-stage
+          path: work/stage/202608291430-release-stage.json
+          if-no-files-found: error
+          retention-days: 90
+
+  verify_public_release:
+    name: Verify exact dynamic Pages deployment and real browser before pointer
+    needs: [classify, verify_candidate]
+    if: ${{ needs.classify.outputs.mode == 'release' }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    permissions:
+      contents: read
+      actions: read
+    outputs:
+      pages_run_id: ${{ steps.pages.outputs.pages_run_id }}
+      pages_verified_at: ${{ steps.pages.outputs.pages_verified_at }}
+      public_browser_claim_sha256: ${{ steps.public.outputs.public_browser_claim_sha256 }}
+    steps:
+      - name: Checkout exact App-promoted release without credentials
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          ref: ${{ needs.classify.outputs.release_commit }}
+          fetch-depth: 4
+          persist-credentials: false
+
+      - name: Download this run's independently rebuilt accepted release
+        uses: actions/download-artifact@37930b1c2abaa49bbe596cd826c3c89aef350131
+        with:
+          name: atlas-v9-${{ needs.classify.outputs.current_commit }}-${{ github.run_id }}-${{ github.run_attempt }}-accepted
+          path: work/accepted
+
+      - name: Reconfirm exact release tree and ancestry
+        env:
+          SOURCE_COMMIT: ${{ needs.classify.outputs.source_commit }}
+          RELEASE_COMMIT: ${{ needs.classify.outputs.release_commit }}
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$RELEASE_COMMIT"
+          test "$(git rev-parse HEAD^)" = "$SOURCE_COMMIT"
+          diff --recursive --no-dereference work/accepted/release "$RELEASE_ID"
+          test "$(jq -r .source_commit "$RELEASE_ID/release-manifest.json")" = "$SOURCE_COMMIT"
+          test "$(jq -r .classification work/accepted/proof/exhaustive-coverage.json)" = VERIFIED_EXHAUSTIVE_REPD_ROUTING_COVERAGE
+
+      - name: Poll the exact dynamic Pages run for this release commit
+        id: pages
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RELEASE_COMMIT: ${{ needs.classify.outputs.release_commit }}
+        run: |
+          set -euo pipefail
+          mkdir -p work/public
+          for attempt in $(seq 1 90); do
+            response="$(curl --fail --silent --show-error --max-time 30 --header "Authorization: Bearer $GH_TOKEN" --header 'X-GitHub-Api-Version: 2022-11-28' "https://api.github.com/repos/$GITHUB_REPOSITORY/actions/runs?head_sha=$RELEASE_COMMIT&per_page=50")"
+            matches="$(jq -c --arg sha "$RELEASE_COMMIT" '[.workflow_runs[] | select(.path=="dynamic/pages/pages-build-deployment" and .head_sha==$sha)]' <<<"$response")"
+            count="$(jq length <<<"$matches")"
+            test "$count" -le 1
+            if test "$count" = 1; then
+              run="$(jq -c '.[0]' <<<"$matches")"
+              test "$(jq -r .path <<<"$run")" = dynamic/pages/pages-build-deployment
+              test "$(jq -r .head_sha <<<"$run")" = "$RELEASE_COMMIT"
+              test "$(jq -r .head_branch <<<"$run")" = main
+              test "$(jq -r .event <<<"$run")" = dynamic
+              test "$(jq -r .run_attempt <<<"$run")" = 1
+              run_id="$(jq -r .id <<<"$run")"
+              status="$(jq -r .status <<<"$run")"
+              conclusion="$(jq -r .conclusion <<<"$run")"
+              if test "$status" = completed; then
+                test "$conclusion" = success
+                verified_at="$(jq -r .updated_at <<<"$run")"
+                jq -S . <<<"$run" > work/public/202608291430-release-pages-run.json
+                echo "pages_run_id=$run_id" >> "$GITHUB_OUTPUT"
+                echo "pages_verified_at=$verified_at" >> "$GITHUB_OUTPUT"
+                exit 0
+              fi
+            fi
+            sleep 10
+          done
+          echo "Timed out waiting for dynamic/pages/pages-build-deployment at $RELEASE_COMMIT" >&2
+          exit 1
+
+      - name: Byte-read every public timestamp-folder file
+        run: |
+          set -euo pipefail
+          mkdir -p work/public/files
+          jq -r '.release_files | to_entries[] | [.key,.value.sha256] | @tsv' work/accepted/proof/atman-live-release.json | while IFS=$'\t' read -r relative expected; do
+            target="work/public/files/$relative"
+            mkdir -p "$(dirname "$target")"
+            curl --fail --location --retry 6 --retry-all-errors --retry-delay 3 --max-time 90 "${LIVE_URL}${relative}?commit=${{ needs.classify.outputs.release_commit }}" -o "$target"
+            test "$(sha256sum "$target" | cut -d' ' -f1)" = "$expected"
+          done
+          curl --fail --location --retry 6 --retry-all-errors --retry-delay 3 --max-time 90 "${LIVE_URL}?repd_ref=12453&commit=${{ needs.classify.outputs.release_commit }}" -o work/public/deep-link-index.html
+          cmp work/public/files/index.html work/public/deep-link-index.html
+
+      - name: Configure exact Node and locked public browser
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020
+        with:
+          node-version: '22.18.0'
+          cache: npm
+
+      - name: Install locked public browser harness
+        run: |
+          npm ci --ignore-scripts
+          npx playwright install --with-deps chromium
+
+      - name: Execute live zero-fetch, routing sentinel and real DuckDB proof
+        id: public
+        run: |
+          set -euo pipefail
+          node atman/202608291430-public-browser-readback.mjs "$LIVE_URL" work/public/browser
+          proof=work/public/browser/202608291430-public-browser-readback.json
+          test "$(jq -r .classification "$proof")" = VERIFIED_PUBLIC_ROUTING_AND_DUCKDB_BROWSER
+          test "$(jq -r .failed "$proof")" = 0
+          test "$(jq -r .normal_registry_selectable_rows "$proof")" = 11033
+          test "$(jq -r .base_map_features "$proof")" = 11033
+          test "$(jq -r .routing_without_deep_link_requests "$proof")" = 0
+          test "$(jq -r .initial_v8_parquet_requests "$proof")" = 0
+          test "$(jq -r .duckdb_mode "$proof")" = real
+          test "$(jq -r .real_visible_features "$proof")" -gt 0
+          test "$(jq -r '.sentinels["12780"].selectable' "$proof")" = false
+          test "$(jq -r '.sentinels["13429"].selectable' "$proof")" = false
+          claim=work/public/browser/202608291430-public-browser-claim.json
+          test "$(jq -r .classification "$claim")" = VERIFIED_PUBLIC_ROUTING_AND_DUCKDB_BROWSER
+          test "$(jq -r .normal_registry_source_rows "$claim")" = 11069
+          test "$(jq -r .normal_registry_selectable_rows "$claim")" = 11033
+          test "$(jq -r .console_errors "$claim")" = 0
+          public_browser_claim_sha256="$(sha256sum "$claim" | cut -d' ' -f1)"
+          echo "public_browser_claim_sha256=$public_browser_claim_sha256" >> "$GITHUB_OUTPUT"
+
+      - name: Write post-deploy release attestation
+        env:
+          RELEASE_COMMIT: ${{ needs.classify.outputs.release_commit }}
+          SOURCE_COMMIT: ${{ needs.classify.outputs.source_commit }}
+          PAGES_RUN_ID: ${{ steps.pages.outputs.pages_run_id }}
+          PAGES_VERIFIED_AT: ${{ steps.pages.outputs.pages_verified_at }}
+          PUBLIC_BROWSER_CLAIM_SHA256: ${{ steps.public.outputs.public_browser_claim_sha256 }}
+        run: |
+          set -euo pipefail
+          jq -n \
+            --arg release_commit "$RELEASE_COMMIT" \
+            --arg source_commit "$SOURCE_COMMIT" \
+            --arg pages_run_id "$PAGES_RUN_ID" \
+            --arg pages_verified_at "$PAGES_VERIFIED_AT" \
+            --arg claim_sha "$PUBLIC_BROWSER_CLAIM_SHA256" \
+            '{schema:"gridatlas.timestamped-routing-public-release-attestation.v1",classification:"VERIFIED_PUBLIC_ROUTING_ATLAS_V9",release_id:"202608291430-atlas-v9",live_url:"https://ventusltd.github.io/gridatlas/202608291430-atlas-v9/",release_commit:$release_commit,source_commit:$source_commit,pages_workflow_path:"dynamic/pages/pages-build-deployment",pages_run_id:($pages_run_id|tonumber),pages_verified_at:$pages_verified_at,public_browser_claim_sha256:$claim_sha,normal_registry_source_rows:11069,normal_registry_selectable_rows:11033,excluded_false_origin_rows:36,routing_map_identities:7652,routing_no_map_identities:28,routing_only_fallbacks:2419,selectable_union:13452,missing_map_identities:0,no_map_selectable_intersection:0,real_duckdb_wasm:true,initial_v8_parquet_requests:0}' \
+            > work/public/202608291430-public-release-attestation.json
+
+      - name: Upload public release attestation
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: atlas-v9-${{ needs.classify.outputs.release_commit }}-public-attestation
+          path: work/public/
+          if-no-files-found: error
+          compression-level: 0
+          retention-days: 90
+
+  stage_pointer:
+    name: Stage byte-identical forward pointers for App promotion
+    needs: [classify, verify_public_release]
+    if: ${{ needs.classify.outputs.mode == 'release' }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout exact public release with staging credentials
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          ref: ${{ needs.classify.outputs.release_commit }}
+          fetch-depth: 4
+
+      - name: Create and CAS-stage only the two verified pointers
+        env:
+          SOURCE_COMMIT: ${{ needs.classify.outputs.source_commit }}
+          RELEASE_COMMIT: ${{ needs.classify.outputs.release_commit }}
+          PAGES_RUN_ID: ${{ needs.verify_public_release.outputs.pages_run_id }}
+          PAGES_VERIFIED_AT: ${{ needs.verify_public_release.outputs.pages_verified_at }}
+          PUBLIC_BROWSER_CLAIM_SHA256: ${{ needs.verify_public_release.outputs.public_browser_claim_sha256 }}
+        run: |
+          set -euo pipefail
+          git fetch --no-tags --depth=4 origin main:refs/remotes/origin/main
+          test "$(git rev-parse HEAD)" = "$RELEASE_COMMIT"
+          test "$(git rev-parse origin/main)" = "$RELEASE_COMMIT"
+          test "$(git rev-parse HEAD^)" = "$SOURCE_COMMIT"
+          cmp state/live-set.json releases/current-v3.json
+          test "$(jq -r .current.release_id state/live-set.json)" = "$PREDECESSOR_RELEASE_ID"
+          python - <<'PY'
+          import hashlib, json, os, pathlib
+          contract = json.loads(pathlib.Path('contracts/202608291430-atlas-v9-live-release.json').read_text())
+          predecessor = json.loads(pathlib.Path('state/live-set.json').read_text())
+          release_manifest = pathlib.Path('202608291430-atlas-v9/release-manifest.json')
+          build_manifest = pathlib.Path('202608291430-atlas-v9/build-manifest.json')
+          digest = lambda item: hashlib.sha256(item.read_bytes()).hexdigest()
+          old = predecessor['current']
+          pointer = {
+            'schema': 'gridatlas.live-set.v3',
+            'classification': 'VERIFIED_LIVE_ATLAS_V9',
+            'generation': '202608291430',
+            'current': {
+              'release_id': '202608291430-atlas-v9',
+              'route': '/gridatlas/202608291430-atlas-v9/',
+              'live_url': 'https://ventusltd.github.io/gridatlas/202608291430-atlas-v9/',
+              'source_commit': os.environ['SOURCE_COMMIT'],
+              'publication_commit': os.environ['RELEASE_COMMIT'],
+              'release_manifest_sha256': digest(release_manifest),
+              'build_manifest_sha256': digest(build_manifest),
+              'query_contract': {'parameter':'repd_ref','identity_rule':'EXACT_REPD_REF_ONLY'},
+              'normal_registry_source_rows': 11069,
+              'normal_registry_selectable_rows': 11033,
+              'excluded_false_origin_rows': 36,
+              'routing_release_id': contract['repd_routing']['release_id'],
+              'routing_publication_commit': contract['repd_routing']['publication_commit'],
+              'routing_release_sha256': contract['repd_routing']['release_sha256'],
+              'routing_projects_sha256': contract['repd_routing']['projects_sha256'],
+              'routing_map_identities': 7652,
+              'routing_no_map_identities': 28,
+              'routing_only_map_fallbacks': 2419,
+              'selectable_union': 13452,
+              'selectable_union_set_sha256': '1ed30d2eef18b75d4b4064f971d2b1ea3fd41ef618fc585b3a3ff0723462ac5f',
+              'data_release_id': contract['data_release']['release_id'],
+              'data_release_commit': contract['data_release']['source_commit'],
+              'data_release_sha256': contract['data_release']['release_sha256'],
+              'data_browser_registry_sha256': contract['data_release']['browser_registry_sha256'],
+            },
+            'predecessor': {
+              'generation': predecessor['generation'],
+              'release_id': old['release_id'],
+              'publication_commit': old['publication_commit'],
+              'route': old['route'],
+              'live_url': old['live_url'],
+            },
+            'rollback': {'commit': old['publication_commit'], 'route': old['route']},
+            'verification': {
+              'promotion_eligible': True,
+              'release_pages_run_id': int(os.environ['PAGES_RUN_ID']),
+              'release_pages_verified_at': os.environ['PAGES_VERIFIED_AT'],
+              'public_browser_claim_sha256': os.environ['PUBLIC_BROWSER_CLAIM_SHA256'],
+              'rendered_all_sentinels': True,
+              'normal_registry_selectable_rows': 11033,
+              'excluded_false_origin_rows': 36,
+              'excluded_false_origin_set_sha256': 'acdee510ef7f29855ea07b376cdc1519835d498184c5d14ea2a8a06d756365d9',
+              'routing_only_map_fallbacks_set_sha256': '5cbd8e6fc2f24f9fab897e9fb558c01e5886d0868db405f73260713ae3542a3b',
+              'missing_map_identities': 0,
+              'no_map_selectable_intersection': 0,
+              'routing_without_deep_link_requests': 0,
+              'initial_v8_parquet_requests': 0,
+              'real_duckdb_wasm': True,
+              'real_parquet_range_206': True,
+            },
+          }
+          encoded = (json.dumps(pointer, sort_keys=True, indent=2) + '\n').encode()
+          pathlib.Path('state/live-set.json').write_bytes(encoded)
+          pathlib.Path('releases/current-v3.json').write_bytes(encoded)
+          PY
+          cmp state/live-set.json releases/current-v3.json
+          git add -- state/live-set.json releases/current-v3.json
+          mapfile -t changed < <(git diff --cached --name-only | sort)
+          test "${#changed[@]}" = 2
+          test "${changed[0]}" = releases/current-v3.json
+          test "${changed[1]}" = state/live-set.json
+          git config user.name gridatlas-v9-stage-bot
+          git config user.email actions@users.noreply.github.com
+          release_date="$(git show -s --format=%cI "$RELEASE_COMMIT")"
+          GIT_AUTHOR_DATE="$release_date" GIT_COMMITTER_DATE="$release_date" git commit -m '202608291430: stage verified Atlas V9 pointers for App promotion'
+          stage_commit="$(git rev-parse HEAD)"
+          test "$(git rev-parse HEAD^)" = "$RELEASE_COMMIT"
+          remote_old="$(git ls-remote --heads origin "refs/heads/$POINTER_STAGE_BRANCH" | awk '{print $1}')"
+          if test -n "$remote_old"; then
+            test "$remote_old" = "$stage_commit"
+          else
+            git push origin "HEAD:refs/heads/$POINTER_STAGE_BRANCH"
+          fi
+          mkdir -p work/stage
+          jq -n --arg branch "$POINTER_STAGE_BRANCH" --arg release_commit "$RELEASE_COMMIT" --arg stage_commit "$stage_commit" \
+            '{schema:"gridatlas.staged-pointer.v1",classification:"STAGED_VERIFIED_ATLAS_V9_POINTER",branch:$branch,release_commit:$release_commit,stage_commit:$stage_commit,main_unchanged:true,github_app_promotion_required:true}' \
+            > work/stage/202608291430-pointer-stage.json
+          echo "Staged $stage_commit on $POINTER_STAGE_BRANCH; main remains $RELEASE_COMMIT" >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Upload pointer staging ledger
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: atlas-v9-${{ needs.classify.outputs.release_commit }}-pointer-stage
+          path: work/stage/202608291430-pointer-stage.json
+          if-no-files-found: error
+          retention-days: 90
+
+  verify_public_pointer:
+    name: Verify App-promoted pointers and exact dynamic Pages deployment
+    needs: classify
+    if: ${{ needs.classify.outputs.mode == 'pointer' }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    permissions:
+      contents: read
+      actions: read
+    steps:
+      - name: Checkout exact pointer commit without credentials
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          ref: ${{ needs.classify.outputs.current_commit }}
+          fetch-depth: 4
+          persist-credentials: false
+
+      - name: Verify local pointer and release bindings
+        env:
+          POINTER_COMMIT: ${{ needs.classify.outputs.current_commit }}
+          SOURCE_COMMIT: ${{ needs.classify.outputs.source_commit }}
+          RELEASE_COMMIT: ${{ needs.classify.outputs.release_commit }}
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$POINTER_COMMIT"
+          test "$(git rev-parse HEAD^)" = "$RELEASE_COMMIT"
+          test "$(git rev-parse HEAD^^)" = "$SOURCE_COMMIT"
+          cmp state/live-set.json releases/current-v3.json
+          test "$(jq -r .current.release_id state/live-set.json)" = "$RELEASE_ID"
+          test "$(jq -r .current.publication_commit state/live-set.json)" = "$RELEASE_COMMIT"
+          test "$(jq -r .current.source_commit state/live-set.json)" = "$SOURCE_COMMIT"
+          test "$(jq -r .current.release_manifest_sha256 state/live-set.json)" = "$(sha256sum "$RELEASE_ID/release-manifest.json" | cut -d' ' -f1)"
+          test "$(jq -r .current.build_manifest_sha256 state/live-set.json)" = "$(sha256sum "$RELEASE_ID/build-manifest.json" | cut -d' ' -f1)"
+          test "$(jq -r .current.normal_registry_source_rows state/live-set.json)" = 11069
+          test "$(jq -r .current.normal_registry_selectable_rows state/live-set.json)" = 11033
+          test "$(jq -r .current.selectable_union state/live-set.json)" = 13452
+          test "$(jq -r .verification.no_map_selectable_intersection state/live-set.json)" = 0
+
+      - name: Poll the exact dynamic Pages run for this pointer commit
+        id: pages
+        env:
+          GH_TOKEN: ${{ github.token }}
+          POINTER_COMMIT: ${{ needs.classify.outputs.current_commit }}
+        run: |
+          set -euo pipefail
+          mkdir -p work/public
+          for attempt in $(seq 1 90); do
+            response="$(curl --fail --silent --show-error --max-time 30 --header "Authorization: Bearer $GH_TOKEN" --header 'X-GitHub-Api-Version: 2022-11-28' "https://api.github.com/repos/$GITHUB_REPOSITORY/actions/runs?head_sha=$POINTER_COMMIT&per_page=50")"
+            matches="$(jq -c --arg sha "$POINTER_COMMIT" '[.workflow_runs[] | select(.path=="dynamic/pages/pages-build-deployment" and .head_sha==$sha)]' <<<"$response")"
+            count="$(jq length <<<"$matches")"
+            test "$count" -le 1
+            if test "$count" = 1; then
+              run="$(jq -c '.[0]' <<<"$matches")"
+              test "$(jq -r .path <<<"$run")" = dynamic/pages/pages-build-deployment
+              test "$(jq -r .head_sha <<<"$run")" = "$POINTER_COMMIT"
+              test "$(jq -r .head_branch <<<"$run")" = main
+              test "$(jq -r .event <<<"$run")" = dynamic
+              test "$(jq -r .run_attempt <<<"$run")" = 1
+              run_id="$(jq -r .id <<<"$run")"
+              status="$(jq -r .status <<<"$run")"
+              conclusion="$(jq -r .conclusion <<<"$run")"
+              if test "$status" = completed; then
+                test "$conclusion" = success
+                jq -S . <<<"$run" > work/public/202608291430-pointer-pages-run.json
+                echo "pages_run_id=$run_id" >> "$GITHUB_OUTPUT"
+                echo "pages_verified_at=$(jq -r .updated_at <<<"$run")" >> "$GITHUB_OUTPUT"
+                exit 0
+              fi
+            fi
+            sleep 10
+          done
+          echo "Timed out waiting for dynamic Pages pointer deployment at $POINTER_COMMIT" >&2
+          exit 1
+
+      - name: Byte-read both public pointers and immutable release receipt
+        env:
+          POINTER_COMMIT: ${{ needs.classify.outputs.current_commit }}
+        run: |
+          set -euo pipefail
+          mkdir -p work/public
+          curl --fail --location --retry 6 --retry-all-errors --retry-delay 3 --max-time 90 "https://ventusltd.github.io/gridatlas/state/live-set.json?commit=$POINTER_COMMIT" -o work/public/live-set.json
+          curl --fail --location --retry 6 --retry-all-errors --retry-delay 3 --max-time 90 "https://ventusltd.github.io/gridatlas/releases/current-v3.json?commit=$POINTER_COMMIT" -o work/public/current-v3.json
+          curl --fail --location --retry 6 --retry-all-errors --retry-delay 3 --max-time 90 "${LIVE_URL}release-manifest.json?commit=$POINTER_COMMIT" -o work/public/release-manifest.json
+          cmp state/live-set.json work/public/live-set.json
+          cmp releases/current-v3.json work/public/current-v3.json
+          cmp "$RELEASE_ID/release-manifest.json" work/public/release-manifest.json
+          jq -n --arg pointer_commit "$POINTER_COMMIT" --arg pages_run_id '${{ steps.pages.outputs.pages_run_id }}' --arg verified_at '${{ steps.pages.outputs.pages_verified_at }}' \
+            '{schema:"gridatlas.public-pointer-attestation.v1",classification:"VERIFIED_PUBLIC_ATLAS_V9_POINTER",release_id:"202608291430-atlas-v9",pointer_commit:$pointer_commit,pages_workflow_path:"dynamic/pages/pages-build-deployment",pages_run_id:($pages_run_id|tonumber),verified_at:$verified_at,pointer_mirrors_identical:true,immutable_release_receipt_identical:true}' \
+            > work/public/202608291430-public-pointer-attestation.json
+
+      - name: Upload public pointer attestation
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: atlas-v9-${{ needs.classify.outputs.current_commit }}-public-pointer-attestation
+          path: work/public/
+          if-no-files-found: error
+          retention-days: 90

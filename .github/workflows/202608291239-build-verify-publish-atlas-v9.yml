@@ -1,20 +1,6 @@
 name: 202608291239 Stage and verify timestamped Atlas V9
 
 on:
-  push:
-    branches: [main]
-    paths:
-      - '.github/workflows/202608291239-build-verify-publish-atlas-v9.yml'
-      - 'contracts/202608291239-atlas-v9-live-release.json'
-      - 'compiler/202608291239-compile-atlas-v9-live.py'
-      - 'atman/202608291239-verify-live-release.mjs'
-      - 'atman/202608291239-compare-incumbent-successor.py'
-      - 'atman/202608291239-rendered-browser-audit.mjs'
-      - 'atman/202608291239-public-browser-readback.mjs'
-      - 'ui/successor-202608291239/**'
-      - '202608291239-atlas-v9/**'
-      - 'state/live-set.json'
-      - 'releases/current-v3.json'
   workflow_dispatch:
     inputs:
       expected_main_sha:
