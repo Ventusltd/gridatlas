@@ -29,7 +29,8 @@ function searchable(record) {
 
 function scoreRecord(record, parsed) {
   const haystack = searchable(record);
-  if (!parsed.groups.length || !parsed.groups.every(group => group.some(term => haystack.includes(term.replace(/\s/g, "")) || haystack.includes(term)))) return null;
+  const compactHaystack = haystack.replace(/\s/g, "");
+  if (!parsed.groups.length || !parsed.groups.every(group => group.some(term => compactHaystack.includes(term.replace(/\s/g, "")) || haystack.includes(term)))) return null;
   const name = normalizeSearchText(record.name);
   const address = normalizeSearchText(record.repd_address_display);
   const postcode = normalizeSearchText(record.repd_postcode).replace(/\s/g, "");
@@ -37,7 +38,7 @@ function scoreRecord(record, parsed) {
   let score = 0;
   const reasons = new Set();
   for (const group of parsed.groups) {
-    const term = group.find(item => haystack.includes(item.replace(/\s/g, "")) || haystack.includes(item)) || group[0];
+    const term = group.find(item => compactHaystack.includes(item.replace(/\s/g, "")) || haystack.includes(item)) || group[0];
     const compact = term.replace(/\s/g, "");
     if (String(record.repd_ref) === term) { score += 1000; reasons.add("REPD ID"); }
     if (postcode && postcode === compact) { score += 800; reasons.add("postcode"); }
