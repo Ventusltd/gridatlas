@@ -1,0 +1,160 @@
+{
+  "schema": "gridatlas.map-ready-runtime-contract.v1",
+  "generation": "202608292126",
+  "release_id": "202608292126-atlas-v9",
+  "parent_release_id": "202608291818-atlas-v9",
+  "product_oracle": {
+    "repository": "Ventusltd/globalgrid2050",
+    "commit": "f2f343a92ee972cc74ed23b4b99d8a22896791ad",
+    "root": "repd_grid_atlasv8",
+    "index_blob_sha1": "278c3f55d3b61af9d13417c99bfb558374131143",
+    "css_blob_sha1": "29a2edb490407f489c29433d84e329b1038e0657",
+    "engine_blob_sha1": "0a647c32c346770851704727bbf86fb7167e2596",
+    "critical_oracle_files": {
+      "data/grid_400kv.geojson": {
+        "git_blob_sha1": "41f1e35147445d6a41b8dbc761e57392951d5a93",
+        "bytes": 1802840
+      },
+      "data/grid_substations.geojson": {
+        "git_blob_sha1": "11c68163099541ee16b9bfe8e72917ff52f82749",
+        "bytes": 1822645
+      }
+    }
+  },
+  "data_plane": {
+    "repository": "Ventusltd/data-gridatlas",
+    "commit": "32459230b958ff6ddbdb24365f56da83ab1cdc93",
+    "release_id": "202608291237-data-gridatlas",
+    "manifest_path": "202608291237-data-gridatlas/data/manifest.json",
+    "manifest_sha256": "3246dbdaa042ae8352ec9b7128cb6c2fe65e4f1aba0534302510661828df2526",
+    "runtime_base_url": "https://ventusltd.github.io/data-gridatlas/202608291237-data-gridatlas/"
+  },
+  "map_ready_sources": [
+    {
+      "url": "data/grid_400kv.geojson",
+      "source_id": "grid_400kv",
+      "artifact": "derived/grid_400kv_snapped.parquet",
+      "expected_rows": 4106,
+      "pre_snapped": true,
+      "critical": true
+    },
+    {
+      "url": "data/grid_275kv.geojson",
+      "source_id": "grid_275kv",
+      "artifact": "derived/grid_275kv_snapped.parquet",
+      "expected_rows": 2935,
+      "pre_snapped": true,
+      "critical": false
+    },
+    {
+      "url": "data/grid_220kv.geojson",
+      "source_id": "grid_220kv",
+      "artifact": "derived/grid_220kv_snapped.parquet",
+      "expected_rows": 126,
+      "pre_snapped": true,
+      "critical": false
+    },
+    {
+      "url": "data/grid_132kv.geojson",
+      "source_id": "grid_132kv",
+      "artifact": "derived/grid_132kv_snapped.parquet",
+      "expected_rows": 6227,
+      "pre_snapped": true,
+      "critical": false
+    },
+    {
+      "url": "data/grid_66kv.geojson",
+      "source_id": "grid_66kv",
+      "artifact": "derived/grid_66kv_snapped.parquet",
+      "expected_rows": 1171,
+      "pre_snapped": true,
+      "critical": false
+    },
+    {
+      "url": "data/grid_substations.geojson",
+      "source_id": "grid_substations",
+      "artifact": "partitions/grid_substations.parquet",
+      "expected_rows": 5800,
+      "pre_snapped": false,
+      "critical": false
+    },
+    {
+      "url": "data/power_plants.geojson",
+      "source_id": "power_plants",
+      "artifact": "partitions/power_plants.parquet",
+      "expected_rows": 178,
+      "pre_snapped": false,
+      "critical": false
+    },
+    {
+      "url": "data/industrial_offtakers.geojson",
+      "source_id": "industrial_offtakers",
+      "artifact": "partitions/industrial_offtakers.parquet",
+      "expected_rows": 5878,
+      "pre_snapped": false,
+      "critical": false
+    },
+    {
+      "url": "data/datacentres.geojson",
+      "source_id": "datacentres",
+      "artifact": "partitions/datacentres.parquet",
+      "expected_rows": 240,
+      "pre_snapped": false,
+      "critical": false
+    },
+    {
+      "url": "data/airports.geojson",
+      "source_id": "airports",
+      "artifact": "partitions/airports.parquet",
+      "expected_rows": 810,
+      "pre_snapped": false,
+      "critical": false
+    },
+    {
+      "url": "data/railways.geojson",
+      "source_id": "railways",
+      "artifact": "partitions/railways.parquet",
+      "expected_rows": 3596,
+      "pre_snapped": false,
+      "critical": false
+    }
+  ],
+  "topology_snap_bypass_layer_ids": [
+    "400",
+    "275",
+    "220",
+    "132",
+    "66"
+  ],
+  "permitted_product_delta": [
+    "insert 202608292126-map-ready-fetch-bridge.js before the byte-identical V8 engine",
+    "retain 202608291818-place-postcode-search.js before the byte-identical V8 engine",
+    "insert 202608292126-pre-snapped-config-adapter.js after the byte-identical V8 engine",
+    "materialise eleven same-origin map-ready GeoJSON cartridges from pinned Parquet",
+    "disable duplicate browser snapping only for five topology layers already snapped in the pinned data build"
+  ],
+  "performance_gates": {
+    "local": {
+      "cold_samples": 5,
+      "candidate_click_to_ready_p95_max_ms": 1200,
+      "candidate_click_to_ready_p95_vs_oracle_ratio_max": 1.1,
+      "candidate_click_to_ready_slack_ms": 150,
+      "candidate_warm_toggle_p95_max_ms": 120
+    },
+    "public": {
+      "cold_samples": 4,
+      "candidate_click_to_ready_p95_max_ms": 2000,
+      "candidate_click_to_ready_p95_vs_oracle_ratio_max": 1.35,
+      "candidate_click_to_ready_slack_ms": 300,
+      "candidate_warm_toggle_p95_max_ms": 180
+    }
+  },
+  "machine_learning_record": {
+    "schema": "gridatlas.ml.layer-performance-record.v1",
+    "path": "machine-learning/records/202608292126-layer-performance.jsonl",
+    "task": "binary_release_promotion",
+    "positive_label": "PROMOTE",
+    "negative_label": "REJECT",
+    "privacy": "NO_PERSONAL_DATA"
+  }
+}
