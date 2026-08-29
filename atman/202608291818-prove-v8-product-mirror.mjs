@@ -1,5 +1,6 @@
 import crypto from 'node:crypto';
 import fs from 'node:fs/promises';
+import { PNG } from 'pngjs';
 import { chromium } from 'playwright';
 
 const oracleUrl = process.env.ORACLE_URL || 'http://127.0.0.1:4174/';
@@ -34,6 +35,7 @@ const pixelRegions = [
 
 const requireCondition = (ok, message) => { if (!ok) throw new Error(message); };
 const blob = bytes => crypto.createHash('sha1').update(Buffer.from(`blob ${bytes.length}\0`)).update(bytes).digest('hex');
+const sha256 = bytes => crypto.createHash('sha256').update(bytes).digest('hex');
 async function bytes(url) {
   const r = await fetch(url, { cache: 'no-store' });
   requireCondition(r.ok, `${url} HTTP ${r.status}`);
@@ -133,16 +135,32 @@ async function shot(page, region) {
     animations:'disabled', mask:region.masks.map(s=>page.locator(s)), maskColor:'#000000'
   });
 }
+
+function decodePng(buffer) {
+  const image = PNG.sync.read(buffer);
+  return { width:image.width, height:image.height, rgba:Buffer.from(image.data) };
+}
+
 async function pixelProof(aPage,bPage,viewport) {
   await Promise.all([normalisePixels(aPage),normalisePixels(bPage)]);
   const regions={};
   for(const region of pixelRegions){
-    const [a,b]=await Promise.all([shot(aPage,region),shot(bPage,region)]);
-    const ah=crypto.createHash('sha256').update(a).digest('hex'), bh=crypto.createHash('sha256').update(b).digest('hex');
-    requireCondition(a.equals(b),`${viewport}: stable UI pixels differ for ${region.selector}`);
-    regions[region.selector]={identical:true,sha256:ah,mirror_sha256:bh,bytes:a.length,masks:region.masks};
+    const [aPng,bPng]=await Promise.all([shot(aPage,region),shot(bPage,region)]);
+    const a=decodePng(aPng), b=decodePng(bPng);
+    requireCondition(a.width===b.width && a.height===b.height,`${viewport}: decoded dimensions differ for ${region.selector}`);
+    requireCondition(a.rgba.equals(b.rgba),`${viewport}: decoded RGBA differs for ${region.selector}`);
+    regions[region.selector]={
+      identical:true,
+      width:a.width,
+      height:a.height,
+      rgba_sha256:sha256(a.rgba),
+      mirror_rgba_sha256:sha256(b.rgba),
+      png_encoding_sha256:sha256(aPng),
+      mirror_png_encoding_sha256:sha256(bPng),
+      masks:region.masks
+    };
   }
-  return { identical:true, method:'EXACT_STABLE_COMPONENT_PNG_BYTES', volatile_map_pixels_excluded:true,
+  return { identical:true, comparison:'EXACT_DECODED_RGBA', volatile_map_pixels_excluded:true,
     live_clock_text_masked:true, async_scada_grid_excluded_from_bitmap_but_exact_dom_gated:true, regions };
 }
 
@@ -176,7 +194,7 @@ async function bridgeProof(page){
   return b;
 }
 
-const proof={schema:'gridatlas.v8-public-product-mirror-proof.v6',classification:'REJECTED',oracle:oracleUrl,mirror:mirrorUrl,bytes:null,viewports:{},interactions:null,bridge:null,errors:[]};
+const proof={schema:'gridatlas.v8-public-product-mirror-proof.v7',classification:'REJECTED',oracle:oracleUrl,mirror:mirrorUrl,bytes:null,viewports:{},interactions:null,bridge:null,errors:[]};
 const browser=await chromium.launch({headless:true});
 try{
   proof.bytes=await byteProof();
