@@ -7,6 +7,7 @@ on:
     paths:
       - '.github/workflows/202608292126-bootstrap-map-ready-source.yml'
       - 'bootstrap/202608292126/**'
+  workflow_dispatch:
 
 permissions:
   contents: write
@@ -30,12 +31,13 @@ jobs:
           fetch-depth: 2
           persist-credentials: true
 
-      - name: Decode, validate and compare-and-swap source programme
+      - name: Decode, validate and compare-and-swap non-workflow source programme
         run: |
           set -euo pipefail
           test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
           git fetch --no-tags origin main:refs/remotes/origin/main
           test "$(git rev-parse origin/main)" = "$GITHUB_SHA"
+
           test "$(find bootstrap/202608292126 -maxdepth 1 -type f -name 'part-*.b64' | wc -l)" = 7
           test "$(git hash-object bootstrap/202608292126/part-00.b64)" = b283191e0046055a8c374fd4c3eb85c0c8e647bb
           test "$(git hash-object bootstrap/202608292126/part-01.b64)" = 0e5cb0bf4d078d53212bf3c1b18a56fb01098151
@@ -50,17 +52,12 @@ jobs:
           test "$(sha256sum /tmp/gridatlas-map-ready-source.tar.gz | cut -d' ' -f1)" = 65158de561bcb0c086b53e862640641f0cbf8ee4e92aab47283e17b793437c91
           test "$(tar -tzf /tmp/gridatlas-map-ready-source.tar.gz | wc -l)" = 10
           tar -xzf /tmp/gridatlas-map-ready-source.tar.gz -C .
-          python - <<'PY'
-          from pathlib import Path
-          path = Path('.github/workflows/202608292126-build-map-ready-v9.yml')
-          text = path.read_text()
-          needle = '            bootstrap/202608292126/part-04.b64\n'
-          replacement = '            bootstrap/202608292126/part-04a.b64\n            bootstrap/202608292126/part-04b.b64\n'
-          assert text.count(needle) == 1
-          path.write_text(text.replace(needle, replacement))
-          PY
-          rm -rf bootstrap/202608292126
-          rm .github/workflows/202608292126-bootstrap-map-ready-source.yml
+
+          # The archive also carries proposed workflow changes. GitHub Actions tokens
+          # cannot create or alter workflow files, so restore them exactly and install
+          # only the executable source programme. Workflow installation is performed
+          # separately through the connected GitHub control plane.
+          git restore --source=HEAD --staged --worktree .github/workflows
 
           python -m py_compile compiler/202608292126-build-map-ready-v9.py
           node --check atman/202608292126-layer-performance-comparator.mjs
@@ -76,34 +73,23 @@ jobs:
               json.loads(path.read_text())
           PY
 
-          git add -A
-          mapfile -t staged < <(git diff --cached --name-only | sort)
-          expected=(
-            .github/workflows/202608291430-build-verify-publish-atlas-v9.yml
-            .github/workflows/202608291742-promote-root-current.yml
-            .github/workflows/202608291742-v9-transfer-closure.yml
-            .github/workflows/202608292126-bootstrap-map-ready-source.yml
-            .github/workflows/202608292126-build-map-ready-v9.yml
+          source_paths=(
             atman/202608292126-layer-performance-comparator.mjs
-            bootstrap/202608292126/part-00.b64
-            bootstrap/202608292126/part-01.b64
-            bootstrap/202608292126/part-02.b64
-            bootstrap/202608292126/part-03.b64
-            bootstrap/202608292126/part-04a.b64
-            bootstrap/202608292126/part-04b.b64
-            bootstrap/202608292126/part-05.b64
             compiler/202608292126-build-map-ready-v9.py
             contracts/202608292126-map-ready-runtime.json
             machine-learning/schemas/layer-performance-record-v1.schema.json
             ui/v8-mirror/202608292126-map-ready-fetch-bridge.js
             ui/v8-mirror/202608292126-pre-snapped-config-adapter.js
           )
+          git add -- "${source_paths[@]}"
+          mapfile -t staged < <(git diff --cached --name-only | sort)
+          mapfile -t expected < <(printf '%s\n' "${source_paths[@]}" | sort)
           test "${#staged[@]}" = "${#expected[@]}"
           test "${staged[*]}" = "${expected[*]}"
 
           git config user.name gridatlas-map-ready-source-bot
           git config user.email actions@users.noreply.github.com
-          git commit -m '202608292126: install map-ready CI comparator programme'
+          git commit -m '202608292206: install map-ready runtime and comparator source'
           SOURCE_COMMIT="$(git rev-parse HEAD)"
           git fetch --no-tags origin main:refs/remotes/origin/main
           test "$(git rev-parse origin/main)" = "$GITHUB_SHA"
