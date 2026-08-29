@@ -9,6 +9,7 @@ on:
       - 'contracts/202608290716-atlas-v9-source.json'
       - 'compiler/202608290716-compile-atlas-v9.py'
       - 'atman/202608290716-verify-atlas-v9.py'
+      - 'atman/202608290828-compare-live-vs-candidate.py'
       - 'ui/cartridges/202608290716-repd-address-flyto.mjs'
       - 'ui/site/**'
   workflow_dispatch:
@@ -89,7 +90,25 @@ jobs:
           diff --unified work/build-a.sha256 work/build-b.sha256
 
       - name: Independent typed and truth verification
-        run: python atman/202608290716-verify-atlas-v9.py --site build-a | tee work/verification.json
+        shell: bash
+        run: |
+          set -o pipefail
+          python atman/202608290716-verify-atlas-v9.py --site build-a | tee work/verification.json
+          test -s work/verification.json
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          proof = json.loads(Path('work/verification.json').read_text(encoding='utf-8'))
+          if proof.get('classification') != 'VERIFIED':
+              raise SystemExit(f"non-verified Atman classification: {proof.get('classification')!r}")
+          PY
+
+      - name: Compare incumbent V9 with candidate V9 in DuckDB
+        run: |
+          python atman/202608290828-compare-live-vs-candidate.py \
+            --incumbent-site . \
+            --candidate-site build-a \
+            --output work/incumbent-vs-candidate.json
 
       - name: Exercise address query and fly-to cartridge contract
         run: |
@@ -116,6 +135,7 @@ jobs:
             build-a/
             work/build-a.sha256
             work/verification.json
+            work/incumbent-vs-candidate.json
           if-no-files-found: error
           retention-days: 30
           compression-level: 0
@@ -135,6 +155,13 @@ jobs:
           cp build-a/data/repd_projects_202608290716.parquet data/repd_projects_202608290716.parquet
           cp build-a/data/repd_browser_registry_202608290716.json data/repd_browser_registry_202608290716.json
           cp build-a/data/repd_v9_manifest_202608290716.json data/repd_v9_manifest_202608290716.json
+          cmp build-a/index.html index.html
+          cmp build-a/assets/atlas-v9.css assets/atlas-v9.css
+          cmp build-a/assets/atlas-v9.mjs assets/atlas-v9.mjs
+          cmp build-a/cartridges/202608290716-repd-address-flyto.mjs cartridges/202608290716-repd-address-flyto.mjs
+          cmp build-a/data/repd_projects_202608290716.parquet data/repd_projects_202608290716.parquet
+          cmp build-a/data/repd_browser_registry_202608290716.json data/repd_browser_registry_202608290716.json
+          cmp build-a/data/repd_v9_manifest_202608290716.json data/repd_v9_manifest_202608290716.json
           git add -- index.html assets/atlas-v9.css assets/atlas-v9.mjs cartridges/202608290716-repd-address-flyto.mjs data/repd_projects_202608290716.parquet data/repd_browser_registry_202608290716.json data/repd_v9_manifest_202608290716.json
           python - <<'PY'
           import subprocess
@@ -146,9 +173,14 @@ jobs:
             'data/repd_v9_manifest_202608290716.json'
           }
           changed = set(subprocess.check_output(['git','diff','--cached','--name-only'], text=True).splitlines())
-          if changed != allowed:
-              raise SystemExit(f'publication allowlist mismatch: {sorted(changed)}')
+          unexpected = changed - allowed
+          if unexpected:
+              raise SystemExit(f'publication allowlist mismatch: {sorted(unexpected)}')
           PY
+          if git diff --cached --quiet; then
+            echo "Verified candidate is already the published byte closure; no output commit required."
+            exit 0
+          fi
           git config user.name "gridatlas-v9-bot"
           git config user.email "actions@users.noreply.github.com"
           git commit -m "202608290716: publish verified Atlas V9 address search"
