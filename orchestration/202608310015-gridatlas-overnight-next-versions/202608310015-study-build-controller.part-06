@@ -1,0 +1,120 @@
+
+  const catalogueRows = inventory
+    .filter(item => item.content_sha256)
+    .sort((a, b) => String(b.timestamp || '').localeCompare(String(a.timestamp || '')) || a.path.localeCompare(b.path))
+    .slice(0, config.max_inventory_entries_in_html);
+  const catalogueName = `${runStamp}-gridatlas-artifact-catalogue.html`;
+  const catalogueHtml = `<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>${htmlEscape(candidateId)} artifact catalogue</title>
+<style>body{font:14px/1.45 system-ui;margin:24px;max-width:1400px}code{background:#eee;padding:2px 4px}table{border-collapse:collapse;width:100%}th,td{border:1px solid #bbb;padding:6px;text-align:left;vertical-align:top}th{position:sticky;top:0;background:#fff}small{color:#555}.ok{color:#075}.warn{color:#a50}</style></head><body>
+<h1>${htmlEscape(candidateId)}</h1>
+<p><a href="./">Open candidate app</a></p>
+<p>Build mode: <strong>${htmlEscape(buildMode)}</strong>. Source fingerprint: <code>${htmlEscape(fingerprint)}</code>.</p>
+<p>Corpus visible at build: <strong>${summary.unique_words.toLocaleString('en-GB')} words</strong>; expected scope marker: ${config.expected_scope_words.toLocaleString('en-GB')}.</p>
+<h2>High-signal directives</h2><ol>${directives.slice(0, 100).map(row => `<li><code>${htmlEscape(row.ref)}:${htmlEscape(row.path)}</code> — ${htmlEscape(row.directive)}</li>`).join('')}</ol>
+<h2>Artifacts</h2><table><thead><tr><th>Timestamp</th><th>Kind</th><th>Branch</th><th>Path</th><th>Words</th><th>SHA-256</th></tr></thead><tbody>
+${catalogueRows.map(item => `<tr><td>${htmlEscape(item.timestamp || '')}</td><td>${htmlEscape(item.kind)}</td><td>${htmlEscape(item.ref)}</td><td><a href="${htmlEscape(item.github_url)}">${htmlEscape(item.path)}</a></td><td>${item.words}</td><td><small><code>${htmlEscape(item.content_sha256)}</code></small></td></tr>`).join('\n')}
+</tbody></table></body></html>\n`;
+  await fs.writeFile(path.join(absoluteFolder, catalogueName), catalogueHtml);
+
+  const readmeName = `${runStamp}-gridatlas-candidate-readme.md`;
+  await fs.writeFile(path.join(absoluteFolder, readmeName), `# ${candidateId}\n\n- Candidate route: \`/gridatlas/${relativeFolder}/\`\n- Candidate version: \`${candidateCurrent.composition_version}\`\n- Build mode: \`${buildMode}\`\n- Source fingerprint: \`${fingerprint}\`\n- Frozen shell: \`${config.frozen_shell_release_id}\`\n- Live pointer modified: **no**\n- Promotion authorised: **no**\n- Browser proof: pending\n\nSee [artifact catalogue](./${catalogueName}).\n`);
+
+  const filesForHash = await listFilesRecursive(absoluteFolder);
+  const sums = [];
+  for (const name of filesForHash) {
+    const buffer = await fs.readFile(path.join(absoluteFolder, name));
+    sums.push(`${sha256(buffer)}  ${name}`);
+  }
+  const sumsName = `${runStamp}-gridatlas-sha256sums.txt`;
+  await fs.writeFile(path.join(absoluteFolder, sumsName), `${sums.join('\n')}\n`);
+
+  const searchCartridge = candidateCurrent.cartridges.find(item => item.id === 'uk-gazetteer-flyto');
+  return {
+    sequence,
+    candidateId,
+    relativeFolder,
+    candidateManifestPath: path.posix.join(relativeFolder, candidateManifestName),
+    candidateCurrentPath: path.posix.join(relativeFolder, 'current.json'),
+    generation: runStamp,
+    version: candidateCurrent.composition_version,
+    searchGeneration: searchCartridge?.generation || '',
+    buildMode
+  };
+}
+
+async function main() {
+  const runStamp = londonTimestamp(now);
+  appendOutput('run_stamp', runStamp);
+  appendOutput('programme_root', config.programme_root);
+
+  const force = String(process.env.FORCE_RUN || '').toLowerCase() === 'true';
+  if (!force && !isWithinActiveWindow(now)) {
+    appendOutput('active', 'false');
+    appendOutput('candidate_created', 'false');
+    console.log(JSON.stringify({ status: 'OUTSIDE_ACTIVE_WINDOW', now: now.toISOString(), active_until: config.active_until }));
+    return;
+  }
+  appendOutput('active', 'true');
+
+  const programmeRoot = path.join(SOURCE_ROOT, config.programme_root);
+  await fs.mkdir(path.join(programmeRoot, 'runs'), { recursive: true });
+  const ledgerPath = path.join(programmeRoot, `${config.generation}-gridatlas-programme-ledger.json`);
+  const ledger = await readJsonIfPresent(ledgerPath, null) || {
+    schema: 'gridatlas.overnight-programme-ledger.v1',
+    generation: config.generation,
+    requested_start: config.requested_start,
+    installed_baseline_sha: config.baseline_main_sha,
+    study_started_at: now.toISOString(),
+    not_before: new Date(now.getTime() + config.minimum_study_seconds * 1000).toISOString(),
+    minimum_study_seconds: config.minimum_study_seconds,
+    expected_scope_words: config.expected_scope_words,
+    active_until: config.active_until,
+    next_candidate_sequence: 1,
+    observations: [],
+    candidates: []
+  };
+
+  const refs = listRemoteRefs();
+  const commits = collectCommits();
+  const { inventory, parsedCompositionArtifacts } = collectInventory(refs);
+  const summary = corpusSummary(inventory);
+  const directives = directiveSummary(inventory);
+  const fingerprint = sourceFingerprint(inventory);
+  const baselineCurrent = JSON.parse(readBlob(`origin/${config.source_branch}`, 'atlas/current.json').toString('utf8'));
+  const loaderHtml = readBlob(`origin/${config.source_branch}`, 'atlas/index.html').toString('utf8');
+  const frozenShellPath = normaliseRepoPath(path.posix.join('atlas', String(baselineCurrent.shell.index).replace(/^\.\//, '')));
+  const frozenShellHtml = readBlob(`origin/${config.source_branch}`, frozenShellPath).toString('utf8');
+  assertBaselineComposition(baselineCurrent, frozenShellHtml);
+  const { selected, validations } = selectComposition(parsedCompositionArtifacts, baselineCurrent, frozenShellHtml);
+
+  const study = await writeStudyEvidence({
+    programmeRoot,
+    runStamp,
+    fingerprint,
+    refs,
+    commits,
+    inventory,
+    summary,
+    directives,
+    ledger,
+    selected,
+    validations
+  });
+
+  ledger.last_observed_at = now.toISOString();
+  ledger.last_source_fingerprint = fingerprint;
+  ledger.last_main_sha = git(['rev-parse', 'HEAD']).trim();
+  ledger.last_visible_unique_words = summary.unique_words;
+  ledger.last_scope_word_status = summary.unique_words >= config.expected_scope_words ? 'EXPECTED_CORPUS_VISIBLE' : 'ADDITIONAL_ARTIFACTS_EXPECTED';
+  ledger.observations.push({
+    generation: runStamp,
+    observed_at: now.toISOString(),
+    source_fingerprint: fingerprint,
+    main_sha: ledger.last_main_sha,
+    refs: refs.map(item => ({ ref: item.ref, sha: item.sha, committed_at: item.committed_at })),
+    visible_unique_words: summary.unique_words,
+    study_folder: study.relativeFolder,
+    timer_mature: study.timer.mature,
+    selected_composition: selected ? `${selected.entry.ref}:${selected.entry.path}` : null
