@@ -1,0 +1,76 @@
+name: 202608300257 Repair render-ready browser install
+run-name: Add WebKit required by render comparator from ${{ github.sha }}
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/202608300257-repair-render-ready-browser-install.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: gridatlas-202608300257-render-browser-repair
+  cancel-in-progress: false
+
+jobs:
+  repair:
+    name: Patch browser installation and activate existing governed workflow
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - name: Checkout exact source boundary
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 20
+          persist-credentials: true
+
+      - name: Apply one bounded CI-only repair
+        run: |
+          set -euo pipefail
+          target=.github/workflows/202608292311-build-verify-publish-render-ready-v9.yml
+          git fetch --no-tags origin main:refs/remotes/origin/main
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          test "$(git rev-parse origin/main)" = "$GITHUB_SHA"
+          test -f "$target"
+          python3 - <<'PY'
+          from pathlib import Path
+
+          path = Path('.github/workflows/202608292311-build-verify-publish-render-ready-v9.yml')
+          text = path.read_text(encoding='utf-8')
+          before = '          npx playwright install --with-deps chromium\n'
+          after = '          npx playwright install --with-deps chromium webkit\n'
+          assert text.count(before) == 1, f'expected one Chromium-only install, found {text.count(before)}'
+          assert after not in text
+          path.write_text(text.replace(before, after), encoding='utf-8', newline='\n')
+          PY
+          grep -Fxq '          npx playwright install --with-deps chromium webkit' "$target"
+          test "$(grep -Fxc '          npx playwright install --with-deps chromium webkit' "$target")" = 1
+          git diff --check
+          git diff --exit-code -- . ':!/.github/workflows/202608292311-build-verify-publish-render-ready-v9.yml' || true
+
+      - name: Commit compare-and-swap repair to main
+        run: |
+          set -euo pipefail
+          target=.github/workflows/202608292311-build-verify-publish-render-ready-v9.yml
+          git fetch --no-tags origin main:refs/remotes/origin/main
+          test "$(git rev-parse origin/main)" = "$GITHUB_SHA"
+          git add "$target"
+          test "$(git diff --cached --name-only)" = "$target"
+          git config user.name gridatlas-ci-repair-bot
+          git config user.email actions@users.noreply.github.com
+          git commit -m '202608300257: install WebKit for mobile render comparator'
+          git push origin HEAD:main
+
+      - name: Record handoff
+        run: |
+          {
+            echo '## Render-ready comparator repair committed'
+            echo
+            echo '- Added the pinned WebKit runtime required by the existing mobile comparator.'
+            echo '- Changing the governed render-ready workflow automatically triggers a fresh build and promotion attempt.'
+            echo '- No product source, immutable release, live pointer or data cartridge was altered by this repair job.'
+          } >> "$GITHUB_STEP_SUMMARY"
