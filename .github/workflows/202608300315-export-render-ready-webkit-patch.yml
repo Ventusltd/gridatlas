@@ -28,6 +28,7 @@ jobs:
         run: |
           set -euo pipefail
           target=.github/workflows/202608292311-build-verify-publish-render-ready-v9.yml
+          replacement=export/202608292311-build-verify-publish-render-ready-v9.yml
           test -f "$target"
           test "$(grep -Fxc '          npx playwright install --with-deps chromium' "$target")" = 1
           python3 - <<'PY'
@@ -44,10 +45,11 @@ jobs:
           mapfile -t changed < <(git diff --name-only)
           test "${#changed[@]}" = 1
           test "${changed[0]}" = "$target"
-          mkdir -p export/.github/workflows
-          cp "$target" export/.github/workflows/
-          sha256sum "$target" > export/SHA256SUMS.txt
+          mkdir -p export
+          cp "$target" "$replacement"
+          sha256sum "$replacement" > export/SHA256SUMS.txt
           git diff -- "$target" > export/ONE-LINE-PATCH.diff
+          test -s "$replacement"
 
       - name: Upload exact replacement and proof
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
