@@ -36,21 +36,13 @@ jobs:
           old = Path('.github/workflows/202608300327-three-hour-v8-v9-watchdog.yml')
           new = Path('.github/workflows/202608300430-five-hour-v8-v9-watchdog.yml')
           text = old.read_text(encoding='utf-8')
-
           replacements = [
-              ('name: 202608300327 Three-hour V8 V9 comparator watchdog',
-               'name: 202608300430 Five-hour V8 V9 comparator watchdog'),
-              ('run-name: Hourly V8/V9 closure check ${{ github.run_number }}',
-               'run-name: Five-hour V8/V9 closure check ${{ github.run_number }}'),
-              ("      - '.github/workflows/202608300327-three-hour-v8-v9-watchdog.yml'",
-               "      - '.github/workflows/202608300430-five-hour-v8-v9-watchdog.yml'"),
+              ('name: 202608300327 Three-hour V8 V9 comparator watchdog', 'name: 202608300430 Five-hour V8 V9 comparator watchdog'),
+              ("      - '.github/workflows/202608300327-three-hour-v8-v9-watchdog.yml'", "      - '.github/workflows/202608300430-five-hour-v8-v9-watchdog.yml'"),
               ("    - cron: '15 3-5 30 8 *'", "    - cron: '5 4-8 30 8 *'"),
-              ('group: gridatlas-three-hour-v8-v9-watchdog',
-               'group: gridatlas-five-hour-v8-v9-watchdog'),
-              ("MISSION_INCEPTED_AT: '2026-08-30T02:27:00Z'",
-               "MISSION_INCEPTED_AT: '2026-08-30T03:30:00Z'"),
-              ("MISSION_EXPIRES_AT: '2026-08-30T05:28:00Z'",
-               "MISSION_EXPIRES_AT: '2026-08-30T08:35:00Z'"),
+              ('group: gridatlas-three-hour-v8-v9-watchdog', 'group: gridatlas-five-hour-v8-v9-watchdog'),
+              ("MISSION_INCEPTED_AT: '2026-08-30T02:27:00Z'", "MISSION_INCEPTED_AT: '2026-08-30T03:30:00Z'"),
+              ("MISSION_EXPIRES_AT: '2026-08-30T05:28:00Z'", "MISSION_EXPIRES_AT: '2026-08-30T08:35:00Z'"),
               ('bounded three-hour mission window', 'bounded five-hour mission window'),
               ('three-hour mission', 'five-hour mission'),
           ]
@@ -60,43 +52,47 @@ jobs:
                   raise SystemExit(f'missing Atlas bootstrap anchor: {before}')
               text = text.replace(before, after)
 
-          evidence_step = """
-
-      - name: Retain five-hour comparator evidence
-        if: always() && steps.window.outputs.active == 'true'
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
-        with:
-          name: gridatlas-five-hour-v8-v9-${{ github.run_number }}-${{ github.sha }}
-          path: |
-            work/hourly-public-render-ready-proof.json
-            work/hourly-public-render-ready-record.jsonl
-            work/hourly-public-render-ready-attempt-history.json
-            work/hourly-public-render-ready-attempt-*.json
-            work/hourly-public-render-ready-record-attempt-*.jsonl
-            work/live-set.json
-            work/release-manifest.json
-          if-no-files-found: warn
-          retention-days: 90
-          compression-level: 0
-"""
+          expression = lambda name: '$' + '{{ ' + name + ' }}'
+          evidence_lines = [
+              '',
+              '      - name: Retain five-hour comparator evidence',
+              "        if: always() && steps.window.outputs.active == 'true'",
+              '        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a',
+              '        with:',
+              '          name: gridatlas-five-hour-v8-v9-' + expression('github.run_number') + '-' + expression('github.sha'),
+              '          path: |',
+              '            work/hourly-public-render-ready-proof.json',
+              '            work/hourly-public-render-ready-record.jsonl',
+              '            work/hourly-public-render-ready-attempt-history.json',
+              '            work/hourly-public-render-ready-attempt-*.json',
+              '            work/hourly-public-render-ready-record-attempt-*.jsonl',
+              '            work/live-set.json',
+              '            work/release-manifest.json',
+              '          if-no-files-found: warn',
+              '          retention-days: 90',
+              '          compression-level: 0',
+          ]
           if 'Retain five-hour comparator evidence' not in text:
-              text = text.rstrip() + evidence_step
+              text = text.rstrip() + '\n'.join(evidence_lines)
           new.write_text(text.rstrip() + '\n', encoding='utf-8', newline='\n')
 
-          old.write_text("""name: 202608300327 Retired three-hour V8 V9 watchdog
-
-on:
-  workflow_dispatch:
-
-permissions:
-  contents: read
-
-jobs:
-  retired:
-    runs-on: ubuntu-24.04
-    steps:
-      - run: echo 'Retired in favour of 202608300430-five-hour-v8-v9-watchdog.yml'
-""", encoding='utf-8', newline='\n')
+          retired_lines = [
+              'name: 202608300327 Retired three-hour V8 V9 watchdog',
+              '',
+              'on:',
+              '  workflow_dispatch:',
+              '',
+              'permissions:',
+              '  contents: read',
+              '',
+              'jobs:',
+              '  retired:',
+              '    runs-on: ubuntu-24.04',
+              '    steps:',
+              "      - run: echo 'Retired in favour of 202608300430-five-hour-v8-v9-watchdog.yml'",
+              '',
+          ]
+          old.write_text('\n'.join(retired_lines), encoding='utf-8', newline='\n')
           PY
           git diff --check
           grep -q "cron: '5 4-8 30 8 \*'" .github/workflows/202608300430-five-hour-v8-v9-watchdog.yml
