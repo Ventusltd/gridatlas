@@ -1,49 +1,202 @@
-name: 202608301321 Verify live Atlas composition
+name: 202608301321 Build, deploy and verify live Atlas composition
 
 on:
   workflow_dispatch:
   push:
     branches: [main]
     paths:
+      - 'state/v9-5-request.json'
       - 'state/public-verification-request.json'
+      - 'tools/v9_5/**'
+      - 'tools/history/scan_gridatlas_versions.py'
+      - 'atman/202608301624-verify-v9-5-search.mjs'
+      - '.github/workflows/202608301321-verify-live.yml'
 
 permissions:
+  actions: read
   contents: write
+  pages: write
 
 concurrency:
   group: gridatlas-live-composition-verification
   cancel-in-progress: true
 
 jobs:
-  verify-live:
+  build-deploy-verify:
     runs-on: ubuntu-24.04
-    timeout-minutes: 20
+    timeout-minutes: 35
     env:
       GH_TOKEN: ${{ secrets.GRIDATLAS_SCOPE_TOKEN || github.token }}
       GRIDATLAS_BASE_URL: https://ventusltd.github.io/gridatlas/
+      GENERATION: '202608301624'
     steps:
-      - name: Checkout exact main state
+      - name: Checkout complete GridAtlas history
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
         with:
           fetch-depth: 0
           token: ${{ secrets.GRIDATLAS_SCOPE_TOKEN || github.token }}
 
-      - name: Install pinned browser test dependency
+      - name: Checkout pinned CVAA reference read-only
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          repository: Ventusltd/cvaa
+          ref: daada0fe917e82c170b866a06c493c1e2b1c1ee3
+          path: work/cvaa
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Scan all Git history without duplicating an existing scanner
         run: |
-          npm ci
+          set -euo pipefail
+          python3 tools/history/scan_gridatlas_versions.py \
+            --repo . \
+            --reference-repo work/cvaa \
+            --max-seconds 30 \
+            --output work/202608301624-gridatlas-history-scan.json
+          test "$(jq -r .status work/202608301624-gridatlas-history-scan.json)" != FAIL
+          test "$(jq -r .repositories.gridatlas.scanner_was_already_present work/202608301624-gridatlas-history-scan.json)" = false
+
+      - name: Compile v9.5 as one hashed cartridge
+        run: |
+          set -euo pipefail
+          python3 tools/v9_5/build_v9_5.py \
+            --request state/v9-5-request.json \
+            --report work/202608301624-v9-5-build.json
+          node tools/scope/verify-compose.mjs
+          node tools/scope/loop.mjs lint
+          test "$(jq -r .full_application_copies_created work/202608301624-v9-5-build.json)" = 0
+          test "$(jq -r .composition_version atlas/current.json)" = v9.5
+          test "$(jq -r .generation atlas/current.json)" = "$GENERATION"
+
+      - name: Configure exact Node and Chromium
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v4.4.0
+        with:
+          node-version: '22.18.0'
+          cache: npm
+
+      - name: Install pinned browser runtime
+        run: |
+          set -euo pipefail
+          npm ci --ignore-scripts
           npx playwright install --with-deps chromium
 
-      - name: Run the five public acceptance tests
-        id: verify
+      - name: Serve the GitHub Pages path locally
+        run: |
+          set -euo pipefail
+          mkdir -p work/site
+          ln -s "$GITHUB_WORKSPACE" work/site/gridatlas
+          python3 -m http.server 4173 --bind 127.0.0.1 --directory work/site >work/local-http.log 2>&1 &
+          echo $! > work/local-http.pid
+          for attempt in $(seq 1 30); do
+            curl --fail --silent http://127.0.0.1:4173/gridatlas/atlas/current.json >/dev/null && exit 0
+            sleep 1
+          done
+          exit 1
+
+      - name: Prove v9.5 locally in a real mobile browser
+        env:
+          GRIDATLAS_URL: http://127.0.0.1:4173/gridatlas/atlas/
+          EXPECTED_GENERATION: '202608301624'
+          OUTPUT: work/202608301624-v9-5-local-proof.json
+        run: node atman/202608301624-verify-v9-5-search.mjs
+
+      - name: Stop local server
+        if: always()
+        run: test ! -f work/local-http.pid || kill "$(cat work/local-http.pid)" 2>/dev/null || true
+
+      - name: Commit only the verified v9.5 cartridge composition
+        id: publish
+        run: |
+          set -euo pipefail
+          git config user.name gridatlas-v9-5-builder
+          git config user.email actions@users.noreply.github.com
+          git add \
+            atlas/current.json \
+            "atlas/cartridges/${GENERATION}-place-global-search-v9-5.js" \
+            "atlas/manifests/${GENERATION}-composition.json" \
+            "ui/cartridges/${GENERATION}-global-gazetteer-flyto-v9-5.mjs" \
+            tools/scope/verify-live.mjs
+          if git diff --cached --quiet; then
+            echo "commit_sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+            echo "published=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          allowed='^(atlas/current.json|atlas/cartridges/202608301624-place-global-search-v9-5.js|atlas/manifests/202608301624-composition.json|ui/cartridges/202608301624-global-gazetteer-flyto-v9-5.mjs|tools/scope/verify-live.mjs)$'
+          test "$(git diff --cached --name-only | grep -Evc "$allowed" || true)" = 0
+          git commit -m "202608301624-gridatlas-v9.5: add global address fly-to cartridge"
+          git pull --rebase origin main
+          git push origin HEAD:main
+          echo "commit_sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+          echo "published=true" >> "$GITHUB_OUTPUT"
+
+      - name: Request GitHub Pages deployment
+        run: |
+          set -euo pipefail
+          accepted=false
+          for attempt in 1 2 3; do
+            if gh api --method POST "repos/${GITHUB_REPOSITORY}/pages/builds"; then
+              accepted=true
+              break
+            fi
+            sleep 10
+          done
+          if test "$accepted" != true; then
+            echo "Pages build request was already active or temporarily refused; public generation polling remains authoritative."
+          fi
+
+      - name: Wait for the exact public v9.5 composition
+        run: |
+          set -euo pipefail
+          public="${GRIDATLAS_BASE_URL}atlas/current.json"
+          for attempt in $(seq 1 90); do
+            payload="$(curl --fail --location --silent --show-error -H 'Cache-Control: no-cache' "${public}?generation=${GENERATION}&attempt=${attempt}" || true)"
+            if test -n "$payload" && test "$(printf '%s' "$payload" | jq -r '.generation // empty')" = "$GENERATION" && test "$(printf '%s' "$payload" | jq -r '.composition_version // empty')" = v9.5; then
+              exit 0
+            fi
+            sleep 5
+          done
+          exit 1
+
+      - name: Prove the public deployment in a real mobile browser
+        env:
+          GRIDATLAS_URL: https://ventusltd.github.io/gridatlas/atlas/
+          EXPECTED_GENERATION: '202608301624'
+          OUTPUT: work/202608301624-v9-5-public-proof.json
+        run: node atman/202608301624-verify-v9-5-search.mjs
+
+      - name: Run the durable public acceptance suite
+        env:
+          GRIDATLAS_BASE_URL: https://ventusltd.github.io/gridatlas/
         run: node tools/scope/verify-live.mjs
 
-      - name: Commit durable verification report
+      - name: Retain scanner, build and browser proofs
         if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v4.4.3
+        with:
+          name: gridatlas-v9-5-${{ github.run_id }}
+          path: |
+            work/202608301624-gridatlas-history-scan.json
+            work/202608301624-v9-5-build.json
+            work/202608301624-v9-5-local-proof.json
+            work/202608301624-v9-5-public-proof.json
+            reports/scope-loop/*.json
+            work/local-http.log
+          if-no-files-found: warn
+          retention-days: 90
+          compression-level: 0
+
+      - name: Commit durable public verification reports
+        if: success()
         run: |
-          git config user.name "gridatlas-live-verifier"
-          git config user.email "actions@users.noreply.github.com"
-          git add reports/scope-loop || true
+          set -euo pipefail
+          mkdir -p reports/v9-5
+          for file in work/202608301624-gridatlas-history-scan.json work/202608301624-v9-5-build.json work/202608301624-v9-5-public-proof.json; do
+            test ! -f "$file" || cp "$file" reports/v9-5/
+          done
+          git add reports/v9-5 reports/scope-loop || true
           if git diff --cached --quiet; then exit 0; fi
-          git commit -m "$(date -u +%Y%m%d%H%M)-gridatlas: record live cartridge acceptance"
+          git config user.name gridatlas-live-verifier
+          git config user.email actions@users.noreply.github.com
+          git commit -m "202608301624-gridatlas-v9.5: record public deployment proof"
           git pull --rebase origin main
           git push origin HEAD:main

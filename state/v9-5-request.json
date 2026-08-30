@@ -1,0 +1,20 @@
+{
+  "schema": "gridatlas.v9-5-request.v1",
+  "generation": "202608301624",
+  "version": "v9.5",
+  "status": "REQUESTED",
+  "goal": "REPD-first search plus fly-to for any address, town, postcode or global place",
+  "source_pattern": "Ventusltd/globalgrid2050/solar-bess-topology-v7/gis-sld-financial-sandbox/gis-sld-v5-ui.js",
+  "cvaa_repository": "Ventusltd/cvaa",
+  "cvaa_commit": "daada0fe917e82c170b866a06c493c1e2b1c1ee3",
+  "acceptance": [
+    "SW1A 1AA remains a postcodes.io LOCATION_ONLY result after character-by-character typing",
+    "Truro flies to the UK place",
+    "Beacon Fen REPD 13599 is first and sets repd_ref",
+    "direct repd_ref=13599 flies on load",
+    "Oxford, England, UK flies",
+    "Delhi flies through Nominatim",
+    "no full application copy",
+    "history scanner completes within 30 seconds"
+  ]
+}
