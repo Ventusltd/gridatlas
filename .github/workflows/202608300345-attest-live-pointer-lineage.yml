@@ -1,0 +1,150 @@
+name: 202608300345 Attest current Atlas live-pointer lineage
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/202608300345-attest-live-pointer-lineage.yml'
+  workflow_dispatch:
+  schedule:
+    - cron: '2 * * * *'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: gridatlas-live-pointer-lineage-attestation
+  cancel-in-progress: false
+
+jobs:
+  attest:
+    name: Derive source, publication and promotion commits from governed evidence
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - name: Checkout exact source boundary
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 100
+          persist-credentials: true
+
+      - name: Validate promoted pointer and derive lineage
+        id: lineage
+        run: |
+          set -euo pipefail
+          test "$GITHUB_REF" = refs/heads/main
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          git fetch --no-tags origin main:refs/remotes/origin/main
+          test "$(git rev-parse origin/main)" = "$GITHUB_SHA"
+          test -f state/live-set.json
+          test -f releases/current-v5.json
+          cmp state/live-set.json releases/current-v5.json
+
+          release_id="$(jq -r '.current.release_id // empty' state/live-set.json)"
+          generation="$(jq -r '.generation // empty' state/live-set.json)"
+          live_url="$(jq -r '.current.live_url // empty' state/live-set.json)"
+          test "$(jq -r '.classification' state/live-set.json)" = VERIFIED_LIVE_V8_MIRROR_RENDER_READY_ATLAS_V9
+          test "$(jq -r '.verification.promotion_eligible' state/live-set.json)" = true
+          test "$(jq -r '.verification.failed_gates' state/live-set.json)" = 0
+          [[ "$release_id" =~ ^[0-9]{12}-atlas-v9$ ]]
+          [[ "$generation" =~ ^[0-9]{12}$ ]]
+          test "$release_id" = "${generation}-atlas-v9"
+          test "$live_url" = "https://ventusltd.github.io/gridatlas/$release_id/"
+          test -f "$release_id/release-manifest.json"
+          test -f "$release_id/build-manifest.json"
+          test -f "$release_id/sha256sums.txt"
+          (
+            cd "$release_id"
+            sha256sum --check sha256sums.txt
+          )
+
+          source_commit="$(jq -r '.source_commit // empty' "$release_id/release-manifest.json")"
+          [[ "$source_commit" =~ ^[a-f0-9]{40}$ ]]
+          test "$(jq -r '.release_id' "$release_id/release-manifest.json")" = "$release_id"
+
+          publication_commit="$(git log --diff-filter=A --format=%H -- "$release_id/release-manifest.json" | tail -n 1)"
+          promotion_commit="$(git log -1 --format=%H -- state/live-set.json)"
+          [[ "$publication_commit" =~ ^[a-f0-9]{40}$ ]]
+          [[ "$promotion_commit" =~ ^[a-f0-9]{40}$ ]]
+          test "$publication_commit" != "$promotion_commit"
+          test "$(git merge-base --is-ancestor "$source_commit" "$publication_commit"; echo $?)" = 0
+          test "$(git merge-base --is-ancestor "$publication_commit" "$promotion_commit"; echo $?)" = 0
+
+          git show "$publication_commit:$release_id/release-manifest.json" >/tmp/publication-release-manifest.json
+          test "$(jq -r '.release_id' /tmp/publication-release-manifest.json)" = "$release_id"
+          test "$(jq -r '.source_commit' /tmp/publication-release-manifest.json)" = "$source_commit"
+          git show "$promotion_commit:state/live-set.json" >/tmp/promotion-live-set.json
+          test "$(jq -r '.current.release_id' /tmp/promotion-live-set.json)" = "$release_id"
+          test "$(jq -r '.verification.failed_gates' /tmp/promotion-live-set.json)" = 0
+
+          echo "release_id=$release_id" >> "$GITHUB_OUTPUT"
+          echo "source_commit=$source_commit" >> "$GITHUB_OUTPUT"
+          echo "publication_commit=$publication_commit" >> "$GITHUB_OUTPUT"
+          echo "promotion_commit=$promotion_commit" >> "$GITHUB_OUTPUT"
+
+      - name: Build mirrored attested pointer
+        env:
+          RELEASE_ID: ${{ steps.lineage.outputs.release_id }}
+          SOURCE_COMMIT: ${{ steps.lineage.outputs.source_commit }}
+          PUBLICATION_COMMIT: ${{ steps.lineage.outputs.publication_commit }}
+          PROMOTION_COMMIT: ${{ steps.lineage.outputs.promotion_commit }}
+        run: |
+          set -euo pipefail
+          candidate_pages_run_id="$(jq -r '.verification.candidate_pages_run_id' state/live-set.json)"
+          jq \
+            --arg source "$SOURCE_COMMIT" \
+            --arg publication "$PUBLICATION_COMMIT" \
+            --arg promotion "$PROMOTION_COMMIT" \
+            --argjson pages "$candidate_pages_run_id" \
+            '.current.source_commit = $source
+             | .current.publication_commit = $publication
+             | .current.promotion_commit = $promotion
+             | .current.candidate_pages_run_id = $pages
+             | .verification.commit_lineage_attested = true
+             | .verification.commit_lineage_rule = "SOURCE_ANCESTOR_OF_PUBLICATION_ANCESTOR_OF_PROMOTION"
+             | .verification.commit_lineage = {
+                 source_commit: $source,
+                 publication_commit: $publication,
+                 promotion_commit: $promotion
+               }' \
+            state/live-set.json > /tmp/live-set.json
+          mv /tmp/live-set.json state/live-set.json
+          cp state/live-set.json releases/current-v5.json
+          cmp state/live-set.json releases/current-v5.json
+          test "$(jq -r '.current.release_id' state/live-set.json)" = "$RELEASE_ID"
+          test "$(jq -r '.current.source_commit' state/live-set.json)" = "$SOURCE_COMMIT"
+          test "$(jq -r '.current.publication_commit' state/live-set.json)" = "$PUBLICATION_COMMIT"
+          test "$(jq -r '.current.promotion_commit' state/live-set.json)" = "$PROMOTION_COMMIT"
+          test "$(jq -r '.verification.commit_lineage_attested' state/live-set.json)" = true
+          python3 -m json.tool state/live-set.json >/dev/null
+          git diff --check
+
+      - name: Compare-and-swap attestation onto main
+        env:
+          RELEASE_ID: ${{ steps.lineage.outputs.release_id }}
+        run: |
+          set -euo pipefail
+          if git diff --quiet -- state/live-set.json releases/current-v5.json; then
+            echo "Atlas pointer lineage already attested for $RELEASE_ID" >> "$GITHUB_STEP_SUMMARY"
+            exit 0
+          fi
+          git fetch --no-tags origin main:refs/remotes/origin/main
+          test "$(git rev-parse origin/main)" = "$GITHUB_SHA"
+          git add state/live-set.json releases/current-v5.json
+          mapfile -t staged < <(git diff --cached --name-only | sort)
+          expected=(releases/current-v5.json state/live-set.json)
+          test "${staged[*]}" = "${expected[*]}"
+          git config user.name gridatlas-lineage-attestation-bot
+          git config user.email actions@users.noreply.github.com
+          git commit -m "attest: $RELEASE_ID source publication promotion lineage"
+          git push origin HEAD:main
+          {
+            echo '## Atlas live-pointer lineage attested'
+            echo
+            echo "- Release: $RELEASE_ID"
+            echo "- Source: ${{ steps.lineage.outputs.source_commit }}"
+            echo "- Publication: ${{ steps.lineage.outputs.publication_commit }}"
+            echo "- Promotion: ${{ steps.lineage.outputs.promotion_commit }}"
+            echo '- Cadence: hourly at minute 02.'
+          } >> "$GITHUB_STEP_SUMMARY"
