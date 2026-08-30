@@ -1,58 +1,69 @@
 {
   "classification": "VERIFIED_LIVE_V8_MIRROR_RENDER_READY_ATLAS_V9",
   "current": {
-    "live_url": "https://ventusltd.github.io/gridatlas/202608292311-atlas-v9/",
-    "manifests": {
-      "build_sha256": "4ddd736c3bb705402a4064027e9bd7881de2de503408652a2411980b69b1209d",
-      "map_ready_sha256": "a79344a58cf5f0f7355134d3efdff36bb11d491ceef7bfce34787a2da44a6ed3",
-      "release_sha256": "82de73f303d4fc4f08eac1a14c43f0cdbddeb8cf5fbcd36e0e3b6710bd50c1b2",
-      "sha256sums_sha256": "b18f4133c18e6aa355fb3a19af196887a9cddab9a116b844ade08300fab610d1"
+    "candidate_pages_run_id": 33291723177,
+    "deep_link_receiver": {
+      "automatic_fly_to": true,
+      "automatic_search": true,
+      "golden_project_name": "Beacon Fen Energy Park",
+      "golden_repd_ref": "13599",
+      "identity_parameter": "repd_ref",
+      "identity_rule": "EXACT_REPD_REF_ONLY",
+      "route_interceptions": 0,
+      "schema": "gridatlas.exact-repd-deep-link-receiver.v1",
+      "synthetic_receiver": false
     },
-    "parent_release_id": "202608292126-atlas-v9",
-    "release_id": "202608292311-atlas-v9",
-    "route": "/gridatlas/202608292311-atlas-v9/",
+    "live_url": "https://ventusltd.github.io/gridatlas/202608300453-atlas-v9/",
+    "manifests": {
+      "build_sha256": "9b477f88db87a37320a2840b568a1809c7867f1059603c950d54d25563611434",
+      "deep_link_sha256": "1c339136dfd8a8c4abfcd4b27072cd4722262ca03720603acd6480b2d02abb69",
+      "map_ready_sha256": "a6440c134dd1abf4b0506300017297791fef011abd155f1e952792f572141388",
+      "release_sha256": "da5d8ca43515575d545c7885e8dfd022933f7c3f5745a153bb10edff2fbae19a",
+      "sha256sums_sha256": "bac28b4271399a95806b83884bf702c1d68c2780176939e27c694aea7be24602"
+    },
+    "parent_release_id": "202608292311-atlas-v9",
+    "publication_commit": "bf16a713b9e5d926822efe80c681c017cc4edcee",
+    "release_id": "202608300453-atlas-v9",
+    "route": "/gridatlas/202608300453-atlas-v9/",
     "runtime": {
       "cache_identity": "CONTENT_ADDRESSED_STABLE_URL",
       "critical_sha256": "5f5fbec83f9ce307b47ddc6e7277743f0bba1a2445b0f3ca50a9a1806146e993",
       "delivery": "MAPLIBRE_WORKER_DIRECT_URL",
       "shared_cartridge_path": "cartridges/5f5fbec83f9ce307b47ddc6e7277743f0bba1a2445b0f3ca50a9a1806146e993/grid_400kv.geojson"
     },
-    "source_commit": "150c4ad7b04686182c27c47ee581960396378dec",
-    "publication_commit": "0597f4654a675e575690a6eab43f3c17707ef613",
-    "promotion_commit": "eecfeacdb5d7acb134591614285a90db385e5b59",
-    "candidate_pages_run_id": 33287946181
+    "source_commit": "4f3e8fc5c7ea28edf83dbac9b231024723bcf231"
   },
-  "generation": "202608292311",
+  "generation": "202608300453",
   "predecessor": {
-    "live_url": "https://ventusltd.github.io/gridatlas/202608292126-atlas-v9/",
-    "release_id": "202608292126-atlas-v9",
-    "route": "/gridatlas/202608292126-atlas-v9/"
+    "live_url": "https://ventusltd.github.io/gridatlas/202608292311-atlas-v9/",
+    "release_id": "202608292311-atlas-v9",
+    "route": "/gridatlas/202608292311-atlas-v9/"
   },
   "rollback": {
-    "release_id": "202608292126-atlas-v9",
-    "route": "/gridatlas/202608292126-atlas-v9/"
+    "release_id": "202608292311-atlas-v9",
+    "route": "/gridatlas/202608292311-atlas-v9/"
   },
   "schema": "gridatlas.live-set.v5",
   "verification": {
-    "candidate_pages_run_id": 33287946181,
+    "candidate_pages_run_id": 33291723177,
+    "commit_lineage_attested": false,
     "desktop_surface_geometry_style_identical": true,
+    "exact_repd_deep_link_resolved": true,
+    "exact_repd_fly_to": true,
     "failed_gates": 0,
     "local_classification": "VERIFIED_LOCAL_RENDER_READY_400KV",
-    "local_proof_sha256": "b00c6f6e7f05ea09bc2fb239aa7156bfdcb9f3887e68a2c6990ae68ed028ee21",
-    "machine_learning_record_sha256": "75d73436b0231bd13f792780387bec8bb61784137db1d4cbb452ffcf7eba5d96",
+    "local_deep_link_classification": "VERIFIED_LOCAL_ATLAS_EXACT_REPD_DEEP_LINK",
+    "local_deep_link_proof_sha256": "08dffb24f96698841a7b0e1eef43b4700cefecf80153cd1e3eb038f38784802e",
+    "local_proof_sha256": "2b0b1e40f396f226fdad067cfc12fb5f02280b384d3480a4a531c7e85d72eb38",
+    "machine_learning_record_sha256": "dc9884ded303f4d18e4e223ccafe96ca3c69d45af58d2caa67668f206809db1b",
     "machine_learning_records": 2,
     "promotion_eligible": true,
     "public_classification": "VERIFIED_PUBLIC_RENDER_READY_400KV",
-    "public_proof_sha256": "c1479f0a9284e0b2920c9252a8b688a33e204d2461507e0f864ffe226f04f416",
+    "public_deep_link_classification": "VERIFIED_PUBLIC_ATLAS_EXACT_REPD_DEEP_LINK",
+    "public_deep_link_proof_sha256": "559903a226c7c92f446fbbbe1d2311e7770c0491894740884fe0b4e43dced3b1",
+    "public_proof_sha256": "a5af3b3564c7ec852ac62bde0e1bceb6baa916618b2f5cc25ad27689e394493b",
     "v8_css_byte_identical": true,
     "v8_html_surface_preserved": true,
-    "verified_at": "2026-08-30T02:27:14.807770Z",
-    "commit_lineage_attested": true,
-    "commit_lineage_rule": "SOURCE_ANCESTOR_OF_PUBLICATION_ANCESTOR_OF_PROMOTION",
-    "commit_lineage": {
-      "source_commit": "150c4ad7b04686182c27c47ee581960396378dec",
-      "publication_commit": "0597f4654a675e575690a6eab43f3c17707ef613",
-      "promotion_commit": "eecfeacdb5d7acb134591614285a90db385e5b59"
-    }
+    "verified_at": "2026-08-30T04:07:46.491263Z"
   }
 }
