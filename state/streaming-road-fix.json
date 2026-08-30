@@ -8,6 +8,8 @@
   "data_fidelity_commit": "b335aca6c9c6b028b358c419410e4cf5b2035c2e",
   "fidelity_workflow": ".github/workflows/202608301931-layer-fidelity.yml",
   "cvaa_commit": "d2ebc01f6eab41f2a84b0c53c4cfae0d2625ec5e",
+  "verification_revision": "composition-and-preserved-cartridge-generations-independent",
+  "preserved_search_generation": "202608301624",
   "budgets": {
     "layer_seconds": 15,
     "heap_mb": 400
@@ -21,6 +23,7 @@
     "immutable_shell_modified": false,
     "full_application_copies_created": 0,
     "search_cartridge_preserved": true,
+    "search_cartridge_generation_independent": true,
     "parquet_data_plane_preserved": true,
     "promotion_requires_local_and_public_chromium": true
   }
