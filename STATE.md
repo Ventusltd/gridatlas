@@ -1,7 +1,7 @@
 # GridAtlas durable state
 
-- Master: `active`
-- Active scope: `202608301524-06-close-and-harden-cicd-loop.md`
+- Master: `done`
+- Active scope: `none`
 - Composition: `202608301522 · 202608300453-atlas-v9 · uk-gazetteer-flyto`
 - Top-level full release copies: `0`
 - Immutable releases under atlas/releases: `8`
@@ -16,6 +16,6 @@
 | 3 | 202608301520 | done | 202608301520-03-apply-pipelinenews-lessons.md |
 | 4 | 202608301521 | done | 202608301521-04-add-uk-location-search-cartridge.md |
 | 5 | 202608301522 | done | 202608301522-05-compile-and-attest-cartridge-composition.md |
-| 6 | 202608301524 | active | 202608301524-06-close-and-harden-cicd-loop.md |
+| 6 | 202608301524 | done | 202608301524-06-close-and-harden-cicd-loop.md |
 
 This file is generated deterministically by `node tools/scope/loop.mjs state`.

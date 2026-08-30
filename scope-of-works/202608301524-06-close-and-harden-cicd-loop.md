@@ -1,7 +1,7 @@
 ---
 schema: "gridatlas.scope-of-works.v1"
 generation: "202608301524"
-status: "active"
+status: "done"
 scope: 6
 parent: "202608301522-05-compile-and-attest-cartridge-composition.md"
 next: null
