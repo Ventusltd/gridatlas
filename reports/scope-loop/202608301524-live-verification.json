@@ -1,0 +1,599 @@
+{
+  "schema": "gridatlas.live-cartridge-verification.v1",
+  "base_url": "https://ventusltd.github.io/gridatlas/",
+  "status": "FAIL",
+  "deployed_current": {
+    "schema": "gridatlas.current.v2",
+    "generation": "202608301522",
+    "previous_generation": "202608301521",
+    "architecture": "IMMUTABLE_SHELL_PLUS_HASHED_CARTRIDGES",
+    "live_route": "/gridatlas/atlas/",
+    "release_id": "202608300453-atlas-v9",
+    "release_route": "/gridatlas/atlas/releases/202608300453-atlas-v9/",
+    "shell": {
+      "release_id": "202608300453-atlas-v9",
+      "index": "./releases/202608300453-atlas-v9/index.html",
+      "base": "./releases/202608300453-atlas-v9/"
+    },
+    "cartridge_order": [
+      "uk-gazetteer-flyto"
+    ],
+    "cartridges": [
+      {
+        "id": "uk-gazetteer-flyto",
+        "generation": "202608301136",
+        "type": "script",
+        "slot": "replace-script",
+        "replace_script": "202608291818-place-postcode-search.js",
+        "path": "./cartridges/202608301136-place-postcode-search.js",
+        "sha256": "7f8e91c5ed54152f5ae4cd999ec501caed8d6625fdf0df20cc418805dec3e1fa",
+        "contract": "../ui/cartridges/202608301136-uk-gazetteer-flyto.mjs",
+        "result_class": "LOCATION_ONLY",
+        "sets_deep_link": false
+      }
+    ],
+    "last_known_green": {
+      "release_id": "202608300453-atlas-v9",
+      "route": "/gridatlas/atlas/releases/202608300453-atlas-v9/"
+    },
+    "contracts": {
+      "new_full_application_folders": 0,
+      "cartridge_sha256_required": true,
+      "cartridge_order_explicit": true,
+      "shell_mutation_forbidden": true
+    },
+    "provenance": {
+      "pipelinenews_repository": "https://github.com/Ventusltd/pipelinenews",
+      "pipelinenews_tree": "83d9c430b283f8beaa8c0a05e42b14d4a4784623",
+      "cvaa_guide": "https://github.com/Ventusltd/cvaa/blob/main/202608301321-gridatlas-amnesia-vaccine.txt"
+    },
+    "search_lanes": {
+      "repd": {
+        "external_requests": 0,
+        "identity_claims": "EXACT_REPD_REF_ONLY",
+        "first": true
+      },
+      "uk_gazetteer": {
+        "provider": "postcodes.io",
+        "endpoints": [
+          "postcodes",
+          "outcodes",
+          "places"
+        ],
+        "identity_claims": "none",
+        "external_requests_per_query_max": 2,
+        "result_class": "LOCATION_ONLY"
+      }
+    },
+    "composition_manifest": "./manifests/202608301522-composition.json",
+    "scope_closure": {
+      "generation": "202608301524",
+      "status": "DONE",
+      "scopes": 6,
+      "schedule_retired": true
+    }
+  },
+  "tests": [
+    {
+      "name": "exact REPD deep link remains automatic",
+      "status": "PASS",
+      "state": {
+        "schema": "gridatlas.v9-place-postcode-search.v2",
+        "generation": "202608301136",
+        "geocoder": "https://api.postcodes.io",
+        "geocoder_requests": 0,
+        "geocoder_failures": [],
+        "last_location_selection": null,
+        "parquet_url": "https://ventusltd.github.io/gridatlas/data/repd_projects_202608290716.parquet",
+        "parquet_sha256": "174040c37f3d63742d6fdd7af722a8cfdf3fb53de3ff85ff1142d22fdac4866b",
+        "ready": true,
+        "map_captured": true,
+        "query_count": 1,
+        "last_query": "13599",
+        "last_results": [
+          {
+            "repd_ref": "13599",
+            "name": "Beacon Fen Energy Park",
+            "address": "E/O Sleaford, Btw Heckington & Helpringham, Sleaford",
+            "postcode": "NG34 7SR",
+            "county": "Lincolnshire",
+            "planning_authority": "The Planning Inspectorate - National Infrastructure",
+            "technology": "solar",
+            "status": "application submitted",
+            "capacity_mw": 400,
+            "longitude": -0.409234,
+            "latitude": 52.998999,
+            "score": 9000
+          }
+        ],
+        "last_selection": {
+          "repd_ref": "13599",
+          "name": "Beacon Fen Energy Park",
+          "postcode": "NG34 7SR",
+          "mapped": true,
+          "longitude": -0.409234,
+          "latitude": 52.998999
+        },
+        "failures": [],
+        "deep_link": {
+          "status": "RESOLVED",
+          "repd_ref": "13599",
+          "resolved": true,
+          "mapped": true,
+          "name": "Beacon Fen Energy Park",
+          "postcode": "NG34 7SR",
+          "longitude": -0.409234,
+          "latitude": 52.998999
+        }
+      },
+      "url": "https://ventusltd.github.io/gridatlas/atlas/?repd_ref=13599"
+    },
+    {
+      "name": "SW1A 1AA flies to a LOCATION_ONLY postcode",
+      "status": "PASS",
+      "state": {
+        "schema": "gridatlas.v9-place-postcode-search.v2",
+        "generation": "202608301136",
+        "geocoder": "https://api.postcodes.io",
+        "geocoder_requests": 2,
+        "geocoder_failures": [],
+        "last_location_selection": {
+          "kind": "postcode",
+          "label": "SW1A 1AA",
+          "sublabel": "Westminster · London",
+          "longitude": -0.141563,
+          "latitude": 51.50101,
+          "mapped": true
+        },
+        "parquet_url": "https://ventusltd.github.io/gridatlas/data/repd_projects_202608290716.parquet",
+        "parquet_sha256": "174040c37f3d63742d6fdd7af722a8cfdf3fb53de3ff85ff1142d22fdac4866b",
+        "ready": true,
+        "map_captured": true,
+        "query_count": 2,
+        "last_query": "SW1A 1AA",
+        "last_results": [],
+        "last_selection": {
+          "repd_ref": "13599",
+          "name": "Beacon Fen Energy Park",
+          "postcode": "NG34 7SR",
+          "mapped": true,
+          "longitude": -0.409234,
+          "latitude": 52.998999
+        },
+        "failures": [],
+        "deep_link": {
+          "status": "RESOLVED",
+          "repd_ref": "13599",
+          "resolved": true,
+          "mapped": true,
+          "name": "Beacon Fen Energy Park",
+          "postcode": "NG34 7SR",
+          "longitude": -0.409234,
+          "latitude": 52.998999
+        }
+      },
+      "url": "https://ventusltd.github.io/gridatlas/atlas/"
+    },
+    {
+      "name": "Truro town result flies to a LOCATION_ONLY place",
+      "status": "PASS",
+      "state": {
+        "schema": "gridatlas.v9-place-postcode-search.v2",
+        "generation": "202608301136",
+        "geocoder": "https://api.postcodes.io",
+        "geocoder_requests": 4,
+        "geocoder_failures": [],
+        "last_location_selection": {
+          "kind": "place",
+          "label": "Truro",
+          "sublabel": "City · Cornwall · South West",
+          "longitude": -5.051012659505978,
+          "latitude": 50.263330053427545,
+          "mapped": true
+        },
+        "parquet_url": "https://ventusltd.github.io/gridatlas/data/repd_projects_202608290716.parquet",
+        "parquet_sha256": "174040c37f3d63742d6fdd7af722a8cfdf3fb53de3ff85ff1142d22fdac4866b",
+        "ready": true,
+        "map_captured": true,
+        "query_count": 4,
+        "last_query": "Truro",
+        "last_results": [
+          {
+            "repd_ref": "3976",
+            "name": "Carland Cross Wind Farm Repowering",
+            "address": "Carland Cross, Mitchell, Truro",
+            "postcode": "",
+            "county": "Cornwall",
+            "planning_authority": "Cornwall",
+            "technology": "wind_onshore",
+            "status": "operational",
+            "capacity_mw": 20,
+            "longitude": -5.030587,
+            "latitude": 50.35088,
+            "score": 200
+          },
+          {
+            "repd_ref": "2008",
+            "name": "Penare Farm Solar Farm",
+            "address": "Penare Farm St Allen Truro Cornwall",
+            "postcode": "TR4 9DG",
+            "county": "Cornwall",
+            "planning_authority": "Cornwall",
+            "technology": "solar",
+            "status": "operational",
+            "capacity_mw": 11,
+            "longitude": -5.075493,
+            "latitude": 50.303687,
+            "score": 200
+          },
+          {
+            "repd_ref": "3077",
+            "name": "Carn Vean",
+            "address": "Carn Vean, Tretheague Mill, Stithians, Truro, Cornwall",
+            "postcode": "TR3 7BY",
+            "county": "Cornwall",
+            "planning_authority": "Cornwall",
+            "technology": "wind_onshore",
+            "status": "operational",
+            "capacity_mw": 10,
+            "longitude": -5.187462,
+            "latitude": 50.179906,
+            "score": 200
+          },
+          {
+            "repd_ref": "2009",
+            "name": "Pencoose Farm",
+            "address": "W F Gluyas & Son, Pencoose Farm, Stithians, Truro, Cornwall",
+            "postcode": "TR3 7DN",
+            "county": "Cornwall",
+            "planning_authority": "Cornwall",
+            "technology": "solar",
+            "status": "operational",
+            "capacity_mw": 8.5,
+            "longitude": -5.16911,
+            "latitude": 50.198734,
+            "score": 200
+          },
+          {
+            "repd_ref": "1754",
+            "name": "Nanteague Farm",
+            "address": "Nanteague Farm, Marazanvose, Truro, Cornwall",
+            "postcode": "TR4 9DH",
+            "county": "Cornwall",
+            "planning_authority": "Cornwall",
+            "technology": "solar",
+            "status": "operational",
+            "capacity_mw": 7.7,
+            "longitude": -5.095052,
+            "latitude": 50.30619,
+            "score": 200
+          },
+          {
+            "repd_ref": "1595",
+            "name": "Four Burrows Solar farm",
+            "address": "Little Lambriggan Penhallow Truro Cornwall",
+            "postcode": "TR4 9NG",
+            "county": "Cornwall",
+            "planning_authority": "Cornwall",
+            "technology": "solar",
+            "status": "operational",
+            "capacity_mw": 7.2,
+            "longitude": -5.141365,
+            "latitude": 50.303885,
+            "score": 200
+          },
+          {
+            "repd_ref": "1642",
+            "name": "Carnemough Farm Solar Park",
+            "address": "Land At Carnemough Farm Grampound Road Truro Cornwall",
+            "postcode": "TR2 4EL",
+            "county": "Cornwall",
+            "planning_authority": "Cornwall",
+            "technology": "solar",
+            "status": "operational",
+            "capacity_mw": 7,
+            "longitude": -4.929172,
+            "latitude": 50.331577,
+            "score": 200
+          },
+          {
+            "repd_ref": "1897",
+            "name": "Garvinack Farm Solar Park",
+            "address": "Land at Garvinack Farm, Truro, Cornwall",
+            "postcode": "TR4 9EP",
+            "county": "Cornwall",
+            "planning_authority": "Cornwall",
+            "technology": "solar",
+            "status": "operational",
+            "capacity_mw": 7,
+            "longitude": -5.120718,
+            "latitude": 50.289724,
+            "score": 200
+          },
+          {
+            "repd_ref": "1353",
+            "name": "Tregassow Farm - Solar Modules",
+            "address": "Tregassow Farm, St Erme, Truro, Cornwall",
+            "postcode": "TR4 9BL",
+            "county": "Cornwall",
+            "planning_authority": "Cornwall",
+            "technology": "solar",
+            "status": "operational",
+            "capacity_mw": 6,
+            "longitude": -5.015216,
+            "latitude": 50.306886,
+            "score": 200
+          },
+          {
+            "repd_ref": "1545",
+            "name": "Causilgey Solar Farm",
+            "address": "Causilgey Barton Tregavethan Truro Cornwall",
+            "postcode": "TR4 9EP",
+            "county": "Cornwall",
+            "planning_authority": "Cornwall",
+            "technology": "solar",
+            "status": "operational",
+            "capacity_mw": 5,
+            "longitude": -5.1209,
+            "latitude": 50.286292,
+            "score": 200
+          },
+          {
+            "repd_ref": "1548",
+            "name": "Hewas Solar Farm",
+            "address": "Land At Hewas Farm Ladock Truro Cornwall",
+            "postcode": "TR2 4EP",
+            "county": "Cornwall",
+            "planning_authority": "Cornwall",
+            "technology": "solar",
+            "status": "operational",
+            "capacity_mw": 5,
+            "longitude": -4.930325,
+            "latitude": 50.341407,
+            "score": 200
+          },
+          {
+            "repd_ref": "3578",
+            "name": "Four Burrows Wind Farm",
+            "address": "Blackwater, Truro, Cornwall",
+            "postcode": "",
+            "county": "Cornwall",
+            "planning_authority": "Cornwall",
+            "technology": "wind_onshore",
+            "status": "operational",
+            "capacity_mw": 4.5,
+            "longitude": -5.137361,
+            "latitude": 50.288943,
+            "score": 200
+          },
+          {
+            "repd_ref": "1028",
+            "name": "Chynoweth Farm",
+            "address": "Chynoweth Farm St Allen Truro Cornwall",
+            "postcode": "TR4 9DG",
+            "county": "Cornwall",
+            "planning_authority": "Cornwall",
+            "technology": "solar",
+            "status": "operational",
+            "capacity_mw": 2.9,
+            "longitude": -5.081529,
+            "latitude": 50.304498,
+            "score": 200
+          },
+          {
+            "repd_ref": "7588",
+            "name": "Land near Ventonteague",
+            "address": "Land Off Ventonteague, St. Allen, Truro,",
+            "postcode": "TR4 9QX",
+            "county": "Cornwall",
+            "planning_authority": "Cornwall",
+            "technology": "wind_onshore",
+            "status": "operational",
+            "capacity_mw": 2.3,
+            "longitude": -5.055565,
+            "latitude": 50.320801,
+            "score": 200
+          },
+          {
+            "repd_ref": "1032",
+            "name": "Wheal Jane",
+            "address": "Baldhu, Truro, Cornwall",
+            "postcode": "TR3 6ED",
+            "county": "Cornwall",
+            "planning_authority": "Cornwall",
+            "technology": "solar",
+            "status": "operational",
+            "capacity_mw": 1.4,
+            "longitude": -5.122807,
+            "latitude": 50.237573,
+            "score": 200
+          },
+          {
+            "repd_ref": "9648",
+            "name": "Richard Lander School - Solar Photovoltaic Panels",
+            "address": "Richard Lander School, Higher Besore Road, Gloweth, Truro",
+            "postcode": "TR3 6LT",
+            "county": "Cornwall",
+            "planning_authority": "Cornwall",
+            "technology": "solar_roof",
+            "status": "awaiting construction",
+            "capacity_mw": 0.48,
+            "longitude": -5.102875,
+            "latitude": 50.259788,
+            "score": 200
+          },
+          {
+            "repd_ref": "19682",
+            "name": "J Sainsbury, Treyew Road - Solar panels",
+            "address": "J Sainsbury Plc, Treyew Road, Truro",
+            "postcode": "TR1 3XL",
+            "county": "Cornwall",
+            "planning_authority": "Cornwall",
+            "technology": "solar_roof",
+            "status": "awaiting construction",
+            "capacity_mw": 0.44,
+            "longitude": -5.06769,
+            "latitude": 50.261451,
+            "score": 200
+          },
+          {
+            "repd_ref": "16248",
+            "name": "Sir Ben Ainslie Sports Centre, Trennick Lane - Solar Panels",
+            "address": "Truro School, Trennick Lane, Truro",
+            "postcode": "TR1 1TH",
+            "county": "Cornwall",
+            "planning_authority": "Cornwall",
+            "technology": "solar_roof",
+            "status": "awaiting construction",
+            "capacity_mw": 0.24,
+            "longitude": -5.042741,
+            "latitude": 50.260812,
+            "score": 200
+          },
+          {
+            "repd_ref": "18883",
+            "name": "Great Roseveth Farm - Battery Energy Storage System",
+            "address": "Great Roseveth Farm, Sw/O Shortlanesend, Truro",
+            "postcode": "TR4 9ES",
+            "county": "Cornwall",
+            "planning_authority": "Cornwall",
+            "technology": "bess",
+            "status": "application submitted",
+            "capacity_mw": 0,
+            "longitude": -5.091098,
+            "latitude": 50.284858,
+            "score": 200
+          },
+          {
+            "repd_ref": "19529",
+            "name": "Pennans Farm, Grampound - Anaerobic Digestion Facility",
+            "address": "Nw/O Pennans Farm, Grampound, Truro",
+            "postcode": "TR2 4RQ",
+            "county": "Cornwall",
+            "planning_authority": "Cornwall",
+            "technology": "biomass",
+            "status": "application submitted",
+            "capacity_mw": 0,
+            "longitude": -4.873762,
+            "latitude": 50.305075,
+            "score": 200
+          },
+          {
+            "repd_ref": "9837",
+            "name": "Rosehill Farm - Geothermal Power Plant",
+            "address": "Nw/O Rosehill Farm, Penhallow, Truro",
+            "postcode": "TR4 9LU",
+            "county": "Cornwall",
+            "planning_authority": "Cornwall",
+            "technology": "geothermal",
+            "status": "awaiting construction",
+            "capacity_mw": 0,
+            "longitude": -5.141309,
+            "latitude": 50.318585,
+            "score": 200
+          }
+        ],
+        "last_selection": {
+          "repd_ref": "13599",
+          "name": "Beacon Fen Energy Park",
+          "postcode": "NG34 7SR",
+          "mapped": true,
+          "longitude": -0.409234,
+          "latitude": 52.998999
+        },
+        "failures": [],
+        "deep_link": {
+          "status": "RESOLVED",
+          "repd_ref": "13599",
+          "resolved": true,
+          "mapped": true,
+          "name": "Beacon Fen Energy Park",
+          "postcode": "NG34 7SR",
+          "longitude": -0.409234,
+          "latitude": 52.998999
+        }
+      },
+      "url": "https://ventusltd.github.io/gridatlas/atlas/"
+    },
+    {
+      "name": "known REPD project stays first and sets exact identity",
+      "status": "FAIL",
+      "state": {
+        "schema": "gridatlas.v9-place-postcode-search.v2",
+        "generation": "202608301136",
+        "geocoder": "https://api.postcodes.io",
+        "geocoder_requests": 5,
+        "geocoder_failures": [],
+        "last_location_selection": {
+          "kind": "place",
+          "label": "Truro",
+          "sublabel": "City · Cornwall · South West",
+          "longitude": -5.051012659505978,
+          "latitude": 50.263330053427545,
+          "mapped": true
+        },
+        "parquet_url": "https://ventusltd.github.io/gridatlas/data/repd_projects_202608290716.parquet",
+        "parquet_sha256": "174040c37f3d63742d6fdd7af722a8cfdf3fb53de3ff85ff1142d22fdac4866b",
+        "ready": true,
+        "map_captured": true,
+        "query_count": 5,
+        "last_query": "Beacon Fen Energy Park",
+        "last_results": [
+          {
+            "repd_ref": "13600",
+            "name": "Beacon Fen Energy Park",
+            "address": "E/O Sleaford, Btw Heckington & Helpringham, Sleaford",
+            "postcode": "NG34 7SR",
+            "county": "Lincolnshire",
+            "planning_authority": "The Planning Inspectorate - National Infrastructure",
+            "technology": "bess",
+            "status": "application submitted",
+            "capacity_mw": 600,
+            "longitude": -0.409234,
+            "latitude": 52.998999,
+            "score": 500
+          },
+          {
+            "repd_ref": "13599",
+            "name": "Beacon Fen Energy Park",
+            "address": "E/O Sleaford, Btw Heckington & Helpringham, Sleaford",
+            "postcode": "NG34 7SR",
+            "county": "Lincolnshire",
+            "planning_authority": "The Planning Inspectorate - National Infrastructure",
+            "technology": "solar",
+            "status": "application submitted",
+            "capacity_mw": 400,
+            "longitude": -0.409234,
+            "latitude": 52.998999,
+            "score": 500
+          }
+        ],
+        "last_selection": {
+          "repd_ref": "13599",
+          "name": "Beacon Fen Energy Park",
+          "postcode": "NG34 7SR",
+          "mapped": true,
+          "longitude": -0.409234,
+          "latitude": 52.998999
+        },
+        "failures": [],
+        "deep_link": {
+          "status": "RESOLVED",
+          "repd_ref": "13599",
+          "resolved": true,
+          "mapped": true,
+          "name": "Beacon Fen Energy Park",
+          "postcode": "NG34 7SR",
+          "longitude": -0.409234,
+          "latitude": 52.998999
+        }
+      },
+      "url": "https://ventusltd.github.io/gridatlas/atlas/",
+      "message": "REPD result was not first; first identity=13600"
+    }
+  ],
+  "browser_console_errors": [
+    "[V9 DEEP LINK FAILED] Error: canonical project technology is invalid\n    at focusCanonicalProjectDeepLink (https://ventusltd.github.io/gridatlas/atlas/releases/202608300453-atlas-v9/ventus-corev8engine.js:806:70)\n    at Ba.Map.<anonymous> (https://ventusltd.github.io/gridatlas/atlas/releases/202608300453-atlas-v9/ventus-corev8engine.js:1434:9)\n    at Ba.Map.fire (https://cdn.jsdelivr.net/npm/maplibre-gl@3.6.2/dist/maplibre-gl.js:31:10251)\n    at Ba.Map._render (https://cdn.jsdelivr.net/npm/maplibre-gl@3.6.2/dist/maplibre-gl.js:35:376162)\n    at https://cdn.jsdelivr.net/npm/maplibre-gl@3.6.2/dist/maplibre-gl.js:35:377759"
+  ],
+  "failure": "Error: REPD result was not first; first identity=13600\n    at invariant (file:///home/runner/work/gridatlas/gridatlas/tools/scope/verify-live.mjs:19:25)\n    at file:///home/runner/work/gridatlas/gridatlas/tools/scope/verify-live.mjs:125:5\n    at async record (file:///home/runner/work/gridatlas/gridatlas/tools/scope/verify-live.mjs:54:5)\n    at async run (file:///home/runner/work/gridatlas/gridatlas/tools/scope/verify-live.mjs:118:3)\n    at async file:///home/runner/work/gridatlas/gridatlas/tools/scope/verify-live.mjs:157:3"
+}
