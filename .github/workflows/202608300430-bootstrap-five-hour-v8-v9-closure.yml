@@ -1,120 +1,13 @@
-name: 202608300430 Bootstrap five-hour Atlas V8 V9 closure
+name: 202608300430 Retired Atlas bootstrap wrapper
 
 on:
-  push:
-    branches: [main]
-    paths:
-      - '.github/workflows/202608300430-bootstrap-five-hour-v8-v9-closure.yml'
   workflow_dispatch:
 
 permissions:
-  contents: write
-
-concurrency:
-  group: gridatlas-five-hour-closure-bootstrap
-  cancel-in-progress: false
+  contents: read
 
 jobs:
-  bootstrap:
-    name: Extend strict actual-render comparator to a bounded five-hour mission
+  retired:
     runs-on: ubuntu-24.04
-    timeout-minutes: 5
     steps:
-      - name: Checkout exact GridAtlas source boundary
-        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
-        with:
-          ref: ${{ github.sha }}
-          fetch-depth: 120
-          persist-credentials: true
-
-      - name: Build five-hour comparator conductor and retire old timer
-        run: |
-          set -euo pipefail
-          python3 - <<'PY'
-          from pathlib import Path
-
-          old = Path('.github/workflows/202608300327-three-hour-v8-v9-watchdog.yml')
-          new = Path('.github/workflows/202608300430-five-hour-v8-v9-watchdog.yml')
-          text = old.read_text(encoding='utf-8')
-          replacements = [
-              ('name: 202608300327 Three-hour V8 V9 comparator watchdog', 'name: 202608300430 Five-hour V8 V9 comparator watchdog'),
-              ("      - '.github/workflows/202608300327-three-hour-v8-v9-watchdog.yml'", "      - '.github/workflows/202608300430-five-hour-v8-v9-watchdog.yml'"),
-              ("    - cron: '15 3-5 30 8 *'", "    - cron: '5 4-8 30 8 *'"),
-              ('group: gridatlas-three-hour-v8-v9-watchdog', 'group: gridatlas-five-hour-v8-v9-watchdog'),
-              ("MISSION_INCEPTED_AT: '2026-08-30T02:27:00Z'", "MISSION_INCEPTED_AT: '2026-08-30T03:30:00Z'"),
-              ("MISSION_EXPIRES_AT: '2026-08-30T05:28:00Z'", "MISSION_EXPIRES_AT: '2026-08-30T08:35:00Z'"),
-              ('bounded three-hour mission window', 'bounded five-hour mission window'),
-              ('three-hour mission', 'five-hour mission'),
-          ]
-          for before, after in replacements:
-              count = text.count(before)
-              if count < 1:
-                  raise SystemExit(f'missing Atlas bootstrap anchor: {before}')
-              text = text.replace(before, after)
-
-          expression = lambda name: '$' + '{{ ' + name + ' }}'
-          evidence_lines = [
-              '',
-              '      - name: Retain five-hour comparator evidence',
-              "        if: always() && steps.window.outputs.active == 'true'",
-              '        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a',
-              '        with:',
-              '          name: gridatlas-five-hour-v8-v9-' + expression('github.run_number') + '-' + expression('github.sha'),
-              '          path: |',
-              '            work/hourly-public-render-ready-proof.json',
-              '            work/hourly-public-render-ready-record.jsonl',
-              '            work/hourly-public-render-ready-attempt-history.json',
-              '            work/hourly-public-render-ready-attempt-*.json',
-              '            work/hourly-public-render-ready-record-attempt-*.jsonl',
-              '            work/live-set.json',
-              '            work/release-manifest.json',
-              '          if-no-files-found: warn',
-              '          retention-days: 90',
-              '          compression-level: 0',
-          ]
-          if 'Retain five-hour comparator evidence' not in text:
-              text = text.rstrip() + '\n'.join(evidence_lines)
-          new.write_text(text.rstrip() + '\n', encoding='utf-8', newline='\n')
-
-          retired_lines = [
-              'name: 202608300327 Retired three-hour V8 V9 watchdog',
-              '',
-              'on:',
-              '  workflow_dispatch:',
-              '',
-              'permissions:',
-              '  contents: read',
-              '',
-              'jobs:',
-              '  retired:',
-              '    runs-on: ubuntu-24.04',
-              '    steps:',
-              "      - run: echo 'Retired in favour of 202608300430-five-hour-v8-v9-watchdog.yml'",
-              '',
-          ]
-          old.write_text('\n'.join(retired_lines), encoding='utf-8', newline='\n')
-          PY
-          git diff --check
-          grep -q "cron: '5 4-8 30 8 \*'" .github/workflows/202608300430-five-hour-v8-v9-watchdog.yml
-          grep -q "MISSION_EXPIRES_AT: '2026-08-30T08:35:00Z'" .github/workflows/202608300430-five-hour-v8-v9-watchdog.yml
-          grep -q 'VERIFIED_PUBLIC_RENDER_READY_400KV' .github/workflows/202608300430-five-hour-v8-v9-watchdog.yml
-          grep -q 'Retain five-hour comparator evidence' .github/workflows/202608300430-five-hour-v8-v9-watchdog.yml
-
-      - name: Compare-and-swap five-hour conductor onto main
-        run: |
-          set -euo pipefail
-          git fetch --no-tags origin main:refs/remotes/origin/main
-          test "$(git rev-parse origin/main)" = "$GITHUB_SHA"
-          git add \
-            .github/workflows/202608300327-three-hour-v8-v9-watchdog.yml \
-            .github/workflows/202608300430-five-hour-v8-v9-watchdog.yml
-          mapfile -t staged < <(git diff --cached --name-only | sort)
-          expected=(
-            '.github/workflows/202608300327-three-hour-v8-v9-watchdog.yml'
-            '.github/workflows/202608300430-five-hour-v8-v9-watchdog.yml'
-          )
-          test "${staged[*]}" = "${expected[*]}"
-          git config user.name gridatlas-five-hour-mission-bot
-          git config user.email actions@users.noreply.github.com
-          git commit -m '202608300430: run strict V8 V9 closure for five hours'
-          git push origin HEAD:main
+      - run: echo 'Superseded by the direct five-hour strict V8 V9 comparator.'
