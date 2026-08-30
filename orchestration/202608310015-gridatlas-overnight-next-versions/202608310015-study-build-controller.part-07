@@ -1,0 +1,62 @@
+  });
+  if (ledger.observations.length > 200) ledger.observations = ledger.observations.slice(-200);
+
+  const alreadyBuilt = ledger.candidates.some(candidate => candidate.source_fingerprint === fingerprint);
+  let candidate = null;
+  if (study.timer.mature && !alreadyBuilt) {
+    candidate = await buildCandidate({
+      runStamp,
+      fingerprint,
+      inventory,
+      summary,
+      directives,
+      ledger,
+      baselineCurrent,
+      loaderHtml,
+      selected
+    });
+    ledger.candidates.push({
+      sequence: candidate.sequence,
+      candidate_id: candidate.candidateId,
+      candidate_version: candidate.version,
+      candidate_route: `/gridatlas/${candidate.relativeFolder}/`,
+      generation: candidate.generation,
+      built_at: now.toISOString(),
+      source_fingerprint: fingerprint,
+      visible_unique_words: summary.unique_words,
+      build_mode: candidate.buildMode,
+      manifest_path: candidate.candidateManifestPath,
+      test_status: 'PENDING'
+    });
+    ledger.next_candidate_sequence = candidate.sequence + 1;
+  }
+
+  await writeJson(ledgerPath, ledger);
+  appendOutput('candidate_created', candidate ? 'true' : 'false');
+  appendOutput('source_fingerprint', fingerprint);
+  appendOutput('visible_unique_words', summary.unique_words);
+  appendOutput('study_mature', study.timer.mature ? 'true' : 'false');
+  appendOutput('study_remaining_seconds', study.timer.remaining_seconds);
+  appendOutput('study_folder', study.relativeFolder);
+  if (candidate) {
+    appendOutput('candidate_dir', candidate.relativeFolder);
+    appendOutput('candidate_id', candidate.candidateId);
+    appendOutput('candidate_manifest', candidate.candidateManifestPath);
+    appendOutput('candidate_current', candidate.candidateCurrentPath);
+    appendOutput('candidate_generation', candidate.generation);
+    appendOutput('candidate_version', candidate.version);
+    appendOutput('search_generation', candidate.searchGeneration);
+    appendOutput('candidate_url_path', `/gridatlas/${candidate.relativeFolder}/`);
+  }
+
+  console.log(JSON.stringify({
+    status: candidate ? 'CANDIDATE_CREATED' : study.timer.mature ? 'NO_NEW_SOURCE_FINGERPRINT' : 'STUDYING',
+    generation: runStamp,
+    source_fingerprint: fingerprint,
+    visible_unique_words: summary.unique_words,
+    study: study.timer,
+    candidate
+  }, null, 2));
+}
+
+await main();
