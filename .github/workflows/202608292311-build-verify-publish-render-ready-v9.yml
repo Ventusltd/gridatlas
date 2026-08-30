@@ -106,7 +106,7 @@ jobs:
         run: |
           set -euo pipefail
           npm ci --ignore-scripts
-          npx playwright install --with-deps chromium
+          npx playwright install --with-deps chromium webkit
 
       - name: Compile deterministic render-ready successor from immutable parent
         run: |
