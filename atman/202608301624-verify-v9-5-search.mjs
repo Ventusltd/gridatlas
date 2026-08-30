@@ -3,11 +3,13 @@ import { chromium } from 'playwright';
 
 const base = String(process.env.GRIDATLAS_URL || 'http://127.0.0.1:4173/gridatlas/atlas/');
 const output = process.env.OUTPUT || 'work/202608301624-v9-5-search-proof.json';
-const expectedGeneration = process.env.EXPECTED_GENERATION || '202608301624';
+const expectedCompositionGeneration = process.env.EXPECTED_GENERATION || '202608301624';
+const expectedSearchGeneration = process.env.EXPECTED_SEARCH_GENERATION || '202608301624';
 
 const proof = {
-  schema: 'gridatlas.v9-5-global-search-proof.v1',
-  generation: expectedGeneration,
+  schema: 'gridatlas.v9-5-global-search-proof.v2',
+  composition_generation: expectedCompositionGeneration,
+  search_cartridge_generation: expectedSearchGeneration,
   url: base,
   status: 'RUNNING',
   tests: [],
@@ -20,11 +22,15 @@ function invariant(condition, message) {
 }
 
 async function waitReady(page) {
-  await page.waitForFunction(generation => {
+  await page.waitForFunction(expected => {
     const search = window.__GRIDATLAS_PLACE_SEARCH__;
     const atlas = window.__GRIDATLAS_ATLAS__;
-    return search?.ready === true && search?.generation === generation && atlas?.generation === generation && window.__GRIDATLAS_V9_MAP__;
-  }, expectedGeneration, { timeout: 120_000 });
+    return search?.ready === true &&
+      search?.generation === expected.search &&
+      atlas?.generation === expected.composition &&
+      atlas?.loaded_cartridges?.some(item => item.id === 'uk-gazetteer-flyto') &&
+      window.__GRIDATLAS_V9_MAP__;
+  }, { composition: expectedCompositionGeneration, search: expectedSearchGeneration }, { timeout: 120_000 });
 }
 
 async function record(name, action) {
@@ -65,6 +71,20 @@ page.on('console', message => {
 page.on('pageerror', error => proof.console_errors.push(String(error?.message || error)));
 
 try {
+  await record('composition retains the independently versioned search cartridge', async () => {
+    await cleanPage(page);
+    const state = await page.evaluate(() => ({
+      atlas: window.__GRIDATLAS_ATLAS__,
+      search_generation: window.__GRIDATLAS_PLACE_SEARCH__?.generation,
+      search_ready: window.__GRIDATLAS_PLACE_SEARCH__?.ready
+    }));
+    invariant(state.atlas.generation === expectedCompositionGeneration, 'composition generation mismatch');
+    invariant(state.search_generation === expectedSearchGeneration, 'search cartridge generation mismatch');
+    invariant(state.search_ready === true, 'search cartridge is not ready');
+    invariant(state.atlas.loaded_cartridges.some(item => item.id === 'uk-gazetteer-flyto'), 'search cartridge is not loaded');
+    return state;
+  });
+
   await record('direct REPD 13599 deep link flies to Beacon Fen', async () => {
     await page.goto(`${base}?repd_ref=13599`, { waitUntil: 'domcontentloaded', timeout: 120_000 });
     await waitReady(page);
@@ -85,7 +105,7 @@ try {
     await query(page, 'SW1A 1AA', { sequential: true });
     const postcode = page.locator('.search-result-item[data-location-kind="postcode"]').first();
     await postcode.waitFor({ state: 'visible', timeout: 60_000 });
-    await page.waitForTimeout(3000); // stale outcode responses must not overwrite the final postcode
+    await page.waitForTimeout(3000);
     invariant(await postcode.isVisible(), 'final postcode was overwritten by a stale response');
     const kinds = await page.locator('.search-result-item[data-location-kind]').evaluateAll(items => items.map(item => item.dataset.locationKind));
     invariant(kinds[0] === 'postcode', `final location was ${kinds[0] || 'missing'}, not postcode`);
@@ -157,6 +177,12 @@ try {
 } catch (error) {
   proof.status = 'FAIL';
   proof.failure = String(error?.stack || error);
+  proof.runtime_state = await page.evaluate(() => ({
+    atlas: window.__GRIDATLAS_ATLAS__ || null,
+    search: window.__GRIDATLAS_PLACE_SEARCH__ || null,
+    transport: window.__GRIDATLAS_MAP_READY__ || null,
+    ready_state: document.readyState
+  })).catch(() => null);
   process.exitCode = 1;
 } finally {
   await browser.close();
