@@ -1,0 +1,75 @@
+  function renderResults(repdResults, resultsEl, locationResults = []) {
+    resultsEl.innerHTML = '';
+    if (!repdResults.length && !locationResults.length) {
+      const empty = document.createElement('div');
+      empty.className = 'search-no-results';
+      empty.textContent = 'No REPD project, UK postcode or place match';
+      resultsEl.appendChild(empty);
+      resultsEl.style.display = 'block';
+      return;
+    }
+
+    for (const result of repdResults) {
+      const item = document.createElement('div');
+      item.className = 'search-result-item';
+      item.dataset.repdRef = result.repd_ref;
+      const location = [result.address, result.postcode, result.county].filter(Boolean).join(' · ');
+      const capacity = Number.isFinite(result.capacity_mw) ? `${result.capacity_mw.toLocaleString('en-GB')} MW` : '';
+      item.innerHTML = `<b>${escapeHtml(result.name)}</b><br><span>${escapeHtml(location)}</span>${capacity ? `<br><span style="color:#ffae00">${escapeHtml(capacity)}</span>` : ''}<span style="color:#555"> · REPD ${escapeHtml(result.repd_ref)}</span>`;
+      item.addEventListener('click', event => {
+        event.preventDefault();
+        event.stopPropagation();
+        resultsEl.style.display = 'none';
+        selectResult(result);
+      });
+      resultsEl.appendChild(item);
+    }
+
+    if (locationResults.length) {
+      const divider = document.createElement('div');
+      divider.className = 'search-no-results';
+      divider.textContent = 'UK location';
+      resultsEl.appendChild(divider);
+      for (const result of locationResults) {
+        const item = document.createElement('div');
+        item.className = 'search-result-item';
+        item.dataset.locationKind = result.kind;
+        item.innerHTML = `<b>${escapeHtml(result.label)}</b><br><span>${escapeHtml(result.sublabel)}</span><span style="color:#555"> · fly to only, not a REPD project</span>`;
+        item.addEventListener('click', event => {
+          event.preventDefault();
+          event.stopPropagation();
+          resultsEl.style.display = 'none';
+          selectLocation(result);
+        });
+        resultsEl.appendChild(item);
+      }
+    }
+    resultsEl.style.display = 'block';
+  }
+
+  async function executeSearch(input, resultsEl) {
+    const serial = ++activeQuerySerial;
+    const query = input.value.trim();
+    if (query.length < 2) {
+      resultsEl.innerHTML = '';
+      resultsEl.style.display = 'none';
+      return;
+    }
+    resultsEl.style.display = 'block';
+    resultsEl.innerHTML = '<div class="search-no-results">Searching REPD projects and UK postcodes / places…</div>';
+    try {
+      const [results, locations] = await Promise.all([
+        queryOfficialRepd(query, serial),
+        queryUkGazetteer(query)
+      ]);
+      if (serial !== activeQuerySerial) return;
+      renderResults(results, resultsEl, locations);
+    } catch (error) {
+      if (serial !== activeQuerySerial) return;
+      state.failures.push({ query, message: String(error?.message || error) });
+      resultsEl.innerHTML = '<div class="search-no-results">Search unavailable — V8 map remains usable</div>';
+      resultsEl.style.display = 'block';
+      console.error('[V9 PLACE SEARCH]', error);
+    }
+  }
+

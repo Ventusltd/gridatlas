@@ -1,0 +1,95 @@
+  // ---- 202608301136 UK gazetteer lane (LOCATION_ONLY, never claims REPD identity) ----
+  const FULL_POSTCODE = /^[A-Z]{1,2}[0-9][A-Z0-9]?[0-9][A-Z]{2}$/;
+  const OUTCODE = /^[A-Z]{1,2}[0-9][A-Z0-9]?$/;
+  let locationPopup = null;
+
+  async function geocoderGet(path, query) {
+    state.geocoder_requests += 1;
+    try {
+      const response = await fetch(`${GEOCODER_BASE}${path}`, { cache: 'default' });
+      if (response.status === 404) return null;
+      if (!response.ok) throw new Error(`postcodes.io ${response.status} for ${path}`);
+      const body = await response.json();
+      return body?.result ?? null;
+    } catch (error) {
+      state.geocoder_failures.push({
+        query: String(query ?? ''),
+        path,
+        message: String(error?.message || error)
+      });
+      throw error;
+    }
+  }
+
+  function joinParts(...parts) {
+    return parts.filter(Boolean).join(' · ');
+  }
+
+  async function queryUkGazetteer(query) {
+    const raw = String(query ?? '').trim();
+    if (raw.length < 2) return [];
+    const compact = normaliseCompact(raw);
+    const out = [];
+    try {
+      if (FULL_POSTCODE.test(compact)) {
+        const result = await geocoderGet(`/postcodes/${encodeURIComponent(compact)}`, raw);
+        if (result && Number.isFinite(result.longitude) && Number.isFinite(result.latitude)) {
+          out.push({
+            kind: 'postcode',
+            label: result.postcode,
+            sublabel: joinParts(result.admin_district, result.admin_county, result.region),
+            longitude: result.longitude,
+            latitude: result.latitude
+          });
+          return out;
+        }
+      } else if (OUTCODE.test(compact)) {
+        const result = await geocoderGet(`/outcodes/${encodeURIComponent(compact)}`, raw);
+        if (result && Number.isFinite(result.longitude) && Number.isFinite(result.latitude)) {
+          out.push({
+            kind: 'postcode_district',
+            label: result.outcode,
+            sublabel: joinParts(
+              Array.isArray(result.admin_district) ? result.admin_district.join(', ') : result.admin_district,
+              Array.isArray(result.region) ? result.region.join(', ') : result.region
+            ),
+            longitude: result.longitude,
+            latitude: result.latitude
+          });
+          return out;
+        }
+      }
+
+      const places = await geocoderGet(`/places?q=${encodeURIComponent(raw)}&limit=8`, raw);
+      for (const place of Array.isArray(places) ? places : []) {
+        if (!Number.isFinite(place.longitude) || !Number.isFinite(place.latitude)) continue;
+        out.push({
+          kind: 'place',
+          label: place.name_1,
+          sublabel: joinParts(place.local_type, place.county_unitary, place.region),
+          longitude: place.longitude,
+          latitude: place.latitude
+        });
+      }
+    } catch (error) {
+      console.warn('[V9 UK GAZETTEER]', error);
+    }
+    return out;
+  }
+
+  function selectLocation(result) {
+    const url = new URL(window.location.href);
+    url.searchParams.delete('repd_ref');
+    history.replaceState(history.state, '', url);
+    const map = window.__GRIDATLAS_V9_MAP__;
+    const canMap = hasSafeMapPoint(result) && map && typeof map.flyTo === 'function';
+    state.last_location_selection = { ...result, mapped: Boolean(canMap) };
+    if (!canMap) return;
+    const zoom = result.kind === 'postcode' ? 13 : result.kind === 'postcode_district' ? 11 : 12;
+    map.flyTo({ center: [result.longitude, result.latitude], zoom, duration: 1200, essential: true });
+    if (locationPopup) locationPopup.remove();
+    locationPopup = new window.maplibregl.Popup({ maxWidth: '300px' })
+      .setLngLat([result.longitude, result.latitude])
+      .setHTML(`<div style="font-family:monospace;background:#000;padding:6px"><b style="color:#00ffff;font-size:13px">${escapeHtml(result.label)}</b><br><span style="color:#aaa;font-size:10px">${escapeHtml(result.sublabel)}</span><br><span style="color:#555;font-size:9px">Location only · postcodes.io · no project identity claimed</span></div>`)
+      .addTo(map);
+  }
