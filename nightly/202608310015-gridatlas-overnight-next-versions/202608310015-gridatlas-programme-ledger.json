@@ -26,12 +26,43 @@
       "study_folder": "nightly/202608310015-gridatlas-overnight-next-versions/runs/202608310040-gridatlas-study-artifact-38973f80-run-33342440280",
       "timer_mature": false,
       "selected_composition": null
+    },
+    {
+      "generation": "202608310043",
+      "observed_at": "2026-08-30T23:43:33.108Z",
+      "source_fingerprint": "38973f807fef8673b9b91a43d44d73faec7fee4665b79f6c713312c124ea7ad1",
+      "main_sha": "1586d0394a148cc57fa0879e448ce53e5396d75c",
+      "refs": [
+        {
+          "ref": "origin/automation/202608310043-gridatlas-hard-scope-gate",
+          "sha": "f5c6ec14cb7d250d9af9105e4fbd635f9aa76381",
+          "committed_at": "2026-08-31T00:43:08+01:00"
+        },
+        {
+          "ref": "origin/main",
+          "sha": "1586d0394a148cc57fa0879e448ce53e5396d75c",
+          "committed_at": "2026-08-31T00:43:25+01:00"
+        }
+      ],
+      "visible_unique_words": 15213,
+      "study_folder": "nightly/202608310015-gridatlas-overnight-next-versions/runs/202608310043-gridatlas-study-artifact-38973f80-run-33342561875",
+      "timer_mature": false,
+      "selected_composition": null
     }
   ],
   "candidates": [],
-  "last_observed_at": "2026-08-30T23:40:36.640Z",
+  "last_observed_at": "2026-08-30T23:43:33.108Z",
   "last_source_fingerprint": "38973f807fef8673b9b91a43d44d73faec7fee4665b79f6c713312c124ea7ad1",
-  "last_main_sha": "fa9cf4770d430a1b63d435685df8c30142c9b1b5",
+  "last_main_sha": "1586d0394a148cc57fa0879e448ce53e5396d75c",
   "last_visible_unique_words": 15213,
-  "last_scope_word_status": "ADDITIONAL_ARTIFACTS_EXPECTED"
+  "last_scope_word_status": "ADDITIONAL_ARTIFACTS_EXPECTED",
+  "last_corpus_gate": {
+    "checked_at": "2026-08-30T23:43:33.726509Z",
+    "source_fingerprint": "38973f807fef8673b9b91a43d44d73faec7fee4665b79f6c713312c124ea7ad1",
+    "visible_unique_words": 15213,
+    "required_unique_words": 43000,
+    "scope_ready": false,
+    "candidate_suppressed": false,
+    "candidate_id": null
+  }
 }
