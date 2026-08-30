@@ -1,10 +1,10 @@
 ---
 schema: "gridatlas.scope-of-works.v1"
 generation: "202608301321"
-status: "active"
+status: "done"
 scope: 1
 parent: "202608301321-scope-of-works.md"
-next: null
+next: "202608301518-02-modularise-immutable-shell-and-cartridges.md"
 ---
 # Scope 1 — move the Atlas into `atlas/`
 

@@ -13,7 +13,7 @@
       "schema": "gridatlas.exact-repd-deep-link-receiver.v1",
       "synthetic_receiver": false
     },
-    "live_url": "https://ventusltd.github.io/gridatlas/202608300453-atlas-v9/",
+    "live_url": "https://ventusltd.github.io/gridatlas/atlas/",
     "manifests": {
       "build_sha256": "9b477f88db87a37320a2840b568a1809c7867f1059603c950d54d25563611434",
       "deep_link_sha256": "1c339136dfd8a8c4abfcd4b27072cd4722262ca03720603acd6480b2d02abb69",
@@ -25,24 +25,26 @@
     "promotion_commit": "9ba16ba960466aa98c99e0d665d46c48f8334664",
     "publication_commit": "bf16a713b9e5d926822efe80c681c017cc4edcee",
     "release_id": "202608300453-atlas-v9",
-    "route": "/gridatlas/202608300453-atlas-v9/",
+    "route": "/gridatlas/atlas/",
     "runtime": {
       "cache_identity": "CONTENT_ADDRESSED_STABLE_URL",
       "critical_sha256": "5f5fbec83f9ce307b47ddc6e7277743f0bba1a2445b0f3ca50a9a1806146e993",
       "delivery": "MAPLIBRE_WORKER_DIRECT_URL",
-      "shared_cartridge_path": "cartridges/5f5fbec83f9ce307b47ddc6e7277743f0bba1a2445b0f3ca50a9a1806146e993/grid_400kv.geojson"
+      "shared_cartridge_path": "atlas/releases/cartridges/5f5fbec83f9ce307b47ddc6e7277743f0bba1a2445b0f3ca50a9a1806146e993/grid_400kv.geojson"
     },
-    "source_commit": "4f3e8fc5c7ea28edf83dbac9b231024723bcf231"
+    "source_commit": "4f3e8fc5c7ea28edf83dbac9b231024723bcf231",
+    "release_route": "/gridatlas/atlas/releases/202608300453-atlas-v9/",
+    "atlas_router_generation": "202608301321"
   },
   "generation": "202608300453",
   "predecessor": {
-    "live_url": "https://ventusltd.github.io/gridatlas/202608292311-atlas-v9/",
+    "live_url": "https://ventusltd.github.io/gridatlas/atlas/releases/202608292311-atlas-v9/",
     "release_id": "202608292311-atlas-v9",
-    "route": "/gridatlas/202608292311-atlas-v9/"
+    "route": "/gridatlas/atlas/releases/202608292311-atlas-v9/"
   },
   "rollback": {
     "release_id": "202608292311-atlas-v9",
-    "route": "/gridatlas/202608292311-atlas-v9/"
+    "route": "/gridatlas/atlas/releases/202608292311-atlas-v9/"
   },
   "schema": "gridatlas.live-set.v5",
   "verification": {
@@ -72,5 +74,12 @@
     "v8_css_byte_identical": true,
     "v8_html_surface_preserved": true,
     "verified_at": "2026-08-30T04:07:46.491263Z"
+  },
+  "atlas": {
+    "schema": "gridatlas.router.v1",
+    "generation": "202608301321",
+    "stable_route": "/gridatlas/atlas/",
+    "immutable_release_route": "/gridatlas/atlas/releases/202608300453-atlas-v9/",
+    "no_new_application_copy": true
   }
 }
