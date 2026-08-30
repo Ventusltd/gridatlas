@@ -62,6 +62,8 @@ for (const [id, target] of expected) {
     }, terminal.sourceId, { timeout: 60000 });
   }
   const seconds = (performance.now() - started) / 1000;
+  await page.waitForTimeout(250);
+  await cdp.send('HeapProfiler.collectGarbage');
   const heapMb = (await cdp.send('Runtime.getHeapUsage')).usedSize / 1e6;
   const state = await page.evaluate(({ layerId, pathname }) => {
     const map = window.__GRIDATLAS_V9_MAP__;
@@ -82,6 +84,7 @@ for (const [id, target] of expected) {
       rows: entry?.[1]?.rows ?? -1,
       parquet: entry?.[1]?.parquet ?? null,
       streamedResponses: transport?.streamed_responses ?? -1,
+      releasedPayloads: transport?.released_payloads ?? -1,
       streamFailures: transport?.stream_failures || [],
       label: document.querySelector(`#lbl-${CSS.escape(layerId)}`)?.textContent || '',
     };
@@ -91,6 +94,7 @@ for (const [id, target] of expected) {
     !state.loaded ||
     state.rows !== target.rows ||
     state.streamedResponses < 1 ||
+    state.releasedPayloads < state.streamedResponses ||
     state.streamFailures.length > 0 ||
     seconds > 15 ||
     heapMb > 400
@@ -98,7 +102,8 @@ for (const [id, target] of expected) {
   if (bad) failures += 1;
   results.push({ id, expected_rows: target.rows, seconds, heap_mb: heapMb, ...state, verdict: bad ? 'FAIL' : 'PASS' });
   await page.locator(selector).uncheck({ force: true }).catch(() => {});
-  await page.waitForTimeout(200);
+  await page.waitForTimeout(500);
+  await cdp.send('HeapProfiler.collectGarbage');
 }
 
 const report = {
@@ -114,8 +119,8 @@ const report = {
 };
 await fs.mkdir(output.split('/').slice(0, -1).join('/') || '.', { recursive: true });
 await fs.writeFile(output, JSON.stringify(report, null, 2) + '\n');
-console.log('| layer | rows | loaded | seconds | heap MB | label | verdict |');
-console.log('|---|---:|---:|---:|---:|---|---|');
-for (const row of results) console.log(`| ${row.id} | ${row.rows} | ${row.loaded} | ${row.seconds.toFixed(1)} | ${row.heap_mb.toFixed(0)} | ${row.label.replaceAll('|', '/')} | ${row.verdict} |`);
+console.log('| layer | rows | loaded | seconds | heap MB | cache released | label | verdict |');
+console.log('|---|---:|---:|---:|---:|---:|---|---|');
+for (const row of results) console.log(`| ${row.id} | ${row.rows} | ${row.loaded} | ${row.seconds.toFixed(1)} | ${row.heap_mb.toFixed(0)} | ${row.releasedPayloads}/${row.streamedResponses} | ${row.label.replaceAll('|', '/')} | ${row.verdict} |`);
 await browser.close();
 process.exit(failures ? 1 : 0);
