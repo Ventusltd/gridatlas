@@ -1,10 +1,10 @@
 ---
 schema: "gridatlas.scope-of-works.v1"
 generation: "202608301521"
-status: "active"
+status: "done"
 scope: 4
 parent: "202608301520-03-apply-pipelinenews-lessons.md"
-next: null
+next: "202608301522-05-compile-and-attest-cartridge-composition.md"
 ---
 # Scope 4 — add UK postcode and town location search
 

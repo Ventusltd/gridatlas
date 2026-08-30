@@ -1,7 +1,7 @@
 {
   "schema": "gridatlas.current.v2",
-  "generation": "202608301520",
-  "previous_generation": "202608301321",
+  "generation": "202608301521",
+  "previous_generation": "202608301520",
   "architecture": "IMMUTABLE_SHELL_PLUS_HASHED_CARTRIDGES",
   "live_route": "/gridatlas/atlas/",
   "release_id": "202608300453-atlas-v9",
@@ -11,8 +11,23 @@
     "index": "./releases/202608300453-atlas-v9/index.html",
     "base": "./releases/202608300453-atlas-v9/"
   },
-  "cartridge_order": [],
-  "cartridges": [],
+  "cartridge_order": [
+    "uk-gazetteer-flyto"
+  ],
+  "cartridges": [
+    {
+      "id": "uk-gazetteer-flyto",
+      "generation": "202608301136",
+      "type": "script",
+      "slot": "replace-script",
+      "replace_script": "202608291818-place-postcode-search.js",
+      "path": "./cartridges/202608301136-place-postcode-search.js",
+      "sha256": "7f8e91c5ed54152f5ae4cd999ec501caed8d6625fdf0df20cc418805dec3e1fa",
+      "contract": "../ui/cartridges/202608301136-uk-gazetteer-flyto.mjs",
+      "result_class": "LOCATION_ONLY",
+      "sets_deep_link": false
+    }
+  ],
   "last_known_green": {
     "release_id": "202608300453-atlas-v9",
     "route": "/gridatlas/atlas/releases/202608300453-atlas-v9/"
@@ -27,5 +42,23 @@
     "pipelinenews_repository": "https://github.com/Ventusltd/pipelinenews",
     "pipelinenews_tree": "83d9c430b283f8beaa8c0a05e42b14d4a4784623",
     "cvaa_guide": "https://github.com/Ventusltd/cvaa/blob/main/202608301321-gridatlas-amnesia-vaccine.txt"
+  },
+  "search_lanes": {
+    "repd": {
+      "external_requests": 0,
+      "identity_claims": "EXACT_REPD_REF_ONLY",
+      "first": true
+    },
+    "uk_gazetteer": {
+      "provider": "postcodes.io",
+      "endpoints": [
+        "postcodes",
+        "outcodes",
+        "places"
+      ],
+      "identity_claims": "none",
+      "external_requests_per_query_max": 2,
+      "result_class": "LOCATION_ONLY"
+    }
   }
 }
