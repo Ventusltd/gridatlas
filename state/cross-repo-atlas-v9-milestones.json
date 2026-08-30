@@ -1,7 +1,7 @@
 {
   "classification": "CROSS_REPO_ATLAS_V9_IN_PROGRESS",
-  "evaluated_at": "2026-08-30T03:24:45.511852Z",
-  "generation": "202608292311",
+  "evaluated_at": "2026-08-30T09:26:55.450083Z",
+  "generation": "202608300453",
   "milestones": [
     {
       "gate": {
@@ -11,7 +11,7 @@
       "id": "M0_FROZEN_BASELINE",
       "observed": {
         "oracle_commit": null,
-        "rollback_release_id": "202608292126-atlas-v9"
+        "rollback_release_id": "202608292311-atlas-v9"
       },
       "passed": false
     },
@@ -25,18 +25,18 @@
       "observed": {
         "classification": "VERIFIED_LIVE_V8_MIRROR_RENDER_READY_ATLAS_V9",
         "failed_gates": 0,
-        "generation": "202608292311",
+        "generation": "202608300453",
         "promotion_eligible": true,
         "public_400kv_click_p95_ms": null,
         "public_400kv_render_p95_ms": null,
-        "release_id": "202608292311-atlas-v9"
+        "release_id": "202608300453-atlas-v9"
       },
       "passed": true
     },
     {
       "gate": {
         "classification": "MIRRORED_PROMOTED_GRIDATLAS_V9",
-        "release_id": "202608292311-atlas-v9"
+        "release_id": "202608300453-atlas-v9"
       },
       "id": "M2_GLOBALGRID_MIRROR_AND_ORDER",
       "observed": {
@@ -68,7 +68,7 @@
     {
       "gate": {
         "immutable_releases_modified": 0,
-        "release_id": "202608292311-atlas-v9",
+        "release_id": "202608300453-atlas-v9",
         "sentinels": [
           "13599",
           "17494"
@@ -76,19 +76,22 @@
       },
       "id": "M4_PIPELINENEWS_CANONICAL_LINKS",
       "observed": {
-        "base_url": null,
-        "immutable_releases_modified": null,
-        "release_id": null,
-        "replacements": null,
-        "sentinel_refs": []
+        "base_url": "https://ventusltd.github.io/gridatlas/202608300453-atlas-v9/",
+        "immutable_releases_modified": 0,
+        "release_id": "202608300453-atlas-v9",
+        "replacements": 19,
+        "sentinel_refs": [
+          "13599",
+          "17494"
+        ]
       },
-      "passed": false
+      "passed": true
     },
     {
       "gate": {
         "personal_data": false,
         "raw_companies_house_data_stored": false,
-        "release_id": "202608292311-atlas-v9"
+        "release_id": "202608300453-atlas-v9"
       },
       "id": "M5_COMPANIES_COMPACT_RELATION",
       "observed": {
@@ -109,24 +112,24 @@
       },
       "id": "M6_END_TO_END_GREEN",
       "observed": {
-        "passed": 2,
+        "passed": 3,
         "total": 6
       },
       "passed": false
     }
   ],
   "next_milestone": "M0_FROZEN_BASELINE",
-  "passed": 2,
-  "release_id": "202608292311-atlas-v9",
+  "passed": 3,
+  "release_id": "202608300453-atlas-v9",
   "schema": "gridatlas.cross-repo-atlas-v9-milestones.v1",
   "sources": {
     "companies_manifest_sha256": null,
     "companies_pointer_sha256": null,
     "deep_link_contract_sha256": "d424fef69240e2b4a4ba9209242e569fc95963bc1e6a1213f1d62ad01deff455",
     "globalgrid_pointer_sha256": null,
-    "gridatlas_live_set_sha256": "2e977d628ca25367d03098d50925c29278f62e5f7fbe87f4440ad434465df9c4",
-    "pipelinenews_audit_sha256": null,
-    "pipelinenews_pointer_sha256": null
+    "gridatlas_live_set_sha256": "17dbcdaf027406bc856971f16103c8532f1776c6bcc6206d46d8279c44e6a958",
+    "pipelinenews_audit_sha256": "9f1821794cff9c1168dad8e95a99564c8b00366ef081389ab1b16082fe4bb4dc",
+    "pipelinenews_pointer_sha256": "9a8ae710a535ceb0ce843dbae1fe16b16d24691a4865c759291516a7f870e170"
   },
   "total": 7
 }
