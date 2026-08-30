@@ -1,7 +1,7 @@
 {
   "schema": "gridatlas.current.v2",
-  "generation": "202608301522",
-  "previous_generation": "202608301521",
+  "generation": "202608301624",
+  "previous_generation": "202608301522",
   "architecture": "IMMUTABLE_SHELL_PLUS_HASHED_CARTRIDGES",
   "live_route": "/gridatlas/atlas/",
   "release_id": "202608300453-atlas-v9",
@@ -17,13 +17,21 @@
   "cartridges": [
     {
       "id": "uk-gazetteer-flyto",
-      "generation": "202608301136",
+      "generation": "202608301624",
+      "version": "v9.5",
       "type": "script",
       "slot": "replace-script",
       "replace_script": "202608291818-place-postcode-search.js",
-      "path": "./cartridges/202608301136-place-postcode-search.js",
-      "sha256": "7f8e91c5ed54152f5ae4cd999ec501caed8d6625fdf0df20cc418805dec3e1fa",
-      "contract": "../ui/cartridges/202608301136-uk-gazetteer-flyto.mjs",
+      "path": "./cartridges/202608301624-place-global-search-v9-5.js",
+      "sha256": "b6497b437de52f68151a1bb22ccd95133d15c243c58eb9df1912fb36f38bcfca",
+      "contract": "../ui/cartridges/202608301624-global-gazetteer-flyto-v9-5.mjs",
+      "capabilities": [
+        "exact-repd-first",
+        "uk-postcode",
+        "uk-place",
+        "global-address",
+        "global-place"
+      ],
       "result_class": "LOCATION_ONLY",
       "sets_deep_link": false
     }
@@ -41,7 +49,9 @@
   "provenance": {
     "pipelinenews_repository": "https://github.com/Ventusltd/pipelinenews",
     "pipelinenews_tree": "83d9c430b283f8beaa8c0a05e42b14d4a4784623",
-    "cvaa_guide": "https://github.com/Ventusltd/cvaa/blob/main/202608301321-gridatlas-amnesia-vaccine.txt"
+    "cvaa_guide": "https://github.com/Ventusltd/cvaa/blob/main/202608301321-gridatlas-amnesia-vaccine.txt",
+    "sandbox_source": "https://github.com/Ventusltd/globalgrid2050/blob/main/solar-bess-topology-v7/gis-sld-financial-sandbox/gis-sld-v5-ui.js",
+    "cvaa_commit": "daada0fe917e82c170b866a06c493c1e2b1c1ee3"
   },
   "search_lanes": {
     "repd": {
@@ -57,15 +67,23 @@
         "places"
       ],
       "identity_claims": "none",
-      "external_requests_per_query_max": 2,
+      "result_class": "LOCATION_ONLY"
+    },
+    "global_gazetteer": {
+      "provider": "Nominatim / OpenStreetMap",
+      "endpoint": "search",
+      "activation": "Enter or search button",
+      "identity_claims": "none",
       "result_class": "LOCATION_ONLY"
     }
   },
-  "composition_manifest": "./manifests/202608301522-composition.json",
+  "composition_manifest": "./manifests/202608301624-composition.json",
   "scope_closure": {
-    "generation": "202608301524",
+    "generation": "202608301624",
     "status": "DONE",
-    "scopes": 6,
+    "scope": "GridAtlas v9.5 global address fly-to",
     "schedule_retired": true
-  }
+  },
+  "composition_version": "v9.5",
+  "composition_id": "202608301624-gridatlas-v9.5"
 }

@@ -35,7 +35,7 @@ async function waitForDeployedCurrent() {
       const response = await api.get(`${BASE}atlas/current.json?scope_verify=${Date.now()}`);
       if (response.ok()) {
         const current = await response.json();
-        if (current?.schema === 'gridatlas.current.v2' && current?.scope_closure?.status === 'DONE' && current?.cartridge_order?.includes('uk-gazetteer-flyto')) {
+        if (current?.schema === 'gridatlas.current.v2' && current?.generation === '202608301624' && current?.composition_version === 'v9.5' && current?.scope_closure?.status === 'DONE' && current?.cartridge_order?.includes('uk-gazetteer-flyto')) {
           return current;
         }
       }
