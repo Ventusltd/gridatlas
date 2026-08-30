@@ -1,5 +1,5 @@
 name: 202608300437 Five-hour strict V8 V9 comparator
-run-name: Five-hour V8/V9 actual-render check ${{ github.run_number }}
+run-name: Five-hour V8/V9 actual-render check ${{ github.run_number }} from ${{ github.sha }}
 
 on:
   push:
@@ -22,17 +22,17 @@ env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: 'true'
   MISSION_INCEPTED_AT: '2026-08-30T03:37:00Z'
   MISSION_EXPIRES_AT: '2026-08-30T08:35:00Z'
-  EXPECTED_RELEASE_ID: 202608292311-atlas-v9
-  EXPECTED_GENERATION: '202608292311'
+  MINIMUM_GENERATION: '202608292311'
   ATLAS_STATE_URL: https://ventusltd.github.io/gridatlas/state/live-set.json
   ORACLE_URL: https://globalgrid2050.com/repd_grid_atlasv8/
   CONTRACT: contracts/202608292311-render-ready-runtime.json
   COMPARATOR: atman/202608292311-render-ready-comparator.mjs
-  GOLDEN_REPD_REF: '16135'
+  GOLDEN_REPD_REF: '13599'
+  GOLDEN_TECHNOLOGY: solar
 
 jobs:
-  compare:
-    name: Prove actual 400 kV render, V8 fidelity and machine promotion gates
+  prove:
+    name: Prove promoted Atlas against V8 actual render
     runs-on: ubuntu-24.04
     timeout-minutes: 45
     steps:
@@ -41,22 +41,16 @@ jobs:
         run: |
           set -euo pipefail
           now="$(date -u +%s)"
+          starts="$(date -u -d "$MISSION_INCEPTED_AT" +%s)"
           expires="$(date -u -d "$MISSION_EXPIRES_AT" +%s)"
-          if (( now > expires )); then
+          if (( now < starts || now > expires )); then
             echo 'active=false' >> "$GITHUB_OUTPUT"
-            echo "GridAtlas five-hour comparator retired at $MISSION_EXPIRES_AT; no comparator started." >> "$GITHUB_STEP_SUMMARY"
+            echo "GridAtlas five-hour mission inactive outside $MISSION_INCEPTED_AT to $MISSION_EXPIRES_AT." >> "$GITHUB_STEP_SUMMARY"
             exit 0
           fi
           echo 'active=true' >> "$GITHUB_OUTPUT"
-          {
-            echo '## GridAtlas V8/V9 five-hour closure'
-            echo
-            echo "- Window: $MISSION_INCEPTED_AT to $MISSION_EXPIRES_AT"
-            echo "- V8 oracle: $ORACLE_URL"
-            echo "- Expected V9: $EXPECTED_RELEASE_ID"
-          } >> "$GITHUB_STEP_SUMMARY"
 
-      - name: Checkout exact current source
+      - name: Checkout exact GridAtlas source boundary
         if: steps.window.outputs.active == 'true'
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
@@ -64,37 +58,59 @@ jobs:
           fetch-depth: 120
           persist-credentials: false
 
-      - name: Resolve exact promoted Atlas candidate
+      - name: Require exact main and resolve promoted release
         if: steps.window.outputs.active == 'true'
         id: atlas
         run: |
           set -euo pipefail
+          test "$GITHUB_REF" = refs/heads/main
+          git fetch --no-tags origin main:refs/remotes/origin/main
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          test "$(git rev-parse origin/main)" = "$GITHUB_SHA"
+
           mkdir -p work
-          test -f "$CONTRACT"
-          test -f "$COMPARATOR"
           curl --fail --location --silent --show-error --retry 3 --retry-delay 2 \
             "$ATLAS_STATE_URL" -o work/live-set.json
           python3 -m json.tool work/live-set.json >/dev/null
-          test "$(jq -r '.schema' work/live-set.json)" = gridatlas.live-set.v5
+          cmp state/live-set.json work/live-set.json
+
+          generation="$(jq -r '.generation // empty' work/live-set.json)"
+          release_id="$(jq -r '.current.release_id // empty' work/live-set.json)"
+          live_url="$(jq -r '.current.live_url // empty' work/live-set.json)"
+          parent_url="$(jq -r '.predecessor.live_url // empty' work/live-set.json)"
+
+          [[ "$generation" =~ ^[0-9]{12}$ ]]
+          (( 10#$generation >= 10#$MINIMUM_GENERATION ))
+          test "$release_id" = "${generation}-atlas-v9"
+          test "$live_url" = "https://ventusltd.github.io/gridatlas/$release_id/"
           test "$(jq -r '.classification' work/live-set.json)" = VERIFIED_LIVE_V8_MIRROR_RENDER_READY_ATLAS_V9
-          test "$(jq -r '.generation' work/live-set.json)" = "$EXPECTED_GENERATION"
-          test "$(jq -r '.current.release_id' work/live-set.json)" = "$EXPECTED_RELEASE_ID"
           test "$(jq -r '.verification.promotion_eligible' work/live-set.json)" = true
           test "$(jq -r '.verification.failed_gates' work/live-set.json)" = 0
           test "$(jq -r '.verification.commit_lineage_attested' work/live-set.json)" = true
           test "$(jq -r '.verification.v8_css_byte_identical' work/live-set.json)" = true
           test "$(jq -r '.verification.v8_html_surface_preserved' work/live-set.json)" = true
-          live_url="$(jq -r '.current.live_url' work/live-set.json)"
-          test "$live_url" = "https://ventusltd.github.io/gridatlas/$EXPECTED_RELEASE_ID/"
+          test -f "$release_id/release-manifest.json"
+          test -f "$release_id/build-manifest.json"
+          test -f "$release_id/202608291818-place-postcode-search.js"
+          test -f "$CONTRACT"
+          test -f "$COMPARATOR"
+
           curl --fail --location --silent --show-error --retry 3 --retry-delay 2 \
             "${live_url}release-manifest.json" -o work/release-manifest.json
-          test "$(jq -r '.release_id' work/release-manifest.json)" = "$EXPECTED_RELEASE_ID"
+          test "$(jq -r '.release_id' work/release-manifest.json)" = "$release_id"
+
+          sentinel="${live_url}?repd_ref=${GOLDEN_REPD_REF}&technology=${GOLDEN_TECHNOLOGY}"
           effective="$(curl --fail --location --silent --show-error --retry 3 --retry-delay 2 \
-            --output work/golden.html --write-out '%{url_effective}' \
-            "${live_url}?repd_ref=${GOLDEN_REPD_REF}")"
-          test "$effective" = "${live_url}?repd_ref=${GOLDEN_REPD_REF}"
-          grep -q 'ventus-corev8engine.js' work/golden.html
+            --output work/sentinel.html --write-out '%{url_effective}' "$sentinel")"
+          test "$effective" = "$sentinel"
+          grep -q 'ventus-corev8engine.js' work/sentinel.html
+          grep -q '202608292311-maplibre-worker-bridge.js' work/sentinel.html
+          grep -q '202608291818-place-postcode-search.js' work/sentinel.html
+
+          echo "generation=$generation" >> "$GITHUB_OUTPUT"
+          echo "release_id=$release_id" >> "$GITHUB_OUTPUT"
           echo "live_url=$live_url" >> "$GITHUB_OUTPUT"
+          echo "parent_url=$parent_url" >> "$GITHUB_OUTPUT"
 
       - name: Configure pinned Node
         if: steps.window.outputs.active == 'true'
@@ -110,10 +126,11 @@ jobs:
           npm ci --ignore-scripts
           npx playwright install --with-deps chromium
 
-      - name: Run public Atman comparator with bounded noise retries
+      - name: Run actual-render comparator with bounded noise retries
         if: steps.window.outputs.active == 'true'
         env:
           CANDIDATE_URL: ${{ steps.atlas.outputs.live_url }}
+          PARENT_URL: ${{ steps.atlas.outputs.parent_url }}
           MODE: public
         run: |
           set -euo pipefail
@@ -152,17 +169,14 @@ jobs:
           import glob
           import json
           from pathlib import Path
+
           attempts = []
-          for filename in sorted(glob.glob('work/five-hour-attempt-*.json')):
-              proof = json.loads(Path(filename).read_text(encoding='utf-8'))
+          for name in sorted(glob.glob('work/five-hour-attempt-*.json')):
+              proof = json.loads(Path(name).read_text(encoding='utf-8'))
               attempts.append({
-                  'attempt': int(Path(filename).stem.rsplit('-', 1)[-1]),
+                  'attempt': int(Path(name).stem.rsplit('-', 1)[-1]),
                   'classification': proof.get('classification'),
                   'failed_gates': [gate['id'] for gate in proof.get('gates', []) if not gate.get('passed')],
-                  'actual_render_passed': all(
-                      gate.get('passed') for gate in proof.get('gates', [])
-                      if gate.get('id', '').endswith('-rendered')
-                  ),
                   'candidate_desktop_p95_ms': proof.get('benchmark', {}).get('candidate', {}).get('desktop', {}).get('render_ready', {}).get('p95_ms'),
                   'candidate_mobile_p95_ms': proof.get('benchmark', {}).get('candidate', {}).get('mobile', {}).get('render_ready', {}).get('p95_ms'),
               })
@@ -177,33 +191,7 @@ jobs:
           test -f "$final_output"
           test -f "$final_record"
 
-      - name: Publish strict comparison result
-        if: always() && steps.window.outputs.active == 'true'
-        run: |
-          set -euo pipefail
-          {
-            echo
-            echo '### V8/V9 actual-render result'
-            echo
-            if test -f work/five-hour-public-render-ready-proof.json; then
-              echo "- Classification: $(jq -r '.classification' work/five-hour-public-render-ready-proof.json)"
-              echo "- Clean attempt: ${ATMAN_SUCCESSFUL_ATTEMPT:-none}"
-              echo "- Failed promotion gates: $(jq -r '.failed_gates' work/five-hour-public-render-ready-proof.json)"
-              echo "- V8 desktop p95: $(jq -r '.benchmark.oracle.desktop.render_ready.p95_ms' work/five-hour-public-render-ready-proof.json) ms"
-              echo "- V9 desktop p95: $(jq -r '.benchmark.candidate.desktop.render_ready.p95_ms' work/five-hour-public-render-ready-proof.json) ms"
-              echo "- V8 mobile p95: $(jq -r '.benchmark.oracle.mobile.render_ready.p95_ms' work/five-hour-public-render-ready-proof.json) ms"
-              echo "- V9 mobile p95: $(jq -r '.benchmark.candidate.mobile.render_ready.p95_ms' work/five-hour-public-render-ready-proof.json) ms"
-              echo "- 400 kV actual render: $(jq -r '[.gates[] | select(.id | test("rendered$")) | .passed] | all' work/five-hour-public-render-ready-proof.json)"
-              echo '- Deep-link query preserved: true'
-            else
-              echo '- No clean comparison after three bounded attempts.'
-            fi
-            if test -f work/five-hour-attempt-history.json; then
-              echo "- Attempt history: $(jq -c '.attempts' work/five-hour-attempt-history.json)"
-            fi
-          } >> "$GITHUB_STEP_SUMMARY"
-
-      - name: Retain comparator evidence
+      - name: Retain five-hour comparator evidence
         if: always() && steps.window.outputs.active == 'true'
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
         with:
@@ -216,6 +204,28 @@ jobs:
             work/five-hour-record-attempt-*.jsonl
             work/live-set.json
             work/release-manifest.json
+            work/sentinel.html
           if-no-files-found: warn
           retention-days: 90
           compression-level: 0
+
+      - name: Publish proof summary
+        if: always() && steps.window.outputs.active == 'true'
+        run: |
+          {
+            echo '## Five-hour GridAtlas V8/V9 closure'
+            echo
+            echo "- Window: $MISSION_INCEPTED_AT to $MISSION_EXPIRES_AT"
+            echo "- Release: ${{ steps.atlas.outputs.release_id || 'unresolved' }}"
+            echo "- Clean attempt: ${ATMAN_SUCCESSFUL_ATTEMPT:-none}"
+            if test -f work/five-hour-public-render-ready-proof.json; then
+              echo "- Classification: $(jq -r '.classification' work/five-hour-public-render-ready-proof.json)"
+              echo "- Failed gates: $(jq -r '.failed_gates' work/five-hour-public-render-ready-proof.json)"
+              echo "- V8 desktop p95: $(jq -r '.benchmark.oracle.desktop.render_ready.p95_ms' work/five-hour-public-render-ready-proof.json) ms"
+              echo "- V9 desktop p95: $(jq -r '.benchmark.candidate.desktop.render_ready.p95_ms' work/five-hour-public-render-ready-proof.json) ms"
+              echo "- V8 mobile p95: $(jq -r '.benchmark.oracle.mobile.render_ready.p95_ms' work/five-hour-public-render-ready-proof.json) ms"
+              echo "- V9 mobile p95: $(jq -r '.benchmark.candidate.mobile.render_ready.p95_ms' work/five-hour-public-render-ready-proof.json) ms"
+            else
+              echo '- No clean comparator proof produced.'
+            fi
+          } >> "$GITHUB_STEP_SUMMARY"
