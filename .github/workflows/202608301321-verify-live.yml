@@ -2,6 +2,10 @@ name: 202608301321 Verify live Atlas composition
 
 on:
   workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'state/public-verification-request.json'
 
 permissions:
   contents: write
