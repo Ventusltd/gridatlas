@@ -1,0 +1,379 @@
+name: 202608292311 Build verify publish render-ready V9
+run-name: Prove actual 400 kV render and promote from ${{ github.sha }}
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/202608292311-build-verify-publish-render-ready-v9.yml'
+      - 'atman/202608292311-render-ready-comparator.mjs'
+      - 'compiler/202608292311-build-render-ready-v9.py'
+      - 'contracts/202608292311-render-ready-runtime.json'
+      - 'machine-learning/schemas/render-ready-performance-record-v1.schema.json'
+      - 'ui/v8-mirror/202608292311-maplibre-worker-bridge.js'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  actions: read
+
+concurrency:
+  group: gridatlas-202608292311-render-ready-promotion
+  cancel-in-progress: false
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: 'true'
+  RELEASE_ID: 202608292311-atlas-v9
+  PARENT_RELEASE_ID: 202608292126-atlas-v9
+  CONTRACT: contracts/202608292311-render-ready-runtime.json
+  COMPILER: compiler/202608292311-build-render-ready-v9.py
+  COMPARATOR: atman/202608292311-render-ready-comparator.mjs
+  RECORD_SCHEMA: machine-learning/schemas/render-ready-performance-record-v1.schema.json
+  ORACLE_URL: https://globalgrid2050.com/repd_grid_atlasv8/
+  PARENT_URL: https://ventusltd.github.io/gridatlas/202608292126-atlas-v9/
+  SHARED_CARTRIDGE: cartridges/5f5fbec83f9ce307b47ddc6e7277743f0bba1a2445b0f3ca50a9a1806146e993/grid_400kv.geojson
+  CANDIDATE_URL: https://ventusltd.github.io/gridatlas/202608292311-atlas-v9/
+
+jobs:
+  finish:
+    name: Build bounded worker-source successor, prove actual render, promote
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    steps:
+      - name: Checkout exact source boundary
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 80
+          persist-credentials: true
+
+      - name: Require exact current main and immutable predecessor
+        run: |
+          set -euo pipefail
+          test "$GITHUB_REF" = refs/heads/main
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          git fetch --no-tags origin main:refs/remotes/origin/main
+          test "$(git rev-parse origin/main)" = "$GITHUB_SHA"
+          test ! -e "$RELEASE_ID"
+          test ! -e "$SHARED_CARTRIDGE"
+          test -d "$PARENT_RELEASE_ID"
+          test -f state/live-set.json
+          test "$(jq -r .current.release_id state/live-set.json)" = "$PARENT_RELEASE_ID"
+          grep -q "$PARENT_RELEASE_ID" index.html
+          test -f "$CONTRACT"
+          test -f "$COMPILER"
+          test -f "$COMPARATOR"
+          test -f "$RECORD_SCHEMA"
+          test -f ui/v8-mirror/202608292311-maplibre-worker-bridge.js
+          python3 -m py_compile "$COMPILER"
+          node --check "$COMPARATOR"
+          node --check ui/v8-mirror/202608292311-maplibre-worker-bridge.js
+          python3 -m json.tool "$CONTRACT" >/dev/null
+          python3 -m json.tool "$RECORD_SCHEMA" >/dev/null
+          jq -e \
+            --arg release "$RELEASE_ID" \
+            --arg parent "$PARENT_RELEASE_ID" \
+            '.schema == "gridatlas.render-ready-runtime-contract.v1"
+             and .release_id == $release
+             and .parent_release_id == $parent
+             and .runtime.critical_layer_id == "400"
+             and .runtime.critical_rows == 4106
+             and .runtime.delivery == "MAPLIBRE_WORKER_DIRECT_URL"
+             and .runtime.window_prefetch == false
+             and .runtime.main_thread_json_parse == false
+             and .runtime.duplicate_fetch == false
+             and .runtime.cache_identity == "CONTENT_ADDRESSED_STABLE_URL"
+             and .runtime.shared_cartridge_path == env.SHARED_CARTRIDGE' \
+            "$CONTRACT" >/dev/null
+          (
+            cd "$PARENT_RELEASE_ID"
+            sha256sum --check sha256sums.txt
+          )
+          git diff --exit-code
+
+      - name: Configure pinned Python
+        uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+
+      - name: Configure pinned Node
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020
+        with:
+          node-version: '22.18.0'
+          cache: npm
+
+      - name: Install pinned browser runtime
+        run: |
+          set -euo pipefail
+          npm ci --ignore-scripts
+          npx playwright install --with-deps chromium
+
+      - name: Compile deterministic render-ready successor from immutable parent
+        run: |
+          set -euo pipefail
+          rm -rf work
+          mkdir -p work/release
+          python3 "$COMPILER" \
+            --contract "$CONTRACT" \
+            --output "work/release/$RELEASE_ID" \
+            --oracle-output work/oracle \
+            --source-commit "$GITHUB_SHA" \
+            | tee work/compiler-result.json
+          jq -e \
+            --arg release "$RELEASE_ID" \
+            '.classification == "DETERMINISTIC_RENDER_READY_RELEASE_BUILT"
+             and .release_id == $release
+             and .critical_400kv_rows == 4106
+             and .engine_patch_anchors == 3
+             and .delivery == "MAPLIBRE_WORKER_DIRECT_URL"
+             and .shared_cartridge == env.SHARED_CARTRIDGE
+             and .shared_cartridge_sha256 == "5f5fbec83f9ce307b47ddc6e7277743f0bba1a2445b0f3ca50a9a1806146e993"' \
+            work/compiler-result.json >/dev/null
+          test "$(jq -r .schema "work/release/$RELEASE_ID/release-manifest.json")" = gridatlas.v8-render-ready-release.v1
+          test "$(jq -r .schema "work/release/$RELEASE_ID/build-manifest.json")" = gridatlas.render-ready-build-manifest.v1
+          test "$(jq -r .schema "work/release/$RELEASE_ID/map-ready-manifest.json")" = gridatlas.map-ready-cartridge-manifest.v2
+          test "$(jq -r .closure.critical_400kv_rows "work/release/$RELEASE_ID/map-ready-manifest.json")" = 4106
+          test "$(jq -r .architecture.critical_400kv_delivery "work/release/$RELEASE_ID/map-ready-manifest.json")" = MAPLIBRE_WORKER_DIRECT_URL
+          test "$(jq -r .architecture.critical_400kv_window_prefetch "work/release/$RELEASE_ID/map-ready-manifest.json")" = false
+          test "$(jq -r .architecture.critical_400kv_main_thread_json_parse "work/release/$RELEASE_ID/map-ready-manifest.json")" = false
+          test "$(jq -r .architecture.critical_400kv_cache_identity "work/release/$RELEASE_ID/map-ready-manifest.json")" = CONTENT_ADDRESSED_STABLE_URL
+          test -f "work/release/$SHARED_CARTRIDGE"
+          test "$(sha256sum "work/release/$SHARED_CARTRIDGE" | cut -d' ' -f1)" = 5f5fbec83f9ce307b47ddc6e7277743f0bba1a2445b0f3ca50a9a1806146e993
+          cmp "work/release/$SHARED_CARTRIDGE" "work/release/$RELEASE_ID/data/grid_400kv.geojson"
+          (
+            cd "work/release/$RELEASE_ID"
+            sha256sum --check sha256sums.txt
+          )
+
+      - name: Serve pinned V8 oracle and candidate locally
+        run: |
+          set -euo pipefail
+          python3 -m http.server 4173 --bind 127.0.0.1 --directory work/release >work/candidate-http.log 2>&1 &
+          echo $! > work/candidate-http.pid
+          python3 -m http.server 4174 --bind 127.0.0.1 --directory work/oracle >work/oracle-http.log 2>&1 &
+          echo $! > work/oracle-http.pid
+          python3 -m http.server 4175 --bind 127.0.0.1 --directory . >work/parent-http.log 2>&1 &
+          echo $! > work/parent-http.pid
+          for url in "http://127.0.0.1:4173/$RELEASE_ID/" "http://127.0.0.1:4174/" "http://127.0.0.1:4175/$PARENT_RELEASE_ID/"; do
+            ready=0
+            for attempt in $(seq 1 60); do
+              if curl --fail --silent --show-error "$url" >/dev/null; then ready=1; break; fi
+              sleep 1
+            done
+            test "$ready" = 1
+          done
+
+      - name: Run local actual-render V8 comparator
+        id: local_compare
+        continue-on-error: true
+        env:
+          MODE: local
+          CANDIDATE_URL: http://127.0.0.1:4173/202608292311-atlas-v9/
+          ORACLE_URL: http://127.0.0.1:4174/
+          PARENT_URL: http://127.0.0.1:4175/202608292126-atlas-v9/
+          OUTPUT: work/202608292311-local-render-ready-proof.json
+          RECORD_OUTPUT: work/202608292311-local-render-ready-performance.jsonl
+        run: |
+          set -euo pipefail
+          node "$COMPARATOR"
+
+      - name: Retain local actual-render evidence
+        if: ${{ always() }}
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: gridatlas-202608292311-local-render-ready-${{ github.sha }}
+          path: |
+            work/202608292311-local-render-ready-proof.json
+            work/202608292311-local-render-ready-performance.jsonl
+            work/compiler-result.json
+            work/candidate-http.log
+            work/oracle-http.log
+            work/parent-http.log
+          if-no-files-found: error
+          retention-days: 90
+          compression-level: 0
+
+      - name: Require local actual-render regression closed
+        env:
+          LOCAL_OUTCOME: ${{ steps.local_compare.outcome }}
+        run: |
+          set -euo pipefail
+          test "$LOCAL_OUTCOME" = success
+          proof=work/202608292311-local-render-ready-proof.json
+          record=work/202608292311-local-render-ready-performance.jsonl
+          test "$(jq -r .classification "$proof")" = VERIFIED_LOCAL_RENDER_READY_400KV
+          test "$(jq -r .failed_gates "$proof")" = 0
+          test "$(jq -r .label "$record")" = PROMOTE
+          test "$(jq -r .privacy "$record")" = NO_PERSONAL_DATA
+          test "$(jq '[.gates[] | select(.passed != true)] | length' "$proof")" = 0
+          test "$(jq -r .bytes_and_manifests.candidate.css_byte_identical "$proof")" = true
+          test "$(jq -r .surface.desktop_geometry_and_style_identical "$proof")" = true
+          test "$(jq -r .benchmark.candidate.desktop.samples[0].runtime.source_loaded "$proof")" = true
+          test "$(jq -r '.benchmark.candidate.desktop.samples[0].runtime.rendered_features > 0' "$proof")" = true
+          test "$(jq -r .benchmark.candidate.mobile.samples[0].runtime.source_loaded "$proof")" = true
+          test "$(jq -r '.benchmark.candidate.mobile.samples[0].runtime.rendered_features > 0' "$proof")" = true
+
+      - name: Stop local servers
+        if: ${{ always() }}
+        run: |
+          set +e
+          for pidfile in work/candidate-http.pid work/oracle-http.pid work/parent-http.pid; do
+            if test -f "$pidfile"; then kill "$(cat "$pidfile")" 2>/dev/null || true; fi
+          done
+
+      - name: Compare-and-swap immutable candidate and shared cartridge onto main
+        run: |
+          set -euo pipefail
+          git fetch --no-tags origin main:refs/remotes/origin/main
+          test "$(git rev-parse origin/main)" = "$GITHUB_SHA"
+          test ! -e "$RELEASE_ID"
+          test ! -e "$SHARED_CARTRIDGE"
+          cp -R "work/release/$RELEASE_ID" "$RELEASE_ID"
+          mkdir -p "$(dirname "$SHARED_CARTRIDGE")"
+          cp "work/release/$SHARED_CARTRIDGE" "$SHARED_CARTRIDGE"
+          git add "$RELEASE_ID" "$SHARED_CARTRIDGE"
+          mapfile -t staged < <(git diff --cached --name-only)
+          test "${#staged[@]}" -gt 10
+          for path in "${staged[@]}"; do
+            case "$path" in
+              "$RELEASE_ID"/*|"$SHARED_CARTRIDGE") ;;
+              *) echo "unexpected staged path: $path" >&2; exit 1 ;;
+            esac
+          done
+          git config user.name gridatlas-render-ready-release-bot
+          git config user.email actions@users.noreply.github.com
+          git commit -m "202608292311: publish worker-source render-ready V8 mirror candidate"
+          publication_commit="$(git rev-parse HEAD)"
+          git push origin HEAD:main
+          echo "PUBLICATION_COMMIT=$publication_commit" >> "$GITHUB_ENV"
+
+      - name: Wait for exact candidate Pages deployment
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          api="https://api.github.com/repos/$GITHUB_REPOSITORY/actions/runs?head_sha=$PUBLICATION_COMMIT&per_page=50"
+          pages_run=''
+          status=''
+          conclusion=''
+          for attempt in $(seq 1 120); do
+            payload="$(curl --fail --silent --show-error -H "Authorization: Bearer $GH_TOKEN" -H 'Accept: application/vnd.github+json' "$api")"
+            pages_run="$(printf '%s' "$payload" | jq -r '[.workflow_runs[] | select(.name == "pages build and deployment")][0].id // empty')"
+            status="$(printf '%s' "$payload" | jq -r '[.workflow_runs[] | select(.name == "pages build and deployment")][0].status // empty')"
+            conclusion="$(printf '%s' "$payload" | jq -r '[.workflow_runs[] | select(.name == "pages build and deployment")][0].conclusion // empty')"
+            if test "$status" = completed; then test "$conclusion" = success; break; fi
+            sleep 5
+          done
+          test -n "$pages_run"
+          test "$status" = completed
+          test "$conclusion" = success
+          echo "CANDIDATE_PAGES_RUN_ID=$pages_run" >> "$GITHUB_ENV"
+
+      - name: Run public actual-render V8 comparator
+        id: public_compare
+        continue-on-error: true
+        env:
+          MODE: public
+          OUTPUT: work/202608292311-public-render-ready-proof.json
+          RECORD_OUTPUT: work/202608292311-public-render-ready-performance.jsonl
+        run: |
+          set -euo pipefail
+          node "$COMPARATOR"
+
+      - name: Require public actual-render regression closed
+        env:
+          PUBLIC_OUTCOME: ${{ steps.public_compare.outcome }}
+        run: |
+          set -euo pipefail
+          test "$PUBLIC_OUTCOME" = success
+          proof=work/202608292311-public-render-ready-proof.json
+          record=work/202608292311-public-render-ready-performance.jsonl
+          test "$(jq -r .classification "$proof")" = VERIFIED_PUBLIC_RENDER_READY_400KV
+          test "$(jq -r .failed_gates "$proof")" = 0
+          test "$(jq -r .label "$record")" = PROMOTE
+          test "$(jq '[.gates[] | select(.passed != true)] | length' "$proof")" = 0
+
+      - name: Build governed current pointer and machine-learning evidence
+        run: |
+          set -euo pipefail
+          git fetch --no-tags origin main:refs/remotes/origin/main
+          test "$(git rev-parse origin/main)" = "$PUBLICATION_COMMIT"
+          mkdir -p machine-learning/proofs machine-learning/records releases state
+          cp work/202608292311-local-render-ready-proof.json machine-learning/proofs/202608292311-local-render-ready-proof.json
+          cp work/202608292311-public-render-ready-proof.json machine-learning/proofs/202608292311-public-render-ready-proof.json
+          cat work/202608292311-local-render-ready-performance.jsonl work/202608292311-public-render-ready-performance.jsonl > machine-learning/records/202608292311-render-ready-performance.jsonl
+          python3 - <<'PY'
+          import json, hashlib, os
+          from datetime import datetime, timezone
+          from pathlib import Path
+          release_id = '202608292311-atlas-v9'
+          predecessor_id = '202608292126-atlas-v9'
+          release = Path(release_id)
+          def sha(path): return hashlib.sha256(Path(path).read_bytes()).hexdigest()
+          public = json.loads(Path('machine-learning/proofs/202608292311-public-render-ready-proof.json').read_text())
+          local = json.loads(Path('machine-learning/proofs/202608292311-local-render-ready-proof.json').read_text())
+          state = {
+            'schema':'gridatlas.live-set.v5',
+            'classification':'VERIFIED_LIVE_V8_MIRROR_RENDER_READY_ATLAS_V9',
+            'generation':'202608292311',
+            'current':{
+              'release_id':release_id,
+              'route':f'/gridatlas/{release_id}/',
+              'live_url':f'https://ventusltd.github.io/gridatlas/{release_id}/',
+              'parent_release_id':predecessor_id,
+              'runtime':{
+                'delivery':'MAPLIBRE_WORKER_DIRECT_URL',
+                'cache_identity':'CONTENT_ADDRESSED_STABLE_URL',
+                'shared_cartridge_path':'cartridges/5f5fbec83f9ce307b47ddc6e7277743f0bba1a2445b0f3ca50a9a1806146e993/grid_400kv.geojson',
+                'critical_sha256':'5f5fbec83f9ce307b47ddc6e7277743f0bba1a2445b0f3ca50a9a1806146e993'
+              },
+              'manifests':{
+                'release_sha256':sha(release/'release-manifest.json'),
+                'build_sha256':sha(release/'build-manifest.json'),
+                'map_ready_sha256':sha(release/'map-ready-manifest.json'),
+                'sha256sums_sha256':sha(release/'sha256sums.txt')
+              }
+            },
+            'predecessor':{'release_id':predecessor_id,'route':f'/gridatlas/{predecessor_id}/','live_url':f'https://ventusltd.github.io/gridatlas/{predecessor_id}/'},
+            'rollback':{'release_id':predecessor_id,'route':f'/gridatlas/{predecessor_id}/'},
+            'verification':{
+              'promotion_eligible':True,
+              'verified_at':datetime.now(timezone.utc).isoformat().replace('+00:00','Z'),
+              'candidate_pages_run_id':int(os.environ['CANDIDATE_PAGES_RUN_ID']),
+              'local_classification':local['classification'],
+              'public_classification':public['classification'],
+              'local_proof_sha256':sha('machine-learning/proofs/202608292311-local-render-ready-proof.json'),
+              'public_proof_sha256':sha('machine-learning/proofs/202608292311-public-render-ready-proof.json'),
+              'machine_learning_record_sha256':sha('machine-learning/records/202608292311-render-ready-performance.jsonl'),
+              'machine_learning_records':2,
+              'v8_css_byte_identical':True,
+              'v8_html_surface_preserved':True,
+              'desktop_surface_geometry_style_identical':True,
+              'failed_gates':0
+            }
+          }
+          payload=json.dumps(state,indent=2,sort_keys=True)+'\n'
+          Path('state/live-set.json').write_text(payload)
+          Path('releases/current-v5.json').write_text(payload)
+          index=f'''<!doctype html>
+          <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="gridatlas-current-release" content="{release_id}"><title>Grid Atlas V9</title><script>(()=>{{const target="./{release_id}/";window.location.replace(target+window.location.search+window.location.hash);}})();</script></head><body data-gridatlas-current-release="{release_id}"><main><h1>Grid Atlas V9</h1><p><a href="./{release_id}/">Open {release_id}</a></p></main></body></html>'''
+          Path('index.html').write_text(index+'\n')
+          PY
+
+      - name: Compare-and-swap public promotion pointer onto main
+        run: |
+          set -euo pipefail
+          git fetch --no-tags origin main:refs/remotes/origin/main
+          test "$(git rev-parse origin/main)" = "$PUBLICATION_COMMIT"
+          git add index.html state/live-set.json releases/current-v5.json machine-learning/proofs/202608292311-local-render-ready-proof.json machine-learning/proofs/202608292311-public-render-ready-proof.json machine-learning/records/202608292311-render-ready-performance.jsonl
+          git config user.name gridatlas-render-ready-promotion-bot
+          git config user.email actions@users.noreply.github.com
+          git commit -m "202608292311: promote actual-render V8 mirror after public comparator"
+          promotion_commit="$(git rev-parse HEAD)"
+          git push origin HEAD:main
+          echo "PROMOTION_COMMIT=$promotion_commit" >> "$GITHUB_ENV"
+
+      - name: Verify final Pages pointer and immutable render-ready release
+        run: |
+          set -euo pipefail
+          test -n "$PROMOTION_COMMIT"
