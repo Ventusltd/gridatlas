@@ -1,0 +1,132 @@
+{
+  "classification": "CROSS_REPO_ATLAS_V9_IN_PROGRESS",
+  "evaluated_at": "2026-08-30T03:24:45.511852Z",
+  "generation": "202608292311",
+  "milestones": [
+    {
+      "gate": {
+        "oracle_pinned": true,
+        "rollback_recorded": true
+      },
+      "id": "M0_FROZEN_BASELINE",
+      "observed": {
+        "oracle_commit": null,
+        "rollback_release_id": "202608292126-atlas-v9"
+      },
+      "passed": false
+    },
+    {
+      "gate": {
+        "failed_gates": 0,
+        "generation_min": "202608292311",
+        "promotion_eligible": true
+      },
+      "id": "M1_RENDER_COMPARATOR_PROMOTED",
+      "observed": {
+        "classification": "VERIFIED_LIVE_V8_MIRROR_RENDER_READY_ATLAS_V9",
+        "failed_gates": 0,
+        "generation": "202608292311",
+        "promotion_eligible": true,
+        "public_400kv_click_p95_ms": null,
+        "public_400kv_render_p95_ms": null,
+        "release_id": "202608292311-atlas-v9"
+      },
+      "passed": true
+    },
+    {
+      "gate": {
+        "classification": "MIRRORED_PROMOTED_GRIDATLAS_V9",
+        "release_id": "202608292311-atlas-v9"
+      },
+      "id": "M2_GLOBALGRID_MIRROR_AND_ORDER",
+      "observed": {
+        "files": null,
+        "live_url": null,
+        "release_id": null
+      },
+      "passed": false
+    },
+    {
+      "gate": {
+        "required_identity": [
+          "repd_ref",
+          "technology"
+        ],
+        "schema": "gridatlas.deep-link-contract.v1"
+      },
+      "id": "M3_CANONICAL_DEEP_LINK_CONTRACT",
+      "observed": {
+        "required_identity": [
+          "repd_ref",
+          "technology"
+        ],
+        "schema": "gridatlas.deep-link-contract.v1",
+        "sha256": "d424fef69240e2b4a4ba9209242e569fc95963bc1e6a1213f1d62ad01deff455"
+      },
+      "passed": true
+    },
+    {
+      "gate": {
+        "immutable_releases_modified": 0,
+        "release_id": "202608292311-atlas-v9",
+        "sentinels": [
+          "13599",
+          "17494"
+        ]
+      },
+      "id": "M4_PIPELINENEWS_CANONICAL_LINKS",
+      "observed": {
+        "base_url": null,
+        "immutable_releases_modified": null,
+        "release_id": null,
+        "replacements": null,
+        "sentinel_refs": []
+      },
+      "passed": false
+    },
+    {
+      "gate": {
+        "personal_data": false,
+        "raw_companies_house_data_stored": false,
+        "release_id": "202608292311-atlas-v9"
+      },
+      "id": "M5_COMPANIES_COMPACT_RELATION",
+      "observed": {
+        "abstentions": null,
+        "output_bytes": null,
+        "output_rows": null,
+        "output_sha256": null,
+        "personal_data": null,
+        "raw_companies_house_data_stored": null,
+        "release_id": null
+      },
+      "passed": false
+    },
+    {
+      "gate": {
+        "passed": 6,
+        "total": 6
+      },
+      "id": "M6_END_TO_END_GREEN",
+      "observed": {
+        "passed": 2,
+        "total": 6
+      },
+      "passed": false
+    }
+  ],
+  "next_milestone": "M0_FROZEN_BASELINE",
+  "passed": 2,
+  "release_id": "202608292311-atlas-v9",
+  "schema": "gridatlas.cross-repo-atlas-v9-milestones.v1",
+  "sources": {
+    "companies_manifest_sha256": null,
+    "companies_pointer_sha256": null,
+    "deep_link_contract_sha256": "d424fef69240e2b4a4ba9209242e569fc95963bc1e6a1213f1d62ad01deff455",
+    "globalgrid_pointer_sha256": null,
+    "gridatlas_live_set_sha256": "2e977d628ca25367d03098d50925c29278f62e5f7fbe87f4440ad434465df9c4",
+    "pipelinenews_audit_sha256": null,
+    "pipelinenews_pointer_sha256": null
+  },
+  "total": 7
+}
