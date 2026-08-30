@@ -1,10 +1,10 @@
 ---
 schema: "gridatlas.scope-of-works.v1"
 generation: "202608301520"
-status: "active"
+status: "done"
 scope: 3
 parent: "202608301518-02-modularise-immutable-shell-and-cartridges.md"
-next: null
+next: "202608301521-04-add-uk-location-search-cartridge.md"
 ---
 # Scope 3 — apply PipelineNews repository lessons
 

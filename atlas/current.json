@@ -1,6 +1,6 @@
 {
   "schema": "gridatlas.current.v2",
-  "generation": "202608301518",
+  "generation": "202608301520",
   "previous_generation": "202608301321",
   "architecture": "IMMUTABLE_SHELL_PLUS_HASHED_CARTRIDGES",
   "live_route": "/gridatlas/atlas/",
@@ -22,5 +22,10 @@
     "cartridge_sha256_required": true,
     "cartridge_order_explicit": true,
     "shell_mutation_forbidden": true
+  },
+  "provenance": {
+    "pipelinenews_repository": "https://github.com/Ventusltd/pipelinenews",
+    "pipelinenews_tree": "83d9c430b283f8beaa8c0a05e42b14d4a4784623",
+    "cvaa_guide": "https://github.com/Ventusltd/cvaa/blob/main/202608301321-gridatlas-amnesia-vaccine.txt"
   }
 }
