@@ -1,7 +1,7 @@
 {
   "schema": "gridatlas.current.v2",
-  "generation": "202608301624",
-  "previous_generation": "202608301522",
+  "generation": "202608301825",
+  "previous_generation": "202608301624",
   "architecture": "IMMUTABLE_SHELL_PLUS_HASHED_CARTRIDGES",
   "live_route": "/gridatlas/atlas/",
   "release_id": "202608300453-atlas-v9",
@@ -12,9 +12,29 @@
     "base": "./releases/202608300453-atlas-v9/"
   },
   "cartridge_order": [
+    "streaming-parquet-bridge",
     "uk-gazetteer-flyto"
   ],
   "cartridges": [
+    {
+      "id": "streaming-parquet-bridge",
+      "generation": "202608301825",
+      "version": "v9.5",
+      "type": "script",
+      "slot": "replace-script",
+      "replace_script": "202608292311-maplibre-worker-bridge.js",
+      "path": "./cartridges/202608301825-streaming-parquet-bridge-v9-5.js",
+      "sha256": "79045ccadaebf226af06fb2f800a32ca1f1e6c58d24442ee37037f1f28874af9",
+      "contract": "../ui/cartridges/202608301825-streaming-parquet-bridge-v9-5.mjs",
+      "capabilities": [
+        "response-before-body-reconstruction",
+        "duckdb-runtime-prewarm-after-400kv",
+        "metro-partition-alias",
+        "parquet-on-demand-preserved",
+        "payload-cache-release-after-serialisation"
+      ],
+      "immutable_shell_modified": false
+    },
     {
       "id": "uk-gazetteer-flyto",
       "generation": "202608301624",
@@ -51,7 +71,8 @@
     "pipelinenews_tree": "83d9c430b283f8beaa8c0a05e42b14d4a4784623",
     "cvaa_guide": "https://github.com/Ventusltd/cvaa/blob/main/202608301321-gridatlas-amnesia-vaccine.txt",
     "sandbox_source": "https://github.com/Ventusltd/globalgrid2050/blob/main/solar-bess-topology-v7/gis-sld-financial-sandbox/gis-sld-v5-ui.js",
-    "cvaa_commit": "daada0fe917e82c170b866a06c493c1e2b1c1ee3"
+    "cvaa_commit": "d2ebc01f6eab41f2a84b0c53c4cfae0d2625ec5e",
+    "v8_oracle_commit": "f2f343a92ee972cc74ed23b4b99d8a22896791ad"
   },
   "search_lanes": {
     "repd": {
@@ -77,13 +98,27 @@
       "result_class": "LOCATION_ONLY"
     }
   },
-  "composition_manifest": "./manifests/202608301624-composition.json",
+  "composition_manifest": "./manifests/202608301825-composition.json",
   "scope_closure": {
-    "generation": "202608301624",
+    "generation": "202608301825",
     "status": "DONE",
-    "scope": "GridAtlas v9.5 global address fly-to",
+    "scope": "GridAtlas v9.5 streamed Parquet response and A-road recovery",
     "schedule_retired": true
   },
   "composition_version": "v9.5",
-  "composition_id": "202608301624-gridatlas-v9.5"
+  "composition_id": "202608301825-gridatlas-v9.5",
+  "transport": {
+    "response_contract": "HEADERS_BEFORE_PARQUET_BODY",
+    "engine_timeout_seconds": 15,
+    "duckdb_prewarm": "AFTER_400KV_SOURCE_READY",
+    "data_plane": "PARQUET_DUCKDB_ON_DEMAND",
+    "highway_layers": [
+      "motorways",
+      "trunk_roads",
+      "primary_roads"
+    ],
+    "v8_oracle_commit": "f2f343a92ee972cc74ed23b4b99d8a22896791ad",
+    "fidelity_workflow": ".github/workflows/202608301931-layer-fidelity.yml",
+    "payload_cache": "RELEASE_AFTER_SERIALISATION"
+  }
 }
