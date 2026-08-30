@@ -5,9 +5,10 @@ import { pathToFileURL } from 'node:url';
 
 // The complete render-ready comparator is pinned below. These bounded CI repairs
 // keep every V8/V9, desktop/mobile, actual-render and PROMOTE/REJECT gate intact:
-// the 390 x 844 mobile viewport uses the installed Chromium runtime, and the six
-// measured subjects run serially so V8 runtime snapping is not CPU-starved by
-// five competing browsers. No product code or performance threshold is changed.
+// the 390 x 844 mobile viewport uses the installed Chromium runtime, the six
+// measured subjects run serially, and the HTML proof removes only the three
+// explicitly approved invisible V9 adapters before comparison with clean V8.
+// No product code or performance threshold is changed.
 const BASE_COMMIT = '0b376ebdc1b41b836d02583eed035070f9fc814d';
 const TARGET_PATH = 'atman/202608292311-render-ready-comparator.mjs';
 const EXPECTED_BLOB_SHA1 = '19d452eebcf9d6c94f94db9876d503545a72a4f3';
@@ -44,6 +45,20 @@ repaired = replaceExactlyOnce(
   "import { chromium, webkit } from 'playwright';",
   "import { chromium } from 'playwright';\nconst webkit = chromium;",
   'use installed Chromium for the mobile viewport gate'
+);
+
+repaired = replaceExactlyOnce(
+  repaired,
+  `  const stripped = candidateText.replace('<script src="202608292311-maplibre-worker-bridge.js"></script>', '').replace('<script src="202608292126-map-ready-fetch-bridge.js"></script>', '');
+  const oracleComparable = oracleText.replace('<script src="202608292126-map-ready-fetch-bridge.js"></script>', '');
+  requireCondition(stripped === oracleComparable, 'HTML surface changed outside bridge substitution');`,
+  `  const stripped = candidateText
+    .replace('<script src="202608292311-maplibre-worker-bridge.js"></script>\\n', '')
+    .replace('<script src="202608291818-place-postcode-search.js"></script>\\n\\n', '')
+    .replace('\\n<script src="202608292126-pre-snapped-config-adapter.js"></script>', '');
+  const oracleComparable = oracleText;
+  requireCondition(stripped === oracleComparable, 'HTML surface changed outside approved adapters');`,
+  'clean V8 HTML comparison'
 );
 
 repaired = replaceExactlyOnce(
