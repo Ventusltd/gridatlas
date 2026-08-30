@@ -1,0 +1,59 @@
+name: 202608300315 Export render-ready WebKit patch
+run-name: Export validated WebKit pipeline patch from ${{ github.sha }}
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/202608300315-export-render-ready-webkit-patch.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  export:
+    name: Build exact one-line workflow replacement artifact
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - name: Checkout exact source boundary
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 1
+          persist-credentials: false
+
+      - name: Apply and verify bounded browser dependency repair
+        run: |
+          set -euo pipefail
+          target=.github/workflows/202608292311-build-verify-publish-render-ready-v9.yml
+          test -f "$target"
+          test "$(grep -Fxc '          npx playwright install --with-deps chromium' "$target")" = 1
+          python3 - <<'PY'
+          from pathlib import Path
+          path = Path('.github/workflows/202608292311-build-verify-publish-render-ready-v9.yml')
+          before = '          npx playwright install --with-deps chromium\n'
+          after = '          npx playwright install --with-deps chromium webkit\n'
+          text = path.read_text(encoding='utf-8')
+          assert text.count(before) == 1
+          path.write_text(text.replace(before, after), encoding='utf-8', newline='\n')
+          PY
+          test "$(grep -Fxc '          npx playwright install --with-deps chromium webkit' "$target")" = 1
+          git diff --check
+          mapfile -t changed < <(git diff --name-only)
+          test "${#changed[@]}" = 1
+          test "${changed[0]}" = "$target"
+          mkdir -p export/.github/workflows
+          cp "$target" export/.github/workflows/
+          sha256sum "$target" > export/SHA256SUMS.txt
+          git diff -- "$target" > export/ONE-LINE-PATCH.diff
+
+      - name: Upload exact replacement and proof
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: gridatlas-202608300315-render-ready-webkit-patch
+          path: export
+          if-no-files-found: error
+          retention-days: 30
+          compression-level: 0
