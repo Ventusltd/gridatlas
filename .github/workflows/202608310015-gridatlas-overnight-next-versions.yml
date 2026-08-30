@@ -1,0 +1,199 @@
+name: 202608310015 GridAtlas overnight next versions
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - .github/workflows/202608310015-gridatlas-overnight-next-versions.yml
+      - orchestration/202608310015-gridatlas-overnight-next-versions/**
+  workflow_dispatch:
+  schedule:
+    - cron: '30,45 23 30 8 *'
+    - cron: '*/15 0-7 31 8 *'
+
+permissions:
+  actions: write
+  contents: write
+  pages: write
+
+concurrency:
+  group: 202608310015-gridatlas-overnight-next-versions
+  cancel-in-progress: false
+
+jobs:
+  study-build-test:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 150
+    env:
+      PROGRAMME_ROOT: nightly/202608310015-gridatlas-overnight-next-versions
+      PROGRAMME_CONFIG: orchestration/202608310015-gridatlas-overnight-next-versions/202608310015-programme.json
+      ASSEMBLER: orchestration/202608310015-gridatlas-overnight-next-versions/202608310015-assemble-study-build-controller.mjs
+      CONTROLLER: work/202608310015-study-build-controller.mjs
+      VERIFIER: orchestration/202608310015-gridatlas-overnight-next-versions/202608310015-verify-overnight-candidate.mjs
+      FINALISER: orchestration/202608310015-gridatlas-overnight-next-versions/202608310015-finalise-overnight-candidate.mjs
+      GH_TOKEN: ${{ github.token }}
+
+    steps:
+      - name: Checkout exact current main
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          ref: main
+          fetch-depth: 0
+          token: ${{ github.token }}
+
+      - name: Fetch every newly updated artifact branch
+        run: git fetch --force --prune origin '+refs/heads/*:refs/remotes/origin/*'
+
+      - name: Validate the timestamped controller
+        run: |
+          node --version
+          node --check "$ASSEMBLER"
+          SOURCE_ROOT="$GITHUB_WORKSPACE" CONTROLLER_OUTPUT="$GITHUB_WORKSPACE/$CONTROLLER" node "$ASSEMBLER"
+          node --check "$CONTROLLER"
+          node --check "$VERIFIER"
+          node --check "$FINALISER"
+          node -e "const p=require('./${PROGRAMME_CONFIG}'); if(p.generation!=='202608310015'||p.minimum_study_seconds<3600) process.exit(1)"
+
+      - name: Record study and build only after the one-hour gate
+        id: controller
+        env:
+          SOURCE_ROOT: ${{ github.workspace }}
+          FORCE_RUN: ${{ github.event_name == 'workflow_dispatch' }}
+        run: node "$CONTROLLER"
+
+      - name: Install pinned browser tooling for a new candidate only
+        if: steps.controller.outputs.candidate_created == 'true'
+        run: |
+          npm ci
+          npx playwright install --with-deps chromium
+
+      - name: Run browser acceptance against the isolated candidate
+        id: browser
+        if: steps.controller.outputs.candidate_created == 'true'
+        env:
+          CANDIDATE_DIR: ${{ steps.controller.outputs.candidate_dir }}
+          CANDIDATE_GENERATION: ${{ steps.controller.outputs.candidate_generation }}
+          SEARCH_GENERATION: ${{ steps.controller.outputs.search_generation }}
+          RUN_STAMP: ${{ steps.controller.outputs.run_stamp }}
+        run: |
+          set -u
+          SERVE_ROOT="$RUNNER_TEMP/202608310015-gridatlas-serve"
+          rm -rf "$SERVE_ROOT"
+          mkdir -p "$SERVE_ROOT"
+          ln -s "$GITHUB_WORKSPACE" "$SERVE_ROOT/gridatlas"
+          python3 -m http.server 4173 --bind 127.0.0.1 --directory "$SERVE_ROOT" >"$RUNNER_TEMP/202608310015-gridatlas-server.log" 2>&1 &
+          SERVER_PID=$!
+          cleanup() { kill "$SERVER_PID" 2>/dev/null || true; }
+          trap cleanup EXIT
+          for attempt in $(seq 1 30); do
+            if curl --fail --silent --show-error "http://127.0.0.1:4173/gridatlas/${CANDIDATE_DIR}/current.json" >/dev/null; then break; fi
+            sleep 1
+          done
+          PROOF="${CANDIDATE_DIR}/${RUN_STAMP}-gridatlas-browser-proof.json"
+          SCREENSHOT="${CANDIDATE_DIR}/${RUN_STAMP}-gridatlas-browser-proof.png"
+          set +e
+          GRIDATLAS_URL="http://127.0.0.1:4173/gridatlas/${CANDIDATE_DIR}/" \
+          EXPECTED_GENERATION="$CANDIDATE_GENERATION" \
+          EXPECTED_SEARCH_GENERATION="$SEARCH_GENERATION" \
+          OUTPUT="$PROOF" \
+          SCREENSHOT="$SCREENSHOT" \
+          node "$VERIFIER"
+          EXIT_CODE=$?
+          set -e
+          echo "exit_code=$EXIT_CODE" >> "$GITHUB_OUTPUT"
+          echo "proof=$PROOF" >> "$GITHUB_OUTPUT"
+          echo "screenshot=$SCREENSHOT" >> "$GITHUB_OUTPUT"
+
+      - name: Finalise candidate status and quarantine evidence
+        id: finaliser
+        if: steps.controller.outputs.candidate_created == 'true'
+        env:
+          SOURCE_ROOT: ${{ github.workspace }}
+          CANDIDATE_DIR: ${{ steps.controller.outputs.candidate_dir }}
+          CANDIDATE_ID: ${{ steps.controller.outputs.candidate_id }}
+          CANDIDATE_MANIFEST: ${{ steps.controller.outputs.candidate_manifest }}
+          CANDIDATE_CURRENT: ${{ steps.controller.outputs.candidate_current }}
+          PROOF: ${{ steps.browser.outputs.proof }}
+          BROWSER_EXIT: ${{ steps.browser.outputs.exit_code }}
+          RUN_STAMP: ${{ steps.controller.outputs.run_stamp }}
+        run: node "$FINALISER"
+
+      - name: Commit only new timestamped programme and candidate folders
+        id: commit
+        if: steps.controller.outputs.active == 'true'
+        env:
+          RUN_STAMP: ${{ steps.controller.outputs.run_stamp }}
+          CANDIDATE_CREATED: ${{ steps.controller.outputs.candidate_created }}
+          CANDIDATE_DIR: ${{ steps.controller.outputs.candidate_dir }}
+        run: |
+          git config user.name "gridatlas-overnight-next-versions"
+          git config user.email "actions@users.noreply.github.com"
+          git add -- "$PROGRAMME_ROOT"
+          if [ "$CANDIDATE_CREATED" = "true" ]; then git add -- "$CANDIDATE_DIR"; fi
+          if git diff --cached --quiet; then
+            echo "committed=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          if [ "$CANDIDATE_CREATED" = "true" ]; then
+            MESSAGE="${RUN_STAMP}-gridatlas: publish isolated overnight candidate and proof"
+          else
+            MESSAGE="${RUN_STAMP}-gridatlas: record overnight study observation"
+          fi
+          git commit -m "$MESSAGE"
+          for attempt in 1 2 3; do
+            git pull --rebase origin main
+            if git push origin HEAD:main; then
+              echo "committed=true" >> "$GITHUB_OUTPUT"
+              echo "commit_sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+              exit 0
+            fi
+            git fetch origin main
+            sleep $((attempt * 3))
+          done
+          echo "Failed to push additive overnight output after three rebases" >&2
+          exit 1
+
+      - name: Request Pages rebuild for public testing
+        if: steps.commit.outputs.committed == 'true'
+        continue-on-error: true
+        run: gh api --method POST "repos/${GITHUB_REPOSITORY}/pages/builds"
+
+      - name: Publish run summary
+        if: always()
+        env:
+          ACTIVE: ${{ steps.controller.outputs.active }}
+          RUN_STAMP: ${{ steps.controller.outputs.run_stamp }}
+          WORDS: ${{ steps.controller.outputs.visible_unique_words }}
+          STUDY_MATURE: ${{ steps.controller.outputs.study_mature }}
+          REMAINING: ${{ steps.controller.outputs.study_remaining_seconds }}
+          STUDY_FOLDER: ${{ steps.controller.outputs.study_folder }}
+          CANDIDATE_CREATED: ${{ steps.controller.outputs.candidate_created }}
+          CANDIDATE_DIR: ${{ steps.controller.outputs.candidate_dir }}
+          CANDIDATE_VERSION: ${{ steps.controller.outputs.candidate_version }}
+          CANDIDATE_STATUS: ${{ steps.finaliser.outputs.candidate_status }}
+        run: |
+          {
+            echo "# 202608310015 GridAtlas overnight controller"
+            echo
+            echo "- Active: ${ACTIVE:-false}"
+            echo "- Run generation: ${RUN_STAMP:-none}"
+            echo "- Visible corpus words: ${WORDS:-0}"
+            echo "- Study mature: ${STUDY_MATURE:-false}"
+            echo "- Study seconds remaining: ${REMAINING:-unknown}"
+            echo "- Study evidence: \`${STUDY_FOLDER:-none}\`"
+            echo "- Candidate created: ${CANDIDATE_CREATED:-false}"
+            if [ "${CANDIDATE_CREATED:-false}" = "true" ]; then
+              OWNER_LOWER=$(printf '%s' "$GITHUB_REPOSITORY_OWNER" | tr '[:upper:]' '[:lower:]')
+              REPO_NAME=${GITHUB_REPOSITORY#*/}
+              echo "- Candidate version: ${CANDIDATE_VERSION}"
+              echo "- Candidate status: ${CANDIDATE_STATUS:-UNKNOWN}"
+              echo "- Candidate URL: https://${OWNER_LOWER}.github.io/${REPO_NAME}/${CANDIDATE_DIR}/"
+            fi
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Keep quarantined candidates visible but mark the run red
+        if: steps.controller.outputs.candidate_created == 'true' && steps.finaliser.outputs.candidate_status == 'FAIL'
+        run: |
+          echo "Candidate was committed with quarantine evidence; no live pointer was changed." >&2
+          exit 1

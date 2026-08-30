@@ -1,0 +1,120 @@
+      if (!textExtension(cleanPath) || meta.size > config.max_text_bytes) {
+        inventory.push({ ...base, kind: 'binary-or-oversize', words: 0, content_sha256: null });
+        continue;
+      }
+
+      const buffer = readBlob(refMeta.ref, cleanPath);
+      const content = buffer.toString('utf8');
+      const contentSha = sha256(buffer);
+      let parsedJson = null;
+      if (cleanPath.toLowerCase().endsWith('.json')) {
+        try {
+          parsedJson = JSON.parse(content);
+        } catch {
+          parsedJson = null;
+        }
+      }
+      const item = {
+        ...base,
+        kind: classify(cleanPath, content),
+        words: wordCount(content),
+        content_sha256: contentSha,
+        headings: extractHeadings(content),
+        directives: extractDirectives(content),
+        json_schema: parsedJson?.schema || null
+      };
+      inventory.push(item);
+      if (parsedJson && ['gridatlas.composition-manifest.v1', 'gridatlas.current.v2'].includes(parsedJson.schema)) {
+        parsedCompositionArtifacts.push({ ...item, json: parsedJson });
+      }
+    }
+  }
+
+  return { inventory, parsedCompositionArtifacts };
+}
+
+function corpusSummary(inventory) {
+  const unique = new Map();
+  for (const item of inventory) {
+    if (!item.content_sha256) continue;
+    if (!unique.has(item.content_sha256)) unique.set(item.content_sha256, item);
+  }
+  const uniqueItems = [...unique.values()];
+  const byKind = {};
+  for (const item of uniqueItems) {
+    byKind[item.kind] ||= { files: 0, words: 0, bytes: 0 };
+    byKind[item.kind].files += 1;
+    byKind[item.kind].words += item.words;
+    byKind[item.kind].bytes += item.size_bytes;
+  }
+  return {
+    inventory_entries: inventory.length,
+    unique_text_blobs: uniqueItems.length,
+    unique_words: uniqueItems.reduce((sum, item) => sum + item.words, 0),
+    unique_text_bytes: uniqueItems.reduce((sum, item) => sum + item.size_bytes, 0),
+    timestamped_entries: inventory.filter(item => item.timestamp && item.timestamp >= config.generation).length,
+    by_kind: byKind
+  };
+}
+
+function directiveSummary(inventory) {
+  const rows = [];
+  const seen = new Set();
+  for (const item of inventory) {
+    for (const directive of item.directives || []) {
+      const key = directive.toLowerCase();
+      if (seen.has(key)) continue;
+      seen.add(key);
+      rows.push({ ref: item.ref, path: item.path, directive });
+      if (rows.length >= config.max_directive_excerpts) return rows;
+    }
+  }
+  return rows;
+}
+
+function sourceFingerprint(inventory) {
+  const appFiles = [
+    'atlas/index.html',
+    'atlas/current.json',
+    'atlas/manifests/202608301825-composition.json',
+    'atlas/cartridges/202608301825-streaming-parquet-bridge-v9-5.js',
+    'atlas/cartridges/202608301624-place-global-search-v9-5.js'
+  ];
+  const parts = [...new Set(inventory
+    .filter(item => item.content_sha256)
+    .map(item => `${item.path}|${item.content_sha256}`))];
+  for (const repoPath of appFiles) {
+    try {
+      const buffer = readBlob(`origin/${config.source_branch}`, repoPath);
+      parts.push(`main-app|${repoPath}|${sha256(buffer)}`);
+    } catch {
+      parts.push(`main-app|${repoPath}|MISSING`);
+    }
+  }
+  return sha256(parts.sort().join('\n'));
+}
+
+function resolveArtifactPath(entry, referencedPath) {
+  const raw = String(referencedPath || '');
+  if (!raw || /^https?:\/\//i.test(raw)) return null;
+  const candidates = [];
+  if (raw.startsWith('/gridatlas/')) candidates.push(normaliseRepoPath(raw.slice('/gridatlas/'.length)));
+  else if (raw.startsWith('/')) candidates.push(normaliseRepoPath(raw));
+  else if (raw.startsWith('atlas/')) candidates.push(normaliseRepoPath(raw));
+  else if (raw.startsWith('./atlas/')) candidates.push(normaliseRepoPath(raw.slice(2)));
+  else {
+    const local = normaliseRepoPath(path.posix.join(path.posix.dirname(entry.path), raw));
+    const atlasRoot = normaliseRepoPath(path.posix.join('atlas', raw.replace(/^\.\//, '')));
+    if (entry.path.startsWith('atlas/manifests/')) candidates.push(atlasRoot, local);
+    else candidates.push(local, atlasRoot);
+  }
+  for (const candidate of [...new Set(candidates)]) {
+    if (tryGit(['cat-file', '-e', `${entry.ref}:${candidate}`]) !== null) return candidate;
+  }
+  return candidates[0] || null;
+}
+
+function absoluteAtlasPath(value) {
+  const raw = String(value || '');
+  if (/^https?:\/\//i.test(raw) || raw.startsWith('/')) return raw;
+  return `/gridatlas/atlas/${normaliseRepoPath(raw)}`;

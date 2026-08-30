@@ -1,0 +1,120 @@
+function htmlEscape(value) {
+  return String(value)
+    .replaceAll('&', '&amp;')
+    .replaceAll('<', '&lt;')
+    .replaceAll('>', '&gt;')
+    .replaceAll('"', '&quot;')
+    .replaceAll("'", '&#39;');
+}
+
+function repoFileUrl(ref, repoPath) {
+  const branch = ref.replace(/^origin\//, '');
+  const encodedPath = normaliseRepoPath(repoPath).split('/').map(encodeURIComponent).join('/');
+  return `https://github.com/${process.env.GITHUB_REPOSITORY || 'Ventusltd/gridatlas'}/blob/${encodeURIComponent(branch)}/${encodedPath}`;
+}
+
+function listRemoteRefs() {
+  const raw = tryGit([
+    'for-each-ref',
+    '--format=%(refname:short)%00%(objectname)%00%(committerdate:iso-strict)%00%(subject)',
+    'refs/remotes/origin'
+  ]);
+  const activeFrom = new Date(config.active_from).getTime();
+  const refs = [];
+  for (const line of String(raw || '').split('\n')) {
+    if (!line.trim()) continue;
+    const [ref, sha, committedAt, subject] = line.split('\0');
+    if (!ref || ref.endsWith('/HEAD')) continue;
+    if (config.ignore_branch_fragments.some(fragment => ref.includes(fragment))) continue;
+    const isMain = ref === `origin/${config.source_branch}`;
+    const updatedInWindow = new Date(committedAt).getTime() >= activeFrom;
+    if (!isMain && !updatedInWindow) continue;
+    refs.push({ ref, sha, committed_at: committedAt, subject: subject || '' });
+  }
+  if (!refs.some(item => item.ref === `origin/${config.source_branch}`)) {
+    const sha = git(['rev-parse', 'HEAD']).trim();
+    const committedAt = git(['show', '-s', '--format=%cI', 'HEAD']).trim();
+    refs.push({ ref: 'HEAD', sha, committed_at: committedAt, subject: 'checked-out source' });
+  }
+  return refs.sort((a, b) => a.ref.localeCompare(b.ref));
+}
+
+function mergeBase(ref) {
+  return (tryGit(['merge-base', config.baseline_main_sha, ref]) || config.baseline_main_sha).trim();
+}
+
+function changedPaths(ref) {
+  const base = mergeBase(ref);
+  const raw = tryGit(['diff', '--name-only', '--diff-filter=ACMR', `${base}..${ref}`, '--']);
+  return String(raw || '').split('\n').map(item => item.trim()).filter(Boolean);
+}
+
+function listedPaths(ref, roots) {
+  const raw = tryGit(['ls-tree', '-r', '-z', '--name-only', ref, '--', ...roots], { encoding: 'buffer' });
+  if (!raw) return [];
+  return raw.toString('utf8').split('\0').filter(Boolean);
+}
+
+function blobMetadata(ref, repoPath) {
+  const object = `${ref}:${repoPath}`;
+  const type = tryGit(['cat-file', '-t', object]);
+  if (!type || type.trim() !== 'blob') return null;
+  const size = Number((tryGit(['cat-file', '-s', object]) || '').trim());
+  const blobSha = (tryGit(['rev-parse', object]) || '').trim();
+  if (!Number.isFinite(size) || !blobSha) return null;
+  return { size, blob_sha: blobSha };
+}
+
+function readBlob(ref, repoPath) {
+  return git(['show', `${ref}:${repoPath}`], { encoding: 'buffer' });
+}
+
+function collectCommits() {
+  const raw = tryGit([
+    'log',
+    '--all',
+    `--since=${config.active_from}`,
+    '--no-merges',
+    '--pretty=format:%H%x00%cI%x00%D%x00%s'
+  ]);
+  const commits = [];
+  for (const line of String(raw || '').split('\n')) {
+    if (!line) continue;
+    const [sha, committedAt, decorations, subject] = line.split('\0');
+    if (!sha) continue;
+    commits.push({ sha, committed_at: committedAt, decorations, subject });
+    if (commits.length >= 300) break;
+  }
+  return commits;
+}
+
+function collectInventory(refs) {
+  const inventory = [];
+  const parsedCompositionArtifacts = [];
+  const seenRefPath = new Set();
+
+  for (const refMeta of refs) {
+    const paths = new Set(changedPaths(refMeta.ref));
+    if (refMeta.ref === `origin/${config.source_branch}` || refMeta.ref === 'HEAD') {
+      for (const repoPath of listedPaths(refMeta.ref, config.always_include)) paths.add(repoPath);
+    }
+
+    for (const repoPath of [...paths].sort()) {
+      const cleanPath = normaliseRepoPath(repoPath);
+      const key = `${refMeta.ref}\u0000${cleanPath}`;
+      if (seenRefPath.has(key) || excluded(cleanPath)) continue;
+      seenRefPath.add(key);
+      const meta = blobMetadata(refMeta.ref, cleanPath);
+      if (!meta) continue;
+
+      const base = {
+        ref: refMeta.ref,
+        ref_sha: refMeta.sha,
+        ref_committed_at: refMeta.committed_at,
+        path: cleanPath,
+        size_bytes: meta.size,
+        blob_sha: meta.blob_sha,
+        timestamp: timestampFromPath(cleanPath),
+        github_url: repoFileUrl(refMeta.ref, cleanPath)
+      };
+

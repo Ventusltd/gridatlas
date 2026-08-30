@@ -1,0 +1,120 @@
+  await fs.mkdir(absoluteFolder, { recursive: false });
+
+  const elapsedSeconds = Math.max(0, Math.floor((now.getTime() - new Date(ledger.study_started_at).getTime()) / 1000));
+  const timer = {
+    study_started_at: ledger.study_started_at,
+    not_before: ledger.not_before,
+    minimum_study_seconds: config.minimum_study_seconds,
+    elapsed_seconds: elapsedSeconds,
+    remaining_seconds: Math.max(0, config.minimum_study_seconds - elapsedSeconds),
+    mature: now.getTime() >= new Date(ledger.not_before).getTime()
+  };
+
+  const report = {
+    schema: 'gridatlas.overnight-study-report.v1',
+    generation: runStamp,
+    programme_generation: config.generation,
+    observed_at: now.toISOString(),
+    source_fingerprint: fingerprint,
+    timer,
+    expected_scope_words: config.expected_scope_words,
+    visible_unique_words: summary.unique_words,
+    scope_word_status: summary.unique_words >= config.expected_scope_words ? 'EXPECTED_CORPUS_VISIBLE' : 'ADDITIONAL_ARTIFACTS_EXPECTED',
+    repository_refs: refs,
+    commits_since_programme_start: commits,
+    corpus: summary,
+    directive_excerpts: directives,
+    composition_selection: selected ? {
+      status: 'VALID_NEW_COMPOSITION_SELECTED',
+      ref: selected.entry.ref,
+      path: selected.entry.path,
+      generation: selected.artifact.generation,
+      content_sha256: selected.entry.content_sha256
+    } : {
+      status: 'NO_VALID_NEW_COMPOSITION_YET',
+      rejected: validations
+        .filter(item => !item.valid)
+        .map(item => ({ ref: item.entry.ref, path: item.entry.path, generation: item.artifact.generation, failures: item.failures }))
+    },
+    rules: config.rules
+  };
+
+  const inventoryReport = inventory.map(item => ({
+    ref: item.ref,
+    ref_sha: item.ref_sha,
+    ref_committed_at: item.ref_committed_at,
+    path: item.path,
+    kind: item.kind,
+    size_bytes: item.size_bytes,
+    words: item.words,
+    blob_sha: item.blob_sha,
+    content_sha256: item.content_sha256,
+    timestamp: item.timestamp,
+    json_schema: item.json_schema,
+    headings: item.headings,
+    directives: item.directives,
+    github_url: item.github_url
+  }));
+
+  const reportJsonName = `${runStamp}-gridatlas-study-report.json`;
+  const inventoryName = `${runStamp}-gridatlas-source-inventory.json`;
+  const reportMdName = `${runStamp}-gridatlas-study-report.md`;
+  await writeJson(path.join(absoluteFolder, reportJsonName), report);
+  await writeJson(path.join(absoluteFolder, inventoryName), inventoryReport);
+
+  const lines = [
+    `# ${runStamp} GridAtlas overnight study`,
+    '',
+    `- Programme: \`${config.generation}-gridatlas-overnight-next-versions\``,
+    `- Observed: \`${now.toISOString()}\``,
+    `- Source fingerprint: \`${fingerprint}\``,
+    `- Study elapsed: **${timer.elapsed_seconds}s / ${timer.minimum_study_seconds}s**`,
+    `- Earliest build: \`${timer.not_before}\``,
+    `- Visible unique corpus: **${summary.unique_words.toLocaleString('en-GB')} words** across **${summary.unique_text_blobs} unique text blobs**`,
+    `- 43k expectation: **${report.scope_word_status}**`,
+    `- New valid composition: **${selected ? `${selected.artifact.generation} from ${selected.entry.ref}:${selected.entry.path}` : 'none yet'}**`,
+    '',
+    '## Branch tips inspected',
+    '',
+    ...refs.map(item => `- \`${item.ref}\` — \`${item.sha.slice(0, 12)}\` — ${item.committed_at} — ${item.subject}`),
+    '',
+    '## Corpus by kind',
+    '',
+    '| Kind | Files | Words | Bytes |',
+    '|---|---:|---:|---:|',
+    ...Object.entries(summary.by_kind).sort(([a], [b]) => a.localeCompare(b)).map(([kind, row]) => `| ${kind} | ${row.files} | ${row.words} | ${row.bytes} |`),
+    '',
+    '## High-signal directives',
+    '',
+    ...directives.slice(0, 80).map(row => `- **${row.ref}:${row.path}** — ${row.directive}`),
+    '',
+    '## Candidate rule',
+    '',
+    timer.mature
+      ? 'The one-hour study gate is mature. A new source fingerprint may now produce a new candidate folder.'
+      : `No candidate can be built for another ${timer.remaining_seconds} seconds.`,
+    ''
+  ];
+  await fs.writeFile(path.join(absoluteFolder, reportMdName), `${lines.join('\n')}\n`);
+  return { relativeFolder, timer, report };
+}
+
+function rewriteBaselineCurrent(baselineCurrent, runStamp, candidateId, sequence, fingerprint, summary) {
+  const current = JSON.parse(JSON.stringify(baselineCurrent));
+  current.generation = runStamp;
+  current.previous_generation = baselineCurrent.generation;
+  current.live_route = `/gridatlas/nightly/${candidateId}/`;
+  current.release_route = absoluteAtlasPath(baselineCurrent.release_route.replace(/^\/gridatlas\/atlas\//, ''));
+  current.shell.index = absoluteAtlasPath(baselineCurrent.shell.index);
+  current.shell.base = absoluteAtlasPath(baselineCurrent.shell.base);
+  current.cartridges = current.cartridges.map(cartridge => ({
+    ...cartridge,
+    path: absoluteAtlasPath(cartridge.path)
+  }));
+  current.composition_version = `${config.candidate_version_base}.${sequence}`;
+  current.composition_id = candidateId;
+  current.composition_manifest = `./${runStamp}-gridatlas-candidate-composition.json`;
+  current.scope_closure = {
+    generation: runStamp,
+    status: 'CANDIDATE_ONLY',
+    scope: 'Overnight next-version study candidate',

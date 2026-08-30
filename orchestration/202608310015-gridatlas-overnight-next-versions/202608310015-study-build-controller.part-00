@@ -1,0 +1,120 @@
+import { execFileSync } from 'node:child_process';
+import crypto from 'node:crypto';
+import fsSync from 'node:fs';
+import fs from 'node:fs/promises';
+import path from 'node:path';
+
+const SCRIPT_DIR = path.dirname(new URL(import.meta.url).pathname);
+const SOURCE_ROOT = path.resolve(process.env.SOURCE_ROOT || process.cwd());
+const CONFIG_PATH = path.resolve(
+  process.env.PROGRAMME_CONFIG || path.join(SCRIPT_DIR, '202608310015-programme.json')
+);
+const config = JSON.parse(await fs.readFile(CONFIG_PATH, 'utf8'));
+const now = new Date();
+const runId = String(process.env.GITHUB_RUN_ID || process.pid);
+
+function londonTimestamp(date = new Date()) {
+  const parts = new Intl.DateTimeFormat('en-GB', {
+    timeZone: config.timezone || 'Europe/London',
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+    hour: '2-digit',
+    minute: '2-digit',
+    hourCycle: 'h23'
+  }).formatToParts(date);
+  const value = Object.fromEntries(parts.map(part => [part.type, part.value]));
+  return `${value.year}${value.month}${value.day}${value.hour}${value.minute}`;
+}
+
+function sha256(value) {
+  return crypto.createHash('sha256').update(value).digest('hex');
+}
+
+function git(args, options = {}) {
+  return execFileSync('git', args, {
+    cwd: SOURCE_ROOT,
+    encoding: options.encoding === 'buffer' ? null : 'utf8',
+    maxBuffer: options.maxBuffer || 128 * 1024 * 1024,
+    stdio: ['ignore', 'pipe', 'pipe']
+  });
+}
+
+function tryGit(args, options = {}) {
+  try {
+    return git(args, options);
+  } catch {
+    return null;
+  }
+}
+
+function appendOutput(key, value) {
+  if (!process.env.GITHUB_OUTPUT) return;
+  fsSync.appendFileSync(process.env.GITHUB_OUTPUT, `${key}=${String(value).replaceAll('\n', ' ')}\n`);
+}
+
+function isWithinActiveWindow(date) {
+  const time = date.getTime();
+  return time >= new Date(config.active_from).getTime() && time <= new Date(config.active_until).getTime();
+}
+
+function normaliseRepoPath(value) {
+  return String(value || '').replaceAll('\\', '/').replace(/^\.\//, '').replace(/^\//, '');
+}
+
+function excluded(repoPath) {
+  const clean = normaliseRepoPath(repoPath);
+  return config.exclude_prefixes.some(prefix => {
+    const normalisedPrefix = normaliseRepoPath(prefix);
+    return clean === normalisedPrefix.replace(/\/$/, '') || clean.startsWith(normalisedPrefix);
+  });
+}
+
+function textExtension(repoPath) {
+  const lower = repoPath.toLowerCase();
+  return config.text_extensions.some(extension => lower.endsWith(extension));
+}
+
+function wordCount(content) {
+  return content.match(/[\p{L}\p{N}][\p{L}\p{N}’'_-]*/gu)?.length || 0;
+}
+
+function classify(repoPath, content = '') {
+  const lower = repoPath.toLowerCase();
+  if (lower.includes('scope-of-works') || /\bscope of works\b/i.test(content)) return 'scope';
+  if (lower.includes('/cartridge') || lower.includes('cartridges/')) return 'cartridge';
+  if (lower.endsWith('index.html') || lower.includes('-app-')) return 'app';
+  if (lower.includes('workflow') || lower.startsWith('.github/workflows/')) return 'workflow';
+  if (lower.includes('atman') || lower.includes('verify') || lower.includes('test')) return 'test';
+  if (lower.includes('compiler') || lower.includes('builder') || lower.includes('build_')) return 'compiler';
+  if (lower.includes('manifest')) return 'manifest';
+  if (lower.includes('state/') || lower.endsWith('-state.json')) return 'state';
+  if (lower.includes('report')) return 'report';
+  if (lower.endsWith('.md') || lower.endsWith('.txt')) return 'document';
+  return 'artifact';
+}
+
+function timestampFromPath(repoPath) {
+  const matches = normaliseRepoPath(repoPath).match(/(?:^|\/)(20\d{10})-[^/]+/g) || [];
+  if (!matches.length) return null;
+  const last = matches.at(-1).match(/20\d{10}/);
+  return last?.[0] || null;
+}
+
+function extractHeadings(content) {
+  return content
+    .split(/\r?\n/)
+    .filter(line => /^#{1,6}\s+\S/.test(line))
+    .slice(0, 80)
+    .map(line => line.trim());
+}
+
+function extractDirectives(content) {
+  const pattern = /\b(must|shall|required|acceptance|goal|rule|next step|out of scope|do not|never|always|todo)\b/i;
+  return content
+    .split(/\r?\n/)
+    .map(line => line.trim())
+    .filter(line => line.length >= 12 && line.length <= 500 && pattern.test(line))
+    .slice(0, 60);
+}
+
