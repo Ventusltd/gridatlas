@@ -1,10 +1,10 @@
 ---
 schema: "gridatlas.scope-of-works.v1"
 generation: "202608301518"
-status: "active"
+status: "done"
 scope: 2
 parent: "202608301321-01-move-atlas-into-atlas-folder.md"
-next: null
+next: "202608301520-03-apply-pipelinenews-lessons.md"
 ---
 # Scope 2 — modularise the Atlas shell and cartridges
 

@@ -1,12 +1,26 @@
 {
-  "schema": "gridatlas.current.v1",
-  "generation": "202608301321",
-  "architecture": "MOVED_RELEASE_BASELINE",
+  "schema": "gridatlas.current.v2",
+  "generation": "202608301518",
+  "previous_generation": "202608301321",
+  "architecture": "IMMUTABLE_SHELL_PLUS_HASHED_CARTRIDGES",
   "live_route": "/gridatlas/atlas/",
   "release_id": "202608300453-atlas-v9",
   "release_route": "/gridatlas/atlas/releases/202608300453-atlas-v9/",
-  "shell_index": "./releases/202608300453-atlas-v9/index.html",
-  "last_known_green": "/gridatlas/atlas/releases/202608300453-atlas-v9/",
+  "shell": {
+    "release_id": "202608300453-atlas-v9",
+    "index": "./releases/202608300453-atlas-v9/index.html",
+    "base": "./releases/202608300453-atlas-v9/"
+  },
   "cartridge_order": [],
-  "cartridges": []
+  "cartridges": [],
+  "last_known_green": {
+    "release_id": "202608300453-atlas-v9",
+    "route": "/gridatlas/atlas/releases/202608300453-atlas-v9/"
+  },
+  "contracts": {
+    "new_full_application_folders": 0,
+    "cartridge_sha256_required": true,
+    "cartridge_order_explicit": true,
+    "shell_mutation_forbidden": true
+  }
 }
