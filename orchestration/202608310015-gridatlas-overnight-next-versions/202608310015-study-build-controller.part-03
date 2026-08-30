@@ -1,0 +1,120 @@
+}
+
+function assertBaselineComposition(baselineCurrent, frozenShellHtml) {
+  if (baselineCurrent?.schema !== 'gridatlas.current.v2') throw new Error('baseline current.json schema mismatch');
+  if (baselineCurrent?.architecture !== 'IMMUTABLE_SHELL_PLUS_HASHED_CARTRIDGES') throw new Error('baseline architecture mismatch');
+  const byId = new Map((baselineCurrent.cartridges || []).map(item => [item.id, item]));
+  for (const requiredId of config.required_cartridge_ids) {
+    if (!byId.has(requiredId)) throw new Error(`baseline missing required cartridge ${requiredId}`);
+    if (!(baselineCurrent.cartridge_order || []).includes(requiredId)) throw new Error(`baseline order missing ${requiredId}`);
+  }
+  for (const cartridge of baselineCurrent.cartridges || []) {
+    const repoPath = normaliseRepoPath(path.posix.join('atlas', String(cartridge.path || '').replace(/^\.\//, '')));
+    const buffer = readBlob(`origin/${config.source_branch}`, repoPath);
+    const actual = sha256(buffer);
+    if (actual !== cartridge.sha256) throw new Error(`baseline ${cartridge.id}: SHA-256 mismatch`);
+    if (!cartridge.replace_script || !frozenShellHtml.includes(cartridge.replace_script)) {
+      throw new Error(`baseline ${cartridge.id}: frozen shell slot missing`);
+    }
+  }
+}
+
+function validateCompositionArtifact(entry, baselineCurrent, frozenShellHtml) {
+  const artifact = entry.json;
+  const failures = [];
+  if (String(artifact.generation || '') < config.generation) failures.push('generation predates programme');
+  if (!Array.isArray(artifact.cartridge_order) || !Array.isArray(artifact.cartridges)) failures.push('cartridge registry missing');
+  const shell = artifact.shell || {};
+  if (shell.release_id !== config.frozen_shell_release_id) failures.push('frozen shell release changed');
+
+  const byId = new Map((artifact.cartridges || []).map(item => [item.id, item]));
+  for (const requiredId of config.required_cartridge_ids) {
+    if (!byId.has(requiredId)) failures.push(`required cartridge missing: ${requiredId}`);
+    if (!(artifact.cartridge_order || []).includes(requiredId)) failures.push(`required cartridge not ordered: ${requiredId}`);
+  }
+
+  const resolvedCartridges = [];
+  const seenSlots = new Set();
+  for (const cartridge of artifact.cartridges || []) {
+    if (!cartridge?.id) {
+      failures.push('cartridge without id');
+      continue;
+    }
+    if (cartridge.type !== 'script' || cartridge.slot !== 'replace-script') failures.push(`${cartridge.id}: unsupported type or slot`);
+    if (!/^[a-f0-9]{64}$/.test(cartridge.sha256 || '')) failures.push(`${cartridge.id}: invalid SHA-256`);
+    if (!cartridge.replace_script || !frozenShellHtml.includes(cartridge.replace_script)) {
+      failures.push(`${cartridge.id}: frozen shell slot not found`);
+    }
+    if (seenSlots.has(cartridge.replace_script)) failures.push(`${cartridge.id}: duplicate shell slot`);
+    seenSlots.add(cartridge.replace_script);
+    const repoPath = resolveArtifactPath(entry, cartridge.path);
+    if (!repoPath) {
+      failures.push(`${cartridge.id}: unresolved path`);
+      continue;
+    }
+    try {
+      const buffer = readBlob(entry.ref, repoPath);
+      const actual = sha256(buffer);
+      if (actual !== cartridge.sha256) failures.push(`${cartridge.id}: SHA-256 mismatch`);
+      resolvedCartridges.push({ cartridge, repo_path: repoPath, buffer, actual_sha256: actual });
+    } catch {
+      failures.push(`${cartridge.id}: file missing at ${repoPath}`);
+    }
+  }
+
+  const frozenShellIndex = normaliseRepoPath(path.posix.join('atlas', String(baselineCurrent.shell.index).replace(/^\.\//, '')));
+  const candidateShellIndex = resolveArtifactPath(entry, shell.index || baselineCurrent.shell.index);
+  if (candidateShellIndex && candidateShellIndex !== frozenShellIndex) failures.push('shell index path changed');
+
+  return {
+    valid: failures.length === 0,
+    failures,
+    entry,
+    artifact,
+    resolved_cartridges: resolvedCartridges
+  };
+}
+
+function selectComposition(parsedArtifacts, baselineCurrent, frozenShellHtml) {
+  const validations = parsedArtifacts.map(entry => validateCompositionArtifact(entry, baselineCurrent, frozenShellHtml));
+  const valid = validations
+    .filter(item => item.valid)
+    .sort((a, b) => {
+      const generation = String(b.artifact.generation).localeCompare(String(a.artifact.generation));
+      if (generation) return generation;
+      const date = String(b.entry.ref_committed_at).localeCompare(String(a.entry.ref_committed_at));
+      if (date) return date;
+      return b.entry.path.localeCompare(a.entry.path);
+    });
+  return { selected: valid[0] || null, validations };
+}
+
+async function readJsonIfPresent(filePath, fallback) {
+  try {
+    return JSON.parse(await fs.readFile(filePath, 'utf8'));
+  } catch {
+    return fallback;
+  }
+}
+
+async function listFilesRecursive(root, relative = '') {
+  const folder = path.join(root, relative);
+  const entries = await fs.readdir(folder, { withFileTypes: true });
+  const files = [];
+  for (const entry of entries) {
+    const child = relative ? path.posix.join(relative, entry.name) : entry.name;
+    if (entry.isDirectory()) files.push(...await listFilesRecursive(root, child));
+    else if (entry.isFile()) files.push(child);
+  }
+  return files.sort();
+}
+
+async function writeJson(filePath, value) {
+  await fs.mkdir(path.dirname(filePath), { recursive: true });
+  await fs.writeFile(filePath, `${JSON.stringify(value, null, 2)}\n`);
+}
+
+async function writeStudyEvidence({ programmeRoot, runStamp, fingerprint, refs, commits, inventory, summary, directives, ledger, selected, validations }) {
+  const folderName = `${runStamp}-gridatlas-study-artifact-${fingerprint.slice(0, 8)}-run-${runId}`;
+  const relativeFolder = path.posix.join(config.programme_root, 'runs', folderName);
+  const absoluteFolder = path.join(SOURCE_ROOT, relativeFolder);
