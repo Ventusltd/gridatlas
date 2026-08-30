@@ -1,0 +1,111 @@
+{
+  "schema": "gridatlas.v9-5-global-search-proof.v1",
+  "generation": "202608301624",
+  "url": "https://ventusltd.github.io/gridatlas/atlas/",
+  "status": "PASS",
+  "tests": [
+    {
+      "name": "direct REPD 13599 deep link flies to Beacon Fen",
+      "status": "PASS",
+      "evidence": {
+        "deep_link": {
+          "status": "RESOLVED",
+          "repd_ref": "13599",
+          "resolved": true,
+          "mapped": true,
+          "name": "Beacon Fen Energy Park",
+          "postcode": "NG34 7SR",
+          "longitude": -0.409234,
+          "latitude": 52.998999
+        },
+        "selection": {
+          "repd_ref": "13599",
+          "name": "Beacon Fen Energy Park",
+          "postcode": "NG34 7SR",
+          "mapped": true,
+          "longitude": -0.409234,
+          "latitude": 52.998999
+        },
+        "url": "https://ventusltd.github.io/gridatlas/atlas/?repd_ref=13599"
+      }
+    },
+    {
+      "name": "SW1A 1AA typed character-by-character keeps final postcode result",
+      "status": "PASS",
+      "evidence": {
+        "kinds": [
+          "postcode"
+        ],
+        "selected": {
+          "location": {
+            "kind": "postcode",
+            "provider": "postcodes.io",
+            "label": "SW1A 1AA",
+            "sublabel": "Westminster · London",
+            "longitude": -0.141563,
+            "latitude": 51.50101,
+            "mapped": true
+          },
+          "popup": "SW1A 1AAWestminster · LondonLocation only · postcodes.io · no project identity claimed×",
+          "url": "https://ventusltd.github.io/gridatlas/atlas/?proof=1788104993173"
+        }
+      }
+    },
+    {
+      "name": "Truro flies to a UK location",
+      "status": "PASS",
+      "evidence": {
+        "kind": "place",
+        "provider": "postcodes.io",
+        "label": "Truro",
+        "sublabel": "City · Cornwall · South West",
+        "longitude": -5.051012659505978,
+        "latitude": 50.263330053427545,
+        "mapped": true
+      }
+    },
+    {
+      "name": "Beacon Fen REPD 13599 is first and sets identity",
+      "status": "PASS",
+      "evidence": {
+        "repd_ref": "13599",
+        "name": "Beacon Fen Energy Park",
+        "postcode": "NG34 7SR",
+        "mapped": true,
+        "longitude": -0.409234,
+        "latitude": 52.998999
+      }
+    },
+    {
+      "name": "Oxford, England, UK flies without project identity",
+      "status": "PASS",
+      "evidence": {
+        "kind": "global_place",
+        "provider": "Nominatim / OpenStreetMap",
+        "label": "Oxford",
+        "sublabel": "Oxford, Oxfordshire, England, United Kingdom",
+        "longitude": -1.2578499,
+        "latitude": 51.7520131,
+        "mapped": true
+      }
+    },
+    {
+      "name": "Delhi flies through the global gazetteer",
+      "status": "PASS",
+      "evidence": {
+        "kind": "global_place",
+        "provider": "Nominatim / OpenStreetMap",
+        "label": "Delhi",
+        "sublabel": "Delhi, India",
+        "longitude": 77.2197713,
+        "latitude": 28.6328027,
+        "mapped": true
+      }
+    }
+  ],
+  "console_errors": [
+    "[V9 DEEP LINK FAILED] Error: canonical project technology is invalid\n    at focusCanonicalProjectDeepLink (https://ventusltd.github.io/gridatlas/atlas/releases/202608300453-atlas-v9/ventus-corev8engine.js:806:70)\n    at Ba.Map.<anonymous> (https://ventusltd.github.io/gridatlas/atlas/releases/202608300453-atlas-v9/ventus-corev8engine.js:1434:9)\n    at Ba.Map.fire (https://cdn.jsdelivr.net/npm/maplibre-gl@3.6.2/dist/maplibre-gl.js:31:10251)\n    at Ba.Map._render (https://cdn.jsdelivr.net/npm/maplibre-gl@3.6.2/dist/maplibre-gl.js:35:376162)\n    at https://cdn.jsdelivr.net/npm/maplibre-gl@3.6.2/dist/maplibre-gl.js:35:377759",
+    "Failed to load resource: the server responded with a status of 404 ()"
+  ],
+  "failure": null
+}
