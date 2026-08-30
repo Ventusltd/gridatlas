@@ -16,7 +16,11 @@
       "critical_sha256": "5f5fbec83f9ce307b47ddc6e7277743f0bba1a2445b0f3ca50a9a1806146e993",
       "delivery": "MAPLIBRE_WORKER_DIRECT_URL",
       "shared_cartridge_path": "cartridges/5f5fbec83f9ce307b47ddc6e7277743f0bba1a2445b0f3ca50a9a1806146e993/grid_400kv.geojson"
-    }
+    },
+    "source_commit": "150c4ad7b04686182c27c47ee581960396378dec",
+    "publication_commit": "0597f4654a675e575690a6eab43f3c17707ef613",
+    "promotion_commit": "eecfeacdb5d7acb134591614285a90db385e5b59",
+    "candidate_pages_run_id": 33287946181
   },
   "generation": "202608292311",
   "predecessor": {
@@ -42,6 +46,13 @@
     "public_proof_sha256": "c1479f0a9284e0b2920c9252a8b688a33e204d2461507e0f864ffe226f04f416",
     "v8_css_byte_identical": true,
     "v8_html_surface_preserved": true,
-    "verified_at": "2026-08-30T02:27:14.807770Z"
+    "verified_at": "2026-08-30T02:27:14.807770Z",
+    "commit_lineage_attested": true,
+    "commit_lineage_rule": "SOURCE_ANCESTOR_OF_PUBLICATION_ANCESTOR_OF_PROMOTION",
+    "commit_lineage": {
+      "source_commit": "150c4ad7b04686182c27c47ee581960396378dec",
+      "publication_commit": "0597f4654a675e575690a6eab43f3c17707ef613",
+      "promotion_commit": "eecfeacdb5d7acb134591614285a90db385e5b59"
+    }
   }
 }
