@@ -19,7 +19,9 @@ export const EXPECTED_RELEASES = Object.freeze([
 ]);
 export const ACTIVE_WORKFLOWS = Object.freeze([
   '202608301321-scope-loop.yml',
-  '202608301321-verify-live.yml'
+  '202608301321-verify-live.yml',
+  '202608310015-gridatlas-overnight-next-versions.yml',
+  '202608310050-gridatlas-next-version-builders.yml'
 ]);
 
 export function invariant(condition, message) {

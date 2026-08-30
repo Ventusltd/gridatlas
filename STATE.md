@@ -2,10 +2,10 @@
 
 - Master: `done`
 - Active scope: `none`
-- Composition: `202608301522 · 202608300453-atlas-v9 · uk-gazetteer-flyto`
+- Composition: `202608301825 · 202608300453-atlas-v9 · streaming-parquet-bridge → uk-gazetteer-flyto`
 - Top-level full release copies: `0`
 - Immutable releases under atlas/releases: `8`
-- Active workflows: `2`
+- Active workflows: `4`
 - Historical workflows archived: `21`
 - Last-known-green shell: `202608300453-atlas-v9`
 

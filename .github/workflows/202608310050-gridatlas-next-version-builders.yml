@@ -1,0 +1,296 @@
+name: 202608310050 GridAtlas next-version builders
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '_build-plan/**'
+      - '202608310050-gridatlas-next-version-builders/**'
+      - '.github/workflows/202608310050-gridatlas-next-version-builders.yml'
+      - 'tools/scope/lib.mjs'
+      - 'STATE.md'
+  schedule:
+    # 01:07/01:37 BST onwards, offset from the quarter-hour observer.
+    # The source gate still prohibits any build before 01:15 BST.
+    - cron: '7,37 0-7 31 8 *'
+  workflow_dispatch:
+
+permissions:
+  actions: write
+  contents: write
+  pages: write
+
+concurrency:
+  group: 202608310050-gridatlas-next-version-builders
+  cancel-in-progress: false
+
+jobs:
+  build-one-stage:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 55
+    env:
+      BUILD_PLAN_DIR: work/202608310050-build-plan/_build-plan
+    steps:
+      - name: Checkout exact GridAtlas history
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GRIDATLAS_SCOPE_TOKEN || github.token }}
+
+      - name: Fetch every branch carrying overnight build-plan artefacts
+        run: |
+          git config remote.origin.fetch '+refs/heads/*:refs/remotes/origin/*'
+          git fetch origin --prune --tags --force
+
+      - name: Prove the workflow allowlist and derived state
+        run: |
+          node tools/scope/loop.mjs lint
+          node tools/scope/loop.mjs state
+          git diff --exit-code -- STATE.md
+
+      - name: Select the most complete 43k+ build plan and next unfinished stage
+        id: plan
+        run: node 202608310050-gridatlas-next-version-builders/tools/202608310050-select-build-plan.mjs
+
+      - name: Record a non-build source gate in the Actions summary
+        if: steps.plan.outputs.ready != 'true' || steps.plan.outputs.mature != 'true' || steps.plan.outputs.active != 'true'
+        run: |
+          {
+            echo '## GridAtlas next-version source gate'
+            echo
+            echo "- active: ${{ steps.plan.outputs.active }}"
+            echo "- one-hour study complete: ${{ steps.plan.outputs.mature }}"
+            echo "- complete source ready: ${{ steps.plan.outputs.ready }}"
+            echo "- selected ref: ${{ steps.plan.outputs.source_ref }}"
+            echo "- selected SHA: ${{ steps.plan.outputs.source_sha }}"
+            echo "- visible words: ${{ steps.plan.outputs.source_words }} / 43000"
+            echo "- missing: ${{ steps.plan.outputs.missing }}"
+            echo
+            echo 'No candidate was created and no live pointer was touched.'
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Checkout PipelineNews for N1 candidate generation
+        if: steps.plan.outputs.stage == 'n1'
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          repository: Ventusltd/pipelinenews
+          path: work/pipelinenews
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Checkout Companies for N1 candidate generation
+        if: steps.plan.outputs.stage == 'n1'
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          repository: Ventusltd/companies
+          path: work/companies
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Build N1 stable-route producer candidates
+        if: steps.plan.outputs.stage == 'n1'
+        id: n1_build
+        continue-on-error: true
+        run: |
+          python3 202608310050-gridatlas-next-version-builders/tools/202608310050-build-n1-deep-link-candidates.py \
+            --output "${{ steps.plan.outputs.output_dir }}" \
+            --generation "${{ steps.plan.outputs.generation }}" \
+            --pipelinenews work/pipelinenews \
+            --companies work/companies \
+            --gridatlas-current atlas/current.json
+
+      - name: Install pinned browser harness for N1
+        if: steps.plan.outputs.stage == 'n1' && steps.n1_build.outcome == 'success'
+        id: n1_browser_install
+        continue-on-error: true
+        run: |
+          npm ci
+          npx playwright install --with-deps chromium
+
+      - name: Prove both stable-route sentinels and the stale 404
+        if: steps.plan.outputs.stage == 'n1' && steps.n1_build.outcome == 'success' && steps.n1_browser_install.outcome == 'success'
+        id: n1_proof
+        continue-on-error: true
+        run: |
+          node 202608310050-gridatlas-next-version-builders/tools/202608310050-prove-federated-deep-links.mjs \
+            "${{ steps.plan.outputs.output_dir }}" \
+            "${{ steps.plan.outputs.generation }}"
+
+      - name: Install pinned DuckDB for N2
+        if: steps.plan.outputs.stage == 'n2'
+        id: n2_install
+        continue-on-error: true
+        env:
+          PIP_DISABLE_PIP_VERSION_CHECK: '1'
+        run: python3 -m pip install duckdb==1.3.2
+
+      - name: Build the static exact-REPD reference index candidate
+        if: steps.plan.outputs.stage == 'n2' && steps.n2_install.outcome == 'success'
+        id: n2_build
+        continue-on-error: true
+        run: |
+          python3 202608310050-gridatlas-next-version-builders/tools/202608310050-build-repd-ref-index.py \
+            --parquet data/repd_projects_202608290716.parquet \
+            --output "${{ steps.plan.outputs.output_dir }}" \
+            --generation "${{ steps.plan.outputs.generation }}" \
+            --build-plan "$BUILD_PLAN_DIR"
+
+      - name: Checkout pinned CVAA registry for N3
+        if: steps.plan.outputs.stage == 'n3'
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          repository: Ventusltd/cvaa
+          ref: d2ebc01f6eab41f2a84b0c53c4cfae0d2625ec5e
+          path: work/cvaa
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Measure current GridAtlas findings against pinned CVAA
+        if: steps.plan.outputs.stage == 'n3'
+        id: n3_measure
+        continue-on-error: true
+        shell: bash
+        run: |
+          set +e
+          OUT="${{ steps.plan.outputs.output_dir }}/cvaa"
+          mkdir -p "$OUT"
+          node work/cvaa/tools/selftest.mjs > "$OUT/selftest.log" 2>&1
+          SELF_RC=$?
+          node work/cvaa/inoculate.mjs . --json --no-write > "$OUT/inoculate-current.json" 2> "$OUT/inoculate-current.stderr.log"
+          INOCULATE_RC=$?
+          python3 - <<PY
+          import json
+          from pathlib import Path
+          out=Path('$OUT')
+          payload={
+            'schema':'gridatlas.cvaa-measurement.v1',
+            'generation':'${{ steps.plan.outputs.generation }}',
+            'cvaa_sha':'d2ebc01f6eab41f2a84b0c53c4cfae0d2625ec5e',
+            'selftest_exit_code':$SELF_RC,
+            'inoculate_exit_code':$INOCULATE_RC,
+            'classification':'MEASURED_NOT_BASELINED',
+            'baseline_installed':False,
+            'live_product_changed':False
+          }
+          (out/'measurement.json').write_text(json.dumps(payload,indent=2)+'\n')
+          PY
+          test "$SELF_RC" -eq 0
+          test -s "$OUT/inoculate-current.json"
+
+      - name: Checkout PipelineNews frozen spine for N4
+        if: steps.plan.outputs.stage == 'n4'
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          repository: Ventusltd/pipelinenews
+          path: work/pipelinenews
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Build N4 design-freeze calibration candidate
+        if: steps.plan.outputs.stage == 'n4'
+        id: n4_build
+        continue-on-error: true
+        run: |
+          python3 202608310050-gridatlas-next-version-builders/tools/202608310050-calibrate-design-freeze.py \
+            --pipelinenews work/pipelinenews \
+            --output "${{ steps.plan.outputs.output_dir }}" \
+            --generation "${{ steps.plan.outputs.generation }}"
+
+      - name: Build later-stage source locks and readiness artefacts
+        if: contains(fromJSON('["n5","n6","n11","handover"]'), steps.plan.outputs.stage)
+        id: readiness
+        continue-on-error: true
+        run: |
+          node 202608310050-gridatlas-next-version-builders/tools/202608310050-build-readiness.mjs \
+            "$BUILD_PLAN_DIR" \
+            "${{ steps.plan.outputs.output_dir }}" \
+            "${{ steps.plan.outputs.stage }}" \
+            202608310050-gridatlas-next-version-builders/outputs
+
+      - name: Finalise status and SHA-256 closure
+        if: always() && steps.plan.outputs.output_dir != ''
+        id: finalise
+        env:
+          OUTPUT_DIR: ${{ steps.plan.outputs.output_dir }}
+          STAGE: ${{ steps.plan.outputs.stage }}
+          N1_BUILD_OUTCOME: ${{ steps.n1_build.outcome }}
+          N1_BROWSER_INSTALL_OUTCOME: ${{ steps.n1_browser_install.outcome }}
+          N1_PROOF_OUTCOME: ${{ steps.n1_proof.outcome }}
+          N2_INSTALL_OUTCOME: ${{ steps.n2_install.outcome }}
+          N2_BUILD_OUTCOME: ${{ steps.n2_build.outcome }}
+          N3_MEASURE_OUTCOME: ${{ steps.n3_measure.outcome }}
+          N4_BUILD_OUTCOME: ${{ steps.n4_build.outcome }}
+          READINESS_OUTCOME: ${{ steps.readiness.outcome }}
+        run: node 202608310050-gridatlas-next-version-builders/tools/202608310050-finalise-stage.mjs
+
+      - name: Assert source, shell and live pointers were not edited
+        if: always() && steps.plan.outputs.output_dir != ''
+        id: boundary
+        shell: bash
+        run: |
+          set -euo pipefail
+          OUT="${{ steps.plan.outputs.output_dir }}"
+          git diff --exit-code -- _build-plan atlas/current.json atlas/index.html state/live-set.json releases/current-v5.json
+          while IFS= read -r changed; do
+            [ -z "$changed" ] && continue
+            case "$changed" in
+              "$OUT"|"$OUT"/*) ;;
+              *) echo "Unexpected changed path: $changed" >&2; exit 1 ;;
+            esac
+          done < <(git status --porcelain=v1 | sed -E 's/^.. //; s#/$##')
+
+      - name: Commit only the new timestamped candidate folder
+        if: always() && steps.plan.outputs.output_dir != '' && steps.finalise.outcome == 'success' && steps.boundary.outcome == 'success'
+        id: commit
+        shell: bash
+        run: |
+          set -euo pipefail
+          OUT="${{ steps.plan.outputs.output_dir }}"
+          git config user.name 'gridatlas-next-version-builder'
+          git config user.email 'actions@users.noreply.github.com'
+          git add -- "$OUT"
+          while IFS= read -r staged; do
+            [ -z "$staged" ] && continue
+            case "$staged" in
+              "$OUT"/*) ;;
+              *) echo "Refusing staged path outside candidate folder: $staged" >&2; exit 1 ;;
+            esac
+          done < <(git diff --cached --name-only)
+          git commit -m "${{ steps.plan.outputs.generation }}-${{ steps.plan.outputs.stage }}-gridatlas: isolated next-version candidate [skip ci]"
+          for attempt in 1 2 3 4; do
+            git pull --rebase origin main
+            if git push origin HEAD:main; then
+              echo "committed=true" >> "$GITHUB_OUTPUT"
+              echo "commit_sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+              exit 0
+            fi
+            sleep $((attempt * 5))
+          done
+          exit 1
+
+      - name: Request Pages rebuild for test artefacts
+        if: steps.commit.outputs.committed == 'true'
+        continue-on-error: true
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh api --method POST "repos/${GITHUB_REPOSITORY}/pages/builds"
+
+      - name: Chain the next stage after a green bounded stage
+        if: steps.commit.outputs.committed == 'true' && steps.finalise.outputs.completed == 'true' && steps.plan.outputs.stage != 'handover'
+        continue-on-error: true
+        env:
+          GH_TOKEN: ${{ secrets.GRIDATLAS_SCOPE_TOKEN || github.token }}
+        run: |
+          sleep 25
+          gh workflow run 202608310050-gridatlas-next-version-builders.yml --ref main
+
+      - name: Preserve a red gate after committing its evidence
+        if: always() && steps.plan.outputs.output_dir != ''
+        run: |
+          STATUS="$(python3 - <<PY
+          import json
+          print(json.load(open('${{ steps.plan.outputs.output_dir }}/status.json'))['status'])
+          PY
+          )"
+          echo "final-status=$STATUS"
+          test "$STATUS" != 'FAILED_WITH_EVIDENCE'
