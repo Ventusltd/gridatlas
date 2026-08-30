@@ -1,10 +1,10 @@
 ---
 schema: "gridatlas.scope-of-works.v1"
 generation: "202608301522"
-status: "active"
+status: "done"
 scope: 5
 parent: "202608301521-04-add-uk-location-search-cartridge.md"
-next: null
+next: "202608301524-06-close-and-harden-cicd-loop.md"
 ---
 # Scope 5 — compile and attest the cartridge composition
 

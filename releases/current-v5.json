@@ -34,7 +34,17 @@
     },
     "source_commit": "4f3e8fc5c7ea28edf83dbac9b231024723bcf231",
     "release_route": "/gridatlas/atlas/releases/202608300453-atlas-v9/",
-    "atlas_router_generation": "202608301321"
+    "atlas_router_generation": "202608301321",
+    "atlas_composition": {
+      "schema": "gridatlas.composition-pointer.v1",
+      "generation": "202608301522",
+      "route": "/gridatlas/atlas/",
+      "shell_release_id": "202608300453-atlas-v9",
+      "cartridge_order": [
+        "uk-gazetteer-flyto"
+      ],
+      "manifest": "atlas/manifests/202608301522-composition.json"
+    }
   },
   "generation": "202608300453",
   "predecessor": {

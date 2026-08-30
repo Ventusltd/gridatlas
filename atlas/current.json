@@ -1,7 +1,7 @@
 {
   "schema": "gridatlas.current.v2",
-  "generation": "202608301521",
-  "previous_generation": "202608301520",
+  "generation": "202608301522",
+  "previous_generation": "202608301521",
   "architecture": "IMMUTABLE_SHELL_PLUS_HASHED_CARTRIDGES",
   "live_route": "/gridatlas/atlas/",
   "release_id": "202608300453-atlas-v9",
@@ -60,5 +60,6 @@
       "external_requests_per_query_max": 2,
       "result_class": "LOCATION_ONLY"
     }
-  }
+  },
+  "composition_manifest": "./manifests/202608301522-composition.json"
 }
