@@ -1,0 +1,667 @@
+name: 202608300453 Build verify promote exact REPD receiver
+run-name: Exact REPD receiver successor ${{ github.run_number }} from ${{ github.sha }}
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/202608300453-build-verify-promote-exact-repd-deep-link.yml'
+      - 'compiler/202608300453-build-exact-repd-deep-link-successor.py'
+      - 'atman/202608300453-verify-exact-repd-deep-link.mjs'
+  workflow_dispatch:
+  schedule:
+    - cron: '55 3-8 30 8 *'
+
+permissions:
+  contents: write
+  actions: read
+
+concurrency:
+  group: gridatlas-202608300453-exact-repd-receiver
+  cancel-in-progress: false
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: 'true'
+  PYTHONDONTWRITEBYTECODE: '1'
+  PYTHONPYCACHEPREFIX: /tmp/gridatlas-pycache
+  MISSION_INCEPTED_AT: '2026-08-30T03:53:00Z'
+  MISSION_EXPIRES_AT: '2026-08-30T08:35:00Z'
+  RELEASE_ID: 202608300453-atlas-v9
+  GENERATION: '202608300453'
+  PARENT_RELEASE_ID: 202608292311-atlas-v9
+  PARENT_URL: https://ventusltd.github.io/gridatlas/202608292311-atlas-v9/
+  CANDIDATE_URL: https://ventusltd.github.io/gridatlas/202608300453-atlas-v9/
+  ORACLE_URL: https://globalgrid2050.com/repd_grid_atlasv8/
+  COMPILER: compiler/202608300453-build-exact-repd-deep-link-successor.py
+  DEEP_LINK_VERIFIER: atman/202608300453-verify-exact-repd-deep-link.mjs
+  COMPARATOR: atman/202608292311-render-ready-comparator.mjs
+  CONTRACT: contracts/202608292311-render-ready-runtime.json
+  GOLDEN_REPD_REF: '13599'
+  GOLDEN_PROJECT_NAME: Beacon Fen Energy Park
+
+jobs:
+  successor:
+    name: Preserve V8 and actual-render gates while adding exact REPD receiver
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    steps:
+      - name: Enforce bounded five-hour mission window
+        id: window
+        run: |
+          set -euo pipefail
+          now="$(date -u +%s)"
+          starts="$(date -u -d "$MISSION_INCEPTED_AT" +%s)"
+          expires="$(date -u -d "$MISSION_EXPIRES_AT" +%s)"
+          if (( now < starts || now > expires )); then
+            echo 'active=false' >> "$GITHUB_OUTPUT"
+            echo "Exact REPD receiver mission inactive outside $MISSION_INCEPTED_AT to $MISSION_EXPIRES_AT." >> "$GITHUB_STEP_SUMMARY"
+            exit 0
+          fi
+          echo 'active=true' >> "$GITHUB_OUTPUT"
+
+      - name: Checkout exact GridAtlas source boundary
+        if: steps.window.outputs.active == 'true'
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 220
+          persist-credentials: true
+
+      - name: Resolve immutable parent and resumable successor state
+        if: steps.window.outputs.active == 'true'
+        id: preflight
+        run: |
+          set -euo pipefail
+          test "$GITHUB_REF" = refs/heads/main
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          git fetch --no-tags origin main:refs/remotes/origin/main
+          test "$(git rev-parse origin/main)" = "$GITHUB_SHA"
+          test -d "$PARENT_RELEASE_ID"
+          test -f state/live-set.json
+          test "$(jq -r '.current.release_id' state/live-set.json)" = "$PARENT_RELEASE_ID"
+          test "$(jq -r '.verification.promotion_eligible' state/live-set.json)" = true
+          test "$(jq -r '.verification.failed_gates' state/live-set.json)" = 0
+          test "$(jq -r '.verification.commit_lineage_attested' state/live-set.json)" = true
+          test -f "$COMPILER"
+          test -f "$DEEP_LINK_VERIFIER"
+          test -f "$COMPARATOR"
+          test -f "$CONTRACT"
+          python3 - <<'PY'
+          from pathlib import Path
+          for name in (
+              'compiler/202608300453-build-exact-repd-deep-link-successor.py',
+          ):
+              path = Path(name)
+              compile(path.read_text(encoding='utf-8'), str(path), 'exec')
+          PY
+          node --check "$DEEP_LINK_VERIFIER"
+          node --check "$COMPARATOR"
+          (
+            cd "$PARENT_RELEASE_ID"
+            sha256sum --check sha256sums.txt
+          )
+          if test -d "$RELEASE_ID"; then
+            if test "$(jq -r '.current.release_id' state/live-set.json)" = "$RELEASE_ID"; then
+              echo 'ready=false' >> "$GITHUB_OUTPUT"
+              echo 'mode=complete' >> "$GITHUB_OUTPUT"
+              echo "$RELEASE_ID is already the governed current release." >> "$GITHUB_STEP_SUMMARY"
+              exit 0
+            fi
+            (
+              cd "$RELEASE_ID"
+              sha256sum --check sha256sums.txt
+            )
+            echo 'mode=resume' >> "$GITHUB_OUTPUT"
+          else
+            echo 'mode=build' >> "$GITHUB_OUTPUT"
+          fi
+          echo 'ready=true' >> "$GITHUB_OUTPUT"
+          git diff --exit-code
+
+      - name: Configure pinned Python
+        if: steps.preflight.outputs.ready == 'true'
+        uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+
+      - name: Configure pinned Node
+        if: steps.preflight.outputs.ready == 'true'
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020
+        with:
+          node-version: '22.18.0'
+          cache: npm
+
+      - name: Install pinned Chromium runtime
+        if: steps.preflight.outputs.ready == 'true'
+        run: |
+          set -euo pipefail
+          npm ci --ignore-scripts
+          npx playwright install --with-deps chromium
+
+      - name: Build or recover deterministic immutable successor
+        if: steps.preflight.outputs.ready == 'true'
+        env:
+          BUILD_MODE: ${{ steps.preflight.outputs.mode }}
+        run: |
+          set -euo pipefail
+          rm -rf work
+          mkdir -p work/release
+          if test "$BUILD_MODE" = build; then
+            python3 "$COMPILER" \
+              --parent "$PARENT_RELEASE_ID" \
+              --output "work/release/$RELEASE_ID" \
+              --release-id "$RELEASE_ID" \
+              --parent-release-id "$PARENT_RELEASE_ID" \
+              --source-commit "$GITHUB_SHA" \
+              | tee work/compiler-result.json
+          else
+            cp -R "$RELEASE_ID" "work/release/$RELEASE_ID"
+            jq -n \
+              --arg release "$RELEASE_ID" \
+              --arg parent "$PARENT_RELEASE_ID" \
+              '{classification:"RECOVERED_IMMUTABLE_EXACT_REPD_RECEIVER",release_id:$release,parent_release_id:$parent}' \
+              > work/compiler-result.json
+          fi
+          candidate="work/release/$RELEASE_ID"
+          test "$(jq -r '.release_id' "$candidate/release-manifest.json")" = "$RELEASE_ID"
+          test "$(jq -r '.parent_release_id' "$candidate/release-manifest.json")" = "$PARENT_RELEASE_ID"
+          test "$(jq -r '.deep_link_receiver.identity_rule' "$candidate/release-manifest.json")" = EXACT_REPD_REF_ONLY
+          test "$(jq -r '.deep_link_receiver.automatic_fly_to' "$candidate/release-manifest.json")" = true
+          test "$(jq -r '.schema' "$candidate/deep-link-receiver-manifest.json")" = gridatlas.exact-repd-deep-link-build.v1
+          test "$(jq -r '.v8_html_changed' "$candidate/deep-link-receiver-manifest.json")" = false
+          test "$(jq -r '.v8_css_changed' "$candidate/deep-link-receiver-manifest.json")" = false
+          test "$(jq -r '.v8_engine_changed' "$candidate/deep-link-receiver-manifest.json")" = false
+          test "$(jq -r '.map_ready_data_changed' "$candidate/deep-link-receiver-manifest.json")" = false
+          node --check "$candidate/202608291818-place-postcode-search.js"
+          cmp "$PARENT_RELEASE_ID/index.html" "$candidate/index.html"
+          cmp "$PARENT_RELEASE_ID/ventusv8.css" "$candidate/ventusv8.css"
+          cmp "$PARENT_RELEASE_ID/ventus-corev8engine.js" "$candidate/ventus-corev8engine.js"
+          diff -qr "$PARENT_RELEASE_ID/data" "$candidate/data"
+          python3 - <<'PY'
+          from pathlib import Path
+          import os
+
+          parent = Path(os.environ['PARENT_RELEASE_ID'])
+          candidate = Path('work/release') / os.environ['RELEASE_ID']
+          permitted = {
+              '202608291818-place-postcode-search.js',
+              'build-manifest.json',
+              'deep-link-receiver-manifest.json',
+              'map-ready-manifest.json',
+              'release-manifest.json',
+              'sha256sums.txt',
+          }
+          for path in sorted(item for item in parent.rglob('*') if item.is_file()):
+              relative = path.relative_to(parent).as_posix()
+              peer = candidate / relative
+              if relative in permitted:
+                  continue
+              if not peer.is_file() or peer.read_bytes() != path.read_bytes():
+                  raise SystemExit(f'unapproved successor byte change: {relative}')
+          for path in sorted(item for item in candidate.rglob('*') if item.is_file()):
+              relative = path.relative_to(candidate).as_posix()
+              if not (parent / relative).is_file() and relative not in permitted:
+                  raise SystemExit(f'unapproved successor file addition: {relative}')
+          PY
+          (
+            cd "$candidate"
+            sha256sum --check sha256sums.txt
+          )
+
+      - name: Serve candidate and immutable parent locally
+        if: steps.preflight.outputs.ready == 'true'
+        run: |
+          set -euo pipefail
+          python3 -m http.server 4173 --bind 127.0.0.1 --directory work/release >work/candidate-http.log 2>&1 &
+          echo $! > work/candidate-http.pid
+          python3 -m http.server 4175 --bind 127.0.0.1 --directory . >work/parent-http.log 2>&1 &
+          echo $! > work/parent-http.pid
+          for url in "http://127.0.0.1:4173/$RELEASE_ID/" "http://127.0.0.1:4175/$PARENT_RELEASE_ID/"; do
+            ready=0
+            for attempt in $(seq 1 60); do
+              if curl --fail --silent --show-error "$url" >/dev/null; then ready=1; break; fi
+              sleep 1
+            done
+            test "$ready" = 1
+          done
+
+      - name: Prove local Beacon Fen exact receiver and fly-to
+        if: steps.preflight.outputs.ready == 'true'
+        env:
+          MODE: local
+          TARGET_URL: http://127.0.0.1:4173/202608300453-atlas-v9/
+          EXPECTED_REPD_REF: ${{ env.GOLDEN_REPD_REF }}
+          EXPECTED_PROJECT_NAME: ${{ env.GOLDEN_PROJECT_NAME }}
+          OUTPUT: work/202608300453-local-exact-repd-deep-link-proof.json
+          SCREENSHOT: work/202608300453-local-exact-repd-deep-link.png
+        run: |
+          set -euo pipefail
+          node "$DEEP_LINK_VERIFIER"
+          proof="$OUTPUT"
+          test "$(jq -r '.classification' "$proof")" = VERIFIED_LOCAL_ATLAS_EXACT_REPD_DEEP_LINK
+          test "$(jq -r '.failed_checks | length' "$proof")" = 0
+          test "$(jq -r '.receiver.repd_ref' "$proof")" = "$GOLDEN_REPD_REF"
+          test "$(jq -r '.receiver.name' "$proof")" = "$GOLDEN_PROJECT_NAME"
+          test "$(jq -r '.receiver.mapped' "$proof")" = true
+          test "$(jq -r '.synthetic_receiver' "$proof")" = false
+          test "$(jq -r '.route_interceptions' "$proof")" = 0
+
+      - name: Run local strict V8 actual-render comparator with bounded retries
+        if: steps.preflight.outputs.ready == 'true'
+        run: |
+          set -euo pipefail
+          passed=false
+          for attempt in 1 2 3; do
+            proof="work/202608300453-local-render-attempt-${attempt}.json"
+            record="work/202608300453-local-render-record-${attempt}.jsonl"
+            set +e
+            MODE=local \
+            CANDIDATE_URL="http://127.0.0.1:4173/$RELEASE_ID/" \
+            PARENT_URL="http://127.0.0.1:4175/$PARENT_RELEASE_ID/" \
+            ORACLE_URL="$ORACLE_URL" \
+            OUTPUT="$proof" \
+            RECORD_OUTPUT="$record" \
+            node "$COMPARATOR"
+            rc=$?
+            set -e
+            if test "$rc" = 0 \
+              && test "$(jq -r '.classification' "$proof")" = VERIFIED_LOCAL_RENDER_READY_400KV \
+              && test "$(jq -r '.failed_gates' "$proof")" = 0 \
+              && test "$(jq -r '.label' "$record")" = PROMOTE; then
+              cp "$proof" work/202608300453-local-render-ready-proof.json
+              cp "$record" work/202608300453-local-render-ready-performance.jsonl
+              echo "LOCAL_RENDER_ATTEMPT=$attempt" >> "$GITHUB_ENV"
+              passed=true
+              break
+            fi
+            sleep 8
+          done
+          test "$passed" = true
+          test "$(jq '[.gates[] | select(.passed != true)] | length' work/202608300453-local-render-ready-proof.json)" = 0
+          test "$(jq -r '.privacy' work/202608300453-local-render-ready-performance.jsonl)" = NO_PERSONAL_DATA
+
+      - name: Retain local receiver and actual-render evidence
+        if: always() && steps.preflight.outputs.ready == 'true'
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: gridatlas-202608300453-local-${{ github.sha }}
+          path: |
+            work/202608300453-local-exact-repd-deep-link-proof.json
+            work/202608300453-local-exact-repd-deep-link.png
+            work/202608300453-local-render-ready-proof.json
+            work/202608300453-local-render-ready-performance.jsonl
+            work/202608300453-local-render-attempt-*.json
+            work/202608300453-local-render-record-*.jsonl
+            work/compiler-result.json
+            work/candidate-http.log
+            work/parent-http.log
+          if-no-files-found: warn
+          retention-days: 90
+          compression-level: 0
+
+      - name: Stop local servers
+        if: always()
+        run: |
+          set +e
+          for pidfile in work/candidate-http.pid work/parent-http.pid; do
+            if test -f "$pidfile"; then kill "$(cat "$pidfile")" 2>/dev/null || true; fi
+          done
+
+      - name: Publish or recover immutable candidate commit
+        if: steps.preflight.outputs.ready == 'true'
+        env:
+          BUILD_MODE: ${{ steps.preflight.outputs.mode }}
+        run: |
+          set -euo pipefail
+          if test "$BUILD_MODE" = build; then
+            git fetch --no-tags origin main:refs/remotes/origin/main
+            test "$(git rev-parse origin/main)" = "$GITHUB_SHA"
+            test ! -e "$RELEASE_ID"
+            cp -R "work/release/$RELEASE_ID" "$RELEASE_ID"
+            git add "$RELEASE_ID"
+            mapfile -t staged < <(git diff --cached --name-only)
+            test "${#staged[@]}" -gt 10
+            for path in "${staged[@]}"; do
+              case "$path" in
+                "$RELEASE_ID"/*) ;;
+                *) echo "unexpected staged path: $path" >&2; exit 1 ;;
+              esac
+            done
+            git config user.name gridatlas-exact-repd-release-bot
+            git config user.email actions@users.noreply.github.com
+            git commit -m "202608300453: publish exact REPD receiver candidate"
+            publication_commit="$(git rev-parse HEAD)"
+            git push origin HEAD:main
+          else
+            publication_commit="$(git log --diff-filter=A -1 --format=%H -- "$RELEASE_ID/release-manifest.json")"
+            [[ "$publication_commit" =~ ^[a-f0-9]{40}$ ]]
+          fi
+          echo "PUBLICATION_COMMIT=$publication_commit" >> "$GITHUB_ENV"
+
+      - name: Wait for exact candidate Pages deployment
+        if: steps.preflight.outputs.ready == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          api="https://api.github.com/repos/$GITHUB_REPOSITORY/actions/runs?head_sha=$PUBLICATION_COMMIT&per_page=50"
+          pages_run=''; status=''; conclusion=''
+          for attempt in $(seq 1 120); do
+            payload="$(curl --fail --silent --show-error -H "Authorization: Bearer $GH_TOKEN" -H 'Accept: application/vnd.github+json' "$api")"
+            pages_run="$(printf '%s' "$payload" | jq -r '[.workflow_runs[] | select(.name == "pages build and deployment")][0].id // empty')"
+            status="$(printf '%s' "$payload" | jq -r '[.workflow_runs[] | select(.name == "pages build and deployment")][0].status // empty')"
+            conclusion="$(printf '%s' "$payload" | jq -r '[.workflow_runs[] | select(.name == "pages build and deployment")][0].conclusion // empty')"
+            if test "$status" = completed; then test "$conclusion" = success; break; fi
+            sleep 5
+          done
+          test -n "$pages_run"
+          test "$status" = completed
+          test "$conclusion" = success
+          echo "CANDIDATE_PAGES_RUN_ID=$pages_run" >> "$GITHUB_ENV"
+          for attempt in $(seq 1 60); do
+            if curl --fail --location --silent --show-error "$CANDIDATE_URL" >/dev/null; then break; fi
+            sleep 3
+          done
+
+      - name: Prove public Beacon Fen exact receiver and fly-to
+        if: steps.preflight.outputs.ready == 'true'
+        env:
+          MODE: public
+          TARGET_URL: ${{ env.CANDIDATE_URL }}
+          EXPECTED_REPD_REF: ${{ env.GOLDEN_REPD_REF }}
+          EXPECTED_PROJECT_NAME: ${{ env.GOLDEN_PROJECT_NAME }}
+          OUTPUT: work/202608300453-public-exact-repd-deep-link-proof.json
+          SCREENSHOT: work/202608300453-public-exact-repd-deep-link.png
+        run: |
+          set -euo pipefail
+          node "$DEEP_LINK_VERIFIER"
+          proof="$OUTPUT"
+          test "$(jq -r '.classification' "$proof")" = VERIFIED_PUBLIC_ATLAS_EXACT_REPD_DEEP_LINK
+          test "$(jq -r '.failed_checks | length' "$proof")" = 0
+          test "$(jq -r '.receiver.repd_ref' "$proof")" = "$GOLDEN_REPD_REF"
+          test "$(jq -r '.receiver.name' "$proof")" = "$GOLDEN_PROJECT_NAME"
+          test "$(jq -r '.receiver.mapped' "$proof")" = true
+
+      - name: Run public strict V8 actual-render comparator with bounded retries
+        if: steps.preflight.outputs.ready == 'true'
+        run: |
+          set -euo pipefail
+          passed=false
+          for attempt in 1 2 3; do
+            proof="work/202608300453-public-render-attempt-${attempt}.json"
+            record="work/202608300453-public-render-record-${attempt}.jsonl"
+            set +e
+            MODE=public \
+            CANDIDATE_URL="$CANDIDATE_URL" \
+            PARENT_URL="$PARENT_URL" \
+            ORACLE_URL="$ORACLE_URL" \
+            OUTPUT="$proof" \
+            RECORD_OUTPUT="$record" \
+            node "$COMPARATOR"
+            rc=$?
+            set -e
+            if test "$rc" = 0 \
+              && test "$(jq -r '.classification' "$proof")" = VERIFIED_PUBLIC_RENDER_READY_400KV \
+              && test "$(jq -r '.failed_gates' "$proof")" = 0 \
+              && test "$(jq -r '.label' "$record")" = PROMOTE; then
+              cp "$proof" work/202608300453-public-render-ready-proof.json
+              cp "$record" work/202608300453-public-render-ready-performance.jsonl
+              echo "PUBLIC_RENDER_ATTEMPT=$attempt" >> "$GITHUB_ENV"
+              passed=true
+              break
+            fi
+            sleep 8
+          done
+          test "$passed" = true
+          test "$(jq '[.gates[] | select(.passed != true)] | length' work/202608300453-public-render-ready-proof.json)" = 0
+          test "$(jq -r '.privacy' work/202608300453-public-render-ready-performance.jsonl)" = NO_PERSONAL_DATA
+
+      - name: Build governed pointer and machine evidence
+        if: steps.preflight.outputs.ready == 'true'
+        run: |
+          set -euo pipefail
+          git fetch --no-tags origin main:refs/remotes/origin/main
+          test "$(git rev-parse origin/main)" = "$PUBLICATION_COMMIT"
+          mkdir -p machine-learning/proofs machine-learning/records releases state
+          cp work/202608300453-local-exact-repd-deep-link-proof.json machine-learning/proofs/202608300453-local-exact-repd-deep-link-proof.json
+          cp work/202608300453-public-exact-repd-deep-link-proof.json machine-learning/proofs/202608300453-public-exact-repd-deep-link-proof.json
+          cp work/202608300453-local-render-ready-proof.json machine-learning/proofs/202608300453-local-render-ready-proof.json
+          cp work/202608300453-public-render-ready-proof.json machine-learning/proofs/202608300453-public-render-ready-proof.json
+          cat work/202608300453-local-render-ready-performance.jsonl work/202608300453-public-render-ready-performance.jsonl \
+            > machine-learning/records/202608300453-render-ready-performance.jsonl
+          python3 - <<'PY'
+          import hashlib
+          import json
+          import os
+          from datetime import datetime, timezone
+          from pathlib import Path
+
+          release_id = os.environ['RELEASE_ID']
+          parent_id = os.environ['PARENT_RELEASE_ID']
+          release = Path(release_id)
+          def sha(path): return hashlib.sha256(Path(path).read_bytes()).hexdigest()
+          local_render = json.loads(Path('machine-learning/proofs/202608300453-local-render-ready-proof.json').read_text())
+          public_render = json.loads(Path('machine-learning/proofs/202608300453-public-render-ready-proof.json').read_text())
+          local_link = json.loads(Path('machine-learning/proofs/202608300453-local-exact-repd-deep-link-proof.json').read_text())
+          public_link = json.loads(Path('machine-learning/proofs/202608300453-public-exact-repd-deep-link-proof.json').read_text())
+          state = {
+              'schema': 'gridatlas.live-set.v5',
+              'classification': 'VERIFIED_LIVE_V8_MIRROR_RENDER_READY_ATLAS_V9',
+              'generation': os.environ['GENERATION'],
+              'current': {
+                  'release_id': release_id,
+                  'route': f'/gridatlas/{release_id}/',
+                  'live_url': f'https://ventusltd.github.io/gridatlas/{release_id}/',
+                  'parent_release_id': parent_id,
+                  'source_commit': os.environ['GITHUB_SHA'],
+                  'publication_commit': os.environ['PUBLICATION_COMMIT'],
+                  'candidate_pages_run_id': int(os.environ['CANDIDATE_PAGES_RUN_ID']),
+                  'runtime': {
+                      'delivery': 'MAPLIBRE_WORKER_DIRECT_URL',
+                      'cache_identity': 'CONTENT_ADDRESSED_STABLE_URL',
+                      'shared_cartridge_path': 'cartridges/5f5fbec83f9ce307b47ddc6e7277743f0bba1a2445b0f3ca50a9a1806146e993/grid_400kv.geojson',
+                      'critical_sha256': '5f5fbec83f9ce307b47ddc6e7277743f0bba1a2445b0f3ca50a9a1806146e993'
+                  },
+                  'deep_link_receiver': {
+                      'schema': 'gridatlas.exact-repd-deep-link-receiver.v1',
+                      'identity_parameter': 'repd_ref',
+                      'identity_rule': 'EXACT_REPD_REF_ONLY',
+                      'automatic_search': True,
+                      'automatic_fly_to': True,
+                      'golden_repd_ref': os.environ['GOLDEN_REPD_REF'],
+                      'golden_project_name': os.environ['GOLDEN_PROJECT_NAME'],
+                      'synthetic_receiver': False,
+                      'route_interceptions': 0
+                  },
+                  'manifests': {
+                      'release_sha256': sha(release / 'release-manifest.json'),
+                      'build_sha256': sha(release / 'build-manifest.json'),
+                      'map_ready_sha256': sha(release / 'map-ready-manifest.json'),
+                      'deep_link_sha256': sha(release / 'deep-link-receiver-manifest.json'),
+                      'sha256sums_sha256': sha(release / 'sha256sums.txt')
+                  }
+              },
+              'predecessor': {
+                  'release_id': parent_id,
+                  'route': f'/gridatlas/{parent_id}/',
+                  'live_url': f'https://ventusltd.github.io/gridatlas/{parent_id}/'
+              },
+              'rollback': {'release_id': parent_id, 'route': f'/gridatlas/{parent_id}/'},
+              'verification': {
+                  'promotion_eligible': True,
+                  'verified_at': datetime.now(timezone.utc).isoformat().replace('+00:00', 'Z'),
+                  'candidate_pages_run_id': int(os.environ['CANDIDATE_PAGES_RUN_ID']),
+                  'local_classification': local_render['classification'],
+                  'public_classification': public_render['classification'],
+                  'local_deep_link_classification': local_link['classification'],
+                  'public_deep_link_classification': public_link['classification'],
+                  'local_proof_sha256': sha('machine-learning/proofs/202608300453-local-render-ready-proof.json'),
+                  'public_proof_sha256': sha('machine-learning/proofs/202608300453-public-render-ready-proof.json'),
+                  'local_deep_link_proof_sha256': sha('machine-learning/proofs/202608300453-local-exact-repd-deep-link-proof.json'),
+                  'public_deep_link_proof_sha256': sha('machine-learning/proofs/202608300453-public-exact-repd-deep-link-proof.json'),
+                  'machine_learning_record_sha256': sha('machine-learning/records/202608300453-render-ready-performance.jsonl'),
+                  'machine_learning_records': 2,
+                  'v8_css_byte_identical': True,
+                  'v8_html_surface_preserved': True,
+                  'desktop_surface_geometry_style_identical': True,
+                  'exact_repd_deep_link_resolved': True,
+                  'exact_repd_fly_to': True,
+                  'failed_gates': 0,
+                  'commit_lineage_attested': False
+              }
+          }
+          payload = json.dumps(state, indent=2, sort_keys=True) + '\n'
+          Path('state/live-set.json').write_text(payload, encoding='utf-8', newline='\n')
+          Path('releases/current-v5.json').write_text(payload, encoding='utf-8', newline='\n')
+          index = f'''<!doctype html>
+          <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="gridatlas-current-release" content="{release_id}"><title>Grid Atlas V9</title><script>(()=>{{const target="./{release_id}/";window.location.replace(target+window.location.search+window.location.hash);}})();</script></head><body data-gridatlas-current-release="{release_id}"><main><h1>Grid Atlas V9</h1><p><a href="./{release_id}/">Open {release_id}</a></p></main></body></html>'''
+          Path('index.html').write_text(index + '\n', encoding='utf-8', newline='\n')
+          PY
+
+      - name: Compare-and-swap public promotion pointer onto main
+        if: steps.preflight.outputs.ready == 'true'
+        run: |
+          set -euo pipefail
+          git fetch --no-tags origin main:refs/remotes/origin/main
+          test "$(git rev-parse origin/main)" = "$PUBLICATION_COMMIT"
+          git add \
+            index.html \
+            state/live-set.json \
+            releases/current-v5.json \
+            machine-learning/proofs/202608300453-local-exact-repd-deep-link-proof.json \
+            machine-learning/proofs/202608300453-public-exact-repd-deep-link-proof.json \
+            machine-learning/proofs/202608300453-local-render-ready-proof.json \
+            machine-learning/proofs/202608300453-public-render-ready-proof.json \
+            machine-learning/records/202608300453-render-ready-performance.jsonl
+          git config user.name gridatlas-exact-repd-promotion-bot
+          git config user.email actions@users.noreply.github.com
+          git commit -m "202608300453: promote exact REPD receiver after all public gates"
+          promotion_commit="$(git rev-parse HEAD)"
+          git push origin HEAD:main
+          echo "PROMOTION_COMMIT=$promotion_commit" >> "$GITHUB_ENV"
+
+      - name: Attest source publication promotion lineage immediately
+        if: steps.preflight.outputs.ready == 'true'
+        run: |
+          set -euo pipefail
+          git fetch --no-tags origin main:refs/remotes/origin/main
+          test "$(git rev-parse origin/main)" = "$PROMOTION_COMMIT"
+          test "$(git merge-base --is-ancestor "$GITHUB_SHA" "$PUBLICATION_COMMIT"; echo $?)" = 0
+          test "$(git merge-base --is-ancestor "$PUBLICATION_COMMIT" "$PROMOTION_COMMIT"; echo $?)" = 0
+          python3 - <<'PY'
+          import json
+          import os
+          from pathlib import Path
+          state = json.loads(Path('state/live-set.json').read_text(encoding='utf-8'))
+          source = os.environ['GITHUB_SHA']
+          publication = os.environ['PUBLICATION_COMMIT']
+          promotion = os.environ['PROMOTION_COMMIT']
+          state['current']['source_commit'] = source
+          state['current']['publication_commit'] = publication
+          state['current']['promotion_commit'] = promotion
+          state['verification']['commit_lineage_attested'] = True
+          state['verification']['commit_lineage_rule'] = 'SOURCE_ANCESTOR_OF_PUBLICATION_ANCESTOR_OF_PROMOTION'
+          state['verification']['commit_lineage'] = {
+              'source_commit': source,
+              'publication_commit': publication,
+              'promotion_commit': promotion,
+          }
+          payload = json.dumps(state, indent=2, sort_keys=True) + '\n'
+          Path('state/live-set.json').write_text(payload, encoding='utf-8', newline='\n')
+          Path('releases/current-v5.json').write_text(payload, encoding='utf-8', newline='\n')
+          PY
+          cmp state/live-set.json releases/current-v5.json
+          test "$(jq -r '.verification.commit_lineage_attested' state/live-set.json)" = true
+          git add state/live-set.json releases/current-v5.json
+          git config user.name gridatlas-exact-repd-lineage-bot
+          git config user.email actions@users.noreply.github.com
+          git commit -m "attest: $RELEASE_ID exact REPD receiver lineage"
+          attestation_commit="$(git rev-parse HEAD)"
+          git push origin HEAD:main
+          echo "ATTESTATION_COMMIT=$attestation_commit" >> "$GITHUB_ENV"
+
+      - name: Wait for final attested Pages deployment
+        if: steps.preflight.outputs.ready == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          api="https://api.github.com/repos/$GITHUB_REPOSITORY/actions/runs?head_sha=$ATTESTATION_COMMIT&per_page=50"
+          status=''; conclusion=''; pages_run=''
+          for attempt in $(seq 1 120); do
+            payload="$(curl --fail --silent --show-error -H "Authorization: Bearer $GH_TOKEN" -H 'Accept: application/vnd.github+json' "$api")"
+            pages_run="$(printf '%s' "$payload" | jq -r '[.workflow_runs[] | select(.name == "pages build and deployment")][0].id // empty')"
+            status="$(printf '%s' "$payload" | jq -r '[.workflow_runs[] | select(.name == "pages build and deployment")][0].status // empty')"
+            conclusion="$(printf '%s' "$payload" | jq -r '[.workflow_runs[] | select(.name == "pages build and deployment")][0].conclusion // empty')"
+            if test "$status" = completed; then test "$conclusion" = success; break; fi
+            sleep 5
+          done
+          test -n "$pages_run"
+          test "$status" = completed
+          test "$conclusion" = success
+          echo "FINAL_PAGES_RUN_ID=$pages_run" >> "$GITHUB_ENV"
+
+      - name: Prove final root pointer preserves and resolves exact REPD identity
+        if: steps.preflight.outputs.ready == 'true'
+        env:
+          MODE: public
+          TARGET_URL: https://ventusltd.github.io/gridatlas/
+          EXPECTED_REPD_REF: ${{ env.GOLDEN_REPD_REF }}
+          EXPECTED_PROJECT_NAME: ${{ env.GOLDEN_PROJECT_NAME }}
+          OUTPUT: work/202608300453-final-root-exact-repd-deep-link-proof.json
+          SCREENSHOT: work/202608300453-final-root-exact-repd-deep-link.png
+        run: |
+          set -euo pipefail
+          for attempt in $(seq 1 60); do
+            if curl --fail --location --silent --show-error \
+              https://ventusltd.github.io/gridatlas/state/live-set.json \
+              -o work/final-live-set.json \
+              && test "$(jq -r '.current.release_id' work/final-live-set.json)" = "$RELEASE_ID" \
+              && test "$(jq -r '.verification.commit_lineage_attested' work/final-live-set.json)" = true; then
+              break
+            fi
+            sleep 3
+          done
+          test "$(jq -r '.verification.failed_gates' work/final-live-set.json)" = 0
+          test "$(jq -r '.verification.exact_repd_deep_link_resolved' work/final-live-set.json)" = true
+          test "$(jq -r '.verification.exact_repd_fly_to' work/final-live-set.json)" = true
+          test "$(jq -r '.current.promotion_commit' work/final-live-set.json)" = "$PROMOTION_COMMIT"
+          node "$DEEP_LINK_VERIFIER"
+          test "$(jq -r '.classification' "$OUTPUT")" = VERIFIED_PUBLIC_ATLAS_EXACT_REPD_DEEP_LINK
+          test "$(jq -r '.failed_checks | length' "$OUTPUT")" = 0
+          {
+            echo '## Exact REPD receiver promotion complete'
+            echo
+            echo "- Release: $RELEASE_ID"
+            echo "- Parent: $PARENT_RELEASE_ID"
+            echo "- Beacon Fen: REPD $GOLDEN_REPD_REF"
+            echo "- Local render attempt: ${LOCAL_RENDER_ATTEMPT:-none}"
+            echo "- Public render attempt: ${PUBLIC_RENDER_ATTEMPT:-none}"
+            echo "- Candidate Pages run: $CANDIDATE_PAGES_RUN_ID"
+            echo "- Final Pages run: $FINAL_PAGES_RUN_ID"
+            echo "- Publication commit: $PUBLICATION_COMMIT"
+            echo "- Promotion commit: $PROMOTION_COMMIT"
+            echo "- Attestation commit: $ATTESTATION_COMMIT"
+            echo '- V8 HTML, CSS and engine changed: false'
+            echo '- Map data changed: false'
+            echo '- Failed gates: 0'
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Retain complete public and root evidence
+        if: always() && steps.preflight.outputs.ready == 'true'
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: gridatlas-202608300453-complete-${{ github.sha }}
+          path: |
+            work/202608300453-public-exact-repd-deep-link-proof.json
+            work/202608300453-public-exact-repd-deep-link.png
+            work/202608300453-public-render-ready-proof.json
+            work/202608300453-public-render-ready-performance.jsonl
+            work/202608300453-public-render-attempt-*.json
+            work/202608300453-public-render-record-*.jsonl
+            work/202608300453-final-root-exact-repd-deep-link-proof.json
+            work/202608300453-final-root-exact-repd-deep-link.png
+            work/final-live-set.json
+          if-no-files-found: warn
+          retention-days: 90
+          compression-level: 0
