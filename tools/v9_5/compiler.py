@@ -250,10 +250,14 @@ def compile_cartridge(source: str, generation: str) -> str:
         "      debounceTimer = setTimeout(() => executeSearch(input, resultsEl, false), 180);\n",
         "debounced local lanes",
     )
-    # There are exactly two explicit user-submit calls: Enter and button click.
-    if source.count("        executeSearch(input, resultsEl);\n") != 2:
-        raise RuntimeError("explicit search submissions: expected two unqualified calls")
-    source = source.replace("        executeSearch(input, resultsEl);\n", "        executeSearch(input, resultsEl, true);\n")
+    # Enter is nested inside an if (8 spaces); button click is one level shallower (6 spaces).
+    for indent, label in [("        ", "Enter submission"), ("      ", "button submission")]:
+        source = replace_once(
+            source,
+            f"{indent}executeSearch(input, resultsEl);\n",
+            f"{indent}executeSearch(input, resultsEl, true);\n",
+            label,
+        )
 
     for marker in [
         "const serial = ++activeQuerySerial",
