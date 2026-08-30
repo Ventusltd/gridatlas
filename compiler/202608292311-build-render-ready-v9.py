@@ -1,184 +1,60 @@
 #!/usr/bin/env python3
-"""Build a deterministic V8-surface successor with direct MapLibre-worker 400 kV delivery."""
+"""Run the pinned render-ready compiler with a complete deterministic V8 oracle."""
 
 from __future__ import annotations
 
-import argparse
 import hashlib
-import json
-import shutil
+import runpy
+import subprocess
 from pathlib import Path
-from typing import Any
 
-
-def canonical(value: Any) -> str:
-    return json.dumps(value, ensure_ascii=False, sort_keys=True, separators=(",", ":"), allow_nan=False)
-
-
-def require(condition: bool, message: str) -> None:
-    if not condition:
-        raise RuntimeError(message)
-
-
-def sha256_file(path: Path) -> str:
-    digest = hashlib.sha256()
-    with path.open("rb") as handle:
-        for chunk in iter(lambda: handle.read(1024 * 1024), b""):
-            digest.update(chunk)
-    return digest.hexdigest()
+BASE_COMMIT = "f9864e85ffbc4673d530ce58598ec6a528da8105"
+TARGET_PATH = "compiler/202608292311-build-render-ready-v9.py"
+EXPECTED_BLOB_SHA1 = "4535a9787905c86746842f8b7404b93c40753f6f"
 
 
 def git_blob_sha1(payload: bytes) -> str:
     return hashlib.sha1(f"blob {len(payload)}\0".encode("utf-8") + payload).hexdigest()
 
 
-def write_sha256sums(root: Path) -> None:
-    rows = []
-    for path in sorted(item for item in root.rglob("*") if item.is_file() and item.name != "sha256sums.txt"):
-        rows.append((sha256_file(path), path.relative_to(root).as_posix()))
-    (root / "sha256sums.txt").write_text("".join(f"{digest}  {name}\n" for digest, name in rows), encoding="utf-8", newline="\n")
-
-
 def replace_exactly_once(source: str, before: str, after: str, label: str) -> str:
-    require(source.count(before) == 1, f"engine patch anchor mismatch: {label}")
+    count = source.count(before)
+    if count != 1:
+        raise RuntimeError(f"compiler repair anchor mismatch for {label}: {count}")
     return source.replace(before, after)
 
 
-def main() -> None:
-    parser = argparse.ArgumentParser()
-    parser.add_argument("--contract", required=True)
-    parser.add_argument("--output", required=True)
-    parser.add_argument("--oracle-output", required=True)
-    parser.add_argument("--source-commit", required=True)
-    args = parser.parse_args()
+original = subprocess.check_output(
+    ["git", "show", f"{BASE_COMMIT}:{TARGET_PATH}"],
+    stderr=subprocess.STDOUT,
+)
+if git_blob_sha1(original) != EXPECTED_BLOB_SHA1:
+    raise RuntimeError("pinned render-ready compiler Git blob mismatch")
 
-    contract_path = Path(args.contract)
-    output = Path(args.output)
-    oracle_output = Path(args.oracle_output)
-    source_commit = args.source_commit
-    contract = json.loads(contract_path.read_text(encoding="utf-8"))
+repaired = original.decode("utf-8")
+repaired = replace_exactly_once(
+    repaired,
+    "import shutil\nfrom pathlib import Path\nfrom typing import Any\n",
+    "import shutil\nimport time\nimport urllib.parse\nimport urllib.request\nfrom pathlib import Path\nfrom typing import Any\n",
+    "network imports",
+)
 
-    require(contract.get("schema") == "gridatlas.render-ready-runtime-contract.v1", "contract schema mismatch")
-    require(output.name == contract["release_id"], "output directory must equal release id")
-    require(not output.exists(), f"immutable output already exists: {output}")
-    require(not oracle_output.exists(), f"oracle output already exists: {oracle_output}")
+repaired = replace_exactly_once(
+    repaired,
+    '''def git_blob_sha1(payload: bytes) -> str:\n    return hashlib.sha1(f"blob {len(payload)}\\0".encode("utf-8") + payload).hexdigest()\n\n\n''',
+    '''def git_blob_sha1(payload: bytes) -> str:\n    return hashlib.sha1(f"blob {len(payload)}\\0".encode("utf-8") + payload).hexdigest()\n\n\ndef fetch_bytes(url: str, attempts: int = 5, timeout: int = 180) -> bytes:\n    last_error: Exception | None = None\n    for attempt in range(1, attempts + 1):\n        try:\n            request = urllib.request.Request(\n                url, headers={"User-Agent": "gridatlas-render-ready-compiler/202608292311"}\n            )\n            with urllib.request.urlopen(request, timeout=timeout) as response:\n                require(200 <= response.status < 300, f"HTTP {response.status}: {url}")\n                return response.read()\n        except Exception as error:  # noqa: BLE001 - bounded retry boundary\n            last_error = error\n            if attempt < attempts:\n                time.sleep(min(attempt * 2, 8))\n    raise RuntimeError(f"failed after {attempts} attempts: {url}: {last_error}")\n\n\ndef raw_url(repository: str, commit: str, path: str) -> str:\n    quoted = urllib.parse.quote(path, safe="/")\n    return f"https://raw.githubusercontent.com/{repository}/{commit}/{quoted}"\n\n\ndef write_bytes(path: Path, payload: bytes) -> None:\n    path.parent.mkdir(parents=True, exist_ok=True)\n    path.write_bytes(payload)\n\n\n''',
+    "pinned oracle helpers",
+)
 
-    parent = Path(contract["parent_release_id"])
-    require(parent.is_dir(), f"missing parent release: {parent}")
-    require((parent / "sha256sums.txt").is_file(), "parent sha256 manifest missing")
+repaired = replace_exactly_once(
+    repaired,
+    '''    oracle = contract["product_oracle"]\n    for name in ("index.html", "ventusv8.css", "ventus-corev8engine.js"):\n        source = parent / name\n        require(source.is_file(), f"parent {name} missing")\n        shutil.copyfile(source, oracle_output / name)\n\n''',
+    '''    oracle = contract["product_oracle"]\n    oracle_root = str(oracle["root"]).rstrip("/")\n    oracle_files = {\n        "index.html": oracle["index_blob_sha1"],\n        "ventusv8.css": oracle["css_blob_sha1"],\n        "ventus-corev8engine.js": oracle["engine_blob_sha1"],\n    }\n    for relative, expected_blob in oracle_files.items():\n        payload = fetch_bytes(\n            raw_url(\n                oracle["repository"],\n                oracle["commit"],\n                f"{oracle_root}/{relative}",\n            )\n        )\n        require(git_blob_sha1(payload) == expected_blob, f"V8 Git blob mismatch: {relative}")\n        write_bytes(oracle_output / relative, payload)\n\n    # V8 preloads these eleven same-origin sources. A local comparator oracle that\n    # omits them is not V8 and can only time out or emit false performance evidence.\n    oracle_preload_files = (\n        "grid_400kv.geojson",\n        "grid_275kv.geojson",\n        "grid_220kv.geojson",\n        "grid_132kv.geojson",\n        "grid_66kv.geojson",\n        "grid_substations.geojson",\n        "power_plants.geojson",\n        "industrial_offtakers.geojson",\n        "datacentres.geojson",\n        "airports.geojson",\n        "railways.geojson",\n    )\n    for name in oracle_preload_files:\n        payload = fetch_bytes(\n            raw_url(\n                oracle["repository"],\n                oracle["commit"],\n                f"{oracle_root}/data/{name}",\n            )\n        )\n        write_bytes(oracle_output / "data" / name, payload)\n        if name == "grid_400kv.geojson":\n            collection = json.loads(payload)\n            require(\n                isinstance(collection, dict)\n                and isinstance(collection.get("features"), list)\n                and len(collection["features"]) == int(runtime["critical_rows"]),\n                "V8 400 kV oracle row closure mismatch",\n            )\n\n''',
+    "complete pinned V8 local oracle",
+)
 
-    output.mkdir(parents=True)
-    oracle_output.mkdir(parents=True)
-    shutil.copytree(parent, output, dirs_exist_ok=True)
-
-    runtime = contract["runtime"]
-    shared_path = Path(runtime["shared_cartridge_path"])
-    source_400 = parent / "data/grid_400kv.geojson"
-    require(source_400.is_file(), "parent 400 kV cartridge missing")
-    require(sha256_file(source_400) == runtime["shared_cartridge_sha256"], "parent 400 kV SHA mismatch")
-    shared_target = output.parent / shared_path
-    shared_target.parent.mkdir(parents=True, exist_ok=True)
-    shutil.copyfile(source_400, shared_target)
-    require(sha256_file(shared_target) == runtime["shared_cartridge_sha256"], "shared cartridge SHA mismatch")
-
-    oracle = contract["product_oracle"]
-    for name in ("index.html", "ventusv8.css", "ventus-corev8engine.js"):
-        source = parent / name
-        require(source.is_file(), f"parent {name} missing")
-        shutil.copyfile(source, oracle_output / name)
-
-    bridge_name = "202608292311-maplibre-worker-bridge.js"
-    shutil.copyfile(Path("ui/v8-mirror") / bridge_name, output / bridge_name)
-
-    html_path = output / "index.html"
-    html = html_path.read_text(encoding="utf-8")
-    old_bridge = '<script src="202608292126-map-ready-fetch-bridge.js"></script>'
-    require(html.count(old_bridge) == 1, "parent bridge tag mismatch")
-    html = html.replace(old_bridge, f'<script src="{bridge_name}"></script>')
-    html_path.write_text(html, encoding="utf-8", newline="\n")
-
-    engine_path = output / "ventus-corev8engine.js"
-    engine = engine_path.read_text(encoding="utf-8")
-    anchors = 0
-
-    before = """        if (isVisible) hydrateLayer(layerId);\n"""
-    after = """        if (isVisible && layerId !== '400') hydrateLayer(layerId);\n"""
-    engine = replace_exactly_once(engine, before, after, "skip main-thread 400 hydrate")
-    anchors += 1
-
-    before = """                map.addSource(`src-${layer.id}`, { type: 'geojson', data: { type: 'FeatureCollection', features: [] } });\n"""
-    after = """                if (layer.id === '400') {\n                    map.addSource('src-400', {\n                        type: 'geojson',\n                        data: '../cartridges/5f5fbec83f9ce307b47ddc6e7277743f0bba1a2445b0f3ca50a9a1806146e993/grid_400kv.geojson'\n                    });\n                } else {\n                    map.addSource(`src-${layer.id}`, { type: 'geojson', data: { type: 'FeatureCollection', features: [] } });\n                }\n"""
-    engine = replace_exactly_once(engine, before, after, "direct 400 MapLibre worker source")
-    anchors += 1
-
-    before = """        GRID_CONFIG.forEach(group => { group.layers.forEach(layer => { if (layer.preload) hydrateLayer(layer.id); }); });\n"""
-    after = """        GRID_CONFIG.forEach(group => { group.layers.forEach(layer => { if (layer.preload && layer.id !== '400') hydrateLayer(layer.id); }); });\n        const state400 = RUNTIME_STATE['400'];\n        if (state400) { state400.loaded = true; state400.loading = false; updateUIState('400', 'OK'); }\n"""
-    engine = replace_exactly_once(engine, before, after, "skip preload fetch and mark worker-backed source ready")
-    anchors += 1
-
-    engine_path.write_text(engine, encoding="utf-8", newline="\n")
-
-    parent_map_ready = json.loads((parent / "map-ready-manifest.json").read_text(encoding="utf-8"))
-    parent_map_ready["schema"] = "gridatlas.map-ready-cartridge-manifest.v2"
-    parent_map_ready["generation"] = contract["generation"]
-    parent_map_ready["release_id"] = contract["release_id"]
-    parent_map_ready["source_commit"] = source_commit
-    architecture = parent_map_ready.setdefault("architecture", {})
-    architecture.update({
-        "critical_400kv_delivery": runtime["delivery"],
-        "critical_400kv_window_prefetch": runtime["window_prefetch"],
-        "critical_400kv_main_thread_json_parse": runtime["main_thread_json_parse"],
-        "critical_400kv_duplicate_fetch": runtime["duplicate_fetch"],
-        "critical_400kv_cache_identity": runtime["cache_identity"],
-        "critical_400kv_shared_cartridge_path": runtime["shared_cartridge_path"],
-    })
-    (output / "map-ready-manifest.json").write_text(json.dumps(parent_map_ready, indent=2) + "\n", encoding="utf-8", newline="\n")
-
-    release_manifest = {
-        "schema": "gridatlas.v8-render-ready-release.v1",
-        "classification": "V8_RENDER_READY_PERFORMANCE_CANDIDATE",
-        "generation": contract["generation"],
-        "release_id": contract["release_id"],
-        "parent_release_id": contract["parent_release_id"],
-        "source_commit": source_commit,
-        "immutable_after_publication": True,
-        "product_surface": "PINNED_V8_WITH_WORKER_SOURCE_400KV",
-        "critical_400kv_delivery": runtime["delivery"],
-        "shared_cartridge_path": runtime["shared_cartridge_path"],
-        "machine_learning_record": contract["machine_learning_record"],
-        "promotion_policy": "AUTOMATIC_ONLY_AFTER_ACTUAL_RENDER_LOCAL_AND_PUBLIC_GATES",
-    }
-    (output / "release-manifest.json").write_text(json.dumps(release_manifest, indent=2) + "\n", encoding="utf-8", newline="\n")
-
-    build_manifest = {
-        "schema": "gridatlas.render-ready-build-manifest.v1",
-        "classification": "DETERMINISTIC_BUILD_COMPLETE",
-        "generation": contract["generation"],
-        "release_id": contract["release_id"],
-        "source_commit": source_commit,
-        "contract_sha256": sha256_file(contract_path),
-        "compiler_sha256": sha256_file(Path(__file__)),
-        "engine_patch_anchors": anchors,
-        "delivery": runtime["delivery"],
-        "shared_cartridge": runtime["shared_cartridge_path"],
-        "shared_cartridge_sha256": runtime["shared_cartridge_sha256"],
-        "v8_css_blob_sha1": git_blob_sha1((output / "ventusv8.css").read_bytes()),
-        "parent_release_id": contract["parent_release_id"],
-    }
-    (output / "build-manifest.json").write_text(json.dumps(build_manifest, indent=2) + "\n", encoding="utf-8", newline="\n")
-    write_sha256sums(output)
-
-    print(canonical({
-        "classification": "DETERMINISTIC_RENDER_READY_RELEASE_BUILT",
-        "release_id": contract["release_id"],
-        "critical_400kv_rows": runtime["critical_rows"],
-        "engine_patch_anchors": anchors,
-        "delivery": runtime["delivery"],
-        "shared_cartridge": runtime["shared_cartridge_path"],
-        "shared_cartridge_sha256": runtime["shared_cartridge_sha256"],
-        "output": output.as_posix(),
-    }))
-
-
-if __name__ == "__main__":
-    main()
+runtime_dir = Path("work/.compiler-runtime")
+runtime_dir.mkdir(parents=True, exist_ok=True)
+runtime_path = runtime_dir / "202608292311-build-render-ready-v9.repaired.py"
+runtime_path.write_text(repaired, encoding="utf-8", newline="\n")
+runpy.run_path(str(runtime_path), run_name="__main__")
