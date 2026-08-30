@@ -11,6 +11,9 @@ from pathlib import Path
 
 SEARCH_FILE = "202608291818-place-postcode-search.js"
 GENERATION = "202608300453"
+SHARED_CARTRIDGE = Path(
+    "cartridges/5f5fbec83f9ce307b47ddc6e7277743f0bba1a2445b0f3ca50a9a1806146e993/grid_400kv.geojson"
+)
 
 
 def replace_once(source: str, before: str, after: str, label: str) -> str:
@@ -43,8 +46,16 @@ def main() -> int:
         raise RuntimeError("parent folder and parent release id disagree")
     if not args.parent.is_dir():
         raise RuntimeError("immutable parent is missing")
+    if not SHARED_CARTRIDGE.is_file():
+        raise RuntimeError(f"shared 400 kV cartridge is missing: {SHARED_CARTRIDGE}")
 
     shutil.copytree(args.parent, args.output)
+    local_cartridge = args.output.parent / SHARED_CARTRIDGE
+    local_cartridge.parent.mkdir(parents=True, exist_ok=True)
+    shutil.copy2(SHARED_CARTRIDGE, local_cartridge)
+    if sha256(local_cartridge) != sha256(SHARED_CARTRIDGE):
+        raise RuntimeError("local shared 400 kV cartridge digest mismatch")
+
     search_path = args.output / SEARCH_FILE
     source = search_path.read_text(encoding="utf-8")
 
@@ -201,6 +212,8 @@ def main() -> int:
         "identity_rule": "EXACT_REPD_REF_ONLY",
         "search_cartridge": SEARCH_FILE,
         "search_cartridge_sha256": sha256(search_path),
+        "local_test_shared_cartridge": SHARED_CARTRIDGE.as_posix(),
+        "local_test_shared_cartridge_sha256": sha256(local_cartridge),
         "immutable_parent_files_changed": [
             SEARCH_FILE,
             "build-manifest.json",
@@ -230,6 +243,8 @@ def main() -> int:
         "release_id": args.release_id,
         "parent_release_id": args.parent_release_id,
         "search_cartridge_sha256": sha256(search_path),
+        "local_test_shared_cartridge": local_cartridge.as_posix(),
+        "local_test_shared_cartridge_sha256": sha256(local_cartridge),
         "v8_html_changed": False,
         "v8_css_changed": False,
         "v8_engine_changed": False,
