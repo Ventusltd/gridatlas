@@ -1,0 +1,45 @@
+name: 202608301321 Verify live Atlas composition
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: gridatlas-live-composition-verification
+  cancel-in-progress: true
+
+jobs:
+  verify-live:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    env:
+      GH_TOKEN: ${{ secrets.GRIDATLAS_SCOPE_TOKEN || github.token }}
+      GRIDATLAS_BASE_URL: https://ventusltd.github.io/gridatlas/
+    steps:
+      - name: Checkout exact main state
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GRIDATLAS_SCOPE_TOKEN || github.token }}
+
+      - name: Install pinned browser test dependency
+        run: |
+          npm ci
+          npx playwright install --with-deps chromium
+
+      - name: Run the five public acceptance tests
+        id: verify
+        run: node tools/scope/verify-live.mjs
+
+      - name: Commit durable verification report
+        if: always()
+        run: |
+          git config user.name "gridatlas-live-verifier"
+          git config user.email "actions@users.noreply.github.com"
+          git add reports/scope-loop || true
+          if git diff --cached --quiet; then exit 0; fi
+          git commit -m "$(date -u +%Y%m%d%H%M)-gridatlas: record live cartridge acceptance"
+          git pull --rebase origin main
+          git push origin HEAD:main
