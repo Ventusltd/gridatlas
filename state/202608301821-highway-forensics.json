@@ -1,0 +1,31 @@
+{
+  "contracts": {
+    "full_application_copy_forbidden": true,
+    "parquet_duckdb_retained_for_analytical_layers": true,
+    "primary_roads_duckdb_rehydration_forbidden": true,
+    "shell_mutation_forbidden": true
+  },
+  "generation": "202608301821",
+  "layer": "primary_roads",
+  "operator_symptom": "V8 loads A roads; V9.5 crashes or corrupts the browser while loading A roads",
+  "reference": "GlobalGrid2050 REPD Grid Atlas V8",
+  "required_execution": [
+    "Ubuntu Chromium V8 versus public V9.5 forensic comparison",
+    "prove transport path and browser failure mechanism",
+    "build one hashed cartridge only",
+    "preserve immutable shell and UK/global search cartridge",
+    "run full-history CVAA surgical gates",
+    "deploy with GitHub Actions",
+    "prove public Chromium and WebKit A-road load"
+  ],
+  "schema": "gridatlas.highway-forensics-request.v1",
+  "source_evidence": {
+    "cvaa_commit": "d2ebc01f6eab41f2a84b0c53c4cfae0d2625ec5e",
+    "globalgrid_static_source_commit": "6afd5dea721648e3ef14d5705d9f2dc3589af100",
+    "primary_roads_parquet_bytes": 29292883,
+    "primary_roads_parquet_rows": 163790,
+    "primary_roads_parquet_sha256": "9df875a7791ed5af1c77a40b9872ff32315711eec73b4b9eaa31e7a0882e8a99"
+  },
+  "status": "REQUESTED",
+  "target": "GridAtlas v9.5 current composition"
+}
