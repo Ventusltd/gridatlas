@@ -1,0 +1,21 @@
+{
+  "schema": "gridatlas.v8-render-ready-release.v1",
+  "classification": "V8_RENDER_READY_PERFORMANCE_CANDIDATE",
+  "generation": "202608292311",
+  "release_id": "202608292311-atlas-v9",
+  "parent_release_id": "202608292126-atlas-v9",
+  "source_commit": "150c4ad7b04686182c27c47ee581960396378dec",
+  "immutable_after_publication": true,
+  "product_surface": "PINNED_V8_WITH_WORKER_SOURCE_400KV",
+  "critical_400kv_delivery": "MAPLIBRE_WORKER_DIRECT_URL",
+  "shared_cartridge_path": "cartridges/5f5fbec83f9ce307b47ddc6e7277743f0bba1a2445b0f3ca50a9a1806146e993/grid_400kv.geojson",
+  "machine_learning_record": {
+    "schema": "gridatlas.ml.render-ready-performance-record.v1",
+    "path": "machine-learning/records/202608292311-render-ready-performance.jsonl",
+    "task": "binary_release_promotion",
+    "positive_label": "PROMOTE",
+    "negative_label": "REJECT",
+    "privacy": "NO_PERSONAL_DATA"
+  },
+  "promotion_policy": "AUTOMATIC_ONLY_AFTER_ACTUAL_RENDER_LOCAL_AND_PUBLIC_GATES"
+}
