@@ -1,0 +1,136 @@
+name: 202608300232 Evaluate cross-repo Atlas V9 milestones
+run-name: Evaluate Atlas V9 publication and deep-link chain from ${{ github.sha }}
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'orchestration/202608300232-evaluate-cross-repo-atlas-v9.py'
+      - 'contracts/atlas-v9-deep-link-contract.v1.json'
+      - '.github/workflows/202608300232-evaluate-cross-repo-atlas-v9.yml'
+  workflow_dispatch:
+  schedule:
+    - cron: '*/10 * * * *'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: gridatlas-cross-repo-milestone-evaluator
+  cancel-in-progress: false
+
+env:
+  PYTHONDONTWRITEBYTECODE: '1'
+
+jobs:
+  evaluate:
+    name: Evaluate M0-M6 and publish machine-readable progress
+    runs-on: ubuntu-24.04
+    timeout-minutes: 8
+    steps:
+      - name: Checkout exact GridAtlas source boundary
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 20
+          persist-credentials: true
+
+      - name: Require current main and syntax-check evaluator
+        run: |
+          set -euo pipefail
+          test "$GITHUB_REF" = refs/heads/main
+          git fetch --no-tags origin main:refs/remotes/origin/main
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          test "$(git rev-parse origin/main)" = "$GITHUB_SHA"
+          python3 - <<'PY'
+          import ast
+          from pathlib import Path
+          path = Path('orchestration/202608300232-evaluate-cross-repo-atlas-v9.py')
+          ast.parse(path.read_text(encoding='utf-8'), filename=str(path))
+          PY
+          jq -e '.schema == "gridatlas.deep-link-contract.v1"' contracts/atlas-v9-deep-link-contract.v1.json >/dev/null
+
+      - name: Fetch downstream repository evidence
+        run: |
+          set -euo pipefail
+          rm -rf "$RUNNER_TEMP/globalgrid2050" "$RUNNER_TEMP/pipelinenews" "$RUNNER_TEMP/companies"
+          git clone --depth 1 https://github.com/Ventusltd/globalgrid2050.git "$RUNNER_TEMP/globalgrid2050"
+          git clone --depth 1 https://github.com/Ventusltd/pipelinenews.git "$RUNNER_TEMP/pipelinenews"
+          git clone --depth 1 https://github.com/Ventusltd/companies.git "$RUNNER_TEMP/companies"
+
+      - name: Evaluate deterministic milestone state
+        id: evaluate
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/milestones"
+          if test -f state/cross-repo-atlas-v9-milestones.json; then
+            cp state/cross-repo-atlas-v9-milestones.json "$RUNNER_TEMP/milestones/previous.json"
+          fi
+          python3 orchestration/202608300232-evaluate-cross-repo-atlas-v9.py \
+            --gridatlas . \
+            --globalgrid "$RUNNER_TEMP/globalgrid2050" \
+            --pipelinenews "$RUNNER_TEMP/pipelinenews" \
+            --companies "$RUNNER_TEMP/companies" \
+            --output state/cross-repo-atlas-v9-milestones.json \
+            | tee "$RUNNER_TEMP/milestones/result.json"
+          if test -f "$RUNNER_TEMP/milestones/previous.json"; then
+            jq -S 'del(.evaluated_at)' "$RUNNER_TEMP/milestones/previous.json" > "$RUNNER_TEMP/milestones/previous.semantic.json"
+            jq -S 'del(.evaluated_at)' state/cross-repo-atlas-v9-milestones.json > "$RUNNER_TEMP/milestones/current.semantic.json"
+            if cmp -s "$RUNNER_TEMP/milestones/previous.semantic.json" "$RUNNER_TEMP/milestones/current.semantic.json"; then
+              cp "$RUNNER_TEMP/milestones/previous.json" state/cross-repo-atlas-v9-milestones.json
+            fi
+          fi
+          echo "classification=$(jq -r .classification state/cross-repo-atlas-v9-milestones.json)" >> "$GITHUB_OUTPUT"
+          echo "passed=$(jq -r .passed state/cross-repo-atlas-v9-milestones.json)" >> "$GITHUB_OUTPUT"
+          echo "total=$(jq -r .total state/cross-repo-atlas-v9-milestones.json)" >> "$GITHUB_OUTPUT"
+          echo "next=$(jq -r '.next_milestone // "none"' state/cross-repo-atlas-v9-milestones.json)" >> "$GITHUB_OUTPUT"
+          echo "release=$(jq -r '.release_id // "waiting"' state/cross-repo-atlas-v9-milestones.json)" >> "$GITHUB_OUTPUT"
+
+      - name: Validate milestone closure
+        run: |
+          set -euo pipefail
+          jq -e '.schema == "gridatlas.cross-repo-atlas-v9-milestones.v1"' state/cross-repo-atlas-v9-milestones.json >/dev/null
+          test "$(jq '.milestones | length' state/cross-repo-atlas-v9-milestones.json)" = 7
+          test "$(jq '[.milestones[].id] | unique | length' state/cross-repo-atlas-v9-milestones.json)" = 7
+          test "$(jq -r .total state/cross-repo-atlas-v9-milestones.json)" = 7
+          git diff --check
+          unexpected="$(git status --porcelain=v1 -uall | awk '{print $2}' | grep -v '^state/cross-repo-atlas-v9-milestones.json$' || true)"
+          test -z "$unexpected"
+
+      - name: Compare-and-swap milestone state onto main
+        id: commit
+        run: |
+          set -euo pipefail
+          if git diff --quiet -- state/cross-repo-atlas-v9-milestones.json \
+             && test -z "$(git ls-files --others --exclude-standard state/cross-repo-atlas-v9-milestones.json)"; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            echo "commit=$GITHUB_SHA" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          git fetch --no-tags origin main:refs/remotes/origin/main
+          test "$(git rev-parse origin/main)" = "$GITHUB_SHA"
+          git add state/cross-repo-atlas-v9-milestones.json
+          git config user.name gridatlas-milestone-bot
+          git config user.email actions@users.noreply.github.com
+          git commit -m "${{ steps.evaluate.outputs.release }}: record Atlas V9 cross-repo milestones ${{ steps.evaluate.outputs.passed }}/${{ steps.evaluate.outputs.total }}"
+          commit="$(git rev-parse HEAD)"
+          git push origin HEAD:main
+          echo "changed=true" >> "$GITHUB_OUTPUT"
+          echo "commit=$commit" >> "$GITHUB_OUTPUT"
+
+      - name: Record milestone summary
+        if: ${{ always() }}
+        run: |
+          {
+            echo '## Atlas V9 cross-repository milestones'
+            echo
+            echo "- Classification: ${{ steps.evaluate.outputs.classification || 'not evaluated' }}"
+            echo "- Progress: ${{ steps.evaluate.outputs.passed || '0' }}/${{ steps.evaluate.outputs.total || '7' }}"
+            echo "- Release: ${{ steps.evaluate.outputs.release || 'waiting' }}"
+            echo "- Next milestone: ${{ steps.evaluate.outputs.next || 'unknown' }}"
+            echo "- State commit: ${{ steps.commit.outputs.commit || 'no change' }}"
+            echo
+            if test -f state/cross-repo-atlas-v9-milestones.json; then
+              jq -r '.milestones[] | "- [" + (if .passed then "x" else " " end) + "] " + .id' state/cross-repo-atlas-v9-milestones.json
+            fi
+          } >> "$GITHUB_STEP_SUMMARY"
