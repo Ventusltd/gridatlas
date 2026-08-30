@@ -53,7 +53,7 @@ jobs:
           node --check "$CONTROLLER"
           node --check "$VERIFIER"
           node --check "$FINALISER"
-          node -e "const p=require('./${PROGRAMME_CONFIG}'); if(p.generation!=='202608310015'||p.minimum_study_seconds<3600) process.exit(1)"
+          node -e "const p=require('./${PROGRAMME_CONFIG}'); if(p.generation!=='202608310015'||p.minimum_study_seconds<3600||p.expected_scope_words<43000) process.exit(1)"
 
       - name: Record study and build only after the one-hour gate
         id: controller
@@ -62,15 +62,80 @@ jobs:
           FORCE_RUN: ${{ github.event_name == 'workflow_dispatch' }}
         run: node "$CONTROLLER"
 
+      - name: Require the complete 43k scope before any candidate
+        id: corpus_gate
+        env:
+          CONTROLLER_CANDIDATE_CREATED: ${{ steps.controller.outputs.candidate_created }}
+          CANDIDATE_DIR: ${{ steps.controller.outputs.candidate_dir }}
+          CANDIDATE_ID: ${{ steps.controller.outputs.candidate_id }}
+          SOURCE_FINGERPRINT: ${{ steps.controller.outputs.source_fingerprint }}
+          VISIBLE_WORDS: ${{ steps.controller.outputs.visible_unique_words }}
+        run: |
+          REQUIRED_WORDS=$(node -p "require('./${PROGRAMME_CONFIG}').expected_scope_words")
+          VISIBLE_WORDS=${VISIBLE_WORDS:-0}
+          echo "required_words=$REQUIRED_WORDS" >> "$GITHUB_OUTPUT"
+          echo "visible_words=$VISIBLE_WORDS" >> "$GITHUB_OUTPUT"
+
+          export REQUIRED_WORDS VISIBLE_WORDS
+          python3 - <<'PY'
+          import json
+          import os
+          from datetime import datetime, timezone
+          from pathlib import Path
+
+          ledger_path = Path(os.environ['PROGRAMME_ROOT']) / '202608310015-gridatlas-programme-ledger.json'
+          ledger = json.loads(ledger_path.read_text(encoding='utf-8'))
+          candidate_id = os.environ.get('CANDIDATE_ID', '')
+          visible_words = int(os.environ.get('VISIBLE_WORDS', '0'))
+          required_words = int(os.environ.get('REQUIRED_WORDS', '43000'))
+          created = os.environ.get('CONTROLLER_CANDIDATE_CREATED', '').lower() == 'true'
+          removed = []
+
+          if created and visible_words < required_words:
+              removed = [row for row in ledger.get('candidates', []) if row.get('candidate_id') == candidate_id]
+              ledger['candidates'] = [row for row in ledger.get('candidates', []) if row.get('candidate_id') != candidate_id]
+              if removed:
+                  first_sequence = min(int(row.get('sequence', ledger.get('next_candidate_sequence', 1))) for row in removed)
+                  ledger['next_candidate_sequence'] = min(int(ledger.get('next_candidate_sequence', first_sequence)), first_sequence)
+
+          ledger['last_corpus_gate'] = {
+              'checked_at': datetime.now(timezone.utc).isoformat().replace('+00:00', 'Z'),
+              'source_fingerprint': os.environ.get('SOURCE_FINGERPRINT', ''),
+              'visible_unique_words': visible_words,
+              'required_unique_words': required_words,
+              'scope_ready': visible_words >= required_words,
+              'candidate_suppressed': bool(removed),
+              'candidate_id': candidate_id or None
+          }
+          ledger_path.write_text(json.dumps(ledger, indent=2) + '\n', encoding='utf-8')
+          PY
+
+          if [ "$VISIBLE_WORDS" -lt "$REQUIRED_WORDS" ]; then
+            if [ "${CONTROLLER_CANDIDATE_CREATED:-false}" = "true" ] && [ -n "${CANDIDATE_DIR:-}" ]; then
+              rm -rf -- "$CANDIDATE_DIR"
+            fi
+            echo "candidate_allowed=false" >> "$GITHUB_OUTPUT"
+            echo "scope_ready=false" >> "$GITHUB_OUTPUT"
+            echo "gate_status=WAITING_FOR_COMPLETE_43K_SCOPE" >> "$GITHUB_OUTPUT"
+          elif [ "${CONTROLLER_CANDIDATE_CREATED:-false}" = "true" ]; then
+            echo "candidate_allowed=true" >> "$GITHUB_OUTPUT"
+            echo "scope_ready=true" >> "$GITHUB_OUTPUT"
+            echo "gate_status=COMPLETE_SCOPE_CANDIDATE_ALLOWED" >> "$GITHUB_OUTPUT"
+          else
+            echo "candidate_allowed=false" >> "$GITHUB_OUTPUT"
+            echo "scope_ready=true" >> "$GITHUB_OUTPUT"
+            echo "gate_status=COMPLETE_SCOPE_STUDYING" >> "$GITHUB_OUTPUT"
+          fi
+
       - name: Install pinned browser tooling for a new candidate only
-        if: steps.controller.outputs.candidate_created == 'true'
+        if: steps.corpus_gate.outputs.candidate_allowed == 'true'
         run: |
           npm ci
           npx playwright install --with-deps chromium
 
       - name: Run browser acceptance against the isolated candidate
         id: browser
-        if: steps.controller.outputs.candidate_created == 'true'
+        if: steps.corpus_gate.outputs.candidate_allowed == 'true'
         env:
           CANDIDATE_DIR: ${{ steps.controller.outputs.candidate_dir }}
           CANDIDATE_GENERATION: ${{ steps.controller.outputs.candidate_generation }}
@@ -107,7 +172,7 @@ jobs:
 
       - name: Finalise candidate status and quarantine evidence
         id: finaliser
-        if: steps.controller.outputs.candidate_created == 'true'
+        if: steps.corpus_gate.outputs.candidate_allowed == 'true'
         env:
           SOURCE_ROOT: ${{ github.workspace }}
           CANDIDATE_DIR: ${{ steps.controller.outputs.candidate_dir }}
@@ -124,7 +189,7 @@ jobs:
         if: steps.controller.outputs.active == 'true'
         env:
           RUN_STAMP: ${{ steps.controller.outputs.run_stamp }}
-          CANDIDATE_CREATED: ${{ steps.controller.outputs.candidate_created }}
+          CANDIDATE_CREATED: ${{ steps.corpus_gate.outputs.candidate_allowed }}
           CANDIDATE_DIR: ${{ steps.controller.outputs.candidate_dir }}
         run: |
           git config user.name "gridatlas-overnight-next-versions"
@@ -165,10 +230,13 @@ jobs:
           ACTIVE: ${{ steps.controller.outputs.active }}
           RUN_STAMP: ${{ steps.controller.outputs.run_stamp }}
           WORDS: ${{ steps.controller.outputs.visible_unique_words }}
+          REQUIRED_WORDS: ${{ steps.corpus_gate.outputs.required_words }}
+          SCOPE_READY: ${{ steps.corpus_gate.outputs.scope_ready }}
+          CORPUS_GATE: ${{ steps.corpus_gate.outputs.gate_status }}
           STUDY_MATURE: ${{ steps.controller.outputs.study_mature }}
           REMAINING: ${{ steps.controller.outputs.study_remaining_seconds }}
           STUDY_FOLDER: ${{ steps.controller.outputs.study_folder }}
-          CANDIDATE_CREATED: ${{ steps.controller.outputs.candidate_created }}
+          CANDIDATE_CREATED: ${{ steps.corpus_gate.outputs.candidate_allowed }}
           CANDIDATE_DIR: ${{ steps.controller.outputs.candidate_dir }}
           CANDIDATE_VERSION: ${{ steps.controller.outputs.candidate_version }}
           CANDIDATE_STATUS: ${{ steps.finaliser.outputs.candidate_status }}
@@ -178,7 +246,9 @@ jobs:
             echo
             echo "- Active: ${ACTIVE:-false}"
             echo "- Run generation: ${RUN_STAMP:-none}"
-            echo "- Visible corpus words: ${WORDS:-0}"
+            echo "- Visible corpus words: ${WORDS:-0} / ${REQUIRED_WORDS:-43000}"
+            echo "- Complete scope visible: ${SCOPE_READY:-false}"
+            echo "- Corpus gate: ${CORPUS_GATE:-unknown}"
             echo "- Study mature: ${STUDY_MATURE:-false}"
             echo "- Study seconds remaining: ${REMAINING:-unknown}"
             echo "- Study evidence: \`${STUDY_FOLDER:-none}\`"
@@ -193,7 +263,7 @@ jobs:
           } >> "$GITHUB_STEP_SUMMARY"
 
       - name: Keep quarantined candidates visible but mark the run red
-        if: steps.controller.outputs.candidate_created == 'true' && steps.finaliser.outputs.candidate_status == 'FAIL'
+        if: steps.corpus_gate.outputs.candidate_allowed == 'true' && steps.finaliser.outputs.candidate_status == 'FAIL'
         run: |
           echo "Candidate was committed with quarantine evidence; no live pointer was changed." >&2
           exit 1
