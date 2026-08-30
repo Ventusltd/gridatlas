@@ -7,6 +7,7 @@ on:
     paths:
       - 'state/streaming-road-fix.json'
       - 'tools/v9_5/build_streaming_bridge.py'
+      - 'tools/v9_5/release_stream_payload_cache.py'
       - 'atman/verify_streaming_roads.mjs'
       - '.github/workflows/202608301321-verify-live.yml'
 
@@ -67,9 +68,13 @@ jobs:
             --generation "$G" \
             --request state/streaming-road-fix.json \
             --report work/streaming-road-build.json
+          python3 tools/v9_5/release_stream_payload_cache.py \
+            --generation "$G" \
+            --report work/streaming-road-build.json
           node tools/scope/verify-compose.mjs
           test "$(jq -r .full_application_copies_created work/streaming-road-build.json)" = 0
           test "$(jq -r .immutable_shell_modified work/streaming-road-build.json)" = false
+          test "$(jq -r .payload_cache_released_after_serialisation work/streaming-road-build.json)" = true
           test "$(jq -r .generation atlas/current.json)" = "$G"
           test "$(jq -r '.cartridge_order | join(",")' atlas/current.json)" = 'streaming-parquet-bridge,uk-gazetteer-flyto'
 
@@ -81,7 +86,7 @@ jobs:
           test "$(git diff --cached --name-only | grep -Evc "$allowed" || true)" = 0
           git config user.name gridatlas-streaming-road-builder
           git config user.email actions@users.noreply.github.com
-          git commit -m "$G-gridatlas-v9.5: stream Parquet response before body reconstruction"
+          git commit -m "$G-gridatlas-v9.5: stream roads and release reconstructed payload cache"
           echo "commit_sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
 
       - name: Prove selected CVAA contracts on the locally committed candidate
@@ -95,9 +100,8 @@ jobs:
           python3 - <<'PY'
           import json
           from pathlib import Path
-          rows = Path('work/cvaa-candidate.txt').read_text(encoding='utf-8').splitlines()
           payload = None
-          for line in reversed(rows):
+          for line in reversed(Path('work/cvaa-candidate.txt').read_text(encoding='utf-8').splitlines()):
               try:
                   candidate = json.loads(line)
               except json.JSONDecodeError:
@@ -110,14 +114,15 @@ jobs:
           if payload.get('shallow') is not False:
               raise SystemExit('CVAA saw a shallow checkout')
           states = {row['vaccine']: row for row in payload['results']}
-          for vaccine in ('full-history-checkout', 'no-app-copies', 'registry-integrity', 'no-dangerous-apis'):
+          selected = ('full-history-checkout', 'no-app-copies', 'registry-integrity', 'no-dangerous-apis')
+          for vaccine in selected:
               row = states.get(vaccine)
               if not row or row.get('state') != 'immune':
                   raise SystemExit(f'{vaccine} is not immune: {row}')
           Path('work/cvaa-selected-gates.json').write_text(json.dumps({
               'schema': 'gridatlas.cvaa-selected-gates.v1',
               'cvaa_sha': 'd2ebc01f6eab41f2a84b0c53c4cfae0d2625ec5e',
-              'selected': {name: states[name] for name in ('full-history-checkout', 'no-app-copies', 'registry-integrity', 'no-dangerous-apis')},
+              'selected': {name: states[name] for name in selected},
               'all_findings': payload.get('findings'),
           }, indent=2) + '\n', encoding='utf-8')
           PY
