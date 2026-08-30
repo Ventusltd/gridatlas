@@ -1,0 +1,120 @@
+    schedule_retired: false
+  };
+  current.contracts = {
+    ...(current.contracts || {}),
+    new_full_application_folders: 0,
+    thin_candidate_folders_created: 1,
+    live_pointer_modified: false,
+    promotion_allowed: false
+  };
+  current.candidate = {
+    schema: 'gridatlas.overnight-candidate.v1',
+    programme_generation: config.generation,
+    sequence,
+    source_fingerprint: fingerprint,
+    visible_unique_words: summary.unique_words,
+    frozen_shell: true,
+    build_mode: 'FROZEN_LIVE_COMPOSITION_SNAPSHOT',
+    test_status: 'PENDING'
+  };
+  return current;
+}
+
+async function buildCandidate({ runStamp, fingerprint, inventory, summary, directives, ledger, baselineCurrent, loaderHtml, selected }) {
+  const sequence = Number(ledger.next_candidate_sequence || 1);
+  const candidateId = `${runStamp}-gridatlas-app-candidate-${String(sequence).padStart(2, '0')}-${fingerprint.slice(0, 8)}`;
+  const relativeFolder = path.posix.join(config.public_root, candidateId);
+  const absoluteFolder = path.join(SOURCE_ROOT, relativeFolder);
+  if (fsSync.existsSync(absoluteFolder)) throw new Error(`candidate folder already exists: ${relativeFolder}`);
+  await fs.mkdir(absoluteFolder, { recursive: false });
+
+  let candidateCurrent = rewriteBaselineCurrent(baselineCurrent, runStamp, candidateId, sequence, fingerprint, summary);
+  const copiedCartridges = [];
+  let buildMode = 'FROZEN_LIVE_COMPOSITION_SNAPSHOT';
+  let selectedSource = null;
+
+  if (selected) {
+    buildMode = 'VALIDATED_NEW_CARTRIDGE_COMPOSITION';
+    selectedSource = {
+      ref: selected.entry.ref,
+      ref_sha: selected.entry.ref_sha,
+      path: selected.entry.path,
+      generation: selected.artifact.generation,
+      content_sha256: selected.entry.content_sha256
+    };
+    const cartridgeDir = path.join(absoluteFolder, 'cartridges');
+    await fs.mkdir(cartridgeDir, { recursive: false });
+    const localNames = new Set();
+    const cartridges = [];
+    for (const resolved of selected.resolved_cartridges) {
+      const baseName = path.posix.basename(resolved.repo_path);
+      let localName = baseName;
+      if (localNames.has(localName)) localName = `${resolved.cartridge.id}-${baseName}`;
+      localNames.add(localName);
+      await fs.writeFile(path.join(cartridgeDir, localName), resolved.buffer);
+      copiedCartridges.push({
+        id: resolved.cartridge.id,
+        source_ref: selected.entry.ref,
+        source_path: resolved.repo_path,
+        local_path: `./cartridges/${localName}`,
+        sha256: resolved.actual_sha256
+      });
+      cartridges.push({ ...resolved.cartridge, path: `./cartridges/${localName}` });
+    }
+    candidateCurrent.shell = {
+      ...candidateCurrent.shell,
+      release_id: config.frozen_shell_release_id,
+      index: absoluteAtlasPath(baselineCurrent.shell.index),
+      base: absoluteAtlasPath(baselineCurrent.shell.base)
+    };
+    candidateCurrent.cartridge_order = [...selected.artifact.cartridge_order];
+    candidateCurrent.cartridges = cartridges;
+    candidateCurrent.previous_generation = selected.artifact.generation;
+    candidateCurrent.candidate.build_mode = buildMode;
+    candidateCurrent.candidate.selected_composition = selectedSource;
+  }
+
+  await fs.writeFile(path.join(absoluteFolder, 'index.html'), loaderHtml);
+  await writeJson(path.join(absoluteFolder, 'current.json'), candidateCurrent);
+
+  const candidateManifestName = `${runStamp}-gridatlas-candidate-manifest.json`;
+  const candidateCompositionName = `${runStamp}-gridatlas-candidate-composition.json`;
+  const candidateManifest = {
+    schema: 'gridatlas.overnight-candidate-manifest.v1',
+    generation: runStamp,
+    candidate_id: candidateId,
+    candidate_version: candidateCurrent.composition_version,
+    candidate_route: `/gridatlas/${relativeFolder}/`,
+    programme_generation: config.generation,
+    sequence,
+    built_at: now.toISOString(),
+    study_started_at: ledger.study_started_at,
+    study_not_before: ledger.not_before,
+    study_elapsed_seconds: Math.floor((now.getTime() - new Date(ledger.study_started_at).getTime()) / 1000),
+    source_fingerprint: fingerprint,
+    visible_unique_words: summary.unique_words,
+    expected_scope_words: config.expected_scope_words,
+    build_mode: buildMode,
+    selected_source: selectedSource,
+    copied_cartridges: copiedCartridges,
+    frozen_shell_release_id: config.frozen_shell_release_id,
+    live_pointer_modified: false,
+    full_application_copy_created: false,
+    promotion_allowed: false,
+    test_status: 'PENDING',
+    proof: null
+  };
+  await writeJson(path.join(absoluteFolder, candidateManifestName), candidateManifest);
+  await writeJson(path.join(absoluteFolder, candidateCompositionName), {
+    schema: 'gridatlas.candidate-composition.v1',
+    generation: runStamp,
+    candidate_id: candidateId,
+    source_fingerprint: fingerprint,
+    build_mode: buildMode,
+    shell: candidateCurrent.shell,
+    cartridge_order: candidateCurrent.cartridge_order,
+    cartridges: candidateCurrent.cartridges,
+    copied_cartridges: copiedCartridges,
+    source_composition: selectedSource,
+    contracts: candidateCurrent.contracts
+  });
