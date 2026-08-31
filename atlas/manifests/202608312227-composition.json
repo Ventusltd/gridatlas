@@ -1,7 +1,7 @@
 {
   "schema": "gridatlas.composition-manifest.v1",
-  "generation": "202608312222",
-  "parent_generation": "202608312208",
+  "generation": "202608312227",
+  "parent_generation": "202608312222",
   "live_route": "/gridatlas/atlas/",
   "shell": {
     "release_id": "202608300453-atlas-v9",
@@ -66,13 +66,13 @@
     },
     {
       "id": "sld-sandbox",
-      "generation": "202608312222",
-      "version": "v9.23",
+      "generation": "202608312227",
+      "version": "v9.24",
       "type": "script",
       "slot": "replace-script",
       "replace_script": "202608292126-pre-snapped-config-adapter.js",
-      "path": "./cartridges/202608312222-sld-sandbox-v9-8.js",
-      "sha256": "39dbf4b9d265d0619e9d89b4e159b5680da029235162164b34df120c40bf3b37",
+      "path": "./cartridges/202608312227-sld-sandbox-v9-8.js",
+      "sha256": "29c067f994b48ed77247e0b4f648a4efd099c6c6a5241f8eaa6618b444004afb",
       "capabilities": [
         "pre-snapped-config-adapter-carried-forward",
         "project-or-substation-selection",
@@ -121,7 +121,8 @@
         "labels-take-their-font-from-the-style",
         "no-glyphs-means-no-labels-not-an-exception-per-frame",
         "glyph-range-pre-flighted-before-any-symbol-layer",
-        "card-geometry-is-per-selection"
+        "card-geometry-is-per-selection",
+        "gb-decade-prices-beside-the-map"
       ],
       "immutable_shell_modified": false,
       "supersedes_shell_script": {
@@ -227,6 +228,17 @@
         "reported": "Vikram: arriving from Pipeline News and then clicking another solar pixel gives a card that is not sized correctly",
         "cause": "the popup element is reused between selections and nothing this cartridge wrote onto a card was ever taken off: the max-height computed for the previous card's contents, gridatlas-free if it had been freed, the --gx/--gy it was parked at, the minimised state; and addCardBar returned early once the bar existed, so the only call to boundCardToMap on that path never ran again",
         "rule": "geometry is per selection, content is not: the bar, its listeners and the drag handlers are kept, because rebuilding them costs a card that can no longer be moved"
+      },
+      "gb_decade": {
+        "reads": "https://globalgrid2050.com/uk_energy_tracking_v6/derived/decade-summary.json",
+        "why_not_the_live_feeds": "their collection workflows were deliberately stopped, so a live panel would print ten-week-old numbers under a word that promises otherwise",
+        "why_not_a_port": "the tracker is 49 MB and the Atlas already boots a 35.7 MB query engine; the summary is 6.4 kB against 1.9 MB of daily series, and this arrives on a phone",
+        "sources": [
+          "Elexon system price",
+          "Sheffield Solar PVLive, estimated not metered"
+        ],
+        "headline": "the lowest half hour of the decade was -185.33 GBP/MWh on 2023-07-17 at 14:00, a July afternoon, which is the export limitation and curtailment question stated as a measurement",
+        "fetched": "on first open only, never at boot"
       }
     }
   ],
@@ -255,8 +267,8 @@
     "offshore_wind_excluded_from_links": true,
     "cards_fit_after_drag_and_restore": true,
     "shell_modified": false,
-    "scope": "card geometry resets on every selection",
-    "proof": "tools/proofs/202608312222-sld-sandbox.proof.mjs, 262 checks"
+    "scope": "the GB electricity tracker is connected to the map",
+    "proof": "tools/proofs/202608312227-sld-sandbox.proof.mjs, 293 checks"
   },
   "version": "v9.15",
   "composition_id": "202608312031-gridatlas-v9.15",
@@ -266,5 +278,5 @@
     "source_sha256": "07d33eda5b3279a03df4c0a0aded61e4363c46734dda991aa5f48ae0d55097da",
     "transformation": "carry the pre-snap config rewrite verbatim; add a measured link layer and on-card beta distances"
   },
-  "composition_version": "v9.23"
+  "composition_version": "v9.24"
 }

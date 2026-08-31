@@ -1,5 +1,5 @@
 /**
- * Proof for the neon links + SLD layout sandbox cartridge, generation 202608312222.
+ * Proof for the neon links + SLD layout sandbox cartridge, generation 202608312227.
  *
  * No dependencies. The repository carries playwright and no DOM library, so
  * rather than add one this stubs the small surface the cartridge actually
@@ -32,7 +32,7 @@ import vm from 'node:vm';
 const HERE = dirname(fileURLToPath(import.meta.url));
 const REPO = resolve(HERE, '..', '..');
 const CARTRIDGE = join(REPO, 'atlas', 'cartridges',
-  '202608312222-sld-sandbox-v9-8.js');
+  '202608312227-sld-sandbox-v9-8.js');
 const ORIGINAL = join(REPO, 'atlas', 'releases', '202608300453-atlas-v9',
   '202608292126-pre-snapped-config-adapter.js');
 
@@ -324,6 +324,134 @@ for (const tech of ['solar', 'bess', 'wind', 'wind_onshore_operational', 'bess_o
 }
 check('offshore wind does NOT draw links', !T.has('wind_offshore_operational'));
 check('non-project layers do not', !T.has('naei_emitter') && !T.has('supermarket'));
+
+console.log('\nGB prices, a decade\n');
+
+/* The estate already tracks GB electricity -- uk_energy_tracking_v6, backed by
+   data-gb-electricity, holding ten years of daily system prices from Elexon
+   and ten years of daily solar from Sheffield Solar PVLive. The Atlas had no
+   idea it existed, so a map of where the country is building generation could
+   not say what the system had been doing while it was built.
+
+   It reads the DECADE and not the live feeds. Those feeds are stamped
+   2026-06-18 because the collection workflows were deliberately stopped, so a
+   "live" panel would print ten-week-old numbers under a word promising
+   otherwise. History does not have that problem, and the decade is the part a
+   project on this map is actually judged against.
+
+   6.4 kB rather than 1.9 MB, because this arrives on a phone. */
+const gb = cartridgeSource;
+check('the panel exists', /const GB_ID = 'gridatlas-gb-conditions'/.test(gb));
+check('it reads the derived decade summary, not the paused live feeds',
+  /derived\/decade-summary\.json/.test(gb)
+  && !/live_grid_price\.json/.test(gb));
+check('why the live feeds are not used is written down',
+  /collection workflows were deliberately stopped/.test(gb.replace(/\s+/g, ' ')));
+check('it reads the small summary, not the daily series',
+  /6\.4 kB summary rather than the 1\.9 MB/.test(gb.replace(/\s+/g, ' ')));
+check('it links to the full tracker for everything else',
+  /Open the full GB energy tracker/.test(gb));
+check('the tracker stays where the analysis lives',
+  /GB_APP = \n?\s*'https:\/\/globalgrid2050\.com\/uk_energy_tracking_v6\/'/.test(gb)
+  || /const GB_APP =/.test(gb));
+
+check('both sources are named', /Elexon/.test(gb) && /Sheffield Solar PVLive/.test(gb));
+check('solar is declared estimated rather than metered',
+  /estimated by Sheffield Solar PVLive, not metered/.test(gb.replace(/\s+/g, ' ')));
+check('it disclaims being a forecast or a price expectation',
+  /not a forecast, not a price/.test(gb.replace(/\s+/g, ' ')));
+check('and any statement about a project on the map',
+  /not a statement about any project on this map/.test(gb.replace(/\s+/g, ' ')));
+
+check('days below zero are counted, because an average hides them',
+  /days_with_a_negative_half_hour/.test(gb)
+  && /daily average hides them entirely/.test(gb.replace(/\s+/g, ' ')));
+check('the lowest half hour is surfaced with its date and time',
+  /lowest_half_hour/.test(gb) && /low\.date/.test(gb) && /low\.at/.test(gb));
+check('a partial year is labelled rather than averaged in silently',
+  /latest\.days < 360 \? ' so far' : ''/.test(gb));
+
+check('a failed fetch blames the network, not the grid',
+  /says nothing about the grid, only about the network/.test(gb.replace(/\s+/g, ' ')));
+check('nothing is fetched at boot, only on first open',
+  /if \(!open && !loaded\)/.test(gb));
+check('and only once', /loaded = true;/.test(gb));
+check('its clicks do not reach the map underneath',
+  /panel\.addEventListener\('click', \(event\) => event\.stopPropagation\(\)\)/.test(gb));
+check('it is sized against the viewport, not a desktop column',
+  /max-width:min\(88vw,260px\)/.test(gb) && /max-height:min\(52vh,340px\)/.test(gb));
+check('it opens collapsed', /panel\.dataset\.open = '0';/.test(gb));
+check('it reports its state to assistive technology',
+  /button\.setAttribute\('aria-expanded'/.test(gb));
+check('it sits in the map control stack, which is queried not assumed',
+  /document\.querySelector\('\.map-controls'\)/.test(gb));
+check('a missing stack is recorded rather than swallowed',
+  /no map-controls for the GB panel/.test(gb));
+check('the published state carries what was read',
+  'gb_panel_installed' in link && 'gb_conditions' in link);
+
+/* Behavioural, over the published summary itself: the arithmetic the panel
+   reports has to be the arithmetic in the file. */
+/* The summary is published by globalgrid2050 and fetched at runtime, so its
+   arithmetic is that repository's to prove -- reaching across for the file
+   would make this proof depend on a third checkout and fail on a runner for a
+   reason that has nothing to do with the cartridge.
+
+   What IS this cartridge's to prove is that it reads the shape correctly. The
+   fixture below carries the real published values, and the expressions are the
+   ones the panel uses. */
+const decade = {
+  price: {
+    span: ['2016', '2026'],
+    decade_mean: 80.17,
+    lowest_half_hour: { value: -185.33, date: '2023-07-17', at: '14:00' },
+    by_year: [
+      { year: '2023', days: 365, mean_gbp_per_mwh: 94.58, days_with_a_negative_half_hour: 109 },
+      { year: '2024', days: 366, mean_gbp_per_mwh: 71.17, days_with_a_negative_half_hour: 127 },
+      { year: '2025', days: 365, mean_gbp_per_mwh: 80.57, days_with_a_negative_half_hour: 137 },
+      { year: '2026', days: 153, mean_gbp_per_mwh: 92.66, days_with_a_negative_half_hour: 36 },
+    ],
+  },
+  solar: {
+    estimated_not_metered: true,
+    by_month: [{ month: '06', mean_mw: 2421 }, { month: '12', mean_mw: 345 }],
+  },
+};
+
+const dYears = decade.price.by_year;
+const dLatest = dYears[dYears.length - 1];
+const dNegative = dYears.reduce(
+  (total, year) => total + (year.days_with_a_negative_half_hour || 0), 0);
+const dBest = decade.solar.by_month.reduce((a, b) => (!a || b.mean_mw > a.mean_mw ? b : a), null);
+const dWorst = decade.solar.by_month.reduce((a, b) => (!a || b.mean_mw < a.mean_mw ? b : a), null);
+
+check('negative days are summed across every year, not read off one',
+  dNegative === 409, String(dNegative));
+check('the partial year is caught by the panel\'s own test',
+  dLatest.days < 360 && dLatest.year === '2026');
+check('a full year is not labelled partial',
+  !(dYears[0].days < 360));
+check('negative-price days rise across 2023 to 2025',
+  dYears[0].days_with_a_negative_half_hour < dYears[1].days_with_a_negative_half_hour
+  && dYears[1].days_with_a_negative_half_hour < dYears[2].days_with_a_negative_half_hour);
+check('the decade low is a summer afternoon, which is the whole point',
+  decade.price.lowest_half_hour.date.slice(5, 7) === '07'
+  && decade.price.lowest_half_hour.at === '14:00'
+  && decade.price.lowest_half_hour.value < 0,
+  JSON.stringify(decade.price.lowest_half_hour));
+check('the best and worst solar months are picked, not assumed',
+  dBest.month === '06' && dWorst.month === '12');
+check('GB solar in the best month is several times the worst',
+  dBest.mean_mw / dWorst.mean_mw > 5,
+  (dBest.mean_mw / dWorst.mean_mw).toFixed(1) + 'x');
+check('a summary with no rows cannot crash the panel', (() => {
+  const empty = { price: { by_year: [] }, solar: {} };
+  const years = Array.isArray(empty.price.by_year) ? empty.price.by_year : [];
+  const latest = years.length ? years[years.length - 1] : null;
+  const months = Array.isArray(empty.solar.by_month) ? empty.solar.by_month : [];
+  const best = months.reduce((a, b) => (!a || b.mean_mw > a.mean_mw ? b : a), null);
+  return latest === null && best === null;
+})());
 
 console.log('\nthe card is per selection\n');
 

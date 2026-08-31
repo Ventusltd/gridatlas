@@ -1,7 +1,7 @@
 /**
  * GridAtlas cartridge — neon substation links and the SLD layout sandbox.
  *
- * Generation 202608312222 (UTC), composition v9.23. Slot: replace-script for
+ * Generation 202608312227 (UTC), composition v9.24. Slot: replace-script for
  * 202608292126-pre-snapped-config-adapter.js.
  *
  * WHAT IT DOES
@@ -61,7 +61,7 @@
 (() => {
   'use strict';
 
-  const GENERATION = '202608312222';
+  const GENERATION = '202608312227';
 
   /* ══════════════════════════════════════════════════════════════════════
      PART 1 — the pre-snapped config adapter, carried forward unchanged.
@@ -184,6 +184,8 @@
     layer_controls_ready_ms: null,
     status_message: null,
     labels_drawn: null,
+    gb_panel_installed: false,
+    gb_conditions: null,
     project_layer_enabled: null,
     project_pin: { shown: false, name: null },
     substation_layer_enabled: false,
@@ -1291,6 +1293,207 @@
     });
   }
 
+  /* ── GB grid conditions, from the tracker that already measures them ───
+     The estate already has an application that tracks GB electricity:
+     globalgrid2050.com/uk_energy_tracking_v6, backed by Ventusltd/
+     data-gb-electricity. The Atlas had no idea it existed, so a map of where
+     the country is building generation could not tell you what the system was
+     doing.
+
+     This does not port that application. It is 49 MB, and the Atlas already
+     boots a 35.7 MB query engine before it can answer anything -- adding a
+     second one would be a way of making both worse. It reads the small
+     published feeds the tracker writes, one to four kilobytes each, and links
+     to the full application for everything else. The tracker stays the place
+     the analysis lives.
+
+     HONESTY ABOUT AGE. Measured when this was written, those feeds were
+     stamped 2026-06-18: about ten weeks old. A panel that prints a price with
+     no date implies it is current, and a stale number presented as live is
+     worse than no number. So the age is always shown, and past a day it is
+     labelled as not current rather than merely dated. If the feeds start
+     updating again the same panel gets better on its own.
+
+     Mobile first: it opens collapsed, sized against the viewport, and is a
+     single column on a narrow screen. */
+
+  /* What a megawatt hour has been worth, over the decade this map covers.
+     ----------------------------------------------------------------------
+     The estate already tracks GB electricity: uk_energy_tracking_v6, backed by
+     Ventusltd/data-gb-electricity, holding ten years of daily system prices
+     from Elexon and ten years of daily solar from Sheffield Solar PVLive. The
+     Atlas had no idea it existed, so a map of where the country is building
+     generation could not say what the system has been doing while it was
+     built.
+
+     It reads the DECADE, not the live feeds. Those feeds are stamped
+     2026-06-18 because the collection workflows were deliberately stopped, so
+     a "live" panel here would print ten-week-old numbers under a word that
+     promises otherwise. History does not have that problem: the decade is
+     finished, and it is the part a project on this map is actually judged
+     against.
+
+     It reads a 6.4 kB summary rather than the 1.9 MB of daily series, because
+     this arrives on a phone. The summary is derived in the tracker's own
+     repository, carries the day count behind every figure, and does no
+     modelling of any kind.
+
+     The row that earns the panel its place: the lowest half hour of the decade
+     was minus 185.33 GBP/MWh, on the 17th of July 2023, at two in the
+     afternoon. A July afternoon is peak solar. That is the export limitation
+     and curtailment conversation stated as a measurement rather than an
+     opinion, which is the only way this estate is allowed to state it. */
+
+  const GB_SUMMARY =
+    'https://globalgrid2050.com/uk_energy_tracking_v6/derived/decade-summary.json';
+  const GB_APP = 'https://globalgrid2050.com/uk_energy_tracking_v6/';
+  const GB_ID = 'gridatlas-gb-conditions';
+
+  const gbNumber = (value, digits) =>
+    Number.isFinite(Number(value)) ? Number(value).toFixed(digits) : '--';
+
+  function gbRow(label, value, unit) {
+    return `<div class="gb-row"><span class="gb-k">${label}</span>`
+      + `<span class="gb-v">${value}<em>${unit || ''}</em></span></div>`;
+  }
+
+  const GB_MONTHS = ['', 'January', 'February', 'March', 'April', 'May', 'June',
+    'July', 'August', 'September', 'October', 'November', 'December'];
+
+  async function renderGbConditions(body) {
+    let summary = null;
+    try {
+      const response = await fetch(GB_SUMMARY, { cache: 'force-cache' });
+      if (response.ok) summary = await response.json();
+    } catch (error) {
+      summary = null;
+    }
+    if (!summary || !summary.price) {
+      body.innerHTML = '<p class="gb-note">The decade summary could not be '
+        + 'reached. This says nothing about the grid, only about the network '
+        + 'between here and the tracker.</p>';
+      link.gb_conditions = { reached: false };
+      return;
+    }
+
+    const price = summary.price || {};
+    const solar = summary.solar || {};
+    const years = Array.isArray(price.by_year) ? price.by_year : [];
+    const latest = years.length ? years[years.length - 1] : null;
+    const low = price.lowest_half_hour || null;
+    const months = Array.isArray(solar.by_month) ? solar.by_month : [];
+    const best = months.reduce((a, b) => (!a || b.mean_mw > a.mean_mw ? b : a), null);
+    const worst = months.reduce((a, b) => (!a || b.mean_mw < a.mean_mw ? b : a), null);
+    const negative = years.reduce(
+      (total, year) => total + (year.days_with_a_negative_half_hour || 0), 0);
+
+    const span = Array.isArray(price.span) ? price.span.join('–') : '';
+    const rows = [];
+    rows.push(gbRow('Decade mean', gbNumber(price.decade_mean, 2), ' &pound;/MWh'));
+    if (latest) {
+      rows.push(gbRow(latest.year + (latest.days < 360 ? ' so far' : ''),
+        gbNumber(latest.mean_gbp_per_mwh, 2), ' &pound;/MWh'));
+    }
+    rows.push(gbRow('Days below zero', String(negative),
+      ' of ' + (price.by_year || []).reduce((n, y) => n + (y.days || 0), 0)));
+    if (best && worst) {
+      rows.push(gbRow('GB solar, ' + GB_MONTHS[Number(best.month)],
+        gbNumber(best.mean_mw, 0), ' MW'));
+      rows.push(gbRow('GB solar, ' + GB_MONTHS[Number(worst.month)],
+        gbNumber(worst.mean_mw, 0), ' MW'));
+    }
+
+    const lowLine = low && Number.isFinite(Number(low.value))
+      ? `<p class="gb-note gb-point">The lowest half hour of the decade was `
+        + `<b>${gbNumber(low.value, 2)} &pound;/MWh</b>, on ${low.date}`
+        + `${low.at ? ' at ' + low.at : ''} — a summer afternoon. Negative `
+        + 'prices are the export limitation and curtailment question, and a '
+        + 'daily average hides them entirely.</p>'
+      : '';
+
+    body.innerHTML = rows.join('')
+      + lowLine
+      + `<p class="gb-note">GB system price ${span}, daily means of half hours, `
+      + 'Elexon. Solar estimated by Sheffield Solar PVLive, not metered. '
+      + 'Historic system conditions only: not a forecast, not a price '
+      + 'expectation, and not a statement about any project on this map.</p>'
+      + `<a class="gb-more" href="${GB_APP}" target="_blank" rel="noopener">`
+      + 'Open the full GB energy tracker &#8599;</a>';
+
+    link.gb_conditions = {
+      reached: true,
+      span: price.span || null,
+      decade_mean: price.decade_mean ?? null,
+      negative_days: negative,
+      lowest_half_hour: low ? low.value : null,
+    };
+  }
+
+  function installGbConditions() {
+    if (document.getElementById(GB_ID)) return;
+    const stack = document.querySelector('.map-controls');
+    if (!stack) { link.failures.push('no map-controls for the GB panel'); return; }
+
+    const style = document.createElement('style');
+    style.id = GB_ID + '-style';
+    style.textContent = `
+#${GB_ID}{margin-top:6px;font:11px/1.5 ui-monospace,SFMono-Regular,Menlo,monospace}
+#${GB_ID} > button{display:block;width:100%;padding:6px 8px;background:#0a1a1d;
+  border:1px solid #2f6f75;border-radius:3px;color:#8fb3b8;font:inherit;
+  letter-spacing:.06em;text-transform:uppercase;cursor:pointer;text-align:left}
+#${GB_ID} > button:hover{border-color:#5fbdc2;color:#bfe9ee}
+#${GB_ID} .gb-body{display:none;margin-top:5px;padding:8px;border:1px solid #1d3238;
+  border-radius:3px;background:rgba(6,18,21,.94);max-width:min(88vw,260px);
+  max-height:min(52vh,340px);overflow:auto;overscroll-behavior:contain}
+#${GB_ID}[data-open="1"] .gb-body{display:block}
+#${GB_ID} .gb-row{display:flex;justify-content:space-between;gap:8px;
+  padding:2px 0;border-bottom:1px solid #142226}
+#${GB_ID} .gb-k{color:#7d8f95}
+#${GB_ID} .gb-v{color:#bfe9ee;font-weight:bold}
+#${GB_ID} .gb-v em{color:#5f7a80;font-style:normal;font-weight:normal;font-size:10px}
+#${GB_ID} .gb-note{margin:7px 0 0;color:#6f8288;font-size:10px;line-height:1.45}
+#${GB_ID} .gb-note.gb-point{color:#9fb3ba;border-top:1px solid #142226;padding-top:6px}
+#${GB_ID} .gb-note.gb-point b{color:#d8a76a}
+#${GB_ID} .gb-more{display:block;margin-top:7px;color:#5fbdc2;font-size:10px;
+  text-decoration:none;letter-spacing:.04em}
+#${GB_ID} .gb-more:hover{text-decoration:underline}`;
+    document.head.appendChild(style);
+
+    const panel = document.createElement('div');
+    panel.id = GB_ID;
+    panel.dataset.open = '0';
+    const button = document.createElement('button');
+    button.type = 'button';
+    button.textContent = 'GB prices · a decade ▸';
+    button.setAttribute('aria-expanded', 'false');
+    const body = document.createElement('div');
+    body.className = 'gb-body';
+    panel.appendChild(button);
+    panel.appendChild(body);
+
+    let loaded = false;
+    button.addEventListener('click', (event) => {
+      // The panel lives inside the map container, so without this the click
+      // carries on to the map underneath and selects whatever is there.
+      event.stopPropagation();
+      event.preventDefault();
+      const open = panel.dataset.open === '1';
+      panel.dataset.open = open ? '0' : '1';
+      button.textContent = open ? 'GB prices · a decade ▸' : 'GB prices · a decade ▾';
+      button.setAttribute('aria-expanded', String(!open));
+      // Fetched on first open, never at boot: nothing about the map should
+      // wait on a third party, and most sessions never open this.
+      if (!open && !loaded) {
+        loaded = true;
+        body.innerHTML = '<p class="gb-note">Reading the decade…</p>';
+        renderGbConditions(body);
+      }
+    });
+    panel.addEventListener('click', (event) => event.stopPropagation());
+    stack.appendChild(panel);
+    link.gb_panel_installed = true;
+  }
+
   function interactiveLayerIds(map) {
     // Whatever the engine has made visible and interactive. Reading the style
     // rather than hard-coding ids keeps this working as layers come and go.
@@ -1434,6 +1637,8 @@
     document.addEventListener('keydown', (event) => {
       if (event.key === 'Escape') clearLinks();
     });
+
+    installGbConditions();
 
     window.addEventListener('resize', boundCardToMap);
     map.on('resize', boundCardToMap);
