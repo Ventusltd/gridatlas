@@ -1,5 +1,5 @@
 /**
- * Proof for the neon links + SLD layout sandbox cartridge, generation 202608312003.
+ * Proof for the neon links + SLD layout sandbox cartridge, generation 202608312008.
  *
  * No dependencies. The repository carries playwright and no DOM library, so
  * rather than add one this stubs the small surface the cartridge actually
@@ -32,7 +32,7 @@ import vm from 'node:vm';
 const HERE = dirname(fileURLToPath(import.meta.url));
 const REPO = resolve(HERE, '..', '..');
 const CARTRIDGE = join(REPO, 'atlas', 'cartridges',
-  '202608312003-sld-sandbox-v9-8.js');
+  '202608312008-sld-sandbox-v9-8.js');
 const ORIGINAL = join(REPO, 'atlas', 'releases', '202608300453-atlas-v9',
   '202608292126-pre-snapped-config-adapter.js');
 
@@ -569,6 +569,14 @@ check('it ticks the engine control rather than reaching past it',
 check('and it is on for a project-origin layout too',
   (code.match(/enableSubstationLayer\(\);/g) || []).length >= 2);
 check('a missing control is reported, not ignored', /'subs: control not found'/.test(code));
+
+check('the flow is a repeating train, not a single pulse',
+  /function flowDash/.test(code) && /FLOW_PERIOD/.test(code) && /FLOW_PULSE/.test(code));
+check('two flow layers run half a period apart on the links',
+  /L_FLOW_B/.test(code) && /FLOW_PERIOD \/ 2/.test(code));
+check('the export cable gets the second layer too', /cableFlowB/.test(code));
+check('reduced motion silences every flow layer',
+  (code.match(/'line-opacity', 0\)/g) || []).length >= 5);
 
 console.log(`\n${passed}/${passed + failures.length} checks passed`);
 if (failures.length) {

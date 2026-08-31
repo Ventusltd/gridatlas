@@ -1,7 +1,7 @@
 /**
  * GridAtlas cartridge — neon substation links and the SLD layout sandbox.
  *
- * Generation 202608312003 (UTC), composition v9.8. Slot: replace-script for
+ * Generation 202608312008 (UTC), composition v9.8. Slot: replace-script for
  * 202608292126-pre-snapped-config-adapter.js.
  *
  * WHAT IT DOES
@@ -61,7 +61,7 @@
 (() => {
   'use strict';
 
-  const GENERATION = '202608312003';
+  const GENERATION = '202608312008';
 
   /* ══════════════════════════════════════════════════════════════════════
      PART 1 — the pre-snapped config adapter, carried forward unchanged.
@@ -145,11 +145,26 @@
   const SUBSTATION_COLOUR = '#5fbdc2';   // teal, the substation end of a link
   const FLOW_COLOUR = '#bfe9ee';         // pale cyan travelling pulse, not white
 
+  // The flow. MapLibre repeats a dash array along the line, so a short period
+  // puts several electrons on the wire at once instead of one dot going round.
+  // Two layers half a period apart double the density without doubling the
+  // speed, which would only look frantic.
+  const FLOW_PERIOD = 1.5;
+  const FLOW_SPEED = 0.055;
+  const FLOW_PULSE = 0.42;
+
+  function flowDash(phase) {
+    const lead = Math.max(0.001, phase);
+    const tail = Math.max(0.001, FLOW_PERIOD - phase);
+    return [0.001, lead, FLOW_PULSE, tail];
+  }
+
   const SRC = 'gridatlas-neon-links';
   const SRC_NODES = 'gridatlas-neon-nodes';
   const L_GLOW = 'l-neon-glow';
   const L_CORE = 'l-neon-core';
   const L_FLOW = 'l-neon-flow';
+  const L_FLOW_B = 'l-neon-flow-b';
   const L_NODE = 'l-neon-node';
   const L_NODE_RING = 'l-neon-node-ring';
   const L_LABEL = 'l-neon-label';
@@ -457,13 +472,25 @@
         'line-opacity': ['get', 'strength']
       }
     });
+    // Two flow layers, half a period apart, so a link reads as a stream of
+    // electrons rather than one dot going round.
     map.addLayer({
       id: L_FLOW, type: 'line', source: SRC,
-      layout: { 'line-cap': 'butt' },
+      layout: { 'line-cap': 'round' },
       paint: {
         'line-color': FLOW_COLOUR,
-        'line-width': ['interpolate', ['linear'], ['zoom'], 6, 1, 12, 2],
-        'line-opacity': 0.55,
+        'line-width': ['interpolate', ['linear'], ['zoom'], 6, 1.2, 12, 2.4],
+        'line-opacity': 0.8,
+        'line-dasharray': [0.2, 3.2]
+      }
+    });
+    map.addLayer({
+      id: L_FLOW_B, type: 'line', source: SRC,
+      layout: { 'line-cap': 'round' },
+      paint: {
+        'line-color': FLOW_COLOUR,
+        'line-width': ['interpolate', ['linear'], ['zoom'], 6, 0.9, 12, 1.8],
+        'line-opacity': 0.45,
         'line-dasharray': [0.2, 3.2]
       }
     });
@@ -521,14 +548,18 @@
     if (reduced) {
       // Motion is a preference, not a requirement. The lines, the nodes and
       // every number stay; only the travelling dash stops.
-      try { map.setPaintProperty(L_FLOW, 'line-opacity', 0); } catch (_) { /* layer gone */ }
+      try {
+        map.setPaintProperty(L_FLOW, 'line-opacity', 0);
+        map.setPaintProperty(L_FLOW_B, 'line-opacity', 0);
+      } catch (_) { /* layer gone */ }
       return;
     }
     const step = () => {
-      dashPhase = (dashPhase + 0.09) % 3.4;
+      dashPhase = (dashPhase + FLOW_SPEED) % FLOW_PERIOD;
+      const half = (dashPhase + FLOW_PERIOD / 2) % FLOW_PERIOD;
       try {
-        map.setPaintProperty(L_FLOW, 'line-dasharray',
-          [0.001, dashPhase, 0.55, 3.4 - dashPhase]);
+        map.setPaintProperty(L_FLOW, 'line-dasharray', flowDash(dashPhase));
+        map.setPaintProperty(L_FLOW_B, 'line-dasharray', flowDash(half));
       } catch (_) {
         stopAnimation();
         return;
@@ -845,6 +876,7 @@
     cable: 'l-sld-cable',
     cableGlow: 'l-sld-cable-glow',
     cableFlow: 'l-sld-cable-flow',
+    cableFlowB: 'l-sld-cable-flow-b',
     node: 'l-sld-node',
     pin: 'l-sld-pin',
     handle: 'l-sld-handle',
@@ -1195,7 +1227,8 @@
     // The electron flow, on the collectors.
     map.addLayer({ id: SLD_LAYERS.radialFlow, type: 'line', source: SRC_SLD,
       filter: ['all', ['==', ['get', 'kind'], 'radial'], ['!=', ['get', 'role'], 'handle_stem']],
-      paint: { 'line-color': FLOW_COLOUR, 'line-width': 1.1, 'line-opacity': 0.45,
+      layout: { 'line-cap': 'round' },
+      paint: { 'line-color': FLOW_COLOUR, 'line-width': 1.3, 'line-opacity': 0.65,
         'line-dasharray': [0.2, 3.2] } });
 
     map.addLayer({ id: SLD_LAYERS.cableGlow, type: 'line', source: SRC_SLD,
@@ -1209,7 +1242,13 @@
       paint: { 'line-color': SLD_COLOUR.cable, 'line-width': 1.8, 'line-opacity': 0.85 } });
     map.addLayer({ id: SLD_LAYERS.cableFlow, type: 'line', source: SRC_SLD,
       filter: ['==', ['get', 'kind'], 'cable'],
-      paint: { 'line-color': FLOW_COLOUR, 'line-width': 2, 'line-opacity': 0.7,
+      layout: { 'line-cap': 'round' },
+      paint: { 'line-color': FLOW_COLOUR, 'line-width': 2.4, 'line-opacity': 0.9,
+        'line-dasharray': [0.2, 3.2] } });
+    map.addLayer({ id: SLD_LAYERS.cableFlowB, type: 'line', source: SRC_SLD,
+      filter: ['==', ['get', 'kind'], 'cable'],
+      layout: { 'line-cap': 'round' },
+      paint: { 'line-color': FLOW_COLOUR, 'line-width': 1.6, 'line-opacity': 0.55,
         'line-dasharray': [0.2, 3.2] } });
 
     map.addLayer({ id: SLD_LAYERS.node, type: 'circle', source: SRC_SLD,
@@ -1240,16 +1279,18 @@
     if (window.matchMedia?.('(prefers-reduced-motion: reduce)')?.matches) {
       try {
         map.setPaintProperty(SLD_LAYERS.cableFlow, 'line-opacity', 0);
+        map.setPaintProperty(SLD_LAYERS.cableFlowB, 'line-opacity', 0);
         map.setPaintProperty(SLD_LAYERS.radialFlow, 'line-opacity', 0);
       } catch (_) { /* layer gone */ }
       return;
     }
     const step = () => {
-      sldPhase = (sldPhase + 0.09) % 3.4;
-      const dash = [0.001, sldPhase, 0.55, 3.4 - sldPhase];
+      sldPhase = (sldPhase + FLOW_SPEED) % FLOW_PERIOD;
+      const half = (sldPhase + FLOW_PERIOD / 2) % FLOW_PERIOD;
       try {
-        map.setPaintProperty(SLD_LAYERS.cableFlow, 'line-dasharray', dash);
-        map.setPaintProperty(SLD_LAYERS.radialFlow, 'line-dasharray', dash);
+        map.setPaintProperty(SLD_LAYERS.cableFlow, 'line-dasharray', flowDash(sldPhase));
+        map.setPaintProperty(SLD_LAYERS.cableFlowB, 'line-dasharray', flowDash(half));
+        map.setPaintProperty(SLD_LAYERS.radialFlow, 'line-dasharray', flowDash(sldPhase));
       } catch (_) { sldFlowHandle = null; return; }
       sldFlowHandle = requestAnimationFrame(step);
     };

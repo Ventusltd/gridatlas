@@ -1,7 +1,7 @@
 {
   "schema": "gridatlas.current.v2",
-  "generation": "202608312003",
-  "previous_generation": "202608311952",
+  "generation": "202608312008",
+  "previous_generation": "202608312003",
   "architecture": "IMMUTABLE_SHELL_PLUS_HASHED_CARTRIDGES",
   "live_route": "/gridatlas/atlas/",
   "release_id": "202608300453-atlas-v9",
@@ -58,13 +58,13 @@
     },
     {
       "id": "sld-sandbox",
-      "generation": "202608312003",
+      "generation": "202608312008",
       "version": "v9.8",
       "type": "script",
       "slot": "replace-script",
       "replace_script": "202608292126-pre-snapped-config-adapter.js",
-      "path": "./cartridges/202608312003-sld-sandbox-v9-8.js",
-      "sha256": "0cfa4e00b637bdc9ceede30cc84bf3af2a6b215b6e1974130fd615c6a8ce198a",
+      "path": "./cartridges/202608312008-sld-sandbox-v9-8.js",
+      "sha256": "839a29832a58ef2043d80439fa50984f4c474ea0fd616a72dc50956679c1fc11",
       "capabilities": [
         "pre-snapped-config-adapter-carried-forward",
         "project-or-substation-selection",
@@ -85,7 +85,8 @@
         "panel-clear-of-the-atlas-toolbar",
         "deep-link-runs-the-same-measurement-as-a-click",
         "substation-layer-auto-enabled-on-arrival",
-        "layout-opens-from-the-project-card"
+        "layout-opens-from-the-project-card",
+        "denser-electron-flow-two-layers"
       ],
       "immutable_shell_modified": false,
       "supersedes_shell_script": {
@@ -185,15 +186,15 @@
       "result_class": "LOCATION_ONLY"
     }
   },
-  "composition_manifest": "./manifests/202608312003-composition.json",
+  "composition_manifest": "./manifests/202608312008-composition.json",
   "scope_closure": {
-    "generation": "202608312003",
+    "generation": "202608312008",
     "status": "DONE",
     "scope": "GridAtlas v9.8 deep-link measurement, auto Subs and the layout entry point",
     "schedule_retired": true
   },
   "composition_version": "v9.8",
-  "composition_id": "202608312003-gridatlas-v9.8",
+  "composition_id": "202608312008-gridatlas-v9.8",
   "transport": {
     "response_contract": "HEADERS_BEFORE_PARQUET_BODY",
     "engine_timeout_seconds": 15,
