@@ -1,7 +1,7 @@
 /**
  * GridAtlas cartridge — neon substation links and the SLD layout sandbox.
  *
- * Generation 202608312026 (UTC), composition v9.13. Slot: replace-script for
+ * Generation 202608312028 (UTC), composition v9.14. Slot: replace-script for
  * 202608292126-pre-snapped-config-adapter.js.
  *
  * WHAT IT DOES
@@ -61,7 +61,7 @@
 (() => {
   'use strict';
 
-  const GENERATION = '202608312026';
+  const GENERATION = '202608312028';
 
   /* ══════════════════════════════════════════════════════════════════════
      PART 1 — the pre-snapped config adapter, carried forward unchanged.
@@ -472,6 +472,27 @@
    */
   const MIN_ANCHORED_CARD = 200;
 
+  /**
+   * Where to put a card that has been freed from its anchor.
+   *
+   * Not the map's top left. The Atlas keeps its own tool stack there -- Export
+   * CSV, Radius Search, Radius Area, Poly Zone, Status Colours, Measure --
+   * measured live at x 15 to 137, and parking on top of it trades one
+   * obstruction for another. The stack is queried rather than assumed, so the
+   * card still lands correctly if those buttons move or change.
+   */
+  function parkingSpot(map) {
+    let x = map.left + 12;
+    try {
+      const controls = document.querySelector('.map-controls');
+      if (controls) {
+        const rect = controls.getBoundingClientRect();
+        if (rect.width > 0 && rect.right > x) x = rect.right + 12;
+      }
+    } catch (_) { /* the default is still inside the map */ }
+    return { x, y: map.top + 12 };
+  }
+
   function boundCardToMap() {
     try {
       const container = capturedMap?.getContainer();
@@ -492,8 +513,9 @@
       const available = map.bottom - rect.top - 12;
       if (available < MIN_ANCHORED_CARD) {
         popup.classList.add('gridatlas-free');
-        popup.style.setProperty('--gx', (map.left + 12) + 'px');
-        popup.style.setProperty('--gy', (map.top + 12) + 'px');
+        const parked = parkingSpot(map);
+        popup.style.setProperty('--gx', parked.x + 'px');
+        popup.style.setProperty('--gy', parked.y + 'px');
         content.style.maxHeight = Math.max(160, map.height - 48) + 'px';
         return;
       }
