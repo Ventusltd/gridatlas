@@ -1,0 +1,594 @@
+{
+  "schema": "gridatlas.overnight-study-report.v1",
+  "generation": "202608310237",
+  "programme_generation": "202608310015",
+  "observed_at": "2026-08-31T01:37:10.404Z",
+  "source_fingerprint": "9f699c189a90256b5edcee379495a0ced6e554c9e07e2f84618e0513e3ecf0d3",
+  "timer": {
+    "study_started_at": "2026-08-30T23:40:36.640Z",
+    "not_before": "2026-08-31T00:40:36.640Z",
+    "minimum_study_seconds": 3600,
+    "elapsed_seconds": 6993,
+    "remaining_seconds": 0,
+    "mature": true
+  },
+  "expected_scope_words": 43000,
+  "visible_unique_words": 23622,
+  "scope_word_status": "ADDITIONAL_ARTIFACTS_EXPECTED",
+  "repository_refs": [
+    {
+      "ref": "origin/automation/202608310043-gridatlas-hard-scope-gate",
+      "sha": "f5c6ec14cb7d250d9af9105e4fbd635f9aa76381",
+      "committed_at": "2026-08-31T00:43:08+01:00",
+      "subject": "202608310043-gridatlas: require complete 43k corpus before candidate build"
+    },
+    {
+      "ref": "origin/main",
+      "sha": "cd4ef33430a3e989d9cd53f87498c40112b95504",
+      "committed_at": "2026-08-31T00:59:10+01:00",
+      "subject": "202608310050-gridatlas: install isolated next-version builders and source gate"
+    }
+  ],
+  "commits_since_programme_start": [
+    {
+      "sha": "cd4ef33430a3e989d9cd53f87498c40112b95504",
+      "committed_at": "2026-08-31T00:59:10+01:00",
+      "decorations": "HEAD -> main, origin/main",
+      "subject": "202608310050-gridatlas: install isolated next-version builders and source gate"
+    },
+    {
+      "sha": "1d802d102a0b0d97a6a14685794572ca76c16d59",
+      "committed_at": "2026-08-30T23:43:33Z",
+      "decorations": "",
+      "subject": "202608310043-gridatlas: record overnight study observation"
+    },
+    {
+      "sha": "1586d0394a148cc57fa0879e448ce53e5396d75c",
+      "committed_at": "2026-08-31T00:43:25+01:00",
+      "decorations": "",
+      "subject": "202608310043-gridatlas: hard-gate candidates on complete 43k corpus"
+    },
+    {
+      "sha": "f5c6ec14cb7d250d9af9105e4fbd635f9aa76381",
+      "committed_at": "2026-08-31T00:43:08+01:00",
+      "decorations": "origin/automation/202608310043-gridatlas-hard-scope-gate",
+      "subject": "202608310043-gridatlas: require complete 43k corpus before candidate build"
+    },
+    {
+      "sha": "cfadedfd417d7c9f6e1d0dfd44b0600de3e061a9",
+      "committed_at": "2026-08-30T23:40:37Z",
+      "decorations": "",
+      "subject": "202608310040-gridatlas: record overnight study observation"
+    },
+    {
+      "sha": "fa9cf4770d430a1b63d435685df8c30142c9b1b5",
+      "committed_at": "2026-08-31T00:40:28+01:00",
+      "decorations": "",
+      "subject": "202608310015-gridatlas: install overnight next-versions controller"
+    },
+    {
+      "sha": "5c8e1fa6523722dd6b05e938e546f233ea2b0370",
+      "committed_at": "2026-08-31T00:39:01+01:00",
+      "decorations": "origin/automation/202608310015-gridatlas-overnight-next-versions",
+      "subject": "202608310015-gridatlas: install overnight study build and test workflow"
+    },
+    {
+      "sha": "829f5f7839579553aaab6bfe74c2a532af6625a9",
+      "committed_at": "2026-08-31T00:38:35+01:00",
+      "decorations": "",
+      "subject": "202608310015-gridatlas: add integrity-checked controller assembler"
+    },
+    {
+      "sha": "e2ef95204882c4732c88443761efce30ec54d22a",
+      "committed_at": "2026-08-31T00:38:21+01:00",
+      "decorations": "",
+      "subject": "202608310015-gridatlas: add controller source part 07"
+    },
+    {
+      "sha": "997a161a6b1480c0d55243c6d2b8bdd435d4a0b0",
+      "committed_at": "2026-08-31T00:38:06+01:00",
+      "decorations": "",
+      "subject": "202608310015-gridatlas: add controller source part 06"
+    },
+    {
+      "sha": "4d4e54a5402a5fa859a2726c69df8e5859138efa",
+      "committed_at": "2026-08-31T00:37:43+01:00",
+      "decorations": "",
+      "subject": "202608310015-gridatlas: add controller source part 05"
+    },
+    {
+      "sha": "b45f92eef34e8501a1087b741786a368eaa80e2c",
+      "committed_at": "2026-08-31T00:37:24+01:00",
+      "decorations": "",
+      "subject": "202608310015-gridatlas: add controller source part 04"
+    },
+    {
+      "sha": "23e02134459607c2a55726d3dc0875f59737d285",
+      "committed_at": "2026-08-31T00:37:02+01:00",
+      "decorations": "",
+      "subject": "202608310015-gridatlas: add controller source part 03"
+    },
+    {
+      "sha": "3ca2e7d5ade6c2c6e162b4f5722c67eb0f0cc894",
+      "committed_at": "2026-08-31T00:36:36+01:00",
+      "decorations": "",
+      "subject": "202608310015-gridatlas: add controller source part 02"
+    },
+    {
+      "sha": "7e1d01875b2065c98cc927a6e7406ec47f6aec1b",
+      "committed_at": "2026-08-31T00:36:20+01:00",
+      "decorations": "",
+      "subject": "202608310015-gridatlas: add controller source part 01"
+    },
+    {
+      "sha": "446f662bb616a060c82470e787d36a41ab23e0dd",
+      "committed_at": "2026-08-31T00:35:57+01:00",
+      "decorations": "",
+      "subject": "202608310015-gridatlas: add controller source part 00"
+    },
+    {
+      "sha": "19731ddf783259c3ea85f8ccbb96859f02e97675",
+      "committed_at": "2026-08-31T00:33:45+01:00",
+      "decorations": "",
+      "subject": "202608310015-gridatlas: add browser acceptance for overnight candidates"
+    },
+    {
+      "sha": "c98d1479f8f99b79ee268d8782ab1cdf29e63bff",
+      "committed_at": "2026-08-31T00:33:02+01:00",
+      "decorations": "",
+      "subject": "202608310015-gridatlas: add candidate proof finaliser"
+    },
+    {
+      "sha": "5b7b570d7f2a98c2cf851de74b83bb92a51d6b0e",
+      "committed_at": "2026-08-31T00:32:41+01:00",
+      "decorations": "",
+      "subject": "202608310015-gridatlas: define one-hour study and candidate contract"
+    },
+    {
+      "sha": "30386cc0f447d2352d1089546043eea3e4374dbf",
+      "committed_at": "2026-08-31T00:32:08+01:00",
+      "decorations": "",
+      "subject": "202608310015-gridatlas: document overnight next-versions boundaries"
+    }
+  ],
+  "corpus": {
+    "inventory_entries": 47,
+    "unique_text_blobs": 47,
+    "unique_words": 23622,
+    "unique_text_bytes": 243660,
+    "timestamped_entries": 13,
+    "by_kind": {
+      "workflow": {
+        "files": 1,
+        "words": 1151,
+        "bytes": 12398
+      },
+      "compiler": {
+        "files": 15,
+        "words": 9347,
+        "bytes": 95304
+      },
+      "document": {
+        "files": 4,
+        "words": 1295,
+        "bytes": 10472
+      },
+      "cartridge": {
+        "files": 7,
+        "words": 6254,
+        "bytes": 65721
+      },
+      "artifact": {
+        "files": 3,
+        "words": 1501,
+        "bytes": 16440
+      },
+      "app": {
+        "files": 1,
+        "words": 533,
+        "bytes": 5223
+      },
+      "manifest": {
+        "files": 3,
+        "words": 387,
+        "bytes": 8305
+      },
+      "test": {
+        "files": 2,
+        "words": 1693,
+        "bytes": 16753
+      },
+      "scope": {
+        "files": 8,
+        "words": 1202,
+        "bytes": 9695
+      },
+      "state": {
+        "files": 3,
+        "words": 259,
+        "bytes": 3349
+      }
+    }
+  },
+  "directive_excerpts": [
+    {
+      "ref": "origin/main",
+      "path": ".github/workflows/202608310050-gridatlas-next-version-builders.yml",
+      "directive": "if: always() && steps.plan.outputs.output_dir != ''"
+    },
+    {
+      "ref": "origin/main",
+      "path": ".github/workflows/202608310050-gridatlas-next-version-builders.yml",
+      "directive": "if: always() && steps.plan.outputs.output_dir != '' && steps.finalise.outcome == 'success' && steps.boundary.outcome == 'success'"
+    },
+    {
+      "ref": "origin/main",
+      "path": "202608310050-gridatlas-next-version-builders/202608310050-source-gate.md",
+      "directive": "Required files beyond the attached sample set:"
+    },
+    {
+      "ref": "origin/main",
+      "path": "202608310050-gridatlas-next-version-builders/README.md",
+      "directive": "A second, isolated overnight campaign. It complements — and never edits — `orchestration/202608310015-gridatlas-overnight-next-versions/`."
+    },
+    {
+      "ref": "origin/main",
+      "path": "202608310050-gridatlas-next-version-builders/README.md",
+      "directive": "The workflow refuses changes to `_build-plan/`, the immutable shell, `atlas/current.json`, `state/live-set.json`, `releases/current-v5.json`, PipelineNews or Companies. It never promotes a pointer and never creates a full application copy. A failed proof is committed as evidence and the same stage retries later."
+    },
+    {
+      "ref": "origin/main",
+      "path": "202608310050-gridatlas-next-version-builders/inputs/202608310015-attached-sample-findings.md",
+      "directive": "Required N1 proof:"
+    },
+    {
+      "ref": "origin/main",
+      "path": "202608310050-gridatlas-next-version-builders/inputs/202608310015-attached-sample-findings.md",
+      "directive": "The index must be hash-pinned to `data/repd_projects_202608290716.parquet`, whose expected SHA-256 is `174040c37f3d63742d6fdd7af722a8cfdf3fb53de3ff85ff1142d22fdac4866b`. It is data, not a full app. Cartridge installation remains blocked until the reviewed anchored patch and spec arrive under `DRAFT-CARTRIDGES/`."
+    },
+    {
+      "ref": "origin/main",
+      "path": "202608310050-gridatlas-next-version-builders/inputs/202608310015-attached-sample-findings.md",
+      "directive": "- Static exact-ref lookup must work on constrained devices without starting DuckDB."
+    },
+    {
+      "ref": "origin/main",
+      "path": "202608310050-gridatlas-next-version-builders/inputs/202608310015-attached-sample-findings.md",
+      "directive": "The immutable shell has four script slots: the bridge is taken, search is taken, the engine is forbidden, and the pre-snapped config adapter is the one remaining slot. A future window-intelligence cartridge must be composite and reproduce `snap: false` for 400/275/220/132/66 kV before adding any layer. It must insert the Funding Window group first so it is visible on iPad portrait without scrolling. Failure of its data or manifest must add zero window layers while leaving the core map unchanged."
+    },
+    {
+      "ref": "origin/main",
+      "path": "202608310050-gridatlas-next-version-builders/inputs/202608310015-attached-sample-findings.md",
+      "directive": "- C5 Companies candidate search Parquet; never draw it."
+    },
+    {
+      "ref": "origin/main",
+      "path": "202608310050-gridatlas-next-version-builders/inputs/202608310015-attached-sample-findings.md",
+      "directive": "- C12 GB electricity HUD, must carry as-of/stale state."
+    },
+    {
+      "ref": "origin/main",
+      "path": "202608310050-gridatlas-next-version-builders/inputs/202608310015-attached-sample-findings.md",
+      "directive": "CVAA has 24 vaccines and a reusable pinned workflow, but no consumer repository directly calls it. GridAtlas re-implements some antibodies inline. Adoption must be pinned to reviewed commit `d2ebc01f6eab41f2a84b0c53c4cfae0d2625ec5e`, measure actual findings first, then create a short-dated ratchet baseline. Do not install predicted maxima as if measured. Adding an inoculate workflow requires updating GridAtlas `ACTIVE_WORKFLOWS` in the same commit."
+    },
+    {
+      "ref": "origin/main",
+      "path": "202608310050-gridatlas-next-version-builders/inputs/202608310015-attached-sample-findings.md",
+      "directive": "This is dependency-free arithmetic over the frozen 7,680-project PipelineNews spine. For projects with both planning permission and construction dates, compute `under_construction - planning_permission_granted`, then median by technology and capacity band. A cell with fewer than 30 samples is NULL, not guessed. The estimate remains derived and must publish sample size."
+    },
+    {
+      "ref": "origin/main",
+      "path": "202608310050-gridatlas-next-version-builders/inputs/202608310015-attached-sample-findings.md",
+      "directive": "The shipped product calls postcodes.io and Nominatim without source cards. REPD's card is still unstudied. Needed cards also include PlanIt, planning.data.gov.uk, The Gazette, LCCC, Companies House bulk and Companies House REST. A draft card is not approval: licence, attribution, rate limits, allowed use and last-checked date must be reviewed before a source becomes declared truth."
+    },
+    {
+      "ref": "origin/main",
+      "path": "202608310050-gridatlas-next-version-builders/inputs/202608310015-attached-sample-findings.md",
+      "directive": "## Required missing artefacts"
+    },
+    {
+      "ref": "origin/main",
+      "path": "202608310050-gridatlas-next-version-builders/inputs/202608310015-attached-sample-findings.md",
+      "directive": "Later stages must block rather than infer these files."
+    },
+    {
+      "ref": "origin/main",
+      "path": "202608310050-gridatlas-next-version-builders/tools/202608310050-build-n1-deep-link-candidates.py",
+      "directive": "\"\"\"Build isolated N1 candidate files. Never writes into producer repositories.\"\"\""
+    },
+    {
+      "ref": "origin/main",
+      "path": "202608310050-gridatlas-next-version-builders/tools/202608310050-build-n1-deep-link-candidates.py",
+      "directive": "parser.add_argument(\"--output\", required=True, type=Path)"
+    },
+    {
+      "ref": "origin/main",
+      "path": "202608310050-gridatlas-next-version-builders/tools/202608310050-build-n1-deep-link-candidates.py",
+      "directive": "parser.add_argument(\"--generation\", required=True)"
+    },
+    {
+      "ref": "origin/main",
+      "path": "202608310050-gridatlas-next-version-builders/tools/202608310050-build-n1-deep-link-candidates.py",
+      "directive": "parser.add_argument(\"--pipelinenews\", required=True, type=Path)"
+    },
+    {
+      "ref": "origin/main",
+      "path": "202608310050-gridatlas-next-version-builders/tools/202608310050-build-n1-deep-link-candidates.py",
+      "directive": "parser.add_argument(\"--companies\", required=True, type=Path)"
+    },
+    {
+      "ref": "origin/main",
+      "path": "202608310050-gridatlas-next-version-builders/tools/202608310050-build-n1-deep-link-candidates.py",
+      "directive": "parser.add_argument(\"--gridatlas-current\", required=True, type=Path)"
+    },
+    {
+      "ref": "origin/main",
+      "path": "202608310050-gridatlas-next-version-builders/tools/202608310050-build-readiness.mjs",
+      "directive": "if (!fs.existsSync(source)) throw new Error(`required build-plan file missing: ${relative}`);"
+    },
+    {
+      "ref": "origin/main",
+      "path": "202608310050-gridatlas-next-version-builders/tools/202608310050-build-readiness.mjs",
+      "directive": "['postcodes_io', 'postcodes.io', 'live geocoder; rate, attribution and browser-use constraints must be verified'],"
+    },
+    {
+      "ref": "origin/main",
+      "path": "202608310050-gridatlas-next-version-builders/tools/202608310050-build-readiness.mjs",
+      "directive": "['nominatim', 'Nominatim / OpenStreetMap', 'live explicit geocoder; rate and attribution policy must be verified'],"
+    },
+    {
+      "ref": "origin/main",
+      "path": "202608310050-gridatlas-next-version-builders/tools/202608310050-build-readiness.mjs",
+      "directive": "['repd', 'DESNZ REPD', 'frozen project spine; licence and attribution must be completed'],"
+    },
+    {
+      "ref": "origin/main",
+      "path": "202608310050-gridatlas-next-version-builders/tools/202608310050-build-readiness.mjs",
+      "directive": "rule: 'No card may leave draft until licence, attribution, access, rate and last-checked fields are externally verified.'"
+    },
+    {
+      "ref": "origin/main",
+      "path": "202608310050-gridatlas-next-version-builders/tools/202608310050-build-readiness.mjs",
+      "directive": "const required = ["
+    },
+    {
+      "ref": "origin/main",
+      "path": "202608310050-gridatlas-next-version-builders/tools/202608310050-build-readiness.mjs",
+      "directive": "const files = required.map(relative => copy(relative, 'frozen-inputs'));"
+    },
+    {
+      "ref": "origin/main",
+      "path": "202608310050-gridatlas-next-version-builders/tools/202608310050-build-repd-ref-index.py",
+      "directive": "parser.add_argument(\"--parquet\", required=True, type=Path)"
+    },
+    {
+      "ref": "origin/main",
+      "path": "202608310050-gridatlas-next-version-builders/tools/202608310050-build-repd-ref-index.py",
+      "directive": "\"rule\": \"Do not infer or rewrite the anchored search-cartridge patch when the reviewed draft is absent.\","
+    },
+    {
+      "ref": "origin/main",
+      "path": "202608310050-gridatlas-next-version-builders/tools/202608310050-calibrate-design-freeze.py",
+      "directive": "\"recovery_rule\": \"Never overwrite this calibration; create a later Europe/London timestamped successor.\","
+    },
+    {
+      "ref": "origin/main",
+      "path": "202608310050-gridatlas-next-version-builders/tools/202608310050-finalise-stage.mjs",
+      "directive": "if (!outputDir || !fs.existsSync(outputDir)) throw new Error('OUTPUT_DIR is required');"
+    },
+    {
+      "ref": "origin/main",
+      "path": "202608310050-gridatlas-next-version-builders/tools/202608310050-finalise-stage.mjs",
+      "directive": "if (!stage) throw new Error('STAGE is required');"
+    },
+    {
+      "ref": "origin/main",
+      "path": "202608310050-gridatlas-next-version-builders/tools/202608310050-prove-federated-deep-links.mjs",
+      "directive": "if (!outputDir || !fs.existsSync(outputDir)) throw new Error('output directory is required');"
+    },
+    {
+      "ref": "origin/main",
+      "path": "202608310050-gridatlas-next-version-builders/tools/202608310050-select-build-plan.mjs",
+      "directive": "const missing = REQUIRED.filter(relative => !fs.existsSync(path.join(plan, relative)));"
+    },
+    {
+      "ref": "origin/main",
+      "path": "202608310050-gridatlas-next-version-builders/tools/202608310050-select-build-plan.mjs",
+      "directive": "required_files: REQUIRED, missing: selected.missing,"
+    },
+    {
+      "ref": "origin/main",
+      "path": "atlas/cartridges/202608301136-place-postcode-search.js",
+      "directive": "// ---- 202608301136 UK gazetteer lane (LOCATION_ONLY, never claims REPD identity) ----"
+    },
+    {
+      "ref": "origin/main",
+      "path": "atlas/manifests/202608301522-composition.json",
+      "directive": "\"acceptance\": {"
+    },
+    {
+      "ref": "origin/main",
+      "path": "atlas/manifests/202608301624-composition.json",
+      "directive": "\"golden_browser_verification\": \"REQUIRED\""
+    },
+    {
+      "ref": "origin/main",
+      "path": "atlas/manifests/202608301825-composition.json",
+      "directive": "\"golden_browser_verification\": \"REQUIRED\","
+    },
+    {
+      "ref": "origin/main",
+      "path": "atman/verify_streaming_roads.mjs",
+      "directive": "if (!url || !expectedGeneration) throw new Error('GRIDATLAS_URL and EXPECTED_GENERATION are required');"
+    },
+    {
+      "ref": "origin/main",
+      "path": "docs/milestones/202608300305-atlas-v9-federated-deep-links.md",
+      "directive": "Execution rule: GitHub Actions performs builds, comparisons, publication and pointer movement. Human/AI work is restricted to contracts, gates and bounded repairs."
+    },
+    {
+      "ref": "origin/main",
+      "path": "docs/milestones/202608300305-atlas-v9-federated-deep-links.md",
+      "directive": "- no full PipelineNews rebuild is required for pointer movement."
+    },
+    {
+      "ref": "origin/main",
+      "path": "docs/milestones/202608300305-atlas-v9-federated-deep-links.md",
+      "directive": "- do not add URLs, names or descriptive data to relationship rows;"
+    },
+    {
+      "ref": "origin/main",
+      "path": "docs/milestones/202608300305-atlas-v9-federated-deep-links.md",
+      "directive": "- never roll a data or application pointer forward from a red gate."
+    },
+    {
+      "ref": "origin/main",
+      "path": "governance/202608300232-cross-repo-atlas-v9-milestones.md",
+      "directive": "- `name`, `longitude`, `latitude`: optional display/fallback evidence only; never identity."
+    },
+    {
+      "ref": "origin/main",
+      "path": "governance/202608300232-cross-repo-atlas-v9-milestones.md",
+      "directive": "A consumer must use the promoted `state/live-set.json` pointer and must not hard-code a mutable candidate."
+    },
+    {
+      "ref": "origin/main",
+      "path": "governance/202608300232-cross-repo-atlas-v9-milestones.md",
+      "directive": "- Use Parquet ZSTD and DuckDB validation; never store Companies House bulk dumps."
+    },
+    {
+      "ref": "origin/main",
+      "path": "governance/202608300232-cross-repo-atlas-v9-milestones.md",
+      "directive": "Any red gate leaves the previous current pointers unchanged. Recovery is always the last-known-green timestamped release."
+    },
+    {
+      "ref": "origin/main",
+      "path": "scope-of-works/202608301321-01-move-atlas-into-atlas-folder.md",
+      "directive": "## Acceptance"
+    },
+    {
+      "ref": "origin/main",
+      "path": "scope-of-works/202608301321-scope-of-works.md",
+      "directive": "6. Failed gates do not advance the scope. The last known green shell remains available."
+    },
+    {
+      "ref": "origin/main",
+      "path": "scope-of-works/202608301321-scope-of-works.md",
+      "directive": "2. Replace the temporary redirect with one stable modular Atlas loader: immutable shell plus ordered SHA-256 cartridges. Do not duplicate the application."
+    },
+    {
+      "ref": "origin/main",
+      "path": "scope-of-works/202608301321-scope-of-works.md",
+      "directive": "## Out of scope"
+    },
+    {
+      "ref": "origin/main",
+      "path": "scope-of-works/202608301518-02-modularise-immutable-shell-and-cartridges.md",
+      "directive": "- Define ordered cartridges in `atlas/current.json`; an empty order must reproduce the shell."
+    },
+    {
+      "ref": "origin/main",
+      "path": "scope-of-works/202608301520-03-apply-pipelinenews-lessons.md",
+      "directive": "- Preserve the archived one-off workflows as evidence; do not reactivate them."
+    },
+    {
+      "ref": "origin/main",
+      "path": "scope-of-works/202608301521-04-add-uk-location-search-cartridge.md",
+      "directive": "- Location results are `LOCATION_ONLY`, never set `repd_ref`, and remove a stale `repd_ref` on selection."
+    },
+    {
+      "ref": "origin/main",
+      "path": "scope-of-works/202608301525-closure.md",
+      "directive": "All six bounded scopes are complete. The loop schedule is retired. The immutable shell remains `202608300453-atlas-v9`; future application changes must be SHA-256 cartridges ordered by `atlas/current.json`, not copied application folders."
+    },
+    {
+      "ref": "origin/main",
+      "path": "state/v9-5-request.json",
+      "directive": "\"goal\": \"REPD-first search plus fly-to for any address, town, postcode or global place\","
+    },
+    {
+      "ref": "origin/main",
+      "path": "state/v9-5-request.json",
+      "directive": "\"acceptance\": ["
+    },
+    {
+      "ref": "origin/main",
+      "path": "tools/v9_5/build_streaming_bridge.py",
+      "directive": "acceptance = copy.deepcopy(new_manifest.get(\"acceptance\", {}))"
+    },
+    {
+      "ref": "origin/main",
+      "path": "tools/v9_5/build_streaming_bridge.py",
+      "directive": "acceptance.update({"
+    },
+    {
+      "ref": "origin/main",
+      "path": "tools/v9_5/build_streaming_bridge.py",
+      "directive": "new_manifest[\"acceptance\"] = acceptance"
+    },
+    {
+      "ref": "origin/main",
+      "path": "tools/v9_5/build_v9_5.py",
+      "directive": "raise RuntimeError(\"request version must be v9.5\")"
+    },
+    {
+      "ref": "origin/main",
+      "path": "tools/v9_5/release_stream_payload_cache.py",
+      "directive": "manifest.setdefault(\"acceptance\", {})[\"bridge_payload_cache_released_after_serialisation\"] = True"
+    }
+  ],
+  "composition_selection": {
+    "status": "NO_VALID_NEW_COMPOSITION_YET",
+    "rejected": [
+      {
+        "ref": "origin/main",
+        "path": "atlas/current.json",
+        "generation": "202608301825",
+        "failures": [
+          "generation predates programme"
+        ]
+      },
+      {
+        "ref": "origin/main",
+        "path": "atlas/manifests/202608301522-composition.json",
+        "generation": "202608301522",
+        "failures": [
+          "generation predates programme",
+          "required cartridge missing: streaming-parquet-bridge",
+          "required cartridge not ordered: streaming-parquet-bridge"
+        ]
+      },
+      {
+        "ref": "origin/main",
+        "path": "atlas/manifests/202608301624-composition.json",
+        "generation": "202608301624",
+        "failures": [
+          "generation predates programme",
+          "required cartridge missing: streaming-parquet-bridge",
+          "required cartridge not ordered: streaming-parquet-bridge"
+        ]
+      },
+      {
+        "ref": "origin/main",
+        "path": "atlas/manifests/202608301825-composition.json",
+        "generation": "202608301825",
+        "failures": [
+          "generation predates programme"
+        ]
+      }
+    ]
+  },
+  "rules": {
+    "minimum_study_gate_may_not_be_bypassed": true,
+    "new_output_folder_per_observation": true,
+    "new_output_folder_per_candidate": true,
+    "live_pointer_mutation_forbidden": true,
+    "immutable_shell_mutation_forbidden": true,
+    "full_application_copy_forbidden": true,
+    "thin_candidate_loader_allowed": true,
+    "candidate_only_no_promotion": true,
+    "cvaa_repository_write_forbidden": true,
+    "unverified_cartridge_execution_forbidden": true,
+    "main_writes_restricted_to_programme_and_candidate_folders": true
+  }
+}
