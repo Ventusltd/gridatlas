@@ -1,7 +1,7 @@
 {
   "schema": "gridatlas.current.v2",
-  "generation": "202608312317",
-  "previous_generation": "202608312315",
+  "generation": "202608312321",
+  "previous_generation": "202608312317",
   "architecture": "IMMUTABLE_SHELL_PLUS_HASHED_CARTRIDGES",
   "live_route": "/gridatlas/atlas/",
   "release_id": "202608300453-atlas-v9",
@@ -58,13 +58,13 @@
     },
     {
       "id": "sld-sandbox",
-      "generation": "202608312317",
-      "version": "v9.32",
+      "generation": "202608312321",
+      "version": "v9.33",
       "type": "script",
       "slot": "replace-script",
       "replace_script": "202608292126-pre-snapped-config-adapter.js",
-      "path": "./cartridges/202608312317-sld-sandbox-v9-8.js",
-      "sha256": "f10d489cd562877adca1cee8c26f8f6ed65ee2bc0553f999731b7caaa35a64b1",
+      "path": "./cartridges/202608312321-sld-sandbox-v9-8.js",
+      "sha256": "0b58c3bcf44f51ac9b394d22a631230e9ed409b64ba8fe36b6c73191c91e5010",
       "capabilities": [
         "pre-snapped-config-adapter-carried-forward",
         "project-or-substation-selection",
@@ -177,7 +177,7 @@
           "the electron flow runs along the collectors and the export cable in the direction power flows",
           "central AC sizing is corrected, not carried: gis-sld-v5-calculations.js line 147 computes total_blocks * central_skid_mva * inv_per_mv, but total_blocks already contains inv_per_mv, so the inverters sharing a skid enter the answer squared, and a count of inverters is multiplied by a transformer rating. On the shipped defaults that reported 211.2 MW where the inverters total 105.6 MW and the skids 52.8 MVA; on a 3-inverter skid it reported 1425.6 against 158.4, a factor of nine. The Atlas reports the smaller of the two nameplates and names the element that limits export. The same fault is still in the sandbox this was ported from."
         ],
-        "reverted_divergence": "z_strings was briefly changed from the original 18 to 23 here, reasoning that 18 gives a block DC/AC of 0.945. That was done without checking the reference, which is explicit that 28 inverters at 352 kVA make 9,856 kVA \"before transformer and grid limitations\" - the oversizing is the design. Reverted. A port does not improve its reference by guessing."
+        "reverted_divergence": "z_strings was briefly changed from the original 18 to 23 here, reasoning that 18 gives a block DC/AC of 0.945. That was done without checking the reference, which is explicit that 28 inverters at 352 kVA make 9,856 kVA \"before transformer and grid limitations\" - the oversizing is the design. Reverted. A port does not improve its reference by guessing. The reconciler that implemented that reasoning was then left behind uncalled; the Codex source gate flagged it as a stop-ship and it was right. Dead code that assigns to a reference input is one handler away from silently rewriting the design. Deleted, and gated against."
       },
       "entry_points": {
         "pipelinenews_map_button": "a deep link with latitude, longitude and technology draws the links, writes the distances onto the engine's own card, ticks the Subs control AND the project's own technology control, and drops a pin on the project itself so the scheme the card describes is visible under it",
@@ -357,15 +357,15 @@
       "result_class": "LOCATION_ONLY"
     }
   },
-  "composition_manifest": "./manifests/202608312317-composition.json",
+  "composition_manifest": "./manifests/202608312321-composition.json",
   "scope_closure": {
-    "generation": "202608312317",
+    "generation": "202608312321",
     "status": "DONE",
-    "scope": "GridAtlas v9.32 the voltage unit comes from the property",
+    "scope": "GridAtlas v9.33 delete the dormant reference rewrite",
     "schedule_retired": true
   },
-  "composition_version": "v9.32",
-  "composition_id": "202608312317-gridatlas-v9.32",
+  "composition_version": "v9.33",
+  "composition_id": "202608312321-gridatlas-v9.33",
   "transport": {
     "response_contract": "HEADERS_BEFORE_PARQUET_BODY",
     "engine_timeout_seconds": 15,

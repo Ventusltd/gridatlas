@@ -1,5 +1,5 @@
 /**
- * Proof for the neon links + SLD layout sandbox cartridge, generation 202608312317.
+ * Proof for the neon links + SLD layout sandbox cartridge, generation 202608312321.
  *
  * No dependencies. The repository carries playwright and no DOM library, so
  * rather than add one this stubs the small surface the cartridge actually
@@ -32,7 +32,7 @@ import vm from 'node:vm';
 const HERE = dirname(fileURLToPath(import.meta.url));
 const REPO = resolve(HERE, '..', '..');
 const CARTRIDGE = join(REPO, 'atlas', 'cartridges',
-  '202608312317-sld-sandbox-v9-8.js');
+  '202608312321-sld-sandbox-v9-8.js');
 const ORIGINAL = join(REPO, 'atlas', 'releases', '202608300453-atlas-v9',
   '202608292126-pre-snapped-config-adapter.js');
 
@@ -844,6 +844,31 @@ check('the divergence from the ported sandbox is recorded, not silent',
   /gis-sld-v5-calculations\.js line 147/.test(cs));
 check('the source of the report is credited',
   /Codex session auditing this estate in parallel/.test(cs));
+
+
+console.log('\nno dormant rewrite of the reference design\n');
+
+/* Flagged as a stop-ship by the Codex source gate. An auto-reconciler that
+   assigned sld.inputs.z_strings from the stated ratio was left in place,
+   uncalled, after the default was reverted to the original 18. Dead code that
+   ASSIGNS to a reference input is not inert: it is one future handler away
+   from silently rewriting the design this cartridge exists to reproduce, and
+   it would do it quietly, somewhere nobody would look.
+
+   The same lesson as the dead .grid-cell grading CSS removed from Pipeline
+   News earlier the same night — a rule with no caller is one edit from having
+   one — repeated within hours of writing it down. */
+const dead = cartridgeSource;
+check('the reconciler is deleted, not merely uncalled',
+  !/function stringsForRatio/.test(dead) && !/function reconcileStringCount/.test(dead));
+check('nothing is exported that could call it',
+  !/sld\.reconcileStringCount/.test(dead) && !/sld\.stringsForRatio/.test(dead));
+check('nothing assigns z_strings outside the defaults',
+  (dead.match(/z_strings\s*=/g) || []).length === 0);
+check('the original default is what ships', /z_strings: 18,/.test(dead));
+check('the obsolete rationale is gone with it', !/Nobody builds that/.test(dead));
+check('why it was deleted rather than commented out is recorded',
+  /one future handler away from silently rewriting/.test(dead.replace(/\s+/g, ' ')));
 
 
 console.log('\nthe dash atlas is bounded\n');

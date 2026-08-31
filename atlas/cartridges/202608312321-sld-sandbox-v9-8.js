@@ -1,7 +1,7 @@
 /**
  * GridAtlas cartridge — neon substation links and the SLD layout sandbox.
  *
- * Generation 202608312317 (UTC), composition v9.32. Slot: replace-script for
+ * Generation 202608312321 (UTC), composition v9.33. Slot: replace-script for
  * 202608292126-pre-snapped-config-adapter.js.
  *
  * WHAT IT DOES
@@ -61,7 +61,7 @@
 (() => {
   'use strict';
 
-  const GENERATION = '202608312317';
+  const GENERATION = '202608312321';
 
   /* ══════════════════════════════════════════════════════════════════════
      PART 1 — the pre-snapped config adapter, carried forward unchanged.
@@ -2308,53 +2308,26 @@
 
      Nothing here changes a layout. It changes what the numbers are called, and
      says so out loud when they disagree with each other. */
-  /* Make the stated ratio true, rather than reporting that it is not.
+  /* There was an auto-reconciler here. It is deleted, not disabled.
      ----------------------------------------------------------------------
-     The shipped string defaults did not describe a plant anyone would build:
+     It computed a "consistent" strings-per-inverter count from the stated
+     DC/AC ratio and assigned it to sld.inputs.z_strings, on the reasoning that
+     the original's 18 gives a block DC/AC of 0.945 and that nobody builds an
+     array smaller than its own inverters. That reasoning was wrong: the
+     reference documents 28 string inverters at 352 kVA making 9,856 kVA ahead
+     of an 8.96 MVA skid, and the oversizing is the design.
 
-       inverters per block   28 x 352 kVA        =  9.856 MVA
-       array per block       28 x 18 x 28 x 660  =  9.314 MWp
-       DC/AC                                        0.945
+     The default was reverted, and the reconciler was left behind uncalled.
+     Flagged by the Codex source gate as a stop-ship, and it was right. Dead
+     code that ASSIGNS to a reference input is not inert: it is one future
+     handler away from silently rewriting the design this cartridge exists to
+     reproduce, and it would do so quietly, in a place nobody would look.
 
-     Below one. The array was smaller than the inverters feeding it, while the
-     input said 1.2. Reporting that disagreement is honest but it is not a fix:
-     the counts are what get drawn, so the counts have to honour the ratio.
+     This is the same lesson as the dead .grid-cell grading CSS removed from
+     Pipeline News earlier tonight — a rule with no caller is one edit from
+     having one — and I repeated the mistake within hours of writing it down.
+     Deleted rather than commented out, for the same reason. */
 
-     Strings per inverter is the knob that means something here. A string is a
-     row of modules on one MPPT input, and how many you put on an inverter IS
-     the DC/AC ratio — it is the decision the ratio describes. Module wattage,
-     modules per string and the inverter rating are all supplier facts; strings
-     per inverter is the designer's.
-
-       z = ratio x kVA / (modules per string x Wp / 1000)
-         = 1.2 x 352 / (28 x 0.66) = 22.9 -> 23
-
-     which gives 1.208, the nearest a whole number of strings can sit to 1.2.
-     Integers are why the answer lands near the ratio rather than on it, and
-     the achieved value is reported so the difference is visible rather than
-     assumed away. */
-  function stringsForRatio(inputs) {
-    const i = inputs;
-    const perStringKw = (i.x_mods * i.mod_wp) / 1000;
-    if (!(perStringKw > 0) || !(i.string_inv_kva > 0)) return null;
-    const wanted = Number(i.dc_ac_ratio);
-    if (!Number.isFinite(wanted) || wanted <= 0) return null;
-    const z = Math.round((wanted * i.string_inv_kva) / perStringKw);
-    return Math.max(1, z);
-  }
-
-  // Called when the ratio, the module or the inverter changes, never on every
-  // redraw: a user who deliberately sets an odd string count should keep it
-  // until they change something the count depends on.
-  function reconcileStringCount() {
-    if (sld.inputs.mode !== 'string') return false;
-    const z = stringsForRatio(sld.inputs);
-    if (z == null || z === sld.inputs.z_strings) return false;
-    sld.inputs.z_strings = z;
-    return true;
-  }
-  sld.reconcileStringCount = reconcileStringCount;
-  sld.stringsForRatio = () => stringsForRatio(sld.inputs);
 
   function consistency(inputs, stats) {
     const i = inputs;
