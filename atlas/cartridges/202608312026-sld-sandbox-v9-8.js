@@ -1,7 +1,7 @@
 /**
  * GridAtlas cartridge — neon substation links and the SLD layout sandbox.
  *
- * Generation 202608312022 (UTC), composition v9.12. Slot: replace-script for
+ * Generation 202608312026 (UTC), composition v9.13. Slot: replace-script for
  * 202608292126-pre-snapped-config-adapter.js.
  *
  * WHAT IT DOES
@@ -61,7 +61,7 @@
 (() => {
   'use strict';
 
-  const GENERATION = '202608312022';
+  const GENERATION = '202608312026';
 
   /* ══════════════════════════════════════════════════════════════════════
      PART 1 — the pre-snapped config adapter, carried forward unchanged.
@@ -363,7 +363,7 @@
    bar stays put at the top of that scroll so the controls never leave. */
 .maplibregl-popup-content{max-height:var(--gridatlas-card-max, 60vh) !important;
   overflow-y:auto !important;overflow-x:hidden;overscroll-behavior:contain}
-.gridatlas-card-bar{position:sticky;top:-6px;z-index:2;
+.gridatlas-card-bar{position:sticky;top:-6px;z-index:2;flex:0 0 auto;
   display:flex;align-items:center;gap:6px;margin:-6px -6px 6px;
   padding:5px 6px;background:#0a1a1d;border-bottom:1px solid #1d3238;
   border-radius:3px 3px 0 0;cursor:grab;user-select:none;font-family:monospace}
@@ -458,12 +458,46 @@
   // map is the difference between a card and an obstruction.
   // Bound the card to the map it lives in. The Atlas gives the map roughly a
   // third of a desktop window, so a viewport-relative cap is not enough.
+  /**
+   * Fit the open card to the room it actually has.
+   *
+   * The container height is the wrong number: a card anchored two thirds of
+   * the way down a 319px map has 159px beneath it, not 319. Measured live, a
+   * cap taken from the container still left 127px hanging below the map.
+   *
+   * So the cap is the distance from where the card is anchored to the bottom
+   * of the map. Where that is too small to be usable the card is freed from
+   * its anchor instead and parked at the top of the map, which is the honest
+   * answer: a 90px scrolling window is not a card, it is a slot.
+   */
+  const MIN_ANCHORED_CARD = 200;
+
   function boundCardToMap() {
     try {
       const container = capturedMap?.getContainer();
       if (!container) return;
-      const height = Math.max(160, container.getBoundingClientRect().height - 60);
-      document.documentElement.style.setProperty('--gridatlas-card-max', height + 'px');
+      const map = container.getBoundingClientRect();
+      const popup = document.querySelector('.maplibregl-popup');
+      const content = popup?.querySelector('.maplibregl-popup-content');
+      if (!popup || !content) {
+        document.documentElement.style.setProperty(
+          '--gridatlas-card-max', Math.max(160, map.height - 60) + 'px');
+        return;
+      }
+      if (popup.classList.contains('gridatlas-free')) {
+        content.style.maxHeight = Math.max(160, map.height - 48) + 'px';
+        return;
+      }
+      const rect = popup.getBoundingClientRect();
+      const available = map.bottom - rect.top - 12;
+      if (available < MIN_ANCHORED_CARD) {
+        popup.classList.add('gridatlas-free');
+        popup.style.setProperty('--gx', (map.left + 12) + 'px');
+        popup.style.setProperty('--gy', (map.top + 12) + 'px');
+        content.style.maxHeight = Math.max(160, map.height - 48) + 'px';
+        return;
+      }
+      content.style.maxHeight = available + 'px';
     } catch (_) { /* leave the CSS default */ }
   }
 
@@ -535,7 +569,13 @@
     holder.innerHTML = cardBlockHtml(links, direction, layerLoaded);
     const block = holder.firstElementChild;
     if (!block) return false;
-    (content.firstElementChild || content).appendChild(block);
+    // Straight onto the content, never onto firstElementChild. Once the grab
+    // bar exists it IS the first element, and appending there put the whole
+    // block inside the bar: measured live, a bar that should be 30px tall came
+    // out at 401px with the card's contents crammed into a flex row.
+    content.appendChild(block);
+    // The card only has its real height once the block is in it.
+    requestAnimationFrame(boundCardToMap);
     block.querySelector?.('.neon-layout')?.addEventListener('click', (event) => {
       // The card sits inside the map container, so without this the click
       // carries on to the map, lands on the substation underneath and the

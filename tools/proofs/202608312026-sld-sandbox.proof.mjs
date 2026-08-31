@@ -1,5 +1,5 @@
 /**
- * Proof for the neon links + SLD layout sandbox cartridge, generation 202608312022.
+ * Proof for the neon links + SLD layout sandbox cartridge, generation 202608312026.
  *
  * No dependencies. The repository carries playwright and no DOM library, so
  * rather than add one this stubs the small surface the cartridge actually
@@ -32,7 +32,7 @@ import vm from 'node:vm';
 const HERE = dirname(fileURLToPath(import.meta.url));
 const REPO = resolve(HERE, '..', '..');
 const CARTRIDGE = join(REPO, 'atlas', 'cartridges',
-  '202608312022-sld-sandbox-v9-8.js');
+  '202608312026-sld-sandbox-v9-8.js');
 const ORIGINAL = join(REPO, 'atlas', 'releases', '202608300453-atlas-v9',
   '202608292126-pre-snapped-config-adapter.js');
 
@@ -676,6 +676,17 @@ check('the layer dashboard survives fullscreen',
 check('the dashboard is moved, not cloned, so its listeners live',
   /full\.appendChild\(dashboard\)/.test(code) && /home\.parent\.insertBefore/.test(code));
 check('a missing dashboard is reported', /'fullscreen: dashboard not found'/.test(code));
+
+check('the block goes on the content, never inside the bar',
+  /content\.appendChild\(block\)/.test(code)
+  && !/firstElementChild \|\| content\)\.appendChild/.test(code));
+check('the bar cannot stretch', /flex:0 0 auto/.test(src));
+check('the cap measures the space below the anchor, not the container',
+  /map\.bottom - rect\.top - 12/.test(code));
+check('a card with no room is freed and parked instead of squeezed',
+  /MIN_ANCHORED_CARD/.test(code) && /gridatlas-free'\)/.test(code));
+check('the fit is recomputed once the block has landed',
+  /requestAnimationFrame\(boundCardToMap\)/.test(code));
 
 console.log(`\n${passed}/${passed + failures.length} checks passed`);
 if (failures.length) {
