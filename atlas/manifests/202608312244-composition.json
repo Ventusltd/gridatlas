@@ -1,7 +1,7 @@
 {
   "schema": "gridatlas.composition-manifest.v1",
-  "generation": "202608312238",
-  "parent_generation": "202608312227",
+  "generation": "202608312244",
+  "parent_generation": "202608312238",
   "live_route": "/gridatlas/atlas/",
   "shell": {
     "release_id": "202608300453-atlas-v9",
@@ -66,13 +66,13 @@
     },
     {
       "id": "sld-sandbox",
-      "generation": "202608312238",
-      "version": "v9.25",
+      "generation": "202608312244",
+      "version": "v9.26",
       "type": "script",
       "slot": "replace-script",
       "replace_script": "202608292126-pre-snapped-config-adapter.js",
-      "path": "./cartridges/202608312238-sld-sandbox-v9-8.js",
-      "sha256": "4d52b072a0e8dacd10d72c3aaa1d853c9c267c213bfbe38815b76ee08ec35d5d",
+      "path": "./cartridges/202608312244-sld-sandbox-v9-8.js",
+      "sha256": "947bc8d7af2536a90c8fe86276d2e5721ac6d389dc97ee0822699ec5ee64acae",
       "capabilities": [
         "pre-snapped-config-adapter-carried-forward",
         "project-or-substation-selection",
@@ -122,7 +122,8 @@
         "no-glyphs-means-no-labels-not-an-exception-per-frame",
         "glyph-range-pre-flighted-before-any-symbol-layer",
         "card-geometry-is-per-selection",
-        "gb-decade-prices-beside-the-map"
+        "gb-decade-prices-beside-the-map",
+        "late-layer-controls-are-switched-on-not-abandoned"
       ],
       "immutable_shell_modified": false,
       "supersedes_shell_script": {
@@ -236,6 +237,11 @@
         "size": "4 kB rollup against roughly a hundred megabytes of settlement periods",
         "headline": "the lowest settlement period of the decade was -185.33 GBP/MWh on 2023-07-17, a July day and so peak solar",
         "solar": "absent from the product by decision, and the panel says so: PVLive has not been taken into the data repository, and filling the gap from elsewhere would make a second source of truth"
+      },
+      "late_layers": {
+        "problem": "a fixed budget is always the wrong number: the engine dashboard has been measured arriving in 2s and not arriving at all in 86s, and giving up after the budget gave up permanently, leaving a card saying the grid data had not loaded while the controls sat on screen",
+        "fix": "the bounded wait still governs how long a spinner is shown, because that is a promise about the interface; a MutationObserver keeps watching afterwards and switches the layers on whenever they arrive, clearing the notice with them",
+        "observer": "armed once, disconnects the first time it fires"
       }
     }
   ],
@@ -264,8 +270,8 @@
     "offshore_wind_excluded_from_links": true,
     "cards_fit_after_drag_and_restore": true,
     "shell_modified": false,
-    "scope": "one source of truth for GB prices: the data repository",
-    "proof": "tools/proofs/202608312238-sld-sandbox.proof.mjs, 296 checks"
+    "scope": "late layer controls are used, and the repository is LF everywhere",
+    "proof": "tools/proofs/202608312244-sld-sandbox.proof.mjs, 297 checks"
   },
   "version": "v9.15",
   "composition_id": "202608312031-gridatlas-v9.15",
@@ -275,5 +281,5 @@
     "source_sha256": "07d33eda5b3279a03df4c0a0aded61e4363c46734dda991aa5f48ae0d55097da",
     "transformation": "carry the pre-snap config rewrite verbatim; add a measured link layer and on-card beta distances"
   },
-  "composition_version": "v9.25"
+  "composition_version": "v9.26"
 }

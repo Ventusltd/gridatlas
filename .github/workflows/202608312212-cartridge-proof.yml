@@ -94,3 +94,36 @@ jobs:
       # file is how a session picks up a wrong picture of the estate.
       - name: STATE.md was regenerated before it was committed
         run: git diff --exit-code -- STATE.md
+
+      # Linux compliance, enforced rather than intended.
+      #
+      # .gitattributes pins every text file to LF in the working copy as well
+      # as the blob, which removes the class of defect that appeared four times
+      # in one evening: a file on disk that is not the file that ships, so
+      # anything reading the disk answers differently depending on the machine.
+      #
+      # A CR at the end of a shebang line is the sharpest version. The kernel
+      # then looks for an interpreter whose name ends in a carriage return and
+      # reports "bad interpreter" against a path that plainly exists.
+      - name: No CRLF survives in a tracked text file
+        run: |
+          set -euo pipefail
+          # git ls-files --eol reports the index and working-tree endings for
+          # every tracked file. On a runner both must be lf; i/crlf would mean
+          # a blob carrying CRLF, which is what ships.
+          if git ls-files --eol | grep -E 'i/crlf|i/mixed|w/crlf|w/mixed'; then
+            echo "the files listed above are not LF"
+            exit 1
+          fi
+          echo "every tracked text file is LF, on disk and in the blob"
+
+      - name: Renormalising changes nothing, so .gitattributes is being obeyed
+        run: |
+          set -euo pipefail
+          git add --renormalize .
+          if ! git diff --cached --quiet; then
+            echo "these files are not stored as .gitattributes requires:"
+            git diff --cached --name-only
+            exit 1
+          fi
+          echo "the index already agrees with .gitattributes"

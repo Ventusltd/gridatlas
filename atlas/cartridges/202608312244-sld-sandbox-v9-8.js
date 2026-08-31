@@ -1,7 +1,7 @@
 /**
  * GridAtlas cartridge — neon substation links and the SLD layout sandbox.
  *
- * Generation 202608312238 (UTC), composition v9.25. Slot: replace-script for
+ * Generation 202608312244 (UTC), composition v9.26. Slot: replace-script for
  * 202608292126-pre-snapped-config-adapter.js.
  *
  * WHAT IT DOES
@@ -61,7 +61,7 @@
 (() => {
   'use strict';
 
-  const GENERATION = '202608312238';
+  const GENERATION = '202608312244';
 
   /* ══════════════════════════════════════════════════════════════════════
      PART 1 — the pre-snapped config adapter, carried forward unchanged.
@@ -182,6 +182,7 @@
     deep_linked: false,
     boot_trigger: null,
     layer_controls_ready_ms: null,
+    layer_controls_arrived_late: false,
     status_message: null,
     labels_drawn: null,
     gb_panel_installed: false,
@@ -1044,14 +1045,58 @@
   // wait is up. Returning false is a fact worth having, not an error: it says
   // the engine had not finished, which is a different problem from the layer
   // being missing.
+  /* Watch for the controls; do not guess how long they will take.
+     ----------------------------------------------------------------------
+     A fixed budget is always the wrong number. Twelve seconds was generous on
+     one load and hopeless on the next: the engine builds its layer dashboard
+     from its own data, and that has been measured arriving in two seconds and
+     not arriving at all in eighty-six.
+
+     Giving up after a budget also gave up permanently. If the dashboard
+     appeared at thirteen seconds -- which it often does -- the layers the
+     arrival depends on stayed off for the rest of the session, with a card on
+     screen saying the grid data had not loaded while the controls sat there.
+
+     So: the wait still bounds how long the user is asked to look at a spinner,
+     because that is a promise about the interface. But an observer keeps
+     watching afterwards, and switches the layers on whenever they arrive,
+     however late. The status line is cleared at the same moment, because a
+     failure notice that outlives the failure is its own bug.
+
+     The observer disconnects the first time it fires. It is not a subscription
+     to the page; it is one deferred question. */
+
+  const LAYER_CONTROL = 'input[type=checkbox][data-layer-id]';
+  let layerWatcher = null;
+
+  function watchForLayerControls(onReady) {
+    if (layerWatcher || typeof MutationObserver !== 'function') return;
+    try {
+      layerWatcher = new MutationObserver(() => {
+        if (!document.querySelector(LAYER_CONTROL)) return;
+        layerWatcher.disconnect();
+        layerWatcher = null;
+        link.layer_controls_arrived_late = true;
+        clearStatus();
+        try { onReady(); } catch (error) {
+          link.failures.push('late layers: ' + String(error?.message || error));
+        }
+      });
+      layerWatcher.observe(document.body, { childList: true, subtree: true });
+    } catch (error) {
+      link.failures.push('layer watcher: ' + String(error?.message || error));
+      layerWatcher = null;
+    }
+  }
+
   async function waitForLayerControls(budgetMs) {
     const started = Date.now();
-    if (!document.querySelector('input[type=checkbox][data-layer-id]')) {
+    if (!document.querySelector(LAYER_CONTROL)) {
       injectStatusStyle();
       showStatus('Loading the grid data \u2014 the distances need it.', 'waiting');
     }
     while (Date.now() - started < budgetMs) {
-      if (document.querySelector('input[type=checkbox][data-layer-id]')) {
+      if (document.querySelector(LAYER_CONTROL)) {
         link.layer_controls_ready_ms = Date.now() - started;
         clearStatus();
         return true;
@@ -1061,12 +1106,12 @@
     link.layer_controls_ready_ms = null;
     link.failures.push(
       'the engine had not rendered its layer controls within '
-      + Math.round(budgetMs / 1000) + 's, so the substation and project layers '
-      + 'could not be switched on');
+      + Math.round(budgetMs / 1000) + 's; still watching, and the layers will '
+      + 'be switched on if they arrive');
     injectStatusStyle();
-    showStatus('The grid data has not finished loading, so no distances can be '
-      + 'measured yet. This is usually the network rather than the project.',
-      'failed');
+    showStatus('The grid data has not finished loading yet. The distances '
+      + 'below are already measured; the layers will switch on by themselves '
+      + 'if it arrives.', 'failed');
     return false;
   }
 
@@ -1605,11 +1650,17 @@
         // did nothing, and the layers the arrival depends on stayed off.
         // Named, so Try again re-runs exactly the arrival rather than
         // reloading and paying for the whole engine a second time.
+        const enableBoth = () => {
+          enableSubstationLayer();
+          enableTechnologyLayer(tech);
+        };
         const arrive = async () => {
           clearStatus();
           const ready = await waitForLayerControls(12000);
-          enableSubstationLayer();
-          enableTechnologyLayer(tech);
+          enableBoth();
+          // Late is not never. If the dashboard turns up after the budget, the
+          // layers still go on, without the user having to do anything.
+          if (!ready) watchForLayerControls(enableBoth);
           return ready;
         };
         retryArrival = () => { arrive().then(() => runArrivalSelection()); };

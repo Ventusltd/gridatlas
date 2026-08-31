@@ -1,5 +1,5 @@
 /**
- * Proof for the neon links + SLD layout sandbox cartridge, generation 202608312238.
+ * Proof for the neon links + SLD layout sandbox cartridge, generation 202608312244.
  *
  * No dependencies. The repository carries playwright and no DOM library, so
  * rather than add one this stubs the small surface the cartridge actually
@@ -32,7 +32,7 @@ import vm from 'node:vm';
 const HERE = dirname(fileURLToPath(import.meta.url));
 const REPO = resolve(HERE, '..', '..');
 const CARTRIDGE = join(REPO, 'atlas', 'cartridges',
-  '202608312238-sld-sandbox-v9-8.js');
+  '202608312244-sld-sandbox-v9-8.js');
 const ORIGINAL = join(REPO, 'atlas', 'releases', '202608300453-atlas-v9',
   '202608292126-pre-snapped-config-adapter.js');
 
@@ -607,8 +607,10 @@ const st = cartridgeSource;
 check('there is a status element at all', /const STATUS_ID = 'gridatlas-boot-status'/.test(st));
 check('it says what is being waited for, not merely that something is',
   /Loading the grid data .{1,12} the distances need it\./.test(st));
-check('failure blames the network rather than the project',
-  /usually the network rather than the project/.test(st));
+check('failure says the measurement already happened, not that nothing did',
+  st.includes('below are already measured'));
+check('and promises the layers will arrive on their own',
+  /layers will switch on by themselves/.test(st));
 check('failure offers a way forward', /again\.textContent = 'Try again';/.test(st));
 check('the retry re-runs the arrival instead of reloading the engine',
   /retryArrival = \(\) => \{ arrive\(\)\.then/.test(st));
@@ -668,11 +670,12 @@ check('three triggers still boot exactly once', (() => {
    seconds into a cold load. Clicking nothing silently did nothing, and the
    layers the whole arrival depends on stayed off. */
 check('the deep link waits for the controls before ticking them',
-  /await waitForLayerControls\(12000\);\s*[\s\S]{0,40}enableSubstationLayer\(\);/.test(bootSrc));
+  /await waitForLayerControls\(12000\);[\s\S]{0,40}enableBoth\(\);/.test(bootSrc));
 check('the wait is bounded, not a hang',
   /while \(Date\.now\(\) - started < budgetMs\)/.test(bootSrc));
 check('it waits for a tagged control, the same hook it will tick',
-  /querySelector\('input\[type=checkbox\]\[data-layer-id\]'\)/.test(bootSrc));
+  /const LAYER_CONTROL = 'input\[type=checkbox\]\[data-layer-id\]';/.test(bootSrc)
+  && /document\.querySelector\(LAYER_CONTROL\)/.test(bootSrc));
 check('how long the engine took is published', /link\.layer_controls_ready_ms = Date\.now\(\) - started;/.test(bootSrc));
 check('giving up says what could not be switched on, and why',
   /had not rendered its layer controls within/.test(bootSrc));
