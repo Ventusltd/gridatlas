@@ -5,7 +5,7 @@ import {
   ROOT, SCOPE_DIR, MASTER_NAME, CURRENT_RELEASE, SHARED_400KV_CARTRIDGE,
   EXPECTED_RELEASES, invariant, listScopeDocuments, activeScope, readJson,
   writeJson, writeText, writeFrontMatter, nextGeneration, scopeFileName,
-  scopeMarkdown, sha256File, githubOutput, relativePosix
+  scopeMarkdown, sha256PublishedFile, githubOutput, relativePosix
 } from './lib.mjs';
 
 const MASTER_PATH = path.join(SCOPE_DIR, MASTER_NAME);
@@ -265,7 +265,7 @@ function scope4(document) {
     slot: 'replace-script',
     replace_script: '202608291818-place-postcode-search.js',
     path: './cartridges/202608301136-place-postcode-search.js',
-    sha256: sha256File(cartridgePath),
+    sha256: sha256PublishedFile(cartridgePath),
     contract: '../ui/cartridges/202608301136-uk-gazetteer-flyto.mjs',
     result_class: 'LOCATION_ONLY',
     sets_deep_link: false
@@ -319,16 +319,16 @@ function scope5(document) {
       index: current.shell.index,
       base: current.shell.base,
       hashes: {
-        index_html: sha256File(path.join(releaseDirectory, 'index.html')),
-        css: sha256File(path.join(releaseDirectory, 'ventusv8.css')),
-        engine: sha256File(path.join(releaseDirectory, 'ventus-corev8engine.js')),
-        maplibre_worker_bridge: sha256File(path.join(releaseDirectory, '202608292311-maplibre-worker-bridge.js')),
-        pre_snapped_adapter: sha256File(path.join(releaseDirectory, '202608292126-pre-snapped-config-adapter.js'))
+        index_html: sha256PublishedFile(path.join(releaseDirectory, 'index.html')),
+        css: sha256PublishedFile(path.join(releaseDirectory, 'ventusv8.css')),
+        engine: sha256PublishedFile(path.join(releaseDirectory, 'ventus-corev8engine.js')),
+        maplibre_worker_bridge: sha256PublishedFile(path.join(releaseDirectory, '202608292311-maplibre-worker-bridge.js')),
+        pre_snapped_adapter: sha256PublishedFile(path.join(releaseDirectory, '202608292126-pre-snapped-config-adapter.js'))
       }
     },
     shared_runtime: {
       path: `./releases/cartridges/${SHARED_400KV_CARTRIDGE}/grid_400kv.geojson`,
-      sha256: sha256File(path.join(ROOT, 'atlas', 'releases', 'cartridges', SHARED_400KV_CARTRIDGE, 'grid_400kv.geojson'))
+      sha256: sha256PublishedFile(path.join(ROOT, 'atlas', 'releases', 'cartridges', SHARED_400KV_CARTRIDGE, 'grid_400kv.geojson'))
     },
     cartridge_order: current.cartridge_order,
     cartridges: current.cartridges,

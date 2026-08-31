@@ -2,7 +2,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import {
   ROOT, CURRENT_RELEASE, EXPECTED_RELEASES, SHARED_400KV_CARTRIDGE,
-  invariant, readJson, sha256File, relativePosix
+  invariant, readJson, sha256PublishedFile, relativePosix
 } from './lib.mjs';
 
 function releaseDirectories(directory) {
@@ -48,13 +48,13 @@ try {
     const filePath = path.resolve(path.join(ROOT, 'atlas'), cartridge.path);
     invariant(filePath.startsWith(`${path.join(ROOT, 'atlas')}${path.sep}`), `${id}: cartridge escaped atlas`);
     invariant(fs.existsSync(filePath), `${id}: cartridge file missing`);
-    invariant(sha256File(filePath) === cartridge.sha256, `${id}: cartridge hash mismatch`);
+    invariant(sha256PublishedFile(filePath) === cartridge.sha256, `${id}: cartridge hash mismatch`);
     invariant(shell.includes(cartridge.replace_script), `${id}: replacement slot missing from immutable shell`);
   }
 
   const sharedPath = path.join(ROOT, 'atlas', 'releases', 'cartridges', SHARED_400KV_CARTRIDGE, 'grid_400kv.geojson');
   invariant(fs.existsSync(sharedPath), 'shared 400 kV content-addressed cartridge missing');
-  invariant(sha256File(sharedPath) === SHARED_400KV_CARTRIDGE, 'shared 400 kV content hash mismatch');
+  invariant(sha256PublishedFile(sharedPath) === SHARED_400KV_CARTRIDGE, 'shared 400 kV content hash mismatch');
 
   if (current.cartridge_order.includes('uk-gazetteer-flyto')) {
     const cartridge = byId.get('uk-gazetteer-flyto');

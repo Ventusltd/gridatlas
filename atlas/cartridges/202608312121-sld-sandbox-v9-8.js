@@ -1,7 +1,7 @@
 /**
  * GridAtlas cartridge — neon substation links and the SLD layout sandbox.
  *
- * Generation 202608312031 (UTC), composition v9.15. Slot: replace-script for
+ * Generation 202608312121 (UTC), composition v9.16. Slot: replace-script for
  * 202608292126-pre-snapped-config-adapter.js.
  *
  * WHAT IT DOES
@@ -61,7 +61,7 @@
 (() => {
   'use strict';
 
-  const GENERATION = '202608312031';
+  const GENERATION = '202608312121';
 
   /* ══════════════════════════════════════════════════════════════════════
      PART 1 — the pre-snapped config adapter, carried forward unchanged.
@@ -180,6 +180,8 @@
     last_selection: null,
     links_drawn: 0,
     deep_linked: false,
+    project_layer_enabled: null,
+    project_pin: { shown: false, name: null },
     substation_layer_enabled: false,
     reduced_motion: false,
     failures: []
@@ -350,6 +352,11 @@
 .${BLOCK_CLASS} .neon-name{color:#9fb3ba;overflow:hidden;text-overflow:ellipsis;
   white-space:nowrap;flex:1;max-width:150px}
 .${BLOCK_CLASS} .neon-kv{color:#ffae00;font-size:9px;white-space:nowrap}
+.${BLOCK_CLASS} .neon-pin{display:block;width:100%;margin-top:7px;padding:5px 6px;
+  background:#0a1a1d;border:1px solid #2f6f75;border-radius:3px;color:#8b9aa1;
+  font:inherit;font-size:10px;letter-spacing:.05em;cursor:pointer;text-transform:uppercase}
+.${BLOCK_CLASS} .neon-pin:hover{border-color:#5fbdc2;color:#bfe9ee}
+.${BLOCK_CLASS} .neon-pin[aria-pressed="false"]{color:#5f7a80;border-color:#1d3238}
 .${BLOCK_CLASS} .neon-layout{display:block;width:100%;margin-top:7px;padding:5px 6px;
   background:#0a1a1d;border:1px solid #2f6f75;border-radius:3px;color:#5fbdc2;
   font:inherit;font-size:10px;letter-spacing:.05em;cursor:pointer;text-transform:uppercase}
@@ -445,7 +452,9 @@
     // The way into the layout. Without this there is no route from a project
     // to the sandbox at all, which is exactly how it felt to use.
     const button = toSubstations
-      ? `<button class="neon-layout" type="button">Lay out a scheme here &#9656;</button>`
+      ? `<button class="neon-pin" type="button" aria-pressed="${pinVisible}">`
+        + `${pinVisible ? 'Hide' : 'Show'} the project pin</button>`
+        + `<button class="neon-layout" type="button">Lay out a scheme here &#9656;</button>`
       : '';
     return `<div class="${BLOCK_CLASS}">${head}<ol>${rows}</ol>${button}${caveatHtml()}</div>`;
   }
@@ -617,6 +626,16 @@
     content.appendChild(block);
     // The card only has its real height once the block is in it.
     requestAnimationFrame(boundCardToMap);
+    block.querySelector?.('.neon-pin')?.addEventListener('click', (event) => {
+      event.stopPropagation();
+      event.preventDefault();
+      const shown = togglePin();
+      const control = block.querySelector('.neon-pin');
+      if (control) {
+        control.textContent = `${shown ? 'Hide' : 'Show'} the project pin`;
+        control.setAttribute('aria-pressed', String(shown));
+      }
+    });
     block.querySelector?.('.neon-layout')?.addEventListener('click', (event) => {
       // The card sits inside the map container, so without this the click
       // carries on to the map, lands on the substation underneath and the
@@ -779,6 +798,7 @@
       map.getSource(SRC_NODES).setData(emptyCollection());
     }
     removeCardBlock();
+    clearPin(capturedMap);
     link.links_drawn = 0;
     link.last_selection = null;
   }
@@ -830,6 +850,7 @@
     link.last_selection = { name, tech, direction, count: links.length,
       nearest_km: links.length ? Number(links[0].km.toFixed(3)) : null };
     lastSelection = { origin, name, tech, direction, links, statedMw: statedMw || null };
+    if (direction !== 'from-substation') setPin(map, origin, name, tech);
   }
 
   /* ── selection ───────────────────────────────────────────────────────── */
@@ -863,6 +884,119 @@
     return Boolean(target.closest('.maplibregl-popup')
       || target.closest('#gridatlas-sld-panel'));
   }
+
+  // The engine's own layer control for a technology. Arriving from Pipeline
+  // News the project itself was invisible: the deep link switched the
+  // substations on and left the project's layer off, so the card described a
+  // scheme with no pixel under it and the links appeared to start from nowhere.
+  const TECH_CONTROL = {
+    solar: "Solar PV [", solar_operational: "Solar PV (Operational",
+    solar_roof: "Solar Roof [",
+    bess: "Battery Storage [", bess_operational: "Battery Storage (Operational",
+    wind: "Wind [", wind_onshore_operational: "Onshore Wind (Operational",
+  };
+
+  function enableTechnologyLayer(tech) {
+    const label = TECH_CONTROL[tech];
+    if (!label) return false;
+    try {
+      const box = [...document.querySelectorAll('input[type=checkbox]')].find((input) => {
+        const text = (input.closest('label') || input.parentElement)?.textContent || "";
+        return text.replace(/\s+/g, " ").trim().toLowerCase()
+          .startsWith(label.toLowerCase());
+      });
+      if (!box) { link.failures.push('layer control not found: ' + label); return false; }
+      if (!box.checked) box.click();
+      link.project_layer_enabled = tech;
+      return true;
+    } catch (error) {
+      link.failures.push('layer: ' + String(error?.message || error));
+      return false;
+    }
+  }
+
+  /* ── the project pin ─────────────────────────────────────────────────
+     A marker for the selected project, drawn by this cartridge rather than
+     borrowed from a layer.
+
+     The engine's technology layers are hydrated on demand and can be switched
+     off by the user, so a project arriving by deep link may have no pixel at
+     all. This one does not depend on any of that: it is the thing the card is
+     about, and while a card is open its subject should be visible on the map.
+     It toggles, because a pin over the site is exactly what you want out of the
+     way when you are looking at the site. */
+
+  const SRC_PIN = 'gridatlas-project-pin';
+  const L_PIN_HALO = 'l-project-pin-halo';
+  const L_PIN = 'l-project-pin';
+  let pinVisible = true;
+
+  function ensurePinLayers(map) {
+    // addSource throws if the style is not loaded, and a source that failed to
+    // add reads back as null. The pin is a convenience: it may not be the
+    // reason a card fails to open.
+    if (!map || typeof map.addSource !== 'function') return false;
+    if (map.getSource(SRC_PIN)) return true;
+    try {
+    map.addSource(SRC_PIN, { type: 'geojson', data: { type: 'FeatureCollection', features: [] } });
+    map.addLayer({
+      id: L_PIN_HALO, type: 'circle', source: SRC_PIN,
+      paint: {
+        'circle-radius': ['interpolate', ['linear'], ['zoom'], 6, 9, 14, 22],
+        'circle-color': ['get', 'colour'],
+        'circle-opacity': 0.12,
+        'circle-blur': 0.6,
+      },
+    });
+    map.addLayer({
+      id: L_PIN, type: 'circle', source: SRC_PIN,
+      paint: {
+        'circle-radius': ['interpolate', ['linear'], ['zoom'], 6, 4, 14, 7],
+        'circle-color': ['get', 'colour'],
+        'circle-opacity': 0.95,
+        'circle-stroke-color': '#000c10',
+        'circle-stroke-width': 1.5,
+      },
+    });
+    } catch (error) {
+      link.failures.push('pin: ' + String(error?.message || error));
+      return false;
+    }
+    return Boolean(map.getSource(SRC_PIN));
+  }
+
+  function setPin(map, origin, name, tech) {
+    if (!ensurePinLayers(map)) return;
+    const source = map.getSource(SRC_PIN);
+    if (!source || typeof source.setData !== 'function') return;
+    const colour = TECH_COLOUR[tech] || SUBSTATION_COLOUR;
+    source.setData({
+      type: 'FeatureCollection',
+      features: origin && pinVisible ? [{
+        type: 'Feature',
+        properties: { colour, name: name || '' },
+        geometry: { type: 'Point', coordinates: origin },
+      }] : [],
+    });
+    link.project_pin = { shown: Boolean(origin && pinVisible), name: name || null };
+  }
+
+  function clearPin(map) {
+    const source = map && map.getSource && map.getSource(SRC_PIN);
+    if (source && typeof source.setData === 'function') {
+      source.setData({ type: 'FeatureCollection', features: [] });
+    }
+    link.project_pin = { shown: false, name: null };
+  }
+
+  function togglePin() {
+    pinVisible = !pinVisible;
+    if (capturedMap && lastSelection) {
+      setPin(capturedMap, lastSelection.origin, lastSelection.name, lastSelection.tech);
+    }
+    return pinVisible;
+  }
+  link.togglePin = togglePin;
 
   function interactiveLayerIds(map) {
     // Whatever the engine has made visible and interactive. Reading the style
@@ -970,6 +1104,9 @@
         // rather than an answer. The engine owns the layer, so this ticks its
         // own control rather than reaching past it into the map.
         enableSubstationLayer();
+        // And the project's own layer, so the scheme the card describes has a
+        // pixel under it rather than being an assertion about empty ground.
+        enableTechnologyLayer(tech);
         // Wait for the engine to put its own card up first, so this decorates
         // that card rather than racing it. Give up rather than hang.
         for (let i = 0; i < 40; i += 1) {

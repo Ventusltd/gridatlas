@@ -1,7 +1,7 @@
 {
   "schema": "gridatlas.composition-manifest.v1",
-  "generation": "202608312031",
-  "parent_generation": "202608312028",
+  "generation": "202608312121",
+  "parent_generation": "202608312031",
   "live_route": "/gridatlas/atlas/",
   "shell": {
     "release_id": "202608300453-atlas-v9",
@@ -66,13 +66,13 @@
     },
     {
       "id": "sld-sandbox",
-      "generation": "202608312031",
-      "version": "v9.15",
+      "generation": "202608312121",
+      "version": "v9.16",
       "type": "script",
       "slot": "replace-script",
       "replace_script": "202608292126-pre-snapped-config-adapter.js",
-      "path": "./cartridges/202608312031-sld-sandbox-v9-8.js",
-      "sha256": "b9cfd0dd17b4368fdc12a7e7c5dae5967079e1f323966df6998825a40adc6867",
+      "path": "./cartridges/202608312121-sld-sandbox-v9-8.js",
+      "sha256": "d4a93676b8ef4fb8bbc5897a3af544d58088a5b22dcd544e3da867882bdfbf31",
       "capabilities": [
         "pre-snapped-config-adapter-carried-forward",
         "project-or-substation-selection",
@@ -103,7 +103,10 @@
         "cards-drag-minimise-and-close",
         "minimised-cards-stay-identifiable",
         "card-bounded-to-the-map",
-        "layers-survive-fullscreen"
+        "layers-survive-fullscreen",
+        "project-pin-drawn-by-the-cartridge-not-a-layer",
+        "project-layer-enabled-on-arrival",
+        "pin-toggles-on-and-off-from-the-card"
       ],
       "immutable_shell_modified": false,
       "supersedes_shell_script": {
@@ -155,7 +158,7 @@
         ]
       },
       "entry_points": {
-        "pipelinenews_map_button": "a deep link with latitude, longitude and technology draws the links, writes the distances onto the engine's own card and ticks the Subs control, with no click required",
+        "pipelinenews_map_button": "a deep link with latitude, longitude and technology draws the links, writes the distances onto the engine's own card, ticks the Subs control AND the project's own technology control, and drops a pin on the project itself so the scheme the card describes is visible under it",
         "map_click": "a project or a substation",
         "layout": "a button on the project card; the array starts on the project and the cable runs to the nearest substation found"
       },
@@ -164,6 +167,13 @@
         "handling": "nothing is fitted until the user declares the basis; the unstated case shows a red notice rather than a default",
         "why_it_matters": "matching AC when the figure was DC oversizes the connection by the DC/AC ratio, which drives export limitation, curtailment and the size of the offer",
         "fit": "only the block count moves - ring main circuits in string mode, rings in central; ratings, string length and module choice are untouched, and the residual is reported"
+      },
+      "project_pin": {
+        "why": "the engine hydrates a technology layer on demand and the user may switch it off, so a project arriving by deep link could have no pixel at all; the card then described a scheme over empty ground and the links appeared to start from nowhere",
+        "source": "gridatlas-project-pin, owned by this cartridge",
+        "independent_of": "the engine's technology layers and their visibility",
+        "toggle": "a button on the project card; a pin over the site is the thing you want out of the way when you are looking at the site",
+        "failure_mode": "a style that has not loaded is recorded in failures and the card still opens"
       }
     }
   ],
@@ -190,7 +200,10 @@
     "beta_scope_stated_on_card": true,
     "connection_factors_named_on_card": true,
     "offshore_wind_excluded_from_links": true,
-    "cards_fit_after_drag_and_restore": true
+    "cards_fit_after_drag_and_restore": true,
+    "shell_modified": false,
+    "scope": "the project arriving from Pipeline News is visible: its own technology layer is enabled and a pin owned by this cartridge is dropped on it, with a toggle on the card",
+    "proof": "tools/proofs/202608312121-sld-sandbox.proof.mjs, 174 checks"
   },
   "version": "v9.15",
   "composition_id": "202608312031-gridatlas-v9.15",
@@ -199,5 +212,6 @@
     "path": "atlas/releases/202608300453-atlas-v9/202608292126-pre-snapped-config-adapter.js",
     "source_sha256": "07d33eda5b3279a03df4c0a0aded61e4363c46734dda991aa5f48ae0d55097da",
     "transformation": "carry the pre-snap config rewrite verbatim; add a measured link layer and on-card beta distances"
-  }
+  },
+  "composition_version": "v9.16"
 }

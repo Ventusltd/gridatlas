@@ -1,5 +1,5 @@
 /**
- * Proof for the neon links + SLD layout sandbox cartridge, generation 202608312031.
+ * Proof for the neon links + SLD layout sandbox cartridge, generation 202608312121.
  *
  * No dependencies. The repository carries playwright and no DOM library, so
  * rather than add one this stubs the small surface the cartridge actually
@@ -32,7 +32,7 @@ import vm from 'node:vm';
 const HERE = dirname(fileURLToPath(import.meta.url));
 const REPO = resolve(HERE, '..', '..');
 const CARTRIDGE = join(REPO, 'atlas', 'cartridges',
-  '202608312031-sld-sandbox-v9-8.js');
+  '202608312121-sld-sandbox-v9-8.js');
 const ORIGINAL = join(REPO, 'atlas', 'releases', '202608300453-atlas-v9',
   '202608292126-pre-snapped-config-adapter.js');
 
@@ -98,7 +98,13 @@ class MapStub {
   constructor(options) { this.options = options; constructed.push(this); }
   isStyleLoaded() { return false; }
   once() {} on() {} getContainer() { return makeElement(); }
-  getSource() { return null; } addSource() {} addLayer() {}
+  sources = new Map();
+  addedLayers = [];
+  getSource(id) { return this.sources.get(id) || null; }
+  addSource(id, spec) {
+    this.sources.set(id, { spec, data: spec.data, setData(d) { this.data = d; } });
+  }
+  addLayer(spec) { this.addedLayers.push(spec.id); }
   getStyle() { return { layers: [] }; }
   getLayoutProperty() { return 'visible'; }
   setPaintProperty() {} querySourceFeatures() { return []; }
@@ -299,6 +305,62 @@ for (const tech of ['solar', 'bess', 'wind', 'wind_onshore_operational', 'bess_o
 }
 check('offshore wind does NOT draw links', !T.has('wind_offshore_operational'));
 check('non-project layers do not', !T.has('naei_emitter') && !T.has('supermarket'));
+
+console.log('\nthe project pin\n');
+
+// Arriving from Pipeline News the project itself was invisible: the deep link
+// switched the substations on and left the project's own layer off, so the card
+// described a scheme with no pixel under it. These checks hold both halves of
+// the fix -- the engine's own layer is turned on, and the pin is drawn by this
+// cartridge so that it does not depend on that layer at all.
+const pinSrc = cartridgeSource;
+check("the deep link enables the project's own technology layer",
+  /enableSubstationLayer\(\);[\s\S]{0,240}enableTechnologyLayer\(tech\);/.test(pinSrc));
+check("a technology maps to the engine's own control, not to a layer id",
+  /TECH_CONTROL = \{[\s\S]*?solar: "Solar PV \[/.test(pinSrc));
+check('battery and wind are mapped too',
+  /bess: "Battery Storage \[/.test(pinSrc) && /wind: "Wind \[/.test(pinSrc));
+check('a control already ticked is left alone',
+  /if \(!box\.checked\) box\.click\(\);/.test(pinSrc));
+check('a missing control is recorded rather than swallowed',
+  /layer control not found/.test(pinSrc));
+
+check('the published state reports whether the pin is shown',
+  Boolean(link.project_pin) && 'shown' in link.project_pin,
+  JSON.stringify(link.project_pin));
+check('the published state reports which layer was enabled',
+  'project_layer_enabled' in link);
+check('the pin can be toggled from outside the cartridge',
+  typeof link.togglePin === 'function');
+check('toggling twice returns to where it started', (() => {
+  const first = link.togglePin();
+  const second = link.togglePin();
+  return first === false && second === true;
+})());
+
+// The pin must survive a map whose style has not loaded -- addSource throws
+// there, and a card that will not open is a worse failure than a missing dot.
+check('a source that failed to add is never dereferenced',
+  /const source = map\.getSource\(SRC_PIN\);\n\s*if \(!source \|\| typeof source\.setData !== 'function'\) return;/.test(pinSrc));
+check('an addSource that throws is caught and recorded',
+  /catch \(error\) \{\n\s*link\.failures\.push\('pin: '/.test(pinSrc));
+check('clearing the pin tolerates a map with no source',
+  /const source = map && map\.getSource && map\.getSource\(SRC_PIN\);/.test(pinSrc));
+
+check('the card carries a pin toggle', /class="neon-pin"/.test(pinSrc));
+check('the toggle says what it will do, not what it currently is',
+  /\$\{pinVisible \? 'Hide' : 'Show'\} the project pin/.test(pinSrc));
+check('the toggle reports its state to assistive technology',
+  /aria-pressed="\$\{pinVisible\}"/.test(pinSrc));
+check('the toggle does not fall through to the card underneath',
+  /\.neon-pin'\)\?\.addEventListener\('click', \(event\) => \{\n\s*event\.stopPropagation\(\);/.test(pinSrc));
+check('the pin is coloured by technology, not one colour for everything',
+  /const colour = TECH_COLOUR\[tech\] \|\| SUBSTATION_COLOUR;/.test(pinSrc));
+check('clearing the links clears the pin with them',
+  /removeCardBlock\(\);\n\s*clearPin\(capturedMap\);/.test(pinSrc));
+check('selecting a substation does not drop a project pin on it',
+  /if \(direction !== 'from-substation'\) setPin\(map, origin, name, tech\);/.test(pinSrc));
+
 
 console.log('\nthe card\n');
 
