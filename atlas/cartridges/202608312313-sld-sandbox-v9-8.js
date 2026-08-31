@@ -1,7 +1,7 @@
 /**
  * GridAtlas cartridge — neon substation links and the SLD layout sandbox.
  *
- * Generation 202608312306 (UTC), composition v9.29. Slot: replace-script for
+ * Generation 202608312313 (UTC), composition v9.30. Slot: replace-script for
  * 202608292126-pre-snapped-config-adapter.js.
  *
  * WHAT IT DOES
@@ -61,7 +61,7 @@
 (() => {
   'use strict';
 
-  const GENERATION = '202608312306';
+  const GENERATION = '202608312313';
 
   /* ══════════════════════════════════════════════════════════════════════
      PART 1 — the pre-snapped config adapter, carried forward unchanged.
@@ -202,11 +202,52 @@
   const FLOW_SPEED = 0.055;
   const FLOW_PULSE = 0.42;
 
+  /* A fixed set of dash patterns, cycled — not a new one every frame.
+     ----------------------------------------------------------------------
+     MapLibre rasterises every distinct line-dasharray into a texture atlas
+     (its LineAtlas) and keeps it for the lifetime of the map. A continuously
+     varying dasharray therefore asks for a NEW entry sixty times a second,
+     and the atlas fills: it runs out of space in about twenty seconds, after
+     which lines stop drawing correctly and the renderer spends its time
+     managing a texture nobody will reuse.
+
+     Reported by the Codex session's LineAtlas cardinality gate, which counted
+     five continuously varying writes and refused to call the storm fixed. It
+     was right: the glyph fault in v9.21 and v9.22 was a different fault with a
+     similar symptom, and fixing one did not fix the other.
+
+     The animation only needs to LOOK continuous. Twenty-four phases around the
+     cycle is finer than the eye resolves on a moving dash at this speed, and
+     it bounds the atlas at twenty-four entries forever. The patterns are built
+     once, at module load, so the running loop only ever hands back an array it
+     has already handed back before, and MapLibre reuses the raster.
+
+     Interpolating the phase against a frame index rather than a clock also
+     makes the flow independent of frame rate, which it was not: a slow phone
+     ran the electrons slower than a desktop. */
+  const FLOW_STEPS = 24;
+
+  const FLOW_PATTERNS = (() => {
+    const patterns = [];
+    for (let step = 0; step < FLOW_STEPS; step += 1) {
+      const phase = (step / FLOW_STEPS) * FLOW_PERIOD;
+      const lead = Math.max(0.001, phase);
+      const tail = Math.max(0.001, FLOW_PERIOD - phase);
+      // Frozen: a caller that mutated one of these would poison every frame
+      // that reuses it, and the reuse is the whole point.
+      patterns.push(Object.freeze([0.001, lead, FLOW_PULSE, tail]));
+    }
+    return Object.freeze(patterns);
+  })();
+
+  // Quantise to one of the prepared patterns. Same input band, same array
+  // identity, so the atlas never grows past FLOW_STEPS.
   function flowDash(phase) {
-    const lead = Math.max(0.001, phase);
-    const tail = Math.max(0.001, FLOW_PERIOD - phase);
-    return [0.001, lead, FLOW_PULSE, tail];
+    const wrapped = ((phase % FLOW_PERIOD) + FLOW_PERIOD) % FLOW_PERIOD;
+    const index = Math.floor((wrapped / FLOW_PERIOD) * FLOW_STEPS) % FLOW_STEPS;
+    return FLOW_PATTERNS[index];
   }
+  flowDash.patterns = FLOW_PATTERNS;
 
   const SRC = 'gridatlas-neon-links';
   const SRC_NODES = 'gridatlas-neon-nodes';
@@ -380,6 +421,7 @@
   link.measure.MAX_LINK_KM = MAX_LINK_KM;
   link.measure.LINK_COUNT = LINK_COUNT;
   link.measure.PROJECT_TECHS = PROJECT_TECHS;
+  link.measure.flowDash = flowDash;
   link.measure.OFFSHORE_TECHS = OFFSHORE_TECHS;
   link.measure.isProjectTech = isProjectTech;
 
@@ -2247,17 +2289,35 @@
       : (i.mv_per_ring_c * i.rings_c) * i.central_skid_mva_c;
     const exportMva = Math.min(inverterAcMw, skidAcMva);
 
+    /* Three ratios, three names. They describe different pairs of things and
+       collapsing them is how a plant specified at 1.2 gets reported as 2.4.
+
+         design    array DC MWp / inverter AC MW    what "DC/AC" means
+         export    array DC MWp / export MVA        what drives clipping
+         headroom  inverter AC MW / export MVA      how hard the inverters are
+                                                    pushed against their skids
+
+       The third is the one that says whether the inverters are oversized
+       against the transformers, and in this design they deliberately are. */
     const designRatio = inverterAcMw > 0 ? stats.dc_mwp / inverterAcMw : null;
     const exportRatio = exportMva > 0 ? stats.dc_mwp / exportMva : null;
+    const headroomRatio = exportMva > 0 ? inverterAcMw / exportMva : null;
     const statedRatio = string ? Number(i.dc_ac_ratio) : (
       i.inv_ac_mw_c > 0 ? i.inv_dc_mw_c / i.inv_ac_mw_c : null);
 
     const notes = [];
-    // A ratio below 1 is a contradiction, not a conservative choice.
+    /* Descriptive, not a verdict.
+       An earlier version of this called a design ratio below one a
+       contradiction that "nobody builds". That was wrong about this design:
+       the reference sandbox documents 28 string inverters at 352 kVA making
+       9,856 kVA ahead of an 8.96 MVA skid, and oversizing inverters against
+       the transformer is a deliberate choice, not an arithmetic fault. The
+       panel states the number and what it means; it does not grade it. */
     if (Number.isFinite(designRatio) && designRatio < 1) {
-      notes.push('The array is smaller than the inverters it feeds — a DC/AC '
-        + 'ratio of ' + designRatio.toFixed(2) + '. Nobody builds that; the '
-        + 'module or inverter counts are inconsistent.');
+      notes.push('The array is smaller than the inverter nameplate feeding it, '
+        + 'a DC/AC of ' + designRatio.toFixed(2) + '. That is unusual for solar '
+        + 'and is worth checking against the module and string counts, which '
+        + 'are what decide it.');
     }
     // The stated ratio is an instruction. If the hardware does not honour it,
     // the hardware is what will be built.
@@ -2270,10 +2330,12 @@
     // The transformers, not the inverters, set the export.
     if (Number.isFinite(inverterAcMw) && Number.isFinite(skidAcMva)
         && inverterAcMw > skidAcMva * 1.001) {
+      // Stated as the design fact it is, with the ratio, not as a fault.
       notes.push('Inverters total ' + inverterAcMw.toFixed(1) + ' MW against '
-        + skidAcMva.toFixed(1) + ' MVA of skid transformer, so export is '
-        + 'limited by the transformers. Verify the export limit in the '
-        + 'connection agreement.');
+        + skidAcMva.toFixed(1) + ' MVA of skid transformer, a ratio of '
+        + (headroomRatio || 0).toFixed(2) + '. Export is set by the '
+        + 'transformers, not the inverters. Oversizing here is a normal design '
+        + 'choice; verify the export limit in the connection agreement.');
     }
     return {
       dc_mwp: stats.dc_mwp,
@@ -2282,6 +2344,7 @@
       export_mva: exportMva,
       design_dc_ac: designRatio,
       export_dc_ac: exportRatio,
+      inverter_to_export: headroomRatio,
       stated_dc_ac: Number.isFinite(statedRatio) ? statedRatio : null,
       notes,
     };

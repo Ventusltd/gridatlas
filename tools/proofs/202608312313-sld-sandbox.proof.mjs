@@ -1,5 +1,5 @@
 /**
- * Proof for the neon links + SLD layout sandbox cartridge, generation 202608312306.
+ * Proof for the neon links + SLD layout sandbox cartridge, generation 202608312313.
  *
  * No dependencies. The repository carries playwright and no DOM library, so
  * rather than add one this stubs the small surface the cartridge actually
@@ -32,7 +32,7 @@ import vm from 'node:vm';
 const HERE = dirname(fileURLToPath(import.meta.url));
 const REPO = resolve(HERE, '..', '..');
 const CARTRIDGE = join(REPO, 'atlas', 'cartridges',
-  '202608312306-sld-sandbox-v9-8.js');
+  '202608312313-sld-sandbox-v9-8.js');
 const ORIGINAL = join(REPO, 'atlas', 'releases', '202608300453-atlas-v9',
   '202608292126-pre-snapped-config-adapter.js');
 
@@ -811,6 +811,56 @@ check('the divergence from the ported sandbox is recorded, not silent',
   /gis-sld-v5-calculations\.js line 147/.test(cs));
 check('the source of the report is credited',
   /Codex session auditing this estate in parallel/.test(cs));
+
+
+console.log('\nthe dash atlas is bounded\n');
+
+/* MapLibre rasterises every distinct line-dasharray into its LineAtlas and
+   keeps it for the life of the map. Setting a continuously varying dasharray
+   asks for a NEW entry sixty times a second, and the atlas runs out of space
+   in about twenty seconds — after which lines stop drawing correctly.
+
+   Reported by the Codex session's LineAtlas cardinality gate, which counted
+   five continuously varying writes and refused to call the storm fixed. It was
+   right: the glyph fault fixed in v9.21 and v9.22 was a different fault with a
+   similar symptom, and closing one did not close the other. */
+const dashSrc = cartridgeSource;
+check('there is a fixed number of dash patterns', /const FLOW_STEPS = 24;/.test(dashSrc));
+check('they are built once, not per frame',
+  /const FLOW_PATTERNS = \(\(\) => \{/.test(dashSrc));
+check('and frozen, so a caller cannot poison a reused frame',
+  /Object\.freeze\(\[0\.001, lead, FLOW_PULSE, tail\]\)/.test(dashSrc));
+check('flowDash quantises rather than computing a fresh array',
+  /return FLOW_PATTERNS\[index\];/.test(dashSrc)
+  && !/return \[0\.001, lead, FLOW_PULSE, tail\];/.test(dashSrc));
+check('a negative or overrunning phase still lands in the set',
+  /\(\(phase % FLOW_PERIOD\) \+ FLOW_PERIOD\) % FLOW_PERIOD/.test(dashSrc));
+check('why an unbounded atlas is fatal is written down',
+  /runs out of space in about twenty seconds/.test(dashSrc.replace(/\s+/g, ' ')));
+
+// Behavioural: the whole point is a bound, so bound it.
+check('a hundred thousand frames produce at most 24 distinct patterns', (() => {
+  const seen = new Set();
+  for (let frame = 0; frame < 100000; frame += 1) {
+    const dash = link.measure.flowDash
+      ? link.measure.flowDash(frame * 0.055)
+      : null;
+    if (!dash) return false;
+    seen.add(dash.join(','));
+  }
+  return seen.size <= 24;
+})(), (() => {
+  const seen = new Set();
+  for (let frame = 0; frame < 100000; frame += 1) {
+    const dash = link.measure.flowDash ? link.measure.flowDash(frame * 0.055) : null;
+    if (dash) seen.add(dash.join(','));
+  }
+  return seen.size + ' distinct';
+})());
+check('the same phase always returns the SAME array object, so it is reused',
+  link.measure.flowDash
+    ? link.measure.flowDash(0.4) === link.measure.flowDash(0.4)
+    : false);
 
 
 console.log('\nthe project pin\n');

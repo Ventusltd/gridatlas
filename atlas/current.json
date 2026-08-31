@@ -1,7 +1,7 @@
 {
   "schema": "gridatlas.current.v2",
-  "generation": "202608312306",
-  "previous_generation": "202608312300",
+  "generation": "202608312313",
+  "previous_generation": "202608312306",
   "architecture": "IMMUTABLE_SHELL_PLUS_HASHED_CARTRIDGES",
   "live_route": "/gridatlas/atlas/",
   "release_id": "202608300453-atlas-v9",
@@ -58,13 +58,13 @@
     },
     {
       "id": "sld-sandbox",
-      "generation": "202608312306",
-      "version": "v9.29",
+      "generation": "202608312313",
+      "version": "v9.30",
       "type": "script",
       "slot": "replace-script",
       "replace_script": "202608292126-pre-snapped-config-adapter.js",
-      "path": "./cartridges/202608312306-sld-sandbox-v9-8.js",
-      "sha256": "91098933f9b73d298bd88f3deadae0e21bbc2fa4e514bd193c6e982c223d4581",
+      "path": "./cartridges/202608312313-sld-sandbox-v9-8.js",
+      "sha256": "d8e988449393827d6ee2b2e46e4576fcd634a1a510937cb9ebc752c2cabfe0f4",
       "capabilities": [
         "pre-snapped-config-adapter-carried-forward",
         "project-or-substation-selection",
@@ -122,7 +122,9 @@
         "voltage-class-context-on-the-card",
         "whole-generation-and-storage-dashboard-accepted",
         "fit-moves-two-variables",
-        "dc-inverter-ac-and-export-kept-apart"
+        "dc-inverter-ac-and-export-kept-apart",
+        "dash-atlas-bounded-at-24-patterns",
+        "three-named-capacity-ratios"
       ],
       "immutable_shell_modified": false,
       "supersedes_shell_script": {
@@ -270,10 +272,22 @@
       "capacity_names": {
         "problem": "three different numbers were all called DC/AC: a stated input of 1.200, a reported 1.040, and 0.945 implied by the hardware; and in central mode a reported 2.402 against an inverter 1.200",
         "cause": "AC had correctly become the LIMITING nameplate while the ratio was still read as though it were the inverter nameplate",
-        "now": "DC, inverter AC and export are named separately; the design ratio is DC over inverter AC, the export ratio is DC over the limit, and a disagreement between the stated and achieved ratio is stated"
+        "now": "DC, inverter AC and export are named separately; the design ratio is DC over inverter AC, the export ratio is DC over the limit, and a disagreement between the stated and achieved ratio is stated",
+        "three_ratios": {
+          "design": "array DC MWp / inverter AC MW - what DC/AC means",
+          "export": "array DC MWp / export MVA - what drives clipping",
+          "headroom": "inverter AC MW / export MVA - how hard the inverters are pushed"
+        },
+        "not_a_verdict": "an earlier version called a design ratio below one a contradiction nobody builds; the reference documents 28 inverters at 352 kVA ahead of an 8.96 MVA skid, so oversizing is a deliberate choice and the panel describes it rather than grading it"
       },
       "not_ported_yet": {
         "financial_model": "the original carries price, yield, bifacial gain, five loss components, degradation, opex, EPC, flood, module and fixed capex, contingency, full BESS assumptions and 25/35-year generation. None of it is in this cartridge, so there is nothing to compare against the original yet"
+      },
+      "dash_atlas": {
+        "reported_by": "the Codex session's LineAtlas cardinality gate",
+        "fault": "MapLibre rasterises every distinct line-dasharray into its LineAtlas and keeps it for the life of the map; a continuously varying dasharray asks for a new entry sixty times a second and the atlas runs out of space in about twenty seconds",
+        "distinct_from": "the glyph fault fixed in v9.21 and v9.22 — a different cause with a similar symptom, which is why closing one did not close the other",
+        "fix": "24 patterns built once and frozen, cycled; measured at 24 distinct over 100,000 frames"
       }
     }
   ],
@@ -319,15 +333,15 @@
       "result_class": "LOCATION_ONLY"
     }
   },
-  "composition_manifest": "./manifests/202608312306-composition.json",
+  "composition_manifest": "./manifests/202608312313-composition.json",
   "scope_closure": {
-    "generation": "202608312306",
+    "generation": "202608312313",
     "status": "DONE",
-    "scope": "GridAtlas v9.29 the fit reaches small projects, and the capacities are named apart",
+    "scope": "GridAtlas v9.30 a bounded dash atlas and three named ratios",
     "schedule_retired": true
   },
-  "composition_version": "v9.29",
-  "composition_id": "202608312306-gridatlas-v9.29",
+  "composition_version": "v9.30",
+  "composition_id": "202608312313-gridatlas-v9.30",
   "transport": {
     "response_contract": "HEADERS_BEFORE_PARQUET_BODY",
     "engine_timeout_seconds": 15,
