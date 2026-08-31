@@ -1,7 +1,7 @@
 {
   "schema": "gridatlas.current.v2",
-  "generation": "202608312227",
-  "previous_generation": "202608312222",
+  "generation": "202608312238",
+  "previous_generation": "202608312227",
   "architecture": "IMMUTABLE_SHELL_PLUS_HASHED_CARTRIDGES",
   "live_route": "/gridatlas/atlas/",
   "release_id": "202608300453-atlas-v9",
@@ -58,13 +58,13 @@
     },
     {
       "id": "sld-sandbox",
-      "generation": "202608312227",
-      "version": "v9.24",
+      "generation": "202608312238",
+      "version": "v9.25",
       "type": "script",
       "slot": "replace-script",
       "replace_script": "202608292126-pre-snapped-config-adapter.js",
-      "path": "./cartridges/202608312227-sld-sandbox-v9-8.js",
-      "sha256": "29c067f994b48ed77247e0b4f648a4efd099c6c6a5241f8eaa6618b444004afb",
+      "path": "./cartridges/202608312238-sld-sandbox-v9-8.js",
+      "sha256": "4d52b072a0e8dacd10d72c3aaa1d853c9c267c213bfbe38815b76ee08ec35d5d",
       "capabilities": [
         "pre-snapped-config-adapter-carried-forward",
         "project-or-substation-selection",
@@ -222,15 +222,12 @@
         "rule": "geometry is per selection, content is not: the bar, its listeners and the drag handlers are kept, because rebuilding them costs a card that can no longer be moved"
       },
       "gb_decade": {
-        "reads": "https://globalgrid2050.com/uk_energy_tracking_v6/derived/decade-summary.json",
-        "why_not_the_live_feeds": "their collection workflows were deliberately stopped, so a live panel would print ten-week-old numbers under a word that promises otherwise",
-        "why_not_a_port": "the tracker is 49 MB and the Atlas already boots a 35.7 MB query engine; the summary is 6.4 kB against 1.9 MB of daily series, and this arrives on a phone",
-        "sources": [
-          "Elexon system price",
-          "Sheffield Solar PVLive, estimated not metered"
-        ],
-        "headline": "the lowest half hour of the decade was -185.33 GBP/MWh on 2023-07-17 at 14:00, a July afternoon, which is the export limitation and curtailment question stated as a measurement",
-        "fetched": "on first open only, never at boot"
+        "reads": "https://raw.githubusercontent.com/Ventusltd/data-gb-electricity/main/derived/price-decade-rollup.json",
+        "why_there": "\"data before charts\": a consumer reads a data product that already sits clean and never owns source data or becomes a second source of truth. data-gb-electricity owns the Parquet and refreshes monthly on a schedule that is still running",
+        "supersedes": "an earlier copy derived inside globalgrid2050, which was a second definition of the same numbers and is retired",
+        "size": "4 kB rollup against roughly a hundred megabytes of settlement periods",
+        "headline": "the lowest settlement period of the decade was -185.33 GBP/MWh on 2023-07-17, a July day and so peak solar",
+        "solar": "absent from the product by decision, and the panel says so: PVLive has not been taken into the data repository, and filling the gap from elsewhere would make a second source of truth"
       }
     }
   ],
@@ -276,15 +273,15 @@
       "result_class": "LOCATION_ONLY"
     }
   },
-  "composition_manifest": "./manifests/202608312227-composition.json",
+  "composition_manifest": "./manifests/202608312238-composition.json",
   "scope_closure": {
-    "generation": "202608312227",
+    "generation": "202608312238",
     "status": "DONE",
-    "scope": "GridAtlas v9.24 a decade of GB prices beside the map",
+    "scope": "GridAtlas v9.25 read the repository that owns the data",
     "schedule_retired": true
   },
-  "composition_version": "v9.24",
-  "composition_id": "202608312227-gridatlas-v9.24",
+  "composition_version": "v9.25",
+  "composition_id": "202608312238-gridatlas-v9.25",
   "transport": {
     "response_contract": "HEADERS_BEFORE_PARQUET_BODY",
     "engine_timeout_seconds": 15,

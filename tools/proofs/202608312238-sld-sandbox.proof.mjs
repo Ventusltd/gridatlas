@@ -1,5 +1,5 @@
 /**
- * Proof for the neon links + SLD layout sandbox cartridge, generation 202608312227.
+ * Proof for the neon links + SLD layout sandbox cartridge, generation 202608312238.
  *
  * No dependencies. The repository carries playwright and no DOM library, so
  * rather than add one this stubs the small surface the cartridge actually
@@ -32,7 +32,7 @@ import vm from 'node:vm';
 const HERE = dirname(fileURLToPath(import.meta.url));
 const REPO = resolve(HERE, '..', '..');
 const CARTRIDGE = join(REPO, 'atlas', 'cartridges',
-  '202608312227-sld-sandbox-v9-8.js');
+  '202608312238-sld-sandbox-v9-8.js');
 const ORIGINAL = join(REPO, 'atlas', 'releases', '202608300453-atlas-v9',
   '202608292126-pre-snapped-config-adapter.js');
 
@@ -342,32 +342,46 @@ console.log('\nGB prices, a decade\n');
    6.4 kB rather than 1.9 MB, because this arrives on a phone. */
 const gb = cartridgeSource;
 check('the panel exists', /const GB_ID = 'gridatlas-gb-conditions'/.test(gb));
-check('it reads the derived decade summary, not the paused live feeds',
-  /derived\/decade-summary\.json/.test(gb)
-  && !/live_grid_price\.json/.test(gb));
-check('why the live feeds are not used is written down',
-  /collection workflows were deliberately stopped/.test(gb.replace(/\s+/g, ' ')));
-check('it reads the small summary, not the daily series',
-  /6\.4 kB summary rather than the 1\.9 MB/.test(gb.replace(/\s+/g, ' ')));
+check('it reads the repository that owns the data, not a copy',
+  /data-gb-electricity\/main\/derived\/price-decade-rollup\.json/.test(gb)
+  && !/live_grid_price\.json/.test(gb)
+  && !/uk_energy_tracking_v6\/derived\/decade-summary/.test(gb));
+check('the second-source-of-truth rule is written down where it applies',
+  /must never own source data or\s*become a second source of truth/
+    .test(gb.replace(/\s+/g, ' ')));
+check('retiring the earlier duplicate is recorded, not silent',
+  /that copy was a second definition of the same numbers and has been retired/
+    .test(gb.replace(/\s+/g, ' ')));
+check('it reads the rollup, not the settlement periods',
+  /FOUR KILOBYTES, NOT A HUNDRED MEGABYTES/.test(gb));
 check('it links to the full tracker for everything else',
   /Open the full GB energy tracker/.test(gb));
 check('the tracker stays where the analysis lives',
   /GB_APP = \n?\s*'https:\/\/globalgrid2050\.com\/uk_energy_tracking_v6\/'/.test(gb)
   || /const GB_APP =/.test(gb));
 
-check('both sources are named', /Elexon/.test(gb) && /Sheffield Solar PVLive/.test(gb));
-check('solar is declared estimated rather than metered',
-  /estimated by Sheffield Solar PVLive, not metered/.test(gb.replace(/\s+/g, ' ')));
+check('the upstream and the owning repository are both named',
+  /Elexon/.test(gb) && /Ventusltd\/data-gb-electricity/.test(gb));
+// Solar is absent from the product by decision. A panel that quietly
+// filled that gap from a second source would be the exact failure the data
+// discipline exists to prevent, so absence has to be visible.
+check('an absent solar series is stated, not left as a silent gap',
+  /product\.solar && product\.solar\.present === false/.test(gb)
+  && /Solar is not in this product yet/.test(gb));
+check('and the reason given is the second-source rule',
+  /would make a second source of truth/.test(gb.replace(/\s+/g, ' ')));
 check('it disclaims being a forecast or a price expectation',
   /not a forecast, not a price/.test(gb.replace(/\s+/g, ' ')));
 check('and any statement about a project on the map',
   /not a statement about any project on this map/.test(gb.replace(/\s+/g, ' ')));
 
 check('days below zero are counted, because an average hides them',
-  /days_with_a_negative_half_hour/.test(gb)
-  && /daily average hides them entirely/.test(gb.replace(/\s+/g, ' ')));
-check('the lowest half hour is surfaced with its date and time',
-  /lowest_half_hour/.test(gb) && /low\.date/.test(gb) && /low\.at/.test(gb));
+  /days_with_a_negative_settlement_period/.test(gb)
+  && /daily average hides them/.test(gb));
+check('the lowest settlement period is surfaced with its date',
+  /lowest_settlement_period/.test(gb) && /low\.date/.test(gb));
+check('and it is read as the export limitation question, not a curiosity',
+  /Negative prices are the export/.test(gb) && /limitation and curtailment question/.test(gb));
 check('a partial year is labelled rather than averaged in silently',
   /latest\.days < 360 \? ' so far' : ''/.test(gb));
 
@@ -406,10 +420,10 @@ const decade = {
     decade_mean: 80.17,
     lowest_half_hour: { value: -185.33, date: '2023-07-17', at: '14:00' },
     by_year: [
-      { year: '2023', days: 365, mean_gbp_per_mwh: 94.58, days_with_a_negative_half_hour: 109 },
-      { year: '2024', days: 366, mean_gbp_per_mwh: 71.17, days_with_a_negative_half_hour: 127 },
-      { year: '2025', days: 365, mean_gbp_per_mwh: 80.57, days_with_a_negative_half_hour: 137 },
-      { year: '2026', days: 153, mean_gbp_per_mwh: 92.66, days_with_a_negative_half_hour: 36 },
+      { year: '2023', days: 365, mean_gbp_per_mwh: 94.58, days_with_a_negative_settlement_period: 109 },
+      { year: '2024', days: 366, mean_gbp_per_mwh: 71.17, days_with_a_negative_settlement_period: 127 },
+      { year: '2025', days: 365, mean_gbp_per_mwh: 80.57, days_with_a_negative_settlement_period: 137 },
+      { year: '2026', days: 153, mean_gbp_per_mwh: 92.66, days_with_a_negative_settlement_period: 36 },
     ],
   },
   solar: {
@@ -421,7 +435,7 @@ const decade = {
 const dYears = decade.price.by_year;
 const dLatest = dYears[dYears.length - 1];
 const dNegative = dYears.reduce(
-  (total, year) => total + (year.days_with_a_negative_half_hour || 0), 0);
+  (total, year) => total + (year.days_with_a_negative_settlement_period || 0), 0);
 const dBest = decade.solar.by_month.reduce((a, b) => (!a || b.mean_mw > a.mean_mw ? b : a), null);
 const dWorst = decade.solar.by_month.reduce((a, b) => (!a || b.mean_mw < a.mean_mw ? b : a), null);
 
@@ -432,8 +446,8 @@ check('the partial year is caught by the panel\'s own test',
 check('a full year is not labelled partial',
   !(dYears[0].days < 360));
 check('negative-price days rise across 2023 to 2025',
-  dYears[0].days_with_a_negative_half_hour < dYears[1].days_with_a_negative_half_hour
-  && dYears[1].days_with_a_negative_half_hour < dYears[2].days_with_a_negative_half_hour);
+  dYears[0].days_with_a_negative_settlement_period < dYears[1].days_with_a_negative_settlement_period
+  && dYears[1].days_with_a_negative_settlement_period < dYears[2].days_with_a_negative_settlement_period);
 check('the decade low is a summer afternoon, which is the whole point',
   decade.price.lowest_half_hour.date.slice(5, 7) === '07'
   && decade.price.lowest_half_hour.at === '14:00'

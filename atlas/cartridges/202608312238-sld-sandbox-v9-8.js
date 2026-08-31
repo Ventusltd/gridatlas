@@ -1,7 +1,7 @@
 /**
  * GridAtlas cartridge — neon substation links and the SLD layout sandbox.
  *
- * Generation 202608312227 (UTC), composition v9.24. Slot: replace-script for
+ * Generation 202608312238 (UTC), composition v9.25. Slot: replace-script for
  * 202608292126-pre-snapped-config-adapter.js.
  *
  * WHAT IT DOES
@@ -61,7 +61,7 @@
 (() => {
   'use strict';
 
-  const GENERATION = '202608312227';
+  const GENERATION = '202608312238';
 
   /* ══════════════════════════════════════════════════════════════════════
      PART 1 — the pre-snapped config adapter, carried forward unchanged.
@@ -1319,33 +1319,36 @@
 
   /* What a megawatt hour has been worth, over the decade this map covers.
      ----------------------------------------------------------------------
-     The estate already tracks GB electricity: uk_energy_tracking_v6, backed by
-     Ventusltd/data-gb-electricity, holding ten years of daily system prices
-     from Elexon and ten years of daily solar from Sheffield Solar PVLive. The
-     Atlas had no idea it existed, so a map of where the country is building
-     generation could not say what the system has been doing while it was
-     built.
+     A map of where the country is building generation should be able to say
+     what the system has been doing while it was built.
 
-     It reads the DECADE, not the live feeds. Those feeds are stamped
-     2026-06-18 because the collection workflows were deliberately stopped, so
-     a "live" panel here would print ten-week-old numbers under a word that
-     promises otherwise. History does not have that problem: the decade is
-     finished, and it is the part a project on this map is actually judged
-     against.
+     IT READS THE DATA REPOSITORY, NOT A COPY. The governing rule in the
+     estate's migration scope is "data before charts": a consumer must read a
+     data product that already sits clean, and must never own source data or
+     become a second source of truth. So this reads
+     Ventusltd/data-gb-electricity, which owns the Parquet, refreshes itself
+     monthly on a schedule that is still running, and now publishes a four
+     kilobyte rollup derived from it. An earlier version of this panel read a
+     copy derived inside globalgrid2050; that copy was a second definition of
+     the same numbers and has been retired in favour of this one.
 
-     It reads a 6.4 kB summary rather than the 1.9 MB of daily series, because
-     this arrives on a phone. The summary is derived in the tracker's own
-     repository, carries the day count behind every figure, and does no
-     modelling of any kind.
+     FOUR KILOBYTES, NOT A HUNDRED MEGABYTES. The settlement periods are the
+     right size for a chart someone chose to open and the wrong size for a
+     panel inside a map on a phone, which is where most readers arrive.
 
-     The row that earns the panel its place: the lowest half hour of the decade
-     was minus 185.33 GBP/MWh, on the 17th of July 2023, at two in the
-     afternoon. A July afternoon is peak solar. That is the export limitation
-     and curtailment conversation stated as a measurement rather than an
-     opinion, which is the only way this estate is allowed to state it. */
+     The row that earns it its place: the lowest settlement period of the
+     decade was -185.33 GBP/MWh, on the 17th of July 2023. A July day is peak
+     solar. That is the export limitation and curtailment conversation stated
+     as a measurement rather than an opinion, which is the only way this estate
+     is permitted to state it.
 
-  const GB_SUMMARY =
-    'https://globalgrid2050.com/uk_energy_tracking_v6/derived/decade-summary.json';
+     SOLAR IS ABSENT, AND SAYS SO. PVLive has not been decided into the data
+     repository, so the product declares solar absent rather than carrying a
+     series from somewhere else. A panel that quietly filled that gap from a
+     second source would be the exact thing the discipline forbids. */
+
+  const GB_ROLLUP = 'https://raw.githubusercontent.com/Ventusltd/'
+    + 'data-gb-electricity/main/derived/price-decade-rollup.json';
   const GB_APP = 'https://globalgrid2050.com/uk_energy_tracking_v6/';
   const GB_ID = 'gridatlas-gb-conditions';
 
@@ -1357,64 +1360,59 @@
       + `<span class="gb-v">${value}<em>${unit || ''}</em></span></div>`;
   }
 
-  const GB_MONTHS = ['', 'January', 'February', 'March', 'April', 'May', 'June',
-    'July', 'August', 'September', 'October', 'November', 'December'];
-
   async function renderGbConditions(body) {
-    let summary = null;
+    let product = null;
     try {
-      const response = await fetch(GB_SUMMARY, { cache: 'force-cache' });
-      if (response.ok) summary = await response.json();
+      const response = await fetch(GB_ROLLUP, { cache: 'force-cache' });
+      if (response.ok) product = await response.json();
     } catch (error) {
-      summary = null;
+      product = null;
     }
-    if (!summary || !summary.price) {
-      body.innerHTML = '<p class="gb-note">The decade summary could not be '
+    if (!product || !product.price) {
+      body.innerHTML = '<p class="gb-note">The price rollup could not be '
         + 'reached. This says nothing about the grid, only about the network '
-        + 'between here and the tracker.</p>';
+        + 'between here and the data repository.</p>';
       link.gb_conditions = { reached: false };
       return;
     }
 
-    const price = summary.price || {};
-    const solar = summary.solar || {};
+    const price = product.price || {};
     const years = Array.isArray(price.by_year) ? price.by_year : [];
     const latest = years.length ? years[years.length - 1] : null;
-    const low = price.lowest_half_hour || null;
-    const months = Array.isArray(solar.by_month) ? solar.by_month : [];
-    const best = months.reduce((a, b) => (!a || b.mean_mw > a.mean_mw ? b : a), null);
-    const worst = months.reduce((a, b) => (!a || b.mean_mw < a.mean_mw ? b : a), null);
-    const negative = years.reduce(
-      (total, year) => total + (year.days_with_a_negative_half_hour || 0), 0);
+    const low = price.lowest_settlement_period || null;
+    const days = (product.derived_from || {}).complete_days;
 
-    const span = Array.isArray(price.span) ? price.span.join('–') : '';
     const rows = [];
     rows.push(gbRow('Decade mean', gbNumber(price.decade_mean, 2), ' &pound;/MWh'));
     if (latest) {
       rows.push(gbRow(latest.year + (latest.days < 360 ? ' so far' : ''),
         gbNumber(latest.mean_gbp_per_mwh, 2), ' &pound;/MWh'));
     }
-    rows.push(gbRow('Days below zero', String(negative),
-      ' of ' + (price.by_year || []).reduce((n, y) => n + (y.days || 0), 0)));
-    if (best && worst) {
-      rows.push(gbRow('GB solar, ' + GB_MONTHS[Number(best.month)],
-        gbNumber(best.mean_mw, 0), ' MW'));
-      rows.push(gbRow('GB solar, ' + GB_MONTHS[Number(worst.month)],
-        gbNumber(worst.mean_mw, 0), ' MW'));
-    }
+    rows.push(gbRow('Days below zero',
+      String(price.days_with_a_negative_settlement_period ?? '--'),
+      Number.isFinite(days) ? ' of ' + days : ''));
 
     const lowLine = low && Number.isFinite(Number(low.value))
-      ? `<p class="gb-note gb-point">The lowest half hour of the decade was `
-        + `<b>${gbNumber(low.value, 2)} &pound;/MWh</b>, on ${low.date}`
-        + `${low.at ? ' at ' + low.at : ''} — a summer afternoon. Negative `
-        + 'prices are the export limitation and curtailment question, and a '
-        + 'daily average hides them entirely.</p>'
+      ? '<p class="gb-note gb-point">The lowest settlement period of the decade '
+        + `was <b>${gbNumber(low.value, 2)} &pound;/MWh</b>, on ${low.date} — a `
+        + 'July day, which is peak solar. Negative prices are the export '
+        + 'limitation and curtailment question, and a daily average hides them '
+        + 'entirely.</p>'
       : '';
 
+    // Absent by decision, so it is stated rather than left as a silent gap.
+    const solarLine = product.solar && product.solar.present === false
+      ? '<p class="gb-note">Solar is not in this product yet: the data '
+        + 'repository has not taken PVLive, and filling the gap from somewhere '
+        + 'else would make a second source of truth.</p>'
+      : '';
+
+    const span = Array.isArray(price.span) ? price.span.join('–') : '';
     body.innerHTML = rows.join('')
       + lowLine
-      + `<p class="gb-note">GB system price ${span}, daily means of half hours, `
-      + 'Elexon. Solar estimated by Sheffield Solar PVLive, not metered. '
+      + solarLine
+      + `<p class="gb-note">GB system sell price ${span}, daily means of `
+      + 'settlement periods, Elexon, via Ventusltd/data-gb-electricity. '
       + 'Historic system conditions only: not a forecast, not a price '
       + 'expectation, and not a statement about any project on this map.</p>'
       + `<a class="gb-more" href="${GB_APP}" target="_blank" rel="noopener">`
@@ -1422,10 +1420,12 @@
 
     link.gb_conditions = {
       reached: true,
+      source: 'data-gb-electricity',
       span: price.span || null,
       decade_mean: price.decade_mean ?? null,
-      negative_days: negative,
-      lowest_half_hour: low ? low.value : null,
+      negative_days: price.days_with_a_negative_settlement_period ?? null,
+      lowest: low ? low.value : null,
+      solar_present: product.solar ? product.solar.present : null,
     };
   }
 
