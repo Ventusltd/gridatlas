@@ -1,7 +1,7 @@
 /**
  * GridAtlas cartridge — neon substation links and the SLD layout sandbox.
  *
- * Generation 202608311952 (UTC), composition v9.7. Slot: replace-script for
+ * Generation 202608312003 (UTC), composition v9.8. Slot: replace-script for
  * 202608292126-pre-snapped-config-adapter.js.
  *
  * WHAT IT DOES
@@ -61,7 +61,7 @@
 (() => {
   'use strict';
 
-  const GENERATION = '202608311952';
+  const GENERATION = '202608312003';
 
   /* ══════════════════════════════════════════════════════════════════════
      PART 1 — the pre-snapped config adapter, carried forward unchanged.
@@ -164,6 +164,8 @@
     substations_qualifying: 0,
     last_selection: null,
     links_drawn: 0,
+    deep_linked: false,
+    substation_layer_enabled: false,
     reduced_motion: false,
     failures: []
   };
@@ -327,6 +329,10 @@
 .${BLOCK_CLASS} .neon-name{color:#9fb3ba;overflow:hidden;text-overflow:ellipsis;
   white-space:nowrap;flex:1;max-width:150px}
 .${BLOCK_CLASS} .neon-kv{color:#ffae00;font-size:9px;white-space:nowrap}
+.${BLOCK_CLASS} .neon-layout{display:block;width:100%;margin-top:7px;padding:5px 6px;
+  background:#0a1a1d;border:1px solid #2f6f75;border-radius:3px;color:#5fbdc2;
+  font:inherit;font-size:10px;letter-spacing:.05em;cursor:pointer;text-transform:uppercase}
+.${BLOCK_CLASS} .neon-layout:hover{border-color:#5fbdc2;color:#bfe9ee;background:#0d2429}
 .${BLOCK_CLASS} .neon-caveat{margin-top:6px;color:#68797f;font-size:9px;line-height:1.5}
 .${BLOCK_CLASS} .neon-caveat b{color:#8b9aa1;font-weight:bold}`;
     document.head.appendChild(style);
@@ -353,6 +359,9 @@
       + `</div>`;
   }
 
+  // Remembered so the LAYOUT button knows what it was opened from.
+  let lastSelection = null;
+
   function cardBlockHtml(links, direction) {
     installStyles();
     const toSubstations = direction !== 'from-substation';
@@ -376,7 +385,12 @@
         + `<span class="neon-name">${escapeHtml(l.name || fallbackName)}</span>`
         + (tail ? `<span class="neon-kv">${escapeHtml(tail)}</span>` : '') + `</li>`;
     }).join('');
-    return `<div class="${BLOCK_CLASS}">${head}<ol>${rows}</ol>${caveatHtml()}</div>`;
+    // The way into the layout. Without this there is no route from a project
+    // to the sandbox at all, which is exactly how it felt to use.
+    const button = toSubstations
+      ? `<button class="neon-layout" type="button">Lay out a scheme here &#9656;</button>`
+      : '';
+    return `<div class="${BLOCK_CLASS}">${head}<ol>${rows}</ol>${button}${caveatHtml()}</div>`;
   }
 
   // The engine opens its popup in its own click handler. This one is registered
@@ -391,6 +405,13 @@
     const block = holder.firstElementChild;
     if (!block) return false;
     (content.firstElementChild || content).appendChild(block);
+    block.querySelector?.('.neon-layout')?.addEventListener('click', () => {
+      if (!lastSelection || !capturedMap) return;
+      // The array goes at the project and the cable runs to the nearest
+      // substation found for it, which is the direction a scheme is actually
+      // built: generation first, then the route to the network.
+      openSldFromProject(capturedMap, lastSelection);
+    });
     return true;
   }
 
@@ -575,9 +596,29 @@
     link.links_drawn = links.length;
     link.last_selection = { name, tech, direction, count: links.length,
       nearest_km: links.length ? Number(links[0].km.toFixed(3)) : null };
+    lastSelection = { origin, name, tech, direction, links };
   }
 
   /* ── selection ───────────────────────────────────────────────────────── */
+
+  // Tick the engine's own Subs control. Going through the checkbox means the
+  // engine hydrates the layer, updates its UI state and stays the owner of it;
+  // adding the source here instead would leave its panel lying about what is on.
+  function enableSubstationLayer() {
+    try {
+      const box = [...document.querySelectorAll('input[type=checkbox]')].find((input) => {
+        const label = (input.closest('label') || input.parentElement)?.textContent || '';
+        return label.replace(/\s+/g, ' ').trim().toLowerCase().startsWith('subs ');
+      });
+      if (!box) { link.failures.push('subs: control not found'); return false; }
+      if (!box.checked) box.click();
+      link.substation_layer_enabled = true;
+      return true;
+    } catch (error) {
+      link.failures.push('subs: ' + String(error?.message || error));
+      return false;
+    }
+  }
 
   function interactiveLayerIds(map) {
     // Whatever the engine has made visible and interactive. Reading the style
@@ -613,6 +654,23 @@
 
     // Registered after the engine's own click handler, so the engine's popup
     // opens first and this decorates it rather than racing it.
+    // Measure and draw for one selection. Split out of the click handler so a
+    // deep link, which opens a card without anybody clicking, goes through
+    // exactly the same path.
+    async function selectAt(origin, name, tech, fromSubstation) {
+      if (fromSubstation) {
+        // No fetch needed: the projects are already in the engine's own
+        // source, and reading them there keeps one set of coordinates.
+        drawLinks(map, origin, name, tech,
+          nearestProjects(map, origin[0], origin[1]), 'from-substation');
+        return;
+      }
+      const subs = await loadSubstations();
+      drawLinks(map, origin, name, tech,
+        nearestSubstations(origin[0], origin[1], subs), 'to-substation');
+    }
+    link.selectAt = selectAt;
+
     map.on('click', async (event) => {
       try {
         const ids = interactiveLayerIds(map);
@@ -639,22 +697,43 @@
           || [event.lngLat.lng, event.lngLat.lat];
         const name = properties.name || properties.SiteName || properties['Site Name']
           || (fromSubstation ? 'Unnamed substation' : 'Unnamed project');
-
-        if (fromSubstation) {
-          // No fetch needed: the projects are already in the engine's own
-          // source, and reading them there keeps one set of coordinates.
-          drawLinks(map, origin, name, tech,
-            nearestProjects(map, origin[0], origin[1]), 'from-substation');
-          return;
-        }
-
-        const subs = await loadSubstations();
-        drawLinks(map, origin, name, tech,
-          nearestSubstations(origin[0], origin[1], subs), 'to-substation');
+        await selectAt(origin, name, tech, fromSubstation);
       } catch (error) {
         link.failures.push(String(error?.message || error));
       }
     });
+
+    // A deep link opens the project card on its own, with no click anywhere.
+    // Arriving that way is how most people reach the Atlas -- the MAP button in
+    // Pipeline News sends them here -- so the measurement has to run for it
+    // too, or the card that brought them arrives with nothing on it.
+    (async () => {
+      try {
+        const q = new URLSearchParams(window.location.search);
+        const lon = Number(q.get('longitude'));
+        const lat = Number(q.get('latitude'));
+        const tech = String(q.get('technology') || '');
+        if (!Number.isFinite(lon) || !Number.isFinite(lat)) return;
+        if (!PROJECT_TECHS.has(tech)) return;
+        const name = q.get('project') || 'Deep-linked project';
+        // Turn the substations on. Arriving from the MAP button in Pipeline
+        // News, the whole point is to see the project against the network, and
+        // a user who has to find a checkbox first has been handed a puzzle
+        // rather than an answer. The engine owns the layer, so this ticks its
+        // own control rather than reaching past it into the map.
+        enableSubstationLayer();
+        // Wait for the engine to put its own card up first, so this decorates
+        // that card rather than racing it. Give up rather than hang.
+        for (let i = 0; i < 40; i += 1) {
+          if (document.querySelector('.maplibregl-popup-content')) break;
+          await new Promise(resolve => setTimeout(resolve, 250));
+        }
+        link.deep_linked = true;
+        await selectAt([lon, lat], name, tech, false);
+      } catch (error) {
+        link.failures.push('deep link: ' + String(error?.message || error));
+      }
+    })();
 
     // Escape clears, the way a game HUD does.
     document.addEventListener('keydown', (event) => {
@@ -793,6 +872,7 @@
     rotationDeg: 0,
     routePins: [],           // user vertices between customer substation and grid node
     stats: null,
+    projectName: null,
     cableKm: 0,
     straightKm: 0,
     dragging: null,
@@ -1306,6 +1386,7 @@
 #${PANEL_ID} .sld-close{margin-left:auto;cursor:pointer;background:none;border:0;color:#3f6f75;
   font:inherit;font-size:14px;padding:0 2px}
 #${PANEL_ID} .sld-close:hover{color:#5fbdc2}
+#${PANEL_ID} .sld-to{color:#8b9aa1;font-size:9.5px;margin:-6px 0 8px}
 #${PANEL_ID} .sld-tabs{display:flex;gap:5px;margin-bottom:8px}
 #${PANEL_ID} .sld-tabs button{flex:1;background:#050a0d;border:1px solid #1d3238;color:#7f939a;
   font:inherit;font-size:9px;padding:4px;cursor:pointer;border-radius:3px;text-transform:uppercase}
@@ -1365,7 +1446,9 @@
     el.innerHTML = `
       <h4>Layout sandbox<span class="sld-beta">Beta</span>
         <button class="sld-close" title="Close">&times;</button></h4>
-      <div class="sld-site">${escapeHtml(sld.gridNodeName || 'Grid node')}</div>
+      <div class="sld-site">${escapeHtml(sld.projectName || sld.gridNodeName || 'Grid node')}</div>
+      ${sld.projectName ? `<div class="sld-to">to ${escapeHtml(sld.gridNodeName || 'grid node')}`
+        + `${sld.gridNodeVoltage ? ` &middot; ${escapeHtml(sld.gridNodeVoltage)}` : ''}</div>` : ''}
       <div class="sld-tabs">
         <button data-mode="string" data-on="${sld.inputs.mode === 'string'}">String</button>
         <button data-mode="central" data-on="${sld.inputs.mode === 'central'}">Central</button>
@@ -1423,6 +1506,7 @@
 
   function closeSld() {
     sld.active = false;
+    sld.projectName = null;
     sld.routePins = [];
     sld.arrayCentre = null;
     sld.rotationDeg = 0;
@@ -1438,6 +1522,7 @@
   // sandbox is one click from the thing it connects to.
   function openSldAt(map, gridNode, name, voltage) {
     sld.active = true;
+    sld.projectName = null;
     sld.gridNode = gridNode;
     sld.gridNodeName = name;
     sld.gridNodeVoltage = voltage;
@@ -1447,6 +1532,35 @@
     redrawSld(map, { fit: true });
   }
   sld.openAt = openSldAt;
+
+  // Opened from a project card. The scheme sits at the project and the export
+  // cable runs to the nearest substation the links already found, which is the
+  // order a scheme is actually built: generation first, then the route to the
+  // network. Falls back to the project's own point if nothing was in range, so
+  // the button never does nothing.
+  function openSldFromProject(map, selection) {
+    const nearest = selection.links && selection.links[0];
+    if (!nearest) {
+      sld.active = false;
+      link.failures.push('layout: no substation within '
+        + `${MAX_LINK_KM} km of ${selection.name}`);
+      return;
+    }
+    sld.active = true;
+    sld.gridNode = nearest.at;
+    sld.gridNodeName = nearest.name || 'Grid node';
+    sld.gridNodeVoltage = nearest.kv && nearest.kv.length ? `${nearest.kv[0]} kV` : '';
+    sld.projectName = selection.name;
+    // The array starts on the project, not offset from the substation, because
+    // the project is the thing that exists.
+    sld.arrayCentre = selection.origin;
+    sld.rotationDeg = initialBearingDeg(
+      nearest.at[0], nearest.at[1], selection.origin[0], selection.origin[1]);
+    sld.routePins = [];
+    enableSubstationLayer();
+    redrawSld(map, { fit: true });
+  }
+  sld.openFromProject = openSldFromProject;
 
   function installSld(map) {
     installSldStyles();

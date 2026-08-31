@@ -1,7 +1,7 @@
 {
   "schema": "gridatlas.current.v2",
-  "generation": "202608311952",
-  "previous_generation": "202608311910",
+  "generation": "202608312003",
+  "previous_generation": "202608311952",
   "architecture": "IMMUTABLE_SHELL_PLUS_HASHED_CARTRIDGES",
   "live_route": "/gridatlas/atlas/",
   "release_id": "202608300453-atlas-v9",
@@ -58,13 +58,13 @@
     },
     {
       "id": "sld-sandbox",
-      "generation": "202608311952",
-      "version": "v9.7",
+      "generation": "202608312003",
+      "version": "v9.8",
       "type": "script",
       "slot": "replace-script",
       "replace_script": "202608292126-pre-snapped-config-adapter.js",
-      "path": "./cartridges/202608311952-sld-sandbox-v9-7.js",
-      "sha256": "decc07aa0dd27b656c5fce5bfd73d582419af6403f58c91f4747f328ad9ea48d",
+      "path": "./cartridges/202608312003-sld-sandbox-v9-8.js",
+      "sha256": "0cfa4e00b637bdc9ceede30cc84bf3af2a6b215b6e1974130fd615c6a8ce198a",
       "capabilities": [
         "pre-snapped-config-adapter-carried-forward",
         "project-or-substation-selection",
@@ -82,7 +82,10 @@
         "drag-array-and-rotate-handle",
         "electron-flow-on-collectors-and-cable",
         "single-earth-radius-throughout",
-        "panel-clear-of-the-atlas-toolbar"
+        "panel-clear-of-the-atlas-toolbar",
+        "deep-link-runs-the-same-measurement-as-a-click",
+        "substation-layer-auto-enabled-on-arrival",
+        "layout-opens-from-the-project-card"
       ],
       "immutable_shell_modified": false,
       "supersedes_shell_script": {
@@ -132,6 +135,11 @@
           "grab rather than mode-switch: the array is dragged, rotation has a handle, route vertices are dragged, inserted and removed without a commit step",
           "the electron flow runs along the collectors and the export cable in the direction power flows"
         ]
+      },
+      "entry_points": {
+        "pipelinenews_map_button": "a deep link with latitude, longitude and technology draws the links, writes the distances onto the engine's own card and ticks the Subs control, with no click required",
+        "map_click": "a project or a substation",
+        "layout": "a button on the project card; the array starts on the project and the cable runs to the nearest substation found"
       }
     }
   ],
@@ -177,15 +185,15 @@
       "result_class": "LOCATION_ONLY"
     }
   },
-  "composition_manifest": "./manifests/202608311952-composition.json",
+  "composition_manifest": "./manifests/202608312003-composition.json",
   "scope_closure": {
-    "generation": "202608311952",
+    "generation": "202608312003",
     "status": "DONE",
-    "scope": "GridAtlas v9.7 SLD layout sandbox on the canonical geodesy",
+    "scope": "GridAtlas v9.8 deep-link measurement, auto Subs and the layout entry point",
     "schedule_retired": true
   },
-  "composition_version": "v9.7",
-  "composition_id": "202608311952-gridatlas-v9.7",
+  "composition_version": "v9.8",
+  "composition_id": "202608312003-gridatlas-v9.8",
   "transport": {
     "response_contract": "HEADERS_BEFORE_PARQUET_BODY",
     "engine_timeout_seconds": 15,

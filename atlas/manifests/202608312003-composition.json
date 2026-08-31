@@ -1,7 +1,7 @@
 {
   "schema": "gridatlas.composition-manifest.v1",
-  "generation": "202608311952",
-  "parent_generation": "202608311910",
+  "generation": "202608312003",
+  "parent_generation": "202608311952",
   "live_route": "/gridatlas/atlas/",
   "shell": {
     "release_id": "202608300453-atlas-v9",
@@ -66,13 +66,13 @@
     },
     {
       "id": "sld-sandbox",
-      "generation": "202608311952",
-      "version": "v9.7",
+      "generation": "202608312003",
+      "version": "v9.8",
       "type": "script",
       "slot": "replace-script",
       "replace_script": "202608292126-pre-snapped-config-adapter.js",
-      "path": "./cartridges/202608311952-sld-sandbox-v9-7.js",
-      "sha256": "decc07aa0dd27b656c5fce5bfd73d582419af6403f58c91f4747f328ad9ea48d",
+      "path": "./cartridges/202608312003-sld-sandbox-v9-8.js",
+      "sha256": "0cfa4e00b637bdc9ceede30cc84bf3af2a6b215b6e1974130fd615c6a8ce198a",
       "capabilities": [
         "pre-snapped-config-adapter-carried-forward",
         "project-or-substation-selection",
@@ -90,7 +90,10 @@
         "drag-array-and-rotate-handle",
         "electron-flow-on-collectors-and-cable",
         "single-earth-radius-throughout",
-        "panel-clear-of-the-atlas-toolbar"
+        "panel-clear-of-the-atlas-toolbar",
+        "deep-link-runs-the-same-measurement-as-a-click",
+        "substation-layer-auto-enabled-on-arrival",
+        "layout-opens-from-the-project-card"
       ],
       "immutable_shell_modified": false,
       "supersedes_shell_script": {
@@ -140,6 +143,11 @@
           "grab rather than mode-switch: the array is dragged, rotation has a handle, route vertices are dragged, inserted and removed without a commit step",
           "the electron flow runs along the collectors and the export cable in the direction power flows"
         ]
+      },
+      "entry_points": {
+        "pipelinenews_map_button": "a deep link with latitude, longitude and technology draws the links, writes the distances onto the engine's own card and ticks the Subs control, with no click required",
+        "map_click": "a project or a substation",
+        "layout": "a button on the project card; the array starts on the project and the cable runs to the nearest substation found"
       }
     }
   ],
@@ -152,7 +160,7 @@
     "uk_location_result_class": "LOCATION_ONLY",
     "global_location_result_class": "LOCATION_ONLY",
     "external_location_failure_isolated": true,
-    "golden_browser_verification": "DONE",
+    "golden_browser_verification": "REQUIRED",
     "parquet_on_demand_preserved": true,
     "response_established_before_body_reconstruction": true,
     "a_road_browser_budget_seconds": 15,
@@ -171,10 +179,12 @@
     "turf_dependency": false,
     "layout_is_not_a_design": true,
     "connection_factors_named_on_panel": true,
-    "panel_clear_of_atlas_tools_and_search": "measured on the live map"
+    "deep_link_draws_without_a_click": true,
+    "substation_layer_auto_enabled": true,
+    "layout_reachable_from_a_project_card": true
   },
-  "version": "v9.7",
-  "composition_id": "202608311952-gridatlas-v9.7",
+  "version": "v9.8",
+  "composition_id": "202608312003-gridatlas-v9.8",
   "source_pattern": {
     "repository": "Ventusltd/gridatlas",
     "path": "atlas/releases/202608300453-atlas-v9/202608292126-pre-snapped-config-adapter.js",

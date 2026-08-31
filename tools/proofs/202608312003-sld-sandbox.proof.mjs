@@ -1,5 +1,5 @@
 /**
- * Proof for the neon links + SLD layout sandbox cartridge, generation 202608311952.
+ * Proof for the neon links + SLD layout sandbox cartridge, generation 202608312003.
  *
  * No dependencies. The repository carries playwright and no DOM library, so
  * rather than add one this stubs the small surface the cartridge actually
@@ -32,7 +32,7 @@ import vm from 'node:vm';
 const HERE = dirname(fileURLToPath(import.meta.url));
 const REPO = resolve(HERE, '..', '..');
 const CARTRIDGE = join(REPO, 'atlas', 'cartridges',
-  '202608311952-sld-sandbox-v9-7.js');
+  '202608312003-sld-sandbox-v9-8.js');
 const ORIGINAL = join(REPO, 'atlas', 'releases', '202608300453-atlas-v9',
   '202608292126-pre-snapped-config-adapter.js');
 
@@ -514,6 +514,61 @@ check('it names consent and land control', /consent/i.test(j) && /land control/i
 check('it says a substation does not confirm capacity', /does not confirm capacity/i.test(j));
 check('the detour factor is shown beside the straight line',
   /Detour factor/.test(src) && /Straight line/.test(src));
+
+
+/* ══════════════════════════════════════════════════════════════════════════
+   ARRIVING BY DEEP LINK, AND GETTING INTO THE LAYOUT
+   ══════════════════════════════════════════════════════════════════════════
+   Both of these were missing until someone opened the live Atlas from a
+   Pipeline News MAP link and found a project card with nothing on it and no
+   way through to the sandbox. Neither gap was visible to any assertion here,
+   because every assertion was about what happens after a click.
+*/
+
+console.log('\ndeep links and the way into the layout\n');
+
+check('the measurement is split out of the click handler',
+  /async function selectAt\(/.test(code) && /link\.selectAt = selectAt/.test(code));
+check('a deep link runs the same path as a click',
+  /new URLSearchParams\(window\.location\.search\)/.test(code)
+  && /selectAt\(\[lon, lat\], name, tech, false\)/.test(code));
+check('it only fires for a technology that draws links',
+  /PROJECT_TECHS\.has\(tech\)/.test(code));
+check('it waits for the engine card rather than racing it',
+  /maplibregl-popup-content/.test(code) && /for \(let i = 0; i < 40/.test(code));
+check('it gives up rather than hanging', /i \+= 1\)/.test(code));
+check('a deep-link failure is recorded, not swallowed', /'deep link: '/.test(code));
+
+check('the card offers a way into the layout',
+  /class="neon-layout"/.test(code) && /Lay out a scheme here/.test(src));
+check('the button is only offered on a project card, not a substation one',
+  /const button = toSubstations/.test(code));
+check('the button opens the layout from the project',
+  /openSldFromProject\(capturedMap, lastSelection\)/.test(code));
+check('the selection is remembered for it', /lastSelection = \{ origin, name, tech/.test(code));
+
+check('a project-origin layout puts the array on the project',
+  /sld\.arrayCentre = selection\.origin/.test(code));
+check('and runs the cable to the nearest substation found',
+  /sld\.gridNode = nearest\.at/.test(code));
+check('the array is oriented along the line to the grid node',
+  /sld\.rotationDeg = initialBearingDeg\(/.test(code));
+check('nothing in range fails soft with a reason',
+  /no substation within/.test(code));
+check('the panel names the project and where it runs to',
+  /sld\.projectName \|\| sld\.gridNodeName/.test(code) && /class="sld-to"/.test(code));
+check('closing clears the project name', /sld\.projectName = null/.test(code));
+
+// The functions must actually exist on the published surface, not just in text.
+check('openFromProject is exposed', typeof sld.openFromProject === 'function');
+
+check('the substation layer is turned on for a deep link',
+  /enableSubstationLayer\(\);/.test(code) && /function enableSubstationLayer/.test(code));
+check('it ticks the engine control rather than reaching past it',
+  /input\[type=checkbox\]/.test(code) && /box\.click\(\)/.test(code));
+check('and it is on for a project-origin layout too',
+  (code.match(/enableSubstationLayer\(\);/g) || []).length >= 2);
+check('a missing control is reported, not ignored', /'subs: control not found'/.test(code));
 
 console.log(`\n${passed}/${passed + failures.length} checks passed`);
 if (failures.length) {
