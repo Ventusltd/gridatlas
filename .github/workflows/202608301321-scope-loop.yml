@@ -37,6 +37,7 @@ jobs:
           node --version
           node tools/scope/loop.mjs lint
           node tools/scope/loop.mjs state
+          node tools/proofs/run-current.mjs
 
       - name: Read the one active scope
         id: before
@@ -51,6 +52,7 @@ jobs:
         if: steps.bootstrap.outputs.bootstrapped != 'true' && steps.before.outputs.pending == 'true'
         run: |
           node tools/scope/verify-compose.mjs
+          node tools/proofs/run-current.mjs
           node tools/scope/loop.mjs lint
           node tools/scope/loop.mjs state
 
