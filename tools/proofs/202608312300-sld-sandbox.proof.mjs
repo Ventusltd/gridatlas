@@ -1,5 +1,5 @@
 /**
- * Proof for the neon links + SLD layout sandbox cartridge, generation 202608312257.
+ * Proof for the neon links + SLD layout sandbox cartridge, generation 202608312300.
  *
  * No dependencies. The repository carries playwright and no DOM library, so
  * rather than add one this stubs the small surface the cartridge actually
@@ -32,7 +32,7 @@ import vm from 'node:vm';
 const HERE = dirname(fileURLToPath(import.meta.url));
 const REPO = resolve(HERE, '..', '..');
 const CARTRIDGE = join(REPO, 'atlas', 'cartridges',
-  '202608312257-sld-sandbox-v9-8.js');
+  '202608312300-sld-sandbox-v9-8.js');
 const ORIGINAL = join(REPO, 'atlas', 'releases', '202608300453-atlas-v9',
   '202608292126-pre-snapped-config-adapter.js');
 
@@ -341,6 +341,46 @@ check('the engine is asked about anything not in the list',
 check('an unknown technology is recorded rather than ignored',
   /deep link: unknown technology/.test(cartridgeSource));
 check('non-project layers do not', !T.has('naei_emitter') && !T.has('supermarket'));
+
+console.log('\nwhat a voltage class means\n');
+
+/* A distance to a 132 kV substation is not the same proposition as a distance
+   to a 66 kV one, and the reader of a register usually knows that while the map
+   does not say it. 66 kV is largely legacy industrial distribution being
+   reinforced to 132 kV and above as old heavy load is replaced and offshore
+   wind arrives; 132 kV is distribution in England and Wales and TRANSMISSION in
+   Scotland — the same number meaning two different things depending on where
+   you are standing.
+
+   Descriptive, never advisory: what a class generally is, not what a project
+   should do with it. */
+const kvSrc = cartridgeSource;
+check('every class the register connects at is described',
+  [400, 275, 220, 132, 66, 33].every(kv => kvSrc.includes(kv + ':')));
+check('66 kV is described as legacy industrial being reinforced',
+  /largely legacy industrial distribution/.test(kvSrc));
+check('132 kV carries the England-Wales versus Scotland distinction',
+  /distribution in England and Wales, transmission in Scotland/.test(kvSrc));
+check('220 kV is tied to offshore wind landfalls',
+  /built out for offshore wind landfalls/.test(kvSrc));
+check('33 kV is named as the usual utility-scale connection',
+  /usual class for a utility-scale solar or/.test(kvSrc));
+check('the note is rendered, not merely declared',
+  kvSrc.includes('</ol>${kvNoteHtml}'));
+check('only the classes actually found are described',
+  kvSrc.includes('[...new Set(links'));
+check('it disclaims being advice about the scheme',
+  /Descriptions of the network, not advice about this scheme/.test(kvSrc));
+check('the per-row hint reads as a hint',
+  /cursor:help/.test(kvSrc) && kvSrc.includes("kv + ' kV: ' + context"));
+
+// The engine's own dashboard, read off the live page, is the vocabulary.
+check('the rest of the generation and storage dashboard is accepted',
+  ['tidal', 'geothermal', 'flywheel', 'caes', 'act', 'biomass', 'hydro', 'hydrogen']
+    .every(x => T.has(x)));
+check('why asking the engine alone would not have been enough is recorded',
+  /wind_onshore is NOT among the/.test(kvSrc));
+
 
 console.log('\nGB prices, a decade\n');
 

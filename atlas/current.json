@@ -1,7 +1,7 @@
 {
   "schema": "gridatlas.current.v2",
-  "generation": "202608312257",
-  "previous_generation": "202608312244",
+  "generation": "202608312300",
+  "previous_generation": "202608312257",
   "architecture": "IMMUTABLE_SHELL_PLUS_HASHED_CARTRIDGES",
   "live_route": "/gridatlas/atlas/",
   "release_id": "202608300453-atlas-v9",
@@ -58,13 +58,13 @@
     },
     {
       "id": "sld-sandbox",
-      "generation": "202608312257",
-      "version": "v9.27",
+      "generation": "202608312300",
+      "version": "v9.28",
       "type": "script",
       "slot": "replace-script",
       "replace_script": "202608292126-pre-snapped-config-adapter.js",
-      "path": "./cartridges/202608312257-sld-sandbox-v9-8.js",
-      "sha256": "6b4d93c7fe0842f14dda9c1d2b19227c66d972211b90adfc80c0750466a0ba45",
+      "path": "./cartridges/202608312300-sld-sandbox-v9-8.js",
+      "sha256": "ad77f1f5049113c91698dd1f66a16e974e7cacbf8a28f2488d781c97d450927a",
       "capabilities": [
         "pre-snapped-config-adapter-carried-forward",
         "project-or-substation-selection",
@@ -118,7 +118,9 @@
         "late-layer-controls-are-switched-on-not-abandoned",
         "every-technology-the-register-uses",
         "unknown-technology-asks-the-engine",
-        "offshore-opens-a-card-and-withholds-the-measurement"
+        "offshore-opens-a-card-and-withholds-the-measurement",
+        "voltage-class-context-on-the-card",
+        "whole-generation-and-storage-dashboard-accepted"
       ],
       "immutable_shell_modified": false,
       "supersedes_shell_script": {
@@ -243,6 +245,18 @@
         "cause": "the register writes wind_onshore and the engine has had a wind_onshore layer throughout; only this list disagreed with both",
         "now": "the list is a fast path, and any technology the engine has a layer control for is accepted, so the engine owns the vocabulary",
         "offshore": "accepted, opens a card, draws no links: an offshore turbine reaches an offshore substation, an export cable and a landfall before anything onshore, and the route inland is chosen for consent and ground conditions rather than distance"
+      },
+      "voltage_context": {
+        "why": "a distance to 132 kV is not the same proposition as a distance to 66 kV, and the reader of a register knows that while the map did not say it",
+        "classes": {
+          "400 / 275": "transmission, bulk power",
+          "220": "transmission; the class being built out for offshore wind landfalls",
+          "132": "distribution in England and Wales, transmission in Scotland",
+          "66": "largely legacy industrial distribution, much of it being reinforced to 132 kV and above as old heavy load is replaced and offshore wind arrives",
+          "33": "primary distribution; the usual utility-scale solar or storage connection"
+        },
+        "rule": "descriptive, never advisory: what a class generally is, never what a particular project should do with it",
+        "shown": "only for the classes actually found, never as a general legend"
       }
     }
   ],
@@ -288,15 +302,15 @@
       "result_class": "LOCATION_ONLY"
     }
   },
-  "composition_manifest": "./manifests/202608312257-composition.json",
+  "composition_manifest": "./manifests/202608312300-composition.json",
   "scope_closure": {
-    "generation": "202608312257",
+    "generation": "202608312300",
     "status": "DONE",
-    "scope": "GridAtlas v9.27 any project, not a third of them",
+    "scope": "GridAtlas v9.28 what a voltage class means",
     "schedule_retired": true
   },
-  "composition_version": "v9.27",
-  "composition_id": "202608312257-gridatlas-v9.27",
+  "composition_version": "v9.28",
+  "composition_id": "202608312300-gridatlas-v9.28",
   "transport": {
     "response_contract": "HEADERS_BEFORE_PARQUET_BODY",
     "engine_timeout_seconds": 15,

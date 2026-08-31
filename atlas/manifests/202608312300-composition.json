@@ -1,7 +1,7 @@
 {
   "schema": "gridatlas.composition-manifest.v1",
-  "generation": "202608312257",
-  "parent_generation": "202608312244",
+  "generation": "202608312300",
+  "parent_generation": "202608312257",
   "live_route": "/gridatlas/atlas/",
   "shell": {
     "release_id": "202608300453-atlas-v9",
@@ -66,13 +66,13 @@
     },
     {
       "id": "sld-sandbox",
-      "generation": "202608312257",
-      "version": "v9.27",
+      "generation": "202608312300",
+      "version": "v9.28",
       "type": "script",
       "slot": "replace-script",
       "replace_script": "202608292126-pre-snapped-config-adapter.js",
-      "path": "./cartridges/202608312257-sld-sandbox-v9-8.js",
-      "sha256": "6b4d93c7fe0842f14dda9c1d2b19227c66d972211b90adfc80c0750466a0ba45",
+      "path": "./cartridges/202608312300-sld-sandbox-v9-8.js",
+      "sha256": "ad77f1f5049113c91698dd1f66a16e974e7cacbf8a28f2488d781c97d450927a",
       "capabilities": [
         "pre-snapped-config-adapter-carried-forward",
         "project-or-substation-selection",
@@ -126,7 +126,9 @@
         "late-layer-controls-are-switched-on-not-abandoned",
         "every-technology-the-register-uses",
         "unknown-technology-asks-the-engine",
-        "offshore-opens-a-card-and-withholds-the-measurement"
+        "offshore-opens-a-card-and-withholds-the-measurement",
+        "voltage-class-context-on-the-card",
+        "whole-generation-and-storage-dashboard-accepted"
       ],
       "immutable_shell_modified": false,
       "supersedes_shell_script": {
@@ -251,6 +253,18 @@
         "cause": "the register writes wind_onshore and the engine has had a wind_onshore layer throughout; only this list disagreed with both",
         "now": "the list is a fast path, and any technology the engine has a layer control for is accepted, so the engine owns the vocabulary",
         "offshore": "accepted, opens a card, draws no links: an offshore turbine reaches an offshore substation, an export cable and a landfall before anything onshore, and the route inland is chosen for consent and ground conditions rather than distance"
+      },
+      "voltage_context": {
+        "why": "a distance to 132 kV is not the same proposition as a distance to 66 kV, and the reader of a register knows that while the map did not say it",
+        "classes": {
+          "400 / 275": "transmission, bulk power",
+          "220": "transmission; the class being built out for offshore wind landfalls",
+          "132": "distribution in England and Wales, transmission in Scotland",
+          "66": "largely legacy industrial distribution, much of it being reinforced to 132 kV and above as old heavy load is replaced and offshore wind arrives",
+          "33": "primary distribution; the usual utility-scale solar or storage connection"
+        },
+        "rule": "descriptive, never advisory: what a class generally is, never what a particular project should do with it",
+        "shown": "only for the classes actually found, never as a general legend"
       }
     }
   ],
@@ -279,8 +293,8 @@
     "offshore_wind_excluded_from_links": true,
     "cards_fit_after_drag_and_restore": true,
     "shell_modified": false,
-    "scope": "the MAP button works for every technology in the register",
-    "proof": "tools/proofs/202608312257-sld-sandbox.proof.mjs, 302 checks"
+    "scope": "voltage classes are explained, and the whole dashboard is accepted",
+    "proof": "tools/proofs/202608312300-sld-sandbox.proof.mjs, 313 checks"
   },
   "version": "v9.15",
   "composition_id": "202608312031-gridatlas-v9.15",
@@ -290,5 +304,5 @@
     "source_sha256": "07d33eda5b3279a03df4c0a0aded61e4363c46734dda991aa5f48ae0d55097da",
     "transformation": "carry the pre-snap config rewrite verbatim; add a measured link layer and on-card beta distances"
   },
-  "composition_version": "v9.27"
+  "composition_version": "v9.28"
 }

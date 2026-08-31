@@ -1,7 +1,7 @@
 /**
  * GridAtlas cartridge — neon substation links and the SLD layout sandbox.
  *
- * Generation 202608312257 (UTC), composition v9.27. Slot: replace-script for
+ * Generation 202608312300 (UTC), composition v9.28. Slot: replace-script for
  * 202608292126-pre-snapped-config-adapter.js.
  *
  * WHAT IT DOES
@@ -61,7 +61,7 @@
 (() => {
   'use strict';
 
-  const GENERATION = '202608312257';
+  const GENERATION = '202608312300';
 
   /* ══════════════════════════════════════════════════════════════════════
      PART 1 — the pre-snapped config adapter, carried forward unchanged.
@@ -148,7 +148,14 @@
     'bess', 'bess_operational',
     'wind', 'wind_onshore', 'wind_onshore_operational',
     'wind_offshore', 'wind_offshore_operational',
-    'biomass', 'hydro', 'hydrogen'
+    // The rest of the engine's own generation and storage dashboard, read off
+    // the live page rather than guessed. Note wind_onshore is NOT among the
+    // engine's layer ids -- it has `wind` and `wind_onshore_operational` --
+    // yet the register writes wind_onshore for 2,399 projects. Asking the
+    // engine alone would still have missed every one of them, which is why the
+    // explicit entry above is not redundant with the lookup below.
+    'biomass', 'hydro', 'hydrogen', 'tidal', 'geothermal',
+    'flywheel', 'caes', 'act'
   ]);
 
   // Offshore opens a card and draws no links. A turbine in the North Sea does
@@ -180,7 +187,9 @@
     // Offshore reads cooler than onshore: it is the one technology here whose
     // links are deliberately not drawn, and it should not look like the others.
     wind_offshore: '#5f9fb5', wind_offshore_operational: '#5f9fb5',
-    biomass: '#b58f6f', hydro: '#6f9fd8', hydrogen: '#a98fd8'
+    biomass: '#b58f6f', hydro: '#6f9fd8', hydrogen: '#a98fd8',
+    tidal: '#5fb5a8', geothermal: '#b57f6f',
+    flywheel: '#9f9fb5', caes: '#9f9fb5', act: '#9f9fb5'
   };
   const SUBSTATION_COLOUR = '#5fbdc2';   // teal, the substation end of a link
   const FLOW_COLOUR = '#bfe9ee';         // pale cyan travelling pulse, not white
@@ -400,7 +409,9 @@
   min-width:54px;text-shadow:0 0 6px rgba(95,189,194,.35)}
 .${BLOCK_CLASS} .neon-name{color:#9fb3ba;overflow:hidden;text-overflow:ellipsis;
   white-space:nowrap;flex:1;max-width:150px}
-.${BLOCK_CLASS} .neon-kv{color:#ffae00;font-size:9px;white-space:nowrap}
+.${BLOCK_CLASS} .neon-kv{color:#ffae00;font-size:9px;white-space:nowrap;cursor:help}
+.${BLOCK_CLASS} .neon-kvnote{margin-top:6px;font-size:10px;line-height:1.45}
+.${BLOCK_CLASS} .neon-kvnote b{color:#ffae00;font-weight:normal}
 .${BLOCK_CLASS} .neon-pin{display:block;width:100%;margin-top:7px;padding:5px 6px;
   background:#0a1a1d;border:1px solid #2f6f75;border-radius:3px;color:#8b9aa1;
   font:inherit;font-size:10px;letter-spacing:.05em;cursor:pointer;text-transform:uppercase}
@@ -479,6 +490,44 @@
     + 'conditions rather than distance. A straight line to the nearest onshore '
     + 'substation would be a number with nothing behind it.';
 
+  /* What a voltage class means, on the card, beside the number.
+     ----------------------------------------------------------------------
+     A distance to a "132 kV" substation is not the same proposition as a
+     distance to a "66 kV" one, and the register's reader usually knows that
+     while the map does not say it. These are descriptions of the network as it
+     is, not advice about any scheme:
+
+       400 / 275 kV  transmission, bulk power
+       220 kV        transmission, and the class being built out for offshore
+                     wind landfalls
+       132 kV        distribution in England and Wales, transmission in
+                     Scotland - the same number meaning two different things
+                     depending on where you are standing
+       66 kV         largely legacy industrial distribution, much of it being
+                     reinforced to 132 kV and above as old heavy load is
+                     replaced and offshore wind arrives
+       33 kV         primary distribution, and the usual class for a
+                     utility-scale solar or storage connection
+
+     Deliberately descriptive. It says what a class generally is, never what a
+     particular project should do with it, because the estate's rule is that
+     the maths and the tools do the talking. */
+  const KV_CONTEXT = {
+    400: 'transmission, bulk power',
+    275: 'transmission, bulk power',
+    220: 'transmission; the class being built out for offshore wind landfalls',
+    132: 'distribution in England and Wales, transmission in Scotland',
+    66: 'largely legacy industrial distribution, much of it being reinforced '
+        + 'to 132 kV and above',
+    33: 'primary distribution; the usual class for a utility-scale solar or '
+        + 'storage connection',
+  };
+
+  function kvContext(kv) {
+    const n = Number(kv);
+    return Number.isFinite(n) ? (KV_CONTEXT[n] || null) : null;
+  }
+
   function cardBlockHtml(links, direction, layerLoaded = true) {
     if (direction === 'offshore') {
       return `<div class="${BLOCK_CLASS}">`
@@ -504,20 +553,43 @@
         + `<div class="neon-caveat">${nothing}</div>${caveatHtml()}</div>`;
     }
     const rows = links.map(l => {
-      const tail = l.kv && l.kv.length ? `${l.kv[0]} kV`
+      const kv = l.kv && l.kv.length ? l.kv[0] : null;
+      const tail = kv != null ? `${kv} kV`
         : (l.mw != null ? `${l.mw} MW` : '');
+      // What the class generally IS, on hover, beside the number. A distance
+      // to 132 kV is not the same proposition as a distance to 66 kV, and the
+      // reader of a register usually knows that while the map does not say it.
+      const context = kvContext(kv);
+      const titled = context
+        ? ` title="${escapeHtml(kv + ' kV: ' + context)}"` : '';
       return `<li><span class="neon-km">${l.km.toFixed(2)} km</span>`
         + `<span class="neon-name">${escapeHtml(l.name || fallbackName)}</span>`
-        + (tail ? `<span class="neon-kv">${escapeHtml(tail)}</span>` : '') + `</li>`;
+        + (tail ? `<span class="neon-kv"${titled}>${escapeHtml(tail)}</span>` : '')
+        + `</li>`;
     }).join('');
+
+    /* One line naming the classes actually present, rather than a legend for
+       classes that are not. If every substation found is 33 kV, a paragraph
+       about 400 kV transmission is noise. */
+    const classes = [...new Set(links
+      .map(l => (l.kv && l.kv.length ? Number(l.kv[0]) : null))
+      .filter(kv => Number.isFinite(kv) && kvContext(kv)))]
+      .sort((a, b) => b - a);
+    const classNote = classes.length
+      ? `<p class="neon-caveat neon-kvnote">`
+        + classes.map(kv => `<b>${kv} kV</b> ${escapeHtml(kvContext(kv))}`).join('. ')
+        + '. Descriptions of the network, not advice about this scheme.</p>'
+      : '';
     // The way into the layout. Without this there is no route from a project
     // to the sandbox at all, which is exactly how it felt to use.
+    const kvNoteHtml = classNote;
     const button = toSubstations
       ? `<button class="neon-pin" type="button" aria-pressed="${pinVisible}">`
         + `${pinVisible ? 'Hide' : 'Show'} the project ring</button>`
         + `<button class="neon-layout" type="button">Lay out a scheme here &#9656;</button>`
       : '';
-    return `<div class="${BLOCK_CLASS}">${head}<ol>${rows}</ol>${button}${caveatHtml()}</div>`;
+    return `<div class="${BLOCK_CLASS}">${head}<ol>${rows}</ol>${kvNoteHtml}`
+      + `${button}${caveatHtml()}</div>`;
   }
 
   // The engine opens its popup in its own click handler. This one is registered
