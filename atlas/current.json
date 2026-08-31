@@ -1,7 +1,7 @@
 {
   "schema": "gridatlas.current.v2",
-  "generation": "202608312205",
-  "previous_generation": "202608312157",
+  "generation": "202608312208",
+  "previous_generation": "202608312205",
   "architecture": "IMMUTABLE_SHELL_PLUS_HASHED_CARTRIDGES",
   "live_route": "/gridatlas/atlas/",
   "release_id": "202608300453-atlas-v9",
@@ -58,13 +58,13 @@
     },
     {
       "id": "sld-sandbox",
-      "generation": "202608312205",
-      "version": "v9.21",
+      "generation": "202608312208",
+      "version": "v9.22",
       "type": "script",
       "slot": "replace-script",
       "replace_script": "202608292126-pre-snapped-config-adapter.js",
-      "path": "./cartridges/202608312205-sld-sandbox-v9-8.js",
-      "sha256": "ad4b2f5e3bdadb30eea2e188bfa1c05a135b20d6d3cc98557dc7579f9cc25e07",
+      "path": "./cartridges/202608312208-sld-sandbox-v9-8.js",
+      "sha256": "c99543106c45fa2ec1cacd0bc90550b96aacb1c00f463c019c0d7b422d9d78f2",
       "capabilities": [
         "pre-snapped-config-adapter-carried-forward",
         "project-or-substation-selection",
@@ -111,7 +111,8 @@
         "retry-without-rebooting-the-engine",
         "status-sized-for-a-phone-first",
         "labels-take-their-font-from-the-style",
-        "no-glyphs-means-no-labels-not-an-exception-per-frame"
+        "no-glyphs-means-no-labels-not-an-exception-per-frame",
+        "glyph-range-pre-flighted-before-any-symbol-layer"
       ],
       "immutable_shell_modified": false,
       "supersedes_shell_script": {
@@ -209,7 +210,9 @@
         "symptom": "Cannot read properties of null (reading 'width') once per rendered frame; 4,218 on a cold load here, 50+ in about 20 seconds on mounting the layout, seen independently by the Codex session",
         "cause": "a symbol layer with no glyph atlas -- either the style carries no glyphs endpoint, or it has one and the assumed font is not served by it; the font was named literally rather than taken from the style that has to serve it",
         "fix": "ask the style: no glyphs endpoint means no labels, which is a quiet map rather than a broken one; otherwise borrow a font the style already labels with, because that one is definitely served",
-        "why_it_matters_on_a_phone": "an exception per frame is a main thread that never idles: heat, battery, and a page that stops answering touches"
+        "why_it_matters_on_a_phone": "an exception per frame is a main thread that never idles: heat, battery, and a page that stops answering touches",
+        "second_half": "having a glyphs endpoint is not the same as reaching it: the style declared tiles.basemaps.cartocdn.com/fonts on the same CDN that had just returned 200 for style.json and then served no vector tiles at all, which gives the identical null atlas and 5,362 exceptions in thirty seconds",
+        "pre_flight": "one fetch of the 0-255 range, the same request the renderer would make; no answer means no labels, and the layer is never added"
       }
     }
   ],
@@ -255,15 +258,15 @@
       "result_class": "LOCATION_ONLY"
     }
   },
-  "composition_manifest": "./manifests/202608312205-composition.json",
+  "composition_manifest": "./manifests/202608312208-composition.json",
   "scope_closure": {
-    "generation": "202608312205",
+    "generation": "202608312208",
     "status": "DONE",
-    "scope": "GridAtlas v9.21 labels without glyphs",
+    "scope": "GridAtlas v9.22 pre-flight the glyph range",
     "schedule_retired": true
   },
-  "composition_version": "v9.21",
-  "composition_id": "202608312205-gridatlas-v9.21",
+  "composition_version": "v9.22",
+  "composition_id": "202608312208-gridatlas-v9.22",
   "transport": {
     "response_contract": "HEADERS_BEFORE_PARQUET_BODY",
     "engine_timeout_seconds": 15,

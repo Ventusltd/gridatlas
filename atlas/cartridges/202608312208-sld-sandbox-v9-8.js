@@ -1,7 +1,7 @@
 /**
  * GridAtlas cartridge — neon substation links and the SLD layout sandbox.
  *
- * Generation 202608312205 (UTC), composition v9.21. Slot: replace-script for
+ * Generation 202608312208 (UTC), composition v9.22. Slot: replace-script for
  * 202608292126-pre-snapped-config-adapter.js.
  *
  * WHAT IT DOES
@@ -61,7 +61,7 @@
 (() => {
   'use strict';
 
-  const GENERATION = '202608312205';
+  const GENERATION = '202608312208';
 
   /* ══════════════════════════════════════════════════════════════════════
      PART 1 — the pre-snapped config adapter, carried forward unchanged.
@@ -743,24 +743,26 @@
       link.labels_drawn = false;
       link.failures.push('the basemap serves no glyphs, so link labels are omitted');
     } else {
-      link.labels_drawn = true;
-      map.addLayer({
-        id: L_LABEL, type: 'symbol', source: SRC_NODES,
-        layout: {
-          'text-field': ['get', 'label'],
-          'text-size': 10,
-          'text-offset': [0, -1.5],
-          'text-anchor': 'bottom',
-          'text-allow-overlap': false,
-          'text-font': neonFont
-        },
-        paint: {
-          'text-color': '#a9c4c9',
-          'text-halo-color': '#000c10',
-          'text-halo-width': 1.5,
-          'text-opacity': 0.9
-        }
-      });
+      // Defer until a glyph range actually comes back. Nothing waits on
+      // labels: the links are already drawn and the distances are on the
+      // card.
+      addLabelLayerWhenDrawable(map, neonFont, {
+          id: L_LABEL, type: 'symbol', source: SRC_NODES,
+          layout: {
+            'text-field': ['get', 'label'],
+            'text-size': 10,
+            'text-offset': [0, -1.5],
+            'text-anchor': 'bottom',
+            'text-allow-overlap': false,
+            'text-font': neonFont
+          },
+          paint: {
+            'text-color': '#a9c4c9',
+            'text-halo-color': '#000c10',
+            'text-halo-width': 1.5,
+            'text-opacity': 0.9
+          }
+        }, 'link');
     }
         link.installed = true;
   }
@@ -1191,6 +1193,61 @@
       link.failures.push('glyphs: ' + String(error?.message || error));
       return null;
     }
+  }
+
+  /* Having a glyphs endpoint is not the same as being able to reach it.
+     ----------------------------------------------------------------------
+     Naming a font the style serves fixed one half. The other half was watched
+     live and is worse: the style declared
+
+       https://tiles.basemaps.cartocdn.com/fonts/{fontstack}/{range}.pbf
+
+     on the same CDN that had just returned 200 for style.json and then served
+     no vector tiles at all. A declared endpoint that cannot be reached gives
+     exactly the same null atlas as no endpoint, and 5,362 exceptions in thirty
+     seconds. Checking that the property exists proves nothing; the only honest
+     test is to ask for a range and see.
+
+     So fetch one - the first 256 codepoints, a few kilobytes, the same request
+     the renderer would make. If it does not come back, there are no labels.
+     That is a map without text, which is a great deal better than a map that
+     throws on every frame it ever draws.
+
+     Deferring the labels costs nothing: they are decoration over links that
+     are already on screen, and the distances they annotate are on the card. */
+  async function glyphsReachable(map, font) {
+    let template;
+    try { template = map.getStyle?.()?.glyphs; } catch (error) { template = null; }
+    if (!template || !font) return false;
+    const url = String(template)
+      .replace('{fontstack}', encodeURIComponent(font.join(',')))
+      .replace('{range}', '0-255');
+    try {
+      const response = await fetch(url, { cache: 'force-cache' });
+      if (!response.ok) {
+        link.failures.push('glyph range ' + response.status + '; labels omitted');
+        return false;
+      }
+      return true;
+    } catch (error) {
+      link.failures.push('glyph range unreachable; labels omitted');
+      return false;
+    }
+  }
+
+  // Add a symbol layer only once its text can actually be drawn. Callers do
+  // not await this: the labels arrive when they arrive, or never, and nothing
+  // else waits on them.
+  function addLabelLayerWhenDrawable(map, font, spec, what) {
+    glyphsReachable(map, font).then((ok) => {
+      link.labels_drawn = ok;
+      if (!ok) return;
+      try {
+        if (!map.getLayer(spec.id)) map.addLayer(spec);
+      } catch (error) {
+        link.failures.push(what + ' labels: ' + String(error?.message || error));
+      }
+    });
   }
 
   function interactiveLayerIds(map) {
@@ -1969,13 +2026,13 @@
     if (!sldFont) {
       link.failures.push('the basemap serves no glyphs, so layout labels are omitted');
     } else {
-    map.addLayer({ id: SLD_LAYERS.label, type: 'symbol', source: SRC_SLD,
+      addLabelLayerWhenDrawable(map, sldFont, { id: SLD_LAYERS.label, type: 'symbol', source: SRC_SLD,
         filter: ['==', ['get', 'kind'], 'node'],
         layout: { 'text-field': ['get', 'label'], 'text-size': 9.5,
           'text-offset': [0, -1.4], 'text-anchor': 'bottom',
           'text-font': sldFont },
         paint: { 'text-color': '#a9c4c9', 'text-halo-color': '#000c10',
-          'text-halo-width': 1.5 } });
+          'text-halo-width': 1.5 } }, 'layout');
     }
   }
 

@@ -1,5 +1,5 @@
 /**
- * Proof for the neon links + SLD layout sandbox cartridge, generation 202608312205.
+ * Proof for the neon links + SLD layout sandbox cartridge, generation 202608312208.
  *
  * No dependencies. The repository carries playwright and no DOM library, so
  * rather than add one this stubs the small surface the cartridge actually
@@ -32,7 +32,7 @@ import vm from 'node:vm';
 const HERE = dirname(fileURLToPath(import.meta.url));
 const REPO = resolve(HERE, '..', '..');
 const CARTRIDGE = join(REPO, 'atlas', 'cartridges',
-  '202608312205-sld-sandbox-v9-8.js');
+  '202608312208-sld-sandbox-v9-8.js');
 const ORIGINAL = join(REPO, 'atlas', 'releases', '202608300453-atlas-v9',
   '202608292126-pre-snapped-config-adapter.js');
 
@@ -348,6 +348,27 @@ check('omitting labels is recorded, not silent',
 check('whether labels were drawn is published', 'labels_drawn' in link);
 check('why this matters on a phone is written down',
   /never idles, and on a phone that is heat, battery and a page/.test(gl.replace(/\s+/g, ' ')));
+
+check('a declared glyph endpoint is not trusted, it is asked',
+  /async function glyphsReachable\(map, font\)/.test(gl));
+check('the pre-flight requests the same range the renderer would',
+  /replace\('\{range\}', '0-255'\)/.test(gl)
+  && /replace\('\{fontstack\}', encodeURIComponent\(font\.join\(','\)\)\)/.test(gl));
+check('a non-ok range means no labels, and says the status code',
+  /glyph range ' \+ response\.status \+ '; labels omitted/.test(gl));
+check('an unreachable range means no labels too',
+  /glyph range unreachable; labels omitted/.test(gl));
+check('both label layers go through the pre-flight, neither is added directly',
+  /addLabelLayerWhenDrawable\(map, neonFont,/.test(gl)
+  && /addLabelLayerWhenDrawable\(map, sldFont,/.test(gl)
+  // and no symbol layer is added straight onto the map any more
+  && !/map\.addLayer\(\{[^)]{0,80}type: 'symbol'/.test(gl));
+check('the layer is added only once the range came back',
+  /\.then\(\(ok\) => \{[\s\S]{0,80}link\.labels_drawn = ok;[\s\S]{0,40}if \(!ok\) return;/.test(gl));
+check('adding it twice is guarded against', /if \(!map\.getLayer\(spec\.id\)\) map\.addLayer\(spec\)/.test(gl));
+check('nothing awaits the labels', !/await addLabelLayerWhenDrawable/.test(gl));
+check('why a present endpoint is not enough is written down',
+  /same CDN that had just returned 200 for style\.json/.test(gl.replace(/\s+/g, ' ')));
 
 // Behavioural: the resolver must survive every shape a style can arrive in.
 check('a style with no glyphs yields no font', (() => {
