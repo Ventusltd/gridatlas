@@ -3,7 +3,7 @@ import path from 'node:path';
 import {
   ROOT, SCOPE_DIR, MASTER_NAME, CURRENT_RELEASE, SHARED_400KV_CARTRIDGE,
   EXPECTED_RELEASES, ACTIVE_WORKFLOWS, invariant, listScopeDocuments,
-  masterDocument, numberedScopes, activeScope, readJson, sha256File,
+  masterDocument, numberedScopes, activeScope, readJson, sha256File, sha256PublishedFile,
   writeText, githubOutput, relativePosix
 } from './lib.mjs';
 
@@ -37,7 +37,9 @@ function verifyReleaseChecksums(releaseDirectory) {
     const target = path.resolve(releaseDirectory, match[2]);
     invariant(target.startsWith(`${path.resolve(releaseDirectory)}${path.sep}`), `${relativePosix(sumsPath)}: path escapes release: ${match[2]}`);
     invariant(fs.existsSync(target), `${relativePosix(target)} is missing`);
-    invariant(sha256File(target) === match[1], `${relativePosix(target)} SHA-256 mismatch`);
+    // Compare against the published (LF) content rather than the working copy,
+    // so a Windows CRLF checkout cannot fail an untouched immutable release.
+    invariant(sha256PublishedFile(target) === match[1], `${relativePosix(target)} SHA-256 mismatch`);
   }
 }
 
@@ -172,7 +174,9 @@ function validateAtlasLayout(scopeState) {
       const cartridgePath = path.resolve(path.join(ROOT, 'atlas'), cartridge.path);
       invariant(cartridgePath.startsWith(`${path.resolve(path.join(ROOT, 'atlas'))}${path.sep}`), `${id}: path escapes atlas/`);
       invariant(fs.existsSync(cartridgePath), `${id}: ${relativePosix(cartridgePath)} is missing`);
-      invariant(sha256File(cartridgePath) === cartridge.sha256, `${id}: SHA-256 mismatch`);
+      // The browser fetches the served bytes and hashes those, so verify the
+      // same thing here rather than the CRLF working copy.
+      invariant(sha256PublishedFile(cartridgePath) === cartridge.sha256, `${id}: SHA-256 mismatch`);
       invariant(fs.statSync(cartridgePath).size <= 400_000, `${id}: cartridge exceeds 400 kB boundary`);
     }
     const atlasIndex = fs.readFileSync(atlasIndexPath, 'utf8');

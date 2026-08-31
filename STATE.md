@@ -2,7 +2,7 @@
 
 - Master: `done`
 - Active scope: `none`
-- Composition: `202608301825 · 202608300453-atlas-v9 · streaming-parquet-bridge → uk-gazetteer-flyto`
+- Composition: `202608311910 · 202608300453-atlas-v9 · streaming-parquet-bridge → uk-gazetteer-flyto → neon-substation-links`
 - Top-level full release copies: `0`
 - Immutable releases under atlas/releases: `8`
 - Active workflows: `4`

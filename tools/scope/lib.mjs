@@ -137,6 +137,31 @@ export function sha256File(filePath) {
   return sha256Buffer(fs.readFileSync(filePath));
 }
 
+// Text assets in this repository are hashed as they are PUBLISHED, which is LF:
+// the sums were generated from git blob content and GitHub Pages serves those
+// same bytes. A Windows checkout with core.autocrlf=true writes CRLF into the
+// working copy, so hashing the file on disk disagrees with every published
+// digest and the release verifier fails on a tree nobody has touched.
+//
+// This is the same defect that made pipelinenews .sha256 sidecars attest bytes
+// that were never served. Normalising here makes the check answer the question
+// that matters -- do the bytes we publish match what we said we published --
+// instead of a question about the reader's line-ending settings.
+const LF_NORMALISED_EXTENSIONS = new Set([
+  '.js', '.mjs', '.cjs', '.css', '.html', '.htm', '.json', '.geojson',
+  '.txt', '.md', '.yml', '.yaml', '.svg'
+]);
+
+export function sha256PublishedFile(filePath) {
+  const bytes = fs.readFileSync(filePath);
+  if (!LF_NORMALISED_EXTENSIONS.has(path.extname(filePath).toLowerCase())) {
+    return sha256Buffer(bytes);
+  }
+  const normalised = Buffer.from(
+    bytes.toString('binary').replace(/\r\n/g, '\n'), 'binary');
+  return sha256Buffer(normalised);
+}
+
 export function londonGeneration(date = new Date()) {
   const parts = new Intl.DateTimeFormat('en-GB', {
     timeZone: 'Europe/London',
