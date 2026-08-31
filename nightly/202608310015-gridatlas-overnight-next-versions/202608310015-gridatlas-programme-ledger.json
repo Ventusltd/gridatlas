@@ -70,21 +70,43 @@
       "study_folder": "nightly/202608310015-gridatlas-overnight-next-versions/runs/202608310237-gridatlas-study-artifact-9f699c18-run-33348127158",
       "timer_mature": true,
       "selected_composition": null
+    },
+    {
+      "generation": "202608310446",
+      "observed_at": "2026-08-31T03:46:27.394Z",
+      "source_fingerprint": "9f699c189a90256b5edcee379495a0ced6e554c9e07e2f84618e0513e3ecf0d3",
+      "main_sha": "71365bb857e2f16c892dc8bbc9dfe6da1bc46eb5",
+      "refs": [
+        {
+          "ref": "origin/automation/202608310043-gridatlas-hard-scope-gate",
+          "sha": "f5c6ec14cb7d250d9af9105e4fbd635f9aa76381",
+          "committed_at": "2026-08-31T00:43:08+01:00"
+        },
+        {
+          "ref": "origin/main",
+          "sha": "71365bb857e2f16c892dc8bbc9dfe6da1bc46eb5",
+          "committed_at": "2026-08-31T01:37:11Z"
+        }
+      ],
+      "visible_unique_words": 23622,
+      "study_folder": "nightly/202608310015-gridatlas-overnight-next-versions/runs/202608310446-gridatlas-study-artifact-9f699c18-run-33354907599",
+      "timer_mature": true,
+      "selected_composition": null
     }
   ],
   "candidates": [],
-  "last_observed_at": "2026-08-31T01:37:10.404Z",
+  "last_observed_at": "2026-08-31T03:46:27.394Z",
   "last_source_fingerprint": "9f699c189a90256b5edcee379495a0ced6e554c9e07e2f84618e0513e3ecf0d3",
-  "last_main_sha": "cd4ef33430a3e989d9cd53f87498c40112b95504",
+  "last_main_sha": "71365bb857e2f16c892dc8bbc9dfe6da1bc46eb5",
   "last_visible_unique_words": 23622,
   "last_scope_word_status": "ADDITIONAL_ARTIFACTS_EXPECTED",
   "last_corpus_gate": {
-    "checked_at": "2026-08-31T01:37:11.643771Z",
+    "checked_at": "2026-08-31T03:46:28.755239Z",
     "source_fingerprint": "9f699c189a90256b5edcee379495a0ced6e554c9e07e2f84618e0513e3ecf0d3",
     "visible_unique_words": 23622,
     "required_unique_words": 43000,
     "scope_ready": false,
     "candidate_suppressed": true,
-    "candidate_id": "202608310237-gridatlas-app-candidate-01-9f699c18"
+    "candidate_id": "202608310446-gridatlas-app-candidate-01-9f699c18"
   }
 }
