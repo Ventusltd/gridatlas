@@ -129,8 +129,27 @@ sandbox.globalThis = sandbox;
 
 /* ── the original adapter, for behavioural comparison ──────────────────── */
 
-const originalSource = await readFile(ORIGINAL, 'utf8');
-const cartridgeSource = await readFile(CARTRIDGE, 'utf8');
+/* Read what is PUBLISHED, which is LF.
+   ------------------------------------------------------------------------
+   Every digest in this estate is of git blob content, and GitHub Pages serves
+   those same bytes. A Windows checkout with core.autocrlf=true writes CRLF
+   into the working copy, so the file on disk is not the file that ships.
+
+   Measured on this very pair: the shell adapter is 50 CRLF lines in a Windows
+   working copy and pure LF in the blob a runner checks out. Comparing the
+   cartridge's carried-forward copy against the working copy therefore passed
+   here and failed on the runner -- and the natural reading of that is that the
+   runner is wrong, which it is not.
+
+   This is the fourth time tonight the same defect has appeared in this estate:
+   in the release verifier, in verify-compose, in advance.mjs, which RECORDED
+   digests, and now in the proof that was supposed to catch things. Normalise
+   at every boundary where bytes are compared, without exception. */
+const readPublished = async (file) =>
+  (await readFile(file, 'utf8')).split('\r\n').join('\n');
+
+const originalSource = await readPublished(ORIGINAL);
+const cartridgeSource = await readPublished(CARTRIDGE);
 
 function runAdapter(source, initSpy) {
   const box = {
@@ -338,7 +357,7 @@ check('a glyph endpoint with no symbol layer still gets a served default',
 check('both label layers use the resolved font, neither a literal',
   /'text-font': neonFont/.test(gl) && /'text-font': sldFont \}/.test(gl));
 check('no symbol layer names a font directly any more',
-  !/'text-font': \['Open Sans Bold', 'Arial Unicode MS Bold'\]\s*[,}\n]/.test(
+  !/'text-font': \['Open Sans Bold', 'Arial Unicode MS Bold'\]\s*[,}[\s\S]{0,4}]/.test(
     gl.replace(/return \['Open Sans Bold', 'Arial Unicode MS Bold'\];/, '')));
 check('the link labels are guarded', /if \(!neonFont\) \{/.test(gl));
 check('the layout labels are guarded too', /if \(!sldFont\) \{/.test(gl));
@@ -474,7 +493,7 @@ check('three triggers still boot exactly once', (() => {
    seconds into a cold load. Clicking nothing silently did nothing, and the
    layers the whole arrival depends on stayed off. */
 check('the deep link waits for the controls before ticking them',
-  /await waitForLayerControls\(12000\);\s*\n\s*enableSubstationLayer\(\);/.test(bootSrc));
+  /await waitForLayerControls\(12000\);\s*[\s\S]{0,40}enableSubstationLayer\(\);/.test(bootSrc));
 check('the wait is bounded, not a hang',
   /while \(Date\.now\(\) - started < budgetMs\)/.test(bootSrc));
 check('it waits for a tagged control, the same hook it will tick',
@@ -603,9 +622,9 @@ check('toggling twice returns to where it started', (() => {
 // The pin must survive a map whose style has not loaded -- addSource throws
 // there, and a card that will not open is a worse failure than a missing dot.
 check('a source that failed to add is never dereferenced',
-  /const source = map\.getSource\(SRC_PIN\);\n\s*if \(!source \|\| typeof source\.setData !== 'function'\) return;/.test(pinSrc));
+  /const source = map\.getSource\(SRC_PIN\);[\s\S]{0,40}if \(!source \|\| typeof source\.setData !== 'function'\) return;/.test(pinSrc));
 check('an addSource that throws is caught and recorded',
-  /catch \(error\) \{\n\s*link\.failures\.push\('pin: '/.test(pinSrc));
+  /catch \(error\) \{[\s\S]{0,40}link\.failures\.push\('pin: '/.test(pinSrc));
 check('clearing the pin tolerates a map with no source',
   /const source = map && map\.getSource && map\.getSource\(SRC_PIN\);/.test(pinSrc));
 
@@ -637,11 +656,11 @@ check('why a dot failed is recorded where the next reader will look',
 check('the toggle reports its state to assistive technology',
   /aria-pressed="\$\{pinVisible\}"/.test(pinSrc));
 check('the toggle does not fall through to the card underneath',
-  /\.neon-pin'\)\?\.addEventListener\('click', \(event\) => \{\n\s*event\.stopPropagation\(\);/.test(pinSrc));
+  /\.neon-pin'\)\?\.addEventListener\('click', \(event\) => \{[\s\S]{0,40}event\.stopPropagation\(\);/.test(pinSrc));
 check('the pin is coloured by technology, not one colour for everything',
   /const colour = TECH_COLOUR\[tech\] \|\| SUBSTATION_COLOUR;/.test(pinSrc));
 check('clearing the links clears the pin with them',
-  /removeCardBlock\(\);\n\s*clearPin\(capturedMap\);/.test(pinSrc));
+  /removeCardBlock\(\);[\s\S]{0,40}clearPin\(capturedMap\);/.test(pinSrc));
 check('selecting a substation does not drop a project pin on it',
   /if \(direction !== 'from-substation'\) setPin\(map, origin, name, tech\);/.test(pinSrc));
 
@@ -1091,6 +1110,13 @@ check('a card dropped too low is lifted, not shrunk to a slot',
   /const lifted = Math\.max\(map\.top \+ 12/.test(code));
 check('restoring re-checks the fit', /requestAnimationFrame\(boundCardToMap\)/.test(code));
 check('so does finishing a drag', (code.match(/requestAnimationFrame\(boundCardToMap\)/g)||[]).length >= 3);
+
+// The glyph pre-flight is deliberately not awaited by the cartridge, so a
+// promise is still in flight here. Whether it has resolved before the
+// tally is a scheduling detail that differs between platforms, and a
+// proof must not depend on one. Drain, then count.
+await new Promise(resolve => setTimeout(resolve, 0));
+await new Promise(resolve => setImmediate(resolve));
 
 console.log(`\n${passed}/${passed + failures.length} checks passed`);
 if (failures.length) {
