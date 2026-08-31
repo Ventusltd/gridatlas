@@ -1,7 +1,7 @@
 /**
  * GridAtlas cartridge — neon substation links and the SLD layout sandbox.
  *
- * Generation 202608312321 (UTC), composition v9.33. Slot: replace-script for
+ * Generation 202608312324 (UTC), composition v9.34. Slot: replace-script for
  * 202608292126-pre-snapped-config-adapter.js.
  *
  * WHAT IT DOES
@@ -61,7 +61,7 @@
 (() => {
   'use strict';
 
-  const GENERATION = '202608312321';
+  const GENERATION = '202608312324';
 
   /* ══════════════════════════════════════════════════════════════════════
      PART 1 — the pre-snapped config adapter, carried forward unchanged.
@@ -1097,8 +1097,8 @@
     stopAnimation();
     const map = capturedMap;
     if (map && map.getSource(SRC)) {
-      map.getSource(SRC).setData(emptyCollection());
-      map.getSource(SRC_NODES).setData(emptyCollection());
+      setSourceData(map, SRC, emptyCollection());
+      setSourceData(map, SRC_NODES, emptyCollection());
     }
     removeCardBlock();
     clearPin(capturedMap);
@@ -1138,8 +1138,8 @@
       };
     });
 
-    map.getSource(SRC).setData({ type: 'FeatureCollection', features: lines });
-    map.getSource(SRC_NODES).setData({ type: 'FeatureCollection', features: nodes });
+    setSourceData(map, SRC, { type: 'FeatureCollection', features: lines });
+    setSourceData(map, SRC_NODES, { type: 'FeatureCollection', features: nodes });
 
     // The popup is built by the engine and rendered synchronously in its own
     // click handler, but MapLibre attaches it on the next frame in some paths.
@@ -1784,6 +1784,37 @@
     panel.addEventListener('click', (event) => event.stopPropagation());
     stack.appendChild(panel);
     link.gb_panel_installed = true;
+  }
+
+  /* Never dereference a source without checking it is there.
+     ----------------------------------------------------------------------
+     addSource throws if the style is not loaded, and a source that failed to
+     add reads back as null. Both happen: the basemap CDN served style.json and
+     then no tiles at all on this estate tonight, and the cartridge now boots on
+     the style rather than a painted frame precisely so it can work in that
+     condition.
+
+     The pin was guarded when that was found. Five call sites were not, and
+     they are the ones that draw the links, the nodes and the whole layout — so
+     the guarded convenience survived while the substance would have thrown.
+     Codex's gate has been finding this class all night; this is the last of it
+     in this file.
+
+     Returning false rather than throwing means a missing source costs the
+     drawing, not the card, the distances or the session. */
+  function setSourceData(map, id, data) {
+    try {
+      const source = map?.getSource?.(id);
+      if (!source || typeof source.setData !== 'function') {
+        link.failures.push('source missing, nothing drawn: ' + id);
+        return false;
+      }
+      source.setData(data);
+      return true;
+    } catch (error) {
+      link.failures.push('source ' + id + ': ' + String(error?.message || error));
+      return false;
+    }
   }
 
   function interactiveLayerIds(map) {
@@ -2832,7 +2863,7 @@
   function redrawSld(map, { fit = false } = {}) {
     ensureSldLayers(map);
     const data = buildLayout();
-    map.getSource(SRC_SLD).setData(data);
+    setSourceData(map, SRC_SLD, data);
     renderSldPanel();
     if (data.features.length) animateSld(map);
     if (fit && data.features.length && sld.geometry) {
@@ -3190,7 +3221,7 @@
     const el = document.getElementById(PANEL_ID);
     if (el) el.dataset.open = 'false';
     if (capturedMap && capturedMap.getSource(SRC_SLD)) {
-      capturedMap.getSource(SRC_SLD).setData({ type: 'FeatureCollection', features: [] });
+      setSourceData(capturedMap, SRC_SLD, { type: 'FeatureCollection', features: [] });
     }
   }
 

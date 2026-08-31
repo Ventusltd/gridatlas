@@ -1,5 +1,5 @@
 /**
- * Proof for the neon links + SLD layout sandbox cartridge, generation 202608312321.
+ * Proof for the neon links + SLD layout sandbox cartridge, generation 202608312324.
  *
  * No dependencies. The repository carries playwright and no DOM library, so
  * rather than add one this stubs the small surface the cartridge actually
@@ -32,7 +32,7 @@ import vm from 'node:vm';
 const HERE = dirname(fileURLToPath(import.meta.url));
 const REPO = resolve(HERE, '..', '..');
 const CARTRIDGE = join(REPO, 'atlas', 'cartridges',
-  '202608312321-sld-sandbox-v9-8.js');
+  '202608312324-sld-sandbox-v9-8.js');
 const ORIGINAL = join(REPO, 'atlas', 'releases', '202608300453-atlas-v9',
   '202608292126-pre-snapped-config-adapter.js');
 
@@ -844,6 +844,33 @@ check('the divergence from the ported sandbox is recorded, not silent',
   /gis-sld-v5-calculations\.js line 147/.test(cs));
 check('the source of the report is credited',
   /Codex session auditing this estate in parallel/.test(cs));
+
+
+console.log('\nno source is dereferenced unchecked\n');
+
+/* addSource throws if the style is not loaded, and a source that failed to add
+   reads back as null. Both happen: the basemap CDN served style.json and then
+   no tiles at all tonight, and the cartridge now boots on the style rather than
+   a painted frame precisely so it can work in that condition.
+
+   The pin was guarded when that was found. Five call sites were not — the ones
+   that draw the links, the nodes and the whole layout — so the guarded
+   convenience would have survived while the substance threw. */
+const src5 = cartridgeSource;
+check('there are no unguarded setData call sites left',
+  !/getSource\([^)]*\)\.setData/.test(src5));
+check('every draw goes through the guard',
+  (src5.match(/setSourceData\(/g) || []).length >= 5);
+check('a missing source costs the drawing, not the session',
+  /source missing, nothing drawn: /.test(src5)
+  && /return false;/.test(src5));
+check('a throw is caught and named',
+  /link\.failures\.push\('source ' \+ id \+ ': '/.test(src5));
+check('why a missing source is possible at all is recorded',
+  /served style\.json and\s+then no tiles at all/.test(src5.replace(/\s+/g, ' ')
+    .replace('served style.json and then no tiles at all',
+             'served style.json and then no tiles at all'))
+  || /no tiles at all/.test(src5));
 
 
 console.log('\nno dormant rewrite of the reference design\n');

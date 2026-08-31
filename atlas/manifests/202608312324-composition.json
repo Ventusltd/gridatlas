@@ -1,7 +1,7 @@
 {
   "schema": "gridatlas.composition-manifest.v1",
-  "generation": "202608312321",
-  "parent_generation": "202608312317",
+  "generation": "202608312324",
+  "parent_generation": "202608312321",
   "live_route": "/gridatlas/atlas/",
   "shell": {
     "release_id": "202608300453-atlas-v9",
@@ -66,13 +66,13 @@
     },
     {
       "id": "sld-sandbox",
-      "generation": "202608312321",
-      "version": "v9.33",
+      "generation": "202608312324",
+      "version": "v9.34",
       "type": "script",
       "slot": "replace-script",
       "replace_script": "202608292126-pre-snapped-config-adapter.js",
-      "path": "./cartridges/202608312321-sld-sandbox-v9-8.js",
-      "sha256": "0b58c3bcf44f51ac9b394d22a631230e9ed409b64ba8fe36b6c73191c91e5010",
+      "path": "./cartridges/202608312324-sld-sandbox-v9-8.js",
+      "sha256": "3d4711f8deda97fe6ef6d6e2798fe664c21ece918306dcea49e108d9bcdec6ff",
       "capabilities": [
         "pre-snapped-config-adapter-carried-forward",
         "project-or-substation-selection",
@@ -134,7 +134,8 @@
         "dash-atlas-bounded-at-24-patterns",
         "three-named-capacity-ratios",
         "dash-written-only-when-it-changes",
-        "voltage-unit-from-the-property-not-the-magnitude"
+        "voltage-unit-from-the-property-not-the-magnitude",
+        "no-source-dereferenced-unchecked"
       ],
       "immutable_shell_modified": false,
       "supersedes_shell_script": {
@@ -320,6 +321,11 @@
           "14596 Ford Halewood Transmissions, 33000;11000;415, 415 kV -> 33 kV"
         ],
         "note": "a bare 33 under `voltage` is now 33 volts and falls out of scope; Codex confirmed the pinned payload contains no such token, so nothing real is lost by obeying the contract"
+      },
+      "source_guards": {
+        "why": "addSource throws if the style is not loaded and a failed source reads back as null; both are reachable now that the cartridge boots on the style rather than a painted frame",
+        "was": "the pin was guarded when this was found and five call sites were not - the ones drawing the links, the nodes and the layout - so the convenience would have survived while the substance threw",
+        "now": "one guard, five call sites, a missing source costs the drawing only"
       }
     }
   ],
@@ -348,8 +354,8 @@
     "offshore_wind_excluded_from_links": true,
     "cards_fit_after_drag_and_restore": true,
     "shell_modified": false,
-    "scope": "nothing can rewrite the reference design, not even later",
-    "proof": "tools/proofs/202608312321-sld-sandbox.proof.mjs, 351 checks"
+    "scope": "a missing source costs a drawing, never the session",
+    "proof": "tools/proofs/202608312324-sld-sandbox.proof.mjs, 356 checks"
   },
   "version": "v9.15",
   "composition_id": "202608312031-gridatlas-v9.15",
@@ -359,5 +365,5 @@
     "source_sha256": "07d33eda5b3279a03df4c0a0aded61e4363c46734dda991aa5f48ae0d55097da",
     "transformation": "carry the pre-snap config rewrite verbatim; add a measured link layer and on-card beta distances"
   },
-  "composition_version": "v9.33"
+  "composition_version": "v9.34"
 }
