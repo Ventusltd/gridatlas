@@ -17,11 +17,22 @@ export const EXPECTED_RELEASES = Object.freeze([
   '202608292311-atlas-v9',
   '202608300453-atlas-v9'
 ]);
+// The budget exists because this repository once accumulated one-off
+// workflows faster than it retired them -- 21 sit in the archive. It is a cap
+// on sprawl, not a ban on automation, so adding to it is a decision that gets
+// written down rather than a number that gets nudged.
+//
+// 202608312212-cartridge-proof.yml earns its place: the scope loop is retired
+// and fires only on workflow_dispatch, and verify-live triggers on a path list
+// that excludes atlas/, so a cartridge could be composed, hashed, pushed and
+// served with nobody having run its proof. It is node-only and takes seconds,
+// so there is never a reason to skip it.
 export const ACTIVE_WORKFLOWS = Object.freeze([
   '202608301321-scope-loop.yml',
   '202608301321-verify-live.yml',
   '202608310015-gridatlas-overnight-next-versions.yml',
-  '202608310050-gridatlas-next-version-builders.yml'
+  '202608310050-gridatlas-next-version-builders.yml',
+  '202608312212-cartridge-proof.yml'
 ]);
 
 export function invariant(condition, message) {

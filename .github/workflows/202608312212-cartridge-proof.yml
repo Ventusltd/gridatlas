@@ -1,0 +1,74 @@
+# Every cartridge push runs the proof of the cartridge that is composed.
+#
+# The bounded scope loop is retired and fires only on workflow_dispatch, and
+# the verify-live workflow triggers on a path list that does not include
+# atlas/. So until now a cartridge could be composed, hashed, pushed and served
+# with nobody having run its proof except the person who wrote it.
+#
+# That proof is 253 checks, and every one of them encodes something that was
+# actually wrong on a live page: central AC larger than any nameplate in the
+# plant, a project marker invisible against the links converging on it, a boot
+# that needed a painted basemap, a symbol layer throwing once per frame for
+# want of a glyph atlas. Guarding that by hand is not guarding it.
+#
+# Deliberately cheap: node, no browser, no checkout of history. It should cost
+# a few seconds so there is never a reason to skip it.
+
+name: 202608312212 GridAtlas cartridge proof
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'atlas/**'
+      - 'tools/proofs/**'
+      - 'tools/scope/**'
+      - '.github/workflows/202608312212-cartridge-proof.yml'
+  pull_request:
+    paths:
+      - 'atlas/**'
+      - 'tools/proofs/**'
+      - 'tools/scope/**'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: gridatlas-cartridge-proof-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  proof:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - name: Checkout the pushed state
+        uses: actions/checkout@v4
+
+      - name: Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+
+      # Every digest in this repository is of git blob content, which is LF. A
+      # runner checks out LF, so a mismatch here is a real mismatch and not a
+      # line-ending artefact -- unlike a Windows working copy, where it is
+      # usually the reverse. Three verifiers in this estate hashed the working
+      # copy rather than the bytes served before that was fixed.
+      - name: The composition matches what is declared and hashed
+        run: node tools/scope/verify-compose.mjs
+
+      - name: The composed cartridge passes its own proof
+        run: node tools/proofs/run-current.mjs
+
+      - name: The scope ledger and workflow budget still hold
+        run: |
+          node tools/scope/loop.mjs lint
+          node tools/scope/loop.mjs state
+
+      # STATE.md is generated deterministically. If running the generator
+      # changes it, the committed file was stale, and a stale durable-state
+      # file is how a session picks up a wrong picture of the estate.
+      - name: STATE.md was regenerated before it was committed
+        run: git diff --exit-code -- STATE.md

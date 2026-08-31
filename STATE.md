@@ -5,7 +5,7 @@
 - Composition: `202608312208 · 202608300453-atlas-v9 · streaming-parquet-bridge → uk-gazetteer-flyto → sld-sandbox`
 - Top-level full release copies: `0`
 - Immutable releases under atlas/releases: `8`
-- Active workflows: `4`
+- Active workflows: `5`
 - Historical workflows archived: `21`
 - Last-known-green shell: `202608300453-atlas-v9`
 
