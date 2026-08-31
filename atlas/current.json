@@ -1,7 +1,7 @@
 {
   "schema": "gridatlas.current.v2",
-  "generation": "202608312121",
-  "previous_generation": "202608312031",
+  "generation": "202608312133",
+  "previous_generation": "202608312121",
   "architecture": "IMMUTABLE_SHELL_PLUS_HASHED_CARTRIDGES",
   "live_route": "/gridatlas/atlas/",
   "release_id": "202608300453-atlas-v9",
@@ -58,13 +58,13 @@
     },
     {
       "id": "sld-sandbox",
-      "generation": "202608312121",
-      "version": "v9.16",
+      "generation": "202608312133",
+      "version": "v9.17",
       "type": "script",
       "slot": "replace-script",
       "replace_script": "202608292126-pre-snapped-config-adapter.js",
-      "path": "./cartridges/202608312121-sld-sandbox-v9-8.js",
-      "sha256": "d4a93676b8ef4fb8bbc5897a3af544d58088a5b22dcd544e3da867882bdfbf31",
+      "path": "./cartridges/202608312133-sld-sandbox-v9-8.js",
+      "sha256": "a9e873973824b6ee5d8cb7de039167de9dcfd01e6e7feb85c4d5fbee0f8adc89",
       "capabilities": [
         "pre-snapped-config-adapter-carried-forward",
         "project-or-substation-selection",
@@ -98,7 +98,10 @@
         "layers-survive-fullscreen",
         "project-pin-drawn-by-the-cartridge-not-a-layer",
         "project-layer-enabled-on-arrival",
-        "pin-toggles-on-and-off-from-the-card"
+        "pin-toggles-on-and-off-from-the-card",
+        "central-ac-is-the-limiting-nameplate-not-a-product",
+        "inverter-and-transformer-nameplates-reported-separately",
+        "mv-block-overload-detected-against-its-skid"
       ],
       "immutable_shell_modified": false,
       "supersedes_shell_script": {
@@ -146,7 +149,8 @@
         "deliberate_differences": [
           "one Earth radius: the sandbox measures on 6378.137 but builds geometry with turf.destination on 6371.0088, mixing two radii inside one drawing; the Atlas ships no turf and every operation here is canonical",
           "grab rather than mode-switch: the array is dragged, rotation has a handle, route vertices are dragged, inserted and removed without a commit step",
-          "the electron flow runs along the collectors and the export cable in the direction power flows"
+          "the electron flow runs along the collectors and the export cable in the direction power flows",
+          "central AC sizing is corrected, not carried: gis-sld-v5-calculations.js line 147 computes total_blocks * central_skid_mva * inv_per_mv, but total_blocks already contains inv_per_mv, so the inverters sharing a skid enter the answer squared, and a count of inverters is multiplied by a transformer rating. On the shipped defaults that reported 211.2 MW where the inverters total 105.6 MW and the skids 52.8 MVA; on a 3-inverter skid it reported 1425.6 against 158.4, a factor of nine. The Atlas reports the smaller of the two nameplates and names the element that limits export. The same fault is still in the sandbox this was ported from."
         ]
       },
       "entry_points": {
@@ -166,6 +170,16 @@
         "independent_of": "the engine's technology layers and their visibility",
         "toggle": "a button on the project card; a pin over the site is the thing you want out of the way when you are looking at the site",
         "failure_mode": "a style that has not loaded is recorded in failures and the card still opens"
+      },
+      "central_sizing": {
+        "reported_by": "the Codex session auditing this estate in parallel, 202608312124",
+        "confirmed": "dimensionally, and against the shipped defaults, in the proof",
+        "export": "min(inverters x inverter AC, skids x skid MVA)",
+        "both_published": [
+          "central_inverter_ac_total",
+          "central_skid_ac_total"
+        ],
+        "string_mode": "untouched, and still reproduces the sandbox exactly on every case"
       }
     }
   ],
@@ -211,15 +225,15 @@
       "result_class": "LOCATION_ONLY"
     }
   },
-  "composition_manifest": "./manifests/202608312121-composition.json",
+  "composition_manifest": "./manifests/202608312133-composition.json",
   "scope_closure": {
-    "generation": "202608312121",
+    "generation": "202608312133",
     "status": "DONE",
-    "scope": "GridAtlas v9.16 project pin and technology layer on arrival",
+    "scope": "GridAtlas v9.17 central AC sizing corrected",
     "schedule_retired": true
   },
-  "composition_version": "v9.16",
-  "composition_id": "202608312121-gridatlas-v9.16",
+  "composition_version": "v9.17",
+  "composition_id": "202608312133-gridatlas-v9.17",
   "transport": {
     "response_contract": "HEADERS_BEFORE_PARQUET_BODY",
     "engine_timeout_seconds": 15,

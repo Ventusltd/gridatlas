@@ -1,7 +1,7 @@
 /**
  * GridAtlas cartridge — neon substation links and the SLD layout sandbox.
  *
- * Generation 202608312121 (UTC), composition v9.16. Slot: replace-script for
+ * Generation 202608312133 (UTC), composition v9.17. Slot: replace-script for
  * 202608292126-pre-snapped-config-adapter.js.
  *
  * WHAT IT DOES
@@ -61,7 +61,7 @@
 (() => {
   'use strict';
 
-  const GENERATION = '202608312121';
+  const GENERATION = '202608312133';
 
   /* ══════════════════════════════════════════════════════════════════════
      PART 1 — the pre-snapped config adapter, carried forward unchanged.
@@ -1423,21 +1423,63 @@
     }
     const strDcKwp = (i.x_mods_c * i.mod_wp) / 1000;
     const reqStrings = strDcKwp > 0 ? Math.ceil((i.inv_dc_mw_c * 1000) / strDcKwp) : 0;
+    // total_blocks counts INVERTERS: inverters per MV skid, times skids per
+    // ring, times rings. The skids are the level above it.
     const total_blocks = i.inv_per_mv_c * i.mv_per_ring_c * i.rings_c;
+    const skid_count = i.mv_per_ring_c * i.rings_c;
     const module_count = reqStrings * i.x_mods_c * total_blocks;
-    const production = i.central_skid_mva_c * i.inv_per_mv_c;
+
+    /* Two nameplates, and they are not the same number.
+       --------------------------------------------------------------------
+       The inverters and the MV skid transformers they share are rated
+       separately, and the plant can export no more than the smaller of the
+       two. On the shipped defaults they are a factor of two apart: 24
+       inverters at 4.4 MW is 105.6 MW of inverter, sitting on 12 skids at
+       4.4 MVA, which is 52.8 MVA of transformer.
+
+       The figure shown was 211.2 MW -- neither of those, and larger than
+       both. `total_blocks` already contains `inv_per_mv_c`, and the AC line
+       multiplied by it a second time, so the count of inverters sharing a
+       skid entered the answer squared. It also multiplied a count of
+       inverters by a TRANSFORMER rating, which is not a quantity that
+       exists.
+
+       This is a deliberate divergence from the sandbox this was ported from.
+       gis-sld-v5-calculations.js line 147 computes the same expression, so
+       the fault is in the original and was carried across faithfully by a
+       port whose whole contract was to carry the arithmetic unchanged.
+       Reported by the Codex session auditing this estate in parallel;
+       confirmed here dimensionally and against those defaults. */
+    const inverter_ac_total = total_blocks * i.inv_ac_mw_c;
+    const skid_ac_total = skid_count * i.central_skid_mva_c;
+    const ac_mw_direct = Math.min(inverter_ac_total, skid_ac_total);
+
+    // A skid carries every inverter fed into it, so the comparison that
+    // matters is the whole MV block against its transformer, not one
+    // inverter against it. One-to-one it never fires; on the defaults the
+    // block is 8.8 MW on a 4.4 MVA skid and it should.
+    const block_ac_mw = i.inv_ac_mw_c * i.inv_per_mv_c;
     let warning;
-    if (i.inv_ac_mw_c > i.central_skid_mva_c) {
-      warning = 'Central inverter AC output exceeds the skid transformer rating. Verify thermal rating and export limitation.';
+    if (block_ac_mw > i.central_skid_mva_c) {
+      warning = `The ${i.inv_per_mv_c} inverters on each MV skid total `
+        + `${block_ac_mw.toFixed(2)} MW against a skid rated `
+        + `${i.central_skid_mva_c} MVA. Export is limited by the transformer, `
+        + `not the inverters. Verify thermal rating, overload strategy and `
+        + `the export limit in the connection agreement.`;
     } else if (i.inv_ac_mw_c > 10) {
       warning = 'Large central inverter or power block selected. Verify transformer, MV switchgear, harmonics, thermal loading, protection and grid code compliance.';
     }
     return buildStats({
       total_blocks, module_count,
       dc_ac_ratio: i.inv_ac_mw_c > 0 ? i.inv_dc_mw_c / i.inv_ac_mw_c : 1.2,
-      ac_mw_direct: total_blocks * i.central_skid_mva_c * i.inv_per_mv_c,
-      production_substation_ac_mva: production,
-      ring_main_ac_mva: production * i.mv_per_ring_c,
+      ac_mw_direct,
+      // One skid's rating. The label on the control is "Skid MVA", so it is
+      // the skid, and multiplying it by the inverters on that skid described
+      // no piece of equipment.
+      production_substation_ac_mva: i.central_skid_mva_c,
+      ring_main_ac_mva: i.central_skid_mva_c * i.mv_per_ring_c,
+      central_inverter_ac_total: inverter_ac_total,
+      central_skid_ac_total: skid_ac_total,
       warning
     });
   }

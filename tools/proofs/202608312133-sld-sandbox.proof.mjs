@@ -1,5 +1,5 @@
 /**
- * Proof for the neon links + SLD layout sandbox cartridge, generation 202608312121.
+ * Proof for the neon links + SLD layout sandbox cartridge, generation 202608312133.
  *
  * No dependencies. The repository carries playwright and no DOM library, so
  * rather than add one this stubs the small surface the cartridge actually
@@ -32,7 +32,7 @@ import vm from 'node:vm';
 const HERE = dirname(fileURLToPath(import.meta.url));
 const REPO = resolve(HERE, '..', '..');
 const CARTRIDGE = join(REPO, 'atlas', 'cartridges',
-  '202608312121-sld-sandbox-v9-8.js');
+  '202608312133-sld-sandbox-v9-8.js');
 const ORIGINAL = join(REPO, 'atlas', 'releases', '202608300453-atlas-v9',
   '202608292126-pre-snapped-config-adapter.js');
 
@@ -306,6 +306,79 @@ for (const tech of ['solar', 'bess', 'wind', 'wind_onshore_operational', 'bess_o
 check('offshore wind does NOT draw links', !T.has('wind_offshore_operational'));
 check('non-project layers do not', !T.has('naei_emitter') && !T.has('supermarket'));
 
+console.log('\ncentral sizing\n');
+
+/* The shipped default reported 211.2 MW of AC. It is not the inverter figure
+   and it is not the transformer figure; it is larger than both, and it comes
+   from multiplying a count of inverters by a transformer rating and then by
+   the inverters-per-skid a second time.
+
+   Defaults: inv_ac_mw_c 4.4, central_skid_mva_c 4.4, inv_per_mv_c 2,
+   mv_per_ring_c 4, rings_c 3.
+
+     inverters          2 x 4 x 3            = 24
+     inverter nameplate 24 x 4.4 MW          = 105.6 MW
+     skids              4 x 3                = 12
+     skid nameplate     12 x 4.4 MVA         = 52.8 MVA
+     export             min(105.6, 52.8)     = 52.8   <- the smaller one
+     was                24 x 4.4 x 2         = 211.2  <- larger than both
+
+   These are worked here rather than read from the module, so the fixture
+   fails if the module is edited to agree with itself. */
+const cs = cartridgeSource;
+const INV_AC = 4.4, SKID_MVA = 4.4, PER_MV = 2, MV_PER_RING = 4, RINGS = 3;
+const inverters = PER_MV * MV_PER_RING * RINGS;
+const skids = MV_PER_RING * RINGS;
+const inverterNameplate = inverters * INV_AC;
+const skidNameplate = skids * SKID_MVA;
+
+check('the defaults are still the ones this fixture reasons about',
+  /inv_ac_mw_c: 4\.4, inv_dc_mw_c: 5\.28, central_skid_mva_c: 4\.4/.test(cs)
+  && /inv_per_mv_c: 2, mv_per_ring_c: 4, rings_c: 3/.test(cs));
+check('24 inverters on 12 skids', inverters === 24 && skids === 12);
+const close = (a, b) => Math.abs(a - b) < 1e-9;
+check('inverter nameplate is 105.6 MW', close(inverterNameplate, 105.6),
+  String(inverterNameplate));
+check('skid nameplate is 52.8 MVA', close(skidNameplate, 52.8), String(skidNameplate));
+check('the old figure was larger than both nameplates',
+  close(inverters * SKID_MVA * PER_MV, 211.2)
+  && 211.2 > inverterNameplate && 211.2 > skidNameplate);
+
+check('a skid count exists in its own right, above the inverter count',
+  /const skid_count = i\.mv_per_ring_c \* i\.rings_c;/.test(cs));
+check('the two nameplates are computed separately',
+  /const inverter_ac_total = total_blocks \* i\.inv_ac_mw_c;/.test(cs)
+  && /const skid_ac_total = skid_count \* i\.central_skid_mva_c;/.test(cs));
+check('export is the smaller of the two, never a product of them',
+  /const ac_mw_direct = Math\.min\(inverter_ac_total, skid_ac_total\);/.test(cs));
+check('inverters per skid no longer enters the answer twice',
+  !/total_blocks \* i\.central_skid_mva_c \* i\.inv_per_mv_c/.test(cs));
+check('a count of inverters is never multiplied by a transformer rating',
+  !/total_blocks \* i\.central_skid_mva_c/.test(cs));
+check('the production substation is one skid, not a skid times its inverters',
+  /production_substation_ac_mva: i\.central_skid_mva_c,/.test(cs));
+check('the ring main is the skids on that ring',
+  /ring_main_ac_mva: i\.central_skid_mva_c \* i\.mv_per_ring_c,/.test(cs));
+check('both nameplates are published, so the reader sees the constraint',
+  /central_inverter_ac_total: inverter_ac_total,/.test(cs)
+  && /central_skid_ac_total: skid_ac_total,/.test(cs));
+
+check('the overload test compares the whole MV block against its skid',
+  /const block_ac_mw = i\.inv_ac_mw_c \* i\.inv_per_mv_c;/.test(cs)
+  && /if \(block_ac_mw > i\.central_skid_mva_c\)/.test(cs));
+check('one inverter is no longer compared with one skid, which never fired',
+  !/if \(i\.inv_ac_mw_c > i\.central_skid_mva_c\)/.test(cs));
+check('on the defaults that comparison does fire',
+  INV_AC * PER_MV > SKID_MVA);
+check('the warning says which element limits export, not merely that it is odd',
+  /Export is limited by the transformer/.test(cs));
+
+check('the divergence from the ported sandbox is recorded, not silent',
+  /gis-sld-v5-calculations\.js line 147/.test(cs));
+check('the source of the report is credited',
+  /Codex session auditing this estate in parallel/.test(cs));
+
+
 console.log('\nthe project pin\n');
 
 // Arriving from Pipeline News the project itself was invisible: the deep link
@@ -493,15 +566,25 @@ const CASES = [
   { mode: 'central', x_mods_c: 32, mod_wp: 720, gcr: 0.75 }
 ];
 
+/* Parity with the sandbox, split by mode.
+   --------------------------------------------------------------------------
+   String mode must still reproduce the sandbox exactly: nothing is known to be
+   wrong there, so any drift is a porting error and must fail.
+
+   Central mode must now DIFFER, because the sandbox squares the inverters per
+   skid. "Differs" on its own is a weak assertion -- it would pass if the port
+   were broken in some new way -- so the difference is pinned: the sandbox must
+   produce exactly the squared figure, ours must produce exactly the smaller
+   nameplate, and ours must be the lower of the two. */
 let sizingMismatch = 0;
+let centralChecked = 0;
+const divergence = [];
 for (const patch of CASES) {
   Object.assign(sld.inputs, patch);
   // Drive the cartridge's own path: buildLayout() calls computeSldStats().
   sld.gridNode = [-1.5, 54.0];
   sld.active = true;
   const mine = (() => {
-    // stats are stored on the state object by buildLayout via redraw; call the
-    // exposed opener against a stub map instead of reaching into the closure.
     sld.stats = null;
     sld.openAt(stubMap, [-1.5, 54.0], 'Test', '33 kV');
     return sld.stats;
@@ -509,20 +592,57 @@ for (const patch of CASES) {
   const theirs = sld.inputs.mode === 'string'
     ? sandboxStringStats(sld.inputs) : sandboxCentralStats(sld.inputs);
   const near = (a, b) => Math.abs(a - b) <= Math.max(1e-9, Math.abs(b) * 1e-12);
-  const same = mine
+  const structural = mine
     && mine.total_blocks === theirs.total_blocks
     && mine.module_count === theirs.module_count
     && near(mine.dc_mwp, theirs.dc_mwp)
-    && near(mine.ac_mw, theirs.ac_mw)
-    && near(mine.dc_ac_ratio, theirs.dc_ac_ratio)
-    && near(mine.gross_site_area_m2, theirs.gross_site_area_m2)
-    && near(mine.ring_main_ac_mva, theirs.ring_main_ac_mva);
-  if (!same) {
-    sizingMismatch += 1;
-    console.log('      mismatch', JSON.stringify(patch), JSON.stringify({ mine, theirs }).slice(0, 240));
+    && near(mine.gross_site_area_m2, theirs.gross_site_area_m2);
+
+  if (sld.inputs.mode === 'string') {
+    const same = structural
+      && near(mine.ac_mw, theirs.ac_mw)
+      && near(mine.dc_ac_ratio, theirs.dc_ac_ratio)
+      && near(mine.ring_main_ac_mva, theirs.ring_main_ac_mva);
+    if (!same) {
+      sizingMismatch += 1;
+      console.log('      mismatch', JSON.stringify(patch),
+        JSON.stringify({ mine, theirs }).slice(0, 240));
+    }
+    continue;
   }
+
+  // Central: the geometry must still agree; only the AC statement diverges.
+  if (!structural) {
+    sizingMismatch += 1;
+    console.log('      central geometry drifted', JSON.stringify(patch));
+    continue;
+  }
+  const i = sld.inputs;
+  const invTotal = i.inv_per_mv_c * i.mv_per_ring_c * i.rings_c * i.inv_ac_mw_c;
+  const skidTotal = i.mv_per_ring_c * i.rings_c * i.central_skid_mva_c;
+  const squared = i.inv_per_mv_c * i.mv_per_ring_c * i.rings_c
+    * i.central_skid_mva_c * i.inv_per_mv_c;
+  divergence.push({
+    patch, sandbox: theirs.ac_mw, ours: mine.ac_mw,
+    squaredAsExpected: near(theirs.ac_mw, squared),
+    oursIsLimiting: near(mine.ac_mw, Math.min(invTotal, skidTotal)),
+    oursIsLower: mine.ac_mw < theirs.ac_mw
+  });
+  centralChecked += 1;
 }
-check('the ported sizing reproduces the sandbox on every case',
+
+check('every central case was reached', centralChecked === 3, String(centralChecked));
+check('the sandbox produces exactly the squared figure on every central case',
+  divergence.every(d => d.squaredAsExpected),
+  JSON.stringify(divergence.map(d => d.sandbox)));
+check('ours produces exactly the smaller of the two nameplates',
+  divergence.every(d => d.oursIsLimiting),
+  JSON.stringify(divergence.map(d => d.ours)));
+check('ours is lower than the sandbox on every central case, never higher',
+  divergence.every(d => d.oursIsLower));
+check('the divergence is confined to central mode', sizingMismatch === 0);
+
+check('string mode still reproduces the sandbox exactly',
   sizingMismatch === 0, `${sizingMismatch} of ${CASES.length} differ`);
 
 // ---- one Earth radius ----------------------------------------------------
