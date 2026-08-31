@@ -1,7 +1,7 @@
 {
   "schema": "gridatlas.composition-manifest.v1",
-  "generation": "202608312028",
-  "parent_generation": "202608312026",
+  "generation": "202608312031",
+  "parent_generation": "202608312028",
   "live_route": "/gridatlas/atlas/",
   "shell": {
     "release_id": "202608300453-atlas-v9",
@@ -66,13 +66,13 @@
     },
     {
       "id": "sld-sandbox",
-      "generation": "202608312028",
-      "version": "v9.14",
+      "generation": "202608312031",
+      "version": "v9.15",
       "type": "script",
       "slot": "replace-script",
       "replace_script": "202608292126-pre-snapped-config-adapter.js",
-      "path": "./cartridges/202608312028-sld-sandbox-v9-8.js",
-      "sha256": "3554474ac3b3fabf031af2c9fe2aeedc15392882af4615fb821633278a22feff",
+      "path": "./cartridges/202608312031-sld-sandbox-v9-8.js",
+      "sha256": "b9cfd0dd17b4368fdc12a7e7c5dae5967079e1f323966df6998825a40adc6867",
       "capabilities": [
         "pre-snapped-config-adapter-carried-forward",
         "project-or-substation-selection",
@@ -190,10 +190,10 @@
     "beta_scope_stated_on_card": true,
     "connection_factors_named_on_card": true,
     "offshore_wind_excluded_from_links": true,
-    "cards_park_clear_of_atlas_controls": true
+    "cards_fit_after_drag_and_restore": true
   },
-  "version": "v9.14",
-  "composition_id": "202608312028-gridatlas-v9.14",
+  "version": "v9.15",
+  "composition_id": "202608312031-gridatlas-v9.15",
   "source_pattern": {
     "repository": "Ventusltd/gridatlas",
     "path": "atlas/releases/202608300453-atlas-v9/202608292126-pre-snapped-config-adapter.js",

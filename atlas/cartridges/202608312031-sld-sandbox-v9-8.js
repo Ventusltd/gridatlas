@@ -1,7 +1,7 @@
 /**
  * GridAtlas cartridge — neon substation links and the SLD layout sandbox.
  *
- * Generation 202608312028 (UTC), composition v9.14. Slot: replace-script for
+ * Generation 202608312031 (UTC), composition v9.15. Slot: replace-script for
  * 202608292126-pre-snapped-config-adapter.js.
  *
  * WHAT IT DOES
@@ -61,7 +61,7 @@
 (() => {
   'use strict';
 
-  const GENERATION = '202608312028';
+  const GENERATION = '202608312031';
 
   /* ══════════════════════════════════════════════════════════════════════
      PART 1 — the pre-snapped config adapter, carried forward unchanged.
@@ -506,7 +506,20 @@
         return;
       }
       if (popup.classList.contains('gridatlas-free')) {
-        content.style.maxHeight = Math.max(160, map.height - 48) + 'px';
+        // A freed card is wherever the user put it, and the same
+        // anchor-blindness applies: dragging it low while minimised and then
+        // restoring it made it 277px tall starting 88px above the bottom of
+        // the map, so it hung 189px underneath. Cap to the room below where it
+        // now sits, and if that is not enough, lift it rather than shrink it
+        // into a slot.
+        const rect = popup.getBoundingClientRect();
+        let available = map.bottom - rect.top - 12;
+        if (available < MIN_ANCHORED_CARD) {
+          const lifted = Math.max(map.top + 12, map.bottom - MIN_ANCHORED_CARD - 12);
+          popup.style.setProperty('--gy', lifted + 'px');
+          available = map.bottom - lifted - 12;
+        }
+        content.style.maxHeight = Math.max(120, Math.min(available, map.height - 48)) + 'px';
         return;
       }
       const rect = popup.getBoundingClientRect();
@@ -549,6 +562,9 @@
       popup.classList.toggle('gridatlas-min');
       bar.querySelector('.min').innerHTML = popup.classList.contains('gridatlas-min')
         ? '&plus;' : '&minus;';
+      // Restoring gives the card its height back, which is exactly when it can
+      // fall off the bottom of the map again.
+      requestAnimationFrame(boundCardToMap);
     });
     bar.querySelector('.close').addEventListener('click', (event) => {
       event.stopPropagation();
@@ -577,7 +593,10 @@
       popup.style.setProperty('--gx', x + 'px');
       popup.style.setProperty('--gy', y + 'px');
     };
-    const up = () => { dragging = null; };
+    const up = () => {
+      if (dragging) requestAnimationFrame(boundCardToMap);
+      dragging = null;
+    };
     document.addEventListener('mousemove', move);
     document.addEventListener('mouseup', up);
   }

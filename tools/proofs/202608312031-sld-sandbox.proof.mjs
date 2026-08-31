@@ -1,5 +1,5 @@
 /**
- * Proof for the neon links + SLD layout sandbox cartridge, generation 202608312028.
+ * Proof for the neon links + SLD layout sandbox cartridge, generation 202608312031.
  *
  * No dependencies. The repository carries playwright and no DOM library, so
  * rather than add one this stubs the small surface the cartridge actually
@@ -32,7 +32,7 @@ import vm from 'node:vm';
 const HERE = dirname(fileURLToPath(import.meta.url));
 const REPO = resolve(HERE, '..', '..');
 const CARTRIDGE = join(REPO, 'atlas', 'cartridges',
-  '202608312028-sld-sandbox-v9-8.js');
+  '202608312031-sld-sandbox-v9-8.js');
 const ORIGINAL = join(REPO, 'atlas', 'releases', '202608300453-atlas-v9',
   '202608292126-pre-snapped-config-adapter.js');
 
@@ -691,6 +691,13 @@ check('the fit is recomputed once the block has landed',
 check('a freed card parks clear of the Atlas tool stack',
   /function parkingSpot/.test(code) && /\.map-controls/.test(code));
 check('the tool stack is queried, not assumed', /getBoundingClientRect\(\)/.test(code));
+
+check('a freed card is capped by the room below where it sits',
+  /let available = map\.bottom - rect\.top - 12/.test(code));
+check('a card dropped too low is lifted, not shrunk to a slot',
+  /const lifted = Math\.max\(map\.top \+ 12/.test(code));
+check('restoring re-checks the fit', /requestAnimationFrame\(boundCardToMap\)/.test(code));
+check('so does finishing a drag', (code.match(/requestAnimationFrame\(boundCardToMap\)/g)||[]).length >= 3);
 
 console.log(`\n${passed}/${passed + failures.length} checks passed`);
 if (failures.length) {
