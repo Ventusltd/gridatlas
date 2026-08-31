@@ -1,5 +1,5 @@
 /**
- * Proof for the neon links + SLD layout sandbox cartridge, generation 202608312313.
+ * Proof for the neon links + SLD layout sandbox cartridge, generation 202608312315.
  *
  * No dependencies. The repository carries playwright and no DOM library, so
  * rather than add one this stubs the small surface the cartridge actually
@@ -32,7 +32,7 @@ import vm from 'node:vm';
 const HERE = dirname(fileURLToPath(import.meta.url));
 const REPO = resolve(HERE, '..', '..');
 const CARTRIDGE = join(REPO, 'atlas', 'cartridges',
-  '202608312313-sld-sandbox-v9-8.js');
+  '202608312315-sld-sandbox-v9-8.js');
 const ORIGINAL = join(REPO, 'atlas', 'releases', '202608300453-atlas-v9',
   '202608292126-pre-snapped-config-adapter.js');
 
@@ -831,8 +831,16 @@ check('they are built once, not per frame',
 check('and frozen, so a caller cannot poison a reused frame',
   /Object\.freeze\(\[0\.001, lead, FLOW_PULSE, tail\]\)/.test(dashSrc));
 check('flowDash quantises rather than computing a fresh array',
-  /return FLOW_PATTERNS\[index\];/.test(dashSrc)
+  /return FLOW_PATTERNS\[flowIndex\(phase\)\];/.test(dashSrc)
   && !/return \[0\.001, lead, FLOW_PULSE, tail\];/.test(dashSrc));
+check('a dash is written only when the pattern changes',
+  /if \(lastDashIndex\.get\(layerId\) === index\) return false;/.test(dashSrc));
+check('the memo is per layer, since the two flows run half a period apart',
+  /lastDashIndex\.set\(layerId, index\)/.test(dashSrc));
+check('and cleared when the layers go, or a rebuilt layer misses its first write',
+  /function forgetDashMemo\(\) \{ lastDashIndex\.clear\(\); \}/.test(dashSrc));
+check('the measured saving is stated, not the one first guessed',
+  /a reduction of 1\.1x rather than the 3\.5x this comment first/.test(dashSrc.replace(/\s+/g, ' ')));
 check('a negative or overrunning phase still lands in the set',
   /\(\(phase % FLOW_PERIOD\) \+ FLOW_PERIOD\) % FLOW_PERIOD/.test(dashSrc));
 check('why an unbounded atlas is fatal is written down',

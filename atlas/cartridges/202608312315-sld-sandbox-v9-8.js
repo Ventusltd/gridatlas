@@ -1,7 +1,7 @@
 /**
  * GridAtlas cartridge — neon substation links and the SLD layout sandbox.
  *
- * Generation 202608312313 (UTC), composition v9.30. Slot: replace-script for
+ * Generation 202608312315 (UTC), composition v9.31. Slot: replace-script for
  * 202608292126-pre-snapped-config-adapter.js.
  *
  * WHAT IT DOES
@@ -61,7 +61,7 @@
 (() => {
   'use strict';
 
-  const GENERATION = '202608312313';
+  const GENERATION = '202608312315';
 
   /* ══════════════════════════════════════════════════════════════════════
      PART 1 — the pre-snapped config adapter, carried forward unchanged.
@@ -242,10 +242,51 @@
 
   // Quantise to one of the prepared patterns. Same input band, same array
   // identity, so the atlas never grows past FLOW_STEPS.
-  function flowDash(phase) {
+  /* Write a dash only when it changes.
+     ----------------------------------------------------------------------
+     Bounding the atlas to twenty-four patterns stopped it filling, but the
+     call sites still handed MapLibre a value sixty times a second, and
+     twenty-three of every twenty-four of those were the value it already had.
+
+     Codex's cardinality gate went on failing on exactly that, and it was
+     asking the right question: a paint-property write per frame is a promise
+     to the renderer that something changed, and it is cheaper not to make it
+     when nothing has.
+
+     MEASURED, and smaller than it looks. At FLOW_SPEED 0.055 over a period of
+     1.5 the phase advances 3.7% of the cycle per frame while a step is 4.2%,
+     so the pattern really does change on most frames: 3,168 writes in 3,600
+     frames, a reduction of 1.1x rather than the 3.5x this comment first
+     claimed. The saving grows with frame rate, which is the case it is for --
+     at 120 Hz half the frames become redundant, and on a slow phone almost
+     none do.
+
+     The bound on the atlas is the substantive fix. This is tidiness on top of
+     it, and worth having because it is free.
+
+     The index is remembered per layer, because the two flow layers run half a
+     period apart and would otherwise fight over one memo. */
+  const lastDashIndex = new Map();
+
+  function setFlowDash(map, layerId, phase) {
+    const index = flowIndex(phase);
+    if (lastDashIndex.get(layerId) === index) return false;
+    lastDashIndex.set(layerId, index);
+    map.setPaintProperty(layerId, 'line-dasharray', FLOW_PATTERNS[index]);
+    return true;
+  }
+
+  // Forgotten when the layers go, or a rebuilt layer keeps a stale memo and
+  // misses its first write.
+  function forgetDashMemo() { lastDashIndex.clear(); }
+
+  function flowIndex(phase) {
     const wrapped = ((phase % FLOW_PERIOD) + FLOW_PERIOD) % FLOW_PERIOD;
-    const index = Math.floor((wrapped / FLOW_PERIOD) * FLOW_STEPS) % FLOW_STEPS;
-    return FLOW_PATTERNS[index];
+    return Math.floor((wrapped / FLOW_PERIOD) * FLOW_STEPS) % FLOW_STEPS;
+  }
+
+  function flowDash(phase) {
+    return FLOW_PATTERNS[flowIndex(phase)];
   }
   flowDash.patterns = FLOW_PATTERNS;
 
@@ -422,6 +463,7 @@
   link.measure.LINK_COUNT = LINK_COUNT;
   link.measure.PROJECT_TECHS = PROJECT_TECHS;
   link.measure.flowDash = flowDash;
+  link.measure.flowIndex = flowIndex;
   link.measure.OFFSHORE_TECHS = OFFSHORE_TECHS;
   link.measure.isProjectTech = isProjectTech;
 
@@ -980,6 +1022,7 @@
   }
 
   function stopAnimation() {
+    forgetDashMemo();
     if (animationHandle !== null) {
       cancelAnimationFrame(animationHandle);
       animationHandle = null;
@@ -1003,8 +1046,8 @@
       dashPhase = (dashPhase + FLOW_SPEED) % FLOW_PERIOD;
       const half = (dashPhase + FLOW_PERIOD / 2) % FLOW_PERIOD;
       try {
-        map.setPaintProperty(L_FLOW, 'line-dasharray', flowDash(dashPhase));
-        map.setPaintProperty(L_FLOW_B, 'line-dasharray', flowDash(half));
+        setFlowDash(map, L_FLOW, dashPhase);
+        setFlowDash(map, L_FLOW_B, half);
       } catch (_) {
         stopAnimation();
         return;
@@ -2768,9 +2811,9 @@
       sldPhase = (sldPhase + FLOW_SPEED) % FLOW_PERIOD;
       const half = (sldPhase + FLOW_PERIOD / 2) % FLOW_PERIOD;
       try {
-        map.setPaintProperty(SLD_LAYERS.cableFlow, 'line-dasharray', flowDash(sldPhase));
-        map.setPaintProperty(SLD_LAYERS.cableFlowB, 'line-dasharray', flowDash(half));
-        map.setPaintProperty(SLD_LAYERS.radialFlow, 'line-dasharray', flowDash(sldPhase));
+        setFlowDash(map, SLD_LAYERS.cableFlow, sldPhase);
+        setFlowDash(map, SLD_LAYERS.cableFlowB, half);
+        setFlowDash(map, SLD_LAYERS.radialFlow, sldPhase);
       } catch (_) { sldFlowHandle = null; return; }
       sldFlowHandle = requestAnimationFrame(step);
     };

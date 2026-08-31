@@ -1,7 +1,7 @@
 {
   "schema": "gridatlas.composition-manifest.v1",
-  "generation": "202608312313",
-  "parent_generation": "202608312306",
+  "generation": "202608312315",
+  "parent_generation": "202608312313",
   "live_route": "/gridatlas/atlas/",
   "shell": {
     "release_id": "202608300453-atlas-v9",
@@ -66,13 +66,13 @@
     },
     {
       "id": "sld-sandbox",
-      "generation": "202608312313",
-      "version": "v9.30",
+      "generation": "202608312315",
+      "version": "v9.31",
       "type": "script",
       "slot": "replace-script",
       "replace_script": "202608292126-pre-snapped-config-adapter.js",
-      "path": "./cartridges/202608312313-sld-sandbox-v9-8.js",
-      "sha256": "d8e988449393827d6ee2b2e46e4576fcd634a1a510937cb9ebc752c2cabfe0f4",
+      "path": "./cartridges/202608312315-sld-sandbox-v9-8.js",
+      "sha256": "a5dff965e875744facb9d0cc4cd5057a241d06b018541fc6258fcbd02ff36cd2",
       "capabilities": [
         "pre-snapped-config-adapter-carried-forward",
         "project-or-substation-selection",
@@ -132,7 +132,8 @@
         "fit-moves-two-variables",
         "dc-inverter-ac-and-export-kept-apart",
         "dash-atlas-bounded-at-24-patterns",
-        "three-named-capacity-ratios"
+        "three-named-capacity-ratios",
+        "dash-written-only-when-it-changes"
       ],
       "immutable_shell_modified": false,
       "supersedes_shell_script": {
@@ -295,7 +296,9 @@
         "reported_by": "the Codex session's LineAtlas cardinality gate",
         "fault": "MapLibre rasterises every distinct line-dasharray into its LineAtlas and keeps it for the life of the map; a continuously varying dasharray asks for a new entry sixty times a second and the atlas runs out of space in about twenty seconds",
         "distinct_from": "the glyph fault fixed in v9.21 and v9.22 — a different cause with a similar symptom, which is why closing one did not close the other",
-        "fix": "24 patterns built once and frozen, cycled; measured at 24 distinct over 100,000 frames"
+        "fix": "24 patterns built once and frozen, cycled; measured at 24 distinct over 100,000 frames",
+        "call_sites": "a dash is written only when the quantised pattern changes; measured 3,168 writes in 3,600 frames, a 1.1x reduction rather than the 3.5x first claimed here - the saving grows with frame rate. The atlas bound is the substantive fix; this is tidiness on top of it",
+        "codex_gate": "dynamic_dash_writes 0, status CLEAN"
       }
     }
   ],
@@ -324,8 +327,8 @@
     "offshore_wind_excluded_from_links": true,
     "cards_fit_after_drag_and_restore": true,
     "shell_modified": false,
-    "scope": "the neon flow no longer exhausts the renderer",
-    "proof": "tools/proofs/202608312313-sld-sandbox.proof.mjs, 332 checks"
+    "scope": "Codex's LineAtlas cardinality gate passes",
+    "proof": "tools/proofs/202608312315-sld-sandbox.proof.mjs, 336 checks"
   },
   "version": "v9.15",
   "composition_id": "202608312031-gridatlas-v9.15",
@@ -335,5 +338,5 @@
     "source_sha256": "07d33eda5b3279a03df4c0a0aded61e4363c46734dda991aa5f48ae0d55097da",
     "transformation": "carry the pre-snap config rewrite verbatim; add a measured link layer and on-card beta distances"
   },
-  "composition_version": "v9.30"
+  "composition_version": "v9.31"
 }
