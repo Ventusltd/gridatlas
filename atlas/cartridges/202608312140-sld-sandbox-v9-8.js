@@ -1,7 +1,7 @@
 /**
  * GridAtlas cartridge — neon substation links and the SLD layout sandbox.
  *
- * Generation 202608312133 (UTC), composition v9.17. Slot: replace-script for
+ * Generation 202608312140 (UTC), composition v9.18. Slot: replace-script for
  * 202608292126-pre-snapped-config-adapter.js.
  *
  * WHAT IT DOES
@@ -61,7 +61,7 @@
 (() => {
   'use strict';
 
-  const GENERATION = '202608312133';
+  const GENERATION = '202608312140';
 
   /* ══════════════════════════════════════════════════════════════════════
      PART 1 — the pre-snapped config adapter, carried forward unchanged.
@@ -453,7 +453,7 @@
     // to the sandbox at all, which is exactly how it felt to use.
     const button = toSubstations
       ? `<button class="neon-pin" type="button" aria-pressed="${pinVisible}">`
-        + `${pinVisible ? 'Hide' : 'Show'} the project pin</button>`
+        + `${pinVisible ? 'Hide' : 'Show'} the project ring</button>`
         + `<button class="neon-layout" type="button">Lay out a scheme here &#9656;</button>`
       : '';
     return `<div class="${BLOCK_CLASS}">${head}<ol>${rows}</ol>${button}${caveatHtml()}</div>`;
@@ -632,7 +632,7 @@
       const shown = togglePin();
       const control = block.querySelector('.neon-pin');
       if (control) {
-        control.textContent = `${shown ? 'Hide' : 'Show'} the project pin`;
+        control.textContent = `${shown ? 'Hide' : 'Show'} the project ring`;
         control.setAttribute('aria-pressed', String(shown));
       }
     });
@@ -889,7 +889,13 @@
   // News the project itself was invisible: the deep link switched the
   // substations on and left the project's layer off, so the card described a
   // scheme with no pixel under it and the links appeared to start from nowhere.
-  const TECH_CONTROL = {
+  // The engine tags each layer control with the layer it drives:
+  //   <input type=checkbox data-layer-id="solar">
+  // so the technology IS the hook, and no mapping table is needed. Matching on
+  // the label text worked, but the labels carry live counts -- "Solar PV [2819
+  // | 52.3GW]" -- so it was matching prose that changes with the data. The
+  // label match stays as a fallback for a control the engine has not tagged.
+  const TECH_LABEL_FALLBACK = {
     solar: "Solar PV [", solar_operational: "Solar PV (Operational",
     solar_roof: "Solar Roof [",
     bess: "Battery Storage [", bess_operational: "Battery Storage (Operational",
@@ -897,15 +903,21 @@
   };
 
   function enableTechnologyLayer(tech) {
-    const label = TECH_CONTROL[tech];
-    if (!label) return false;
+    if (!tech) return false;
     try {
-      const box = [...document.querySelectorAll('input[type=checkbox]')].find((input) => {
-        const text = (input.closest('label') || input.parentElement)?.textContent || "";
-        return text.replace(/\s+/g, " ").trim().toLowerCase()
-          .startsWith(label.toLowerCase());
-      });
-      if (!box) { link.failures.push('layer control not found: ' + label); return false; }
+      const boxes = [...document.querySelectorAll('input[type=checkbox]')];
+      let box = boxes.find((input) => input.dataset?.layerId === tech);
+      if (!box) {
+        const label = TECH_LABEL_FALLBACK[tech];
+        if (label) {
+          box = boxes.find((input) => {
+            const text = (input.closest('label') || input.parentElement)?.textContent || "";
+            return text.replace(/\s+/g, " ").trim().toLowerCase()
+              .startsWith(label.toLowerCase());
+          });
+        }
+      }
+      if (!box) { link.failures.push('layer control not found: ' + tech); return false; }
       if (!box.checked) box.click();
       link.project_layer_enabled = tech;
       return true;
@@ -939,23 +951,42 @@
     if (map.getSource(SRC_PIN)) return true;
     try {
     map.addSource(SRC_PIN, { type: 'geojson', data: { type: 'FeatureCollection', features: [] } });
+    /* A ring around the site, not a dot on it.
+       ------------------------------------------------------------------
+       A filled dot in the technology colour was invisible: it sat under the
+       engine's own pixel for the same project, and the neon links converging
+       on it are drawn in that same colour, so it disappeared into its own
+       arrival point. Seen in Chrome at zoom 12 on Botley West -- position
+       exactly right, nothing to look at.
+
+       A ring solves all three. It does not duplicate the engine's pixel,
+       because it surrounds it. It reads against the links, because it crosses
+       them rather than joining them. And it answers the question the marker
+       exists for -- which of these is the one the card is about -- which a
+       second dot among dots cannot. */
     map.addLayer({
       id: L_PIN_HALO, type: 'circle', source: SRC_PIN,
       paint: {
-        'circle-radius': ['interpolate', ['linear'], ['zoom'], 6, 9, 14, 22],
-        'circle-color': ['get', 'colour'],
-        'circle-opacity': 0.12,
-        'circle-blur': 0.6,
+        'circle-radius': ['interpolate', ['linear'], ['zoom'], 6, 11, 14, 26],
+        'circle-color': 'rgba(0,0,0,0)',
+        'circle-stroke-color': ['get', 'colour'],
+        'circle-stroke-width': 6,
+        'circle-stroke-opacity': 0.13,
+        'circle-blur': 0.4,
       },
     });
     map.addLayer({
       id: L_PIN, type: 'circle', source: SRC_PIN,
       paint: {
-        'circle-radius': ['interpolate', ['linear'], ['zoom'], 6, 4, 14, 7],
-        'circle-color': ['get', 'colour'],
-        'circle-opacity': 0.95,
-        'circle-stroke-color': '#000c10',
-        'circle-stroke-width': 1.5,
+        'circle-radius': ['interpolate', ['linear'], ['zoom'], 6, 11, 14, 26],
+        // Hollow: whatever the engine draws for this project stays readable
+        // inside it.
+        'circle-color': 'rgba(0,0,0,0)',
+        // Pale, not white. It has to separate from the technology colour it
+        // encircles without becoming the loudest thing on a dark map.
+        'circle-stroke-color': '#cfe9ed',
+        'circle-stroke-width': 1.6,
+        'circle-stroke-opacity': 0.85,
       },
     });
     } catch (error) {

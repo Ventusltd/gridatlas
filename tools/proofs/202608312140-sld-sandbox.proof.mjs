@@ -1,5 +1,5 @@
 /**
- * Proof for the neon links + SLD layout sandbox cartridge, generation 202608312133.
+ * Proof for the neon links + SLD layout sandbox cartridge, generation 202608312140.
  *
  * No dependencies. The repository carries playwright and no DOM library, so
  * rather than add one this stubs the small surface the cartridge actually
@@ -32,7 +32,7 @@ import vm from 'node:vm';
 const HERE = dirname(fileURLToPath(import.meta.url));
 const REPO = resolve(HERE, '..', '..');
 const CARTRIDGE = join(REPO, 'atlas', 'cartridges',
-  '202608312133-sld-sandbox-v9-8.js');
+  '202608312140-sld-sandbox-v9-8.js');
 const ORIGINAL = join(REPO, 'atlas', 'releases', '202608300453-atlas-v9',
   '202608292126-pre-snapped-config-adapter.js');
 
@@ -389,9 +389,18 @@ console.log('\nthe project pin\n');
 const pinSrc = cartridgeSource;
 check("the deep link enables the project's own technology layer",
   /enableSubstationLayer\(\);[\s\S]{0,240}enableTechnologyLayer\(tech\);/.test(pinSrc));
-check("a technology maps to the engine's own control, not to a layer id",
-  /TECH_CONTROL = \{[\s\S]*?solar: "Solar PV \[/.test(pinSrc));
-check('battery and wind are mapped too',
+// The engine tags each control with the layer it drives, so the technology is
+// the hook and no table is consulted first. The labels carry live counts --
+// "Solar PV [2819 | 52.3GW]" -- so matching them was matching prose that moves
+// with the data.
+check('the control is found by the layer id the engine tags it with',
+  /input\.dataset\?\.layerId === tech/.test(pinSrc));
+check('the data attribute is tried before any label text',
+  pinSrc.indexOf('dataset?.layerId === tech')
+    < pinSrc.indexOf('TECH_LABEL_FALLBACK[tech]'));
+check('a label fallback remains for a control the engine has not tagged',
+  /TECH_LABEL_FALLBACK = \{[\s\S]*?solar: "Solar PV \[/.test(pinSrc));
+check('battery and wind are in the fallback too',
   /bess: "Battery Storage \[/.test(pinSrc) && /wind: "Wind \[/.test(pinSrc));
 check('a control already ticked is left alone',
   /if \(!box\.checked\) box\.click\(\);/.test(pinSrc));
@@ -422,7 +431,29 @@ check('clearing the pin tolerates a map with no source',
 
 check('the card carries a pin toggle', /class="neon-pin"/.test(pinSrc));
 check('the toggle says what it will do, not what it currently is',
-  /\$\{pinVisible \? 'Hide' : 'Show'\} the project pin/.test(pinSrc));
+  /\$\{pinVisible \? 'Hide' : 'Show'\} the project ring/.test(pinSrc));
+
+/* The marker is a ring, not a dot.
+   ------------------------------------------------------------------------
+   A filled dot in the technology colour was invisible in Chrome at zoom 12 on
+   Botley West: it sat under the engine's own pixel for the same project, and
+   the neon links converging on it are drawn in that same colour, so it
+   vanished into its own arrival point. Position was exactly right and there
+   was nothing to see. */
+check('the marker is hollow, so the engine pixel stays readable inside it',
+  /id: L_PIN_HALO[\s\S]{0,300}'circle-color': 'rgba\(0,0,0,0\)'/.test(pinSrc)
+  && /id: L_PIN,[\s\S]{0,400}'circle-color': 'rgba\(0,0,0,0\)'/.test(pinSrc));
+check('there is no filled disc in the technology colour any more',
+  !/'circle-color': \['get', 'colour'\]/.test(pinSrc));
+check('the ring is larger than the pixel it surrounds',
+  /L_PIN, type: 'circle'[\s\S]{0,400}'circle-radius': \['interpolate', \['linear'\], \['zoom'\], 6, 11, 14, 26\]/.test(pinSrc));
+check('the ring reads against the links rather than joining them',
+  /'circle-stroke-color': '#cfe9ed'/.test(pinSrc));
+check('the outer glow keeps the technology colour, quietly',
+  /'circle-stroke-color': \['get', 'colour'\][\s\S]{0,120}'circle-stroke-opacity': 0\.13/.test(pinSrc));
+check('why a dot failed is recorded where the next reader will look',
+  /disappeared into its own\s+arrival point/.test(pinSrc)
+  && /Seen in Chrome at zoom 12 on Botley West/.test(pinSrc));
 check('the toggle reports its state to assistive technology',
   /aria-pressed="\$\{pinVisible\}"/.test(pinSrc));
 check('the toggle does not fall through to the card underneath',

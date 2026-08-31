@@ -1,7 +1,7 @@
 {
   "schema": "gridatlas.current.v2",
-  "generation": "202608312133",
-  "previous_generation": "202608312121",
+  "generation": "202608312140",
+  "previous_generation": "202608312133",
   "architecture": "IMMUTABLE_SHELL_PLUS_HASHED_CARTRIDGES",
   "live_route": "/gridatlas/atlas/",
   "release_id": "202608300453-atlas-v9",
@@ -58,13 +58,13 @@
     },
     {
       "id": "sld-sandbox",
-      "generation": "202608312133",
-      "version": "v9.17",
+      "generation": "202608312140",
+      "version": "v9.18",
       "type": "script",
       "slot": "replace-script",
       "replace_script": "202608292126-pre-snapped-config-adapter.js",
-      "path": "./cartridges/202608312133-sld-sandbox-v9-8.js",
-      "sha256": "a9e873973824b6ee5d8cb7de039167de9dcfd01e6e7feb85c4d5fbee0f8adc89",
+      "path": "./cartridges/202608312140-sld-sandbox-v9-8.js",
+      "sha256": "3bda28de689a16baea2a03e44a768cd70d65bef80d2c0a88993d73212001e622",
       "capabilities": [
         "pre-snapped-config-adapter-carried-forward",
         "project-or-substation-selection",
@@ -101,7 +101,9 @@
         "pin-toggles-on-and-off-from-the-card",
         "central-ac-is-the-limiting-nameplate-not-a-product",
         "inverter-and-transformer-nameplates-reported-separately",
-        "mv-block-overload-detected-against-its-skid"
+        "mv-block-overload-detected-against-its-skid",
+        "project-marked-by-a-ring-not-a-second-dot",
+        "layer-control-found-by-data-layer-id"
       ],
       "immutable_shell_modified": false,
       "supersedes_shell_script": {
@@ -165,11 +167,10 @@
         "fit": "only the block count moves - ring main circuits in string mode, rings in central; ratings, string length and module choice are untouched, and the residual is reported"
       },
       "project_pin": {
-        "why": "the engine hydrates a technology layer on demand and the user may switch it off, so a project arriving by deep link could have no pixel at all; the card then described a scheme over empty ground and the links appeared to start from nowhere",
-        "source": "gridatlas-project-pin, owned by this cartridge",
-        "independent_of": "the engine's technology layers and their visibility",
-        "toggle": "a button on the project card; a pin over the site is the thing you want out of the way when you are looking at the site",
-        "failure_mode": "a style that has not loaded is recorded in failures and the card still opens"
+        "shape": "a hollow ring around the site, toggled from the card",
+        "why_not_a_dot": "a filled dot in the technology colour was invisible in Chrome at zoom 12 on Botley West: it sat under the engine's own pixel for the same project, and the neon links converging on it are drawn in that same colour, so it disappeared into its own arrival point",
+        "what_the_ring_answers": "which of these is the project the card is about",
+        "control_lookup": "input[data-layer-id=\"<technology>\"], the attribute the engine tags its own control with; the label text is a fallback only, because the labels carry live counts"
       },
       "central_sizing": {
         "reported_by": "the Codex session auditing this estate in parallel, 202608312124",
@@ -225,15 +226,15 @@
       "result_class": "LOCATION_ONLY"
     }
   },
-  "composition_manifest": "./manifests/202608312133-composition.json",
+  "composition_manifest": "./manifests/202608312140-composition.json",
   "scope_closure": {
-    "generation": "202608312133",
+    "generation": "202608312140",
     "status": "DONE",
-    "scope": "GridAtlas v9.17 central AC sizing corrected",
+    "scope": "GridAtlas v9.18 the project ring, seen in Chrome",
     "schedule_retired": true
   },
-  "composition_version": "v9.17",
-  "composition_id": "202608312133-gridatlas-v9.17",
+  "composition_version": "v9.18",
+  "composition_id": "202608312140-gridatlas-v9.18",
   "transport": {
     "response_contract": "HEADERS_BEFORE_PARQUET_BODY",
     "engine_timeout_seconds": 15,
