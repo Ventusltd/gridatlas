@@ -1,7 +1,7 @@
 /**
  * GridAtlas cartridge — neon substation links and the SLD layout sandbox.
  *
- * Generation 202608311940 (UTC), composition v9.7. Slot: replace-script for
+ * Generation 202608311949 (UTC), composition v9.7. Slot: replace-script for
  * 202608292126-pre-snapped-config-adapter.js.
  *
  * WHAT IT DOES
@@ -61,7 +61,7 @@
 (() => {
   'use strict';
 
-  const GENERATION = '202608311940';
+  const GENERATION = '202608311949';
 
   /* ══════════════════════════════════════════════════════════════════════
      PART 1 — the pre-snapped config adapter, carried forward unchanged.
@@ -1286,7 +1286,11 @@
     const style = document.createElement('style');
     style.id = 'gridatlas-sld-css';
     style.textContent = `
-#${PANEL_ID}{position:absolute;left:14px;top:14px;z-index:11;width:310px;
+/* Top RIGHT, below the search box. The Atlas keeps its own tool buttons down
+   the left edge -- EXPORT CSV, RADIUS SEARCH, ZONE DRAW, MEASURE -- and a
+   panel on that side covers them. Found by looking at it on the live map;
+   no headless test would have caught a collision with another component. */
+#${PANEL_ID}{position:absolute;right:14px;top:58px;z-index:11;width:310px;
   max-height:calc(100% - 28px);overflow:auto;font:11px/1.5 'Courier New',monospace;
   color:#cfe9ee;background:rgba(2,8,11,.93);border:1px solid #0b5f63;border-radius:5px;
   padding:11px 12px;box-shadow:0 0 22px rgba(0,255,255,.14);backdrop-filter:blur(3px);display:none}
@@ -1318,7 +1322,7 @@
   color:#68797f;font-size:9px;line-height:1.5}
 #${PANEL_ID} .sld-caveat b{color:#8b9aa1}
 #${PANEL_ID} .sld-hint{margin-top:6px;color:#5f7a80;font-size:9px;line-height:1.45}
-@media (max-width:700px){#${PANEL_ID}{width:auto;right:14px}}`;
+@media (max-width:700px){#${PANEL_ID}{width:auto;left:14px;right:14px;top:96px}}`;
     document.head.appendChild(style);
   }
 
