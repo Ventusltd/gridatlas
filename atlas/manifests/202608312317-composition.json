@@ -1,7 +1,7 @@
 {
   "schema": "gridatlas.composition-manifest.v1",
-  "generation": "202608312315",
-  "parent_generation": "202608312313",
+  "generation": "202608312317",
+  "parent_generation": "202608312315",
   "live_route": "/gridatlas/atlas/",
   "shell": {
     "release_id": "202608300453-atlas-v9",
@@ -66,13 +66,13 @@
     },
     {
       "id": "sld-sandbox",
-      "generation": "202608312315",
-      "version": "v9.31",
+      "generation": "202608312317",
+      "version": "v9.32",
       "type": "script",
       "slot": "replace-script",
       "replace_script": "202608292126-pre-snapped-config-adapter.js",
-      "path": "./cartridges/202608312315-sld-sandbox-v9-8.js",
-      "sha256": "a5dff965e875744facb9d0cc4cd5057a241d06b018541fc6258fcbd02ff36cd2",
+      "path": "./cartridges/202608312317-sld-sandbox-v9-8.js",
+      "sha256": "f10d489cd562877adca1cee8c26f8f6ed65ee2bc0553f999731b7caaa35a64b1",
       "capabilities": [
         "pre-snapped-config-adapter-carried-forward",
         "project-or-substation-selection",
@@ -133,7 +133,8 @@
         "dc-inverter-ac-and-export-kept-apart",
         "dash-atlas-bounded-at-24-patterns",
         "three-named-capacity-ratios",
-        "dash-written-only-when-it-changes"
+        "dash-written-only-when-it-changes",
+        "voltage-unit-from-the-property-not-the-magnitude"
       ],
       "immutable_shell_modified": false,
       "supersedes_shell_script": {
@@ -299,6 +300,26 @@
         "fix": "24 patterns built once and frozen, cycled; measured at 24 distinct over 100,000 frames",
         "call_sites": "a dash is written only when the quantised pattern changes; measured 3,168 writes in 3,600 frames, a 1.1x reduction rather than the 3.5x first claimed here - the saving grows with frame rate. The atlas bound is the substantive fix; this is tidiness on top of it",
         "codex_gate": "dynamic_dash_writes 0, status CLEAN"
+      },
+      "voltage_units": {
+        "contract": "OSM `voltage` is volts at every magnitude; an explicit `kv` property is already kilovolts. Magnitude is not the unit.",
+        "was": "anything over 1,000 treated as volts, anything under as kilovolts",
+        "audited_by": "the Codex session, against the pinned 5,800-feature payload",
+        "impact": "229 features (3.95%) carry a token below 1,000 and every one was misread; 204 displayed a primary above 400 kV, which does not exist on this network",
+        "low_tokens": {
+          "230": 10,
+          "240": 1,
+          "400": 14,
+          "415": 2,
+          "750": 202
+        },
+        "why_750": "DC traction supplies at railway depots, so a third rail was shown as a 750 kV substation",
+        "examples": [
+          "19709 Selhurst Traincare Depot, 33000;750, 750 kV -> 33 kV",
+          "18128 Thames Way Northfleet, 33000;750, 750 kV -> 33 kV",
+          "14596 Ford Halewood Transmissions, 33000;11000;415, 415 kV -> 33 kV"
+        ],
+        "note": "a bare 33 under `voltage` is now 33 volts and falls out of scope; Codex confirmed the pinned payload contains no such token, so nothing real is lost by obeying the contract"
       }
     }
   ],
@@ -327,8 +348,8 @@
     "offshore_wind_excluded_from_links": true,
     "cards_fit_after_drag_and_restore": true,
     "shell_modified": false,
-    "scope": "Codex's LineAtlas cardinality gate passes",
-    "proof": "tools/proofs/202608312315-sld-sandbox.proof.mjs, 336 checks"
+    "scope": "no substation can display an impossible voltage",
+    "proof": "tools/proofs/202608312317-sld-sandbox.proof.mjs, 345 checks"
   },
   "version": "v9.15",
   "composition_id": "202608312031-gridatlas-v9.15",
@@ -338,5 +359,5 @@
     "source_sha256": "07d33eda5b3279a03df4c0a0aded61e4363c46734dda991aa5f48ae0d55097da",
     "transformation": "carry the pre-snap config rewrite verbatim; add a measured link layer and on-card beta distances"
   },
-  "composition_version": "v9.31"
+  "composition_version": "v9.32"
 }

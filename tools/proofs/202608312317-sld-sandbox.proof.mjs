@@ -1,5 +1,5 @@
 /**
- * Proof for the neon links + SLD layout sandbox cartridge, generation 202608312315.
+ * Proof for the neon links + SLD layout sandbox cartridge, generation 202608312317.
  *
  * No dependencies. The repository carries playwright and no DOM library, so
  * rather than add one this stubs the small surface the cartridge actually
@@ -32,7 +32,7 @@ import vm from 'node:vm';
 const HERE = dirname(fileURLToPath(import.meta.url));
 const REPO = resolve(HERE, '..', '..');
 const CARTRIDGE = join(REPO, 'atlas', 'cartridges',
-  '202608312315-sld-sandbox-v9-8.js');
+  '202608312317-sld-sandbox-v9-8.js');
 const ORIGINAL = join(REPO, 'atlas', 'releases', '202608300453-atlas-v9',
   '202608292126-pre-snapped-config-adapter.js');
 
@@ -275,7 +275,40 @@ check('a 33000;11000 list keeps both', V({ voltage: '33000;11000' }).join(',') =
 check('a 33000:11000 transformer ratio still carries 33 kV',
   V({ voltage: '33000:11000' }).includes(33), V({ voltage: '33000:11000' }).join(','));
 check('an 11000 site is below scope', Math.max(...V({ voltage: '11000' })) < 33);
-check('a kV-unit tag is not multiplied', V({ voltage: '33' }).join(',') === '33');
+/* The unit comes from the property, never from the magnitude.
+   This check used to assert the opposite -- that a bare 33 under `voltage` was
+   33 kV -- which is what produced the defect. OSM's `voltage` tag is in VOLTS
+   at every magnitude; an explicit `kv` property is already kilovolts.
+
+   Audited by Codex against the pinned 5,800-feature payload: 229 features
+   (3.95%) carry a token below 1,000 and every one was misread, 204 of them
+   into a displayed primary above 400 kV. The low tokens are 230, 240, 400,
+   415 and 750 volts, and 202 of the 229 are 750 V DC traction at railway
+   depots. */
+check('a bare 33 under `voltage` is 33 VOLTS, as the source says',
+  Math.abs(V({ voltage: '33' })[0] - 0.033) < 1e-9,
+  String(V({ voltage: '33' })[0]));
+check('and therefore falls out of a 33 kV-and-above scope',
+  Math.max(...V({ voltage: '33' }), 0) < 33);
+check('an explicit kv property is already kilovolts',
+  V({ kv: '33' }).join(',') === '33');
+check('voltage wins when both are present, since it is the OSM tag',
+  V({ voltage: '132000', kv: '999' }).join(',') === '132');
+
+// Codex's measured cases, by REPD ref.
+check('Selhurst Traincare Depot: 33000;750 is 33 kV, not 750 kV',
+  Math.max(...V({ voltage: '33000;750' })) === 33,
+  'was ' + Math.max(...[33000, 750].map(v => v > 1000 ? v / 1000 : v)) + ' kV');
+check('Thames Way Northfleet: the same tag, the same answer',
+  V({ voltage: '33000;750' }).map(x => x.toFixed(3)).join(',') === '33.000,0.750');
+check('Ford Halewood: 33000;11000;415 tops out at 33 kV, not 415',
+  Math.max(...V({ voltage: '33000;11000;415' })) === 33);
+check('a genuine 400 kV tag is still 400 kV',
+  V({ voltage: '400000' }).join(',') === '400');
+check('and a real 600 kV tag is not mistaken for the defect',
+  V({ voltage: '600000;400000' }).join(',') === '600,400');
+check('nothing on this network can now display above 400 kV from a low token',
+  [230, 240, 400, 415, 750].every(v => V({ voltage: String(v) })[0] < 1));
 check('an unparseable tag yields nothing', V({ voltage: 'yes' }).length === 0);
 
 const P = link.measure.representativePoint;

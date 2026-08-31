@@ -1,7 +1,7 @@
 /**
  * GridAtlas cartridge — neon substation links and the SLD layout sandbox.
  *
- * Generation 202608312315 (UTC), composition v9.31. Slot: replace-script for
+ * Generation 202608312317 (UTC), composition v9.32. Slot: replace-script for
  * 202608292126-pre-snapped-config-adapter.js.
  *
  * WHAT IT DOES
@@ -61,7 +61,7 @@
 (() => {
   'use strict';
 
-  const GENERATION = '202608312315';
+  const GENERATION = '202608312317';
 
   /* ══════════════════════════════════════════════════════════════════════
      PART 1 — the pre-snapped config adapter, carried forward unchanged.
@@ -341,15 +341,51 @@
 
   // `33000`, `33000;11000` (two voltages) and `33000:11000` (a transformer
   // ratio) all mean 33 kV is present. Splitting only on ';' drops the ratios.
+  /* The unit comes from the property, never from the size of the number.
+     ----------------------------------------------------------------------
+     This guessed: anything over 1,000 was volts, anything under was already
+     kilovolts. That is not what the source says. OSM's `voltage` tag is in
+     VOLTS throughout, including its small values, while an explicit `kv`
+     property is already kilovolts. Magnitude is not the unit.
+
+     Audited by the Codex session against the pinned 5,800-feature substation
+     payload: all 5,800 use `voltage`, 229 of them (3.95%) carry a token below
+     1,000, and every one of those was misread. 204 then displayed a primary
+     voltage ABOVE 400 kV, which does not exist anywhere on this network. The
+     low tokens are 230 (10), 240 (1), 400 (14), 415 (2) and 750 (202) volts —
+     the 750s are DC traction supplies at railway depots, so a depot's third
+     rail was being shown as a 750 kV substation.
+
+     Measured project impact, from that audit:
+
+       19709  Selhurst Traincare Depot     33000;750       750 kV  ->  33 kV
+       18128  Thames Way, Northfleet       33000;750       750 kV  ->  33 kV
+       14596  Ford Halewood Transmissions  33000;11000;415 415 kV  ->  33 kV
+
+     Each of those is a real project whose nearest displayed candidate carried
+     an impossible voltage, on a card that also carries a distance. A wrong
+     voltage beside a right distance is worse than either alone, because the
+     distance lends it credibility.
+
+     A bare `33` under `voltage` is therefore 33 volts and correctly falls out
+     of a 33 kV-and-above scope. That reads oddly until you remember it is the
+     source's own unit; and Codex confirmed the pinned payload contains no such
+     token, so nothing real is lost by obeying the contract rather than
+     second-guessing it. */
   function voltagesKv(properties) {
-    const raw = properties?.voltage ?? properties?.kv ?? '';
     const out = [];
-    for (const token of String(raw).split(/[;,|:\s]+/)) {
-      if (!token) continue;
-      const value = Number(token);
-      if (!Number.isFinite(value)) continue;
-      out.push(value > 1000 ? value / 1000 : value);
-    }
+    const push = (raw, divisor) => {
+      for (const token of String(raw ?? '').split(/[;,|:\s]+/)) {
+        if (!token) continue;
+        const value = Number(token);
+        if (!Number.isFinite(value) || value <= 0) continue;
+        out.push(value / divisor);
+      }
+    };
+    // OSM `voltage` is volts. Always, at every magnitude.
+    push(properties?.voltage, 1000);
+    // An explicit `kv` is already kilovolts.
+    if (!out.length) push(properties?.kv, 1);
     return out;
   }
 
