@@ -1,5 +1,5 @@
 /**
- * Proof for the neon links + SLD layout sandbox cartridge, generation 202608312012.
+ * Proof for the neon links + SLD layout sandbox cartridge, generation 202608312016.
  *
  * No dependencies. The repository carries playwright and no DOM library, so
  * rather than add one this stubs the small surface the cartridge actually
@@ -32,7 +32,7 @@ import vm from 'node:vm';
 const HERE = dirname(fileURLToPath(import.meta.url));
 const REPO = resolve(HERE, '..', '..');
 const CARTRIDGE = join(REPO, 'atlas', 'cartridges',
-  '202608312012-sld-sandbox-v9-8.js');
+  '202608312016-sld-sandbox-v9-8.js');
 const ORIGINAL = join(REPO, 'atlas', 'releases', '202608300453-atlas-v9',
   '202608292126-pre-snapped-config-adapter.js');
 
@@ -633,6 +633,18 @@ check('an out-of-range DC\/AC ratio is called out in red',
   /sld-ratio-warn/.test(src) && /outside the usual 1\.0 to 1\.6/.test(src));
 check('the ratio warning explains both directions',
   /inverters are larger than the array/i.test(j) && /heavy clipping/i.test(j));
+
+check('a click on our own card never reaches the map',
+  /function fromOwnUi/.test(code) && /maplibregl-popup/.test(code)
+  && /gridatlas-sld-panel/.test(code));
+check('every map handler consults that guard',
+  (code.match(/fromOwnUi\(event\)/g) || []).length >= 4);
+check('the layout button stops its own event',
+  /event\.stopPropagation\(\)/.test(code));
+check('an unloaded project layer is reported as unloaded, not as absence',
+  /loaded: false/.test(code) && /not a statement that no project is here/.test(j));
+check('and the loaded case still says none in range',
+  /No mapped project within \$\{MAX_LINK_KM\} km of this substation\./.test(code));
 
 console.log(`\n${passed}/${passed + failures.length} checks passed`);
 if (failures.length) {

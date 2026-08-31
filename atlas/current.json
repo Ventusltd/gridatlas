@@ -1,7 +1,7 @@
 {
   "schema": "gridatlas.current.v2",
-  "generation": "202608312012",
-  "previous_generation": "202608312008",
+  "generation": "202608312016",
+  "previous_generation": "202608312012",
   "architecture": "IMMUTABLE_SHELL_PLUS_HASHED_CARTRIDGES",
   "live_route": "/gridatlas/atlas/",
   "release_id": "202608300453-atlas-v9",
@@ -58,13 +58,13 @@
     },
     {
       "id": "sld-sandbox",
-      "generation": "202608312012",
-      "version": "v9.9",
+      "generation": "202608312016",
+      "version": "v9.10",
       "type": "script",
       "slot": "replace-script",
       "replace_script": "202608292126-pre-snapped-config-adapter.js",
-      "path": "./cartridges/202608312012-sld-sandbox-v9-8.js",
-      "sha256": "49d9e24c3f9bd3e2f35fcadf3171e7345f94482b6eb35159d643b6d9e8a6a219",
+      "path": "./cartridges/202608312016-sld-sandbox-v9-8.js",
+      "sha256": "74d61e7b9c5b05bca820c5e7aa18bfa2039cb7d831c96a814c7b7cdac6e11b92",
       "capabilities": [
         "pre-snapped-config-adapter-carried-forward",
         "project-or-substation-selection",
@@ -89,7 +89,9 @@
         "denser-electron-flow-two-layers",
         "fit-array-to-the-registers-stated-capacity",
         "ac-dc-basis-declared-not-assumed",
-        "dc-ac-ratio-range-check"
+        "dc-ac-ratio-range-check",
+        "own-ui-clicks-do-not-reach-the-map",
+        "unloaded-layer-reported-as-unloaded"
       ],
       "immutable_shell_modified": false,
       "supersedes_shell_script": {
@@ -195,15 +197,15 @@
       "result_class": "LOCATION_ONLY"
     }
   },
-  "composition_manifest": "./manifests/202608312012-composition.json",
+  "composition_manifest": "./manifests/202608312016-composition.json",
   "scope_closure": {
-    "generation": "202608312012",
+    "generation": "202608312016",
     "status": "DONE",
-    "scope": "GridAtlas v9.9 capacity fit and the AC/DC basis notice",
+    "scope": "GridAtlas v9.10 click containment and unloaded-layer honesty",
     "schedule_retired": true
   },
-  "composition_version": "v9.9",
-  "composition_id": "202608312012-gridatlas-v9.9",
+  "composition_version": "v9.10",
+  "composition_id": "202608312016-gridatlas-v9.10",
   "transport": {
     "response_contract": "HEADERS_BEFORE_PARQUET_BODY",
     "engine_timeout_seconds": 15,

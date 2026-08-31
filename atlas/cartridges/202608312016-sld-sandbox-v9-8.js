@@ -1,7 +1,7 @@
 /**
  * GridAtlas cartridge — neon substation links and the SLD layout sandbox.
  *
- * Generation 202608312012 (UTC), composition v9.9. Slot: replace-script for
+ * Generation 202608312016 (UTC), composition v9.10. Slot: replace-script for
  * 202608292126-pre-snapped-config-adapter.js.
  *
  * WHAT IT DOES
@@ -61,7 +61,7 @@
 (() => {
   'use strict';
 
-  const GENERATION = '202608312012';
+  const GENERATION = '202608312016';
 
   /* ══════════════════════════════════════════════════════════════════════
      PART 1 — the pre-snapped config adapter, carried forward unchanged.
@@ -283,7 +283,13 @@
   function nearestProjects(map, lon, lat) {
     let features = [];
     try { features = map.querySourceFeatures('src-repd') || []; }
-    catch (_) { return []; }
+    catch (_) { return { loaded: false, links: [] }; }
+    // querySourceFeatures reads loaded tiles. With every project layer switched
+    // off there are none, and returning an empty list here made the card say
+    // "no mapped project within 40 km" of a substation with a 840 MW scheme
+    // beside it. Absence from a layer that is not loaded is not absence on the
+    // ground, and this is exactly where that rule has to hold.
+    if (!features.length) return { loaded: false, links: [] };
     const seen = new Set();
     const scored = [];
     for (const feature of features) {
@@ -308,7 +314,7 @@
       });
     }
     scored.sort((a, b) => a.km - b.km);
-    return scored.slice(0, LINK_COUNT);
+    return { loaded: true, links: scored.slice(0, LINK_COUNT) };
   }
 
   link.measure.nearestSubstations = nearestSubstations;
@@ -377,7 +383,7 @@
   // Remembered so the LAYOUT button knows what it was opened from.
   let lastSelection = null;
 
-  function cardBlockHtml(links, direction) {
+  function cardBlockHtml(links, direction, layerLoaded = true) {
     installStyles();
     const toSubstations = direction !== 'from-substation';
     const title = toSubstations
@@ -388,8 +394,11 @@
     if (!links.length) {
       const nothing = toSubstations
         ? `No mapped substation at ${MIN_KV} kV or above within ${MAX_LINK_KM} km of this point.`
-        : `No mapped project within ${MAX_LINK_KM} km of this substation, among the layers `
-          + `currently loaded.`;
+        : (layerLoaded
+          ? `No mapped project within ${MAX_LINK_KM} km of this substation.`
+          : `The project layers are switched off, so there is nothing to measure `
+            + `against. Turn on Solar PV, Wind or Battery Storage and click again. `
+            + `This is not a statement that no project is here.`);
       return `<div class="${BLOCK_CLASS}">${head}`
         + `<div class="neon-caveat">${nothing}</div>${caveatHtml()}</div>`;
     }
@@ -411,16 +420,21 @@
   // The engine opens its popup in its own click handler. This one is registered
   // afterwards, so by the time it runs the popup is in the DOM and can be
   // extended rather than replaced.
-  function injectIntoCard(links, direction) {
+  function injectIntoCard(links, direction, layerLoaded = true) {
     const content = document.querySelector('.maplibregl-popup-content');
     if (!content) return false;
     content.querySelectorAll(`.${BLOCK_CLASS}`).forEach(node => node.remove());
     const holder = document.createElement('div');
-    holder.innerHTML = cardBlockHtml(links, direction);
+    holder.innerHTML = cardBlockHtml(links, direction, layerLoaded);
     const block = holder.firstElementChild;
     if (!block) return false;
     (content.firstElementChild || content).appendChild(block);
-    block.querySelector?.('.neon-layout')?.addEventListener('click', () => {
+    block.querySelector?.('.neon-layout')?.addEventListener('click', (event) => {
+      // The card sits inside the map container, so without this the click
+      // carries on to the map, lands on the substation underneath and the
+      // substation handler overwrites the layout that was just opened.
+      event.stopPropagation();
+      event.preventDefault();
       if (!lastSelection || !capturedMap) return;
       // The array goes at the project and the cable runs to the nearest
       // substation found for it, which is the direction a scheme is actually
@@ -581,7 +595,7 @@
     link.last_selection = null;
   }
 
-  function drawLinks(map, origin, name, tech, links, direction, statedMw) {
+  function drawLinks(map, origin, name, tech, links, direction, statedMw, layerLoaded = true) {
     ensureLayers(map);
     // A link takes the colour of the project end, whichever end was clicked.
     const colour = direction === 'from-substation'
@@ -619,8 +633,8 @@
     // The popup is built by the engine and rendered synchronously in its own
     // click handler, but MapLibre attaches it on the next frame in some paths.
     // One retry covers that without polling forever.
-    if (!injectIntoCard(links, direction)) {
-      requestAnimationFrame(() => injectIntoCard(links, direction));
+    if (!injectIntoCard(links, direction, layerLoaded)) {
+      requestAnimationFrame(() => injectIntoCard(links, direction, layerLoaded));
     }
     startAnimation(map);
 
@@ -649,6 +663,17 @@
       link.failures.push('subs: ' + String(error?.message || error));
       return false;
     }
+  }
+
+  // True when a click came from one of our own surfaces -- the card block or
+  // the layout panel -- rather than from the map itself. MapLibre delivers
+  // container clicks as map clicks, so without this every button we add fires
+  // whatever is under it.
+  function fromOwnUi(event) {
+    const target = event?.originalEvent?.target;
+    if (!target || typeof target.closest !== 'function') return false;
+    return Boolean(target.closest('.maplibregl-popup')
+      || target.closest('#gridatlas-sld-panel'));
   }
 
   function interactiveLayerIds(map) {
@@ -692,8 +717,9 @@
       if (fromSubstation) {
         // No fetch needed: the projects are already in the engine's own
         // source, and reading them there keeps one set of coordinates.
-        drawLinks(map, origin, name, tech,
-          nearestProjects(map, origin[0], origin[1]), 'from-substation');
+        const found = nearestProjects(map, origin[0], origin[1]);
+        drawLinks(map, origin, name, tech, found.links, 'from-substation',
+          null, found.loaded);
         return;
       }
       const subs = await loadSubstations();
@@ -704,6 +730,7 @@
 
     map.on('click', async (event) => {
       try {
+        if (fromOwnUi(event)) return;
         const ids = interactiveLayerIds(map);
         if (!ids.length) return;
         let features = [];
@@ -1383,7 +1410,7 @@
     });
 
     map.on('mousedown', (event) => {
-      if (!sld.active) return;
+      if (!sld.active || fromOwnUi(event)) return;
       const layers = grabbable.filter(id => map.getLayer(id));
       if (!layers.length) return;
       const hits = map.queryRenderedFeatures(event.point, { layers });
@@ -1424,6 +1451,7 @@
     // Click the cable to insert a vertex where you clicked; double-click a
     // vertex to remove it. No modes, no commit step.
     map.on('click', (event) => {
+      if (fromOwnUi(event)) return;
       if (!sld.active || !map.getLayer(SLD_LAYERS.cable)) return;
       const onPin = map.queryRenderedFeatures(event.point, { layers: [SLD_LAYERS.pin] });
       if (onPin.length) return;
@@ -1732,6 +1760,7 @@
     attachSldDragging(map);
     // A substation click offers the layout; the neon links still draw.
     map.on('click', (event) => {
+      if (fromOwnUi(event)) return;
       if (!map.getLayer(SUBS_LAYER_ID)) return;
       const hits = map.queryRenderedFeatures(event.point, { layers: [SUBS_LAYER_ID] });
       if (!hits.length) return;

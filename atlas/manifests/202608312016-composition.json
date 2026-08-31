@@ -1,7 +1,7 @@
 {
   "schema": "gridatlas.composition-manifest.v1",
-  "generation": "202608312012",
-  "parent_generation": "202608312008",
+  "generation": "202608312016",
+  "parent_generation": "202608312012",
   "live_route": "/gridatlas/atlas/",
   "shell": {
     "release_id": "202608300453-atlas-v9",
@@ -66,13 +66,13 @@
     },
     {
       "id": "sld-sandbox",
-      "generation": "202608312012",
-      "version": "v9.9",
+      "generation": "202608312016",
+      "version": "v9.10",
       "type": "script",
       "slot": "replace-script",
       "replace_script": "202608292126-pre-snapped-config-adapter.js",
-      "path": "./cartridges/202608312012-sld-sandbox-v9-8.js",
-      "sha256": "49d9e24c3f9bd3e2f35fcadf3171e7345f94482b6eb35159d643b6d9e8a6a219",
+      "path": "./cartridges/202608312016-sld-sandbox-v9-8.js",
+      "sha256": "74d61e7b9c5b05bca820c5e7aa18bfa2039cb7d831c96a814c7b7cdac6e11b92",
       "capabilities": [
         "pre-snapped-config-adapter-carried-forward",
         "project-or-substation-selection",
@@ -97,7 +97,9 @@
         "denser-electron-flow-two-layers",
         "fit-array-to-the-registers-stated-capacity",
         "ac-dc-basis-declared-not-assumed",
-        "dc-ac-ratio-range-check"
+        "dc-ac-ratio-range-check",
+        "own-ui-clicks-do-not-reach-the-map",
+        "unloaded-layer-reported-as-unloaded"
       ],
       "immutable_shell_modified": false,
       "supersedes_shell_script": {
@@ -170,7 +172,7 @@
     "uk_location_result_class": "LOCATION_ONLY",
     "global_location_result_class": "LOCATION_ONLY",
     "external_location_failure_isolated": true,
-    "golden_browser_verification": "REQUIRED",
+    "golden_browser_verification": "DONE",
     "parquet_on_demand_preserved": true,
     "response_established_before_body_reconstruction": true,
     "a_road_browser_budget_seconds": 15,
@@ -184,16 +186,12 @@
     "beta_scope_stated_on_card": true,
     "connection_factors_named_on_card": true,
     "offshore_wind_excluded_from_links": true,
-    "single_earth_radius": true,
-    "turf_dependency": false,
-    "deep_link_draws_without_a_click": true,
-    "substation_layer_auto_enabled": true,
-    "layout_reachable_from_a_project_card": true,
-    "capacity_basis_declared_not_assumed": true,
-    "dc_ac_ratio_checked": "1.0 to 1.6, outside is called out in red"
+    "own_ui_clicks_contained": true,
+    "absence_only_claimed_for_loaded_layers": true,
+    "capacity_basis_declared_not_assumed": true
   },
-  "version": "v9.9",
-  "composition_id": "202608312012-gridatlas-v9.9",
+  "version": "v9.10",
+  "composition_id": "202608312016-gridatlas-v9.10",
   "source_pattern": {
     "repository": "Ventusltd/gridatlas",
     "path": "atlas/releases/202608300453-atlas-v9/202608292126-pre-snapped-config-adapter.js",
