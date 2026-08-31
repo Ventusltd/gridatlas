@@ -1,7 +1,7 @@
 {
   "schema": "gridatlas.composition-manifest.v1",
-  "generation": "202608312208",
-  "parent_generation": "202608312205",
+  "generation": "202608312222",
+  "parent_generation": "202608312208",
   "live_route": "/gridatlas/atlas/",
   "shell": {
     "release_id": "202608300453-atlas-v9",
@@ -66,13 +66,13 @@
     },
     {
       "id": "sld-sandbox",
-      "generation": "202608312208",
-      "version": "v9.22",
+      "generation": "202608312222",
+      "version": "v9.23",
       "type": "script",
       "slot": "replace-script",
       "replace_script": "202608292126-pre-snapped-config-adapter.js",
-      "path": "./cartridges/202608312208-sld-sandbox-v9-8.js",
-      "sha256": "c99543106c45fa2ec1cacd0bc90550b96aacb1c00f463c019c0d7b422d9d78f2",
+      "path": "./cartridges/202608312222-sld-sandbox-v9-8.js",
+      "sha256": "39dbf4b9d265d0619e9d89b4e159b5680da029235162164b34df120c40bf3b37",
       "capabilities": [
         "pre-snapped-config-adapter-carried-forward",
         "project-or-substation-selection",
@@ -120,7 +120,8 @@
         "status-sized-for-a-phone-first",
         "labels-take-their-font-from-the-style",
         "no-glyphs-means-no-labels-not-an-exception-per-frame",
-        "glyph-range-pre-flighted-before-any-symbol-layer"
+        "glyph-range-pre-flighted-before-any-symbol-layer",
+        "card-geometry-is-per-selection"
       ],
       "immutable_shell_modified": false,
       "supersedes_shell_script": {
@@ -221,6 +222,11 @@
         "why_it_matters_on_a_phone": "an exception per frame is a main thread that never idles: heat, battery, and a page that stops answering touches",
         "second_half": "having a glyphs endpoint is not the same as reaching it: the style declared tiles.basemaps.cartocdn.com/fonts on the same CDN that had just returned 200 for style.json and then served no vector tiles at all, which gives the identical null atlas and 5,362 exceptions in thirty seconds",
         "pre_flight": "one fetch of the 0-255 range, the same request the renderer would make; no answer means no labels, and the layer is never added"
+      },
+      "card_reuse": {
+        "reported": "Vikram: arriving from Pipeline News and then clicking another solar pixel gives a card that is not sized correctly",
+        "cause": "the popup element is reused between selections and nothing this cartridge wrote onto a card was ever taken off: the max-height computed for the previous card's contents, gridatlas-free if it had been freed, the --gx/--gy it was parked at, the minimised state; and addCardBar returned early once the bar existed, so the only call to boundCardToMap on that path never ran again",
+        "rule": "geometry is per selection, content is not: the bar, its listeners and the drag handlers are kept, because rebuilding them costs a card that can no longer be moved"
       }
     }
   ],
@@ -249,8 +255,8 @@
     "offshore_wind_excluded_from_links": true,
     "cards_fit_after_drag_and_restore": true,
     "shell_modified": false,
-    "scope": "a symbol layer is added only once its text can be drawn",
-    "proof": "tools/proofs/202608312208-sld-sandbox.proof.mjs, 253 checks"
+    "scope": "card geometry resets on every selection",
+    "proof": "tools/proofs/202608312222-sld-sandbox.proof.mjs, 262 checks"
   },
   "version": "v9.15",
   "composition_id": "202608312031-gridatlas-v9.15",
@@ -260,5 +266,5 @@
     "source_sha256": "07d33eda5b3279a03df4c0a0aded61e4363c46734dda991aa5f48ae0d55097da",
     "transformation": "carry the pre-snap config rewrite verbatim; add a measured link layer and on-card beta distances"
   },
-  "composition_version": "v9.22"
+  "composition_version": "v9.23"
 }

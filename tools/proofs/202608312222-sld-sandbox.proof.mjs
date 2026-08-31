@@ -1,5 +1,5 @@
 /**
- * Proof for the neon links + SLD layout sandbox cartridge, generation 202608312208.
+ * Proof for the neon links + SLD layout sandbox cartridge, generation 202608312222.
  *
  * No dependencies. The repository carries playwright and no DOM library, so
  * rather than add one this stubs the small surface the cartridge actually
@@ -32,7 +32,7 @@ import vm from 'node:vm';
 const HERE = dirname(fileURLToPath(import.meta.url));
 const REPO = resolve(HERE, '..', '..');
 const CARTRIDGE = join(REPO, 'atlas', 'cartridges',
-  '202608312208-sld-sandbox-v9-8.js');
+  '202608312222-sld-sandbox-v9-8.js');
 const ORIGINAL = join(REPO, 'atlas', 'releases', '202608300453-atlas-v9',
   '202608292126-pre-snapped-config-adapter.js');
 
@@ -324,6 +324,39 @@ for (const tech of ['solar', 'bess', 'wind', 'wind_onshore_operational', 'bess_o
 }
 check('offshore wind does NOT draw links', !T.has('wind_offshore_operational'));
 check('non-project layers do not', !T.has('naei_emitter') && !T.has('supermarket'));
+
+console.log('\nthe card is per selection\n');
+
+/* Reported: arrive from Pipeline News, then click another solar pixel, and the
+   card is the wrong size.
+
+   The popup element is reused between selections, and everything this
+   cartridge writes onto a card was never taken off again -- the max-height
+   computed for the previous card's contents, gridatlas-free if that one had
+   been freed, the --gx/--gy it was parked at, and the minimised state. And
+   addCardBar returns early once the bar exists, so on every selection after
+   the first the only call to boundCardToMap on that path never ran: the stale
+   numbers were not merely inherited, nothing recomputed them. */
+const cd = cartridgeSource;
+check('a new selection resets the card geometry before anything else',
+  /resetCardGeometry\(content\);[\s\S]{0,40}addCardBar\(content\);/.test(cd));
+check('a freed card does not stay freed for the next project',
+  /popup\.classList\.remove\('gridatlas-free'\)/.test(cd));
+check('nor minimised', /popup\.classList\.remove\('gridatlas-min'\)/.test(cd));
+check('the parked position is dropped with it',
+  /removeProperty\('--gx'\)/.test(cd) && /removeProperty\('--gy'\)/.test(cd));
+check("the previous card's height is dropped",
+  /content\.style\.removeProperty\('max-height'\)/.test(cd));
+check('the bar control is put back, so it still minimises',
+  /content\.querySelector\('\.gridatlas-card-bar \.min'\)/.test(cd)
+  && /toggle\.innerHTML = '&minus;'/.test(cd));
+check('an existing bar now measures instead of returning silently',
+  /if \(content\.querySelector\('\.gridatlas-card-bar'\)\) \{ boundCardToMap\(\); return; \}/.test(cd));
+check('the bar and its listeners are kept rather than rebuilt',
+  /rebuilding them would drop the/.test(cd.replace(/\s+/g, ' ')));
+check('the reset targets the popup, not the whole document',
+  /content\?\.closest\?\.\('\.maplibregl-popup'\)/.test(cd));
+
 
 console.log('\nlabels without glyphs\n');
 

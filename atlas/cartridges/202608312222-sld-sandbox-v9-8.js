@@ -1,7 +1,7 @@
 /**
  * GridAtlas cartridge — neon substation links and the SLD layout sandbox.
  *
- * Generation 202608312208 (UTC), composition v9.22. Slot: replace-script for
+ * Generation 202608312222 (UTC), composition v9.23. Slot: replace-script for
  * 202608292126-pre-snapped-config-adapter.js.
  *
  * WHAT IT DOES
@@ -61,7 +61,7 @@
 (() => {
   'use strict';
 
-  const GENERATION = '202608312208';
+  const GENERATION = '202608312222';
 
   /* ══════════════════════════════════════════════════════════════════════
      PART 1 — the pre-snapped config adapter, carried forward unchanged.
@@ -550,7 +550,11 @@
   }
 
   function addCardBar(content) {
-    if (!content || content.querySelector('.gridatlas-card-bar')) return;
+    if (!content) return;
+    // The bar is built once and kept, but the fit is not: a card that already
+    // has a bar is a card being reused for a different project, and its height
+    // is the one thing that must be measured again.
+    if (content.querySelector('.gridatlas-card-bar')) { boundCardToMap(); return; }
     const popup = content.closest('.maplibregl-popup');
     if (!popup) return;
     boundCardToMap();
@@ -614,9 +618,46 @@
     document.addEventListener('mouseup', up);
   }
 
+  /* A second project gets a second card, not the first one's shape.
+     ----------------------------------------------------------------------
+     Reported: arrive from Pipeline News, then click another solar pixel, and
+     the card is the wrong size.
+
+     The popup element is reused between selections, and everything this
+     cartridge does to a card was written onto it and never taken off -- the
+     max-height computed for the previous card's contents, the gridatlas-free
+     class if that one had been freed, the --gx/--gy it was parked at, and the
+     minimised state. A card for Botley West would open at the height of the
+     card before it, in the place the card before it had been dragged to.
+
+     Worse, addCardBar returns early once the bar exists, and the only call to
+     boundCardToMap on that path was inside it. So on every selection after the
+     first, nothing measured anything: the stale numbers were not merely
+     inherited, they were never recomputed.
+
+     Geometry is per selection. The content is not: the bar, its listeners and
+     the drag handlers are kept, because rebuilding them would drop the
+     listeners and cost a card that could no longer be moved. */
+  function resetCardGeometry(content) {
+    const popup = content?.closest?.('.maplibregl-popup');
+    if (!popup) return;
+    popup.classList.remove('gridatlas-free');
+    popup.classList.remove('gridatlas-min');
+    popup.style.removeProperty('--gx');
+    popup.style.removeProperty('--gy');
+    content.style.removeProperty('max-height');
+    content.style.removeProperty('display');
+    // The bar's own control has to agree with the class it toggles, or a card
+    // restored by this reset still shows a plus that no longer minimises
+    // anything. The control is .min and it carries an HTML entity, not text.
+    const toggle = content.querySelector('.gridatlas-card-bar .min');
+    if (toggle) toggle.innerHTML = '&minus;';
+  }
+
   function injectIntoCard(links, direction, layerLoaded = true) {
     const content = document.querySelector('.maplibregl-popup-content');
     if (!content) return false;
+    resetCardGeometry(content);
     addCardBar(content);
     content.querySelectorAll(`.${BLOCK_CLASS}`).forEach(node => node.remove());
     const holder = document.createElement('div');
