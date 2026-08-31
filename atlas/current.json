@@ -1,7 +1,7 @@
 {
   "schema": "gridatlas.current.v2",
-  "generation": "202608312019",
-  "previous_generation": "202608312016",
+  "generation": "202608312022",
+  "previous_generation": "202608312019",
   "architecture": "IMMUTABLE_SHELL_PLUS_HASHED_CARTRIDGES",
   "live_route": "/gridatlas/atlas/",
   "release_id": "202608300453-atlas-v9",
@@ -58,13 +58,13 @@
     },
     {
       "id": "sld-sandbox",
-      "generation": "202608312019",
-      "version": "v9.11",
+      "generation": "202608312022",
+      "version": "v9.12",
       "type": "script",
       "slot": "replace-script",
       "replace_script": "202608292126-pre-snapped-config-adapter.js",
-      "path": "./cartridges/202608312019-sld-sandbox-v9-8.js",
-      "sha256": "5857fa0bc5d5a1947bc6496ecb7425e7998af2e1bac012e20d12e34342f39780",
+      "path": "./cartridges/202608312022-sld-sandbox-v9-8.js",
+      "sha256": "9894d46ed683691e889598717c341b37cc06a3a2648ec761670b011b7af5294d",
       "capabilities": [
         "pre-snapped-config-adapter-carried-forward",
         "project-or-substation-selection",
@@ -93,7 +93,9 @@
         "own-ui-clicks-do-not-reach-the-map",
         "unloaded-layer-reported-as-unloaded",
         "cards-drag-minimise-and-close",
-        "minimised-cards-stay-identifiable"
+        "minimised-cards-stay-identifiable",
+        "card-bounded-to-the-map",
+        "layers-survive-fullscreen"
       ],
       "immutable_shell_modified": false,
       "supersedes_shell_script": {
@@ -199,15 +201,15 @@
       "result_class": "LOCATION_ONLY"
     }
   },
-  "composition_manifest": "./manifests/202608312019-composition.json",
+  "composition_manifest": "./manifests/202608312022-composition.json",
   "scope_closure": {
-    "generation": "202608312019",
+    "generation": "202608312022",
     "status": "DONE",
-    "scope": "GridAtlas v9.11 movable cards",
+    "scope": "GridAtlas v9.12 card fit and fullscreen layers",
     "schedule_retired": true
   },
-  "composition_version": "v9.11",
-  "composition_id": "202608312019-gridatlas-v9.11",
+  "composition_version": "v9.12",
+  "composition_id": "202608312022-gridatlas-v9.12",
   "transport": {
     "response_contract": "HEADERS_BEFORE_PARQUET_BODY",
     "engine_timeout_seconds": 15,

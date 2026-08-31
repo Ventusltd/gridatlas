@@ -1,5 +1,5 @@
 /**
- * Proof for the neon links + SLD layout sandbox cartridge, generation 202608312019.
+ * Proof for the neon links + SLD layout sandbox cartridge, generation 202608312022.
  *
  * No dependencies. The repository carries playwright and no DOM library, so
  * rather than add one this stubs the small surface the cartridge actually
@@ -32,7 +32,7 @@ import vm from 'node:vm';
 const HERE = dirname(fileURLToPath(import.meta.url));
 const REPO = resolve(HERE, '..', '..');
 const CARTRIDGE = join(REPO, 'atlas', 'cartridges',
-  '202608312019-sld-sandbox-v9-8.js');
+  '202608312022-sld-sandbox-v9-8.js');
 const ORIGINAL = join(REPO, 'atlas', 'releases', '202608300453-atlas-v9',
   '202608292126-pre-snapped-config-adapter.js');
 
@@ -663,6 +663,19 @@ check('the bar carries the card title so a minimised card is identifiable',
   /class="label"/.test(code) && /content\.querySelector\('b, strong, h1, h2, h3'\)/.test(code));
 check('a minimised card is styled to read as restorable',
   /gridatlas-min .gridatlas-card-bar button.min/.test(src) && /box-shadow:0 0 14px/.test(src));
+
+check('the card is bounded to the map and scrolls',
+  /max-height:var\(--gridatlas-card-max/.test(src) && /overflow-y:auto !important/.test(src));
+check('the cap comes from the real map height, not the viewport',
+  /function boundCardToMap/.test(code) && /getContainer\(\)/.test(code));
+check('the bar stays put while the card scrolls', /position:sticky/.test(src));
+check('the cap is refreshed on resize',
+  /addEventListener\('resize', boundCardToMap\)/.test(code));
+check('the layer dashboard survives fullscreen',
+  /function keepLayersInFullscreen/.test(code) && /fullscreenchange/.test(code));
+check('the dashboard is moved, not cloned, so its listeners live',
+  /full\.appendChild\(dashboard\)/.test(code) && /home\.parent\.insertBefore/.test(code));
+check('a missing dashboard is reported', /'fullscreen: dashboard not found'/.test(code));
 
 console.log(`\n${passed}/${passed + failures.length} checks passed`);
 if (failures.length) {

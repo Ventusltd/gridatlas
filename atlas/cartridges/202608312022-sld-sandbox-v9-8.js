@@ -1,7 +1,7 @@
 /**
  * GridAtlas cartridge — neon substation links and the SLD layout sandbox.
  *
- * Generation 202608312019 (UTC), composition v9.11. Slot: replace-script for
+ * Generation 202608312022 (UTC), composition v9.12. Slot: replace-script for
  * 202608292126-pre-snapped-config-adapter.js.
  *
  * WHAT IT DOES
@@ -61,7 +61,7 @@
 (() => {
   'use strict';
 
-  const GENERATION = '202608312019';
+  const GENERATION = '202608312022';
 
   /* ══════════════════════════════════════════════════════════════════════
      PART 1 — the pre-snapped config adapter, carried forward unchanged.
@@ -357,7 +357,14 @@
 /* The card sits over the map and used to be immovable, with only MapLibre's
    own hairline close cross. It gets a bar: grab it to move the card out of the
    way, and two controls big enough to hit without aiming. */
-.gridatlas-card-bar{display:flex;align-items:center;gap:6px;margin:-6px -6px 6px;
+/* Measured on the live map: the card was 563px tall inside a 319px map and
+   hung 403px below it, so the caveat and the layout button could not be
+   reached at all. The content is now bounded to the map and scrolls, and the
+   bar stays put at the top of that scroll so the controls never leave. */
+.maplibregl-popup-content{max-height:var(--gridatlas-card-max, 60vh) !important;
+  overflow-y:auto !important;overflow-x:hidden;overscroll-behavior:contain}
+.gridatlas-card-bar{position:sticky;top:-6px;z-index:2;
+  display:flex;align-items:center;gap:6px;margin:-6px -6px 6px;
   padding:5px 6px;background:#0a1a1d;border-bottom:1px solid #1d3238;
   border-radius:3px 3px 0 0;cursor:grab;user-select:none;font-family:monospace}
 .gridatlas-card-bar:active{cursor:grabbing}
@@ -449,10 +456,22 @@
   // A grab bar with a minimise and a close, added to whatever card is open.
   // MapLibre gives a popup one hairline cross and no way to move it, which on a
   // map is the difference between a card and an obstruction.
+  // Bound the card to the map it lives in. The Atlas gives the map roughly a
+  // third of a desktop window, so a viewport-relative cap is not enough.
+  function boundCardToMap() {
+    try {
+      const container = capturedMap?.getContainer();
+      if (!container) return;
+      const height = Math.max(160, container.getBoundingClientRect().height - 60);
+      document.documentElement.style.setProperty('--gridatlas-card-max', height + 'px');
+    } catch (_) { /* leave the CSS default */ }
+  }
+
   function addCardBar(content) {
     if (!content || content.querySelector('.gridatlas-card-bar')) return;
     const popup = content.closest('.maplibregl-popup');
     if (!popup) return;
+    boundCardToMap();
 
     // Carry the card's own title into the bar. Minimised, the bar is all that
     // is left, and a nameless strip on a map is a puzzle rather than a card you
@@ -889,6 +908,10 @@
     document.addEventListener('keydown', (event) => {
       if (event.key === 'Escape') clearLinks();
     });
+
+    window.addEventListener('resize', boundCardToMap);
+    map.on('resize', boundCardToMap);
+    boundCardToMap();
 
     // A backgrounded tab should not keep an animation frame loop alive.
     document.addEventListener('visibilitychange', () => {
@@ -1881,10 +1904,53 @@
   }
   sld.openFromProject = openSldFromProject;
 
+  /**
+   * Keep the layer controls reachable in fullscreen.
+   *
+   * The shell fullscreens the map element alone, so on desktop every layer
+   * checkbox -- the whole dashboard below the map -- vanishes the moment you
+   * maximise, and there is no way to turn anything on until you come back out.
+   * Mobile is unaffected: it has its own drop-down curtain.
+   *
+   * The dashboard node is MOVED into the fullscreen element and moved back on
+   * exit, rather than cloned. A clone would look right and do nothing, because
+   * every checkbox listener belongs to the original.
+   */
+  function keepLayersInFullscreen() {
+    const dashboard = document.getElementById('dashboard')
+      || document.querySelector('.dashboard');
+    if (!dashboard) { link.failures.push('fullscreen: dashboard not found'); return; }
+    let home = null;
+
+    const onChange = () => {
+      const full = document.fullscreenElement;
+      if (full && !full.contains(dashboard)) {
+        home = { parent: dashboard.parentNode, next: dashboard.nextSibling };
+        dashboard.classList.add('gridatlas-fs-layers');
+        full.appendChild(dashboard);
+      } else if (!full && home) {
+        dashboard.classList.remove('gridatlas-fs-layers');
+        home.parent.insertBefore(dashboard, home.next);
+        home = null;
+      }
+      boundCardToMap();
+    };
+    document.addEventListener('fullscreenchange', onChange);
+    document.addEventListener('webkitfullscreenchange', onChange);
+
+    const style = document.createElement('style');
+    style.textContent = `.gridatlas-fs-layers{position:absolute !important;left:0;right:0;bottom:0;
+      max-height:42vh;overflow:auto;z-index:9;background:rgba(2,8,11,.94);
+      border-top:1px solid #0b5f63;backdrop-filter:blur(3px)}`;
+    document.head.appendChild(style);
+  }
+
   function installSld(map) {
     installSldStyles();
     ensureSldLayers(map);
     attachSldDragging(map);
+    try { keepLayersInFullscreen(); }
+    catch (error) { link.failures.push('fullscreen: ' + String(error?.message || error)); }
     // A substation click offers the layout; the neon links still draw.
     map.on('click', (event) => {
       if (fromOwnUi(event)) return;
