@@ -1,7 +1,7 @@
 {
   "schema": "gridatlas.current.v2",
-  "generation": "202608312140",
-  "previous_generation": "202608312133",
+  "generation": "202608312154",
+  "previous_generation": "202608312140",
   "architecture": "IMMUTABLE_SHELL_PLUS_HASHED_CARTRIDGES",
   "live_route": "/gridatlas/atlas/",
   "release_id": "202608300453-atlas-v9",
@@ -58,13 +58,13 @@
     },
     {
       "id": "sld-sandbox",
-      "generation": "202608312140",
-      "version": "v9.18",
+      "generation": "202608312154",
+      "version": "v9.19",
       "type": "script",
       "slot": "replace-script",
       "replace_script": "202608292126-pre-snapped-config-adapter.js",
-      "path": "./cartridges/202608312140-sld-sandbox-v9-8.js",
-      "sha256": "3bda28de689a16baea2a03e44a768cd70d65bef80d2c0a88993d73212001e622",
+      "path": "./cartridges/202608312154-sld-sandbox-v9-8.js",
+      "sha256": "81849ad5395b39ef89a4a29ed794363876985112d0fa736cfba3c60a81b6835a",
       "capabilities": [
         "pre-snapped-config-adapter-carried-forward",
         "project-or-substation-selection",
@@ -103,7 +103,10 @@
         "inverter-and-transformer-nameplates-reported-separately",
         "mv-block-overload-detected-against-its-skid",
         "project-marked-by-a-ring-not-a-second-dot",
-        "layer-control-found-by-data-layer-id"
+        "layer-control-found-by-data-layer-id",
+        "installs-without-a-painted-basemap",
+        "deep-link-waits-for-the-controls-it-ticks",
+        "boot-trigger-and-control-latency-published"
       ],
       "immutable_shell_modified": false,
       "supersedes_shell_script": {
@@ -181,6 +184,13 @@
           "central_skid_ac_total"
         ],
         "string_mode": "untouched, and still reproduces the sandbox exactly on every case"
+      },
+      "boot": {
+        "trigger": "whichever of style.load or load arrives first, then an 8s timer",
+        "why": "map.once(\"load\") fires only after a frame is painted, so a basemap that never serves tiles stopped the grid maths installing at all; observed live with style.json, tiles.json and the sprite all at 200 and not one vector tile fetched",
+        "independence": "the distances are arithmetic over substation coordinates and need no map; layers need a parsed style, not a frame",
+        "refuses": "to boot with no style at all, which would fail on the first addSource",
+        "reported_ios": "Vikram, 2026-08-31: the map from Pipeline News does not load on iPhone. iOS Safari delays or drops the first paint under memory pressure, which is exactly the condition this removes as a dependency. Not yet confirmed on a device."
       }
     }
   ],
@@ -226,15 +236,15 @@
       "result_class": "LOCATION_ONLY"
     }
   },
-  "composition_manifest": "./manifests/202608312140-composition.json",
+  "composition_manifest": "./manifests/202608312154-composition.json",
   "scope_closure": {
-    "generation": "202608312140",
+    "generation": "202608312154",
     "status": "DONE",
-    "scope": "GridAtlas v9.18 the project ring, seen in Chrome",
+    "scope": "GridAtlas v9.19 install without a painted basemap",
     "schedule_retired": true
   },
-  "composition_version": "v9.18",
-  "composition_id": "202608312140-gridatlas-v9.18",
+  "composition_version": "v9.19",
+  "composition_id": "202608312154-gridatlas-v9.19",
   "transport": {
     "response_contract": "HEADERS_BEFORE_PARQUET_BODY",
     "engine_timeout_seconds": 15,

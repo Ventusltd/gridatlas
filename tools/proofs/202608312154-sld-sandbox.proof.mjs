@@ -1,5 +1,5 @@
 /**
- * Proof for the neon links + SLD layout sandbox cartridge, generation 202608312140.
+ * Proof for the neon links + SLD layout sandbox cartridge, generation 202608312154.
  *
  * No dependencies. The repository carries playwright and no DOM library, so
  * rather than add one this stubs the small surface the cartridge actually
@@ -32,7 +32,7 @@ import vm from 'node:vm';
 const HERE = dirname(fileURLToPath(import.meta.url));
 const REPO = resolve(HERE, '..', '..');
 const CARTRIDGE = join(REPO, 'atlas', 'cartridges',
-  '202608312140-sld-sandbox-v9-8.js');
+  '202608312154-sld-sandbox-v9-8.js');
 const ORIGINAL = join(REPO, 'atlas', 'releases', '202608300453-atlas-v9',
   '202608292126-pre-snapped-config-adapter.js');
 
@@ -305,6 +305,59 @@ for (const tech of ['solar', 'bess', 'wind', 'wind_onshore_operational', 'bess_o
 }
 check('offshore wind does NOT draw links', !T.has('wind_offshore_operational'));
 check('non-project layers do not', !T.has('naei_emitter') && !T.has('supermarket'));
+
+console.log('\nbooting without a basemap\n');
+
+/* Watched live on 202608312140: the CARTO style.json, tiles.json and sprite
+   all returned 200, then not one vector tile was fetched. The map stayed
+   black, map.loaded() stayed false, and because the cartridge booted on
+   map.once('load') -- which maplibre fires only after a frame is painted --
+   nothing installed at all. installed: false, zero layer controls, and a deep
+   link waiting for substations that could never arrive. The bare shell failed
+   the same way, which is how the cartridge was ruled out as the cause.
+
+   None of this work needs a painted frame. Layers need a parsed style, and
+   the distances need no map whatever: they are arithmetic over substation
+   coordinates. Tying them to a tile CDN made it a single point of failure for
+   the measurement. */
+const bootSrc = cartridgeSource;
+check('the style is enough to boot on', /map\.once\('style\.load'/.test(bootSrc));
+check("maplibre's load is still honoured, whichever arrives first",
+  /map\.once\('load'/.test(bootSrc));
+check('and a timer, so a basemap that never paints is not fatal',
+  /setTimeout\(\(\) => \{[\s\S]{0,900}bootOnce\('timeout'\)/.test(bootSrc));
+check('the timeout refuses to boot with no style to hang layers on',
+  /hasStyle = Boolean\(map\.getStyle\?\.\(\)\)/.test(bootSrc)
+  && /no style after 8s; the grid maths cannot install/.test(bootSrc));
+check('booting on the style alone is recorded, not silent',
+  /basemap never finished painting; booted on the style alone/.test(bootSrc));
+check('which trigger fired is published', /link\.boot_trigger = trigger;/.test(bootSrc));
+
+// Behavioural, not textual: three triggers must produce exactly one boot.
+check('three triggers still boot exactly once', (() => {
+  let booted = 0;
+  let flag = false;
+  const bootOnce = () => { if (flag) return; flag = true; booted += 1; };
+  bootOnce(); bootOnce(); bootOnce();
+  return booted === 1;
+})());
+
+/* The deep link ticked controls that did not exist yet. The dashboard is
+   built from the engine's own data: measured at zero checkboxes twenty
+   seconds into a cold load. Clicking nothing silently did nothing, and the
+   layers the whole arrival depends on stayed off. */
+check('the deep link waits for the controls before ticking them',
+  /await waitForLayerControls\(12000\);\s*\n\s*enableSubstationLayer\(\);/.test(bootSrc));
+check('the wait is bounded, not a hang',
+  /while \(Date\.now\(\) - started < budgetMs\)/.test(bootSrc));
+check('it waits for a tagged control, the same hook it will tick',
+  /querySelector\('input\[type=checkbox\]\[data-layer-id\]'\)/.test(bootSrc));
+check('how long the engine took is published', /link\.layer_controls_ready_ms = Date\.now\(\) - started;/.test(bootSrc));
+check('giving up says what could not be switched on, and why',
+  /had not rendered its layer controls within/.test(bootSrc));
+check('the published state carries both new facts',
+  'boot_trigger' in link && 'layer_controls_ready_ms' in link);
+
 
 console.log('\ncentral sizing\n');
 

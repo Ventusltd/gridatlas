@@ -1,7 +1,7 @@
 /**
  * GridAtlas cartridge — neon substation links and the SLD layout sandbox.
  *
- * Generation 202608312140 (UTC), composition v9.18. Slot: replace-script for
+ * Generation 202608312154 (UTC), composition v9.19. Slot: replace-script for
  * 202608292126-pre-snapped-config-adapter.js.
  *
  * WHAT IT DOES
@@ -61,7 +61,7 @@
 (() => {
   'use strict';
 
-  const GENERATION = '202608312140';
+  const GENERATION = '202608312154';
 
   /* ══════════════════════════════════════════════════════════════════════
      PART 1 — the pre-snapped config adapter, carried forward unchanged.
@@ -180,6 +180,8 @@
     last_selection: null,
     links_drawn: 0,
     deep_linked: false,
+    boot_trigger: null,
+    layer_controls_ready_ms: null,
     project_layer_enabled: null,
     project_pin: { shown: false, name: null },
     substation_layer_enabled: false,
@@ -902,6 +904,27 @@
     wind: "Wind [", wind_onshore_operational: "Onshore Wind (Operational",
   };
 
+  // Resolve when the engine has rendered its layer dashboard, or when the
+  // wait is up. Returning false is a fact worth having, not an error: it says
+  // the engine had not finished, which is a different problem from the layer
+  // being missing.
+  async function waitForLayerControls(budgetMs) {
+    const started = Date.now();
+    while (Date.now() - started < budgetMs) {
+      if (document.querySelector('input[type=checkbox][data-layer-id]')) {
+        link.layer_controls_ready_ms = Date.now() - started;
+        return true;
+      }
+      await new Promise(resolve => setTimeout(resolve, 200));
+    }
+    link.layer_controls_ready_ms = null;
+    link.failures.push(
+      'the engine had not rendered its layer controls within '
+      + Math.round(budgetMs / 1000) + 's, so the substation and project layers '
+      + 'could not be switched on');
+    return false;
+  }
+
   function enableTechnologyLayer(tech) {
     if (!tech) return false;
     try {
@@ -1134,6 +1157,11 @@
         // a user who has to find a checkbox first has been handed a puzzle
         // rather than an answer. The engine owns the layer, so this ticks its
         // own control rather than reaching past it into the map.
+        // The dashboard is built from the engine's own data and does not
+        // exist yet on a cold load -- measured at zero checkboxes twenty
+        // seconds in. Ticking a control that has not been rendered silently
+        // did nothing, and the layers the arrival depends on stayed off.
+        await waitForLayerControls(12000);
         enableSubstationLayer();
         // And the project's own layer, so the scheme the card describes has a
         // pixel under it rather than being an assertion about empty ground.
@@ -1181,7 +1209,48 @@
       try { installSld(map); }
       catch (error) { link.failures.push('sld: ' + String(error?.message || error)); }
     };
-    if (map.isStyleLoaded?.()) boot(); else map.once('load', boot);
+    /* Boot when the style is ready, not when a frame has painted.
+       ------------------------------------------------------------------
+       This waited on map.once('load'), which maplibre fires only after the
+       first frame is on screen -- and that needs basemap tiles. Watched live:
+       the CARTO style.json, tiles.json and sprite all returned 200 and then
+       not one vector tile was fetched, so the map stayed black, 'load' never
+       came, and the whole grid-maths layer never installed. The bare shell
+       failed identically, which is how the cartridge was ruled out.
+
+       Nothing here needs a painted frame. Sources and layers need a parsed
+       STYLE, and the distances need no map at all: they are arithmetic over
+       substation coordinates. Tying them to the basemap made an unrelated CDN
+       a single point of failure for the measurement.
+
+       So: whichever of style.load or load arrives first, and failing both, a
+       timer. A basemap that never paints is a bad map, not a reason to have
+       no maths. */
+    if (map.isStyleLoaded?.()) { link.boot_trigger = 'already-loaded'; boot(); }
+    else {
+      let booted = false;
+      const bootOnce = (trigger) => {
+        if (booted) return;
+        booted = true;
+        link.boot_trigger = trigger;
+        boot();
+      };
+      map.once('style.load', () => bootOnce('style.load'));
+      map.once('load', () => bootOnce('load'));
+      setTimeout(() => {
+        // Only if a style is actually there to hang layers on. Booting without
+        // one would fail on the first addSource and lose the real reason.
+        if (booted) return;
+        let hasStyle = false;
+        try { hasStyle = Boolean(map.getStyle?.()); } catch (error) { hasStyle = false; }
+        if (hasStyle) {
+          link.failures.push('basemap never finished painting; booted on the style alone');
+          bootOnce('timeout');
+        } else {
+          link.failures.push('no style after 8s; the grid maths cannot install');
+        }
+      }, 8000);
+    }
   }
 
   // The engine keeps its map in a closure and returns nothing, so the only
