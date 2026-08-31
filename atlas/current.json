@@ -1,7 +1,7 @@
 {
   "schema": "gridatlas.current.v2",
-  "generation": "202608312300",
-  "previous_generation": "202608312257",
+  "generation": "202608312306",
+  "previous_generation": "202608312300",
   "architecture": "IMMUTABLE_SHELL_PLUS_HASHED_CARTRIDGES",
   "live_route": "/gridatlas/atlas/",
   "release_id": "202608300453-atlas-v9",
@@ -58,13 +58,13 @@
     },
     {
       "id": "sld-sandbox",
-      "generation": "202608312300",
-      "version": "v9.28",
+      "generation": "202608312306",
+      "version": "v9.29",
       "type": "script",
       "slot": "replace-script",
       "replace_script": "202608292126-pre-snapped-config-adapter.js",
-      "path": "./cartridges/202608312300-sld-sandbox-v9-8.js",
-      "sha256": "ad77f1f5049113c91698dd1f66a16e974e7cacbf8a28f2488d781c97d450927a",
+      "path": "./cartridges/202608312306-sld-sandbox-v9-8.js",
+      "sha256": "91098933f9b73d298bd88f3deadae0e21bbc2fa4e514bd193c6e982c223d4581",
       "capabilities": [
         "pre-snapped-config-adapter-carried-forward",
         "project-or-substation-selection",
@@ -120,7 +120,9 @@
         "unknown-technology-asks-the-engine",
         "offshore-opens-a-card-and-withholds-the-measurement",
         "voltage-class-context-on-the-card",
-        "whole-generation-and-storage-dashboard-accepted"
+        "whole-generation-and-storage-dashboard-accepted",
+        "fit-moves-two-variables",
+        "dc-inverter-ac-and-export-kept-apart"
       ],
       "immutable_shell_modified": false,
       "supersedes_shell_script": {
@@ -170,7 +172,8 @@
           "grab rather than mode-switch: the array is dragged, rotation has a handle, route vertices are dragged, inserted and removed without a commit step",
           "the electron flow runs along the collectors and the export cable in the direction power flows",
           "central AC sizing is corrected, not carried: gis-sld-v5-calculations.js line 147 computes total_blocks * central_skid_mva * inv_per_mv, but total_blocks already contains inv_per_mv, so the inverters sharing a skid enter the answer squared, and a count of inverters is multiplied by a transformer rating. On the shipped defaults that reported 211.2 MW where the inverters total 105.6 MW and the skids 52.8 MVA; on a 3-inverter skid it reported 1425.6 against 158.4, a factor of nine. The Atlas reports the smaller of the two nameplates and names the element that limits export. The same fault is still in the sandbox this was ported from."
-        ]
+        ],
+        "reverted_divergence": "z_strings was briefly changed from the original 18 to 23 here, reasoning that 18 gives a block DC/AC of 0.945. That was done without checking the reference, which is explicit that 28 inverters at 352 kVA make 9,856 kVA \"before transformer and grid limitations\" - the oversizing is the design. Reverted. A port does not improve its reference by guessing."
       },
       "entry_points": {
         "pipelinenews_map_button": "a deep link with latitude, longitude and technology draws the links, writes the distances onto the engine's own card, ticks the Subs control AND the project's own technology control, and drops a pin on the project itself so the scheme the card describes is visible under it",
@@ -257,6 +260,20 @@
         },
         "rule": "descriptive, never advisory: what a class generally is, never what a particular project should do with it",
         "shown": "only for the classes actually found, never as a general legend"
+      },
+      "fit": {
+        "was": "one variable, so with s_subs pinned at five a single step of b_cols was five blocks - 44.8 MW. Targets of 5, 10, 20, 30, 40, 49.9 and 50 MW all produced the same 44.80 MW layout, and a 30 MW solar farm was drawn as 44.8. The register starts at 1 MW",
+        "now": "two variables, so the quantum is one block: 8.96 MW in string mode and 4.4 MVA in central. 30 MW gives 26.9 rather than 44.8",
+        "inner_bound": "12, because a ring main carries a handful of skids",
+        "tie_break": "the layout closest to the one already on screen, so it does not jump"
+      },
+      "capacity_names": {
+        "problem": "three different numbers were all called DC/AC: a stated input of 1.200, a reported 1.040, and 0.945 implied by the hardware; and in central mode a reported 2.402 against an inverter 1.200",
+        "cause": "AC had correctly become the LIMITING nameplate while the ratio was still read as though it were the inverter nameplate",
+        "now": "DC, inverter AC and export are named separately; the design ratio is DC over inverter AC, the export ratio is DC over the limit, and a disagreement between the stated and achieved ratio is stated"
+      },
+      "not_ported_yet": {
+        "financial_model": "the original carries price, yield, bifacial gain, five loss components, degradation, opex, EPC, flood, module and fixed capex, contingency, full BESS assumptions and 25/35-year generation. None of it is in this cartridge, so there is nothing to compare against the original yet"
       }
     }
   ],
@@ -302,15 +319,15 @@
       "result_class": "LOCATION_ONLY"
     }
   },
-  "composition_manifest": "./manifests/202608312300-composition.json",
+  "composition_manifest": "./manifests/202608312306-composition.json",
   "scope_closure": {
-    "generation": "202608312300",
+    "generation": "202608312306",
     "status": "DONE",
-    "scope": "GridAtlas v9.28 what a voltage class means",
+    "scope": "GridAtlas v9.29 the fit reaches small projects, and the capacities are named apart",
     "schedule_retired": true
   },
-  "composition_version": "v9.28",
-  "composition_id": "202608312300-gridatlas-v9.28",
+  "composition_version": "v9.29",
+  "composition_id": "202608312306-gridatlas-v9.29",
   "transport": {
     "response_contract": "HEADERS_BEFORE_PARQUET_BODY",
     "engine_timeout_seconds": 15,

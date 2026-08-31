@@ -1,5 +1,5 @@
 /**
- * Proof for the neon links + SLD layout sandbox cartridge, generation 202608312300.
+ * Proof for the neon links + SLD layout sandbox cartridge, generation 202608312306.
  *
  * No dependencies. The repository carries playwright and no DOM library, so
  * rather than add one this stubs the small surface the cartridge actually
@@ -32,7 +32,7 @@ import vm from 'node:vm';
 const HERE = dirname(fileURLToPath(import.meta.url));
 const REPO = resolve(HERE, '..', '..');
 const CARTRIDGE = join(REPO, 'atlas', 'cartridges',
-  '202608312300-sld-sandbox-v9-8.js');
+  '202608312306-sld-sandbox-v9-8.js');
 const ORIGINAL = join(REPO, 'atlas', 'releases', '202608300453-atlas-v9',
   '202608292126-pre-snapped-config-adapter.js');
 
@@ -1233,8 +1233,12 @@ check('the register figure is carried through the selection',
 check('nothing is fitted until the basis is declared',
   /sld\.targetBasis = 'unstated'/.test(code)
   && /targetBasis !== 'ac' && sld\.targetBasis !== 'dc'/.test(code));
-check('the fit moves only the block count',
-  /const key = sld\.inputs\.mode === 'string' \? 'b_cols' : 'rings_c'/.test(code));
+// This used to assert the fit moved ONE variable, which was the defect: with
+// s_subs pinned at five, one step of b_cols was five blocks and every target
+// under 50 MW collapsed onto 44.8 MW.
+check('the fit moves the outer and the inner count',
+  /const outerKey = string \? 'b_cols' : 'rings_c';/.test(code)
+  && /const innerKey = string \? 's_subs' : 'mv_per_ring_c';/.test(code));
 check('the residual is reported rather than hidden', /fitResidualPct/.test(code));
 check('a hand edit is not silently re-fitted',
   /Editing by hand wins/.test(src));
@@ -1345,6 +1349,108 @@ check('a card dropped too low is lifted, not shrunk to a slot',
   /const lifted = Math\.max\(map\.top \+ 12/.test(code));
 check('restoring re-checks the fit', /requestAnimationFrame\(boundCardToMap\)/.test(code));
 check('so does finishing a drag', (code.match(/requestAnimationFrame\(boundCardToMap\)/g)||[]).length >= 3);
+console.log('\nfitting to the headline capacity\n');
+
+/* Reported: the numbers do not change when the headline capacity changes.
+   Measured on the generation before this one, and they did not:
+
+     string   5, 10, 20, 30, 40, 49.9 and 50 MW all produced 44.80 MW
+     central  5, 10 and 20 MW all produced 17.60 MW
+
+   The fit moved one variable. total_blocks is b_cols x s_subs and s_subs was
+   pinned at five, so one step of b_cols was five blocks — 44.8 MW at the
+   default skid rating. A 30 MW solar farm was drawn as 44.8 MW, half as much
+   again, and the register starts at 1 MW.
+
+   These drive the cartridge's own fit and read its own stats. They are not
+   assertions about the source. */
+const fitAt = (mode, target, basis = 'ac') => {
+  sld.inputs.mode = mode;
+  sld.targetMw = target;
+  sld.targetBasis = basis;
+  sld.fitToStatedCapacity();
+  sld.gridNode = [-1.5, 54.0];
+  sld.active = true;
+  sld.stats = null;
+  sld.openAt(stubMap, [-1.5, 54.0], 'Fit', '33 kV');
+  return sld.stats;
+};
+
+check('a 30 MW project is no longer drawn as a 44.8 MW one', (() => {
+  const s = fitAt('string', 30);
+  return s && Math.abs(s.ac_mw - 44.8) > 1 && s.ac_mw < 40;
+})(), (() => { const s = fitAt('string', 30); return s ? s.ac_mw.toFixed(2) + ' MW' : 'none'; })());
+
+check('targets between 5 and 50 MW no longer collapse onto one layout', (() => {
+  const seen = new Set();
+  for (const t of [10, 20, 30, 40, 50]) {
+    const s = fitAt('string', t);
+    if (s) seen.add(Math.round(s.ac_mw * 100));
+  }
+  return seen.size >= 4;
+})());
+
+check('central tracks the target across the whole range', (() => {
+  for (const t of [20, 30, 40, 100, 400, 840]) {
+    const s = fitAt('central', t);
+    if (!s) return false;
+    if (Math.abs(s.ac_mw - t) / t > 0.15) return false;
+  }
+  return true;
+})());
+
+check('the capacity rises with the target, never falls', (() => {
+  let previous = 0;
+  for (const t of [20, 50, 100, 200, 400, 800]) {
+    const s = fitAt('central', t);
+    if (!s || s.ac_mw < previous - 1e-9) return false;
+    previous = s.ac_mw;
+  }
+  return true;
+})());
+
+// Below one block there is nothing to draw, and that is physics rather than a
+// defect. It must be REPORTED rather than hidden in a rounded headline.
+check('a target under one block reports a residual', (() => {
+  // The fit alone, not through openAt: openAt rebuilds the layout and the
+  // residual belongs to the fit that produced it.
+  sld.inputs.mode = 'string';
+  sld.targetMw = 3;
+  sld.targetBasis = 'ac';
+  sld.fitToStatedCapacity();
+  return Number.isFinite(sld.fitResidualPct) && sld.fitResidualPct > 0;
+})(), String(sld.fitResidualPct));
+check('and states what one more block would have added', (() => {
+  sld.inputs.mode = 'string';
+  sld.targetMw = 3;
+  sld.targetBasis = 'ac';
+  sld.fitToStatedCapacity();
+  return Number.isFinite(sld.fitQuantumMw) && sld.fitQuantumMw > 0;
+})(), String(sld.fitQuantumMw));
+
+check('both variables are searched, not one',
+  /const outerKey = string \? 'b_cols' : 'rings_c';/.test(cartridgeSource)
+  && /const innerKey = string \? 's_subs' : 'mv_per_ring_c';/.test(cartridgeSource));
+check('the inner bound is physical, not generous',
+  /FIT_INNER_MAX = 12/.test(cartridgeSource)
+  && /a ring main carries a handful of/.test(cartridgeSource.replace(/\s+/g, ' ')));
+check('a near-tie goes to the layout already on screen',
+  /const drift = Math\.abs\(inner - inner0\)/.test(cartridgeSource)
+  && /the drawing jumps for no reason the user can see/.test(cartridgeSource.replace(/\s+/g, ' ')));
+check('the module bookkeeping still holds after a fit', (() => {
+  const s = fitAt('string', 250);
+  if (!s) return false;
+  const fromModules = (s.module_count * sld.inputs.mod_wp) / 1e6;
+  return Math.abs(fromModules - s.dc_mwp) < 1e-6;
+})());
+check('and the DC/AC ratio is still the derived one', (() => {
+  const s = fitAt('central', 250);
+  return s && s.ac_mw > 0
+    && Math.abs(s.dc_mwp / s.ac_mw - s.dc_ac_ratio) < 1e-6;
+})());
+
+
+
 
 // The glyph pre-flight is deliberately not awaited by the cartridge, so a
 // promise is still in flight here. Whether it has resolved before the

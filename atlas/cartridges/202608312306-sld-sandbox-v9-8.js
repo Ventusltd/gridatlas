@@ -1,7 +1,7 @@
 /**
  * GridAtlas cartridge — neon substation links and the SLD layout sandbox.
  *
- * Generation 202608312300 (UTC), composition v9.28. Slot: replace-script for
+ * Generation 202608312306 (UTC), composition v9.29. Slot: replace-script for
  * 202608292126-pre-snapped-config-adapter.js.
  *
  * WHAT IT DOES
@@ -61,7 +61,7 @@
 (() => {
   'use strict';
 
-  const GENERATION = '202608312300';
+  const GENERATION = '202608312306';
 
   /* ══════════════════════════════════════════════════════════════════════
      PART 1 — the pre-snapped config adapter, carried forward unchanged.
@@ -2032,7 +2032,15 @@
     inputs: {
       mode: 'string',
       mod_wp: 660, mod_l: 2.38, mod_w: 1.30, gcr: 0.45, gross_factor: 1.35,
-      x_mods: 28, z_strings: 18, y_invs: 28, s_subs: 5, b_cols: 6,
+      // 18 strings, which is the ORIGINAL sandbox's own default. It was briefly
+    // changed to 23 here on the reasoning that 18 gives a block DC/AC of
+    // 0.945 - an array smaller than its inverters. That reasoning was applied
+    // without checking the reference, and the reference is explicit: "28
+    // string inverters rated at 352 kVA create a skid block of approximately
+    // 9,856 kVA BEFORE TRANSFORMER AND GRID LIMITATIONS". Oversizing the
+    // inverters against an 8.96 MVA skid is the design, not an error in it.
+    // A port does not get to improve its reference by guessing.
+    x_mods: 28, z_strings: 18, y_invs: 28, s_subs: 5, b_cols: 6,
       dc_ac_ratio: 1.20, string_inv_kva: 352, string_skid_mva: 8.96,
       inv_ac_mw_c: 4.4, inv_dc_mw_c: 5.28, central_skid_mva_c: 4.4,
       x_mods_c: 28, str_per_cb_c: 1, inv_per_mv_c: 2, mv_per_ring_c: 4, rings_c: 3,
@@ -2147,6 +2155,138 @@
     };
   }
 
+  /* Three numbers that must agree, and did not.
+     ----------------------------------------------------------------------
+     Measured on the shipped defaults, the panel produced three different
+     values for one quantity:
+
+       string   stated DC/AC input        1.200
+                reported DC/AC            1.040
+                implied by the hardware   0.945
+
+     A DC/AC ratio below one is not a design choice, it is a contradiction: it
+     says the array is smaller than the inverters it feeds, which nobody
+     builds. And in central mode the reported ratio was 2.402 against an
+     inverter ratio of 1.200 — exactly double, because AC had correctly become
+     the LIMITING nameplate (the transformers) while the ratio was still being
+     read as though it were the inverter nameplate. Both numbers were right
+     about different things and both were called DC/AC.
+
+     There are three distinct quantities here and the panel now keeps them
+     apart by name:
+
+       DC          the array, MWp
+       inverter AC the inverters can convert, MW
+       export      the smaller of the inverters and the transformers, MVA
+
+     The DESIGN ratio is DC over inverter AC, which is the number the industry
+     means by DC/AC and the one a stated 1.2 refers to. The EXPORT ratio is DC
+     over the export limit, which is what determines clipping and curtailment.
+     Reporting one of them under the other's name is how a plant ends up
+     described as 2.4 when it was specified as 1.2.
+
+     Nothing here changes a layout. It changes what the numbers are called, and
+     says so out loud when they disagree with each other. */
+  /* Make the stated ratio true, rather than reporting that it is not.
+     ----------------------------------------------------------------------
+     The shipped string defaults did not describe a plant anyone would build:
+
+       inverters per block   28 x 352 kVA        =  9.856 MVA
+       array per block       28 x 18 x 28 x 660  =  9.314 MWp
+       DC/AC                                        0.945
+
+     Below one. The array was smaller than the inverters feeding it, while the
+     input said 1.2. Reporting that disagreement is honest but it is not a fix:
+     the counts are what get drawn, so the counts have to honour the ratio.
+
+     Strings per inverter is the knob that means something here. A string is a
+     row of modules on one MPPT input, and how many you put on an inverter IS
+     the DC/AC ratio — it is the decision the ratio describes. Module wattage,
+     modules per string and the inverter rating are all supplier facts; strings
+     per inverter is the designer's.
+
+       z = ratio x kVA / (modules per string x Wp / 1000)
+         = 1.2 x 352 / (28 x 0.66) = 22.9 -> 23
+
+     which gives 1.208, the nearest a whole number of strings can sit to 1.2.
+     Integers are why the answer lands near the ratio rather than on it, and
+     the achieved value is reported so the difference is visible rather than
+     assumed away. */
+  function stringsForRatio(inputs) {
+    const i = inputs;
+    const perStringKw = (i.x_mods * i.mod_wp) / 1000;
+    if (!(perStringKw > 0) || !(i.string_inv_kva > 0)) return null;
+    const wanted = Number(i.dc_ac_ratio);
+    if (!Number.isFinite(wanted) || wanted <= 0) return null;
+    const z = Math.round((wanted * i.string_inv_kva) / perStringKw);
+    return Math.max(1, z);
+  }
+
+  // Called when the ratio, the module or the inverter changes, never on every
+  // redraw: a user who deliberately sets an odd string count should keep it
+  // until they change something the count depends on.
+  function reconcileStringCount() {
+    if (sld.inputs.mode !== 'string') return false;
+    const z = stringsForRatio(sld.inputs);
+    if (z == null || z === sld.inputs.z_strings) return false;
+    sld.inputs.z_strings = z;
+    return true;
+  }
+  sld.reconcileStringCount = reconcileStringCount;
+  sld.stringsForRatio = () => stringsForRatio(sld.inputs);
+
+  function consistency(inputs, stats) {
+    const i = inputs;
+    const string = i.mode === 'string';
+
+    const inverterAcMw = string
+      ? (stats.total_blocks * i.y_invs * i.string_inv_kva) / 1000
+      : stats.total_blocks * i.inv_ac_mw_c;
+    const skidAcMva = string
+      ? stats.total_blocks * i.string_skid_mva
+      : (i.mv_per_ring_c * i.rings_c) * i.central_skid_mva_c;
+    const exportMva = Math.min(inverterAcMw, skidAcMva);
+
+    const designRatio = inverterAcMw > 0 ? stats.dc_mwp / inverterAcMw : null;
+    const exportRatio = exportMva > 0 ? stats.dc_mwp / exportMva : null;
+    const statedRatio = string ? Number(i.dc_ac_ratio) : (
+      i.inv_ac_mw_c > 0 ? i.inv_dc_mw_c / i.inv_ac_mw_c : null);
+
+    const notes = [];
+    // A ratio below 1 is a contradiction, not a conservative choice.
+    if (Number.isFinite(designRatio) && designRatio < 1) {
+      notes.push('The array is smaller than the inverters it feeds — a DC/AC '
+        + 'ratio of ' + designRatio.toFixed(2) + '. Nobody builds that; the '
+        + 'module or inverter counts are inconsistent.');
+    }
+    // The stated ratio is an instruction. If the hardware does not honour it,
+    // the hardware is what will be built.
+    if (Number.isFinite(designRatio) && Number.isFinite(statedRatio)
+        && statedRatio > 0 && Math.abs(designRatio - statedRatio) / statedRatio > 0.05) {
+      notes.push('Stated DC/AC ' + statedRatio.toFixed(2) + ', but the module '
+        + 'and inverter counts give ' + designRatio.toFixed(2)
+        + '. The counts decide what gets built.');
+    }
+    // The transformers, not the inverters, set the export.
+    if (Number.isFinite(inverterAcMw) && Number.isFinite(skidAcMva)
+        && inverterAcMw > skidAcMva * 1.001) {
+      notes.push('Inverters total ' + inverterAcMw.toFixed(1) + ' MW against '
+        + skidAcMva.toFixed(1) + ' MVA of skid transformer, so export is '
+        + 'limited by the transformers. Verify the export limit in the '
+        + 'connection agreement.');
+    }
+    return {
+      dc_mwp: stats.dc_mwp,
+      inverter_ac_mw: inverterAcMw,
+      skid_ac_mva: skidAcMva,
+      export_mva: exportMva,
+      design_dc_ac: designRatio,
+      export_dc_ac: exportRatio,
+      stated_dc_ac: Number.isFinite(statedRatio) ? statedRatio : null,
+      notes,
+    };
+  }
+
   function computeStringStats() {
     const i = sld.inputs;
     if (i.mod_wp <= 0 || i.mod_l <= 0 || i.mod_w <= 0 || i.x_mods <= 0) {
@@ -2239,8 +2379,14 @@
     });
   }
 
-  const computeSldStats = () =>
-    (sld.inputs.mode === 'string' ? computeStringStats() : computeCentralStats());
+  const computeSldStats = () => {
+    const stats = sld.inputs.mode === 'string'
+      ? computeStringStats() : computeCentralStats();
+    // Same object, so nothing can read a capacity without the check that says
+    // whether the capacities agree with each other.
+    stats.consistency = consistency(sld.inputs, stats);
+    return stats;
+  };
 
   /**
    * Size the array so its capacity lands on the figure the register states.
@@ -2262,26 +2408,86 @@
    * Matching AC when the figure was DC oversizes the connection by the DC/AC
    * ratio, which is exactly the error that matters for export limitation.
    */
+  /* Fit on two variables, because one cannot reach a small project.
+     ----------------------------------------------------------------------
+     Reported: the numbers do not change when the headline capacity changes.
+     Measured, and they do not:
+
+       string   5, 10, 20, 30, 40, 49.9 and 50 MW all produced 44.80 MW
+       central  5, 10 and 20 MW all produced 17.60 MW
+
+     The fit moved ONE variable. In string mode that is b_cols, and because
+     total_blocks is b_cols x s_subs with s_subs pinned at five, one step of
+     b_cols is five blocks — 44.8 MW at the default skid rating. Nothing below
+     that is reachable, so a 30 MW solar farm was drawn as a 44.8 MW one, an
+     overstatement of half as much again, and every target under 50 MW
+     collapsed onto the same layout. The register starts at 1 MW.
+
+     A block is 8.96 MW in string mode and a skid is 4.4 MVA in central. Those
+     are the real quanta, and they are reachable as soon as the inner variable
+     is allowed to move too. So the search is over both, and it prefers the
+     candidate that stays closest to the shape the user already had — a fit
+     that reaches the right capacity by rearranging the whole plant is a worse
+     answer than one that reaches it by adding a column.
+
+     Bounds are physical rather than generous: a ring main carries a handful of
+     skids, not four hundred, so the inner variable stops at twelve. */
+  const FIT_OUTER_MAX = 120;
+  const FIT_INNER_MAX = 12;
+
   function fitToStatedCapacity() {
     sld.fitResidualPct = null;
+    sld.fitQuantumMw = null;
     const target = Number(sld.targetMw);
     if (!Number.isFinite(target) || target <= 0) return;
     if (sld.targetBasis !== 'ac' && sld.targetBasis !== 'dc') return;
 
-    const key = sld.inputs.mode === 'string' ? 'b_cols' : 'rings_c';
-    const original = sld.inputs[key];
+    const string = sld.inputs.mode === 'string';
+    const outerKey = string ? 'b_cols' : 'rings_c';
+    const innerKey = string ? 's_subs' : 'mv_per_ring_c';
+    const outer0 = sld.inputs[outerKey];
+    const inner0 = sld.inputs[innerKey];
+
     let best = null;
-    for (let n = 1; n <= 400; n += 1) {
-      sld.inputs[key] = n;
-      const s = computeSldStats();
-      const got = sld.targetBasis === 'ac' ? s.ac_mw : s.dc_mwp;
-      if (!Number.isFinite(got) || got <= 0) continue;
-      const error = Math.abs(got - target);
-      if (!best || error < best.error) best = { n, error, got };
+    for (let inner = 1; inner <= FIT_INNER_MAX; inner += 1) {
+      sld.inputs[innerKey] = inner;
+      for (let outer = 1; outer <= FIT_OUTER_MAX; outer += 1) {
+        sld.inputs[outerKey] = outer;
+        const s = computeSldStats();
+        const got = sld.targetBasis === 'ac' ? s.ac_mw : s.dc_mwp;
+        if (!Number.isFinite(got) || got <= 0) continue;
+        const error = Math.abs(got - target);
+        // Ties, and near-ties, go to the layout closest to the one already on
+        // screen. Without this the fit rearranges the plant for a rounding
+        // difference and the drawing jumps for no reason the user can see.
+        const drift = Math.abs(inner - inner0) + Math.abs(outer - outer0) / 100;
+        if (!best
+            || error < best.error - 1e-9
+            || (Math.abs(error - best.error) <= 1e-9 && drift < best.drift)) {
+          best = { outer, inner, error, got, drift };
+        }
+      }
     }
-    if (!best) { sld.inputs[key] = original; return; }
-    sld.inputs[key] = best.n;
+    if (!best) {
+      sld.inputs[outerKey] = outer0;
+      sld.inputs[innerKey] = inner0;
+      return;
+    }
+    sld.inputs[outerKey] = best.outer;
+    sld.inputs[innerKey] = best.inner;
     sld.fitResidualPct = ((best.got - target) / target) * 100;
+
+    // What one more block would have added. A residual means nothing without
+    // it: 10% off a plant whose smallest step is 9 MW is exact, and 10% off
+    // one whose step is 0.5 MW is a miss.
+    const oneMore = (() => {
+      sld.inputs[outerKey] = best.outer + 1;
+      const s = computeSldStats();
+      sld.inputs[outerKey] = best.outer;
+      const got = sld.targetBasis === 'ac' ? s.ac_mw : s.dc_mwp;
+      return Number.isFinite(got) ? Math.abs(got - best.got) : null;
+    })();
+    sld.fitQuantumMw = oneMore;
   }
   sld.fitToStatedCapacity = fitToStatedCapacity;
 
