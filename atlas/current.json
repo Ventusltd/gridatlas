@@ -1,7 +1,7 @@
 {
   "schema": "gridatlas.current.v2",
-  "generation": "202608312016",
-  "previous_generation": "202608312012",
+  "generation": "202608312019",
+  "previous_generation": "202608312016",
   "architecture": "IMMUTABLE_SHELL_PLUS_HASHED_CARTRIDGES",
   "live_route": "/gridatlas/atlas/",
   "release_id": "202608300453-atlas-v9",
@@ -58,13 +58,13 @@
     },
     {
       "id": "sld-sandbox",
-      "generation": "202608312016",
-      "version": "v9.10",
+      "generation": "202608312019",
+      "version": "v9.11",
       "type": "script",
       "slot": "replace-script",
       "replace_script": "202608292126-pre-snapped-config-adapter.js",
-      "path": "./cartridges/202608312016-sld-sandbox-v9-8.js",
-      "sha256": "74d61e7b9c5b05bca820c5e7aa18bfa2039cb7d831c96a814c7b7cdac6e11b92",
+      "path": "./cartridges/202608312019-sld-sandbox-v9-8.js",
+      "sha256": "5857fa0bc5d5a1947bc6496ecb7425e7998af2e1bac012e20d12e34342f39780",
       "capabilities": [
         "pre-snapped-config-adapter-carried-forward",
         "project-or-substation-selection",
@@ -91,7 +91,9 @@
         "ac-dc-basis-declared-not-assumed",
         "dc-ac-ratio-range-check",
         "own-ui-clicks-do-not-reach-the-map",
-        "unloaded-layer-reported-as-unloaded"
+        "unloaded-layer-reported-as-unloaded",
+        "cards-drag-minimise-and-close",
+        "minimised-cards-stay-identifiable"
       ],
       "immutable_shell_modified": false,
       "supersedes_shell_script": {
@@ -197,15 +199,15 @@
       "result_class": "LOCATION_ONLY"
     }
   },
-  "composition_manifest": "./manifests/202608312016-composition.json",
+  "composition_manifest": "./manifests/202608312019-composition.json",
   "scope_closure": {
-    "generation": "202608312016",
+    "generation": "202608312019",
     "status": "DONE",
-    "scope": "GridAtlas v9.10 click containment and unloaded-layer honesty",
+    "scope": "GridAtlas v9.11 movable cards",
     "schedule_retired": true
   },
-  "composition_version": "v9.10",
-  "composition_id": "202608312016-gridatlas-v9.10",
+  "composition_version": "v9.11",
+  "composition_id": "202608312019-gridatlas-v9.11",
   "transport": {
     "response_contract": "HEADERS_BEFORE_PARQUET_BODY",
     "engine_timeout_seconds": 15,

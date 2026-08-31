@@ -1,7 +1,7 @@
 /**
  * GridAtlas cartridge — neon substation links and the SLD layout sandbox.
  *
- * Generation 202608312016 (UTC), composition v9.10. Slot: replace-script for
+ * Generation 202608312019 (UTC), composition v9.11. Slot: replace-script for
  * 202608292126-pre-snapped-config-adapter.js.
  *
  * WHAT IT DOES
@@ -61,7 +61,7 @@
 (() => {
   'use strict';
 
-  const GENERATION = '202608312016';
+  const GENERATION = '202608312019';
 
   /* ══════════════════════════════════════════════════════════════════════
      PART 1 — the pre-snapped config adapter, carried forward unchanged.
@@ -354,6 +354,32 @@
   background:#0a1a1d;border:1px solid #2f6f75;border-radius:3px;color:#5fbdc2;
   font:inherit;font-size:10px;letter-spacing:.05em;cursor:pointer;text-transform:uppercase}
 .${BLOCK_CLASS} .neon-layout:hover{border-color:#5fbdc2;color:#bfe9ee;background:#0d2429}
+/* The card sits over the map and used to be immovable, with only MapLibre's
+   own hairline close cross. It gets a bar: grab it to move the card out of the
+   way, and two controls big enough to hit without aiming. */
+.gridatlas-card-bar{display:flex;align-items:center;gap:6px;margin:-6px -6px 6px;
+  padding:5px 6px;background:#0a1a1d;border-bottom:1px solid #1d3238;
+  border-radius:3px 3px 0 0;cursor:grab;user-select:none;font-family:monospace}
+.gridatlas-card-bar:active{cursor:grabbing}
+.gridatlas-card-bar .grip{color:#3f6f75;letter-spacing:2px;font-size:11px}
+.gridatlas-card-bar .label{color:#8b9aa1;font-size:10px;max-width:190px;overflow:hidden;
+  text-overflow:ellipsis;white-space:nowrap}
+.maplibregl-popup.gridatlas-min .gridatlas-card-bar .label{color:#5fbdc2;font-weight:bold;max-width:230px}
+.gridatlas-card-bar .spacer{flex:1}
+.gridatlas-card-bar button{background:#050a0d;border:1px solid #2f6f75;color:#5fbdc2;
+  font:inherit;font-size:12px;line-height:1;min-width:26px;height:22px;border-radius:3px;
+  cursor:pointer;padding:0 6px}
+.gridatlas-card-bar button:hover{color:#bfe9ee;border-color:#5fbdc2;background:#0d2429}
+.gridatlas-card-bar button.close:hover{color:#ff8f8f;border-color:#ff5d5d}
+.maplibregl-popup.gridatlas-free{position:fixed !important;transform:none !important;
+  left:var(--gx) !important;top:var(--gy) !important;z-index:12}
+.maplibregl-popup.gridatlas-free .maplibregl-popup-tip{display:none !important}
+.maplibregl-popup.gridatlas-min .maplibregl-popup-content > *:not(.gridatlas-card-bar){display:none !important}
+.maplibregl-popup.gridatlas-min .maplibregl-popup-content{padding:6px !important;
+  border:1px solid #2f6f75;border-radius:4px;box-shadow:0 0 14px rgba(95,189,194,.25)}
+.maplibregl-popup.gridatlas-min .gridatlas-card-bar{margin:0;border-bottom:0;
+  border-radius:3px;background:#08171a}
+.maplibregl-popup.gridatlas-min .gridatlas-card-bar button.min{border-color:#5fbdc2;color:#bfe9ee}
 .${BLOCK_CLASS} .neon-caveat{margin-top:6px;color:#68797f;font-size:9px;line-height:1.5}
 .${BLOCK_CLASS} .neon-caveat b{color:#8b9aa1;font-weight:bold}`;
     document.head.appendChild(style);
@@ -420,9 +446,71 @@
   // The engine opens its popup in its own click handler. This one is registered
   // afterwards, so by the time it runs the popup is in the DOM and can be
   // extended rather than replaced.
+  // A grab bar with a minimise and a close, added to whatever card is open.
+  // MapLibre gives a popup one hairline cross and no way to move it, which on a
+  // map is the difference between a card and an obstruction.
+  function addCardBar(content) {
+    if (!content || content.querySelector('.gridatlas-card-bar')) return;
+    const popup = content.closest('.maplibregl-popup');
+    if (!popup) return;
+
+    // Carry the card's own title into the bar. Minimised, the bar is all that
+    // is left, and a nameless strip on a map is a puzzle rather than a card you
+    // put down on purpose.
+    const heading = content.querySelector('b, strong, h1, h2, h3');
+    const title = (heading?.textContent || 'Card').replace(/\s+/g, ' ').trim();
+
+    const bar = document.createElement('div');
+    bar.className = 'gridatlas-card-bar';
+    bar.innerHTML = '<span class="grip">&#8942;&#8942;</span>'
+      + `<span class="label">${escapeHtml(title)}</span>`
+      + '<span class="spacer"></span>'
+      + '<button type="button" class="min" title="Minimise">&minus;</button>'
+      + '<button type="button" class="close" title="Close">&times;</button>';
+    content.insertBefore(bar, content.firstChild);
+
+    bar.querySelector('.min').addEventListener('click', (event) => {
+      event.stopPropagation();
+      popup.classList.toggle('gridatlas-min');
+      bar.querySelector('.min').innerHTML = popup.classList.contains('gridatlas-min')
+        ? '&plus;' : '&minus;';
+    });
+    bar.querySelector('.close').addEventListener('click', (event) => {
+      event.stopPropagation();
+      clearLinks();
+      popup.remove();
+    });
+
+    // Dragging frees the popup from its anchor. Fixed positioning with an
+    // explicit left/top beats MapLibre's transform, which it rewrites on every
+    // map move; without that the card would snap back the moment you panned.
+    let dragging = null;
+    bar.addEventListener('mousedown', (event) => {
+      if (event.target.closest('button')) return;
+      event.stopPropagation();
+      event.preventDefault();
+      const rect = popup.getBoundingClientRect();
+      dragging = { dx: event.clientX - rect.left, dy: event.clientY - rect.top };
+      popup.classList.add('gridatlas-free');
+      popup.style.setProperty('--gx', rect.left + 'px');
+      popup.style.setProperty('--gy', rect.top + 'px');
+    });
+    const move = (event) => {
+      if (!dragging) return;
+      const x = Math.max(4, Math.min(window.innerWidth - 60, event.clientX - dragging.dx));
+      const y = Math.max(4, Math.min(window.innerHeight - 40, event.clientY - dragging.dy));
+      popup.style.setProperty('--gx', x + 'px');
+      popup.style.setProperty('--gy', y + 'px');
+    };
+    const up = () => { dragging = null; };
+    document.addEventListener('mousemove', move);
+    document.addEventListener('mouseup', up);
+  }
+
   function injectIntoCard(links, direction, layerLoaded = true) {
     const content = document.querySelector('.maplibregl-popup-content');
     if (!content) return false;
+    addCardBar(content);
     content.querySelectorAll(`.${BLOCK_CLASS}`).forEach(node => node.remove());
     const holder = document.createElement('div');
     holder.innerHTML = cardBlockHtml(links, direction, layerLoaded);
@@ -1505,9 +1593,19 @@
   color:#e0b050;border:1px solid #6a5320}
 #${PANEL_ID} .sld-site{color:#fff;font-size:12px;font-weight:bold;margin:2px 0 8px;
   overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-#${PANEL_ID} .sld-close{margin-left:auto;cursor:pointer;background:none;border:0;color:#3f6f75;
-  font:inherit;font-size:14px;padding:0 2px}
-#${PANEL_ID} .sld-close:hover{color:#5fbdc2}
+#${PANEL_ID} h4.sld-drag{cursor:grab;user-select:none}
+#${PANEL_ID} h4.sld-drag:active{cursor:grabbing}
+#${PANEL_ID} .sld-min{margin-left:auto}
+#${PANEL_ID} .sld-min,#${PANEL_ID} .sld-close{cursor:pointer;background:#050a0d;
+  border:1px solid #2f6f75;color:#5fbdc2;font:inherit;font-size:12px;line-height:1;
+  min-width:24px;height:20px;border-radius:3px;padding:0 5px}
+#${PANEL_ID} .sld-min:hover{color:#bfe9ee;border-color:#5fbdc2}
+#${PANEL_ID} .sld-close:hover{color:#ff8f8f;border-color:#ff5d5d}
+#${PANEL_ID}[data-min="true"] > *:not(h4){display:none}
+#${PANEL_ID}[data-min="true"]{width:auto;padding:7px 9px;
+  box-shadow:0 0 14px rgba(95,189,194,.25)}
+#${PANEL_ID}[data-min="true"] h4{margin:0}
+#${PANEL_ID}[data-min="true"] .sld-min{border-color:#5fbdc2;color:#bfe9ee}
 #${PANEL_ID} .sld-to{color:#8b9aa1;font-size:9.5px;margin:-6px 0 8px}
 #${PANEL_ID} .sld-target{margin:0 0 9px;padding:7px 8px;border:1px solid #1d3238;
   border-radius:3px;background:#050a0d}
@@ -1579,7 +1677,8 @@
     const acres = s ? s.gross_site_area_m2 / SLD.M2_PER_ACRE : 0;
 
     el.innerHTML = `
-      <h4>Layout sandbox<span class="sld-beta">Beta</span>
+      <h4 class="sld-drag">Layout sandbox<span class="sld-beta">Beta</span>
+        <button class="sld-min" title="Minimise">&minus;</button>
         <button class="sld-close" title="Close">&times;</button></h4>
       <div class="sld-site">${escapeHtml(sld.projectName || sld.gridNodeName || 'Grid node')}</div>
       ${sld.projectName ? `<div class="sld-to">to ${escapeHtml(sld.gridNodeName || 'grid node')}`
@@ -1661,6 +1760,34 @@
     // take the layout down with it. The geometry is the product; the panel is
     // how it is driven.
     el.querySelector?.('.sld-close')?.addEventListener('click', closeSld);
+    el.querySelector?.('.sld-min')?.addEventListener('click', () => {
+      const min = el.dataset.min === 'true';
+      el.dataset.min = min ? 'false' : 'true';
+      const button = el.querySelector('.sld-min');
+      if (button) button.innerHTML = min ? '&minus;' : '&plus;';
+    });
+    // The panel is draggable by its heading for the same reason the card is:
+    // on a map, anything fixed in a corner is eventually in the way.
+    const heading = el.querySelector?.('h4.sld-drag');
+    if (heading && !heading.dataset.bound) {
+      heading.dataset.bound = '1';
+      let drag = null;
+      heading.addEventListener('mousedown', (event) => {
+        if (event.target.closest('button')) return;
+        event.preventDefault();
+        const rect = el.getBoundingClientRect();
+        drag = { dx: event.clientX - rect.left, dy: event.clientY - rect.top };
+        el.style.right = 'auto';
+        el.style.left = rect.left + 'px';
+        el.style.top = rect.top + 'px';
+      });
+      document.addEventListener('mousemove', (event) => {
+        if (!drag) return;
+        el.style.left = Math.max(4, Math.min(window.innerWidth - 80, event.clientX - drag.dx)) + 'px';
+        el.style.top = Math.max(4, Math.min(window.innerHeight - 40, event.clientY - drag.dy)) + 'px';
+      });
+      document.addEventListener('mouseup', () => { drag = null; });
+    }
     (el.querySelectorAll?.('.sld-tabs button') || []).forEach(button => {
       button.addEventListener('click', () => {
         sld.inputs.mode = button.dataset.mode;

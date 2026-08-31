@@ -1,5 +1,5 @@
 /**
- * Proof for the neon links + SLD layout sandbox cartridge, generation 202608312016.
+ * Proof for the neon links + SLD layout sandbox cartridge, generation 202608312019.
  *
  * No dependencies. The repository carries playwright and no DOM library, so
  * rather than add one this stubs the small surface the cartridge actually
@@ -32,7 +32,7 @@ import vm from 'node:vm';
 const HERE = dirname(fileURLToPath(import.meta.url));
 const REPO = resolve(HERE, '..', '..');
 const CARTRIDGE = join(REPO, 'atlas', 'cartridges',
-  '202608312016-sld-sandbox-v9-8.js');
+  '202608312019-sld-sandbox-v9-8.js');
 const ORIGINAL = join(REPO, 'atlas', 'releases', '202608300453-atlas-v9',
   '202608292126-pre-snapped-config-adapter.js');
 
@@ -645,6 +645,24 @@ check('an unloaded project layer is reported as unloaded, not as absence',
   /loaded: false/.test(code) && /not a statement that no project is here/.test(j));
 check('and the loaded case still says none in range',
   /No mapped project within \$\{MAX_LINK_KM\} km of this substation\./.test(code));
+
+check('the card gets a grab bar', /gridatlas-card-bar/.test(code) && /function addCardBar/.test(code));
+check('with a minimise and a close big enough to hit',
+  /class="min"/.test(code) && /class="close"/.test(code) && /min-width:26px/.test(src));
+check('dragging frees the card from its anchor',
+  /gridatlas-free/.test(code) && /position:fixed !important/.test(src));
+check('a freed card does not snap back on pan',
+  /transform:none !important/.test(src));
+check('minimising collapses to the bar', /gridatlas-min/.test(code));
+check('closing clears the links too', /clearLinks\(\);\s*popup\.remove\(\)/.test(code));
+check('the layout panel is draggable by its heading too',
+  /h4\.sld-drag/.test(code) && /sld-min/.test(code));
+check('bar buttons do not leak to the map', (code.match(/event\.stopPropagation\(\)/g)||[]).length >= 3);
+
+check('the bar carries the card title so a minimised card is identifiable',
+  /class="label"/.test(code) && /content\.querySelector\('b, strong, h1, h2, h3'\)/.test(code));
+check('a minimised card is styled to read as restorable',
+  /gridatlas-min .gridatlas-card-bar button.min/.test(src) && /box-shadow:0 0 14px/.test(src));
 
 console.log(`\n${passed}/${passed + failures.length} checks passed`);
 if (failures.length) {

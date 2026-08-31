@@ -1,7 +1,7 @@
 {
   "schema": "gridatlas.composition-manifest.v1",
-  "generation": "202608312016",
-  "parent_generation": "202608312012",
+  "generation": "202608312019",
+  "parent_generation": "202608312016",
   "live_route": "/gridatlas/atlas/",
   "shell": {
     "release_id": "202608300453-atlas-v9",
@@ -66,13 +66,13 @@
     },
     {
       "id": "sld-sandbox",
-      "generation": "202608312016",
-      "version": "v9.10",
+      "generation": "202608312019",
+      "version": "v9.11",
       "type": "script",
       "slot": "replace-script",
       "replace_script": "202608292126-pre-snapped-config-adapter.js",
-      "path": "./cartridges/202608312016-sld-sandbox-v9-8.js",
-      "sha256": "74d61e7b9c5b05bca820c5e7aa18bfa2039cb7d831c96a814c7b7cdac6e11b92",
+      "path": "./cartridges/202608312019-sld-sandbox-v9-8.js",
+      "sha256": "5857fa0bc5d5a1947bc6496ecb7425e7998af2e1bac012e20d12e34342f39780",
       "capabilities": [
         "pre-snapped-config-adapter-carried-forward",
         "project-or-substation-selection",
@@ -99,7 +99,9 @@
         "ac-dc-basis-declared-not-assumed",
         "dc-ac-ratio-range-check",
         "own-ui-clicks-do-not-reach-the-map",
-        "unloaded-layer-reported-as-unloaded"
+        "unloaded-layer-reported-as-unloaded",
+        "cards-drag-minimise-and-close",
+        "minimised-cards-stay-identifiable"
       ],
       "immutable_shell_modified": false,
       "supersedes_shell_script": {
@@ -186,12 +188,12 @@
     "beta_scope_stated_on_card": true,
     "connection_factors_named_on_card": true,
     "offshore_wind_excluded_from_links": true,
+    "cards_movable_and_minimisable": true,
     "own_ui_clicks_contained": true,
-    "absence_only_claimed_for_loaded_layers": true,
-    "capacity_basis_declared_not_assumed": true
+    "absence_only_claimed_for_loaded_layers": true
   },
-  "version": "v9.10",
-  "composition_id": "202608312016-gridatlas-v9.10",
+  "version": "v9.11",
+  "composition_id": "202608312019-gridatlas-v9.11",
   "source_pattern": {
     "repository": "Ventusltd/gridatlas",
     "path": "atlas/releases/202608300453-atlas-v9/202608292126-pre-snapped-config-adapter.js",
