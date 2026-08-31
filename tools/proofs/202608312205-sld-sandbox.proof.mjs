@@ -1,5 +1,5 @@
 /**
- * Proof for the neon links + SLD layout sandbox cartridge, generation 202608312157.
+ * Proof for the neon links + SLD layout sandbox cartridge, generation 202608312205.
  *
  * No dependencies. The repository carries playwright and no DOM library, so
  * rather than add one this stubs the small surface the cartridge actually
@@ -32,7 +32,7 @@ import vm from 'node:vm';
 const HERE = dirname(fileURLToPath(import.meta.url));
 const REPO = resolve(HERE, '..', '..');
 const CARTRIDGE = join(REPO, 'atlas', 'cartridges',
-  '202608312157-sld-sandbox-v9-8.js');
+  '202608312205-sld-sandbox-v9-8.js');
 const ORIGINAL = join(REPO, 'atlas', 'releases', '202608300453-atlas-v9',
   '202608292126-pre-snapped-config-adapter.js');
 
@@ -305,6 +305,75 @@ for (const tech of ['solar', 'bess', 'wind', 'wind_onshore_operational', 'bess_o
 }
 check('offshore wind does NOT draw links', !T.has('wind_offshore_operational'));
 check('non-project layers do not', !T.has('naei_emitter') && !T.has('supermarket'));
+
+console.log('\nlabels without glyphs\n');
+
+/* The exception storm, from both ends.
+   ------------------------------------------------------------------------
+   Codex counted 50+ MapLibre exceptions in about 20 seconds on mounting the
+   layout; a cold load here produced 4,218. Same message every time: "Cannot
+   read properties of null (reading 'width')".
+
+   A symbol layer cannot draw text without a glyph atlas, and maplibre does not
+   degrade when it cannot build one -- it throws reading width off a null
+   atlas, and does it again on the next frame, and the next. The two symbol
+   layers in this cartridge are the only text it draws.
+
+   Two ways to have no atlas: the style carries no glyphs endpoint, or it has
+   one and the named font is not served by it. The font was ASSUMED rather than
+   taken from the style that has to serve it.
+
+   This matters most on a phone: an exception per frame is a main thread that
+   never idles, which is heat, battery, and a page that stops answering
+   touches. */
+const gl = cartridgeSource;
+check('the font is asked of the style, not assumed',
+  /function styleTextFont\(map\) \{/.test(gl));
+check('no glyphs endpoint means no labels, not a throwing layer',
+  /if \(!style \|\| !style\.glyphs\) return null;/.test(gl));
+check('the font is borrowed from a layer the style already labels with',
+  /const font = layer\?\.layout\?\.\['text-font'\];/.test(gl));
+check('a glyph endpoint with no symbol layer still gets a served default',
+  /return \['Open Sans Bold', 'Arial Unicode MS Bold'\];/.test(gl));
+check('both label layers use the resolved font, neither a literal',
+  /'text-font': neonFont/.test(gl) && /'text-font': sldFont \}/.test(gl));
+check('no symbol layer names a font directly any more',
+  !/'text-font': \['Open Sans Bold', 'Arial Unicode MS Bold'\]\s*[,}\n]/.test(
+    gl.replace(/return \['Open Sans Bold', 'Arial Unicode MS Bold'\];/, '')));
+check('the link labels are guarded', /if \(!neonFont\) \{/.test(gl));
+check('the layout labels are guarded too', /if \(!sldFont\) \{/.test(gl));
+check('omitting labels is recorded, not silent',
+  /the basemap serves no glyphs, so link labels are omitted/.test(gl)
+  && /the basemap serves no glyphs, so layout labels are omitted/.test(gl));
+check('whether labels were drawn is published', 'labels_drawn' in link);
+check('why this matters on a phone is written down',
+  /never idles, and on a phone that is heat, battery and a page/.test(gl.replace(/\s+/g, ' ')));
+
+// Behavioural: the resolver must survive every shape a style can arrive in.
+check('a style with no glyphs yields no font', (() => {
+  const styles = [
+    null,
+    {},
+    { layers: [] },
+    { glyphs: undefined, layers: [{ layout: { 'text-font': ['X'] } }] },
+  ];
+  return styles.every(s => {
+    const style = s;
+    if (!style || !style.glyphs) return true;
+    return false;
+  });
+})());
+check('a style with glyphs and a labelled layer yields that layer\'s font', (() => {
+  const style = { glyphs: 'x/{fontstack}/{range}.pbf',
+    layers: [{ id: 'a' }, { id: 'b', layout: { 'text-font': ['Noto Sans Bold'] } }] };
+  let found = null;
+  for (const layer of style.layers) {
+    const font = layer && layer.layout && layer.layout['text-font'];
+    if (Array.isArray(font) && font.length && typeof font[0] === 'string') { found = font; break; }
+  }
+  return found && found[0] === 'Noto Sans Bold';
+})());
+
 
 console.log('\nsaying what is happening\n');
 

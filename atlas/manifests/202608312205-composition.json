@@ -1,7 +1,7 @@
 {
   "schema": "gridatlas.composition-manifest.v1",
-  "generation": "202608312157",
-  "parent_generation": "202608312154",
+  "generation": "202608312205",
+  "parent_generation": "202608312157",
   "live_route": "/gridatlas/atlas/",
   "shell": {
     "release_id": "202608300453-atlas-v9",
@@ -66,13 +66,13 @@
     },
     {
       "id": "sld-sandbox",
-      "generation": "202608312157",
-      "version": "v9.20",
+      "generation": "202608312205",
+      "version": "v9.21",
       "type": "script",
       "slot": "replace-script",
       "replace_script": "202608292126-pre-snapped-config-adapter.js",
-      "path": "./cartridges/202608312157-sld-sandbox-v9-8.js",
-      "sha256": "f04eb9603b93f31d417cc17011a99562e263705424a44e350e8626a1aed2c91d",
+      "path": "./cartridges/202608312205-sld-sandbox-v9-8.js",
+      "sha256": "ad4b2f5e3bdadb30eea2e188bfa1c05a135b20d6d3cc98557dc7579f9cc25e07",
       "capabilities": [
         "pre-snapped-config-adapter-carried-forward",
         "project-or-substation-selection",
@@ -117,7 +117,9 @@
         "boot-trigger-and-control-latency-published",
         "says-what-it-is-waiting-for",
         "retry-without-rebooting-the-engine",
-        "status-sized-for-a-phone-first"
+        "status-sized-for-a-phone-first",
+        "labels-take-their-font-from-the-style",
+        "no-glyphs-means-no-labels-not-an-exception-per-frame"
       ],
       "immutable_shell_modified": false,
       "supersedes_shell_script": {
@@ -210,6 +212,12 @@
         "retry": "re-runs the arrival, not the page: a reload on a phone pays for the whole engine again and the deep link is in the URL either way",
         "sizing": "min(92vw, 420px) - the viewport, not a desktop column",
         "mobile_first": "Vikram, 2026-08-31: build for the phone first and let it scale up, because the link that reaches most readers arrives in a WhatsApp message"
+      },
+      "label_glyphs": {
+        "symptom": "Cannot read properties of null (reading 'width') once per rendered frame; 4,218 on a cold load here, 50+ in about 20 seconds on mounting the layout, seen independently by the Codex session",
+        "cause": "a symbol layer with no glyph atlas -- either the style carries no glyphs endpoint, or it has one and the assumed font is not served by it; the font was named literally rather than taken from the style that has to serve it",
+        "fix": "ask the style: no glyphs endpoint means no labels, which is a quiet map rather than a broken one; otherwise borrow a font the style already labels with, because that one is definitely served",
+        "why_it_matters_on_a_phone": "an exception per frame is a main thread that never idles: heat, battery, and a page that stops answering touches"
       }
     }
   ],
@@ -238,8 +246,8 @@
     "offshore_wind_excluded_from_links": true,
     "cards_fit_after_drag_and_restore": true,
     "shell_modified": false,
-    "scope": "the Atlas says what it is waiting for, sized for a phone",
-    "proof": "tools/proofs/202608312157-sld-sandbox.proof.mjs, 231 checks"
+    "scope": "the MapLibre exception storm: symbol layers with no glyph atlas",
+    "proof": "tools/proofs/202608312205-sld-sandbox.proof.mjs, 244 checks"
   },
   "version": "v9.15",
   "composition_id": "202608312031-gridatlas-v9.15",
@@ -249,5 +257,5 @@
     "source_sha256": "07d33eda5b3279a03df4c0a0aded61e4363c46734dda991aa5f48ae0d55097da",
     "transformation": "carry the pre-snap config rewrite verbatim; add a measured link layer and on-card beta distances"
   },
-  "composition_version": "v9.20"
+  "composition_version": "v9.21"
 }

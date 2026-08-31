@@ -1,7 +1,7 @@
 /**
  * GridAtlas cartridge — neon substation links and the SLD layout sandbox.
  *
- * Generation 202608312157 (UTC), composition v9.20. Slot: replace-script for
+ * Generation 202608312205 (UTC), composition v9.21. Slot: replace-script for
  * 202608292126-pre-snapped-config-adapter.js.
  *
  * WHAT IT DOES
@@ -61,7 +61,7 @@
 (() => {
   'use strict';
 
-  const GENERATION = '202608312157';
+  const GENERATION = '202608312205';
 
   /* ══════════════════════════════════════════════════════════════════════
      PART 1 — the pre-snapped config adapter, carried forward unchanged.
@@ -183,6 +183,7 @@
     boot_trigger: null,
     layer_controls_ready_ms: null,
     status_message: null,
+    labels_drawn: null,
     project_layer_enabled: null,
     project_pin: { shown: false, name: null },
     substation_layer_enabled: false,
@@ -737,25 +738,31 @@
         'circle-opacity': 0.8
       }
     });
-    map.addLayer({
-      id: L_LABEL, type: 'symbol', source: SRC_NODES,
-      layout: {
-        'text-field': ['get', 'label'],
-        'text-size': 10,
-        'text-offset': [0, -1.5],
-        'text-anchor': 'bottom',
-        'text-allow-overlap': false,
-        'text-font': ['Open Sans Bold', 'Arial Unicode MS Bold']
-      },
-      paint: {
-        'text-color': '#a9c4c9',
-        'text-halo-color': '#000c10',
-        'text-halo-width': 1.5,
-        'text-opacity': 0.9
-      }
-    });
-
-    link.installed = true;
+    const neonFont = styleTextFont(map);
+    if (!neonFont) {
+      link.labels_drawn = false;
+      link.failures.push('the basemap serves no glyphs, so link labels are omitted');
+    } else {
+      link.labels_drawn = true;
+      map.addLayer({
+        id: L_LABEL, type: 'symbol', source: SRC_NODES,
+        layout: {
+          'text-field': ['get', 'label'],
+          'text-size': 10,
+          'text-offset': [0, -1.5],
+          'text-anchor': 'bottom',
+          'text-allow-overlap': false,
+          'text-font': neonFont
+        },
+        paint: {
+          'text-color': '#a9c4c9',
+          'text-halo-color': '#000c10',
+          'text-halo-width': 1.5,
+          'text-opacity': 0.9
+        }
+      });
+    }
+        link.installed = true;
   }
 
   function stopAnimation() {
@@ -1144,6 +1151,47 @@
     return pinVisible;
   }
   link.togglePin = togglePin;
+
+  /* ── labels need glyphs, and glyphs can be absent ─────────────────────
+     A symbol layer cannot draw text without a glyph atlas, and maplibre does
+     not degrade when it cannot build one: it throws reading `width` off a null
+     atlas, and it does it again on the NEXT frame, and the next. Both of us
+     watching this estate tonight found the same storm from different ends --
+     Codex counted 50+ in about 20 seconds on mounting the layout, and a cold
+     load here produced 4,218. Same exception, and the two symbol layers in
+     this cartridge are the only text it draws.
+
+     Two ways to have no atlas: the style carries no `glyphs` endpoint at all,
+     or it has one and the named font is not served by it. The font name here
+     was assumed -- 'Open Sans Bold' -- rather than taken from the style that
+     has to serve it, so a basemap with a different font family produced text
+     that could never resolve.
+
+     So: ask the style. No glyphs endpoint means no labels, which is a quiet
+     map rather than a broken one. Otherwise use a font the style already uses
+     for its own labels, because that one is definitely served.
+
+     This matters most on a phone. An exception per frame is a main thread that
+     never idles, and on a phone that is heat, battery and a page that stops
+     answering touches. */
+  function styleTextFont(map) {
+    try {
+      const style = map.getStyle?.();
+      if (!style || !style.glyphs) return null;
+      for (const layer of style.layers || []) {
+        const font = layer?.layout?.['text-font'];
+        if (Array.isArray(font) && font.length && typeof font[0] === 'string') {
+          return font;
+        }
+      }
+      // A glyph endpoint with no symbol layer to learn from. This is the
+      // Mapbox/MapLibre default family and the one CARTO serves.
+      return ['Open Sans Bold', 'Arial Unicode MS Bold'];
+    } catch (error) {
+      link.failures.push('glyphs: ' + String(error?.message || error));
+      return null;
+    }
+  }
 
   function interactiveLayerIds(map) {
     // Whatever the engine has made visible and interactive. Reading the style
@@ -1917,13 +1965,18 @@
       filter: ['==', ['get', 'kind'], 'handle'],
       paint: { 'circle-radius': 6, 'circle-color': 'rgba(0,0,0,0)',
         'circle-stroke-color': SLD_COLOUR.handle, 'circle-stroke-width': 1.8 } });
+    const sldFont = styleTextFont(map);
+    if (!sldFont) {
+      link.failures.push('the basemap serves no glyphs, so layout labels are omitted');
+    } else {
     map.addLayer({ id: SLD_LAYERS.label, type: 'symbol', source: SRC_SLD,
-      filter: ['==', ['get', 'kind'], 'node'],
-      layout: { 'text-field': ['get', 'label'], 'text-size': 9.5,
-        'text-offset': [0, -1.4], 'text-anchor': 'bottom',
-        'text-font': ['Open Sans Bold', 'Arial Unicode MS Bold'] },
-      paint: { 'text-color': '#a9c4c9', 'text-halo-color': '#000c10',
-        'text-halo-width': 1.5 } });
+        filter: ['==', ['get', 'kind'], 'node'],
+        layout: { 'text-field': ['get', 'label'], 'text-size': 9.5,
+          'text-offset': [0, -1.4], 'text-anchor': 'bottom',
+          'text-font': sldFont },
+        paint: { 'text-color': '#a9c4c9', 'text-halo-color': '#000c10',
+          'text-halo-width': 1.5 } });
+    }
   }
 
   let sldFlowHandle = null;
