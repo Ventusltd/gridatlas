@@ -1,5 +1,5 @@
 /**
- * Proof for the neon links + SLD layout sandbox cartridge, generation 202608312008.
+ * Proof for the neon links + SLD layout sandbox cartridge, generation 202608312012.
  *
  * No dependencies. The repository carries playwright and no DOM library, so
  * rather than add one this stubs the small surface the cartridge actually
@@ -32,7 +32,7 @@ import vm from 'node:vm';
 const HERE = dirname(fileURLToPath(import.meta.url));
 const REPO = resolve(HERE, '..', '..');
 const CARTRIDGE = join(REPO, 'atlas', 'cartridges',
-  '202608312008-sld-sandbox-v9-8.js');
+  '202608312012-sld-sandbox-v9-8.js');
 const ORIGINAL = join(REPO, 'atlas', 'releases', '202608300453-atlas-v9',
   '202608292126-pre-snapped-config-adapter.js');
 
@@ -531,7 +531,7 @@ check('the measurement is split out of the click handler',
   /async function selectAt\(/.test(code) && /link\.selectAt = selectAt/.test(code));
 check('a deep link runs the same path as a click',
   /new URLSearchParams\(window\.location\.search\)/.test(code)
-  && /selectAt\(\[lon, lat\], name, tech, false\)/.test(code));
+  && /selectAt\(\[lon, lat\], name, tech, false,/.test(code));
 check('it only fires for a technology that draws links',
   /PROJECT_TECHS\.has\(tech\)/.test(code));
 check('it waits for the engine card rather than racing it',
@@ -577,6 +577,62 @@ check('two flow layers run half a period apart on the links',
 check('the export cable gets the second layer too', /cableFlowB/.test(code));
 check('reduced motion silences every flow layer',
   (code.match(/'line-opacity', 0\)/g) || []).length >= 5);
+
+
+console.log(String.fromCharCode(10)+'fitting to the stated capacity'+String.fromCharCode(10));
+
+check('the register figure is carried through the selection',
+  /statedMw/.test(code) && /q\.get\('capacity_mw'\)/.test(code));
+check('nothing is fitted until the basis is declared',
+  /sld\.targetBasis = 'unstated'/.test(code)
+  && /targetBasis !== 'ac' && sld\.targetBasis !== 'dc'/.test(code));
+check('the fit moves only the block count',
+  /const key = sld\.inputs\.mode === 'string' \? 'b_cols' : 'rings_c'/.test(code));
+check('the residual is reported rather than hidden', /fitResidualPct/.test(code));
+check('a hand edit is not silently re-fitted',
+  /Editing by hand wins/.test(src));
+
+// The fit must actually land on the target. Drive it through the real code.
+sld.inputs.mode = 'string';
+Object.assign(sld.inputs, { mod_wp: 660, mod_l: 2.38, mod_w: 1.30, gcr: 0.45,
+  gross_factor: 1.35, x_mods: 28, z_strings: 18, y_invs: 28, s_subs: 5,
+  string_inv_kva: 352, string_skid_mva: 8.96, dc_ac_ratio: 1.2, bess_mwh: 0 });
+
+let fitFailures = 0;
+for (const [target, basis] of [[50, 'ac'], [150, 'ac'], [840, 'ac'], [50, 'dc'], [500, 'dc'], [840, 'dc']]) {
+  sld.targetMw = target;
+  sld.targetBasis = basis;
+  sld.fitToStatedCapacity();
+  sld.gridNode = [-1.5, 54.0];
+  sld.active = true;
+  sld.openAt(stubMap, [-1.5, 54.0], 'T', '33 kV');
+  // openAt clears the target, so recompute against the fitted inputs directly.
+  sld.targetMw = target; sld.targetBasis = basis;
+  sld.fitToStatedCapacity();
+  const got = sld.inputs.mode === 'string'
+    ? (basis === 'ac' ? sld.inputs.b_cols * sld.inputs.s_subs * sld.inputs.string_skid_mva : null)
+    : null;
+  const within = sld.fitResidualPct != null && Math.abs(sld.fitResidualPct) <= 12;
+  if (!within) { fitFailures += 1; console.log('      miss', target, basis, sld.fitResidualPct); }
+}
+check('every target is reached within one block step',
+  fitFailures === 0, `${fitFailures} of 6 outside 12%`);
+
+console.log(String.fromCharCode(10)+'the AC/DC disclaimer'+String.fromCharCode(10));
+check('the unstated case is called out in red',
+  /class="sld-danger"/.test(src) && /#ff5d5d/.test(src));
+check('it says REPD does not reliably distinguish AC from DC',
+  /does not reliably distinguish/i.test(j));
+check('it explains the consequence for the connection',
+  /oversizes the\s*connection/i.test(j) || /oversizes the connection/i.test(j));
+check('it names export limitation and curtailment',
+  /export\s*limitation/i.test(j) && /curtailment/i.test(j));
+check('the basis is a user choice, not an assumption',
+  /id="sld_basis"/.test(src) && /AC export MW/.test(src) && /DC MWp/.test(src));
+check('an out-of-range DC\/AC ratio is called out in red',
+  /sld-ratio-warn/.test(src) && /outside the usual 1\.0 to 1\.6/.test(src));
+check('the ratio warning explains both directions',
+  /inverters are larger than the array/i.test(j) && /heavy clipping/i.test(j));
 
 console.log(`\n${passed}/${passed + failures.length} checks passed`);
 if (failures.length) {

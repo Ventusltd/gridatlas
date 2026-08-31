@@ -1,7 +1,7 @@
 {
   "schema": "gridatlas.composition-manifest.v1",
-  "generation": "202608312008",
-  "parent_generation": "202608312003",
+  "generation": "202608312012",
+  "parent_generation": "202608312008",
   "live_route": "/gridatlas/atlas/",
   "shell": {
     "release_id": "202608300453-atlas-v9",
@@ -66,13 +66,13 @@
     },
     {
       "id": "sld-sandbox",
-      "generation": "202608312008",
-      "version": "v9.8",
+      "generation": "202608312012",
+      "version": "v9.9",
       "type": "script",
       "slot": "replace-script",
       "replace_script": "202608292126-pre-snapped-config-adapter.js",
-      "path": "./cartridges/202608312008-sld-sandbox-v9-8.js",
-      "sha256": "839a29832a58ef2043d80439fa50984f4c474ea0fd616a72dc50956679c1fc11",
+      "path": "./cartridges/202608312012-sld-sandbox-v9-8.js",
+      "sha256": "49d9e24c3f9bd3e2f35fcadf3171e7345f94482b6eb35159d643b6d9e8a6a219",
       "capabilities": [
         "pre-snapped-config-adapter-carried-forward",
         "project-or-substation-selection",
@@ -94,7 +94,10 @@
         "deep-link-runs-the-same-measurement-as-a-click",
         "substation-layer-auto-enabled-on-arrival",
         "layout-opens-from-the-project-card",
-        "denser-electron-flow-two-layers"
+        "denser-electron-flow-two-layers",
+        "fit-array-to-the-registers-stated-capacity",
+        "ac-dc-basis-declared-not-assumed",
+        "dc-ac-ratio-range-check"
       ],
       "immutable_shell_modified": false,
       "supersedes_shell_script": {
@@ -149,6 +152,12 @@
         "pipelinenews_map_button": "a deep link with latitude, longitude and technology draws the links, writes the distances onto the engine's own card and ticks the Subs control, with no click required",
         "map_click": "a project or a substation",
         "layout": "a button on the project card; the array starts on the project and the cable runs to the nearest substation found"
+      },
+      "capacity_basis": {
+        "problem": "REPD's figure is nominally MWelec but schemes report it as AC export and as DC MWp, and the register does not carry the distinction",
+        "handling": "nothing is fitted until the user declares the basis; the unstated case shows a red notice rather than a default",
+        "why_it_matters": "matching AC when the figure was DC oversizes the connection by the DC/AC ratio, which drives export limitation, curtailment and the size of the offer",
+        "fit": "only the block count moves - ring main circuits in string mode, rings in central; ratings, string length and module choice are untouched, and the residual is reported"
       }
     }
   ],
@@ -180,10 +189,11 @@
     "deep_link_draws_without_a_click": true,
     "substation_layer_auto_enabled": true,
     "layout_reachable_from_a_project_card": true,
-    "flow_density": "two layers, period 1.5, half-period offset"
+    "capacity_basis_declared_not_assumed": true,
+    "dc_ac_ratio_checked": "1.0 to 1.6, outside is called out in red"
   },
-  "version": "v9.8",
-  "composition_id": "202608312008-gridatlas-v9.8",
+  "version": "v9.9",
+  "composition_id": "202608312012-gridatlas-v9.9",
   "source_pattern": {
     "repository": "Ventusltd/gridatlas",
     "path": "atlas/releases/202608300453-atlas-v9/202608292126-pre-snapped-config-adapter.js",

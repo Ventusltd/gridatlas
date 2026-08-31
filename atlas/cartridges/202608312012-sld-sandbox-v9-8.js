@@ -1,7 +1,7 @@
 /**
  * GridAtlas cartridge — neon substation links and the SLD layout sandbox.
  *
- * Generation 202608312008 (UTC), composition v9.8. Slot: replace-script for
+ * Generation 202608312012 (UTC), composition v9.9. Slot: replace-script for
  * 202608292126-pre-snapped-config-adapter.js.
  *
  * WHAT IT DOES
@@ -61,7 +61,7 @@
 (() => {
   'use strict';
 
-  const GENERATION = '202608312008';
+  const GENERATION = '202608312012';
 
   /* ══════════════════════════════════════════════════════════════════════
      PART 1 — the pre-snapped config adapter, carried forward unchanged.
@@ -581,7 +581,7 @@
     link.last_selection = null;
   }
 
-  function drawLinks(map, origin, name, tech, links, direction) {
+  function drawLinks(map, origin, name, tech, links, direction, statedMw) {
     ensureLayers(map);
     // A link takes the colour of the project end, whichever end was clicked.
     const colour = direction === 'from-substation'
@@ -627,7 +627,7 @@
     link.links_drawn = links.length;
     link.last_selection = { name, tech, direction, count: links.length,
       nearest_km: links.length ? Number(links[0].km.toFixed(3)) : null };
-    lastSelection = { origin, name, tech, direction, links };
+    lastSelection = { origin, name, tech, direction, links, statedMw: statedMw || null };
   }
 
   /* ── selection ───────────────────────────────────────────────────────── */
@@ -688,7 +688,7 @@
     // Measure and draw for one selection. Split out of the click handler so a
     // deep link, which opens a card without anybody clicking, goes through
     // exactly the same path.
-    async function selectAt(origin, name, tech, fromSubstation) {
+    async function selectAt(origin, name, tech, fromSubstation, statedMw) {
       if (fromSubstation) {
         // No fetch needed: the projects are already in the engine's own
         // source, and reading them there keeps one set of coordinates.
@@ -698,7 +698,7 @@
       }
       const subs = await loadSubstations();
       drawLinks(map, origin, name, tech,
-        nearestSubstations(origin[0], origin[1], subs), 'to-substation');
+        nearestSubstations(origin[0], origin[1], subs), 'to-substation', statedMw);
     }
     link.selectAt = selectAt;
 
@@ -728,7 +728,9 @@
           || [event.lngLat.lng, event.lngLat.lat];
         const name = properties.name || properties.SiteName || properties['Site Name']
           || (fromSubstation ? 'Unnamed substation' : 'Unnamed project');
-        await selectAt(origin, name, tech, fromSubstation);
+        const stated = Number(properties.capacity);
+        await selectAt(origin, name, tech, fromSubstation,
+          Number.isFinite(stated) && stated > 0 ? stated : null);
       } catch (error) {
         link.failures.push(String(error?.message || error));
       }
@@ -760,7 +762,9 @@
           await new Promise(resolve => setTimeout(resolve, 250));
         }
         link.deep_linked = true;
-        await selectAt([lon, lat], name, tech, false);
+        const stated = Number(q.get('capacity_mw'));
+        await selectAt([lon, lat], name, tech, false,
+          Number.isFinite(stated) && stated > 0 ? stated : null);
       } catch (error) {
         link.failures.push('deep link: ' + String(error?.message || error));
       }
@@ -905,6 +909,12 @@
     routePins: [],           // user vertices between customer substation and grid node
     stats: null,
     projectName: null,
+    // The capacity the register states for this project, and what that figure
+    // is taken to mean. REPD does not reliably distinguish, which is why the
+    // basis is a user choice and not an assumption.
+    targetMw: null,
+    targetBasis: 'unstated',
+    fitResidualPct: null,
     cableKm: 0,
     straightKm: 0,
     dragging: null,
@@ -1078,6 +1088,49 @@
 
   const computeSldStats = () =>
     (sld.inputs.mode === 'string' ? computeStringStats() : computeCentralStats());
+
+  /**
+   * Size the array so its capacity lands on the figure the register states.
+   *
+   * WHAT IS ADJUSTED, AND WHAT IS NOT
+   * Only the block count moves -- ring main circuits in string mode, rings in
+   * central mode. Everything a supplier fixes stays where the user put it:
+   * module rating, string length, inverter and skid ratings. That keeps the
+   * result buildable rather than a number reverse-engineered into nonsense.
+   *
+   * Blocks are integers, so an exact hit is usually impossible. The residual
+   * is reported rather than hidden, because a layout that quietly lands 7%
+   * off the stated capacity is worse than one that says so.
+   *
+   * WHICH CAPACITY IS BEING MATCHED
+   * That is the caller's declared basis, never a guess. REPD's figure is
+   * nominally MWelec, but it is reported inconsistently: some schemes state
+   * DC, some AC, and the register does not carry the distinction reliably.
+   * Matching AC when the figure was DC oversizes the connection by the DC/AC
+   * ratio, which is exactly the error that matters for export limitation.
+   */
+  function fitToStatedCapacity() {
+    sld.fitResidualPct = null;
+    const target = Number(sld.targetMw);
+    if (!Number.isFinite(target) || target <= 0) return;
+    if (sld.targetBasis !== 'ac' && sld.targetBasis !== 'dc') return;
+
+    const key = sld.inputs.mode === 'string' ? 'b_cols' : 'rings_c';
+    const original = sld.inputs[key];
+    let best = null;
+    for (let n = 1; n <= 400; n += 1) {
+      sld.inputs[key] = n;
+      const s = computeSldStats();
+      const got = sld.targetBasis === 'ac' ? s.ac_mw : s.dc_mwp;
+      if (!Number.isFinite(got) || got <= 0) continue;
+      const error = Math.abs(got - target);
+      if (!best || error < best.error) best = { n, error, got };
+    }
+    if (!best) { sld.inputs[key] = original; return; }
+    sld.inputs[key] = best.n;
+    sld.fitResidualPct = ((best.got - target) / target) * 100;
+  }
+  sld.fitToStatedCapacity = fitToStatedCapacity;
 
   /* ── the layout ──────────────────────────────────────────────────────── */
 
@@ -1428,6 +1481,19 @@
   font:inherit;font-size:14px;padding:0 2px}
 #${PANEL_ID} .sld-close:hover{color:#5fbdc2}
 #${PANEL_ID} .sld-to{color:#8b9aa1;font-size:9.5px;margin:-6px 0 8px}
+#${PANEL_ID} .sld-target{margin:0 0 9px;padding:7px 8px;border:1px solid #1d3238;
+  border-radius:3px;background:#050a0d}
+#${PANEL_ID} .sld-target-row{display:flex;justify-content:space-between;align-items:baseline}
+#${PANEL_ID} .sld-target-row b{color:#e0b050;font-variant-numeric:tabular-nums}
+#${PANEL_ID} .sld-basis{display:flex;align-items:center;gap:6px;margin-top:5px}
+#${PANEL_ID} .sld-basis span{color:#8b9aa1;font-size:10px;white-space:nowrap}
+#${PANEL_ID} .sld-basis select{flex:1}
+#${PANEL_ID} .sld-danger{margin-top:6px;color:#ff5d5d;font-size:9px;line-height:1.5;
+  border-left:2px solid #ff5d5d;padding-left:6px}
+#${PANEL_ID} .sld-fitted{margin-top:6px;color:#8b9aa1;font-size:9px;line-height:1.5}
+#${PANEL_ID} .sld-fitted b{color:#6fb582}
+#${PANEL_ID} .sld-fitted b.sld-off{color:#ff5d5d}
+#${PANEL_ID} .sld-ratio-warn{margin-top:6px;color:#ff5d5d;font-size:9px;line-height:1.5}
 #${PANEL_ID} .sld-tabs{display:flex;gap:5px;margin-bottom:8px}
 #${PANEL_ID} .sld-tabs button{flex:1;background:#050a0d;border:1px solid #1d3238;color:#7f939a;
   font:inherit;font-size:9px;padding:4px;cursor:pointer;border-radius:3px;text-transform:uppercase}
@@ -1494,6 +1560,31 @@
         <button data-mode="string" data-on="${sld.inputs.mode === 'string'}">String</button>
         <button data-mode="central" data-on="${sld.inputs.mode === 'central'}">Central</button>
       </div>
+      ${sld.targetMw ? `
+      <div class="sld-target">
+        <div class="sld-target-row"><span>Register states</span><b>${sld.targetMw} MW</b></div>
+        <div class="sld-basis">
+          <span>That figure is</span>
+          <select id="sld_basis">
+            <option value="unstated" ${sld.targetBasis === 'unstated' ? 'selected' : ''}>not stated</option>
+            <option value="ac" ${sld.targetBasis === 'ac' ? 'selected' : ''}>AC export MW</option>
+            <option value="dc" ${sld.targetBasis === 'dc' ? 'selected' : ''}>DC MWp</option>
+          </select>
+        </div>
+        ${sld.targetBasis === 'unstated'
+          ? `<div class="sld-danger">REPD does not reliably distinguish AC from DC.
+               Its figure is nominally MWelec, but schemes report it both ways and the
+               register does not carry the distinction. Nothing is fitted until you say
+               which this is: matching AC when the figure was DC oversizes the
+               connection by the DC/AC ratio, and that is the error that drives export
+               limitation, curtailment and the size of the offer.</div>`
+          : `<div class="sld-fitted">Fitted to ${sld.targetBasis === 'ac' ? 'AC export' : 'DC'} by
+               ${sld.inputs.mode === 'string' ? 'ring main circuits' : 'rings'}
+               ${sld.fitResidualPct != null
+                 ? `&middot; <b class="${Math.abs(sld.fitResidualPct) > 5 ? 'sld-off' : ''}">${sld.fitResidualPct >= 0 ? '+' : ''}${sld.fitResidualPct.toFixed(1)}%</b> against the stated figure`
+                 : ''}.
+               Ratings, string length and module choice are untouched.</div>`}
+      </div>` : ''}
       <div class="sld-grid">
         ${fields.map(([key, label]) =>
           `<label for="sld_${key}">${label}</label>`
@@ -1514,6 +1605,18 @@
         <span>Route vertices</span><b>${sld.routePins.length}</b>
         <span>Rotation</span><b>${normBearing(sld.rotationDeg).toFixed(0)}&deg;</b>
       </div>
+      ${(() => {
+        if (!s || !(s.dc_ac_ratio > 0)) return '';
+        const r = s.dc_ac_ratio;
+        // Outside roughly 1.0 to 1.6 the layout is describing something that
+        // does not behave like a UK utility-scale scheme, and the connection
+        // consequences differ, so it is called out rather than printed flat.
+        if (r >= 1.0 && r <= 1.6) return '';
+        const why = r < 1.0
+          ? 'DC below AC: the inverters are larger than the array can ever feed, so the connection is sized for power that will not arrive.'
+          : 'DC well above AC: heavy clipping, and the export limit rather than the array decides the energy. Verify the offer, the export limitation scheme and the curtailment assumptions.';
+        return `<div class="sld-ratio-warn">DC/AC ${r.toFixed(2)} is outside the usual 1.0 to 1.6. ${why}</div>`;
+      })()}
       ${s && s.warning ? `<div class="sld-warn">${escapeHtml(s.warning)}</div>` : ''}
       <div class="sld-hint">Drag the site to move it. Drag the handle to rotate. Click the
         cable to add a vertex, drag a vertex to shape the route, double-click one to remove it.</div>
@@ -1536,10 +1639,23 @@
         if (capturedMap) redrawSld(capturedMap);
       });
     });
+    el.querySelector?.('#sld_basis')?.addEventListener('change', (event) => {
+      sld.targetBasis = event.target.value;
+      fitToStatedCapacity();
+      if (capturedMap) redrawSld(capturedMap, { fit: true });
+    });
     (el.querySelectorAll?.('input[data-key]') || []).forEach(input => {
       input.addEventListener('change', () => {
         const value = Number(input.value);
         if (Number.isFinite(value)) sld.inputs[input.dataset.key] = value;
+        // Editing by hand wins. Re-fitting here would silently undo the change
+        // the user just made; the residual simply moves and says so.
+        if (sld.targetBasis === 'ac' || sld.targetBasis === 'dc') {
+          const s = computeSldStats();
+          const got = sld.targetBasis === 'ac' ? s.ac_mw : s.dc_mwp;
+          sld.fitResidualPct = sld.targetMw > 0
+            ? ((got - sld.targetMw) / sld.targetMw) * 100 : null;
+        }
         if (capturedMap) redrawSld(capturedMap);
       });
     });
@@ -1564,6 +1680,9 @@
   function openSldAt(map, gridNode, name, voltage) {
     sld.active = true;
     sld.projectName = null;
+    sld.targetMw = null;
+    sld.targetBasis = 'unstated';
+    sld.fitResidualPct = null;
     sld.gridNode = gridNode;
     sld.gridNodeName = name;
     sld.gridNodeVoltage = voltage;
@@ -1592,6 +1711,10 @@
     sld.gridNodeName = nearest.name || 'Grid node';
     sld.gridNodeVoltage = nearest.kv && nearest.kv.length ? `${nearest.kv[0]} kV` : '';
     sld.projectName = selection.name;
+    sld.targetMw = selection.statedMw || null;
+    // Unstated until the user says. The register's figure is not self-describing
+    // and the layout must not pretend otherwise.
+    sld.targetBasis = 'unstated';
     // The array starts on the project, not offset from the substation, because
     // the project is the thing that exists.
     sld.arrayCentre = selection.origin;
