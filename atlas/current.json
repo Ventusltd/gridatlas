@@ -1,7 +1,7 @@
 {
   "schema": "gridatlas.current.v2",
-  "generation": "202608312154",
-  "previous_generation": "202608312140",
+  "generation": "202608312157",
+  "previous_generation": "202608312154",
   "architecture": "IMMUTABLE_SHELL_PLUS_HASHED_CARTRIDGES",
   "live_route": "/gridatlas/atlas/",
   "release_id": "202608300453-atlas-v9",
@@ -58,13 +58,13 @@
     },
     {
       "id": "sld-sandbox",
-      "generation": "202608312154",
-      "version": "v9.19",
+      "generation": "202608312157",
+      "version": "v9.20",
       "type": "script",
       "slot": "replace-script",
       "replace_script": "202608292126-pre-snapped-config-adapter.js",
-      "path": "./cartridges/202608312154-sld-sandbox-v9-8.js",
-      "sha256": "81849ad5395b39ef89a4a29ed794363876985112d0fa736cfba3c60a81b6835a",
+      "path": "./cartridges/202608312157-sld-sandbox-v9-8.js",
+      "sha256": "f04eb9603b93f31d417cc17011a99562e263705424a44e350e8626a1aed2c91d",
       "capabilities": [
         "pre-snapped-config-adapter-carried-forward",
         "project-or-substation-selection",
@@ -106,7 +106,10 @@
         "layer-control-found-by-data-layer-id",
         "installs-without-a-painted-basemap",
         "deep-link-waits-for-the-controls-it-ticks",
-        "boot-trigger-and-control-latency-published"
+        "boot-trigger-and-control-latency-published",
+        "says-what-it-is-waiting-for",
+        "retry-without-rebooting-the-engine",
+        "status-sized-for-a-phone-first"
       ],
       "immutable_shell_modified": false,
       "supersedes_shell_script": {
@@ -191,6 +194,14 @@
         "independence": "the distances are arithmetic over substation coordinates and need no map; layers need a parsed style, not a frame",
         "refuses": "to boot with no style at all, which would fail on the first addSource",
         "reported_ios": "Vikram, 2026-08-31: the map from Pipeline News does not load on iPhone. iOS Safari delays or drops the first paint under memory pressure, which is exactly the condition this removes as a dependency. Not yet confirmed on a device."
+      },
+      "status_surface": {
+        "why": "a black map is indistinguishable from a broken one, and the Atlas boots a 35.7 MB query engine before it can answer anything",
+        "waiting": "Loading the grid data - the distances need it.",
+        "failed": "The grid data has not finished loading, so no distances can be measured yet. This is usually the network rather than the project.",
+        "retry": "re-runs the arrival, not the page: a reload on a phone pays for the whole engine again and the deep link is in the URL either way",
+        "sizing": "min(92vw, 420px) - the viewport, not a desktop column",
+        "mobile_first": "Vikram, 2026-08-31: build for the phone first and let it scale up, because the link that reaches most readers arrives in a WhatsApp message"
       }
     }
   ],
@@ -236,15 +247,15 @@
       "result_class": "LOCATION_ONLY"
     }
   },
-  "composition_manifest": "./manifests/202608312154-composition.json",
+  "composition_manifest": "./manifests/202608312157-composition.json",
   "scope_closure": {
-    "generation": "202608312154",
+    "generation": "202608312157",
     "status": "DONE",
-    "scope": "GridAtlas v9.19 install without a painted basemap",
+    "scope": "GridAtlas v9.20 say what is happening, phone first",
     "schedule_retired": true
   },
-  "composition_version": "v9.19",
-  "composition_id": "202608312154-gridatlas-v9.19",
+  "composition_version": "v9.20",
+  "composition_id": "202608312157-gridatlas-v9.20",
   "transport": {
     "response_contract": "HEADERS_BEFORE_PARQUET_BODY",
     "engine_timeout_seconds": 15,

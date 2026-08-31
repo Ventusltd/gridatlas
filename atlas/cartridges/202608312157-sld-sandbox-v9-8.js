@@ -1,7 +1,7 @@
 /**
  * GridAtlas cartridge — neon substation links and the SLD layout sandbox.
  *
- * Generation 202608312154 (UTC), composition v9.19. Slot: replace-script for
+ * Generation 202608312157 (UTC), composition v9.20. Slot: replace-script for
  * 202608292126-pre-snapped-config-adapter.js.
  *
  * WHAT IT DOES
@@ -61,7 +61,7 @@
 (() => {
   'use strict';
 
-  const GENERATION = '202608312154';
+  const GENERATION = '202608312157';
 
   /* ══════════════════════════════════════════════════════════════════════
      PART 1 — the pre-snapped config adapter, carried forward unchanged.
@@ -182,6 +182,7 @@
     deep_linked: false,
     boot_trigger: null,
     layer_controls_ready_ms: null,
+    status_message: null,
     project_layer_enabled: null,
     project_pin: { shown: false, name: null },
     substation_layer_enabled: false,
@@ -904,15 +905,103 @@
     wind: "Wind [", wind_onshore_operational: "Onshore Wind (Operational",
   };
 
+  /* ── say what is happening ────────────────────────────────────────────
+     Vikram, tonight: "the map feature from pipelinenews doesnt load on
+     iphone". Reproduced in kind on the desktop: a black rectangle, no
+     controls, and a deep link waiting for substations that could not arrive.
+     Nothing on screen said so. A black map is indistinguishable from a broken
+     one, and the reader is left to guess which they have.
+
+     The Atlas boots a 35.7 MB query engine before it can answer anything. On
+     a phone over cellular that is a long wait and sometimes not a wait at all,
+     and the honest thing is to say which. This chip says what is being waited
+     for, and when the wait has failed it says that too, with a way to try
+     again -- because a retry after the network recovers is usually all it
+     needs, and a reload throws away the deep link.
+
+     It removes itself the moment the controls arrive, so a working Atlas is
+     never decorated with news about itself. */
+
+  const STATUS_ID = 'gridatlas-boot-status';
+
+  function statusHost() {
+    return document.querySelector('.maplibregl-map') || document.body;
+  }
+
+  function showStatus(message, kind) {
+    try {
+      let el = document.getElementById(STATUS_ID);
+      if (!el) {
+        el = document.createElement('div');
+        el.id = STATUS_ID;
+        el.setAttribute('role', 'status');
+        el.setAttribute('aria-live', 'polite');
+        statusHost().appendChild(el);
+      }
+      el.dataset.kind = kind || 'waiting';
+      el.textContent = message;
+      if (kind === 'failed') {
+        const again = document.createElement('button');
+        again.type = 'button';
+        again.textContent = 'Try again';
+        again.addEventListener('click', (event) => {
+          event.stopPropagation();
+          event.preventDefault();
+          retryArrival();
+        });
+        el.appendChild(again);
+      }
+      link.status_message = message;
+    } catch (error) {
+      link.failures.push('status: ' + String(error?.message || error));
+    }
+  }
+
+  function clearStatus() {
+    document.getElementById(STATUS_ID)?.remove();
+    link.status_message = null;
+  }
+
+  // Re-run the arrival rather than reloading: a reload on a phone repeats the
+  // whole 35.7 MB boot, and the deep link is in the URL either way.
+  let retryArrival = () => {};
+
+  function injectStatusStyle() {
+    if (document.getElementById(STATUS_ID + '-style')) return;
+    const style = document.createElement('style');
+    style.id = STATUS_ID + '-style';
+    style.textContent = `
+#${STATUS_ID}{position:absolute;left:50%;top:14px;transform:translateX(-50%);
+  z-index:5;max-width:min(92vw,420px);padding:7px 11px;border-radius:4px;
+  background:rgba(6,18,21,.93);border:1px solid #21454b;color:#9fb3ba;
+  font:11px/1.5 ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.04em;
+  text-align:center;pointer-events:auto}
+#${STATUS_ID}[data-kind="failed"]{border-color:#7a4a4a;color:#d0a9a9}
+#${STATUS_ID} button{display:block;margin:7px auto 0;padding:4px 12px;
+  background:#0a1a1d;border:1px solid #2f6f75;border-radius:3px;color:#bfe9ee;
+  font:inherit;text-transform:uppercase;letter-spacing:.06em;cursor:pointer}
+#${STATUS_ID} button:hover{border-color:#5fbdc2}
+@media (prefers-reduced-motion:no-preference){
+  #${STATUS_ID}[data-kind="waiting"]{animation:ga-status-pulse 2.4s ease-in-out infinite}
+}
+@keyframes ga-status-pulse{0%,100%{opacity:.72}50%{opacity:1}}`;
+    document.head.appendChild(style);
+  }
+
   // Resolve when the engine has rendered its layer dashboard, or when the
   // wait is up. Returning false is a fact worth having, not an error: it says
   // the engine had not finished, which is a different problem from the layer
   // being missing.
   async function waitForLayerControls(budgetMs) {
     const started = Date.now();
+    if (!document.querySelector('input[type=checkbox][data-layer-id]')) {
+      injectStatusStyle();
+      showStatus('Loading the grid data \u2014 the distances need it.', 'waiting');
+    }
     while (Date.now() - started < budgetMs) {
       if (document.querySelector('input[type=checkbox][data-layer-id]')) {
         link.layer_controls_ready_ms = Date.now() - started;
+        clearStatus();
         return true;
       }
       await new Promise(resolve => setTimeout(resolve, 200));
@@ -922,6 +1011,10 @@
       'the engine had not rendered its layer controls within '
       + Math.round(budgetMs / 1000) + 's, so the substation and project layers '
       + 'could not be switched on');
+    injectStatusStyle();
+    showStatus('The grid data has not finished loading, so no distances can be '
+      + 'measured yet. This is usually the network rather than the project.',
+      'failed');
     return false;
   }
 
@@ -1161,21 +1254,31 @@
         // exist yet on a cold load -- measured at zero checkboxes twenty
         // seconds in. Ticking a control that has not been rendered silently
         // did nothing, and the layers the arrival depends on stayed off.
-        await waitForLayerControls(12000);
-        enableSubstationLayer();
-        // And the project's own layer, so the scheme the card describes has a
-        // pixel under it rather than being an assertion about empty ground.
-        enableTechnologyLayer(tech);
-        // Wait for the engine to put its own card up first, so this decorates
-        // that card rather than racing it. Give up rather than hang.
-        for (let i = 0; i < 40; i += 1) {
-          if (document.querySelector('.maplibregl-popup-content')) break;
-          await new Promise(resolve => setTimeout(resolve, 250));
-        }
-        link.deep_linked = true;
+        // Named, so Try again re-runs exactly the arrival rather than
+        // reloading and paying for the whole engine a second time.
+        const arrive = async () => {
+          clearStatus();
+          const ready = await waitForLayerControls(12000);
+          enableSubstationLayer();
+          enableTechnologyLayer(tech);
+          return ready;
+        };
+        retryArrival = () => { arrive().then(() => runArrivalSelection()); };
+        await arrive();
         const stated = Number(q.get('capacity_mw'));
-        await selectAt([lon, lat], name, tech, false,
-          Number.isFinite(stated) && stated > 0 ? stated : null);
+        async function runArrivalSelection() {
+          // Wait for the engine to put its own card up first, so this
+          // decorates that card rather than racing it. Give up rather than
+          // hang.
+          for (let i = 0; i < 40; i += 1) {
+            if (document.querySelector('.maplibregl-popup-content')) break;
+            await new Promise(resolve => setTimeout(resolve, 250));
+          }
+          link.deep_linked = true;
+          await selectAt([lon, lat], name, tech, false,
+            Number.isFinite(stated) && stated > 0 ? stated : null);
+        }
+        await runArrivalSelection();
       } catch (error) {
         link.failures.push('deep link: ' + String(error?.message || error));
       }

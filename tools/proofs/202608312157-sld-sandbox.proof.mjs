@@ -1,5 +1,5 @@
 /**
- * Proof for the neon links + SLD layout sandbox cartridge, generation 202608312154.
+ * Proof for the neon links + SLD layout sandbox cartridge, generation 202608312157.
  *
  * No dependencies. The repository carries playwright and no DOM library, so
  * rather than add one this stubs the small surface the cartridge actually
@@ -32,7 +32,7 @@ import vm from 'node:vm';
 const HERE = dirname(fileURLToPath(import.meta.url));
 const REPO = resolve(HERE, '..', '..');
 const CARTRIDGE = join(REPO, 'atlas', 'cartridges',
-  '202608312154-sld-sandbox-v9-8.js');
+  '202608312157-sld-sandbox-v9-8.js');
 const ORIGINAL = join(REPO, 'atlas', 'releases', '202608300453-atlas-v9',
   '202608292126-pre-snapped-config-adapter.js');
 
@@ -305,6 +305,43 @@ for (const tech of ['solar', 'bess', 'wind', 'wind_onshore_operational', 'bess_o
 }
 check('offshore wind does NOT draw links', !T.has('wind_offshore_operational'));
 check('non-project layers do not', !T.has('naei_emitter') && !T.has('supermarket'));
+
+console.log('\nsaying what is happening\n');
+
+/* "the map feature from pipelinenews doesnt load on iphone" -- Vikram,
+   2026-08-31. Reproduced in kind on the desktop: a black rectangle, no
+   controls, a deep link waiting for substations that could not arrive, and
+   nothing on screen saying so. A black map is indistinguishable from a broken
+   one. The Atlas boots a 35.7 MB query engine before it can answer anything,
+   which on a phone over cellular is a long wait and sometimes not a wait at
+   all -- so it should say which.
+
+   Mobile first: this is sized against the viewport, not a desktop column,
+   because the link that reaches most readers arrives in a message on a
+   phone. */
+const st = cartridgeSource;
+check('there is a status element at all', /const STATUS_ID = 'gridatlas-boot-status'/.test(st));
+check('it says what is being waited for, not merely that something is',
+  /Loading the grid data .{1,12} the distances need it\./.test(st));
+check('failure blames the network rather than the project',
+  /usually the network rather than the project/.test(st));
+check('failure offers a way forward', /again\.textContent = 'Try again';/.test(st));
+check('the retry re-runs the arrival instead of reloading the engine',
+  /retryArrival = \(\) => \{ arrive\(\)\.then/.test(st));
+check('the reason a reload is the wrong answer is written down',
+  /repeats the[\s\S]{0,12}whole 35\.7 MB boot/.test(st));
+check('it is announced to assistive technology',
+  /setAttribute\('role', 'status'\)/.test(st) && /aria-live', 'polite'/.test(st));
+check('it is sized against the viewport, not a desktop column',
+  /max-width:min\(92vw,420px\)/.test(st));
+check('the pulse honours a reduced-motion preference',
+  /@media \(prefers-reduced-motion:no-preference\)/.test(st));
+check('its own button does not fall through to the map underneath',
+  /again\.addEventListener\('click', \(event\) => \{/.test(st)
+  && st.indexOf('again.addEventListener') < st.indexOf('retryArrival();'));
+check('the message is published for verification', /link\.status_message = message;/.test(st));
+check('the published state carries it', 'status_message' in link);
+
 
 console.log('\nbooting without a basemap\n');
 
