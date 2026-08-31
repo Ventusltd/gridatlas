@@ -11,8 +11,17 @@
 # that needed a painted basemap, a symbol layer throwing once per frame for
 # want of a glyph atlas. Guarding that by hand is not guarding it.
 #
-# Deliberately cheap: node, no browser, no checkout of history. It should cost
-# a few seconds so there is never a reason to skip it.
+# TWO REPOSITORIES, DELIBERATELY.
+#
+# The proof's parity check measures every distance the cartridge produces
+# against Ventusltd/grid-distance-maths, the canonical geodesy for the estate,
+# and it needs that repository checked out BESIDE this one. The first run of
+# this workflow failed for exactly that reason and was right to: one repo on
+# the runner, so the check that guards the arithmetic could not run and said
+# so. Checking out both is what makes the parity real rather than a thing that
+# only ever happens on one laptop.
+#
+# Deliberately cheap otherwise: node, no browser, no history.
 
 name: 202608312212 GridAtlas cartridge proof
 
@@ -42,9 +51,21 @@ jobs:
   proof:
     runs-on: ubuntu-24.04
     timeout-minutes: 10
+    defaults:
+      run:
+        working-directory: gridatlas
     steps:
       - name: Checkout the pushed state
         uses: actions/checkout@v4
+        with:
+          path: gridatlas
+
+      # Beside it, not inside it: the proof resolves ../grid-distance-maths.
+      - name: Checkout the canonical geodesy beside it
+        uses: actions/checkout@v4
+        with:
+          repository: Ventusltd/grid-distance-maths
+          path: grid-distance-maths
 
       - name: Node
         uses: actions/setup-node@v4
@@ -54,8 +75,9 @@ jobs:
       # Every digest in this repository is of git blob content, which is LF. A
       # runner checks out LF, so a mismatch here is a real mismatch and not a
       # line-ending artefact -- unlike a Windows working copy, where it is
-      # usually the reverse. Three verifiers in this estate hashed the working
-      # copy rather than the bytes served before that was fixed.
+      # usually the reverse. Four verifiers in this estate hashed the working
+      # copy rather than the bytes served before that was fixed, the proof
+      # itself among them.
       - name: The composition matches what is declared and hashed
         run: node tools/scope/verify-compose.mjs
 
