@@ -1,7 +1,7 @@
 {
   "schema": "gridatlas.composition-manifest.v1",
-  "generation": "202608312244",
-  "parent_generation": "202608312238",
+  "generation": "202608312257",
+  "parent_generation": "202608312244",
   "live_route": "/gridatlas/atlas/",
   "shell": {
     "release_id": "202608300453-atlas-v9",
@@ -66,13 +66,13 @@
     },
     {
       "id": "sld-sandbox",
-      "generation": "202608312244",
-      "version": "v9.26",
+      "generation": "202608312257",
+      "version": "v9.27",
       "type": "script",
       "slot": "replace-script",
       "replace_script": "202608292126-pre-snapped-config-adapter.js",
-      "path": "./cartridges/202608312244-sld-sandbox-v9-8.js",
-      "sha256": "947bc8d7af2536a90c8fe86276d2e5721ac6d389dc97ee0822699ec5ee64acae",
+      "path": "./cartridges/202608312257-sld-sandbox-v9-8.js",
+      "sha256": "6b4d93c7fe0842f14dda9c1d2b19227c66d972211b90adfc80c0750466a0ba45",
       "capabilities": [
         "pre-snapped-config-adapter-carried-forward",
         "project-or-substation-selection",
@@ -123,7 +123,10 @@
         "glyph-range-pre-flighted-before-any-symbol-layer",
         "card-geometry-is-per-selection",
         "gb-decade-prices-beside-the-map",
-        "late-layer-controls-are-switched-on-not-abandoned"
+        "late-layer-controls-are-switched-on-not-abandoned",
+        "every-technology-the-register-uses",
+        "unknown-technology-asks-the-engine",
+        "offshore-opens-a-card-and-withholds-the-measurement"
       ],
       "immutable_shell_modified": false,
       "supersedes_shell_script": {
@@ -242,6 +245,12 @@
         "problem": "a fixed budget is always the wrong number: the engine dashboard has been measured arriving in 2s and not arriving at all in 86s, and giving up after the budget gave up permanently, leaving a card saying the grid data had not loaded while the controls sat on screen",
         "fix": "the bounded wait still governs how long a spinner is shown, because that is a promise about the interface; a MutationObserver keeps watching afterwards and switches the layers on whenever they arrive, clearing the notice with them",
         "observer": "armed once, disconnects the first time it fires"
+      },
+      "any_project": {
+        "was": "the accepted set was solar, bess and two spellings of wind, so 2,399 onshore wind and 109 offshore projects - 2,508 of 7,680, a third of the register - had a MAP button that did nothing at all: no card, no links, no message, no recorded failure",
+        "cause": "the register writes wind_onshore and the engine has had a wind_onshore layer throughout; only this list disagreed with both",
+        "now": "the list is a fast path, and any technology the engine has a layer control for is accepted, so the engine owns the vocabulary",
+        "offshore": "accepted, opens a card, draws no links: an offshore turbine reaches an offshore substation, an export cable and a landfall before anything onshore, and the route inland is chosen for consent and ground conditions rather than distance"
       }
     }
   ],
@@ -270,8 +279,8 @@
     "offshore_wind_excluded_from_links": true,
     "cards_fit_after_drag_and_restore": true,
     "shell_modified": false,
-    "scope": "late layer controls are used, and the repository is LF everywhere",
-    "proof": "tools/proofs/202608312244-sld-sandbox.proof.mjs, 297 checks"
+    "scope": "the MAP button works for every technology in the register",
+    "proof": "tools/proofs/202608312257-sld-sandbox.proof.mjs, 302 checks"
   },
   "version": "v9.15",
   "composition_id": "202608312031-gridatlas-v9.15",
@@ -281,5 +290,5 @@
     "source_sha256": "07d33eda5b3279a03df4c0a0aded61e4363c46734dda991aa5f48ae0d55097da",
     "transformation": "carry the pre-snap config rewrite verbatim; add a measured link layer and on-card beta distances"
   },
-  "composition_version": "v9.26"
+  "composition_version": "v9.27"
 }

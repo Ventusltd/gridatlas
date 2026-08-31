@@ -1,5 +1,5 @@
 /**
- * Proof for the neon links + SLD layout sandbox cartridge, generation 202608312244.
+ * Proof for the neon links + SLD layout sandbox cartridge, generation 202608312257.
  *
  * No dependencies. The repository carries playwright and no DOM library, so
  * rather than add one this stubs the small surface the cartridge actually
@@ -32,7 +32,7 @@ import vm from 'node:vm';
 const HERE = dirname(fileURLToPath(import.meta.url));
 const REPO = resolve(HERE, '..', '..');
 const CARTRIDGE = join(REPO, 'atlas', 'cartridges',
-  '202608312244-sld-sandbox-v9-8.js');
+  '202608312257-sld-sandbox-v9-8.js');
 const ORIGINAL = join(REPO, 'atlas', 'releases', '202608300453-atlas-v9',
   '202608292126-pre-snapped-config-adapter.js');
 
@@ -322,7 +322,24 @@ const T = link.measure.PROJECT_TECHS;
 for (const tech of ['solar', 'bess', 'wind', 'wind_onshore_operational', 'bess_operational']) {
   check(`${tech} draws links`, T.has(tech));
 }
-check('offshore wind does NOT draw links', !T.has('wind_offshore_operational'));
+// Offshore is accepted now -- it was not, so the MAP button did nothing for
+// 109 projects, and silence is not caution. It opens a card and withholds the
+// measurement, because a straight line from a North Sea turbine to the nearest
+// onshore substation is the loudest wrong answer this map could give.
+check('offshore IS accepted, so the button does something',
+  T.has('wind_offshore') && T.has('wind_offshore_operational'));
+check('but it draws no links',
+  /if \(OFFSHORE_TECHS\.has\(tech\)\) \{[\s\S]{0,1200}drawLinks\(map, origin, name, tech, \[\], 'offshore'/.test(cartridgeSource));
+check('and the card says why the measurement is withheld',
+  /No distance is measured for an offshore project/.test(cartridgeSource)
+  && /a number with nothing behind it/.test(cartridgeSource.replace(/\s+/g, ' ')));
+check('onshore wind is accepted, which is what the register writes',
+  T.has('wind_onshore'), 'the register has 2,399 of them');
+check('the engine is asked about anything not in the list',
+  /input\[type=checkbox\]\[data-layer-id="/.test(cartridgeSource)
+  && /function isProjectTech\(tech\)/.test(cartridgeSource));
+check('an unknown technology is recorded rather than ignored',
+  /deep link: unknown technology/.test(cartridgeSource));
 check('non-project layers do not', !T.has('naei_emitter') && !T.has('supermarket'));
 
 console.log('\nGB prices, a decade\n');

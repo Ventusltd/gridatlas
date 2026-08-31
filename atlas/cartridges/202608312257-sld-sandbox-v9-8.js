@@ -1,7 +1,7 @@
 /**
  * GridAtlas cartridge — neon substation links and the SLD layout sandbox.
  *
- * Generation 202608312244 (UTC), composition v9.26. Slot: replace-script for
+ * Generation 202608312257 (UTC), composition v9.27. Slot: replace-script for
  * 202608292126-pre-snapped-config-adapter.js.
  *
  * WHAT IT DOES
@@ -61,7 +61,7 @@
 (() => {
   'use strict';
 
-  const GENERATION = '202608312244';
+  const GENERATION = '202608312257';
 
   /* ══════════════════════════════════════════════════════════════════════
      PART 1 — the pre-snapped config adapter, carried forward unchanged.
@@ -128,11 +128,47 @@
   // Project technologies this fires for. Onshore only: an offshore turbine's
   // export route is nothing like a straight line to the nearest onshore
   // substation, so drawing one would be a picture of a lie.
+  /* Every technology the register actually uses, and then some.
+     ----------------------------------------------------------------------
+     This set was solar, bess and two spellings of wind, and it silently
+     rejected the rest. Counted against the shipped register: 2,399 onshore
+     wind projects and 109 offshore, so 2,508 of 7,680 — a third of the
+     register — had a MAP button that did nothing at all. Not an error, not a
+     message, nothing: the deep link tested membership and returned.
+
+     The register writes `wind_onshore`. The engine has had a `wind_onshore`
+     layer the whole time. Only this list disagreed with both.
+
+     So it no longer decides alone. The list below is the fast path, and
+     anything the ENGINE has a layer control for is accepted too — the engine
+     owns the layers, so the engine's vocabulary is the authority and this
+     stops being a place a technology can be forgotten. */
   const PROJECT_TECHS = new Set([
     'solar', 'solar_operational', 'solar_roof',
     'bess', 'bess_operational',
-    'wind', 'wind_onshore_operational'
+    'wind', 'wind_onshore', 'wind_onshore_operational',
+    'wind_offshore', 'wind_offshore_operational',
+    'biomass', 'hydro', 'hydrogen'
   ]);
+
+  // Offshore opens a card and draws no links. A turbine in the North Sea does
+  // not connect to the nearest onshore substation by a straight line, and
+  // pretending otherwise would be the loudest wrong answer this map could
+  // give. It says so on the card rather than looking broken.
+  const OFFSHORE_TECHS = new Set(['wind_offshore', 'wind_offshore_operational']);
+
+  function isProjectTech(tech) {
+    if (!tech) return false;
+    if (PROJECT_TECHS.has(tech)) return true;
+    // Ask the engine. If it has a control for this layer, it is a technology
+    // this map knows about, whatever this cartridge was written knowing.
+    try {
+      return Boolean(document.querySelector(
+        'input[type=checkbox][data-layer-id="' + String(tech).replace(/"/g, '') + '"]'));
+    } catch (error) {
+      return false;
+    }
+  }
 
   // SCADA on a dark map, not arcade neon. These are the muted siblings of the
   // engine's own layer colours: enough saturation to read as live, low enough
@@ -140,7 +176,11 @@
   const TECH_COLOUR = {
     solar: '#d8c96a', solar_operational: '#d8c96a', solar_roof: '#d8c96a',
     bess: '#d9963c', bess_operational: '#d9963c',
-    wind: '#6fb582', wind_onshore_operational: '#6fb582'
+    wind: '#6fb582', wind_onshore: '#6fb582', wind_onshore_operational: '#6fb582',
+    // Offshore reads cooler than onshore: it is the one technology here whose
+    // links are deliberately not drawn, and it should not look like the others.
+    wind_offshore: '#5f9fb5', wind_offshore_operational: '#5f9fb5',
+    biomass: '#b58f6f', hydro: '#6f9fd8', hydrogen: '#a98fd8'
   };
   const SUBSTATION_COLOUR = '#5fbdc2';   // teal, the substation end of a link
   const FLOW_COLOUR = '#bfe9ee';         // pale cyan travelling pulse, not white
@@ -304,7 +344,7 @@
     for (const feature of features) {
       const properties = feature.properties || {};
       const tech = String(properties.tech || properties.type || '');
-      if (!PROJECT_TECHS.has(tech)) continue;
+      if (!isProjectTech(tech)) continue;
       const at = representativePoint(feature.geometry);
       if (!at) continue;
       // One source, many tiles: the same project surfaces more than once.
@@ -331,6 +371,8 @@
   link.measure.MAX_LINK_KM = MAX_LINK_KM;
   link.measure.LINK_COUNT = LINK_COUNT;
   link.measure.PROJECT_TECHS = PROJECT_TECHS;
+  link.measure.OFFSHORE_TECHS = OFFSHORE_TECHS;
+  link.measure.isProjectTech = isProjectTech;
 
   /* ── the project card ────────────────────────────────────────────────── */
 
@@ -430,7 +472,19 @@
   // Remembered so the LAYOUT button knows what it was opened from.
   let lastSelection = null;
 
+  const OFFSHORE_NOTE =
+    'No distance is measured for an offshore project. An offshore turbine '
+    + 'reaches an offshore substation, an export cable and a landfall before '
+    + 'anything onshore, and the route inland is chosen for consent and ground '
+    + 'conditions rather than distance. A straight line to the nearest onshore '
+    + 'substation would be a number with nothing behind it.';
+
   function cardBlockHtml(links, direction, layerLoaded = true) {
+    if (direction === 'offshore') {
+      return `<div class="${BLOCK_CLASS}">`
+        + `<div class="neon-head">OFFSHORE <span class="neon-beta">Beta</span></div>`
+        + `<p class="neon-caveat">${OFFSHORE_NOTE}</p></div>`;
+    }
     installStyles();
     const toSubstations = direction !== 'from-substation';
     const title = toSubstations
@@ -1585,6 +1639,24 @@
           null, found.loaded);
         return;
       }
+      if (OFFSHORE_TECHS.has(tech)) {
+        /* A card, and no links.
+           ----------------------------------------------------------------
+           An offshore turbine does not reach the nearest onshore substation
+           by a straight line. It reaches an offshore substation, then an
+           export cable, then a landfall, then a route inland that is chosen
+           for consent and ground conditions rather than distance. A
+           straight-line measurement here would be the loudest wrong answer
+           this map is capable of giving, and the closer it looked to the
+           others the more it would be believed.
+
+           Before this it was worse than wrong: offshore was not in the
+           accepted set at all, so the MAP button did nothing whatsoever for
+           109 projects. Silence is not caution. A card that explains why the
+           measurement is withheld is the honest version. */
+        drawLinks(map, origin, name, tech, [], 'offshore', statedMw);
+        return;
+      }
       const subs = await loadSubstations();
       drawLinks(map, origin, name, tech,
         nearestSubstations(origin[0], origin[1], subs), 'to-substation', statedMw);
@@ -1607,7 +1679,7 @@
         const hit = features.find(feature => {
           const properties = feature.properties || {};
           const tech = String(properties.tech || properties.type || '');
-          return PROJECT_TECHS.has(tech) || feature.layer?.id === SUBS_LAYER_ID;
+          return isProjectTech(tech) || feature.layer?.id === SUBS_LAYER_ID;
         });
         if (!hit) { clearLinks(); return; }
 
@@ -1637,7 +1709,13 @@
         const lat = Number(q.get('latitude'));
         const tech = String(q.get('technology') || '');
         if (!Number.isFinite(lon) || !Number.isFinite(lat)) return;
-        if (!PROJECT_TECHS.has(tech)) return;
+        if (!isProjectTech(tech)) {
+          // Recorded rather than silent. A MAP button that does nothing is the
+          // worst outcome available, and for a third of the register that is
+          // exactly what this line used to produce.
+          link.failures.push('deep link: unknown technology "' + tech + '"');
+          return;
+        }
         const name = q.get('project') || 'Deep-linked project';
         // Turn the substations on. Arriving from the MAP button in Pipeline
         // News, the whole point is to see the project against the network, and
