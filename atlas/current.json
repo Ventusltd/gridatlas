@@ -1,6 +1,6 @@
 {
   "schema": "gridatlas.current.v2",
-  "generation": "202608311949",
+  "generation": "202608311952",
   "previous_generation": "202608311910",
   "architecture": "IMMUTABLE_SHELL_PLUS_HASHED_CARTRIDGES",
   "live_route": "/gridatlas/atlas/",
@@ -58,13 +58,13 @@
     },
     {
       "id": "sld-sandbox",
-      "generation": "202608311949",
+      "generation": "202608311952",
       "version": "v9.7",
       "type": "script",
       "slot": "replace-script",
       "replace_script": "202608292126-pre-snapped-config-adapter.js",
-      "path": "./cartridges/202608311949-sld-sandbox-v9-7.js",
-      "sha256": "5fe89ac2b38d3076ebf804924e4687a6e98eb26d0a8fcd13a5671e8f2dcaf6d0",
+      "path": "./cartridges/202608311952-sld-sandbox-v9-7.js",
+      "sha256": "decc07aa0dd27b656c5fce5bfd73d582419af6403f58c91f4747f328ad9ea48d",
       "capabilities": [
         "pre-snapped-config-adapter-carried-forward",
         "project-or-substation-selection",
@@ -177,15 +177,15 @@
       "result_class": "LOCATION_ONLY"
     }
   },
-  "composition_manifest": "./manifests/202608311949-composition.json",
+  "composition_manifest": "./manifests/202608311952-composition.json",
   "scope_closure": {
-    "generation": "202608311949",
+    "generation": "202608311952",
     "status": "DONE",
     "scope": "GridAtlas v9.7 SLD layout sandbox on the canonical geodesy",
     "schedule_retired": true
   },
   "composition_version": "v9.7",
-  "composition_id": "202608311949-gridatlas-v9.7",
+  "composition_id": "202608311952-gridatlas-v9.7",
   "transport": {
     "response_contract": "HEADERS_BEFORE_PARQUET_BODY",
     "engine_timeout_seconds": 15,
