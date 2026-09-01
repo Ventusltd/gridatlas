@@ -1,7 +1,7 @@
 {
   "schema": "gridatlas.composition-manifest.v1",
-  "generation": "202609010106",
-  "parent_generation": "202609010058",
+  "generation": "202609010204",
+  "parent_generation": "202609010106",
   "live_route": "/gridatlas/atlas/",
   "shell": {
     "release_id": "202608300453-atlas-v9",
@@ -66,13 +66,13 @@
     },
     {
       "id": "sld-sandbox",
-      "generation": "202609010106",
-      "version": "v9.39",
+      "generation": "202609010204",
+      "version": "v9.40",
       "type": "script",
       "slot": "replace-script",
       "replace_script": "202608292126-pre-snapped-config-adapter.js",
-      "path": "./cartridges/202609010106-sld-sandbox-v9-8.js",
-      "sha256": "ebc5ae39cecdb5ea00e5c03aa14ca33dcc342c7149170e8547b8e4dc86775cf3",
+      "path": "./cartridges/202609010204-sld-sandbox-v9-8.js",
+      "sha256": "61bbbfc5264562d956bbab5ff687fc807545cdc143cc5e4778a6836c4d88624f",
       "capabilities": [
         "pre-snapped-config-adapter-carried-forward",
         "project-or-substation-selection",
@@ -152,7 +152,8 @@
         "original-central-input-defaults",
         "one-bess-value-for-layout-and-finance",
         "fractional-topology-counts-rejected",
-        "original-electrical-input-bounds"
+        "original-electrical-input-bounds",
+        "version-ledger-on-the-page"
       ],
       "immutable_shell_modified": false,
       "supersedes_shell_script": {
@@ -362,13 +363,24 @@
         "dom_fix": "Pointer Events with pointer capture on the card and panel handles; no document-wide move listeners are recreated when the panel redraws",
         "map_fix": "MapLibre touchstart, touchmove and touchend share the mouse drag path; interrupted pointers release the drag, and map gestures are restored only if they were enabled before it",
         "containment": "the whole card width is clamped to the map, the panel is bounded by top and bottom, short landscape controls scroll, search results are viewport bounded, and primary panel controls are 44 CSS pixels",
-        "source_viewports": ["390x844", "414x896", "844x390"],
+        "source_viewports": [
+          "390x844",
+          "414x896",
+          "844x390"
+        ],
         "live_acceptance": "PENDING_CLAUDE"
       },
       "ratio_rendering": {
         "problem": "the arithmetic kept array DC, inverter AC and export MVA separate but the visible panel relabelled array divided by export as DC/AC and graded it against a usual range",
         "now": "the panel names array DC, inverter AC and export limit separately; design DC/AC, DC/export and inverter/export are three distinct rows",
         "mismatch": "entered and derived DC/AC remain visible without rewriting inputs or declaring the design good, bad, close or remote"
+      },
+      "version_ledger": {
+        "what": "every composition this cartridge line has ever shipped, with its generation, version and one-line scope, as a collapsed mobile-first panel on the map",
+        "source": "extracted from the repository history at build time - every composition manifest that ever existed, read at its last commit; pinned history carried by the page, nothing fetched at runtime",
+        "span": "v9.16 through v9.40, 25 scoped entries, 16 pre-scope compositions counted",
+        "doctrine_stated": "a bad composition is never repaired in place; an earlier one is composed again under a new timestamp",
+        "why": "Vikram: produce timestamped versions on the website. They existed everywhere except where a visitor could see them"
       }
     }
   ],
@@ -397,8 +409,8 @@
     "offshore_wind_excluded_from_links": true,
     "cards_fit_after_drag_and_restore": true,
     "shell_modified": false,
-    "scope": "remove duplicate BESS truth, restore original central defaults and reject fractional topology counts",
-    "proof": "tools/proofs/202609010106-sld-sandbox.proof.mjs, 406 checks; tools/proofs/202609010002-original-sld-finance-fixture.mjs, 4 executable-original cases; tools/proofs/202609010030-mobile-static.audit.mjs, CLEAN"
+    "scope": "the version ledger itself, on the page",
+    "proof": "tools/proofs/202609010204-sld-sandbox.proof.mjs, 417 checks"
   },
   "version": "v9.39",
   "composition_id": "202609010106-gridatlas-v9.39",
@@ -408,5 +420,5 @@
     "source_sha256": "07d33eda5b3279a03df4c0a0aded61e4363c46734dda991aa5f48ae0d55097da",
     "transformation": "carry the pre-snap config rewrite verbatim; add a measured link layer and on-card beta distances"
   },
-  "composition_version": "v9.39"
+  "composition_version": "v9.40"
 }

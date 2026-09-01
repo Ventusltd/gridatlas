@@ -1,7 +1,7 @@
 /**
  * GridAtlas cartridge — neon substation links and the SLD layout sandbox.
  *
- * Generation 202609010106 (UTC), composition v9.39. Slot: replace-script for
+ * Generation 202609010106 (UTC), composition v9.40. Slot: replace-script for
  * 202608292126-pre-snapped-config-adapter.js.
  *
  * WHAT IT DOES
@@ -61,7 +61,7 @@
 (() => {
   'use strict';
 
-  const GENERATION = '202609010106';
+  const GENERATION = '202609010204';
 
   /* ══════════════════════════════════════════════════════════════════════
      PART 1 — the pre-snapped config adapter, carried forward unchanged.
@@ -317,6 +317,7 @@
     status_message: null,
     labels_drawn: null,
     gb_panel_installed: false,
+    version_ledger: null,
     gb_conditions: null,
     project_layer_enabled: null,
     project_pin: { shown: false, name: null },
@@ -1751,6 +1752,96 @@
     };
   }
 
+
+  /* ── the version ledger, on the page ──────────────────────────────────
+     The estate's whole method is sealed, timestamped compositions - build a
+     new one, never edit the last - and in one overnight session that produced
+     twenty-four of them, each a correction with a one-line scope. Pipeline
+     News ledgers its releases on the homepage; the Atlas's generations were
+     visible only in git, which a visitor does not have.
+
+     The ledger below is extracted from git at BUILD time: every composition
+     manifest that ever existed, read at its last commit. It is pinned history
+     carried by the page, not prose about it, and nothing is fetched at
+     runtime. Rollback doctrine, stated where the versions are: a bad
+     composition is never repaired in place - an earlier one is composed
+     again under a new timestamp.
+
+     Mobile first, like everything since Vikram said the link travels by
+     WhatsApp: a collapsed chip, viewport-sized body, newest first. */
+  const VERSION_LEDGER = [{"g":"202608312121","v":"v9.16","s":"the project arriving from Pipeline News is visible: its own technology layer is enabled and a pin owned by this cartridge is dropped on it, with a toggle on the card"},{"g":"202608312133","v":"v9.17","s":"central AC sizing: the limiting nameplate, not a squared product"},{"g":"202608312140","v":"v9.18","s":"the project marker is a ring, found by looking at it in Chrome"},{"g":"202608312154","v":"v9.19","s":"the grid maths installs even when the basemap never paints"},{"g":"202608312157","v":"v9.20","s":"the Atlas says what it is waiting for, sized for a phone"},{"g":"202608312205","v":"v9.21","s":"the MapLibre exception storm: symbol layers with no glyph atlas"},{"g":"202608312208","v":"v9.22","s":"a symbol layer is added only once its text can be drawn"},{"g":"202608312222","v":"v9.23","s":"card geometry resets on every selection"},{"g":"202608312227","v":"v9.24","s":"the GB electricity tracker is connected to the map"},{"g":"202608312238","v":"v9.25","s":"one source of truth for GB prices: the data repository"},{"g":"202608312244","v":"v9.26","s":"late layer controls are used, and the repository is LF everywhere"},{"g":"202608312257","v":"v9.27","s":"the MAP button works for every technology in the register"},{"g":"202608312300","v":"v9.28","s":"voltage classes are explained, and the whole dashboard is accepted"},{"g":"202608312306","v":"v9.29","s":"the headline capacity actually moves the layout"},{"g":"202608312313","v":"v9.30","s":"the neon flow no longer exhausts the renderer"},{"g":"202608312315","v":"v9.31","s":"Codex's LineAtlas cardinality gate passes"},{"g":"202608312317","v":"v9.32","s":"no substation can display an impossible voltage"},{"g":"202608312321","v":"v9.33","s":"nothing can rewrite the reference design, not even later"},{"g":"202608312324","v":"v9.34","s":"a missing source costs a drawing, never the session"},{"g":"202609010021","v":"v9.35","s":"phone pointer operation, viewport containment and named electrical ratios"},{"g":"202609010040","v":"v9.36","s":"original financial-model parity with explicit correction of the known central AC double-count"},{"g":"202609010053","v":"v9.37","s":"complete the original finance interaction contract by linking development stage, cost and success"},{"g":"202609010058","v":"v9.38","s":"restore topology-isolated physical inputs and the original mounting-to-bifacial linkage"},{"g":"202609010106","v":"v9.39","s":"remove duplicate BESS truth, restore original central defaults and reject fractional topology counts"},{"g":"202609010204","v":"v9.40","s":"the version ledger itself, on the page"}];
+  const PRE_SCOPE_COMPOSITIONS = 16;
+  const LEDGER_ID = 'gridatlas-version-ledger';
+
+  function ledgerStamp(generation) {
+    return generation.slice(0, 4) + '-' + generation.slice(4, 6) + '-'
+      + generation.slice(6, 8) + ' ' + generation.slice(8, 10) + ':'
+      + generation.slice(10, 12) + ' UTC';
+  }
+
+  function installVersionLedger() {
+    if (document.getElementById(LEDGER_ID)) return;
+    const stack = document.querySelector('.map-controls');
+    if (!stack) { link.failures.push('no map-controls for the ledger'); return; }
+
+    const style = document.createElement('style');
+    style.id = LEDGER_ID + '-style';
+    style.textContent = `
+#${LEDGER_ID}{margin-top:6px;font:11px/1.5 ui-monospace,SFMono-Regular,Menlo,monospace}
+#${LEDGER_ID} > button{display:block;width:100%;padding:6px 8px;background:#0a1a1d;
+  border:1px solid #2f6f75;border-radius:3px;color:#8fb3b8;font:inherit;
+  letter-spacing:.06em;text-transform:uppercase;cursor:pointer;text-align:left}
+#${LEDGER_ID} > button:hover{border-color:#5fbdc2;color:#bfe9ee}
+#${LEDGER_ID} .vl-body{display:none;margin-top:5px;padding:8px;border:1px solid #1d3238;
+  border-radius:3px;background:rgba(6,18,21,.94);max-width:min(88vw,300px);
+  max-height:min(56vh,380px);overflow:auto;overscroll-behavior:contain}
+#${LEDGER_ID}[data-open="1"] .vl-body{display:block}
+#${LEDGER_ID} .vl-row{padding:4px 0;border-bottom:1px solid #142226}
+#${LEDGER_ID} .vl-head{display:flex;justify-content:space-between;gap:8px}
+#${LEDGER_ID} .vl-ver{color:#bfe9ee;font-weight:bold}
+#${LEDGER_ID} .vl-when{color:#5f7a80;font-size:10px}
+#${LEDGER_ID} .vl-scope{color:#9fb3ba;font-size:10px;line-height:1.4;margin-top:1px}
+#${LEDGER_ID} .vl-note{margin:7px 0 0;color:#6f8288;font-size:10px;line-height:1.45}`;
+    document.head.appendChild(style);
+
+    const panel = document.createElement('div');
+    panel.id = LEDGER_ID;
+    panel.dataset.open = '0';
+    const button = document.createElement('button');
+    button.type = 'button';
+    const newest = VERSION_LEDGER[VERSION_LEDGER.length - 1];
+    button.textContent = 'Versions \u00b7 ' + newest.v + ' \u25b8';
+    button.setAttribute('aria-expanded', 'false');
+    const body = document.createElement('div');
+    body.className = 'vl-body';
+
+    const rows = [...VERSION_LEDGER].reverse().map(entry =>
+      '<div class="vl-row"><div class="vl-head">'
+      + '<span class="vl-ver">' + entry.v + '</span>'
+      + '<span class="vl-when">' + ledgerStamp(entry.g) + '</span></div>'
+      + '<div class="vl-scope">' + entry.s + '</div></div>').join('');
+    body.innerHTML = rows
+      + '<p class="vl-note">Every entry is a sealed composition: a bad one is '
+      + 'never repaired in place, an earlier one is composed again under a new '
+      + 'timestamp. ' + PRE_SCOPE_COMPOSITIONS + ' earlier compositions predate '
+      + 'the scope line. Extracted from the repository history at build time; '
+      + 'nothing here is fetched or editable at runtime.</p>';
+
+    panel.appendChild(button);
+    panel.appendChild(body);
+    button.addEventListener('click', (event) => {
+      event.stopPropagation();
+      event.preventDefault();
+      const open = panel.dataset.open === '1';
+      panel.dataset.open = open ? '0' : '1';
+      button.textContent = 'Versions \u00b7 ' + newest.v + (open ? ' \u25b8' : ' \u25be');
+      button.setAttribute('aria-expanded', String(!open));
+    });
+    panel.addEventListener('click', (event) => event.stopPropagation());
+    stack.appendChild(panel);
+    link.version_ledger = { entries: VERSION_LEDGER.length, newest: newest.v };
+  }
+
   function installGbConditions() {
     if (document.getElementById(GB_ID)) return;
     const stack = document.querySelector('.map-controls');
@@ -2022,6 +2113,7 @@
     });
 
     installGbConditions();
+    installVersionLedger();
 
     window.addEventListener('resize', boundCardToMap);
     map.on('resize', boundCardToMap);

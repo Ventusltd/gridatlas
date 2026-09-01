@@ -1,7 +1,7 @@
 {
   "schema": "gridatlas.current.v2",
-  "generation": "202609010106",
-  "previous_generation": "202609010058",
+  "generation": "202609010204",
+  "previous_generation": "202609010106",
   "architecture": "IMMUTABLE_SHELL_PLUS_HASHED_CARTRIDGES",
   "live_route": "/gridatlas/atlas/",
   "release_id": "202608300453-atlas-v9",
@@ -58,13 +58,13 @@
     },
     {
       "id": "sld-sandbox",
-      "generation": "202609010106",
-      "version": "v9.39",
+      "generation": "202609010204",
+      "version": "v9.40",
       "type": "script",
       "slot": "replace-script",
       "replace_script": "202608292126-pre-snapped-config-adapter.js",
-      "path": "./cartridges/202609010106-sld-sandbox-v9-8.js",
-      "sha256": "ebc5ae39cecdb5ea00e5c03aa14ca33dcc342c7149170e8547b8e4dc86775cf3",
+      "path": "./cartridges/202609010204-sld-sandbox-v9-8.js",
+      "sha256": "61bbbfc5264562d956bbab5ff687fc807545cdc143cc5e4778a6836c4d88624f",
       "capabilities": [
         "pre-snapped-config-adapter-carried-forward",
         "project-or-substation-selection",
@@ -144,7 +144,8 @@
         "original-central-input-defaults",
         "one-bess-value-for-layout-and-finance",
         "fractional-topology-counts-rejected",
-        "original-electrical-input-bounds"
+        "original-electrical-input-bounds",
+        "version-ledger-on-the-page"
       ],
       "immutable_shell_modified": false,
       "supersedes_shell_script": {
@@ -354,13 +355,24 @@
         "dom_fix": "Pointer Events with pointer capture on the card and panel handles; no document-wide move listeners are recreated when the panel redraws",
         "map_fix": "MapLibre touchstart, touchmove and touchend share the mouse drag path; interrupted pointers release the drag, and map gestures are restored only if they were enabled before it",
         "containment": "the whole card width is clamped to the map, the panel is bounded by top and bottom, short landscape controls scroll, search results are viewport bounded, and primary panel controls are 44 CSS pixels",
-        "source_viewports": ["390x844", "414x896", "844x390"],
+        "source_viewports": [
+          "390x844",
+          "414x896",
+          "844x390"
+        ],
         "live_acceptance": "PENDING_CLAUDE"
       },
       "ratio_rendering": {
         "problem": "the arithmetic kept array DC, inverter AC and export MVA separate but the visible panel relabelled array divided by export as DC/AC and graded it against a usual range",
         "now": "the panel names array DC, inverter AC and export limit separately; design DC/AC, DC/export and inverter/export are three distinct rows",
         "mismatch": "entered and derived DC/AC remain visible without rewriting inputs or declaring the design good, bad, close or remote"
+      },
+      "version_ledger": {
+        "what": "every composition this cartridge line has ever shipped, with its generation, version and one-line scope, as a collapsed mobile-first panel on the map",
+        "source": "extracted from the repository history at build time - every composition manifest that ever existed, read at its last commit; pinned history carried by the page, nothing fetched at runtime",
+        "span": "v9.16 through v9.40, 25 scoped entries, 16 pre-scope compositions counted",
+        "doctrine_stated": "a bad composition is never repaired in place; an earlier one is composed again under a new timestamp",
+        "why": "Vikram: produce timestamped versions on the website. They existed everywhere except where a visitor could see them"
       }
     }
   ],
@@ -406,15 +418,15 @@
       "result_class": "LOCATION_ONLY"
     }
   },
-  "composition_manifest": "./manifests/202609010106-composition.json",
+  "composition_manifest": "./manifests/202609010204-composition.json",
   "scope_closure": {
-    "generation": "202609010106",
+    "generation": "202609010204",
     "status": "DONE",
-    "scope": "GridAtlas v9.39 remove duplicate BESS truth, restore original defaults and guard topology counts",
+    "scope": "GridAtlas v9.40 the version ledger itself, on the page",
     "schedule_retired": true
   },
-  "composition_version": "v9.39",
-  "composition_id": "202609010106-gridatlas-v9.39",
+  "composition_version": "v9.40",
+  "composition_id": "202609010204-gridatlas-v9.40",
   "transport": {
     "response_contract": "HEADERS_BEFORE_PARQUET_BODY",
     "engine_timeout_seconds": 15,

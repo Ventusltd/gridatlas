@@ -1,5 +1,5 @@
 /**
- * Proof for the neon links + SLD layout sandbox cartridge, generation 202609010106.
+ * Proof for the neon links + SLD layout sandbox cartridge, generation 202609010204.
  *
  * No dependencies. The repository carries playwright and no DOM library, so
  * rather than add one this stubs the small surface the cartridge actually
@@ -32,7 +32,7 @@ import vm from 'node:vm';
 const HERE = dirname(fileURLToPath(import.meta.url));
 const REPO = resolve(HERE, '..', '..');
 const CARTRIDGE = join(REPO, 'atlas', 'cartridges',
-  '202609010106-sld-sandbox-v9-8.js');
+  '202609010204-sld-sandbox-v9-8.js');
 const ORIGINAL = join(REPO, 'atlas', 'releases', '202608300453-atlas-v9',
   '202608292126-pre-snapped-config-adapter.js');
 const FINANCE_ORACLE = join(REPO, 'tools', 'proofs', 'fixtures',
@@ -681,6 +681,54 @@ check('a style with glyphs and a labelled layer yields that layer\'s font', (() 
   }
   return found && found[0] === 'Noto Sans Bold';
 })());
+
+
+console.log('\nthe version ledger\n');
+
+/* The bonus version, earned by reviewing all versions: the estate's method is
+   sealed timestamped compositions, twenty-four of them in one overnight
+   session, and they were visible only in git. The ledger is extracted from
+   the repository history at BUILD time and carried by the page - pinned
+   history, not prose, nothing fetched at runtime. */
+const vl = cartridgeSource;
+check('the ledger exists and is embedded, not fetched',
+  /const VERSION_LEDGER = \[/.test(vl)
+  && !/fetch\([^)]*ledger/i.test(vl));
+check('it spans the whole reviewed session', (() => {
+  const m = vl.match(/const VERSION_LEDGER = (\[[^\n]*\]);/);
+  if (!m) return false;
+  const ledger = JSON.parse(m[1]);
+  const versions = ledger.map(e => e.v);
+  return versions.includes('v9.16') && versions.includes('v9.39')
+    && versions[versions.length - 1] === 'v9.40' && ledger.length >= 25;
+})());
+check('every entry carries a generation, a version and a scope', (() => {
+  const m = vl.match(/const VERSION_LEDGER = (\[[^\n]*\]);/);
+  const ledger = JSON.parse(m[1]);
+  return ledger.every(e => /^\d{12}$/.test(e.g) && /^v9\.\d+$/.test(e.v)
+    && typeof e.s === 'string' && e.s.length > 0);
+})());
+check('generations are strictly increasing, as timestamps must be', (() => {
+  const m = vl.match(/const VERSION_LEDGER = (\[[^\n]*\]);/);
+  const ledger = JSON.parse(m[1]);
+  return ledger.every((e, i) => i === 0 || e.g > ledger[i - 1].g);
+})());
+check('the rollback doctrine is stated where the versions are',
+  /never repaired in place, an earlier one is composed again/.test(vl.replace(/\s+/g, ' ')));
+check('the pre-scope era is counted, not hidden',
+  /const PRE_SCOPE_COMPOSITIONS = \d+;/.test(vl)
+  && /earlier compositions predate/.test(vl.replace(/\s+/g, ' ')));
+check('newest first for the reader',
+  /\[\.\.\.VERSION_LEDGER\]\.reverse\(\)/.test(vl));
+check('it opens collapsed and is sized for a phone',
+  /panel\.dataset\.open = '0';/.test(vl)
+  && /max-width:min\(88vw,300px\)/.test(vl));
+check('its clicks do not reach the map underneath',
+  vl.includes("panel.addEventListener('click', (event) => event.stopPropagation())"));
+check('it reports its state to assistive technology',
+  vl.split('LEDGER_ID')[1] !== undefined
+  && /aria-expanded/.test(vl));
+check('the published state carries the ledger size', 'version_ledger' in link);
 
 
 console.log('\nsaying what is happening\n');
