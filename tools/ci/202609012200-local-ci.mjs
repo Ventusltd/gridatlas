@@ -43,7 +43,7 @@
 
 import { execFileSync } from 'node:child_process';
 import { existsSync, writeFileSync, readFileSync } from 'node:fs';
-import { dirname, join, resolve } from 'node:path';
+import { basename, dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const HERE = dirname(fileURLToPath(import.meta.url));
@@ -298,7 +298,8 @@ const GATES = [
   ['grid scope', ['tools/proofs/modules/202609012040-grid-scope.proof.mjs']],
   ['network topology', ['tools/proofs/modules/202609012145-network-topology.proof.mjs']],
   ['assembler', ['tools/proofs/modules/202609012010-assembler.proof.mjs']],
-  ['source registry', ['tools/proofs/modules/202609012245-source-registry.proof.mjs']]
+  ['source registry', ['tools/proofs/modules/202609012135-source-registry.proof.mjs']],
+  ['declared connections', ['tools/proofs/modules/202609012130-declared-connections.proof.mjs']]
 ];
 
 for (const [name, args] of GATES) {
@@ -424,6 +425,114 @@ if (!skippers.length) {
 }
 report.skips = { proofs_read: proofsRead, skippers };
 
+
+/* ═══════════════════════════════════════════════════════════════════════
+   PASS 5 - A STAMP IS A CLOCK
+   ═══════════════════════════════════════════════════════════════════════
+   Found 1 Sep 2026, 21:2x UTC, by asking what time it was. Every stamp
+   chosen that evening ran ahead of the clock, by up to 249 minutes: the
+   composition named 202609012250 was committed at 18:51 UTC. The CVAA
+   vaccine monotonic-utc-generations had said since 30 Aug that a
+   generation is read from date -u, never chosen, and had been run against
+   nothing. A vaccine nobody runs is a note.
+
+   Three questions, one per tense:
+     history  - how far did committed stamps sit from their commit clocks?
+                Reported, never failed: history is not amended.
+     present  - is any stamped file in the working tree named for a time
+                the clock has not reached? Failed: that is a typed stamp.
+     the loop - does the sibling cvaa run here, and what does it say?
+                Failed if cvaa is absent. A skip is not a pass. */
+
+console.log('\n\x1b[1mPASS 5 - a stamp is a clock\x1b[0m');
+
+const STAMP_TOLERANCE_MIN = 15;
+const stampMinutes = (s) => Date.UTC(+s.slice(0, 4), +s.slice(4, 6) - 1,
+  +s.slice(6, 8), +s.slice(8, 10), +s.slice(10, 12)) / 60000;
+const nowStamp = new Date().toISOString().replace(/[-:T]/g, '').slice(0, 12);
+report.clock = { now_utc: nowStamp, repos: {} };
+
+for (const repo of REPOS) {
+  /* history: commit subject stamp vs committer clock, UTC */
+  const raw = git(repo, ['log', '--all', '--no-merges', '--date=iso-strict',
+    '--pretty=format:%h%x1f%cI%x1f%s']);
+  const rows = raw.split('\n').map(line => line.split(UNIT)).filter(r => r.length === 3);
+  const drifts = [];
+  for (const [hash, when, subject] of rows) {
+    const m = (subject || '').match(/^(\d{12})\b/);
+    if (!m) continue;
+    const committed = new Date(when).toISOString().replace(/[-:T]/g, '').slice(0, 12);
+    const drift = stampMinutes(m[1]) - stampMinutes(committed);
+    if (Math.abs(drift) > STAMP_TOLERANCE_MIN) drifts.push({ hash, stamp: m[1], committed, drift });
+  }
+  const worst = drifts.reduce((a, b) => Math.abs(b.drift) > Math.abs(a.drift) ? b : a, { drift: 0 });
+
+  /* present: every stamped file name in the working tree, tracked or not.
+     A file already in HEAD is history - it was committed ahead of the
+     clock and is reported, and the clock will catch up with its name. A
+     file NOT in HEAD is being committed now, and a future name on it is a
+     typed stamp: that fails. */
+  const committed = new Set(git(repo, ['ls-tree', '-r', '--name-only', 'HEAD']).split('\n'));
+  const listed = git(repo, ['ls-files', '--cached', '--others', '--exclude-standard']);
+  const future = [];
+  const inherited = [];
+  for (const file of listed.split('\n')) {
+    const m = basename(file).match(/^(\d{12})[-.]/);
+    if (!m) continue;
+    const ahead = stampMinutes(m[1]) - stampMinutes(nowStamp);
+    if (ahead <= STAMP_TOLERANCE_MIN) continue;
+    (committed.has(file) ? inherited : future).push({ file, ahead });
+  }
+
+  console.log(`\n  \x1b[1m${repo.name}\x1b[0m  ${rows.length} commits, `
+    + `${drifts.length} stamped more than ${STAMP_TOLERANCE_MIN} min from the commit clock`
+    + (drifts.length ? `; worst ${worst.hash} ${worst.stamp} vs ${worst.committed} (${worst.drift > 0 ? '+' : ''}${worst.drift} min)` : ''));
+  if (inherited.length) {
+    console.log(`    ${inherited.length} committed file(s) still named ahead of ${nowStamp} UTC (history; the clock catches up)`);
+  }
+  if (future.length) {
+    console.log(`    \x1b[31m${future.length} file(s) in the working tree are stamped in the future of ${nowStamp} UTC:\x1b[0m`);
+    for (const item of future.slice(0, 8)) console.log(`      ${item.file}  (+${item.ahead} min)`);
+    flaws.push({ severity: 'typed-stamp',
+      detail: `${repo.name}: ${future.length} file(s) stamped ahead of the clock`,
+      paths: future.map(f => f.file) });
+  } else {
+    console.log(`    \x1b[32mno file in the working tree is stamped ahead of ${nowStamp} UTC\x1b[0m`);
+  }
+
+  /* the loop: the sibling cvaa, run here */
+  const cvaa = join(HOME, 'cvaa', 'inoculate.mjs');
+  let cvaaSummary = null;
+  if (!existsSync(cvaa)) {
+    console.log(`    \x1b[31mcvaa is not beside this repository (${cvaa}); a skip is not a pass\x1b[0m`);
+    flaws.push({ severity: 'cvaa-absent', detail: `${repo.name}: cvaa/inoculate.mjs not found beside the repository`, paths: [cvaa] });
+  } else {
+    let out = '';
+    try {
+      out = execFileSync(process.execPath, [cvaa, repo.path, '--json'],
+        { cwd: dirname(cvaa), encoding: 'utf8', maxBuffer: 64 * 1024 * 1024 });
+    } catch (error) { out = (error.stdout || '') + (error.stderr || ''); }
+    const line = out.split('\n').find(l => l.startsWith('{"schema":"cvaa.run.v1"'));
+    if (!line) {
+      console.log('    \x1b[31mcvaa ran and produced no cvaa.run.v1 record\x1b[0m');
+      flaws.push({ severity: 'cvaa-unreadable', detail: `${repo.name}: inoculate.mjs produced no cvaa.run.v1 record`, paths: [cvaa] });
+    } else {
+      const run = JSON.parse(line);
+      const clockRule = (run.results || []).find(r => r.vaccine === 'monotonic-utc-generations');
+      const offCount = (clockRule?.findings || []).filter(f => /minutes off/.test(f)).length;
+      const orderCount = (clockRule?.findings || []).filter(f => /earlier than previous/.test(f)).length;
+      const failing = (run.results || []).filter(r => r.state === 'fail').map(r => r.vaccine);
+      cvaaSummary = { status: run.status, findings: run.findings, failing,
+        monotonic_utc: { off_clock: offCount, out_of_order: orderCount } };
+      console.log(`    cvaa: ${run.status}, ${run.findings} finding(s) across ${failing.length} failing vaccine(s)`);
+      console.log(`    monotonic-utc-generations: ${offCount} commit(s) off the clock, ${orderCount} out of order`
+        + ' (history; reported, not amended)');
+    }
+  }
+  report.clock.repos[repo.name] = {
+    commits: rows.length, off_clock: drifts.length, worst: worst.hash ? worst : null,
+    future_files: future, cvaa: cvaaSummary };
+}
 const jsonOut = argv('--json');
 if (jsonOut) {
   writeFileSync(jsonOut, `${JSON.stringify(report, null, 1)}\n`, 'utf8');

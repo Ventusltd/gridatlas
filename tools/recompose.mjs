@@ -13,8 +13,12 @@
  * that did not change keeps its own generation, which is why the composition
  * carries mixed stamps and should.
  *
- *   node tools/recompose.mjs --generation 202609012110 --version v9.64 \
- *     --restamp sld-sandbox --note "why this generation exists"
+ *   node tools/recompose.mjs --version v9.64 --restamp sld-sandbox \
+ *     --scope "..." --proof ... --note "why this generation exists"
+ *
+ *   The generation is read from the clock (UTC). --generation is accepted
+ *   only within five minutes of now; --replace-module old=new swaps a
+ *   module for its successor; --add-module appends one after the last.
  *
  * A restamped cartridge with a parts manifest is REASSEMBLED from the same
  * part list through tools/build-cartridge.mjs, so an edited part actually
@@ -41,10 +45,29 @@ function argv(flag, { many = false } = {}) {
   return many ? values : values[0];
 }
 
-const generation = argv('--generation');
+/* The generation is READ FROM THE CLOCK, never typed.
+   ------------------------------------------------------------------------
+   On the evening of 1 Sep 2026 two agents typed stamps by hand and both ran
+   ahead of the clock: v9.67 is named 202609012250 and was cut at 18:51 UTC,
+   four hours before the time its name claims. The CVAA vaccine
+   monotonic-utc-generations had said since 30 Aug that "generations are
+   read from date -u at commit time, never chosen"; it was in the registry
+   and not in the loop, and it fired 122 times when it was finally run.
+
+   So --generation is optional and defaults to UTC now. Given explicitly it
+   must be within five minutes of UTC now: a stamp is a clock reading, and
+   a reading the clock has not reached is not a reading. */
+const utcNow = () => new Date().toISOString().replace(/[-:T]/g, '').slice(0, 12);
+const generation = argv('--generation') || utcNow();
 const version = argv('--version');
 const restamp = argv('--restamp', { many: true });
 const addModules = argv('--add-module', { many: true });
+const replaceModules = argv('--replace-module', { many: true })
+  .map(pair => {
+    const [from, to] = String(pair).split('=');
+    if (!from || !to) die(`--replace-module wants old/path.js=new/path.js, got ${pair}`);
+    return { from, to };
+  });
 const scope = argv('--scope');
 const proofs = argv('--proof', { many: true });
 const note = argv('--note') || '';
@@ -65,7 +88,15 @@ function die(message) {
   process.exit(1);
 }
 
-if (!generation || !/^\d{12}$/.test(generation)) die('--generation YYYYMMDDHHMM is required');
+if (!/^[0-9]{12}$/.test(generation)) die('--generation must be YYYYMMDDHHMM (UTC), or omitted to read the clock');
+{
+  const minute = (s) => Date.UTC(+s.slice(0, 4), +s.slice(4, 6) - 1, +s.slice(6, 8), +s.slice(8, 10), +s.slice(10, 12)) / 60000;
+  const drift = minute(generation) - minute(utcNow());
+  if (Math.abs(drift) > 5) {
+    die(`--generation ${generation} is ${drift > 0 ? drift + ' minutes ahead of' : (-drift) + ' minutes behind'} `
+      + `the clock (UTC now ${utcNow()}). A stamp is read from the clock, not chosen; omit --generation.`);
+  }
+}
 if (!version || !/^v\d+\.\d+$/.test(version)) die('--version vX.Y is required');
 if (!restamp.length) die('--restamp <cartridge-id> is required at least once');
 /* The first cut of this tool spread the previous composition manifest and
@@ -86,8 +117,18 @@ const currentPath = path.join(ATLAS, 'current.json');
 const current = readJson(currentPath);
 const previousGeneration = current.generation;
 
+/* Ordering is a consequence of the clock, not a rule of its own.
+   ------------------------------------------------------------------------
+   This used to refuse a generation that sorted before the current one.
+   Read from the clock, a new cut sorts after the previous one whenever the
+   previous one was honest. The one time it does not is the time this note
+   describes: the generation after v9.67 (202609012250, cut at 18:51 UTC)
+   was read from the clock at 21:xx UTC and sorts before it. The chain is
+   previous_generation, which is a pointer; a listing sorted by name shows
+   the lie of the earlier stamp, and should. */
 if (generation <= previousGeneration) {
-  die(`--generation ${generation} is not after the current ${previousGeneration}`);
+  console.warn(`  note: ${generation} sorts before the current ${previousGeneration} - `
+    + 'the earlier stamp was typed ahead of the clock; the chain is previous_generation');
 }
 const compositionPath = path.join(ATLAS, 'manifests', `${generation}-composition.json`);
 if (fs.existsSync(compositionPath)) {
@@ -122,6 +163,13 @@ for (const id of restamp) {
        undefined. That happened on the first attempt at v9.67. A module is
        inserted BEFORE the non-module parts, because a body that depends on
        a module must be evaluated after it. */
+    for (const swap of replaceModules) {
+      const entry = parts.find(e => e.role === 'module' && e.path === swap.from);
+      if (!entry) die(`--replace-module: ${swap.from} is not a module of this cartridge`);
+      if (!fs.existsSync(path.join(ROOT, swap.to))) die(`no such module: ${swap.to}`);
+      entry.path = swap.to;
+      console.log(`  ~module    ${swap.from} -> ${swap.to}`);
+    }
     for (const modulePath of addModules) {
       if (parts.some(entry => entry.path === modulePath)) continue;
       if (!fs.existsSync(path.join(ROOT, modulePath))) die(`no such module: ${modulePath}`);
@@ -226,6 +274,9 @@ const composition = {
   composition_version: version,
   composition_id: current.composition_id,
   version,
+  /* The clock, recorded beside the stamp, so a later reader can verify the
+     name against the time without opening git. */
+  cut_at_utc: new Date().toISOString(),
   acceptance: {
     ...previousComposition.acceptance,
     // Never inherited: these three describe THIS generation or they lie.

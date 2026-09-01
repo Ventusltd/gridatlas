@@ -54,12 +54,16 @@ const sha256 = (text) => createHash('sha256')
 
 const entries = (await readdir(MANIFESTS)).filter(f => f.endsWith('-parts.json'));
 
-/* Which generation is being served. verify-compose owns the composition
-   itself; this only needs to know which cartridges it names. */
-const compositions = (await readdir(MANIFESTS))
-  .filter(f => f.endsWith('-composition.json')).sort();
+/* Which generation is being served: the one atlas/current.json POINTS AT.
+   This used to take the last manifest in name order, which is the same
+   thing only while every stamp was read from the clock. On 1 Sep 2026 they
+   were typed ahead of it - v9.67 is named 202609012250 and was cut at
+   18:51 UTC - so the generation that succeeded it, read from the clock,
+   sorts before it. Name order called the served composition superseded and
+   the superseded one served, and then failed the wrong one. The pointer
+   is the chain; sort order is a coincidence of honest clocks. */
 const current = JSON.parse(
-  await readFile(join(MANIFESTS, compositions[compositions.length - 1]), 'utf8'));
+  await readFile(join(REPO, 'atlas', 'current.json'), 'utf8'));
 const currentGeneration = current.generation;
 const servedCartridges = new Set(
   (current.cartridges || []).map(c => basename(c.path || c.file || '')));

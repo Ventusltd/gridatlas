@@ -367,8 +367,15 @@ const shipped = await readFile(
   join(ATLAS, 'cartridges', composedSandbox.path.replace('./cartridges/', '')), 'utf8');
 const ledger = JSON.parse(shipped.match(/const VERSION_LEDGER = (\[[\s\S]*?\]);/)[1]);
 
-check('the ledger is not empty and is strictly increasing',
-  ledger.length > 25 && ledger.every((e, i) => i === 0 || e.g > ledger[i - 1].g));
+/* Strictly increasing, except after the one stamp recorded as typed ahead
+   of the clock (v9.67, 202609012250, cut at 18:51 UTC). The sandbox proof
+   holds the same record; an unrecorded step backwards is a typed stamp. */
+const TYPED_AHEAD = new Set(['202609012250']);
+check('the ledger is not empty and is strictly increasing, except after the one stamp typed ahead',
+  ledger.length > 25 && ledger.every((e, i) => i === 0 || e.g > ledger[i - 1].g
+    || TYPED_AHEAD.has(ledger[i - 1].g)));
+check('the versions in the ledger are strictly increasing without exception',
+  ledger.every((e, i) => i === 0 || Number(e.v.slice(3)) > Number(ledger[i - 1].v.slice(3))));
 check('its newest entry is the composition actually being served',
   ledger[ledger.length - 1].g === current.generation
   && ledger[ledger.length - 1].v === current.composition_version);
