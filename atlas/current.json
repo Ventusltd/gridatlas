@@ -1,7 +1,7 @@
 {
   "schema": "gridatlas.current.v2",
-  "generation": "202609011435",
-  "previous_generation": "202609011434",
+  "generation": "202609011612",
+  "previous_generation": "202609011435",
   "architecture": "IMMUTABLE_SHELL_PLUS_HASHED_CARTRIDGES",
   "live_route": "/gridatlas/atlas/",
   "release_id": "202608300453-atlas-v9",
@@ -59,13 +59,13 @@
     },
     {
       "id": "sld-sandbox",
-      "generation": "202609011435",
-      "version": "v9.53",
+      "generation": "202609011612",
+      "version": "v9.54",
       "type": "script",
       "slot": "replace-script",
       "replace_script": "202608292126-pre-snapped-config-adapter.js",
-      "path": "./cartridges/202609011435-sld-sandbox-v9-8.js",
-      "sha256": "7f5b1edb21dced6670cea587eaa4fec8a080f88309e5aa76c672135b432f0b7d",
+      "path": "./cartridges/202609011612-sld-sandbox-v9-8.js",
+      "sha256": "94e9d925950cb61558500d9a80bb71e2258a5e12b1464bcb274063949230587e",
       "capabilities": [
         "pre-snapped-config-adapter-carried-forward",
         "project-or-substation-selection",
@@ -164,7 +164,9 @@
         "nearest-400kv-measured-for-every-project",
         "recovered-failures-ledgered-separately",
         "consented-works-quoted-on-the-declared-card",
-        "nearest-named-400kv-companion-measurement"
+        "nearest-named-400kv-companion-measurement",
+        "measurement-independent-of-layer-controls",
+        "substation-payload-warmed-at-install"
       ],
       "immutable_shell_modified": false,
       "supersedes_shell_script": {
@@ -465,6 +467,12 @@
       "works_study": {
         "source": "governance/202609011515-400kv-customer-substation-study.md",
         "rule": "quotations of consented works from made Orders and Environmental Statements; never design advice"
+      },
+      "arrival_latency": {
+        "reported_by": "Vikram, West Burton journey from Pipeline News on iPhone: 'it did nothing'",
+        "reproduced": "desktop Chrome, same URL: 0 links at 10s with the status still on the layer wait; 5 links at about 20s",
+        "cause": "the arrival awaited a 12s layer-control budget before attempting a measurement that needs no controls, then fetched the 1.2 MB substation payload afterwards - the two costs in series",
+        "fix": "measure first and let the layer switch-on run alongside; warm the payload at install; never show a late-layers notice over a map that already carries the answer"
       }
     }
   ],
@@ -510,15 +518,15 @@
       "result_class": "LOCATION_ONLY"
     }
   },
-  "composition_manifest": "./manifests/202609011435-composition.json",
+  "composition_manifest": "./manifests/202609011612-composition.json",
   "scope_closure": {
     "generation": "202609010726",
     "status": "DONE",
     "scope": "GridAtlas v9.42 the price panel revalidates",
     "schedule_retired": true
   },
-  "composition_version": "v9.53",
-  "composition_id": "202609011435-gridatlas-v9.53",
+  "composition_version": "v9.54",
+  "composition_id": "202609011612-gridatlas-v9.54",
   "transport": {
     "response_contract": "HEADERS_BEFORE_PARQUET_BODY",
     "engine_timeout_seconds": 15,

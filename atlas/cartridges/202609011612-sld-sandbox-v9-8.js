@@ -1,7 +1,7 @@
 /**
  * GridAtlas cartridge — neon substation links and the SLD layout sandbox.
  *
- * Generation 202609011435 (UTC), composition v9.53. Slot: replace-script for
+ * Generation 202609011612 (UTC), composition v9.54. Slot: replace-script for
  * 202608292126-pre-snapped-config-adapter.js.
  *
  * WHAT IT DOES
@@ -61,7 +61,7 @@
 (() => {
   'use strict';
 
-  const GENERATION = '202609011435';
+  const GENERATION = '202609011612';
 
   /* ══════════════════════════════════════════════════════════════════════
      PART 1 — the pre-snapped config adapter, carried forward unchanged.
@@ -1691,7 +1691,8 @@
     const started = Date.now();
     if (!document.querySelector(LAYER_CONTROL)) {
       injectStatusStyle();
-      showStatus('Loading the grid data \u2014 the distances need it.', 'waiting');
+      showStatus('Switching the grid layers on as soon as the map\u2019s own '
+        + 'controls appear. The distances do not wait for them.', 'waiting');
     }
     while (Date.now() - started < budgetMs) {
       if (document.querySelector(LAYER_CONTROL)) {
@@ -1706,10 +1707,16 @@
       'the engine had not rendered its layer controls within '
       + Math.round(budgetMs / 1000) + 's; still watching, and the layers will '
       + 'be switched on if they arrive');
-    injectStatusStyle();
-    showStatus('The grid data has not finished loading yet. The distances '
-      + 'below are already measured; the layers will switch on by themselves '
-      + 'if it arrives.', 'failed');
+    if (link.links_drawn > 0) {
+      // The answer is already on the map. Late layers are not a failure the
+      // reader has to act on, and a red notice over a working map is noise.
+      clearStatus();
+    } else {
+      injectStatusStyle();
+      showStatus('The grid data has not finished loading yet. The distances '
+        + 'below are already measured; the layers will switch on by themselves '
+        + 'if it arrives.', 'failed');
+    }
     return false;
   }
 
@@ -2158,7 +2165,7 @@
 
      Mobile first, like everything since Vikram said the link travels by
      WhatsApp: a collapsed chip, viewport-sized body, newest first. */
-  const VERSION_LEDGER = [{"g":"202608312121","v":"v9.16","s":"the project arriving from Pipeline News is visible: its own technology layer is enabled and a pin owned by this cartridge is dropped on it, with a toggle on the card"},{"g":"202608312133","v":"v9.17","s":"central AC sizing: the limiting nameplate, not a squared product"},{"g":"202608312140","v":"v9.18","s":"the project marker is a ring, found by looking at it in Chrome"},{"g":"202608312154","v":"v9.19","s":"the grid maths installs even when the basemap never paints"},{"g":"202608312157","v":"v9.20","s":"the Atlas says what it is waiting for, sized for a phone"},{"g":"202608312205","v":"v9.21","s":"the MapLibre exception storm: symbol layers with no glyph atlas"},{"g":"202608312208","v":"v9.22","s":"a symbol layer is added only once its text can be drawn"},{"g":"202608312222","v":"v9.23","s":"card geometry resets on every selection"},{"g":"202608312227","v":"v9.24","s":"the GB electricity tracker is connected to the map"},{"g":"202608312238","v":"v9.25","s":"one source of truth for GB prices: the data repository"},{"g":"202608312244","v":"v9.26","s":"late layer controls are used, and the repository is LF everywhere"},{"g":"202608312257","v":"v9.27","s":"the MAP button works for every technology in the register"},{"g":"202608312300","v":"v9.28","s":"voltage classes are explained, and the whole dashboard is accepted"},{"g":"202608312306","v":"v9.29","s":"the headline capacity actually moves the layout"},{"g":"202608312313","v":"v9.30","s":"the neon flow no longer exhausts the renderer"},{"g":"202608312315","v":"v9.31","s":"Codex's LineAtlas cardinality gate passes"},{"g":"202608312317","v":"v9.32","s":"no substation can display an impossible voltage"},{"g":"202608312321","v":"v9.33","s":"nothing can rewrite the reference design, not even later"},{"g":"202608312324","v":"v9.34","s":"a missing source costs a drawing, never the session"},{"g":"202609010021","v":"v9.35","s":"phone pointer operation, viewport containment and named electrical ratios"},{"g":"202609010040","v":"v9.36","s":"original financial-model parity with explicit correction of the known central AC double-count"},{"g":"202609010053","v":"v9.37","s":"complete the original finance interaction contract by linking development stage, cost and success"},{"g":"202609010058","v":"v9.38","s":"restore topology-isolated physical inputs and the original mounting-to-bifacial linkage"},{"g":"202609010106","v":"v9.39","s":"remove duplicate BESS truth, restore original central defaults and reject fractional topology counts"},{"g":"202609010204","v":"v9.40","s":"the version ledger itself, on the page"},{"g":"202609010722","v":"v9.41","s":"exact GB price evidence, beside the ledger"},{"g":"202609010726","v":"v9.42","s":"the price panel revalidates instead of pinning its first sight"},{"g":"202609010902","v":"v9.43","s":"mobile: tools collapse behind one chip; grid and subs are one tap"},{"g":"202609011141","v":"v9.44","s":"a repd_ref-only link computes the links: identity resolved by the search lane is consumed, not re-required from the URL"},{"g":"202609011205","v":"v9.45","s":"arrival: fullscreen on touch, the identity wait runs to its end, and every stage says what it is doing"},{"g":"202609011215","v":"v9.46","s":"the distances survive the card: a keeper re-attaches the measurement block when a late popup replaces the one it decorated"},{"g":"202609011242","v":"v9.47","s":"the arrival owns its card: 2,421 register-absent projects (873 solar) get a card from the link's own fields, yielded if the register's card lands"},{"g":"202609011243","v":"v9.48","s":"supersedes v9.47's boundary: the composition was sound, its proof shipped one stale check; re-sealed coherent"},{"g":"202609011244","v":"v9.49","s":"supersedes v9.48, whose boundary shipped without its proof file; same composition, re-sealed whole"},{"g":"202609011251","v":"v9.50","s":"the card precedes the lines: a register-absent arrival opened its card after drawing, and the lines-belong-to-the-card watcher rightly wiped them"},{"g":"202609011433","v":"v9.51","s":"the 400 kV public record: declared DCO connections drawn and carded, new customer substations named, nearest 400 kV measured for every project"},{"g":"202609011434","v":"v9.52","s":"a recovered failure is not a failure: late-arrival entries move to their own ledger when the controls arrive, per the Codex supervision finding"},{"g":"202609011435","v":"v9.53","s":"the consented works on the card: customer-substation and PoC interface quotes from the made Orders; the nearest-400 row gains its named companion"}];
+  const VERSION_LEDGER = [{"g":"202608312121","v":"v9.16","s":"the project arriving from Pipeline News is visible: its own technology layer is enabled and a pin owned by this cartridge is dropped on it, with a toggle on the card"},{"g":"202608312133","v":"v9.17","s":"central AC sizing: the limiting nameplate, not a squared product"},{"g":"202608312140","v":"v9.18","s":"the project marker is a ring, found by looking at it in Chrome"},{"g":"202608312154","v":"v9.19","s":"the grid maths installs even when the basemap never paints"},{"g":"202608312157","v":"v9.20","s":"the Atlas says what it is waiting for, sized for a phone"},{"g":"202608312205","v":"v9.21","s":"the MapLibre exception storm: symbol layers with no glyph atlas"},{"g":"202608312208","v":"v9.22","s":"a symbol layer is added only once its text can be drawn"},{"g":"202608312222","v":"v9.23","s":"card geometry resets on every selection"},{"g":"202608312227","v":"v9.24","s":"the GB electricity tracker is connected to the map"},{"g":"202608312238","v":"v9.25","s":"one source of truth for GB prices: the data repository"},{"g":"202608312244","v":"v9.26","s":"late layer controls are used, and the repository is LF everywhere"},{"g":"202608312257","v":"v9.27","s":"the MAP button works for every technology in the register"},{"g":"202608312300","v":"v9.28","s":"voltage classes are explained, and the whole dashboard is accepted"},{"g":"202608312306","v":"v9.29","s":"the headline capacity actually moves the layout"},{"g":"202608312313","v":"v9.30","s":"the neon flow no longer exhausts the renderer"},{"g":"202608312315","v":"v9.31","s":"Codex's LineAtlas cardinality gate passes"},{"g":"202608312317","v":"v9.32","s":"no substation can display an impossible voltage"},{"g":"202608312321","v":"v9.33","s":"nothing can rewrite the reference design, not even later"},{"g":"202608312324","v":"v9.34","s":"a missing source costs a drawing, never the session"},{"g":"202609010021","v":"v9.35","s":"phone pointer operation, viewport containment and named electrical ratios"},{"g":"202609010040","v":"v9.36","s":"original financial-model parity with explicit correction of the known central AC double-count"},{"g":"202609010053","v":"v9.37","s":"complete the original finance interaction contract by linking development stage, cost and success"},{"g":"202609010058","v":"v9.38","s":"restore topology-isolated physical inputs and the original mounting-to-bifacial linkage"},{"g":"202609010106","v":"v9.39","s":"remove duplicate BESS truth, restore original central defaults and reject fractional topology counts"},{"g":"202609010204","v":"v9.40","s":"the version ledger itself, on the page"},{"g":"202609010722","v":"v9.41","s":"exact GB price evidence, beside the ledger"},{"g":"202609010726","v":"v9.42","s":"the price panel revalidates instead of pinning its first sight"},{"g":"202609010902","v":"v9.43","s":"mobile: tools collapse behind one chip; grid and subs are one tap"},{"g":"202609011141","v":"v9.44","s":"a repd_ref-only link computes the links: identity resolved by the search lane is consumed, not re-required from the URL"},{"g":"202609011205","v":"v9.45","s":"arrival: fullscreen on touch, the identity wait runs to its end, and every stage says what it is doing"},{"g":"202609011215","v":"v9.46","s":"the distances survive the card: a keeper re-attaches the measurement block when a late popup replaces the one it decorated"},{"g":"202609011242","v":"v9.47","s":"the arrival owns its card: 2,421 register-absent projects (873 solar) get a card from the link's own fields, yielded if the register's card lands"},{"g":"202609011243","v":"v9.48","s":"supersedes v9.47's boundary: the composition was sound, its proof shipped one stale check; re-sealed coherent"},{"g":"202609011244","v":"v9.49","s":"supersedes v9.48, whose boundary shipped without its proof file; same composition, re-sealed whole"},{"g":"202609011251","v":"v9.50","s":"the card precedes the lines: a register-absent arrival opened its card after drawing, and the lines-belong-to-the-card watcher rightly wiped them"},{"g":"202609011433","v":"v9.51","s":"the 400 kV public record: declared DCO connections drawn and carded, new customer substations named, nearest 400 kV measured for every project"},{"g":"202609011434","v":"v9.52","s":"a recovered failure is not a failure: late-arrival entries move to their own ledger when the controls arrive, per the Codex supervision finding"},{"g":"202609011435","v":"v9.53","s":"the consented works on the card: customer-substation and PoC interface quotes from the made Orders; the nearest-400 row gains its named companion"},{"g":"202609011612","v":"v9.54","s":"the measurement no longer waits for the engine's layer controls: links draw at once, layers follow when they arrive"}];
   const PRE_SCOPE_COMPOSITIONS = 16;
   const LEDGER_ID = 'gridatlas-version-ledger';
 
@@ -2467,6 +2474,13 @@
     installStyles();
     ensureLayers(map);
 
+    /* Warm the substation payload immediately. It is 1.2 MB and every
+       measurement needs it; until v9.54 it was first requested only after
+       the arrival had finished waiting for the engine's layer controls,
+       so a phone paid for the wait AND the fetch in series. The promise is
+       cached, so the arrival reuses whatever this started. */
+    try { loadSubstations(); } catch (_) { /* the arrival will retry */ }
+
     // The lines belong to the card. When the card closes, they go with it --
     // leaving neon on the map with nothing explaining it is how a screenshot
     // ends up quoted without its caveat.
@@ -2721,8 +2735,17 @@
           if (!ready) watchForLayerControls(enableBoth);
           return ready;
         };
-        retryArrival = () => { arrive().then(() => runArrivalSelection()); };
-        await arrive();
+        retryArrival = () => { runArrivalSelection().then(() => arrive()); };
+        /* Measure first. The distances are arithmetic over substation
+           coordinates and need no layer control, no dashboard and no
+           painted basemap; only the layers need the engine's controls.
+           Until v9.54 this awaited arrive() - up to twelve seconds - before
+           the measurement was even attempted, and Vikram's West Burton
+           journey on a phone showed exactly what that buys: a card, and
+           nothing beside it, for long enough to conclude the map is
+           broken. The layer switch-on runs alongside and finishes whenever
+           the engine is ready. */
+        const layersReady = arrive();
         async function runArrivalSelection() {
           // Wait for the engine to put its own card up first, so this
           // decorates that card rather than racing it. Give up rather than
@@ -2750,6 +2773,7 @@
             Number.isFinite(stated) && stated > 0 ? stated : null);
         }
         await runArrivalSelection();
+        await layersReady;
       } catch (error) {
         link.failures.push('deep link: ' + String(error?.message || error));
       }

@@ -1,5 +1,5 @@
 /**
- * Proof for the neon links + SLD layout sandbox cartridge, generation 202609011435.
+ * Proof for the neon links + SLD layout sandbox cartridge, generation 202609011612.
  *
  * No dependencies. The repository carries playwright and no DOM library, so
  * rather than add one this stubs the small surface the cartridge actually
@@ -32,7 +32,7 @@ import vm from 'node:vm';
 const HERE = dirname(fileURLToPath(import.meta.url));
 const REPO = resolve(HERE, '..', '..');
 const CARTRIDGE = join(REPO, 'atlas', 'cartridges',
-  '202609011435-sld-sandbox-v9-8.js');
+  '202609011612-sld-sandbox-v9-8.js');
 const ORIGINAL = join(REPO, 'atlas', 'releases', '202608300453-atlas-v9',
   '202608292126-pre-snapped-config-adapter.js');
 const FINANCE_ORACLE = join(REPO, 'tools', 'proofs', 'fixtures',
@@ -774,14 +774,15 @@ console.log('\nsaying what is happening\n');
 const st = cartridgeSource;
 check('there is a status element at all', /const STATUS_ID = 'gridatlas-boot-status'/.test(st));
 check('it says what is being waited for, not merely that something is',
-  /Loading the grid data .{1,12} the distances need it\./.test(st));
+  /Switching the grid layers on as soon as/.test(st)
+  && /The distances do not wait for them\./.test(st));
 check('failure says the measurement already happened, not that nothing did',
   st.includes('below are already measured'));
 check('and promises the layers will arrive on their own',
   /layers will switch on by themselves/.test(st));
 check('failure offers a way forward', /again\.textContent = 'Try again';/.test(st));
 check('the retry re-runs the arrival instead of reloading the engine',
-  /retryArrival = \(\) => \{ arrive\(\)\.then/.test(st));
+  /retryArrival = \(\) => \{ runArrivalSelection\(\)\.then/.test(st));
 check('the reason a reload is the wrong answer is written down',
   /repeats the[\s\S]{0,12}whole 35\.7 MB boot/.test(st));
 check('it is announced to assistive technology',
@@ -2201,6 +2202,23 @@ check('the nearest-400 row measures a named companion when an unnamed node wins'
   /let bestNamed = null;/.test(cartridgeSource)
   && /nearest named: \$\{escapeHtml\(n\.named\.name\)\}/.test(cartridgeSource)
   && /bestNamed\.name !== best\.name/.test(cartridgeSource));
+
+
+console.log('\nthe measurement does not wait for the layers\n');
+
+check('the arrival measures before it awaits the layer controls',
+  /const layersReady = arrive\(\);/.test(cartridgeSource)
+  && /await runArrivalSelection\(\);\n        await layersReady;/.test(cartridgeSource)
+  && !/await arrive\(\);/.test(cartridgeSource));
+check('the substation payload is warmed at install',
+  /try \{ loadSubstations\(\); \} catch \(_\)/.test(cartridgeSource));
+check('the waiting message no longer claims the distances need the layers',
+  /The distances do not wait for them\./.test(cartridgeSource)
+  && !/Loading the grid data \u2014 the distances need it\./.test(cartridgeSource));
+check('a late-layers notice never covers a drawn answer',
+  /if \(link\.links_drawn > 0\) \{\n      \/\/ The answer is already on the map/.test(cartridgeSource));
+check('retry still re-runs the measurement and the layers',
+  /retryArrival = \(\) => \{ runArrivalSelection\(\)\.then\(\(\) => arrive\(\)\); \};/.test(cartridgeSource));
 
 console.log(`\n${passed}/${passed + failures.length} checks passed`);
 if (failures.length) {
