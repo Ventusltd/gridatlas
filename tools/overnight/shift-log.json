@@ -259,6 +259,42 @@
       "outcome": "failed",
       "reason": "apply: tools/ci/202609012200-local-ci.mjs: anchor found 0 times (CI gate list)",
       "finished_at": "2026-09-01T22:32:42.279Z"
+    },
+    {
+      "step": "202609012217-data-contract-parity.mjs",
+      "id": "data-contract-parity",
+      "version": "v9.70",
+      "started_at": "2026-09-01T22:32:53.431Z",
+      "dry": false,
+      "stages": [
+        {
+          "name": "tooling committed",
+          "at": "2026-09-01T22:32:54.167Z",
+          "commit": "f8cf6f6"
+        },
+        {
+          "name": "applied",
+          "at": "2026-09-01T22:32:54.269Z",
+          "changed": [
+            "atlas/current.json",
+            "atlas/parts/202609012045-sld-sandbox-body.js",
+            "tools/ci/202609012200-local-ci.mjs"
+          ]
+        },
+        {
+          "name": "syntax checked",
+          "at": "2026-09-01T22:32:54.347Z"
+        },
+        {
+          "name": "step proof 202609012217-source-registry.proof.mjs",
+          "at": "2026-09-01T22:32:54.395Z",
+          "status": 0
+        }
+      ],
+      "outcome": "failed",
+      "reason": "recompose refused the cut",
+      "finished_at": "2026-09-01T22:32:54.570Z",
+      "output": "  ~module    atlas/modules/202609012135-source-registry.js -> atlas/modules/202609012217-source-registry.js\n  ledger     atlas/parts/202609012045-sld-sandbox-body.js  += v9.70\n  assembled  202609012232-sld-sandbox-v9-8.js  from 7 part(s)\n  proof      202609012232-sld-sandbox.proof.mjs\n--scope describes v9.69; write the sentence for 202609012232\n"
     }
   ]
 }

@@ -39,7 +39,7 @@ const CURRENT = 'atlas/current.json';
 export default {
   id: 'data-contract-parity',
   version: 'v9.70',
-  scope: 'the composition manifest is proven against the bytes: substation-intelligence declares connection-points.v3 as it has required since v9.65 (the entry said v2 from v9.63 to v9.69), sld-sandbox declares the transmission network and the price rollup it fetches, a data-contract parity proof holds every entry to its bytes in both directions, the source registry states what each fetching source requires in every state and registers the GB conditions loader, whose state the sandbox now publishes',
+  scope: 'the composition manifest is proven against the bytes: substation-intelligence declares connection-points.v3 as it has required since v9.65 (the entry said v2 from v9.63 until this cut), sld-sandbox declares the transmission network and the price rollup it fetches, a data-contract parity proof holds every entry to its bytes in both directions, the source registry states what each fetching source requires in every state and registers the GB conditions loader, whose state the sandbox now publishes',
   note: 'the manifest is held to the bytes: connection-points v3 declared as consumed, every fetched product declared with its schema, and a parity gate so no generation inherits a false contract again',
   brings: [REGISTRY_PROOF, PARITY_PROOF],
   replaceModules: [`${OLD_REGISTRY}=${NEW_REGISTRY}`],
