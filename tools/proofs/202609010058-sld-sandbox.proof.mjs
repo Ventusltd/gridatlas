@@ -1,5 +1,5 @@
 /**
- * Proof for the neon links + SLD layout sandbox cartridge, generation 202609010053.
+ * Proof for the neon links + SLD layout sandbox cartridge, generation 202609010058.
  *
  * No dependencies. The repository carries playwright and no DOM library, so
  * rather than add one this stubs the small surface the cartridge actually
@@ -32,7 +32,7 @@ import vm from 'node:vm';
 const HERE = dirname(fileURLToPath(import.meta.url));
 const REPO = resolve(HERE, '..', '..');
 const CARTRIDGE = join(REPO, 'atlas', 'cartridges',
-  '202609010053-sld-sandbox-v9-8.js');
+  '202609010058-sld-sandbox-v9-8.js');
 const ORIGINAL = join(REPO, 'atlas', 'releases', '202608300453-atlas-v9',
   '202608292126-pre-snapped-config-adapter.js');
 const FINANCE_ORACLE = join(REPO, 'tools', 'proofs', 'fixtures',
@@ -1152,18 +1152,18 @@ function sandboxStringStats(i) {
 }
 
 function sandboxCentralStats(i) {
-  const strDcKwp = (i.x_mods_c * i.mod_wp) / 1000;
+  const strDcKwp = (i.x_mods_c * i.mod_wp_c) / 1000;
   const reqStrings = Math.ceil((i.inv_dc_mw_c * 1000) / strDcKwp);
   const total_blocks = i.inv_per_mv_c * i.mv_per_ring_c * i.rings_c;
   const module_count = reqStrings * i.x_mods_c * total_blocks;
-  const dc_mwp = (module_count * i.mod_wp) / 1e6;
+  const dc_mwp = (module_count * i.mod_wp_c) / 1e6;
   const ac_mw = total_blocks * i.central_skid_mva_c * i.inv_per_mv_c;
-  const net_array_area_m2 = (module_count * i.mod_l * i.mod_w) / i.gcr;
+  const net_array_area_m2 = (module_count * i.mod_l_c * i.mod_w_c) / i.gcr_c;
   return {
     total_blocks, module_count, dc_mwp, ac_mw,
     dc_ac_ratio: ac_mw > 0 ? dc_mwp / ac_mw : 1.2,
     net_array_area_m2,
-    gross_site_area_m2: net_array_area_m2 * i.gross_factor,
+    gross_site_area_m2: net_array_area_m2 * i.gross_factor_c,
     ring_main_ac_mva: i.central_skid_mva_c * i.inv_per_mv_c * i.mv_per_ring_c
   };
 }
@@ -1174,7 +1174,7 @@ const CASES = [
   { mode: 'string', b_cols: 12, s_subs: 8, string_skid_mva: 12.5, gcr: 0.35, gross_factor: 1.5 },
   { mode: 'central' },
   { mode: 'central', inv_per_mv_c: 3, mv_per_ring_c: 6, rings_c: 4, inv_ac_mw_c: 6.6, inv_dc_mw_c: 7.9, central_skid_mva_c: 6.6 },
-  { mode: 'central', x_mods_c: 32, mod_wp: 720, gcr: 0.75 }
+  { mode: 'central', x_mods_c: 32, mod_wp_c: 720, gcr_c: 0.75 }
 ];
 
 /* Parity with the sandbox, split by mode.
@@ -1624,8 +1624,34 @@ check('the cartridge exposes one finance function for parity testing',
   typeof sld.computeFinance === 'function');
 check('the original linked development-stage handler is exposed for testing',
   typeof sld.applyDevelopmentStage === 'function');
+check('the original mounting-to-bifacial handler is exposed for testing',
+  typeof sld.applyMountingBifacial === 'function');
 check('string and central financial assumptions are independent',
   sld.finance?.string && sld.finance?.central && sld.finance.string !== sld.finance.central);
+check('string and central physical assumptions are independent', (() => {
+  Object.assign(sld.inputs, {
+    mod_wp: 580, mod_l: 2.10, mod_w: 1.15, gcr: 0.35,
+    gross_factor: 1.25, bess_mwh: 10,
+    mod_wp_c: 720, mod_l_c: 2.50, mod_w_c: 1.40, gcr_c: 0.75,
+    gross_factor_c: 1.55, bess_mwh_c: 40,
+  });
+  sld.inputs.mode = 'string';
+  sld.openAt(stubMap, [-1.5, 54.0], 'string-state', '33 kV');
+  const stringStats = sld.stats;
+  sld.inputs.mode = 'central';
+  sld.openAt(stubMap, [-1.5, 54.0], 'central-state', '33 kV');
+  const centralStats = sld.stats;
+  return Math.abs(stringStats.dc_mwp
+      - (stringStats.module_count * 580) / 1e6) < 1e-9
+    && Math.abs(centralStats.dc_mwp
+      - (centralStats.module_count * 720) / 1e6) < 1e-9
+    && sld.inputs.mod_wp === 580 && sld.inputs.mod_wp_c === 720
+    && sld.inputs.bess_mwh === 10 && sld.inputs.bess_mwh_c === 40;
+})());
+check('the central panel binds its own physical and BESS keys',
+  /\['mod_wp_c', 'Module rating Wp'\]/.test(cartridgeSource)
+  && /\['gcr_c', 'Ground cover ratio'\]/.test(cartridgeSource)
+  && /\['bess_mwh_c', 'BESS MWh'\]/.test(cartridgeSource));
 
 const financeNumberValue = value => {
   const number = Number(value);
@@ -1635,7 +1661,8 @@ const financeNumberValue = value => {
 function applyOracleCase(spec) {
   const input = spec.inputs;
   sld.inputs.mode = spec.mode;
-  sld.inputs.bess_mwh = 0;
+  if (spec.mode === 'string') sld.inputs.bess_mwh = 0;
+  else sld.inputs.bess_mwh_c = 0;
   if (spec.mode === 'string') {
     Object.assign(sld.inputs, {
       mod_wp: financeNumberValue(input.mod_wp),
@@ -1654,11 +1681,11 @@ function applyOracleCase(spec) {
     });
   } else {
     Object.assign(sld.inputs, {
-      mod_wp: financeNumberValue(input.mod_wp_c),
-      mod_l: financeNumberValue(input.mod_l_c),
-      mod_w: financeNumberValue(input.mod_w_c),
-      gcr: financeNumberValue(input.mounting_type_c),
-      gross_factor: financeNumberValue(input.gross_factor_c),
+      mod_wp_c: financeNumberValue(input.mod_wp_c),
+      mod_l_c: financeNumberValue(input.mod_l_c),
+      mod_w_c: financeNumberValue(input.mod_w_c),
+      gcr_c: financeNumberValue(input.mounting_type_c),
+      gross_factor_c: financeNumberValue(input.gross_factor_c),
       inv_dc_mw_c: financeNumberValue(input.inv_dc_mw_c),
       inv_ac_mw_c: financeNumberValue(input.inv_ac_mw_c),
       central_skid_mva_c: financeNumberValue(input.central_skid_mva_c),
@@ -1759,6 +1786,25 @@ check('an unknown stage fails closed without changing assumptions', (() => {
 check('the UI stage control uses the linked handler before redraw',
   /input\.dataset\.finKey === 'dev_stage'/.test(cartridgeSource)
   && /applyDevelopmentStageDefaults\(values, input\.value\)/.test(cartridgeSource));
+check('every original mounting preset updates bifacial gain on its topology only', (() => {
+  sld.finance.string.bifacial = 99;
+  sld.finance.central.bifacial = 77;
+  const stringApplied = sld.applyMountingBifacial('string', 0.35);
+  const stringOnly = sld.finance.string.bifacial === 8
+    && sld.finance.central.bifacial === 77;
+  const centralApplied = sld.applyMountingBifacial('central', 0.75);
+  return stringApplied && centralApplied && stringOnly
+    && sld.finance.string.bifacial === 8
+    && sld.finance.central.bifacial === 2;
+})());
+check('a free-form GCR does not invent a bifacial assumption', (() => {
+  const before = sld.finance.string.bifacial;
+  return sld.applyMountingBifacial('string', 0.51) === false
+    && sld.finance.string.bifacial === before;
+})());
+check('the GCR input invokes the original linked bifacial behavior before redraw',
+  /input\.dataset\.key === 'gcr' \|\| input\.dataset\.key === 'gcr_c'/.test(cartridgeSource)
+  && /applyMountingBifacial\(sld\.inputs\.mode, value\)/.test(cartridgeSource));
 check('the financial block starts collapsed and remembers an explicit open',
   /financeOpen: false/.test(cartridgeSource)
   && /details class="sld-finance" \$\{sld\.financeOpen \? 'open' : ''\}/.test(cartridgeSource)
@@ -1769,7 +1815,8 @@ check('finance changes redraw the same electrical and financial state',
   && /if \(capturedMap\) redrawSld\(capturedMap\)/.test(cartridgeSource));
 check('layout and finance BESS energy can disagree only visibly',
   /Layout BESS energy is/.test(cartridgeSource)
-  && /They are separate original inputs and neither has been rewritten/.test(cartridgeSource));
+  && /They are separate original inputs and neither has been rewritten/.test(cartridgeSource)
+  && /activePhysicalInputs\(\)\.bess_mwh/.test(cartridgeSource));
 check('the on-panel financial disclaimer is explicit',
   /Screening values only, not financial advice/.test(cartridgeSource)
   && /investment-committee models/.test(cartridgeSource));

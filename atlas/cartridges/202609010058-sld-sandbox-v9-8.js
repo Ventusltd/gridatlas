@@ -1,7 +1,7 @@
 /**
  * GridAtlas cartridge — neon substation links and the SLD layout sandbox.
  *
- * Generation 202609010053 (UTC), composition v9.37. Slot: replace-script for
+ * Generation 202609010058 (UTC), composition v9.38. Slot: replace-script for
  * 202608292126-pre-snapped-config-adapter.js.
  *
  * WHAT IT DOES
@@ -61,7 +61,7 @@
 (() => {
   'use strict';
 
-  const GENERATION = '202609010053';
+  const GENERATION = '202609010058';
 
   /* ══════════════════════════════════════════════════════════════════════
      PART 1 — the pre-snapped config adapter, carried forward unchanged.
@@ -2243,9 +2243,14 @@
     // A port does not get to improve its reference by guessing.
     x_mods: 28, z_strings: 18, y_invs: 28, s_subs: 5, b_cols: 6,
       dc_ac_ratio: 1.20, string_inv_kva: 352, string_skid_mva: 8.96,
+      // The original has a complete second physical-input set for central
+      // topology. Editing one tab must not rewrite the other tab's module,
+      // mounting, land or BESS case.
+      mod_wp_c: 660, mod_l_c: 2.38, mod_w_c: 1.30, gcr_c: 0.45,
+      gross_factor_c: 1.35,
       inv_ac_mw_c: 4.4, inv_dc_mw_c: 5.28, central_skid_mva_c: 4.4,
       x_mods_c: 28, str_per_cb_c: 1, inv_per_mv_c: 2, mv_per_ring_c: 4, rings_c: 3,
-      bess_mwh: 0
+      bess_mwh: 0, bess_mwh_c: 0
     },
     finance: {
       string: freshFinanceInputs(),
@@ -2338,13 +2343,29 @@
 
   /* ── the sizing arithmetic, carried across unchanged ─────────────────── */
 
-  function buildStats(o) {
+  function activePhysicalInputs() {
     const i = sld.inputs;
-    const dcMwp = (o.module_count * i.mod_wp) / 1e6;
+    if (i.mode === 'central') {
+      return {
+        mod_wp: i.mod_wp_c, mod_l: i.mod_l_c, mod_w: i.mod_w_c,
+        gcr: i.gcr_c, gross_factor: i.gross_factor_c,
+        bess_mwh: i.bess_mwh_c,
+      };
+    }
+    return {
+      mod_wp: i.mod_wp, mod_l: i.mod_l, mod_w: i.mod_w,
+      gcr: i.gcr, gross_factor: i.gross_factor,
+      bess_mwh: i.bess_mwh,
+    };
+  }
+
+  function buildStats(o) {
+    const p = activePhysicalInputs();
+    const dcMwp = (o.module_count * p.mod_wp) / 1e6;
     const acMw = o.ac_mw_direct != null ? o.ac_mw_direct
       : (o.dc_ac_ratio > 0 ? dcMwp / o.dc_ac_ratio : 0);
-    const netModArea = o.module_count * i.mod_l * i.mod_w;
-    const netArrayArea = i.gcr > 0 ? netModArea / i.gcr : 0;
+    const netModArea = o.module_count * p.mod_l * p.mod_w;
+    const netArrayArea = p.gcr > 0 ? netModArea / p.gcr : 0;
     return {
       total_blocks: o.total_blocks,
       module_count: o.module_count,
@@ -2352,7 +2373,7 @@
       ac_mw: acMw,
       dc_ac_ratio: acMw > 0 ? dcMwp / acMw : o.dc_ac_ratio,
       net_array_area_m2: netArrayArea,
-      gross_site_area_m2: netArrayArea * i.gross_factor,
+      gross_site_area_m2: netArrayArea * p.gross_factor,
       block_ground_area_m2: o.total_blocks > 0 ? netArrayArea / o.total_blocks : 0,
       production_substation_ac_mva: o.production_substation_ac_mva || 0,
       ring_main_ac_mva: o.ring_main_ac_mva || 0,
@@ -2510,10 +2531,10 @@
 
   function computeCentralStats() {
     const i = sld.inputs;
-    if (i.mod_wp <= 0 || i.mod_l <= 0 || i.mod_w <= 0 || i.x_mods_c <= 0) {
+    if (i.mod_wp_c <= 0 || i.mod_l_c <= 0 || i.mod_w_c <= 0 || i.x_mods_c <= 0) {
       return buildStats({ total_blocks: 0, module_count: 0, dc_ac_ratio: 1.2 });
     }
-    const strDcKwp = (i.x_mods_c * i.mod_wp) / 1000;
+    const strDcKwp = (i.x_mods_c * i.mod_wp_c) / 1000;
     const reqStrings = strDcKwp > 0 ? Math.ceil((i.inv_dc_mw_c * 1000) / strDcKwp) : 0;
     // total_blocks counts INVERTERS: inverters per MV skid, times skids per
     // ring, times rings. The skids are the level above it.
@@ -2601,6 +2622,12 @@
     '0.100': 95,
   });
 
+  const BIFACIAL_BY_GCR = Object.freeze({
+    '0.35': 8,
+    '0.45': 5,
+    '0.75': 2,
+  });
+
   /* The original stage selector is not only a label: its change handler sets
      development cost to the selected GBP/Wp value and success probability to
      a stage-specific percentage. Keep that linked behavior explicit so a
@@ -2611,6 +2638,18 @@
     financeInputs.dev_stage = stage;
     financeInputs.dev_cost_mw = financeNumber(stage);
     financeInputs.dev_success = DEVELOPMENT_SUCCESS[stage];
+    return true;
+  }
+
+  /* Original Mounting & GCR presets also set the financial bifacial gain.
+     Apply the exact three preset mappings to the active topology only. A
+     free-form GCR value does not invent a gain. */
+  function applyMountingBifacial(mode, gcrValue) {
+    const values = sld.finance[mode];
+    if (!values) return false;
+    const key = String(Number(gcrValue));
+    if (!Object.prototype.hasOwnProperty.call(BIFACIAL_BY_GCR, key)) return false;
+    values.bifacial = BIFACIAL_BY_GCR[key];
     return true;
   }
 
@@ -2727,6 +2766,7 @@
   };
   sld.computeFinance = computeScreeningFinance;
   sld.applyDevelopmentStage = applyDevelopmentStageDefaults;
+  sld.applyMountingBifacial = applyMountingBifacial;
 
   /**
    * Size the array so its capacity lands on the figure the register states.
@@ -2846,7 +2886,8 @@
     const cols = Math.ceil(Math.sqrt(N));
     const rows = Math.ceil(N / cols);
     const blockAreaKm2 = stats.block_ground_area_m2 / 1e6;
-    const aspect = sld.inputs.gcr === 0.45 ? 1 / 1.4 : sld.inputs.gcr === 0.75 ? 1.0 : 1.4;
+    const physical = activePhysicalInputs();
+    const aspect = physical.gcr === 0.45 ? 1 / 1.4 : physical.gcr === 0.75 ? 1.0 : 1.4;
     const blockW = Math.sqrt(blockAreaKm2 / aspect);
     const blockL = blockW * aspect;
     const gap = SLD.BLOCK_SPACING_KM;
@@ -2911,8 +2952,8 @@
     }
 
     // BESS compound alongside the customer substation.
-    if (sld.inputs.bess_mwh > 0) {
-      const areaKm2 = (sld.inputs.bess_mwh * SLD.BESS_M2_PER_MWH) / 1e6;
+    if (physical.bess_mwh > 0) {
+      const areaKm2 = (physical.bess_mwh * SLD.BESS_M2_PER_MWH) / 1e6;
       const w = Math.sqrt(areaKm2 * SLD.BESS_ASPECT);
       const l = areaKm2 / w;
       const at = destinationPoint(customerSub[0], customerSub[1], w / 2 + 0.05, axis - 90);
@@ -3281,12 +3322,12 @@
     ['dc_ac_ratio', 'DC/AC ratio'], ['bess_mwh', 'BESS MWh']
   ];
   const FIELDS_CENTRAL = [
-    ['mod_wp', 'Module rating Wp'], ['mod_l', 'Module length m'], ['mod_w', 'Module width m'],
-    ['gcr', 'Ground cover ratio'], ['gross_factor', 'Gross site factor'],
+    ['mod_wp_c', 'Module rating Wp'], ['mod_l_c', 'Module length m'], ['mod_w_c', 'Module width m'],
+    ['gcr_c', 'Ground cover ratio'], ['gross_factor_c', 'Gross site factor'],
     ['x_mods_c', 'Modules / string'], ['str_per_cb_c', 'Strings / combiner'],
     ['inv_ac_mw_c', 'Inverter AC MW'], ['inv_dc_mw_c', 'Inverter DC MWp'],
     ['central_skid_mva_c', 'Skid MVA'], ['inv_per_mv_c', 'Inverters / MV'],
-    ['mv_per_ring_c', 'MV / ring'], ['rings_c', 'Rings'], ['bess_mwh', 'BESS MWh']
+    ['mv_per_ring_c', 'MV / ring'], ['rings_c', 'Rings'], ['bess_mwh_c', 'BESS MWh']
   ];
 
   const FINANCE_FIELDS = [
@@ -3436,8 +3477,8 @@
           <span>Risk-adjusted value</span><b>${moneyText(finance?.devRiskAdjustedValue)}</b>
           <span>Equity money multiple</span><b>${financeNumber(finance?.devReturnMultiple).toFixed(2)}x</b>
         </div>
-        ${financeNumber(financeInputs.bess_mwh) !== financeNumber(sld.inputs.bess_mwh)
-          ? `<div class="sld-fin-note">Layout BESS energy is ${financeNumber(sld.inputs.bess_mwh)} MWh; `
+        ${financeNumber(financeInputs.bess_mwh) !== financeNumber(activePhysicalInputs().bess_mwh)
+          ? `<div class="sld-fin-note">Layout BESS energy is ${financeNumber(activePhysicalInputs().bess_mwh)} MWh; `
             + `the financial case uses ${financeNumber(financeInputs.bess_mwh)} MWh. `
             + `They are separate original inputs and neither has been rewritten.</div>` : ''}
         <div class="sld-fin-grid">${FINANCE_FIELDS.map(field => financeFieldHtml(field, financeInputs)).join('')}</div>
@@ -3545,7 +3586,12 @@
     (el.querySelectorAll?.('input[data-key]') || []).forEach(input => {
       input.addEventListener('change', () => {
         const value = Number(input.value);
-        if (Number.isFinite(value)) sld.inputs[input.dataset.key] = value;
+        if (Number.isFinite(value)) {
+          sld.inputs[input.dataset.key] = value;
+          if (input.dataset.key === 'gcr' || input.dataset.key === 'gcr_c') {
+            applyMountingBifacial(sld.inputs.mode, value);
+          }
+        }
         // Editing by hand wins. Re-fitting here would silently undo the change
         // the user just made; the residual simply moves and says so.
         if (sld.targetBasis === 'ac' || sld.targetBasis === 'dc') {

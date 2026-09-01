@@ -1,7 +1,7 @@
 {
   "schema": "gridatlas.composition-manifest.v1",
-  "generation": "202609010053",
-  "parent_generation": "202609010040",
+  "generation": "202609010058",
+  "parent_generation": "202609010053",
   "live_route": "/gridatlas/atlas/",
   "shell": {
     "release_id": "202608300453-atlas-v9",
@@ -66,13 +66,13 @@
     },
     {
       "id": "sld-sandbox",
-      "generation": "202609010053",
-      "version": "v9.37",
+      "generation": "202609010058",
+      "version": "v9.38",
       "type": "script",
       "slot": "replace-script",
       "replace_script": "202608292126-pre-snapped-config-adapter.js",
-      "path": "./cartridges/202609010053-sld-sandbox-v9-8.js",
-      "sha256": "259fea7a9f1c2e1bf2921682b984b5ca82b3ddc7d8fe06c4ce658d6d43990a99",
+      "path": "./cartridges/202609010058-sld-sandbox-v9-8.js",
+      "sha256": "c6a13cfa4e31e3cfd9c9671137f36776993405f5d11a03aca9b20f466ec5ae9d",
       "capabilities": [
         "pre-snapped-config-adapter-carried-forward",
         "project-or-substation-selection",
@@ -146,7 +146,9 @@
         "corrected-central-finance-divergence",
         "mobile-collapsed-finance",
         "visible-finance-assumptions",
-        "development-stage-updates-cost-and-success"
+        "development-stage-updates-cost-and-success",
+        "separate-string-central-physical-state",
+        "mounting-preset-updates-bifacial-per-topology"
       ],
       "immutable_shell_modified": false,
       "supersedes_shell_script": {
@@ -309,10 +311,13 @@
         "parity": "every unaffected output equals the executable original within floating-point tolerance",
         "central_divergence": "the original central stress case squares inverters per skid into AC. The port uses corrected inverter AC for central OPEX, and its corrected 25/35-year surplus is named in the oracle fixture rather than hidden as parity",
         "topology_state": "string and central finance assumptions are independent, as in the original",
+        "physical_state": "module dimensions, GCR, gross-site factor and layout BESS are independent for string and central topology, as in the original",
         "development_stage": "selecting a stage updates development cost GBP/Wp and success probability together, matching the original change handler; unknown stages fail closed",
+        "mounting_bifacial": "the original preset links are exact and topology-local: GCR 0.35 sets 8 percent, 0.45 sets 5 percent, and 0.75 sets 2 percent; a free-form GCR invents no bifacial value",
         "bess_state": "layout and financial BESS inputs are not silently synchronised; any mismatch is visible",
         "mobile": "the financial block starts collapsed, remembers an explicit open, and uses the same bounded phone-first panel",
-        "limits": "screening values only, not financial advice; all assumptions remain visible"
+        "limits": "screening values only, not financial advice; all assumptions remain visible",
+        "benchmark_warnings_not_ported": "the original calls finance assumptions typical, aggressive or optimistic. Those benchmark verdicts are not calculation outputs and are withheld until they have governed evidence; the Atlas shows the inputs and arithmetic instead"
       },
       "dash_atlas": {
         "reported_by": "the Codex session's LineAtlas cardinality gate",
@@ -387,16 +392,16 @@
     "offshore_wind_excluded_from_links": true,
     "cards_fit_after_drag_and_restore": true,
     "shell_modified": false,
-    "scope": "complete the original finance interaction contract by linking development stage, cost and success",
-    "proof": "tools/proofs/202609010053-sld-sandbox.proof.mjs, 394 checks; tools/proofs/202609010002-original-sld-finance-fixture.mjs, 4 executable-original cases; tools/proofs/202609010030-mobile-static.audit.mjs, CLEAN"
+    "scope": "restore topology-isolated physical inputs and the original mounting-to-bifacial linkage",
+    "proof": "tools/proofs/202609010058-sld-sandbox.proof.mjs, 400 checks; tools/proofs/202609010002-original-sld-finance-fixture.mjs, 4 executable-original cases; tools/proofs/202609010030-mobile-static.audit.mjs, CLEAN"
   },
-  "version": "v9.37",
-  "composition_id": "202609010053-gridatlas-v9.37",
+  "version": "v9.38",
+  "composition_id": "202609010058-gridatlas-v9.38",
   "source_pattern": {
     "repository": "Ventusltd/gridatlas",
     "path": "atlas/releases/202608300453-atlas-v9/202608292126-pre-snapped-config-adapter.js",
     "source_sha256": "07d33eda5b3279a03df4c0a0aded61e4363c46734dda991aa5f48ae0d55097da",
     "transformation": "carry the pre-snap config rewrite verbatim; add a measured link layer and on-card beta distances"
   },
-  "composition_version": "v9.37"
+  "composition_version": "v9.38"
 }
