@@ -34,9 +34,7 @@ for (const id of current.cartridge_order || []) {
   const proof = path.join(ROOT, 'tools', 'proofs',
     `${cartridge.generation}-${id}.proof.mjs`);
   if (!fs.existsSync(proof)) {
-    // Not every cartridge in this composition carries a proof under its own
-    // id; say which, plainly, rather than passing in silence.
-    console.log(`  ${id} ${cartridge.generation}: no proof at ${path.relative(ROOT, proof)}`);
+    failures.push(`${id} ${cartridge.generation}: no proof at ${path.relative(ROOT, proof)}`);
     continue;
   }
   console.log(`\n=== ${id} ${cartridge.generation} ===`);
@@ -60,5 +58,5 @@ if (failures.length) {
   console.error('  FAIL no proof ran for any composed cartridge');
   process.exitCode = 1;
 } else {
-  console.log('every composed cartridge that carries a proof passed it');
+  console.log('every composed cartridge passed its generation-matched proof');
 }
