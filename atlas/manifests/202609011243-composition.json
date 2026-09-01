@@ -1,7 +1,7 @@
 {
  "schema": "gridatlas.composition-manifest.v1",
- "generation": "202609011242",
- "parent_generation": "202609011215",
+ "generation": "202609011243",
+ "parent_generation": "202609011242",
  "live_route": "/gridatlas/atlas/",
  "shell": {
   "release_id": "202608300453-atlas-v9",
@@ -67,13 +67,13 @@
   },
   {
    "id": "sld-sandbox",
-   "generation": "202609011242",
-   "version": "v9.47",
+   "generation": "202609011243",
+   "version": "v9.48",
    "type": "script",
    "slot": "replace-script",
    "replace_script": "202608292126-pre-snapped-config-adapter.js",
-   "path": "./cartridges/202609011242-sld-sandbox-v9-8.js",
-   "sha256": "35ecdaddf3208ba181c6b039ab1e1d5c1ef4693fd9e40d384aada39c92d104fa",
+   "path": "./cartridges/202609011243-sld-sandbox-v9-8.js",
+   "sha256": "edd450116fe8989a870ba7e341fd41df8eccc1b3b1399d3b2af215bb86400a3c",
    "capabilities": [
     "pre-snapped-config-adapter-carried-forward",
     "project-or-substation-selection",
@@ -462,7 +462,7 @@
   "offshore_wind_excluded_from_links": true,
   "cards_fit_after_drag_and_restore": true,
   "shell_modified": false,
-  "scope": "the arrival owns its card: a register-absent project gets a card built from the link's own fields, yielded to the register's card if that lands later",
+  "scope": "supersedes 202609011242: the composition was sound, its proof shipped one stale clear-order check; re-sealed with a coherent proof",
   "proof": "tools/proofs/202609010726-sld-sandbox.proof.mjs, 420 checks"
  },
  "version": "v9.39",
@@ -473,5 +473,5 @@
   "source_sha256": "07d33eda5b3279a03df4c0a0aded61e4363c46734dda991aa5f48ae0d55097da",
   "transformation": "carry the pre-snap config rewrite verbatim; add a measured link layer and on-card beta distances"
  },
- "composition_version": "v9.47"
+ "composition_version": "v9.48"
 }

@@ -1,7 +1,7 @@
 {
   "schema": "gridatlas.current.v2",
-  "generation": "202609011242",
-  "previous_generation": "202609011215",
+  "generation": "202609011243",
+  "previous_generation": "202609011242",
   "architecture": "IMMUTABLE_SHELL_PLUS_HASHED_CARTRIDGES",
   "live_route": "/gridatlas/atlas/",
   "release_id": "202608300453-atlas-v9",
@@ -59,13 +59,13 @@
     },
     {
       "id": "sld-sandbox",
-      "generation": "202609011242",
-      "version": "v9.47",
+      "generation": "202609011243",
+      "version": "v9.48",
       "type": "script",
       "slot": "replace-script",
       "replace_script": "202608292126-pre-snapped-config-adapter.js",
-      "path": "./cartridges/202609011242-sld-sandbox-v9-8.js",
-      "sha256": "35ecdaddf3208ba181c6b039ab1e1d5c1ef4693fd9e40d384aada39c92d104fa",
+      "path": "./cartridges/202609011243-sld-sandbox-v9-8.js",
+      "sha256": "edd450116fe8989a870ba7e341fd41df8eccc1b3b1399d3b2af215bb86400a3c",
       "capabilities": [
         "pre-snapped-config-adapter-carried-forward",
         "project-or-substation-selection",
@@ -471,15 +471,15 @@
       "result_class": "LOCATION_ONLY"
     }
   },
-  "composition_manifest": "./manifests/202609011242-composition.json",
+  "composition_manifest": "./manifests/202609011243-composition.json",
   "scope_closure": {
     "generation": "202609010726",
     "status": "DONE",
     "scope": "GridAtlas v9.42 the price panel revalidates",
     "schedule_retired": true
   },
-  "composition_version": "v9.47",
-  "composition_id": "202609011242-gridatlas-v9.47",
+  "composition_version": "v9.48",
+  "composition_id": "202609011243-gridatlas-v9.48",
   "transport": {
     "response_contract": "HEADERS_BEFORE_PARQUET_BODY",
     "engine_timeout_seconds": 15,
