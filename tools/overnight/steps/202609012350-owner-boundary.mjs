@@ -262,10 +262,16 @@ const composedSource = (await Promise.all(
       for (const label of RETARGET) {
         const at = text.indexOf(`check('${label}'`);
         if (at < 0) throw new Error(`cannot retarget a check that is not there: ${label}`);
-        /* the call ends at the first ');' that closes it - these checks are
-           all single statements, which is asserted by requiring one */
-        const end = text.indexOf(');\n', at);
-        if (end < 0) throw new Error(`cannot find the end of: ${label}`);
+        /* The call ends where the NEXT top-level statement begins, not at
+           the first ');' - several of these wrap an IIFE and contain a
+           ');' inside their own body, and stopping there rewrote half a
+           check and left the other half reading the old variable. */
+        const rest = text.slice(at + 6);
+        const candidates = ['\ncheck(', '\nconsole.log(', '\n/*', '\nconst ', '\n{']
+          .map(marker => rest.indexOf(marker))
+          .filter(i => i >= 0);
+        if (!candidates.length) throw new Error(`cannot find the end of: ${label}`);
+        const end = at + 6 + Math.min(...candidates);
         const call = text.slice(at, end);
         if (!call.includes('cartridgeSource')) {
           throw new Error(`already retargeted or unexpected shape: ${label}`);
@@ -274,6 +280,38 @@ const composedSource = (await Promise.all(
           + call.split('cartridgeSource').join('composedSource')
           + text.slice(end);
       }
+
+      /* One of them changes MEANING, not just target.
+         --------------------------------------------------------------
+         It asserted the module appears before `const DECLARED = ` in the
+         same file, which was how "evaluated before the body that uses it"
+         was guaranteed while both lived in one cartridge. They no longer
+         do, and a concatenation order is not an evaluation order. What
+         guarantees it now is the shell: it loads ventus-corev8engine.js
+         at line 138 and the sandbox adapter at line 139, so the cartridge
+         holding the modules is evaluated first. That is the fact to
+         assert, and it is read from the shell rather than assumed. */
+      const ORDER_OLD = "check('the network-topology module is composed into the served bytes',\n"
+        + "  /gridatlas\\.module\\.network-topology\\.v1/.test(composedSource)\n"
+        + "  && composedSource.indexOf('gridatlas.module.network-topology.v1') < composedSource.indexOf('const DECLARED = '));";
+      if (!text.includes(ORDER_OLD)) {
+        throw new Error('the network-topology ordering check is not in the shape this step expects');
+      }
+      text = text.split(ORDER_OLD).join(
+        "check('the network-topology module is composed into the served bytes',\n"
+        + "  /gridatlas\\.module\\.network-topology\\.v1/.test(composedSource));\n"
+        + "check('and in a cartridge the shell evaluates BEFORE the sandbox that calls it', (() => {\n"
+        + "  /* Concatenation order is not evaluation order. The shell decides,\n"
+        + "     so the shell is what is read. */\n"
+        + "  const shell = await readFile(join(REPO, 'atlas', 'releases',\n"
+        + "    '202608300453-atlas-v9', 'index.html'), 'utf8');\n"
+        + "  const holder = (CURRENT.cartridges || []).find(c => c.id === 'substation-intelligence');\n"
+        + "  const sandbox = (CURRENT.cartridges || []).find(c => c.id === 'sld-sandbox');\n"
+        + "  if (!holder || !sandbox) return false;\n"
+        + "  const first = shell.indexOf(holder.replace_script);\n"
+        + "  const second = shell.indexOf(sandbox.replace_script);\n"
+        + "  return first >= 0 && second >= 0 && first < second;\n"
+        + "})());");
       write(sandboxProof, text);
     }
 
