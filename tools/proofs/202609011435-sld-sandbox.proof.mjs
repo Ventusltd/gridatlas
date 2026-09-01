@@ -1,5 +1,5 @@
 /**
- * Proof for the neon links + SLD layout sandbox cartridge, generation 202609011434.
+ * Proof for the neon links + SLD layout sandbox cartridge, generation 202609011435.
  *
  * No dependencies. The repository carries playwright and no DOM library, so
  * rather than add one this stubs the small surface the cartridge actually
@@ -32,7 +32,7 @@ import vm from 'node:vm';
 const HERE = dirname(fileURLToPath(import.meta.url));
 const REPO = resolve(HERE, '..', '..');
 const CARTRIDGE = join(REPO, 'atlas', 'cartridges',
-  '202609011434-sld-sandbox-v9-8.js');
+  '202609011435-sld-sandbox-v9-8.js');
 const ORIGINAL = join(REPO, 'atlas', 'releases', '202608300453-atlas-v9',
   '202608292126-pre-snapped-config-adapter.js');
 const FINANCE_ORACLE = join(REPO, 'tools', 'proofs', 'fixtures',
@@ -2134,7 +2134,7 @@ console.log('\nthe 400 kV public record\n');
 check('the declared table binds register identities to named substations',
   /const DECLARED_CONNECTIONS = Object\.freeze\(\{/.test(cartridgeSource)
   && ['10914','10916','9809','12281','14806','13599','9806','13644','11928']
-    .every(ref => new RegExp(`'${ref}': \\{ substation: '`).test(cartridgeSource)));
+    .every(ref => new RegExp(`'${ref}': \\{ (works|substation): `).test(cartridgeSource)));
 check('every declared entry names its public source',
   /EN010133/.test(cartridgeSource) && /EN010132/.test(cartridgeSource)
   && /EN010131/.test(cartridgeSource) && /EN010142/.test(cartridgeSource)
@@ -2181,6 +2181,26 @@ check('the technology control recovers exactly its own entry, escaped',
   /link\.project_layer_enabled = tech;\n      recoverFailures\(new RegExp\('\^layer control not found: '/.test(cartridgeSource));
 check('the late-controls observer recovers the budget note it outlived',
   /link\.layer_controls_arrived_late = true;\n        recoverFailures\(\/\^the engine had not rendered its layer controls within\//.test(cartridgeSource));
+
+
+console.log('\nthe consented works\n');
+
+check('declared schemes carry customer-substation works quotes',
+  /works: "an up to 400 kV substation collating the satellite sites/.test(cartridgeSource)
+  && /150\/75\/75 MVA transformers with 400 kV GIS/.test(cartridgeSource)
+  && /160 t, up to 15 x 9\.5 x 10\.5 m each/.test(cartridgeSource));
+check('PoC interface classes are quoted, from bay reuse to NG-delivered extension',
+  /reuse of an ex-generation bay/.test(cartridgeSource)
+  && /new GIS bay by extension of main busbar 4/.test(cartridgeSource)
+  && /National Grid-delivered extension of Bicker Fen/.test(cartridgeSource));
+check('the card labels them as consented quotations, never advice',
+  /Customer substation \(consented\):/.test(cartridgeSource)
+  && /Works at the point of connection:/.test(cartridgeSource)
+  && /Never design advice/.test(cartridgeSource));
+check('the nearest-400 row measures a named companion when an unnamed node wins',
+  /let bestNamed = null;/.test(cartridgeSource)
+  && /nearest named: \$\{escapeHtml\(n\.named\.name\)\}/.test(cartridgeSource)
+  && /bestNamed\.name !== best\.name/.test(cartridgeSource));
 
 console.log(`\n${passed}/${passed + failures.length} checks passed`);
 if (failures.length) {

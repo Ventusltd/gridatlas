@@ -1,7 +1,7 @@
 {
   "schema": "gridatlas.current.v2",
-  "generation": "202609011434",
-  "previous_generation": "202609011433",
+  "generation": "202609011435",
+  "previous_generation": "202609011434",
   "architecture": "IMMUTABLE_SHELL_PLUS_HASHED_CARTRIDGES",
   "live_route": "/gridatlas/atlas/",
   "release_id": "202608300453-atlas-v9",
@@ -59,13 +59,13 @@
     },
     {
       "id": "sld-sandbox",
-      "generation": "202609011434",
-      "version": "v9.52",
+      "generation": "202609011435",
+      "version": "v9.53",
       "type": "script",
       "slot": "replace-script",
       "replace_script": "202608292126-pre-snapped-config-adapter.js",
-      "path": "./cartridges/202609011434-sld-sandbox-v9-8.js",
-      "sha256": "96875ebf9aa5c8141ea5fffe806ea6654e52039cd8a3a6dce3bd516192785596",
+      "path": "./cartridges/202609011435-sld-sandbox-v9-8.js",
+      "sha256": "7f5b1edb21dced6670cea587eaa4fec8a080f88309e5aa76c672135b432f0b7d",
       "capabilities": [
         "pre-snapped-config-adapter-carried-forward",
         "project-or-substation-selection",
@@ -162,7 +162,9 @@
         "new-customer-substations-in-the-declared-chain",
         "substation-works-noted-from-public-record",
         "nearest-400kv-measured-for-every-project",
-        "recovered-failures-ledgered-separately"
+        "recovered-failures-ledgered-separately",
+        "consented-works-quoted-on-the-declared-card",
+        "nearest-named-400kv-companion-measurement"
       ],
       "immutable_shell_modified": false,
       "supersedes_shell_script": {
@@ -459,6 +461,10 @@
         "found_by": "Codex supervision 202609011446",
         "fault": "recovered late-arrival entries stayed in the public failures array, indistinguishable from terminal faults",
         "fix": "recovery moves the entry to link.recovered at the moment the late control arrives; failures speaks only for what is still failing"
+      },
+      "works_study": {
+        "source": "governance/202609011515-400kv-customer-substation-study.md",
+        "rule": "quotations of consented works from made Orders and Environmental Statements; never design advice"
       }
     }
   ],
@@ -504,15 +510,15 @@
       "result_class": "LOCATION_ONLY"
     }
   },
-  "composition_manifest": "./manifests/202609011434-composition.json",
+  "composition_manifest": "./manifests/202609011435-composition.json",
   "scope_closure": {
     "generation": "202609010726",
     "status": "DONE",
     "scope": "GridAtlas v9.42 the price panel revalidates",
     "schedule_retired": true
   },
-  "composition_version": "v9.52",
-  "composition_id": "202609011434-gridatlas-v9.52",
+  "composition_version": "v9.53",
+  "composition_id": "202609011435-gridatlas-v9.53",
   "transport": {
     "response_contract": "HEADERS_BEFORE_PARQUET_BODY",
     "engine_timeout_seconds": 15,

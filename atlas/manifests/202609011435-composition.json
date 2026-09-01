@@ -1,7 +1,7 @@
 {
  "schema": "gridatlas.composition-manifest.v1",
- "generation": "202609011434",
- "parent_generation": "202609011433",
+ "generation": "202609011435",
+ "parent_generation": "202609011434",
  "live_route": "/gridatlas/atlas/",
  "shell": {
   "release_id": "202608300453-atlas-v9",
@@ -67,13 +67,13 @@
   },
   {
    "id": "sld-sandbox",
-   "generation": "202609011434",
-   "version": "v9.52",
+   "generation": "202609011435",
+   "version": "v9.53",
    "type": "script",
    "slot": "replace-script",
    "replace_script": "202608292126-pre-snapped-config-adapter.js",
-   "path": "./cartridges/202609011434-sld-sandbox-v9-8.js",
-   "sha256": "96875ebf9aa5c8141ea5fffe806ea6654e52039cd8a3a6dce3bd516192785596",
+   "path": "./cartridges/202609011435-sld-sandbox-v9-8.js",
+   "sha256": "7f5b1edb21dced6670cea587eaa4fec8a080f88309e5aa76c672135b432f0b7d",
    "capabilities": [
     "pre-snapped-config-adapter-carried-forward",
     "project-or-substation-selection",
@@ -170,7 +170,9 @@
     "new-customer-substations-in-the-declared-chain",
     "substation-works-noted-from-public-record",
     "nearest-400kv-measured-for-every-project",
-    "recovered-failures-ledgered-separately"
+    "recovered-failures-ledgered-separately",
+    "consented-works-quoted-on-the-declared-card",
+    "nearest-named-400kv-companion-measurement"
    ],
    "immutable_shell_modified": false,
    "supersedes_shell_script": {
@@ -467,6 +469,10 @@
     "found_by": "Codex supervision 202609011446",
     "fault": "recovered late-arrival entries stayed in the public failures array, indistinguishable from terminal faults",
     "fix": "recovery moves the entry to link.recovered at the moment the late control arrives; failures speaks only for what is still failing"
+   },
+   "works_study": {
+    "source": "governance/202609011515-400kv-customer-substation-study.md",
+    "rule": "quotations of consented works from made Orders and Environmental Statements; never design advice"
    }
   }
  ],
@@ -495,7 +501,7 @@
   "offshore_wind_excluded_from_links": true,
   "cards_fit_after_drag_and_restore": true,
   "shell_modified": false,
-  "scope": "a recovered failure is not a failure: late-arrival entries move to a published recovered ledger at the moment the control arrives, closing the Codex 202609011446 telemetry finding",
+  "scope": "the consented works on the card: customer-substation and PoC interface quotes from the made Orders per the 202609011515 study; the nearest-400 row gains its named companion",
   "proof": "tools/proofs/202609010726-sld-sandbox.proof.mjs, 420 checks"
  },
  "version": "v9.39",
@@ -506,5 +512,5 @@
   "source_sha256": "07d33eda5b3279a03df4c0a0aded61e4363c46734dda991aa5f48ae0d55097da",
   "transformation": "carry the pre-snap config rewrite verbatim; add a measured link layer and on-card beta distances"
  },
- "composition_version": "v9.52"
+ "composition_version": "v9.53"
 }

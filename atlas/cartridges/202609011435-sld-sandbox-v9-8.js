@@ -1,7 +1,7 @@
 /**
  * GridAtlas cartridge — neon substation links and the SLD layout sandbox.
  *
- * Generation 202609011434 (UTC), composition v9.52. Slot: replace-script for
+ * Generation 202609011435 (UTC), composition v9.53. Slot: replace-script for
  * 202608292126-pre-snapped-config-adapter.js.
  *
  * WHAT IT DOES
@@ -61,7 +61,7 @@
 (() => {
   'use strict';
 
-  const GENERATION = '202609011434';
+  const GENERATION = '202609011435';
 
   /* ══════════════════════════════════════════════════════════════════════
      PART 1 — the pre-snapped config adapter, carried forward unchanged.
@@ -206,28 +206,44 @@
      payload, and the distance shown is measured, never asserted. */
   const DECLARED_COLOUR = '#d8b64a';   // gold: the declared link, not a guess
   const DECLARED_CONNECTIONS = Object.freeze({
-    '10914': { substation: 'Cottam Substation',
+    '10914': { works: "an up to 400 kV substation collating the satellite sites at 132 kV and site generation at 33 kV (Work No. 4A)",
+      poc_works: "reuse of an ex-generation bay: busbars, a 400 kV 3-phase 4000 A breaker, metering and protection (Work No. 5)",
+      substation: 'Cottam Substation',
       via: 'a new 400 kV scheme substation consented within the DCO',
       source: 'Cottam Solar Project Order 2024, granted 5 Sep 2024 (EN010133)' },
-    '10915': { substation: 'Cottam Substation',
+    '10915': { works: "an up to 400 kV substation collating the satellite sites at 132 kV and site generation at 33 kV (Work No. 4A)",
+      poc_works: "reuse of an ex-generation bay: busbars, a 400 kV 3-phase 4000 A breaker, metering and protection (Work No. 5)",
+      substation: 'Cottam Substation',
       via: 'a new 400 kV scheme substation consented within the DCO',
       source: 'Cottam Solar Project Order 2024, granted 5 Sep 2024 (EN010133)' },
-    '10916': { substation: 'West Burton Substation',
+    '10916': { works: "an up to 400 kV customer substation at West Burton 3 with reactive power units; up to 132 kV site substations at WB1 and WB2 (Works 3A-3C)",
+      poc_works: "a new GIS bay by extension of main busbar 4 and reserve busbar 3/4 gas zones (Work No. 4)",
+      substation: 'West Burton Substation',
       via: 'a new 400 kV customer substation at West Burton 3 and a 400 kV cable to the former generator bay',
       source: 'West Burton Solar Project Order, granted 24 Jan 2025 (EN010132)' },
-    '10917': { substation: 'West Burton Substation',
+    '10917': { works: "an up to 400 kV customer substation at West Burton 3 with reactive power units; up to 132 kV site substations at WB1 and WB2 (Works 3A-3C)",
+      poc_works: "a new GIS bay by extension of main busbar 4 and reserve busbar 3/4 gas zones (Work No. 4)",
+      substation: 'West Burton Substation',
       via: 'a new 400 kV customer substation at West Burton 3 and a 400 kV cable to the former generator bay',
       source: 'West Burton Solar Project Order, granted 24 Jan 2025 (EN010132)' },
-    '9809': { substation: 'Cottam Substation',
+    '9809': { works: "a scheme substation with reactive power units and a 400 kV harmonic filter compound (Work No. 3)",
+      poc_works: "one new 400 kV generation bay at Cottam (Work No. 4C)",
+      substation: 'Cottam Substation',
       via: 'a new 400 kV scheme substation and a 7.5 km 400 kV underground cable',
       source: 'Gate Burton Energy Park Order, granted 2024 (EN010131)' },
-    '9810': { substation: 'Cottam Substation',
+    '9810': { works: "a scheme substation with reactive power units and a 400 kV harmonic filter compound (Work No. 3)",
+      poc_works: "one new 400 kV generation bay at Cottam (Work No. 4C)",
+      substation: 'Cottam Substation',
       via: 'a new 400 kV scheme substation and a 7.5 km 400 kV underground cable',
       source: 'Gate Burton Energy Park Order, granted 2024 (EN010131)' },
-    '12281': { substation: 'Cottam Substation',
+    '12281': { works: "two scheme substations, each 2 x 400/33 kV 150/75/75 MVA transformers with 400 kV GIS (Works 3A-3B)",
+      poc_works: "the standard 400 kV bay kit at a free bay at Cottam (Work No. 5)",
+      substation: 'Cottam Substation',
       via: 'an 18.5 km 400 kV underground cable to a free bay',
       source: 'Tillbridge Solar Order 2025 (EN010142)' },
-    '12282': { substation: 'Cottam Substation',
+    '12282': { works: "two scheme substations, each 2 x 400/33 kV 150/75/75 MVA transformers with 400 kV GIS (Works 3A-3B)",
+      poc_works: "the standard 400 kV bay kit at a free bay at Cottam (Work No. 5)",
+      substation: 'Cottam Substation',
       via: 'an 18.5 km 400 kV underground cable to a free bay',
       source: 'Tillbridge Solar Order 2025 (EN010142)' },
     '14806': { substation: 'High Marnham Substation',
@@ -236,16 +252,24 @@
     '14807': { substation: 'High Marnham Substation',
       via: "NGET's new substation adjacent to the existing High Marnham (Great Grid Upgrade)",
       source: 'One Earth Solar Farm DCO, consented (EN010159)' },
-    '13599': { substation: 'Bicker Fen Substation',
+    '13599': { works: "up to four 33-400 kV transformers (160 t, up to 15 x 9.5 x 10.5 m each) in a compound of up to 40,000 m2 (ES Ch.2 s2.8)",
+      poc_works: "a National Grid-delivered extension of Bicker Fen, AIS or GIS, sited for multiple customers (s2.13)",
+      substation: 'Bicker Fen Substation',
       via: 'a 400 kV cable and a consented extension of Bicker Fen shared with Heckington Fen',
       source: 'Beacon Fen Energy Park DCO, granted Aug 2026 (EN010151)' },
-    '13600': { substation: 'Bicker Fen Substation',
+    '13600': { works: "up to four 33-400 kV transformers (160 t, up to 15 x 9.5 x 10.5 m each) in a compound of up to 40,000 m2 (ES Ch.2 s2.8)",
+      poc_works: "a National Grid-delivered extension of Bicker Fen, AIS or GIS, sited for multiple customers (s2.13)",
+      substation: 'Bicker Fen Substation',
       via: 'a 400 kV cable and a consented extension of Bicker Fen shared with Heckington Fen',
       source: 'Beacon Fen Energy Park DCO, granted Aug 2026 (EN010151)' },
-    '9806': { substation: 'Bicker Fen Substation',
+    '9806': { works: "transformers with bunding and blast walls, switchgear, and harmonic filtering reactive power compensation (Work No. 4)",
+      poc_works: "a new generation bay plus an AIS-or-GIS extension and a cable sealing end compound at Bicker Fen (Works 6A-6C)",
+      substation: 'Bicker Fen Substation',
       via: 'the consented Bicker Fen extension shared with Beacon Fen',
       source: 'Heckington Fen Solar Park DCO, granted (EN010123)' },
-    '9807': { substation: 'Bicker Fen Substation',
+    '9807': { works: "transformers with bunding and blast walls, switchgear, and harmonic filtering reactive power compensation (Work No. 4)",
+      poc_works: "a new generation bay plus an AIS-or-GIS extension and a cable sealing end compound at Bicker Fen (Works 6A-6C)",
+      substation: 'Bicker Fen Substation',
       via: 'the consented Bicker Fen extension shared with Beacon Fen',
       source: 'Heckington Fen Solar Park DCO, granted (EN010123)' },
     '13644': { substation: 'Thorpe Marsh Substation',
@@ -286,24 +310,39 @@
       .sort((a, b) => b.kv[0] - a.kv[0])[0] || null;
     if (!match) {
       return { poc: declared.substation, kv: 400, at: null, km: null,
-        via: declared.via, source: declared.source, works };
+        via: declared.via, source: declared.source, works,
+        customer_works: declared.works || null,
+        poc_works: declared.poc_works || null };
     }
     return { poc: match.name, kv: Math.round(match.kv[0]), at: match.at,
       km: distanceKm(origin[0], origin[1], match.at[0], match.at[1]),
-      via: declared.via, source: declared.source, works };
+      via: declared.via, source: declared.source, works,
+      customer_works: declared.works || null,
+      poc_works: declared.poc_works || null };
   }
 
   function nearestTransmission(origin, subs) {
     let best = null;
+    let bestNamed = null;
     for (const s of subs) {
       if (!(Array.isArray(s.kv) && s.kv[0] >= 400)) continue;
       const km = distanceKm(origin[0], origin[1], s.at[0], s.at[1]);
       if (!best || km < best.km) {
         best = { name: s.name || 'Unnamed substation', km, at: s.at };
       }
+      // An unnamed OSM node can win on raw distance; the reader still wants
+      // to know the nearest substation with an identity. Both are shown -
+      // two measurements, no judgement about either.
+      if (s.name && (!bestNamed || km < bestNamed.km)) {
+        bestNamed = { name: s.name, km, at: s.at };
+      }
     }
     if (best) {
       best.works = SUBSTATION_WORKS[String(best.name).toLowerCase()] || null;
+      if (bestNamed && bestNamed.name !== best.name) {
+        best.named = bestNamed;
+        best.named.works = SUBSTATION_WORKS[bestNamed.name.toLowerCase()] || null;
+      }
     }
     return best;
   }
@@ -324,12 +363,27 @@
         + (d.works ? ` ${escapeHtml(d.works)}` : '')
         + (d.at ? '' : ' This substation is not in the mapped payload, so no distance is measured.')
         + `</p>`;
+      // Quotations of consented works from the made Order or Environmental
+      // Statement - the DCO's own illustration of the customer substation
+      // and the interface at the point of connection. Never design advice.
+      if (d.customer_works) {
+        out += `<p class="neon-caveat"><b>Customer substation (consented):</b> `
+          + `${escapeHtml(d.customer_works)}</p>`;
+      }
+      if (d.poc_works) {
+        out += `<p class="neon-caveat"><b>Works at the point of connection:</b> `
+          + `${escapeHtml(d.poc_works)}</p>`;
+      }
     }
     if (currentNearest400) {
       const n = currentNearest400;
       out += `<p class="neon-caveat"><b>Nearest 400 kV substation:</b> `
         + `${escapeHtml(n.name)} · ${n.km.toFixed(2)} km`
         + (n.works ? `. ${escapeHtml(n.works)}` : '')
+        + (n.named
+          ? ` (nearest named: ${escapeHtml(n.named.name)} · ${n.named.km.toFixed(2)} km`
+            + (n.named.works ? `. ${escapeHtml(n.named.works)}` : '') + `)`
+          : '')
         + `</p>`;
     }
     return out;
@@ -2104,7 +2158,7 @@
 
      Mobile first, like everything since Vikram said the link travels by
      WhatsApp: a collapsed chip, viewport-sized body, newest first. */
-  const VERSION_LEDGER = [{"g":"202608312121","v":"v9.16","s":"the project arriving from Pipeline News is visible: its own technology layer is enabled and a pin owned by this cartridge is dropped on it, with a toggle on the card"},{"g":"202608312133","v":"v9.17","s":"central AC sizing: the limiting nameplate, not a squared product"},{"g":"202608312140","v":"v9.18","s":"the project marker is a ring, found by looking at it in Chrome"},{"g":"202608312154","v":"v9.19","s":"the grid maths installs even when the basemap never paints"},{"g":"202608312157","v":"v9.20","s":"the Atlas says what it is waiting for, sized for a phone"},{"g":"202608312205","v":"v9.21","s":"the MapLibre exception storm: symbol layers with no glyph atlas"},{"g":"202608312208","v":"v9.22","s":"a symbol layer is added only once its text can be drawn"},{"g":"202608312222","v":"v9.23","s":"card geometry resets on every selection"},{"g":"202608312227","v":"v9.24","s":"the GB electricity tracker is connected to the map"},{"g":"202608312238","v":"v9.25","s":"one source of truth for GB prices: the data repository"},{"g":"202608312244","v":"v9.26","s":"late layer controls are used, and the repository is LF everywhere"},{"g":"202608312257","v":"v9.27","s":"the MAP button works for every technology in the register"},{"g":"202608312300","v":"v9.28","s":"voltage classes are explained, and the whole dashboard is accepted"},{"g":"202608312306","v":"v9.29","s":"the headline capacity actually moves the layout"},{"g":"202608312313","v":"v9.30","s":"the neon flow no longer exhausts the renderer"},{"g":"202608312315","v":"v9.31","s":"Codex's LineAtlas cardinality gate passes"},{"g":"202608312317","v":"v9.32","s":"no substation can display an impossible voltage"},{"g":"202608312321","v":"v9.33","s":"nothing can rewrite the reference design, not even later"},{"g":"202608312324","v":"v9.34","s":"a missing source costs a drawing, never the session"},{"g":"202609010021","v":"v9.35","s":"phone pointer operation, viewport containment and named electrical ratios"},{"g":"202609010040","v":"v9.36","s":"original financial-model parity with explicit correction of the known central AC double-count"},{"g":"202609010053","v":"v9.37","s":"complete the original finance interaction contract by linking development stage, cost and success"},{"g":"202609010058","v":"v9.38","s":"restore topology-isolated physical inputs and the original mounting-to-bifacial linkage"},{"g":"202609010106","v":"v9.39","s":"remove duplicate BESS truth, restore original central defaults and reject fractional topology counts"},{"g":"202609010204","v":"v9.40","s":"the version ledger itself, on the page"},{"g":"202609010722","v":"v9.41","s":"exact GB price evidence, beside the ledger"},{"g":"202609010726","v":"v9.42","s":"the price panel revalidates instead of pinning its first sight"},{"g":"202609010902","v":"v9.43","s":"mobile: tools collapse behind one chip; grid and subs are one tap"},{"g":"202609011141","v":"v9.44","s":"a repd_ref-only link computes the links: identity resolved by the search lane is consumed, not re-required from the URL"},{"g":"202609011205","v":"v9.45","s":"arrival: fullscreen on touch, the identity wait runs to its end, and every stage says what it is doing"},{"g":"202609011215","v":"v9.46","s":"the distances survive the card: a keeper re-attaches the measurement block when a late popup replaces the one it decorated"},{"g":"202609011242","v":"v9.47","s":"the arrival owns its card: 2,421 register-absent projects (873 solar) get a card from the link's own fields, yielded if the register's card lands"},{"g":"202609011243","v":"v9.48","s":"supersedes v9.47's boundary: the composition was sound, its proof shipped one stale check; re-sealed coherent"},{"g":"202609011244","v":"v9.49","s":"supersedes v9.48, whose boundary shipped without its proof file; same composition, re-sealed whole"},{"g":"202609011251","v":"v9.50","s":"the card precedes the lines: a register-absent arrival opened its card after drawing, and the lines-belong-to-the-card watcher rightly wiped them"},{"g":"202609011433","v":"v9.51","s":"the 400 kV public record: declared DCO connections drawn and carded, new customer substations named, nearest 400 kV measured for every project"},{"g":"202609011434","v":"v9.52","s":"a recovered failure is not a failure: late-arrival entries move to their own ledger when the controls arrive, per the Codex supervision finding"}];
+  const VERSION_LEDGER = [{"g":"202608312121","v":"v9.16","s":"the project arriving from Pipeline News is visible: its own technology layer is enabled and a pin owned by this cartridge is dropped on it, with a toggle on the card"},{"g":"202608312133","v":"v9.17","s":"central AC sizing: the limiting nameplate, not a squared product"},{"g":"202608312140","v":"v9.18","s":"the project marker is a ring, found by looking at it in Chrome"},{"g":"202608312154","v":"v9.19","s":"the grid maths installs even when the basemap never paints"},{"g":"202608312157","v":"v9.20","s":"the Atlas says what it is waiting for, sized for a phone"},{"g":"202608312205","v":"v9.21","s":"the MapLibre exception storm: symbol layers with no glyph atlas"},{"g":"202608312208","v":"v9.22","s":"a symbol layer is added only once its text can be drawn"},{"g":"202608312222","v":"v9.23","s":"card geometry resets on every selection"},{"g":"202608312227","v":"v9.24","s":"the GB electricity tracker is connected to the map"},{"g":"202608312238","v":"v9.25","s":"one source of truth for GB prices: the data repository"},{"g":"202608312244","v":"v9.26","s":"late layer controls are used, and the repository is LF everywhere"},{"g":"202608312257","v":"v9.27","s":"the MAP button works for every technology in the register"},{"g":"202608312300","v":"v9.28","s":"voltage classes are explained, and the whole dashboard is accepted"},{"g":"202608312306","v":"v9.29","s":"the headline capacity actually moves the layout"},{"g":"202608312313","v":"v9.30","s":"the neon flow no longer exhausts the renderer"},{"g":"202608312315","v":"v9.31","s":"Codex's LineAtlas cardinality gate passes"},{"g":"202608312317","v":"v9.32","s":"no substation can display an impossible voltage"},{"g":"202608312321","v":"v9.33","s":"nothing can rewrite the reference design, not even later"},{"g":"202608312324","v":"v9.34","s":"a missing source costs a drawing, never the session"},{"g":"202609010021","v":"v9.35","s":"phone pointer operation, viewport containment and named electrical ratios"},{"g":"202609010040","v":"v9.36","s":"original financial-model parity with explicit correction of the known central AC double-count"},{"g":"202609010053","v":"v9.37","s":"complete the original finance interaction contract by linking development stage, cost and success"},{"g":"202609010058","v":"v9.38","s":"restore topology-isolated physical inputs and the original mounting-to-bifacial linkage"},{"g":"202609010106","v":"v9.39","s":"remove duplicate BESS truth, restore original central defaults and reject fractional topology counts"},{"g":"202609010204","v":"v9.40","s":"the version ledger itself, on the page"},{"g":"202609010722","v":"v9.41","s":"exact GB price evidence, beside the ledger"},{"g":"202609010726","v":"v9.42","s":"the price panel revalidates instead of pinning its first sight"},{"g":"202609010902","v":"v9.43","s":"mobile: tools collapse behind one chip; grid and subs are one tap"},{"g":"202609011141","v":"v9.44","s":"a repd_ref-only link computes the links: identity resolved by the search lane is consumed, not re-required from the URL"},{"g":"202609011205","v":"v9.45","s":"arrival: fullscreen on touch, the identity wait runs to its end, and every stage says what it is doing"},{"g":"202609011215","v":"v9.46","s":"the distances survive the card: a keeper re-attaches the measurement block when a late popup replaces the one it decorated"},{"g":"202609011242","v":"v9.47","s":"the arrival owns its card: 2,421 register-absent projects (873 solar) get a card from the link's own fields, yielded if the register's card lands"},{"g":"202609011243","v":"v9.48","s":"supersedes v9.47's boundary: the composition was sound, its proof shipped one stale check; re-sealed coherent"},{"g":"202609011244","v":"v9.49","s":"supersedes v9.48, whose boundary shipped without its proof file; same composition, re-sealed whole"},{"g":"202609011251","v":"v9.50","s":"the card precedes the lines: a register-absent arrival opened its card after drawing, and the lines-belong-to-the-card watcher rightly wiped them"},{"g":"202609011433","v":"v9.51","s":"the 400 kV public record: declared DCO connections drawn and carded, new customer substations named, nearest 400 kV measured for every project"},{"g":"202609011434","v":"v9.52","s":"a recovered failure is not a failure: late-arrival entries move to their own ledger when the controls arrive, per the Codex supervision finding"},{"g":"202609011435","v":"v9.53","s":"the consented works on the card: customer-substation and PoC interface quotes from the made Orders; the nearest-400 row gains its named companion"}];
   const PRE_SCOPE_COMPOSITIONS = 16;
   const LEDGER_ID = 'gridatlas-version-ledger';
 
