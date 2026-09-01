@@ -927,6 +927,43 @@
       "commit": "93c13cf3d7d59d8c489adc9a11d28214556a27d0",
       "finished_at": "2026-09-01T23:10:33.578Z",
       "outcome": "live"
+    },
+    {
+      "step": "202609012330-grid-at-point.mjs",
+      "id": "grid-at-point",
+      "version": "v9.74",
+      "started_at": "2026-09-01T23:15:41.928Z",
+      "dry": false,
+      "stages": [
+        {
+          "name": "applied",
+          "at": "2026-09-01T23:15:42.694Z",
+          "changed": [
+            "atlas/parts/202609012045-sld-sandbox-body.js",
+            "tools/proofs/202609012308-sld-sandbox.proof.mjs"
+          ]
+        },
+        {
+          "name": "syntax checked",
+          "at": "2026-09-01T23:15:42.779Z"
+        },
+        {
+          "name": "composed",
+          "at": "2026-09-01T23:15:43.076Z",
+          "generation": "202609012315",
+          "version": "v9.74",
+          "previous": "202609012308"
+        },
+        {
+          "name": "gate sandbox proof",
+          "at": "2026-09-01T23:15:43.802Z",
+          "status": 1
+        }
+      ],
+      "outcome": "failed",
+      "reason": "gate red: sandbox proof",
+      "finished_at": "2026-09-01T23:15:43.802Z",
+      "output": " guess\n  [PASS] the page says plainly that a hop is not a distance\n  [PASS] refusals are surfaced to the reader, not swallowed\n  [PASS] the traversal state is published for review\n  [PASS] no kilometre figure is taken from the topology answer\n\nevery season the operator publishes, and no total\n\n  [PASS] the rating-envelope module is in the served cartridge\n  [PASS] it is evaluated before the body that calls it\n  [PASS] the card asks for summer, not winter alone\n  [PASS] the card is scoped to the connection voltage when there is one\n  [PASS] the page states plainly that the ratings are not added together\n  [PASS] the page distinguishes a rating from what is free on the circuit\n  [PASS] a placeholder value is named to the reader, not hidden\n  [PASS] the served bytes contain no site total of circuit ratings\n  [PASS] the rating state is published for review\n\na declared powerflow, and what it refuses to say\n\n  [PASS] the injection-response module is in the served cartridge\n  [PASS] it is evaluated before the body that calls it\n  [PASS] the served bytes never read resistance or susceptance into the flow model\n  [PASS] the card names the slack, because a transfer has two ends\n  [PASS] the card states the model assumptions where the reader sees them\n  [PASS] the card says plainly it is not a loading\n  [PASS] an answer that fails its own Kirchhoff check is discarded, not printed\n  [PASS] the powerflow uses the capacity the deep link carries\n  [PASS] the 400 kV node list is recorded once, where the product is already parsed\n  [PASS] the powerflow is scoped to 400 kV, never walked through an unmodelled tap\n  [PASS] the conservation error is published for review\n  [PASS] the served bytes claim no headroom anywhere in the flow module\n\nthe grid computation without a project, and a dash that gets out of the way\n\n  [PASS] a tool is added to the shell tray, which the cartridge does not own\n  [PASS] the tool does not duplicate itself if the cartridge runs twice\n  [PASS] arming is explicit, as it is for the scope\n  [PASS] an unarmed click still does nothing new\n  [PASS] the point query never measures a distance itself\n  [FAIL] the block it writes is found by the filler, which selects by class  \n  [PASS] the reader is told that nearest MAPPED is not nearest\n  [PASS] the reader is told it is a straight line and not a cable route\n  [PASS] the point answer never claims anything can connect\n  [PASS] an absent connection-points cartridge is an absence, not a guess\n  [PASS] the layers dash can be collapsed without entering fullscreen\n  [PASS] the collapsed choice is remembered, and every storage access is guarded\n  [PASS] the map is told to resize when the dash moves under it\n  [PASS] the toggle is reachable and labelled for assistive technology\n  [PASS] both new surfaces are published for review\n\n592/594 checks passed\n\nFAILURES\n  the module is never asked at load: the boot path does not touch the loader\n  the block it writes is found by the filler, which selects by class\n"
     }
   ]
 }

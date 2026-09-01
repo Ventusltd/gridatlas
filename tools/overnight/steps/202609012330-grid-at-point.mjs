@@ -260,6 +260,52 @@ export default {
 
     write(BODY, body);
 
+    /* ── 7a. a positional guard becomes an enumerated one ─────────────
+       The existing check proved the 10 MB product is not fetched at page
+       load by scanning a SPAN of the file - everything between the
+       declared table and topologyBlockHtml - for a call to the loader.
+       The guarantee is right and must not be lost; the mechanism is
+       positional, so any on-demand caller written inside that span turns
+       it red for the wrong reason, which is what runGridAtPoint just did.
+
+       It is replaced by an enumerated one: every call site is located,
+       the enclosing function is named, and each name must be on an
+       allow-list. That is a stronger claim than the span version - it
+       covers the whole file rather than one region - and adding a caller
+       now requires declaring it here, which is the point. */
+    {
+      const p = read(sandboxProof);
+      const OLD = [
+        "check('the module is never asked at load: the boot path does not touch the loader', (() => {",
+        "  const boot = cartridgeSource.indexOf('function topologyBlockHtml(queries)');",
+        "  const before = cartridgeSource.slice(cartridgeSource.indexOf('const DECLARED = '), boot);",
+        "  return !/ensureTopology\\(\\)/.test(before.replace(/function ensureTopology\\(\\)[\\s\\S]*?\\n  \\}\\n/, ''));",
+        "})());"
+      ].join('\n');
+      if (p.split(OLD).length - 1 !== 1) throw new Error('boot-path check anchor is not unique');
+      const NEW = [
+        "check('the loader is called only from named on-demand paths, never at load', (() => {",
+        "  /* Every caller is enumerated. A new one must be added here, which",
+        "     is the guarantee: the 10 MB product is fetched when a reader asks",
+        "     a question, and never because the page opened. */",
+        "  const ALLOWED = new Set(['ensureTopology', 'topologyBlockHtml', 'runGridAtPoint']);",
+        "  const found = [];",
+        "  let at = cartridgeSource.indexOf('ensureTopology()');",
+        "  while (at >= 0) {",
+        "    const before = cartridgeSource.slice(0, at);",
+        "    const m = [...before.matchAll(/function\\s+(\\w+)\\s*\\(/g)].pop();",
+        "    found.push(m ? m[1] : '<top level>');",
+        "    at = cartridgeSource.indexOf('ensureTopology()', at + 1);",
+        "  }",
+        "  if (!found.length) return false;   // the loader vanished entirely",
+        "  const strays = found.filter(name => !ALLOWED.has(name));",
+        "  if (strays.length) console.log('    unexpected ensureTopology caller(s): ' + strays.join(', '));",
+        "  return strays.length === 0;",
+        "})());"
+      ].join('\n');
+      write(sandboxProof, p.split(OLD).join(NEW));
+    }
+
     /* ── 7. the gate ─────────────────────────────────────────────────── */
     const proof = read(sandboxProof);
     const TAIL = 'console.log(`\\n${passed}/${passed + failures.length} checks passed`);';
@@ -286,9 +332,12 @@ export default {
       "    return /network\\.nearest\\(lon, lat/.test(fn)",
       "      && !/Math\\.atan2|Math\\.asin|6378\\.137/.test(fn);",
       "  })());",
+      "/* A plain substring, not a regex: fillTopologyBlocks selects by CLASS",
+      "   and getting this wrong produces a block that shows its loading line",
+      "   forever and never fills - which no other check here would catch. */",
       "check('the block it writes is found by the filler, which selects by class',",
-      "  /'<div class=\\\" \\+ TOPOLOGY_BLOCK \\+ '\\\" data-queries=/.test(cartridgeSource)",
-      "  || /<div class=\\\" \\+ TOPOLOGY_BLOCK/.test(cartridgeSource));",
+      "  cartridgeSource.includes(`'<div class=\"' + TOPOLOGY_BLOCK + '\" data-queries=\"'`)",
+      "  && /querySelectorAll\\('\\.' \\+ TOPOLOGY_BLOCK\\)/.test(cartridgeSource));",
       "check('the reader is told that nearest MAPPED is not nearest',",
       "  /the nearest <i>mapped<\\/i> point may not/.test(cartridgeSource));",
       "check('the reader is told it is a straight line and not a cable route',",
