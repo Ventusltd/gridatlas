@@ -1,7 +1,7 @@
 /**
  * GridAtlas cartridge — neon substation links and the SLD layout sandbox.
  *
- * Generation 202609010106 (UTC), composition v9.40. Slot: replace-script for
+ * Generation 202609010722 (UTC), composition v9.41. Slot: replace-script for
  * 202608292126-pre-snapped-config-adapter.js.
  *
  * WHAT IT DOES
@@ -61,7 +61,7 @@
 (() => {
   'use strict';
 
-  const GENERATION = '202609010204';
+  const GENERATION = '202609010722';
 
   /* ══════════════════════════════════════════════════════════════════════
      PART 1 — the pre-snapped config adapter, carried forward unchanged.
@@ -1640,7 +1640,7 @@
      Mobile first: it opens collapsed, sized against the viewport, and is a
      single column on a narrow screen. */
 
-  /* What a megawatt hour has been worth, over the decade this map covers.
+  /* What a megawatt hour has been worth in the available historic record.
      ----------------------------------------------------------------------
      A map of where the country is building generation should be able to say
      what the system has been doing while it was built.
@@ -1649,21 +1649,19 @@
      estate's migration scope is "data before charts": a consumer must read a
      data product that already sits clean, and must never own source data or
      become a second source of truth. So this reads
-     Ventusltd/data-gb-electricity, which owns the Parquet, refreshes itself
-     monthly on a schedule that is still running, and now publishes a four
-     kilobyte rollup derived from it. An earlier version of this panel read a
+     Ventusltd/data-gb-electricity, which owns the Parquet and publishes a
+     browser-sized rollup derived from it. An earlier version of this panel read a
      copy derived inside globalgrid2050; that copy was a second definition of
      the same numbers and has been retired in favour of this one.
 
-     FOUR KILOBYTES, NOT A HUNDRED MEGABYTES. The settlement periods are the
-     right size for a chart someone chose to open and the wrong size for a
-     panel inside a map on a phone, which is where most readers arrive.
+     A ROLLUP, NOT A HUNDRED MEGABYTES. Settlement-period history is the right
+     size for a chart someone chose to open and the wrong size for a panel
+     inside a map on a phone, which is where most readers arrive.
 
-     The row that earns it its place: the lowest settlement period of the
-     decade was -185.33 GBP/MWh, on the 17th of July 2023. A July day is peak
-     solar. That is the export limitation and curtailment conversation stated
-     as a measurement rather than an opinion, which is the only way this estate
-     is permitted to state it.
+     THE MEASUREMENT STOPS WHERE THE PRODUCT STOPS. A negative system price is
+     an observed market value. It does not by itself establish a local network
+     constraint, curtailment, connection capacity, a usable charging window or
+     the economics of any project on this map.
 
      SOLAR IS ABSENT, AND SAYS SO. PVLive has not been decided into the data
      repository, so the product declares solar absent rather than carrying a
@@ -1674,6 +1672,7 @@
     + 'data-gb-electricity/main/derived/price-decade-rollup.json';
   const GB_APP = 'https://globalgrid2050.com/uk_energy_tracking_v6/';
   const GB_ID = 'gridatlas-gb-conditions';
+  const GB_SCHEMA = 'data-gb-electricity.price-decade-rollup.v2';
 
   const gbNumber = (value, digits) =>
     Number.isFinite(Number(value)) ? Number(value).toFixed(digits) : '--';
@@ -1681,6 +1680,43 @@
   function gbRow(label, value, unit) {
     return `<div class="gb-row"><span class="gb-k">${label}</span>`
       + `<span class="gb-v">${value}<em>${unit || ''}</em></span></div>`;
+  }
+
+  function gbProductError(product) {
+    if (!product || product.schema !== GB_SCHEMA) return 'owner product v2 is not available';
+    const price = product.price || {};
+    const derived = product.derived_from || {};
+    const years = Array.isArray(price.by_year) ? price.by_year : [];
+    if (!years.length) return 'year rows are absent';
+    const included = years.reduce((sum, row) => sum + Number(row.days_included), 0);
+    const negative = years.reduce((sum, row) =>
+      sum + Number(row.days_with_a_negative_settlement_period), 0);
+    if (included !== Number(derived.included_days)) return 'included-date total disagrees';
+    if (negative !== Number(price.days_with_a_negative_settlement_period)) {
+      return 'negative-date total disagrees';
+    }
+    const validYears = years.every(row => {
+      const days = Number(row.days_included);
+      const calendarDays = Number(row.calendar_days);
+      const status = days === calendarDays ? 'FULL_DATE_COVERAGE' : 'PARTIAL_DATE_COVERAGE';
+      const coverage = 100 * days / calendarDays;
+      const share = 100 * Number(row.days_with_a_negative_settlement_period) / days;
+      return days === Number(row.days)
+        && calendarDays >= days
+        && row.calendar_date_coverage === status
+        && Math.abs(Number(row.calendar_date_coverage_pct) - coverage) < 0.011
+        && Math.abs(Number(row.negative_period_day_share_pct) - share) < 0.011;
+    });
+    if (!validYears) return 'year coverage or share disagrees';
+    if (Math.abs(Number(price.negative_period_day_share_pct)
+      - (100 * negative / included)) >= 0.011) return 'record share disagrees';
+    for (const extreme of [price.lowest_settlement_period, price.highest_settlement_period]) {
+      if (!Number.isInteger(extreme?.settlement_period)
+        || !/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z$/u.test(extreme?.period_start_utc)) {
+        return 'extreme-period identity is incomplete';
+      }
+    }
+    return '';
   }
 
   async function renderGbConditions(body) {
@@ -1691,7 +1727,7 @@
     } catch (error) {
       product = null;
     }
-    if (!product || !product.price) {
+    if (!product) {
       body.innerHTML = '<p class="gb-note">The price rollup could not be '
         + 'reached. This says nothing about the grid, only about the network '
         + 'between here and the data repository.</p>';
@@ -1699,28 +1735,41 @@
       return;
     }
 
+    const productError = gbProductError(product);
+    if (productError) {
+      body.innerHTML = '<p class="gb-note">The owner price product did not pass '
+        + `the v2 evidence gate (${productError}), so no values are shown.</p>`;
+      link.gb_conditions = { reached: true, schema_supported: false,
+        source: 'data-gb-electricity', reason: productError, project_bindings: 0 };
+      return;
+    }
+
     const price = product.price || {};
     const years = Array.isArray(price.by_year) ? price.by_year : [];
     const latest = years.length ? years[years.length - 1] : null;
     const low = price.lowest_settlement_period || null;
-    const days = (product.derived_from || {}).complete_days;
+    const includedDays = Number((product.derived_from || {}).included_days);
+    const negativeDays = Number(price.days_with_a_negative_settlement_period);
+    const partialYears = years.filter(row =>
+      row.calendar_date_coverage === 'PARTIAL_DATE_COVERAGE');
 
     const rows = [];
-    rows.push(gbRow('Decade mean', gbNumber(price.decade_mean, 2), ' &pound;/MWh'));
+    rows.push(gbRow('Available-record daily mean',
+      gbNumber(price.available_record_daily_mean, 2), ' &pound;/MWh'));
+    rows.push(gbRow('Dates with a negative period',
+      gbNumber(price.negative_period_day_share_pct, 2) + '%',
+      ` ${negativeDays} of ${includedDays}`));
     if (latest) {
-      rows.push(gbRow(latest.year + (latest.days < 360 ? ' so far' : ''),
+      const partial = latest.calendar_date_coverage === 'PARTIAL_DATE_COVERAGE';
+      rows.push(gbRow(latest.year + (partial ? ' partial' : ''),
         gbNumber(latest.mean_gbp_per_mwh, 2), ' &pound;/MWh'));
     }
-    rows.push(gbRow('Days below zero',
-      String(price.days_with_a_negative_settlement_period ?? '--'),
-      Number.isFinite(days) ? ' of ' + days : ''));
 
     const lowLine = low && Number.isFinite(Number(low.value))
-      ? '<p class="gb-note gb-point">The lowest settlement period of the decade '
-        + `was <b>${gbNumber(low.value, 2)} &pound;/MWh</b>, on ${low.date} — a `
-        + 'July day, which is peak solar. Negative prices are the export '
-        + 'limitation and curtailment question, and a daily average hides them '
-        + 'entirely.</p>'
+      ? '<p class="gb-note gb-point">Lowest observed settlement price: '
+        + `<b>${gbNumber(low.value, 2)} &pound;/MWh</b>, SP ${low.settlement_period}, `
+        + `${low.period_start_utc}. This is a historic GB system-price `
+        + 'observation, not evidence about a project on this map.</p>'
       : '';
 
     // Absent by decision, so it is stated rather than left as a silent gap.
@@ -1734,21 +1783,32 @@
     body.innerHTML = rows.join('')
       + lowLine
       + solarLine
-      + `<p class="gb-note">GB system sell price ${span}, daily means of `
-      + 'settlement periods, Elexon, via Ventusltd/data-gb-electricity. '
+      + `<p class="gb-note">GB system sell price ${span}, included daily means `
+      + `from dates with at least ${product.grain.minimum_periods_per_day} available `
+      + 'settlement periods. Included does not mean all 48 are present. '
+      + `${partialYears.length} year${partialYears.length === 1 ? '' : 's'} have `
+      + 'partial calendar-date coverage. Elexon, via Ventusltd/data-gb-electricity. '
       + 'Historic system conditions only: not a forecast, not a price '
-      + 'expectation, and not a statement about any project on this map.</p>'
+      + 'expectation, and not a statement about any project on this map. The '
+      + 'count and share do not measure local network constraint, curtailment, '
+      + 'connection capacity, a usable charging window or project revenue.</p>'
       + `<a class="gb-more" href="${GB_APP}" target="_blank" rel="noopener">`
       + 'Open the full GB energy tracker &#8599;</a>';
 
     link.gb_conditions = {
       reached: true,
+      schema_supported: true,
       source: 'data-gb-electricity',
+      schema: product.schema,
       span: price.span || null,
-      decade_mean: price.decade_mean ?? null,
-      negative_days: price.days_with_a_negative_settlement_period ?? null,
-      lowest: low ? low.value : null,
+      available_record_daily_mean: price.available_record_daily_mean ?? null,
+      negative_date_share_pct: price.negative_period_day_share_pct ?? null,
+      negative_dates: negativeDays,
+      included_dates: includedDays,
+      lowest: low ? { value: low.value, settlement_period: low.settlement_period,
+        period_start_utc: low.period_start_utc } : null,
       solar_present: product.solar ? product.solar.present : null,
+      project_bindings: 0,
     };
   }
 
@@ -1769,7 +1829,7 @@
 
      Mobile first, like everything since Vikram said the link travels by
      WhatsApp: a collapsed chip, viewport-sized body, newest first. */
-  const VERSION_LEDGER = [{"g":"202608312121","v":"v9.16","s":"the project arriving from Pipeline News is visible: its own technology layer is enabled and a pin owned by this cartridge is dropped on it, with a toggle on the card"},{"g":"202608312133","v":"v9.17","s":"central AC sizing: the limiting nameplate, not a squared product"},{"g":"202608312140","v":"v9.18","s":"the project marker is a ring, found by looking at it in Chrome"},{"g":"202608312154","v":"v9.19","s":"the grid maths installs even when the basemap never paints"},{"g":"202608312157","v":"v9.20","s":"the Atlas says what it is waiting for, sized for a phone"},{"g":"202608312205","v":"v9.21","s":"the MapLibre exception storm: symbol layers with no glyph atlas"},{"g":"202608312208","v":"v9.22","s":"a symbol layer is added only once its text can be drawn"},{"g":"202608312222","v":"v9.23","s":"card geometry resets on every selection"},{"g":"202608312227","v":"v9.24","s":"the GB electricity tracker is connected to the map"},{"g":"202608312238","v":"v9.25","s":"one source of truth for GB prices: the data repository"},{"g":"202608312244","v":"v9.26","s":"late layer controls are used, and the repository is LF everywhere"},{"g":"202608312257","v":"v9.27","s":"the MAP button works for every technology in the register"},{"g":"202608312300","v":"v9.28","s":"voltage classes are explained, and the whole dashboard is accepted"},{"g":"202608312306","v":"v9.29","s":"the headline capacity actually moves the layout"},{"g":"202608312313","v":"v9.30","s":"the neon flow no longer exhausts the renderer"},{"g":"202608312315","v":"v9.31","s":"Codex's LineAtlas cardinality gate passes"},{"g":"202608312317","v":"v9.32","s":"no substation can display an impossible voltage"},{"g":"202608312321","v":"v9.33","s":"nothing can rewrite the reference design, not even later"},{"g":"202608312324","v":"v9.34","s":"a missing source costs a drawing, never the session"},{"g":"202609010021","v":"v9.35","s":"phone pointer operation, viewport containment and named electrical ratios"},{"g":"202609010040","v":"v9.36","s":"original financial-model parity with explicit correction of the known central AC double-count"},{"g":"202609010053","v":"v9.37","s":"complete the original finance interaction contract by linking development stage, cost and success"},{"g":"202609010058","v":"v9.38","s":"restore topology-isolated physical inputs and the original mounting-to-bifacial linkage"},{"g":"202609010106","v":"v9.39","s":"remove duplicate BESS truth, restore original central defaults and reject fractional topology counts"},{"g":"202609010204","v":"v9.40","s":"the version ledger itself, on the page"}];
+  const VERSION_LEDGER = [{"g":"202608312121","v":"v9.16","s":"the project arriving from Pipeline News is visible: its own technology layer is enabled and a pin owned by this cartridge is dropped on it, with a toggle on the card"},{"g":"202608312133","v":"v9.17","s":"central AC sizing: the limiting nameplate, not a squared product"},{"g":"202608312140","v":"v9.18","s":"the project marker is a ring, found by looking at it in Chrome"},{"g":"202608312154","v":"v9.19","s":"the grid maths installs even when the basemap never paints"},{"g":"202608312157","v":"v9.20","s":"the Atlas says what it is waiting for, sized for a phone"},{"g":"202608312205","v":"v9.21","s":"the MapLibre exception storm: symbol layers with no glyph atlas"},{"g":"202608312208","v":"v9.22","s":"a symbol layer is added only once its text can be drawn"},{"g":"202608312222","v":"v9.23","s":"card geometry resets on every selection"},{"g":"202608312227","v":"v9.24","s":"the GB electricity tracker is connected to the map"},{"g":"202608312238","v":"v9.25","s":"one source of truth for GB prices: the data repository"},{"g":"202608312244","v":"v9.26","s":"late layer controls are used, and the repository is LF everywhere"},{"g":"202608312257","v":"v9.27","s":"the MAP button works for every technology in the register"},{"g":"202608312300","v":"v9.28","s":"voltage classes are explained, and the whole dashboard is accepted"},{"g":"202608312306","v":"v9.29","s":"the headline capacity actually moves the layout"},{"g":"202608312313","v":"v9.30","s":"the neon flow no longer exhausts the renderer"},{"g":"202608312315","v":"v9.31","s":"Codex's LineAtlas cardinality gate passes"},{"g":"202608312317","v":"v9.32","s":"no substation can display an impossible voltage"},{"g":"202608312321","v":"v9.33","s":"nothing can rewrite the reference design, not even later"},{"g":"202608312324","v":"v9.34","s":"a missing source costs a drawing, never the session"},{"g":"202609010021","v":"v9.35","s":"phone pointer operation, viewport containment and named electrical ratios"},{"g":"202609010040","v":"v9.36","s":"original financial-model parity with explicit correction of the known central AC double-count"},{"g":"202609010053","v":"v9.37","s":"complete the original finance interaction contract by linking development stage, cost and success"},{"g":"202609010058","v":"v9.38","s":"restore topology-isolated physical inputs and the original mounting-to-bifacial linkage"},{"g":"202609010106","v":"v9.39","s":"remove duplicate BESS truth, restore original central defaults and reject fractional topology counts"},{"g":"202609010204","v":"v9.40","s":"the version ledger itself, on the page"},{"g":"202609010722","v":"v9.41","s":"exact GB price evidence, beside the ledger"}];
   const PRE_SCOPE_COMPOSITIONS = 16;
   const LEDGER_ID = 'gridatlas-version-ledger';
 
@@ -1877,7 +1937,7 @@
     panel.dataset.open = '0';
     const button = document.createElement('button');
     button.type = 'button';
-    button.textContent = 'GB prices · a decade ▸';
+    button.textContent = 'GB prices · historic ▸';
     button.setAttribute('aria-expanded', 'false');
     const body = document.createElement('div');
     body.className = 'gb-body';
@@ -1892,7 +1952,7 @@
       event.preventDefault();
       const open = panel.dataset.open === '1';
       panel.dataset.open = open ? '0' : '1';
-      button.textContent = open ? 'GB prices · a decade ▸' : 'GB prices · a decade ▾';
+      button.textContent = open ? 'GB prices · historic ▸' : 'GB prices · historic ▾';
       button.setAttribute('aria-expanded', String(!open));
       // Fetched on first open, never at boot: nothing about the map should
       // wait on a third party, and most sessions never open this.

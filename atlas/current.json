@@ -1,7 +1,7 @@
 {
   "schema": "gridatlas.current.v2",
-  "generation": "202609010204",
-  "previous_generation": "202609010106",
+  "generation": "202609010722",
+  "previous_generation": "202609010204",
   "architecture": "IMMUTABLE_SHELL_PLUS_HASHED_CARTRIDGES",
   "live_route": "/gridatlas/atlas/",
   "release_id": "202608300453-atlas-v9",
@@ -58,13 +58,13 @@
     },
     {
       "id": "sld-sandbox",
-      "generation": "202609010204",
-      "version": "v9.40",
+      "generation": "202609010722",
+      "version": "v9.41",
       "type": "script",
       "slot": "replace-script",
       "replace_script": "202608292126-pre-snapped-config-adapter.js",
-      "path": "./cartridges/202609010204-sld-sandbox-v9-8.js",
-      "sha256": "61bbbfc5264562d956bbab5ff687fc807545cdc143cc5e4778a6836c4d88624f",
+      "path": "./cartridges/202609010722-sld-sandbox-v9-8.js",
+      "sha256": "492c855c9e32dc549f7ce44c91803520533f1eec16252797395affc86c8005c6",
       "capabilities": [
         "pre-snapped-config-adapter-carried-forward",
         "project-or-substation-selection",
@@ -145,7 +145,8 @@
         "one-bess-value-for-layout-and-finance",
         "fractional-topology-counts-rejected",
         "original-electrical-input-bounds",
-        "version-ledger-on-the-page"
+        "version-ledger-on-the-page",
+        "owner-v2-coverage-and-negative-share-verified"
       ],
       "immutable_shell_modified": false,
       "supersedes_shell_script": {
@@ -259,7 +260,10 @@
         "supersedes": "an earlier copy derived inside globalgrid2050, which was a second definition of the same numbers and is retired",
         "size": "4 kB rollup against roughly a hundred megabytes of settlement periods",
         "headline": "the lowest settlement period of the decade was -185.33 GBP/MWh on 2023-07-17, a July day and so peak solar",
-        "solar": "absent from the product by decision, and the panel says so: PVLive has not been taken into the data repository, and filling the gap from elsewhere would make a second source of truth"
+        "solar": "absent from the product by decision, and the panel says so: PVLive has not been taken into the data repository, and filling the gap from elsewhere would make a second source of truth",
+        "contract": "requires data-gb-electricity.price-decade-rollup.v2 before rendering any value; a v1 or malformed product fails closed with no numeric values",
+        "exactness": "the negative-day share keeps numerator and denominator visible (580 of 3,339, 17.37% in the pinned fixture); partial years are labelled from the owner's explicit calendar coverage, replacing the 360-day heuristic; the record low carries exact settlement-period and UTC identity",
+        "boundary_tightened": "the panel no longer infers peak solar, curtailment or export limitation from the record low's date or sign - an earlier version said \"a July day, which is peak solar\", and that was an inference, which this estate does not make on a card"
       },
       "late_layers": {
         "problem": "a fixed budget is always the wrong number: the engine dashboard has been measured arriving in 2s and not arriving at all in 86s, and giving up after the budget gave up permanently, leaving a card saying the grid data had not loaded while the controls sat on screen",
@@ -418,15 +422,15 @@
       "result_class": "LOCATION_ONLY"
     }
   },
-  "composition_manifest": "./manifests/202609010204-composition.json",
+  "composition_manifest": "./manifests/202609010722-composition.json",
   "scope_closure": {
-    "generation": "202609010204",
+    "generation": "202609010722",
     "status": "DONE",
-    "scope": "GridAtlas v9.40 the version ledger itself, on the page",
+    "scope": "GridAtlas v9.41 exact GB price evidence, beside the ledger",
     "schedule_retired": true
   },
-  "composition_version": "v9.40",
-  "composition_id": "202609010204-gridatlas-v9.40",
+  "composition_version": "v9.41",
+  "composition_id": "202609010722-gridatlas-v9.41",
   "transport": {
     "response_contract": "HEADERS_BEFORE_PARQUET_BODY",
     "engine_timeout_seconds": 15,

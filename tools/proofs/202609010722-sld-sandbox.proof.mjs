@@ -1,5 +1,5 @@
 /**
- * Proof for the neon links + SLD layout sandbox cartridge, generation 202609010204.
+ * Proof for the neon links + SLD layout sandbox cartridge, generation 202609010722.
  *
  * No dependencies. The repository carries playwright and no DOM library, so
  * rather than add one this stubs the small surface the cartridge actually
@@ -32,7 +32,7 @@ import vm from 'node:vm';
 const HERE = dirname(fileURLToPath(import.meta.url));
 const REPO = resolve(HERE, '..', '..');
 const CARTRIDGE = join(REPO, 'atlas', 'cartridges',
-  '202609010204-sld-sandbox-v9-8.js');
+  '202609010722-sld-sandbox-v9-8.js');
 const ORIGINAL = join(REPO, 'atlas', 'releases', '202608300453-atlas-v9',
   '202608292126-pre-snapped-config-adapter.js');
 const FINANCE_ORACLE = join(REPO, 'tools', 'proofs', 'fixtures',
@@ -418,7 +418,7 @@ check('why asking the engine alone would not have been enough is recorded',
   /wind_onshore is NOT among the/.test(kvSrc));
 
 
-console.log('\nGB prices, a decade\n');
+console.log('\nGB prices, available historic record\n');
 
 /* The estate already tracks GB electricity -- uk_energy_tracking_v6, backed by
    data-gb-electricity, holding ten years of daily system prices from Elexon
@@ -426,13 +426,12 @@ console.log('\nGB prices, a decade\n');
    idea it existed, so a map of where the country is building generation could
    not say what the system had been doing while it was built.
 
-   It reads the DECADE and not the live feeds. Those feeds are stamped
-   2026-06-18 because the collection workflows were deliberately stopped, so a
-   "live" panel would print ten-week-old numbers under a word promising
-   otherwise. History does not have that problem, and the decade is the part a
-   project on this map is actually judged against.
+   It reads the browser-sized owner product and not the live feeds. The v2
+   product carries its gaps, inclusion threshold and exact extreme-period
+   identity. No price observation is turned into a project judgment.
 
-   6.4 kB rather than 1.9 MB, because this arrives on a phone. */
+   Kilobytes rather than the settlement-period history, because this arrives
+   on a phone. */
 const gb = cartridgeSource;
 check('the panel exists', /const GB_ID = 'gridatlas-gb-conditions'/.test(gb));
 check('it reads the repository that owns the data, not a copy',
@@ -445,8 +444,8 @@ check('the second-source-of-truth rule is written down where it applies',
 check('retiring the earlier duplicate is recorded, not silent',
   /that copy was a second definition of the same numbers and has been retired/
     .test(gb.replace(/\s+/g, ' ')));
-check('it reads the rollup, not the settlement periods',
-  /FOUR KILOBYTES, NOT A HUNDRED MEGABYTES/.test(gb));
+check('it reads the rollup, not the settlement-period history',
+  /A ROLLUP, NOT A HUNDRED MEGABYTES/.test(gb));
 check('it links to the full tracker for everything else',
   /Open the full GB energy tracker/.test(gb));
 check('the tracker stays where the analysis lives',
@@ -468,15 +467,27 @@ check('it disclaims being a forecast or a price expectation',
 check('and any statement about a project on the map',
   /not a statement about any project on this map/.test(gb.replace(/\s+/g, ' ')));
 
-check('days below zero are counted, because an average hides them',
-  /days_with_a_negative_settlement_period/.test(gb)
-  && /daily average hides them/.test(gb));
-check('the lowest settlement period is surfaced with its date',
-  /lowest_settlement_period/.test(gb) && /low\.date/.test(gb));
-check('and it is read as the export limitation question, not a curiosity',
-  /Negative prices are the export/.test(gb) && /limitation and curtailment question/.test(gb));
-check('a partial year is labelled rather than averaged in silently',
-  /latest\.days < 360 \? ' so far' : ''/.test(gb));
+check('the v2 owner schema is required before any values are shown',
+  /data-gb-electricity\.price-decade-rollup\.v2/.test(gb)
+  && /owner product v2 is not available/.test(gb));
+check('annual coverage and negative-date shares are recomputed as integrity gates',
+  /calendar_date_coverage_pct/.test(gb)
+  && /negative_period_day_share_pct/.test(gb)
+  && /record share disagrees/.test(gb));
+check('the lowest settlement observation carries exact period and UTC identity',
+  /lowest_settlement_period/.test(gb)
+  && /low\.settlement_period/.test(gb)
+  && /low\.period_start_utc/.test(gb));
+check('no solar, curtailment or project conclusion is inferred from its date or sign',
+  !/July day, which is peak solar/.test(gb)
+  && !/Negative prices are the export/.test(gb)
+  && /do not measure local network constraint, curtailment/.test(gb.replace(/\s+/g, ' ')));
+check('partial-year labels use the owner coverage state, not a 360-day guess',
+  /latest\.calendar_date_coverage === 'PARTIAL_DATE_COVERAGE'/.test(gb)
+  && !/latest\.days < 360/.test(gb));
+check('the record-wide share is shown with numerator and denominator',
+  /negative_date_share_pct/.test(gb)
+  && /negativeDays} of \${includedDays}/.test(gb));
 
 check('a failed fetch blames the network, not the grid',
   /says nothing about the grid, only about the network/.test(gb.replace(/\s+/g, ' ')));
@@ -507,57 +518,59 @@ check('the published state carries what was read',
    What IS this cartridge's to prove is that it reads the shape correctly. The
    fixture below carries the real published values, and the expressions are the
    ones the panel uses. */
-const decade = {
+const ownerV2 = {
+  schema: 'data-gb-electricity.price-decade-rollup.v2',
+  derived_from: { included_days: 3339 },
   price: {
     span: ['2016', '2026'],
-    decade_mean: 80.17,
-    lowest_half_hour: { value: -185.33, date: '2023-07-17', at: '14:00' },
+    available_record_daily_mean: 78.18,
+    days_with_a_negative_settlement_period: 580,
+    negative_period_day_share_pct: 17.37,
+    lowest_settlement_period: {
+      value: -185.33,
+      date: '2023-07-17',
+      settlement_period: 29,
+      period_start_utc: '2023-07-17T14:00:00Z',
+    },
     by_year: [
-      { year: '2023', days: 365, mean_gbp_per_mwh: 94.58, days_with_a_negative_settlement_period: 109 },
-      { year: '2024', days: 366, mean_gbp_per_mwh: 71.17, days_with_a_negative_settlement_period: 127 },
-      { year: '2025', days: 365, mean_gbp_per_mwh: 80.57, days_with_a_negative_settlement_period: 137 },
-      { year: '2026', days: 153, mean_gbp_per_mwh: 92.66, days_with_a_negative_settlement_period: 36 },
+      { year: '2023', days: 365, days_included: 365, calendar_days: 365,
+        calendar_date_coverage_pct: 100, calendar_date_coverage: 'FULL_DATE_COVERAGE',
+        mean_gbp_per_mwh: 94.59, days_with_a_negative_settlement_period: 109,
+        negative_period_day_share_pct: 29.86 },
+      { year: '2026', days: 168, days_included: 168, calendar_days: 365,
+        calendar_date_coverage_pct: 46.03, calendar_date_coverage: 'PARTIAL_DATE_COVERAGE',
+        mean_gbp_per_mwh: 91.97, days_with_a_negative_settlement_period: 41,
+        negative_period_day_share_pct: 24.4 },
     ],
   },
-  solar: {
-    estimated_not_metered: true,
-    by_month: [{ month: '06', mean_mw: 2421 }, { month: '12', mean_mw: 345 }],
-  },
+  solar: { present: false },
 };
 
-const dYears = decade.price.by_year;
-const dLatest = dYears[dYears.length - 1];
-const dNegative = dYears.reduce(
-  (total, year) => total + (year.days_with_a_negative_settlement_period || 0), 0);
-const dBest = decade.solar.by_month.reduce((a, b) => (!a || b.mean_mw > a.mean_mw ? b : a), null);
-const dWorst = decade.solar.by_month.reduce((a, b) => (!a || b.mean_mw < a.mean_mw ? b : a), null);
-
-check('negative days are summed across every year, not read off one',
-  dNegative === 409, String(dNegative));
-check('the partial year is caught by the panel\'s own test',
-  dLatest.days < 360 && dLatest.year === '2026');
-check('a full year is not labelled partial',
-  !(dYears[0].days < 360));
-check('negative-price days rise across 2023 to 2025',
-  dYears[0].days_with_a_negative_settlement_period < dYears[1].days_with_a_negative_settlement_period
-  && dYears[1].days_with_a_negative_settlement_period < dYears[2].days_with_a_negative_settlement_period);
-check('the decade low is a summer afternoon, which is the whole point',
-  decade.price.lowest_half_hour.date.slice(5, 7) === '07'
-  && decade.price.lowest_half_hour.at === '14:00'
-  && decade.price.lowest_half_hour.value < 0,
-  JSON.stringify(decade.price.lowest_half_hour));
-check('the best and worst solar months are picked, not assumed',
-  dBest.month === '06' && dWorst.month === '12');
-check('GB solar in the best month is several times the worst',
-  dBest.mean_mw / dWorst.mean_mw > 5,
-  (dBest.mean_mw / dWorst.mean_mw).toFixed(1) + 'x');
+const ownerYears = ownerV2.price.by_year;
+const ownerLatest = ownerYears[ownerYears.length - 1];
+check('the v2 record-wide share carries its measured denominator',
+  Math.abs(100 * ownerV2.price.days_with_a_negative_settlement_period
+    / ownerV2.derived_from.included_days
+    - ownerV2.price.negative_period_day_share_pct) < 0.011);
+check('the partial year is explicit owner state',
+  ownerLatest.calendar_date_coverage === 'PARTIAL_DATE_COVERAGE'
+  && ownerLatest.calendar_date_coverage_pct === 46.03);
+check('a full year is explicit owner state',
+  ownerYears[0].calendar_date_coverage === 'FULL_DATE_COVERAGE'
+  && ownerYears[0].calendar_date_coverage_pct === 100);
+check('each sample annual share has its own denominator', ownerYears.every(row =>
+  Math.abs(100 * row.days_with_a_negative_settlement_period / row.days_included
+    - row.negative_period_day_share_pct) < 0.011));
+check('the low carries exact period and UTC without a solar inference',
+  ownerV2.price.lowest_settlement_period.settlement_period === 29
+  && ownerV2.price.lowest_settlement_period.period_start_utc === '2023-07-17T14:00:00Z'
+  && ownerV2.price.lowest_settlement_period.value === -185.33);
+check('solar remains explicitly absent', ownerV2.solar.present === false);
 check('a summary with no rows cannot crash the panel', (() => {
   const empty = { price: { by_year: [] }, solar: {} };
   const years = Array.isArray(empty.price.by_year) ? empty.price.by_year : [];
   const latest = years.length ? years[years.length - 1] : null;
-  const months = Array.isArray(empty.solar.by_month) ? empty.solar.by_month : [];
-  const best = months.reduce((a, b) => (!a || b.mean_mw > a.mean_mw ? b : a), null);
-  return latest === null && best === null;
+  return latest === null;
 })());
 
 console.log('\nthe card is per selection\n');
@@ -699,8 +712,15 @@ check('it spans the whole reviewed session', (() => {
   if (!m) return false;
   const ledger = JSON.parse(m[1]);
   const versions = ledger.map(e => e.v);
+  // The newest entry must be THE SHIPPING VERSION, read from the cartridge's
+  // own header rather than written here - the literal 'v9.40' this check first
+  // carried went stale one version later and correctly failed, which is the
+  // point, but a self-referential form fails only when the ledger is actually
+  // behind.
+  const header = vl.match(/composition (v9\.\d+)\./);
   return versions.includes('v9.16') && versions.includes('v9.39')
-    && versions[versions.length - 1] === 'v9.40' && ledger.length >= 25;
+    && header && versions[versions.length - 1] === header[1]
+    && ledger.length >= 25;
 })());
 check('every entry carries a generation, a version and a scope', (() => {
   const m = vl.match(/const VERSION_LEDGER = (\[[^\n]*\]);/);
