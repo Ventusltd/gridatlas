@@ -1,7 +1,7 @@
 {
  "schema": "gridatlas.composition-manifest.v1",
- "generation": "202609011915",
- "parent_generation": "202609011845",
+ "generation": "202609012020",
+ "parent_generation": "202609011915",
  "live_route": "/gridatlas/atlas/",
  "shell": {
   "release_id": "202608300453-atlas-v9",
@@ -68,13 +68,13 @@
   },
   {
    "id": "sld-sandbox",
-   "generation": "202609011915",
-   "version": "v9.61",
+   "generation": "202609012020",
+   "version": "v9.62",
    "type": "script",
    "slot": "replace-script",
    "replace_script": "202608292126-pre-snapped-config-adapter.js",
-   "path": "./cartridges/202609011915-sld-sandbox-v9-8.js",
-   "sha256": "1bb46f6bea3d0e0063bc8920444e36098754a70cca514571da44f4f11a65ec91",
+   "path": "./cartridges/202609012020-sld-sandbox-v9-8.js",
+   "sha256": "a47805b194974ce1ac5671c92bd05963793ef7a0aca3db267f5e90b57889d70a",
    "capabilities": [
     "pre-snapped-config-adapter-carried-forward",
     "project-or-substation-selection",
@@ -184,7 +184,10 @@
     "published-network-parameters-on-the-card",
     "subs-control-found-by-attribute-not-label-text",
     "active-failures-recorded-once",
-    "network-sentence-scope-labelled"
+    "network-sentence-scope-labelled",
+    "grid-finding-scope-on-a-blank-click",
+    "scope-never-implies-capacity",
+    "assembled-from-modules-and-a-body-part"
    ],
    "immutable_shell_modified": false,
    "supersedes_shell_script": {
@@ -505,17 +508,18 @@
     "circuit_not_substation": "Little Crow - a looped connection into the existing Keadby-Broughton-Teed-Scawby Brook 132 kV Northern Powergrid circuit within the site, 99.9 MW export secured (EN010101 Grid Network Constraints Report, Nov 2020); no line is drawn because there is no node to draw to",
     "archetypes": "West Burton builds a 400 kV customer substation and a 10 km cable to an existing transmission bay; Little Crow loops into a distribution circuit already crossing its land. Both are NSIPs; only one is a 400 kV story",
     "rule": "the state is taken from the public record, never from whether OSM happens to have mapped the asset"
-   }
+   },
+   "assembled_from": "./manifests/202609012020-sld-sandbox-v9-8-parts.json"
   },
   {
    "id": "substation-intelligence",
-   "generation": "202609011915",
-   "version": "v9.61",
+   "generation": "202609012020",
+   "version": "v9.62",
    "type": "script",
    "slot": "replace-script",
    "replace_script": "ventus-corev8engine.js",
-   "path": "./cartridges/202609011915-substation-intelligence-v9-61.js",
-   "sha256": "3b73fe18c3a5e06aa67f1e0e6f4b041f53d0221a013b95d1d64b4483e502befd",
+   "path": "./cartridges/202609012020-substation-intelligence-v9-62.js",
+   "sha256": "23f3e7ebcf33b55a2cc4a027d887b8aaeeb352b6a6d975d4e5dd9d475dcc1547",
    "capabilities": [
     "v8-engine-carried-forward-verbatim",
     "neso-etys-connection-points-v2-consumed",
@@ -579,16 +583,16 @@
   "offshore_wind_excluded_from_links": true,
   "cards_fit_after_drag_and_restore": true,
   "shell_modified": false,
-  "scope": "the network sentence names its own scope: a site-wide envelope across the voltages present rather than a value for the declared bus, and the breaker-duty metric no longer claims to be the one switchgear is rated against",
-  "proof": "tools/proofs/202609011915-sld-sandbox.proof.mjs, and tools/proofs/202609011915-substation-intelligence.proof.mjs"
+  "scope": "the Grid Finding Scope: a click on blank space counts what grid is mapped in the vicinity, in bands, and states in the same breath that it is not a statement about capacity",
+  "proof": "tools/proofs/202609012020-sld-sandbox.proof.mjs, tools/proofs/202609012020-substation-intelligence.proof.mjs, tools/proofs/modules/202609012010-grid-scope.proof.mjs, tools/proofs/modules/202609012010-assembler.proof.mjs, tools/proofs/modules/202609011950-module-parity.proof.mjs"
  },
- "version": "v9.61",
- "composition_id": "202609011915-gridatlas-v9.61",
+ "version": "v9.62",
+ "composition_id": "202609012020-gridatlas-v9.62",
  "source_pattern": {
   "repository": "Ventusltd/gridatlas",
   "path": "atlas/releases/202608300453-atlas-v9/202608292126-pre-snapped-config-adapter.js",
   "source_sha256": "07d33eda5b3279a03df4c0a0aded61e4363c46734dda991aa5f48ae0d55097da",
   "transformation": "carry the pre-snap config rewrite verbatim; add a measured link layer and on-card beta distances"
  },
- "composition_version": "v9.61"
+ "composition_version": "v9.62"
 }

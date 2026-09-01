@@ -1,5 +1,5 @@
 /**
- * Proof for the neon links + SLD layout sandbox cartridge, generation 202609011915.
+ * Proof for the neon links + SLD layout sandbox cartridge, generation 202609012020.
  *
  * No dependencies. The repository carries playwright and no DOM library, so
  * rather than add one this stubs the small surface the cartridge actually
@@ -32,7 +32,7 @@ import vm from 'node:vm';
 const HERE = dirname(fileURLToPath(import.meta.url));
 const REPO = resolve(HERE, '..', '..');
 const CARTRIDGE = join(REPO, 'atlas', 'cartridges',
-  '202609011915-sld-sandbox-v9-8.js');
+  '202609012020-sld-sandbox-v9-8.js');
 const ORIGINAL = join(REPO, 'atlas', 'releases', '202608300453-atlas-v9',
   '202608292126-pre-snapped-config-adapter.js');
 const FINANCE_ORACLE = join(REPO, 'tools', 'proofs', 'fixtures',
@@ -2297,19 +2297,19 @@ console.log('\nthe manifest knows who it is, and the Subs control is found by it
 
 /* Codex pre-promotion findings, 202609011823. Both proven where they
    live: the manifest by reading it, the lookup by running it. */
-const manifestPath = join(REPO, 'atlas', 'manifests', '202609011915-composition.json');
+const manifestPath = join(REPO, 'atlas', 'manifests', '202609012020-composition.json');
 const manifestText = await readFile(manifestPath, 'utf8');
 const manifest = JSON.parse(manifestText);
 check('the manifest states this generation everywhere it states one',
-  manifest.generation === '202609011915' && manifest.version === 'v9.61'
-  && manifest.composition_version === 'v9.61'
+  manifest.generation === '202609012020' && manifest.version === 'v9.62'
+  && manifest.composition_version === 'v9.62'
   // Derived from the generation under test, not restated: a hard-coded
   // identity here is the same drift this check exists to catch.
-  && manifest.composition_id === `${manifest.generation}-gridatlas-v9.61`);
+  && manifest.composition_id === `${manifest.generation}-gridatlas-v9.62`);
 check('no identity from an older composition survives anywhere in it',
   !/v9\.39|202609010106/.test(manifestText));
 check('the acceptance receipt names this generation\'s proofs',
-  manifest.acceptance.proof.includes('202609011915')
+  manifest.acceptance.proof.includes('202609012020')
   && !/420 checks/.test(manifest.acceptance.proof));
 check('the golden browser field is this generation\'s, not an inherited pending',
   manifest.acceptance.golden_browser_verification === 'PENDING_THIS_GENERATION');
@@ -2389,6 +2389,31 @@ check('a multi-voltage site is badged Site-wide',
   /published\.site_wide\s*\n?\s*\?\s*`<span class="neon-beta"[^`]*Site-wide/.test(cartridgeSource));
 check('the card never prints a distance taken from the owner product',
   !/__GRIDATLAS_NETWORK__[^;]*\.nearest\(/.test(cartridgeSource));
+
+
+console.log('\nthe Grid Finding Scope\n');
+
+check('the scope computation is a module, not more cartridge body',
+  /window\.__GRIDATLAS_MODULES__\?\.gridScope/.test(cartridgeSource)
+  && /gridatlas\.module\.grid-scope\.v1/.test(cartridgeSource));
+check('the neon anchor is untouched: a scope runs only where nothing was hit',
+  // The gap holds the reason-why comment and the clearLinks call; the
+  // point of the check is the ORDER, so the bound is generous.
+  /if \(!hit\) \{[\s\S]{0,500}if \(scopeArmed\) await runGridScope/.test(cartridgeSource));
+check('arming is explicit, not automatic',
+  /scopeArmed = !scopeArmed;/.test(cartridgeSource)
+  && /let scopeArmed = false;/.test(cartridgeSource));
+check('the tray carries both a scope and a clear',
+  /\\u25ce Scope/.test(cartridgeSource) && /\\u2715 Clear/.test(cartridgeSource));
+check('selecting a project clears any standing scope',
+  /async function selectAt\(origin, name, tech, fromSubstation, statedMw\) \{\n      clearScope\(\);/
+    .test(cartridgeSource));
+check('the card prints what the scope is not, in bold, from the result itself',
+  /<b>\$\{escapeHtml\(result\.what_this_is_not\)\}<\/b>/.test(cartridgeSource));
+check('an absence is described as an absence from the map',
+  /an absence from the map, not from the ground/.test(cartridgeSource));
+check('the scope publishes its state',
+  /link\.grid_scope = \{ counted/.test(cartridgeSource));
 
 console.log(`\n${passed}/${passed + failures.length} checks passed`);
 if (failures.length) {
