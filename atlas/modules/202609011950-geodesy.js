@@ -26,7 +26,19 @@
     const dLon = (lon2 - lon1) * DEG;
     const a = Math.sin(dLat / 2) ** 2
       + Math.cos(lat1 * DEG) * Math.cos(lat2 * DEG) * Math.sin(dLon / 2) ** 2;
-    return 2 * EARTH_RADIUS_KM * Math.asin(Math.sqrt(a));
+    /* atan2, in this operand order, because that is the form every version
+       of this estate has shipped - ventus-corev8engine.js haversine() and
+       every cartridge carried from it.
+       -------------------------------------------------------------------
+       The extraction wrote 2 * R * asin(sqrt(a)) instead. Algebraically the
+       same; numerically one unit in the last place apart, which the
+       all-versions proof caught on West Burton Solar to Cottam:
+       7.050150827184836 shipped, 7.050150827184837 from the module. It is
+       1e-15 km and changes no figure any reader will ever see - and it is
+       still wrong, because the claim being made is PARITY. A module that is
+       nearly the incumbent is a module that has to be argued about every
+       time a digit differs. */
+    return EARTH_RADIUS_KM * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
   }
 
   /* A polygon reduces to the mean of its outer ring, not its first corner.
