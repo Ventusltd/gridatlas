@@ -433,6 +433,29 @@
       "outcome": "committed-not-pushed",
       "reason": "error: dst ref refs/heads/main receives from more than one src\nerror: failed to push some refs to 'https://github.com/Ventusltd/gridatlas.git'\n",
       "finished_at": "2026-09-01T22:34:36.108Z"
+    },
+    {
+      "step": "202609012217-data-contract-parity.mjs",
+      "id": "data-contract-parity",
+      "version": "v9.70",
+      "started_at": "2026-09-01T22:34:03.291Z",
+      "dry": false,
+      "stages": [
+        {
+          "name": "pushed by hand after the runner refspec fault",
+          "at": "2026-09-01T22:36:39.298Z",
+          "commit": "f39a76a"
+        }
+      ],
+      "generation": "202609012234",
+      "live": {
+        "generation": "202609012234",
+        "seen_at": "2026-09-01T22:36:05Z",
+        "by": "polling the deployed atlas/current.json"
+      },
+      "outcome": "live",
+      "reason": "the runner committed the cut and its push was refused (two refspecs, one destination); the push was completed by hand and the refspec fixed in the runner. Recorded as live, and recorded as NOT a clean unattended run.",
+      "attended": true
     }
   ]
 }
