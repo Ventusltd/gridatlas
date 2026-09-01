@@ -20,7 +20,7 @@
  *   node tools/proofs/modules/202609012010-assembler.proof.mjs
  */
 
-import { readFile, writeFile, rm, mkdir, access } from 'node:fs/promises';
+import { readFile, writeFile, rm, mkdir, access, readdir } from 'node:fs/promises';
 import { constants } from 'node:fs';
 import { createHash } from 'node:crypto';
 import { spawnSync } from 'node:child_process';
@@ -42,9 +42,9 @@ function check(label, condition, detail) {
   }
 }
 
-function run(args) {
+function run(args, extraEnv = {}) {
   const result = spawnSync(process.execPath, [BUILDER, ...args],
-    { cwd: REPO, encoding: 'utf8' });
+    { cwd: REPO, encoding: 'utf8', env: { ...process.env, ...extraEnv } });
   return { code: result.status, out: result.stdout || '', err: result.stderr || '' };
 }
 
@@ -60,14 +60,20 @@ await writeFile(join(REPO, PART_B), "/* B */\r\nconst B = 2;\r\n", 'utf8');
 
 const GEN_OK = '209912310101';
 const GEN_TWO = '209912310202';
+const GEN_MANIFEST = '209912310303';
+const GEN_FAIL = '209912310404';
 const NAME = 'assembler-proof';
 const outputFor = (generation) =>
   join(REPO, 'atlas', 'cartridges', `${generation}-${NAME}.js`);
 const manifestFor = (generation) =>
   join(REPO, 'atlas', 'manifests', `${generation}-${NAME}-parts.json`);
+async function existsForProof(path) {
+  try { await access(path, constants.F_OK); return true; }
+  catch { return false; }
+}
 
 async function cleanup() {
-  for (const generation of [GEN_OK, GEN_TWO]) {
+  for (const generation of [GEN_OK, GEN_TWO, GEN_MANIFEST, GEN_FAIL]) {
     await rm(outputFor(generation), { force: true });
     await rm(manifestFor(generation), { force: true });
   }
@@ -127,33 +133,6 @@ check('its recorded digest is over LF bytes',
   manifest.assembled_from[1].sha256 === sha256(partBSource.replace(/\r\n/g, '\n')));
 check('the assembled cartridge carries no CR', !assembled.includes('\r'));
 
-console.log('\nboth files or neither\n');
-/* Codex, 202609012025: the assembler wrote the cartridge and then the
-   manifest, so a failure between them left an artefact nothing had
-   hashed — worse than no artefact. The pair is now written and then read
-   back and checked against each other before the run reports success. */
-check('a successful assembly leaves BOTH the cartridge and its manifest',
-  assembled.length > 0 && /^[0-9a-f]{64}$/.test(manifest.sha256));
-check('the manifest names the cartridge it was written beside',
-  manifest.cartridge.endsWith(`${GEN_OK}-${NAME}.js`));
-check('the manifest digest matches the bytes on disk',
-  manifest.sha256 === sha256(await readFile(outputFor(GEN_OK), 'utf8')));
-check('a failed assembly leaves neither file behind', await (async () => {
-  // A name containing a path separator cannot be written as a file, so the
-  // write fails after the cartridge path is computed — exactly the window
-  // the rollback exists for.
-  const bad = run(['--generation', '209912310303', '--name', 'roll/back',
-    '--part', PART_A]);
-  if (bad.code === 0) return false;
-  for (const path of [
-    join(REPO, 'atlas', 'cartridges', '209912310303-roll'),
-    join(REPO, 'atlas', 'manifests', '209912310303-roll')
-  ]) {
-    try { await access(path, constants.F_OK); return false; } catch { /* good */ }
-  }
-  return /rolled back|ENOENT|no such file/i.test(bad.err) || bad.code !== 0;
-})());
-
 console.log('\nimmutability, and repeatability\n');
 const again = run(['--generation', GEN_OK, '--name', NAME,
   '--carry', PART_A, '--module', PART_B]);
@@ -161,6 +140,46 @@ check('it refuses to overwrite an existing generation',
   again.code !== 0 && /refusing to overwrite/.test(again.err));
 check('the existing cartridge is untouched by the refusal',
   (await readFile(outputFor(GEN_OK), 'utf8')) === assembled);
+
+console.log('\nboth members, or neither\n');
+/* Carried from Claude's v9.63 attempt, which Codex's implementation
+   superseded: the cases below prove nothing is left behind on failure,
+   and these three prove the successful pair really is a pair - a manifest
+   that names the cartridge beside it and hashes the bytes on disk. */
+check('a successful assembly leaves BOTH the cartridge and its manifest',
+  assembled.length > 0 && /^[0-9a-f]{64}$/.test(manifest.sha256));
+check('the manifest names the cartridge it was written beside',
+  manifest.cartridge.endsWith(`${GEN_OK}-${NAME}.js`));
+check('the manifest digest matches the bytes on disk',
+  manifest.sha256 === sha256(await readFile(outputFor(GEN_OK), 'utf8')));
+
+const manifestSentinel = 'manifest owned by another invocation\n';
+await writeFile(manifestFor(GEN_MANIFEST), manifestSentinel, { encoding: 'utf8', flag: 'wx' });
+const manifestCollision = run(['--generation', GEN_MANIFEST, '--name', NAME,
+  '--carry', PART_A, '--module', PART_B]);
+check('a manifest-only collision is refused before publishing a cartridge',
+  manifestCollision.code !== 0 && /existing manifest/.test(manifestCollision.err));
+check('the pre-existing manifest is byte-identical after refusal',
+  (await readFile(manifestFor(GEN_MANIFEST), 'utf8')) === manifestSentinel);
+check('a manifest collision leaves no orphan cartridge',
+  !(await existsForProof(outputFor(GEN_MANIFEST))));
+
+const injected = run(['--generation', GEN_FAIL, '--name', NAME,
+  '--carry', PART_A, '--module', PART_B], {
+  NODE_ENV: 'test', GRIDATLAS_ASSEMBLER_FAIL_STAGE: 'after-cartridge'
+});
+check('an injected second-stage publication failure is reported',
+  injected.code !== 0 && /injected failure/.test(injected.err));
+check('a failed second-stage publication removes the cartridge',
+  !(await existsForProof(outputFor(GEN_FAIL))));
+check('a failed second-stage publication leaves no manifest',
+  !(await existsForProof(manifestFor(GEN_FAIL))));
+const leftovers = [
+  ...(await readdir(join(REPO, 'atlas', 'cartridges'))),
+  ...(await readdir(join(REPO, 'atlas', 'manifests')))
+].filter(file => file.includes(GEN_FAIL) && file.includes('.tmp-'));
+check('failed publication removes both staged files', leftovers.length === 0,
+  leftovers.join(', '));
 
 const second = run(['--generation', GEN_TWO, '--name', NAME,
   '--carry', PART_A, '--module', PART_B]);

@@ -110,12 +110,6 @@ ${record.map(r => ` *   ${r.role.padEnd(22)} ${r.path}`).join('\n')}
 
 const assembled = header + pieces.join('\n');
 const outputPath = join(REPO, 'atlas', 'cartridges', `${generation}-${name}.js`);
-try {
-  await access(outputPath, constants.F_OK);
-  console.error(`refusing to overwrite an existing generation: ${generation}-${name}.js`);
-  process.exit(1);
-} catch { /* absent, which is what we want */ }
-
 const manifest = {
   schema: 'gridatlas.cartridge-parts.v1',
   generation,
@@ -125,32 +119,59 @@ const manifest = {
   assembled_from: record,
   rule: 'edit a part and rebuild under a new generation; this file is not edited by hand'
 };
-const manifestPath = join(REPO, 'atlas', 'manifests', `${generation}-${name}-parts.json`);
+const manifestDir = join(REPO, 'atlas', 'manifests');
+const manifestPath = join(manifestDir, `${generation}-${name}-parts.json`);
+const manifestText = `${JSON.stringify(manifest, null, 1)}\n`;
+const outputTemp = `${outputPath}.tmp-${process.pid}`;
+const manifestTemp = `${manifestPath}.tmp-${process.pid}`;
 
-/* Both files or neither.
-   ------------------------------------------------------------------------
-   Codex, 202609012025: the assembler wrote the cartridge and then the
-   manifest, so a failure between them left a cartridge nothing had hashed
-   — an artefact with no provenance, which is worse than no artefact. The
-   pair is written and then verified by reading both back; if either step
-   fails, both are removed and the run exits non-zero, leaving the
-   generation free to be assembled again. */
-await mkdir(join(REPO, 'atlas', 'manifests'), { recursive: true });
-try {
-  await writeFile(outputPath, assembled, 'utf8');
-  await writeFile(manifestPath, `${JSON.stringify(manifest, null, 1)}\n`, 'utf8');
-  const writtenCartridge = await readFile(outputPath, 'utf8');
-  const writtenManifest = JSON.parse(await readFile(manifestPath, 'utf8'));
-  if (writtenCartridge !== assembled) throw new Error('cartridge did not survive the write');
-  if (writtenManifest.sha256 !== sha256(writtenCartridge)) {
-    throw new Error('manifest digest does not match the cartridge it names');
-  }
-} catch (error) {
-  await rm(outputPath, { force: true });
-  await rm(manifestPath, { force: true });
-  console.error(`assembly failed and was rolled back: ${error.message}`);
-  process.exit(1);
+async function exists(path) {
+  try { await access(path, constants.F_OK); return true; }
+  catch { return false; }
 }
+
+await mkdir(manifestDir, { recursive: true });
+for (const [kind, path] of [['cartridge', outputPath], ['manifest', manifestPath]]) {
+  if (await exists(path)) {
+    console.error(`refusing to overwrite an existing ${kind}: ${relative(REPO, path).replace(/\\/g, '/')}`);
+    process.exit(1);
+  }
+}
+
+let createdOutput = false;
+let createdManifest = false;
+try {
+  // Stage and verify both members before either final path becomes visible.
+  await writeFile(outputTemp, assembled, { encoding: 'utf8', flag: 'wx' });
+  await writeFile(manifestTemp, manifestText, { encoding: 'utf8', flag: 'wx' });
+  if (sha256(await readFile(outputTemp, 'utf8')) !== manifest.sha256) {
+    throw new Error('staged cartridge hash does not match its manifest');
+  }
+  if ((await readFile(manifestTemp, 'utf8')) !== manifestText) {
+    throw new Error('staged manifest bytes changed before publication');
+  }
+
+  // Exclusive final writes close the race between preflight and publication.
+  await writeFile(outputPath, assembled, { encoding: 'utf8', flag: 'wx' });
+  createdOutput = true;
+  if (process.env.NODE_ENV === 'test'
+      && process.env.GRIDATLAS_ASSEMBLER_FAIL_STAGE === 'after-cartridge') {
+    throw new Error('injected failure after cartridge publication');
+  }
+  await writeFile(manifestPath, manifestText, { encoding: 'utf8', flag: 'wx' });
+  createdManifest = true;
+} catch (error) {
+  // A failed command must never leave one plausible member of a release pair.
+  if (createdManifest) await rm(manifestPath, { force: true });
+  if (createdOutput) await rm(outputPath, { force: true });
+  console.error(`assembly failed: ${error.message}`);
+  process.exitCode = 1;
+} finally {
+  await rm(outputTemp, { force: true });
+  await rm(manifestTemp, { force: true });
+}
+
+if (process.exitCode) process.exit(process.exitCode);
 
 console.log(JSON.stringify({
   status: 'ASSEMBLED',
