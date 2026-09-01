@@ -1,7 +1,7 @@
 {
  "schema": "gridatlas.composition-manifest.v1",
- "generation": "202609011612",
- "parent_generation": "202609011435",
+ "generation": "202609011615",
+ "parent_generation": "202609011612",
  "live_route": "/gridatlas/atlas/",
  "shell": {
   "release_id": "202608300453-atlas-v9",
@@ -67,13 +67,13 @@
   },
   {
    "id": "sld-sandbox",
-   "generation": "202609011612",
-   "version": "v9.54",
+   "generation": "202609011615",
+   "version": "v9.55",
    "type": "script",
    "slot": "replace-script",
    "replace_script": "202608292126-pre-snapped-config-adapter.js",
-   "path": "./cartridges/202609011612-sld-sandbox-v9-8.js",
-   "sha256": "94e9d925950cb61558500d9a80bb71e2258a5e12b1464bcb274063949230587e",
+   "path": "./cartridges/202609011615-sld-sandbox-v9-8.js",
+   "sha256": "a9d7cd6be440853c30f0dac24ef7fd6497c34de65788efd5fe5f8dfbcc253407",
    "capabilities": [
     "pre-snapped-config-adapter-carried-forward",
     "project-or-substation-selection",
@@ -174,7 +174,9 @@
     "consented-works-quoted-on-the-declared-card",
     "nearest-named-400kv-companion-measurement",
     "measurement-independent-of-layer-controls",
-    "substation-payload-warmed-at-install"
+    "substation-payload-warmed-at-install",
+    "declared-connection-shown-before-measurement",
+    "project-ring-drawn-on-arrival-not-after-the-payload"
    ],
    "immutable_shell_modified": false,
    "supersedes_shell_script": {
@@ -481,6 +483,12 @@
     "reproduced": "desktop Chrome, same URL: 0 links at 10s with the status still on the layer wait; 5 links at about 20s",
     "cause": "the arrival awaited a 12s layer-control budget before attempting a measurement that needs no controls, then fetched the 1.2 MB substation payload afterwards - the two costs in series",
     "fix": "measure first and let the layer switch-on run alongside; warm the payload at install; never show a late-layers notice over a map that already carries the answer"
+   },
+   "immediate_product": {
+    "asked_by": "Vikram: mobile is the sales surface and must show product immediately; desktop carries the detailed engineering",
+    "known_without_a_network": "substation, voltage class, route, consented works, citation - all from the made Order and the link",
+    "measured": "the distance only, marked pending until it exists",
+    "never": "no measured value is shown before it is measured, and the provisional block never overwrites a measured one"
    }
   }
  ],
@@ -509,7 +517,7 @@
   "offshore_wind_excluded_from_links": true,
   "cards_fit_after_drag_and_restore": true,
   "shell_modified": false,
-  "scope": "the measurement runs on arrival without waiting for the engine's layer controls, the substation payload is warmed at install, and a late-layers notice never covers a drawn answer",
+  "scope": "the sales surface answers immediately: a declared 400 kV connection, its route, works and citation are on the card before any payload arrives, with the distance marked pending and filled in when measured",
   "proof": "tools/proofs/202609010726-sld-sandbox.proof.mjs, 420 checks"
  },
  "version": "v9.39",
@@ -520,5 +528,5 @@
   "source_sha256": "07d33eda5b3279a03df4c0a0aded61e4363c46734dda991aa5f48ae0d55097da",
   "transformation": "carry the pre-snap config rewrite verbatim; add a measured link layer and on-card beta distances"
  },
- "composition_version": "v9.54"
+ "composition_version": "v9.55"
 }

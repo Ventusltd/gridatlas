@@ -1,7 +1,7 @@
 {
   "schema": "gridatlas.current.v2",
-  "generation": "202609011612",
-  "previous_generation": "202609011435",
+  "generation": "202609011615",
+  "previous_generation": "202609011612",
   "architecture": "IMMUTABLE_SHELL_PLUS_HASHED_CARTRIDGES",
   "live_route": "/gridatlas/atlas/",
   "release_id": "202608300453-atlas-v9",
@@ -59,13 +59,13 @@
     },
     {
       "id": "sld-sandbox",
-      "generation": "202609011612",
-      "version": "v9.54",
+      "generation": "202609011615",
+      "version": "v9.55",
       "type": "script",
       "slot": "replace-script",
       "replace_script": "202608292126-pre-snapped-config-adapter.js",
-      "path": "./cartridges/202609011612-sld-sandbox-v9-8.js",
-      "sha256": "94e9d925950cb61558500d9a80bb71e2258a5e12b1464bcb274063949230587e",
+      "path": "./cartridges/202609011615-sld-sandbox-v9-8.js",
+      "sha256": "a9d7cd6be440853c30f0dac24ef7fd6497c34de65788efd5fe5f8dfbcc253407",
       "capabilities": [
         "pre-snapped-config-adapter-carried-forward",
         "project-or-substation-selection",
@@ -166,7 +166,9 @@
         "consented-works-quoted-on-the-declared-card",
         "nearest-named-400kv-companion-measurement",
         "measurement-independent-of-layer-controls",
-        "substation-payload-warmed-at-install"
+        "substation-payload-warmed-at-install",
+        "declared-connection-shown-before-measurement",
+        "project-ring-drawn-on-arrival-not-after-the-payload"
       ],
       "immutable_shell_modified": false,
       "supersedes_shell_script": {
@@ -473,6 +475,12 @@
         "reproduced": "desktop Chrome, same URL: 0 links at 10s with the status still on the layer wait; 5 links at about 20s",
         "cause": "the arrival awaited a 12s layer-control budget before attempting a measurement that needs no controls, then fetched the 1.2 MB substation payload afterwards - the two costs in series",
         "fix": "measure first and let the layer switch-on run alongside; warm the payload at install; never show a late-layers notice over a map that already carries the answer"
+      },
+      "immediate_product": {
+        "asked_by": "Vikram: mobile is the sales surface and must show product immediately; desktop carries the detailed engineering",
+        "known_without_a_network": "substation, voltage class, route, consented works, citation - all from the made Order and the link",
+        "measured": "the distance only, marked pending until it exists",
+        "never": "no measured value is shown before it is measured, and the provisional block never overwrites a measured one"
       }
     }
   ],
@@ -518,15 +526,15 @@
       "result_class": "LOCATION_ONLY"
     }
   },
-  "composition_manifest": "./manifests/202609011612-composition.json",
+  "composition_manifest": "./manifests/202609011615-composition.json",
   "scope_closure": {
     "generation": "202609010726",
     "status": "DONE",
     "scope": "GridAtlas v9.42 the price panel revalidates",
     "schedule_retired": true
   },
-  "composition_version": "v9.54",
-  "composition_id": "202609011612-gridatlas-v9.54",
+  "composition_version": "v9.55",
+  "composition_id": "202609011615-gridatlas-v9.55",
   "transport": {
     "response_contract": "HEADERS_BEFORE_PARQUET_BODY",
     "engine_timeout_seconds": 15,

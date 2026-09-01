@@ -1,5 +1,5 @@
 /**
- * Proof for the neon links + SLD layout sandbox cartridge, generation 202609011612.
+ * Proof for the neon links + SLD layout sandbox cartridge, generation 202609011615.
  *
  * No dependencies. The repository carries playwright and no DOM library, so
  * rather than add one this stubs the small surface the cartridge actually
@@ -32,7 +32,7 @@ import vm from 'node:vm';
 const HERE = dirname(fileURLToPath(import.meta.url));
 const REPO = resolve(HERE, '..', '..');
 const CARTRIDGE = join(REPO, 'atlas', 'cartridges',
-  '202609011612-sld-sandbox-v9-8.js');
+  '202609011615-sld-sandbox-v9-8.js');
 const ORIGINAL = join(REPO, 'atlas', 'releases', '202608300453-atlas-v9',
   '202608292126-pre-snapped-config-adapter.js');
 const FINANCE_ORACLE = join(REPO, 'tools', 'proofs', 'fixtures',
@@ -2121,8 +2121,14 @@ check('the fallback is published for the next debugger',
 
 console.log('\nthe card precedes the lines\n');
 
-check('the fallback card is opened before the measurement runs',
-  /ensureArrivalCard\(lon, lat, name, tech, stated\);\n          link\.deep_linked = true;\n          await selectAt/.test(cartridgeSource));
+check('the fallback card is opened before the measurement runs', (() => {
+  // Ordering, not adjacency: v9.55 puts the provisional declared block and
+  // the ring between the card and the measurement, which is still the card
+  // first. Compare positions rather than pinning neighbouring lines.
+  const card = cartridgeSource.indexOf('ensureArrivalCard(lon, lat, name, tech, stated);');
+  const measure = cartridgeSource.indexOf('await selectAt([lon, lat], name, tech, false,');
+  return card > 0 && measure > card;
+})());
 check('a terminally failed identity lane does not spend the popup budget',
   /if \(idStatus === 'FAILED' \|\| idStatus === 'ABSENT'\) break;/.test(cartridgeSource));
 
@@ -2219,6 +2225,26 @@ check('a late-layers notice never covers a drawn answer',
   /if \(link\.links_drawn > 0\) \{\n      \/\/ The answer is already on the map/.test(cartridgeSource));
 check('retry still re-runs the measurement and the layers',
   /retryArrival = \(\) => \{ runArrivalSelection\(\)\.then\(\(\) => arrive\(\)\); \};/.test(cartridgeSource));
+
+
+console.log('\nthe sales surface answers immediately\n');
+
+check('a declared connection is knowable from the link alone',
+  /function provisionalDeclaredConnection\(repdRef\)/.test(cartridgeSource)
+  && /at: null, km: null, pending: true/.test(cartridgeSource));
+check('it is shown before the measurement is attempted',
+  /currentDeclared = provisionalDeclaredConnection\(currentRepdRef\);\n          if \(currentDeclared\) injectDeclaredOnly\(\);/.test(cartridgeSource));
+check('the ring is drawn on arrival, not after the payload',
+  /if \(capturedMap\) setPin\(capturedMap, \[lon, lat\], name, tech\);/.test(cartridgeSource));
+check('a pending distance says it is being measured, never that none exists',
+  /The distance is being measured now\./.test(cartridgeSource)
+  && /d\.pending/.test(cartridgeSource));
+check('the provisional block never overwrites a measured one',
+  /if \(content\.querySelector\(`\.\$\{BLOCK_CLASS\}`\)\) return false;/.test(cartridgeSource));
+check('the measurement does not blank a standing provisional block',
+  /if \(!currentDeclared\?\.pending\) currentDeclared = null;/.test(cartridgeSource));
+check('the early answer is published for the next debugger',
+  /link\.declared_shown_before_measurement = true;/.test(cartridgeSource));
 
 console.log(`\n${passed}/${passed + failures.length} checks passed`);
 if (failures.length) {
