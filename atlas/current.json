@@ -1,7 +1,7 @@
 {
   "schema": "gridatlas.current.v2",
-  "generation": "202609010726",
-  "previous_generation": "202609010722",
+  "generation": "202609010902",
+  "previous_generation": "202609010726",
   "architecture": "IMMUTABLE_SHELL_PLUS_HASHED_CARTRIDGES",
   "live_route": "/gridatlas/atlas/",
   "release_id": "202608300453-atlas-v9",
@@ -58,13 +58,13 @@
     },
     {
       "id": "sld-sandbox",
-      "generation": "202609010726",
-      "version": "v9.42",
+      "generation": "202609010902",
+      "version": "v9.43",
       "type": "script",
       "slot": "replace-script",
       "replace_script": "202608292126-pre-snapped-config-adapter.js",
-      "path": "./cartridges/202609010726-sld-sandbox-v9-8.js",
-      "sha256": "ad204a51d2116249991b38f19261f0d3ad225618ece0f6c4041fc60a3b956570",
+      "path": "./cartridges/202609010902-sld-sandbox-v9-8.js",
+      "sha256": "54878f09fffcceb6feeac9f0164ce6182ff506a6a6ca2c5ecfbdb9d98c80f9b4",
       "capabilities": [
         "pre-snapped-config-adapter-carried-forward",
         "project-or-substation-selection",
@@ -146,7 +146,9 @@
         "fractional-topology-counts-rejected",
         "original-electrical-input-bounds",
         "version-ledger-on-the-page",
-        "owner-v2-coverage-and-negative-share-verified"
+        "owner-v2-coverage-and-negative-share-verified",
+        "mobile-tray-tools-collapsed-on-touch",
+        "grid-and-subs-one-tap-on-the-map"
       ],
       "immutable_shell_modified": false,
       "supersedes_shell_script": {
@@ -378,6 +380,18 @@
         "span": "v9.16 through v9.40, 25 scoped entries, 16 pre-scope compositions counted",
         "doctrine_stated": "a bad composition is never repaired in place; an earlier one is composed again under a new timestamp",
         "why": "Vikram: produce timestamped versions on the website. They existed everywhere except where a visitor could see them"
+      },
+      "mobile_tray": {
+        "reported_by": "Vikram, phone acceptance 2026-09-01, portrait screenshots",
+        "faults": [
+          "the six shell tool buttons at this cartridge's own 44px coarse-pointer height covered a third of the portrait map",
+          "the grid-line and substation switches live below the map in the scada panel, which a phone never scrolls to; activation looked broken"
+        ],
+        "engine_cleared": "the switches themselves work: toggled live in Chrome, 220kV drew immediately; both faults are composition faults",
+        "fix": "on coarse pointers or windows at 700px and under, the tool buttons collapse behind one Tools chip, and GRID and SUBS chips stand on the map itself",
+        "mechanism": "the chips drive the engine's own checkboxes with real clicks - the same path enableTechnologyLayer uses - so the scada panel, the fullscreen curtain and the chips cannot disagree",
+        "readiness": "chips start disabled and wake when the engine builds its switches, however late; a document-level change listener keeps them true to switches toggled elsewhere",
+        "desktop": "unchanged: the tray installs only on touch or narrow windows"
       }
     }
   ],
@@ -423,15 +437,15 @@
       "result_class": "LOCATION_ONLY"
     }
   },
-  "composition_manifest": "./manifests/202609010726-composition.json",
+  "composition_manifest": "./manifests/202609010902-composition.json",
   "scope_closure": {
     "generation": "202609010726",
     "status": "DONE",
     "scope": "GridAtlas v9.42 the price panel revalidates",
     "schedule_retired": true
   },
-  "composition_version": "v9.42",
-  "composition_id": "202609010726-gridatlas-v9.42",
+  "composition_version": "v9.43",
+  "composition_id": "202609010902-gridatlas-v9.43",
   "transport": {
     "response_contract": "HEADERS_BEFORE_PARQUET_BODY",
     "engine_timeout_seconds": 15,

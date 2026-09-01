@@ -1,5 +1,5 @@
 /**
- * Proof for the neon links + SLD layout sandbox cartridge, generation 202609010726.
+ * Proof for the neon links + SLD layout sandbox cartridge, generation 202609010902.
  *
  * No dependencies. The repository carries playwright and no DOM library, so
  * rather than add one this stubs the small surface the cartridge actually
@@ -32,7 +32,7 @@ import vm from 'node:vm';
 const HERE = dirname(fileURLToPath(import.meta.url));
 const REPO = resolve(HERE, '..', '..');
 const CARTRIDGE = join(REPO, 'atlas', 'cartridges',
-  '202609010726-sld-sandbox-v9-8.js');
+  '202609010902-sld-sandbox-v9-8.js');
 const ORIGINAL = join(REPO, 'atlas', 'releases', '202608300453-atlas-v9',
   '202608292126-pre-snapped-config-adapter.js');
 const FINANCE_ORACLE = join(REPO, 'tools', 'proofs', 'fixtures',
@@ -1986,6 +1986,41 @@ check('the 844 by 390 search result list is viewport bounded',
 check('coarse pointers enlarge shell and sandbox controls',
   /@media \(pointer:coarse\)\{[\s\S]*?\.map-ctrl-btn,\.search-btn\{min-height:44px\}/.test(mobile)
   && /sld-tabs button,#\$\{PANEL_ID\} input,#\$\{PANEL_ID\} select,[\s\S]{0,100}sld-finance summary\{min-height:44px\}/.test(mobile));
+
+
+console.log('\nthe mobile tray\n');
+
+/* Vikram's phone acceptance: tools covered the map, and the layer switches
+   were out of reach below it. The tray collapses the one and surfaces the
+   other; these checks pin the mechanism, the live map proves the pixels. */
+check('the tray exists and installs only on touch or narrow windows',
+  /function installMobileTray\(/.test(cartridgeSource)
+  && /pointer: coarse/.test(cartridgeSource)
+  && /innerWidth <= 700/.test(cartridgeSource));
+check('the six shell tool buttons collapse behind one chip',
+  /\.map-controls\.gm-tools-collapsed > \.map-ctrl-btn\{display:none\}/.test(cartridgeSource)
+  && /stack\.classList\.add\('gm-tools-collapsed'\)/.test(cartridgeSource));
+check('grid means the five voltage line layers, not a private list',
+  /const GRID_LINE_LAYERS = \['400', '275', '220', '132', '66'\];/.test(cartridgeSource));
+check('the chips drive the engine\'s own switches with real clicks',
+  /#scada-ui-container input\[type=checkbox\]\[data-layer-id="/.test(cartridgeSource)
+  && /if \(box\.checked !== turnOn\) box\.click\(\);/.test(cartridgeSource));
+check('chips start disabled and wake when the switches exist',
+  /chip\.disabled = true;/.test(cartridgeSource)
+  && /chip\.disabled = boxes\.length === 0;/.test(cartridgeSource));
+check('chips follow switches toggled anywhere else',
+  /document\.addEventListener\('change', \(event\) => \{\n      if \(event\.target\?\.dataset\?\.layerId\)/.test(cartridgeSource));
+check('mixed state turns everything on before anything off',
+  /const turnOn = boxes\.some\(\(box\) => !box\.checked\);/.test(cartridgeSource));
+check('tray clicks do not reach the map underneath',
+  cartridgeSource.includes("tray.addEventListener('click', (event) => event.stopPropagation())"));
+check('the tray reports its state to assistive technology',
+  /tools\.setAttribute\('aria-expanded'/.test(cartridgeSource)
+  && /chip\.setAttribute\('aria-pressed'/.test(cartridgeSource));
+check('the tray publishes its state', /link\.mobile_tray = \{\n      installed: true/.test(cartridgeSource));
+check('touch targets stay 44px inside the tray',
+  new RegExp('#\\$\\{TRAY_ID\\} button\\{min-height:44px').test(cartridgeSource));
+check('the desktop is left alone', /installed: false, reason: 'fine pointer, wide window'/.test(cartridgeSource));
 
 console.log(`\n${passed}/${passed + failures.length} checks passed`);
 if (failures.length) {

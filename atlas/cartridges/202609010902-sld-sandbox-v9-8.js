@@ -1,7 +1,7 @@
 /**
  * GridAtlas cartridge — neon substation links and the SLD layout sandbox.
  *
- * Generation 202609010722 (UTC), composition v9.42. Slot: replace-script for
+ * Generation 202609010902 (UTC), composition v9.43. Slot: replace-script for
  * 202608292126-pre-snapped-config-adapter.js.
  *
  * WHAT IT DOES
@@ -61,7 +61,7 @@
 (() => {
   'use strict';
 
-  const GENERATION = '202609010726';
+  const GENERATION = '202609010902';
 
   /* ══════════════════════════════════════════════════════════════════════
      PART 1 — the pre-snapped config adapter, carried forward unchanged.
@@ -1836,7 +1836,7 @@
 
      Mobile first, like everything since Vikram said the link travels by
      WhatsApp: a collapsed chip, viewport-sized body, newest first. */
-  const VERSION_LEDGER = [{"g":"202608312121","v":"v9.16","s":"the project arriving from Pipeline News is visible: its own technology layer is enabled and a pin owned by this cartridge is dropped on it, with a toggle on the card"},{"g":"202608312133","v":"v9.17","s":"central AC sizing: the limiting nameplate, not a squared product"},{"g":"202608312140","v":"v9.18","s":"the project marker is a ring, found by looking at it in Chrome"},{"g":"202608312154","v":"v9.19","s":"the grid maths installs even when the basemap never paints"},{"g":"202608312157","v":"v9.20","s":"the Atlas says what it is waiting for, sized for a phone"},{"g":"202608312205","v":"v9.21","s":"the MapLibre exception storm: symbol layers with no glyph atlas"},{"g":"202608312208","v":"v9.22","s":"a symbol layer is added only once its text can be drawn"},{"g":"202608312222","v":"v9.23","s":"card geometry resets on every selection"},{"g":"202608312227","v":"v9.24","s":"the GB electricity tracker is connected to the map"},{"g":"202608312238","v":"v9.25","s":"one source of truth for GB prices: the data repository"},{"g":"202608312244","v":"v9.26","s":"late layer controls are used, and the repository is LF everywhere"},{"g":"202608312257","v":"v9.27","s":"the MAP button works for every technology in the register"},{"g":"202608312300","v":"v9.28","s":"voltage classes are explained, and the whole dashboard is accepted"},{"g":"202608312306","v":"v9.29","s":"the headline capacity actually moves the layout"},{"g":"202608312313","v":"v9.30","s":"the neon flow no longer exhausts the renderer"},{"g":"202608312315","v":"v9.31","s":"Codex's LineAtlas cardinality gate passes"},{"g":"202608312317","v":"v9.32","s":"no substation can display an impossible voltage"},{"g":"202608312321","v":"v9.33","s":"nothing can rewrite the reference design, not even later"},{"g":"202608312324","v":"v9.34","s":"a missing source costs a drawing, never the session"},{"g":"202609010021","v":"v9.35","s":"phone pointer operation, viewport containment and named electrical ratios"},{"g":"202609010040","v":"v9.36","s":"original financial-model parity with explicit correction of the known central AC double-count"},{"g":"202609010053","v":"v9.37","s":"complete the original finance interaction contract by linking development stage, cost and success"},{"g":"202609010058","v":"v9.38","s":"restore topology-isolated physical inputs and the original mounting-to-bifacial linkage"},{"g":"202609010106","v":"v9.39","s":"remove duplicate BESS truth, restore original central defaults and reject fractional topology counts"},{"g":"202609010204","v":"v9.40","s":"the version ledger itself, on the page"},{"g":"202609010722","v":"v9.41","s":"exact GB price evidence, beside the ledger"},{"g":"202609010726","v":"v9.42","s":"the price panel revalidates instead of pinning its first sight"}];
+  const VERSION_LEDGER = [{"g":"202608312121","v":"v9.16","s":"the project arriving from Pipeline News is visible: its own technology layer is enabled and a pin owned by this cartridge is dropped on it, with a toggle on the card"},{"g":"202608312133","v":"v9.17","s":"central AC sizing: the limiting nameplate, not a squared product"},{"g":"202608312140","v":"v9.18","s":"the project marker is a ring, found by looking at it in Chrome"},{"g":"202608312154","v":"v9.19","s":"the grid maths installs even when the basemap never paints"},{"g":"202608312157","v":"v9.20","s":"the Atlas says what it is waiting for, sized for a phone"},{"g":"202608312205","v":"v9.21","s":"the MapLibre exception storm: symbol layers with no glyph atlas"},{"g":"202608312208","v":"v9.22","s":"a symbol layer is added only once its text can be drawn"},{"g":"202608312222","v":"v9.23","s":"card geometry resets on every selection"},{"g":"202608312227","v":"v9.24","s":"the GB electricity tracker is connected to the map"},{"g":"202608312238","v":"v9.25","s":"one source of truth for GB prices: the data repository"},{"g":"202608312244","v":"v9.26","s":"late layer controls are used, and the repository is LF everywhere"},{"g":"202608312257","v":"v9.27","s":"the MAP button works for every technology in the register"},{"g":"202608312300","v":"v9.28","s":"voltage classes are explained, and the whole dashboard is accepted"},{"g":"202608312306","v":"v9.29","s":"the headline capacity actually moves the layout"},{"g":"202608312313","v":"v9.30","s":"the neon flow no longer exhausts the renderer"},{"g":"202608312315","v":"v9.31","s":"Codex's LineAtlas cardinality gate passes"},{"g":"202608312317","v":"v9.32","s":"no substation can display an impossible voltage"},{"g":"202608312321","v":"v9.33","s":"nothing can rewrite the reference design, not even later"},{"g":"202608312324","v":"v9.34","s":"a missing source costs a drawing, never the session"},{"g":"202609010021","v":"v9.35","s":"phone pointer operation, viewport containment and named electrical ratios"},{"g":"202609010040","v":"v9.36","s":"original financial-model parity with explicit correction of the known central AC double-count"},{"g":"202609010053","v":"v9.37","s":"complete the original finance interaction contract by linking development stage, cost and success"},{"g":"202609010058","v":"v9.38","s":"restore topology-isolated physical inputs and the original mounting-to-bifacial linkage"},{"g":"202609010106","v":"v9.39","s":"remove duplicate BESS truth, restore original central defaults and reject fractional topology counts"},{"g":"202609010204","v":"v9.40","s":"the version ledger itself, on the page"},{"g":"202609010722","v":"v9.41","s":"exact GB price evidence, beside the ledger"},{"g":"202609010726","v":"v9.42","s":"the price panel revalidates instead of pinning its first sight"},{"g":"202609010902","v":"v9.43","s":"mobile: tools collapse behind one chip; grid and subs are one tap"}];
   const PRE_SCOPE_COMPOSITIONS = 16;
   const LEDGER_ID = 'gridatlas-version-ledger';
 
@@ -1907,6 +1907,126 @@
     panel.addEventListener('click', (event) => event.stopPropagation());
     stack.appendChild(panel);
     link.version_ledger = { entries: VERSION_LEDGER.length, newest: newest.v };
+  }
+
+
+  /* ── the mobile tray ──────────────────────────────────────────────────
+     Vikram's phone acceptance, 2026-09-01: the six shell tool buttons at
+     44px touch height are the right size to hit and the wrong size to keep
+     on screen - a third of a portrait map behind buttons - and the switches
+     that turn the grid lines and substations on live below the map, where a
+     phone never looks. Both are composition faults, not engine faults: the
+     44px rule is this cartridge's own coarse-pointer override, and the
+     engine's switches work - toggled live in Chrome, the lines drew at once.
+
+     So on a touch screen or a narrow window the six tool buttons collapse
+     behind one chip, and two first-class chips - GRID and SUBS - stand on
+     the map itself. They drive the engine's own checkboxes with real
+     clicks, the same path enableTechnologyLayer has used all along, so the
+     scada panel, the fullscreen curtain and these chips cannot disagree. */
+  const TRAY_ID = 'gridatlas-mobile-tray';
+  const GRID_LINE_LAYERS = ['400', '275', '220', '132', '66'];
+
+  function trayTarget() {
+    try {
+      return matchMedia('(pointer: coarse)').matches || window.innerWidth <= 700;
+    } catch (_) { return false; }
+  }
+
+  function engineLayerBox(id) {
+    return document.querySelector(
+      '#scada-ui-container input[type=checkbox][data-layer-id="' + id + '"]');
+  }
+
+  function installMobileTray() {
+    if (document.getElementById(TRAY_ID)) return;
+    if (!trayTarget()) {
+      link.mobile_tray = { installed: false, reason: 'fine pointer, wide window' };
+      return;
+    }
+    const stack = document.querySelector('.map-controls');
+    if (!stack) { link.failures.push('no map-controls for the tray'); return; }
+
+    const style = document.createElement('style');
+    style.id = TRAY_ID + '-style';
+    style.textContent = `
+#${TRAY_ID}{display:flex;gap:4px;font:11px/1.2 ui-monospace,SFMono-Regular,Menlo,monospace}
+#${TRAY_ID} button{min-height:44px;padding:6px 10px;background:#0a1a1d;
+  border:1px solid #2f6f75;border-radius:3px;color:#8fb3b8;font:inherit;
+  letter-spacing:.06em;text-transform:uppercase;cursor:pointer}
+#${TRAY_ID} button[aria-pressed="true"]{border-color:#5fbdc2;color:#bfe9ee;
+  background:rgba(0,255,255,0.08)}
+#${TRAY_ID} button[disabled]{opacity:.45;cursor:default}
+.map-controls.gm-tools-collapsed > .map-ctrl-btn{display:none}`;
+    document.head.appendChild(style);
+
+    stack.classList.add('gm-tools-collapsed');
+
+    const tray = document.createElement('div');
+    tray.id = TRAY_ID;
+
+    const tools = document.createElement('button');
+    tools.type = 'button';
+    tools.textContent = 'Tools \u25b8';
+    tools.setAttribute('aria-expanded', 'false');
+    tools.addEventListener('click', (event) => {
+      event.stopPropagation();
+      const collapsed = stack.classList.toggle('gm-tools-collapsed');
+      tools.textContent = collapsed ? 'Tools \u25b8' : 'Tools \u25be';
+      tools.setAttribute('aria-expanded', String(!collapsed));
+    });
+
+    function quickChip(labelText, ids) {
+      const chip = document.createElement('button');
+      chip.type = 'button';
+      chip.textContent = labelText;
+      chip.disabled = true;
+      chip.setAttribute('aria-pressed', 'false');
+      function reflect() {
+        const boxes = ids.map(engineLayerBox).filter(Boolean);
+        chip.disabled = boxes.length === 0;
+        chip.setAttribute('aria-pressed',
+          String(boxes.length > 0 && boxes.every((box) => box.checked)));
+      }
+      chip.addEventListener('click', (event) => {
+        event.stopPropagation();
+        const boxes = ids.map(engineLayerBox).filter(Boolean);
+        if (!boxes.length) return;
+        const turnOn = boxes.some((box) => !box.checked);
+        boxes.forEach((box) => { if (box.checked !== turnOn) box.click(); });
+        reflect();
+      });
+      chip.gmReflect = reflect;
+      return chip;
+    }
+
+    const grid = quickChip('\u26a1 Grid', GRID_LINE_LAYERS);
+    const subs = quickChip('\u25c9 Subs', ['subs']);
+
+    tray.appendChild(tools);
+    tray.appendChild(grid);
+    tray.appendChild(subs);
+    tray.addEventListener('click', (event) => event.stopPropagation());
+    stack.insertBefore(tray, stack.firstChild);
+
+    // The engine builds its switches only after the map loads; the chips
+    // wake when the switches exist and follow them wherever they are
+    // toggled from - scada panel, fullscreen curtain, or a deep link.
+    document.addEventListener('change', (event) => {
+      if (event.target?.dataset?.layerId) { grid.gmReflect(); subs.gmReflect(); }
+    });
+    let polls = 0;
+    const poll = setInterval(() => {
+      grid.gmReflect(); subs.gmReflect(); polls += 1;
+      if (!grid.disabled || polls > 200) clearInterval(poll);
+    }, 300);
+
+    link.mobile_tray = {
+      installed: true,
+      tools_collapsed: true,
+      grid_quick_layers: GRID_LINE_LAYERS.length,
+      subs_quick: true
+    };
   }
 
   function installGbConditions() {
@@ -2181,6 +2301,7 @@
 
     installGbConditions();
     installVersionLedger();
+    installMobileTray();
 
     window.addEventListener('resize', boundCardToMap);
     map.on('resize', boundCardToMap);
