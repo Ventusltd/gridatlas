@@ -1,0 +1,42 @@
+{
+  "schema": "gridatlas.shift-log.v1",
+  "runs": [
+    {
+      "step": "202609012205-sizing-arithmetic.mjs",
+      "id": "sizing-arithmetic",
+      "version": "v9.69",
+      "started_at": "2026-09-01T22:09:02.898Z",
+      "dry": false,
+      "stages": [
+        {
+          "name": "tooling committed",
+          "at": "2026-09-01T22:09:03.633Z",
+          "commit": "8f22719"
+        },
+        {
+          "name": "applied",
+          "at": "2026-09-01T22:09:03.749Z",
+          "changed": [
+            "atlas/parts/202609012045-sld-sandbox-body.js",
+            "atlas/modules/202609012205-sizing-arithmetic.js",
+            "tools/proofs/modules/202609012205-sizing-arithmetic.proof.mjs"
+          ]
+        },
+        {
+          "name": "syntax checked",
+          "at": "2026-09-01T22:09:03.868Z"
+        },
+        {
+          "name": "step proof 202609012205-sizing-arithmetic.proof.mjs",
+          "at": "2026-09-01T22:09:04.766Z",
+          "status": 0,
+          "tally": "35/35"
+        }
+      ],
+      "outcome": "failed",
+      "reason": "recompose refused the cut",
+      "finished_at": "2026-09-01T22:09:04.966Z",
+      "output": "  +module    atlas/modules/202609012205-sizing-arithmetic.js\n  ledger     atlas/parts/202609012045-sld-sandbox-body.js  += v9.69\n  assembled  202609012209-sld-sandbox-v9-8.js  from 7 part(s)\n  proof      202609012209-sld-sandbox.proof.mjs\nno such proof: tools/proofs/202609012141-sld-sandbox.proof.mjs\n"
+    }
+  ]
+}

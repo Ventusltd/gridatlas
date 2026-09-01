@@ -182,7 +182,7 @@ if (dry) {
   process.exit(0);
 }
 const composeArgs = ['tools/recompose.mjs', '--version', step.version, '--restamp', 'sld-sandbox',
-  '--scope', step.scope, '--proof', `tools/proofs/${proofs[0]}`, '--note', step.note];
+  '--scope', step.scope, '--proof', 'tools/proofs/{generation}-sld-sandbox.proof.mjs', '--note', step.note];
 for (const m of step.addModules || []) composeArgs.push('--add-module', m);
 for (const m of step.replaceModules || []) composeArgs.push('--replace-module', m);
 {
