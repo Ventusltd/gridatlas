@@ -1,7 +1,7 @@
 {
   "schema": "gridatlas.current.v2",
-  "generation": "202609011141",
-  "previous_generation": "202609010902",
+  "generation": "202609011205",
+  "previous_generation": "202609011141",
   "architecture": "IMMUTABLE_SHELL_PLUS_HASHED_CARTRIDGES",
   "live_route": "/gridatlas/atlas/",
   "release_id": "202608300453-atlas-v9",
@@ -59,13 +59,13 @@
     },
     {
       "id": "sld-sandbox",
-      "generation": "202609011141",
-      "version": "v9.44",
+      "generation": "202609011205",
+      "version": "v9.45",
       "type": "script",
       "slot": "replace-script",
       "replace_script": "202608292126-pre-snapped-config-adapter.js",
-      "path": "./cartridges/202609011141-sld-sandbox-v9-8.js",
-      "sha256": "c4e1097cea73ea11df562b9f63520b307d382c07e839895473828f61e166c379",
+      "path": "./cartridges/202609011205-sld-sandbox-v9-8.js",
+      "sha256": "8bab3c34818d3192cf11f5c1fc8027d913ccff8c6518056f5625425cfd2a3f34",
       "capabilities": [
         "pre-snapped-config-adapter-carried-forward",
         "project-or-substation-selection",
@@ -151,7 +151,10 @@
         "mobile-tray-tools-collapsed-on-touch",
         "grid-and-subs-one-tap-on-the-map",
         "arrival-by-identity-repd-ref-only",
-        "null-island-guard-on-deep-link-coordinates"
+        "null-island-guard-on-deep-link-coordinates",
+        "arrival-enters-fullscreen-on-touch",
+        "identity-wait-until-terminal-not-budgeted",
+        "arrival-stages-surfaced-with-retry"
       ],
       "immutable_shell_modified": false,
       "supersedes_shell_script": {
@@ -403,6 +406,12 @@
         "fix": "when URL coordinates or technology are unusable and repd_ref is present, the lane waits for the search cartridge's published deep_link state and consumes its resolved longitude, latitude, technology, name and capacity",
         "one_resolver": "the search lane owns identity resolution against the pinned register parquet; this lane only consumes what it publishes",
         "budget": "120s, because the identity lane boots a 35.7 MB query engine first on a cold phone; terminal FAILED or ABSENT is honoured immediately"
+      },
+      "arrival_surface": {
+        "reported_by": "Vikram, phone, 13:01: fullscreen still computed nothing, and the normal page is clutter fighting a small map",
+        "budget_relearned": "v9.44 waited 120s for the identity lane; a cold phone boots the 35.7 MB query engine first and exceeded it, so the lane gave up permanently and the card opened with nothing computed. The wait now runs until RESOLVED, FAILED or ABSENT, with a ten-minute last-resort stop for a lane that died silently",
+        "fullscreen": "an arrival on a touch screen enters the shell's own fullscreen - Vikram's design: arrive in full screen mode with the clutter minimised; the tray keeps the tool buttons collapsed",
+        "stages_surfaced": "resolving the identity, loading the substation payload, and a zero-substation outcome each say what is happening where the user is looking; failures carry Try again, which re-runs the arrival rather than reloading the page"
       }
     }
   ],
@@ -448,15 +457,15 @@
       "result_class": "LOCATION_ONLY"
     }
   },
-  "composition_manifest": "./manifests/202609011141-composition.json",
+  "composition_manifest": "./manifests/202609011205-composition.json",
   "scope_closure": {
     "generation": "202609010726",
     "status": "DONE",
     "scope": "GridAtlas v9.42 the price panel revalidates",
     "schedule_retired": true
   },
-  "composition_version": "v9.44",
-  "composition_id": "202609011141-gridatlas-v9.44",
+  "composition_version": "v9.45",
+  "composition_id": "202609011205-gridatlas-v9.45",
   "transport": {
     "response_contract": "HEADERS_BEFORE_PARQUET_BODY",
     "engine_timeout_seconds": 15,

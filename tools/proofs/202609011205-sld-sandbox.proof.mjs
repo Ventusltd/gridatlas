@@ -1,5 +1,5 @@
 /**
- * Proof for the neon links + SLD layout sandbox cartridge, generation 202609011141.
+ * Proof for the neon links + SLD layout sandbox cartridge, generation 202609011205.
  *
  * No dependencies. The repository carries playwright and no DOM library, so
  * rather than add one this stubs the small surface the cartridge actually
@@ -32,7 +32,7 @@ import vm from 'node:vm';
 const HERE = dirname(fileURLToPath(import.meta.url));
 const REPO = resolve(HERE, '..', '..');
 const CARTRIDGE = join(REPO, 'atlas', 'cartridges',
-  '202609011141-sld-sandbox-v9-8.js');
+  '202609011205-sld-sandbox-v9-8.js');
 const ORIGINAL = join(REPO, 'atlas', 'releases', '202608300453-atlas-v9',
   '202608292126-pre-snapped-config-adapter.js');
 const FINANCE_ORACLE = join(REPO, 'tools', 'proofs', 'fixtures',
@@ -2048,9 +2048,40 @@ check('a resolved identity supplies coordinates, technology, name and capacity',
   && /if \(resolved\.name\) name = String\(resolved\.name\)/.test(cartridgeSource)
   && /if \(Number\.isFinite\(cap\) && cap > 0\) stated = cap/.test(cartridgeSource));
 check('an unresolved identity is recorded, never silent',
-  /identity lane did not resolve within/.test(cartridgeSource));
+  /identity lane still not terminal after 10 minutes/.test(cartridgeSource));
 check('the consumption is published for the next debugger',
   /link\.deep_link_identity = 'resolved-by-search-lane'/.test(cartridgeSource));
+
+
+console.log('\nthe arrival surface\n');
+
+/* Vikram: arrive in full screen mode with the clutter minimised; and a
+   fixed identity budget expired on a phone that was still booting the
+   query engine, which read as a broken map. */
+check('an arrival on touch enters the shell fullscreen',
+  /q\.get\('repd_ref'\) !== null \|\| coordsUsable\(\)\) && trayTarget\(\)/.test(cartridgeSource)
+  && /window\.enterFullscreen\?\.\(\)/.test(cartridgeSource)
+  && /link\.arrival_fullscreen = true/.test(cartridgeSource));
+check('the map is resized after entering fullscreen',
+  /setTimeout\(\(\) => \{ try \{ map\.resize\(\); \}/.test(cartridgeSource));
+check('the identity wait has no budget parameter and runs to terminal',
+  /async function waitForResolvedIdentity\(\) \{/.test(cartridgeSource)
+  && /await waitForResolvedIdentity\(\);/.test(cartridgeSource)
+  && !/waitForResolvedIdentity\(120000\)/.test(cartridgeSource));
+check('the wait says what it is waiting for',
+  /Resolving the project against the register/.test(cartridgeSource));
+check('a ten-minute stop guards a lane that died silently',
+  /waited > 600000/.test(cartridgeSource));
+check('an unresolvable identity is surfaced with a retry of the arrival',
+  /could not be resolved/.test(cartridgeSource)
+  && /retryArrival = \(\) => \{ clearStatus\(\); runDeepLink\(\); \};/.test(cartridgeSource));
+check('the substation stage is surfaced and zero substations never draws silently',
+  /Loading the substation data/.test(cartridgeSource)
+  && /The substation data did not load/.test(cartridgeSource)
+  && /if \(!subs\.length\) \{/.test(cartridgeSource));
+check('the deep link is a named function so retry re-runs it, not the page',
+  /async function runDeepLink\(\) \{/.test(cartridgeSource)
+  && /runDeepLink\(\);/.test(cartridgeSource));
 
 console.log(`\n${passed}/${passed + failures.length} checks passed`);
 if (failures.length) {
