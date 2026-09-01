@@ -132,8 +132,13 @@ check('the page states plainly that the ratings are not added together',
   /not a quantity that exists/.test(cartridgeSource));
 check('the page distinguishes a rating from what is free on the circuit',
   /a rating is not what is free on the circuit/.test(cartridgeSource));
+/* The sentence is split across a template interpolation for the
+   singular/plural, so the words "reads as a placeholder" never appear
+   adjacent in the source. Pin the two halves that do ship verbatim. */
 check('a placeholder value is named to the reader, not hidden',
-  /reads. as a placeholder|read. as a placeholder/.test(cartridgeSource));
+  /as a placeholder and/.test(cartridgeSource)
+  && /at or above 9,999 MVA on spans of a kilometre or less/.test(cartridgeSource)
+  && /excluded from the range above/.test(cartridgeSource));
 check('the served bytes contain no site total of circuit ratings', (() => {
   const start = cartridgeSource.indexOf('gridatlas.module.rating-envelope.v1');
   const end = cartridgeSource.indexOf('NS.ratingEnvelope = Object.freeze');
