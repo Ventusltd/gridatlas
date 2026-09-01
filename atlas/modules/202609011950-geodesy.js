@@ -101,10 +101,44 @@
     return [...new Set(out)].sort((a, b) => b - a);
   }
 
+  /* Projection and bearing, carried in from the sandbox verbatim.
+     ----------------------------------------------------------------------
+     The deep scan found the body carrying a SECOND geodesy section - "the
+     geodesy the layout needs, all on R_ATLAS" - four hundred lines away
+     from the first. Two geodesies in one file, on a constant that must
+     never differ, is the configuration that produced the divergence the
+     all-versions proof caught. Both belong here, on the one radius, and
+     the body now delegates rather than defining.
+
+     The bodies below are the incumbent's, character for character apart
+     from the radius identifier, so parity is a property of the move rather
+     than something to argue about afterwards. */
+  function destinationPoint(lon, lat, km, bearingDeg) {
+    const ad = km / EARTH_RADIUS_KM;
+    const brg = bearingDeg * DEG;
+    const p1 = lat * DEG;
+    const p2 = Math.asin(Math.sin(p1) * Math.cos(ad)
+      + Math.cos(p1) * Math.sin(ad) * Math.cos(brg));
+    const l2 = lon * DEG + Math.atan2(
+      Math.sin(brg) * Math.sin(ad) * Math.cos(p1),
+      Math.cos(ad) - Math.sin(p1) * Math.sin(p2));
+    return [l2 / DEG, p2 / DEG];
+  }
+
+  function initialBearingDeg(lon1, lat1, lon2, lat2) {
+    const p1 = lat1 * DEG; const p2 = lat2 * DEG;
+    const dl = (lon2 - lon1) * DEG;
+    const y = Math.sin(dl) * Math.cos(p2);
+    const x = Math.cos(p1) * Math.sin(p2) - Math.sin(p1) * Math.cos(p2) * Math.cos(dl);
+    return (Math.atan2(y, x) / DEG + 360) % 360;
+  }
+
   NS.geodesy = Object.freeze({
     schema: 'gridatlas.module.geodesy.v1',
     EARTH_RADIUS_KM,
     distanceKm,
+    destinationPoint,
+    initialBearingDeg,
     representativePoint,
     voltagesKv
   });

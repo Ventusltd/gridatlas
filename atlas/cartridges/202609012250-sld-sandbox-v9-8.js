@@ -1,4 +1,493 @@
 /**
+ * sld-sandbox-v9-8, generation 202609012250 (UTC).
+ *
+ * ASSEMBLED by tools/build-cartridge.mjs from the parts below. Do not edit
+ * this file: edit a part and rebuild under a new generation. Each part is
+ * hashed in manifests/202609012250-sld-sandbox-v9-8-parts.json.
+ *
+ *   module                 atlas/modules/202609011950-geodesy.js
+ *   module                 atlas/modules/202609012040-grid-scope.js
+ *   module                 atlas/modules/202609012245-source-registry.js
+ *   part                   atlas/parts/202609012045-sld-sandbox-body.js
+ */
+
+/**
+ * Module: geodesy
+ *
+ * One Earth radius for the whole estate, and the three operations every
+ * measurement here is built from. This existed three times tonight - in
+ * the sandbox, in the substation cartridge and in the data repository -
+ * which is exactly how two of them end up on different radii without
+ * anyone noticing.
+ *
+ * Radius 6378.137 km, matching Ventusltd/grid-distance-maths. Haversine.
+ * No projection, no turf, no second radius for geometry.
+ *
+ * Pure functions. No DOM, no network, no state.
+ */
+(() => {
+  'use strict';
+
+  const NS = (window.__GRIDATLAS_MODULES__ = window.__GRIDATLAS_MODULES__ || {});
+  if (NS.geodesy) return;
+
+  const EARTH_RADIUS_KM = 6378.137;
+  const DEG = Math.PI / 180;
+
+  function distanceKm(lon1, lat1, lon2, lat2) {
+    const dLat = (lat2 - lat1) * DEG;
+    const dLon = (lon2 - lon1) * DEG;
+    const a = Math.sin(dLat / 2) ** 2
+      + Math.cos(lat1 * DEG) * Math.cos(lat2 * DEG) * Math.sin(dLon / 2) ** 2;
+    /* atan2, in this operand order, because that is the form every version
+       of this estate has shipped - ventus-corev8engine.js haversine() and
+       every cartridge carried from it.
+       -------------------------------------------------------------------
+       The extraction wrote 2 * R * asin(sqrt(a)) instead. Algebraically the
+       same; numerically one unit in the last place apart, which the
+       all-versions proof caught on West Burton Solar to Cottam:
+       7.050150827184836 shipped, 7.050150827184837 from the module. It is
+       1e-15 km and changes no figure any reader will ever see - and it is
+       still wrong, because the claim being made is PARITY. A module that is
+       nearly the incumbent is a module that has to be argued about every
+       time a digit differs. */
+    return EARTH_RADIUS_KM * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+  }
+
+  /* A polygon reduces to the mean of its outer ring, not its first corner.
+     A substation drawn as a compound outline would otherwise be measured
+     from whichever vertex the mapper happened to start at.
+
+     Point, Polygon and MultiPolygon, and NOTHING ELSE. The first draft of
+     this module accepted any nested coordinate array and so returned a
+     mean for a LineString where the incumbent returns null; the parity
+     proof caught it against the live cartridge. Extraction is not the
+     moment to change behaviour, so the behaviour is pinned here and any
+     widening becomes its own version with its own reasoning.
+
+     One deliberate difference, on malformed input only: this returns null
+     where the incumbent would throw on a Point with no coordinates. No
+     real geometry reaches that path, and a proof asserts it. */
+  function representativePoint(geometry) {
+    if (!geometry) return null;
+    const { type, coordinates } = geometry;
+    if (type === 'Point') {
+      return Array.isArray(coordinates) && coordinates.length >= 2
+        ? [coordinates[0], coordinates[1]] : null;
+    }
+    const ring = type === 'Polygon' ? coordinates && coordinates[0]
+      : type === 'MultiPolygon' ? coordinates && coordinates[0] && coordinates[0][0]
+        : null;
+    if (!Array.isArray(ring) || !ring.length) return null;
+    let sumLon = 0;
+    let sumLat = 0;
+    for (const point of ring) {
+      sumLon += point[0];
+      sumLat += point[1];
+    }
+    return [sumLon / ring.length, sumLat / ring.length];
+  }
+
+  /* OpenStreetMap's `voltage` is VOLTS at every magnitude, and a feature
+     may carry several separated by a semicolon. Magnitude is not the unit:
+     750 is a DC traction supply at a railway depot, not 750 kV. An audit
+     of the served payload found 229 features (3.95%) carrying a token
+     below 1,000, every one of which had been misread. An explicit `kv`
+     property is already kilovolts and is trusted as such. */
+  function voltagesKv(properties) {
+    if (!properties) return [];
+    const out = [];
+    const explicit = properties.kv ?? properties.KV;
+    if (explicit != null && String(explicit).trim() !== '') {
+      for (const token of String(explicit).match(/\d+(?:\.\d+)?/g) || []) {
+        const value = Number(token);
+        if (Number.isFinite(value) && value > 0) out.push(value);
+      }
+    }
+    const volts = properties.voltage ?? properties.VOLTAGE;
+    if (volts != null) {
+      for (const token of String(volts).match(/\d+(?:\.\d+)?/g) || []) {
+        const value = Number(token);
+        if (Number.isFinite(value) && value > 0) out.push(value / 1000);
+      }
+    }
+    return [...new Set(out)].sort((a, b) => b - a);
+  }
+
+  /* Projection and bearing, carried in from the sandbox verbatim.
+     ----------------------------------------------------------------------
+     The deep scan found the body carrying a SECOND geodesy section - "the
+     geodesy the layout needs, all on R_ATLAS" - four hundred lines away
+     from the first. Two geodesies in one file, on a constant that must
+     never differ, is the configuration that produced the divergence the
+     all-versions proof caught. Both belong here, on the one radius, and
+     the body now delegates rather than defining.
+
+     The bodies below are the incumbent's, character for character apart
+     from the radius identifier, so parity is a property of the move rather
+     than something to argue about afterwards. */
+  function destinationPoint(lon, lat, km, bearingDeg) {
+    const ad = km / EARTH_RADIUS_KM;
+    const brg = bearingDeg * DEG;
+    const p1 = lat * DEG;
+    const p2 = Math.asin(Math.sin(p1) * Math.cos(ad)
+      + Math.cos(p1) * Math.sin(ad) * Math.cos(brg));
+    const l2 = lon * DEG + Math.atan2(
+      Math.sin(brg) * Math.sin(ad) * Math.cos(p1),
+      Math.cos(ad) - Math.sin(p1) * Math.sin(p2));
+    return [l2 / DEG, p2 / DEG];
+  }
+
+  function initialBearingDeg(lon1, lat1, lon2, lat2) {
+    const p1 = lat1 * DEG; const p2 = lat2 * DEG;
+    const dl = (lon2 - lon1) * DEG;
+    const y = Math.sin(dl) * Math.cos(p2);
+    const x = Math.cos(p1) * Math.sin(p2) - Math.sin(p1) * Math.cos(p2) * Math.cos(dl);
+    return (Math.atan2(y, x) / DEG + 360) % 360;
+  }
+
+  NS.geodesy = Object.freeze({
+    schema: 'gridatlas.module.geodesy.v1',
+    EARTH_RADIUS_KM,
+    distanceKm,
+    destinationPoint,
+    initialBearingDeg,
+    representativePoint,
+    voltagesKv
+  });
+})();
+
+/**
+ * Module: grid-scope
+ *
+ * "When you click on a blank space, the user should be able to see grid in
+ * the vicinity. Call it the GRID FINDING SCOPE — analysis of what is
+ * there, NOT indicative of capacity." — Vikram, 2026-09-01.
+ *
+ * So this answers exactly one question: WHAT IS MAPPED HERE. It counts
+ * what the served payload contains around a point, by voltage class and
+ * by distance band, and names the nearest few. It is a census of the map,
+ * not a study of the network.
+ *
+ * WHAT IT WILL NOT DO, EVER
+ * It does not say whether a connection is available, likely, cheap or
+ * possible. Nothing in a payload of substation positions can support any
+ * of that: capacity depends on queue position, committed connections,
+ * thermal and fault headroom, consent and commercial terms, and none of
+ * those is a distance. A scope that counted substations and implied
+ * opportunity would be the most dangerous thing this estate could ship,
+ * because it would look like analysis.
+ *
+ * Pure. No DOM, no network, no state. Depends on: geodesy.
+ */
+(() => {
+  'use strict';
+
+  const NS = (window.__GRIDATLAS_MODULES__ = window.__GRIDATLAS_MODULES__ || {});
+  if (NS.gridScope) return;
+
+  const geodesy = NS.geodesy;
+  if (!geodesy) throw new Error('grid-scope requires the geodesy module');
+
+  /* Bands, not a single radius. A reader asking "what is around here"
+     wants the shape of the answer - is the nearest thing on top of me or
+     twenty kilometres away - and one number hides that. */
+  const DEFAULT_BANDS_KM = [2, 5, 10, 25];
+  const CLASSES_KV = [400, 275, 220, 132, 66, 33];
+
+  /* A voltage is classified ONLY as a class it actually is.
+     ------------------------------------------------------------------
+     The first version walked the classes and returned the first one the
+     value exceeded, so it labelled 750 kV as 400, 110 kV as 66 and 50 kV
+     as 33 - a false label on anything the list does not contain, which is
+     exactly the sort of quiet relabelling this estate exists to avoid.
+     Codex caught it on the committed module before it reached a card
+     (stop-ship 202609012025).
+
+     Now: membership, within a tolerance for the fractions OSM carries.
+     Anything else is UNCLASSIFIED and counted as such, because a voltage
+     the standard classes do not contain is a fact about the data, not a
+     value to be rounded into the nearest familiar number. */
+  const CLASS_TOLERANCE_KV = 0.5;
+
+  function classOf(kv) {
+    if (!Number.isFinite(kv)) return null;
+    for (const known of CLASSES_KV) {
+      if (Math.abs(kv - known) <= CLASS_TOLERANCE_KV) return known;
+    }
+    return null;
+  }
+
+  /**
+   * @param origin [lon, lat]
+   * @param substations  [{ at:[lon,lat], kv:[numbers], name, operator }]
+   * @param options { bandsKm, minimumKv, nearestCount }
+   */
+  function scope(origin, substations, options) {
+    const bandsKm = (options && options.bandsKm) || DEFAULT_BANDS_KM;
+    const minimumKv = (options && options.minimumKv) || 0;
+    const nearestCount = (options && options.nearestCount) || 5;
+    const maximumKm = bandsKm[bandsKm.length - 1];
+
+    const within = [];
+    for (const substation of substations || []) {
+      if (!substation || !Array.isArray(substation.at)) continue;
+      const voltages = (Array.isArray(substation.kv) ? substation.kv : [])
+        .filter(Number.isFinite);
+      /* Non-finite voltages are dropped BEFORE the maximum.
+         ----------------------------------------------------------------
+         Codex, 202609012055: Math.max over a NaN gives NaN, and NaN < floor
+         is false, so a substation whose voltage did not parse survived a
+         132 kV floor and was censused as though it qualified. A voltage
+         that is not a number is not a voltage above the floor. */
+      const top = voltages.length ? Math.max(...voltages) : 0;
+      if (top < minimumKv) continue;
+      const km = geodesy.distanceKm(origin[0], origin[1],
+        substation.at[0], substation.at[1]);
+      if (km > maximumKm) continue;
+      within.push({
+        name: substation.name || '',
+        operator: substation.operator || '',
+        kv: top,
+        class_kv: classOf(top),
+        km,
+        at: substation.at
+      });
+    }
+    within.sort((a, b) => a.km - b.km);
+
+    const bands = bandsKm.map((band) => {
+      const inBand = within.filter(entry => entry.km <= band);
+      const counts = {};
+      let unclassified = 0;
+      const unclassifiedKv = [];
+      for (const entry of inBand) {
+        if (entry.class_kv == null) {
+          // Counted, never folded into a class it is not.
+          unclassified += 1;
+          if (Number.isFinite(entry.kv) && !unclassifiedKv.includes(entry.kv)) {
+            unclassifiedKv.push(entry.kv);
+          }
+          continue;
+        }
+        counts[entry.class_kv] = (counts[entry.class_kv] || 0) + 1;
+      }
+      const highest = inBand.reduce(
+        (best, entry) => (entry.class_kv != null && (best == null || entry.class_kv > best)
+          ? entry.class_kv : best), null);
+      return {
+        within_km: band,
+        substations: inBand.length,
+        by_class_kv: counts,
+        highest_class_kv: highest,
+        unclassified_voltage: unclassified,
+        unclassified_kv: unclassifiedKv.sort((a, b) => b - a)
+      };
+    });
+
+    /* Named first, because an unnamed OSM node is a fact about the map
+       rather than a place anyone can look up. Both are reported: the
+       nearest thing, and the nearest thing with an identity. */
+    const named = within.filter(entry => entry.name);
+    return {
+      schema: 'gridatlas.grid-scope.v1',
+      origin: [origin[0], origin[1]],
+      radius_km: maximumKm,
+      minimum_kv: minimumKv,
+      counted: within.length,
+      bands,
+      nearest: within.slice(0, nearestCount),
+      nearest_named: named.slice(0, nearestCount),
+      nearest_transmission: within.find(entry => entry.kv >= 275 - 0.5) || null,
+      /* Carried in the result itself so it cannot be separated from the
+         numbers by a renderer, a screenshot or a quote. */
+      what_this_is: 'A census of the substations in the served map payload '
+        + 'around this point, by voltage class and distance band.',
+      what_this_is_not: 'Not a statement about capacity, headroom, '
+        + 'availability or the cost of connecting here. Distance is not '
+        + 'capacity: queue position, committed connections, thermal and '
+        + 'fault headroom, consent and commercial terms decide that, and '
+        + 'none of them is in this payload.',
+      method: 'haversine on a single Earth radius of '
+        + geodesy.EARTH_RADIUS_KM + ' km, straight line to mapped geometry'
+    };
+  }
+
+  NS.gridScope = Object.freeze({
+    schema: 'gridatlas.module.grid-scope.v2',
+    CLASS_TOLERANCE_KV,
+    DEFAULT_BANDS_KM,
+    CLASSES_KV,
+    classOf,
+    scope
+  });
+})();
+
+/**
+ * Module: source-registry
+ *
+ * "Click anywhere on a map and the neons that already work via Pipeline News
+ * look for cartridges and code." — Vikram, 2026-09-01.
+ *
+ * The looking is this module. The Atlas is a composition of cartridges that
+ * find each other through `window.__GRIDATLAS_*` globals, and the deep scan
+ * of 1 Sep 2026 found fifteen such surfaces ever registered, thirteen live,
+ * and nothing anywhere that documents them. Every consumer therefore does
+ * its own `window.__GRIDATLAS_NETWORK__?.something` and quietly does less
+ * when the answer is undefined. That is how a click on blank space came to
+ * report only what OpenStreetMap has mapped, while the cartridge holding
+ * NESO's 886 published connection points sat loaded in the same page.
+ *
+ * So: one registry, declared once, that answers three questions.
+ *
+ *   WHAT COULD ANSWER      the sources this estate knows about, each with
+ *                          what it contributes and whether it is required.
+ *   WHAT IS ANSWERING NOW  probed live, by looking for the surface AND the
+ *                          specific capability, because a cartridge that
+ *                          has loaded but not yet fetched is present and
+ *                          not yet useful, and those are different states.
+ *   WHAT DID NOT           named, with the reason, in the result itself.
+ *
+ * The third is the point. A reader who is told "3 of 4 sources answered;
+ * NESO's published network did not, because its payload had not loaded" can
+ * judge the answer. A reader shown a shorter answer cannot, and will
+ * reasonably assume the map has told them everything it knows.
+ *
+ * It reads. It never fetches, never renders, and never decides what a
+ * finding means.
+ *
+ * Depends on: nothing.
+ */
+(() => {
+  'use strict';
+
+  const NS = (window.__GRIDATLAS_MODULES__ = window.__GRIDATLAS_MODULES__ || {});
+  if (NS.sourceRegistry) return;
+
+  /* The registry is DECLARED, not discovered by scanning window.
+     ----------------------------------------------------------------------
+     Enumerating every __GRIDATLAS_* global would report whatever happens to
+     be there, including surfaces this estate has never agreed to consume,
+     and would silently start using a new one the day someone adds it. A
+     declared list is a contract: adding a source is an edit here, with a
+     reason, and a proof that the probe actually works. */
+  const SOURCES = [
+    {
+      id: 'map',
+      surface: '__GRIDATLAS_V9_MAP__',
+      contributes: 'the map itself: where the click happened, and what is drawn',
+      probe: (w) => (w.__GRIDATLAS_V9_MAP__ ? 'ready' : 'absent')
+    },
+    {
+      id: 'mapped-substations',
+      surface: '__GRIDATLAS_NEON_LINKS__',
+      contributes: 'substations as OpenStreetMap has them mapped, and the '
+        + 'measurement the neon links already use',
+      probe: (w) => {
+        const links = w.__GRIDATLAS_NEON_LINKS__;
+        if (!links) return 'absent';
+        if (typeof links.measure?.distanceKm !== 'function') return 'loaded, cannot measure';
+        if (!links.substations_loaded) return 'loaded, no substations yet';
+        return 'ready';
+      },
+      detail: (w) => ({ substations: w.__GRIDATLAS_NEON_LINKS__?.substations_loaded || 0 })
+    },
+    {
+      id: 'neso-connection-points',
+      surface: '__GRIDATLAS_NETWORK__',
+      contributes: "NESO's published connection points: circuits, transformers, "
+        + 'per-voltage fault current and planned changes',
+      probe: (w) => {
+        const network = w.__GRIDATLAS_NETWORK__;
+        if (!network) return 'absent';
+        if (network.failed) return 'failed to load';
+        if (!network.loaded) return 'loading';
+        return 'ready';
+      },
+      detail: (w) => ({ connection_points: w.__GRIDATLAS_NETWORK__?.count || null,
+        schema: w.__GRIDATLAS_NETWORK__?.schema || null })
+    },
+    {
+      id: 'grid-scope',
+      surface: '__GRIDATLAS_MODULES__.gridScope',
+      contributes: 'the census of what is mapped around a point, in distance bands',
+      probe: (w) => (w.__GRIDATLAS_MODULES__?.gridScope ? 'ready' : 'absent')
+    },
+    {
+      id: 'network-topology',
+      surface: '__GRIDATLAS_MODULES__.networkTopology',
+      contributes: 'circuits, transformers, planned changes and neighbouring '
+        + 'sites at a named substation, per voltage',
+      probe: (w) => (w.__GRIDATLAS_MODULES__?.networkTopology ? 'ready' : 'absent')
+    },
+    {
+      id: 'declared-connections',
+      surface: '__GRIDATLAS_SLD__.declared',
+      contributes: 'points of connection bound to a made Order or a published '
+        + 'planning document',
+      probe: (w) => (w.__GRIDATLAS_SLD__?.declared ? 'ready' : 'absent')
+    }
+  ];
+
+  const READY = 'ready';
+
+  /**
+   * Probe every declared source against a window.
+   * @param scope  the window to read; defaults to this one. Passing it in is
+   *               what lets a proof drive the probe without a browser.
+   */
+  function survey(scope) {
+    const w = scope || window;
+    const sources = SOURCES.map((source) => {
+      let state = 'absent';
+      let detail = null;
+      try { state = source.probe(w) || 'absent'; }
+      catch (error) { state = `probe threw: ${error && error.message}`; }
+      if (state === READY && typeof source.detail === 'function') {
+        try { detail = source.detail(w); } catch (_) { detail = null; }
+      }
+      return { id: source.id, surface: source.surface,
+        contributes: source.contributes, state, ready: state === READY, detail };
+    });
+
+    const ready = sources.filter(s => s.ready);
+    const missing = sources.filter(s => !s.ready);
+
+    return {
+      schema: 'gridatlas.module.source-registry.v1',
+      sources,
+      ready: ready.map(s => s.id),
+      missing: missing.map(s => ({ id: s.id, state: s.state })),
+      counts: { declared: sources.length, ready: ready.length, missing: missing.length },
+      /* Written as a sentence here so a card cannot compose its own and get
+         it wrong, and so an absence is never presented as an absence in the
+         world rather than in this page. */
+      sentence: missing.length === 0
+        ? `All ${sources.length} sources answered.`
+        : `${ready.length} of ${sources.length} sources answered. Not answering: `
+          + missing.map(s => `${s.id} (${s.state})`).join(', ')
+          + '. What they would have added is missing from this answer, not '
+          + 'absent from the world.'
+    };
+  }
+
+  /** Is one source usable right now. */
+  function ready(id, scope) {
+    const source = SOURCES.find(s => s.id === id);
+    if (!source) return false;
+    try { return source.probe(scope || window) === READY; }
+    catch (_) { return false; }
+  }
+
+  NS.sourceRegistry = Object.freeze({
+    schema: 'gridatlas.module.source-registry.v1',
+    declared: SOURCES.map(s => s.id),
+    survey,
+    ready
+  });
+})();
+
+/**
  * GridAtlas cartridge — neon substation links and the SLD layout sandbox.
  *
  * Assembled under the generation named in the header above; this part

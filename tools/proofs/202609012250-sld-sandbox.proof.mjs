@@ -1359,8 +1359,29 @@ check('no turf dependency came across in the code', !/\bturf\./.test(code));
 check('the Turf default radius appears nowhere in the code', !/6371/.test(code));
 check('and the header still explains why it was removed',
   /6371\.0088/.test(src) && /turf\.destination/.test(src));
-check('every geometric operation is on R_ATLAS',
-  /const R_ATLAS = 6378\.137/.test(src) && /destinationPoint/.test(src));
+/* The check that used to read `const R_ATLAS = 6378.137` in this file.
+   ------------------------------------------------------------------------
+   It passed for weeks while the assembled cartridge declared the radius
+   TWICE - once in the geodesy module in front of the body, once in the body
+   itself - because it only ever asked whether the constant was present, not
+   whether it was present more than once. That is the configuration the
+   all-versions proof later caught actually diverging.
+
+   v9.67 makes the body take the constant from the module. So the assertion
+   is now the stronger one it should always have been: the whole served
+   cartridge declares an Earth radius exactly once, and the body delegates
+   rather than defining. */
+check('the served cartridge declares an Earth radius exactly ONCE',
+  (code.match(/=\s*6378\.137/g) || []).length === 1,
+  `${(code.match(/=\s*6378\.137/g) || []).length} declarations`);
+check('the body takes the radius and the distance from the geodesy module',
+  /const R_ATLAS = GEODESY\.EARTH_RADIUS_KM;/.test(src)
+  && /return GEODESY\.distanceKm\(/.test(src));
+check('a missing geodesy module is a hard failure, never a fallback',
+  /if \(!GEODESY\) throw new Error/.test(src));
+check('projection and bearing come from the module too',
+  /return GEODESY\.destinationPoint\(/.test(src)
+  && /return GEODESY\.initialBearingDeg\(/.test(src));
 check('point-to-segment replaces turf.nearestPointOnLine',
   /function distanceToSegmentKm/.test(src) && /footOnSegment/.test(src));
 

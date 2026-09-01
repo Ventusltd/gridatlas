@@ -44,6 +44,7 @@ function argv(flag, { many = false } = {}) {
 const generation = argv('--generation');
 const version = argv('--version');
 const restamp = argv('--restamp', { many: true });
+const addModules = argv('--add-module', { many: true });
 const scope = argv('--scope');
 const proofs = argv('--proof', { many: true });
 const note = argv('--note') || '';
@@ -112,6 +113,22 @@ for (const id of restamp) {
     /* Reassembled, not copied: the point of restamping an assembled
        cartridge is that one of its parts moved. */
     const parts = readJson(partsManifest).assembled_from || [];
+
+    /* A cartridge can gain a module at a cut.
+       -------------------------------------------------------------------
+       Without this, the reassembly reproduces the previous part list
+       exactly, and a new module written for this generation is simply not
+       in the served bytes - the body calls `sourceRegistry` and finds
+       undefined. That happened on the first attempt at v9.67. A module is
+       inserted BEFORE the non-module parts, because a body that depends on
+       a module must be evaluated after it. */
+    for (const modulePath of addModules) {
+      if (parts.some(entry => entry.path === modulePath)) continue;
+      if (!fs.existsSync(path.join(ROOT, modulePath))) die(`no such module: ${modulePath}`);
+      const lastModule = parts.map(e => e.role).lastIndexOf('module');
+      parts.splice(lastModule + 1, 0, { role: 'module', path: modulePath });
+      console.log(`  +module    ${modulePath}`);
+    }
 
     /* The version ledger the page shows is written by the cut, not by hand.
        -------------------------------------------------------------------

@@ -185,9 +185,28 @@ check('no grading language anywhere in the module',
 let productPresent = true;
 try { await access(PRODUCT, constants.R_OK); } catch { productPresent = false; }
 
+/* A SKIP IS NOT A PASS.
+   ------------------------------------------------------------------------
+   Codex, 202609012230: this pass silently skipped every real-payload
+   assertion when the sibling data-grid-gb checkout was absent - which is
+   the normal condition on an isolated CI checkout, i.e. exactly where the
+   proof would report green having tested nothing that matters.
+
+   The product is a hard requirement. Absent, this FAILS and says how to
+   satisfy it. An environment that genuinely cannot provide it must say so
+   out loud with GRIDATLAS_ALLOW_MISSING_PRODUCT=1, and that concession is
+   itself a check, so it appears in the output rather than being inferred
+   from a shorter list. */
+const concession = process.env.GRIDATLAS_ALLOW_MISSING_PRODUCT === '1';
+check('the published product this module reads is available',
+  productPresent || concession,
+  productPresent ? '' : `not found at ${PRODUCT} - clone Ventusltd/data-grid-gb `
+    + 'beside this repository, or set GRIDATLAS_ALLOW_MISSING_PRODUCT=1 to '
+    + 'accept an unverified run');
 if (!productPresent) {
-  console.log('\n[skip] the published product is not on this machine; '
-    + 'the real-payload checks below did not run');
+  console.log('\n  [concession] running without the published product by '
+    + 'explicit opt-in; the real-payload assertions did NOT run and this '
+    + 'result does not attest them');
 } else {
   console.log('\nand it answers correctly on the published payload\n');
   const product = JSON.parse(await readFile(PRODUCT, 'utf8'));
