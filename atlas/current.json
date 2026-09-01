@@ -1,7 +1,7 @@
 {
   "schema": "gridatlas.current.v2",
-  "generation": "202609011244",
-  "previous_generation": "202609011243",
+  "generation": "202609011251",
+  "previous_generation": "202609011244",
   "architecture": "IMMUTABLE_SHELL_PLUS_HASHED_CARTRIDGES",
   "live_route": "/gridatlas/atlas/",
   "release_id": "202608300453-atlas-v9",
@@ -59,13 +59,13 @@
     },
     {
       "id": "sld-sandbox",
-      "generation": "202609011244",
-      "version": "v9.49",
+      "generation": "202609011251",
+      "version": "v9.50",
       "type": "script",
       "slot": "replace-script",
       "replace_script": "202608292126-pre-snapped-config-adapter.js",
-      "path": "./cartridges/202609011244-sld-sandbox-v9-8.js",
-      "sha256": "a248362c63697994cfe8c67b54bfbe97e9e45465bab3df5cd48552ed48c1ac3f",
+      "path": "./cartridges/202609011251-sld-sandbox-v9-8.js",
+      "sha256": "fdb2cbc287600470e9f4de539298d89224bb07cd586394a635bcdc759974ab2a",
       "capabilities": [
         "pre-snapped-config-adapter-carried-forward",
         "project-or-substation-selection",
@@ -156,7 +156,8 @@
         "identity-wait-until-terminal-not-budgeted",
         "arrival-stages-surfaced-with-retry",
         "measurement-block-kept-not-written-once",
-        "arrival-card-from-link-fields-when-register-absent"
+        "arrival-card-from-link-fields-when-register-absent",
+        "arrival-card-precedes-the-lines"
       ],
       "immutable_shell_modified": false,
       "supersedes_shell_script": {
@@ -471,15 +472,15 @@
       "result_class": "LOCATION_ONLY"
     }
   },
-  "composition_manifest": "./manifests/202609011244-composition.json",
+  "composition_manifest": "./manifests/202609011251-composition.json",
   "scope_closure": {
     "generation": "202609010726",
     "status": "DONE",
     "scope": "GridAtlas v9.42 the price panel revalidates",
     "schedule_retired": true
   },
-  "composition_version": "v9.49",
-  "composition_id": "202609011244-gridatlas-v9.49",
+  "composition_version": "v9.50",
+  "composition_id": "202609011251-gridatlas-v9.50",
   "transport": {
     "response_contract": "HEADERS_BEFORE_PARQUET_BODY",
     "engine_timeout_seconds": 15,

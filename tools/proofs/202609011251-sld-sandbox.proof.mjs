@@ -1,5 +1,5 @@
 /**
- * Proof for the neon links + SLD layout sandbox cartridge, generation 202609011244.
+ * Proof for the neon links + SLD layout sandbox cartridge, generation 202609011251.
  *
  * No dependencies. The repository carries playwright and no DOM library, so
  * rather than add one this stubs the small surface the cartridge actually
@@ -32,7 +32,7 @@ import vm from 'node:vm';
 const HERE = dirname(fileURLToPath(import.meta.url));
 const REPO = resolve(HERE, '..', '..');
 const CARTRIDGE = join(REPO, 'atlas', 'cartridges',
-  '202609011244-sld-sandbox-v9-8.js');
+  '202609011251-sld-sandbox-v9-8.js');
 const ORIGINAL = join(REPO, 'atlas', 'releases', '202608300453-atlas-v9',
   '202608292126-pre-snapped-config-adapter.js');
 const FINANCE_ORACLE = join(REPO, 'tools', 'proofs', 'fixtures',
@@ -2116,6 +2116,14 @@ check('a cleared selection removes the fallback',
   /disarmCardKeeper\(\);\n    removeArrivalFallback\(\);\n    removeCardBlock\(\);/.test(cartridgeSource));
 check('the fallback is published for the next debugger',
   /link\.arrival_card = 'from-link-fields';/.test(cartridgeSource));
+
+
+console.log('\nthe card precedes the lines\n');
+
+check('the fallback card is opened before the measurement runs',
+  /ensureArrivalCard\(lon, lat, name, tech, stated\);\n          link\.deep_linked = true;\n          await selectAt/.test(cartridgeSource));
+check('a terminally failed identity lane does not spend the popup budget',
+  /if \(idStatus === 'FAILED' \|\| idStatus === 'ABSENT'\) break;/.test(cartridgeSource));
 
 console.log(`\n${passed}/${passed + failures.length} checks passed`);
 if (failures.length) {
