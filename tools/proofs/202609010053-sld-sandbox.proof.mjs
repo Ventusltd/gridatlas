@@ -1,5 +1,5 @@
 /**
- * Proof for the neon links + SLD layout sandbox cartridge, generation 202609010040.
+ * Proof for the neon links + SLD layout sandbox cartridge, generation 202609010053.
  *
  * No dependencies. The repository carries playwright and no DOM library, so
  * rather than add one this stubs the small surface the cartridge actually
@@ -32,7 +32,7 @@ import vm from 'node:vm';
 const HERE = dirname(fileURLToPath(import.meta.url));
 const REPO = resolve(HERE, '..', '..');
 const CARTRIDGE = join(REPO, 'atlas', 'cartridges',
-  '202609010040-sld-sandbox-v9-8.js');
+  '202609010053-sld-sandbox-v9-8.js');
 const ORIGINAL = join(REPO, 'atlas', 'releases', '202608300453-atlas-v9',
   '202608292126-pre-snapped-config-adapter.js');
 const FINANCE_ORACLE = join(REPO, 'tools', 'proofs', 'fixtures',
@@ -1622,6 +1622,8 @@ check('the fixture names the central double-count instead of hiding it',
     financeOracle.reference_behavior?.known_central_defect || ''));
 check('the cartridge exposes one finance function for parity testing',
   typeof sld.computeFinance === 'function');
+check('the original linked development-stage handler is exposed for testing',
+  typeof sld.applyDevelopmentStage === 'function');
 check('string and central financial assumptions are independent',
   sld.finance?.string && sld.finance?.central && sld.finance.string !== sld.finance.central);
 
@@ -1733,6 +1735,30 @@ check('the executable original development-stage labels are retained',
   /Land Option Signed/.test(cartridgeSource)
   && /Buyer or Revenue Agreement Reviewed \(Power Purchase Agreement \(PPA\) \/ Offtaker\)/.test(cartridgeSource)
   && /Construction Contract Signed and Finance Committed \(Financial Close\)/.test(cartridgeSource));
+const originalStageDefaults = new Map([
+  ['0.003', 10], ['0.015', 15], ['0.035', 30], ['0.055', 55],
+  ['0.070', 70], ['0.080', 80], ['0.100', 95],
+]);
+let stageDefaultsMatch = true;
+for (const [stage, success] of originalStageDefaults) {
+  const values = { dev_stage: '0.100', dev_cost_mw: 0.100, dev_success: 95 };
+  const applied = sld.applyDevelopmentStage(values, stage);
+  stageDefaultsMatch = stageDefaultsMatch && applied
+    && values.dev_stage === stage
+    && values.dev_cost_mw === Number(stage)
+    && values.dev_success === success;
+}
+check('every stage updates cost and success exactly like the original change handler',
+  stageDefaultsMatch);
+check('an unknown stage fails closed without changing assumptions', (() => {
+  const values = { dev_stage: '0.100', dev_cost_mw: 0.100, dev_success: 95 };
+  const before = JSON.stringify(values);
+  return sld.applyDevelopmentStage(values, 'unknown') === false
+    && JSON.stringify(values) === before;
+})());
+check('the UI stage control uses the linked handler before redraw',
+  /input\.dataset\.finKey === 'dev_stage'/.test(cartridgeSource)
+  && /applyDevelopmentStageDefaults\(values, input\.value\)/.test(cartridgeSource));
 check('the financial block starts collapsed and remembers an explicit open',
   /financeOpen: false/.test(cartridgeSource)
   && /details class="sld-finance" \$\{sld\.financeOpen \? 'open' : ''\}/.test(cartridgeSource)

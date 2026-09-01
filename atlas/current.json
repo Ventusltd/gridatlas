@@ -1,7 +1,7 @@
 {
   "schema": "gridatlas.current.v2",
-  "generation": "202609010040",
-  "previous_generation": "202609010021",
+  "generation": "202609010053",
+  "previous_generation": "202609010040",
   "architecture": "IMMUTABLE_SHELL_PLUS_HASHED_CARTRIDGES",
   "live_route": "/gridatlas/atlas/",
   "release_id": "202608300453-atlas-v9",
@@ -58,13 +58,13 @@
     },
     {
       "id": "sld-sandbox",
-      "generation": "202609010040",
-      "version": "v9.36",
+      "generation": "202609010053",
+      "version": "v9.37",
       "type": "script",
       "slot": "replace-script",
       "replace_script": "202608292126-pre-snapped-config-adapter.js",
-      "path": "./cartridges/202609010040-sld-sandbox-v9-8.js",
-      "sha256": "cdfc8d209c4414037a0e9a8f1acfe052b7136c51fd60f3ad30c39d02bc29326b",
+      "path": "./cartridges/202609010053-sld-sandbox-v9-8.js",
+      "sha256": "259fea7a9f1c2e1bf2921682b984b5ca82b3ddc7d8fe06c4ce658d6d43990a99",
       "capabilities": [
         "pre-snapped-config-adapter-carried-forward",
         "project-or-substation-selection",
@@ -137,7 +137,8 @@
         "separate-string-central-finance",
         "corrected-central-finance-divergence",
         "mobile-collapsed-finance",
-        "visible-finance-assumptions"
+        "visible-finance-assumptions",
+        "development-stage-updates-cost-and-success"
       ],
       "immutable_shell_modified": false,
       "supersedes_shell_script": {
@@ -300,6 +301,7 @@
         "parity": "every unaffected output equals the executable original within floating-point tolerance",
         "central_divergence": "the original central stress case squares inverters per skid into AC. The port uses corrected inverter AC for central OPEX, and its corrected 25/35-year surplus is named in the oracle fixture rather than hidden as parity",
         "topology_state": "string and central finance assumptions are independent, as in the original",
+        "development_stage": "selecting a stage updates development cost GBP/Wp and success probability together, matching the original change handler; unknown stages fail closed",
         "bess_state": "layout and financial BESS inputs are not silently synchronised; any mismatch is visible",
         "mobile": "the financial block starts collapsed, remembers an explicit open, and uses the same bounded phone-first panel",
         "limits": "screening values only, not financial advice; all assumptions remain visible"
@@ -394,15 +396,15 @@
       "result_class": "LOCATION_ONLY"
     }
   },
-  "composition_manifest": "./manifests/202609010040-composition.json",
+  "composition_manifest": "./manifests/202609010053-composition.json",
   "scope_closure": {
-    "generation": "202609010040",
+    "generation": "202609010053",
     "status": "DONE",
-    "scope": "GridAtlas v9.36 port the original financial model with executable parity and an explicit central correction",
+    "scope": "GridAtlas v9.37 preserve the original development-stage cost and success linkage",
     "schedule_retired": true
   },
-  "composition_version": "v9.36",
-  "composition_id": "202609010040-gridatlas-v9.36",
+  "composition_version": "v9.37",
+  "composition_id": "202609010053-gridatlas-v9.37",
   "transport": {
     "response_contract": "HEADERS_BEFORE_PARQUET_BODY",
     "engine_timeout_seconds": 15,

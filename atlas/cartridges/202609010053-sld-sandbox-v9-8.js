@@ -1,7 +1,7 @@
 /**
  * GridAtlas cartridge — neon substation links and the SLD layout sandbox.
  *
- * Generation 202609010040 (UTC), composition v9.36. Slot: replace-script for
+ * Generation 202609010053 (UTC), composition v9.37. Slot: replace-script for
  * 202608292126-pre-snapped-config-adapter.js.
  *
  * WHAT IT DOES
@@ -61,7 +61,7 @@
 (() => {
   'use strict';
 
-  const GENERATION = '202609010040';
+  const GENERATION = '202609010053';
 
   /* ══════════════════════════════════════════════════════════════════════
      PART 1 — the pre-snapped config adapter, carried forward unchanged.
@@ -2591,6 +2591,29 @@
     return Number.isFinite(number) ? number : 0;
   };
 
+  const DEVELOPMENT_SUCCESS = Object.freeze({
+    '0.003': 10,
+    '0.015': 15,
+    '0.035': 30,
+    '0.055': 55,
+    '0.070': 70,
+    '0.080': 80,
+    '0.100': 95,
+  });
+
+  /* The original stage selector is not only a label: its change handler sets
+     development cost to the selected GBP/Wp value and success probability to
+     a stage-specific percentage. Keep that linked behavior explicit so a
+     stage change cannot leave the old stage's costs behind. */
+  function applyDevelopmentStageDefaults(financeInputs, stageValue) {
+    const stage = String(stageValue);
+    if (!Object.prototype.hasOwnProperty.call(DEVELOPMENT_STAGES, stage)) return false;
+    financeInputs.dev_stage = stage;
+    financeInputs.dev_cost_mw = financeNumber(stage);
+    financeInputs.dev_success = DEVELOPMENT_SUCCESS[stage];
+    return true;
+  }
+
   /* Direct port of gis-sld-v5-finance.js computeFinance(). The original
      executable fixture is the authority, not this comment. The one deliberate
      divergence is inherited from the corrected electrical port: annual OPEX
@@ -2703,6 +2726,7 @@
     return stats;
   };
   sld.computeFinance = computeScreeningFinance;
+  sld.applyDevelopmentStage = applyDevelopmentStageDefaults;
 
   /**
    * Size the array so its capacity lands on the figure the register states.
@@ -3508,7 +3532,9 @@
       input.addEventListener('change', () => {
         const values = sld.finance[sld.inputs.mode];
         if (input.type === 'checkbox') values[input.dataset.finKey] = Boolean(input.checked);
-        else if (input.tagName === 'SELECT') values[input.dataset.finKey] = input.value;
+        else if (input.dataset.finKey === 'dev_stage') {
+          applyDevelopmentStageDefaults(values, input.value);
+        } else if (input.tagName === 'SELECT') values[input.dataset.finKey] = input.value;
         else {
           const value = Number(input.value);
           if (Number.isFinite(value)) values[input.dataset.finKey] = value;
