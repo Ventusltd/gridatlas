@@ -1,7 +1,7 @@
 {
   "schema": "gridatlas.current.v2",
-  "generation": "202609011615",
-  "previous_generation": "202609011612",
+  "generation": "202609011718",
+  "previous_generation": "202609011615",
   "architecture": "IMMUTABLE_SHELL_PLUS_HASHED_CARTRIDGES",
   "live_route": "/gridatlas/atlas/",
   "release_id": "202608300453-atlas-v9",
@@ -59,13 +59,13 @@
     },
     {
       "id": "sld-sandbox",
-      "generation": "202609011615",
-      "version": "v9.55",
+      "generation": "202609011718",
+      "version": "v9.56",
       "type": "script",
       "slot": "replace-script",
       "replace_script": "202608292126-pre-snapped-config-adapter.js",
-      "path": "./cartridges/202609011615-sld-sandbox-v9-8.js",
-      "sha256": "a9d7cd6be440853c30f0dac24ef7fd6497c34de65788efd5fe5f8dfbcc253407",
+      "path": "./cartridges/202609011718-sld-sandbox-v9-8.js",
+      "sha256": "6c77c3f62963ca97cf0e218d86a11722de480c13189c7ddd46a2529c603ad940",
       "capabilities": [
         "pre-snapped-config-adapter-carried-forward",
         "project-or-substation-selection",
@@ -168,7 +168,10 @@
         "measurement-independent-of-layer-controls",
         "substation-payload-warmed-at-install",
         "declared-connection-shown-before-measurement",
-        "project-ring-drawn-on-arrival-not-after-the-payload"
+        "project-ring-drawn-on-arrival-not-after-the-payload",
+        "pink-for-a-point-of-connection-not-yet-built",
+        "declared-circuit-connections-draw-no-line",
+        "little-crow-distribution-loop-archetype"
       ],
       "immutable_shell_modified": false,
       "supersedes_shell_script": {
@@ -481,6 +484,14 @@
         "known_without_a_network": "substation, voltage class, route, consented works, citation - all from the made Order and the link",
         "measured": "the distance only, marked pending until it exists",
         "never": "no measured value is shown before it is measured, and the provisional block never overwrites a measured one"
+      },
+      "far_end_state": {
+        "asked_by": "Vikram: can the line be pink for a substation that has not been built yet",
+        "not_built": "One Earth - the point of connection is NGET's new substation beside the existing High Marnham (EN010159)",
+        "under_construction": "Thorpe Marsh - a new 400 kV four-bay substation is under construction (public record)",
+        "circuit_not_substation": "Little Crow - a looped connection into the existing Keadby-Broughton-Teed-Scawby Brook 132 kV Northern Powergrid circuit within the site, 99.9 MW export secured (EN010101 Grid Network Constraints Report, Nov 2020); no line is drawn because there is no node to draw to",
+        "archetypes": "West Burton builds a 400 kV customer substation and a 10 km cable to an existing transmission bay; Little Crow loops into a distribution circuit already crossing its land. Both are NSIPs; only one is a 400 kV story",
+        "rule": "the state is taken from the public record, never from whether OSM happens to have mapped the asset"
       }
     }
   ],
@@ -526,15 +537,15 @@
       "result_class": "LOCATION_ONLY"
     }
   },
-  "composition_manifest": "./manifests/202609011615-composition.json",
+  "composition_manifest": "./manifests/202609011718-composition.json",
   "scope_closure": {
     "generation": "202609010726",
     "status": "DONE",
     "scope": "GridAtlas v9.42 the price panel revalidates",
     "schedule_retired": true
   },
-  "composition_version": "v9.55",
-  "composition_id": "202609011615-gridatlas-v9.55",
+  "composition_version": "v9.56",
+  "composition_id": "202609011718-gridatlas-v9.56",
   "transport": {
     "response_contract": "HEADERS_BEFORE_PARQUET_BODY",
     "engine_timeout_seconds": 15,

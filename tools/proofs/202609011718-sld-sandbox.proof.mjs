@@ -1,5 +1,5 @@
 /**
- * Proof for the neon links + SLD layout sandbox cartridge, generation 202609011615.
+ * Proof for the neon links + SLD layout sandbox cartridge, generation 202609011718.
  *
  * No dependencies. The repository carries playwright and no DOM library, so
  * rather than add one this stubs the small surface the cartridge actually
@@ -32,7 +32,7 @@ import vm from 'node:vm';
 const HERE = dirname(fileURLToPath(import.meta.url));
 const REPO = resolve(HERE, '..', '..');
 const CARTRIDGE = join(REPO, 'atlas', 'cartridges',
-  '202609011615-sld-sandbox-v9-8.js');
+  '202609011718-sld-sandbox-v9-8.js');
 const ORIGINAL = join(REPO, 'atlas', 'releases', '202608300453-atlas-v9',
   '202608292126-pre-snapped-config-adapter.js');
 const FINANCE_ORACLE = join(REPO, 'tools', 'proofs', 'fixtures',
@@ -2141,7 +2141,7 @@ console.log('\nthe 400 kV public record\n');
 check('the declared table binds register identities to named substations',
   /const DECLARED_CONNECTIONS = Object\.freeze\(\{/.test(cartridgeSource)
   && ['10914','10916','9809','12281','14806','13599','9806','13644','11928']
-    .every(ref => new RegExp(`'${ref}': \\{ (works|substation): `).test(cartridgeSource)));
+    .every(ref => new RegExp(`'${ref}': \\{ (works|substation|poc_status|poc_kind): `).test(cartridgeSource)));
 check('every declared entry names its public source',
   /EN010133/.test(cartridgeSource) && /EN010132/.test(cartridgeSource)
   && /EN010131/.test(cartridgeSource) && /EN010142/.test(cartridgeSource)
@@ -2154,7 +2154,10 @@ check('a payload-absent substation is stated, not silently dropped',
   /not in the mapped payload, so no distance is measured/.test(cartridgeSource));
 check('the declared link draws in its own colour',
   /const DECLARED_COLOUR = '#d8b64a';/.test(cartridgeSource)
-  && /colour: DECLARED_COLOUR, strength: 0\.85/.test(cartridgeSource));
+  // v9.56: the colour is chosen per far-end state, so the line takes the
+  // resolved variable rather than the gold constant directly.
+  && /colour: declaredColour, strength: 0\.85/.test(cartridgeSource)
+  && /unbuilt \? DECLARED_UNBUILT_COLOUR : DECLARED_COLOUR/.test(cartridgeSource));
 check('nearest 400 kV is measured for every project selection',
   /function nearestTransmission\(origin, subs\)/.test(cartridgeSource)
   && /currentNearest400 = nearestTransmission\(origin, subs\);/.test(cartridgeSource));
@@ -2245,6 +2248,37 @@ check('the measurement does not blank a standing provisional block',
   /if \(!currentDeclared\?\.pending\) currentDeclared = null;/.test(cartridgeSource));
 check('the early answer is published for the next debugger',
   /link\.declared_shown_before_measurement = true;/.test(cartridgeSource));
+
+
+console.log('\nthe far end has its own state\n');
+
+check('an unbuilt point of connection has its own colour',
+  /const DECLARED_UNBUILT_COLOUR = '#d87aa8';/.test(cartridgeSource)
+  && /const declaredColour = unbuilt \? DECLARED_UNBUILT_COLOUR : DECLARED_COLOUR;/.test(cartridgeSource));
+check('both line and node take that colour together',
+  /properties: \{ colour: declaredColour, strength: 0\.85/.test(cartridgeSource)
+  && /nodes\.push\(\{ type: 'Feature',\n        properties: \{ colour: declaredColour,/.test(cartridgeSource));
+check('the unbuilt states are the two the record supports',
+  /poc_status === 'not_built'/.test(cartridgeSource)
+  && /poc_status === 'under_construction'/.test(cartridgeSource));
+check('One Earth and Thorpe Marsh carry their state with a reason',
+  /'14806': \{ poc_status: 'not_built'/.test(cartridgeSource)
+  && /'13644': \{ poc_status: 'under_construction'/.test(cartridgeSource)
+  && /Great Grid Upgrade works/.test(cartridgeSource)
+  && /four-bay substation is under construction/.test(cartridgeSource));
+check('the card labels the state beside the public-record badge',
+  /Not built yet/.test(cartridgeSource) && /Under construction/.test(cartridgeSource)
+  && /This point of connection is not yet in service/.test(cartridgeSource));
+check('a declared circuit connection draws no line and measures no distance',
+  /'6557': \{ poc_kind: 'circuit'/.test(cartridgeSource)
+  && /The point of connection is a circuit rather than a substation, so no line is drawn/.test(cartridgeSource)
+  && /if \(declared\.poc_kind === 'circuit'\) return provisionalDeclaredConnection\(repdRef\);/.test(cartridgeSource));
+check('Little Crow names its circuit and its source',
+  /Keadby \\u2013 Broughton \\u2013 Teed \\u2013 Scawby Brook overhead 132 kV line circuit/.test(cartridgeSource)
+  && /EN010101, November 2020/.test(cartridgeSource));
+check('a circuit connection never claims 400 kV',
+  /kv: 132,/.test(cartridgeSource)
+  && /\(d\.kv \? `<span class="neon-kv">\$\{d\.kv\} kV<\/span>` : ''\)/.test(cartridgeSource));
 
 console.log(`\n${passed}/${passed + failures.length} checks passed`);
 if (failures.length) {
