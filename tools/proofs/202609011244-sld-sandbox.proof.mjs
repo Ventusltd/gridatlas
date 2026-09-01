@@ -1,5 +1,5 @@
 /**
- * Proof for the neon links + SLD layout sandbox cartridge, generation 202609011242.
+ * Proof for the neon links + SLD layout sandbox cartridge, generation 202609011244.
  *
  * No dependencies. The repository carries playwright and no DOM library, so
  * rather than add one this stubs the small surface the cartridge actually
@@ -32,7 +32,7 @@ import vm from 'node:vm';
 const HERE = dirname(fileURLToPath(import.meta.url));
 const REPO = resolve(HERE, '..', '..');
 const CARTRIDGE = join(REPO, 'atlas', 'cartridges',
-  '202609011242-sld-sandbox-v9-8.js');
+  '202609011244-sld-sandbox-v9-8.js');
 const ORIGINAL = join(REPO, 'atlas', 'releases', '202608300453-atlas-v9',
   '202608292126-pre-snapped-config-adapter.js');
 const FINANCE_ORACLE = join(REPO, 'tools', 'proofs', 'fixtures',
@@ -2094,7 +2094,7 @@ check('the measurement block is kept, not written once',
 check('the keeper re-attaches only while the card lacks the block',
   /if \(!content \|\| content\.querySelector\(`\.\$\{BLOCK_CLASS\}`\)\) return;/.test(cartridgeSource));
 check('a cleared selection disarms the keeper before the block is removed',
-  /disarmCardKeeper\(\);\n    removeCardBlock\(\);/.test(cartridgeSource));
+  /disarmCardKeeper\(\);\n    removeArrivalFallback\(\);\n    removeCardBlock\(\);/.test(cartridgeSource));
 check('the payload is per selection, so a stale project never decorates a new popup',
   /cardKeeperPayload = \{ links, direction, layerLoaded \};/.test(cartridgeSource)
   && /cardKeeperPayload = null;/.test(cartridgeSource));
