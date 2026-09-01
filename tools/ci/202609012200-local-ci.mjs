@@ -301,14 +301,20 @@ const GATES = [
   ['grid scope', ['tools/proofs/modules/202609012040-grid-scope.proof.mjs']],
   ['network topology', ['tools/proofs/modules/202609012145-network-topology.proof.mjs']],
   ['assembler', ['tools/proofs/modules/202609012010-assembler.proof.mjs']],
-  ['source registry', ['tools/proofs/modules/202609012135-source-registry.proof.mjs']],
+  ['source registry', ['tools/proofs/modules/202609012217-source-registry.proof.mjs']],
   ['map-click network', ['tools/proofs/modules/202609012230-map-click-network.proof.mjs']],
-  ['declared connections', ['tools/proofs/modules/202609012130-declared-connections.proof.mjs']]
+  ['declared connections', ['tools/proofs/modules/202609012130-declared-connections.proof.mjs']],
+  ['sizing arithmetic', ['tools/proofs/modules/202609012205-sizing-arithmetic.proof.mjs']],
+  ['data-contract parity', ['tools/proofs/202609012214-data-contract-parity.proof.mjs']]
 ];
 
 for (const [name, args] of GATES) {
   if (!existsSync(join(GRIDATLAS, args[0]))) {
-    console.log(`  \x1b[33m${name.padEnd(22)} absent\x1b[0m  ${args[0]}`);
+    /* an absent gate was a yellow line and a continue until 202609012217;
+       a skip is not a pass, so it is red and counted */
+    console.log(`  \x1b[31m${name.padEnd(22)} ABSENT\x1b[0m  ${args[0]}`);
+    flaws.push(`gate absent: ${name} (${args[0]})`);
+    report.gates[name] = { ok: false, summary: 'absent' };
     continue;
   }
   let out = '', ok = true;

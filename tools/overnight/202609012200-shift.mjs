@@ -14,6 +14,7 @@
  * A step is a module under tools/overnight/steps/ exporting
  *   { id, version, scope, note, brings?: [untracked files it wrote by hand],
  *     addModules?: [], replaceModules?: ['old=new'], proofs?: [paths],
+ *     postProofs?: [paths that need the composed manifest; run after the cut],
  *     apply({ root, patch, read, write }) }
  * and it is applied to the working tree, checked, composed by recompose
  * (which reads the clock), proven, committed with a subject stamped from the
@@ -30,6 +31,18 @@
  * PRECONDITION failure, before anything had been applied. The undo now
  * removes only files that appeared after the step was applied, and never
  * runs before that point.
+ *
+ * Second and third lessons, 22:09-22:10 UTC, both caught by the gates and
+ * both undone cleanly: recompose could not be told the name of a proof it
+ * had not yet renamed (it now accepts {generation} in --proof), and the
+ * sandbox proof pinned by regex a line the step moved into the module (a
+ * step is now handed the proof's path and patches it before the cut).
+ *
+ * After 22:11 UTC: the step's proofs run again after compose; GitHub's own
+ * workflow runs for the commit must all conclude success or the outcome is
+ * live-but-ci-not-green and the step is not marked done. The board's
+ * request for a Chrome interaction receipt stands open: the extension is
+ * not connected tonight, and a Node simulation is recorded as what it is.
  */
 
 import fs from 'node:fs';
@@ -125,7 +138,24 @@ if (head !== originMain) {
     run('git', ['merge', '--ff-only', 'origin/main'], { quiet: true });
     stage('fast-forwarded to origin/main', { from: head.slice(0, 7), to: originMain.slice(0, 7) });
   } else if (base !== originMain) {
-    fail('origin/main has diverged from this worktree; a human merges, not the night shift', { head, origin_main: originMain });
+    /* Diverged. At 22:20 UTC another agent pushed four commits to main
+       while this worktree held only its own shift-log commit on top of the
+       cut. When everything on OUR side is under tools/overnight/, the
+       rebase is mechanical and the night shift does it; anything else is
+       a merge for a human. Stash-free: the precondition above has already
+       confined the dirty tree to tools/overnight and the brought files,
+       and rebase carries a dirty tree only if it is untouched by both
+       sides, so the overnight edits are committed first as tooling. */
+    const ours = git('diff', '--name-only', `${base}..HEAD`).split('\n').map(slash).filter(Boolean);
+    if (ours.length && ours.every(p => p.startsWith('tools/overnight/'))) {
+      run('git', ['add', 'tools/overnight'], { quiet: true });
+      const r0 = run('git', ['commit', '-q', '-m', `${utcNow()}: overnight - tooling before rebase onto origin/main`], { allowFail: true, quiet: true });
+      const r = run('git', ['rebase', '--quiet', 'origin/main'], { allowFail: true, quiet: true });
+      if (r.status !== 0) { run('git', ['rebase', '--abort'], { allowFail: true, quiet: true }); fail('rebase of the overnight log onto origin/main did not apply cleanly', { output: r.out.slice(-1500) }); }
+      stage('rebased overnight commits onto origin/main', { from: head.slice(0, 7), onto: originMain.slice(0, 7), ours, tooling_committed: r0.status === 0 });
+    } else {
+      fail('origin/main has diverged from this worktree with non-overnight commits on our side; a human merges, not the night shift', { head, origin_main: originMain, ours });
+    }
   }
 }
 
@@ -207,8 +237,12 @@ const gates = [
   ['run-current', ['tools/proofs/run-current.mjs']],
   ['parts integrity', ['tools/proofs/202609012105-parts-integrity.proof.mjs']],
   ['all versions', ['tools/proofs/202609012150-all-versions.proof.mjs']],
+  ['data-contract parity', ['tools/proofs/202609012214-data-contract-parity.proof.mjs']],
   ['local CI (proofs, deep scan, stamps, cvaa)', ['tools/ci/202609012200-local-ci.mjs']],
 ];
+/* the step's own proofs run again, now against the composed tree: a proof
+   that reads current.json must see the generation it will ship with */
+for (const proof of [...(step.proofs || []), ...(step.postProofs || [])]) gates.push([`step proof after compose ${path.basename(proof)}`, [proof]]);
 for (const [name, args] of gates) {
   if (!fs.existsSync(path.join(ROOT, args[0]))) fail(`gate missing: ${args[0]}`);
   const r = run(process.execPath, args, { allowFail: true });
@@ -248,18 +282,28 @@ while (Date.now() < deadline) {
     process.stdout.write(`  live is ${c.generation}, waiting for ${generation}\r`);
   } catch (error) { process.stdout.write(`  live check: ${error.message}\r`); }
 }
+/* GitHub's own CI on the commit is a RECEIPT, not a witness: every workflow
+   run for this sha must have concluded, and concluded success. A missing or
+   unreadable API answer is recorded as such, never read as a pass. */
 let actions = null;
-try {
-  const runs = await (await fetch(`${API}/actions/runs?per_page=10&head_sha=${commit}`)).json();
-  actions = (runs.workflow_runs || []).map(r => ({ name: r.name, status: r.status, conclusion: r.conclusion, url: r.html_url }));
-} catch { /* the API is a witness, not a gate */ }
+const ciDeadline = Date.now() + 10 * 60 * 1000;
+while (Date.now() < ciDeadline) {
+  try {
+    const runs = await (await fetch(`${API}/actions/runs?per_page=10&head_sha=${commit}`, { cache: 'no-store' })).json();
+    actions = (runs.workflow_runs || []).map(r => ({ name: r.name, status: r.status, conclusion: r.conclusion, url: r.html_url }));
+    if (actions.length && actions.every(r => r.status === 'completed')) break;
+  } catch (error) { actions = { unreadable: error.message }; }
+  await new Promise(r => setTimeout(r, 30000));
+}
 entry.actions = actions;
+const ciGreen = Array.isArray(actions) && actions.length > 0 && actions.every(r => r.conclusion === 'success');
 entry.live = live;
 entry.generation = generation;
 entry.commit = commit;
 entry.finished_at = new Date().toISOString();
 if (!live) { entry.outcome = 'pushed-not-seen-live'; entry.reason = 'Pages did not serve the generation within 12 minutes'; record(entry); process.exit(1); }
 if (!live.cartridge_sha_matches) { entry.outcome = 'live-bytes-differ'; record(entry); process.exit(1); }
+if (!ciGreen) { entry.outcome = 'live-but-ci-not-green'; entry.reason = 'GitHub workflow runs for the commit did not all conclude success within 10 minutes'; record(entry); process.exit(1); }
 entry.outcome = 'live';
 record(entry);
 run('git', ['add', LOG], { quiet: true });

@@ -187,6 +187,51 @@
       "commit": "a219ad7a9db27a8971d0c1c3e7ee9e0a0e4e87c6",
       "finished_at": "2026-09-01T22:20:07.163Z",
       "outcome": "live"
+    },
+    {
+      "step": "202609012217-data-contract-parity.mjs",
+      "id": "data-contract-parity",
+      "version": "v9.70",
+      "started_at": "2026-09-01T22:20:42.729Z",
+      "dry": true,
+      "stages": [],
+      "outcome": "failed",
+      "reason": "origin/main has diverged from this worktree; a human merges, not the night shift",
+      "finished_at": "2026-09-01T22:20:43.388Z",
+      "head": "d04446d25052d6b46e17594a8b658d4a998f34c6",
+      "origin_main": "e25137134b6da601e2db670d1d7bac30f87ed232"
+    },
+    {
+      "step": "202609012217-data-contract-parity.mjs",
+      "id": "data-contract-parity",
+      "version": "v9.70",
+      "started_at": "2026-09-01T22:22:12.962Z",
+      "dry": true,
+      "stages": [
+        {
+          "name": "applied",
+          "at": "2026-09-01T22:22:13.690Z",
+          "changed": [
+            "atlas/current.json",
+            "atlas/parts/202609012045-sld-sandbox-body.js",
+            "tools/ci/202609012200-local-ci.mjs",
+            "atlas/modules/202609012217-source-registry.js",
+            "tools/proofs/202609012214-data-contract-parity.proof.mjs",
+            "tools/proofs/modules/202609012217-source-registry.proof.mjs"
+          ]
+        },
+        {
+          "name": "syntax checked",
+          "at": "2026-09-01T22:22:13.892Z"
+        },
+        {
+          "name": "step proof 202609012217-source-registry.proof.mjs",
+          "at": "2026-09-01T22:22:13.940Z",
+          "status": 0
+        }
+      ],
+      "outcome": "dry",
+      "finished_at": "2026-09-01T22:22:13.940Z"
     }
   ]
 }
