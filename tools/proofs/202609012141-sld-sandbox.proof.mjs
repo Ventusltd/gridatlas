@@ -750,10 +750,26 @@ check('every entry carries a generation, a version and a scope', (() => {
   return ledger.every(e => /^\d{12}$/.test(e.g) && /^v9\.\d+$/.test(e.v)
     && typeof e.s === 'string' && e.s.length > 0);
 })());
-check('generations are strictly increasing, as timestamps must be', (() => {
+/* Generations are clock readings and a clock only goes forward - when it
+   is read. On 1 Sep 2026 the stamps from 202609011751 to 202609012315 were
+   TYPED, up to four hours ahead of UTC; v9.67 is named 202609012250 and
+   was cut at 18:51 UTC. The generation after it was read from the clock
+   (recompose does this now) and so sorts before it. That single inversion
+   is recorded here by name, with its reason, and no other is tolerated:
+   an unrecorded step backwards is a typed stamp again. The version numbers
+   have no such excuse and must always increase. */
+const TYPED_AHEAD = Object.freeze({ '202609012250': 'v9.67, typed at 22:50, cut at 18:51 UTC' });
+check('versions are strictly increasing', (() => {
   const m = vl.match(/const VERSION_LEDGER = (\[[^\n]*\]);/);
   const ledger = JSON.parse(m[1]);
-  return ledger.every((e, i) => i === 0 || e.g > ledger[i - 1].g);
+  const minor = v => Number(v.slice(3));
+  return ledger.every((e, i) => i === 0 || minor(e.v) > minor(ledger[i - 1].v));
+})());
+check('generations are strictly increasing, except after the one stamp recorded as typed ahead', (() => {
+  const m = vl.match(/const VERSION_LEDGER = (\[[^\n]*\]);/);
+  const ledger = JSON.parse(m[1]);
+  return ledger.every((e, i) => i === 0 || e.g > ledger[i - 1].g
+    || Object.prototype.hasOwnProperty.call(TYPED_AHEAD, ledger[i - 1].g));
 })());
 check('the rollback doctrine is stated where the versions are',
   /never repaired in place, an earlier one is composed again/.test(vl.replace(/\s+/g, ' ')));
@@ -2172,10 +2188,19 @@ check('a terminally failed identity lane does not spend the popup budget',
 console.log('\nthe 400 kV public record\n');
 
 /* Bind to the public record or say nothing: DCO-scale schemes carry a
-   declared 400 kV point of connection, and the card now states it with its
-   source instead of implying the nearest 132 kV is the story. */
-check('the declared table binds register identities to named substations',
-  /const DECLARED_CONNECTIONS = Object\.freeze\(\{/.test(cartridgeSource)
+   declared 400 kV point of connection, and the card states it with its
+   source instead of implying the nearest 132 kV is the story.
+
+   Since generation 202609012128 the table is a MODULE in front of the
+   body (atlas/modules/202609012128-declared-connections.js), proven value
+   for value against the last cartridge that carried it inline. Here the
+   question is composition: the record is in the served bytes exactly once,
+   the body binds to it by name, and the card still says what it said. */
+const recordTables = (cartridgeSource.match(/const (DECLARED_CONNECTIONS|RECORDS) = Object\.freeze\(\{/g) || []).length;
+check('the served bytes carry the declared table exactly once', recordTables === 1,
+  `${recordTables} tables`);
+check('the table binds register identities to named substations',
+  /const RECORDS = Object\.freeze\(\{/.test(cartridgeSource)
   && ['10914','10916','9809','12281','14806','13599','9806','13644','11928']
     .every(ref => new RegExp(`'${ref}': \\{ (works|substation|poc_status|poc_kind): `).test(cartridgeSource)));
 check('every declared entry names its public source',
@@ -2183,9 +2208,20 @@ check('every declared entry names its public source',
   && /EN010131/.test(cartridgeSource) && /EN010142/.test(cartridgeSource)
   && /EN010159/.test(cartridgeSource) && /EN010151/.test(cartridgeSource)
   && /EN010123/.test(cartridgeSource));
-check('the resolver requires 400 kV at the named substation',
-  /s\.kv\[0\] >= 400\)/.test(cartridgeSource)
-  && /Array\.isArray\(s\.kv\)/.test(cartridgeSource));
+check('the body binds to the module by name or does not load',
+  /const DECLARED = \(window\.__GRIDATLAS_MODULES__ \|\| \{\}\)\.declaredConnections;/.test(cartridgeSource)
+  && /throw new Error\('sld-sandbox requires the declared-connections module'\)/.test(cartridgeSource));
+check('the body carries no resolver of its own, only delegations',
+  /return DECLARED\.provisional\(repdRef\);/.test(cartridgeSource)
+  && /return DECLARED\.resolve\(repdRef, origin, subs\);/.test(cartridgeSource)
+  && /return DECLARED\.nearestTransmission\(origin, subs\);/.test(cartridgeSource)
+  // Both 400 kV filters (resolve and nearestTransmission) are the module's;
+  // the body, which starts at its binding line, carries none.
+  && (cartridgeSource.match(/s\.kv\[0\] >= 400\)/g) || []).length === 2
+  && !/s\.kv\[0\] >= 400\)/.test(cartridgeSource.slice(cartridgeSource.indexOf('const DECLARED = '))));
+check('the module is composed in front of the body, after geodesy',
+  cartridgeSource.indexOf('gridatlas.module.declared-connections.v1') > cartridgeSource.indexOf('gridatlas.module.geodesy.v1')
+  && cartridgeSource.indexOf('gridatlas.module.declared-connections.v1') < cartridgeSource.indexOf('const DECLARED = '));
 check('a payload-absent substation is stated, not silently dropped',
   /not in the mapped payload, so no distance is measured/.test(cartridgeSource));
 check('the declared link draws in its own colour',
@@ -2198,7 +2234,7 @@ check('nearest 400 kV is measured for every project selection',
   /function nearestTransmission\(origin, subs\)/.test(cartridgeSource)
   && /currentNearest400 = nearestTransmission\(origin, subs\);/.test(cartridgeSource));
 check('substation works notes come from the fixed public table only',
-  /const SUBSTATION_WORKS = Object\.freeze\(\{/.test(cartridgeSource)
+  (cartridgeSource.match(/const SUBSTATION_WORKS = Object\.freeze\(\{/g) || []).length === 1
   && /Great Grid Upgrade, public record/.test(cartridgeSource));
 check('the card block says public record and cites the source',
   /Declared connection/.test(cartridgeSource)
@@ -2208,7 +2244,71 @@ check('selection state resets so one scheme never wears another\'s record',
   /currentDeclared = null;\n      currentNearest400 = null;/.test(cartridgeSource)
   && /currentRepdRef = null;\n    currentDeclared = null;/.test(cartridgeSource));
 check('no verdict language decorates the record',
-  !/STRONG|REMOTE|well.placed|ideal|advantage/.test(cartridgeSource.split('DECLARED_CONNECTIONS')[1].split('function resolveDeclaredConnection')[0]));
+  !/STRONG|REMOTE|well.placed|ideal|advantage/.test(
+    cartridgeSource.split('const RECORDS = Object.freeze({')[1].split('NS.declaredConnections = ')[0]));
+
+
+console.log('\nthe transmission network, on demand\n');
+
+/* The network-topology module was proven 47/47 at 202609012145 and
+   composed into nothing: on disk, in no served cartridge, listed by the
+   deep scan as alive. This generation wires it, and these checks are the
+   shape of the wiring: the module is in the bytes, the product is fetched
+   on first use and never at load, every state is visible to the source
+   registry, and both cards that name a substation ask the question. */
+check('the network-topology module is composed into the served bytes',
+  /gridatlas\.module\.network-topology\.v1/.test(cartridgeSource)
+  && cartridgeSource.indexOf('gridatlas.module.network-topology.v1') < cartridgeSource.indexOf('const DECLARED = '));
+check('the loader state lives on the window for the source registry',
+  /window\.__GRIDATLAS_TOPOLOGY__ = topology;/.test(cartridgeSource)
+  && /const topology = \{ state: 'idle'/.test(cartridgeSource));
+check('the product is named once, at data-grid-gb main, and is the v1 schema', (() => {
+  const urls = cartridgeSource.match(/gb-transmission-network\.v1\.json/g) || [];
+  return urls.length === 1
+    && /raw\.githubusercontent\.com\/Ventusltd\/data-grid-gb\/'\s*\n\s*\+ 'main\/derived\/gb-transmission-network\.v1\.json'/.test(cartridgeSource);
+})());
+check('it is fetched on first use, inside ensureTopology, and nowhere at load', (() => {
+  const at = cartridgeSource.indexOf('fetch(TOPOLOGY_PRODUCT)');
+  const fn = cartridgeSource.indexOf('function ensureTopology()');
+  const next = cartridgeSource.indexOf('\n  function ', fn + 10);
+  return at > fn && at < next
+    && (cartridgeSource.match(/fetch\(TOPOLOGY_PRODUCT\)/g) || []).length === 1
+    && !/ensureTopology\(\)\s*;?\s*\n/.test(cartridgeSource.slice(0, fn));
+})());
+check('the loader fails closed on a schema it does not accept',
+  /const index = module\.index\(product\);\s*\n\s*if \(!index\) \{/.test(cartridgeSource)
+  && /is not ' \+ module\.accepts \+ '; this cartridge answers nothing from it/.test(cartridgeSource));
+check('every failure is recorded by the named helper, never swallowed',
+  /noteFailure\('transmission network: ' \+ topology\.error\)/.test(cartridgeSource)
+  && /noteFailure\('topology block: '/.test(cartridgeSource));
+check('the project card asks about its declared substation',
+  /if \(networkName\) \{\s*\n\s*out \+= topologyBlockHtml\(\[\{ name: networkName, kv: connectionKv \}\]\);/.test(cartridgeSource));
+check('the scope card asks about its three nearest named substations',
+  /topologyBlockHtml\(result\.nearest_named\.slice\(0, 3\)\.map\(entry => \(\{ name: entry\.name, kv: entry\.kv \}\)\)\)/.test(cartridgeSource));
+check('blocks are placeholders filled in place, so no card holds another card',
+  /data-queries="\$\{attr\}"/.test(cartridgeSource)
+  && /document\.querySelectorAll\('\.' \+ TOPOLOGY_BLOCK\)\.forEach/.test(cartridgeSource)
+  && /ensureTopology\(\)\.then\(\(\) => fillTopologyBlocks\(\)\)/.test(cartridgeSource));
+check('the join is by name through the connection-points cartridge, and says so',
+  /point = network\.byName\(q\.name\)/.test(cartridgeSource)
+  && /Joined by name from <i>/.test(cartridgeSource)
+  && /to NESO site/.test(cartridgeSource));
+check('the voltage asked about is the voltage answered about',
+  /topology\.index\.at\(point\.site_code, kv != null \? \{ voltageKv: kv \} : undefined\)/.test(cartridgeSource));
+check('the block carries the module\'s not-an-assessment sentence and the attribution',
+  /module \? module\.not_an_assessment : ''/.test(cartridgeSource)
+  && /ETYS Appendix B via Ventusltd\/data-grid-gb/.test(cartridgeSource));
+check('absence is stated as absence, never inferred from', (() => {
+  const section = cartridgeSource.split('function topologyInnerHtml(queries)')[1]?.split('\n  }\n')[0] || '';
+  return /Nothing here is inferred from its absence/.test(section)
+    && /so nothing is stated about their circuits/.test(section)
+    && !/STRONG|REMOTE|well.placed|ideal|advantage|likely|headroom/i.test(section);
+})());
+check('the module is never asked at load: the boot path does not touch the loader', (() => {
+  const boot = cartridgeSource.indexOf('function topologyBlockHtml(queries)');
+  const before = cartridgeSource.slice(cartridgeSource.indexOf('const DECLARED = '), boot);
+  return !/ensureTopology\(\)/.test(before.replace(/function ensureTopology\(\)[\s\S]*?\n  \}\n/, ''));
+})());
 
 
 console.log('\nthe recovered ledger\n');
@@ -2308,7 +2408,8 @@ check('the card labels the state beside the public-record badge',
 check('a declared circuit connection draws no line and measures no distance',
   /'6557': \{ poc_kind: 'circuit'/.test(cartridgeSource)
   && /The point of connection is a circuit rather than a substation, so no line is drawn/.test(cartridgeSource)
-  && /if \(declared\.poc_kind === 'circuit'\) return provisionalDeclaredConnection\(repdRef\);/.test(cartridgeSource));
+  // The rule moved into the declared-connections module with the resolver.
+  && /if \(declared\.poc_kind === 'circuit'\) return provisional\(repdRef\);/.test(cartridgeSource));
 check('Little Crow names its circuit and its source',
   /Keadby \\u2013 Broughton \\u2013 Teed \\u2013 Scawby Brook overhead 132 kV line circuit/.test(cartridgeSource)
   && /EN010101, November 2020/.test(cartridgeSource));
@@ -2351,6 +2452,21 @@ check('the acceptance receipt names this generation\'s proofs',
   && !/420 checks/.test(manifest.acceptance.proof));
 check('the golden browser field is this generation\'s, not an inherited pending',
   manifest.acceptance.golden_browser_verification === 'PENDING_THIS_GENERATION');
+/* The stamp is a clock reading, and the manifest now records the clock
+   beside it. The two must agree to the minute, allowing the seconds the
+   cut itself took. A manifest without cut_at_utc is a manifest from the
+   days stamps were typed, and this generation is not one of them. */
+check('the manifest records the clock it was cut at, and the stamp agrees with it', (() => {
+  if (typeof manifest.cut_at_utc !== 'string') return false;
+  const cut = new Date(manifest.cut_at_utc);
+  if (Number.isNaN(cut.getTime())) return false;
+  const asStamp = cut.toISOString().replace(/[-:T]/g, '').slice(0, 12);
+  const minutes = (s) => Date.UTC(+s.slice(0, 4), +s.slice(4, 6) - 1, +s.slice(6, 8), +s.slice(8, 10), +s.slice(10, 12)) / 60000;
+  return Math.abs(minutes(asStamp) - minutes(GENERATION)) <= 5;
+})(), manifest.cut_at_utc || 'absent');
+check('the manifest chains by pointer, not by sort order',
+  manifest.parent_generation === CURRENT.previous_generation
+  && typeof manifest.parent_generation === 'string' && manifest.parent_generation.length === 12);
 
 check('the Subs control is looked up by its attribute first',
   /document\.querySelector\('input\[type=checkbox\]\[data-layer-id="subs"\]'\)/

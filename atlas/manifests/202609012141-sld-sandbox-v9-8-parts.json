@@ -1,0 +1,46 @@
+{
+ "schema": "gridatlas.cartridge-parts.v1",
+ "generation": "202609012141",
+ "cartridge": "./cartridges/202609012141-sld-sandbox-v9-8.js",
+ "sha256": "80de05760b2120dded5612eaa075977e6b27fbcc11a69740ca091577a8dfe2d8",
+ "bytes": 297093,
+ "assembled_from": [
+  {
+   "role": "module",
+   "path": "atlas/modules/202609011950-geodesy.js",
+   "bytes": 6296,
+   "sha256": "2c98d0be8a1c8f4da045a2050e4ae9d56c2c5d07cd2c261a0fbfbc3ac2238e4f"
+  },
+  {
+   "role": "module",
+   "path": "atlas/modules/202609012040-grid-scope.js",
+   "bytes": 6878,
+   "sha256": "a4f96c30c9240424be54af575ccb8090cbc05d1067c41b5ff7c1e51414544979"
+  },
+  {
+   "role": "module",
+   "path": "atlas/modules/202609012135-source-registry.js",
+   "bytes": 8292,
+   "sha256": "26514d7f048088a447f979ae6a81c17a39f31853387fc114972859de790ee6b0"
+  },
+  {
+   "role": "module",
+   "path": "atlas/modules/202609012128-declared-connections.js",
+   "bytes": 15127,
+   "sha256": "667d76a036ceedd7066bdb68f6f47fc73cd6b4e60c819f50b551e5d8c8aafeb0"
+  },
+  {
+   "role": "module",
+   "path": "atlas/modules/202609012145-network-topology.js",
+   "bytes": 11130,
+   "sha256": "f507eda397fa19923f35096220c159db780c56c6253e524a9b8b42296eeb5a9f"
+  },
+  {
+   "role": "part",
+   "path": "atlas/parts/202609012045-sld-sandbox-body.js",
+   "bytes": 248646,
+   "sha256": "d71be54c4a0d448004349ccda72bc7ac05eca4919eb31d2c0b6207d937072963"
+  }
+ ],
+ "rule": "edit a part and rebuild under a new generation; this file is not edited by hand"
+}
