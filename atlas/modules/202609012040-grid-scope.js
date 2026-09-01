@@ -73,7 +73,14 @@
     const within = [];
     for (const substation of substations || []) {
       if (!substation || !Array.isArray(substation.at)) continue;
-      const voltages = Array.isArray(substation.kv) ? substation.kv : [];
+      const voltages = (Array.isArray(substation.kv) ? substation.kv : [])
+        .filter(Number.isFinite);
+      /* Non-finite voltages are dropped BEFORE the maximum.
+         ----------------------------------------------------------------
+         Codex, 202609012055: Math.max over a NaN gives NaN, and NaN < floor
+         is false, so a substation whose voltage did not parse survived a
+         132 kV floor and was censused as though it qualified. A voltage
+         that is not a number is not a voltage above the floor. */
       const top = voltages.length ? Math.max(...voltages) : 0;
       if (top < minimumKv) continue;
       const km = geodesy.distanceKm(origin[0], origin[1],

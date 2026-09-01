@@ -130,6 +130,21 @@ check('32 kV, just below a class, is not rounded up',
   gridScope.classOf(32) === null);
 check('a fraction within tolerance still classifies',
   gridScope.classOf(400.4) === 400 && gridScope.classOf(131.6) === 132);
+check('the tolerance is a tolerance, not a bucket',
+  gridScope.classOf(399.6) === 400 && gridScope.classOf(399.4) === null
+  && gridScope.classOf(132.4) === 132 && gridScope.classOf(132.6) === null);
+check('an infinity classifies as nothing',
+  gridScope.classOf(Infinity) === null && gridScope.classOf(-Infinity) === null);
+check('a voltage that did not parse cannot pass a voltage floor', (() => {
+  /* Codex, 202609012055: Math.max over NaN is NaN, and NaN < 132 is
+     false, so an unparseable voltage used to survive the floor and be
+     censused as a 132 kV+ site. */
+  const censused = gridScope.scope(HOME, [
+    { name: 'Unparseable', at: at(0.01), kv: [NaN] },
+    { name: 'Real 400', at: at(0.012), kv: [400] }
+  ], { minimumKv: 132 });
+  return censused.nearest.length === 1 && censused.nearest[0].name === 'Real 400';
+})());
 check('nonsense classifies as nothing',
   gridScope.classOf(NaN) === null && gridScope.classOf(undefined) === null);
 check('an off-class site is counted as unclassified, not folded into a class', (() => {

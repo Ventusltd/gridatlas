@@ -1,5 +1,6 @@
 /**
- * Proof for the neon links + SLD layout sandbox cartridge, generation 202609012045.
+ * Proof for the neon links + SLD layout sandbox cartridge. The generation
+ * under test is read from this file's own name, never restated.
  *
  * No dependencies. The repository carries playwright and no DOM library, so
  * rather than add one this stubs the small surface the cartridge actually
@@ -26,13 +27,25 @@
 
 import { readFile } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
-import { dirname, join, resolve } from 'node:path';
+import { basename, dirname, join, resolve } from 'node:path';
 import vm from 'node:vm';
 
 const HERE = dirname(fileURLToPath(import.meta.url));
 const REPO = resolve(HERE, '..', '..');
+
+/* The generation is READ, never restated.
+   ------------------------------------------------------------------------
+   run-current.mjs resolves this file as `<generation>-sld-sandbox.proof.mjs`
+   from the generation in atlas/current.json, so the twelve digits in this
+   file's own name ARE the generation under test. Every generation cut by
+   hand tonight left one of these identity lines pointing at the generation
+   before it; deriving costs nothing and cannot drift. */
+const GENERATION = basename(fileURLToPath(import.meta.url)).slice(0, 12);
+const CURRENT = JSON.parse(
+  await readFile(join(REPO, 'atlas', 'current.json'), 'utf8'));
+const VERSION = CURRENT.composition_version;
 const CARTRIDGE = join(REPO, 'atlas', 'cartridges',
-  '202609012045-sld-sandbox-v9-8.js');
+  `${GENERATION}-sld-sandbox-v9-8.js`);
 const ORIGINAL = join(REPO, 'atlas', 'releases', '202608300453-atlas-v9',
   '202608292126-pre-snapped-config-adapter.js');
 const FINANCE_ORACLE = join(REPO, 'tools', 'proofs', 'fixtures',
@@ -2299,19 +2312,19 @@ console.log('\nthe manifest knows who it is, and the Subs control is found by it
 
 /* Codex pre-promotion findings, 202609011823. Both proven where they
    live: the manifest by reading it, the lookup by running it. */
-const manifestPath = join(REPO, 'atlas', 'manifests', '202609012045-composition.json');
+const manifestPath = join(REPO, 'atlas', 'manifests', `${GENERATION}-composition.json`);
 const manifestText = await readFile(manifestPath, 'utf8');
 const manifest = JSON.parse(manifestText);
 check('the manifest states this generation everywhere it states one',
-  manifest.generation === '202609012045' && manifest.version === 'v9.63'
-  && manifest.composition_version === 'v9.63'
+  manifest.generation === GENERATION && manifest.version === VERSION
+  && manifest.composition_version === VERSION
   // Derived from the generation under test, not restated: a hard-coded
   // identity here is the same drift this check exists to catch.
-  && manifest.composition_id === `${manifest.generation}-gridatlas-v9.63`);
+  && manifest.composition_id === `${manifest.generation}-gridatlas-${VERSION}`);
 check('no identity from an older composition survives anywhere in it',
   !/v9\.39|202609010106/.test(manifestText));
 check('the acceptance receipt names this generation\'s proofs',
-  manifest.acceptance.proof.includes('202609012045')
+  manifest.acceptance.proof.includes(GENERATION)
   && !/420 checks/.test(manifest.acceptance.proof));
 check('the golden browser field is this generation\'s, not an inherited pending',
   manifest.acceptance.golden_browser_verification === 'PENDING_THIS_GENERATION');
