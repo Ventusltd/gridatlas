@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Codex computation lab · 202609020010</title>
+  <link rel="stylesheet" href="./assets/lab.css">
+</head>
+<body>
+  <main>
+    <p class="stamp">CODEX COMPUTATION LAB · 202609020010</p>
+    <h1>Grid-click computation envelope</h1>
+    <p class="limit"><strong>Screening only.</strong> Published facts and
+      straight-line measurements are not solved power flow, available
+      headroom, queue position, a connection offer or a connection assessment.</p>
+    <form id="click-form">
+      <label>Longitude <input name="lon" inputmode="decimal" value="-0.6774547"></label>
+      <label>Latitude <input name="lat" inputmode="decimal" value="53.2926216"></label>
+      <label>REPD reference <input name="repd_ref" value="10916"></label>
+      <label>ETYS site code <input name="site_code" value="WBUR"></label>
+      <label>Connection voltage (kV) <input name="connection_kv" inputmode="numeric" value="400"></label>
+      <button type="submit">Build screening envelope</button>
+    </form>
+    <pre id="answer" aria-live="polite"></pre>
+    <p class="ownership">This immutable Codex route neither composes nor
+      promotes the shared GridAtlas application. Its assets are pinned by
+      <code>route-manifest.json</code>.</p>
+  </main>
+  <script src="./assets/lab.js"></script>
+</body>
+</html>

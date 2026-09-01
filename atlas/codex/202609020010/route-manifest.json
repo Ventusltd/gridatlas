@@ -1,0 +1,29 @@
+{
+  "schema": "gridatlas.codex-route-manifest.v1",
+  "generation": "202609020010",
+  "route": "/gridatlas/atlas/codex/202609020010/",
+  "owner": "codex",
+  "label": "CODEX COMPUTATION LAB",
+  "immutable": true,
+  "publication_mode": "add-only",
+  "shared_composition": false,
+  "limits": "Screening only; not solved power flow, available headroom, queue position, a connection offer or a connection assessment.",
+  "assets": [
+    {
+      "path": "index.html",
+      "sha256": "d36710972b8fd459c44afd6e20c68272c99df8342a7607cd3b3a48beead85081"
+    },
+    {
+      "path": "assets/lab.css",
+      "sha256": "6167ff032bd2d8d167894e413642a7bf8f9075cd0bc9aaa9485678c9ee3dc85e"
+    },
+    {
+      "path": "assets/lab.js",
+      "sha256": "d1fe03a8825ec04bb87c85cba5710f487e4b1ae517f1aed712cfab12633ef5df"
+    },
+    {
+      "path": "proof.mjs",
+      "sha256": "799c328dd920e20e2f660f57f98353779ba22732f2195ed06d546cd4a63c1c09"
+    }
+  ]
+}
