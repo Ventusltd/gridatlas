@@ -142,6 +142,40 @@ declaration (cite), or unverified. Deliver the unverified ones as a
 candidate list with the exact search terms that would settle each. This
 extends the nine known declarations without inventing a tenth.
 
+**WP4b — Validation, by holding declarations back.** The nine declared
+schemes in §3 are ground truth. Hold each out in turn: would your WP4
+method have surfaced the correct substation as its top candidate, from
+the data alone? Report recall (how many of the nine you recover), the
+rank of the true substation where you do not, and the failure modes.
+Then do the same for the worked case in WP7. This measures the candidate
+generator; it never authorises a claim.
+
+**WP7 — The customer substation, where it already exists on the map.**
+The consented schemes build their own substation, and once built it
+appears in OpenStreetMap, usually named after the scheme. Cleve Hill
+Solar Park (REPD 6502 solar 373 MW and 7856 BESS 150 MW, both
+operational, Kent) is the worked case, and its whole chain is already in
+the attached substation file:
+
+  Cleve Hill Solar Park Substation — 400 kV — 1.73 km from the project
+  Cleve Hill 400kV Substation (National Grid) — 0.21 km from that
+  (haversine, R = 6378.137 km; the National Grid substation was built for
+  the London Array offshore wind farm, and the DCO point of connection is
+  publicly stated to be that adjacent 400 kV substation)
+
+Census this across the whole register: for how many REPD identities does
+the substation file contain a substation whose name matches the project
+name (define your matching rule, report precision by inspecting a
+sample), and what is the distance distribution of those matches? Where
+both a name-matched substation and a nearby National Grid substation
+exist, report the **two-hop chain** — project → its own substation →
+transmission substation — as three measurements.
+
+This is a measurement over public map data, not an inference: "a
+substation named after this scheme is mapped 1.73 km away" is a fact
+about the map. Do not upgrade it into a claim that the scheme connects
+there; say what is mapped and what would confirm it.
+
 **WP5 — Coordinate provenance and its limits.** Assess how the
 coordinates behave: are they site centroids, postcode centroids, or
 mixed? Test for tell-tales (many projects sharing an identical point;
@@ -161,7 +195,19 @@ WP4). Register facts and public corporate statements only.
    limits stated in the same breath as each finding.
 2. **A machine-readable table** of the WP3 measurements (one row per
    `repd_ref`, distances and nearest names) and **a candidate table** from
-   WP4 with a verification column.
+   WP4/WP7. The candidate table must use exactly these columns, because a
+   downstream renderer consumes it:
+
+   `repd_ref, project_name, technology, capacity_mw, substation_name,
+   substation_kv, distance_km, own_substation_name, own_substation_km,
+   evidence_class, source, search_terms`
+
+   where `evidence_class` is one of `PUBLICLY_DECLARED` (with `source`
+   naming the Order or PINS document), `MAPPED_OWN_SUBSTATION` (a
+   name-matched substation exists on the map; source is the map), or
+   `UNVERIFIED_CANDIDATE` (proximity or clustering only — `source` empty,
+   `search_terms` filled with what would settle it). Never leave
+   `evidence_class` blank and never invent a `source`.
 3. **The code**, complete and runnable against the two attached files,
    producing every number in the report.
 4. **A limits section**: what a reader must not conclude from this study.
@@ -181,6 +227,12 @@ WP4). Register facts and public corporate statements only.
   and you report how many records the ≥400 kV filter selected.
 - Anything you could not determine is written down as such, not smoothed
   over.
+- No row in the candidate table carries a `source` unless that source
+  genuinely says what the row claims. A proximity result is never
+  promoted to a declaration, however convincing the geometry looks. This
+  is the single failure that would discredit the whole study, because a
+  reader cannot tell a measured guess from a cited fact once they are in
+  the same column.
 
 Start with WP1 and show me the register anatomy before going further, so
 we can agree the ground before the analysis is built on it.
