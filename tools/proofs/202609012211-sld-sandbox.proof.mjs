@@ -1899,7 +1899,7 @@ check('every numeric finance input rejects negative values',
 check('efficiency and probability are capped at one hundred percent',
   /key === 'bess_eff' \|\| key === 'dev_success' \? ' max="100"'/.test(cartridgeSource));
 check('the central OPEX basis is the corrected inverter nameplate only in central mode',
-  /\(stats\?\.mode \|\| sld\.inputs\.mode\) === 'central'/.test(cartridgeSource)
+  /\(stats\?\.mode \|\| \(context && context\.fallbackMode\)\) === 'central'/.test(cartridgeSource)
   && /stats\?\.consistency\?\.inverter_ac_mw/.test(cartridgeSource)
   && /centralInverterAc > 0 \? centralInverterAc : financeNumber\(stats\?\.ac_mw\)/.test(cartridgeSource));
 check('the executable original development-stage labels are retained',
