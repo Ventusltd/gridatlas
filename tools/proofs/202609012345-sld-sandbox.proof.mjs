@@ -2749,6 +2749,33 @@ check('both new surfaces are published for review',
   /window\.__GRIDATLAS_POINT_QUERY__ = pointQuery;/.test(cartridgeSource)
   && /window\.__GRIDATLAS_DASH__ = \{/.test(cartridgeSource));
 
+console.log('\nwhat is published as planned, kept apart from what exists\n');
+
+check('the planned-change module is in the served cartridge',
+  /gridatlas\.module\.planned-change/.test(cartridgeSource));
+check('the parsed product is kept so the module can read it',
+  /topology\.parsedProduct = product;/.test(cartridgeSource));
+check('a missing product is an absence, not a guess',
+  /if \(!mod \|\| !topology\.parsedProduct\) return null;/.test(cartridgeSource));
+check('planned rows are reported in their OWN sentence, not in the circuit counts',
+  /<b>Published as planned:<\/b>/.test(cartridgeSource));
+/* The sentence is concatenated across two template literals, so the
+   phrase never appears contiguously in the source. Pin both halves. */
+check('the page says a planned row is not a circuit today',
+  /None of them is a /.test(cartridgeSource)
+  && /circuit today, a commitment/.test(cartridgeSource));
+check('the page refuses commitment, consent and connection-date readings',
+  /a commitment, a consent, or a connection date/.test(cartridgeSource));
+check('planned rows are stated as excluded from the counts above',
+  /none is counted among the circuits above/.test(cartridgeSource));
+check('the planned state is published for review',
+  /window\.__GRIDATLAS_PLANNED__ = plannedState;/.test(cartridgeSource));
+check('nothing in the planned sentence grades what it found', (() => {
+  const at = cartridgeSource.indexOf('Published as planned:');
+  const section = cartridgeSource.slice(Math.max(0, at - 1200), at + 1200);
+  return !/STRONG|REMOTE|well.placed|ideal|advantage|headroom/i.test(section);
+})());
+
 console.log(`\n${passed}/${passed + failures.length} checks passed`);
 if (failures.length) {
   console.error('\nFAILURES');
