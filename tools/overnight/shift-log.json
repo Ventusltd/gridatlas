@@ -747,6 +747,28 @@
       "commit": "d22bc51dd168c6f35b63f72c61a642550fdf64ca",
       "finished_at": "2026-09-01T22:51:47.578Z",
       "outcome": "live"
+    },
+    {
+      "step": "202609012320-injection-response.mjs",
+      "id": "injection-response",
+      "version": "v9.73",
+      "started_at": "2026-09-01T23:06:03.363Z",
+      "dry": false,
+      "stages": [
+        {
+          "name": "applied",
+          "at": "2026-09-01T23:06:04.183Z",
+          "changed": [
+            "atlas/parts/202609012045-sld-sandbox-body.js",
+            "tools/ci/202609012200-local-ci.mjs",
+            "tools/proofs/202609012249-sld-sandbox.proof.mjs"
+          ]
+        }
+      ],
+      "outcome": "failed",
+      "reason": "node --check tools/proofs/202609012249-sld-sandbox.proof.mjs",
+      "finished_at": "2026-09-01T23:06:04.318Z",
+      "output": "C:\\Users\\vikra\\OneDrive\\Documents\\GitHub\\gridatlas\\tools\\proofs\\202609012249-sld-sandbox.proof.mjs:2672\r\n  /topology.nodes400 = (product.nodes/.test(cartridgeSource));\r\n  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\r\n\r\nSyntaxError: Invalid regular expression: /topology.nodes400 = (product.nodes/: Unterminated group\r\n    at checkSyntax (node:internal/main/check_syntax:72:5)\r\n\r\nNode.js v24.19.0\r\n"
     }
   ]
 }
