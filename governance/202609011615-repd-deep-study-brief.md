@@ -163,10 +163,26 @@ the attached substation file:
   the London Array offshore wind farm, and the DCO point of connection is
   publicly stated to be that adjacent 400 kV substation)
 
-Census this across the whole register: for how many REPD identities does
-the substation file contain a substation whose name matches the project
-name (define your matching rule, report precision by inspecting a
-sample), and what is the distance distribution of those matches? Where
+A crude feasibility probe has already been run, so do not spend the study
+establishing that the signal exists — spend it making the signal
+trustworthy. The probe (token-subset name matching, noise words stripped,
+25 km cap) found 1,254 REPD identities with a name-matched substation, of
+which 198 are ≥50 MW and 191 matched a substation at ≥400 kV, with many
+matches under 200 m: Harker Moss BESS 360 MW → Harker Substation 400 kV
+at 0.15 km; Penwortham 57 MW → Penwortham Substation 400 kV at 0.20 km;
+Richborough Energy Park Phase 2 → Richborough 400 kV at 0.10 km. That rule
+was written in minutes and its precision is unmeasured.
+
+Your job on this package is therefore three things the probe did not do.
+(1) **Precision**: inspect a stratified sample by hand, report the false
+positive rate, and tune the rule — token-subset matching will pair
+unrelated schemes that share a place name. (2) **Classification**: the
+probe conflates two different relationships, and they mean different
+things. Type A, the project is named after an existing substation it sits
+beside (a battery at Harker); Type B, the substation is named after the
+project, which is the scheme's own customer substation (Cleve Hill).
+Separate them, count each, and say how you tell them apart. (3) The
+distance distribution of each type. Where
 both a name-matched substation and a nearby National Grid substation
 exist, report the **two-hop chain** — project → its own substation →
 transmission substation — as three measurements.
