@@ -1,7 +1,7 @@
 {
   "schema": "gridatlas.current.v2",
-  "generation": "202608312324",
-  "previous_generation": "202608312321",
+  "generation": "202609010021",
+  "previous_generation": "202608312324",
   "architecture": "IMMUTABLE_SHELL_PLUS_HASHED_CARTRIDGES",
   "live_route": "/gridatlas/atlas/",
   "release_id": "202608300453-atlas-v9",
@@ -58,13 +58,13 @@
     },
     {
       "id": "sld-sandbox",
-      "generation": "202608312324",
-      "version": "v9.34",
+      "generation": "202609010021",
+      "version": "v9.35",
       "type": "script",
       "slot": "replace-script",
       "replace_script": "202608292126-pre-snapped-config-adapter.js",
-      "path": "./cartridges/202608312324-sld-sandbox-v9-8.js",
-      "sha256": "3d4711f8deda97fe6ef6d6e2798fe664c21ece918306dcea49e108d9bcdec6ff",
+      "path": "./cartridges/202609010021-sld-sandbox-v9-8.js",
+      "sha256": "9ecfabf53d577c35e60399cdd656061f7058d3af96304a8047d2881752167b16",
       "capabilities": [
         "pre-snapped-config-adapter-carried-forward",
         "project-or-substation-selection",
@@ -127,7 +127,12 @@
         "three-named-capacity-ratios",
         "dash-written-only-when-it-changes",
         "voltage-unit-from-the-property-not-the-magnitude",
-        "no-source-dereferenced-unchecked"
+        "no-source-dereferenced-unchecked",
+        "pointer-events-for-card-and-panel",
+        "touch-drag-array-rotation-and-route",
+        "phone-portrait-and-landscape-bounded",
+        "44px-primary-touch-controls",
+        "array-inverter-and-export-ratios-rendered-separately"
       ],
       "immutable_shell_modified": false,
       "supersedes_shell_script": {
@@ -189,7 +194,7 @@
         "problem": "REPD's figure is nominally MWelec but schemes report it as AC export and as DC MWp, and the register does not carry the distinction",
         "handling": "nothing is fitted until the user declares the basis; the unstated case shows a red notice rather than a default",
         "why_it_matters": "matching AC when the figure was DC oversizes the connection by the DC/AC ratio, which drives export limitation, curtailment and the size of the offer",
-        "fit": "only the block count moves - ring main circuits in string mode, rings in central; ratings, string length and module choice are untouched, and the residual is reported"
+        "fit": "two integer topology counts move - circuits and skids per circuit in string mode, rings and MV skids per ring in central; ratings, string length and module choice are untouched, and the residual is reported"
       },
       "project_pin": {
         "shape": "a hollow ring around the site, toggled from the card",
@@ -318,6 +323,19 @@
         "why": "addSource throws if the style is not loaded and a failed source reads back as null; both are reachable now that the cartridge boots on the style rather than a painted frame",
         "was": "the pin was guarded when this was found and five call sites were not - the ones drawing the links, the nodes and the layout - so the convenience would have survived while the substance threw",
         "now": "one guard, five call sites, a missing source costs the drawing only"
+      },
+      "mobile_pointer": {
+        "problem": "the project card, layout panel, array, rotation handle and cable route vertices all advertised dragging but began only on mousedown; a touch screen could open the sandbox and could not operate it",
+        "dom_fix": "Pointer Events with pointer capture on the card and panel handles; no document-wide move listeners are recreated when the panel redraws",
+        "map_fix": "MapLibre touchstart, touchmove and touchend share the mouse drag path; interrupted pointers release the drag, and map gestures are restored only if they were enabled before it",
+        "containment": "the whole card width is clamped to the map, the panel is bounded by top and bottom, short landscape controls scroll, search results are viewport bounded, and primary panel controls are 44 CSS pixels",
+        "source_viewports": ["390x844", "414x896", "844x390"],
+        "live_acceptance": "PENDING_CLAUDE"
+      },
+      "ratio_rendering": {
+        "problem": "the arithmetic kept array DC, inverter AC and export MVA separate but the visible panel relabelled array divided by export as DC/AC and graded it against a usual range",
+        "now": "the panel names array DC, inverter AC and export limit separately; design DC/AC, DC/export and inverter/export are three distinct rows",
+        "mismatch": "entered and derived DC/AC remain visible without rewriting inputs or declaring the design good, bad, close or remote"
       }
     }
   ],
@@ -363,15 +381,15 @@
       "result_class": "LOCATION_ONLY"
     }
   },
-  "composition_manifest": "./manifests/202608312324-composition.json",
+  "composition_manifest": "./manifests/202609010021-composition.json",
   "scope_closure": {
-    "generation": "202608312324",
+    "generation": "202609010021",
     "status": "DONE",
-    "scope": "GridAtlas v9.34 guard every source dereference",
+    "scope": "GridAtlas v9.35 make layout touch-operable and name electrical ratios",
     "schedule_retired": true
   },
-  "composition_version": "v9.34",
-  "composition_id": "202608312324-gridatlas-v9.34",
+  "composition_version": "v9.35",
+  "composition_id": "202609010021-gridatlas-v9.35",
   "transport": {
     "response_contract": "HEADERS_BEFORE_PARQUET_BODY",
     "engine_timeout_seconds": 15,

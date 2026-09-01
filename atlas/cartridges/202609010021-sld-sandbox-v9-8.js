@@ -1,7 +1,7 @@
 /**
  * GridAtlas cartridge — neon substation links and the SLD layout sandbox.
  *
- * Generation 202608312324 (UTC), composition v9.34. Slot: replace-script for
+ * Generation 202609010021 (UTC), composition v9.35. Slot: replace-script for
  * 202608292126-pre-snapped-config-adapter.js.
  *
  * WHAT IT DOES
@@ -61,7 +61,7 @@
 (() => {
   'use strict';
 
-  const GENERATION = '202608312324';
+  const GENERATION = '202609010021';
 
   /* ══════════════════════════════════════════════════════════════════════
      PART 1 — the pre-snapped config adapter, carried forward unchanged.
@@ -553,7 +553,7 @@
 .gridatlas-card-bar{position:sticky;top:-6px;z-index:2;flex:0 0 auto;
   display:flex;align-items:center;gap:6px;margin:-6px -6px 6px;
   padding:5px 6px;background:#0a1a1d;border-bottom:1px solid #1d3238;
-  border-radius:3px 3px 0 0;cursor:grab;user-select:none;font-family:monospace}
+  border-radius:3px 3px 0 0;cursor:grab;user-select:none;touch-action:none;font-family:monospace}
 .gridatlas-card-bar:active{cursor:grabbing}
 .gridatlas-card-bar .grip{color:#3f6f75;letter-spacing:2px;font-size:11px}
 .gridatlas-card-bar .label{color:#8b9aa1;font-size:10px;max-width:190px;overflow:hidden;
@@ -561,7 +561,7 @@
 .maplibregl-popup.gridatlas-min .gridatlas-card-bar .label{color:#5fbdc2;font-weight:bold;max-width:230px}
 .gridatlas-card-bar .spacer{flex:1}
 .gridatlas-card-bar button{background:#050a0d;border:1px solid #2f6f75;color:#5fbdc2;
-  font:inherit;font-size:12px;line-height:1;min-width:26px;height:22px;border-radius:3px;
+  font:inherit;font-size:14px;line-height:1;min-width:44px;height:44px;border-radius:3px;
   cursor:pointer;padding:0 6px}
 .gridatlas-card-bar button:hover{color:#bfe9ee;border-color:#5fbdc2;background:#0d2429}
 .gridatlas-card-bar button.close:hover{color:#ff8f8f;border-color:#ff5d5d}
@@ -575,7 +575,20 @@
   border-radius:3px;background:#08171a}
 .maplibregl-popup.gridatlas-min .gridatlas-card-bar button.min{border-color:#5fbdc2;color:#bfe9ee}
 .${BLOCK_CLASS} .neon-caveat{margin-top:6px;color:#68797f;font-size:9px;line-height:1.5}
-.${BLOCK_CLASS} .neon-caveat b{color:#8b9aa1;font-weight:bold}`;
+.${BLOCK_CLASS} .neon-caveat b{color:#8b9aa1;font-weight:bold}
+/* The immutable shell predates phone-landscape use. These are composition
+   overrides, not a mutation of the attested shell: the left control stack can
+   scroll inside a short map, and search results cannot extend below it. */
+@media (max-height:600px){
+  .map-controls{max-height:min(70%,calc(100dvh - 100px));overflow-y:auto;
+    overscroll-behavior:contain;scrollbar-width:thin}
+  .search-results{max-height:calc(100dvh - 140px) !important}
+}
+@media (pointer:coarse){
+  .map-ctrl-btn,.search-btn{min-height:44px}
+  .search-input{min-height:44px;box-sizing:border-box}
+  .${BLOCK_CLASS} .neon-pin,.${BLOCK_CLASS} .neon-layout{min-height:44px}
+}`;
     document.head.appendChild(style);
   }
 
@@ -842,29 +855,46 @@
     // explicit left/top beats MapLibre's transform, which it rewrites on every
     // map move; without that the card would snap back the moment you panned.
     let dragging = null;
-    bar.addEventListener('mousedown', (event) => {
+    bar.addEventListener('pointerdown', (event) => {
       if (event.target.closest('button')) return;
       event.stopPropagation();
       event.preventDefault();
       const rect = popup.getBoundingClientRect();
-      dragging = { dx: event.clientX - rect.left, dy: event.clientY - rect.top };
+      dragging = {
+        pointerId: event.pointerId,
+        dx: event.clientX - rect.left,
+        dy: event.clientY - rect.top,
+      };
+      bar.setPointerCapture?.(event.pointerId);
       popup.classList.add('gridatlas-free');
       popup.style.setProperty('--gx', rect.left + 'px');
       popup.style.setProperty('--gy', rect.top + 'px');
     });
     const move = (event) => {
-      if (!dragging) return;
-      const x = Math.max(4, Math.min(window.innerWidth - 60, event.clientX - dragging.dx));
-      const y = Math.max(4, Math.min(window.innerHeight - 40, event.clientY - dragging.dy));
+      if (!dragging || event.pointerId !== dragging.pointerId) return;
+      event.preventDefault();
+      const map = capturedMap?.getContainer()?.getBoundingClientRect()
+        || { left: 0, top: 0, right: window.innerWidth, bottom: window.innerHeight };
+      const card = popup.getBoundingClientRect();
+      const minX = map.left + 4;
+      const maxX = Math.max(minX, map.right - card.width - 4);
+      const minY = map.top + 4;
+      // Keep the whole width and at least the 44px drag bar inside the map.
+      const maxY = Math.max(minY, map.bottom - Math.min(44, Math.max(1, card.height)) - 4);
+      const x = Math.max(minX, Math.min(maxX, event.clientX - dragging.dx));
+      const y = Math.max(minY, Math.min(maxY, event.clientY - dragging.dy));
       popup.style.setProperty('--gx', x + 'px');
       popup.style.setProperty('--gy', y + 'px');
     };
-    const up = () => {
+    const up = (event) => {
+      if (!dragging || event.pointerId !== dragging.pointerId) return;
+      try { bar.releasePointerCapture?.(event.pointerId); } catch (_) { /* already released */ }
       if (dragging) requestAnimationFrame(boundCardToMap);
       dragging = null;
     };
-    document.addEventListener('mousemove', move);
-    document.addEventListener('mouseup', up);
+    bar.addEventListener('pointermove', move);
+    bar.addEventListener('pointerup', up);
+    bar.addEventListener('pointercancel', up);
   }
 
   /* A second project gets a second card, not the first one's shape.
@@ -2397,10 +2427,8 @@
        the transformer is a deliberate choice, not an arithmetic fault. The
        panel states the number and what it means; it does not grade it. */
     if (Number.isFinite(designRatio) && designRatio < 1) {
-      notes.push('The array is smaller than the inverter nameplate feeding it, '
-        + 'a DC/AC of ' + designRatio.toFixed(2) + '. That is unusual for solar '
-        + 'and is worth checking against the module and string counts, which '
-        + 'are what decide it.');
+      notes.push('Array DC divided by inverter AC is ' + designRatio.toFixed(2)
+        + ' from the module, string and inverter counts shown.');
     }
     // The stated ratio is an instruction. If the hardware does not honour it,
     // the hardware is what will be built.
@@ -2408,7 +2436,7 @@
         && statedRatio > 0 && Math.abs(designRatio - statedRatio) / statedRatio > 0.05) {
       notes.push('Stated DC/AC ' + statedRatio.toFixed(2) + ', but the module '
         + 'and inverter counts give ' + designRatio.toFixed(2)
-        + '. The counts decide what gets built.');
+        + '. The model displays both and does not rewrite either input.');
     }
     // The transformers, not the inverters, set the export.
     if (Number.isFinite(inverterAcMw) && Number.isFinite(skidAcMva)
@@ -2417,8 +2445,8 @@
       notes.push('Inverters total ' + inverterAcMw.toFixed(1) + ' MW against '
         + skidAcMva.toFixed(1) + ' MVA of skid transformer, a ratio of '
         + (headroomRatio || 0).toFixed(2) + '. Export is set by the '
-        + 'transformers, not the inverters. Oversizing here is a normal design '
-        + 'choice; verify the export limit in the connection agreement.');
+        + 'lower nameplate in this screening model. The connection agreement '
+        + 'and electrical design determine the applicable export constraint.');
     }
     return {
       dc_mwp: stats.dc_mwp,
@@ -2892,24 +2920,32 @@
       canvas.style.cursor = hits.length ? 'grab' : '';
     });
 
-    map.on('mousedown', (event) => {
-      if (!sld.active || fromOwnUi(event)) return;
+    const beginDrag = (event) => {
+      if (!sld.active || sld.dragging || fromOwnUi(event)) return;
       const layers = grabbable.filter(id => map.getLayer(id));
       if (!layers.length) return;
       const hits = map.queryRenderedFeatures(event.point, { layers });
       if (!hits.length) return;
       const kind = hits[0].properties?.kind;
-      if (kind === 'handle') sld.dragging = { what: 'rotate' };
-      else if (kind === 'pin') sld.dragging = { what: 'pin', index: Number(hits[0].properties.index) };
-      else if (kind === 'boundary') sld.dragging = { what: 'array' };
+      let nextDrag = null;
+      if (kind === 'handle') nextDrag = { what: 'rotate' };
+      else if (kind === 'pin') nextDrag = { what: 'pin', index: Number(hits[0].properties.index) };
+      else if (kind === 'boundary') nextDrag = { what: 'array' };
       else return;
+      nextDrag.dragPanWasEnabled = map.dragPan.isEnabled?.() !== false;
+      nextDrag.touchWasEnabled = map.touchZoomRotate?.isEnabled?.() !== false;
+      sld.dragging = nextDrag;
       event.preventDefault();
       map.dragPan.disable();
+      map.touchZoomRotate?.disable();
       canvas.style.cursor = 'grabbing';
-    });
+    };
+    map.on('mousedown', beginDrag);
+    map.on('touchstart', beginDrag);
 
-    map.on('mousemove', (event) => {
+    const moveDrag = (event) => {
       if (!sld.dragging) return;
+      event.preventDefault();
       const at = [event.lngLat.lng, event.lngLat.lat];
       if (sld.dragging.what === 'array') {
         sld.arrayCentre = at;
@@ -2920,16 +2956,22 @@
         sld.routePins[sld.dragging.index] = at;
       }
       redrawSld(map);
-    });
+    };
+    map.on('mousemove', moveDrag);
+    map.on('touchmove', moveDrag);
 
     const release = () => {
       if (!sld.dragging) return;
+      const finished = sld.dragging;
       sld.dragging = null;
-      map.dragPan.enable();
+      if (finished.dragPanWasEnabled) map.dragPan.enable();
+      if (finished.touchWasEnabled) map.touchZoomRotate?.enable();
       canvas.style.cursor = '';
     };
     map.on('mouseup', release);
+    map.on('touchend', release);
     map.on('mouseout', release);
+    canvas.addEventListener?.('pointercancel', release);
 
     // Click the cable to insert a vertex where you clicked; double-click a
     // vertex to remove it. No modes, no commit step.
@@ -2977,8 +3019,8 @@
    the map container on the right, so the panel clears it at 112px. Both offsets
    were measured on the live map: no headless test catches a collision with a
    component the panel knows nothing about. */
-#${PANEL_ID}{position:absolute;right:14px;top:112px;z-index:11;width:310px;
-  max-height:calc(100% - 28px);overflow:auto;font:11px/1.5 'Courier New',monospace;
+#${PANEL_ID}{position:absolute;right:14px;top:112px;bottom:14px;z-index:11;width:310px;
+  max-width:calc(100% - 28px);box-sizing:border-box;overflow:auto;font:11px/1.5 'Courier New',monospace;
   color:#cfe9ee;background:rgba(2,8,11,.93);border:1px solid #0b5f63;border-radius:5px;
   padding:11px 12px;box-shadow:0 0 22px rgba(0,255,255,.14);backdrop-filter:blur(3px);display:none}
 #${PANEL_ID}[data-open="true"]{display:block}
@@ -2988,12 +3030,12 @@
   color:#e0b050;border:1px solid #6a5320}
 #${PANEL_ID} .sld-site{color:#fff;font-size:12px;font-weight:bold;margin:2px 0 8px;
   overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-#${PANEL_ID} h4.sld-drag{cursor:grab;user-select:none}
+#${PANEL_ID} h4.sld-drag{cursor:grab;user-select:none;touch-action:none}
 #${PANEL_ID} h4.sld-drag:active{cursor:grabbing}
 #${PANEL_ID} .sld-min{margin-left:auto}
 #${PANEL_ID} .sld-min,#${PANEL_ID} .sld-close{cursor:pointer;background:#050a0d;
   border:1px solid #2f6f75;color:#5fbdc2;font:inherit;font-size:12px;line-height:1;
-  min-width:24px;height:20px;border-radius:3px;padding:0 5px}
+  min-width:44px;height:44px;border-radius:3px;padding:0 5px}
 #${PANEL_ID} .sld-min:hover{color:#bfe9ee;border-color:#5fbdc2}
 #${PANEL_ID} .sld-close:hover{color:#ff8f8f;border-color:#ff5d5d}
 #${PANEL_ID}[data-min="true"] > *:not(h4){display:none}
@@ -3014,7 +3056,8 @@
 #${PANEL_ID} .sld-fitted{margin-top:6px;color:#8b9aa1;font-size:9px;line-height:1.5}
 #${PANEL_ID} .sld-fitted b{color:#6fb582}
 #${PANEL_ID} .sld-fitted b.sld-off{color:#ff5d5d}
-#${PANEL_ID} .sld-ratio-warn{margin-top:6px;color:#ff5d5d;font-size:9px;line-height:1.5}
+#${PANEL_ID} .sld-ratio-note{margin-top:6px;color:#d9b45f;font-size:9px;line-height:1.5;
+  border-left:2px solid #8b6c28;padding-left:6px}
 #${PANEL_ID} .sld-tabs{display:flex;gap:5px;margin-bottom:8px}
 #${PANEL_ID} .sld-tabs button{flex:1;background:#050a0d;border:1px solid #1d3238;color:#7f939a;
   font:inherit;font-size:9px;padding:4px;cursor:pointer;border-radius:3px;text-transform:uppercase}
@@ -3033,7 +3076,10 @@
   color:#68797f;font-size:9px;line-height:1.5}
 #${PANEL_ID} .sld-caveat b{color:#8b9aa1}
 #${PANEL_ID} .sld-hint{margin-top:6px;color:#5f7a80;font-size:9px;line-height:1.45}
-@media (max-width:700px){#${PANEL_ID}{width:auto;left:14px;right:14px;top:96px}}`;
+@media (max-width:700px){#${PANEL_ID}{width:auto;left:8px;right:8px;top:96px;bottom:8px}}
+@media (pointer:coarse){
+  #${PANEL_ID} .sld-tabs button,#${PANEL_ID} input,#${PANEL_ID} select{min-height:44px}
+}`;
     document.head.appendChild(style);
   }
 
@@ -3114,9 +3160,17 @@
         ).join('')}
       </div>
       <div class="sld-out">
-        <span>DC capacity</span><b>${s ? s.dc_mwp.toFixed(1) : '0.0'} MWp</b>
-        <span>AC capacity</span><b>${s ? s.ac_mw.toFixed(1) : '0.0'} MW</b>
-        <span>DC/AC</span><b>${s ? s.dc_ac_ratio.toFixed(2) : '0.00'}</b>
+        <span>Array DC</span><b>${s ? s.dc_mwp.toFixed(1) : '0.0'} MWp</b>
+        <span>Inverter AC</span><b>${s?.consistency?.inverter_ac_mw != null
+          ? s.consistency.inverter_ac_mw.toFixed(1) : '0.0'} MW</b>
+        <span>Export limit</span><b>${s?.consistency?.export_mva != null
+          ? s.consistency.export_mva.toFixed(1) : '0.0'} MVA</b>
+        <span>Design DC/AC</span><b>${s?.consistency?.design_dc_ac != null
+          ? s.consistency.design_dc_ac.toFixed(2) : '0.00'}</b>
+        <span>DC / export</span><b>${s?.consistency?.export_dc_ac != null
+          ? s.consistency.export_dc_ac.toFixed(2) : '0.00'}</b>
+        <span>Inverter / export</span><b>${s?.consistency?.inverter_to_export != null
+          ? s.consistency.inverter_to_export.toFixed(2) : '0.00'}</b>
         <span>Modules</span><b>${s ? s.module_count.toLocaleString('en-GB') : '0'}</b>
         <span>Blocks</span><b>${s ? s.total_blocks : 0}</b>
         <span>Gross site</span><b>${acres.toFixed(0)} acres</b>
@@ -3128,16 +3182,12 @@
         <span>Rotation</span><b>${normBearing(sld.rotationDeg).toFixed(0)}&deg;</b>
       </div>
       ${(() => {
-        if (!s || !(s.dc_ac_ratio > 0)) return '';
-        const r = s.dc_ac_ratio;
-        // Outside roughly 1.0 to 1.6 the layout is describing something that
-        // does not behave like a UK utility-scale scheme, and the connection
-        // consequences differ, so it is called out rather than printed flat.
-        if (r >= 1.0 && r <= 1.6) return '';
-        const why = r < 1.0
-          ? 'DC below AC: the inverters are larger than the array can ever feed, so the connection is sized for power that will not arrive.'
-          : 'DC well above AC: heavy clipping, and the export limit rather than the array decides the energy. Verify the offer, the export limitation scheme and the curtailment assumptions.';
-        return `<div class="sld-ratio-warn">DC/AC ${r.toFixed(2)} is outside the usual 1.0 to 1.6. ${why}</div>`;
+        const c = s?.consistency;
+        if (!(c?.stated_dc_ac > 0) || !(c?.design_dc_ac > 0)) return '';
+        if (Math.abs(c.design_dc_ac - c.stated_dc_ac) / c.stated_dc_ac <= 0.05) return '';
+        return `<div class="sld-ratio-note">Entered DC/AC ${c.stated_dc_ac.toFixed(2)}; `
+          + `the equipment counts and ratings shown give ${c.design_dc_ac.toFixed(2)}. `
+          + `Both values remain visible and no input is changed automatically.</div>`;
       })()}
       ${s && s.warning ? `<div class="sld-warn">${escapeHtml(s.warning)}</div>` : ''}
       <div class="sld-hint">Drag the site to move it. Drag the handle to rotate. Click the
@@ -3167,21 +3217,46 @@
     if (heading && !heading.dataset.bound) {
       heading.dataset.bound = '1';
       let drag = null;
-      heading.addEventListener('mousedown', (event) => {
+      heading.addEventListener('pointerdown', (event) => {
         if (event.target.closest('button')) return;
         event.preventDefault();
         const rect = el.getBoundingClientRect();
-        drag = { dx: event.clientX - rect.left, dy: event.clientY - rect.top };
+        drag = {
+          pointerId: event.pointerId,
+          dx: event.clientX - rect.left,
+          dy: event.clientY - rect.top,
+        };
+        heading.setPointerCapture?.(event.pointerId);
         el.style.right = 'auto';
+        el.style.bottom = 'auto';
         el.style.left = rect.left + 'px';
         el.style.top = rect.top + 'px';
+        const map = capturedMap?.getContainer()?.getBoundingClientRect();
+        if (map) el.style.maxHeight = Math.max(120, map.bottom - rect.top - 8) + 'px';
       });
-      document.addEventListener('mousemove', (event) => {
-        if (!drag) return;
-        el.style.left = Math.max(4, Math.min(window.innerWidth - 80, event.clientX - drag.dx)) + 'px';
-        el.style.top = Math.max(4, Math.min(window.innerHeight - 40, event.clientY - drag.dy)) + 'px';
+      heading.addEventListener('pointermove', (event) => {
+        if (!drag || event.pointerId !== drag.pointerId) return;
+        event.preventDefault();
+        const map = capturedMap?.getContainer()?.getBoundingClientRect()
+          || { left: 0, top: 0, right: window.innerWidth, bottom: window.innerHeight };
+        const panel = el.getBoundingClientRect();
+        const minX = map.left + 4;
+        const maxX = Math.max(minX, map.right - panel.width - 4);
+        const minY = map.top + 4;
+        const maxY = Math.max(minY, map.bottom - 44 - 4);
+        const left = Math.max(minX, Math.min(maxX, event.clientX - drag.dx));
+        const top = Math.max(minY, Math.min(maxY, event.clientY - drag.dy));
+        el.style.left = left + 'px';
+        el.style.top = top + 'px';
+        el.style.maxHeight = Math.max(120, map.bottom - top - 8) + 'px';
       });
-      document.addEventListener('mouseup', () => { drag = null; });
+      const finish = (event) => {
+        if (!drag || event.pointerId !== drag.pointerId) return;
+        try { heading.releasePointerCapture?.(event.pointerId); } catch (_) { /* already released */ }
+        drag = null;
+      };
+      heading.addEventListener('pointerup', finish);
+      heading.addEventListener('pointercancel', finish);
     }
     (el.querySelectorAll?.('.sld-tabs button') || []).forEach(button => {
       button.addEventListener('click', () => {

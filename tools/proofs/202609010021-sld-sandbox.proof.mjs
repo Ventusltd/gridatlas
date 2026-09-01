@@ -1,5 +1,5 @@
 /**
- * Proof for the neon links + SLD layout sandbox cartridge, generation 202608312324.
+ * Proof for the neon links + SLD layout sandbox cartridge, generation 202609010021.
  *
  * No dependencies. The repository carries playwright and no DOM library, so
  * rather than add one this stubs the small surface the cartridge actually
@@ -32,7 +32,7 @@ import vm from 'node:vm';
 const HERE = dirname(fileURLToPath(import.meta.url));
 const REPO = resolve(HERE, '..', '..');
 const CARTRIDGE = join(REPO, 'atlas', 'cartridges',
-  '202608312324-sld-sandbox-v9-8.js');
+  '202609010021-sld-sandbox-v9-8.js');
 const ORIGINAL = join(REPO, 'atlas', 'releases', '202608300453-atlas-v9',
   '202608292126-pre-snapped-config-adapter.js');
 
@@ -1423,10 +1423,25 @@ check('it names export limitation and curtailment',
   /export\s*limitation/i.test(j) && /curtailment/i.test(j));
 check('the basis is a user choice, not an assumption',
   /id="sld_basis"/.test(src) && /AC export MW/.test(src) && /DC MWp/.test(src));
-check('an out-of-range DC\/AC ratio is called out in red',
-  /sld-ratio-warn/.test(src) && /outside the usual 1\.0 to 1\.6/.test(src));
-check('the ratio warning explains both directions',
-  /inverters are larger than the array/i.test(j) && /heavy clipping/i.test(j));
+check('the panel names array, inverter and export quantities separately',
+  /<span>Array DC<\/span>/.test(src)
+  && /<span>Inverter AC<\/span>/.test(src)
+  && /<span>Export limit<\/span>/.test(src));
+check('the panel names all three ratios instead of collapsing them into DC\/AC',
+  /<span>Design DC\/AC<\/span>/.test(src)
+  && /<span>DC \/ export<\/span>/.test(src)
+  && /<span>Inverter \/ export<\/span>/.test(src));
+check('a stated-to-derived mismatch is descriptive and does not rewrite inputs',
+  /class="sld-ratio-note"/.test(src)
+  && /equipment counts and ratings shown give/.test(src)
+  && /no input is changed automatically/.test(src));
+check('the panel no longer grades a ratio against a usual range',
+  !/outside the usual 1\.0 to 1\.6/.test(src)
+  && !/does not behave like a UK utility-scale scheme/.test(src));
+check('the below-one note is arithmetic rather than a design verdict',
+  /Array DC divided by inverter AC/.test(src)
+  && !/unusual for solar/.test(src)
+  && !/normal design choice/.test(src));
 
 check('a click on our own card never reaches the map',
   /function fromOwnUi/.test(code) && /maplibregl-popup/.test(code)
@@ -1442,7 +1457,8 @@ check('and the loaded case still says none in range',
 
 check('the card gets a grab bar', /gridatlas-card-bar/.test(code) && /function addCardBar/.test(code));
 check('with a minimise and a close big enough to hit',
-  /class="min"/.test(code) && /class="close"/.test(code) && /min-width:26px/.test(src));
+  /class="min"/.test(code) && /class="close"/.test(code)
+  && /gridatlas-card-bar button\{[\s\S]{0,220}min-width:44px;height:44px/.test(src));
 check('dragging frees the card from its anchor',
   /gridatlas-free/.test(code) && /position:fixed !important/.test(src));
 check('a freed card does not snap back on pan',
@@ -1601,6 +1617,59 @@ check('and the DC/AC ratio is still the derived one', (() => {
 // proof must not depend on one. Drain, then count.
 await new Promise(resolve => setTimeout(resolve, 0));
 await new Promise(resolve => setImmediate(resolve));
+
+/* ── phone-first pointer and containment contract ────────────────────────
+   The original sandbox advertised move/rotate/route editing, but every drag
+   began with mousedown. A phone could click the layout button and then could
+   not use the layout it opened. Pointer capture is used for DOM panels so a
+   drag can leave the narrow handle without being lost; MapLibre receives its
+   native touch events for map features. The short-viewport CSS is injected by
+   the cartridge because the attested shell is intentionally immutable. */
+const mobile = cartridgeSource;
+check('the project card starts one pointer interaction for mouse, pen and touch',
+  /bar\.addEventListener\('pointerdown',/.test(mobile)
+  && !/bar\.addEventListener\('mousedown',/.test(mobile));
+check('the project card captures and releases the active pointer',
+  /bar\.setPointerCapture\?\.\(event\.pointerId\)/.test(mobile)
+  && /bar\.releasePointerCapture\?\.\(event\.pointerId\)/.test(mobile));
+check('the project card handles pointer cancellation',
+  /bar\.addEventListener\('pointercancel', up\)/.test(mobile));
+check('the project card clamp measures the map and full card width',
+  /const card = popup\.getBoundingClientRect\(\)/.test(mobile)
+  && /map\.right - card\.width - 4/.test(mobile)
+  && !/window\.innerWidth - 60/.test(mobile));
+check('the layout panel uses pointer capture without document listener accumulation',
+  /heading\.addEventListener\('pointerdown',/.test(mobile)
+  && /heading\.setPointerCapture\?\.\(event\.pointerId\)/.test(mobile)
+  && !/document\.addEventListener\('mousemove'/.test(mobile));
+check('the layout panel handles pointer completion and cancellation',
+  /heading\.addEventListener\('pointerup', finish\)/.test(mobile)
+  && /heading\.addEventListener\('pointercancel', finish\)/.test(mobile));
+check('the array, rotation handle and route pins accept native touch drag',
+  /map\.on\('touchstart', beginDrag\)/.test(mobile)
+  && /map\.on\('touchmove', moveDrag\)/.test(mobile)
+  && /map\.on\('touchend', release\)/.test(mobile));
+check('an interrupted map touch releases the drag state',
+  /canvas\.addEventListener\?\.\('pointercancel', release\)/.test(mobile));
+check('map gestures are restored only when they were enabled before the edit',
+  /dragPanWasEnabled/.test(mobile) && /touchWasEnabled/.test(mobile)
+  && /if \(finished\.dragPanWasEnabled\) map\.dragPan\.enable\(\)/.test(mobile));
+check('the layout panel is bounded by top and bottom rather than an overflowing height',
+  /#\$\{PANEL_ID\}\{position:absolute;right:14px;top:112px;bottom:14px/.test(mobile)
+  && !/max-height:calc\(100% - 28px\)/.test(mobile));
+check('both panel control pairs are 44px phone targets',
+  /gridatlas-card-bar button\{[\s\S]{0,220}min-width:44px;height:44px/.test(mobile)
+  && /sld-min,#\$\{PANEL_ID\} \.sld-close\{[\s\S]{0,240}min-width:44px;height:44px/.test(mobile));
+check('both drag handles suppress browser touch scrolling during capture',
+  /gridatlas-card-bar\{[\s\S]{0,260}touch-action:none/.test(mobile)
+  && /h4\.sld-drag\{[^}]*touch-action:none/.test(mobile));
+check('the 844 by 390 control stack scrolls inside the short viewport',
+  /@media \(max-height:600px\)\{[\s\S]{0,260}\.map-controls\{[^}]*max-height:[^}]*overflow-y:auto/.test(mobile));
+check('the 844 by 390 search result list is viewport bounded',
+  /@media \(max-height:600px\)\{[\s\S]{0,420}\.search-results\{max-height:calc\(100dvh - 140px\)/.test(mobile));
+check('coarse pointers enlarge shell and sandbox controls',
+  /@media \(pointer:coarse\)\{[\s\S]*?\.map-ctrl-btn,\.search-btn\{min-height:44px\}/.test(mobile)
+  && /sld-tabs button,#\$\{PANEL_ID\} input,#\$\{PANEL_ID\} select\{min-height:44px\}/.test(mobile));
 
 console.log(`\n${passed}/${passed + failures.length} checks passed`);
 if (failures.length) {

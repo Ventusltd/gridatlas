@@ -33,6 +33,10 @@ function px(declarations, property) {
 
 function audit(cartridge, baseCss, shellHtml) {
   const findings = [];
+  // The live page is the immutable shell plus the cartridge's injected CSS.
+  // A phone repair is allowed to override the attested shell; auditing the
+  // shell alone would keep reporting a defect the composed page no longer has.
+  const composedCss = `${baseCss}\n${cartridge}`;
 
   const mouseOnlySurfaces = [
     ["project card", /bar\.addEventListener\(['"]mousedown['"]/, /bar\.addEventListener\(['"](?:pointerdown|touchstart)['"]/],
@@ -67,22 +71,22 @@ function audit(cartridge, baseCss, shellHtml) {
   for (const [name, block] of [["card minimise/close", cardButton], ["layout minimise/close", panelButtons]]) {
     const width = px(block, "min-width");
     const height = px(block, "height");
-    if ((Number.isFinite(width) && width < 24) || (Number.isFinite(height) && height < 24)) {
+    if ((Number.isFinite(width) && width < 44) || (Number.isFinite(height) && height < 44)) {
       smallTargets.push({ name, min_width_px: width, height_px: height });
     }
   }
   if (smallTargets.length) {
     findings.push({
-      code: "TOUCH_TARGET_BELOW_24PX",
-      detail: "primary panel controls are smaller than even a 24 CSS px compact touch target",
+      code: "TOUCH_TARGET_BELOW_44PX",
+      detail: "primary panel controls are smaller than the 44 CSS px phone target",
       targets: smallTargets,
     });
   }
 
-  const controls = cssBlock(baseCss, ".map-controls");
+  const controls = cssBlock(composedCss, ".map-controls");
   const controlCount = (shellHtml.match(/class="map-ctrl-btn"/g) || []).length;
-  const shortQueryAt = baseCss.search(/@media\s*\(max-height\s*:\s*600px\)/);
-  const shortRules = shortQueryAt >= 0 ? baseCss.slice(shortQueryAt) : "";
+  const shortQueryAt = composedCss.search(/@media\s*\(max-height\s*:\s*600px\)/);
+  const shortRules = shortQueryAt >= 0 ? composedCss.slice(shortQueryAt) : "";
   if (controlCount >= 6 && !/max-height|overflow-y|flex-wrap/.test(controls)
       && !/\.map-controls\s*\{[^}]*?(?:max-height|overflow-y|flex-wrap)/s.test(shortRules)) {
     findings.push({
@@ -92,11 +96,11 @@ function audit(cartridge, baseCss, shellHtml) {
     });
   }
 
-  const wrapper = cssBlock(baseCss, ".search-bar-wrapper");
-  const results = cssBlock(baseCss, ".search-results");
+  const wrapper = cssBlock(composedCss, ".search-bar-wrapper");
+  const results = cssBlock(composedCss, ".search-results");
   const searchBottom = px(wrapper, "top") + px(results, "top") + px(results, "max-height");
   if (Number.isFinite(searchBottom)
-      && !/@media\s*\(max-height\s*:\s*600px\)[\s\S]*?\.search-results\s*\{/.test(baseCss)) {
+      && !/@media\s*\(max-height\s*:\s*600px\)[\s\S]*?\.search-results\s*\{/.test(composedCss)) {
     findings.push({
       code: "LANDSCAPE_SEARCH_RESULTS_UNBOUNDED",
       detail: `the fixed search dropdown can extend ${searchBottom}px from the map top and has no short-height override; the map container clips overflow`,
