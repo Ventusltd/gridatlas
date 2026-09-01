@@ -467,6 +467,124 @@
       "outcome": "failed",
       "reason": "apply: atlas/modules/202609012217-source-registry.js: anchor found 0 times (registry names the successor topology module)",
       "finished_at": "2026-09-01T22:42:44.998Z"
+    },
+    {
+      "step": "202609012245-electrical-distance.mjs",
+      "id": "electrical-distance",
+      "version": "v9.71",
+      "started_at": "2026-09-01T22:43:07.045Z",
+      "dry": false,
+      "stages": [
+        {
+          "name": "tooling committed",
+          "at": "2026-09-01T22:43:07.777Z",
+          "commit": "806213b"
+        },
+        {
+          "name": "applied",
+          "at": "2026-09-01T22:43:07.889Z",
+          "changed": [
+            "atlas/parts/202609012045-sld-sandbox-body.js",
+            "tools/ci/202609012200-local-ci.mjs",
+            "tools/proofs/202609012234-sld-sandbox.proof.mjs",
+            "atlas/modules/202609012245-electrical-distance.js",
+            "atlas/modules/202609012245-network-topology.js",
+            "tools/proofs/modules/202609012245-electrical-distance.proof.mjs"
+          ]
+        },
+        {
+          "name": "syntax checked",
+          "at": "2026-09-01T22:43:08.143Z"
+        },
+        {
+          "name": "step proof 202609012245-electrical-distance.proof.mjs",
+          "at": "2026-09-01T22:43:08.332Z",
+          "status": 0
+        },
+        {
+          "name": "composed",
+          "at": "2026-09-01T22:43:08.583Z",
+          "generation": "202609012243",
+          "version": "v9.71",
+          "previous": "202609012234"
+        },
+        {
+          "name": "gate sandbox proof",
+          "at": "2026-09-01T22:43:09.243Z",
+          "status": 0
+        },
+        {
+          "name": "gate run-current",
+          "at": "2026-09-01T22:43:10.211Z",
+          "status": 0
+        },
+        {
+          "name": "gate parts integrity",
+          "at": "2026-09-01T22:43:10.294Z",
+          "status": 0
+        },
+        {
+          "name": "gate all versions",
+          "at": "2026-09-01T22:43:10.452Z",
+          "status": 0
+        },
+        {
+          "name": "gate data-contract parity",
+          "at": "2026-09-01T22:43:10.504Z",
+          "status": 0
+        },
+        {
+          "name": "gate local CI (proofs, deep scan, stamps, cvaa)",
+          "at": "2026-09-01T22:43:38.392Z",
+          "status": 0
+        },
+        {
+          "name": "gate step proof after compose 202609012245-electrical-distance.proof.mjs",
+          "at": "2026-09-01T22:43:38.576Z",
+          "status": 0
+        },
+        {
+          "name": "committed",
+          "at": "2026-09-01T22:43:38.735Z",
+          "commit": "dfc6722",
+          "subject_stamp": "202609012243",
+          "clock_at_commit": "202609012243"
+        },
+        {
+          "name": "pushed",
+          "at": "2026-09-01T22:43:41.064Z"
+        }
+      ],
+      "actions": [
+        {
+          "name": "202608312212 GridAtlas cartridge proof",
+          "status": "completed",
+          "conclusion": "success",
+          "url": "https://github.com/Ventusltd/gridatlas/actions/runs/33567692718"
+        },
+        {
+          "name": "202608310050 GridAtlas next-version builders",
+          "status": "completed",
+          "conclusion": "success",
+          "url": "https://github.com/Ventusltd/gridatlas/actions/runs/33567692757"
+        },
+        {
+          "name": "pages build and deployment",
+          "status": "completed",
+          "conclusion": "success",
+          "url": "https://github.com/Ventusltd/gridatlas/actions/runs/33567691428"
+        }
+      ],
+      "live": {
+        "generation": "202609012243",
+        "version": "v9.71",
+        "cartridge_sha_matches": true,
+        "at": "2026-09-01T22:44:21.892Z"
+      },
+      "generation": "202609012243",
+      "commit": "dfc6722657893e6a1eff09664d3fc6286c55e7e4",
+      "finished_at": "2026-09-01T22:45:22.580Z",
+      "outcome": "live"
     }
   ]
 }
