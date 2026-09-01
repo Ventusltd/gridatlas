@@ -1,0 +1,15 @@
+{
+  "schema": "gridatlas.codex-mirror.v1",
+  "requested_identity": "202609011941",
+  "baseline_composition": "202609012155-gridatlas-v9.66",
+  "baseline_commit": "4c7ad98",
+  "branch": "codex/202609012230-map-click-consumer",
+  "purpose": "Independent Codex mirror for comparison with Claude-built versions; it does not replace the strictly increasing live composition.",
+  "artifacts": [
+    "tools/ci/202609012240-estate-deep-scan.mjs",
+    "governance/202609012240-estate-deep-scan.json",
+    "governance/202609012240-estate-deep-scan.md",
+    "tools/proofs/202609012240-estate-deep-scan.proof.mjs",
+    "atlas/modules/202609012230-map-click-network.js"
+  ]
+}
