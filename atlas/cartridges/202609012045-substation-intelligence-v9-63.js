@@ -1,5 +1,5 @@
 /**
- * GridAtlas substation intelligence, generation 202609012020 (UTC), composition v9.62.
+ * GridAtlas substation intelligence, generation 202609012045 (UTC), composition v9.63.
  * Slot: replace-script for ventus-corev8engine.js.
  *
  * PART 1 is the V8 engine, carried forward VERBATIM - every byte of the
@@ -1470,10 +1470,10 @@ window.initVentusMap = function({ config, center, zoom }) {
 (() => {
   'use strict';
 
-  const GENERATION = '202609012020';
+  const GENERATION = '202609012045';
   const PRODUCT = 'https://raw.githubusercontent.com/Ventusltd/data-grid-gb/'
-    + 'main/derived/connection-points.v2.json';
-  const REQUIRED_SCHEMA = 'data-grid-gb.connection-points.v2';
+    + 'main/derived/connection-points.v3.json';
+  const REQUIRED_SCHEMA = 'data-grid-gb.connection-points.v3';
   /* Appendix D publishes eight current metrics and they are NOT
      interchangeable, so one is quoted and named rather than any of them
      being called "the fault level".
@@ -1574,9 +1574,20 @@ window.initVentusMap = function({ config, center, zoom }) {
   /* One line a card can print, built only from what is published, or null
      when nothing is. An empty sentence about a substation is worse than
      silence. */
-  state.summarise = (name) => {
+  /* connectionKv is the voltage the connection is actually made at: the
+     declared point of connection's class, or the class of the substation
+     being measured to. Given one, the fault current is quoted at THAT
+     busbar group rather than across the site.
+
+     An outside review put the reason plainly: fault duty at a 400 kV
+     busbar and at a 132 kV busbar are different physical quantities
+     governing different switchgear, so a range spanning both is
+     meaningless to the engineer reading it - and the more correctly the
+     metric is named, the more readily the eye trusts it. */
+  state.summarise = (name, options) => {
     const point = state.byName(name);
     if (!point) return null;
+    const connectionKv = options && Number(options.connectionKv);
     const parts = [];
     if (point.circuits) {
       parts.push(point.circuits + (point.circuits === 1 ? ' circuit' : ' circuits'));
@@ -1584,16 +1595,41 @@ window.initVentusMap = function({ config, center, zoom }) {
     if (point.transformers) parts.push(point.transformers + ' transformers');
     const rating = point.circuit_winter_rating_mva;
     if (rating) {
-      parts.push('circuit winter ratings ' + rating.min.toLocaleString('en-GB')
+      /* The product does not split ratings by voltage, and a site with
+         several voltages will show a range no single circuit could span -
+         Blackhillock publishes 23 to 1,995 MVA. So it is marked site-wide
+         wherever it appears, rather than sitting beside a bus-specific
+         fault figure as though it shared its scope. */
+      parts.push('circuit winter ratings across the site '
+        + rating.min.toLocaleString('en-GB')
         + '\u2013' + rating.max.toLocaleString('en-GB') + ' MVA');
     }
-    const peak = point.fault_current?.peak;
+    /* Prefer the busbar group the connection is made at. Fall back to the
+       site-wide envelope only when the voltage is unknown or the product
+       does not publish that group, and say which was used either way. */
+    const byVoltage = point.fault_current_by_voltage || null;
+    let peak = point.fault_current?.peak || null;
+    let faultScope = 'site';
+    let faultKv = null;
+    if (Number.isFinite(connectionKv) && byVoltage) {
+      const key = Object.keys(byVoltage)
+        .find(k => Math.abs(Number(k) - connectionKv) < 0.5);
+      if (key && byVoltage[key]?.peak) {
+        peak = byVoltage[key].peak;
+        faultScope = 'bus';
+        faultKv = Number(key);
+      }
+    }
     const metric = peak?.metrics?.[QUOTED_METRIC];
     if (metric) {
       parts.push(QUOTED_METRIC_LABEL + ' ' + metric.min.toFixed(1) + '\u2013'
-        + metric.max.toFixed(1) + ' ' + metric.unit + ' across '
-        + peak.scenarios + ' peak-demand rows'
-        + (peak.locations?.length ? ' at ' + peak.locations.length + ' buses' : '')
+        + metric.max.toFixed(1) + ' ' + metric.unit
+        + (faultScope === 'bus'
+          ? ' at the ' + faultKv + ' kV busbars'
+          : ' across every busbar at this site')
+        + ' over ' + peak.scenarios + ' peak-demand rows'
+        + (peak.locations?.length ? ' at ' + peak.locations.length
+          + (peak.locations.length === 1 ? ' bus' : ' buses') : '')
         + (peak.winters?.length
           ? ' (' + peak.winters[0] + ' to ' + peak.winters[peak.winters.length - 1] + ')'
           : ''));
@@ -1614,6 +1650,9 @@ window.initVentusMap = function({ config, center, zoom }) {
        400 kV result. West Burton is exactly this case: WBUR1 is 132 kV
        and WBUR4 is 400 kV, and its published fault range spans both. */
     const voltages = point.voltages_kv || [];
+    /* Site-wide is now about what remains site-wide. Once the fault
+       current is quoted at a busbar group, the label must not claim the
+       whole sentence is site-wide - only the parts that still are. */
     const siteWide = voltages.length > 1;
     const busLocations = point.fault_current?.peak?.locations || [];
     return {
@@ -1622,12 +1661,19 @@ window.initVentusMap = function({ config, center, zoom }) {
       voltages_kv: voltages,
       site_wide: siteWide,
       bus_locations: busLocations,
-      scope_label: siteWide
-        ? ('Site-wide published envelope across the '
-           + voltages.slice().sort((a, b) => b - a).join('/') + ' kV buses at this site, '
-           + 'not a value for any one bus')
-        : ('Published for this site, which carries one voltage: '
-           + (voltages[0] || '?') + ' kV'),
+      fault_scope: faultScope,
+      fault_kv: faultKv,
+      scope_label: faultScope === 'bus'
+        ? ('Fault current is quoted at the ' + faultKv + ' kV busbars, the '
+           + 'voltage this connection is made at. Circuit counts, ratings, '
+           + 'transformers and planned changes remain site-wide across the '
+           + voltages.slice().sort((a, b) => b - a).join('/') + ' kV buses here')
+        : (siteWide
+          ? ('Site-wide published envelope across the '
+             + voltages.slice().sort((a, b) => b - a).join('/') + ' kV buses at this site, '
+             + 'not a value for any one bus')
+          : ('Published for this site, which carries one voltage: '
+             + (voltages[0] || '?') + ' kV')),
       sentence: parts.join(' \u00b7 '),
       metric_named: QUOTED_METRIC_LABEL,
       metrics_not_interchangeable: 'Appendix D publishes eight current '

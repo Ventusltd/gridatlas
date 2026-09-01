@@ -1,5 +1,5 @@
 /**
- * Proof for the substation intelligence cartridge, generation 202609012020.
+ * Proof for the substation intelligence cartridge, generation 202609012045.
  *
  * The first check here is the one whose absence took the Atlas down on
  * v9.57: every composed cartridge's slot must be a script the shell
@@ -16,7 +16,7 @@ const REPO = resolve(HERE, '..', '..');
 const CURRENT = JSON.parse(await readFile(join(REPO, 'atlas', 'current.json'), 'utf8'));
 const RELEASE = join(REPO, 'atlas', 'releases', CURRENT.shell.release_id);
 const CARTRIDGE = join(REPO, 'atlas', 'cartridges',
-  '202609012020-substation-intelligence-v9-62.js');
+  '202609012045-substation-intelligence-v9-63.js');
 
 const bridgeRejections = [];
 process.on('unhandledRejection', (reason) => {
@@ -57,9 +57,9 @@ check('the intelligence runs after it, not inside it',
 console.log('\nthe product contract\n');
 check('it reads the data repository product',
   /Ventusltd\/data-grid-gb\//.test(source)
-  && /derived\/connection-points\.v2\.json/.test(source));
-check('it requires the v2 schema it was written against',
-  /const REQUIRED_SCHEMA = 'data-grid-gb\.connection-points\.v2';/.test(source));
+  && /derived\/connection-points\.v3\.json/.test(source));
+check('it requires the v3 schema it was written against',
+  /const REQUIRED_SCHEMA = 'data-grid-gb\.connection-points\.v3';/.test(source));
 check('it revalidates rather than pinning first sight',
   /fetch\(PRODUCT, \{ cache: 'no-cache' \}\)/.test(source));
 check('one earth radius, the estate\'s own',
@@ -84,15 +84,19 @@ check('no grading language in anything the file can emit', (() => {
 
 console.log('\nit runs, and answers only from the product\n');
 const product = {
-  schema: 'data-grid-gb.connection-points.v2',
+  schema: 'data-grid-gb.connection-points.v3',
   counts: { connection_points: 1, with_location: 1 },
   connection_points: [{
     site_code: 'COTT', name: 'COTTAM', transmission_owner: 'NGET',
     voltages_kv: [400], circuits: 8, transformers: 0,
     circuit_winter_rating_mva: { min: 2780, max: 3326 },
     fault_current: { peak: { scenarios: 10, winters: ['2025/26', '2033/34'],
+      locations: ['COTT4 M1', 'COTT4 M3'],
       metrics: { three_phase_rms_break_current_ka: { min: 38.13, max: 50.61, unit: 'kA' },
                  three_phase_initial_peak_current_ka: { min: 102, max: 136, unit: 'kA' } } } },
+    fault_current_by_voltage: { '400': { peak: { scenarios: 10,
+      winters: ['2025/26', '2033/34'], locations: ['COTT4 M1', 'COTT4 M3'],
+      metrics: { three_phase_rms_break_current_ka: { min: 38.13, max: 50.61, unit: 'kA' } } } } },
     reactive_compensation: { units: 2 },
     planned_changes: 17, planned_change_years: ['2028', '2031'],
     location: { lat: 53.3, lon: -0.78, matched_by: 'exact_name' }
@@ -158,9 +162,29 @@ check('the breaker-duty overclaim is gone',
   && /one published /.test(source) && /breaker-duty metric/.test(source)
   && /several relevant /.test(source));
 check('the bus count travels with the fault range',
-  /peak\.locations\?\.length \? ' at ' \+ peak\.locations\.length \+ ' buses'/.test(source));
+  // v9.63 singularises one bus, so the count and its noun are on two lines.
+  /peak\.locations\?\.length \? ' at ' \+ peak\.locations\.length/.test(source)
+  && /\? ' bus' : ' buses'/.test(source));
 check('the unverified location join is declared',
   /state\.location_join_is_unverified = true;/.test(source));
+
+
+console.log('\nthe fault current is quoted at the connection voltage\n');
+
+check('the consumer requires the v3 product',
+  /const REQUIRED_SCHEMA = 'data-grid-gb\.connection-points\.v3';/.test(source)
+  && /derived\/connection-points\.v3\.json/.test(source));
+check('it reads the per-voltage split when a connection voltage is given',
+  /point\.fault_current_by_voltage/.test(source)
+  && /faultScope = 'bus'/.test(source));
+check('it says which busbars the number belongs to',
+  /' at the ' \+ faultKv \+ ' kV busbars'/.test(source));
+check('the site-wide fallback names itself as such',
+  /' across every busbar at this site'/.test(source));
+check('ratings are labelled site-wide, because the product does not split them',
+  /circuit winter ratings across the site/.test(source));
+check('the label explains what remains site-wide when the fault is bus-scoped',
+  /remain site-wide across the/.test(source));
 
 console.log(`\n${passed}/${passed + failures.length} checks passed`);
 if (bridgeRejections.length) {

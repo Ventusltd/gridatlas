@@ -26,7 +26,7 @@
  * shell file forward unchanged is a promise the manifest has to keep.
  */
 
-import { readFile, writeFile, access, mkdir } from 'node:fs/promises';
+import { readFile, writeFile, access, mkdir, rm } from 'node:fs/promises';
 import { constants } from 'node:fs';
 import { createHash } from 'node:crypto';
 import { dirname, join, resolve, relative } from 'node:path';
@@ -116,8 +116,6 @@ try {
   process.exit(1);
 } catch { /* absent, which is what we want */ }
 
-await writeFile(outputPath, assembled, 'utf8');
-
 const manifest = {
   schema: 'gridatlas.cartridge-parts.v1',
   generation,
@@ -127,9 +125,32 @@ const manifest = {
   assembled_from: record,
   rule: 'edit a part and rebuild under a new generation; this file is not edited by hand'
 };
+const manifestPath = join(REPO, 'atlas', 'manifests', `${generation}-${name}-parts.json`);
+
+/* Both files or neither.
+   ------------------------------------------------------------------------
+   Codex, 202609012025: the assembler wrote the cartridge and then the
+   manifest, so a failure between them left a cartridge nothing had hashed
+   — an artefact with no provenance, which is worse than no artefact. The
+   pair is written and then verified by reading both back; if either step
+   fails, both are removed and the run exits non-zero, leaving the
+   generation free to be assembled again. */
 await mkdir(join(REPO, 'atlas', 'manifests'), { recursive: true });
-await writeFile(join(REPO, 'atlas', 'manifests', `${generation}-${name}-parts.json`),
-  `${JSON.stringify(manifest, null, 1)}\n`, 'utf8');
+try {
+  await writeFile(outputPath, assembled, 'utf8');
+  await writeFile(manifestPath, `${JSON.stringify(manifest, null, 1)}\n`, 'utf8');
+  const writtenCartridge = await readFile(outputPath, 'utf8');
+  const writtenManifest = JSON.parse(await readFile(manifestPath, 'utf8'));
+  if (writtenCartridge !== assembled) throw new Error('cartridge did not survive the write');
+  if (writtenManifest.sha256 !== sha256(writtenCartridge)) {
+    throw new Error('manifest digest does not match the cartridge it names');
+  }
+} catch (error) {
+  await rm(outputPath, { force: true });
+  await rm(manifestPath, { force: true });
+  console.error(`assembly failed and was rolled back: ${error.message}`);
+  process.exit(1);
+}
 
 console.log(JSON.stringify({
   status: 'ASSEMBLED',

@@ -1,7 +1,7 @@
 {
  "schema": "gridatlas.composition-manifest.v1",
- "generation": "202609012020",
- "parent_generation": "202609011915",
+ "generation": "202609012045",
+ "parent_generation": "202609012020",
  "live_route": "/gridatlas/atlas/",
  "shell": {
   "release_id": "202608300453-atlas-v9",
@@ -68,13 +68,13 @@
   },
   {
    "id": "sld-sandbox",
-   "generation": "202609012020",
-   "version": "v9.62",
+   "generation": "202609012045",
+   "version": "v9.63",
    "type": "script",
    "slot": "replace-script",
    "replace_script": "202608292126-pre-snapped-config-adapter.js",
-   "path": "./cartridges/202609012020-sld-sandbox-v9-8.js",
-   "sha256": "a47805b194974ce1ac5671c92bd05963793ef7a0aca3db267f5e90b57889d70a",
+   "path": "./cartridges/202609012045-sld-sandbox-v9-8.js",
+   "sha256": "6e1c17e2950195a117d17dd6f61619fa1001b3f6e6083fccef90d29a40a03c19",
    "capabilities": [
     "pre-snapped-config-adapter-carried-forward",
     "project-or-substation-selection",
@@ -187,7 +187,8 @@
     "network-sentence-scope-labelled",
     "grid-finding-scope-on-a-blank-click",
     "scope-never-implies-capacity",
-    "assembled-from-modules-and-a-body-part"
+    "assembled-from-modules-and-a-body-part",
+    "connection-voltage-passed-to-the-network-query"
    ],
    "immutable_shell_modified": false,
    "supersedes_shell_script": {
@@ -509,17 +510,17 @@
     "archetypes": "West Burton builds a 400 kV customer substation and a 10 km cable to an existing transmission bay; Little Crow loops into a distribution circuit already crossing its land. Both are NSIPs; only one is a 400 kV story",
     "rule": "the state is taken from the public record, never from whether OSM happens to have mapped the asset"
    },
-   "assembled_from": "./manifests/202609012020-sld-sandbox-v9-8-parts.json"
+   "assembled_from": "./manifests/202609012045-sld-sandbox-v9-8-parts.json"
   },
   {
    "id": "substation-intelligence",
-   "generation": "202609012020",
-   "version": "v9.62",
+   "generation": "202609012045",
+   "version": "v9.63",
    "type": "script",
    "slot": "replace-script",
    "replace_script": "ventus-corev8engine.js",
-   "path": "./cartridges/202609012020-substation-intelligence-v9-62.js",
-   "sha256": "23f3e7ebcf33b55a2cc4a027d887b8aaeeb352b6a6d975d4e5dd9d475dcc1547",
+   "path": "./cartridges/202609012045-substation-intelligence-v9-63.js",
+   "sha256": "52ede03328a65e4f816af9255d32a7a06d210fd085448147a352c79c705e175c",
    "capabilities": [
     "v8-engine-carried-forward-verbatim",
     "neso-etys-connection-points-v2-consumed",
@@ -531,7 +532,10 @@
     "revalidated-never-pinned-to-first-sight",
     "site-wide-envelope-named-not-implied-as-a-bus-value",
     "breaker-duty-metric-one-of-several-ratings",
-    "owner-product-coordinates-never-shown-as-a-distance"
+    "owner-product-coordinates-never-shown-as-a-distance",
+    "connection-points-v3-consumed",
+    "fault-current-quoted-at-the-connection-voltage",
+    "site-wide-quantities-named-as-site-wide"
    ],
    "immutable_shell_modified": false,
    "supersedes_shell_script": {
@@ -555,6 +559,12 @@
     "reported_by": "Codex 202609011852",
     "site_envelope": "the owner product aggregates at site code; a per-bus split is Codex's to land, after which this consumer can quote a bus and drop the label",
     "false_join": "WBUR's exact-name coordinate binds a different West Burton 96.42 km away; the Atlas measures on its own payload and the card is proven never to print a product-derived distance"
+   },
+   "review_findings_closed": {
+    "reviewer": "independent hostile review, 2026-09-01, and Codex 202609011852",
+    "finding": "the card printed a fault-current range spanning 132 kV and 400 kV busbars; correctly named metric, wrong scope",
+    "closed_by": "the owner product's per-voltage split, quoted at the connection voltage",
+    "still_site_wide": "circuit winter ratings are not split by voltage in the product and are now labelled site-wide (Blackhillock publishes 23-1,995 MVA)"
    }
   }
  ],
@@ -583,16 +593,16 @@
   "offshore_wind_excluded_from_links": true,
   "cards_fit_after_drag_and_restore": true,
   "shell_modified": false,
-  "scope": "the Grid Finding Scope: a click on blank space counts what grid is mapped in the vicinity, in bands, and states in the same breath that it is not a statement about capacity",
-  "proof": "tools/proofs/202609012020-sld-sandbox.proof.mjs, tools/proofs/202609012020-substation-intelligence.proof.mjs, tools/proofs/modules/202609012010-grid-scope.proof.mjs, tools/proofs/modules/202609012010-assembler.proof.mjs, tools/proofs/modules/202609011950-module-parity.proof.mjs"
+  "scope": "fault current is quoted at the voltage the connection is made at, using the owner product's per-voltage split, with whatever remains site-wide named as such",
+  "proof": "tools/proofs/202609012045-sld-sandbox.proof.mjs, tools/proofs/202609012045-substation-intelligence.proof.mjs, tools/proofs/modules/202609012040-grid-scope.proof.mjs, tools/proofs/modules/202609012010-assembler.proof.mjs, tools/proofs/modules/202609011950-module-parity.proof.mjs"
  },
- "version": "v9.62",
- "composition_id": "202609012020-gridatlas-v9.62",
+ "version": "v9.63",
+ "composition_id": "202609012045-gridatlas-v9.63",
  "source_pattern": {
   "repository": "Ventusltd/gridatlas",
   "path": "atlas/releases/202608300453-atlas-v9/202608292126-pre-snapped-config-adapter.js",
   "source_sha256": "07d33eda5b3279a03df4c0a0aded61e4363c46734dda991aa5f48ae0d55097da",
   "transformation": "carry the pre-snap config rewrite verbatim; add a measured link layer and on-card beta distances"
  },
- "composition_version": "v9.62"
+ "composition_version": "v9.63"
 }

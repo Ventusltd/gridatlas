@@ -127,6 +127,33 @@ check('its recorded digest is over LF bytes',
   manifest.assembled_from[1].sha256 === sha256(partBSource.replace(/\r\n/g, '\n')));
 check('the assembled cartridge carries no CR', !assembled.includes('\r'));
 
+console.log('\nboth files or neither\n');
+/* Codex, 202609012025: the assembler wrote the cartridge and then the
+   manifest, so a failure between them left an artefact nothing had
+   hashed — worse than no artefact. The pair is now written and then read
+   back and checked against each other before the run reports success. */
+check('a successful assembly leaves BOTH the cartridge and its manifest',
+  assembled.length > 0 && /^[0-9a-f]{64}$/.test(manifest.sha256));
+check('the manifest names the cartridge it was written beside',
+  manifest.cartridge.endsWith(`${GEN_OK}-${NAME}.js`));
+check('the manifest digest matches the bytes on disk',
+  manifest.sha256 === sha256(await readFile(outputFor(GEN_OK), 'utf8')));
+check('a failed assembly leaves neither file behind', await (async () => {
+  // A name containing a path separator cannot be written as a file, so the
+  // write fails after the cartridge path is computed — exactly the window
+  // the rollback exists for.
+  const bad = run(['--generation', '209912310303', '--name', 'roll/back',
+    '--part', PART_A]);
+  if (bad.code === 0) return false;
+  for (const path of [
+    join(REPO, 'atlas', 'cartridges', '209912310303-roll'),
+    join(REPO, 'atlas', 'manifests', '209912310303-roll')
+  ]) {
+    try { await access(path, constants.F_OK); return false; } catch { /* good */ }
+  }
+  return /rolled back|ENOENT|no such file/i.test(bad.err) || bad.code !== 0;
+})());
+
 console.log('\nimmutability, and repeatability\n');
 const again = run(['--generation', GEN_OK, '--name', NAME,
   '--carry', PART_A, '--module', PART_B]);

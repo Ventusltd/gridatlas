@@ -205,7 +205,7 @@ const substationSource = await readFile(
   join(REPO, 'atlas', substationEntry.path.replace('./', '')), 'utf8');
 
 const PRODUCT = {
-  schema: 'data-grid-gb.connection-points.v2',
+  schema: 'data-grid-gb.connection-points.v3',
   counts: { connection_points: 3 },
   connection_points: [
     { site_code: 'COTT', name: 'COTTAM', transmission_owner: 'NGET',

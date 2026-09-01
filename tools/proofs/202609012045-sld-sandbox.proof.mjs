@@ -1,5 +1,5 @@
 /**
- * Proof for the neon links + SLD layout sandbox cartridge, generation 202609012020.
+ * Proof for the neon links + SLD layout sandbox cartridge, generation 202609012045.
  *
  * No dependencies. The repository carries playwright and no DOM library, so
  * rather than add one this stubs the small surface the cartridge actually
@@ -32,7 +32,7 @@ import vm from 'node:vm';
 const HERE = dirname(fileURLToPath(import.meta.url));
 const REPO = resolve(HERE, '..', '..');
 const CARTRIDGE = join(REPO, 'atlas', 'cartridges',
-  '202609012020-sld-sandbox-v9-8.js');
+  '202609012045-sld-sandbox-v9-8.js');
 const ORIGINAL = join(REPO, 'atlas', 'releases', '202608300453-atlas-v9',
   '202608292126-pre-snapped-config-adapter.js');
 const FINANCE_ORACLE = join(REPO, 'tools', 'proofs', 'fixtures',
@@ -2284,7 +2284,9 @@ check('a circuit connection never claims 400 kV',
 console.log('\nthe published network parameters\n');
 
 check('the card asks the substation cartridge and renders only what it returns',
-  /window\.__GRIDATLAS_NETWORK__\?\.summarise\?\.\(networkName\)/.test(cartridgeSource));
+  // v9.63 passes the connection voltage, so the call spans two lines.
+  /window\.__GRIDATLAS_NETWORK__\?\.summarise\?\.\(/.test(cartridgeSource)
+  && /networkName, \{ connectionKv \}\)/.test(cartridgeSource));
 check('a circuit connection is not attributed to a substation',
   /currentDeclared\?\.kind !== 'circuit'/.test(cartridgeSource));
 check('the metric caveat, the attribution and the refusal travel with the numbers',
@@ -2297,19 +2299,19 @@ console.log('\nthe manifest knows who it is, and the Subs control is found by it
 
 /* Codex pre-promotion findings, 202609011823. Both proven where they
    live: the manifest by reading it, the lookup by running it. */
-const manifestPath = join(REPO, 'atlas', 'manifests', '202609012020-composition.json');
+const manifestPath = join(REPO, 'atlas', 'manifests', '202609012045-composition.json');
 const manifestText = await readFile(manifestPath, 'utf8');
 const manifest = JSON.parse(manifestText);
 check('the manifest states this generation everywhere it states one',
-  manifest.generation === '202609012020' && manifest.version === 'v9.62'
-  && manifest.composition_version === 'v9.62'
+  manifest.generation === '202609012045' && manifest.version === 'v9.63'
+  && manifest.composition_version === 'v9.63'
   // Derived from the generation under test, not restated: a hard-coded
   // identity here is the same drift this check exists to catch.
-  && manifest.composition_id === `${manifest.generation}-gridatlas-v9.62`);
+  && manifest.composition_id === `${manifest.generation}-gridatlas-v9.63`);
 check('no identity from an older composition survives anywhere in it',
   !/v9\.39|202609010106/.test(manifestText));
 check('the acceptance receipt names this generation\'s proofs',
-  manifest.acceptance.proof.includes('202609012020')
+  manifest.acceptance.proof.includes('202609012045')
   && !/420 checks/.test(manifest.acceptance.proof));
 check('the golden browser field is this generation\'s, not an inherited pending',
   manifest.acceptance.golden_browser_verification === 'PENDING_THIS_GENERATION');
@@ -2395,7 +2397,7 @@ console.log('\nthe Grid Finding Scope\n');
 
 check('the scope computation is a module, not more cartridge body',
   /window\.__GRIDATLAS_MODULES__\?\.gridScope/.test(cartridgeSource)
-  && /gridatlas\.module\.grid-scope\.v1/.test(cartridgeSource));
+  && /gridatlas\.module\.grid-scope\.v2/.test(cartridgeSource));
 check('the neon anchor is untouched: a scope runs only where nothing was hit',
   // The gap holds the reason-why comment and the clearLinks call; the
   // point of the check is the ORDER, so the bound is generous.
@@ -2414,6 +2416,17 @@ check('an absence is described as an absence from the map',
   /an absence from the map, not from the ground/.test(cartridgeSource));
 check('the scope publishes its state',
   /link\.grid_scope = \{ counted/.test(cartridgeSource));
+
+
+console.log('\nthe connection voltage reaches the network query\n');
+
+check('the card tells the cartridge what voltage the connection is made at',
+  /summarise\?\.\(\n?\s*networkName, \{ connectionKv \}\)/.test(cartridgeSource));
+check('a circuit connection has no busbar voltage to pass',
+  /currentDeclared\?\.kind !== 'circuit'\n\s*\? \(currentDeclared\?\.kv/.test(cartridgeSource));
+check('a bus-scoped answer is badged with its voltage, not as site-wide',
+  /published\.fault_scope === 'bus'/.test(cartridgeSource)
+  && /\$\{published\.fault_kv\} kV bus/.test(cartridgeSource));
 
 console.log(`\n${passed}/${passed + failures.length} checks passed`);
 if (failures.length) {
