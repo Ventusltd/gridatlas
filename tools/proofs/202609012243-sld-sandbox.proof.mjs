@@ -2581,6 +2581,32 @@ check('a bus-scoped answer is badged with its voltage, not as site-wide',
   /published\.fault_scope === 'bus'/.test(cartridgeSource)
   && /\$\{published\.fault_kv\} kV bus/.test(cartridgeSource));
 
+console.log('\nthe map measures in circuits as well as in kilometres\n');
+
+/* The module can be perfect and composed into nothing - that is exactly
+   what happened to network-topology at 202609012145, proven 46/46 and
+   present in no served cartridge for two generations. These checks are
+   about the BYTES that ship. */
+check('the electrical-distance module is in the served cartridge',
+  /gridatlas\.module\.electrical-distance\.v1/.test(cartridgeSource));
+check('it is evaluated before the body that calls it',
+  cartridgeSource.indexOf('gridatlas.module.electrical-distance.v1')
+    < cartridgeSource.indexOf('function distanceModule('));
+check('the successor topology module ships, not the incumbent',
+  /gridatlas\.module\.network-topology\.graph\.v1/.test(cartridgeSource));
+check('the card asks for two hops, scoped to the connection voltage',
+  /mod\.within\(topology\.index, point\.site_code, \{ hops: 2, voltageKv: kv \}\)/.test(cartridgeSource));
+check('a missing module is an absence, never a guess',
+  /if \(!mod\) return null;/.test(cartridgeSource));
+check('the page says plainly that a hop is not a distance',
+  /A hop is a published circuit, not a distance/.test(cartridgeSource));
+check('refusals are surfaced to the reader, not swallowed',
+  /not walked because a circuit cannot change voltage/.test(cartridgeSource));
+check('the traversal state is published for review',
+  /window\.__GRIDATLAS_ELECTRICAL__ = electrical;/.test(cartridgeSource));
+check('no kilometre figure is taken from the topology answer',
+  !/reach[\s\S]{0,200}_km/.test(cartridgeSource));
+
 console.log(`\n${passed}/${passed + failures.length} checks passed`);
 if (failures.length) {
   console.error('\nFAILURES');

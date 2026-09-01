@@ -1,0 +1,58 @@
+{
+ "schema": "gridatlas.cartridge-parts.v1",
+ "generation": "202609012243",
+ "cartridge": "./cartridges/202609012243-sld-sandbox-v9-8.js",
+ "sha256": "920fd36649c054994ba0906c400506c42d24bb0a0e580e72369b5869bdcd9993",
+ "bytes": 322670,
+ "assembled_from": [
+  {
+   "role": "module",
+   "path": "atlas/modules/202609011950-geodesy.js",
+   "bytes": 6296,
+   "sha256": "2c98d0be8a1c8f4da045a2050e4ae9d56c2c5d07cd2c261a0fbfbc3ac2238e4f"
+  },
+  {
+   "role": "module",
+   "path": "atlas/modules/202609012040-grid-scope.js",
+   "bytes": 6878,
+   "sha256": "a4f96c30c9240424be54af575ccb8090cbc05d1067c41b5ff7c1e51414544979"
+  },
+  {
+   "role": "module",
+   "path": "atlas/modules/202609012217-source-registry.js",
+   "bytes": 10146,
+   "sha256": "22080f1a774879d926b39a4bff3471c2aba50f7c128fc6fd7b6463840780f4e3"
+  },
+  {
+   "role": "module",
+   "path": "atlas/modules/202609012128-declared-connections.js",
+   "bytes": 15127,
+   "sha256": "667d76a036ceedd7066bdb68f6f47fc73cd6b4e60c819f50b551e5d8c8aafeb0"
+  },
+  {
+   "role": "module",
+   "path": "atlas/modules/202609012245-network-topology.js",
+   "bytes": 13284,
+   "sha256": "225a0b2eee21f7a306fd5da009e53cca8ebc5852e4255f35816eae84716418b8"
+  },
+  {
+   "role": "module",
+   "path": "atlas/modules/202609012205-sizing-arithmetic.js",
+   "bytes": 27726,
+   "sha256": "bbaf6453475be4c586e349782411cb88702399a6372cd413da5e4945dd7a0f48"
+  },
+  {
+   "role": "module",
+   "path": "atlas/modules/202609012245-electrical-distance.js",
+   "bytes": 13873,
+   "sha256": "28ae3f3e2de8c9d2f495a829e350ea2e76bbb1469d3ff39792e3c8f95b4386bb"
+  },
+  {
+   "role": "part",
+   "path": "atlas/parts/202609012045-sld-sandbox-body.js",
+   "bytes": 228460,
+   "sha256": "96571a7dedeac2f97e1674d01351c17284df576f7e1b8c69e42512e1baf5231a"
+  }
+ ],
+ "rule": "edit a part and rebuild under a new generation; this file is not edited by hand"
+}

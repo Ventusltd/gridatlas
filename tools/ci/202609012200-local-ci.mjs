@@ -305,7 +305,8 @@ const GATES = [
   ['map-click network', ['tools/proofs/modules/202609012230-map-click-network.proof.mjs']],
   ['declared connections', ['tools/proofs/modules/202609012130-declared-connections.proof.mjs']],
   ['sizing arithmetic', ['tools/proofs/modules/202609012205-sizing-arithmetic.proof.mjs']],
-  ['data-contract parity', ['tools/proofs/202609012214-data-contract-parity.proof.mjs']]
+  ['data-contract parity', ['tools/proofs/202609012214-data-contract-parity.proof.mjs']],
+  ['electrical distance', ['tools/proofs/modules/202609012245-electrical-distance.proof.mjs']]
 ];
 
 for (const [name, args] of GATES) {
