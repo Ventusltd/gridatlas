@@ -300,7 +300,7 @@ const composedSource = (await Promise.all(
       text = text.split(ORDER_OLD).join(
         "check('the network-topology module is composed into the served bytes',\n"
         + "  /gridatlas\\.module\\.network-topology\\.v1/.test(composedSource));\n"
-        + "check('and in a cartridge the shell evaluates BEFORE the sandbox that calls it', (() => {\n"
+        + "check('and in a cartridge the shell evaluates BEFORE the sandbox that calls it', await (async () => {\n"
         + "  /* Concatenation order is not evaluation order. The shell decides,\n"
         + "     so the shell is what is read. */\n"
         + "  const shell = await readFile(join(REPO, 'atlas', 'releases',\n"
