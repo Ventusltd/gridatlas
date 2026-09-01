@@ -42,7 +42,7 @@
  */
 
 import { execFileSync } from 'node:child_process';
-import { existsSync, writeFileSync } from 'node:fs';
+import { existsSync, writeFileSync, readFileSync } from 'node:fs';
 import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -331,6 +331,98 @@ for (const [name, args] of GATES) {
 }
 
 /* ═══════════════════════════════════════════════════════════════════════ */
+
+/* ═══════════════════════════════════════════════════════════════════════
+   PASS 4 - PROOFS THAT SKIP INSTEAD OF FAILING
+   ═══════════════════════════════════════════════════════════════════════ */
+
+console.log('\n\x1b[1mPASS 4 - checks that decline to check, and report success\x1b[0m');
+
+/* This belongs in CVAA and cannot live there yet: inoculate.mjs hands an
+   antibody a bounded context whose `files` map holds STATE.md and
+   index.html, so no vaccine can read the text of a proof. An antibody was
+   written, reported `immune` against a repository that had the defect, and
+   was withdrawn - a check that cannot reach its target and reports success
+   is exactly the disease it was written to catch. See
+   cvaa/studies/202609012310-a-skip-is-not-a-pass-needs-source-text.md.
+
+   So it runs here, where the file text is available.
+
+   Codex found the original on 202609012230: the topology proof skipped
+   every real-payload assertion when its sibling data product was absent -
+   the normal condition on an isolated checkout - and reported 46/46. Green
+   exactly where nobody is watching. */
+const CLAIMS_TO_CHECK = /\.(proof|verify|test|spec)\.(mjs|js|ts)$|(^|\/)(proofs?|verify|tests?)\//i;
+const ANNOUNCES_SKIP = /\[skip\]|\bskipping\b|\bskipped\b|did not run|checks below did not/i;
+const GUARDS_ON_ABSENCE = /if\s*\(\s*!\s*\w*(present|exists|found|available|ready|installed)\w*\s*\)/i;
+const DECLARES_CONCESSION = /process\.env\.[A-Z0-9_]*(ALLOW|SKIP|WITHOUT|OFFLINE|MISSING)[A-Z0-9_]*/;
+
+let proofsRead = 0;
+const skippers = [];
+const unreadable = [];
+for (const repo of REPOS) {
+  for (const path of git(repo, ['ls-files']).split('\n')) {
+    if (!path || !CLAIMS_TO_CHECK.test(path)) continue;
+    const full = join(repo.path, path);
+    if (!existsSync(full)) continue;
+    let text = '';
+    /* The catch RECORDS. An empty catch here swallowed a ReferenceError -
+       readFileSync was not imported - for every file in both repositories,
+       and the pass reported "0 proof/verifier files read" and a clean
+       result. It was only visible because the count is printed; a pass that
+       reported nothing would have looked like a pass. */
+    try { text = readFileSync(full, 'utf8'); }
+    catch (error) { unreadable.push(`${repo.name}:${path} (${error.message})`); continue; }
+    proofsRead += 1;
+    if (!ANNOUNCES_SKIP.test(text) || !GUARDS_ON_ABSENCE.test(text)) continue;
+    if (DECLARES_CONCESSION.test(text)) continue;   // a named opt-in is the cure
+
+    /* Not every skip is the disease, and the distinction has to be exact.
+       -------------------------------------------------------------------
+       The first attempt flagged parts-integrity, which skips SUPERSEDED
+       cartridges - a rule, not an evasion. The second attempt looked for a
+       check() near the skip and flagged nothing at all, because check()
+       appears on nearly every line of a proof.
+
+       The real question is narrower: does anything ASSERT THE GUARD
+       ITSELF? In the repaired topology proof the guard variable
+       `productPresent` is passed to check(); in the defective version it
+       appears only in the `if`. That is the whole difference between "this
+       dependency is required and here is the assertion" and "this
+       dependency is missing so never mind". */
+    const guard = text.match(GUARDS_ON_ABSENCE);
+    const variable = guard && guard[0].match(/!\s*(\w+)/);
+    if (variable) {
+      const asserted = new RegExp(
+        `check\\([^;]{0,400}\\b${variable[1]}\\b`, 's').test(text);
+      if (asserted) continue;
+    }
+
+    skippers.push(`${repo.name}:${path}`);
+  }
+}
+
+console.log(`  ${proofsRead} proof/verifier files read across ${REPOS.length} repositories`);
+if (!proofsRead) {
+  console.log('  \x1b[31ma pass that examined nothing is not a pass\x1b[0m');
+  flaws.push({ severity: 'pass-examined-nothing',
+    detail: 'the skip-detection pass matched no files at all', paths: [] });
+}
+if (unreadable.length) {
+  console.log(`  \x1b[33m${unreadable.length} file(s) could not be read:\x1b[0m`);
+  for (const item of unreadable.slice(0, 5)) console.log(`    ${item}`);
+}
+if (!skippers.length) {
+  console.log('  \x1b[32mno check skips its assertions on a missing dependency '
+    + 'without a named opt-in\x1b[0m');
+} else {
+  console.log(`  \x1b[31m${skippers.length} check(s) skip and report success:\x1b[0m`);
+  for (const path of skippers) console.log(`    ${path}`);
+  flaws.push(...skippers.map(path => ({ severity: 'skip-is-not-a-pass',
+    detail: 'skips assertions when a dependency is absent and reports success',
+    paths: [path] })));
+}
+report.skips = { proofs_read: proofsRead, skippers };
 
 const jsonOut = argv('--json');
 if (jsonOut) {
