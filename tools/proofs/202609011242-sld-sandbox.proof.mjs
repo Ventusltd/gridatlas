@@ -1,5 +1,5 @@
 /**
- * Proof for the neon links + SLD layout sandbox cartridge, generation 202609011215.
+ * Proof for the neon links + SLD layout sandbox cartridge, generation 202609011242.
  *
  * No dependencies. The repository carries playwright and no DOM library, so
  * rather than add one this stubs the small surface the cartridge actually
@@ -32,7 +32,7 @@ import vm from 'node:vm';
 const HERE = dirname(fileURLToPath(import.meta.url));
 const REPO = resolve(HERE, '..', '..');
 const CARTRIDGE = join(REPO, 'atlas', 'cartridges',
-  '202609011215-sld-sandbox-v9-8.js');
+  '202609011242-sld-sandbox-v9-8.js');
 const ORIGINAL = join(REPO, 'atlas', 'releases', '202608300453-atlas-v9',
   '202608292126-pre-snapped-config-adapter.js');
 const FINANCE_ORACLE = join(REPO, 'tools', 'proofs', 'fixtures',
@@ -2098,6 +2098,24 @@ check('a cleared selection disarms the keeper before the block is removed',
 check('the payload is per selection, so a stale project never decorates a new popup',
   /cardKeeperPayload = \{ links, direction, layerLoaded \};/.test(cartridgeSource)
   && /cardKeeperPayload = null;/.test(cartridgeSource));
+
+
+console.log('\nthe arrival card\n');
+
+/* 2,421 of Pipeline News's MAP targets are absent from the pinned register
+   (dead-pipeline statuses); links drew and no card ever opened. */
+check('a card is opened from the link fields only when none exists',
+  /function ensureArrivalCard\(lon, lat, name, tech, statedMw\)/.test(cartridgeSource)
+  && /if \(document\.querySelector\('\.maplibregl-popup-content'\)\) return;/.test(cartridgeSource)
+  && /ensureArrivalCard\(lon, lat, name, tech, stated\);/.test(cartridgeSource));
+check('the fallback card states its provenance',
+  /Card built from the\s*'\s*\+\s*'arrival link\./.test(cartridgeSource));
+check('the fallback yields when the register card lands',
+  /\.length > 1\) \{\n          removeArrivalFallback\(\);/.test(cartridgeSource));
+check('a cleared selection removes the fallback',
+  /disarmCardKeeper\(\);\n    removeArrivalFallback\(\);\n    removeCardBlock\(\);/.test(cartridgeSource));
+check('the fallback is published for the next debugger',
+  /link\.arrival_card = 'from-link-fields';/.test(cartridgeSource));
 
 console.log(`\n${passed}/${passed + failures.length} checks passed`);
 if (failures.length) {

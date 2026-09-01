@@ -1,7 +1,7 @@
 {
  "schema": "gridatlas.composition-manifest.v1",
- "generation": "202609011215",
- "parent_generation": "202609011205",
+ "generation": "202609011242",
+ "parent_generation": "202609011215",
  "live_route": "/gridatlas/atlas/",
  "shell": {
   "release_id": "202608300453-atlas-v9",
@@ -67,13 +67,13 @@
   },
   {
    "id": "sld-sandbox",
-   "generation": "202609011215",
-   "version": "v9.46",
+   "generation": "202609011242",
+   "version": "v9.47",
    "type": "script",
    "slot": "replace-script",
    "replace_script": "202608292126-pre-snapped-config-adapter.js",
-   "path": "./cartridges/202609011215-sld-sandbox-v9-8.js",
-   "sha256": "cd3b69f4674805d4c9b1084f7168b1253a6931e8bbae1ef3db7e96ea17806aab",
+   "path": "./cartridges/202609011242-sld-sandbox-v9-8.js",
+   "sha256": "35ecdaddf3208ba181c6b039ab1e1d5c1ef4693fd9e40d384aada39c92d104fa",
    "capabilities": [
     "pre-snapped-config-adapter-carried-forward",
     "project-or-substation-selection",
@@ -163,7 +163,8 @@
     "arrival-enters-fullscreen-on-touch",
     "identity-wait-until-terminal-not-budgeted",
     "arrival-stages-surfaced-with-retry",
-    "measurement-block-kept-not-written-once"
+    "measurement-block-kept-not-written-once",
+    "arrival-card-from-link-fields-when-register-absent"
    ],
    "immutable_shell_modified": false,
    "supersedes_shell_script": {
@@ -426,6 +427,13 @@
     "watched_live": "Pipeline News MAP journey at phone width, v9.45: five links drawn, fullscreen entered, and the card carried no distances - the search lane's popup arrived after the one-frame decoration retry and replaced the decorated card",
     "why_lines_survived": "the links live in map layers; the measurement block lives inside a popup this cartridge does not own",
     "fix": "a per-selection MutationObserver re-attaches the block whenever the active card lacks it; a new selection re-arms it and a cleared selection disarms it, so no other popup is ever decorated with a stale project's distances"
+   },
+   "arrival_card": {
+    "reported_by": "Vikram, phone: worked on Botley West, 'doesn't work on other lines of solar farms on pipelinenews' ",
+    "measured": "2,421 of Pipeline News's 7,680 MAP targets are absent from the pinned register parquet: it excludes Refused (667), Revised (531), Withdrawn (420), Expired (227), Abandoned (221) and other dead-pipeline statuses, and the news rightly reports on those schemes. 873 of the absent are solar. Botley West happened to be present",
+    "consequence": "the identity lane failed for them, and the card on arrival was that lane's popup, so links drew with no card - which on a phone reads as nothing working",
+    "fix": "when no card has appeared by the end of the arrival, this cartridge opens one from the link's own fields - name, technology, capacity - stating that provenance on the card; if the register's card lands later the fallback yields to it, and a cleared selection removes it",
+    "not_done": "widening the register parquet is a data-governance decision (which statuses belong in the Atlas register) and is left recorded, not taken"
    }
   }
  ],
@@ -454,7 +462,7 @@
   "offshore_wind_excluded_from_links": true,
   "cards_fit_after_drag_and_restore": true,
   "shell_modified": false,
-  "scope": "the distances survive the card: the measurement block is kept by a per-selection observer instead of written once into a popup another lane may replace",
+  "scope": "the arrival owns its card: a register-absent project gets a card built from the link's own fields, yielded to the register's card if that lands later",
   "proof": "tools/proofs/202609010726-sld-sandbox.proof.mjs, 420 checks"
  },
  "version": "v9.39",
@@ -465,5 +473,5 @@
   "source_sha256": "07d33eda5b3279a03df4c0a0aded61e4363c46734dda991aa5f48ae0d55097da",
   "transformation": "carry the pre-snap config rewrite verbatim; add a measured link layer and on-card beta distances"
  },
- "composition_version": "v9.46"
+ "composition_version": "v9.47"
 }
