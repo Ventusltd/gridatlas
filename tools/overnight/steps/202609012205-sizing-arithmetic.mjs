@@ -151,7 +151,13 @@ export default {
   brings: [PROOF],
   addModules: [MODULE],
   proofs: [PROOF],
-  apply({ read, write }) {
+  apply({ read, write, patch, sandboxProof }) {
+    /* the sandbox proof pinned the central-mode fallback by its inline
+       spelling; the module spells it on its context parameter */
+    patch(sandboxProof, [[
+      "/\\(stats\\?\\.mode \\|\\| sld\\.inputs\\.mode\\) === 'central'/.test(cartridgeSource)",
+      "/\\(stats\\?\\.mode \\|\\| \\(context && context\\.fallbackMode\\)\\) === 'central'/.test(cartridgeSource)",
+      'central OPEX basis check follows the text into the module']]);
     const body = read(BODY);
     const start = body.indexOf(BLOCK_START);
     const end = body.indexOf(BLOCK_END, start);

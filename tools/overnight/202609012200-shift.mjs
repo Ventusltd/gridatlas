@@ -150,7 +150,13 @@ function patch(rel, pairs) {
 }
 untrackedBefore = untracked();
 try {
-  await step.apply({ root: ROOT, read, write, patch, run });
+  /* The sandbox proof travels with the cartridge and is renamed at the cut,
+     so a step that moves text the proof pins is handed the proof's current
+     path and patches it here, before recompose renames it. Second lesson,
+     22:10 UTC: the sizing step moved a text the proof pinned by regex. */
+  const sandboxProofs = fs.readdirSync(path.join(ROOT, 'tools', 'proofs')).filter(f => f.endsWith('-sld-sandbox.proof.mjs'));
+  if (sandboxProofs.length !== 1) fail('expected exactly one sld-sandbox proof before apply', { sandboxProofs });
+  await step.apply({ root: ROOT, read, write, patch, run, sandboxProof: `tools/proofs/${sandboxProofs[0]}` });
 } catch (error) { fail(`apply: ${error.message}`); }
 const changed = status().map(l => slash(l.slice(3))).filter(p => !p.startsWith('tools/overnight/'));
 stage('applied', { changed });

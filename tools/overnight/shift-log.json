@@ -37,6 +37,55 @@
       "reason": "recompose refused the cut",
       "finished_at": "2026-09-01T22:09:04.966Z",
       "output": "  +module    atlas/modules/202609012205-sizing-arithmetic.js\n  ledger     atlas/parts/202609012045-sld-sandbox-body.js  += v9.69\n  assembled  202609012209-sld-sandbox-v9-8.js  from 7 part(s)\n  proof      202609012209-sld-sandbox.proof.mjs\nno such proof: tools/proofs/202609012141-sld-sandbox.proof.mjs\n"
+    },
+    {
+      "step": "202609012205-sizing-arithmetic.mjs",
+      "id": "sizing-arithmetic",
+      "version": "v9.69",
+      "started_at": "2026-09-01T22:10:00.167Z",
+      "dry": false,
+      "stages": [
+        {
+          "name": "tooling committed",
+          "at": "2026-09-01T22:10:00.916Z",
+          "commit": "ff48c49"
+        },
+        {
+          "name": "applied",
+          "at": "2026-09-01T22:10:01.025Z",
+          "changed": [
+            "atlas/parts/202609012045-sld-sandbox-body.js",
+            "atlas/modules/202609012205-sizing-arithmetic.js",
+            "tools/proofs/modules/202609012205-sizing-arithmetic.proof.mjs"
+          ]
+        },
+        {
+          "name": "syntax checked",
+          "at": "2026-09-01T22:10:01.138Z"
+        },
+        {
+          "name": "step proof 202609012205-sizing-arithmetic.proof.mjs",
+          "at": "2026-09-01T22:10:02.039Z",
+          "status": 0,
+          "tally": "35/35"
+        },
+        {
+          "name": "composed",
+          "at": "2026-09-01T22:10:02.267Z",
+          "generation": "202609012210",
+          "version": "v9.69",
+          "previous": "202609012141"
+        },
+        {
+          "name": "gate sandbox proof",
+          "at": "2026-09-01T22:10:02.925Z",
+          "status": 1
+        }
+      ],
+      "outcome": "failed",
+      "reason": "gate red: sandbox proof",
+      "finished_at": "2026-09-01T22:10:02.925Z",
+      "output": "anding provisional block\n  [PASS] the early answer is published for the next debugger\n\nthe far end has its own state\n\n  [PASS] an unbuilt point of connection has its own colour\n  [PASS] both line and node take that colour together\n  [PASS] the unbuilt states are the two the record supports\n  [PASS] One Earth and Thorpe Marsh carry their state with a reason\n  [PASS] the card labels the state beside the public-record badge\n  [PASS] a declared circuit connection draws no line and measures no distance\n  [PASS] Little Crow names its circuit and its source\n  [PASS] a circuit connection never claims 400 kV\n\nthe published network parameters\n\n  [PASS] the card asks the substation cartridge and renders only what it returns\n  [PASS] a circuit connection is not attributed to a substation\n  [PASS] the metric caveat, the attribution and the refusal travel with the numbers\n\nthe manifest knows who it is, and the Subs control is found by its attribute\n\n  [PASS] the manifest states this generation everywhere it states one\n  [PASS] no identity from an older composition survives anywhere in it\n  [PASS] the acceptance receipt names this generation's proofs\n  [PASS] the golden browser field is this generation's, not an inherited pending\n  [PASS] the manifest records the clock it was cut at, and the stamp agrees with it  2026-09-01T22:10:02.181Z\n  [PASS] the manifest chains by pointer, not by sort order\n  [PASS] the Subs control is looked up by its attribute first\n  [PASS] the label search survives only as a fallback\n  [PASS] an active failure is recorded once, by a named helper\n\nrun against a DOM, not a regular expression\n\n  [PASS] two misses leave one entry, not two  1\n  [PASS] the control is found by attribute despite unhelpful label text\n  [PASS] the recovered entry left the active ledger\n  [PASS] it was preserved as recovered rather than deleted\n  [PASS] an unrelated failure is untouched\n\nthe network sentence names its own scope\n\n  [PASS] the scope label is rendered before the numbers\n  [PASS] a multi-voltage site is badged Site-wide\n  [PASS] the card never prints a distance taken from the owner product\n\nthe Grid Finding Scope\n\n  [PASS] the scope computation is a module, not more cartridge body\n  [PASS] the neon anchor is untouched: a scope runs only where nothing was hit\n  [PASS] arming is explicit, not automatic\n  [PASS] the tray carries both a scope and a clear\n  [PASS] selecting a project clears any standing scope\n  [PASS] the card prints what the scope is not, in bold, from the result itself\n  [PASS] an absence is described as an absence from the map\n  [PASS] the scope publishes its state\n\nthe connection voltage reaches the network query\n\n  [PASS] the card tells the cartridge what voltage the connection is made at\n  [PASS] a circuit connection has no busbar voltage to pass\n  [PASS] a bus-scoped answer is badged with its voltage, not as site-wide\n\n548/549 checks passed\n\nFAILURES\n  the central OPEX basis is the corrected inverter nameplate only in central mode\n"
     }
   ]
 }
