@@ -1,5 +1,5 @@
 /**
- * Proof for the neon links + SLD layout sandbox cartridge, generation 202609011433.
+ * Proof for the neon links + SLD layout sandbox cartridge, generation 202609011434.
  *
  * No dependencies. The repository carries playwright and no DOM library, so
  * rather than add one this stubs the small surface the cartridge actually
@@ -32,7 +32,7 @@ import vm from 'node:vm';
 const HERE = dirname(fileURLToPath(import.meta.url));
 const REPO = resolve(HERE, '..', '..');
 const CARTRIDGE = join(REPO, 'atlas', 'cartridges',
-  '202609011433-sld-sandbox-v9-8.js');
+  '202609011434-sld-sandbox-v9-8.js');
 const ORIGINAL = join(REPO, 'atlas', 'releases', '202608300453-atlas-v9',
   '202608292126-pre-snapped-config-adapter.js');
 const FINANCE_ORACLE = join(REPO, 'tools', 'proofs', 'fixtures',
@@ -2163,6 +2163,24 @@ check('selection state resets so one scheme never wears another\'s record',
   && /currentRepdRef = null;\n    currentDeclared = null;/.test(cartridgeSource));
 check('no verdict language decorates the record',
   !/STRONG|REMOTE|well.placed|ideal|advantage/.test(cartridgeSource.split('DECLARED_CONNECTIONS')[1].split('function resolveDeclaredConnection')[0]));
+
+
+console.log('\nthe recovered ledger\n');
+
+/* Codex supervision 202609011446: recovered events were indistinguishable
+   from terminal faults in the public failures array. */
+check('a recovered ledger exists beside failures',
+  /recovered: \[\]/.test(cartridgeSource)
+  && /function recoverFailures\(pattern\)/.test(cartridgeSource));
+check('recovery moves entries rather than deleting them',
+  /if \(pattern\.test\(entry\)\) link\.recovered\.push\(entry\);/.test(cartridgeSource)
+  && /link\.failures = kept;/.test(cartridgeSource));
+check('the subs control recovers its own earlier miss on success',
+  /link\.substation_layer_enabled = true;\n      recoverFailures\(\/\^subs: control not found\$\//.test(cartridgeSource));
+check('the technology control recovers exactly its own entry, escaped',
+  /link\.project_layer_enabled = tech;\n      recoverFailures\(new RegExp\('\^layer control not found: '/.test(cartridgeSource));
+check('the late-controls observer recovers the budget note it outlived',
+  /link\.layer_controls_arrived_late = true;\n        recoverFailures\(\/\^the engine had not rendered its layer controls within\//.test(cartridgeSource));
 
 console.log(`\n${passed}/${passed + failures.length} checks passed`);
 if (failures.length) {

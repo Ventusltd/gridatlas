@@ -1,7 +1,7 @@
 {
  "schema": "gridatlas.composition-manifest.v1",
- "generation": "202609011433",
- "parent_generation": "202609011251",
+ "generation": "202609011434",
+ "parent_generation": "202609011433",
  "live_route": "/gridatlas/atlas/",
  "shell": {
   "release_id": "202608300453-atlas-v9",
@@ -67,13 +67,13 @@
   },
   {
    "id": "sld-sandbox",
-   "generation": "202609011433",
-   "version": "v9.51",
+   "generation": "202609011434",
+   "version": "v9.52",
    "type": "script",
    "slot": "replace-script",
    "replace_script": "202608292126-pre-snapped-config-adapter.js",
-   "path": "./cartridges/202609011433-sld-sandbox-v9-8.js",
-   "sha256": "7761815947b170af524f9b84683fb7d55d299bea20a749d5619ef7e55f98f5a3",
+   "path": "./cartridges/202609011434-sld-sandbox-v9-8.js",
+   "sha256": "96875ebf9aa5c8141ea5fffe806ea6654e52039cd8a3a6dce3bd516192785596",
    "capabilities": [
     "pre-snapped-config-adapter-carried-forward",
     "project-or-substation-selection",
@@ -169,7 +169,8 @@
     "declared-connections-bound-to-public-record",
     "new-customer-substations-in-the-declared-chain",
     "substation-works-noted-from-public-record",
-    "nearest-400kv-measured-for-every-project"
+    "nearest-400kv-measured-for-every-project",
+    "recovered-failures-ledgered-separately"
    ],
    "immutable_shell_modified": false,
    "supersedes_shell_script": {
@@ -461,6 +462,11 @@
     ],
     "generic": "nearest 400 kV substation is measured and shown for every project selection - measurement, not inference",
     "confidentiality": "a private project document was used only to validate the grid logic; no fact appears on a card that is not in the public record"
+   },
+   "recovered_ledger": {
+    "found_by": "Codex supervision 202609011446",
+    "fault": "recovered late-arrival entries stayed in the public failures array, indistinguishable from terminal faults",
+    "fix": "recovery moves the entry to link.recovered at the moment the late control arrives; failures speaks only for what is still failing"
    }
   }
  ],
@@ -489,7 +495,7 @@
   "offshore_wind_excluded_from_links": true,
   "cards_fit_after_drag_and_restore": true,
   "shell_modified": false,
-  "scope": "the 400 kV public record: declared DCO connections drawn in their own colour and carded with source, new customer and NG substation works named from public record, nearest 400 kV measured for every project",
+  "scope": "a recovered failure is not a failure: late-arrival entries move to a published recovered ledger at the moment the control arrives, closing the Codex 202609011446 telemetry finding",
   "proof": "tools/proofs/202609010726-sld-sandbox.proof.mjs, 420 checks"
  },
  "version": "v9.39",
@@ -500,5 +506,5 @@
   "source_sha256": "07d33eda5b3279a03df4c0a0aded61e4363c46734dda991aa5f48ae0d55097da",
   "transformation": "carry the pre-snap config rewrite verbatim; add a measured link layer and on-card beta distances"
  },
- "composition_version": "v9.51"
+ "composition_version": "v9.52"
 }
