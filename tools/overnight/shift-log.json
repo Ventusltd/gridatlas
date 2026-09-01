@@ -232,6 +232,22 @@
       ],
       "outcome": "dry",
       "finished_at": "2026-09-01T22:22:13.940Z"
+    },
+    {
+      "step": "202609012217-data-contract-parity.mjs",
+      "id": "data-contract-parity",
+      "version": "v9.70",
+      "started_at": "2026-09-01T22:32:14.287Z",
+      "dry": false,
+      "stages": [],
+      "outcome": "failed",
+      "reason": "working tree not clean before the step",
+      "finished_at": "2026-09-01T22:32:14.315Z",
+      "dirty": [
+        "?? AGENTS.md",
+        "?? CLAUDE.md",
+        "?? _build-plan/"
+      ]
     }
   ]
 }
