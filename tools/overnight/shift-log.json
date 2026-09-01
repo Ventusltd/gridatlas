@@ -248,6 +248,17 @@
         "?? CLAUDE.md",
         "?? _build-plan/"
       ]
+    },
+    {
+      "step": "202609012217-data-contract-parity.mjs",
+      "id": "data-contract-parity",
+      "version": "v9.70",
+      "started_at": "2026-09-01T22:32:41.552Z",
+      "dry": false,
+      "stages": [],
+      "outcome": "failed",
+      "reason": "apply: tools/ci/202609012200-local-ci.mjs: anchor found 0 times (CI gate list)",
+      "finished_at": "2026-09-01T22:32:42.279Z"
     }
   ]
 }
