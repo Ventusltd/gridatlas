@@ -456,6 +456,17 @@
       "outcome": "live",
       "reason": "the runner committed the cut and its push was refused (two refspecs, one destination); the push was completed by hand and the refspec fixed in the runner. Recorded as live, and recorded as NOT a clean unattended run.",
       "attended": true
+    },
+    {
+      "step": "202609012245-electrical-distance.mjs",
+      "id": "electrical-distance",
+      "version": "v9.71",
+      "started_at": "2026-09-01T22:42:44.305Z",
+      "dry": false,
+      "stages": [],
+      "outcome": "failed",
+      "reason": "apply: atlas/modules/202609012217-source-registry.js: anchor found 0 times (registry names the successor topology module)",
+      "finished_at": "2026-09-01T22:42:44.998Z"
     }
   ]
 }
