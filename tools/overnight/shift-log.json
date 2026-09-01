@@ -769,6 +769,54 @@
       "reason": "node --check tools/proofs/202609012249-sld-sandbox.proof.mjs",
       "finished_at": "2026-09-01T23:06:04.318Z",
       "output": "C:\\Users\\vikra\\OneDrive\\Documents\\GitHub\\gridatlas\\tools\\proofs\\202609012249-sld-sandbox.proof.mjs:2672\r\n  /topology.nodes400 = (product.nodes/.test(cartridgeSource));\r\n  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\r\n\r\nSyntaxError: Invalid regular expression: /topology.nodes400 = (product.nodes/: Unterminated group\r\n    at checkSyntax (node:internal/main/check_syntax:72:5)\r\n\r\nNode.js v24.19.0\r\n"
+    },
+    {
+      "step": "202609012320-injection-response.mjs",
+      "id": "injection-response",
+      "version": "v9.73",
+      "started_at": "2026-09-01T23:07:26.025Z",
+      "dry": false,
+      "stages": [
+        {
+          "name": "tooling committed",
+          "at": "2026-09-01T23:07:26.795Z",
+          "commit": "a65dfa0"
+        },
+        {
+          "name": "applied",
+          "at": "2026-09-01T23:07:26.923Z",
+          "changed": [
+            "atlas/parts/202609012045-sld-sandbox-body.js",
+            "tools/ci/202609012200-local-ci.mjs",
+            "tools/proofs/202609012249-sld-sandbox.proof.mjs"
+          ]
+        },
+        {
+          "name": "syntax checked",
+          "at": "2026-09-01T23:07:27.057Z"
+        },
+        {
+          "name": "step proof 202609012320-injection-response.proof.mjs",
+          "at": "2026-09-01T23:07:27.208Z",
+          "status": 0
+        },
+        {
+          "name": "composed",
+          "at": "2026-09-01T23:07:27.444Z",
+          "generation": "202609012307",
+          "version": "v9.73",
+          "previous": "202609012249"
+        },
+        {
+          "name": "gate sandbox proof",
+          "at": "2026-09-01T23:07:28.154Z",
+          "status": 1
+        }
+      ],
+      "outcome": "failed",
+      "reason": "gate red: sandbox proof",
+      "finished_at": "2026-09-01T23:07:28.154Z",
+      "output": "e computation is a module, not more cartridge body\n  [PASS] the neon anchor is untouched: a scope runs only where nothing was hit\n  [PASS] arming is explicit, not automatic\n  [PASS] the tray carries both a scope and a clear\n  [PASS] selecting a project clears any standing scope\n  [PASS] the card prints what the scope is not, in bold, from the result itself\n  [PASS] an absence is described as an absence from the map\n  [PASS] the scope publishes its state\n\nthe connection voltage reaches the network query\n\n  [PASS] the card tells the cartridge what voltage the connection is made at\n  [PASS] a circuit connection has no busbar voltage to pass\n  [PASS] a bus-scoped answer is badged with its voltage, not as site-wide\n\nthe map measures in circuits as well as in kilometres\n\n  [PASS] the electrical-distance module is in the served cartridge\n  [PASS] it is evaluated before the body that calls it\n  [PASS] the successor topology module ships, not the incumbent\n  [PASS] the card asks for two hops, scoped to the connection voltage\n  [PASS] a missing module is an absence, never a guess\n  [PASS] the page says plainly that a hop is not a distance\n  [PASS] refusals are surfaced to the reader, not swallowed\n  [PASS] the traversal state is published for review\n  [PASS] no kilometre figure is taken from the topology answer\n\nevery season the operator publishes, and no total\n\n  [PASS] the rating-envelope module is in the served cartridge\n  [PASS] it is evaluated before the body that calls it\n  [PASS] the card asks for summer, not winter alone\n  [PASS] the card is scoped to the connection voltage when there is one\n  [PASS] the page states plainly that the ratings are not added together\n  [PASS] the page distinguishes a rating from what is free on the circuit\n  [PASS] a placeholder value is named to the reader, not hidden\n  [PASS] the served bytes contain no site total of circuit ratings\n  [PASS] the rating state is published for review\n\na declared powerflow, and what it refuses to say\n\n  [PASS] the injection-response module is in the served cartridge\n  [PASS] it is evaluated before the body that calls it\n  [PASS] the served bytes never read resistance or susceptance into the flow model\n  [PASS] the card names the slack, because a transfer has two ends\n  [PASS] the card states the model assumptions where the reader sees them\n  [PASS] the card says plainly it is not a loading\n  [PASS] an answer that fails its own Kirchhoff check is discarded, not printed\n  [FAIL] the powerflow uses the capacity the deep link carries  \n  [FAIL] the 400 kV node list is recorded once, where the product is already parsed  \n  [PASS] the powerflow is scoped to 400 kV, never walked through an unmodelled tap\n  [PASS] the conservation error is published for review\n  [PASS] the served bytes claim no headroom anywhere in the flow module\n\n577/579 checks passed\n\nFAILURES\n  the powerflow uses the capacity the deep link carries\n  the 400 kV node list is recorded once, where the product is already parsed\n"
     }
   ]
 }

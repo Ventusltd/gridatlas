@@ -142,6 +142,12 @@ ${REACH}`);
   const powerflow = { answered: 0, worst_kirchhoff_error: 0 };
   window.__GRIDATLAS_POWERFLOW__ = powerflow;`);
 
+    /* The in-memory edits land first. Everything below reads BODY from
+       disk, so a patch() called before this write would be silently
+       discarded by it - which is exactly what happened on the first run
+       of this step, and the sandbox proof caught it. */
+    write(BODY, body);
+
     /* ── the 400 kV node list, recorded where the product is parsed ──
        ensureTopology already holds the whole 10 MB payload for one tick.
        Taking the node list there costs one pass and keeps no second copy
@@ -179,8 +185,6 @@ ${REACH}`);
             currentCapacityMw = Number.isFinite(stated) && stated > 0 ? stated : null;`,
        'capacity updated when the search lane resolves it'],
     ]);
-
-    write(BODY, body);
 
     patch(CI, [
       [`  ['rating envelope', ['tools/proofs/modules/202609012250-rating-envelope.proof.mjs']]
