@@ -2642,6 +2642,46 @@ check('the served bytes contain no site total of circuit ratings', (() => {
 check('the rating state is published for review',
   /window\.__GRIDATLAS_RATINGS__ = rating;/.test(cartridgeSource));
 
+console.log('\na declared powerflow, and what it refuses to say\n');
+
+check('the injection-response module is in the served cartridge',
+  /gridatlas\.module\.injection-response\.v1/.test(cartridgeSource));
+check('it is evaluated before the body that calls it',
+  cartridgeSource.indexOf('gridatlas.module.injection-response.v1')
+    < cartridgeSource.indexOf('function flowModule('));
+check('the served bytes never read resistance or susceptance into the flow model', (() => {
+  const start = cartridgeSource.indexOf('gridatlas.module.injection-response.v1');
+  const end = cartridgeSource.indexOf('NS.injectionResponse = Object.freeze');
+  if (start < 0 || end < 0) return false;
+  const mod = cartridgeSource.slice(start, end);
+  return !/r_pct_100mva/.test(mod) && !/b_pct_100mva/.test(mod) && /x_pct_100mva/.test(mod);
+})());
+check('the card names the slack, because a transfer has two ends',
+  /transfer to \$\{escapeHtml\(injection\.slack_node\)\}/.test(cartridgeSource));
+check('the card states the model assumptions where the reader sees them',
+  /Flat 1\.0 pu voltages, small angles, no losses, no taps, intact network/.test(cartridgeSource));
+check('the card says plainly it is not a loading',
+  /not a loading/.test(cartridgeSource)
+  && /whether there is room/.test(cartridgeSource));
+check('an answer that fails its own Kirchhoff check is discarded, not printed',
+  /r\.validation && r\.validation\.passes \? r : null/.test(cartridgeSource));
+check('the powerflow uses the capacity the deep link carries',
+  /currentCapacityMw/.test(cartridgeSource)
+  && /currentCapacityMw = Number\.isFinite\(stated\)/.test(cartridgeSource));
+check('the 400 kV node list is recorded once, where the product is already parsed',
+  /topology\.nodes400 = \(product\.nodes/.test(cartridgeSource));
+check('the powerflow is scoped to 400 kV, never walked through an unmodelled tap',
+  /kv !== 400\) return null;/.test(cartridgeSource));
+check('the conservation error is published for review',
+  /window\.__GRIDATLAS_POWERFLOW__ = powerflow;/.test(cartridgeSource));
+check('the served bytes claim no headroom anywhere in the flow module', (() => {
+  const start = cartridgeSource.indexOf('gridatlas.module.injection-response.v1');
+  const end = cartridgeSource.indexOf('NS.injectionResponse = Object.freeze');
+  const mod = cartridgeSource.slice(start, end)
+    .split(/const NOT_A_[A-Z_]+ =[\s\S]*?';/).join(' ');
+  return !/headroom/i.test(mod);
+})());
+
 console.log(`\n${passed}/${passed + failures.length} checks passed`);
 if (failures.length) {
   console.error('\nFAILURES');

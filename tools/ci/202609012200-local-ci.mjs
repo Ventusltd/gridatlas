@@ -307,7 +307,8 @@ const GATES = [
   ['sizing arithmetic', ['tools/proofs/modules/202609012205-sizing-arithmetic.proof.mjs']],
   ['data-contract parity', ['tools/proofs/202609012214-data-contract-parity.proof.mjs']],
   ['electrical distance', ['tools/proofs/modules/202609012245-electrical-distance.proof.mjs']],
-  ['rating envelope', ['tools/proofs/modules/202609012250-rating-envelope.proof.mjs']]
+  ['rating envelope', ['tools/proofs/modules/202609012250-rating-envelope.proof.mjs']],
+  ['injection response (powerflow)', ['tools/proofs/modules/202609012320-injection-response.proof.mjs']]
 ];
 
 for (const [name, args] of GATES) {
