@@ -297,6 +297,7 @@ const GATES = [
   ['composed cartridges', ['tools/proofs/run-current.mjs']],
   ['parts integrity', ['tools/proofs/202609012105-parts-integrity.proof.mjs']],
   ['all versions', ['tools/proofs/202609012150-all-versions.proof.mjs']],
+  ['historical triangulation', ['tools/proofs/202609011941-historical-triangulation.proof.mjs']],
   ['module parity', ['tools/proofs/modules/202609011950-module-parity.proof.mjs']],
   ['grid scope', ['tools/proofs/modules/202609012040-grid-scope.proof.mjs']],
   ['network topology', ['tools/proofs/modules/202609012145-network-topology.proof.mjs']],
