@@ -2263,8 +2263,9 @@ check('the loader state lives on the window for the source registry',
   /window\.__GRIDATLAS_TOPOLOGY__ = topology;/.test(cartridgeSource)
   && /const topology = \{ state: 'idle'/.test(cartridgeSource));
 check('the product is named once, at data-grid-gb main, and is the v1 schema', (() => {
-  const urls = cartridgeSource.match(/gb-transmission-network\.v1\.json/g) || [];
-  return urls.length === 1
+  const urls = cartridgeSource.match(/main\/derived\/gb-transmission-network\.v1\.json/g) || [];
+  const declared = cartridgeSource.match(/product: 'derived\/gb-transmission-network\.v1\.json'/g) || [];
+  return urls.length === 1 && declared.length === 1
     && /raw\.githubusercontent\.com\/Ventusltd\/data-grid-gb\/'\s*\n\s*\+ 'main\/derived\/gb-transmission-network\.v1\.json'/.test(cartridgeSource);
 })());
 check('it is fetched on first use, inside ensureTopology, and nowhere at load', (() => {
