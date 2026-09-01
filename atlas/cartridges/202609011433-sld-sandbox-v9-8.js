@@ -1,7 +1,7 @@
 /**
  * GridAtlas cartridge — neon substation links and the SLD layout sandbox.
  *
- * Generation 202609011251 (UTC), composition v9.50. Slot: replace-script for
+ * Generation 202609011433 (UTC), composition v9.51. Slot: replace-script for
  * 202608292126-pre-snapped-config-adapter.js.
  *
  * WHAT IT DOES
@@ -61,7 +61,7 @@
 (() => {
   'use strict';
 
-  const GENERATION = '202609011251';
+  const GENERATION = '202609011433';
 
   /* ══════════════════════════════════════════════════════════════════════
      PART 1 — the pre-snapped config adapter, carried forward unchanged.
@@ -192,6 +192,149 @@
     flywheel: '#9f9fb5', caes: '#9f9fb5', act: '#9f9fb5'
   };
   const SUBSTATION_COLOUR = '#5fbdc2';   // teal, the substation end of a link
+
+  /* ── the 400 kV public record ────────────────────────────────────────
+     The nearest-substations list is a measurement and nothing more. But
+     the DCO-scale schemes each carry a PUBLIC declared point of connection
+     at 400 kV - usually through a new customer substation consented within
+     the scheme itself - and this card used to say nothing about it while
+     listing closer 33 and 132 kV points, which read as connecting them to
+     the wrong network. The rule holds: bind to the public record or say
+     nothing. Every entry below is sourced from Development Consent Orders,
+     Planning Inspectorate documents, or public project statements; the
+     table binds a register identity to a NAMED substation in the served
+     payload, and the distance shown is measured, never asserted. */
+  const DECLARED_COLOUR = '#d8b64a';   // gold: the declared link, not a guess
+  const DECLARED_CONNECTIONS = Object.freeze({
+    '10914': { substation: 'Cottam Substation',
+      via: 'a new 400 kV scheme substation consented within the DCO',
+      source: 'Cottam Solar Project Order 2024, granted 5 Sep 2024 (EN010133)' },
+    '10915': { substation: 'Cottam Substation',
+      via: 'a new 400 kV scheme substation consented within the DCO',
+      source: 'Cottam Solar Project Order 2024, granted 5 Sep 2024 (EN010133)' },
+    '10916': { substation: 'West Burton Substation',
+      via: 'a new 400 kV customer substation at West Burton 3 and a 400 kV cable to the former generator bay',
+      source: 'West Burton Solar Project Order, granted 24 Jan 2025 (EN010132)' },
+    '10917': { substation: 'West Burton Substation',
+      via: 'a new 400 kV customer substation at West Burton 3 and a 400 kV cable to the former generator bay',
+      source: 'West Burton Solar Project Order, granted 24 Jan 2025 (EN010132)' },
+    '9809': { substation: 'Cottam Substation',
+      via: 'a new 400 kV scheme substation and a 7.5 km 400 kV underground cable',
+      source: 'Gate Burton Energy Park Order, granted 2024 (EN010131)' },
+    '9810': { substation: 'Cottam Substation',
+      via: 'a new 400 kV scheme substation and a 7.5 km 400 kV underground cable',
+      source: 'Gate Burton Energy Park Order, granted 2024 (EN010131)' },
+    '12281': { substation: 'Cottam Substation',
+      via: 'an 18.5 km 400 kV underground cable to a free bay',
+      source: 'Tillbridge Solar Order 2025 (EN010142)' },
+    '12282': { substation: 'Cottam Substation',
+      via: 'an 18.5 km 400 kV underground cable to a free bay',
+      source: 'Tillbridge Solar Order 2025 (EN010142)' },
+    '14806': { substation: 'High Marnham Substation',
+      via: "NGET's new substation adjacent to the existing High Marnham (Great Grid Upgrade)",
+      source: 'One Earth Solar Farm DCO, consented (EN010159)' },
+    '14807': { substation: 'High Marnham Substation',
+      via: "NGET's new substation adjacent to the existing High Marnham (Great Grid Upgrade)",
+      source: 'One Earth Solar Farm DCO, consented (EN010159)' },
+    '13599': { substation: 'Bicker Fen Substation',
+      via: 'a 400 kV cable and a consented extension of Bicker Fen shared with Heckington Fen',
+      source: 'Beacon Fen Energy Park DCO, granted Aug 2026 (EN010151)' },
+    '13600': { substation: 'Bicker Fen Substation',
+      via: 'a 400 kV cable and a consented extension of Bicker Fen shared with Heckington Fen',
+      source: 'Beacon Fen Energy Park DCO, granted Aug 2026 (EN010151)' },
+    '9806': { substation: 'Bicker Fen Substation',
+      via: 'the consented Bicker Fen extension shared with Beacon Fen',
+      source: 'Heckington Fen Solar Park DCO, granted (EN010123)' },
+    '9807': { substation: 'Bicker Fen Substation',
+      via: 'the consented Bicker Fen extension shared with Beacon Fen',
+      source: 'Heckington Fen Solar Park DCO, granted (EN010123)' },
+    '13644': { substation: 'Thorpe Marsh Substation',
+      via: 'a new 400 kV four-bay substation under construction at Thorpe Marsh',
+      source: 'public planning and contractor records; construction under way' },
+    '19801': { substation: 'Thorpe Marsh Substation',
+      via: 'a new 400 kV four-bay substation under construction at Thorpe Marsh',
+      source: 'public planning and contractor records; construction under way' },
+    '11928': { substation: 'West Burton Substation',
+      via: 'a 400 kV grid connection at the former power station site (West Burton C); financial close July 2026',
+      source: 'public project records' }
+  });
+
+  /* Public works at named substations, shown wherever the name is - the
+     "customer and NG substations that do not exist yet" half of the logic.
+     Descriptions of the network, never advice about a scheme. */
+  const SUBSTATION_WORKS = Object.freeze({
+    'thorpe marsh substation':
+      'A new 400 kV four-bay substation is under construction here (public record).',
+    'high marnham substation':
+      'NGET is building a new substation adjacent to the existing one (Great Grid Upgrade, public record).',
+    'bicker fen substation':
+      'A consented extension here will connect Beacon Fen and Heckington Fen (public record).'
+  });
+
+  let currentRepdRef = null;
+  let currentDeclared = null;
+  let currentNearest400 = null;
+
+  function resolveDeclaredConnection(repdRef, origin, subs) {
+    const declared = DECLARED_CONNECTIONS[String(repdRef || '')];
+    if (!declared) return null;
+    const wanted = declared.substation.toLowerCase();
+    const works = SUBSTATION_WORKS[wanted] || null;
+    const match = subs
+      .filter(s => String(s.name).toLowerCase() === wanted
+        && Array.isArray(s.kv) && s.kv[0] >= 400)
+      .sort((a, b) => b.kv[0] - a.kv[0])[0] || null;
+    if (!match) {
+      return { poc: declared.substation, kv: 400, at: null, km: null,
+        via: declared.via, source: declared.source, works };
+    }
+    return { poc: match.name, kv: Math.round(match.kv[0]), at: match.at,
+      km: distanceKm(origin[0], origin[1], match.at[0], match.at[1]),
+      via: declared.via, source: declared.source, works };
+  }
+
+  function nearestTransmission(origin, subs) {
+    let best = null;
+    for (const s of subs) {
+      if (!(Array.isArray(s.kv) && s.kv[0] >= 400)) continue;
+      const km = distanceKm(origin[0], origin[1], s.at[0], s.at[1]);
+      if (!best || km < best.km) {
+        best = { name: s.name || 'Unnamed substation', km, at: s.at };
+      }
+    }
+    if (best) {
+      best.works = SUBSTATION_WORKS[String(best.name).toLowerCase()] || null;
+    }
+    return best;
+  }
+
+  function declaredBlockHtml(toSubstations) {
+    if (!toSubstations) return '';
+    let out = '';
+    if (currentDeclared) {
+      const d = currentDeclared;
+      out += `<div class="neon-hd">Declared connection`
+        + `<span class="neon-beta">Public record</span></div>`
+        + `<ol><li>`
+        + (d.at ? `<span class="neon-km">${d.km.toFixed(2)} km</span>` : '')
+        + `<span class="neon-name">${escapeHtml(d.poc)}</span>`
+        + `<span class="neon-kv">${d.kv} kV</span></li></ol>`
+        + `<p class="neon-caveat">Via ${escapeHtml(d.via)}. `
+        + `Source: ${escapeHtml(d.source)}.`
+        + (d.works ? ` ${escapeHtml(d.works)}` : '')
+        + (d.at ? '' : ' This substation is not in the mapped payload, so no distance is measured.')
+        + `</p>`;
+    }
+    if (currentNearest400) {
+      const n = currentNearest400;
+      out += `<p class="neon-caveat"><b>Nearest 400 kV substation:</b> `
+        + `${escapeHtml(n.name)} · ${n.km.toFixed(2)} km`
+        + (n.works ? `. ${escapeHtml(n.works)}` : '')
+        + `</p>`;
+    }
+    return out;
+  }
+
   const FLOW_COLOUR = '#bfe9ee';         // pale cyan travelling pulse, not white
 
   // The flow. MapLibre repeats a dash array along the line, so a short period
@@ -675,6 +818,7 @@
       : 'Nearest projects';
     const fallbackName = toSubstations ? 'Unnamed substation' : 'Unnamed project';
     const head = `<div class="neon-hd">${title}<span class="neon-beta">Beta</span></div>`;
+    const declaredHtml = declaredBlockHtml(toSubstations);
     if (!links.length) {
       const nothing = toSubstations
         ? `No mapped substation at ${MIN_KV} kV or above within ${MAX_LINK_KM} km of this point.`
@@ -683,7 +827,7 @@
           : `The project layers are switched off, so there is nothing to measure `
             + `against. Turn on Solar PV, Wind or Battery Storage and click again. `
             + `This is not a statement that no project is here.`);
-      return `<div class="${BLOCK_CLASS}">${head}`
+      return `<div class="${BLOCK_CLASS}">${declaredHtml}${head}`
         + `<div class="neon-caveat">${nothing}</div>${caveatHtml()}</div>`;
     }
     const rows = links.map(l => {
@@ -722,7 +866,7 @@
         + `${pinVisible ? 'Hide' : 'Show'} the project ring</button>`
         + `<button class="neon-layout" type="button">Lay out a scheme here &#9656;</button>`
       : '';
-    return `<div class="${BLOCK_CLASS}">${head}<ol>${rows}</ol>${kvNoteHtml}`
+    return `<div class="${BLOCK_CLASS}">${declaredHtml}${head}<ol>${rows}</ol>${kvNoteHtml}`
       + `${button}${caveatHtml()}</div>`;
   }
 
@@ -1225,6 +1369,9 @@
     clearPin(capturedMap);
     link.links_drawn = 0;
     link.last_selection = null;
+    currentRepdRef = null;
+    currentDeclared = null;
+    currentNearest400 = null;
   }
 
   function drawLinks(map, origin, name, tech, links, direction, statedMw, layerLoaded = true) {
@@ -1259,6 +1406,17 @@
       };
     });
 
+    if (direction === 'to-substation' && currentDeclared?.at) {
+      // The declared link is public record, drawn in its own colour so it
+      // never reads as one more nearest-neighbour measurement.
+      lines.push({ type: 'Feature',
+        properties: { colour: DECLARED_COLOUR, strength: 0.85, km: currentDeclared.km },
+        geometry: { type: 'LineString', coordinates: [origin, currentDeclared.at] } });
+      nodes.push({ type: 'Feature',
+        properties: { colour: DECLARED_COLOUR,
+          label: `PoC \u00b7 ${currentDeclared.km.toFixed(2)} km \u00b7 ${currentDeclared.kv} kV` },
+        geometry: { type: 'Point', coordinates: currentDeclared.at } });
+    }
     setSourceData(map, SRC, { type: 'FeatureCollection', features: lines });
     setSourceData(map, SRC_NODES, { type: 'FeatureCollection', features: nodes });
 
@@ -1927,7 +2085,7 @@
 
      Mobile first, like everything since Vikram said the link travels by
      WhatsApp: a collapsed chip, viewport-sized body, newest first. */
-  const VERSION_LEDGER = [{"g":"202608312121","v":"v9.16","s":"the project arriving from Pipeline News is visible: its own technology layer is enabled and a pin owned by this cartridge is dropped on it, with a toggle on the card"},{"g":"202608312133","v":"v9.17","s":"central AC sizing: the limiting nameplate, not a squared product"},{"g":"202608312140","v":"v9.18","s":"the project marker is a ring, found by looking at it in Chrome"},{"g":"202608312154","v":"v9.19","s":"the grid maths installs even when the basemap never paints"},{"g":"202608312157","v":"v9.20","s":"the Atlas says what it is waiting for, sized for a phone"},{"g":"202608312205","v":"v9.21","s":"the MapLibre exception storm: symbol layers with no glyph atlas"},{"g":"202608312208","v":"v9.22","s":"a symbol layer is added only once its text can be drawn"},{"g":"202608312222","v":"v9.23","s":"card geometry resets on every selection"},{"g":"202608312227","v":"v9.24","s":"the GB electricity tracker is connected to the map"},{"g":"202608312238","v":"v9.25","s":"one source of truth for GB prices: the data repository"},{"g":"202608312244","v":"v9.26","s":"late layer controls are used, and the repository is LF everywhere"},{"g":"202608312257","v":"v9.27","s":"the MAP button works for every technology in the register"},{"g":"202608312300","v":"v9.28","s":"voltage classes are explained, and the whole dashboard is accepted"},{"g":"202608312306","v":"v9.29","s":"the headline capacity actually moves the layout"},{"g":"202608312313","v":"v9.30","s":"the neon flow no longer exhausts the renderer"},{"g":"202608312315","v":"v9.31","s":"Codex's LineAtlas cardinality gate passes"},{"g":"202608312317","v":"v9.32","s":"no substation can display an impossible voltage"},{"g":"202608312321","v":"v9.33","s":"nothing can rewrite the reference design, not even later"},{"g":"202608312324","v":"v9.34","s":"a missing source costs a drawing, never the session"},{"g":"202609010021","v":"v9.35","s":"phone pointer operation, viewport containment and named electrical ratios"},{"g":"202609010040","v":"v9.36","s":"original financial-model parity with explicit correction of the known central AC double-count"},{"g":"202609010053","v":"v9.37","s":"complete the original finance interaction contract by linking development stage, cost and success"},{"g":"202609010058","v":"v9.38","s":"restore topology-isolated physical inputs and the original mounting-to-bifacial linkage"},{"g":"202609010106","v":"v9.39","s":"remove duplicate BESS truth, restore original central defaults and reject fractional topology counts"},{"g":"202609010204","v":"v9.40","s":"the version ledger itself, on the page"},{"g":"202609010722","v":"v9.41","s":"exact GB price evidence, beside the ledger"},{"g":"202609010726","v":"v9.42","s":"the price panel revalidates instead of pinning its first sight"},{"g":"202609010902","v":"v9.43","s":"mobile: tools collapse behind one chip; grid and subs are one tap"},{"g":"202609011141","v":"v9.44","s":"a repd_ref-only link computes the links: identity resolved by the search lane is consumed, not re-required from the URL"},{"g":"202609011205","v":"v9.45","s":"arrival: fullscreen on touch, the identity wait runs to its end, and every stage says what it is doing"},{"g":"202609011215","v":"v9.46","s":"the distances survive the card: a keeper re-attaches the measurement block when a late popup replaces the one it decorated"},{"g":"202609011242","v":"v9.47","s":"the arrival owns its card: 2,421 register-absent projects (873 solar) get a card from the link's own fields, yielded if the register's card lands"},{"g":"202609011243","v":"v9.48","s":"supersedes v9.47's boundary: the composition was sound, its proof shipped one stale check; re-sealed coherent"},{"g":"202609011244","v":"v9.49","s":"supersedes v9.48, whose boundary shipped without its proof file; same composition, re-sealed whole"},{"g":"202609011251","v":"v9.50","s":"the card precedes the lines: a register-absent arrival opened its card after drawing, and the lines-belong-to-the-card watcher rightly wiped them"}];
+  const VERSION_LEDGER = [{"g":"202608312121","v":"v9.16","s":"the project arriving from Pipeline News is visible: its own technology layer is enabled and a pin owned by this cartridge is dropped on it, with a toggle on the card"},{"g":"202608312133","v":"v9.17","s":"central AC sizing: the limiting nameplate, not a squared product"},{"g":"202608312140","v":"v9.18","s":"the project marker is a ring, found by looking at it in Chrome"},{"g":"202608312154","v":"v9.19","s":"the grid maths installs even when the basemap never paints"},{"g":"202608312157","v":"v9.20","s":"the Atlas says what it is waiting for, sized for a phone"},{"g":"202608312205","v":"v9.21","s":"the MapLibre exception storm: symbol layers with no glyph atlas"},{"g":"202608312208","v":"v9.22","s":"a symbol layer is added only once its text can be drawn"},{"g":"202608312222","v":"v9.23","s":"card geometry resets on every selection"},{"g":"202608312227","v":"v9.24","s":"the GB electricity tracker is connected to the map"},{"g":"202608312238","v":"v9.25","s":"one source of truth for GB prices: the data repository"},{"g":"202608312244","v":"v9.26","s":"late layer controls are used, and the repository is LF everywhere"},{"g":"202608312257","v":"v9.27","s":"the MAP button works for every technology in the register"},{"g":"202608312300","v":"v9.28","s":"voltage classes are explained, and the whole dashboard is accepted"},{"g":"202608312306","v":"v9.29","s":"the headline capacity actually moves the layout"},{"g":"202608312313","v":"v9.30","s":"the neon flow no longer exhausts the renderer"},{"g":"202608312315","v":"v9.31","s":"Codex's LineAtlas cardinality gate passes"},{"g":"202608312317","v":"v9.32","s":"no substation can display an impossible voltage"},{"g":"202608312321","v":"v9.33","s":"nothing can rewrite the reference design, not even later"},{"g":"202608312324","v":"v9.34","s":"a missing source costs a drawing, never the session"},{"g":"202609010021","v":"v9.35","s":"phone pointer operation, viewport containment and named electrical ratios"},{"g":"202609010040","v":"v9.36","s":"original financial-model parity with explicit correction of the known central AC double-count"},{"g":"202609010053","v":"v9.37","s":"complete the original finance interaction contract by linking development stage, cost and success"},{"g":"202609010058","v":"v9.38","s":"restore topology-isolated physical inputs and the original mounting-to-bifacial linkage"},{"g":"202609010106","v":"v9.39","s":"remove duplicate BESS truth, restore original central defaults and reject fractional topology counts"},{"g":"202609010204","v":"v9.40","s":"the version ledger itself, on the page"},{"g":"202609010722","v":"v9.41","s":"exact GB price evidence, beside the ledger"},{"g":"202609010726","v":"v9.42","s":"the price panel revalidates instead of pinning its first sight"},{"g":"202609010902","v":"v9.43","s":"mobile: tools collapse behind one chip; grid and subs are one tap"},{"g":"202609011141","v":"v9.44","s":"a repd_ref-only link computes the links: identity resolved by the search lane is consumed, not re-required from the URL"},{"g":"202609011205","v":"v9.45","s":"arrival: fullscreen on touch, the identity wait runs to its end, and every stage says what it is doing"},{"g":"202609011215","v":"v9.46","s":"the distances survive the card: a keeper re-attaches the measurement block when a late popup replaces the one it decorated"},{"g":"202609011242","v":"v9.47","s":"the arrival owns its card: 2,421 register-absent projects (873 solar) get a card from the link's own fields, yielded if the register's card lands"},{"g":"202609011243","v":"v9.48","s":"supersedes v9.47's boundary: the composition was sound, its proof shipped one stale check; re-sealed coherent"},{"g":"202609011244","v":"v9.49","s":"supersedes v9.48, whose boundary shipped without its proof file; same composition, re-sealed whole"},{"g":"202609011251","v":"v9.50","s":"the card precedes the lines: a register-absent arrival opened its card after drawing, and the lines-belong-to-the-card watcher rightly wiped them"},{"g":"202609011433","v":"v9.51","s":"the 400 kV public record: declared DCO connections drawn and carded, new customer substations named, nearest 400 kV measured for every project"}];
   const PRE_SCOPE_COMPOSITIONS = 16;
   const LEDGER_ID = 'gridatlas-version-ledger';
 
@@ -2254,6 +2412,8 @@
     // deep link, which opens a card without anybody clicking, goes through
     // exactly the same path.
     async function selectAt(origin, name, tech, fromSubstation, statedMw) {
+      currentDeclared = null;
+      currentNearest400 = null;
       if (fromSubstation) {
         // No fetch needed: the projects are already in the engine's own
         // source, and reading them there keeps one set of coordinates.
@@ -2297,6 +2457,8 @@
         return;
       }
       clearStatus();
+      currentDeclared = resolveDeclaredConnection(currentRepdRef, origin, subs);
+      currentNearest400 = nearestTransmission(origin, subs);
       drawLinks(map, origin, name, tech,
         nearestSubstations(origin[0], origin[1], subs), 'to-substation', statedMw);
     }
@@ -2330,6 +2492,8 @@
         const name = properties.name || properties.SiteName || properties['Site Name']
           || (fromSubstation ? 'Unnamed substation' : 'Unnamed project');
         const stated = Number(properties.capacity);
+        currentRepdRef = fromSubstation
+          ? null : String(properties.repd_ref || properties.repdRef || '');
         await selectAt(origin, name, tech, fromSubstation,
           Number.isFinite(stated) && stated > 0 ? stated : null);
       } catch (error) {
@@ -2506,6 +2670,7 @@
              because the fallback card was opened after the measurement.
              ensureArrivalCard is a no-op when a card is already up, so the
              resolved-register path is unchanged. */
+          currentRepdRef = String(q.get('repd_ref') || '');
           ensureArrivalCard(lon, lat, name, tech, stated);
           link.deep_linked = true;
           await selectAt([lon, lat], name, tech, false,

@@ -1,5 +1,5 @@
 /**
- * Proof for the neon links + SLD layout sandbox cartridge, generation 202609011251.
+ * Proof for the neon links + SLD layout sandbox cartridge, generation 202609011433.
  *
  * No dependencies. The repository carries playwright and no DOM library, so
  * rather than add one this stubs the small surface the cartridge actually
@@ -32,7 +32,7 @@ import vm from 'node:vm';
 const HERE = dirname(fileURLToPath(import.meta.url));
 const REPO = resolve(HERE, '..', '..');
 const CARTRIDGE = join(REPO, 'atlas', 'cartridges',
-  '202609011251-sld-sandbox-v9-8.js');
+  '202609011433-sld-sandbox-v9-8.js');
 const ORIGINAL = join(REPO, 'atlas', 'releases', '202608300453-atlas-v9',
   '202608292126-pre-snapped-config-adapter.js');
 const FINANCE_ORACLE = join(REPO, 'tools', 'proofs', 'fixtures',
@@ -2124,6 +2124,45 @@ check('the fallback card is opened before the measurement runs',
   /ensureArrivalCard\(lon, lat, name, tech, stated\);\n          link\.deep_linked = true;\n          await selectAt/.test(cartridgeSource));
 check('a terminally failed identity lane does not spend the popup budget',
   /if \(idStatus === 'FAILED' \|\| idStatus === 'ABSENT'\) break;/.test(cartridgeSource));
+
+
+console.log('\nthe 400 kV public record\n');
+
+/* Bind to the public record or say nothing: DCO-scale schemes carry a
+   declared 400 kV point of connection, and the card now states it with its
+   source instead of implying the nearest 132 kV is the story. */
+check('the declared table binds register identities to named substations',
+  /const DECLARED_CONNECTIONS = Object\.freeze\(\{/.test(cartridgeSource)
+  && ['10914','10916','9809','12281','14806','13599','9806','13644','11928']
+    .every(ref => new RegExp(`'${ref}': \\{ substation: '`).test(cartridgeSource)));
+check('every declared entry names its public source',
+  /EN010133/.test(cartridgeSource) && /EN010132/.test(cartridgeSource)
+  && /EN010131/.test(cartridgeSource) && /EN010142/.test(cartridgeSource)
+  && /EN010159/.test(cartridgeSource) && /EN010151/.test(cartridgeSource)
+  && /EN010123/.test(cartridgeSource));
+check('the resolver requires 400 kV at the named substation',
+  /s\.kv\[0\] >= 400\)/.test(cartridgeSource)
+  && /Array\.isArray\(s\.kv\)/.test(cartridgeSource));
+check('a payload-absent substation is stated, not silently dropped',
+  /not in the mapped payload, so no distance is measured/.test(cartridgeSource));
+check('the declared link draws in its own colour',
+  /const DECLARED_COLOUR = '#d8b64a';/.test(cartridgeSource)
+  && /colour: DECLARED_COLOUR, strength: 0\.85/.test(cartridgeSource));
+check('nearest 400 kV is measured for every project selection',
+  /function nearestTransmission\(origin, subs\)/.test(cartridgeSource)
+  && /currentNearest400 = nearestTransmission\(origin, subs\);/.test(cartridgeSource));
+check('substation works notes come from the fixed public table only',
+  /const SUBSTATION_WORKS = Object\.freeze\(\{/.test(cartridgeSource)
+  && /Great Grid Upgrade, public record/.test(cartridgeSource));
+check('the card block says public record and cites the source',
+  /Declared connection/.test(cartridgeSource)
+  && /Public record/.test(cartridgeSource)
+  && /Source: \$\{escapeHtml\(d\.source\)\}/.test(cartridgeSource));
+check('selection state resets so one scheme never wears another\'s record',
+  /currentDeclared = null;\n      currentNearest400 = null;/.test(cartridgeSource)
+  && /currentRepdRef = null;\n    currentDeclared = null;/.test(cartridgeSource));
+check('no verdict language decorates the record',
+  !/STRONG|REMOTE|well.placed|ideal|advantage/.test(cartridgeSource.split('DECLARED_CONNECTIONS')[1].split('function resolveDeclaredConnection')[0]));
 
 console.log(`\n${passed}/${passed + failures.length} checks passed`);
 if (failures.length) {

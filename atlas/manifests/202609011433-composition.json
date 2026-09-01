@@ -1,7 +1,7 @@
 {
  "schema": "gridatlas.composition-manifest.v1",
- "generation": "202609011251",
- "parent_generation": "202609011244",
+ "generation": "202609011433",
+ "parent_generation": "202609011251",
  "live_route": "/gridatlas/atlas/",
  "shell": {
   "release_id": "202608300453-atlas-v9",
@@ -67,13 +67,13 @@
   },
   {
    "id": "sld-sandbox",
-   "generation": "202609011251",
-   "version": "v9.50",
+   "generation": "202609011433",
+   "version": "v9.51",
    "type": "script",
    "slot": "replace-script",
    "replace_script": "202608292126-pre-snapped-config-adapter.js",
-   "path": "./cartridges/202609011251-sld-sandbox-v9-8.js",
-   "sha256": "fdb2cbc287600470e9f4de539298d89224bb07cd586394a635bcdc759974ab2a",
+   "path": "./cartridges/202609011433-sld-sandbox-v9-8.js",
+   "sha256": "7761815947b170af524f9b84683fb7d55d299bea20a749d5619ef7e55f98f5a3",
    "capabilities": [
     "pre-snapped-config-adapter-carried-forward",
     "project-or-substation-selection",
@@ -165,7 +165,11 @@
     "arrival-stages-surfaced-with-retry",
     "measurement-block-kept-not-written-once",
     "arrival-card-from-link-fields-when-register-absent",
-    "arrival-card-precedes-the-lines"
+    "arrival-card-precedes-the-lines",
+    "declared-connections-bound-to-public-record",
+    "new-customer-substations-in-the-declared-chain",
+    "substation-works-noted-from-public-record",
+    "nearest-400kv-measured-for-every-project"
    ],
    "immutable_shell_modified": false,
    "supersedes_shell_script": {
@@ -435,6 +439,28 @@
     "consequence": "the identity lane failed for them, and the card on arrival was that lane's popup, so links drew with no card - which on a phone reads as nothing working",
     "fix": "when no card has appeared by the end of the arrival, this cartridge opens one from the link's own fields - name, technology, capacity - stating that provenance on the card; if the register's card lands later the fallback yields to it, and a cleared selection removes it",
     "not_done": "widening the register parquet is a data-governance decision (which statuses belong in the Atlas register) and is left recorded, not taken"
+   },
+   "declared_connections": {
+    "asked_by": "Vikram, 202609011433: NSIP-scale schemes were being read against nearest 132 kV-and-below points while their public record names 400 kV connections, often through new customer substations",
+    "rule": "bind to the public record or say nothing: every carded fact is from DCO orders, Planning Inspectorate documents, or public project statements; distances are measured against the served payload, never asserted",
+    "declared_schemes": [
+     "Cottam Solar -> Cottam 400 kV (EN010133, granted 2024)",
+     "West Burton Solar -> West Burton 400 kV via new customer substation at WB3 (EN010132, granted 2025)",
+     "Gate Burton -> Cottam 400 kV (EN010131, granted 2024)",
+     "Tillbridge -> Cottam 400 kV (EN010142, Order 2025)",
+     "One Earth -> NGET's new High Marnham substation (EN010159, consented)",
+     "Beacon Fen -> Bicker Fen 400 kV via consented extension (EN010151, granted Aug 2026)",
+     "Heckington Fen -> Bicker Fen 400 kV (EN010123, granted)",
+     "Thorpe Marsh Green Energy Hub -> Thorpe Marsh 400 kV, new four-bay substation under construction (public records)",
+     "West Burton C BESS -> West Burton 400 kV, financial close July 2026 (public records)"
+    ],
+    "new_substation_works_noted": [
+     "Thorpe Marsh",
+     "High Marnham (Great Grid Upgrade)",
+     "Bicker Fen extension"
+    ],
+    "generic": "nearest 400 kV substation is measured and shown for every project selection - measurement, not inference",
+    "confidentiality": "a private project document was used only to validate the grid logic; no fact appears on a card that is not in the public record"
    }
   }
  ],
@@ -463,7 +489,7 @@
   "offshore_wind_excluded_from_links": true,
   "cards_fit_after_drag_and_restore": true,
   "shell_modified": false,
-  "scope": "the arrival card precedes the measurement, so the lines-belong-to-the-card watcher never wipes a register-absent arrival's links; a terminally failed identity lane no longer spends the popup budget",
+  "scope": "the 400 kV public record: declared DCO connections drawn in their own colour and carded with source, new customer and NG substation works named from public record, nearest 400 kV measured for every project",
   "proof": "tools/proofs/202609010726-sld-sandbox.proof.mjs, 420 checks"
  },
  "version": "v9.39",
@@ -474,5 +500,5 @@
   "source_sha256": "07d33eda5b3279a03df4c0a0aded61e4363c46734dda991aa5f48ae0d55097da",
   "transformation": "carry the pre-snap config rewrite verbatim; add a measured link layer and on-card beta distances"
  },
- "composition_version": "v9.50"
+ "composition_version": "v9.51"
 }
