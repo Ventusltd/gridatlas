@@ -585,6 +585,51 @@
       "commit": "dfc6722657893e6a1eff09664d3fc6286c55e7e4",
       "finished_at": "2026-09-01T22:45:22.580Z",
       "outcome": "live"
+    },
+    {
+      "step": "202609012250-rating-envelope.mjs",
+      "id": "rating-envelope",
+      "version": "v9.72",
+      "started_at": "2026-09-01T22:49:13.183Z",
+      "dry": false,
+      "stages": [
+        {
+          "name": "applied",
+          "at": "2026-09-01T22:49:13.942Z",
+          "changed": [
+            "atlas/parts/202609012045-sld-sandbox-body.js",
+            "tools/ci/202609012200-local-ci.mjs",
+            "tools/proofs/202609012243-sld-sandbox.proof.mjs",
+            "atlas/modules/202609012250-rating-envelope.js",
+            "tools/proofs/modules/202609012250-rating-envelope.proof.mjs"
+          ]
+        },
+        {
+          "name": "syntax checked",
+          "at": "2026-09-01T22:49:14.149Z"
+        },
+        {
+          "name": "step proof 202609012250-rating-envelope.proof.mjs",
+          "at": "2026-09-01T22:49:14.250Z",
+          "status": 0
+        },
+        {
+          "name": "composed",
+          "at": "2026-09-01T22:49:14.473Z",
+          "generation": "202609012249",
+          "version": "v9.72",
+          "previous": "202609012243"
+        },
+        {
+          "name": "gate sandbox proof",
+          "at": "2026-09-01T22:49:15.170Z",
+          "status": 1
+        }
+      ],
+      "outcome": "failed",
+      "reason": "gate red: sandbox proof",
+      "finished_at": "2026-09-01T22:49:15.171Z",
+      "output": "tion's, not an inherited pending\n  [PASS] the manifest records the clock it was cut at, and the stamp agrees with it  2026-09-01T22:49:14.397Z\n  [PASS] the manifest chains by pointer, not by sort order\n  [PASS] the Subs control is looked up by its attribute first\n  [PASS] the label search survives only as a fallback\n  [PASS] an active failure is recorded once, by a named helper\n\nrun against a DOM, not a regular expression\n\n  [PASS] two misses leave one entry, not two  1\n  [PASS] the control is found by attribute despite unhelpful label text\n  [PASS] the recovered entry left the active ledger\n  [PASS] it was preserved as recovered rather than deleted\n  [PASS] an unrelated failure is untouched\n\nthe network sentence names its own scope\n\n  [PASS] the scope label is rendered before the numbers\n  [PASS] a multi-voltage site is badged Site-wide\n  [PASS] the card never prints a distance taken from the owner product\n\nthe Grid Finding Scope\n\n  [PASS] the scope computation is a module, not more cartridge body\n  [PASS] the neon anchor is untouched: a scope runs only where nothing was hit\n  [PASS] arming is explicit, not automatic\n  [PASS] the tray carries both a scope and a clear\n  [PASS] selecting a project clears any standing scope\n  [PASS] the card prints what the scope is not, in bold, from the result itself\n  [PASS] an absence is described as an absence from the map\n  [PASS] the scope publishes its state\n\nthe connection voltage reaches the network query\n\n  [PASS] the card tells the cartridge what voltage the connection is made at\n  [PASS] a circuit connection has no busbar voltage to pass\n  [PASS] a bus-scoped answer is badged with its voltage, not as site-wide\n\nthe map measures in circuits as well as in kilometres\n\n  [PASS] the electrical-distance module is in the served cartridge\n  [PASS] it is evaluated before the body that calls it\n  [PASS] the successor topology module ships, not the incumbent\n  [PASS] the card asks for two hops, scoped to the connection voltage\n  [PASS] a missing module is an absence, never a guess\n  [PASS] the page says plainly that a hop is not a distance\n  [PASS] refusals are surfaced to the reader, not swallowed\n  [PASS] the traversal state is published for review\n  [PASS] no kilometre figure is taken from the topology answer\n\nevery season the operator publishes, and no total\n\n  [PASS] the rating-envelope module is in the served cartridge\n  [PASS] it is evaluated before the body that calls it\n  [PASS] the card asks for summer, not winter alone\n  [PASS] the card is scoped to the connection voltage when there is one\n  [PASS] the page states plainly that the ratings are not added together\n  [PASS] the page distinguishes a rating from what is free on the circuit\n  [FAIL] a placeholder value is named to the reader, not hidden  \n  [PASS] the served bytes contain no site total of circuit ratings\n  [PASS] the rating state is published for review\n\n566/567 checks passed\n\nFAILURES\n  a placeholder value is named to the reader, not hidden\n"
     }
   ]
 }
