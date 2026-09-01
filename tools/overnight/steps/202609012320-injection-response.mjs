@@ -218,9 +218,9 @@ check('an answer that fails its own Kirchhoff check is discarded, not printed',
   /r\\.validation && r\\.validation\\.passes \\? r : null/.test(cartridgeSource));
 check('the powerflow uses the capacity the deep link carries',
   /currentCapacityMw/.test(cartridgeSource)
-  && /currentCapacityMw = Number\.isFinite\(stated\)/.test(cartridgeSource));
+  && /currentCapacityMw = Number\\.isFinite\\(stated\\)/.test(cartridgeSource));
 check('the 400 kV node list is recorded once, where the product is already parsed',
-  /topology\.nodes400 = \(product\.nodes/.test(cartridgeSource));
+  /topology\\.nodes400 = \\(product\\.nodes/.test(cartridgeSource));
 check('the powerflow is scoped to 400 kV, never walked through an unmodelled tap',
   /kv !== 400\\) return null;/.test(cartridgeSource));
 check('the conservation error is published for review',
