@@ -299,6 +299,7 @@ const GATES = [
   ['network topology', ['tools/proofs/modules/202609012145-network-topology.proof.mjs']],
   ['assembler', ['tools/proofs/modules/202609012010-assembler.proof.mjs']],
   ['source registry', ['tools/proofs/modules/202609012135-source-registry.proof.mjs']],
+  ['map-click network', ['tools/proofs/modules/202609012230-map-click-network.proof.mjs']],
   ['declared connections', ['tools/proofs/modules/202609012130-declared-connections.proof.mjs']]
 ];
 
