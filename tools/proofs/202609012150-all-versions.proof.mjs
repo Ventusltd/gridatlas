@@ -179,6 +179,28 @@ check('more than one version measures, so this comparison means something',
 check('no artefact anywhere carries a different Earth radius',
   strangers.length === 0, strangers.join('; '));
 
+/* The FORM, not only the constant.
+   ------------------------------------------------------------------------
+   The local CI found this gap by reading every blob ever committed: this
+   scan checked that every artefact used the same radius, and said nothing
+   about how it used it. Two forms of the same identity - R*2*atan2(...) and
+   2*R*asin(...) - are one unit in the last place apart, which is how the
+   geodesy module diverged from every version around it while passing a
+   radius check. */
+const ATAN2_FORM = /Math\.atan2\(\s*Math\.sqrt\(\s*\w+\s*\)\s*,\s*Math\.sqrt\(\s*1\s*-\s*\w+\s*\)/;
+const ASIN_FORM = /Math\.asin\(\s*Math\.sqrt\(/;
+const wrongForm = [];
+for (const file of files) {
+  const code = withoutComments(await readFile(file, 'utf8'));
+  if (!code.includes(String(ESTATE_RADIUS_KM))) continue;
+  if (ASIN_FORM.test(code) && !ATAN2_FORM.test(code)) {
+    wrongForm.push(relative(REPO, file).replace(/\\/g, '/'));
+  }
+}
+check('every measuring artefact uses the estate haversine form, not only its radius',
+  wrongForm.length === 0, wrongForm.join('; '));
+
+
 /* ─────────────────────────────────────────────────────────────────────────
    2. EVERY SHIPPED VERSION STILL ANSWERS THE SAME
    ───────────────────────────────────────────────────────────────────────── */
