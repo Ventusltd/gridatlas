@@ -1,7 +1,7 @@
 {
   "schema": "gridatlas.current.v2",
-  "generation": "202609010722",
-  "previous_generation": "202609010204",
+  "generation": "202609010726",
+  "previous_generation": "202609010722",
   "architecture": "IMMUTABLE_SHELL_PLUS_HASHED_CARTRIDGES",
   "live_route": "/gridatlas/atlas/",
   "release_id": "202608300453-atlas-v9",
@@ -58,13 +58,13 @@
     },
     {
       "id": "sld-sandbox",
-      "generation": "202609010722",
-      "version": "v9.41",
+      "generation": "202609010726",
+      "version": "v9.42",
       "type": "script",
       "slot": "replace-script",
       "replace_script": "202608292126-pre-snapped-config-adapter.js",
-      "path": "./cartridges/202609010722-sld-sandbox-v9-8.js",
-      "sha256": "492c855c9e32dc549f7ce44c91803520533f1eec16252797395affc86c8005c6",
+      "path": "./cartridges/202609010726-sld-sandbox-v9-8.js",
+      "sha256": "ad204a51d2116249991b38f19261f0d3ad225618ece0f6c4041fc60a3b956570",
       "capabilities": [
         "pre-snapped-config-adapter-carried-forward",
         "project-or-substation-selection",
@@ -263,7 +263,8 @@
         "solar": "absent from the product by decision, and the panel says so: PVLive has not been taken into the data repository, and filling the gap from elsewhere would make a second source of truth",
         "contract": "requires data-gb-electricity.price-decade-rollup.v2 before rendering any value; a v1 or malformed product fails closed with no numeric values",
         "exactness": "the negative-day share keeps numerator and denominator visible (580 of 3,339, 17.37% in the pinned fixture); partial years are labelled from the owner's explicit calendar coverage, replacing the 360-day heuristic; the record low carries exact settlement-period and UTC identity",
-        "boundary_tightened": "the panel no longer infers peak solar, curtailment or export limitation from the record low's date or sign - an earlier version said \"a July day, which is peak solar\", and that was an inference, which this estate does not make on a card"
+        "boundary_tightened": "the panel no longer infers peak solar, curtailment or export limitation from the record low's date or sign - an earlier version said \"a July day, which is peak solar\", and that was an inference, which this estate does not make on a card",
+        "freshness": "fetched with no-cache: revalidated on every open, never pinned to the first version this browser happened to see. force-cache held the panel on v1 for hours after the owner published v2, watched live"
       },
       "late_layers": {
         "problem": "a fixed budget is always the wrong number: the engine dashboard has been measured arriving in 2s and not arriving at all in 86s, and giving up after the budget gave up permanently, leaving a card saying the grid data had not loaded while the controls sat on screen",
@@ -422,15 +423,15 @@
       "result_class": "LOCATION_ONLY"
     }
   },
-  "composition_manifest": "./manifests/202609010722-composition.json",
+  "composition_manifest": "./manifests/202609010726-composition.json",
   "scope_closure": {
-    "generation": "202609010722",
+    "generation": "202609010726",
     "status": "DONE",
-    "scope": "GridAtlas v9.41 exact GB price evidence, beside the ledger",
+    "scope": "GridAtlas v9.42 the price panel revalidates",
     "schedule_retired": true
   },
-  "composition_version": "v9.41",
-  "composition_id": "202609010722-gridatlas-v9.41",
+  "composition_version": "v9.42",
+  "composition_id": "202609010726-gridatlas-v9.42",
   "transport": {
     "response_contract": "HEADERS_BEFORE_PARQUET_BODY",
     "engine_timeout_seconds": 15,

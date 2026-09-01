@@ -1,5 +1,5 @@
 /**
- * Proof for the neon links + SLD layout sandbox cartridge, generation 202609010722.
+ * Proof for the neon links + SLD layout sandbox cartridge, generation 202609010726.
  *
  * No dependencies. The repository carries playwright and no DOM library, so
  * rather than add one this stubs the small surface the cartridge actually
@@ -32,7 +32,7 @@ import vm from 'node:vm';
 const HERE = dirname(fileURLToPath(import.meta.url));
 const REPO = resolve(HERE, '..', '..');
 const CARTRIDGE = join(REPO, 'atlas', 'cartridges',
-  '202609010722-sld-sandbox-v9-8.js');
+  '202609010726-sld-sandbox-v9-8.js');
 const ORIGINAL = join(REPO, 'atlas', 'releases', '202608300453-atlas-v9',
   '202608292126-pre-snapped-config-adapter.js');
 const FINANCE_ORACLE = join(REPO, 'tools', 'proofs', 'fixtures',
@@ -491,6 +491,13 @@ check('the record-wide share is shown with numerator and denominator',
 
 check('a failed fetch blames the network, not the grid',
   /says nothing about the grid, only about the network/.test(gb.replace(/\s+/g, ' ')));
+check('the rollup is revalidated, never pinned to its first sight',
+  /GB_ROLLUP, \{ cache: 'no-cache' \}/.test(gb)
+  // the substation payload and glyph ranges keep force-cache: those are
+  // release-pinned and immutable bytes, which is what that mode is FOR
+  && !/GB_ROLLUP, \{ cache: 'force-cache' \}/.test(gb));
+check('why force-cache was wrong for a versioned product is recorded',
+  /pin itself to\s+whichever version it saw first/.test(gb.replace(/\s+/g, ' ')));
 check('nothing is fetched at boot, only on first open',
   /if \(!open && !loaded\)/.test(gb));
 check('and only once', /loaded = true;/.test(gb));
