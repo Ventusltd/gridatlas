@@ -47,7 +47,7 @@ export default {
   /* the parity proof reads the composition manifest, which exists for this
      generation only after recompose has cut it */
   postProofs: [PARITY_PROOF],
-  apply({ read, write, patch }) {
+  apply({ read, write, patch, sandboxProof }) {
     /* ── 1. the source registry, succeeded ──────────────────────────── */
     let registry = read(OLD_REGISTRY);
     const once = (from, to) => {
@@ -234,6 +234,31 @@ export default {
     report.gates[name] = { ok: false, summary: 'absent' };
     continue;
   }`, 'absent gate is red'],
+    ]);
+
+    /* ── 5. the sandbox proof: one fetchable URL, declarations welcome ─
+       The check counted every occurrence of the product NAME and required
+       exactly one. Its intent was that the URL is defined in a single
+       place, so a second definition cannot drift from the first. The
+       source registry now DECLARES the same product as a requirement,
+       which is the whole point of it - a reader can see what a source
+       needs without reading the fetch. That is a second mention and not a
+       second definition, and the check as written would have forced the
+       registry to describe its requirement vaguely to stay green.
+
+       So it is made precise rather than loosened: exactly one occurrence
+       is part of a fetchable URL (`main/derived/...`), and the registry's
+       declared product must equal the one the body fetches. That is a
+       STRONGER guarantee than counting - it catches a registry that
+       declares a product the cartridge does not actually read, which the
+       old check could not see at all. */
+    patch(sandboxProof, [
+      [`  const urls = cartridgeSource.match(/gb-transmission-network\\.v1\\.json/g) || [];
+  return urls.length === 1`,
+       `  const urls = cartridgeSource.match(/main\\/derived\\/gb-transmission-network\\.v1\\.json/g) || [];
+  const declared = cartridgeSource.match(/product: 'derived\\/gb-transmission-network\\.v1\\.json'/g) || [];
+  return urls.length === 1 && declared.length === 1`,
+       'one fetchable URL, one registry declaration'],
     ]);
   }
 };
