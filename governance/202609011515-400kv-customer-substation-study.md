@@ -212,3 +212,61 @@ passenger.
 - EN010159 One Earth application documents (export cable CMS and LIRs).
 - Thorpe Marsh Green Energy Hub and West Burton C: public project and
   contractor records.
+
+---
+
+## Addendum, 202609011718 — the counter-archetype, and the far end's state
+
+Vikram asked how West Burton and Little Crow are each being connected.
+They are opposites, and holding them side by side is what produced the
+pink line.
+
+**West Burton Solar (SI 2025/116).** Build your own transmission
+substation: a 400 kV customer substation at WB3 with reactive power
+units, up to 132 kV site substations at WB1 and WB2, a 10 km 400 kV cable
+to an **existing** National Grid bay, taken by extending main busbar 4 and
+reserve busbar 3/4 gas zones for a new GIS bay.
+
+**Little Crow Solar Park (EN010101, Grid Network Constraints Report,
+November 2020).** Do none of that. The point of connection is "a single
+main connection at 132kV to the Northern Powergrid network **located
+within the Order Limits**" — a looped connection into "the Keadby –
+Broughton – Teed – Scawby Brook overhead 132kV line circuit" that already
+crosses the site, with **99.9 MW** of export capacity secured. The
+applicant's own reasoning is instructive: a PoC for a scheme this size
+would normally sit outside the boundary and need "kilometres of
+underground cable at substantial cost". The report also records what the
+local network costs: NGET and NPG 132 kV switchgear and NGET 132 kV
+cabling must be replaced at Keadby at a budget cost of about £22M; Keadby
+GSP is approaching its export capability limit; NPG is making Active
+Network Management offers there; and "the 99.9MW capacity has also taken
+the NGET electricity network very close to its network capability."
+
+So a DCO scheme is not automatically a 400 kV scheme. The register cannot
+tell these two apart — both are large solar with consent — and only the
+public record can.
+
+**What this forces on the drawing.** The far end of a declared connection
+carries two properties, and flattening them into one gold line said things
+that were not true:
+
+1. **Does it exist?** One Earth connects to NGET's *new* substation beside
+   the existing High Marnham (Great Grid Upgrade); Thorpe Marsh's new
+   400 kV four-bay substation is under construction. Both draw **pink**
+   from v9.56, with the state named on the card. The state comes from the
+   public record, never from whether OSM happens to have mapped the asset
+   — an unbuilt substation may be absent, or present because someone
+   mapped the consented site.
+2. **Is it a node at all?** Little Crow's PoC is a *circuit*. There is
+   nothing to draw a line to and nothing to measure, so nothing is drawn
+   — and the card says why, rather than leaving a silence that reads as
+   absence.
+
+**Still to come, from the network side.** NESO publishes what would settle
+much of this without inference: ETYS Appendix A (system schematics),
+Appendix B (connectivity and impedances), Appendix C (power flow
+diagrams) and Appendix D (fault levels, peak and minimum). Fault level in
+particular is one of the factors every card says cannot be inferred from a
+distance — quoting NESO's own published figure at a named substation would
+be citation, not inference. That is a feed to parse, not a study to
+commission.
