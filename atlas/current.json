@@ -1,7 +1,7 @@
 {
   "schema": "gridatlas.current.v2",
-  "generation": "202609010902",
-  "previous_generation": "202609010726",
+  "generation": "202609011141",
+  "previous_generation": "202609010902",
   "architecture": "IMMUTABLE_SHELL_PLUS_HASHED_CARTRIDGES",
   "live_route": "/gridatlas/atlas/",
   "release_id": "202608300453-atlas-v9",
@@ -38,33 +38,34 @@
     },
     {
       "id": "uk-gazetteer-flyto",
-      "generation": "202608301624",
+      "generation": "202609011141",
       "version": "v9.5",
       "type": "script",
       "slot": "replace-script",
       "replace_script": "202608291818-place-postcode-search.js",
-      "path": "./cartridges/202608301624-place-global-search-v9-5.js",
-      "sha256": "b6497b437de52f68151a1bb22ccd95133d15c243c58eb9df1912fb36f38bcfca",
-      "contract": "../ui/cartridges/202608301624-global-gazetteer-flyto-v9-5.mjs",
+      "path": "./cartridges/202609011141-place-global-search-v9-5.js",
+      "sha256": "0e57e7cdc1f87212f18afe95c1157308523b1eaba51dcb935ab72bc4e398c28d",
+      "contract": "../ui/cartridges/202609011141-global-gazetteer-flyto-v9-5.mjs",
       "capabilities": [
         "exact-repd-first",
         "uk-postcode",
         "uk-place",
         "global-address",
-        "global-place"
+        "global-place",
+        "deep-link-publishes-resolved-technology-and-capacity"
       ],
       "result_class": "LOCATION_ONLY",
       "sets_deep_link": false
     },
     {
       "id": "sld-sandbox",
-      "generation": "202609010902",
-      "version": "v9.43",
+      "generation": "202609011141",
+      "version": "v9.44",
       "type": "script",
       "slot": "replace-script",
       "replace_script": "202608292126-pre-snapped-config-adapter.js",
-      "path": "./cartridges/202609010902-sld-sandbox-v9-8.js",
-      "sha256": "54878f09fffcceb6feeac9f0164ce6182ff506a6a6ca2c5ecfbdb9d98c80f9b4",
+      "path": "./cartridges/202609011141-sld-sandbox-v9-8.js",
+      "sha256": "c4e1097cea73ea11df562b9f63520b307d382c07e839895473828f61e166c379",
       "capabilities": [
         "pre-snapped-config-adapter-carried-forward",
         "project-or-substation-selection",
@@ -148,7 +149,9 @@
         "version-ledger-on-the-page",
         "owner-v2-coverage-and-negative-share-verified",
         "mobile-tray-tools-collapsed-on-touch",
-        "grid-and-subs-one-tap-on-the-map"
+        "grid-and-subs-one-tap-on-the-map",
+        "arrival-by-identity-repd-ref-only",
+        "null-island-guard-on-deep-link-coordinates"
       ],
       "immutable_shell_modified": false,
       "supersedes_shell_script": {
@@ -392,6 +395,14 @@
         "mechanism": "the chips drive the engine's own checkboxes with real clicks - the same path enableTechnologyLayer uses - so the scada panel, the fullscreen curtain and the chips cannot disagree",
         "readiness": "chips start disabled and wake when the engine builds its switches, however late; a document-level change listener keeps them true to switches toggled elsewhere",
         "desktop": "unchanged: the tray installs only on touch or narrow windows"
+      },
+      "arrival_identity": {
+        "reported_by": "Vikram, phone, 2026-09-01: 'doesn't auto compute the neon lines on mobile'",
+        "diagnosis": "reproduced on desktop Chrome with ?repd_ref=12588 alone: the search cartridge resolves the identity and opens the card while this lane's URL guards bail, so the failure was the URL shape, never the device",
+        "latent_fault_fixed": "Number(null) is 0, so a link with no coordinates passed the finite guard as Null Island; only the technology guard was accidentally stopping links being drawn to 0,0",
+        "fix": "when URL coordinates or technology are unusable and repd_ref is present, the lane waits for the search cartridge's published deep_link state and consumes its resolved longitude, latitude, technology, name and capacity",
+        "one_resolver": "the search lane owns identity resolution against the pinned register parquet; this lane only consumes what it publishes",
+        "budget": "120s, because the identity lane boots a 35.7 MB query engine first on a cold phone; terminal FAILED or ABSENT is honoured immediately"
       }
     }
   ],
@@ -437,15 +448,15 @@
       "result_class": "LOCATION_ONLY"
     }
   },
-  "composition_manifest": "./manifests/202609010902-composition.json",
+  "composition_manifest": "./manifests/202609011141-composition.json",
   "scope_closure": {
     "generation": "202609010726",
     "status": "DONE",
     "scope": "GridAtlas v9.42 the price panel revalidates",
     "schedule_retired": true
   },
-  "composition_version": "v9.43",
-  "composition_id": "202609010902-gridatlas-v9.43",
+  "composition_version": "v9.44",
+  "composition_id": "202609011141-gridatlas-v9.44",
   "transport": {
     "response_contract": "HEADERS_BEFORE_PARQUET_BODY",
     "engine_timeout_seconds": 15,

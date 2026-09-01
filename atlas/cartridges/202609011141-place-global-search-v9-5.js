@@ -228,7 +228,12 @@
       postcode: result.postcode,
       mapped: Boolean(canMap),
       longitude: result.longitude,
-      latitude: result.latitude
+      latitude: result.latitude,
+      // Published since 202609011141: the measurement cartridge consumes a
+      // resolved identity rather than requiring the URL to restate what the
+      // register already knows. This lane resolved them; it publishes them.
+      technology: result.technology,
+      capacity_mw: result.capacity_mw
     };
     if (!canMap) return;
     map.flyTo({ center: [result.longitude, result.latitude], zoom: 12, duration: 1200, essential: true });
@@ -517,7 +522,12 @@
         name: exact.name,
         postcode: exact.postcode,
         longitude: exact.longitude,
-        latitude: exact.latitude
+        latitude: exact.latitude,
+        // Published since 202609011141, for the same reason as
+        // last_selection: a repd_ref-only link must be enough for the
+        // measurement lane, and these were resolved here anyway.
+        technology: exact.technology,
+        capacity_mw: exact.capacity_mw
       };
     } catch (error) {
       const message = String(error?.message || error);

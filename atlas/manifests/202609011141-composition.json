@@ -1,7 +1,7 @@
 {
  "schema": "gridatlas.composition-manifest.v1",
- "generation": "202609010902",
- "parent_generation": "202609010726",
+ "generation": "202609011141",
+ "parent_generation": "202609010902",
  "live_route": "/gridatlas/atlas/",
  "shell": {
   "release_id": "202608300453-atlas-v9",
@@ -46,33 +46,34 @@
   },
   {
    "id": "uk-gazetteer-flyto",
-   "generation": "202608301624",
+   "generation": "202609011141",
    "version": "v9.5",
    "type": "script",
    "slot": "replace-script",
    "replace_script": "202608291818-place-postcode-search.js",
-   "path": "./cartridges/202608301624-place-global-search-v9-5.js",
-   "sha256": "b6497b437de52f68151a1bb22ccd95133d15c243c58eb9df1912fb36f38bcfca",
-   "contract": "../ui/cartridges/202608301624-global-gazetteer-flyto-v9-5.mjs",
+   "path": "./cartridges/202609011141-place-global-search-v9-5.js",
+   "sha256": "0e57e7cdc1f87212f18afe95c1157308523b1eaba51dcb935ab72bc4e398c28d",
+   "contract": "../ui/cartridges/202609011141-global-gazetteer-flyto-v9-5.mjs",
    "capabilities": [
     "exact-repd-first",
     "uk-postcode",
     "uk-place",
     "global-address",
-    "global-place"
+    "global-place",
+    "deep-link-publishes-resolved-technology-and-capacity"
    ],
    "result_class": "LOCATION_ONLY",
    "sets_deep_link": false
   },
   {
    "id": "sld-sandbox",
-   "generation": "202609010902",
-   "version": "v9.43",
+   "generation": "202609011141",
+   "version": "v9.44",
    "type": "script",
    "slot": "replace-script",
    "replace_script": "202608292126-pre-snapped-config-adapter.js",
-   "path": "./cartridges/202609010902-sld-sandbox-v9-8.js",
-   "sha256": "54878f09fffcceb6feeac9f0164ce6182ff506a6a6ca2c5ecfbdb9d98c80f9b4",
+   "path": "./cartridges/202609011141-sld-sandbox-v9-8.js",
+   "sha256": "c4e1097cea73ea11df562b9f63520b307d382c07e839895473828f61e166c379",
    "capabilities": [
     "pre-snapped-config-adapter-carried-forward",
     "project-or-substation-selection",
@@ -156,7 +157,9 @@
     "version-ledger-on-the-page",
     "owner-v2-coverage-and-negative-share-verified",
     "mobile-tray-tools-collapsed-on-touch",
-    "grid-and-subs-one-tap-on-the-map"
+    "grid-and-subs-one-tap-on-the-map",
+    "arrival-by-identity-repd-ref-only",
+    "null-island-guard-on-deep-link-coordinates"
    ],
    "immutable_shell_modified": false,
    "supersedes_shell_script": {
@@ -400,6 +403,14 @@
     "mechanism": "the chips drive the engine's own checkboxes with real clicks - the same path enableTechnologyLayer uses - so the scada panel, the fullscreen curtain and the chips cannot disagree",
     "readiness": "chips start disabled and wake when the engine builds its switches, however late; a document-level change listener keeps them true to switches toggled elsewhere",
     "desktop": "unchanged: the tray installs only on touch or narrow windows"
+   },
+   "arrival_identity": {
+    "reported_by": "Vikram, phone, 2026-09-01: 'doesn't auto compute the neon lines on mobile'",
+    "diagnosis": "reproduced on desktop Chrome with ?repd_ref=12588 alone: the search cartridge resolves the identity and opens the card while this lane's URL guards bail, so the failure was the URL shape, never the device",
+    "latent_fault_fixed": "Number(null) is 0, so a link with no coordinates passed the finite guard as Null Island; only the technology guard was accidentally stopping links being drawn to 0,0",
+    "fix": "when URL coordinates or technology are unusable and repd_ref is present, the lane waits for the search cartridge's published deep_link state and consumes its resolved longitude, latitude, technology, name and capacity",
+    "one_resolver": "the search lane owns identity resolution against the pinned register parquet; this lane only consumes what it publishes",
+    "budget": "120s, because the identity lane boots a 35.7 MB query engine first on a cold phone; terminal FAILED or ABSENT is honoured immediately"
    }
   }
  ],
@@ -428,7 +439,7 @@
   "offshore_wind_excluded_from_links": true,
   "cards_fit_after_drag_and_restore": true,
   "shell_modified": false,
-  "scope": "mobile: the tool stack collapses behind one chip; grid lines and substations activate in one tap on the map",
+  "scope": "a repd_ref-only deep link computes the links: the identity the search lane resolves is consumed rather than re-required from the URL, and Null Island no longer passes the coordinate guard",
   "proof": "tools/proofs/202609010726-sld-sandbox.proof.mjs, 420 checks"
  },
  "version": "v9.39",
@@ -439,5 +450,5 @@
   "source_sha256": "07d33eda5b3279a03df4c0a0aded61e4363c46734dda991aa5f48ae0d55097da",
   "transformation": "carry the pre-snap config rewrite verbatim; add a measured link layer and on-card beta distances"
  },
- "composition_version": "v9.43"
+ "composition_version": "v9.44"
 }

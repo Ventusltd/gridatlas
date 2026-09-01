@@ -1,7 +1,7 @@
 /**
  * GridAtlas cartridge — neon substation links and the SLD layout sandbox.
  *
- * Generation 202609010902 (UTC), composition v9.43. Slot: replace-script for
+ * Generation 202609011141 (UTC), composition v9.44. Slot: replace-script for
  * 202608292126-pre-snapped-config-adapter.js.
  *
  * WHAT IT DOES
@@ -61,7 +61,7 @@
 (() => {
   'use strict';
 
-  const GENERATION = '202609010902';
+  const GENERATION = '202609011141';
 
   /* ══════════════════════════════════════════════════════════════════════
      PART 1 — the pre-snapped config adapter, carried forward unchanged.
@@ -1836,7 +1836,7 @@
 
      Mobile first, like everything since Vikram said the link travels by
      WhatsApp: a collapsed chip, viewport-sized body, newest first. */
-  const VERSION_LEDGER = [{"g":"202608312121","v":"v9.16","s":"the project arriving from Pipeline News is visible: its own technology layer is enabled and a pin owned by this cartridge is dropped on it, with a toggle on the card"},{"g":"202608312133","v":"v9.17","s":"central AC sizing: the limiting nameplate, not a squared product"},{"g":"202608312140","v":"v9.18","s":"the project marker is a ring, found by looking at it in Chrome"},{"g":"202608312154","v":"v9.19","s":"the grid maths installs even when the basemap never paints"},{"g":"202608312157","v":"v9.20","s":"the Atlas says what it is waiting for, sized for a phone"},{"g":"202608312205","v":"v9.21","s":"the MapLibre exception storm: symbol layers with no glyph atlas"},{"g":"202608312208","v":"v9.22","s":"a symbol layer is added only once its text can be drawn"},{"g":"202608312222","v":"v9.23","s":"card geometry resets on every selection"},{"g":"202608312227","v":"v9.24","s":"the GB electricity tracker is connected to the map"},{"g":"202608312238","v":"v9.25","s":"one source of truth for GB prices: the data repository"},{"g":"202608312244","v":"v9.26","s":"late layer controls are used, and the repository is LF everywhere"},{"g":"202608312257","v":"v9.27","s":"the MAP button works for every technology in the register"},{"g":"202608312300","v":"v9.28","s":"voltage classes are explained, and the whole dashboard is accepted"},{"g":"202608312306","v":"v9.29","s":"the headline capacity actually moves the layout"},{"g":"202608312313","v":"v9.30","s":"the neon flow no longer exhausts the renderer"},{"g":"202608312315","v":"v9.31","s":"Codex's LineAtlas cardinality gate passes"},{"g":"202608312317","v":"v9.32","s":"no substation can display an impossible voltage"},{"g":"202608312321","v":"v9.33","s":"nothing can rewrite the reference design, not even later"},{"g":"202608312324","v":"v9.34","s":"a missing source costs a drawing, never the session"},{"g":"202609010021","v":"v9.35","s":"phone pointer operation, viewport containment and named electrical ratios"},{"g":"202609010040","v":"v9.36","s":"original financial-model parity with explicit correction of the known central AC double-count"},{"g":"202609010053","v":"v9.37","s":"complete the original finance interaction contract by linking development stage, cost and success"},{"g":"202609010058","v":"v9.38","s":"restore topology-isolated physical inputs and the original mounting-to-bifacial linkage"},{"g":"202609010106","v":"v9.39","s":"remove duplicate BESS truth, restore original central defaults and reject fractional topology counts"},{"g":"202609010204","v":"v9.40","s":"the version ledger itself, on the page"},{"g":"202609010722","v":"v9.41","s":"exact GB price evidence, beside the ledger"},{"g":"202609010726","v":"v9.42","s":"the price panel revalidates instead of pinning its first sight"},{"g":"202609010902","v":"v9.43","s":"mobile: tools collapse behind one chip; grid and subs are one tap"}];
+  const VERSION_LEDGER = [{"g":"202608312121","v":"v9.16","s":"the project arriving from Pipeline News is visible: its own technology layer is enabled and a pin owned by this cartridge is dropped on it, with a toggle on the card"},{"g":"202608312133","v":"v9.17","s":"central AC sizing: the limiting nameplate, not a squared product"},{"g":"202608312140","v":"v9.18","s":"the project marker is a ring, found by looking at it in Chrome"},{"g":"202608312154","v":"v9.19","s":"the grid maths installs even when the basemap never paints"},{"g":"202608312157","v":"v9.20","s":"the Atlas says what it is waiting for, sized for a phone"},{"g":"202608312205","v":"v9.21","s":"the MapLibre exception storm: symbol layers with no glyph atlas"},{"g":"202608312208","v":"v9.22","s":"a symbol layer is added only once its text can be drawn"},{"g":"202608312222","v":"v9.23","s":"card geometry resets on every selection"},{"g":"202608312227","v":"v9.24","s":"the GB electricity tracker is connected to the map"},{"g":"202608312238","v":"v9.25","s":"one source of truth for GB prices: the data repository"},{"g":"202608312244","v":"v9.26","s":"late layer controls are used, and the repository is LF everywhere"},{"g":"202608312257","v":"v9.27","s":"the MAP button works for every technology in the register"},{"g":"202608312300","v":"v9.28","s":"voltage classes are explained, and the whole dashboard is accepted"},{"g":"202608312306","v":"v9.29","s":"the headline capacity actually moves the layout"},{"g":"202608312313","v":"v9.30","s":"the neon flow no longer exhausts the renderer"},{"g":"202608312315","v":"v9.31","s":"Codex's LineAtlas cardinality gate passes"},{"g":"202608312317","v":"v9.32","s":"no substation can display an impossible voltage"},{"g":"202608312321","v":"v9.33","s":"nothing can rewrite the reference design, not even later"},{"g":"202608312324","v":"v9.34","s":"a missing source costs a drawing, never the session"},{"g":"202609010021","v":"v9.35","s":"phone pointer operation, viewport containment and named electrical ratios"},{"g":"202609010040","v":"v9.36","s":"original financial-model parity with explicit correction of the known central AC double-count"},{"g":"202609010053","v":"v9.37","s":"complete the original finance interaction contract by linking development stage, cost and success"},{"g":"202609010058","v":"v9.38","s":"restore topology-isolated physical inputs and the original mounting-to-bifacial linkage"},{"g":"202609010106","v":"v9.39","s":"remove duplicate BESS truth, restore original central defaults and reject fractional topology counts"},{"g":"202609010204","v":"v9.40","s":"the version ledger itself, on the page"},{"g":"202609010722","v":"v9.41","s":"exact GB price evidence, beside the ledger"},{"g":"202609010726","v":"v9.42","s":"the price panel revalidates instead of pinning its first sight"},{"g":"202609010902","v":"v9.43","s":"mobile: tools collapse behind one chip; grid and subs are one tap"},{"g":"202609011141","v":"v9.44","s":"a repd_ref-only link computes the links: identity resolved by the search lane is consumed, not re-required from the URL"}];
   const PRE_SCOPE_COMPOSITIONS = 16;
   const LEDGER_ID = 'gridatlas-version-ledger';
 
@@ -2230,6 +2230,33 @@
       }
     });
 
+  /* ── arrival by identity ─────────────────────────────────────────────
+     The search cartridge resolves repd_ref against the register - DuckDB
+     over the pinned parquet - flies there and opens the card. When a link
+     carries only that identity, this lane used to stop at its URL guards
+     while the card opened anyway, which reads as a broken map. The register
+     knows the coordinates and technology better than any URL restatement,
+     so when the identity lane has resolved, its published result is the
+     arrival. One resolver per composition; this lane only consumes.
+
+     The budget is generous because the identity lane boots a 35.7 MB query
+     engine first on a cold phone. Terminal failure or absence returns null
+     and is the caller's decision to record. */
+  async function waitForResolvedIdentity(budgetMs) {
+    const started = Date.now();
+    while (Date.now() - started < budgetMs) {
+      const dl = window.__GRIDATLAS_PLACE_SEARCH__?.deep_link;
+      if (dl) {
+        if (dl.status === 'RESOLVED') return dl;
+        if (dl.status === 'FAILED' || dl.status === 'ABSENT') return null;
+      }
+      await new Promise(resolve => setTimeout(resolve, 250));
+    }
+    link.failures.push('identity lane did not resolve within '
+      + Math.round(budgetMs / 1000) + 's');
+    return null;
+  }
+
     // A deep link opens the project card on its own, with no click anywhere.
     // Arriving that way is how most people reach the Atlas -- the MAP button in
     // Pipeline News sends them here -- so the measurement has to run for it
@@ -2237,10 +2264,39 @@
     (async () => {
       try {
         const q = new URLSearchParams(window.location.search);
-        const lon = Number(q.get('longitude'));
-        const lat = Number(q.get('latitude'));
-        const tech = String(q.get('technology') || '');
-        if (!Number.isFinite(lon) || !Number.isFinite(lat)) return;
+        /* Number(null) is 0, not NaN, so a link with no coordinates used to
+           pass the finite guard as Null Island and only the technology
+           guard stopped it. Absent now means absent. */
+        const rawLon = q.get('longitude');
+        const rawLat = q.get('latitude');
+        let lon = rawLon === null ? NaN : Number(rawLon);
+        let lat = rawLat === null ? NaN : Number(rawLat);
+        let tech = String(q.get('technology') || '');
+        let name = q.get('project') || 'Deep-linked project';
+        let stated = Number(q.get('capacity_mw'));
+        const coordsUsable = () => Number.isFinite(lon) && Number.isFinite(lat)
+          && !(Math.abs(lon) < 1e-9 && Math.abs(lat) < 1e-9);
+
+        if ((!coordsUsable() || !isProjectTech(tech)) && q.get('repd_ref')) {
+          /* Vikram's phone, 2026-09-01: a repd_ref-only link opened the card
+             and computed nothing. Reproduced in desktop Chrome identically,
+             so it was never the device. The identity the URL carries is
+             enough: consume what the search lane resolved. */
+          const resolved = await waitForResolvedIdentity(120000);
+          if (resolved) {
+            lon = Number(resolved.longitude);
+            lat = Number(resolved.latitude);
+            if (typeof resolved.technology === 'string' && resolved.technology) {
+              tech = resolved.technology;
+            }
+            if (resolved.name) name = String(resolved.name);
+            const cap = Number(resolved.capacity_mw);
+            if (Number.isFinite(cap) && cap > 0) stated = cap;
+            link.deep_link_identity = 'resolved-by-search-lane';
+          }
+        }
+
+        if (!coordsUsable()) return;
         if (!isProjectTech(tech)) {
           // Recorded rather than silent. A MAP button that does nothing is the
           // worst outcome available, and for a third of the register that is
@@ -2248,7 +2304,6 @@
           link.failures.push('deep link: unknown technology "' + tech + '"');
           return;
         }
-        const name = q.get('project') || 'Deep-linked project';
         // Turn the substations on. Arriving from the MAP button in Pipeline
         // News, the whole point is to see the project against the network, and
         // a user who has to find a checkbox first has been handed a puzzle
@@ -2275,7 +2330,6 @@
         };
         retryArrival = () => { arrive().then(() => runArrivalSelection()); };
         await arrive();
-        const stated = Number(q.get('capacity_mw'));
         async function runArrivalSelection() {
           // Wait for the engine to put its own card up first, so this
           // decorates that card rather than racing it. Give up rather than

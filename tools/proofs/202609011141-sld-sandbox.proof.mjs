@@ -1,5 +1,5 @@
 /**
- * Proof for the neon links + SLD layout sandbox cartridge, generation 202609010902.
+ * Proof for the neon links + SLD layout sandbox cartridge, generation 202609011141.
  *
  * No dependencies. The repository carries playwright and no DOM library, so
  * rather than add one this stubs the small surface the cartridge actually
@@ -32,7 +32,7 @@ import vm from 'node:vm';
 const HERE = dirname(fileURLToPath(import.meta.url));
 const REPO = resolve(HERE, '..', '..');
 const CARTRIDGE = join(REPO, 'atlas', 'cartridges',
-  '202609010902-sld-sandbox-v9-8.js');
+  '202609011141-sld-sandbox-v9-8.js');
 const ORIGINAL = join(REPO, 'atlas', 'releases', '202608300453-atlas-v9',
   '202608292126-pre-snapped-config-adapter.js');
 const FINANCE_ORACLE = join(REPO, 'tools', 'proofs', 'fixtures',
@@ -2021,6 +2021,36 @@ check('the tray publishes its state', /link\.mobile_tray = \{\n      installed: 
 check('touch targets stay 44px inside the tray',
   new RegExp('#\\$\\{TRAY_ID\\} button\\{min-height:44px').test(cartridgeSource));
 check('the desktop is left alone', /installed: false, reason: 'fine pointer, wide window'/.test(cartridgeSource));
+
+
+console.log('\narrival by identity\n');
+
+/* A repd_ref-only link opened the card and computed nothing - the search
+   lane resolved the identity while this lane's URL guards bailed. One
+   resolver: the search cartridge publishes, this lane consumes. */
+const gazSource = await readFile(join(REPO, 'atlas', 'cartridges',
+  '202609011141-place-global-search-v9-5.js'), 'utf8');
+check('the search lane publishes the technology and capacity it resolved',
+  /technology: exact\.technology,\n        capacity_mw: exact\.capacity_mw/.test(gazSource)
+  && /technology: result\.technology,\n      capacity_mw: result\.capacity_mw/.test(gazSource));
+check('absent coordinates are absent, not Null Island',
+  /rawLon === null \? NaN : Number\(rawLon\)/.test(cartridgeSource)
+  && /Math\.abs\(lon\) < 1e-9 && Math\.abs\(lat\) < 1e-9/.test(cartridgeSource));
+check('the identity fallback is gated on repd_ref being present',
+  /&& q\.get\('repd_ref'\)/.test(cartridgeSource));
+check('the lane waits for the search cartridge and honours terminal states',
+  /window\.__GRIDATLAS_PLACE_SEARCH__\?\.deep_link/.test(cartridgeSource)
+  && /dl\.status === 'RESOLVED'/.test(cartridgeSource)
+  && /dl\.status === 'FAILED' \|\| dl\.status === 'ABSENT'/.test(cartridgeSource));
+check('a resolved identity supplies coordinates, technology, name and capacity',
+  /lon = Number\(resolved\.longitude\)/.test(cartridgeSource)
+  && /tech = resolved\.technology/.test(cartridgeSource)
+  && /if \(resolved\.name\) name = String\(resolved\.name\)/.test(cartridgeSource)
+  && /if \(Number\.isFinite\(cap\) && cap > 0\) stated = cap/.test(cartridgeSource));
+check('an unresolved identity is recorded, never silent',
+  /identity lane did not resolve within/.test(cartridgeSource));
+check('the consumption is published for the next debugger',
+  /link\.deep_link_identity = 'resolved-by-search-lane'/.test(cartridgeSource));
 
 console.log(`\n${passed}/${passed + failures.length} checks passed`);
 if (failures.length) {
