@@ -1,7 +1,7 @@
 {
  "schema": "gridatlas.composition-manifest.v1",
- "generation": "202609011751",
- "parent_generation": "202609011718",
+ "generation": "202609011805",
+ "parent_generation": "202609011751",
  "live_route": "/gridatlas/atlas/",
  "shell": {
   "release_id": "202608300453-atlas-v9",
@@ -22,7 +22,6 @@
  "cartridge_order": [
   "streaming-parquet-bridge",
   "uk-gazetteer-flyto",
-  "substation-intelligence",
   "sld-sandbox"
  ],
  "cartridges": [
@@ -68,13 +67,13 @@
   },
   {
    "id": "sld-sandbox",
-   "generation": "202609011751",
-   "version": "v9.57",
+   "generation": "202609011805",
+   "version": "v9.58",
    "type": "script",
    "slot": "replace-script",
    "replace_script": "202608292126-pre-snapped-config-adapter.js",
-   "path": "./cartridges/202609011751-sld-sandbox-v9-8.js",
-   "sha256": "01ec575e11c3d08e475141f0a06e3129efbb67c569423d9cc72bdfc3b3f53645",
+   "path": "./cartridges/202609011805-sld-sandbox-v9-8.js",
+   "sha256": "b33c89a93bed366eb7735a8dca97cad12f6ba7a909056a7ac570d25660829816",
    "capabilities": [
     "pre-snapped-config-adapter-carried-forward",
     "project-or-substation-selection",
@@ -180,8 +179,7 @@
     "project-ring-drawn-on-arrival-not-after-the-payload",
     "pink-for-a-point-of-connection-not-yet-built",
     "declared-circuit-connections-draw-no-line",
-    "little-crow-distribution-loop-archetype",
-    "published-network-parameters-on-the-card"
+    "little-crow-distribution-loop-archetype"
    ],
    "immutable_shell_modified": false,
    "supersedes_shell_script": {
@@ -503,37 +501,6 @@
     "archetypes": "West Burton builds a 400 kV customer substation and a 10 km cable to an existing transmission bay; Little Crow loops into a distribution circuit already crossing its land. Both are NSIPs; only one is a 400 kV story",
     "rule": "the state is taken from the public record, never from whether OSM happens to have mapped the asset"
    }
-  },
-  {
-   "id": "substation-intelligence",
-   "generation": "202609011751",
-   "version": "v9.57",
-   "type": "script",
-   "slot": "replace-script",
-   "replace_script": "202608292126-map-ready-fetch-bridge.js",
-   "path": "./cartridges/202609011751-substation-intelligence-v9-57.js",
-   "sha256": "f86b669b0b023a3b9bb8f765bad41a5b41f68081954b447e271c641d590be69f",
-   "capabilities": [
-    "map-ready-fetch-bridge-carried-forward-verbatim",
-    "neso-etys-connection-points-consumed",
-    "substation-lookup-by-name-and-by-position",
-    "published-parameters-never-a-connection-assessment",
-    "fails-closed-on-an-unknown-product-schema",
-    "revalidated-never-pinned-to-first-sight"
-   ],
-   "immutable_shell_modified": false,
-   "supersedes_shell_script": {
-    "name": "202608292126-map-ready-fetch-bridge.js",
-    "sha256": "88bd3265584f1f2e26fed253a00586f04c8eca4b866eb864c1b99ff69dcfc1f1",
-    "behaviour": "carried forward verbatim; same data plane, same public state object, same failure mode"
-   },
-   "data_source": {
-    "repository": "Ventusltd/data-grid-gb",
-    "product": "derived/connection-points.v1.json",
-    "schema_required": "data-grid-gb.connection-points.v1",
-    "upstream": "NESO Electricity Ten Year Statement 2025, appendices B and D",
-    "why_a_separate_repository": "a consumer reads a product that already sits clean and never owns source data; the same rule that keeps the price repository honest"
-   }
   }
  ],
  "acceptance": {
@@ -561,7 +528,7 @@
   "offshore_wind_excluded_from_links": true,
   "cards_fit_after_drag_and_restore": true,
   "shell_modified": false,
-  "scope": "the substation computation gets its own cartridge, claiming the last free shell slot and carrying its bridge forward verbatim, and the card gains what NESO publishes about the substation it names",
+  "scope": "service restored: the v9.57 substation cartridge claimed 202608292126-map-ready-fetch-bridge.js, which sits in the release directory but is never loaded by the shell, so the composer refused the composition and the map went dark; this composes the last working set again under a new timestamp",
   "proof": "tools/proofs/202609010726-sld-sandbox.proof.mjs, 420 checks"
  },
  "version": "v9.39",
@@ -572,5 +539,5 @@
   "source_sha256": "07d33eda5b3279a03df4c0a0aded61e4363c46734dda991aa5f48ae0d55097da",
   "transformation": "carry the pre-snap config rewrite verbatim; add a measured link layer and on-card beta distances"
  },
- "composition_version": "v9.57"
+ "composition_version": "v9.58"
 }

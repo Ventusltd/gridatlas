@@ -1,7 +1,7 @@
 {
   "schema": "gridatlas.current.v2",
-  "generation": "202609011751",
-  "previous_generation": "202609011718",
+  "generation": "202609011805",
+  "previous_generation": "202609011751",
   "architecture": "IMMUTABLE_SHELL_PLUS_HASHED_CARTRIDGES",
   "live_route": "/gridatlas/atlas/",
   "release_id": "202608300453-atlas-v9",
@@ -14,7 +14,6 @@
   "cartridge_order": [
     "streaming-parquet-bridge",
     "uk-gazetteer-flyto",
-    "substation-intelligence",
     "sld-sandbox"
   ],
   "cartridges": [
@@ -60,13 +59,13 @@
     },
     {
       "id": "sld-sandbox",
-      "generation": "202609011751",
-      "version": "v9.57",
+      "generation": "202609011805",
+      "version": "v9.58",
       "type": "script",
       "slot": "replace-script",
       "replace_script": "202608292126-pre-snapped-config-adapter.js",
-      "path": "./cartridges/202609011751-sld-sandbox-v9-8.js",
-      "sha256": "01ec575e11c3d08e475141f0a06e3129efbb67c569423d9cc72bdfc3b3f53645",
+      "path": "./cartridges/202609011805-sld-sandbox-v9-8.js",
+      "sha256": "b33c89a93bed366eb7735a8dca97cad12f6ba7a909056a7ac570d25660829816",
       "capabilities": [
         "pre-snapped-config-adapter-carried-forward",
         "project-or-substation-selection",
@@ -495,37 +494,6 @@
         "archetypes": "West Burton builds a 400 kV customer substation and a 10 km cable to an existing transmission bay; Little Crow loops into a distribution circuit already crossing its land. Both are NSIPs; only one is a 400 kV story",
         "rule": "the state is taken from the public record, never from whether OSM happens to have mapped the asset"
       }
-    },
-    {
-      "id": "substation-intelligence",
-      "generation": "202609011751",
-      "version": "v9.57",
-      "type": "script",
-      "slot": "replace-script",
-      "replace_script": "202608292126-map-ready-fetch-bridge.js",
-      "path": "./cartridges/202609011751-substation-intelligence-v9-57.js",
-      "sha256": "f86b669b0b023a3b9bb8f765bad41a5b41f68081954b447e271c641d590be69f",
-      "capabilities": [
-        "map-ready-fetch-bridge-carried-forward-verbatim",
-        "neso-etys-connection-points-consumed",
-        "substation-lookup-by-name-and-by-position",
-        "published-parameters-never-a-connection-assessment",
-        "fails-closed-on-an-unknown-product-schema",
-        "revalidated-never-pinned-to-first-sight"
-      ],
-      "immutable_shell_modified": false,
-      "supersedes_shell_script": {
-        "name": "202608292126-map-ready-fetch-bridge.js",
-        "sha256": "88bd3265584f1f2e26fed253a00586f04c8eca4b866eb864c1b99ff69dcfc1f1",
-        "behaviour": "carried forward verbatim; same data plane, same public state object, same failure mode"
-      },
-      "data_source": {
-        "repository": "Ventusltd/data-grid-gb",
-        "product": "derived/connection-points.v1.json",
-        "schema_required": "data-grid-gb.connection-points.v1",
-        "upstream": "NESO Electricity Ten Year Statement 2025, appendices B and D",
-        "why_a_separate_repository": "a consumer reads a product that already sits clean and never owns source data; the same rule that keeps the price repository honest"
-      }
     }
   ],
   "last_known_green": {
@@ -570,15 +538,15 @@
       "result_class": "LOCATION_ONLY"
     }
   },
-  "composition_manifest": "./manifests/202609011751-composition.json",
+  "composition_manifest": "./manifests/202609011805-composition.json",
   "scope_closure": {
     "generation": "202609010726",
     "status": "DONE",
     "scope": "GridAtlas v9.42 the price panel revalidates",
     "schedule_retired": true
   },
-  "composition_version": "v9.57",
-  "composition_id": "202609011751-gridatlas-v9.57",
+  "composition_version": "v9.58",
+  "composition_id": "202609011805-gridatlas-v9.58",
   "transport": {
     "response_contract": "HEADERS_BEFORE_PARQUET_BODY",
     "engine_timeout_seconds": 15,
