@@ -1,7 +1,7 @@
 {
   "schema": "gridatlas.current.v2",
-  "generation": "202609011205",
-  "previous_generation": "202609011141",
+  "generation": "202609011215",
+  "previous_generation": "202609011205",
   "architecture": "IMMUTABLE_SHELL_PLUS_HASHED_CARTRIDGES",
   "live_route": "/gridatlas/atlas/",
   "release_id": "202608300453-atlas-v9",
@@ -59,13 +59,13 @@
     },
     {
       "id": "sld-sandbox",
-      "generation": "202609011205",
-      "version": "v9.45",
+      "generation": "202609011215",
+      "version": "v9.46",
       "type": "script",
       "slot": "replace-script",
       "replace_script": "202608292126-pre-snapped-config-adapter.js",
-      "path": "./cartridges/202609011205-sld-sandbox-v9-8.js",
-      "sha256": "8bab3c34818d3192cf11f5c1fc8027d913ccff8c6518056f5625425cfd2a3f34",
+      "path": "./cartridges/202609011215-sld-sandbox-v9-8.js",
+      "sha256": "cd3b69f4674805d4c9b1084f7168b1253a6931e8bbae1ef3db7e96ea17806aab",
       "capabilities": [
         "pre-snapped-config-adapter-carried-forward",
         "project-or-substation-selection",
@@ -154,7 +154,8 @@
         "null-island-guard-on-deep-link-coordinates",
         "arrival-enters-fullscreen-on-touch",
         "identity-wait-until-terminal-not-budgeted",
-        "arrival-stages-surfaced-with-retry"
+        "arrival-stages-surfaced-with-retry",
+        "measurement-block-kept-not-written-once"
       ],
       "immutable_shell_modified": false,
       "supersedes_shell_script": {
@@ -412,6 +413,11 @@
         "budget_relearned": "v9.44 waited 120s for the identity lane; a cold phone boots the 35.7 MB query engine first and exceeded it, so the lane gave up permanently and the card opened with nothing computed. The wait now runs until RESOLVED, FAILED or ABSENT, with a ten-minute last-resort stop for a lane that died silently",
         "fullscreen": "an arrival on a touch screen enters the shell's own fullscreen - Vikram's design: arrive in full screen mode with the clutter minimised; the tray keeps the tool buttons collapsed",
         "stages_surfaced": "resolving the identity, loading the substation payload, and a zero-substation outcome each say what is happening where the user is looking; failures carry Try again, which re-runs the arrival rather than reloading the page"
+      },
+      "card_keeper": {
+        "watched_live": "Pipeline News MAP journey at phone width, v9.45: five links drawn, fullscreen entered, and the card carried no distances - the search lane's popup arrived after the one-frame decoration retry and replaced the decorated card",
+        "why_lines_survived": "the links live in map layers; the measurement block lives inside a popup this cartridge does not own",
+        "fix": "a per-selection MutationObserver re-attaches the block whenever the active card lacks it; a new selection re-arms it and a cleared selection disarms it, so no other popup is ever decorated with a stale project's distances"
       }
     }
   ],
@@ -457,15 +463,15 @@
       "result_class": "LOCATION_ONLY"
     }
   },
-  "composition_manifest": "./manifests/202609011205-composition.json",
+  "composition_manifest": "./manifests/202609011215-composition.json",
   "scope_closure": {
     "generation": "202609010726",
     "status": "DONE",
     "scope": "GridAtlas v9.42 the price panel revalidates",
     "schedule_retired": true
   },
-  "composition_version": "v9.45",
-  "composition_id": "202609011205-gridatlas-v9.45",
+  "composition_version": "v9.46",
+  "composition_id": "202609011215-gridatlas-v9.46",
   "transport": {
     "response_contract": "HEADERS_BEFORE_PARQUET_BODY",
     "engine_timeout_seconds": 15,

@@ -1,5 +1,5 @@
 /**
- * Proof for the neon links + SLD layout sandbox cartridge, generation 202609011205.
+ * Proof for the neon links + SLD layout sandbox cartridge, generation 202609011215.
  *
  * No dependencies. The repository carries playwright and no DOM library, so
  * rather than add one this stubs the small surface the cartridge actually
@@ -32,7 +32,7 @@ import vm from 'node:vm';
 const HERE = dirname(fileURLToPath(import.meta.url));
 const REPO = resolve(HERE, '..', '..');
 const CARTRIDGE = join(REPO, 'atlas', 'cartridges',
-  '202609011205-sld-sandbox-v9-8.js');
+  '202609011215-sld-sandbox-v9-8.js');
 const ORIGINAL = join(REPO, 'atlas', 'releases', '202608300453-atlas-v9',
   '202608292126-pre-snapped-config-adapter.js');
 const FINANCE_ORACLE = join(REPO, 'tools', 'proofs', 'fixtures',
@@ -2082,6 +2082,22 @@ check('the substation stage is surfaced and zero substations never draws silentl
 check('the deep link is a named function so retry re-runs it, not the page',
   /async function runDeepLink\(\) \{/.test(cartridgeSource)
   && /runDeepLink\(\);/.test(cartridgeSource));
+
+
+console.log('\nthe card keeper\n');
+
+/* Five links on the map and a card with no distances: the popup that had
+   been decorated was replaced by the search lane's late arrival. */
+check('the measurement block is kept, not written once',
+  /function armCardKeeper\(links, direction, layerLoaded\)/.test(cartridgeSource)
+  && /armCardKeeper\(links, direction, layerLoaded\);\n    if \(!injectIntoCard/.test(cartridgeSource));
+check('the keeper re-attaches only while the card lacks the block',
+  /if \(!content \|\| content\.querySelector\(`\.\$\{BLOCK_CLASS\}`\)\) return;/.test(cartridgeSource));
+check('a cleared selection disarms the keeper before the block is removed',
+  /disarmCardKeeper\(\);\n    removeCardBlock\(\);/.test(cartridgeSource));
+check('the payload is per selection, so a stale project never decorates a new popup',
+  /cardKeeperPayload = \{ links, direction, layerLoaded \};/.test(cartridgeSource)
+  && /cardKeeperPayload = null;/.test(cartridgeSource));
 
 console.log(`\n${passed}/${passed + failures.length} checks passed`);
 if (failures.length) {

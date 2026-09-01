@@ -1,7 +1,7 @@
 /**
  * GridAtlas cartridge — neon substation links and the SLD layout sandbox.
  *
- * Generation 202609011205 (UTC), composition v9.45. Slot: replace-script for
+ * Generation 202609011215 (UTC), composition v9.46. Slot: replace-script for
  * 202608292126-pre-snapped-config-adapter.js.
  *
  * WHAT IT DOES
@@ -61,7 +61,7 @@
 (() => {
   'use strict';
 
-  const GENERATION = '202609011205';
+  const GENERATION = '202609011215';
 
   /* ══════════════════════════════════════════════════════════════════════
      PART 1 — the pre-snapped config adapter, carried forward unchanged.
@@ -976,6 +976,45 @@
     return true;
   }
 
+  /* ── the card keeper ─────────────────────────────────────────────────
+     The measurement block lives inside the popup, and the popup is not
+     ours: the search lane creates it when identity resolution completes,
+     which on a phone can be seconds after the links were drawn. Watched
+     live on the Pipeline News MAP journey: five links on the map, and a
+     card with no distances, because the popup that had been decorated was
+     replaced by the one that arrived late. The lines live in map layers
+     and survived; the block died with the popup.
+
+     So the block is kept, not just written: while a selection is active,
+     an observer re-attaches it whenever the current card lacks it. The
+     payload is per selection - a new selection re-arms it, a cleared
+     selection disarms it, so a radius or measure popup after deselection
+     is never decorated with another project's distances. */
+  let cardKeeper = null;
+  let cardKeeperPayload = null;
+
+  function armCardKeeper(links, direction, layerLoaded) {
+    cardKeeperPayload = { links, direction, layerLoaded };
+    if (cardKeeper || typeof MutationObserver !== 'function') return;
+    try {
+      cardKeeper = new MutationObserver(() => {
+        const payload = cardKeeperPayload;
+        if (!payload) return;
+        const content = document.querySelector('.maplibregl-popup-content');
+        if (!content || content.querySelector(`.${BLOCK_CLASS}`)) return;
+        injectIntoCard(payload.links, payload.direction, payload.layerLoaded);
+      });
+      cardKeeper.observe(document.body, { childList: true, subtree: true });
+    } catch (error) {
+      link.failures.push('card keeper: ' + String(error?.message || error));
+      cardKeeper = null;
+    }
+  }
+
+  function disarmCardKeeper() {
+    cardKeeperPayload = null;
+  }
+
   function removeCardBlock() {
     document.querySelectorAll(`.${BLOCK_CLASS}`).forEach(node => node.remove());
   }
@@ -1131,6 +1170,7 @@
       setSourceData(map, SRC, emptyCollection());
       setSourceData(map, SRC_NODES, emptyCollection());
     }
+    disarmCardKeeper();
     removeCardBlock();
     clearPin(capturedMap);
     link.links_drawn = 0;
@@ -1175,6 +1215,7 @@
     // The popup is built by the engine and rendered synchronously in its own
     // click handler, but MapLibre attaches it on the next frame in some paths.
     // One retry covers that without polling forever.
+    armCardKeeper(links, direction, layerLoaded);
     if (!injectIntoCard(links, direction, layerLoaded)) {
       requestAnimationFrame(() => injectIntoCard(links, direction, layerLoaded));
     }
@@ -1836,7 +1877,7 @@
 
      Mobile first, like everything since Vikram said the link travels by
      WhatsApp: a collapsed chip, viewport-sized body, newest first. */
-  const VERSION_LEDGER = [{"g":"202608312121","v":"v9.16","s":"the project arriving from Pipeline News is visible: its own technology layer is enabled and a pin owned by this cartridge is dropped on it, with a toggle on the card"},{"g":"202608312133","v":"v9.17","s":"central AC sizing: the limiting nameplate, not a squared product"},{"g":"202608312140","v":"v9.18","s":"the project marker is a ring, found by looking at it in Chrome"},{"g":"202608312154","v":"v9.19","s":"the grid maths installs even when the basemap never paints"},{"g":"202608312157","v":"v9.20","s":"the Atlas says what it is waiting for, sized for a phone"},{"g":"202608312205","v":"v9.21","s":"the MapLibre exception storm: symbol layers with no glyph atlas"},{"g":"202608312208","v":"v9.22","s":"a symbol layer is added only once its text can be drawn"},{"g":"202608312222","v":"v9.23","s":"card geometry resets on every selection"},{"g":"202608312227","v":"v9.24","s":"the GB electricity tracker is connected to the map"},{"g":"202608312238","v":"v9.25","s":"one source of truth for GB prices: the data repository"},{"g":"202608312244","v":"v9.26","s":"late layer controls are used, and the repository is LF everywhere"},{"g":"202608312257","v":"v9.27","s":"the MAP button works for every technology in the register"},{"g":"202608312300","v":"v9.28","s":"voltage classes are explained, and the whole dashboard is accepted"},{"g":"202608312306","v":"v9.29","s":"the headline capacity actually moves the layout"},{"g":"202608312313","v":"v9.30","s":"the neon flow no longer exhausts the renderer"},{"g":"202608312315","v":"v9.31","s":"Codex's LineAtlas cardinality gate passes"},{"g":"202608312317","v":"v9.32","s":"no substation can display an impossible voltage"},{"g":"202608312321","v":"v9.33","s":"nothing can rewrite the reference design, not even later"},{"g":"202608312324","v":"v9.34","s":"a missing source costs a drawing, never the session"},{"g":"202609010021","v":"v9.35","s":"phone pointer operation, viewport containment and named electrical ratios"},{"g":"202609010040","v":"v9.36","s":"original financial-model parity with explicit correction of the known central AC double-count"},{"g":"202609010053","v":"v9.37","s":"complete the original finance interaction contract by linking development stage, cost and success"},{"g":"202609010058","v":"v9.38","s":"restore topology-isolated physical inputs and the original mounting-to-bifacial linkage"},{"g":"202609010106","v":"v9.39","s":"remove duplicate BESS truth, restore original central defaults and reject fractional topology counts"},{"g":"202609010204","v":"v9.40","s":"the version ledger itself, on the page"},{"g":"202609010722","v":"v9.41","s":"exact GB price evidence, beside the ledger"},{"g":"202609010726","v":"v9.42","s":"the price panel revalidates instead of pinning its first sight"},{"g":"202609010902","v":"v9.43","s":"mobile: tools collapse behind one chip; grid and subs are one tap"},{"g":"202609011141","v":"v9.44","s":"a repd_ref-only link computes the links: identity resolved by the search lane is consumed, not re-required from the URL"},{"g":"202609011205","v":"v9.45","s":"arrival: fullscreen on touch, the identity wait runs to its end, and every stage says what it is doing"}];
+  const VERSION_LEDGER = [{"g":"202608312121","v":"v9.16","s":"the project arriving from Pipeline News is visible: its own technology layer is enabled and a pin owned by this cartridge is dropped on it, with a toggle on the card"},{"g":"202608312133","v":"v9.17","s":"central AC sizing: the limiting nameplate, not a squared product"},{"g":"202608312140","v":"v9.18","s":"the project marker is a ring, found by looking at it in Chrome"},{"g":"202608312154","v":"v9.19","s":"the grid maths installs even when the basemap never paints"},{"g":"202608312157","v":"v9.20","s":"the Atlas says what it is waiting for, sized for a phone"},{"g":"202608312205","v":"v9.21","s":"the MapLibre exception storm: symbol layers with no glyph atlas"},{"g":"202608312208","v":"v9.22","s":"a symbol layer is added only once its text can be drawn"},{"g":"202608312222","v":"v9.23","s":"card geometry resets on every selection"},{"g":"202608312227","v":"v9.24","s":"the GB electricity tracker is connected to the map"},{"g":"202608312238","v":"v9.25","s":"one source of truth for GB prices: the data repository"},{"g":"202608312244","v":"v9.26","s":"late layer controls are used, and the repository is LF everywhere"},{"g":"202608312257","v":"v9.27","s":"the MAP button works for every technology in the register"},{"g":"202608312300","v":"v9.28","s":"voltage classes are explained, and the whole dashboard is accepted"},{"g":"202608312306","v":"v9.29","s":"the headline capacity actually moves the layout"},{"g":"202608312313","v":"v9.30","s":"the neon flow no longer exhausts the renderer"},{"g":"202608312315","v":"v9.31","s":"Codex's LineAtlas cardinality gate passes"},{"g":"202608312317","v":"v9.32","s":"no substation can display an impossible voltage"},{"g":"202608312321","v":"v9.33","s":"nothing can rewrite the reference design, not even later"},{"g":"202608312324","v":"v9.34","s":"a missing source costs a drawing, never the session"},{"g":"202609010021","v":"v9.35","s":"phone pointer operation, viewport containment and named electrical ratios"},{"g":"202609010040","v":"v9.36","s":"original financial-model parity with explicit correction of the known central AC double-count"},{"g":"202609010053","v":"v9.37","s":"complete the original finance interaction contract by linking development stage, cost and success"},{"g":"202609010058","v":"v9.38","s":"restore topology-isolated physical inputs and the original mounting-to-bifacial linkage"},{"g":"202609010106","v":"v9.39","s":"remove duplicate BESS truth, restore original central defaults and reject fractional topology counts"},{"g":"202609010204","v":"v9.40","s":"the version ledger itself, on the page"},{"g":"202609010722","v":"v9.41","s":"exact GB price evidence, beside the ledger"},{"g":"202609010726","v":"v9.42","s":"the price panel revalidates instead of pinning its first sight"},{"g":"202609010902","v":"v9.43","s":"mobile: tools collapse behind one chip; grid and subs are one tap"},{"g":"202609011141","v":"v9.44","s":"a repd_ref-only link computes the links: identity resolved by the search lane is consumed, not re-required from the URL"},{"g":"202609011205","v":"v9.45","s":"arrival: fullscreen on touch, the identity wait runs to its end, and every stage says what it is doing"},{"g":"202609011215","v":"v9.46","s":"the distances survive the card: a keeper re-attaches the measurement block when a late popup replaces the one it decorated"}];
   const PRE_SCOPE_COMPOSITIONS = 16;
   const LEDGER_ID = 'gridatlas-version-ledger';
 
