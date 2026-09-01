@@ -1336,6 +1336,52 @@
       "reason": "gate red: local CI (proofs, deep scan, stamps, cvaa)",
       "finished_at": "2026-09-01T23:49:03.519Z",
       "output": " 37/37\n  \u001b[32mPASS\u001b[0m  grid scope             33/33\n  \u001b[32mPASS\u001b[0m  network topology       47/47\n  \u001b[32mPASS\u001b[0m  assembler              31/31\n  \u001b[32mPASS\u001b[0m  source registry        42/42\n  \u001b[32mPASS\u001b[0m  map-click network      13/13\n  \u001b[32mPASS\u001b[0m  declared connections   23/23\n  \u001b[32mPASS\u001b[0m  sizing arithmetic      ok\n  \u001b[32mPASS\u001b[0m  data-contract parity   15/15\n  \u001b[32mPASS\u001b[0m  electrical distance    52/52\n  \u001b[32mPASS\u001b[0m  rating envelope        40/40\n  \u001b[32mPASS\u001b[0m  injection response (powerflow) 53/53\n  \u001b[32mPASS\u001b[0m  planned change         79/79\n  \u001b[32mPASS\u001b[0m  owner boundary         72/72\n\n\u001b[1mPASS 4 - checks that decline to check, and report success\u001b[0m\n  141 proof/verifier files read across 3 repositories\n  \u001b[32mno check skips its assertions on a missing dependency without a named opt-in\u001b[0m\n\n\u001b[1mPASS 5 - a stamp is a clock\u001b[0m\n\n  \u001b[1mgridatlas\u001b[0m  324 commits, 185 stamped more than 15 min from the commit clock; worst 17d96ed 202608300453 vs 202608300926 (-273 min)\n    \u001b[32mno file in the working tree is stamped ahead of 202609012348 UTC\u001b[0m\n    cvaa: not-immune, 117 finding(s) across 9 failing vaccine(s)\n    monotonic-utc-generations: 81 commit(s) off the clock, 14 out of order (history; reported, not amended)\n\n  \u001b[1mpipelinenews\u001b[0m  391 commits, 144 stamped more than 15 min from the commit clock; worst acc1309 202609010232 vs 202609010718 (-286 min)\n    \u001b[32mno file in the working tree is stamped ahead of 202609012348 UTC\u001b[0m\n    cvaa: not-immune, 171 finding(s) across 6 failing vaccine(s)\n    monotonic-utc-generations: 98 commit(s) off the clock, 22 out of order (history; reported, not amended)\n\n  \u001b[1mdata-grid-gb\u001b[0m  10 commits, 6 stamped more than 15 min from the commit clock; worst 04e0d62 202609012130 vs 202609011835 (+175 min)\n    \u001b[32mno file in the working tree is stamped ahead of 202609012348 UTC\u001b[0m\n    cvaa: not-immune, 8 finding(s) across 3 failing vaccine(s)\n    monotonic-utc-generations: 5 commit(s) off the clock, 1 out of order (history; reported, not amended)\n\n\u001b[31m1 flaw(s) found across 3 repositories.\u001b[0m\n[scope-loop:lint] Error: sld-sandbox: cartridge exceeds 400 kB boundary\n    at invariant (file:///C:/Users/vikra/OneDrive/Documents/GitHub/gridatlas/tools/scope/lib.mjs:39:25)\n    at validateAtlasLayout (file:///C:/Users/vikra/OneDrive/Documents/GitHub/gridatlas/tools/scope/loop.mjs:180:7)\n    at lint (file:///C:/Users/vikra/OneDrive/Documents/GitHub/gridatlas/tools/scope/loop.mjs:198:3)\n    at file:///C:/Users/vikra/OneDrive/Documents/GitHub/gridatlas/tools/scope/loop.mjs:232:27\n    at ModuleJob.run (node:internal/modules/esm/module_job:439:25)\n    at async node:internal/modules/esm/loader:643:26\n    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5)\nwarning: unshare -rn unavailable; antibodies run without a network namespace\nwarning: unshare -rn unavailable; antibodies run without a network namespace\nwarning: unshare -rn unavailable; antibodies run without a network namespace\n"
+    },
+    {
+      "step": "202609012350-owner-boundary.mjs",
+      "id": "owner-boundary",
+      "version": "v9.76",
+      "started_at": "2026-09-01T23:54:54.654Z",
+      "dry": false,
+      "stages": [
+        {
+          "name": "applied",
+          "at": "2026-09-01T23:54:55.547Z",
+          "changed": [
+            "atlas/current.json",
+            "atlas/parts/202609012045-sld-sandbox-body.js",
+            "tools/ci/202609012200-local-ci.mjs",
+            "tools/proofs/202609012345-sld-sandbox.proof.mjs",
+            "atlas/manifests/202609012045-substation-intelligence-v9-63-parts.json",
+            "atlas/parts/202609012350-substation-intelligence-body.js"
+          ]
+        },
+        {
+          "name": "syntax checked",
+          "at": "2026-09-01T23:54:55.729Z"
+        },
+        {
+          "name": "step proof 202609012350-owner-boundary.proof.mjs",
+          "at": "2026-09-01T23:54:55.858Z",
+          "status": 0
+        },
+        {
+          "name": "composed",
+          "at": "2026-09-01T23:54:56.205Z",
+          "generation": "202609012354",
+          "version": "v9.76",
+          "previous": "202609012345"
+        },
+        {
+          "name": "gate sandbox proof",
+          "at": "2026-09-01T23:54:56.931Z",
+          "status": 1
+        }
+      ],
+      "outcome": "failed",
+      "reason": "gate red: sandbox proof",
+      "finished_at": "2026-09-01T23:54:56.931Z",
+      "output": "s explicit, as it is for the scope\n  [PASS] an unarmed click still does nothing new\n  [PASS] the point query never measures a distance itself\n  [PASS] the block it writes is found by the filler, which selects by class\n  [PASS] the reader is told that nearest MAPPED is not nearest\n  [PASS] the reader is told it is a straight line and not a cable route\n  [PASS] the point answer never claims anything can connect\n  [PASS] an absent connection-points cartridge is an absence, not a guess\n  [PASS] the layers dash can be collapsed without entering fullscreen\n  [PASS] the collapsed choice is remembered, and every storage access is guarded\n  [PASS] the map is told to resize when the dash moves under it\n  [PASS] the toggle is reachable and labelled for assistive technology\n  [PASS] both new surfaces are published for review\n\nwhat is published as planned, kept apart from what exists\n\n  [FAIL] the planned-change module is in the served cartridge  \n  [PASS] the parsed product is kept so the module can read it\n  [PASS] a missing product is an absence, not a guess\n  [PASS] planned rows are reported in their OWN sentence, not in the circuit counts\n  [PASS] the page says a planned row is not a circuit today\n  [PASS] the page refuses commitment, consent and connection-date readings\n  [PASS] planned rows are stated as excluded from the counts above\n  [PASS] the planned state is published for review\n  [PASS] nothing in the planned sentence grades what it found\n\nthe computation left the sandbox, and ownership arrived\n\n  [PASS] the five network modules are no longer in the sandbox cartridge\n  [PASS] the sandbox cartridge is back under the 400 kB boundary with room to spare  316287 bytes\n  [PASS] the sandbox still CALLS them, from the cartridge that now carries them\n  [PASS] the card names the owners present\n  [PASS] a seam is named as a seam, with both ends said to differ\n  [PASS] a null owner is reported as unknown and never taken from the site\n  [PASS] an asset whose owner matches neither end is kept out of the boundary count\n  [PASS] the page refuses the counterparty reading\n  [PASS] the ownership state is published for review\n  [PASS] substation-intelligence is assembled from parts, not a monolith\n  [PASS] the five network modules are in the cartridge that owns the network\n  [PASS] the new owner-boundary module is there too\n  [PASS] it still carries the V8 engine verbatim, which is its slot contract\n  [PASS] it is under the boundary as well  180104 bytes\n\n609/617 checks passed\n\nFAILURES\n  the network-topology module is composed into the served bytes\n  the electrical-distance module is in the served cartridge\n  the successor topology module ships, not the incumbent\n  the rating-envelope module is in the served cartridge\n  the served bytes contain no site total of circuit ratings\n  the injection-response module is in the served cartridge\n  the served bytes never read resistance or susceptance into the flow model\n  the planned-change module is in the served cartridge\n"
     }
   ]
 }

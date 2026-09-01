@@ -212,6 +212,71 @@ export default {
   ['owner boundary', ['tools/proofs/modules/202609012350-owner-boundary.proof.mjs']]
 ];`));
 
+    /* ── 6a. checks that ask "is this module served?" must look at the
+       whole composition, not at one cartridge ─────────────────────────
+       Eight existing checks assert a module is present, and every one of
+       them reads `cartridgeSource` - correct while the sandbox was the
+       only cartridge that carried modules, and wrong the moment the
+       computation moved. Their INTENT is right and must not be lost: a
+       module that is composed into nothing is the v9.67 failure, proven
+       46/46 and present in no served cartridge for two generations.
+
+       So they are retargeted rather than deleted or relaxed: a
+       `composedSource` is the concatenation of every cartridge the
+       composition actually serves, and "is it served?" is asked of that.
+       That is a stronger question than the one they were asking, because
+       it no longer depends on which cartridge happens to hold the file. */
+    {
+      const p = read(sandboxProof);
+      const ANCHOR = 'const cartridgeSource = await readPublished(CARTRIDGE);';
+      if (p.split(ANCHOR).length - 1 !== 1) throw new Error('cartridgeSource anchor is not unique');
+      const withComposed = p.replace(ANCHOR, `${ANCHOR}
+
+/* Every cartridge this composition serves, concatenated.
+   ------------------------------------------------------------------------
+   "Is this module in the served bytes?" is a question about the
+   COMPOSITION, not about one cartridge. It was asked of the sandbox alone
+   until 202609012350, when the network modules moved to the cartridge that
+   owns the network - at which point eight such checks went red for a
+   composition that was entirely correct. Asking the composition is the
+   question that was always meant. */
+const composedSource = (await Promise.all(
+  (CURRENT.cartridges || []).map(entry =>
+    readPublished(join(REPO, 'atlas', String(entry.path).replace(/^\\.\\//, ''))))
+)).join('\\n');`);
+
+      /* Retarget only the named checks, by rewriting the single argument
+         they read. A blanket substitution of cartridgeSource would break
+         every check that legitimately asks about the sandbox itself. */
+      const RETARGET = [
+        'the network-topology module is composed into the served bytes',
+        'the electrical-distance module is in the served cartridge',
+        'the successor topology module ships, not the incumbent',
+        'the rating-envelope module is in the served cartridge',
+        'the served bytes contain no site total of circuit ratings',
+        'the injection-response module is in the served cartridge',
+        'the served bytes never read resistance or susceptance into the flow model',
+        'the planned-change module is in the served cartridge',
+      ];
+      let text = withComposed;
+      for (const label of RETARGET) {
+        const at = text.indexOf(`check('${label}'`);
+        if (at < 0) throw new Error(`cannot retarget a check that is not there: ${label}`);
+        /* the call ends at the first ');' that closes it - these checks are
+           all single statements, which is asserted by requiring one */
+        const end = text.indexOf(');\n', at);
+        if (end < 0) throw new Error(`cannot find the end of: ${label}`);
+        const call = text.slice(at, end);
+        if (!call.includes('cartridgeSource')) {
+          throw new Error(`already retargeted or unexpected shape: ${label}`);
+        }
+        text = text.slice(0, at)
+          + call.split('cartridgeSource').join('composedSource')
+          + text.slice(end);
+      }
+      write(sandboxProof, text);
+    }
+
     /* ── 6. the gate ─────────────────────────────────────────────────── */
     const proof = read(sandboxProof);
     const TAIL = 'console.log(`\\n${passed}/${passed + failures.length} checks passed`);';
