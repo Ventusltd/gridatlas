@@ -1,7 +1,7 @@
 {
  "schema": "gridatlas.composition-manifest.v1",
- "generation": "202609011805",
- "parent_generation": "202609011751",
+ "generation": "202609011820",
+ "parent_generation": "202609011805",
  "live_route": "/gridatlas/atlas/",
  "shell": {
   "release_id": "202608300453-atlas-v9",
@@ -22,6 +22,7 @@
  "cartridge_order": [
   "streaming-parquet-bridge",
   "uk-gazetteer-flyto",
+  "substation-intelligence",
   "sld-sandbox"
  ],
  "cartridges": [
@@ -67,13 +68,13 @@
   },
   {
    "id": "sld-sandbox",
-   "generation": "202609011805",
-   "version": "v9.58",
+   "generation": "202609011820",
+   "version": "v9.59",
    "type": "script",
    "slot": "replace-script",
    "replace_script": "202608292126-pre-snapped-config-adapter.js",
-   "path": "./cartridges/202609011805-sld-sandbox-v9-8.js",
-   "sha256": "b33c89a93bed366eb7735a8dca97cad12f6ba7a909056a7ac570d25660829816",
+   "path": "./cartridges/202609011820-sld-sandbox-v9-8.js",
+   "sha256": "9f9ebce6b8c4824bb2c25d6f0dbb1d16dacc41a69dc46eba8762f962a0f9f41b",
    "capabilities": [
     "pre-snapped-config-adapter-carried-forward",
     "project-or-substation-selection",
@@ -179,7 +180,8 @@
     "project-ring-drawn-on-arrival-not-after-the-payload",
     "pink-for-a-point-of-connection-not-yet-built",
     "declared-circuit-connections-draw-no-line",
-    "little-crow-distribution-loop-archetype"
+    "little-crow-distribution-loop-archetype",
+    "published-network-parameters-on-the-card"
    ],
    "immutable_shell_modified": false,
    "supersedes_shell_script": {
@@ -501,6 +503,44 @@
     "archetypes": "West Burton builds a 400 kV customer substation and a 10 km cable to an existing transmission bay; Little Crow loops into a distribution circuit already crossing its land. Both are NSIPs; only one is a 400 kV story",
     "rule": "the state is taken from the public record, never from whether OSM happens to have mapped the asset"
    }
+  },
+  {
+   "id": "substation-intelligence",
+   "generation": "202609011820",
+   "version": "v9.59",
+   "type": "script",
+   "slot": "replace-script",
+   "replace_script": "ventus-corev8engine.js",
+   "path": "./cartridges/202609011820-substation-intelligence-v9-59.js",
+   "sha256": "0d7e9a393f875867239afa3065802f484fb7e3cb2e287e4d48c760c11025aa34",
+   "capabilities": [
+    "v8-engine-carried-forward-verbatim",
+    "neso-etys-connection-points-v2-consumed",
+    "eight-fault-current-metrics-never-conflated",
+    "rms-break-current-quoted-by-name",
+    "substation-lookup-by-name-and-by-position",
+    "published-parameters-never-a-connection-assessment",
+    "fails-closed-on-an-unknown-product-schema",
+    "revalidated-never-pinned-to-first-sight"
+   ],
+   "immutable_shell_modified": false,
+   "supersedes_shell_script": {
+    "name": "ventus-corev8engine.js",
+    "sha256": "9a75901ebdff05e094650e39973fc0f59204724753d393a734bb8cda7bc875ba",
+    "behaviour": "carried forward verbatim; the engine is unchanged, the intelligence runs after it"
+   },
+   "data_source": {
+    "repository": "Ventusltd/data-grid-gb",
+    "product": "derived/connection-points.v2.json",
+    "schema_required": "data-grid-gb.connection-points.v2",
+    "upstream": "NESO Electricity Ten Year Statement 2025, appendices B and D",
+    "built_by": "Claude and Codex, 2026-09-01; the v2 fault-current semantics are Codex's"
+   },
+   "slot_lesson": {
+    "v9_57": "claimed 202608292126-map-ready-fetch-bridge.js, which the shell does not load; the composer refused and the map went dark",
+    "now": "the composer replaces a script TAG, so only the four scripts index.html loads are slots; the engine was the one unclaimed",
+    "guard": "the proof now asserts every composed cartridge's replace_script appears in the shell index.html"
+   }
   }
  ],
  "acceptance": {
@@ -528,7 +568,7 @@
   "offshore_wind_excluded_from_links": true,
   "cards_fit_after_drag_and_restore": true,
   "shell_modified": false,
-  "scope": "service restored: the v9.57 substation cartridge claimed 202608292126-map-ready-fetch-bridge.js, which sits in the release directory but is never loaded by the shell, so the composer refused the composition and the map went dark; this composes the last working set again under a new timestamp",
+  "scope": "the substation cartridge returns through the engine slot, carrying the engine verbatim, and the card gains what NESO publishes about the substation it names",
   "proof": "tools/proofs/202609010726-sld-sandbox.proof.mjs, 420 checks"
  },
  "version": "v9.39",
@@ -539,5 +579,5 @@
   "source_sha256": "07d33eda5b3279a03df4c0a0aded61e4363c46734dda991aa5f48ae0d55097da",
   "transformation": "carry the pre-snap config rewrite verbatim; add a measured link layer and on-card beta distances"
  },
- "composition_version": "v9.58"
+ "composition_version": "v9.59"
 }

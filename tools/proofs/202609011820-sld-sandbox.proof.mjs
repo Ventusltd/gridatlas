@@ -1,5 +1,5 @@
 /**
- * Proof for the neon links + SLD layout sandbox cartridge, generation 202609011805.
+ * Proof for the neon links + SLD layout sandbox cartridge, generation 202609011820.
  *
  * No dependencies. The repository carries playwright and no DOM library, so
  * rather than add one this stubs the small surface the cartridge actually
@@ -32,7 +32,7 @@ import vm from 'node:vm';
 const HERE = dirname(fileURLToPath(import.meta.url));
 const REPO = resolve(HERE, '..', '..');
 const CARTRIDGE = join(REPO, 'atlas', 'cartridges',
-  '202609011805-sld-sandbox-v9-8.js');
+  '202609011820-sld-sandbox-v9-8.js');
 const ORIGINAL = join(REPO, 'atlas', 'releases', '202608300453-atlas-v9',
   '202608292126-pre-snapped-config-adapter.js');
 const FINANCE_ORACLE = join(REPO, 'tools', 'proofs', 'fixtures',
@@ -2279,6 +2279,18 @@ check('Little Crow names its circuit and its source',
 check('a circuit connection never claims 400 kV',
   /kv: 132,/.test(cartridgeSource)
   && /\(d\.kv \? `<span class="neon-kv">\$\{d\.kv\} kV<\/span>` : ''\)/.test(cartridgeSource));
+
+
+console.log('\nthe published network parameters\n');
+
+check('the card asks the substation cartridge and renders only what it returns',
+  /window\.__GRIDATLAS_NETWORK__\?\.summarise\?\.\(networkName\)/.test(cartridgeSource));
+check('a circuit connection is not attributed to a substation',
+  /currentDeclared\?\.kind !== 'circuit'/.test(cartridgeSource));
+check('the metric caveat, the attribution and the refusal travel with the numbers',
+  /published\.metrics_not_interchangeable/.test(cartridgeSource)
+  && /published\.attribution/.test(cartridgeSource)
+  && /published\.not_an_assessment/.test(cartridgeSource));
 
 console.log(`\n${passed}/${passed + failures.length} checks passed`);
 if (failures.length) {
