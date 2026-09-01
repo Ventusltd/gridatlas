@@ -259,7 +259,13 @@ const commit = git('rev-parse', 'HEAD');
 untrackedBefore = null; /* committed: nothing left to undo */
 stage('committed', { commit: commit.slice(0, 7), subject_stamp: generation, clock_at_commit: stamp });
 {
-  const r = run('git', ['push', 'origin', 'HEAD:main', 'HEAD'], { allowFail: true, quiet: true });
+  /* One refspec, not two. `HEAD:main HEAD` was written for a DETACHED head
+     in a worktree, where the bare `HEAD` pushed the iteration branch and
+     `HEAD:main` promoted it. Run from the ordinary checkout, where HEAD IS
+     refs/heads/main, git sees two sources for one destination and refuses:
+     "dst ref refs/heads/main receives from more than one src". The cut was
+     committed and never pushed, and the shift stopped. 202609012234. */
+  const r = run('git', ['push', 'origin', 'HEAD:main'], { allowFail: true, quiet: true });
   if (r.status !== 0) { entry.outcome = 'committed-not-pushed'; entry.reason = r.out.slice(-1500); entry.finished_at = new Date().toISOString(); record(entry); process.exit(1); }
 }
 stage('pushed');
