@@ -1,7 +1,7 @@
 {
   "schema": "gridatlas.current.v2",
-  "generation": "202609010021",
-  "previous_generation": "202608312324",
+  "generation": "202609010040",
+  "previous_generation": "202609010021",
   "architecture": "IMMUTABLE_SHELL_PLUS_HASHED_CARTRIDGES",
   "live_route": "/gridatlas/atlas/",
   "release_id": "202608300453-atlas-v9",
@@ -58,13 +58,13 @@
     },
     {
       "id": "sld-sandbox",
-      "generation": "202609010021",
-      "version": "v9.35",
+      "generation": "202609010040",
+      "version": "v9.36",
       "type": "script",
       "slot": "replace-script",
       "replace_script": "202608292126-pre-snapped-config-adapter.js",
-      "path": "./cartridges/202609010021-sld-sandbox-v9-8.js",
-      "sha256": "9ecfabf53d577c35e60399cdd656061f7058d3af96304a8047d2881752167b16",
+      "path": "./cartridges/202609010040-sld-sandbox-v9-8.js",
+      "sha256": "cdfc8d209c4414037a0e9a8f1acfe052b7136c51fd60f3ad30c39d02bc29326b",
       "capabilities": [
         "pre-snapped-config-adapter-carried-forward",
         "project-or-substation-selection",
@@ -89,7 +89,7 @@
         "denser-electron-flow-two-layers",
         "fit-array-to-the-registers-stated-capacity",
         "ac-dc-basis-declared-not-assumed",
-        "dc-ac-ratio-range-check",
+        "ratio-mismatch-descriptive-not-graded",
         "own-ui-clicks-do-not-reach-the-map",
         "unloaded-layer-reported-as-unloaded",
         "cards-drag-minimise-and-close",
@@ -132,7 +132,12 @@
         "touch-drag-array-rotation-and-route",
         "phone-portrait-and-landscape-bounded",
         "44px-primary-touch-controls",
-        "array-inverter-and-export-ratios-rendered-separately"
+        "array-inverter-and-export-ratios-rendered-separately",
+        "original-finance-oracle-parity",
+        "separate-string-central-finance",
+        "corrected-central-finance-divergence",
+        "mobile-collapsed-finance",
+        "visible-finance-assumptions"
       ],
       "immutable_shell_modified": false,
       "supersedes_shell_script": {
@@ -176,7 +181,7 @@
           "gis-sld-v5-drawing.js",
           "gis-sld-v5-config.js"
         ],
-        "arithmetic": "carried across unchanged; the proof re-derives the sandbox formula independently and compares on six input cases",
+        "arithmetic": "electrical arithmetic is checked independently on six sizing cases; financial arithmetic is checked against four fixtures produced by executing the original modules directly",
         "deliberate_differences": [
           "one Earth radius: the sandbox measures on 6378.137 but builds geometry with turf.destination on 6371.0088, mixing two radii inside one drawing; the Atlas ships no turf and every operation here is canonical",
           "grab rather than mode-switch: the array is dragged, rotation has a handle, route vertices are dragged, inserted and removed without a commit step",
@@ -288,8 +293,16 @@
         },
         "not_a_verdict": "an earlier version called a design ratio below one a contradiction nobody builds; the reference documents 28 inverters at 352 kVA ahead of an 8.96 MVA skid, so oversizing is a deliberate choice and the panel describes it rather than grading it"
       },
-      "not_ported_yet": {
-        "financial_model": "the original carries price, yield, bifacial gain, five loss components, degradation, opex, EPC, flood, module and fixed capex, contingency, full BESS assumptions and 25/35-year generation. None of it is in this cartridge, so there is nothing to compare against the original yet"
+      "finance_port": {
+        "oracle": "tools/proofs/fixtures/202609010002-original-sld-finance.json",
+        "oracle_builder": "tools/proofs/202609010002-original-sld-finance-fixture.mjs executes the original GlobalGrid2050 modules rather than retyping their formulas",
+        "coverage": "four string and central cases cover electrical outputs, revenue, losses, degradation, OPEX, solar and BESS CAPEX, 25/35-year surplus, and development values",
+        "parity": "every unaffected output equals the executable original within floating-point tolerance",
+        "central_divergence": "the original central stress case squares inverters per skid into AC. The port uses corrected inverter AC for central OPEX, and its corrected 25/35-year surplus is named in the oracle fixture rather than hidden as parity",
+        "topology_state": "string and central finance assumptions are independent, as in the original",
+        "bess_state": "layout and financial BESS inputs are not silently synchronised; any mismatch is visible",
+        "mobile": "the financial block starts collapsed, remembers an explicit open, and uses the same bounded phone-first panel",
+        "limits": "screening values only, not financial advice; all assumptions remain visible"
       },
       "dash_atlas": {
         "reported_by": "the Codex session's LineAtlas cardinality gate",
@@ -381,15 +394,15 @@
       "result_class": "LOCATION_ONLY"
     }
   },
-  "composition_manifest": "./manifests/202609010021-composition.json",
+  "composition_manifest": "./manifests/202609010040-composition.json",
   "scope_closure": {
-    "generation": "202609010021",
+    "generation": "202609010040",
     "status": "DONE",
-    "scope": "GridAtlas v9.35 make layout touch-operable and name electrical ratios",
+    "scope": "GridAtlas v9.36 port the original financial model with executable parity and an explicit central correction",
     "schedule_retired": true
   },
-  "composition_version": "v9.35",
-  "composition_id": "202609010021-gridatlas-v9.35",
+  "composition_version": "v9.36",
+  "composition_id": "202609010040-gridatlas-v9.36",
   "transport": {
     "response_contract": "HEADERS_BEFORE_PARQUET_BODY",
     "engine_timeout_seconds": 15,

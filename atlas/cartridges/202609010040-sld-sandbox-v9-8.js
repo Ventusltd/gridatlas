@@ -1,7 +1,7 @@
 /**
  * GridAtlas cartridge — neon substation links and the SLD layout sandbox.
  *
- * Generation 202609010021 (UTC), composition v9.35. Slot: replace-script for
+ * Generation 202609010040 (UTC), composition v9.36. Slot: replace-script for
  * 202608292126-pre-snapped-config-adapter.js.
  *
  * WHAT IT DOES
@@ -61,7 +61,7 @@
 (() => {
   'use strict';
 
-  const GENERATION = '202609010021';
+  const GENERATION = '202609010040';
 
   /* ══════════════════════════════════════════════════════════════════════
      PART 1 — the pre-snapped config adapter, carried forward unchanged.
@@ -2192,6 +2192,24 @@
     handle: '#d8c96a'
   };
 
+  /* Financial inputs are kept per topology because that is how the original
+     sandbox works. These are its post-migration defaults: the old HTML stores
+     several development values as GBP/MW and migrateFinanceUnitsToWp converts
+     them to GBP/Wp before the first calculation. Keeping the converted values
+     here makes the units visible and avoids a hidden one-million multiplier. */
+  const FINANCE_DEFAULTS = Object.freeze({
+    price: 65, other: 0, yield: 1000, bifacial: 5, losses: 2, deg: 0.4,
+    opex: 25000, epc_ex: 0.30, flood: false, flood_rate: 0.03,
+    modules: 0.15, other_capex: 0.20, fixed_capex: 1500000, cont: 7,
+    loss_dc_string: 0, loss_lv_dc: 0, loss_lv_ac: 0, loss_tx: 0,
+    loss_other: 0, bess_mw: 0, bess_mwh: 0, bess_capex: 0,
+    bess_cycles: 0, bess_spread: 0, bess_eff: 88,
+    dev_stage: '0.100', dev_cost_mw: 0.1, dev_module_mwp: 0.15,
+    dev_epc_mw: 0.5, dev_owner_mw: 0.1, dev_grid_mw: 0.1,
+    dev_exit_mwp: 1.35, dev_npv_mwp: 1.2, dev_success: 15, dev_years: 4,
+  });
+  const freshFinanceInputs = () => ({ ...FINANCE_DEFAULTS });
+
   const sld = {
     active: false,
     gridNode: null,          // the substation the scheme connects to
@@ -2208,6 +2226,7 @@
     targetMw: null,
     targetBasis: 'unstated',
     fitResidualPct: null,
+    financeOpen: false,
     cableKm: 0,
     straightKm: 0,
     dragging: null,
@@ -2227,6 +2246,10 @@
       inv_ac_mw_c: 4.4, inv_dc_mw_c: 5.28, central_skid_mva_c: 4.4,
       x_mods_c: 28, str_per_cb_c: 1, inv_per_mv_c: 2, mv_per_ring_c: 4, rings_c: 3,
       bess_mwh: 0
+    },
+    finance: {
+      string: freshFinanceInputs(),
+      central: freshFinanceInputs(),
     }
   };
   window.__GRIDATLAS_SLD__ = sld;
@@ -2553,21 +2576,141 @@
     });
   }
 
+  const DEVELOPMENT_STAGES = Object.freeze({
+    '0.003': 'Land Option Signed',
+    '0.015': 'Grid Connection Application Accepted',
+    '0.035': 'Planning Application Submitted',
+    '0.055': 'Planning Permission Granted',
+    '0.070': 'Grid Connection Terms Reviewed and Agreed',
+    '0.080': 'Buyer or Revenue Agreement Reviewed (Power Purchase Agreement (PPA) / Offtaker)',
+    '0.100': 'Construction Contract Signed and Finance Committed (Financial Close)',
+  });
+
+  const financeNumber = value => {
+    const number = Number(value);
+    return Number.isFinite(number) ? number : 0;
+  };
+
+  /* Direct port of gis-sld-v5-finance.js computeFinance(). The original
+     executable fixture is the authority, not this comment. The one deliberate
+     divergence is inherited from the corrected electrical port: annual OPEX
+     uses the corrected central inverter nameplate, so the inv_per_mv > 1 case
+     must match the fixture's explicit corrected surplus rather than repeat the
+     original AC double-count. Every unaffected output remains exact. */
+  function computeScreeningFinance(financeInputs, stats) {
+    const f = financeInputs || FINANCE_DEFAULTS;
+    const dcMwp = financeNumber(stats?.dc_mwp);
+    // The reference's OPEX input is GBP/MWac/year. In string mode its AC
+    // quantity is skid-limited export. In central mode, once the known square
+    // is removed, it is inverter count x inverter MWac. Do not silently swap
+    // that to transformer-limited export: those are separately named values.
+    const centralInverterAc = (stats?.mode || sld.inputs.mode) === 'central'
+      ? financeNumber(stats?.consistency?.inverter_ac_mw) : 0;
+    const acMw = centralInverterAc > 0 ? centralInverterAc : financeNumber(stats?.ac_mw);
+    const price = financeNumber(f.price);
+    const other = financeNumber(f.other);
+    const yieldVal = financeNumber(f.yield);
+    const bifacial = financeNumber(f.bifacial);
+    const baseLoss = financeNumber(f.losses);
+    const deg = financeNumber(f.deg);
+    const opexRate = financeNumber(f.opex);
+    const epcEx = financeNumber(f.epc_ex);
+    const floodRate = financeNumber(f.flood_rate);
+    const floodAdder = f.flood ? floodRate : 0;
+    const modules = financeNumber(f.modules);
+    const otherCapex = financeNumber(f.other_capex);
+    const fixedCapex = financeNumber(f.fixed_capex);
+    const cont = financeNumber(f.cont);
+    const lossExtras = financeNumber(f.loss_dc_string) + financeNumber(f.loss_lv_dc)
+      + financeNumber(f.loss_lv_ac) + financeNumber(f.loss_tx) + financeNumber(f.loss_other);
+    const totalLoss = baseLoss + lossExtras;
+    const bessMw = financeNumber(f.bess_mw);
+    const bessMwh = financeNumber(f.bess_mwh);
+    const bessCapexRate = financeNumber(f.bess_capex);
+    const bessCycles = financeNumber(f.bess_cycles);
+    const bessRevenuePerMwh = financeNumber(f.bess_spread);
+    const bessEffPercent = financeNumber(f.bess_eff);
+    const safeLoss = Math.min(Math.max(totalLoss, 0), 100);
+    const safeBessEff = Math.min(Math.max(bessEffPercent / 100, 0), 1);
+    const effectiveYield = yieldVal * (1 + bifacial / 100);
+    const year1Gen = dcMwp * effectiveYield * (1 - safeLoss / 100);
+    let gen25 = 0;
+    let gen35 = 0;
+    for (let year = 1; year <= 35; year += 1) {
+      const generation = year1Gen * Math.pow(1 - deg / 100, year - 1);
+      if (year <= 25) gen25 += generation;
+      gen35 += generation;
+    }
+    const annualSolarRevenue = year1Gen * (price + other);
+    const bessAnnualValue = bessMwh * bessCycles * bessRevenuePerMwh * safeBessEff;
+    const annualRevenue = annualSolarRevenue + bessAnnualValue;
+    const revenue25 = gen25 * (price + other) + bessAnnualValue * 25;
+    const revenue35 = gen35 * (price + other) + bessAnnualValue * 35;
+    const annualOpex = acMw * opexRate;
+    const baseCapexWp = epcEx + modules + otherCapex + floodAdder;
+    const baseCapex = dcMwp * 1_000_000 * baseCapexWp;
+    const contingency = baseCapex * (cont / 100);
+    const bessCapex = bessMwh * bessCapexRate;
+    const totalCapex = baseCapex + contingency + fixedCapex + bessCapex;
+    const capexPerWp = dcMwp > 0 ? totalCapex / (dcMwp * 1_000_000) : 0;
+    const surplus25 = revenue25 - annualOpex * 25 - totalCapex;
+    const surplus35 = revenue35 - annualOpex * 35 - totalCapex;
+    const devCostPerMw = financeNumber(f.dev_cost_mw);
+    const devModulePerMwp = financeNumber(f.dev_module_mwp);
+    const devEpcPerMw = financeNumber(f.dev_epc_mw);
+    const devOwnerPerMw = financeNumber(f.dev_owner_mw);
+    const devGridPerMw = financeNumber(f.dev_grid_mw);
+    const devExitPerMwp = financeNumber(f.dev_exit_mwp);
+    const devNpvPerMwp = financeNumber(f.dev_npv_mwp);
+    const devSuccessPct = financeNumber(f.dev_success);
+    const devYears = financeNumber(f.dev_years);
+    const devStage = DEVELOPMENT_STAGES[String(f.dev_stage)] || 'Manual';
+    const wpCapacity = dcMwp * 1_000_000;
+    const devCapitalAtRisk = wpCapacity * devCostPerMw;
+    const devModuleCost = wpCapacity * devModulePerMwp;
+    const devEpcCost = wpCapacity * devEpcPerMw;
+    const devOwnerCost = wpCapacity * devOwnerPerMw;
+    const devGridCost = wpCapacity * devGridPerMw;
+    const devTotalBuildCost = devCapitalAtRisk + devModuleCost + devEpcCost
+      + devOwnerCost + devGridCost;
+    const devExitValue = wpCapacity * devExitPerMwp;
+    const devOperatingNpv = wpCapacity * devNpvPerMwp;
+    const devGrossMargin = devExitValue - devTotalBuildCost;
+    const devRiskAdjustedValue = devGrossMargin * (devSuccessPct / 100);
+    const devReturnMultiple = devCapitalAtRisk > 0 ? devGrossMargin / devCapitalAtRisk : 0;
+    return {
+      annualRevenue, revenue25, revenue35, totalCapex, capexPerWp, surplus25, surplus35,
+      devStage, devCostPerMw, devModulePerMwp, devEpcPerMw, devOwnerPerMw,
+      devGridPerMw, devExitPerMwp, devNpvPerMwp, devSuccessPct, devYears,
+      devCapitalAtRisk, devModuleCost, devEpcCost, devOwnerCost, devGridCost,
+      devTotalBuildCost, devExitValue, devOperatingNpv, devGrossMargin,
+      devRiskAdjustedValue, devReturnMultiple, price, other, yieldVal, bifacial,
+      baseLoss, deg, opexRate, epcEx, floodActive: Boolean(f.flood), floodRate,
+      modules, otherCapex, fixedCapex, cont, totalLoss, bessMw, bessMwh,
+      bessCapexRate, bessCycles, bessSpread: bessRevenuePerMwh,
+      bessEff: bessEffPercent, epcIncModules: epcEx + modules,
+    };
+  }
+
   const computeSldStats = () => {
     const stats = sld.inputs.mode === 'string'
       ? computeStringStats() : computeCentralStats();
     // Same object, so nothing can read a capacity without the check that says
     // whether the capacities agree with each other.
+    stats.mode = sld.inputs.mode;
     stats.consistency = consistency(sld.inputs, stats);
+    stats.finance = computeScreeningFinance(sld.finance[sld.inputs.mode], stats);
     return stats;
   };
+  sld.computeFinance = computeScreeningFinance;
 
   /**
    * Size the array so its capacity lands on the figure the register states.
    *
    * WHAT IS ADJUSTED, AND WHAT IS NOT
-   * Only the block count moves -- ring main circuits in string mode, rings in
-   * central mode. Everything a supplier fixes stays where the user put it:
+   * Two integer topology counts move -- circuits and skids per circuit in
+   * string mode, rings and MV skids per ring in central mode. Everything a
+   * supplier fixes stays where the user put it:
    * module rating, string length, inverter and skid ratings. That keeps the
    * result buildable rather than a number reverse-engineered into nonsense.
    *
@@ -3076,9 +3219,21 @@
   color:#68797f;font-size:9px;line-height:1.5}
 #${PANEL_ID} .sld-caveat b{color:#8b9aa1}
 #${PANEL_ID} .sld-hint{margin-top:6px;color:#5f7a80;font-size:9px;line-height:1.45}
+#${PANEL_ID} .sld-finance{margin-top:9px;border-top:1px solid #214047;padding-top:7px}
+#${PANEL_ID} .sld-finance summary{min-height:32px;display:flex;align-items:center;cursor:pointer;
+  color:#d9b45f;font-weight:bold;letter-spacing:.05em;user-select:none}
+#${PANEL_ID} .sld-fin-grid{display:grid;grid-template-columns:1fr 76px;gap:3px 7px;align-items:center}
+#${PANEL_ID} .sld-fin-section{grid-column:1/-1;margin-top:7px;padding-top:5px;
+  border-top:1px solid #10262b;color:#5fbdc2;font-size:9px;text-transform:uppercase}
+#${PANEL_ID} .sld-fin-grid input[type="checkbox"]{width:24px;justify-self:end}
+#${PANEL_ID} .sld-fin-out{margin:8px 0;padding:7px;background:#050a0d;border:1px solid #1d3238;
+  display:grid;grid-template-columns:1fr auto;gap:2px 8px}
+#${PANEL_ID} .sld-fin-out b{color:#d9b45f;font-variant-numeric:tabular-nums;text-align:right}
+#${PANEL_ID} .sld-fin-note{margin:6px 0;color:#8b9aa1;font-size:9px;line-height:1.5}
 @media (max-width:700px){#${PANEL_ID}{width:auto;left:8px;right:8px;top:96px;bottom:8px}}
 @media (pointer:coarse){
-  #${PANEL_ID} .sld-tabs button,#${PANEL_ID} input,#${PANEL_ID} select{min-height:44px}
+  #${PANEL_ID} .sld-tabs button,#${PANEL_ID} input,#${PANEL_ID} select,
+  #${PANEL_ID} .sld-finance summary{min-height:44px}
 }`;
     document.head.appendChild(style);
   }
@@ -3110,10 +3265,59 @@
     ['mv_per_ring_c', 'MV / ring'], ['rings_c', 'Rings'], ['bess_mwh', 'BESS MWh']
   ];
 
+  const FINANCE_FIELDS = [
+    ['@', 'Revenue and operating case'],
+    ['price', 'Energy price GBP/MWh'], ['other', 'Other income GBP/MWh'],
+    ['yield', 'Base yield kWh/kWp'], ['bifacial', 'Bifacial gain %'],
+    ['losses', 'Base losses %'], ['deg', 'Degradation %'], ['opex', 'OPEX GBP/MWac/yr'],
+    ['@', 'CAPEX'],
+    ['modules', 'Modules GBP/Wp'], ['epc_ex', 'EPC ex modules GBP/Wp'],
+    ['flood', 'Flood resilience', 'checkbox'], ['flood_rate', 'Flood adder GBP/Wp'],
+    ['other_capex', 'Other CAPEX GBP/Wp'], ['fixed_capex', 'Fixed CAPEX GBP'],
+    ['cont', 'Contingency %'],
+    ['@', 'Electrical loss allowances'],
+    ['loss_dc_string', 'DC string loss %'], ['loss_lv_dc', 'LV main DC loss %'],
+    ['loss_lv_ac', 'LV AC loss %'], ['loss_tx', 'Transformer loss %'],
+    ['loss_other', 'Other electrical loss %'],
+    ['@', 'BESS finance'],
+    ['bess_mw', 'BESS power MW'], ['bess_mwh', 'BESS energy MWh'],
+    ['bess_capex', 'BESS CAPEX GBP/MWh'], ['bess_cycles', 'BESS cycles / year'],
+    ['bess_spread', 'BESS revenue GBP/MWh'], ['bess_eff', 'BESS efficiency %'],
+    ['@', 'Development case'],
+    ['dev_stage', 'Development stage', 'stage'], ['dev_cost_mw', 'Development cost GBP/Wp'],
+    ['dev_module_mwp', 'Module supply GBP/Wp'], ['dev_epc_mw', 'EPC cost GBP/Wp'],
+    ['dev_owner_mw', 'Owner costs GBP/Wp'], ['dev_grid_mw', 'Grid connection GBP/Wp'],
+    ['dev_exit_mwp', 'Target exit value GBP/Wp'], ['dev_npv_mwp', 'Operating NPV GBP/Wp'],
+    ['dev_success', 'Success probability %'], ['dev_years', 'Development years'],
+  ];
+
+  const financeFieldHtml = (field, values) => {
+    const [key, label, kind] = field;
+    if (key === '@') return `<div class="sld-fin-section">${escapeHtml(label)}</div>`;
+    if (kind === 'checkbox') {
+      return `<label for="sld_fin_${key}">${escapeHtml(label)}</label>`
+        + `<input id="sld_fin_${key}" data-fin-key="${key}" type="checkbox" ${values[key] ? 'checked' : ''}>`;
+    }
+    if (kind === 'stage') {
+      const options = Object.entries(DEVELOPMENT_STAGES).map(([value, text]) =>
+        `<option value="${value}" ${String(values[key]) === value ? 'selected' : ''}>${escapeHtml(text)}</option>`
+      ).join('');
+      return `<label for="sld_fin_${key}">${escapeHtml(label)}</label>`
+        + `<select id="sld_fin_${key}" data-fin-key="${key}">${options}</select>`;
+    }
+    const maximum = key === 'bess_eff' || key === 'dev_success' ? ' max="100"' : '';
+    return `<label for="sld_fin_${key}">${escapeHtml(label)}</label>`
+      + `<input id="sld_fin_${key}" data-fin-key="${key}" type="number" min="0"${maximum} step="any" value="${values[key]}">`;
+  };
+
+  const moneyText = value => `GBP ${Math.round(financeNumber(value)).toLocaleString('en-GB')}`;
+
   function renderSldPanel() {
     const el = sldPanel();
     const s = sld.stats;
     const fields = sld.inputs.mode === 'string' ? FIELDS_STRING : FIELDS_CENTRAL;
+    const financeInputs = sld.finance[sld.inputs.mode];
+    const finance = s?.finance;
     const detour = sld.straightKm > 0 ? sld.cableKm / sld.straightKm : 1;
     const acres = s ? s.gross_site_area_m2 / SLD.M2_PER_ACRE : 0;
 
@@ -3190,6 +3394,34 @@
           + `Both values remain visible and no input is changed automatically.</div>`;
       })()}
       ${s && s.warning ? `<div class="sld-warn">${escapeHtml(s.warning)}</div>` : ''}
+      <details class="sld-finance" ${sld.financeOpen ? 'open' : ''}>
+        <summary>Financial screening inputs and outputs</summary>
+        <div class="sld-fin-out">
+          <span>Year 1 revenue</span><b>${moneyText(finance?.annualRevenue)}</b>
+          <span>25-year revenue</span><b>${moneyText(finance?.revenue25)}</b>
+          <span>35-year revenue</span><b>${moneyText(finance?.revenue35)}</b>
+          <span>Total CAPEX</span><b>${moneyText(finance?.totalCapex)}</b>
+          <span>CAPEX / Wp</span><b>GBP ${financeNumber(finance?.capexPerWp).toFixed(2)}</b>
+          <span>25-year surplus</span><b>${moneyText(finance?.surplus25)}</b>
+          <span>35-year surplus</span><b>${moneyText(finance?.surplus35)}</b>
+          <span>Development capital at risk</span><b>${moneyText(finance?.devCapitalAtRisk)}</b>
+          <span>Total build cost</span><b>${moneyText(finance?.devTotalBuildCost)}</b>
+          <span>Target exit value</span><b>${moneyText(finance?.devExitValue)}</b>
+          <span>Operating NPV</span><b>${moneyText(finance?.devOperatingNpv)}</b>
+          <span>Gross development margin</span><b>${moneyText(finance?.devGrossMargin)}</b>
+          <span>Risk-adjusted value</span><b>${moneyText(finance?.devRiskAdjustedValue)}</b>
+          <span>Equity money multiple</span><b>${financeNumber(finance?.devReturnMultiple).toFixed(2)}x</b>
+        </div>
+        ${financeNumber(financeInputs.bess_mwh) !== financeNumber(sld.inputs.bess_mwh)
+          ? `<div class="sld-fin-note">Layout BESS energy is ${financeNumber(sld.inputs.bess_mwh)} MWh; `
+            + `the financial case uses ${financeNumber(financeInputs.bess_mwh)} MWh. `
+            + `They are separate original inputs and neither has been rewritten.</div>` : ''}
+        <div class="sld-fin-grid">${FINANCE_FIELDS.map(field => financeFieldHtml(field, financeInputs)).join('')}</div>
+        <div class="sld-fin-note"><b>Screening values only, not financial advice.</b> Revenue, CAPEX,
+          OPEX, development value and BESS outputs depend entirely on the visible assumptions. They do
+          not replace project-specific yield, degradation, route-to-market, tax, debt, grid, EPC,
+          insurance, degradation, augmentation or investment-committee models.</div>
+      </details>
       <div class="sld-hint">Drag the site to move it. Drag the handle to rotate. Click the
         cable to add a vertex, drag a vertex to shape the route, double-click one to remove it.</div>
       <div class="sld-caveat"><b>Beta analytics, not an actual grid connection.</b> A layout, not
@@ -3268,6 +3500,21 @@
       sld.targetBasis = event.target.value;
       fitToStatedCapacity();
       if (capturedMap) redrawSld(capturedMap, { fit: true });
+    });
+    el.querySelector?.('details.sld-finance')?.addEventListener('toggle', (event) => {
+      sld.financeOpen = Boolean(event.currentTarget.open);
+    });
+    (el.querySelectorAll?.('[data-fin-key]') || []).forEach(input => {
+      input.addEventListener('change', () => {
+        const values = sld.finance[sld.inputs.mode];
+        if (input.type === 'checkbox') values[input.dataset.finKey] = Boolean(input.checked);
+        else if (input.tagName === 'SELECT') values[input.dataset.finKey] = input.value;
+        else {
+          const value = Number(input.value);
+          if (Number.isFinite(value)) values[input.dataset.finKey] = value;
+        }
+        if (capturedMap) redrawSld(capturedMap);
+      });
     });
     (el.querySelectorAll?.('input[data-key]') || []).forEach(input => {
       input.addEventListener('change', () => {

@@ -1,5 +1,5 @@
 /**
- * Proof for the neon links + SLD layout sandbox cartridge, generation 202609010021.
+ * Proof for the neon links + SLD layout sandbox cartridge, generation 202609010040.
  *
  * No dependencies. The repository carries playwright and no DOM library, so
  * rather than add one this stubs the small surface the cartridge actually
@@ -32,9 +32,11 @@ import vm from 'node:vm';
 const HERE = dirname(fileURLToPath(import.meta.url));
 const REPO = resolve(HERE, '..', '..');
 const CARTRIDGE = join(REPO, 'atlas', 'cartridges',
-  '202609010021-sld-sandbox-v9-8.js');
+  '202609010040-sld-sandbox-v9-8.js');
 const ORIGINAL = join(REPO, 'atlas', 'releases', '202608300453-atlas-v9',
   '202608292126-pre-snapped-config-adapter.js');
+const FINANCE_ORACLE = join(REPO, 'tools', 'proofs', 'fixtures',
+  '202609010002-original-sld-finance.json');
 
 let passed = 0;
 const failures = [];
@@ -150,6 +152,7 @@ const readPublished = async (file) =>
 
 const originalSource = await readPublished(ORIGINAL);
 const cartridgeSource = await readPublished(CARTRIDGE);
+const financeOracle = JSON.parse(await readPublished(FINANCE_ORACLE));
 
 function runAdapter(source, initSpy) {
   const box = {
@@ -1608,6 +1611,143 @@ check('and the DC/AC ratio is still the derived one', (() => {
     && Math.abs(s.dc_mwp / s.ac_mw - s.dc_ac_ratio) < 1e-6;
 })());
 
+console.log('\nthe original financial model\n');
+
+check('the financial oracle is the executed-original fixture',
+  financeOracle.schema === 'globalgrid2050.original-sld-electrical-finance-fixture.v1'
+  && financeOracle.provenance?.execution?.startsWith('Original helper'));
+check('all four original finance cases are present', financeOracle.cases?.length === 4);
+check('the fixture names the central double-count instead of hiding it',
+  /multiplies total_blocks by both central_skid_mva and inv_per_mv/.test(
+    financeOracle.reference_behavior?.known_central_defect || ''));
+check('the cartridge exposes one finance function for parity testing',
+  typeof sld.computeFinance === 'function');
+check('string and central financial assumptions are independent',
+  sld.finance?.string && sld.finance?.central && sld.finance.string !== sld.finance.central);
+
+const financeNumberValue = value => {
+  const number = Number(value);
+  return Number.isFinite(number) ? number : 0;
+};
+
+function applyOracleCase(spec) {
+  const input = spec.inputs;
+  sld.inputs.mode = spec.mode;
+  sld.inputs.bess_mwh = 0;
+  if (spec.mode === 'string') {
+    Object.assign(sld.inputs, {
+      mod_wp: financeNumberValue(input.mod_wp),
+      mod_l: financeNumberValue(input.mod_l),
+      mod_w: financeNumberValue(input.mod_w),
+      gcr: financeNumberValue(input.mounting_type),
+      gross_factor: financeNumberValue(input.gross_factor),
+      dc_ac_ratio: financeNumberValue(input.dc_ac_ratio),
+      string_inv_kva: financeNumberValue(input.string_inv_kva),
+      string_skid_mva: financeNumberValue(input.string_skid_mva),
+      x_mods: financeNumberValue(input.x_mods),
+      z_strings: financeNumberValue(input.z_strings),
+      y_invs: financeNumberValue(input.y_invs),
+      s_subs: financeNumberValue(input.s_subs),
+      b_cols: financeNumberValue(input.b_cols),
+    });
+  } else {
+    Object.assign(sld.inputs, {
+      mod_wp: financeNumberValue(input.mod_wp_c),
+      mod_l: financeNumberValue(input.mod_l_c),
+      mod_w: financeNumberValue(input.mod_w_c),
+      gcr: financeNumberValue(input.mounting_type_c),
+      gross_factor: financeNumberValue(input.gross_factor_c),
+      inv_dc_mw_c: financeNumberValue(input.inv_dc_mw_c),
+      inv_ac_mw_c: financeNumberValue(input.inv_ac_mw_c),
+      central_skid_mva_c: financeNumberValue(input.central_skid_mva_c),
+      x_mods_c: financeNumberValue(input.x_mods_c),
+      str_per_cb_c: financeNumberValue(input.str_per_cb_c),
+      inv_per_mv_c: financeNumberValue(input.inv_per_mv_c),
+      mv_per_ring_c: financeNumberValue(input.mv_per_ring_c),
+      rings_c: financeNumberValue(input.rings_c),
+    });
+  }
+  const prefix = spec.mode === 'string' ? 'fin_string_' : 'fin_central_';
+  const finance = {};
+  for (const [key, value] of Object.entries(input)) {
+    if (!key.startsWith(prefix)) continue;
+    const suffix = key.slice(prefix.length);
+    finance[suffix] = suffix === 'flood' ? Boolean(value)
+      : suffix === 'dev_stage' ? String(value) : financeNumberValue(value);
+  }
+  sld.finance[spec.mode] = finance;
+  sld.gridNode = [-1.5, 54.0];
+  sld.active = true;
+  sld.openAt(stubMap, [-1.5, 54.0], spec.id, '33 kV');
+  return sld.stats;
+}
+
+const financialDrift = [];
+for (const spec of financeOracle.cases) {
+  const actualStats = applyOracleCase(spec);
+  const expectedFinance = spec.finance;
+  const actualFinance = actualStats?.finance;
+  for (const [key, expected] of Object.entries(expectedFinance)) {
+    if (spec.reference_defect && (key === 'surplus25' || key === 'surplus35')) continue;
+    const actual = actualFinance?.[key];
+    const matches = typeof expected === 'number'
+      ? Math.abs(actual - expected) <= Math.max(1e-8, Math.abs(expected) * 1e-12)
+      : actual === expected;
+    if (!matches) financialDrift.push(`${spec.id}.${key}: ${actual} != ${expected}`);
+  }
+  if (spec.reference_defect) {
+    const corrected = spec.reference_defect;
+    const inverterAc = actualStats.consistency?.inverter_ac_mw;
+    if (Math.abs(inverterAc - corrected.corrected_ac_mw) > 1e-9) {
+      financialDrift.push(`${spec.id}.corrected_ac_mw: ${inverterAc} != ${corrected.corrected_ac_mw}`);
+    }
+    for (const key of ['surplus25', 'surplus35']) {
+      const expected = corrected[`corrected_${key}`];
+      const actual = actualFinance[key];
+      if (Math.abs(actual - expected) > Math.max(1e-8, Math.abs(expected) * 1e-12)) {
+        financialDrift.push(`${spec.id}.corrected_${key}: ${actual} != ${expected}`);
+      }
+    }
+  }
+}
+check('all unaffected finance outputs equal the original executable oracle',
+  financialDrift.length === 0, financialDrift.slice(0, 3).join('; '));
+check('the central stress case uses the oracle correction, not the squared AC',
+  !financialDrift.some(item => item.includes('central_full_finance_path')));
+check('the model carries every original finance input family',
+  ['price', 'yield', 'bifacial', 'loss_dc_string', 'loss_lv_dc', 'loss_lv_ac',
+    'loss_tx', 'loss_other', 'opex', 'epc_ex', 'modules', 'other_capex',
+    'fixed_capex', 'cont', 'bess_mw', 'bess_mwh', 'bess_capex', 'bess_cycles',
+    'bess_spread', 'bess_eff', 'dev_cost_mw', 'dev_grid_mw', 'dev_exit_mwp',
+    'dev_npv_mwp', 'dev_success', 'dev_years']
+    .every(key => cartridgeSource.includes(`['${key}',`)));
+check('every numeric finance input rejects negative values',
+  /type="number" min="0"\$\{maximum\} step="any"/.test(cartridgeSource));
+check('efficiency and probability are capped at one hundred percent',
+  /key === 'bess_eff' \|\| key === 'dev_success' \? ' max="100"'/.test(cartridgeSource));
+check('the central OPEX basis is the corrected inverter nameplate only in central mode',
+  /\(stats\?\.mode \|\| sld\.inputs\.mode\) === 'central'/.test(cartridgeSource)
+  && /stats\?\.consistency\?\.inverter_ac_mw/.test(cartridgeSource)
+  && /centralInverterAc > 0 \? centralInverterAc : financeNumber\(stats\?\.ac_mw\)/.test(cartridgeSource));
+check('the executable original development-stage labels are retained',
+  /Land Option Signed/.test(cartridgeSource)
+  && /Buyer or Revenue Agreement Reviewed \(Power Purchase Agreement \(PPA\) \/ Offtaker\)/.test(cartridgeSource)
+  && /Construction Contract Signed and Finance Committed \(Financial Close\)/.test(cartridgeSource));
+check('the financial block starts collapsed and remembers an explicit open',
+  /financeOpen: false/.test(cartridgeSource)
+  && /details class="sld-finance" \$\{sld\.financeOpen \? 'open' : ''\}/.test(cartridgeSource)
+  && /addEventListener\('toggle'/.test(cartridgeSource));
+check('finance changes redraw the same electrical and financial state',
+  /\[data-fin-key\]/.test(cartridgeSource)
+  && /values\[input\.dataset\.finKey\]/.test(cartridgeSource)
+  && /if \(capturedMap\) redrawSld\(capturedMap\)/.test(cartridgeSource));
+check('layout and finance BESS energy can disagree only visibly',
+  /Layout BESS energy is/.test(cartridgeSource)
+  && /They are separate original inputs and neither has been rewritten/.test(cartridgeSource));
+check('the on-panel financial disclaimer is explicit',
+  /Screening values only, not financial advice/.test(cartridgeSource)
+  && /investment-committee models/.test(cartridgeSource));
+
 
 
 
@@ -1669,7 +1809,7 @@ check('the 844 by 390 search result list is viewport bounded',
   /@media \(max-height:600px\)\{[\s\S]{0,420}\.search-results\{max-height:calc\(100dvh - 140px\)/.test(mobile));
 check('coarse pointers enlarge shell and sandbox controls',
   /@media \(pointer:coarse\)\{[\s\S]*?\.map-ctrl-btn,\.search-btn\{min-height:44px\}/.test(mobile)
-  && /sld-tabs button,#\$\{PANEL_ID\} input,#\$\{PANEL_ID\} select\{min-height:44px\}/.test(mobile));
+  && /sld-tabs button,#\$\{PANEL_ID\} input,#\$\{PANEL_ID\} select,[\s\S]{0,100}sld-finance summary\{min-height:44px\}/.test(mobile));
 
 console.log(`\n${passed}/${passed + failures.length} checks passed`);
 if (failures.length) {
