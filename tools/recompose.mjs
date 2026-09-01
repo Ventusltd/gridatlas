@@ -61,7 +61,30 @@ const utcNow = () => new Date().toISOString().replace(/[-:T]/g, '').slice(0, 12)
 const generation = argv('--generation') || utcNow();
 const version = argv('--version');
 const restamp = argv('--restamp', { many: true });
-const addModules = argv('--add-module', { many: true });
+/* Module edits may be scoped to ONE restamped cartridge.
+   ------------------------------------------------------------------------
+   `--add-module path` applied to every cartridge named by --restamp, which
+   was harmless while exactly one was ever restamped. The moment a cut moves
+   computation from one cartridge to another - 202609012350, when the
+   sandbox reached 95% of its 400 kB boundary - it stops being harmless: the
+   same module would be added to both halves of the move.
+
+   So both flags now accept `cartridge-id=path` as well as a bare `path`.
+   A bare path keeps the old meaning (every restamped cartridge), because
+   every existing caller writes one. */
+const scoped = (flag) => argv(flag, { many: true }).map((raw) => {
+  const text = String(raw);
+  const split = text.indexOf('=');
+  /* A path never contains '=', and a cartridge id is never a path, so the
+     first '=' is unambiguous - but only when what precedes it looks like an
+     id rather than the start of a path. */
+  if (split > 0 && !text.slice(0, split).includes('/')) {
+    return { id: text.slice(0, split), path: text.slice(split + 1) };
+  }
+  return { id: null, path: text };
+});
+const addModules = scoped('--add-module');
+const removeModules = scoped('--remove-module');
 const replaceModules = argv('--replace-module', { many: true })
   .map(pair => {
     const [from, to] = String(pair).split('=');
@@ -167,19 +190,36 @@ for (const id of restamp) {
        undefined. That happened on the first attempt at v9.67. A module is
        inserted BEFORE the non-module parts, because a body that depends on
        a module must be evaluated after it. */
+    /* A swap must land somewhere, but not necessarily in EVERY restamped
+       cartridge - dying per cartridge was correct only while one was ever
+       restamped at a time. Misses are tolerated here and the miss is
+       reported after the loop if no cartridge took it. */
     for (const swap of replaceModules) {
       const entry = parts.find(e => e.role === 'module' && e.path === swap.from);
-      if (!entry) die(`--replace-module: ${swap.from} is not a module of this cartridge`);
+      if (!entry) continue;
       if (!fs.existsSync(path.join(ROOT, swap.to))) die(`no such module: ${swap.to}`);
       entry.path = swap.to;
-      console.log(`  ~module    ${swap.from} -> ${swap.to}`);
+      swap.applied = true;
+      console.log(`  ~module    ${swap.from} -> ${swap.to}  (in ${id})`);
     }
-    for (const modulePath of addModules) {
+    const forThis = (edit) => edit.id === null || edit.id === id;
+
+    /* Removals run BEFORE additions so a cut can move a module from one
+       cartridge to another in a single generation without the two edits
+       racing over the same part list. */
+    for (const edit of removeModules.filter(forThis)) {
+      const at = parts.findIndex(e => e.role === 'module' && e.path === edit.path);
+      if (at < 0) die(`--remove-module: ${edit.path} is not a module of ${id}`);
+      parts.splice(at, 1);
+      console.log(`  -module    ${edit.path}  (from ${id})`);
+    }
+    for (const edit of addModules.filter(forThis)) {
+      const modulePath = edit.path;
       if (parts.some(entry => entry.path === modulePath)) continue;
       if (!fs.existsSync(path.join(ROOT, modulePath))) die(`no such module: ${modulePath}`);
       const lastModule = parts.map(e => e.role).lastIndexOf('module');
       parts.splice(lastModule + 1, 0, { role: 'module', path: modulePath });
-      console.log(`  +module    ${modulePath}`);
+      console.log(`  +module    ${modulePath}  (into ${id})`);
     }
 
     /* The version ledger the page shows is written by the cut, not by hand.
@@ -219,6 +259,20 @@ for (const id of restamp) {
     if (built.status !== 0) die(`assembly failed for ${id}: ${built.stderr || built.stdout}`);
     const partsOut = path.join(ATLAS, 'manifests', `${generation}-${stem}-parts.json`);
     undo.push(() => { fs.rmSync(newPath, { force: true }); fs.rmSync(partsOut, { force: true }); });
+    /* The pointer follows the manifest that was actually written.
+       --------------------------------------------------------------------
+       It did not, and the drift was silent: at 202609012350 the sld-sandbox
+       entry was on generation 202609012345 while its assembled_from still
+       named ./manifests/202609012045-...-parts.json, five generations
+       behind. Nothing read the field, which is exactly why it rotted -
+       and a reader who did trust it would have been handed the wrong part
+       list. This tool exists to stop that class of drift; it should not
+       leave one in its own output. */
+    const previousPointer = cartridge.assembled_from;
+    cartridge.assembled_from = `./manifests/${generation}-${stem}-parts.json`;
+    if (previousPointer && previousPointer !== cartridge.assembled_from) {
+      console.log(`  pointer    assembled_from ${previousPointer} -> ${cartridge.assembled_from}`);
+    }
     console.log(`  assembled  ${newFile}  from ${parts.length} part(s)`);
   } else {
     fs.copyFileSync(path.join(ATLAS, 'cartridges', oldFile), newPath);
@@ -253,6 +307,11 @@ for (const id of restamp) {
   cartridge.path = `./cartridges/${newFile}`;
   cartridge.sha256 = sha256(bytes);
   changed.push({ id, from: oldFile, to: newFile, sha256: cartridge.sha256, oldGeneration });
+}
+
+/* A swap that matched no restamped cartridge is a typo, not a no-op. */
+for (const swap of replaceModules) {
+  if (!swap.applied) die(`--replace-module: ${swap.from} is not a module of any restamped cartridge`);
 }
 
 current.previous_generation = previousGeneration;

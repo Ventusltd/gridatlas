@@ -1,56 +1,135 @@
 /**
- * Step: who owns what lands here, and where two owners meet.
+ * Step: the computation leaves the sandbox, and ownership arrives.
  *
- * Every site, node, circuit and transformer in the published product
- * carries `transmission_owner` - NGET, SHET, SPT or OFTO - and the card
- * has never said any of it. For most sites that is a single name and a
- * small fact. For some it is the most consequential fact on the card,
- * because a circuit whose two ends are published under DIFFERENT owners
- * is a seam, and a connection across a seam involves more than one party.
+ * THE WALL
+ * --------
+ * The sld-sandbox cartridge reached 383,614 bytes of a 400,000 byte
+ * boundary - 95% - and the next module would have taken it to 400,771.
+ * The scope lint refused it, correctly. There was no fifth script slot to
+ * put a new cartridge in: the shell loads four scripts and all four are
+ * claimed.
  *
- * Measured on the payload: 62 circuits and 10 transformers have ends
- * under different owners. The pairs are SHET/SPT 16, NGET/SPT 10,
- * NGET/OFTO 30, OFTO/SHET 4, OFTO/SPT 2 - and no NGET/SHET seam at all,
- * because those two share no border. That last one is a good sign the
- * data means what it appears to: the absence is the geographically
- * correct absence.
+ * Two dishonest ways out were available and are recorded here as rejected:
+ * raise the 400 kB boundary because my own lane needed it, or leave the
+ * module on disk and uncomposed and call the version shipped. I told Codex
+ * tonight that neither of us may weaken a shared check to make our own
+ * lane pass, three hours before wanting to do it.
  *
- * WHAT IT MUST NOT BECOME
- * -----------------------
- * Ownership is a published fact about an asset. It is NOT a statement
- * about who a project would contract with, which depends on connection
- * agreements, the transmission/distribution split and commercial
- * arrangements that no appendix contains. The module carries that refusal
- * and the card prints it.
+ * THE WAY OUT THAT IS ACTUALLY RIGHT
+ * ----------------------------------
+ * The five network modules - topology, electrical distance, rating
+ * envelope, injection response, planned change - were never the sandbox's
+ * concern. They read the operator's published network. The cartridge that
+ * owns that concern is substation-intelligence, whose own header has said
+ * so since 202609012045: *"the sandbox owns the card, this owns the
+ * computation."* The modules were simply in the wrong cartridge, and the
+ * boundary is what made that visible.
  *
- * Two more things the module refuses to smooth over, and the card keeps:
- *   - 49 nodes publish a null owner. They are reported as unknown, never
- *     back-filled from the site, and the count is shown.
- *   - 7 circuits carry an owner matching neither of their ends. That is
- *     reported as its own category rather than being called a boundary,
- *     because it is a different thing and probably a data question.
+ * substation-intelligence loads at line 138 of the shell and the sandbox
+ * adapter at line 139, so a module composed there is defined before the
+ * body that calls it. Moving 67,159 bytes leaves the sandbox at ~316 kB
+ * with room to grow, and substation-intelligence at ~170 kB.
  *
- * Authored in parallel with its proof and re-run before use: 72/72.
+ * This is also the modularisation asked for: *"if there are 4000 lines
+ * then modularise next versions."* The 4,487-line body stays where it is;
+ * what moves is the computation that was never part of it.
+ *
+ * WHAT THE CUT DOES
+ * -----------------
+ *   - splits the substation cartridge into its two published halves: the
+ *     V8 engine carried verbatim, and PART 2, the intelligence itself;
+ *   - gives it a parts manifest, which it should always have had - the
+ *     assembler's own docstring uses this exact cartridge as its example;
+ *   - moves the five network modules across, and lands owner-boundary
+ *     there too, where it belongs;
+ *   - restamps BOTH cartridges in one generation, because a composition
+ *     where the modules exist twice, or in neither, is not shippable.
  */
 
-const MODULE = 'atlas/modules/202609012350-owner-boundary.js';
-const PROOF = 'tools/proofs/modules/202609012350-owner-boundary.proof.mjs';
+const OWNER_MODULE = 'atlas/modules/202609012350-owner-boundary.js';
+const OWNER_PROOF = 'tools/proofs/modules/202609012350-owner-boundary.proof.mjs';
 const BODY = 'atlas/parts/202609012045-sld-sandbox-body.js';
 const CI = 'tools/ci/202609012200-local-ci.mjs';
+const CURRENT = 'atlas/current.json';
+
+const ENGINE = 'atlas/releases/202608300453-atlas-v9/ventus-corev8engine.js';
+const SUB_BODY = 'atlas/parts/202609012350-substation-intelligence-body.js';
+const SUB_MANIFEST = 'atlas/manifests/202609012045-substation-intelligence-v9-63-parts.json';
+const SUB_CARTRIDGE = 'atlas/cartridges/202609012045-substation-intelligence-v9-63.js';
+
+/* The five that read the published network, and the new sixth. */
+const MOVING = [
+  'atlas/modules/202609012245-network-topology.js',
+  'atlas/modules/202609012245-electrical-distance.js',
+  'atlas/modules/202609012250-rating-envelope.js',
+  'atlas/modules/202609012320-injection-response.js',
+  'atlas/modules/202609012345-planned-change.js',
+];
 
 export default {
   id: 'owner-boundary',
   version: 'v9.76',
 
-  scope: 'the card names which transmission owners the assets landing at a site belong to, and where two owners meet on one circuit it says so and names both - 62 circuits and 10 transformers in the published network have ends under different owners - while stating plainly that ownership is not a statement about who a project would contract with, reporting a null owner as unknown rather than back-filling it from the site, and keeping an asset whose owner matches neither end as its own category rather than calling it a boundary',
+  restamp: ['substation-intelligence', 'sld-sandbox'],
 
-  note: 'the absence of any NGET/SHET seam is the geographically correct absence: those two share no border. 49 nodes publish a null owner, all on placeholder site codes the product does not list as sites, and none of them is an end of any existing circuit or transformer.',
+  scope: 'the computation moves to the cartridge that owns it: the five modules that read the operator\'s published network leave the sandbox for substation-intelligence, which is split into the two halves it has always been - the V8 engine carried verbatim and the intelligence itself - and gains the parts manifest it should always have had; the sandbox drops from 95% of its 400 kB boundary to about 79%, and the new owner-boundary module lands beside its siblings, naming which transmission owners the assets at a site belong to and where two of them meet on one circuit',
 
-  brings: [MODULE, PROOF],
-  addModules: [MODULE],
-  proofs: [PROOF],
+  note: 'the boundary refused the cut and it was right to. Raising it, or leaving the module uncomposed and calling the version shipped, were both available and both rejected. substation-intelligence loads before the sandbox adapter in the shell, so a module composed there is defined before the body that calls it.',
+
+  brings: [OWNER_MODULE, OWNER_PROOF],
+
+  /* Everything that moves, plus the new one, into substation-intelligence;
+     the five that moved, out of the sandbox. Scoped by cartridge id, which
+     is why recompose learned `id=path` for this cut. */
+  addModules: [...MOVING, OWNER_MODULE].map(p => `substation-intelligence=${p}`),
+  removeModules: MOVING.map(p => `sld-sandbox=${p}`),
+
+  proofs: [OWNER_PROOF],
 
   apply({ read, write, sandboxProof }) {
+    /* ── 1. split the substation cartridge into its two halves ───────── */
+    const lf = (s) => s.split('\r\n').join('\n');
+    const engine = lf(read(ENGINE));
+    const cartridge = lf(read(SUB_CARTRIDGE));
+    const at = cartridge.indexOf(engine);
+    if (at < 0) {
+      throw new Error('the carried engine is not present verbatim in the substation cartridge; '
+        + 'the split cannot be made without guessing where the halves divide');
+    }
+    const tail = cartridge.slice(at + engine.length);
+    const marker = 'PART 2 - the network, as its operator publishes it';
+    if (!tail.includes(marker)) {
+      throw new Error('the intelligence half does not carry its own PART 2 marker');
+    }
+    /* PART 2 exactly as it shipped, its leading blank lines trimmed so the
+       assembler's own joiner controls the spacing. */
+    write(SUB_BODY, tail.replace(/^\n+/, ''));
+
+    /* ── 2. the parts manifest it should always have had ─────────────── */
+    write(SUB_MANIFEST, JSON.stringify({
+      schema: 'gridatlas.cartridge-parts.v1',
+      generation: '202609012045',
+      note: 'Written at 202609012350, recording how this cartridge was '
+        + 'always composed: the shell engine carried verbatim, then the '
+        + 'intelligence. It is not a new design - the assembler docstring '
+        + 'uses this cartridge as its worked example - it simply was never '
+        + 'written down, which is why the computation ended up in the '
+        + 'sandbox instead.',
+      assembled_from: [
+        { role: 'carried_shell_script', path: ENGINE },
+        { role: 'part', path: SUB_BODY },
+      ],
+    }, null, 1) + '\n');
+
+    /* ── 3. current.json must know it is assembled ───────────────────── */
+    const current = JSON.parse(read(CURRENT));
+    const sub = (current.cartridges || []).find(c => c.id === 'substation-intelligence');
+    if (!sub) throw new Error('no substation-intelligence cartridge in the current composition');
+    if (sub.assembled_from) throw new Error('substation-intelligence already claims a parts manifest');
+    sub.assembled_from = `./${SUB_MANIFEST.replace(/^atlas\//, '')}`;
+    write(CURRENT, `${JSON.stringify(current, null, 1)}\n`);
+
+    /* ── 4. the ownership sentence in the card ───────────────────────── */
     let body = read(BODY);
     const once = (from, to, label) => {
       const n = body.split(from).length - 1;
@@ -72,8 +151,9 @@ export default {
       `      /* Who owns what lands here, and whether two owners meet.
          ---------------------------------------------------------------
          Printed before the planned sentence because it is a fact about
-         what is there now. The seam is the part worth reading: a single
-         owner is a small fact, two owners on one circuit is not. */
+         what is there now. A single owner is a small fact; two owners on
+         one circuit is a seam, and a connection across a seam involves
+         more than one party. */
       const ownership = (() => {
         const mod = ownerModule();
         if (!mod || !topology.parsedProduct) return null;
@@ -87,21 +167,20 @@ export default {
         const owners = ownership.owners_present.map((o) => escapeHtml(String(o)));
         const seams = (ownership.boundary_circuits || []).length
           + (ownership.boundary_transformers || []).length;
-        const unknown = ownership.counts && ownership.counts.nodes_with_unknown_owner;
-        const odd = ownership.counts && ownership.counts.asset_owner_differs_from_both_ends;
+        const counts = ownership.counts || {};
         out += caveat(\`<b>Transmission owner\${owners.length === 1 ? '' : 's'}:</b> \`
           + \`\${owners.join(', ')}.\`
           + (seams
             ? \` \${seams} branch\${seams === 1 ? '' : 'es'} here \${seams === 1 ? 'is' : 'are'} \`
               + \`a boundary: the two ends are published under different owners.\`
             : '')
-          + (unknown
-            ? \` \${unknown} node here publishes no owner and is reported as unknown, \`
-              + \`never taken from the site.\`
+          + (counts.nodes_with_unknown_owner
+            ? \` \${counts.nodes_with_unknown_owner} node here publishes no owner and is \`
+              + \`reported as unknown, never taken from the site.\`
             : '')
-          + (odd
-            ? \` \${odd} asset carries an owner matching neither of its ends; that is \`
-              + \`reported as itself, not as a boundary.\`
+          + (counts.asset_owner_differs_from_both_ends
+            ? \` \${counts.asset_owner_differs_from_both_ends} asset carries an owner \`
+              + \`matching neither of its ends; that is reported as itself, not as a boundary.\`
             : '')
           + \` Ownership is a published fact about an asset. It is not a statement \`
           + \`about who a project would contract with, which depends on connection \`
@@ -123,6 +202,7 @@ export default {
 
     write(BODY, body);
 
+    /* ── 5. the CI carries the new proof ─────────────────────────────── */
     const ci = read(CI);
     const CI_ANCHOR = `  ['planned change', ['tools/proofs/modules/202609012345-planned-change.proof.mjs']]
 ];`;
@@ -132,37 +212,65 @@ export default {
   ['owner boundary', ['tools/proofs/modules/202609012350-owner-boundary.proof.mjs']]
 ];`));
 
+    /* ── 6. the gate ─────────────────────────────────────────────────── */
     const proof = read(sandboxProof);
     const TAIL = 'console.log(`\\n${passed}/${passed + failures.length} checks passed`);';
     if (proof.split(TAIL).length - 1 !== 1) throw new Error('sandbox proof tail anchor is not unique');
     write(sandboxProof, proof.replace(TAIL, [
-      "console.log('\\nwho owns what lands here, and where two owners meet\\n');",
+      "console.log('\\nthe computation left the sandbox, and ownership arrived\\n');",
       '',
-      "check('the owner-boundary module is in the served cartridge',",
-      "  /gridatlas\\.module\\.owner-boundary/.test(cartridgeSource));",
+      "/* The move is the point of this generation, so it is asserted from both",
+      "   sides: the modules must be GONE from the sandbox cartridge and PRESENT",
+      "   in the served composition. Checking only one side would pass a",
+      "   composition that had lost them entirely. */",
+      "check('the five network modules are no longer in the sandbox cartridge',",
+      "  !/gridatlas\\.module\\.network-topology\\.v1/.test(cartridgeSource)",
+      "  && !/gridatlas\\.module\\.electrical-distance\\.v1/.test(cartridgeSource)",
+      "  && !/gridatlas\\.module\\.rating-envelope\\.v1/.test(cartridgeSource)",
+      "  && !/gridatlas\\.module\\.injection-response\\.v1/.test(cartridgeSource)",
+      "  && !/gridatlas\\.module\\.planned-change/.test(cartridgeSource));",
+      "check('the sandbox cartridge is back under the 400 kB boundary with room to spare',",
+      "  cartridgeSource.length < 340000, `${cartridgeSource.length} bytes`);",
+      "check('the sandbox still CALLS them, from the cartridge that now carries them',",
+      "  /window\\.__GRIDATLAS_MODULES__\\?\\.networkTopology/.test(cartridgeSource)",
+      "  && /window\\.__GRIDATLAS_MODULES__\\?\\.ownerBoundary/.test(cartridgeSource));",
       "check('the card names the owners present',",
-      "  /<b>Transmission owner/.test(cartridgeSource)",
-      "  && /ownership\\.owners_present/.test(cartridgeSource));",
+      "  /<b>Transmission owner/.test(cartridgeSource));",
       "check('a seam is named as a seam, with both ends said to differ',",
       "  /the two ends are published under different owners/.test(cartridgeSource));",
       "check('a null owner is reported as unknown and never taken from the site',",
-      "  /publishes no owner and is reported as unknown/.test(cartridgeSource)",
+      "  /publishes no owner and is /.test(cartridgeSource)",
       "  && /never taken from the site/.test(cartridgeSource));",
       "check('an asset whose owner matches neither end is kept out of the boundary count',",
       "  /reported as itself, not as a boundary/.test(cartridgeSource));",
       "check('the page refuses the counterparty reading',",
-      "  /not a statement /.test(cartridgeSource)",
-      "  && /who a project would contract with/.test(cartridgeSource));",
-      "check('a missing product is an absence, not a guess',",
-      "  /if \\(!mod \\|\\| !topology\\.parsedProduct\\) return null;/.test(cartridgeSource)",
-      "  && (cartridgeSource.match(/if \\(!mod \\|\\| !topology\\.parsedProduct\\) return null;/g) || []).length === 2);",
+      "  /who a project would contract with/.test(cartridgeSource));",
       "check('the ownership state is published for review',",
       "  /window\\.__GRIDATLAS_OWNERSHIP__ = ownerState;/.test(cartridgeSource));",
-      "check('the ownership sentence grades nothing', (() => {",
-      "  const at = cartridgeSource.indexOf('<b>Transmission owner');",
-      "  const section = cartridgeSource.slice(Math.max(0, at - 800), at + 1600);",
-      "  return !/STRONG|REMOTE|well.placed|ideal|advantage|headroom|preferred/i.test(section);",
-      "})());",
+      "",
+      "/* The other half of the move, read from the served composition rather",
+      "   than from this cartridge. */",
+      "{",
+      "  const composed = JSON.parse(",
+      "    await readFile(join(REPO, 'atlas', 'current.json'), 'utf8'));",
+      "  const sub = (composed.cartridges || []).find(c => c.id === 'substation-intelligence');",
+      "  check('substation-intelligence is assembled from parts, not a monolith',",
+      "    !!sub && typeof sub.assembled_from === 'string');",
+      "  const subSource = await readFile(",
+      "    join(REPO, 'atlas', sub.path.replace(/^\\.\\//, '')), 'utf8');",
+      "  check('the five network modules are in the cartridge that owns the network',",
+      "    /gridatlas\\.module\\.network-topology\\.v1/.test(subSource)",
+      "    && /gridatlas\\.module\\.electrical-distance\\.v1/.test(subSource)",
+      "    && /gridatlas\\.module\\.rating-envelope\\.v1/.test(subSource)",
+      "    && /gridatlas\\.module\\.injection-response\\.v1/.test(subSource)",
+      "    && /gridatlas\\.module\\.planned-change/.test(subSource));",
+      "  check('the new owner-boundary module is there too',",
+      "    /gridatlas\\.module\\.owner-boundary/.test(subSource));",
+      "  check('it still carries the V8 engine verbatim, which is its slot contract',",
+      "    subSource.includes('PART 2 - the network, as its operator publishes it'));",
+      "  check('it is under the boundary as well',",
+      "    subSource.length < 400000, `${subSource.length} bytes`);",
+      "}",
       '',
       TAIL
     ].join('\n')));

@@ -1268,6 +1268,74 @@
       "commit": "06e0a1444cafb0c9d9d007b98991c1a9f22daac9",
       "finished_at": "2026-09-01T23:47:07.880Z",
       "outcome": "live"
+    },
+    {
+      "step": "202609012350-owner-boundary.mjs",
+      "id": "owner-boundary",
+      "version": "v9.76",
+      "started_at": "2026-09-01T23:48:25.674Z",
+      "dry": false,
+      "stages": [
+        {
+          "name": "applied",
+          "at": "2026-09-01T23:48:26.493Z",
+          "changed": [
+            "atlas/parts/202609012045-sld-sandbox-body.js",
+            "tools/ci/202609012200-local-ci.mjs",
+            "tools/proofs/202609012345-sld-sandbox.proof.mjs"
+          ]
+        },
+        {
+          "name": "syntax checked",
+          "at": "2026-09-01T23:48:26.645Z"
+        },
+        {
+          "name": "step proof 202609012350-owner-boundary.proof.mjs",
+          "at": "2026-09-01T23:48:26.806Z",
+          "status": 0
+        },
+        {
+          "name": "composed",
+          "at": "2026-09-01T23:48:27.085Z",
+          "generation": "202609012348",
+          "version": "v9.76",
+          "previous": "202609012345"
+        },
+        {
+          "name": "gate sandbox proof",
+          "at": "2026-09-01T23:48:27.940Z",
+          "status": 0
+        },
+        {
+          "name": "gate run-current",
+          "at": "2026-09-01T23:48:29.106Z",
+          "status": 0
+        },
+        {
+          "name": "gate parts integrity",
+          "at": "2026-09-01T23:48:29.205Z",
+          "status": 0
+        },
+        {
+          "name": "gate all versions",
+          "at": "2026-09-01T23:48:29.435Z",
+          "status": 0
+        },
+        {
+          "name": "gate data-contract parity",
+          "at": "2026-09-01T23:48:29.489Z",
+          "status": 0
+        },
+        {
+          "name": "gate local CI (proofs, deep scan, stamps, cvaa)",
+          "at": "2026-09-01T23:49:03.518Z",
+          "status": 1
+        }
+      ],
+      "outcome": "failed",
+      "reason": "gate red: local CI (proofs, deep scan, stamps, cvaa)",
+      "finished_at": "2026-09-01T23:49:03.519Z",
+      "output": " 37/37\n  \u001b[32mPASS\u001b[0m  grid scope             33/33\n  \u001b[32mPASS\u001b[0m  network topology       47/47\n  \u001b[32mPASS\u001b[0m  assembler              31/31\n  \u001b[32mPASS\u001b[0m  source registry        42/42\n  \u001b[32mPASS\u001b[0m  map-click network      13/13\n  \u001b[32mPASS\u001b[0m  declared connections   23/23\n  \u001b[32mPASS\u001b[0m  sizing arithmetic      ok\n  \u001b[32mPASS\u001b[0m  data-contract parity   15/15\n  \u001b[32mPASS\u001b[0m  electrical distance    52/52\n  \u001b[32mPASS\u001b[0m  rating envelope        40/40\n  \u001b[32mPASS\u001b[0m  injection response (powerflow) 53/53\n  \u001b[32mPASS\u001b[0m  planned change         79/79\n  \u001b[32mPASS\u001b[0m  owner boundary         72/72\n\n\u001b[1mPASS 4 - checks that decline to check, and report success\u001b[0m\n  141 proof/verifier files read across 3 repositories\n  \u001b[32mno check skips its assertions on a missing dependency without a named opt-in\u001b[0m\n\n\u001b[1mPASS 5 - a stamp is a clock\u001b[0m\n\n  \u001b[1mgridatlas\u001b[0m  324 commits, 185 stamped more than 15 min from the commit clock; worst 17d96ed 202608300453 vs 202608300926 (-273 min)\n    \u001b[32mno file in the working tree is stamped ahead of 202609012348 UTC\u001b[0m\n    cvaa: not-immune, 117 finding(s) across 9 failing vaccine(s)\n    monotonic-utc-generations: 81 commit(s) off the clock, 14 out of order (history; reported, not amended)\n\n  \u001b[1mpipelinenews\u001b[0m  391 commits, 144 stamped more than 15 min from the commit clock; worst acc1309 202609010232 vs 202609010718 (-286 min)\n    \u001b[32mno file in the working tree is stamped ahead of 202609012348 UTC\u001b[0m\n    cvaa: not-immune, 171 finding(s) across 6 failing vaccine(s)\n    monotonic-utc-generations: 98 commit(s) off the clock, 22 out of order (history; reported, not amended)\n\n  \u001b[1mdata-grid-gb\u001b[0m  10 commits, 6 stamped more than 15 min from the commit clock; worst 04e0d62 202609012130 vs 202609011835 (+175 min)\n    \u001b[32mno file in the working tree is stamped ahead of 202609012348 UTC\u001b[0m\n    cvaa: not-immune, 8 finding(s) across 3 failing vaccine(s)\n    monotonic-utc-generations: 5 commit(s) off the clock, 1 out of order (history; reported, not amended)\n\n\u001b[31m1 flaw(s) found across 3 repositories.\u001b[0m\n[scope-loop:lint] Error: sld-sandbox: cartridge exceeds 400 kB boundary\n    at invariant (file:///C:/Users/vikra/OneDrive/Documents/GitHub/gridatlas/tools/scope/lib.mjs:39:25)\n    at validateAtlasLayout (file:///C:/Users/vikra/OneDrive/Documents/GitHub/gridatlas/tools/scope/loop.mjs:180:7)\n    at lint (file:///C:/Users/vikra/OneDrive/Documents/GitHub/gridatlas/tools/scope/loop.mjs:198:3)\n    at file:///C:/Users/vikra/OneDrive/Documents/GitHub/gridatlas/tools/scope/loop.mjs:232:27\n    at ModuleJob.run (node:internal/modules/esm/module_job:439:25)\n    at async node:internal/modules/esm/loader:643:26\n    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5)\nwarning: unshare -rn unavailable; antibodies run without a network namespace\nwarning: unshare -rn unavailable; antibodies run without a network namespace\nwarning: unshare -rn unavailable; antibodies run without a network namespace\n"
     }
   ]
 }

@@ -217,9 +217,20 @@ if (dry) {
   console.log('\n--dry: applied, checked and step-proven; not composing. The working tree is left as applied.');
   process.exit(0);
 }
-const composeArgs = ['tools/recompose.mjs', '--version', step.version, '--restamp', 'sld-sandbox',
-  '--scope', step.scope, '--proof', 'tools/proofs/{generation}-sld-sandbox.proof.mjs', '--note', step.note];
+/* Which cartridges this cut restamps. One, until 202609012350, when the
+   sandbox reached 95% of its 400 kB boundary and the computation had to
+   move to the cartridge that already owns the network concern - which
+   means restamping both halves of the move in a single generation, or
+   shipping a composition where the modules exist twice or not at all. */
+const restamped = step.restamp && step.restamp.length ? step.restamp : ['sld-sandbox'];
+const composeArgs = ['tools/recompose.mjs', '--version', step.version,
+  '--scope', step.scope, '--note', step.note];
+for (const id of restamped) {
+  composeArgs.push('--restamp', id);
+  composeArgs.push('--proof', `tools/proofs/{generation}-${id}.proof.mjs`);
+}
 for (const m of step.addModules || []) composeArgs.push('--add-module', m);
+for (const m of step.removeModules || []) composeArgs.push('--remove-module', m);
 for (const m of step.replaceModules || []) composeArgs.push('--replace-module', m);
 {
   const r = run(process.execPath, composeArgs, { allowFail: true });
