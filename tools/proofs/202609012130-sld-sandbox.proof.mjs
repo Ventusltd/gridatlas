@@ -732,14 +732,16 @@ check('it spans the whole reviewed session', (() => {
   if (!m) return false;
   const ledger = JSON.parse(m[1]);
   const versions = ledger.map(e => e.v);
-  // The newest entry must be THE SHIPPING VERSION, read from the cartridge's
-  // own header rather than written here - the literal 'v9.40' this check first
-  // carried went stale one version later and correctly failed, which is the
-  // point, but a self-referential form fails only when the ledger is actually
-  // behind.
-  const header = vl.match(/composition (v9\.\d+)\./);
+  /* The newest entry must be the COMPOSED version, and it is compared
+     against current.json rather than against a string inside this same
+     file. The earlier form read the version out of the cartridge's own
+     header, and v9.64 shipped green with a ledger whose newest entry said
+     v9.63 - because the body's header said v9.63 too. Two stale things
+     agreeing is not a check. The literal 'v9.40' this started as at least
+     failed loudly; anchoring to the composition cannot go stale at all. */
+  const newest = ledger[ledger.length - 1];
   return versions.includes('v9.16') && versions.includes('v9.39')
-    && header && versions[versions.length - 1] === header[1]
+    && newest.v === VERSION && newest.g === GENERATION
     && ledger.length >= 25;
 })());
 check('every entry carries a generation, a version and a scope', (() => {

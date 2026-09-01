@@ -112,6 +112,31 @@ for (const id of restamp) {
     /* Reassembled, not copied: the point of restamping an assembled
        cartridge is that one of its parts moved. */
     const parts = readJson(partsManifest).assembled_from || [];
+
+    /* The version ledger the page shows is written by the cut, not by hand.
+       -------------------------------------------------------------------
+       v9.64 shipped with a ledger whose newest entry said v9.63, so the
+       page told its reader it was running the generation before the one it
+       was actually running. That list is generated metadata — the scope
+       sentence is already required above — and the only reason it ever went
+       stale is that appending to it was a separate manual step. */
+    for (const entry of parts) {
+      const partPath = path.join(ROOT, entry.path);
+      if (!fs.existsSync(partPath)) continue;
+      const before = fs.readFileSync(partPath, 'utf8');
+      const found = before.match(/const VERSION_LEDGER = (\[[\s\S]*?\]);/);
+      if (!found) continue;
+      const ledger = JSON.parse(found[1]);
+      if (ledger.some(row => row.g === generation)) continue;
+      ledger.push({ g: generation, v: version, s: scope });
+      const after = before.slice(0, found.index)
+        + `const VERSION_LEDGER = ${JSON.stringify(ledger)};`
+        + before.slice(found.index + found[0].length);
+      fs.writeFileSync(partPath, after, 'utf8');
+      undo.push(() => fs.writeFileSync(partPath, before, 'utf8'));
+      console.log(`  ledger     ${entry.path}  += ${version}`);
+    }
+
     const args = ['--generation', generation, '--name', stem];
     const flagFor = { carried_shell_script: '--carry', module: '--module', part: '--part' };
     for (const entry of parts) {
