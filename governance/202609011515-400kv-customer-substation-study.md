@@ -115,6 +115,14 @@ design); and the works plans place them.
   adjacent to the existing one as Great Grid Upgrade works with new lines
   to Beverley and Brinsworth — the class where the NG end itself does not
   exist yet.
+- The Outline Export Cable Route CMS (APP/7.13.1) illustrates the
+  construction method: a **7.5 km** corridor for a 400 kV underground
+  export cable; a connection agreement for "**export and import of up to
+  740 MW**" (import — the BESS matters to the agreement, not just the
+  panels); crossings selected per site from **HDD, TBM microtunnelling /
+  pipe-jacking, or conventional tunnelling**; an illustrative **25 m ×
+  20 m trenchless launch pit "for a 400 kV connection"**; 5 m haul roads;
+  concrete joint bays.
 
 ### Thorpe Marsh Green Energy Hub (public planning/contractor records)
 
@@ -167,6 +175,16 @@ building.
 underground, 7.5–21 km in this set, trenched with joint bays and HDD at
 crossings — the Trent HDD is shared by four NSIPs (Cottam, West Burton,
 Gate Burton, Tillbridge), and corridors are shared deliberately.
+
+**The construction-method illustration** (One Earth oCMS as exemplar):
+trenchless method chosen crossing-by-crossing from HDD, TBM
+microtunnelling / pipe-jacking, or conventional tunnelling; 25 × 20 m
+launch pits at a 400 kV connection; 5 m haul roads; concrete joint bays;
+satellite and construction compounds with typical details appended. And
+one contractual fact the maps never show: the connection agreements are
+for **export and import** — 740 MW both ways at One Earth — because the
+BESS behind the customer substation is party to the connection, not a
+passenger.
 
 ## 4. What this cooks into the Atlas
 
