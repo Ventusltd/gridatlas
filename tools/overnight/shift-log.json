@@ -1001,6 +1001,105 @@
       "reason": "gate red: sandbox proof",
       "finished_at": "2026-09-01T23:16:43.657Z",
       "output": "ped to the connection voltage\n  [PASS] a missing module is an absence, never a guess\n  [PASS] the page says plainly that a hop is not a distance\n  [PASS] refusals are surfaced to the reader, not swallowed\n  [PASS] the traversal state is published for review\n  [PASS] no kilometre figure is taken from the topology answer\n\nevery season the operator publishes, and no total\n\n  [PASS] the rating-envelope module is in the served cartridge\n  [PASS] it is evaluated before the body that calls it\n  [PASS] the card asks for summer, not winter alone\n  [PASS] the card is scoped to the connection voltage when there is one\n  [PASS] the page states plainly that the ratings are not added together\n  [PASS] the page distinguishes a rating from what is free on the circuit\n  [PASS] a placeholder value is named to the reader, not hidden\n  [PASS] the served bytes contain no site total of circuit ratings\n  [PASS] the rating state is published for review\n\na declared powerflow, and what it refuses to say\n\n  [PASS] the injection-response module is in the served cartridge\n  [PASS] it is evaluated before the body that calls it\n  [PASS] the served bytes never read resistance or susceptance into the flow model\n  [PASS] the card names the slack, because a transfer has two ends\n  [PASS] the card states the model assumptions where the reader sees them\n  [PASS] the card says plainly it is not a loading\n  [PASS] an answer that fails its own Kirchhoff check is discarded, not printed\n  [PASS] the powerflow uses the capacity the deep link carries\n  [PASS] the 400 kV node list is recorded once, where the product is already parsed\n  [PASS] the powerflow is scoped to 400 kV, never walked through an unmodelled tap\n  [PASS] the conservation error is published for review\n  [PASS] the served bytes claim no headroom anywhere in the flow module\n\nthe grid computation without a project, and a dash that gets out of the way\n\n  [PASS] a tool is added to the shell tray, which the cartridge does not own\n  [PASS] the tool does not duplicate itself if the cartridge runs twice\n  [PASS] arming is explicit, as it is for the scope\n  [PASS] an unarmed click still does nothing new\n  [PASS] the point query never measures a distance itself\n  [PASS] the block it writes is found by the filler, which selects by class\n  [PASS] the reader is told that nearest MAPPED is not nearest\n  [PASS] the reader is told it is a straight line and not a cable route\n  [PASS] the point answer never claims anything can connect\n  [PASS] an absent connection-points cartridge is an absence, not a guess\n  [PASS] the layers dash can be collapsed without entering fullscreen\n  [PASS] the collapsed choice is remembered, and every storage access is guarded\n  [PASS] the map is told to resize when the dash moves under it\n  [PASS] the toggle is reachable and labelled for assistive technology\n  [PASS] both new surfaces are published for review\n\n593/594 checks passed\n\nFAILURES\n  the loader is called only from named on-demand paths, never at load\n"
+    },
+    {
+      "step": "202609012330-grid-at-point.mjs",
+      "id": "grid-at-point",
+      "version": "v9.74",
+      "started_at": "2026-09-01T23:17:19.340Z",
+      "dry": false,
+      "stages": [
+        {
+          "name": "applied",
+          "at": "2026-09-01T23:17:20.135Z",
+          "changed": [
+            "atlas/parts/202609012045-sld-sandbox-body.js",
+            "tools/proofs/202609012308-sld-sandbox.proof.mjs"
+          ]
+        },
+        {
+          "name": "syntax checked",
+          "at": "2026-09-01T23:17:20.225Z"
+        },
+        {
+          "name": "composed",
+          "at": "2026-09-01T23:17:20.482Z",
+          "generation": "202609012317",
+          "version": "v9.74",
+          "previous": "202609012308"
+        },
+        {
+          "name": "gate sandbox proof",
+          "at": "2026-09-01T23:17:21.188Z",
+          "status": 0
+        },
+        {
+          "name": "gate run-current",
+          "at": "2026-09-01T23:17:22.203Z",
+          "status": 0
+        },
+        {
+          "name": "gate parts integrity",
+          "at": "2026-09-01T23:17:22.290Z",
+          "status": 0
+        },
+        {
+          "name": "gate all versions",
+          "at": "2026-09-01T23:17:22.475Z",
+          "status": 0
+        },
+        {
+          "name": "gate data-contract parity",
+          "at": "2026-09-01T23:17:22.531Z",
+          "status": 0
+        },
+        {
+          "name": "gate local CI (proofs, deep scan, stamps, cvaa)",
+          "at": "2026-09-01T23:17:52.368Z",
+          "status": 0
+        },
+        {
+          "name": "committed",
+          "at": "2026-09-01T23:17:52.522Z",
+          "commit": "1b29994",
+          "subject_stamp": "202609012317",
+          "clock_at_commit": "202609012317"
+        },
+        {
+          "name": "pushed",
+          "at": "2026-09-01T23:17:54.540Z"
+        }
+      ],
+      "actions": [
+        {
+          "name": "202608310050 GridAtlas next-version builders",
+          "status": "completed",
+          "conclusion": "success",
+          "url": "https://github.com/Ventusltd/gridatlas/actions/runs/33570375907"
+        },
+        {
+          "name": "202608312212 GridAtlas cartridge proof",
+          "status": "completed",
+          "conclusion": "success",
+          "url": "https://github.com/Ventusltd/gridatlas/actions/runs/33570375889"
+        },
+        {
+          "name": "pages build and deployment",
+          "status": "completed",
+          "conclusion": "success",
+          "url": "https://github.com/Ventusltd/gridatlas/actions/runs/33570375058"
+        }
+      ],
+      "live": {
+        "generation": "202609012317",
+        "version": "v9.74",
+        "cartridge_sha_matches": true,
+        "at": "2026-09-01T23:18:55.502Z"
+      },
+      "generation": "202609012317",
+      "commit": "1b29994a832ac6666a813d64c5c4b948591391e8",
+      "finished_at": "2026-09-01T23:18:55.888Z",
+      "outcome": "live"
     }
   ]
 }
