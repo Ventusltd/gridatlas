@@ -2607,6 +2607,41 @@ check('the traversal state is published for review',
 check('no kilometre figure is taken from the topology answer',
   !/reach[\s\S]{0,200}_km/.test(cartridgeSource));
 
+console.log('\nevery season the operator publishes, and no total\n');
+
+check('the rating-envelope module is in the served cartridge',
+  /gridatlas\.module\.rating-envelope\.v1/.test(cartridgeSource));
+check('it is evaluated before the body that calls it',
+  cartridgeSource.indexOf('gridatlas.module.rating-envelope.v1')
+    < cartridgeSource.indexOf('function ratingModule('));
+check('the card asks for summer, not winter alone',
+  /for \(const season of \['winter', 'summer'\]\)/.test(cartridgeSource));
+check('the card is scoped to the connection voltage when there is one',
+  /mod\.at\(topology\.index, point\.site_code, kv != null \? \{ voltageKv: kv \}/.test(cartridgeSource));
+check('the page states plainly that the ratings are not added together',
+  /not a quantity that exists/.test(cartridgeSource));
+check('the page distinguishes a rating from what is free on the circuit',
+  /a rating is not what is free on the circuit/.test(cartridgeSource));
+/* The sentence is split across a template interpolation for the
+   singular/plural, so the words "reads as a placeholder" never appear
+   adjacent in the source. Pin the two halves that do ship verbatim. */
+check('a placeholder value is named to the reader, not hidden',
+  /as a placeholder and/.test(cartridgeSource)
+  && /at or above 9,999 MVA on spans of a kilometre or less/.test(cartridgeSource)
+  && /excluded from the range above/.test(cartridgeSource));
+check('the served bytes contain no site total of circuit ratings', (() => {
+  const start = cartridgeSource.indexOf('gridatlas.module.rating-envelope.v1');
+  const end = cartridgeSource.indexOf('NS.ratingEnvelope = Object.freeze');
+  if (start < 0 || end < 0) return false;
+  const module = cartridgeSource.slice(start, end)
+    .replace(/\/\*[\s\S]*?\*\//g, '').replace(/\/\/[^\n]*/g, '')
+    .split(/const (?:NEVER_SUMMED|NOT_A_CAPACITY)\s*=[\s\S]*?;/).join(' ');
+  return !/(?:^|[^A-Za-z])(total|sum|aggregate)(?![A-Za-z])/i.test(module)
+    && !/\.reduce\(/.test(module);
+})());
+check('the rating state is published for review',
+  /window\.__GRIDATLAS_RATINGS__ = rating;/.test(cartridgeSource));
+
 console.log(`\n${passed}/${passed + failures.length} checks passed`);
 if (failures.length) {
   console.error('\nFAILURES');

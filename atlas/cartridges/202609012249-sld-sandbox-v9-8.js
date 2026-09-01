@@ -1,4 +1,2284 @@
 /**
+ * sld-sandbox-v9-8, generation 202609012249 (UTC).
+ *
+ * ASSEMBLED by tools/build-cartridge.mjs from the parts below. Do not edit
+ * this file: edit a part and rebuild under a new generation. Each part is
+ * hashed in manifests/202609012249-sld-sandbox-v9-8-parts.json.
+ *
+ *   module                 atlas/modules/202609011950-geodesy.js
+ *   module                 atlas/modules/202609012040-grid-scope.js
+ *   module                 atlas/modules/202609012217-source-registry.js
+ *   module                 atlas/modules/202609012128-declared-connections.js
+ *   module                 atlas/modules/202609012245-network-topology.js
+ *   module                 atlas/modules/202609012205-sizing-arithmetic.js
+ *   module                 atlas/modules/202609012245-electrical-distance.js
+ *   module                 atlas/modules/202609012250-rating-envelope.js
+ *   part                   atlas/parts/202609012045-sld-sandbox-body.js
+ */
+
+/**
+ * Module: geodesy
+ *
+ * One Earth radius for the whole estate, and the three operations every
+ * measurement here is built from. This existed three times tonight - in
+ * the sandbox, in the substation cartridge and in the data repository -
+ * which is exactly how two of them end up on different radii without
+ * anyone noticing.
+ *
+ * Radius 6378.137 km, matching Ventusltd/grid-distance-maths. Haversine.
+ * No projection, no turf, no second radius for geometry.
+ *
+ * Pure functions. No DOM, no network, no state.
+ */
+(() => {
+  'use strict';
+
+  const NS = (window.__GRIDATLAS_MODULES__ = window.__GRIDATLAS_MODULES__ || {});
+  if (NS.geodesy) return;
+
+  const EARTH_RADIUS_KM = 6378.137;
+  const DEG = Math.PI / 180;
+
+  function distanceKm(lon1, lat1, lon2, lat2) {
+    const dLat = (lat2 - lat1) * DEG;
+    const dLon = (lon2 - lon1) * DEG;
+    const a = Math.sin(dLat / 2) ** 2
+      + Math.cos(lat1 * DEG) * Math.cos(lat2 * DEG) * Math.sin(dLon / 2) ** 2;
+    /* atan2, in this operand order, because that is the form every version
+       of this estate has shipped - ventus-corev8engine.js haversine() and
+       every cartridge carried from it.
+       -------------------------------------------------------------------
+       The extraction wrote 2 * R * asin(sqrt(a)) instead. Algebraically the
+       same; numerically one unit in the last place apart, which the
+       all-versions proof caught on West Burton Solar to Cottam:
+       7.050150827184836 shipped, 7.050150827184837 from the module. It is
+       1e-15 km and changes no figure any reader will ever see - and it is
+       still wrong, because the claim being made is PARITY. A module that is
+       nearly the incumbent is a module that has to be argued about every
+       time a digit differs. */
+    return EARTH_RADIUS_KM * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+  }
+
+  /* A polygon reduces to the mean of its outer ring, not its first corner.
+     A substation drawn as a compound outline would otherwise be measured
+     from whichever vertex the mapper happened to start at.
+
+     Point, Polygon and MultiPolygon, and NOTHING ELSE. The first draft of
+     this module accepted any nested coordinate array and so returned a
+     mean for a LineString where the incumbent returns null; the parity
+     proof caught it against the live cartridge. Extraction is not the
+     moment to change behaviour, so the behaviour is pinned here and any
+     widening becomes its own version with its own reasoning.
+
+     One deliberate difference, on malformed input only: this returns null
+     where the incumbent would throw on a Point with no coordinates. No
+     real geometry reaches that path, and a proof asserts it. */
+  function representativePoint(geometry) {
+    if (!geometry) return null;
+    const { type, coordinates } = geometry;
+    if (type === 'Point') {
+      return Array.isArray(coordinates) && coordinates.length >= 2
+        ? [coordinates[0], coordinates[1]] : null;
+    }
+    const ring = type === 'Polygon' ? coordinates && coordinates[0]
+      : type === 'MultiPolygon' ? coordinates && coordinates[0] && coordinates[0][0]
+        : null;
+    if (!Array.isArray(ring) || !ring.length) return null;
+    let sumLon = 0;
+    let sumLat = 0;
+    for (const point of ring) {
+      sumLon += point[0];
+      sumLat += point[1];
+    }
+    return [sumLon / ring.length, sumLat / ring.length];
+  }
+
+  /* OpenStreetMap's `voltage` is VOLTS at every magnitude, and a feature
+     may carry several separated by a semicolon. Magnitude is not the unit:
+     750 is a DC traction supply at a railway depot, not 750 kV. An audit
+     of the served payload found 229 features (3.95%) carrying a token
+     below 1,000, every one of which had been misread. An explicit `kv`
+     property is already kilovolts and is trusted as such. */
+  function voltagesKv(properties) {
+    if (!properties) return [];
+    const out = [];
+    const explicit = properties.kv ?? properties.KV;
+    if (explicit != null && String(explicit).trim() !== '') {
+      for (const token of String(explicit).match(/\d+(?:\.\d+)?/g) || []) {
+        const value = Number(token);
+        if (Number.isFinite(value) && value > 0) out.push(value);
+      }
+    }
+    const volts = properties.voltage ?? properties.VOLTAGE;
+    if (volts != null) {
+      for (const token of String(volts).match(/\d+(?:\.\d+)?/g) || []) {
+        const value = Number(token);
+        if (Number.isFinite(value) && value > 0) out.push(value / 1000);
+      }
+    }
+    return [...new Set(out)].sort((a, b) => b - a);
+  }
+
+  /* Projection and bearing, carried in from the sandbox verbatim.
+     ----------------------------------------------------------------------
+     The deep scan found the body carrying a SECOND geodesy section - "the
+     geodesy the layout needs, all on R_ATLAS" - four hundred lines away
+     from the first. Two geodesies in one file, on a constant that must
+     never differ, is the configuration that produced the divergence the
+     all-versions proof caught. Both belong here, on the one radius, and
+     the body now delegates rather than defining.
+
+     The bodies below are the incumbent's, character for character apart
+     from the radius identifier, so parity is a property of the move rather
+     than something to argue about afterwards. */
+  function destinationPoint(lon, lat, km, bearingDeg) {
+    const ad = km / EARTH_RADIUS_KM;
+    const brg = bearingDeg * DEG;
+    const p1 = lat * DEG;
+    const p2 = Math.asin(Math.sin(p1) * Math.cos(ad)
+      + Math.cos(p1) * Math.sin(ad) * Math.cos(brg));
+    const l2 = lon * DEG + Math.atan2(
+      Math.sin(brg) * Math.sin(ad) * Math.cos(p1),
+      Math.cos(ad) - Math.sin(p1) * Math.sin(p2));
+    return [l2 / DEG, p2 / DEG];
+  }
+
+  function initialBearingDeg(lon1, lat1, lon2, lat2) {
+    const p1 = lat1 * DEG; const p2 = lat2 * DEG;
+    const dl = (lon2 - lon1) * DEG;
+    const y = Math.sin(dl) * Math.cos(p2);
+    const x = Math.cos(p1) * Math.sin(p2) - Math.sin(p1) * Math.cos(p2) * Math.cos(dl);
+    return (Math.atan2(y, x) / DEG + 360) % 360;
+  }
+
+  NS.geodesy = Object.freeze({
+    schema: 'gridatlas.module.geodesy.v1',
+    EARTH_RADIUS_KM,
+    distanceKm,
+    destinationPoint,
+    initialBearingDeg,
+    representativePoint,
+    voltagesKv
+  });
+})();
+
+/**
+ * Module: grid-scope
+ *
+ * "When you click on a blank space, the user should be able to see grid in
+ * the vicinity. Call it the GRID FINDING SCOPE — analysis of what is
+ * there, NOT indicative of capacity." — Vikram, 2026-09-01.
+ *
+ * So this answers exactly one question: WHAT IS MAPPED HERE. It counts
+ * what the served payload contains around a point, by voltage class and
+ * by distance band, and names the nearest few. It is a census of the map,
+ * not a study of the network.
+ *
+ * WHAT IT WILL NOT DO, EVER
+ * It does not say whether a connection is available, likely, cheap or
+ * possible. Nothing in a payload of substation positions can support any
+ * of that: capacity depends on queue position, committed connections,
+ * thermal and fault headroom, consent and commercial terms, and none of
+ * those is a distance. A scope that counted substations and implied
+ * opportunity would be the most dangerous thing this estate could ship,
+ * because it would look like analysis.
+ *
+ * Pure. No DOM, no network, no state. Depends on: geodesy.
+ */
+(() => {
+  'use strict';
+
+  const NS = (window.__GRIDATLAS_MODULES__ = window.__GRIDATLAS_MODULES__ || {});
+  if (NS.gridScope) return;
+
+  const geodesy = NS.geodesy;
+  if (!geodesy) throw new Error('grid-scope requires the geodesy module');
+
+  /* Bands, not a single radius. A reader asking "what is around here"
+     wants the shape of the answer - is the nearest thing on top of me or
+     twenty kilometres away - and one number hides that. */
+  const DEFAULT_BANDS_KM = [2, 5, 10, 25];
+  const CLASSES_KV = [400, 275, 220, 132, 66, 33];
+
+  /* A voltage is classified ONLY as a class it actually is.
+     ------------------------------------------------------------------
+     The first version walked the classes and returned the first one the
+     value exceeded, so it labelled 750 kV as 400, 110 kV as 66 and 50 kV
+     as 33 - a false label on anything the list does not contain, which is
+     exactly the sort of quiet relabelling this estate exists to avoid.
+     Codex caught it on the committed module before it reached a card
+     (stop-ship 202609012025).
+
+     Now: membership, within a tolerance for the fractions OSM carries.
+     Anything else is UNCLASSIFIED and counted as such, because a voltage
+     the standard classes do not contain is a fact about the data, not a
+     value to be rounded into the nearest familiar number. */
+  const CLASS_TOLERANCE_KV = 0.5;
+
+  function classOf(kv) {
+    if (!Number.isFinite(kv)) return null;
+    for (const known of CLASSES_KV) {
+      if (Math.abs(kv - known) <= CLASS_TOLERANCE_KV) return known;
+    }
+    return null;
+  }
+
+  /**
+   * @param origin [lon, lat]
+   * @param substations  [{ at:[lon,lat], kv:[numbers], name, operator }]
+   * @param options { bandsKm, minimumKv, nearestCount }
+   */
+  function scope(origin, substations, options) {
+    const bandsKm = (options && options.bandsKm) || DEFAULT_BANDS_KM;
+    const minimumKv = (options && options.minimumKv) || 0;
+    const nearestCount = (options && options.nearestCount) || 5;
+    const maximumKm = bandsKm[bandsKm.length - 1];
+
+    const within = [];
+    for (const substation of substations || []) {
+      if (!substation || !Array.isArray(substation.at)) continue;
+      const voltages = (Array.isArray(substation.kv) ? substation.kv : [])
+        .filter(Number.isFinite);
+      /* Non-finite voltages are dropped BEFORE the maximum.
+         ----------------------------------------------------------------
+         Codex, 202609012055: Math.max over a NaN gives NaN, and NaN < floor
+         is false, so a substation whose voltage did not parse survived a
+         132 kV floor and was censused as though it qualified. A voltage
+         that is not a number is not a voltage above the floor. */
+      const top = voltages.length ? Math.max(...voltages) : 0;
+      if (top < minimumKv) continue;
+      const km = geodesy.distanceKm(origin[0], origin[1],
+        substation.at[0], substation.at[1]);
+      if (km > maximumKm) continue;
+      within.push({
+        name: substation.name || '',
+        operator: substation.operator || '',
+        kv: top,
+        class_kv: classOf(top),
+        km,
+        at: substation.at
+      });
+    }
+    within.sort((a, b) => a.km - b.km);
+
+    const bands = bandsKm.map((band) => {
+      const inBand = within.filter(entry => entry.km <= band);
+      const counts = {};
+      let unclassified = 0;
+      const unclassifiedKv = [];
+      for (const entry of inBand) {
+        if (entry.class_kv == null) {
+          // Counted, never folded into a class it is not.
+          unclassified += 1;
+          if (Number.isFinite(entry.kv) && !unclassifiedKv.includes(entry.kv)) {
+            unclassifiedKv.push(entry.kv);
+          }
+          continue;
+        }
+        counts[entry.class_kv] = (counts[entry.class_kv] || 0) + 1;
+      }
+      const highest = inBand.reduce(
+        (best, entry) => (entry.class_kv != null && (best == null || entry.class_kv > best)
+          ? entry.class_kv : best), null);
+      return {
+        within_km: band,
+        substations: inBand.length,
+        by_class_kv: counts,
+        highest_class_kv: highest,
+        unclassified_voltage: unclassified,
+        unclassified_kv: unclassifiedKv.sort((a, b) => b - a)
+      };
+    });
+
+    /* Named first, because an unnamed OSM node is a fact about the map
+       rather than a place anyone can look up. Both are reported: the
+       nearest thing, and the nearest thing with an identity. */
+    const named = within.filter(entry => entry.name);
+    return {
+      schema: 'gridatlas.grid-scope.v1',
+      origin: [origin[0], origin[1]],
+      radius_km: maximumKm,
+      minimum_kv: minimumKv,
+      counted: within.length,
+      bands,
+      nearest: within.slice(0, nearestCount),
+      nearest_named: named.slice(0, nearestCount),
+      nearest_transmission: within.find(entry => entry.kv >= 275 - 0.5) || null,
+      /* Carried in the result itself so it cannot be separated from the
+         numbers by a renderer, a screenshot or a quote. */
+      what_this_is: 'A census of the substations in the served map payload '
+        + 'around this point, by voltage class and distance band.',
+      what_this_is_not: 'Not a statement about capacity, headroom, '
+        + 'availability or the cost of connecting here. Distance is not '
+        + 'capacity: queue position, committed connections, thermal and '
+        + 'fault headroom, consent and commercial terms decide that, and '
+        + 'none of them is in this payload.',
+      method: 'haversine on a single Earth radius of '
+        + geodesy.EARTH_RADIUS_KM + ' km, straight line to mapped geometry'
+    };
+  }
+
+  NS.gridScope = Object.freeze({
+    schema: 'gridatlas.module.grid-scope.v2',
+    CLASS_TOLERANCE_KV,
+    DEFAULT_BANDS_KM,
+    CLASSES_KV,
+    classOf,
+    scope
+  });
+})();
+
+/**
+ * Module: source-registry
+ *
+ * "Click anywhere on a map and the neons that already work via Pipeline News
+ * look for cartridges and code." — Vikram, 2026-09-01.
+ *
+ * The looking is this module. The Atlas is a composition of cartridges that
+ * find each other through `window.__GRIDATLAS_*` globals, and the deep scan
+ * of 1 Sep 2026 found fifteen such surfaces ever registered, thirteen live,
+ * and nothing anywhere that documents them. Every consumer therefore does
+ * its own `window.__GRIDATLAS_NETWORK__?.something` and quietly does less
+ * when the answer is undefined. That is how a click on blank space came to
+ * report only what OpenStreetMap has mapped, while the cartridge holding
+ * NESO's 886 published connection points sat loaded in the same page.
+ *
+ * So: one registry, declared once, that answers three questions.
+ *
+ *   WHAT COULD ANSWER      the sources this estate knows about, each with
+ *                          what it contributes and whether it is required.
+ *   WHAT IS ANSWERING NOW  probed live, by looking for the surface AND the
+ *                          specific capability, because a cartridge that
+ *                          has loaded but not yet fetched is present and
+ *                          not yet useful, and those are different states.
+ *   WHAT DID NOT           named, with the reason, in the result itself.
+ *
+ * The third is the point. A reader who is told "3 of 4 sources answered;
+ * NESO's published network did not, because its payload had not loaded" can
+ * judge the answer. A reader shown a shorter answer cannot, and will
+ * reasonably assume the map has told them everything it knows.
+ *
+ * It reads. It never fetches, never renders, and never decides what a
+ * finding means.
+ *
+ * Successor to 202609012135 at generation 202609012217: every source that
+ * fetches a product declares what it REQUIRES (repository, product, schema)
+ * and the survey carries that in every state, because a contract stated
+ * only once the load has succeeded is no help to the reader of a failure.
+ * The GB price rollup, fetched since v9.41 without a row here, is
+ * registered with the loader state the sandbox now publishes.
+ *
+ * Depends on: nothing.
+ */
+(() => {
+  'use strict';
+
+  const NS = (window.__GRIDATLAS_MODULES__ = window.__GRIDATLAS_MODULES__ || {});
+  if (NS.sourceRegistry) return;
+
+  /* The registry is DECLARED, not discovered by scanning window.
+     ----------------------------------------------------------------------
+     Enumerating every __GRIDATLAS_* global would report whatever happens to
+     be there, including surfaces this estate has never agreed to consume,
+     and would silently start using a new one the day someone adds it. A
+     declared list is a contract: adding a source is an edit here, with a
+     reason, and a proof that the probe actually works. */
+  const SOURCES = [
+    {
+      id: 'map',
+      surface: '__GRIDATLAS_V9_MAP__',
+      contributes: 'the map itself: where the click happened, and what is drawn',
+      probe: (w) => (w.__GRIDATLAS_V9_MAP__ ? 'ready' : 'absent')
+    },
+    {
+      id: 'mapped-substations',
+      surface: '__GRIDATLAS_NEON_LINKS__',
+      contributes: 'substations as OpenStreetMap has them mapped, and the '
+        + 'measurement the neon links already use',
+      probe: (w) => {
+        const links = w.__GRIDATLAS_NEON_LINKS__;
+        if (!links) return 'absent';
+        if (typeof links.measure?.distanceKm !== 'function') return 'loaded, cannot measure';
+        if (!links.substations_loaded) return 'loaded, no substations yet';
+        return 'ready';
+      },
+      detail: (w) => ({ substations: w.__GRIDATLAS_NEON_LINKS__?.substations_loaded || 0 })
+    },
+    {
+      id: 'neso-connection-points',
+      surface: '__GRIDATLAS_NETWORK__',
+      requires: { repository: 'Ventusltd/data-grid-gb',
+        product: 'derived/connection-points.v3.json',
+        schema: 'data-grid-gb.connection-points.v3' },
+      contributes: "NESO's published connection points: circuits, transformers, "
+        + 'per-voltage fault current and planned changes',
+      probe: (w) => {
+        const network = w.__GRIDATLAS_NETWORK__;
+        if (!network) return 'absent';
+        if (network.failed) return 'failed to load';
+        if (!network.loaded) return 'loading';
+        return 'ready';
+      },
+      detail: (w) => ({ connection_points: w.__GRIDATLAS_NETWORK__?.count || null,
+        schema: w.__GRIDATLAS_NETWORK__?.schema || null })
+    },
+    {
+      id: 'grid-scope',
+      surface: '__GRIDATLAS_MODULES__.gridScope',
+      contributes: 'the census of what is mapped around a point, in distance bands',
+      probe: (w) => (w.__GRIDATLAS_MODULES__?.gridScope ? 'ready' : 'absent')
+    },
+    {
+      id: 'network-topology',
+      surface: '__GRIDATLAS_MODULES__.networkTopology + __GRIDATLAS_TOPOLOGY__',
+      requires: { repository: 'Ventusltd/data-grid-gb',
+        product: 'derived/gb-transmission-network.v1.json',
+        schema: 'data-grid-gb.transmission-network.v1' },
+      contributes: 'circuits, transformers, planned changes and neighbouring '
+        + 'sites at a named substation, per voltage',
+      /* Generation 202609012135: the module alone is not the source. At v9.67
+         this probe said "ready" because the module object existed, while
+         the ten-megabyte product it indexes had never been fetched by any
+         cartridge - the module was on disk and answered nothing. Ready now
+         means the product is indexed; idle means it will load on the first
+         click that asks; the other states are what the loader says. */
+      probe: (w) => {
+        if (!w.__GRIDATLAS_MODULES__?.networkTopology) return 'absent';
+        const loader = w.__GRIDATLAS_TOPOLOGY__;
+        if (!loader) return 'module present, no loader in this composition';
+        if (loader.state === 'ready') return 'ready';
+        if (loader.state === 'loading') return 'loading';
+        if (loader.state === 'failed') return 'failed to load';
+        return 'idle, loads on first use';
+      },
+      detail: (w) => ({ sites: w.__GRIDATLAS_TOPOLOGY__?.sites || null,
+        bytes: w.__GRIDATLAS_TOPOLOGY__?.bytes || null,
+        schema: w.__GRIDATLAS_TOPOLOGY__?.schema || null })
+    },
+    {
+      id: 'declared-connections',
+      surface: '__GRIDATLAS_MODULES__.declaredConnections',
+      contributes: 'points of connection bound to a made Order or a published '
+        + 'planning document',
+      probe: (w) => (w.__GRIDATLAS_MODULES__?.declaredConnections?.count > 0 ? 'ready' : 'absent'),
+      detail: (w) => ({ records: w.__GRIDATLAS_MODULES__?.declaredConnections?.count || null })
+    },
+    {
+      id: 'gb-electricity-conditions',
+      surface: '__GRIDATLAS_GB_CONDITIONS__',
+      contributes: 'the GB wholesale price context a project card carries: '
+        + 'negative-price days and the record daily mean, from the owner rollup',
+      requires: { repository: 'Ventusltd/data-gb-electricity',
+        product: 'derived/price-decade-rollup.json',
+        schema: 'data-gb-electricity.price-decade-rollup.v2' },
+      /* Withheld is its own state: the product was reached and was not the
+         schema this consumer answers, so the panel shows nothing and says
+         why. That is neither a failure of the network nor a source ready. */
+      probe: (w) => {
+        const loader = w.__GRIDATLAS_GB_CONDITIONS__;
+        if (!loader) return 'absent';
+        if (loader.state === 'ready') return 'ready';
+        if (loader.state === 'loading') return 'loading';
+        if (loader.state === 'failed') return 'failed to load';
+        if (loader.state === 'withheld') return 'withheld: ' + String(loader.reason || 'schema not supported');
+        return 'idle, loads on first use';
+      },
+      detail: (w) => ({ schema: w.__GRIDATLAS_GB_CONDITIONS__?.schema || null,
+        renders: w.__GRIDATLAS_GB_CONDITIONS__?.renders || 0 })
+    }
+  ];
+
+  const READY = 'ready';
+
+  /**
+   * Probe every declared source against a window.
+   * @param scope  the window to read; defaults to this one. Passing it in is
+   *               what lets a proof drive the probe without a browser.
+   */
+  function survey(scope) {
+    const w = scope || window;
+    const sources = SOURCES.map((source) => {
+      let state = 'absent';
+      let detail = null;
+      try { state = source.probe(w) || 'absent'; }
+      catch (error) { state = `probe threw: ${error && error.message}`; }
+      if (state === READY && typeof source.detail === 'function') {
+        try { detail = source.detail(w); } catch (_) { detail = null; }
+      }
+      return { id: source.id, surface: source.surface,
+        contributes: source.contributes, requires: source.requires || null,
+        state, ready: state === READY, detail };
+    });
+
+    const ready = sources.filter(s => s.ready);
+    const missing = sources.filter(s => !s.ready);
+
+    return {
+      schema: 'gridatlas.module.source-registry.v1',
+      sources,
+      ready: ready.map(s => s.id),
+      missing: missing.map(s => ({ id: s.id, state: s.state })),
+      counts: { declared: sources.length, ready: ready.length, missing: missing.length },
+      /* Written as a sentence here so a card cannot compose its own and get
+         it wrong, and so an absence is never presented as an absence in the
+         world rather than in this page. */
+      sentence: missing.length === 0
+        ? `All ${sources.length} sources answered.`
+        : `${ready.length} of ${sources.length} sources answered. Not answering: `
+          + missing.map(s => `${s.id} (${s.state})`).join(', ')
+          + '. What they would have added is missing from this answer, not '
+          + 'absent from the world.'
+    };
+  }
+
+  /** Is one source usable right now. */
+  function ready(id, scope) {
+    const source = SOURCES.find(s => s.id === id);
+    if (!source) return false;
+    try { return source.probe(scope || window) === READY; }
+    catch (_) { return false; }
+  }
+
+  NS.sourceRegistry = Object.freeze({
+    schema: 'gridatlas.module.source-registry.v1',
+    declared: SOURCES.map(s => s.id),
+    survey,
+    ready
+  });
+})();
+
+/**
+ * Module: declared-connections
+ *
+ * The 400 kV public record: what each DCO-scale scheme has DECLARED as its
+ * point of connection, taken from Development Consent Orders, Planning
+ * Inspectorate documents and public project statements. The table binds a
+ * register identity (REPD ref) to a NAMED substation, and the functions
+ * here bind that name to the served payload and measure the distance -
+ * measured, never asserted.
+ *
+ * The rule this exists to keep: bind to the public record or say nothing.
+ * A nearest-substations list is a measurement; it was listing closer 33 and
+ * 132 kV points under schemes whose Order names a 400 kV connection, which
+ * read as connecting them to the wrong network. This table is the answer,
+ * and it is data with three small functions, so it lives in a module where
+ * a proof can read every record and a cut can hash it on its own.
+ *
+ * WHAT IT WILL NOT DO
+ * It does not say whether a connection is available, likely or adequate. A
+ * declared point of connection is a fact about a consent, not a judgement
+ * about the network. `poc_status` distinguishes a far end that exists from
+ * one not yet built or under construction, because drawing both the same
+ * would say something untrue.
+ *
+ * Extracted from the sld-sandbox body at generation 202609012128 (UTC),
+ * record for record; the parity proof reads the previously served bytes
+ * and asserts the table is unchanged.
+ *
+ * Pure. No DOM, no network, no state. Depends on: geodesy.
+ */
+(() => {
+  'use strict';
+
+  const NS = (window.__GRIDATLAS_MODULES__ = window.__GRIDATLAS_MODULES__ || {});
+  if (NS.declaredConnections) return;
+
+  const geodesy = NS.geodesy;
+  if (!geodesy) throw new Error('declared-connections requires the geodesy module');
+  const distanceKm = geodesy.distanceKm;
+
+  const RECORDS = Object.freeze({
+    '10914': { works: "an up to 400 kV substation collating the satellite sites at 132 kV and site generation at 33 kV (Work No. 4A)",
+      poc_works: "reuse of an ex-generation bay: busbars, a 400 kV 3-phase 4000 A breaker, metering and protection (Work No. 5)",
+      substation: 'Cottam Substation',
+      via: 'a new 400 kV scheme substation consented within the DCO',
+      source: 'Cottam Solar Project Order 2024, granted 5 Sep 2024 (EN010133)' },
+    '10915': { works: "an up to 400 kV substation collating the satellite sites at 132 kV and site generation at 33 kV (Work No. 4A)",
+      poc_works: "reuse of an ex-generation bay: busbars, a 400 kV 3-phase 4000 A breaker, metering and protection (Work No. 5)",
+      substation: 'Cottam Substation',
+      via: 'a new 400 kV scheme substation consented within the DCO',
+      source: 'Cottam Solar Project Order 2024, granted 5 Sep 2024 (EN010133)' },
+    '10916': { works: "an up to 400 kV customer substation at West Burton 3 with reactive power units; up to 132 kV site substations at WB1 and WB2 (Works 3A-3C)",
+      poc_works: "a new GIS bay by extension of main busbar 4 and reserve busbar 3/4 gas zones (Work No. 4)",
+      substation: 'West Burton Substation',
+      via: 'a new 400 kV customer substation at West Burton 3 and a 400 kV cable to the former generator bay',
+      source: 'West Burton Solar Project Order, granted 24 Jan 2025 (EN010132)' },
+    '10917': { works: "an up to 400 kV customer substation at West Burton 3 with reactive power units; up to 132 kV site substations at WB1 and WB2 (Works 3A-3C)",
+      poc_works: "a new GIS bay by extension of main busbar 4 and reserve busbar 3/4 gas zones (Work No. 4)",
+      substation: 'West Burton Substation',
+      via: 'a new 400 kV customer substation at West Burton 3 and a 400 kV cable to the former generator bay',
+      source: 'West Burton Solar Project Order, granted 24 Jan 2025 (EN010132)' },
+    '9809': { works: "a scheme substation with reactive power units and a 400 kV harmonic filter compound (Work No. 3)",
+      poc_works: "one new 400 kV generation bay at Cottam (Work No. 4C)",
+      substation: 'Cottam Substation',
+      via: 'a new 400 kV scheme substation and a 7.5 km 400 kV underground cable',
+      source: 'Gate Burton Energy Park Order, granted 2024 (EN010131)' },
+    '9810': { works: "a scheme substation with reactive power units and a 400 kV harmonic filter compound (Work No. 3)",
+      poc_works: "one new 400 kV generation bay at Cottam (Work No. 4C)",
+      substation: 'Cottam Substation',
+      via: 'a new 400 kV scheme substation and a 7.5 km 400 kV underground cable',
+      source: 'Gate Burton Energy Park Order, granted 2024 (EN010131)' },
+    '12281': { works: "two scheme substations, each 2 x 400/33 kV 150/75/75 MVA transformers with 400 kV GIS (Works 3A-3B)",
+      poc_works: "the standard 400 kV bay kit at a free bay at Cottam (Work No. 5)",
+      substation: 'Cottam Substation',
+      via: 'an 18.5 km 400 kV underground cable to a free bay',
+      source: 'Tillbridge Solar Order 2025 (EN010142)' },
+    '12282': { works: "two scheme substations, each 2 x 400/33 kV 150/75/75 MVA transformers with 400 kV GIS (Works 3A-3B)",
+      poc_works: "the standard 400 kV bay kit at a free bay at Cottam (Work No. 5)",
+      substation: 'Cottam Substation',
+      via: 'an 18.5 km 400 kV underground cable to a free bay',
+      source: 'Tillbridge Solar Order 2025 (EN010142)' },
+    '14806': { poc_status: 'not_built',
+      poc_status_note: 'the point of connection is NGET\u2019s new substation beside the existing High Marnham, built as Great Grid Upgrade works; the line is drawn to the existing site',
+      substation: 'High Marnham Substation',
+      via: "NGET's new substation adjacent to the existing High Marnham (Great Grid Upgrade)",
+      source: 'One Earth Solar Farm DCO, consented (EN010159)' },
+    '14807': { poc_status: 'not_built',
+      poc_status_note: 'the point of connection is NGET\u2019s new substation beside the existing High Marnham, built as Great Grid Upgrade works; the line is drawn to the existing site',
+      substation: 'High Marnham Substation',
+      via: "NGET's new substation adjacent to the existing High Marnham (Great Grid Upgrade)",
+      source: 'One Earth Solar Farm DCO, consented (EN010159)' },
+    '13599': { works: "up to four 33-400 kV transformers (160 t, up to 15 x 9.5 x 10.5 m each) in a compound of up to 40,000 m2 (ES Ch.2 s2.8)",
+      poc_works: "a National Grid-delivered extension of Bicker Fen, AIS or GIS, sited for multiple customers (s2.13)",
+      substation: 'Bicker Fen Substation',
+      via: 'a 400 kV cable and a consented extension of Bicker Fen shared with Heckington Fen',
+      source: 'Beacon Fen Energy Park DCO, granted Aug 2026 (EN010151)' },
+    '13600': { works: "up to four 33-400 kV transformers (160 t, up to 15 x 9.5 x 10.5 m each) in a compound of up to 40,000 m2 (ES Ch.2 s2.8)",
+      poc_works: "a National Grid-delivered extension of Bicker Fen, AIS or GIS, sited for multiple customers (s2.13)",
+      substation: 'Bicker Fen Substation',
+      via: 'a 400 kV cable and a consented extension of Bicker Fen shared with Heckington Fen',
+      source: 'Beacon Fen Energy Park DCO, granted Aug 2026 (EN010151)' },
+    '9806': { works: "transformers with bunding and blast walls, switchgear, and harmonic filtering reactive power compensation (Work No. 4)",
+      poc_works: "a new generation bay plus an AIS-or-GIS extension and a cable sealing end compound at Bicker Fen (Works 6A-6C)",
+      substation: 'Bicker Fen Substation',
+      via: 'the consented Bicker Fen extension shared with Beacon Fen',
+      source: 'Heckington Fen Solar Park DCO, granted (EN010123)' },
+    '9807': { works: "transformers with bunding and blast walls, switchgear, and harmonic filtering reactive power compensation (Work No. 4)",
+      poc_works: "a new generation bay plus an AIS-or-GIS extension and a cable sealing end compound at Bicker Fen (Works 6A-6C)",
+      substation: 'Bicker Fen Substation',
+      via: 'the consented Bicker Fen extension shared with Beacon Fen',
+      source: 'Heckington Fen Solar Park DCO, granted (EN010123)' },
+    '13644': { poc_status: 'under_construction',
+      poc_status_note: 'a new 400 kV four-bay substation is under construction at Thorpe Marsh',
+      substation: 'Thorpe Marsh Substation',
+      via: 'a new 400 kV four-bay substation under construction at Thorpe Marsh',
+      source: 'public planning and contractor records; construction under way' },
+    '19801': { poc_status: 'under_construction',
+      poc_status_note: 'a new 400 kV four-bay substation is under construction at Thorpe Marsh',
+      substation: 'Thorpe Marsh Substation',
+      via: 'a new 400 kV four-bay substation under construction at Thorpe Marsh',
+      source: 'public planning and contractor records; construction under way' },
+    /* Little Crow is the counter-archetype and belongs here precisely
+       because it is NOT a 400 kV story: no customer transmission
+       substation, no long cable, and a point of connection that is a
+       circuit crossing the site rather than a substation to draw a line
+       to. Stating that plainly is worth more than drawing nothing. */
+    '6557': { poc_kind: 'circuit', poc_status: 'existing',
+      circuit: 'the Keadby \u2013 Broughton \u2013 Teed \u2013 Scawby Brook overhead 132 kV line circuit (Northern Powergrid)',
+      via: 'a looped connection into an existing 132 kV circuit within the site, with 99.9 MW of export capacity secured',
+      kv: 132,
+      source: 'Little Crow Solar Park Grid Network Constraints Report, EN010101, November 2020' },
+    '7175': { poc_kind: 'circuit', poc_status: 'existing',
+      circuit: 'the Keadby \u2013 Broughton \u2013 Teed \u2013 Scawby Brook overhead 132 kV line circuit (Northern Powergrid)',
+      via: 'a looped connection into an existing 132 kV circuit within the site, with 99.9 MW of export capacity secured',
+      kv: 132,
+      source: 'Little Crow Solar Park Grid Network Constraints Report, EN010101, November 2020' },
+    '11928': { substation: 'West Burton Substation',
+      via: 'a 400 kV grid connection at the former power station site (West Burton C); financial close July 2026',
+      source: 'public project records' }
+  });
+
+  /* Public works at named substations, shown wherever the name is - the
+     "customer and NG substations that do not exist yet" half of the logic.
+     Descriptions of the network, never advice about a scheme. */
+
+  const SUBSTATION_WORKS = Object.freeze({
+    'thorpe marsh substation':
+      'A new 400 kV four-bay substation is under construction here (public record).',
+    'high marnham substation':
+      'NGET is building a new substation adjacent to the existing one (Great Grid Upgrade, public record).',
+    'bicker fen substation':
+      'A consented extension here will connect Beacon Fen and Heckington Fen (public record).'
+  });
+
+  const worksAt = (name) => SUBSTATION_WORKS[String(name || '').toLowerCase()] || null;
+
+  /* What the Order says is known the moment the identity is known: the
+     substation, the voltage class, the route, the consented works and the
+     citation need no payload, no fetch and no map. The distance is the one
+     part that must be measured, so it is the one part marked pending. */
+  function provisional(repdRef) {
+    const declared = RECORDS[String(repdRef || '')];
+    if (!declared) return null;
+    if (declared.poc_kind === 'circuit') {
+      // Nothing to measure to and nothing to draw: say what is declared.
+      return { poc: declared.circuit, kv: declared.kv || null, at: null,
+        km: null, pending: false, kind: 'circuit',
+        poc_status: declared.poc_status || 'existing',
+        via: declared.via, source: declared.source, works: null,
+        customer_works: declared.works || null, poc_works: declared.poc_works || null };
+    }
+    return {
+      poc: declared.substation, kv: 400, at: null, km: null, pending: true,
+      kind: 'substation', poc_status: declared.poc_status || 'existing',
+      poc_status_note: declared.poc_status_note || null,
+      via: declared.via, source: declared.source,
+      works: worksAt(declared.substation),
+      customer_works: declared.works || null,
+      poc_works: declared.poc_works || null
+    };
+  }
+
+  /* Bind the declared name to the served payload. Only a substation of the
+     declared class (>= 400 kV) with exactly that name counts; a 132 kV site
+     that happens to share the name is not the point of connection. */
+  function resolve(repdRef, origin, subs) {
+    const declared = RECORDS[String(repdRef || '')];
+    if (!declared) return null;
+    if (declared.poc_kind === 'circuit') return provisional(repdRef);
+    const wanted = declared.substation.toLowerCase();
+    const works = SUBSTATION_WORKS[wanted] || null;
+    const match = (Array.isArray(subs) ? subs : [])
+      .filter(s => String(s.name).toLowerCase() === wanted
+        && Array.isArray(s.kv) && s.kv[0] >= 400)
+      .sort((a, b) => b.kv[0] - a.kv[0])[0] || null;
+    if (!match) {
+      return { poc: declared.substation, kv: 400, at: null, km: null,
+        kind: 'substation', poc_status: declared.poc_status || 'existing',
+        poc_status_note: declared.poc_status_note || null,
+        via: declared.via, source: declared.source, works,
+        customer_works: declared.works || null,
+        poc_works: declared.poc_works || null };
+    }
+    return { poc: match.name, kv: Math.round(match.kv[0]), at: match.at,
+      km: distanceKm(origin[0], origin[1], match.at[0], match.at[1]),
+      kind: 'substation', poc_status: declared.poc_status || 'existing',
+      poc_status_note: declared.poc_status_note || null,
+      via: declared.via, source: declared.source, works,
+      customer_works: declared.works || null,
+      poc_works: declared.poc_works || null };
+  }
+
+  /* The nearest transmission (>= 400 kV) substation in the payload, and
+     separately the nearest one WITH A NAME: an unnamed OSM node can win on
+     raw distance and the reader still wants an identity. Two measurements,
+     no judgement about either. */
+  function nearestTransmission(origin, subs) {
+    let best = null;
+    let bestNamed = null;
+    for (const s of (Array.isArray(subs) ? subs : [])) {
+      if (!(Array.isArray(s.kv) && s.kv[0] >= 400)) continue;
+      const km = distanceKm(origin[0], origin[1], s.at[0], s.at[1]);
+      if (!best || km < best.km) {
+        best = { name: s.name || 'Unnamed substation', km, at: s.at };
+      }
+      if (s.name && (!bestNamed || km < bestNamed.km)) {
+        bestNamed = { name: s.name, km, at: s.at };
+      }
+    }
+    if (best) {
+      best.works = worksAt(best.name);
+      if (bestNamed && bestNamed.name !== best.name) {
+        best.named = bestNamed;
+        best.named.works = worksAt(bestNamed.name);
+      }
+    }
+    return best;
+  }
+
+  NS.declaredConnections = Object.freeze({
+    schema: 'gridatlas.module.declared-connections.v1',
+    records: RECORDS,
+    substationWorks: SUBSTATION_WORKS,
+    count: Object.keys(RECORDS).length,
+    isDeclared: (repdRef) => Object.prototype.hasOwnProperty.call(RECORDS, String(repdRef || '')),
+    worksAt,
+    provisional,
+    resolve,
+    nearestTransmission
+  });
+})();
+
+/**
+ * Module: network-topology
+ *
+ * What the network operator publishes about ONE site: its nodes, the
+ * circuits that land on them, the transformers between them, the changes
+ * it has published for future years, and which other sites those circuits
+ * reach. Appendix B of the Electricity Ten Year Statement, read as a
+ * node/branch model and reported as facts.
+ *
+ * Successor at generation 202609012245: the node-level adjacency this module
+ * already builds is now handed OUT, so that the electrical-distance module
+ * can traverse it instead of building a second one. A second implementation
+ * of voltageOf would be a second opinion about which voltages are real, and
+ * this estate has already shipped one cartridge carrying two geodesies that
+ * disagreed in the last place. Nothing else changed: at() is byte-for-byte
+ * the incumbent's, and the parity proof holds the two to identical answers
+ * on the published payload.
+ *
+ * It answers "what is here, and what is it connected to". It does not
+ * answer "can this project connect", and it cannot: that depends on queue
+ * position, committed connections, consent and commercial terms which no
+ * published appendix contains. The product says so itself and the refusal
+ * travels inside every result, in the same object as the numbers, because
+ * a caveat in a different place from the figure is a caveat nobody reads.
+ *
+ * Three disciplines, each of them a defect this estate has already shipped:
+ *
+ *   VOLTAGE IS NEVER MIXED. A card printed "5.1-49.6 kA" across a 132 kV
+ *   and a 400 kV busbar and an engineer would have read it as one number
+ *   for one point. So every answer here is grouped by the voltage of the
+ *   node the circuit lands on, and a caller asking for one voltage gets
+ *   only that voltage. There is no site-wide range in this module at all.
+ *
+ *   VOLTAGE IS NEVER DECODED. The node-code convention (digit 1->132,
+ *   2->275, 4->400) is derived, not documented, and the product reports
+ *   726 of 2,679 nodes whose voltage their site does not declare. This
+ *   reads `voltage_kv` and honours `voltage_consistent_with_site`; where
+ *   that is false the voltage is `null` and the node is grouped under
+ *   'undeclared', never guessed from its name.
+ *
+ *   R, X AND B ARE NOT A LOAD FLOW. They are published percentages on a
+ *   100 MVA base. Carrying them is publishing; solving with them would
+ *   need a declared model, generation and load assumptions, tap positions
+ *   and contingencies, and validation against a trusted solver. This
+ *   module carries them and says what base they are on. It computes
+ *   nothing from them.
+ *
+ * Fail closed: an unrecognised schema yields no index and therefore no
+ * answers, rather than plausible ones from a shape that has moved.
+ *
+ * Depends on: nothing. Topology is not geometry - this module never
+ * measures a distance and never touches a coordinate.
+ */
+(() => {
+  'use strict';
+
+  const NS = (window.__GRIDATLAS_MODULES__ = window.__GRIDATLAS_MODULES__ || {});
+  if (NS.networkTopology) return;
+
+  const ACCEPTS = 'data-grid-gb.transmission-network.v1';
+
+  const NOT_AN_ASSESSMENT =
+    'Counts, lengths, ratings and impedances are what the network operator '
+    + 'publishes about this site. None of them states whether any project can '
+    + 'connect here, which depends on queue position, committed connections, '
+    + 'consent and commercial terms that no published appendix contains.';
+
+  const IMPEDANCE_BASIS =
+    'R, X and B are percentages on a 100 MVA base, as published. They are '
+    + 'network parameters, not a solved power flow.';
+
+  const UNDECLARED = 'undeclared';
+
+  /* A node's voltage is trusted only where the product says the site
+     declares it. Everything else is undeclared - never inferred from the
+     digit in the node code, which is a derived convention the product
+     itself marks as undocumented. */
+  function voltageOf(node) {
+    if (!node) return null;
+    if (node.voltage_consistent_with_site !== true) return null;
+    return Number.isFinite(node.voltage_kv) ? node.voltage_kv : null;
+  }
+
+  const bandKey = (kv) => (kv == null ? UNDECLARED : String(kv));
+
+  function ratingsOf(row) {
+    const seasons = { winter: row.winter_mva, spring: row.spring_mva,
+      summer: row.summer_mva, autumn: row.autumn_mva };
+    const published = {};
+    for (const [season, value] of Object.entries(seasons)) {
+      if (Number.isFinite(value)) published[season] = value;
+    }
+    return Object.keys(published).length ? published : null;
+  }
+
+  function parametersOf(row) {
+    const published = {};
+    for (const [key, field] of [['r_pct', 'r_pct_100mva'], ['x_pct', 'x_pct_100mva'],
+      ['b_pct', 'b_pct_100mva']]) {
+      if (Number.isFinite(row[field])) published[key] = row[field];
+    }
+    return Object.keys(published).length ? published : null;
+  }
+
+  /**
+   * @param product  the parsed data-grid-gb transmission-network payload
+   * @returns an index, or null if the schema is not the one this reads
+   */
+  function index(product) {
+    if (!product || product.schema !== ACCEPTS) return null;
+
+    const nodes = new Map();
+    for (const node of product.nodes || []) {
+      if (node && node.node) nodes.set(node.node, node);
+    }
+
+    const sitesByCode = new Map();
+    const sitesByName = new Map();
+    for (const site of product.sites || []) {
+      if (!site || !site.code) continue;
+      sitesByCode.set(String(site.code).toUpperCase(), site);
+      if (site.name) sitesByName.set(String(site.name).toUpperCase().trim(), site);
+    }
+
+    /* Branches are indexed by the node they land on, both ends, because a
+       circuit is a fact about both of its sites. */
+    const byNode = new Map();
+    function land(nodeName, entry) {
+      if (!nodeName) return;
+      if (!byNode.has(nodeName)) byNode.set(nodeName, []);
+      byNode.get(nodeName).push(entry);
+    }
+    for (const [kind, rows] of [['circuit', product.circuits],
+      ['transformer', product.transformers], ['planned_change', product.planned_changes]]) {
+      for (const row of rows || []) {
+        if (!row) continue;
+        land(row.node_1, { kind, row, near: 'node_1', far: 'node_2' });
+        land(row.node_2, { kind, row, near: 'node_2', far: 'node_1' });
+      }
+    }
+
+    function siteOf(nodeName) {
+      const node = nodes.get(nodeName);
+      return node ? node.site_code : null;
+    }
+
+    /* The adjacency, handed out rather than rebuilt.
+       ------------------------------------------------------------------
+       Every accessor here is a READ of the structures at() already uses,
+       so a traversal cannot disagree with a one-hop view about which
+       nodes exist, which site a node belongs to, or whether a node's
+       voltage is trustworthy. planned_change rows are excluded from
+       edges: a change published for 2029 is not a path a current can
+       take today, and treating it as one would be the headroom lie in a
+       new costume. They remain available through at(). */
+    function graph() {
+      return {
+        schema: 'gridatlas.module.network-topology.graph.v1',
+        has: (name) => nodes.has(name),
+        nodeVoltageKv: (name) => voltageOf(nodes.get(name)),
+        nodeSiteCode: (name) => {
+          const node = nodes.get(name);
+          return node ? node.site_code : null;
+        },
+        /* circuits and transformers only - see above */
+        edgesAt: (name) => (byNode.get(name) || [])
+          .filter((entry) => entry.kind !== 'planned_change'),
+        nodesOfSite: (code) => {
+          const wanted = String(code || '').toUpperCase();
+          const out = [];
+          for (const node of nodes.values()) {
+            if (String(node.site_code || '').toUpperCase() === wanted) out.push(node.node);
+          }
+          return out.sort();
+        },
+        siteByCode: (code) => sitesByCode.get(String(code || '').toUpperCase()) || null,
+        ratingsOf,
+        parametersOf
+      };
+    }
+
+    function resolve(key) {
+      if (!key) return null;
+      const wanted = String(key).toUpperCase().trim();
+      return sitesByCode.get(wanted) || sitesByName.get(wanted) || null;
+    }
+
+    /**
+     * Everything published about one site, grouped by the voltage of the
+     * node each branch lands on. Never a site-wide range.
+     *
+     * @param key          site code or exact site name
+     * @param options      { voltageKv } to restrict to one voltage
+     */
+    function at(key, options) {
+      const site = resolve(key);
+      if (!site) return null;
+      const wantedKv = options && Number.isFinite(options.voltageKv)
+        ? options.voltageKv : null;
+
+      const siteNodes = [];
+      for (const node of nodes.values()) {
+        if (node.site_code !== site.code) continue;
+        const kv = voltageOf(node);
+        if (wantedKv != null && kv !== wantedKv) continue;
+        siteNodes.push({ node: node.node, voltage_kv: kv });
+      }
+      siteNodes.sort((a, b) => a.node.localeCompare(b.node));
+
+      const byVoltage = new Map();
+      const neighbours = new Map();
+
+      for (const entry of siteNodes) {
+        for (const landing of byNode.get(entry.node) || []) {
+          const farNode = landing.row[landing.far];
+          const farSiteCode = siteOf(farNode);
+          const farSite = farSiteCode ? sitesByCode.get(farSiteCode) : null;
+          const internal = farSiteCode === site.code;
+
+          const key2 = bandKey(entry.voltage_kv);
+          if (!byVoltage.has(key2)) {
+            byVoltage.set(key2, { voltage_kv: entry.voltage_kv,
+              circuits: [], transformers: [], planned_changes: [] });
+          }
+          const band = byVoltage.get(key2);
+
+          const published = {
+            from_node: entry.node,
+            to_node: farNode,
+            to_site_code: farSiteCode,
+            to_site_name: farSite ? farSite.name : null,
+            within_this_site: internal,
+            transmission_owner: landing.row.transmission_owner || null,
+            parameters_pct_100mva: parametersOf(landing.row),
+            ratings_mva: ratingsOf(landing.row)
+          };
+
+          if (landing.kind === 'circuit') {
+            published.circuit_type = landing.row.circuit_type || null;
+            if (Number.isFinite(landing.row.ohl_km)) published.ohl_km = landing.row.ohl_km;
+            if (Number.isFinite(landing.row.cable_km)) published.cable_km = landing.row.cable_km;
+            band.circuits.push(published);
+          } else if (landing.kind === 'transformer') {
+            if (Number.isFinite(landing.row.rating_mva)) published.rating_mva = landing.row.rating_mva;
+            delete published.ratings_mva;
+            band.transformers.push(published);
+          } else {
+            published.year = landing.row.year || null;
+            published.status = landing.row.status || null;
+            published.asset = landing.row.asset || null;
+            band.planned_changes.push(published);
+          }
+
+          /* A neighbour is another SITE this site's circuits reach. An
+             internal branch is not a neighbour, and a planned change is
+             not a neighbour either - it has not been built. */
+          if (landing.kind === 'circuit' && !internal && farSiteCode) {
+            if (!neighbours.has(farSiteCode)) {
+              neighbours.set(farSiteCode, {
+                site_code: farSiteCode,
+                site_name: farSite ? farSite.name : null,
+                circuits: 0
+              });
+            }
+            neighbours.get(farSiteCode).circuits += 1;
+          }
+        }
+      }
+
+      const voltages = [...byVoltage.entries()]
+        .sort((a, b) => {
+          if (a[0] === UNDECLARED) return 1;
+          if (b[0] === UNDECLARED) return -1;
+          return Number(b[0]) - Number(a[0]);
+        })
+        .map(([, band]) => band);
+
+      return {
+        schema: 'gridatlas.module.network-topology.v1',
+        source: ACCEPTS,
+        site: {
+          code: site.code,
+          name: site.name,
+          transmission_owner: site.transmission_owner || null,
+          voltages_kv: Array.isArray(site.voltages_kv) ? site.voltages_kv.slice() : []
+        },
+        requested_voltage_kv: wantedKv,
+        nodes: siteNodes,
+        by_voltage: voltages,
+        neighbours: [...neighbours.values()].sort((a, b) => b.circuits - a.circuits),
+        counts: {
+          nodes: siteNodes.length,
+          circuits: voltages.reduce((sum, band) => sum + band.circuits.length, 0),
+          transformers: voltages.reduce((sum, band) => sum + band.transformers.length, 0),
+          planned_changes: voltages.reduce((sum, band) => sum + band.planned_changes.length, 0),
+          neighbour_sites: neighbours.size
+        },
+        impedance_basis: IMPEDANCE_BASIS,
+        not_an_assessment: NOT_AN_ASSESSMENT
+      };
+    }
+
+    return {
+      schema: 'gridatlas.module.network-topology.v1',
+      source: ACCEPTS,
+      counts: {
+        sites: sitesByCode.size,
+        nodes: nodes.size,
+        branch_landings: byNode.size
+      },
+      site: resolve,
+      at,
+      graph
+    };
+  }
+
+  NS.networkTopology = Object.freeze({
+    schema: 'gridatlas.module.network-topology.v1',
+    accepts: ACCEPTS,
+    not_an_assessment: NOT_AN_ASSESSMENT,
+    impedance_basis: IMPEDANCE_BASIS,
+    index
+  });
+})();
+
+/**
+ * Module: sizing-arithmetic
+ *
+ * The screening arithmetic of the SLD sandbox: physical inputs to array
+ * statistics, the three named ratios (design, export, headroom), the
+ * string and central topologies with their corrected nameplates, the
+ * finance port of gis-sld-v5-finance.js, and the two-variable fit that
+ * lands a layout on the capacity the register states.
+ *
+ * Lifted out of the sld-sandbox body at generation 202609012205 (UTC),
+ * expression for expression. The body closed over its state object and
+ * its finance defaults; here both are parameters. Nothing else changed,
+ * and the parity proof evaluates the last inline copy beside this module
+ * on the same inputs and asserts identical values.
+ *
+ * WHAT IT WILL NOT DO
+ * It grades nothing. A ratio below one is stated with its meaning; an
+ * export set by the transformers is stated as the design fact it is. The
+ * finance figures are a screening model with the reference's own inputs
+ * and are labelled as such by the panel that shows them.
+ *
+ * Pure. No DOM, no network, no state of its own: fitToStatedCapacity
+ * mutates the state object it is handed, as the body's did, and says so.
+ */
+(() => {
+  const NS = window.__GRIDATLAS_MODULES__ = window.__GRIDATLAS_MODULES__ || {};
+  if (NS.sizingArithmetic) return;
+
+
+  function physicalInputs(inputs) {
+    const i = inputs;
+    if (i.mode === 'central') {
+      return {
+        mod_wp: i.mod_wp_c, mod_l: i.mod_l_c, mod_w: i.mod_w_c,
+        gcr: i.gcr_c, gross_factor: i.gross_factor_c,
+      };
+    }
+    return {
+      mod_wp: i.mod_wp, mod_l: i.mod_l, mod_w: i.mod_w,
+      gcr: i.gcr, gross_factor: i.gross_factor,
+    };
+  }
+
+  function buildStats(inputs, o) {
+    const p = physicalInputs(inputs);
+    const dcMwp = (o.module_count * p.mod_wp) / 1e6;
+    const acMw = o.ac_mw_direct != null ? o.ac_mw_direct
+      : (o.dc_ac_ratio > 0 ? dcMwp / o.dc_ac_ratio : 0);
+    const netModArea = o.module_count * p.mod_l * p.mod_w;
+    const netArrayArea = p.gcr > 0 ? netModArea / p.gcr : 0;
+    return {
+      total_blocks: o.total_blocks,
+      module_count: o.module_count,
+      dc_mwp: dcMwp,
+      ac_mw: acMw,
+      dc_ac_ratio: acMw > 0 ? dcMwp / acMw : o.dc_ac_ratio,
+      net_array_area_m2: netArrayArea,
+      gross_site_area_m2: netArrayArea * p.gross_factor,
+      block_ground_area_m2: o.total_blocks > 0 ? netArrayArea / o.total_blocks : 0,
+      production_substation_ac_mva: o.production_substation_ac_mva || 0,
+      ring_main_ac_mva: o.ring_main_ac_mva || 0,
+      warning: o.warning || 'Check skid rating, transformer rating, cable ratings, protection, losses and grid compliance.'
+    };
+  }
+
+  /* Three numbers that must agree, and did not.
+     ----------------------------------------------------------------------
+     Measured on the shipped defaults, the panel produced three different
+     values for one quantity:
+
+       string   stated DC/AC input        1.200
+                reported DC/AC            1.040
+                implied by the hardware   0.945
+
+     A DC/AC ratio below one is not a design choice, it is a contradiction: it
+     says the array is smaller than the inverters it feeds, which nobody
+     builds. And in central mode the reported ratio was 2.402 against an
+     inverter ratio of 1.200 — exactly double, because AC had correctly become
+     the LIMITING nameplate (the transformers) while the ratio was still being
+     read as though it were the inverter nameplate. Both numbers were right
+     about different things and both were called DC/AC.
+
+     There are three distinct quantities here and the panel now keeps them
+     apart by name:
+
+       DC          the array, MWp
+       inverter AC the inverters can convert, MW
+       export      the smaller of the inverters and the transformers, MVA
+
+     The DESIGN ratio is DC over inverter AC, which is the number the industry
+     means by DC/AC and the one a stated 1.2 refers to. The EXPORT ratio is DC
+     over the export limit, which is what determines clipping and curtailment.
+     Reporting one of them under the other's name is how a plant ends up
+     described as 2.4 when it was specified as 1.2.
+
+     Nothing here changes a layout. It changes what the numbers are called, and
+     says so out loud when they disagree with each other. */
+  /* There was an auto-reconciler here. It is deleted, not disabled.
+     ----------------------------------------------------------------------
+     It computed a "consistent" strings-per-inverter count from the stated
+     DC/AC ratio and assigned it to sld.inputs.z_strings, on the reasoning that
+     the original's 18 gives a block DC/AC of 0.945 and that nobody builds an
+     array smaller than its own inverters. That reasoning was wrong: the
+     reference documents 28 string inverters at 352 kVA making 9,856 kVA ahead
+     of an 8.96 MVA skid, and the oversizing is the design.
+
+     The default was reverted, and the reconciler was left behind uncalled.
+     Flagged by the Codex source gate as a stop-ship, and it was right. Dead
+     code that ASSIGNS to a reference input is not inert: it is one future
+     handler away from silently rewriting the design this cartridge exists to
+     reproduce, and it would do so quietly, in a place nobody would look.
+
+     This is the same lesson as the dead .grid-cell grading CSS removed from
+     Pipeline News earlier tonight — a rule with no caller is one edit from
+     having one — and I repeated the mistake within hours of writing it down.
+     Deleted rather than commented out, for the same reason. */
+
+
+  function consistency(inputs, stats) {
+    const i = inputs;
+    const string = i.mode === 'string';
+
+    const inverterAcMw = string
+      ? (stats.total_blocks * i.y_invs * i.string_inv_kva) / 1000
+      : stats.total_blocks * i.inv_ac_mw_c;
+    const skidAcMva = string
+      ? stats.total_blocks * i.string_skid_mva
+      : (i.mv_per_ring_c * i.rings_c) * i.central_skid_mva_c;
+    const exportMva = Math.min(inverterAcMw, skidAcMva);
+
+    /* Three ratios, three names. They describe different pairs of things and
+       collapsing them is how a plant specified at 1.2 gets reported as 2.4.
+
+         design    array DC MWp / inverter AC MW    what "DC/AC" means
+         export    array DC MWp / export MVA        what drives clipping
+         headroom  inverter AC MW / export MVA      how hard the inverters are
+                                                    pushed against their skids
+
+       The third is the one that says whether the inverters are oversized
+       against the transformers, and in this design they deliberately are. */
+    const designRatio = inverterAcMw > 0 ? stats.dc_mwp / inverterAcMw : null;
+    const exportRatio = exportMva > 0 ? stats.dc_mwp / exportMva : null;
+    const headroomRatio = exportMva > 0 ? inverterAcMw / exportMva : null;
+    const statedRatio = string ? Number(i.dc_ac_ratio) : (
+      i.inv_ac_mw_c > 0 ? i.inv_dc_mw_c / i.inv_ac_mw_c : null);
+
+    const notes = [];
+    /* Descriptive, not a verdict.
+       An earlier version of this called a design ratio below one a
+       contradiction that "nobody builds". That was wrong about this design:
+       the reference sandbox documents 28 string inverters at 352 kVA making
+       9,856 kVA ahead of an 8.96 MVA skid, and oversizing inverters against
+       the transformer is a deliberate choice, not an arithmetic fault. The
+       panel states the number and what it means; it does not grade it. */
+    if (Number.isFinite(designRatio) && designRatio < 1) {
+      notes.push('Array DC divided by inverter AC is ' + designRatio.toFixed(2)
+        + ' from the module, string and inverter counts shown.');
+    }
+    // The stated ratio is an instruction. If the hardware does not honour it,
+    // the hardware is what will be built.
+    if (Number.isFinite(designRatio) && Number.isFinite(statedRatio)
+        && statedRatio > 0 && Math.abs(designRatio - statedRatio) / statedRatio > 0.05) {
+      notes.push('Stated DC/AC ' + statedRatio.toFixed(2) + ', but the module '
+        + 'and inverter counts give ' + designRatio.toFixed(2)
+        + '. The model displays both and does not rewrite either input.');
+    }
+    // The transformers, not the inverters, set the export.
+    if (Number.isFinite(inverterAcMw) && Number.isFinite(skidAcMva)
+        && inverterAcMw > skidAcMva * 1.001) {
+      // Stated as the design fact it is, with the ratio, not as a fault.
+      notes.push('Inverters total ' + inverterAcMw.toFixed(1) + ' MW against '
+        + skidAcMva.toFixed(1) + ' MVA of skid transformer, a ratio of '
+        + (headroomRatio || 0).toFixed(2) + '. Export is set by the '
+        + 'lower nameplate in this screening model. The connection agreement '
+        + 'and electrical design determine the applicable export constraint.');
+    }
+    return {
+      dc_mwp: stats.dc_mwp,
+      inverter_ac_mw: inverterAcMw,
+      skid_ac_mva: skidAcMva,
+      export_mva: exportMva,
+      design_dc_ac: designRatio,
+      export_dc_ac: exportRatio,
+      inverter_to_export: headroomRatio,
+      stated_dc_ac: Number.isFinite(statedRatio) ? statedRatio : null,
+      notes,
+    };
+  }
+
+  function stringStats(inputs) {
+    const i = inputs;
+    if (i.mod_wp <= 0 || i.mod_l <= 0 || i.mod_w <= 0 || i.x_mods <= 0) {
+      return buildStats(i, { total_blocks: 0, module_count: 0, dc_ac_ratio: i.dc_ac_ratio });
+    }
+    const total_blocks = i.b_cols * i.s_subs;
+    const module_count = total_blocks * i.y_invs * i.z_strings * i.x_mods;
+    const inverterAcMaxMva = (i.y_invs * i.string_inv_kva) / 1000;
+    const production = i.string_skid_mva;
+    let warning;
+    if (inverterAcMaxMva > production) {
+      warning = 'Inverter ACmax exceeds the skid transformer rating. Verify temperature rating, overload strategy and clipping assumptions.';
+    } else if (i.string_inv_kva > 500) {
+      warning = 'Large string inverter rating selected. Verify LV switchgear, transformer, cable loading and protection.';
+    }
+    return buildStats(i, {
+      total_blocks, module_count, dc_ac_ratio: i.dc_ac_ratio,
+      ac_mw_direct: total_blocks * production,
+      production_substation_ac_mva: production,
+      ring_main_ac_mva: production * i.s_subs,
+      warning
+    });
+  }
+
+  function centralStats(inputs) {
+    const i = inputs;
+    if (i.mod_wp_c <= 0 || i.mod_l_c <= 0 || i.mod_w_c <= 0 || i.x_mods_c <= 0) {
+      return buildStats(i, { total_blocks: 0, module_count: 0, dc_ac_ratio: 1.2 });
+    }
+    const strDcKwp = (i.x_mods_c * i.mod_wp_c) / 1000;
+    const reqStrings = strDcKwp > 0 ? Math.ceil((i.inv_dc_mw_c * 1000) / strDcKwp) : 0;
+    // total_blocks counts INVERTERS: inverters per MV skid, times skids per
+    // ring, times rings. The skids are the level above it.
+    const total_blocks = i.inv_per_mv_c * i.mv_per_ring_c * i.rings_c;
+    const skid_count = i.mv_per_ring_c * i.rings_c;
+    const module_count = reqStrings * i.x_mods_c * total_blocks;
+
+    /* Two nameplates, and they are not the same number.
+       --------------------------------------------------------------------
+       The inverters and the MV skid transformers they share are rated
+       separately, and the plant can export no more than the smaller of the
+       two. On the shipped defaults they are a factor of two apart: 24
+       inverters at 4.4 MW is 105.6 MW of inverter, sitting on 12 skids at
+       4.4 MVA, which is 52.8 MVA of transformer.
+
+       The figure shown was 211.2 MW -- neither of those, and larger than
+       both. `total_blocks` already contains `inv_per_mv_c`, and the AC line
+       multiplied by it a second time, so the count of inverters sharing a
+       skid entered the answer squared. It also multiplied a count of
+       inverters by a TRANSFORMER rating, which is not a quantity that
+       exists.
+
+       This is a deliberate divergence from the sandbox this was ported from.
+       gis-sld-v5-calculations.js line 147 computes the same expression, so
+       the fault is in the original and was carried across faithfully by a
+       port whose whole contract was to carry the arithmetic unchanged.
+       Reported by the Codex session auditing this estate in parallel;
+       confirmed here dimensionally and against those defaults. */
+    const inverter_ac_total = total_blocks * i.inv_ac_mw_c;
+    const skid_ac_total = skid_count * i.central_skid_mva_c;
+    const ac_mw_direct = Math.min(inverter_ac_total, skid_ac_total);
+
+    // A skid carries every inverter fed into it, so the comparison that
+    // matters is the whole MV block against its transformer, not one
+    // inverter against it. One-to-one it never fires; on the defaults the
+    // block is 8.8 MW on a 4.4 MVA skid and it should.
+    const block_ac_mw = i.inv_ac_mw_c * i.inv_per_mv_c;
+    let warning;
+    if (block_ac_mw > i.central_skid_mva_c) {
+      warning = `The ${i.inv_per_mv_c} inverters on each MV skid total `
+        + `${block_ac_mw.toFixed(2)} MW against a skid rated `
+        + `${i.central_skid_mva_c} MVA. Export is limited by the transformer, `
+        + `not the inverters. Verify thermal rating, overload strategy and `
+        + `the export limit in the connection agreement.`;
+    } else if (i.inv_ac_mw_c > 10) {
+      warning = 'Large central inverter or power block selected. Verify transformer, MV switchgear, harmonics, thermal loading, protection and grid code compliance.';
+    }
+    return buildStats(i, {
+      total_blocks, module_count,
+      dc_ac_ratio: i.inv_ac_mw_c > 0 ? i.inv_dc_mw_c / i.inv_ac_mw_c : 1.2,
+      ac_mw_direct,
+      // One skid's rating. The label on the control is "Skid MVA", so it is
+      // the skid, and multiplying it by the inverters on that skid described
+      // no piece of equipment.
+      production_substation_ac_mva: i.central_skid_mva_c,
+      ring_main_ac_mva: i.central_skid_mva_c * i.mv_per_ring_c,
+      central_inverter_ac_total: inverter_ac_total,
+      central_skid_ac_total: skid_ac_total,
+      warning
+    });
+  }
+
+  const DEVELOPMENT_STAGES = Object.freeze({
+    '0.003': 'Land Option Signed',
+    '0.015': 'Grid Connection Application Accepted',
+    '0.035': 'Planning Application Submitted',
+    '0.055': 'Planning Permission Granted',
+    '0.070': 'Grid Connection Terms Reviewed and Agreed',
+    '0.080': 'Buyer or Revenue Agreement Reviewed (Power Purchase Agreement (PPA) / Offtaker)',
+    '0.100': 'Construction Contract Signed and Finance Committed (Financial Close)',
+  });
+
+  const financeNumber = value => {
+    const number = Number(value);
+    return Number.isFinite(number) ? number : 0;
+  };
+
+  const DEVELOPMENT_SUCCESS = Object.freeze({
+    '0.003': 10,
+    '0.015': 15,
+    '0.035': 30,
+    '0.055': 55,
+    '0.070': 70,
+    '0.080': 80,
+    '0.100': 95,
+  });
+
+  const BIFACIAL_BY_GCR = Object.freeze({
+    '0.35': 8,
+    '0.45': 5,
+    '0.75': 2,
+  });
+
+  /* The original stage selector is not only a label: its change handler sets
+     development cost to the selected GBP/Wp value and success probability to
+     a stage-specific percentage. Keep that linked behavior explicit so a
+     stage change cannot leave the old stage's costs behind. */
+  function applyDevelopmentStageDefaults(financeInputs, stageValue) {
+    const stage = String(stageValue);
+    if (!Object.prototype.hasOwnProperty.call(DEVELOPMENT_STAGES, stage)) return false;
+    financeInputs.dev_stage = stage;
+    financeInputs.dev_cost_mw = financeNumber(stage);
+    financeInputs.dev_success = DEVELOPMENT_SUCCESS[stage];
+    return true;
+  }
+
+  /* Original Mounting & GCR presets also set the financial bifacial gain.
+     Apply the exact three preset mappings to the active topology only. A
+     free-form GCR value does not invent a gain. */
+  function applyMountingBifacial(financeByMode, mode, gcrValue) {
+    const values = (financeByMode || {})[mode];
+    if (!values) return false;
+    const key = String(Number(gcrValue));
+    if (!Object.prototype.hasOwnProperty.call(BIFACIAL_BY_GCR, key)) return false;
+    values.bifacial = BIFACIAL_BY_GCR[key];
+    return true;
+  }
+
+  /* Direct port of gis-sld-v5-finance.js computeFinance(). The original
+     executable fixture is the authority, not this comment. The one deliberate
+     divergence is inherited from the corrected electrical port: annual OPEX
+     uses the corrected central inverter nameplate, so the inv_per_mv > 1 case
+     must match the fixture's explicit corrected surplus rather than repeat the
+     original AC double-count. Every unaffected output remains exact. */
+  function screeningFinance(financeInputs, stats, context) {
+    const f = financeInputs || (context && context.defaults) || {};
+    const dcMwp = financeNumber(stats?.dc_mwp);
+    // The reference's OPEX input is GBP/MWac/year. In string mode its AC
+    // quantity is skid-limited export. In central mode, once the known square
+    // is removed, it is inverter count x inverter MWac. Do not silently swap
+    // that to transformer-limited export: those are separately named values.
+    const centralInverterAc = (stats?.mode || (context && context.fallbackMode)) === 'central'
+      ? financeNumber(stats?.consistency?.inverter_ac_mw) : 0;
+    const acMw = centralInverterAc > 0 ? centralInverterAc : financeNumber(stats?.ac_mw);
+    const price = financeNumber(f.price);
+    const other = financeNumber(f.other);
+    const yieldVal = financeNumber(f.yield);
+    const bifacial = financeNumber(f.bifacial);
+    const baseLoss = financeNumber(f.losses);
+    const deg = financeNumber(f.deg);
+    const opexRate = financeNumber(f.opex);
+    const epcEx = financeNumber(f.epc_ex);
+    const floodRate = financeNumber(f.flood_rate);
+    const floodAdder = f.flood ? floodRate : 0;
+    const modules = financeNumber(f.modules);
+    const otherCapex = financeNumber(f.other_capex);
+    const fixedCapex = financeNumber(f.fixed_capex);
+    const cont = financeNumber(f.cont);
+    const lossExtras = financeNumber(f.loss_dc_string) + financeNumber(f.loss_lv_dc)
+      + financeNumber(f.loss_lv_ac) + financeNumber(f.loss_tx) + financeNumber(f.loss_other);
+    const totalLoss = baseLoss + lossExtras;
+    const bessMw = financeNumber(f.bess_mw);
+    const bessMwh = financeNumber(f.bess_mwh);
+    const bessCapexRate = financeNumber(f.bess_capex);
+    const bessCycles = financeNumber(f.bess_cycles);
+    const bessRevenuePerMwh = financeNumber(f.bess_spread);
+    const bessEffPercent = financeNumber(f.bess_eff);
+    const safeLoss = Math.min(Math.max(totalLoss, 0), 100);
+    const safeBessEff = Math.min(Math.max(bessEffPercent / 100, 0), 1);
+    const effectiveYield = yieldVal * (1 + bifacial / 100);
+    const year1Gen = dcMwp * effectiveYield * (1 - safeLoss / 100);
+    let gen25 = 0;
+    let gen35 = 0;
+    for (let year = 1; year <= 35; year += 1) {
+      const generation = year1Gen * Math.pow(1 - deg / 100, year - 1);
+      if (year <= 25) gen25 += generation;
+      gen35 += generation;
+    }
+    const annualSolarRevenue = year1Gen * (price + other);
+    const bessAnnualValue = bessMwh * bessCycles * bessRevenuePerMwh * safeBessEff;
+    const annualRevenue = annualSolarRevenue + bessAnnualValue;
+    const revenue25 = gen25 * (price + other) + bessAnnualValue * 25;
+    const revenue35 = gen35 * (price + other) + bessAnnualValue * 35;
+    const annualOpex = acMw * opexRate;
+    const baseCapexWp = epcEx + modules + otherCapex + floodAdder;
+    const baseCapex = dcMwp * 1_000_000 * baseCapexWp;
+    const contingency = baseCapex * (cont / 100);
+    const bessCapex = bessMwh * bessCapexRate;
+    const totalCapex = baseCapex + contingency + fixedCapex + bessCapex;
+    const capexPerWp = dcMwp > 0 ? totalCapex / (dcMwp * 1_000_000) : 0;
+    const surplus25 = revenue25 - annualOpex * 25 - totalCapex;
+    const surplus35 = revenue35 - annualOpex * 35 - totalCapex;
+    const devCostPerMw = financeNumber(f.dev_cost_mw);
+    const devModulePerMwp = financeNumber(f.dev_module_mwp);
+    const devEpcPerMw = financeNumber(f.dev_epc_mw);
+    const devOwnerPerMw = financeNumber(f.dev_owner_mw);
+    const devGridPerMw = financeNumber(f.dev_grid_mw);
+    const devExitPerMwp = financeNumber(f.dev_exit_mwp);
+    const devNpvPerMwp = financeNumber(f.dev_npv_mwp);
+    const devSuccessPct = financeNumber(f.dev_success);
+    const devYears = financeNumber(f.dev_years);
+    const devStage = DEVELOPMENT_STAGES[String(f.dev_stage)] || 'Manual';
+    const wpCapacity = dcMwp * 1_000_000;
+    const devCapitalAtRisk = wpCapacity * devCostPerMw;
+    const devModuleCost = wpCapacity * devModulePerMwp;
+    const devEpcCost = wpCapacity * devEpcPerMw;
+    const devOwnerCost = wpCapacity * devOwnerPerMw;
+    const devGridCost = wpCapacity * devGridPerMw;
+    const devTotalBuildCost = devCapitalAtRisk + devModuleCost + devEpcCost
+      + devOwnerCost + devGridCost;
+    const devExitValue = wpCapacity * devExitPerMwp;
+    const devOperatingNpv = wpCapacity * devNpvPerMwp;
+    const devGrossMargin = devExitValue - devTotalBuildCost;
+    const devRiskAdjustedValue = devGrossMargin * (devSuccessPct / 100);
+    const devReturnMultiple = devCapitalAtRisk > 0 ? devGrossMargin / devCapitalAtRisk : 0;
+    return {
+      annualRevenue, revenue25, revenue35, totalCapex, capexPerWp, surplus25, surplus35,
+      devStage, devCostPerMw, devModulePerMwp, devEpcPerMw, devOwnerPerMw,
+      devGridPerMw, devExitPerMwp, devNpvPerMwp, devSuccessPct, devYears,
+      devCapitalAtRisk, devModuleCost, devEpcCost, devOwnerCost, devGridCost,
+      devTotalBuildCost, devExitValue, devOperatingNpv, devGrossMargin,
+      devRiskAdjustedValue, devReturnMultiple, price, other, yieldVal, bifacial,
+      baseLoss, deg, opexRate, epcEx, floodActive: Boolean(f.flood), floodRate,
+      modules, otherCapex, fixedCapex, cont, totalLoss, bessMw, bessMwh,
+      bessCapexRate, bessCycles, bessSpread: bessRevenuePerMwh,
+      bessEff: bessEffPercent, epcIncModules: epcEx + modules,
+    };
+  }
+
+  function computeStats(inputs, financeByMode, defaults) {
+    const stats = inputs.mode === 'string'
+      ? stringStats(inputs) : centralStats(inputs);
+    // Same object, so nothing can read a capacity without the check that says
+    // whether the capacities agree with each other.
+    stats.mode = inputs.mode;
+    stats.consistency = consistency(inputs, stats);
+    stats.finance = screeningFinance((financeByMode || {})[inputs.mode], stats,
+      { fallbackMode: inputs.mode, defaults });
+    return stats;
+  }
+
+  /**
+   * Size the array so its capacity lands on the figure the register states.
+   *
+   * WHAT IS ADJUSTED, AND WHAT IS NOT
+   * Two integer topology counts move -- circuits and skids per circuit in
+   * string mode, rings and MV skids per ring in central mode. Everything a
+   * supplier fixes stays where the user put it:
+   * module rating, string length, inverter and skid ratings. That keeps the
+   * result buildable rather than a number reverse-engineered into nonsense.
+   *
+   * Blocks are integers, so an exact hit is usually impossible. The residual
+   * is reported rather than hidden, because a layout that quietly lands 7%
+   * off the stated capacity is worse than one that says so.
+   *
+   * WHICH CAPACITY IS BEING MATCHED
+   * That is the caller's declared basis, never a guess. REPD's figure is
+   * nominally MWelec, but it is reported inconsistently: some schemes state
+   * DC, some AC, and the register does not carry the distinction reliably.
+   * Matching AC when the figure was DC oversizes the connection by the DC/AC
+   * ratio, which is exactly the error that matters for export limitation.
+   */
+  /* Fit on two variables, because one cannot reach a small project.
+     ----------------------------------------------------------------------
+     Reported: the numbers do not change when the headline capacity changes.
+     Measured, and they do not:
+
+       string   5, 10, 20, 30, 40, 49.9 and 50 MW all produced 44.80 MW
+       central  5, 10 and 20 MW all produced 17.60 MW
+
+     The fit moved ONE variable. In string mode that is b_cols, and because
+     total_blocks is b_cols x s_subs with s_subs pinned at five, one step of
+     b_cols is five blocks — 44.8 MW at the default skid rating. Nothing below
+     that is reachable, so a 30 MW solar farm was drawn as a 44.8 MW one, an
+     overstatement of half as much again, and every target under 50 MW
+     collapsed onto the same layout. The register starts at 1 MW.
+
+     A block is 8.96 MW in string mode and a skid is 4.4 MVA in central. Those
+     are the real quanta, and they are reachable as soon as the inner variable
+     is allowed to move too. So the search is over both, and it prefers the
+     candidate that stays closest to the shape the user already had — a fit
+     that reaches the right capacity by rearranging the whole plant is a worse
+     answer than one that reaches it by adding a column.
+
+     Bounds are physical rather than generous: a ring main carries a handful of
+     skids, not four hundred, so the inner variable stops at twelve. */
+  const FIT_OUTER_MAX = 120;
+  const FIT_INNER_MAX = 12;
+
+  function fitToStatedCapacity(sld, computeSldStats) {
+    sld.fitResidualPct = null;
+    sld.fitQuantumMw = null;
+    const target = Number(sld.targetMw);
+    if (!Number.isFinite(target) || target <= 0) return;
+    if (sld.targetBasis !== 'ac' && sld.targetBasis !== 'dc') return;
+
+    const string = sld.inputs.mode === 'string';
+    const outerKey = string ? 'b_cols' : 'rings_c';
+    const innerKey = string ? 's_subs' : 'mv_per_ring_c';
+    const outer0 = sld.inputs[outerKey];
+    const inner0 = sld.inputs[innerKey];
+
+    let best = null;
+    for (let inner = 1; inner <= FIT_INNER_MAX; inner += 1) {
+      sld.inputs[innerKey] = inner;
+      for (let outer = 1; outer <= FIT_OUTER_MAX; outer += 1) {
+        sld.inputs[outerKey] = outer;
+        const s = computeSldStats();
+        const got = sld.targetBasis === 'ac' ? s.ac_mw : s.dc_mwp;
+        if (!Number.isFinite(got) || got <= 0) continue;
+        const error = Math.abs(got - target);
+        // Ties, and near-ties, go to the layout closest to the one already on
+        // screen. Without this the fit rearranges the plant for a rounding
+        // difference and the drawing jumps for no reason the user can see.
+        const drift = Math.abs(inner - inner0) + Math.abs(outer - outer0) / 100;
+        if (!best
+            || error < best.error - 1e-9
+            || (Math.abs(error - best.error) <= 1e-9 && drift < best.drift)) {
+          best = { outer, inner, error, got, drift };
+        }
+      }
+    }
+    if (!best) {
+      sld.inputs[outerKey] = outer0;
+      sld.inputs[innerKey] = inner0;
+      return;
+    }
+    sld.inputs[outerKey] = best.outer;
+    sld.inputs[innerKey] = best.inner;
+    sld.fitResidualPct = ((best.got - target) / target) * 100;
+
+    // What one more block would have added. A residual means nothing without
+    // it: 10% off a plant whose smallest step is 9 MW is exact, and 10% off
+    // one whose step is 0.5 MW is a miss.
+    const oneMore = (() => {
+      sld.inputs[outerKey] = best.outer + 1;
+      const s = computeSldStats();
+      sld.inputs[outerKey] = best.outer;
+      const got = sld.targetBasis === 'ac' ? s.ac_mw : s.dc_mwp;
+      return Number.isFinite(got) ? Math.abs(got - best.got) : null;
+    })();
+    sld.fitQuantumMw = oneMore;
+  }
+
+  NS.sizingArithmetic = Object.freeze({
+    generation: '202609012205',
+    DEVELOPMENT_STAGES,
+    DEVELOPMENT_SUCCESS,
+    BIFACIAL_BY_GCR,
+    FIT_OUTER_MAX,
+    FIT_INNER_MAX,
+    financeNumber,
+    physicalInputs,
+    buildStats,
+    consistency,
+    stringStats,
+    centralStats,
+    applyDevelopmentStageDefaults,
+    applyMountingBifacial,
+    screeningFinance,
+    computeStats,
+    fitToStatedCapacity
+  });
+})();
+
+/**
+ * Module: electrical-distance
+ *
+ * How far away a substation is, measured in the network operator's own
+ * published circuits rather than in kilometres.
+ *
+ * WHY THIS EXISTS
+ * ---------------
+ * Everything this estate has measured until now has been geometry. The
+ * geodesy module answers "how many kilometres from this project to that
+ * substation", and it answers it correctly, to the last place. But a
+ * kilometre is not a connection. Two substations 7 km apart can be on
+ * opposite sides of a network boundary with no circuit between them; two
+ * substations 90 km apart can be the two ends of a single published
+ * circuit. A map that shows only the first number invites the reader to
+ * infer the second, and that inference is wrong often enough to be
+ * dangerous in a document someone spends money on.
+ *
+ * So this module answers a different question, from a different source:
+ * on the network Appendix B actually publishes, how many circuits lie
+ * between these two sites, and which ones? Every hop is a published row
+ * with an identity. The answer is a citation, not an estimate.
+ *
+ * WHAT IT IS NOT
+ * --------------
+ * A hop count is not a distance. Two hops is not "twice as far" as one,
+ * and a site one hop away is not thereby available to connect to. It is
+ * not an impedance either: R, X and B are carried on every hop exactly as
+ * published, and this module contains no arithmetic over them at all -
+ * summing impedance along a path is the first step of a load flow, and a
+ * load flow needs a declared model, base values, taps, generation and load
+ * assumptions, contingencies and validation against a trusted solver. None
+ * of those are in this file, so neither is the sum.
+ *
+ * THE ONE RULE THAT SHAPES THE TRAVERSAL
+ * --------------------------------------
+ * A voltage may only change across a transformer, and when it does the
+ * transformer is named in the path. A circuit whose two ends carry
+ * different declared voltages is not a voltage change - it is a
+ * contradiction in the data, and the traversal refuses it and says so
+ * rather than quietly walking through. Undeclared voltages are carried as
+ * undeclared and never guessed from a node code.
+ *
+ *   node tools/proofs/modules/202609012245-electrical-distance.proof.mjs
+ */
+(() => {
+  const NS = window.__GRIDATLAS_MODULES__ = window.__GRIDATLAS_MODULES__ || {};
+  if (NS.electricalDistance) return;
+
+  const SCHEMA = 'gridatlas.module.electrical-distance.v1';
+  const REQUIRES = 'gridatlas.module.network-topology.graph.v1';
+
+  const NOT_A_DISTANCE =
+    'Hops are published circuits between two sites, not a distance. A site '
+    + 'one hop away may be a hundred kilometres away, and a site ten '
+    + 'kilometres away may be on no shared circuit at all.';
+
+  const NOT_A_CAPACITY =
+    'A path existing on the published network says nothing about whether '
+    + 'anything can flow along it for a new project. Ratings are the '
+    + 'circuit\'s, not a spare allowance, and queue position, committed '
+    + 'connections, consent and commercial terms appear in no appendix.';
+
+  const IMPEDANCE_CARRIED =
+    'R, X and B are reproduced on each hop exactly as published, on a '
+    + '100 MVA base. They are not added, scaled or combined anywhere in '
+    + 'this module. A sum of them would be the beginning of a load flow, '
+    + 'which needs a declared model this data does not contain.';
+
+  const UNDECLARED = 'undeclared';
+
+  /* A traversal must not invent a voltage, so the two ends of an edge are
+     compared only when BOTH are declared. */
+  function crossing(graph, nearNode, farNode) {
+    const near = graph.nodeVoltageKv(nearNode);
+    const far = graph.nodeVoltageKv(farNode);
+    return {
+      near_kv: near,
+      far_kv: far,
+      both_declared: near != null && far != null,
+      changes: near != null && far != null && near !== far
+    };
+  }
+
+  function describe(graph, entry, nearNode) {
+    const farNode = entry.row[entry.far];
+    const cross = crossing(graph, nearNode, farNode);
+    return {
+      kind: entry.kind,
+      from_node: nearNode,
+      to_node: farNode,
+      from_site_code: graph.nodeSiteCode(nearNode) || null,
+      to_site_code: graph.nodeSiteCode(farNode) || null,
+      from_voltage_kv: cross.near_kv,
+      to_voltage_kv: cross.far_kv,
+      voltage_changed: cross.changes,
+      /* The transformer's own published ratio, where it has one. Only 140
+         of 1,472 transformers carry it, so it is reported when present and
+         never reconstructed from the two node voltages when absent - a
+         reconstructed ratio would be this module's opinion wearing the
+         product's authority. */
+      voltage_ratio_kv: entry.kind === 'transformer'
+        && typeof entry.row.voltage_ratio_kv === 'string'
+        ? entry.row.voltage_ratio_kv : null,
+      /* carried, never computed with */
+      ratings_mva: graph.ratingsOf(entry.row),
+      transformer_rating_mva: entry.kind === 'transformer'
+        && Number.isFinite(entry.row.rating_mva) ? entry.row.rating_mva : null,
+      parameters_pct_100mva: graph.parametersOf(entry.row)
+    };
+  }
+
+  /**
+   * Is this edge legal to walk?
+   *
+   * A transformer is the only thing that may change voltage. A circuit
+   * that appears to change voltage is a contradiction between two
+   * published node records, and it is refused and reported rather than
+   * traversed - a silent walk through it would mix voltages, which is the
+   * exact failure this estate holds itself to never repeating.
+   */
+  function legality(kind, cross) {
+    if (!cross.changes) return { legal: true, refusal: null };
+    if (kind === 'transformer') return { legal: true, refusal: null };
+    return {
+      legal: false,
+      refusal: 'a ' + kind + ' whose two ends carry different declared '
+        + 'voltages (' + cross.near_kv + ' kV and ' + cross.far_kv + ' kV); '
+        + 'only a transformer may change voltage, so this edge is not walked'
+    };
+  }
+
+  function startNodes(graph, site, voltageKv) {
+    const nodes = graph.nodesOfSite(site.code);
+    if (voltageKv == null) return nodes;
+    return nodes.filter((name) => graph.nodeVoltageKv(name) === voltageKv);
+  }
+
+  /**
+   * The shortest published path between two sites, in circuits.
+   *
+   * Breadth-first, so the first arrival is a fewest-hop path. Where
+   * several paths tie, the one found first by sorted node order is
+   * returned and `ties` says how many others arrived at the same depth,
+   * because "the" path implies a uniqueness the network does not have.
+   *
+   * @param index      a network-topology index (must expose graph())
+   * @param fromKey    site code or exact site name
+   * @param toKey      site code or exact site name
+   * @param options    { voltageKv, maxHops }
+   * @returns a result object, or null if either site is unknown
+   */
+  function between(index, fromKey, toKey, options) {
+    if (!index || typeof index.graph !== 'function') return null;
+    const graph = index.graph();
+    if (!graph || graph.schema !== REQUIRES) return null;
+
+    const from = index.site(fromKey);
+    const to = index.site(toKey);
+    if (!from || !to) return null;
+
+    const opts = options || {};
+    const voltageKv = Number.isFinite(opts.voltageKv) ? opts.voltageKv : null;
+    const maxHops = Number.isFinite(opts.maxHops) ? opts.maxHops : 6;
+
+    const targets = new Set(graph.nodesOfSite(to.code));
+    const origins = startNodes(graph, from, voltageKv);
+
+    const base = {
+      schema: SCHEMA,
+      from: { code: from.code, name: from.name },
+      to: { code: to.code, name: to.name },
+      requested_voltage_kv: voltageKv,
+      max_hops: maxHops,
+      not_a_distance: NOT_A_DISTANCE,
+      not_a_capacity: NOT_A_CAPACITY,
+      impedance_basis: IMPEDANCE_CARRIED
+    };
+
+    if (!origins.length) {
+      return Object.assign({}, base, {
+        reached: false,
+        reason: voltageKv == null
+          ? 'the origin site publishes no nodes in this product'
+          : 'the origin site publishes no node at ' + voltageKv + ' kV',
+        hops: null, path: [], refusals: [], ties: 0, explored_nodes: 0
+      });
+    }
+
+    if (from.code === to.code) {
+      return Object.assign({}, base, {
+        reached: true, hops: 0, path: [], refusals: [], ties: 0,
+        explored_nodes: origins.length,
+        reason: 'the same site'
+      });
+    }
+
+    const seen = new Map();
+    const refusals = [];
+    let frontier = [];
+    for (const name of origins.slice().sort()) {
+      if (targets.has(name)) {
+        return Object.assign({}, base, {
+          reached: true, hops: 0, path: [], refusals: [], ties: 0,
+          explored_nodes: 1,
+          reason: 'both site codes resolve to the same node'
+        });
+      }
+      seen.set(name, null);
+      frontier.push(name);
+    }
+
+    for (let depth = 1; depth <= maxHops; depth += 1) {
+      const next = [];
+      const arrivals = [];
+      for (const nearNode of frontier) {
+        for (const entry of graph.edgesAt(nearNode)) {
+          const farNode = entry.row[entry.far];
+          if (!farNode || !graph.has(farNode)) continue;
+          const cross = crossing(graph, nearNode, farNode);
+          const verdict = legality(entry.kind, cross);
+          if (!verdict.legal) {
+            refusals.push({
+              at_node: nearNode, to_node: farNode,
+              kind: entry.kind, reason: verdict.refusal
+            });
+            continue;
+          }
+          if (seen.has(farNode)) continue;
+          seen.set(farNode, { via: entry, from: nearNode });
+          if (targets.has(farNode)) arrivals.push(farNode);
+          else next.push(farNode);
+        }
+      }
+
+      if (arrivals.length) {
+        arrivals.sort();
+        const path = [];
+        let cursor = arrivals[0];
+        while (cursor) {
+          const step = seen.get(cursor);
+          if (!step) break;
+          path.unshift(describe(graph, step.via, step.from));
+          cursor = step.from;
+        }
+        return Object.assign({}, base, {
+          reached: true,
+          hops: path.length,
+          path,
+          transformers_crossed: path.filter((h) => h.kind === 'transformer').length,
+          voltage_changes: path.filter((h) => h.voltage_changed).length,
+          ties: arrivals.length - 1,
+          refusals,
+          explored_nodes: seen.size,
+          arrival_node: arrivals[0]
+        });
+      }
+
+      if (!next.length) break;
+      frontier = next.sort();
+    }
+
+    return Object.assign({}, base, {
+      reached: false,
+      reason: 'no published path within ' + maxHops + ' hops'
+        + (voltageKv == null ? '' : ' from a ' + voltageKv + ' kV node')
+        + '; this is a statement about the published network, not about '
+        + 'whether the two sites are connected in reality',
+      hops: null, path: [], refusals, ties: 0, explored_nodes: seen.size
+    });
+  }
+
+  /**
+   * Every site reachable within N hops, with the hop count at which it was
+   * first reached. The neighbourhood a click is actually in, electrically.
+   *
+   * @param index    a network-topology index
+   * @param key      site code or exact site name
+   * @param options  { hops, voltageKv }
+   */
+  function within(index, key, options) {
+    if (!index || typeof index.graph !== 'function') return null;
+    const graph = index.graph();
+    if (!graph || graph.schema !== REQUIRES) return null;
+
+    const site = index.site(key);
+    if (!site) return null;
+
+    const opts = options || {};
+    const voltageKv = Number.isFinite(opts.voltageKv) ? opts.voltageKv : null;
+    const limit = Number.isFinite(opts.hops) ? opts.hops : 2;
+
+    const origins = startNodes(graph, site, voltageKv);
+    const seen = new Set(origins);
+    const bySite = new Map();
+    const refusals = [];
+    let frontier = origins.slice().sort();
+
+    for (let depth = 1; depth <= limit; depth += 1) {
+      const next = [];
+      for (const nearNode of frontier) {
+        for (const entry of graph.edgesAt(nearNode)) {
+          const farNode = entry.row[entry.far];
+          if (!farNode || !graph.has(farNode) || seen.has(farNode)) continue;
+          const cross = crossing(graph, nearNode, farNode);
+          const verdict = legality(entry.kind, cross);
+          if (!verdict.legal) {
+            refusals.push({ at_node: nearNode, to_node: farNode,
+              kind: entry.kind, reason: verdict.refusal });
+            continue;
+          }
+          seen.add(farNode);
+          next.push(farNode);
+          const code = graph.nodeSiteCode(farNode);
+          if (!code || String(code).toUpperCase() === String(site.code).toUpperCase()) continue;
+          if (bySite.has(code)) continue;
+          const far = graph.siteByCode(code);
+          bySite.set(code, {
+            code,
+            name: far ? far.name : null,
+            hops: depth,
+            first_node: farNode,
+            voltage_kv: cross.far_kv,
+            via: entry.kind
+          });
+        }
+      }
+      if (!next.length) break;
+      frontier = next.sort();
+    }
+
+    const sites = [...bySite.values()].sort((a, b) =>
+      a.hops - b.hops || String(a.code).localeCompare(String(b.code)));
+
+    return {
+      schema: SCHEMA,
+      site: { code: site.code, name: site.name },
+      requested_voltage_kv: voltageKv,
+      hop_limit: limit,
+      origin_nodes: origins.length,
+      sites,
+      counts: {
+        sites: sites.length,
+        by_hop: sites.reduce((acc, s) => {
+          acc[s.hops] = (acc[s.hops] || 0) + 1;
+          return acc;
+        }, {})
+      },
+      refusals,
+      not_a_distance: NOT_A_DISTANCE,
+      not_a_capacity: NOT_A_CAPACITY
+    };
+  }
+
+  NS.electricalDistance = Object.freeze({
+    schema: SCHEMA,
+    requires: REQUIRES,
+    not_a_distance: NOT_A_DISTANCE,
+    not_a_capacity: NOT_A_CAPACITY,
+    impedance_basis: IMPEDANCE_CARRIED,
+    undeclared: UNDECLARED,
+    between,
+    within
+  });
+})();
+
+/**
+ * Module: rating-envelope
+ *
+ * What the operator publishes a circuit can carry, season by season -
+ * and a structural refusal to add those numbers up.
+ *
+ * WHY THE REFUSAL IS THE FEATURE
+ * ------------------------------
+ * A substation with eight 400 kV circuits rated 3,000 MVA each does not
+ * have 24,000 MVA of anything. The ratings are thermal limits on
+ * individual branches under stated seasonal conditions; they are not
+ * additive, they are not simultaneous, and the sum is not a quantity that
+ * exists in the network. Yet a sum is the single easiest number to
+ * produce from this data and the single most persuasive to a reader, and
+ * once printed it is indistinguishable from a capacity figure. That is
+ * how a published rating becomes an invented headroom number.
+ *
+ * So this module reports each circuit's ratings individually, names the
+ * season each one belongs to, and contains no code path that produces a
+ * site total. The proof asserts the absence, not merely the intent.
+ *
+ * WHAT IT ADDS BEYOND "THE MINIMUM AND THE MAXIMUM"
+ * -------------------------------------------------
+ * The owner product already publishes a site-wide winter envelope
+ * (`circuit_winter_rating_mva.min/max`). Three things it does not do,
+ * which are done here:
+ *
+ *   1. All four seasons, not winter alone. Summer ratings are the binding
+ *      ones for a thermally limited circuit, and the product carries them
+ *      on 1,276 of 1,392 circuits - the 116 without are OFTO-labelled and
+ *      are reported as not published rather than filled in.
+ *
+ *   2. Scoped to a voltage. A site-wide range across a 132 kV and a
+ *      400 kV busbar is a number about no busbar at all.
+ *
+ *   3. Implausible values named rather than averaged away. Four circuits
+ *      publish winter_mva of exactly 9999, on spans of a kilometre or
+ *      less with zero impedance; planned changes reach 69,275. These have
+ *      the shape of placeholders, not ratings. A module that quietly
+ *      includes them in a maximum reports a lie with a citation attached,
+ *      so they are carried, flagged, and excluded from the envelope with
+ *      the exclusion stated.
+ *
+ *   node tools/proofs/modules/202609012250-rating-envelope.proof.mjs
+ */
+(() => {
+  const NS = window.__GRIDATLAS_MODULES__ = window.__GRIDATLAS_MODULES__ || {};
+  if (NS.ratingEnvelope) return;
+
+  const SCHEMA = 'gridatlas.module.rating-envelope.v1';
+  const REQUIRES = 'gridatlas.module.network-topology.graph.v1';
+
+  const SEASONS = Object.freeze(['winter', 'spring', 'summer', 'autumn']);
+  const FIELD = Object.freeze({
+    winter: 'winter_mva', spring: 'spring_mva',
+    summer: 'summer_mva', autumn: 'autumn_mva'
+  });
+
+  const NEVER_SUMMED =
+    'These are per-circuit thermal ratings under stated seasonal '
+    + 'conditions. They are not additive and they are not simultaneous: '
+    + 'the sum of the circuits at a site is not a quantity that exists in '
+    + 'the network, and this module contains no code that produces one.';
+
+  const NOT_A_CAPACITY =
+    'A rating is what a circuit is rated to carry, not what is free on '
+    + 'it. Existing flows, committed connections, queue position, outage '
+    + 'conditions and commercial terms decide what a project could use, '
+    + 'and no published appendix contains any of them.';
+
+  /* A rating that is obviously not a rating.
+     -----------------------------------------------------------------
+     9999 on a one-kilometre span with zero impedance is a placeholder,
+     not a thermal limit; so is 69,275 on a hundred-metre cable. The test
+     is deliberately narrow - a value at or above this threshold is
+     flagged, nothing else is second-guessed - because a module that
+     starts judging which published numbers it believes has stopped
+     reporting the published record. */
+  const IMPLAUSIBLE_MVA = 9999;
+
+  function seasonsOf(row) {
+    const published = {};
+    const absent = [];
+    for (const season of SEASONS) {
+      const value = row[FIELD[season]];
+      if (Number.isFinite(value)) published[season] = value;
+      else absent.push(season);
+    }
+    return { published, absent };
+  }
+
+  function flagsFor(published) {
+    const flags = [];
+    for (const [season, value] of Object.entries(published)) {
+      if (value >= IMPLAUSIBLE_MVA) {
+        flags.push({
+          season,
+          value,
+          reason: 'at or above ' + IMPLAUSIBLE_MVA + ' MVA, which has the '
+            + 'shape of a placeholder rather than a thermal rating; it is '
+            + 'reported and excluded from the range below'
+        });
+      }
+    }
+    return flags;
+  }
+
+  /**
+   * Every circuit landing at a site, at one voltage, with its own
+   * seasonal ratings. No total anywhere.
+   *
+   * @param index      a network-topology index exposing graph()
+   * @param key        site code or exact site name
+   * @param options    { voltageKv }
+   */
+  function at(index, key, options) {
+    if (!index || typeof index.graph !== 'function') return null;
+    const graph = index.graph();
+    if (!graph || graph.schema !== REQUIRES) return null;
+
+    const site = index.site(key);
+    if (!site) return null;
+
+    const opts = options || {};
+    const voltageKv = Number.isFinite(opts.voltageKv) ? opts.voltageKv : null;
+
+    const nodes = graph.nodesOfSite(site.code)
+      .filter((name) => voltageKv == null || graph.nodeVoltageKv(name) === voltageKv);
+
+    const circuits = [];
+    const seen = new Set();
+    for (const nodeName of nodes) {
+      for (const entry of graph.edgesAt(nodeName)) {
+        if (entry.kind !== 'circuit') continue;
+        const far = entry.row[entry.far];
+        const id = [nodeName, far].sort().join('|');
+        if (seen.has(id)) continue;
+        seen.add(id);
+        const { published, absent } = seasonsOf(entry.row);
+        if (!Object.keys(published).length) continue;
+        circuits.push({
+          from_node: nodeName,
+          to_node: far,
+          to_site_code: graph.nodeSiteCode(far) || null,
+          voltage_kv: graph.nodeVoltageKv(nodeName),
+          circuit_type: typeof entry.row.circuit_type === 'string' ? entry.row.circuit_type : null,
+          ohl_km: Number.isFinite(entry.row.ohl_km) ? entry.row.ohl_km : null,
+          cable_km: Number.isFinite(entry.row.cable_km) ? entry.row.cable_km : null,
+          ratings_mva: published,
+          seasons_not_published: absent,
+          flags: flagsFor(published),
+          parameters_pct_100mva: graph.parametersOf(entry.row)
+        });
+      }
+    }
+
+    circuits.sort((a, b) => String(a.to_node).localeCompare(String(b.to_node)));
+
+    /* The per-season RANGE across circuits - a lowest and a highest
+       rating, which are two real published values - never a sum, and
+       never a mean, which would be a number no circuit is rated at. */
+    const by_season = {};
+    for (const season of SEASONS) {
+      const values = circuits
+        .filter((c) => Number.isFinite(c.ratings_mva[season])
+          && c.ratings_mva[season] < IMPLAUSIBLE_MVA)
+        .map((c) => c.ratings_mva[season]);
+      const excluded = circuits
+        .filter((c) => Number.isFinite(c.ratings_mva[season])
+          && c.ratings_mva[season] >= IMPLAUSIBLE_MVA).length;
+      by_season[season] = values.length
+        ? {
+          lowest_circuit_mva: Math.min.apply(null, values),
+          highest_circuit_mva: Math.max.apply(null, values),
+          circuits: values.length,
+          excluded_as_implausible: excluded
+        }
+        : { circuits: 0, excluded_as_implausible: excluded, published: false };
+    }
+
+    const flagged = circuits.filter((c) => c.flags.length);
+    const missingSeasons = circuits.filter((c) => c.seasons_not_published.length);
+
+    return {
+      schema: SCHEMA,
+      site: { code: site.code, name: site.name },
+      requested_voltage_kv: voltageKv,
+      scope: voltageKv == null
+        ? 'every voltage at this site; a range across two busbar voltages '
+          + 'is a number about neither of them'
+        : voltageKv + ' kV nodes at this site only',
+      circuits,
+      by_season,
+      counts: {
+        circuits: circuits.length,
+        with_a_flagged_value: flagged.length,
+        with_a_season_not_published: missingSeasons.length
+      },
+      never_summed: NEVER_SUMMED,
+      not_a_capacity: NOT_A_CAPACITY
+    };
+  }
+
+  NS.ratingEnvelope = Object.freeze({
+    schema: SCHEMA,
+    requires: REQUIRES,
+    seasons: SEASONS,
+    implausible_mva: IMPLAUSIBLE_MVA,
+    never_summed: NEVER_SUMMED,
+    not_a_capacity: NOT_A_CAPACITY,
+    at
+  });
+})();
+
+/**
  * GridAtlas cartridge — neon substation links and the SLD layout sandbox.
  *
  * Assembled under the generation named in the header above; this part
