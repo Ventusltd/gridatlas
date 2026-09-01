@@ -1,12 +1,13 @@
 import assert from 'node:assert/strict';
 import { execFileSync } from 'node:child_process';
-import { readFileSync } from 'node:fs';
+import { mkdtempSync, readFileSync, rmSync } from 'node:fs';
 import { dirname, join, resolve } from 'node:path';
+import { tmpdir } from 'node:os';
 import { fileURLToPath } from 'node:url';
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..', '..');
 const scanner = join(root, 'tools/ci/202609012240-estate-deep-scan.mjs');
-const out = join(root, 'governance');
+const out = mkdtempSync(join(tmpdir(), 'gridatlas-estate-scan-'));
 let passed = 0;
 const check = (name, condition) => {
   assert.ok(condition, name);
@@ -35,4 +36,5 @@ check('every current cartridge has its generation-matched proof',
 check('the scan retains complete commit counts',
   report.repos.gridatlas.commits > 200 && report.repos.pipelinenews.commits > 300);
 
+rmSync(out, { recursive: true, force: true });
 console.log(`${passed}/${passed} checks passed`);

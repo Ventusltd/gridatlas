@@ -7,7 +7,10 @@ import { dirname, extname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const GRID = resolve(dirname(fileURLToPath(import.meta.url)), '..', '..');
-const ESTATE = resolve(GRID, '..', '..');
+const GRID_PARENT = resolve(GRID, '..');
+const ESTATE = existsSync(join(GRID_PARENT, 'pipelinenews'))
+  ? GRID_PARENT
+  : resolve(GRID, '..', '..');
 const arg = (name, fallback) => {
   const at = process.argv.indexOf(name);
   return at >= 0 ? process.argv[at + 1] : fallback;
