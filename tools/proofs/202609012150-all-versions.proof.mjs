@@ -33,6 +33,23 @@
  *      including the versions long superseded. Identical to the last digit,
  *      or it is a finding.
  *
+ *      WITH ONE HONEST LIMIT, measured rather than assumed. "Identical to
+ *      the last digit" holds IN THIS ENGINE. Verified on the deployed page:
+ *      for West Burton Solar to Cottam, Node's V8 (13.6) returns
+ *      7.050150827184836 from the atan2 form and ...837 from the asin form,
+ *      while Chrome's V8 returns ...837 from BOTH. The same source, two
+ *      engines, a different last bit - Math.asin and Math.atan2 are not
+ *      required to be correctly rounded and their implementations differ
+ *      between builds.
+ *
+ *      So this proves the estate's versions agree with each other under one
+ *      engine, which is what catches a form or constant that has actually
+ *      diverged. It does NOT prove bit-identical output in every browser,
+ *      and no proof run here could. The bound that does hold is the useful
+ *      one: the forms are algebraically the same, so any difference is at
+ *      the scale of floating-point epsilon - 1e-15 km here - and no figure
+ *      this estate displays is quoted to anywhere near that precision.
+ *
  *   3. THE HISTORY. The version ledger on the page is checked against the
  *      compositions actually on disk, so the list a reader sees is the list
  *      that was really shipped.
