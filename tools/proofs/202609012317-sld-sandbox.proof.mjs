@@ -2305,10 +2305,26 @@ check('absence is stated as absence, never inferred from', (() => {
     && /so nothing is stated about their circuits/.test(section)
     && !/STRONG|REMOTE|well.placed|ideal|advantage|likely|headroom/i.test(section);
 })());
-check('the module is never asked at load: the boot path does not touch the loader', (() => {
-  const boot = cartridgeSource.indexOf('function topologyBlockHtml(queries)');
-  const before = cartridgeSource.slice(cartridgeSource.indexOf('const DECLARED = '), boot);
-  return !/ensureTopology\(\)/.test(before.replace(/function ensureTopology\(\)[\s\S]*?\n  \}\n/, ''));
+check('the loader is called only from named on-demand paths, never at load', (() => {
+  /* Every caller is enumerated. A new one must be added here, which
+     is the guarantee: the 10 MB product is fetched when a reader asks
+     a question, and never because the page opened. */
+  const ALLOWED = new Set(['topologyBlockHtml', 'runGridAtPoint']);
+  const found = [];
+  let at = cartridgeSource.indexOf('ensureTopology()');
+  while (at >= 0) {
+    const before = cartridgeSource.slice(0, at);
+    /* the declaration is not a call site; skip `function ensureTopology()` */
+    if (!/function\s+$/.test(before.slice(-12))) {
+      const m = [...before.matchAll(/function\s+(\w+)\s*\(/g)].pop();
+      found.push(m ? m[1] : '<top level>');
+    }
+    at = cartridgeSource.indexOf('ensureTopology()', at + 1);
+  }
+  if (!found.length) return false;   // the loader vanished entirely
+  const strays = found.filter(name => !ALLOWED.has(name));
+  if (strays.length) console.log('    unexpected ensureTopology caller(s): ' + strays.join(', '));
+  return strays.length === 0;
 })());
 
 
@@ -2681,6 +2697,57 @@ check('the served bytes claim no headroom anywhere in the flow module', (() => {
     .split(/const NOT_A_[A-Z_]+ =[\s\S]*?';/).join(' ');
   return !/headroom/i.test(mod);
 })());
+
+console.log('\nthe grid computation without a project, and a dash that gets out of the way\n');
+
+check('a tool is added to the shell tray, which the cartridge does not own',
+  /id = 'btn-gridpoint'/.test(cartridgeSource)
+  && /document\.querySelector\('\.map-controls'\)/.test(cartridgeSource));
+check('the tool does not duplicate itself if the cartridge runs twice',
+  /document\.getElementById\('btn-gridpoint'\)\) return;/.test(cartridgeSource));
+check('arming is explicit, as it is for the scope',
+  /let pointArmed = false;/.test(cartridgeSource)
+  && /pointArmed = !pointArmed;/.test(cartridgeSource));
+check('an unarmed click still does nothing new',
+  /if \(pointArmed\) await runGridAtPoint/.test(cartridgeSource));
+check('the point query never measures a distance itself',
+  (() => {
+    const start = cartridgeSource.indexOf('async function runGridAtPoint');
+    const end = cartridgeSource.indexOf('function topologyBlockHtml');
+    if (start < 0 || end < 0 || end < start) return false;
+    const fn = cartridgeSource.slice(start, end);
+    return /network\.nearest\(lon, lat/.test(fn)
+      && !/Math\.atan2|Math\.asin|6378\.137/.test(fn);
+  })());
+/* A plain substring, not a regex: fillTopologyBlocks selects by CLASS
+   and getting this wrong produces a block that shows its loading line
+   forever and never fills - which no other check here would catch. */
+check('the block it writes is found by the filler, which selects by class',
+  cartridgeSource.includes(`'<div class="' + TOPOLOGY_BLOCK + '" data-queries="'`)
+  && /querySelectorAll\('\.' \+ TOPOLOGY_BLOCK\)/.test(cartridgeSource));
+check('the reader is told that nearest MAPPED is not nearest',
+  /the nearest <i>mapped<\/i> point may not/.test(cartridgeSource));
+check('the reader is told it is a straight line and not a cable route',
+  /not a cable route/.test(cartridgeSource));
+check('the point answer never claims anything can connect',
+  /not a statement that anything can connect/.test(cartridgeSource));
+check('an absent connection-points cartridge is an absence, not a guess',
+  /Nothing is inferred from its absence/.test(cartridgeSource));
+check('the layers dash can be collapsed without entering fullscreen',
+  /gridatlas-dash-toggle/.test(cartridgeSource)
+  && /data-gridatlas-collapsed/.test(cartridgeSource));
+check('the collapsed choice is remembered, and every storage access is guarded',
+  /localStorage\.getItem\(KEY\)/.test(cartridgeSource)
+  && /localStorage\.setItem\(KEY/.test(cartridgeSource)
+  && (cartridgeSource.match(/catch \(_\) \{ collapsed = false; \}/) || []).length === 1);
+check('the map is told to resize when the dash moves under it',
+  /window\.map\.resize\(\)/.test(cartridgeSource));
+check('the toggle is reachable and labelled for assistive technology',
+  /aria-pressed/.test(cartridgeSource) && /aria-label/.test(cartridgeSource)
+  && /focus-visible/.test(cartridgeSource));
+check('both new surfaces are published for review',
+  /window\.__GRIDATLAS_POINT_QUERY__ = pointQuery;/.test(cartridgeSource)
+  && /window\.__GRIDATLAS_DASH__ = \{/.test(cartridgeSource));
 
 console.log(`\n${passed}/${passed + failures.length} checks passed`);
 if (failures.length) {
