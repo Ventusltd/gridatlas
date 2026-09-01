@@ -21,7 +21,8 @@ const entry = current.cartridges.find(({ id }) => id === ID);
 assert.ok(entry, `${ID} is not in the current composition`);
 assert.equal(entry.generation, GENERATION);
 assert.equal(entry.path, `./cartridges/${GENERATION}-streaming-parquet-bridge-v9-5.js`);
-assert.equal(createHash('sha256').update(source).digest('hex'), entry.sha256,
+const servedSource = source.replace(/\r\n/g, '\n');
+assert.equal(createHash('sha256').update(servedSource).digest('hex'), entry.sha256,
   'the proof is not reading the composed runtime bytes');
 
 assert.match(contractSource, /responseEstablishedBeforeBodyReconstruction: true/);

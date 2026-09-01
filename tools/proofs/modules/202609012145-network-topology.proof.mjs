@@ -13,14 +13,18 @@
  */
 
 import { readFile, access } from 'node:fs/promises';
-import { constants } from 'node:fs';
+import { constants, existsSync } from 'node:fs';
 import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import vm from 'node:vm';
 
 const HERE = dirname(fileURLToPath(import.meta.url));
 const REPO = resolve(HERE, '..', '..', '..');
-const PRODUCT = resolve(REPO, '..', '..', 'data-grid-gb', 'derived',
+const REPO_PARENT = resolve(REPO, '..');
+const ESTATE = existsSync(resolve(REPO_PARENT, 'data-grid-gb'))
+  ? REPO_PARENT
+  : resolve(REPO, '..', '..');
+const PRODUCT = resolve(ESTATE, 'data-grid-gb', 'derived',
   'gb-transmission-network.v1.json');
 
 let passed = 0;

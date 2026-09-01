@@ -48,7 +48,10 @@ import { fileURLToPath } from 'node:url';
 
 const HERE = dirname(fileURLToPath(import.meta.url));
 const GRIDATLAS = resolve(HERE, '..', '..');
-const HOME = resolve(GRIDATLAS, '..', '..');
+const GRID_PARENT = resolve(GRIDATLAS, '..');
+const HOME = existsSync(join(GRID_PARENT, 'pipelinenews'))
+  ? GRID_PARENT
+  : resolve(GRIDATLAS, '..', '..');
 
 function argv(flag) {
   const at = process.argv.indexOf(flag);
