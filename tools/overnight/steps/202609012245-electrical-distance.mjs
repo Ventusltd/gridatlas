@@ -115,11 +115,16 @@ ${NEIGHBOUR_ANCHOR}`);
 
     write(BODY, body);
 
-    /* ── 4. the registry declares the successor it now probes ────────── */
-    patch(REGISTRY, [
-      ['202609012145-network-topology', '202609012245-network-topology',
-       'registry names the successor topology module'],
-    ]);
+    /* ── 4. the registry needs no change, and that is worth stating ───
+       It probes `__GRIDATLAS_MODULES__.networkTopology` by GLOBAL name,
+       not by file name, so the successor registers under exactly the same
+       key and the registry keeps working without being restamped. What
+       the registry does NOT yet know about is the traversal itself: it
+       has no `electrical-distance` source, so a page where the module
+       failed to load would report every source healthy. That is a real
+       gap, it is recorded here rather than quietly left, and closing it
+       means a successor registry - which is its own generation, not a
+       silent edit to one that has shipped. */
 
     /* ── 5. the CI carries the new proof ─────────────────────────────── */
     patch(CI, [
