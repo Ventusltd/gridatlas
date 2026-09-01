@@ -85,6 +85,7 @@ const scoped = (flag) => argv(flag, { many: true }).map((raw) => {
 });
 const addModules = scoped('--add-module');
 const removeModules = scoped('--remove-module');
+const partsSeeds = scoped('--parts-from');
 const replaceModules = argv('--replace-module', { many: true })
   .map(pair => {
     const [from, to] = String(pair).split('=');
@@ -176,7 +177,25 @@ for (const id of restamp) {
   const newPath = path.join(ATLAS, 'cartridges', newFile);
   if (fs.existsSync(newPath)) die(`refusing to overwrite ${newFile}`);
 
-  const partsManifest = path.join(ATLAS, 'manifests', `${oldGeneration}-${stem}-parts.json`);
+  /* A cartridge that has never been assembled has no manifest to read.
+     ----------------------------------------------------------------------
+     `--parts-from <id>=<path>` seeds one for exactly that case. The seed is
+     NOT written into atlas/manifests/: a manifest there is a record of how
+     a shipped generation was actually built, and back-dating one that
+     cannot reproduce its own cartridge byte-for-byte would be a false
+     record of the kind this estate keeps finding. The seed is an input to
+     THIS cut; the manifest the cut writes is stamped with the new
+     generation and does reproduce its cartridge, because it built it. */
+  let partsManifest = path.join(ATLAS, 'manifests', `${oldGeneration}-${stem}-parts.json`);
+  if (!fs.existsSync(partsManifest)) {
+    const seed = partsSeeds.find(s => s.id === id);
+    if (seed) {
+      const seedPath = path.join(ROOT, seed.path);
+      if (!fs.existsSync(seedPath)) die(`--parts-from: no such seed ${seed.path}`);
+      partsManifest = seedPath;
+      console.log(`  seed       ${id} assembled from ${seed.path}`);
+    }
+  }
   if (fs.existsSync(partsManifest)) {
     /* Reassembled, not copied: the point of restamping an assembled
        cartridge is that one of its parts moved. */

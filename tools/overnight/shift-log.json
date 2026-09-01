@@ -1453,6 +1453,62 @@
       "reason": "node --check tools/proofs/202609012345-sld-sandbox.proof.mjs",
       "finished_at": "2026-09-01T23:56:36.287Z",
       "output": "C:\\Users\\vikra\\OneDrive\\Documents\\GitHub\\gridatlas\\tools\\proofs\\202609012345-sld-sandbox.proof.mjs:2277\r\n  const shell = await readFile(join(REPO, 'atlas', 'releases',\r\n                ^^^^^\r\n\r\nSyntaxError: Unexpected reserved word\r\n    at checkSyntax (node:internal/main/check_syntax:72:5)\r\n\r\nNode.js v24.19.0\r\n"
+    },
+    {
+      "step": "202609012350-owner-boundary.mjs",
+      "id": "owner-boundary",
+      "version": "v9.76",
+      "started_at": "2026-09-01T23:57:20.940Z",
+      "dry": false,
+      "stages": [
+        {
+          "name": "applied",
+          "at": "2026-09-01T23:57:21.871Z",
+          "changed": [
+            "atlas/current.json",
+            "atlas/parts/202609012045-sld-sandbox-body.js",
+            "tools/ci/202609012200-local-ci.mjs",
+            "tools/proofs/202609012345-sld-sandbox.proof.mjs",
+            "atlas/manifests/202609012045-substation-intelligence-v9-63-parts.json",
+            "atlas/parts/202609012350-substation-intelligence-body.js"
+          ]
+        },
+        {
+          "name": "syntax checked",
+          "at": "2026-09-01T23:57:22.044Z"
+        },
+        {
+          "name": "step proof 202609012350-owner-boundary.proof.mjs",
+          "at": "2026-09-01T23:57:22.175Z",
+          "status": 0
+        },
+        {
+          "name": "composed",
+          "at": "2026-09-01T23:57:22.542Z",
+          "generation": "202609012357",
+          "version": "v9.76",
+          "previous": "202609012345"
+        },
+        {
+          "name": "gate sandbox proof",
+          "at": "2026-09-01T23:57:23.280Z",
+          "status": 0
+        },
+        {
+          "name": "gate run-current",
+          "at": "2026-09-01T23:57:24.313Z",
+          "status": 0
+        },
+        {
+          "name": "gate parts integrity",
+          "at": "2026-09-01T23:57:24.365Z",
+          "status": 1
+        }
+      ],
+      "outcome": "failed",
+      "reason": "gate red: parts integrity",
+      "finished_at": "2026-09-01T23:57:24.365Z",
+      "output": "\n16 parts manifest(s); serving generation 202609012357\n\n  [PASS] there is at least one parts manifest to check\n  [PASS] 202609012045-sld-sandbox-v9-8.js: the cartridge its manifest names exists\n  [PASS] 202609012045-sld-sandbox-v9-8.js: still hashes to its recorded digest\n  [skip] 202609012045-sld-sandbox-v9-8.js: superseded, its parts may move on\nnode:path:902\r\n    validateString(path, 'path');\r\n    ^\r\n\r\nTypeError [ERR_INVALID_ARG_TYPE]: The \"path\" argument must be of type string. Received undefined\r\n    at basename (node:path:902:5)\r\n    at file:///C:/Users/vikra/OneDrive/Documents/GitHub/gridatlas/tools/proofs/202609012105-parts-integrity.proof.mjs:76:25 {\r\n  code: 'ERR_INVALID_ARG_TYPE'\r\n}\r\n\r\nNode.js v24.19.0\r\n"
     }
   ]
 }

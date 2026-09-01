@@ -73,6 +73,14 @@ check('there is at least one parts manifest to check', entries.length > 0);
 
 for (const entry of entries) {
   const manifest = JSON.parse(await readFile(join(MANIFESTS, entry), 'utf8'));
+  /* A manifest with no cartridge named is a broken record, and it used to
+     take the whole proof down with an ERR_INVALID_ARG_TYPE from basename()
+     rather than reporting itself. A gate that crashes tells you less than
+     a gate that fails. */
+  if (typeof manifest.cartridge !== 'string' || !manifest.cartridge) {
+    check(`${entry}: names the cartridge it was built for`, false, 'no cartridge field');
+    continue;
+  }
   const cartridgeName = basename(manifest.cartridge);
   const cartridgePath = join(REPO, 'atlas', 'cartridges', cartridgeName);
 

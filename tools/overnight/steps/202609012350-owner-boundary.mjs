@@ -54,7 +54,13 @@ const CURRENT = 'atlas/current.json';
 
 const ENGINE = 'atlas/releases/202608300453-atlas-v9/ventus-corev8engine.js';
 const SUB_BODY = 'atlas/parts/202609012350-substation-intelligence-body.js';
-const SUB_MANIFEST = 'atlas/manifests/202609012045-substation-intelligence-v9-63-parts.json';
+/* A SEED, deliberately not under atlas/manifests/. A manifest there is a
+   record of how a shipped generation was actually built; back-dating one
+   that cannot reproduce its own cartridge byte-for-byte would be a false
+   record of exactly the kind this estate keeps finding. This is an input
+   to this cut, and the manifest the cut writes is stamped with the new
+   generation and does reproduce its cartridge, because it built it. */
+const SUB_SEED = 'atlas/parts/202609012350-substation-intelligence-seed-parts.json';
 const SUB_CARTRIDGE = 'atlas/cartridges/202609012045-substation-intelligence-v9-63.js';
 
 /* The five that read the published network, and the new sixth. */
@@ -84,6 +90,8 @@ export default {
   addModules: [...MOVING, OWNER_MODULE].map(p => `substation-intelligence=${p}`),
   removeModules: MOVING.map(p => `sld-sandbox=${p}`),
 
+  partsFrom: [`substation-intelligence=${SUB_SEED}`],
+
   proofs: [OWNER_PROOF],
 
   apply({ read, write, sandboxProof }) {
@@ -105,8 +113,8 @@ export default {
        assembler's own joiner controls the spacing. */
     write(SUB_BODY, tail.replace(/^\n+/, ''));
 
-    /* ── 2. the parts manifest it should always have had ─────────────── */
-    write(SUB_MANIFEST, JSON.stringify({
+    /* ── 2. the parts seed it should always have had ─────────────────── */
+    write(SUB_SEED, JSON.stringify({
       schema: 'gridatlas.cartridge-parts.v1',
       generation: '202609012045',
       note: 'Written at 202609012350, recording how this cartridge was '
@@ -121,13 +129,9 @@ export default {
       ],
     }, null, 1) + '\n');
 
-    /* ── 3. current.json must know it is assembled ───────────────────── */
-    const current = JSON.parse(read(CURRENT));
-    const sub = (current.cartridges || []).find(c => c.id === 'substation-intelligence');
-    if (!sub) throw new Error('no substation-intelligence cartridge in the current composition');
-    if (sub.assembled_from) throw new Error('substation-intelligence already claims a parts manifest');
-    sub.assembled_from = `./${SUB_MANIFEST.replace(/^atlas\//, '')}`;
-    write(CURRENT, `${JSON.stringify(current, null, 1)}\n`);
+    /* ── 3. current.json needs no hand edit ──────────────────────────
+       recompose now sets assembled_from to the manifest it actually
+       wrote, so seeding the field here would only race it. */
 
     /* ── 4. the ownership sentence in the card ───────────────────────── */
     let body = read(BODY);

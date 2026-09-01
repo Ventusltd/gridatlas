@@ -231,6 +231,7 @@ for (const id of restamped) {
 }
 for (const m of step.addModules || []) composeArgs.push('--add-module', m);
 for (const m of step.removeModules || []) composeArgs.push('--remove-module', m);
+for (const m of step.partsFrom || []) composeArgs.push('--parts-from', m);
 for (const m of step.replaceModules || []) composeArgs.push('--replace-module', m);
 {
   const r = run(process.execPath, composeArgs, { allowFail: true });
