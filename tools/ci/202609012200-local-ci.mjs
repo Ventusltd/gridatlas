@@ -297,6 +297,7 @@ const GATES = [
   ['module parity', ['tools/proofs/modules/202609011950-module-parity.proof.mjs']],
   ['grid scope', ['tools/proofs/modules/202609012040-grid-scope.proof.mjs']],
   ['network topology', ['tools/proofs/modules/202609012145-network-topology.proof.mjs']],
+  ['map-click network', ['tools/proofs/modules/202609012230-map-click-network.proof.mjs']],
   ['assembler', ['tools/proofs/modules/202609012010-assembler.proof.mjs']]
 ];
 
