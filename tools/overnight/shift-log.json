@@ -1100,6 +1100,21 @@
       "commit": "1b29994a832ac6666a813d64c5c4b948591391e8",
       "finished_at": "2026-09-01T23:18:55.888Z",
       "outcome": "live"
+    },
+    {
+      "step": "202609012345-planned-change.mjs",
+      "id": "planned-change",
+      "version": "v9.75",
+      "started_at": "2026-09-01T23:44:45.081Z",
+      "dry": false,
+      "stages": [],
+      "outcome": "failed",
+      "reason": "working tree not clean before the step",
+      "finished_at": "2026-09-01T23:44:45.118Z",
+      "dirty": [
+        "?? atlas/modules/202609012350-owner-boundary.js",
+        "?? tools/proofs/modules/202609012350-owner-boundary.proof.mjs"
+      ]
     }
   ]
 }
