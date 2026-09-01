@@ -1,7 +1,7 @@
 {
  "schema": "gridatlas.composition-manifest.v1",
- "generation": "202609011820",
- "parent_generation": "202609011805",
+ "generation": "202609011845",
+ "parent_generation": "202609011820",
  "live_route": "/gridatlas/atlas/",
  "shell": {
   "release_id": "202608300453-atlas-v9",
@@ -68,13 +68,13 @@
   },
   {
    "id": "sld-sandbox",
-   "generation": "202609011820",
-   "version": "v9.59",
+   "generation": "202609011845",
+   "version": "v9.60",
    "type": "script",
    "slot": "replace-script",
    "replace_script": "202608292126-pre-snapped-config-adapter.js",
-   "path": "./cartridges/202609011820-sld-sandbox-v9-8.js",
-   "sha256": "9f9ebce6b8c4824bb2c25d6f0dbb1d16dacc41a69dc46eba8762f962a0f9f41b",
+   "path": "./cartridges/202609011845-sld-sandbox-v9-8.js",
+   "sha256": "7774c962438c541aad6ff9981060b8d5a9219459ec5e0ebc76b90293bd90bb39",
    "capabilities": [
     "pre-snapped-config-adapter-carried-forward",
     "project-or-substation-selection",
@@ -181,7 +181,9 @@
     "pink-for-a-point-of-connection-not-yet-built",
     "declared-circuit-connections-draw-no-line",
     "little-crow-distribution-loop-archetype",
-    "published-network-parameters-on-the-card"
+    "published-network-parameters-on-the-card",
+    "subs-control-found-by-attribute-not-label-text",
+    "active-failures-recorded-once"
    ],
    "immutable_shell_modified": false,
    "supersedes_shell_script": {
@@ -506,13 +508,13 @@
   },
   {
    "id": "substation-intelligence",
-   "generation": "202609011820",
-   "version": "v9.59",
+   "generation": "202609011845",
+   "version": "v9.60",
    "type": "script",
    "slot": "replace-script",
    "replace_script": "ventus-corev8engine.js",
-   "path": "./cartridges/202609011820-substation-intelligence-v9-59.js",
-   "sha256": "0d7e9a393f875867239afa3065802f484fb7e3cb2e287e4d48c760c11025aa34",
+   "path": "./cartridges/202609011845-substation-intelligence-v9-60.js",
+   "sha256": "d0198dd8ef1203b652563457d9a9217da48addf2c6afe7ee6f0fb34264c3cf4e",
    "capabilities": [
     "v8-engine-carried-forward-verbatim",
     "neso-etys-connection-points-v2-consumed",
@@ -552,7 +554,7 @@
   "uk_location_result_class": "LOCATION_ONLY",
   "global_location_result_class": "LOCATION_ONLY",
   "external_location_failure_isolated": true,
-  "golden_browser_verification": "PENDING_CLAUDE_PORTRAIT_AND_LANDSCAPE",
+  "golden_browser_verification": "PENDING_THIS_GENERATION",
   "parquet_on_demand_preserved": true,
   "response_established_before_body_reconstruction": true,
   "a_road_browser_budget_seconds": 15,
@@ -568,16 +570,16 @@
   "offshore_wind_excluded_from_links": true,
   "cards_fit_after_drag_and_restore": true,
   "shell_modified": false,
-  "scope": "the substation cartridge returns through the engine slot, carrying the engine verbatim, and the card gains what NESO publishes about the substation it names",
-  "proof": "tools/proofs/202609010726-sld-sandbox.proof.mjs, 420 checks"
+  "scope": "both pre-promotion findings closed: the manifest states its own identity, and the Subs control is found by its data-layer-id rather than by label text, with active failures recorded once",
+  "proof": "tools/proofs/202609011845-sld-sandbox.proof.mjs, and tools/proofs/202609011845-substation-intelligence.proof.mjs"
  },
- "version": "v9.39",
- "composition_id": "202609010106-gridatlas-v9.39",
+ "version": "v9.60",
+ "composition_id": "202609011845-gridatlas-v9.60",
  "source_pattern": {
   "repository": "Ventusltd/gridatlas",
   "path": "atlas/releases/202608300453-atlas-v9/202608292126-pre-snapped-config-adapter.js",
   "source_sha256": "07d33eda5b3279a03df4c0a0aded61e4363c46734dda991aa5f48ae0d55097da",
   "transformation": "carry the pre-snap config rewrite verbatim; add a measured link layer and on-card beta distances"
  },
- "composition_version": "v9.59"
+ "composition_version": "v9.60"
 }

@@ -1,5 +1,5 @@
 /**
- * Proof for the neon links + SLD layout sandbox cartridge, generation 202609011820.
+ * Proof for the neon links + SLD layout sandbox cartridge, generation 202609011845.
  *
  * No dependencies. The repository carries playwright and no DOM library, so
  * rather than add one this stubs the small surface the cartridge actually
@@ -32,7 +32,7 @@ import vm from 'node:vm';
 const HERE = dirname(fileURLToPath(import.meta.url));
 const REPO = resolve(HERE, '..', '..');
 const CARTRIDGE = join(REPO, 'atlas', 'cartridges',
-  '202609011820-sld-sandbox-v9-8.js');
+  '202609011845-sld-sandbox-v9-8.js');
 const ORIGINAL = join(REPO, 'atlas', 'releases', '202608300453-atlas-v9',
   '202608292126-pre-snapped-config-adapter.js');
 const FINANCE_ORACLE = join(REPO, 'tools', 'proofs', 'fixtures',
@@ -2291,6 +2291,89 @@ check('the metric caveat, the attribution and the refusal travel with the number
   /published\.metrics_not_interchangeable/.test(cartridgeSource)
   && /published\.attribution/.test(cartridgeSource)
   && /published\.not_an_assessment/.test(cartridgeSource));
+
+
+console.log('\nthe manifest knows who it is, and the Subs control is found by its attribute\n');
+
+/* Codex pre-promotion findings, 202609011823. Both proven where they
+   live: the manifest by reading it, the lookup by running it. */
+const manifestPath = join(REPO, 'atlas', 'manifests', '202609011845-composition.json');
+const manifestText = await readFile(manifestPath, 'utf8');
+const manifest = JSON.parse(manifestText);
+check('the manifest states this generation everywhere it states one',
+  manifest.generation === '202609011845' && manifest.version === 'v9.60'
+  && manifest.composition_version === 'v9.60'
+  && manifest.composition_id === '202609011845-gridatlas-v9.60');
+check('no identity from an older composition survives anywhere in it',
+  !/v9\.39|202609010106/.test(manifestText));
+check('the acceptance receipt names this generation\'s proofs',
+  manifest.acceptance.proof.includes('202609011845')
+  && !/420 checks/.test(manifest.acceptance.proof));
+check('the golden browser field is this generation\'s, not an inherited pending',
+  manifest.acceptance.golden_browser_verification === 'PENDING_THIS_GENERATION');
+
+check('the Subs control is looked up by its attribute first',
+  /document\.querySelector\('input\[type=checkbox\]\[data-layer-id="subs"\]'\)/
+    .test(cartridgeSource));
+check('the label search survives only as a fallback',
+  /\|\|\s*\[\.\.\.document\.querySelectorAll\('input\[type=checkbox\]'\)\]/.test(cartridgeSource));
+check('an active failure is recorded once, by a named helper',
+  /function noteFailure\(message\)/.test(cartridgeSource)
+  && /if \(!link\.failures\.includes\(message\)\) link\.failures\.push\(message\);/
+    .test(cartridgeSource)
+  && /noteFailure\('subs: control not found'\)/.test(cartridgeSource)
+  && /noteFailure\('layer control not found: ' \+ tech\)/.test(cartridgeSource));
+
+/* Behavioural, not regex: a fresh context with a DOM that answers the
+   attribute selector, and the real functions called against it. */
+console.log('\nrun against a DOM, not a regular expression\n');
+{
+  let subsBox = null;
+  const behaviourDoc = {
+    ...documentStub, _byId: new Map(), head: makeElement('head'),
+    querySelector: (selector) =>
+      (selector.includes('data-layer-id="subs"') ? subsBox : null),
+    querySelectorAll: () => []
+  };
+  const box = {
+    window: { ...windowStub }, document: behaviourDoc, console,
+    fetch: async () => ({ ok: false, status: 404, json: async () => ({}) }), URL,
+    Math, JSON, Number, String, Array, Object, Set, Map, Boolean, Error, RegExp,
+    requestAnimationFrame: () => 0, cancelAnimationFrame: () => {},
+    setTimeout, clearTimeout, setInterval, clearInterval,
+    MutationObserver: MutationObserverStub
+  };
+  box.window.maplibregl = maplibregl;
+  box.maplibregl = maplibregl;
+  box.globalThis = box;
+  vm.createContext(box);
+  vm.runInContext(cartridgeSource, box);
+  const behaviour = box.window.__GRIDATLAS_NEON_LINKS__;
+
+  behaviour.enableSubstationLayer();
+  behaviour.enableSubstationLayer();
+  check('two misses leave one entry, not two',
+    behaviour.failures.filter(f => f === 'subs: control not found').length === 1,
+    String(behaviour.failures.filter(f => f === 'subs: control not found').length));
+  behaviour.noteFailure('an unrelated failure');
+
+  // The control arrives, tagged the way the engine tags it, with label text
+  // that would defeat a label search.
+  let clicked = false;
+  subsBox = { type: 'checkbox', checked: false, click() { clicked = true; this.checked = true; },
+    dataset: { layerId: 'subs' }, closest: () => null,
+    parentElement: { textContent: 'Substations [WAIT] 5,800' } };
+
+  const enabled = behaviour.enableSubstationLayer();
+  check('the control is found by attribute despite unhelpful label text',
+    enabled === true && clicked === true);
+  check('the recovered entry left the active ledger',
+    !behaviour.failures.includes('subs: control not found'));
+  check('it was preserved as recovered rather than deleted',
+    behaviour.recovered.includes('subs: control not found'));
+  check('an unrelated failure is untouched',
+    behaviour.failures.includes('an unrelated failure'));
+}
 
 console.log(`\n${passed}/${passed + failures.length} checks passed`);
 if (failures.length) {

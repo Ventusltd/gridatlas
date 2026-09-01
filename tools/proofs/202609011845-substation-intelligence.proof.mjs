@@ -1,5 +1,5 @@
 /**
- * Proof for the substation intelligence cartridge, generation 202609011820.
+ * Proof for the substation intelligence cartridge, generation 202609011845.
  *
  * The first check here is the one whose absence took the Atlas down on
  * v9.57: every composed cartridge's slot must be a script the shell
@@ -16,7 +16,7 @@ const REPO = resolve(HERE, '..', '..');
 const CURRENT = JSON.parse(await readFile(join(REPO, 'atlas', 'current.json'), 'utf8'));
 const RELEASE = join(REPO, 'atlas', 'releases', CURRENT.shell.release_id);
 const CARTRIDGE = join(REPO, 'atlas', 'cartridges',
-  '202609011820-substation-intelligence-v9-59.js');
+  '202609011845-substation-intelligence-v9-60.js');
 
 const bridgeRejections = [];
 process.on('unhandledRejection', (reason) => {

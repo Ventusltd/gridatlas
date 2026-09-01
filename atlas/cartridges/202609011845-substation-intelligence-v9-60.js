@@ -1,5 +1,5 @@
 /**
- * GridAtlas substation intelligence, generation 202609011820 (UTC), composition v9.59.
+ * GridAtlas substation intelligence, generation 202609011845 (UTC), composition v9.60.
  * Slot: replace-script for ventus-corev8engine.js.
  *
  * PART 1 is the V8 engine, carried forward VERBATIM - every byte of the
@@ -1470,7 +1470,7 @@ window.initVentusMap = function({ config, center, zoom }) {
 (() => {
   'use strict';
 
-  const GENERATION = '202609011820';
+  const GENERATION = '202609011845';
   const PRODUCT = 'https://raw.githubusercontent.com/Ventusltd/data-grid-gb/'
     + 'main/derived/connection-points.v2.json';
   const REQUIRED_SCHEMA = 'data-grid-gb.connection-points.v2';
