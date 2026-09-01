@@ -69,7 +69,11 @@ const replaceModules = argv('--replace-module', { many: true })
     return { from, to };
   });
 const scope = argv('--scope');
-const proofs = argv('--proof', { many: true });
+/* A caller that does not know the clock minute (the overnight runner, which
+   lets this tool read it) writes {generation} in the proof path; it resolves
+   to the generation this cut is stamped with, i.e. the renamed proof. */
+const proofs = argv('--proof', { many: true })
+  .map(proofPath => String(proofPath).split('{generation}').join(generation));
 const note = argv('--note') || '';
 
 /* A failed cut must not leave a half-composed tree.
