@@ -1158,6 +1158,116 @@
       "reason": "gate red: sandbox proof",
       "finished_at": "2026-09-01T23:45:09.581Z",
       "output": "] the page states plainly that the ratings are not added together\n  [PASS] the page distinguishes a rating from what is free on the circuit\n  [PASS] a placeholder value is named to the reader, not hidden\n  [PASS] the served bytes contain no site total of circuit ratings\n  [PASS] the rating state is published for review\n\na declared powerflow, and what it refuses to say\n\n  [PASS] the injection-response module is in the served cartridge\n  [PASS] it is evaluated before the body that calls it\n  [PASS] the served bytes never read resistance or susceptance into the flow model\n  [PASS] the card names the slack, because a transfer has two ends\n  [PASS] the card states the model assumptions where the reader sees them\n  [PASS] the card says plainly it is not a loading\n  [PASS] an answer that fails its own Kirchhoff check is discarded, not printed\n  [PASS] the powerflow uses the capacity the deep link carries\n  [PASS] the 400 kV node list is recorded once, where the product is already parsed\n  [PASS] the powerflow is scoped to 400 kV, never walked through an unmodelled tap\n  [PASS] the conservation error is published for review\n  [PASS] the served bytes claim no headroom anywhere in the flow module\n\nthe grid computation without a project, and a dash that gets out of the way\n\n  [PASS] a tool is added to the shell tray, which the cartridge does not own\n  [PASS] the tool does not duplicate itself if the cartridge runs twice\n  [PASS] arming is explicit, as it is for the scope\n  [PASS] an unarmed click still does nothing new\n  [PASS] the point query never measures a distance itself\n  [PASS] the block it writes is found by the filler, which selects by class\n  [PASS] the reader is told that nearest MAPPED is not nearest\n  [PASS] the reader is told it is a straight line and not a cable route\n  [PASS] the point answer never claims anything can connect\n  [PASS] an absent connection-points cartridge is an absence, not a guess\n  [PASS] the layers dash can be collapsed without entering fullscreen\n  [PASS] the collapsed choice is remembered, and every storage access is guarded\n  [PASS] the map is told to resize when the dash moves under it\n  [PASS] the toggle is reachable and labelled for assistive technology\n  [PASS] both new surfaces are published for review\n\nwhat is published as planned, kept apart from what exists\n\n  [PASS] the planned-change module is in the served cartridge\n  [PASS] the parsed product is kept so the module can read it\n  [PASS] a missing product is an absence, not a guess\n  [PASS] planned rows are reported in their OWN sentence, not in the circuit counts\n  [FAIL] the page says a planned row is not a circuit today  \n  [PASS] the page refuses commitment, consent and connection-date readings\n  [PASS] planned rows are stated as excluded from the counts above\n  [PASS] the planned state is published for review\n  [PASS] nothing in the planned sentence grades what it found\n\n602/603 checks passed\n\nFAILURES\n  the page says a planned row is not a circuit today\n"
+    },
+    {
+      "step": "202609012345-planned-change.mjs",
+      "id": "planned-change",
+      "version": "v9.75",
+      "started_at": "2026-09-01T23:45:25.538Z",
+      "dry": false,
+      "stages": [
+        {
+          "name": "applied",
+          "at": "2026-09-01T23:45:26.377Z",
+          "changed": [
+            "atlas/parts/202609012045-sld-sandbox-body.js",
+            "tools/ci/202609012200-local-ci.mjs",
+            "tools/proofs/202609012317-sld-sandbox.proof.mjs"
+          ]
+        },
+        {
+          "name": "syntax checked",
+          "at": "2026-09-01T23:45:26.538Z"
+        },
+        {
+          "name": "step proof 202609012345-planned-change.proof.mjs",
+          "at": "2026-09-01T23:45:26.743Z",
+          "status": 0
+        },
+        {
+          "name": "composed",
+          "at": "2026-09-01T23:45:27.027Z",
+          "generation": "202609012345",
+          "version": "v9.75",
+          "previous": "202609012317"
+        },
+        {
+          "name": "gate sandbox proof",
+          "at": "2026-09-01T23:45:27.840Z",
+          "status": 0
+        },
+        {
+          "name": "gate run-current",
+          "at": "2026-09-01T23:45:28.981Z",
+          "status": 0
+        },
+        {
+          "name": "gate parts integrity",
+          "at": "2026-09-01T23:45:29.075Z",
+          "status": 0
+        },
+        {
+          "name": "gate all versions",
+          "at": "2026-09-01T23:45:29.309Z",
+          "status": 0
+        },
+        {
+          "name": "gate data-contract parity",
+          "at": "2026-09-01T23:45:29.368Z",
+          "status": 0
+        },
+        {
+          "name": "gate local CI (proofs, deep scan, stamps, cvaa)",
+          "at": "2026-09-01T23:46:03.441Z",
+          "status": 0
+        },
+        {
+          "name": "gate step proof after compose 202609012345-planned-change.proof.mjs",
+          "at": "2026-09-01T23:46:03.611Z",
+          "status": 0
+        },
+        {
+          "name": "committed",
+          "at": "2026-09-01T23:46:03.801Z",
+          "commit": "06e0a14",
+          "subject_stamp": "202609012345",
+          "clock_at_commit": "202609012346"
+        },
+        {
+          "name": "pushed",
+          "at": "2026-09-01T23:46:06.133Z"
+        }
+      ],
+      "actions": [
+        {
+          "name": "202608310050 GridAtlas next-version builders",
+          "status": "completed",
+          "conclusion": "success",
+          "url": "https://github.com/Ventusltd/gridatlas/actions/runs/33572471057"
+        },
+        {
+          "name": "202608312212 GridAtlas cartridge proof",
+          "status": "completed",
+          "conclusion": "success",
+          "url": "https://github.com/Ventusltd/gridatlas/actions/runs/33572471077"
+        },
+        {
+          "name": "pages build and deployment",
+          "status": "completed",
+          "conclusion": "success",
+          "url": "https://github.com/Ventusltd/gridatlas/actions/runs/33572470525"
+        }
+      ],
+      "live": {
+        "generation": "202609012345",
+        "version": "v9.75",
+        "cartridge_sha_matches": true,
+        "at": "2026-09-01T23:47:07.405Z"
+      },
+      "generation": "202609012345",
+      "commit": "06e0a1444cafb0c9d9d007b98991c1a9f22daac9",
+      "finished_at": "2026-09-01T23:47:07.880Z",
+      "outcome": "live"
     }
   ]
 }
