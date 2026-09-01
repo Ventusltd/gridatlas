@@ -1,5 +1,5 @@
 /**
- * Proof for the neon links + SLD layout sandbox cartridge, generation 202609010058.
+ * Proof for the neon links + SLD layout sandbox cartridge, generation 202609010106.
  *
  * No dependencies. The repository carries playwright and no DOM library, so
  * rather than add one this stubs the small surface the cartridge actually
@@ -32,7 +32,7 @@ import vm from 'node:vm';
 const HERE = dirname(fileURLToPath(import.meta.url));
 const REPO = resolve(HERE, '..', '..');
 const CARTRIDGE = join(REPO, 'atlas', 'cartridges',
-  '202609010058-sld-sandbox-v9-8.js');
+  '202609010106-sld-sandbox-v9-8.js');
 const ORIGINAL = join(REPO, 'atlas', 'releases', '202608300453-atlas-v9',
   '202608292126-pre-snapped-config-adapter.js');
 const FINANCE_ORACLE = join(REPO, 'tools', 'proofs', 'fixtures',
@@ -778,12 +778,11 @@ check('the published state carries both new facts',
 
 console.log('\ncentral sizing\n');
 
-/* The shipped default reported 211.2 MW of AC. It is not the inverter figure
-   and it is not the transformer figure; it is larger than both, and it comes
-   from multiplying a count of inverters by a transformer rating and then by
-   the inverters-per-skid a second time.
+/* The original defaults use one inverter per skid, so they do not expose the
+   double-count. The regression therefore keeps the original defaults in the
+   product and drives an explicit stress fixture with two inverters per skid.
 
-   Defaults: inv_ac_mw_c 4.4, central_skid_mva_c 4.4, inv_per_mv_c 2,
+   Stress: inv_ac_mw_c 4.4, central_skid_mva_c 4.4, inv_per_mv_c 2,
    mv_per_ring_c 4, rings_c 3.
 
      inverters          2 x 4 x 3            = 24
@@ -802,10 +801,10 @@ const skids = MV_PER_RING * RINGS;
 const inverterNameplate = inverters * INV_AC;
 const skidNameplate = skids * SKID_MVA;
 
-check('the defaults are still the ones this fixture reasons about',
+check('the product defaults are the executable original central defaults',
   /inv_ac_mw_c: 4\.4, inv_dc_mw_c: 5\.28, central_skid_mva_c: 4\.4/.test(cs)
-  && /inv_per_mv_c: 2, mv_per_ring_c: 4, rings_c: 3/.test(cs));
-check('24 inverters on 12 skids', inverters === 24 && skids === 12);
+  && /x_mods_c: 28, str_per_cb_c: 24, inv_per_mv_c: 1, mv_per_ring_c: 4, rings_c: 4/.test(cs));
+check('the explicit stress has 24 inverters on 12 skids', inverters === 24 && skids === 12);
 const close = (a, b) => Math.abs(a - b) < 1e-9;
 check('inverter nameplate is 105.6 MW', close(inverterNameplate, 105.6),
   String(inverterNameplate));
@@ -838,7 +837,7 @@ check('the overload test compares the whole MV block against its skid',
   && /if \(block_ac_mw > i\.central_skid_mva_c\)/.test(cs));
 check('one inverter is no longer compared with one skid, which never fired',
   !/if \(i\.inv_ac_mw_c > i\.central_skid_mva_c\)/.test(cs));
-check('on the defaults that comparison does fire',
+check('on the explicit stress that comparison does fire',
   INV_AC * PER_MV > SKID_MVA);
 check('the warning says which element limits export, not merely that it is odd',
   /Export is limited by the transformer/.test(cs));
@@ -1237,7 +1236,9 @@ for (const patch of CASES) {
     patch, sandbox: theirs.ac_mw, ours: mine.ac_mw,
     squaredAsExpected: near(theirs.ac_mw, squared),
     oursIsLimiting: near(mine.ac_mw, Math.min(invTotal, skidTotal)),
-    oursIsLower: mine.ac_mw < theirs.ac_mw
+    relationIsCorrect: i.inv_per_mv_c > 1
+      ? mine.ac_mw < theirs.ac_mw : near(mine.ac_mw, theirs.ac_mw),
+    oursIsNeverHigher: mine.ac_mw <= theirs.ac_mw + 1e-9,
   });
   centralChecked += 1;
 }
@@ -1249,8 +1250,8 @@ check('the sandbox produces exactly the squared figure on every central case',
 check('ours produces exactly the smaller of the two nameplates',
   divergence.every(d => d.oursIsLimiting),
   JSON.stringify(divergence.map(d => d.ours)));
-check('ours is lower than the sandbox on every central case, never higher',
-  divergence.every(d => d.oursIsLower));
+check('ours equals the one-inverter original and is lower only where the square exists',
+  divergence.every(d => d.relationIsCorrect && d.oursIsNeverHigher));
 check('the divergence is confined to central mode', sizingMismatch === 0);
 
 check('string mode still reproduces the sandbox exactly',
@@ -1631,9 +1632,9 @@ check('string and central financial assumptions are independent',
 check('string and central physical assumptions are independent', (() => {
   Object.assign(sld.inputs, {
     mod_wp: 580, mod_l: 2.10, mod_w: 1.15, gcr: 0.35,
-    gross_factor: 1.25, bess_mwh: 10,
+    gross_factor: 1.25,
     mod_wp_c: 720, mod_l_c: 2.50, mod_w_c: 1.40, gcr_c: 0.75,
-    gross_factor_c: 1.55, bess_mwh_c: 40,
+    gross_factor_c: 1.55,
   });
   sld.inputs.mode = 'string';
   sld.openAt(stubMap, [-1.5, 54.0], 'string-state', '33 kV');
@@ -1645,13 +1646,30 @@ check('string and central physical assumptions are independent', (() => {
       - (stringStats.module_count * 580) / 1e6) < 1e-9
     && Math.abs(centralStats.dc_mwp
       - (centralStats.module_count * 720) / 1e6) < 1e-9
-    && sld.inputs.mod_wp === 580 && sld.inputs.mod_wp_c === 720
-    && sld.inputs.bess_mwh === 10 && sld.inputs.bess_mwh_c === 40;
+    && sld.inputs.mod_wp === 580 && sld.inputs.mod_wp_c === 720;
 })());
-check('the central panel binds its own physical and BESS keys',
+check('the central panel binds its own physical keys',
   /\['mod_wp_c', 'Module rating Wp'\]/.test(cartridgeSource)
-  && /\['gcr_c', 'Ground cover ratio'\]/.test(cartridgeSource)
-  && /\['bess_mwh_c', 'BESS MWh'\]/.test(cartridgeSource));
+  && /\['gcr_c', 'Ground cover ratio'\]/.test(cartridgeSource));
+check('electrical input normalization is exposed for behavioral testing',
+  typeof sld.normalizeElectricalInput === 'function');
+check('fractional or zero topology counts are rejected before they reach maths',
+  sld.normalizeElectricalInput('rings_c', 1.5) === null
+  && sld.normalizeElectricalInput('rings_c', 0) === null
+  && sld.normalizeElectricalInput('rings_c', 7) === 7
+  && sld.normalizeElectricalInput('z_strings', 18.2) === null);
+check('the original central rating bounds are enforced',
+  sld.normalizeElectricalInput('inv_ac_mw_c', 20) === 20
+  && sld.normalizeElectricalInput('inv_ac_mw_c', 20.01) === null
+  && sld.normalizeElectricalInput('inv_dc_mw_c', 30.01) === null
+  && sld.normalizeElectricalInput('central_skid_mva_c', 25.01) === null);
+check('the rendered electrical controls carry explicit original bounds and steps',
+  /rings_c: \{ min: 1, step: 1, integer: true \}/.test(cartridgeSource)
+  && /inv_ac_mw_c: \{ min: 0\.1, max: 20, step: 0\.01 \}/.test(cartridgeSource)
+  && /electricalInputAttributes\(key\)/.test(cartridgeSource)
+  && !/data-key="\$\{key\}" type="number" step="any"/.test(cartridgeSource));
+check('an invalid edit restores the visible prior value and stops',
+  /if \(value == null\) \{[\s\S]{0,100}input\.value = String\(sld\.inputs\[key\]\);[\s\S]{0,30}return;/.test(cartridgeSource));
 
 const financeNumberValue = value => {
   const number = Number(value);
@@ -1661,8 +1679,6 @@ const financeNumberValue = value => {
 function applyOracleCase(spec) {
   const input = spec.inputs;
   sld.inputs.mode = spec.mode;
-  if (spec.mode === 'string') sld.inputs.bess_mwh = 0;
-  else sld.inputs.bess_mwh_c = 0;
   if (spec.mode === 'string') {
     Object.assign(sld.inputs, {
       mod_wp: financeNumberValue(input.mod_wp),
@@ -1803,7 +1819,7 @@ check('a free-form GCR does not invent a bifacial assumption', (() => {
     && sld.finance.string.bifacial === before;
 })());
 check('the GCR input invokes the original linked bifacial behavior before redraw',
-  /input\.dataset\.key === 'gcr' \|\| input\.dataset\.key === 'gcr_c'/.test(cartridgeSource)
+  /key === 'gcr' \|\| key === 'gcr_c'/.test(cartridgeSource)
   && /applyMountingBifacial\(sld\.inputs\.mode, value\)/.test(cartridgeSource));
 check('the financial block starts collapsed and remembers an explicit open',
   /financeOpen: false/.test(cartridgeSource)
@@ -1813,10 +1829,22 @@ check('finance changes redraw the same electrical and financial state',
   /\[data-fin-key\]/.test(cartridgeSource)
   && /values\[input\.dataset\.finKey\]/.test(cartridgeSource)
   && /if \(capturedMap\) redrawSld\(capturedMap\)/.test(cartridgeSource));
-check('layout and finance BESS energy can disagree only visibly',
-  /Layout BESS energy is/.test(cartridgeSource)
-  && /They are separate original inputs and neither has been rewritten/.test(cartridgeSource)
-  && /activePhysicalInputs\(\)\.bess_mwh/.test(cartridgeSource));
+check('one topology-local BESS value drives both finance and the drawn compound',
+  /financeNumber\(sld\.finance\[sld\.inputs\.mode\]\?\.bess_mwh\)/.test(cartridgeSource)
+  && !/Layout BESS energy is/.test(cartridgeSource)
+  && !/bess_mwh_c/.test(cartridgeSource)
+  && !/\['bess_mwh', 'BESS MWh'\]/.test(cartridgeSource));
+check('changing financial BESS energy adds and removes the drawn BESS compound', (() => {
+  const hasBess = () => [...stubSources.values()].some(source =>
+    source.data?.features?.some(feature => feature.properties?.kind === 'bess'));
+  sld.inputs.mode = 'string';
+  sld.finance.string.bess_mwh = 0;
+  sld.openAt(stubMap, [-1.5, 54.0], 'no-bess', '33 kV');
+  const absent = !hasBess();
+  sld.finance.string.bess_mwh = 20;
+  sld.openAt(stubMap, [-1.5, 54.0], 'with-bess', '33 kV');
+  return absent && hasBess();
+})());
 check('the on-panel financial disclaimer is explicit',
   /Screening values only, not financial advice/.test(cartridgeSource)
   && /investment-committee models/.test(cartridgeSource));

@@ -1,7 +1,7 @@
 {
   "schema": "gridatlas.current.v2",
-  "generation": "202609010058",
-  "previous_generation": "202609010053",
+  "generation": "202609010106",
+  "previous_generation": "202609010058",
   "architecture": "IMMUTABLE_SHELL_PLUS_HASHED_CARTRIDGES",
   "live_route": "/gridatlas/atlas/",
   "release_id": "202608300453-atlas-v9",
@@ -58,13 +58,13 @@
     },
     {
       "id": "sld-sandbox",
-      "generation": "202609010058",
-      "version": "v9.38",
+      "generation": "202609010106",
+      "version": "v9.39",
       "type": "script",
       "slot": "replace-script",
       "replace_script": "202608292126-pre-snapped-config-adapter.js",
-      "path": "./cartridges/202609010058-sld-sandbox-v9-8.js",
-      "sha256": "c6a13cfa4e31e3cfd9c9671137f36776993405f5d11a03aca9b20f466ec5ae9d",
+      "path": "./cartridges/202609010106-sld-sandbox-v9-8.js",
+      "sha256": "ebc5ae39cecdb5ea00e5c03aa14ca33dcc342c7149170e8547b8e4dc86775cf3",
       "capabilities": [
         "pre-snapped-config-adapter-carried-forward",
         "project-or-substation-selection",
@@ -140,7 +140,11 @@
         "visible-finance-assumptions",
         "development-stage-updates-cost-and-success",
         "separate-string-central-physical-state",
-        "mounting-preset-updates-bifacial-per-topology"
+        "mounting-preset-updates-bifacial-per-topology",
+        "original-central-input-defaults",
+        "one-bess-value-for-layout-and-finance",
+        "fractional-topology-counts-rejected",
+        "original-electrical-input-bounds"
       ],
       "immutable_shell_modified": false,
       "supersedes_shell_script": {
@@ -189,7 +193,7 @@
           "one Earth radius: the sandbox measures on 6378.137 but builds geometry with turf.destination on 6371.0088, mixing two radii inside one drawing; the Atlas ships no turf and every operation here is canonical",
           "grab rather than mode-switch: the array is dragged, rotation has a handle, route vertices are dragged, inserted and removed without a commit step",
           "the electron flow runs along the collectors and the export cable in the direction power flows",
-          "central AC sizing is corrected, not carried: gis-sld-v5-calculations.js line 147 computes total_blocks * central_skid_mva * inv_per_mv, but total_blocks already contains inv_per_mv, so the inverters sharing a skid enter the answer squared, and a count of inverters is multiplied by a transformer rating. On the shipped defaults that reported 211.2 MW where the inverters total 105.6 MW and the skids 52.8 MVA; on a 3-inverter skid it reported 1425.6 against 158.4, a factor of nine. The Atlas reports the smaller of the two nameplates and names the element that limits export. The same fault is still in the sandbox this was ported from."
+          "central AC sizing is corrected, not carried: gis-sld-v5-calculations.js line 147 computes total_blocks * central_skid_mva * inv_per_mv, but total_blocks already contains inv_per_mv, so the inverters sharing a skid enter the answer squared, and a count of inverters is multiplied by a transformer rating. The executable original defaults use one inverter per skid, where the square is latent and both paths state 70.4 MW. An explicit two-inverter stress reports 211.2 MW in the original where the inverters total 105.6 MW and the skids 52.8 MVA; a 3-inverter stress reports 1425.6 against 158.4. The Atlas reports the smaller nameplate and names the limiting element."
         ],
         "reverted_divergence": "z_strings was briefly changed from the original 18 to 23 here, reasoning that 18 gives a block DC/AC of 0.945. That was done without checking the reference, which is explicit that 28 inverters at 352 kVA make 9,856 kVA \"before transformer and grid limitations\" - the oversizing is the design. Reverted. A port does not improve its reference by guessing. The reconciler that implemented that reasoning was then left behind uncalled; the Codex source gate flagged it as a stop-ship and it was right. Dead code that assigns to a reference input is one handler away from silently rewriting the design. Deleted, and gated against."
       },
@@ -212,7 +216,7 @@
       },
       "central_sizing": {
         "reported_by": "the Codex session auditing this estate in parallel, 202608312124",
-        "confirmed": "dimensionally, and against the shipped defaults, in the proof",
+        "confirmed": "dimensionally and against explicit two- and three-inverter stress fixtures; original one-inverter defaults remain exact",
         "export": "min(inverters x inverter AC, skids x skid MVA)",
         "both_published": [
           "central_inverter_ac_total",
@@ -303,10 +307,11 @@
         "parity": "every unaffected output equals the executable original within floating-point tolerance",
         "central_divergence": "the original central stress case squares inverters per skid into AC. The port uses corrected inverter AC for central OPEX, and its corrected 25/35-year surplus is named in the oracle fixture rather than hidden as parity",
         "topology_state": "string and central finance assumptions are independent, as in the original",
-        "physical_state": "module dimensions, GCR, gross-site factor and layout BESS are independent for string and central topology, as in the original",
+        "physical_state": "module dimensions, GCR and gross-site factor are independent for string and central topology, as in the original",
         "development_stage": "selecting a stage updates development cost GBP/Wp and success probability together, matching the original change handler; unknown stages fail closed",
         "mounting_bifacial": "the original preset links are exact and topology-local: GCR 0.35 sets 8 percent, 0.45 sets 5 percent, and 0.75 sets 2 percent; a free-form GCR invents no bifacial value",
-        "bess_state": "layout and financial BESS inputs are not silently synchronised; any mismatch is visible",
+        "bess_state": "one topology-local financial BESS MWh value drives CAPEX, revenue and the drawn compound, exactly as the original; the duplicate layout input and false mismatch claim are removed",
+        "input_integrity": "original central defaults are restored; topology counts must be positive integers, central ratings keep their original bounds, and invalid edits restore the prior visible value before arithmetic or geometry runs",
         "mobile": "the financial block starts collapsed, remembers an explicit open, and uses the same bounded phone-first panel",
         "limits": "screening values only, not financial advice; all assumptions remain visible",
         "benchmark_warnings_not_ported": "the original calls finance assumptions typical, aggressive or optimistic. Those benchmark verdicts are not calculation outputs and are withheld until they have governed evidence; the Atlas shows the inputs and arithmetic instead"
@@ -401,15 +406,15 @@
       "result_class": "LOCATION_ONLY"
     }
   },
-  "composition_manifest": "./manifests/202609010058-composition.json",
+  "composition_manifest": "./manifests/202609010106-composition.json",
   "scope_closure": {
-    "generation": "202609010058",
+    "generation": "202609010106",
     "status": "DONE",
-    "scope": "GridAtlas v9.38 isolate string and central physical state and link mounting presets to bifacial gain",
+    "scope": "GridAtlas v9.39 remove duplicate BESS truth, restore original defaults and guard topology counts",
     "schedule_retired": true
   },
-  "composition_version": "v9.38",
-  "composition_id": "202609010058-gridatlas-v9.38",
+  "composition_version": "v9.39",
+  "composition_id": "202609010106-gridatlas-v9.39",
   "transport": {
     "response_contract": "HEADERS_BEFORE_PARQUET_BODY",
     "engine_timeout_seconds": 15,

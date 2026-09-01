@@ -1,7 +1,7 @@
 /**
  * GridAtlas cartridge — neon substation links and the SLD layout sandbox.
  *
- * Generation 202609010058 (UTC), composition v9.38. Slot: replace-script for
+ * Generation 202609010106 (UTC), composition v9.39. Slot: replace-script for
  * 202608292126-pre-snapped-config-adapter.js.
  *
  * WHAT IT DOES
@@ -61,7 +61,7 @@
 (() => {
   'use strict';
 
-  const GENERATION = '202609010058';
+  const GENERATION = '202609010106';
 
   /* ══════════════════════════════════════════════════════════════════════
      PART 1 — the pre-snapped config adapter, carried forward unchanged.
@@ -2249,8 +2249,7 @@
       mod_wp_c: 660, mod_l_c: 2.38, mod_w_c: 1.30, gcr_c: 0.45,
       gross_factor_c: 1.35,
       inv_ac_mw_c: 4.4, inv_dc_mw_c: 5.28, central_skid_mva_c: 4.4,
-      x_mods_c: 28, str_per_cb_c: 1, inv_per_mv_c: 2, mv_per_ring_c: 4, rings_c: 3,
-      bess_mwh: 0, bess_mwh_c: 0
+      x_mods_c: 28, str_per_cb_c: 24, inv_per_mv_c: 1, mv_per_ring_c: 4, rings_c: 4
     },
     finance: {
       string: freshFinanceInputs(),
@@ -2349,13 +2348,11 @@
       return {
         mod_wp: i.mod_wp_c, mod_l: i.mod_l_c, mod_w: i.mod_w_c,
         gcr: i.gcr_c, gross_factor: i.gross_factor_c,
-        bess_mwh: i.bess_mwh_c,
       };
     }
     return {
       mod_wp: i.mod_wp, mod_l: i.mod_l, mod_w: i.mod_w,
       gcr: i.gcr, gross_factor: i.gross_factor,
-      bess_mwh: i.bess_mwh,
     };
   }
 
@@ -2952,8 +2949,11 @@
     }
 
     // BESS compound alongside the customer substation.
-    if (physical.bess_mwh > 0) {
-      const areaKm2 = (physical.bess_mwh * SLD.BESS_M2_PER_MWH) / 1e6;
+    // The original drawing reads the same topology-local financial BESS MWh
+    // that drives CAPEX and revenue. There is no second layout-BESS input.
+    const bessMwh = financeNumber(sld.finance[sld.inputs.mode]?.bess_mwh);
+    if (bessMwh > 0) {
+      const areaKm2 = (bessMwh * SLD.BESS_M2_PER_MWH) / 1e6;
       const w = Math.sqrt(areaKm2 * SLD.BESS_ASPECT);
       const l = areaKm2 / w;
       const at = destinationPoint(customerSub[0], customerSub[1], w / 2 + 0.05, axis - 90);
@@ -3313,13 +3313,57 @@
     return el;
   }
 
+  const ELECTRICAL_RULES = Object.freeze({
+    mod_wp: { min: 1, step: 1, integer: true },
+    mod_l: { min: 0.01, step: 0.01 },
+    mod_w: { min: 0.01, step: 0.01 },
+    gcr: { min: 0.01, max: 1, step: 0.01 },
+    gross_factor: { min: 1, step: 0.05 },
+    x_mods: { min: 1, step: 1, integer: true },
+    z_strings: { min: 1, step: 1, integer: true },
+    y_invs: { min: 1, step: 1, integer: true },
+    s_subs: { min: 1, step: 1, integer: true },
+    b_cols: { min: 1, step: 1, integer: true },
+    string_inv_kva: { min: 1, step: 1 },
+    string_skid_mva: { min: 0.1, step: 0.01 },
+    dc_ac_ratio: { min: 0.01, step: 0.05 },
+    mod_wp_c: { min: 1, step: 1, integer: true },
+    mod_l_c: { min: 0.01, step: 0.01 },
+    mod_w_c: { min: 0.01, step: 0.01 },
+    gcr_c: { min: 0.01, max: 1, step: 0.01 },
+    gross_factor_c: { min: 1, step: 0.05 },
+    x_mods_c: { min: 1, step: 1, integer: true },
+    str_per_cb_c: { min: 1, step: 1, integer: true },
+    inv_ac_mw_c: { min: 0.1, max: 20, step: 0.01 },
+    inv_dc_mw_c: { min: 0.1, max: 30, step: 0.01 },
+    central_skid_mva_c: { min: 0.1, max: 25, step: 0.01 },
+    inv_per_mv_c: { min: 1, step: 1, integer: true },
+    mv_per_ring_c: { min: 1, step: 1, integer: true },
+    rings_c: { min: 1, step: 1, integer: true },
+  });
+
+  function normalizeElectricalInput(key, rawValue) {
+    const rule = ELECTRICAL_RULES[key];
+    const value = Number(rawValue);
+    if (!rule || !Number.isFinite(value)) return null;
+    if (value < rule.min || (rule.max != null && value > rule.max)) return null;
+    if (rule.integer && !Number.isInteger(value)) return null;
+    return value;
+  }
+
+  function electricalInputAttributes(key) {
+    const rule = ELECTRICAL_RULES[key];
+    return `min="${rule.min}"${rule.max == null ? '' : ` max="${rule.max}"`} step="${rule.step}"`;
+  }
+  sld.normalizeElectricalInput = normalizeElectricalInput;
+
   const FIELDS_STRING = [
     ['mod_wp', 'Module rating Wp'], ['mod_l', 'Module length m'], ['mod_w', 'Module width m'],
     ['gcr', 'Ground cover ratio'], ['gross_factor', 'Gross site factor'],
     ['x_mods', 'Modules / string'], ['z_strings', 'Strings / inverter'],
     ['y_invs', 'Inverters / skid'], ['s_subs', 'Skids / ring main'], ['b_cols', 'Ring main circuits'],
     ['string_inv_kva', 'String inverter kVA'], ['string_skid_mva', 'Skid transformer MVA'],
-    ['dc_ac_ratio', 'DC/AC ratio'], ['bess_mwh', 'BESS MWh']
+    ['dc_ac_ratio', 'DC/AC ratio']
   ];
   const FIELDS_CENTRAL = [
     ['mod_wp_c', 'Module rating Wp'], ['mod_l_c', 'Module length m'], ['mod_w_c', 'Module width m'],
@@ -3327,7 +3371,7 @@
     ['x_mods_c', 'Modules / string'], ['str_per_cb_c', 'Strings / combiner'],
     ['inv_ac_mw_c', 'Inverter AC MW'], ['inv_dc_mw_c', 'Inverter DC MWp'],
     ['central_skid_mva_c', 'Skid MVA'], ['inv_per_mv_c', 'Inverters / MV'],
-    ['mv_per_ring_c', 'MV / ring'], ['rings_c', 'Rings'], ['bess_mwh_c', 'BESS MWh']
+    ['mv_per_ring_c', 'MV / ring'], ['rings_c', 'Rings']
   ];
 
   const FINANCE_FIELDS = [
@@ -3425,7 +3469,7 @@
       <div class="sld-grid">
         ${fields.map(([key, label]) =>
           `<label for="sld_${key}">${label}</label>`
-          + `<input id="sld_${key}" data-key="${key}" type="number" step="any" value="${sld.inputs[key]}">`
+          + `<input id="sld_${key}" data-key="${key}" type="number" ${electricalInputAttributes(key)} value="${sld.inputs[key]}">`
         ).join('')}
       </div>
       <div class="sld-out">
@@ -3477,10 +3521,6 @@
           <span>Risk-adjusted value</span><b>${moneyText(finance?.devRiskAdjustedValue)}</b>
           <span>Equity money multiple</span><b>${financeNumber(finance?.devReturnMultiple).toFixed(2)}x</b>
         </div>
-        ${financeNumber(financeInputs.bess_mwh) !== financeNumber(activePhysicalInputs().bess_mwh)
-          ? `<div class="sld-fin-note">Layout BESS energy is ${financeNumber(activePhysicalInputs().bess_mwh)} MWh; `
-            + `the financial case uses ${financeNumber(financeInputs.bess_mwh)} MWh. `
-            + `They are separate original inputs and neither has been rewritten.</div>` : ''}
         <div class="sld-fin-grid">${FINANCE_FIELDS.map(field => financeFieldHtml(field, financeInputs)).join('')}</div>
         <div class="sld-fin-note"><b>Screening values only, not financial advice.</b> Revenue, CAPEX,
           OPEX, development value and BESS outputs depend entirely on the visible assumptions. They do
@@ -3585,12 +3625,15 @@
     });
     (el.querySelectorAll?.('input[data-key]') || []).forEach(input => {
       input.addEventListener('change', () => {
-        const value = Number(input.value);
-        if (Number.isFinite(value)) {
-          sld.inputs[input.dataset.key] = value;
-          if (input.dataset.key === 'gcr' || input.dataset.key === 'gcr_c') {
-            applyMountingBifacial(sld.inputs.mode, value);
-          }
+        const key = input.dataset.key;
+        const value = normalizeElectricalInput(key, input.value);
+        if (value == null) {
+          input.value = String(sld.inputs[key]);
+          return;
+        }
+        sld.inputs[key] = value;
+        if (key === 'gcr' || key === 'gcr_c') {
+          applyMountingBifacial(sld.inputs.mode, value);
         }
         // Editing by hand wins. Re-fitting here would silently undo the change
         // the user just made; the residual simply moves and says so.
