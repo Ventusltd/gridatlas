@@ -1,5 +1,5 @@
 /**
- * Proof for the neon links + SLD layout sandbox cartridge, generation 202609011845.
+ * Proof for the neon links + SLD layout sandbox cartridge, generation 202609011915.
  *
  * No dependencies. The repository carries playwright and no DOM library, so
  * rather than add one this stubs the small surface the cartridge actually
@@ -32,7 +32,7 @@ import vm from 'node:vm';
 const HERE = dirname(fileURLToPath(import.meta.url));
 const REPO = resolve(HERE, '..', '..');
 const CARTRIDGE = join(REPO, 'atlas', 'cartridges',
-  '202609011845-sld-sandbox-v9-8.js');
+  '202609011915-sld-sandbox-v9-8.js');
 const ORIGINAL = join(REPO, 'atlas', 'releases', '202608300453-atlas-v9',
   '202608292126-pre-snapped-config-adapter.js');
 const FINANCE_ORACLE = join(REPO, 'tools', 'proofs', 'fixtures',
@@ -2297,17 +2297,19 @@ console.log('\nthe manifest knows who it is, and the Subs control is found by it
 
 /* Codex pre-promotion findings, 202609011823. Both proven where they
    live: the manifest by reading it, the lookup by running it. */
-const manifestPath = join(REPO, 'atlas', 'manifests', '202609011845-composition.json');
+const manifestPath = join(REPO, 'atlas', 'manifests', '202609011915-composition.json');
 const manifestText = await readFile(manifestPath, 'utf8');
 const manifest = JSON.parse(manifestText);
 check('the manifest states this generation everywhere it states one',
-  manifest.generation === '202609011845' && manifest.version === 'v9.60'
-  && manifest.composition_version === 'v9.60'
-  && manifest.composition_id === '202609011845-gridatlas-v9.60');
+  manifest.generation === '202609011915' && manifest.version === 'v9.61'
+  && manifest.composition_version === 'v9.61'
+  // Derived from the generation under test, not restated: a hard-coded
+  // identity here is the same drift this check exists to catch.
+  && manifest.composition_id === `${manifest.generation}-gridatlas-v9.61`);
 check('no identity from an older composition survives anywhere in it',
   !/v9\.39|202609010106/.test(manifestText));
 check('the acceptance receipt names this generation\'s proofs',
-  manifest.acceptance.proof.includes('202609011845')
+  manifest.acceptance.proof.includes('202609011915')
   && !/420 checks/.test(manifest.acceptance.proof));
 check('the golden browser field is this generation\'s, not an inherited pending',
   manifest.acceptance.golden_browser_verification === 'PENDING_THIS_GENERATION');
@@ -2374,6 +2376,19 @@ console.log('\nrun against a DOM, not a regular expression\n');
   check('an unrelated failure is untouched',
     behaviour.failures.includes('an unrelated failure'));
 }
+
+
+console.log('\nthe network sentence names its own scope\n');
+
+check('the scope label is rendered before the numbers', (() => {
+  const label = cartridgeSource.indexOf('published.scope_label');
+  const sentence = cartridgeSource.indexOf('published.sentence');
+  return label > 0 && sentence > label;
+})());
+check('a multi-voltage site is badged Site-wide',
+  /published\.site_wide\s*\n?\s*\?\s*`<span class="neon-beta"[^`]*Site-wide/.test(cartridgeSource));
+check('the card never prints a distance taken from the owner product',
+  !/__GRIDATLAS_NETWORK__[^;]*\.nearest\(/.test(cartridgeSource));
 
 console.log(`\n${passed}/${passed + failures.length} checks passed`);
 if (failures.length) {

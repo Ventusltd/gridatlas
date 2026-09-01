@@ -1,7 +1,7 @@
 {
   "schema": "gridatlas.current.v2",
-  "generation": "202609011845",
-  "previous_generation": "202609011820",
+  "generation": "202609011915",
+  "previous_generation": "202609011845",
   "architecture": "IMMUTABLE_SHELL_PLUS_HASHED_CARTRIDGES",
   "live_route": "/gridatlas/atlas/",
   "release_id": "202608300453-atlas-v9",
@@ -60,13 +60,13 @@
     },
     {
       "id": "sld-sandbox",
-      "generation": "202609011845",
-      "version": "v9.60",
+      "generation": "202609011915",
+      "version": "v9.61",
       "type": "script",
       "slot": "replace-script",
       "replace_script": "202608292126-pre-snapped-config-adapter.js",
-      "path": "./cartridges/202609011845-sld-sandbox-v9-8.js",
-      "sha256": "7774c962438c541aad6ff9981060b8d5a9219459ec5e0ebc76b90293bd90bb39",
+      "path": "./cartridges/202609011915-sld-sandbox-v9-8.js",
+      "sha256": "1bb46f6bea3d0e0063bc8920444e36098754a70cca514571da44f4f11a65ec91",
       "capabilities": [
         "pre-snapped-config-adapter-carried-forward",
         "project-or-substation-selection",
@@ -175,7 +175,8 @@
         "little-crow-distribution-loop-archetype",
         "published-network-parameters-on-the-card",
         "subs-control-found-by-attribute-not-label-text",
-        "active-failures-recorded-once"
+        "active-failures-recorded-once",
+        "network-sentence-scope-labelled"
       ],
       "immutable_shell_modified": false,
       "supersedes_shell_script": {
@@ -500,13 +501,13 @@
     },
     {
       "id": "substation-intelligence",
-      "generation": "202609011845",
-      "version": "v9.60",
+      "generation": "202609011915",
+      "version": "v9.61",
       "type": "script",
       "slot": "replace-script",
       "replace_script": "ventus-corev8engine.js",
-      "path": "./cartridges/202609011845-substation-intelligence-v9-60.js",
-      "sha256": "d0198dd8ef1203b652563457d9a9217da48addf2c6afe7ee6f0fb34264c3cf4e",
+      "path": "./cartridges/202609011915-substation-intelligence-v9-61.js",
+      "sha256": "3b73fe18c3a5e06aa67f1e0e6f4b041f53d0221a013b95d1d64b4483e502befd",
       "capabilities": [
         "v8-engine-carried-forward-verbatim",
         "neso-etys-connection-points-v2-consumed",
@@ -515,7 +516,10 @@
         "substation-lookup-by-name-and-by-position",
         "published-parameters-never-a-connection-assessment",
         "fails-closed-on-an-unknown-product-schema",
-        "revalidated-never-pinned-to-first-sight"
+        "revalidated-never-pinned-to-first-sight",
+        "site-wide-envelope-named-not-implied-as-a-bus-value",
+        "breaker-duty-metric-one-of-several-ratings",
+        "owner-product-coordinates-never-shown-as-a-distance"
       ],
       "immutable_shell_modified": false,
       "supersedes_shell_script": {
@@ -534,6 +538,11 @@
         "v9_57": "claimed 202608292126-map-ready-fetch-bridge.js, which the shell does not load; the composer refused and the map went dark",
         "now": "the composer replaces a script TAG, so only the four scripts index.html loads are slots; the engine was the one unclaimed",
         "guard": "the proof now asserts every composed cartridge's replace_script appears in the shell index.html"
+      },
+      "open_upstream": {
+        "reported_by": "Codex 202609011852",
+        "site_envelope": "the owner product aggregates at site code; a per-bus split is Codex's to land, after which this consumer can quote a bus and drop the label",
+        "false_join": "WBUR's exact-name coordinate binds a different West Burton 96.42 km away; the Atlas measures on its own payload and the card is proven never to print a product-derived distance"
       }
     }
   ],
@@ -579,15 +588,15 @@
       "result_class": "LOCATION_ONLY"
     }
   },
-  "composition_manifest": "./manifests/202609011845-composition.json",
+  "composition_manifest": "./manifests/202609011915-composition.json",
   "scope_closure": {
     "generation": "202609010726",
     "status": "DONE",
     "scope": "GridAtlas v9.42 the price panel revalidates",
     "schedule_retired": true
   },
-  "composition_version": "v9.60",
-  "composition_id": "202609011845-gridatlas-v9.60",
+  "composition_version": "v9.61",
+  "composition_id": "202609011915-gridatlas-v9.61",
   "transport": {
     "response_contract": "HEADERS_BEFORE_PARQUET_BODY",
     "engine_timeout_seconds": 15,

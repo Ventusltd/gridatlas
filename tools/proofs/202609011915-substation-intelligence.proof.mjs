@@ -1,5 +1,5 @@
 /**
- * Proof for the substation intelligence cartridge, generation 202609011845.
+ * Proof for the substation intelligence cartridge, generation 202609011915.
  *
  * The first check here is the one whose absence took the Atlas down on
  * v9.57: every composed cartridge's slot must be a script the shell
@@ -16,7 +16,7 @@ const REPO = resolve(HERE, '..', '..');
 const CURRENT = JSON.parse(await readFile(join(REPO, 'atlas', 'current.json'), 'utf8'));
 const RELEASE = join(REPO, 'atlas', 'releases', CURRENT.shell.release_id);
 const CARTRIDGE = join(REPO, 'atlas', 'cartridges',
-  '202609011845-substation-intelligence-v9-60.js');
+  '202609011915-substation-intelligence-v9-61.js');
 
 const bridgeRejections = [];
 process.on('unhandledRejection', (reason) => {
@@ -145,6 +145,23 @@ if (api) {
 }
 
 await new Promise(resolve => setTimeout(resolve, 250));
+
+console.log('\nthe scope of what is quoted\n');
+
+check('a multi-voltage site is labelled site-wide, with its voltages named',
+  /Site-wide published envelope across the/.test(source)
+  && /kV buses at this site, /.test(source));
+check('a single-voltage site says so instead',
+  /Published for this site, which carries one voltage/.test(source));
+check('the breaker-duty overclaim is gone',
+  !/the one\s+\+?\s*'?\s*switchgear is rated against/.test(source)
+  && /one published /.test(source) && /breaker-duty metric/.test(source)
+  && /several relevant /.test(source));
+check('the bus count travels with the fault range',
+  /peak\.locations\?\.length \? ' at ' \+ peak\.locations\.length \+ ' buses'/.test(source));
+check('the unverified location join is declared',
+  /state\.location_join_is_unverified = true;/.test(source));
+
 console.log(`\n${passed}/${passed + failures.length} checks passed`);
 if (bridgeRejections.length) {
   console.log(`(${bridgeRejections.length} rejection(s) from the carried engine under the `

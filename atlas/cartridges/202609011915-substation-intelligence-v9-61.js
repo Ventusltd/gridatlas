@@ -1,5 +1,5 @@
 /**
- * GridAtlas substation intelligence, generation 202609011845 (UTC), composition v9.60.
+ * GridAtlas substation intelligence, generation 202609011915 (UTC), composition v9.61.
  * Slot: replace-script for ventus-corev8engine.js.
  *
  * PART 1 is the V8 engine, carried forward VERBATIM - every byte of the
@@ -1470,14 +1470,18 @@ window.initVentusMap = function({ config, center, zoom }) {
 (() => {
   'use strict';
 
-  const GENERATION = '202609011845';
+  const GENERATION = '202609011915';
   const PRODUCT = 'https://raw.githubusercontent.com/Ventusltd/data-grid-gb/'
     + 'main/derived/connection-points.v2.json';
   const REQUIRED_SCHEMA = 'data-grid-gb.connection-points.v2';
   /* Appendix D publishes eight current metrics and they are NOT
-     interchangeable. The RMS break current is the one switchgear is rated
-     against, so it is the one quoted - by name, never as "the fault
-     level". */
+     interchangeable, so one is quoted and named rather than any of them
+     being called "the fault level".
+     Codex, 202609011852: an earlier version of this comment and of the
+     card said the RMS break current is "the one switchgear is rated
+     against". That overclaims. Switchgear carries several relevant
+     ratings - making capacity, short-time withstand, peak withstand -
+     and this is ONE published breaker-duty metric among the eight. */
   const QUOTED_METRIC = 'three_phase_rms_break_current_ka';
   const QUOTED_METRIC_LABEL = 'three-phase RMS break current';
   const EARTH_RADIUS_KM = 6378.137;
@@ -1547,6 +1551,13 @@ window.initVentusMap = function({ config, center, zoom }) {
   state.byName = (name) => state.loaded
     ? (byName.get(normalise(name)) || null) : null;
 
+  /* The owner product's coordinates are NOT used for anything a reader
+     sees. Codex, 202609011852: WBUR's exact-name join binds a different
+     West Burton 96.42 km from the project, and exact text equality is not
+     exact identity. The Atlas measures on its own substation payload and
+     always has; this stays available for callers that want it, marked,
+     and the card is proven never to print a distance from here. */
+  state.location_join_is_unverified = true;
   state.nearest = (lon, lat, options) => {
     if (!state.loaded) return null;
     const minimumKv = options?.minimumKv ?? 0;
@@ -1582,6 +1593,7 @@ window.initVentusMap = function({ config, center, zoom }) {
       parts.push(QUOTED_METRIC_LABEL + ' ' + metric.min.toFixed(1) + '\u2013'
         + metric.max.toFixed(1) + ' ' + metric.unit + ' across '
         + peak.scenarios + ' peak-demand rows'
+        + (peak.locations?.length ? ' at ' + peak.locations.length + ' buses' : '')
         + (peak.winters?.length
           ? ' (' + peak.winters[0] + ' to ' + peak.winters[peak.winters.length - 1] + ')'
           : ''));
@@ -1595,15 +1607,33 @@ window.initVentusMap = function({ config, center, zoom }) {
         + (years.length ? years[0] + '\u2013' + years[years.length - 1] : 'later years'));
     }
     if (!parts.length) return null;
+    /* Everything above is aggregated at SITE CODE, not selected for a
+       bus. Where a site carries more than one voltage the numbers span
+       them, so the reader is told that before reading any of them -
+       otherwise a sentence under a 400 kV point of connection reads as a
+       400 kV result. West Burton is exactly this case: WBUR1 is 132 kV
+       and WBUR4 is 400 kV, and its published fault range spans both. */
+    const voltages = point.voltages_kv || [];
+    const siteWide = voltages.length > 1;
+    const busLocations = point.fault_current?.peak?.locations || [];
     return {
       site_code: point.site_code,
       transmission_owner: point.transmission_owner,
-      voltages_kv: point.voltages_kv,
+      voltages_kv: voltages,
+      site_wide: siteWide,
+      bus_locations: busLocations,
+      scope_label: siteWide
+        ? ('Site-wide published envelope across the '
+           + voltages.slice().sort((a, b) => b - a).join('/') + ' kV buses at this site, '
+           + 'not a value for any one bus')
+        : ('Published for this site, which carries one voltage: '
+           + (voltages[0] || '?') + ' kV'),
       sentence: parts.join(' \u00b7 '),
       metric_named: QUOTED_METRIC_LABEL,
       metrics_not_interchangeable: 'Appendix D publishes eight current '
-        + 'metrics; they are not interchangeable, and this quotes the one '
-        + 'switchgear is rated against.',
+        + 'metrics and they are not interchangeable; this is one published '
+        + 'breaker-duty metric, and switchgear carries several relevant '
+        + 'ratings besides it.',
       attribution: 'NESO Electricity Ten Year Statement 2025, appendices B and D, '
         + 'via Ventusltd/data-grid-gb',
       not_an_assessment: 'Published parameters. Not a statement about whether '
