@@ -125,13 +125,25 @@ user click anywhere on the map and see the nearest substations; the
 Pipeline News map-button journey for BESS, solar and onshore wind;
 parallel work in `data-grid-gb`; spiders extended toward neural networks.
 
-## 7. Honest state at the time of writing
+## 7. Honest state, refreshed at 202609020035
 
-GridAtlas: v9.69 `202609012211`, v9.70 `202609012234`, v9.71 `202609012243`,
-v9.72 `202609012249` — all live. The first two were **attended** (a hand
-push after a runner refspec fault); v9.71 and v9.72 were clean unattended
-runner passes. Pipeline News: **0 published**; its runner exists at
-`tools/overnight/202609012300-shift.mjs` and has not yet cut a release.
+GridAtlas, all live and verified on the deployed bytes: v9.69
+`202609012211`, v9.70 `202609012234`, v9.71 `202609012243`, v9.72
+`202609012249`, v9.73 `202609012308`, v9.74 `202609012317`, v9.75
+`202609012345`, v9.76 `202609020006`, v9.77 `202609020018`. **Nine of ten.**
 
-Do not inflate this count. `shift-log.json` is the authority, and the only
-outcome that counts is `live`.
+The first two were **attended** — a hand push after a runner refspec
+fault. Everything from v9.71 was a clean unattended runner pass.
+
+Pipeline News: **one live**, `202609012326`. Three further cartridges are
+authored and queued and have not been cut.
+
+Do not inflate this count. `shift-log.json` is the authority in each
+repository, and the only outcome that counts is `live`.
+
+**Three open bugs, reported from a phone at 01:25 BST on 2 September, are
+the next priority.** They are written up in
+[`202609020035-session-handover.md`](./202609020035-session-handover.md)
+§3, and the first is a regression: the HIDE LAYERS control added in v9.74
+collapses `.dashboard`, which is the whole application, when it should
+collapse `.scada-wrapper`. Read that file next.
