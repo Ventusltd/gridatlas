@@ -228,6 +228,30 @@ const geodesySource = await readFile(
   join(ATLAS, 'modules', '202609011950-geodesy.js'), 'utf8');
 const geodesyBox = sandbox();
 vm.runInContext(geodesySource, geodesyBox, { filename: 'geodesy.js' });
+
+/* The cartridge currently served, and the modules its siblings give it. */
+const CURRENT_COMPOSITION = JSON.parse(
+  await readFile(join(REPO, 'atlas', 'current.json'), 'utf8'));
+const currentSandboxFile = (() => {
+  const entry = (CURRENT_COMPOSITION.cartridges || []).find(c => c.id === 'sld-sandbox');
+  return entry ? String(entry.path).split('/').pop() : null;
+})();
+const siblingModules = await (async () => {
+  const out = [];
+  for (const entry of (CURRENT_COMPOSITION.cartridges || [])) {
+    if (entry.id === 'sld-sandbox' || !entry.assembled_from) continue;
+    let manifest;
+    try {
+      manifest = JSON.parse(await readFile(
+        join(REPO, 'atlas', String(entry.assembled_from).replace(/^\.\//, '')), 'utf8'));
+    } catch { continue; }
+    for (const part of (manifest.assembled_from || [])) {
+      if (part.role !== 'module') continue;
+      out.push(await readFile(join(REPO, part.path), 'utf8'));
+    }
+  }
+  return out.join('\n');
+})();
 const geodesy = geodesyBox.window.__GRIDATLAS_MODULES__.geodesy;
 
 check('the geodesy module is on the estate radius',
@@ -285,6 +309,14 @@ for (const surface of SURFACES) {
   }
 
   const box = cartridgeContext();
+  /* Modules the CURRENT composition supplies from another cartridge.
+     Older artefacts are loaded untouched: they were self-contained
+     when they shipped, and rewriting how they load would compare a
+     version against something that never existed. */
+  if (surface.file === currentSandboxFile && siblingModules) {
+    try { vm.runInContext(siblingModules, box, { filename: 'siblings.js' }); }
+    catch (_) { /* reported by the surface check below if it matters */ }
+  }
   /* The load THROWS, and that is expected: these cartridges are carried
      engine slots and the V8 engine will not boot under a stub. They
      register their measuring surface on window before they reach the

@@ -129,8 +129,31 @@ function sandboxContext() {
   return box;
 }
 
+/* The modules the composition supplies from another cartridge. Since
+   202609012350 the sandbox does not carry its own geodesy, so running
+   it alone throws before it registers anything to compare against. */
+const composition = JSON.parse(
+  await readFile(join(REPO, 'atlas', 'current.json'), 'utf8'));
+const siblingModules = await (async () => {
+  const out = [];
+  for (const entry of (composition.cartridges || [])) {
+    if (entry.id === 'sld-sandbox' || !entry.assembled_from) continue;
+    let manifest;
+    try {
+      manifest = JSON.parse(await readFile(
+        join(REPO, 'atlas', String(entry.assembled_from).replace(/^\.\//, '')), 'utf8'));
+    } catch { continue; }
+    for (const part of (manifest.assembled_from || [])) {
+      if (part.role !== 'module') continue;
+      out.push(await readFile(join(REPO, part.path), 'utf8'));
+    }
+  }
+  return out.join('\n');
+})();
+
 const sandboxBox = sandboxContext();
 vm.createContext(sandboxBox);
+if (siblingModules) vm.runInContext(siblingModules, sandboxBox, { filename: 'siblings.js' });
 vm.runInContext(sandboxSource, sandboxBox, { filename: 'sld-sandbox.js' });
 const incumbent = sandboxBox.window.__GRIDATLAS_NEON_LINKS__?.measure;
 

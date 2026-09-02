@@ -165,7 +165,41 @@ const readPublished = async (file) =>
 
 const originalSource = await readPublished(ORIGINAL);
 const cartridgeSource = await readPublished(CARTRIDGE);
+
+/* Every cartridge this composition serves, concatenated.
+   ------------------------------------------------------------------------
+   "Is this module in the served bytes?" is a question about the
+   COMPOSITION, not about one cartridge. It was asked of the sandbox alone
+   until 202609012350, when the network modules moved to the cartridge that
+   owns the network - at which point eight such checks went red for a
+   composition that was entirely correct. Asking the composition is the
+   question that was always meant. */
+const composedSource = (await Promise.all(
+  (CURRENT.cartridges || []).map(entry =>
+    readPublished(join(REPO, 'atlas', String(entry.path).replace(/^\.\//, ''))))
+)).join('\n');
 const financeOracle = JSON.parse(await readPublished(FINANCE_ORACLE));
+
+
+/* Modules contributed by the other cartridges in this composition, in the
+   order the shell loads them. The sandbox cannot be evaluated without
+   them, and pretending otherwise would prove a page that does not exist. */
+const SIBLING_MODULES = await (async () => {
+  const out = [];
+  for (const entry of (CURRENT.cartridges || [])) {
+    if (entry.id === 'sld-sandbox' || !entry.assembled_from) continue;
+    const manifestPath = join(REPO, 'atlas',
+      String(entry.assembled_from).replace(/^\.\//, ''));
+    let manifest;
+    try { manifest = JSON.parse(await readFile(manifestPath, 'utf8')); }
+    catch { continue; }
+    for (const part of (manifest.assembled_from || [])) {
+      if (part.role !== 'module') continue;
+      out.push(await readFile(join(REPO, part.path), 'utf8'));
+    }
+  }
+  return out.join('\n');
+})();
 
 function runAdapter(source, initSpy) {
   const box = {
@@ -178,6 +212,7 @@ function runAdapter(source, initSpy) {
   };
   box.globalThis = box;
   vm.createContext(box);
+  if (SIBLING_MODULES) vm.runInContext(SIBLING_MODULES, box);
   vm.runInContext(source, box);
   return box;
 }
@@ -235,6 +270,7 @@ check('the failure is recorded rather than swallowed',
 console.log('\nthe measurement\n');
 
 vm.createContext(sandbox);
+if (SIBLING_MODULES) vm.runInContext(SIBLING_MODULES, sandbox);
 vm.runInContext(cartridgeSource, sandbox);
 const link = sandbox.window.__GRIDATLAS_NEON_LINKS__;
 
@@ -1387,9 +1423,28 @@ check('and the header still explains why it was removed',
    is now the stronger one it should always have been: the whole served
    cartridge declares an Earth radius exactly once, and the body delegates
    rather than defining. */
-check('the served cartridge declares an Earth radius exactly ONCE',
-  (code.match(/=\s*6378\.137/g) || []).length === 1,
-  `${(code.match(/=\s*6378\.137/g) || []).length} declarations`);
+/* Comment-stripped, the same way `code` is, so a radius named only
+   in prose is not counted as a declaration.
+
+   The carried V8 engine declares its own radius at its line 32 and
+   is carried VERBATIM by contract - a cartridge in a replace-script
+   slot reproduces the shell script it supersedes byte for byte, and
+   editing it would break the one guarantee that slot makes. So it
+   is subtracted rather than counted: the claim is that the estate
+   declares ONE radius in its own code, not that the shell it wraps
+   has none. Pretending otherwise would mean either a false pass or
+   an unfixable failure. */
+const carriedEngine = await readFile(join(REPO, 'atlas', 'releases',
+  '202608300453-atlas-v9', 'ventus-corev8engine.js'), 'utf8');
+const composedCode = composedSource
+  .split(carriedEngine.split('\r\n').join('\n')).join(' ')
+  .replace(/\/\*[\s\S]*?\*\//g, '')
+  .replace(/(^|[^:])\/\/[^\n]*/g, '$1');
+check('the estate declares an Earth radius exactly ONCE across the composition',
+  (composedCode.match(/=\s*6378\.137/g) || []).length === 1,
+  `${(composedCode.match(/=\s*6378\.137/g) || []).length} declarations outside the carried engine`);
+check('and the carried engine still has its own, untouched',
+  (carriedEngine.match(/=\s*6378\.137/g) || []).length === 1);
 check('the body takes the radius and the distance from the geodesy module',
   /const R_ATLAS = GEODESY\.EARTH_RADIUS_KM;/.test(src)
   && /return GEODESY\.distanceKm\(/.test(src));
@@ -2257,8 +2312,19 @@ console.log('\nthe transmission network, on demand\n');
    on first use and never at load, every state is visible to the source
    registry, and both cards that name a substation ask the question. */
 check('the network-topology module is composed into the served bytes',
-  /gridatlas\.module\.network-topology\.v1/.test(cartridgeSource)
-  && cartridgeSource.indexOf('gridatlas.module.network-topology.v1') < cartridgeSource.indexOf('const DECLARED = '));
+  /gridatlas\.module\.network-topology\.v1/.test(composedSource));
+check('and in a cartridge the shell evaluates BEFORE the sandbox that calls it', await (async () => {
+  /* Concatenation order is not evaluation order. The shell decides,
+     so the shell is what is read. */
+  const shell = await readFile(join(REPO, 'atlas', 'releases',
+    '202608300453-atlas-v9', 'index.html'), 'utf8');
+  const holder = (CURRENT.cartridges || []).find(c => c.id === 'substation-intelligence');
+  const sandbox = (CURRENT.cartridges || []).find(c => c.id === 'sld-sandbox');
+  if (!holder || !sandbox) return false;
+  const first = shell.indexOf(holder.replace_script);
+  const second = shell.indexOf(sandbox.replace_script);
+  return first >= 0 && second >= 0 && first < second;
+})());
 check('the loader state lives on the window for the source registry',
   /window\.__GRIDATLAS_TOPOLOGY__ = topology;/.test(cartridgeSource)
   && /const topology = \{ state: 'idle'/.test(cartridgeSource));
@@ -2520,6 +2586,7 @@ console.log('\nrun against a DOM, not a regular expression\n');
   box.maplibregl = maplibregl;
   box.globalThis = box;
   vm.createContext(box);
+  if (SIBLING_MODULES) vm.runInContext(SIBLING_MODULES, box);
   vm.runInContext(cartridgeSource, box);
   const behaviour = box.window.__GRIDATLAS_NEON_LINKS__;
 
@@ -2604,12 +2671,12 @@ console.log('\nthe map measures in circuits as well as in kilometres\n');
    present in no served cartridge for two generations. These checks are
    about the BYTES that ship. */
 check('the electrical-distance module is in the served cartridge',
-  /gridatlas\.module\.electrical-distance\.v1/.test(cartridgeSource));
+  /gridatlas\.module\.electrical-distance\.v1/.test(composedSource));
 check('it is evaluated before the body that calls it',
   cartridgeSource.indexOf('gridatlas.module.electrical-distance.v1')
     < cartridgeSource.indexOf('function distanceModule('));
 check('the successor topology module ships, not the incumbent',
-  /gridatlas\.module\.network-topology\.graph\.v1/.test(cartridgeSource));
+  /gridatlas\.module\.network-topology\.graph\.v1/.test(composedSource));
 check('the card asks for two hops, scoped to the connection voltage',
   /mod\.within\(topology\.index, point\.site_code, \{ hops: 2, voltageKv: kv \}\)/.test(cartridgeSource));
 check('a missing module is an absence, never a guess',
@@ -2626,7 +2693,7 @@ check('no kilometre figure is taken from the topology answer',
 console.log('\nevery season the operator publishes, and no total\n');
 
 check('the rating-envelope module is in the served cartridge',
-  /gridatlas\.module\.rating-envelope\.v1/.test(cartridgeSource));
+  /gridatlas\.module\.rating-envelope\.v1/.test(composedSource));
 check('it is evaluated before the body that calls it',
   cartridgeSource.indexOf('gridatlas.module.rating-envelope.v1')
     < cartridgeSource.indexOf('function ratingModule('));
@@ -2646,10 +2713,10 @@ check('a placeholder value is named to the reader, not hidden',
   && /at or above 9,999 MVA on spans of a kilometre or less/.test(cartridgeSource)
   && /excluded from the range above/.test(cartridgeSource));
 check('the served bytes contain no site total of circuit ratings', (() => {
-  const start = cartridgeSource.indexOf('gridatlas.module.rating-envelope.v1');
-  const end = cartridgeSource.indexOf('NS.ratingEnvelope = Object.freeze');
+  const start = composedSource.indexOf('gridatlas.module.rating-envelope.v1');
+  const end = composedSource.indexOf('NS.ratingEnvelope = Object.freeze');
   if (start < 0 || end < 0) return false;
-  const module = cartridgeSource.slice(start, end)
+  const module = composedSource.slice(start, end)
     .replace(/\/\*[\s\S]*?\*\//g, '').replace(/\/\/[^\n]*/g, '')
     .split(/const (?:NEVER_SUMMED|NOT_A_CAPACITY)\s*=[\s\S]*?;/).join(' ');
   return !/(?:^|[^A-Za-z])(total|sum|aggregate)(?![A-Za-z])/i.test(module)
@@ -2661,15 +2728,15 @@ check('the rating state is published for review',
 console.log('\na declared powerflow, and what it refuses to say\n');
 
 check('the injection-response module is in the served cartridge',
-  /gridatlas\.module\.injection-response\.v1/.test(cartridgeSource));
+  /gridatlas\.module\.injection-response\.v1/.test(composedSource));
 check('it is evaluated before the body that calls it',
   cartridgeSource.indexOf('gridatlas.module.injection-response.v1')
     < cartridgeSource.indexOf('function flowModule('));
 check('the served bytes never read resistance or susceptance into the flow model', (() => {
-  const start = cartridgeSource.indexOf('gridatlas.module.injection-response.v1');
-  const end = cartridgeSource.indexOf('NS.injectionResponse = Object.freeze');
+  const start = composedSource.indexOf('gridatlas.module.injection-response.v1');
+  const end = composedSource.indexOf('NS.injectionResponse = Object.freeze');
   if (start < 0 || end < 0) return false;
-  const mod = cartridgeSource.slice(start, end);
+  const mod = composedSource.slice(start, end);
   return !/r_pct_100mva/.test(mod) && !/b_pct_100mva/.test(mod) && /x_pct_100mva/.test(mod);
 })());
 check('the card names the slack, because a transfer has two ends',
@@ -2752,7 +2819,7 @@ check('both new surfaces are published for review',
 console.log('\nwhat is published as planned, kept apart from what exists\n');
 
 check('the planned-change module is in the served cartridge',
-  /gridatlas\.module\.planned-change/.test(cartridgeSource));
+  /gridatlas\.module\.planned-change/.test(composedSource));
 check('the parsed product is kept so the module can read it',
   /topology\.parsedProduct = product;/.test(cartridgeSource));
 check('a missing product is an absence, not a guess',
@@ -2775,6 +2842,61 @@ check('nothing in the planned sentence grades what it found', (() => {
   const section = cartridgeSource.slice(Math.max(0, at - 1200), at + 1200);
   return !/STRONG|REMOTE|well.placed|ideal|advantage|headroom/i.test(section);
 })());
+
+console.log('\nthe computation left the sandbox, and ownership arrived\n');
+
+/* The move is the point of this generation, so it is asserted from both
+   sides: the modules must be GONE from the sandbox cartridge and PRESENT
+   in the served composition. Checking only one side would pass a
+   composition that had lost them entirely. */
+check('the five network modules are no longer in the sandbox cartridge',
+  !/gridatlas\.module\.network-topology\.v1/.test(cartridgeSource)
+  && !/gridatlas\.module\.electrical-distance\.v1/.test(cartridgeSource)
+  && !/gridatlas\.module\.rating-envelope\.v1/.test(cartridgeSource)
+  && !/gridatlas\.module\.injection-response\.v1/.test(cartridgeSource)
+  && !/gridatlas\.module\.planned-change/.test(cartridgeSource));
+check('the sandbox cartridge is back under the 400 kB boundary with room to spare',
+  cartridgeSource.length < 340000, `${cartridgeSource.length} bytes`);
+check('the sandbox still CALLS them, from the cartridge that now carries them',
+  /window\.__GRIDATLAS_MODULES__\?\.networkTopology/.test(cartridgeSource)
+  && /window\.__GRIDATLAS_MODULES__\?\.ownerBoundary/.test(cartridgeSource));
+check('the card names the owners present',
+  /<b>Transmission owner/.test(cartridgeSource));
+check('a seam is named as a seam, with both ends said to differ',
+  /the two ends are published under different owners/.test(cartridgeSource));
+check('a null owner is reported as unknown and never taken from the site',
+  /publishes no owner and is /.test(cartridgeSource)
+  && /never taken from the site/.test(cartridgeSource));
+check('an asset whose owner matches neither end is kept out of the boundary count',
+  /reported as itself, not as a boundary/.test(cartridgeSource));
+check('the page refuses the counterparty reading',
+  /who a project would contract with/.test(cartridgeSource));
+check('the ownership state is published for review',
+  /window\.__GRIDATLAS_OWNERSHIP__ = ownerState;/.test(cartridgeSource));
+
+/* The other half of the move, read from the served composition rather
+   than from this cartridge. */
+{
+  const composed = JSON.parse(
+    await readFile(join(REPO, 'atlas', 'current.json'), 'utf8'));
+  const sub = (composed.cartridges || []).find(c => c.id === 'substation-intelligence');
+  check('substation-intelligence is assembled from parts, not a monolith',
+    !!sub && typeof sub.assembled_from === 'string');
+  const subSource = await readFile(
+    join(REPO, 'atlas', sub.path.replace(/^\.\//, '')), 'utf8');
+  check('the five network modules are in the cartridge that owns the network',
+    /gridatlas\.module\.network-topology\.v1/.test(subSource)
+    && /gridatlas\.module\.electrical-distance\.v1/.test(subSource)
+    && /gridatlas\.module\.rating-envelope\.v1/.test(subSource)
+    && /gridatlas\.module\.injection-response\.v1/.test(subSource)
+    && /gridatlas\.module\.planned-change/.test(subSource));
+  check('the new owner-boundary module is there too',
+    /gridatlas\.module\.owner-boundary/.test(subSource));
+  check('it still carries the V8 engine verbatim, which is its slot contract',
+    subSource.includes('PART 2 - the network, as its operator publishes it'));
+  check('it is under the boundary as well',
+    subSource.length < 400000, `${subSource.length} bytes`);
+}
 
 console.log(`\n${passed}/${passed + failures.length} checks passed`);
 if (failures.length) {

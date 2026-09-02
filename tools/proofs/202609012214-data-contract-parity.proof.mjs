@@ -94,6 +94,10 @@ console.log(`\ndata-contract parity for ${current.composition_id} (${current.car
 for (const entry of current.cartridges) {
   const rel = path.join('atlas', entry.path.replace('./', ''));
   const source = read(rel);
+  /* every cartridge this composition serves, for the sibling lookup */
+  const compositionSource = (current.cartridges || [])
+    .map(c => read(path.join('atlas', String(c.path).replace('./', ''))))
+    .join('\n');
   const named = productsNamedBy(source);
   const declared = declaredBy(entry);
   console.log(`${entry.id} ${entry.generation}: bytes name ${named.size} product(s), entry declares ${declared.length}`);
@@ -103,7 +107,14 @@ for (const entry of current.cartridges) {
     check(`${entry.id}: ${p.product} fetched by the bytes is declared on the entry`, !!d,
       d ? undefined : `declared: ${declared.map(s => s.product).join(', ') || 'nothing'}`);
     if (!d) continue;
-    const schema = p.schema_in_bytes || schemaFromModule(source, p.product);
+    /* The schema may be declared by a module in a sibling cartridge:
+       since 202609012350 the network modules live in the cartridge
+       the shell loads first, while the fetch stayed in the sandbox.
+       Both ship in the same composition and load together, so the
+       composition is where the requirement is looked for. */
+    const schema = p.schema_in_bytes
+      || schemaFromModule(source, p.product)
+      || schemaFromModule(compositionSource, p.product);
     check(`${entry.id}: ${p.product} schema in the bytes is the schema the entry requires`,
       !!schema && schema === d.schema_required, `bytes ${schema}, entry ${d.schema_required}`);
   }

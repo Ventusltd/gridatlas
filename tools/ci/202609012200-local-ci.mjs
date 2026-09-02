@@ -309,7 +309,8 @@ const GATES = [
   ['electrical distance', ['tools/proofs/modules/202609012245-electrical-distance.proof.mjs']],
   ['rating envelope', ['tools/proofs/modules/202609012250-rating-envelope.proof.mjs']],
   ['injection response (powerflow)', ['tools/proofs/modules/202609012320-injection-response.proof.mjs']],
-  ['planned change', ['tools/proofs/modules/202609012345-planned-change.proof.mjs']]
+  ['planned change', ['tools/proofs/modules/202609012345-planned-change.proof.mjs']],
+  ['owner boundary', ['tools/proofs/modules/202609012350-owner-boundary.proof.mjs']]
 ];
 
 for (const [name, args] of GATES) {
