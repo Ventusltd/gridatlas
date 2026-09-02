@@ -133,6 +133,41 @@ export default {
     write(CI, ci.replace(OLD_CI,
       `  ['injection response (powerflow)', ['tools/proofs/modules/202609020015-injection-response.proof.mjs']],`));
 
+    /* ── checks that pinned the module's VERSION must follow it ───────
+       Several existing checks assert the module is present by matching
+       `injection-response.v1`, and one slices the served bytes between
+       that marker and the module's export to prove it reads no resistance
+       or susceptance. The module is v2 now. Pinning the exact version was
+       right - it is how a silent downgrade would be caught - so the
+       pattern is moved forward rather than loosened to match any version,
+       and the check that the OLD one is gone is kept beside it. */
+    {
+      const p = read(sandboxProof);
+      const swaps = [
+        // presence, in the sandbox proof's own module list
+        ['/gridatlas\\.module\\.injection-response\\.v1/.test(composedSource)',
+         '/gridatlas\\.module\\.injection-response\\.v2/.test(composedSource)'],
+        ['/gridatlas\\.module\\.injection-response\\.v1/.test(subSource)',
+         '/gridatlas\\.module\\.injection-response\\.v2/.test(subSource)'],
+        // the r/b slice markers
+        ["const start = composedSource.indexOf('gridatlas.module.injection-response.v1');",
+         "const start = composedSource.indexOf('gridatlas.module.injection-response.v2');"],
+        // the old acceptance gate, replaced by publishable
+        ["check('an answer that fails its own Kirchhoff check is discarded, not printed',\n"
+         + '  /r\\.validation && r\\.validation\\.passes \\? r : null/.test(cartridgeSource));',
+         "check('an answer that fails its own acceptance is discarded, not printed',\n"
+         + '  /r\\.publishable === true \\? r :/.test(cartridgeSource));'],
+      ];
+      let t = p;
+      for (const [from, to] of swaps) {
+        if (t.split(from).length - 1 !== 1) {
+          throw new Error(`version-pinned check anchor is not unique: ${from.slice(0, 60)}`);
+        }
+        t = t.replace(from, () => to);
+      }
+      write(sandboxProof, t);
+    }
+
     /* ── the gate ────────────────────────────────────────────────────── */
     const proof = read(sandboxProof);
     const TAIL = 'console.log(`\\n${passed}/${passed + failures.length} checks passed`);';
