@@ -1764,6 +1764,72 @@
       "reason": "gate red: all versions",
       "finished_at": "2026-09-02T00:03:52.398Z",
       "output": "9-8.js (202609012249): reads ordinary voltages identically\n  [PASS] 202609012249-sld-sandbox-v9-8.js (202609012249): \"33000;750\" is read correctly\n  [PASS] 202609012249-sld-sandbox-v9-8.js (202609012249): \"33000;11000;415\" is read correctly\n  [PASS] 202609012250-sld-sandbox-v9-8.js (202609012250): exposes its measuring surface\n  [PASS] 202609012250-sld-sandbox-v9-8.js (202609012250): agrees on all 8 cases, exactly\n  [PASS] 202609012250-sld-sandbox-v9-8.js (202609012250): reads ordinary voltages identically\n  [PASS] 202609012250-sld-sandbox-v9-8.js (202609012250): \"33000;750\" is read correctly\n  [PASS] 202609012250-sld-sandbox-v9-8.js (202609012250): \"33000;11000;415\" is read correctly\n  [PASS] 202609012308-sld-sandbox-v9-8.js (202609012308): exposes its measuring surface\n  [PASS] 202609012308-sld-sandbox-v9-8.js (202609012308): agrees on all 8 cases, exactly\n  [PASS] 202609012308-sld-sandbox-v9-8.js (202609012308): reads ordinary voltages identically\n  [PASS] 202609012308-sld-sandbox-v9-8.js (202609012308): \"33000;750\" is read correctly\n  [PASS] 202609012308-sld-sandbox-v9-8.js (202609012308): \"33000;11000;415\" is read correctly\n  [PASS] 202609012317-sld-sandbox-v9-8.js (202609012317): exposes its measuring surface\n  [PASS] 202609012317-sld-sandbox-v9-8.js (202609012317): agrees on all 8 cases, exactly\n  [PASS] 202609012317-sld-sandbox-v9-8.js (202609012317): reads ordinary voltages identically\n  [PASS] 202609012317-sld-sandbox-v9-8.js (202609012317): \"33000;750\" is read correctly\n  [PASS] 202609012317-sld-sandbox-v9-8.js (202609012317): \"33000;11000;415\" is read correctly\n  [PASS] 202609012345-sld-sandbox-v9-8.js (202609012345): exposes its measuring surface\n  [PASS] 202609012345-sld-sandbox-v9-8.js (202609012345): agrees on all 8 cases, exactly\n  [PASS] 202609012345-sld-sandbox-v9-8.js (202609012345): reads ordinary voltages identically\n  [PASS] 202609012345-sld-sandbox-v9-8.js (202609012345): \"33000;750\" is read correctly\n  [PASS] 202609012345-sld-sandbox-v9-8.js (202609012345): \"33000;11000;415\" is read correctly\n  [FAIL] 202609020003-sld-sandbox-v9-8.js (202609020003): exposes its measuring surface — a version whose surface cannot be found is not being compared\n  [FAIL] every version that measures was actually compared — 14 of 15\n\nthe versions the page lists are the versions that shipped\n\n  [PASS] the ledger is not empty and is strictly increasing, except after the one stamp typed ahead\n  [PASS] the versions in the ledger are strictly increasing without exception\n  [PASS] its newest entry is the composition actually being served\n  [PASS] every composition manifest from the ledger era onward appears in it\n         60 versions listed, 18 composition manifests retained, 46 versions older than the retained set\n\n80/82 checks passed\n\nFAILURES\n  202609020003-sld-sandbox-v9-8.js (202609020003): exposes its measuring surface — a version whose surface cannot be found is not being compared\n  every version that measures was actually compared — 14 of 15\n"
+    },
+    {
+      "step": "202609012350-owner-boundary.mjs",
+      "id": "owner-boundary",
+      "version": "v9.76",
+      "started_at": "2026-09-02T00:04:35.039Z",
+      "dry": false,
+      "stages": [
+        {
+          "name": "applied",
+          "at": "2026-09-02T00:04:35.815Z",
+          "changed": [
+            "atlas/parts/202609012045-sld-sandbox-body.js",
+            "tools/ci/202609012200-local-ci.mjs",
+            "tools/proofs/202609012150-all-versions.proof.mjs",
+            "tools/proofs/202609012345-sld-sandbox.proof.mjs",
+            "atlas/parts/202609012350-substation-intelligence-body.js",
+            "atlas/parts/202609012350-substation-intelligence-seed-parts.json"
+          ]
+        },
+        {
+          "name": "syntax checked",
+          "at": "2026-09-02T00:04:36.014Z"
+        },
+        {
+          "name": "step proof 202609012350-owner-boundary.proof.mjs",
+          "at": "2026-09-02T00:04:36.119Z",
+          "status": 0
+        },
+        {
+          "name": "composed",
+          "at": "2026-09-02T00:04:36.424Z",
+          "generation": "202609020004",
+          "version": "v9.76",
+          "previous": "202609012345"
+        },
+        {
+          "name": "gate sandbox proof",
+          "at": "2026-09-02T00:04:37.103Z",
+          "status": 0
+        },
+        {
+          "name": "gate run-current",
+          "at": "2026-09-02T00:04:38.079Z",
+          "status": 0
+        },
+        {
+          "name": "gate parts integrity",
+          "at": "2026-09-02T00:04:38.157Z",
+          "status": 0
+        },
+        {
+          "name": "gate all versions",
+          "at": "2026-09-02T00:04:38.346Z",
+          "status": 0
+        },
+        {
+          "name": "gate data-contract parity",
+          "at": "2026-09-02T00:04:38.392Z",
+          "status": 1
+        }
+      ],
+      "outcome": "failed",
+      "reason": "gate red: data-contract parity",
+      "finished_at": "2026-09-02T00:04:38.392Z",
+      "output": "\ndata-contract parity for 202609020004-gridatlas-v9.76 (4 cartridges)\n\nstreaming-parquet-bridge 202608301825: bytes name 0 product(s), entry declares 0\nuk-gazetteer-flyto 202609011141: bytes name 0 product(s), entry declares 0\nsld-sandbox 202609020004: bytes name 2 product(s), entry declares 2\n  PASS sld-sandbox: derived/gb-transmission-network.v1.json fetched by the bytes is declared on the entry\n  FAIL sld-sandbox: derived/gb-transmission-network.v1.json schema in the bytes is the schema the entry requires - bytes null, entry data-grid-gb.transmission-network.v1\n  PASS sld-sandbox: derived/price-decade-rollup.json fetched by the bytes is declared on the entry\n  PASS sld-sandbox: derived/price-decade-rollup.json schema in the bytes is the schema the entry requires\n  PASS sld-sandbox: declared source derived/gb-transmission-network.v1.json is named by the bytes\n  PASS sld-sandbox: declared source derived/price-decade-rollup.json is named by the bytes\nsubstation-intelligence 202609020004: bytes name 1 product(s), entry declares 1\n  PASS substation-intelligence: derived/connection-points.v3.json fetched by the bytes is declared on the entry\n  PASS substation-intelligence: derived/connection-points.v3.json schema in the bytes is the schema the entry requires\n  PASS substation-intelligence: declared source derived/connection-points.v3.json is named by the bytes\n  PASS substation-intelligence: capability connection-points-v3-consumed agrees with a declared schema\n  PASS the composition manifest is the current generation\n  PASS streaming-parquet-bridge: the composition manifest declares the same sources as current.json\n  PASS uk-gazetteer-flyto: the composition manifest declares the same sources as current.json\n  PASS sld-sandbox: the composition manifest declares the same sources as current.json\n  PASS substation-intelligence: the composition manifest declares the same sources as current.json\n\n14/15 checks passed\nFAILURES\n  sld-sandbox: derived/gb-transmission-network.v1.json schema in the bytes is the schema the entry requires - bytes null, entry data-grid-gb.transmission-network.v1\n"
     }
   ]
 }

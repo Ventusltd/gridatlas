@@ -552,6 +552,46 @@ const SIBLING_MODULES = await (async () => {
       ].join('\n')));
     }
 
+    /* ── 6c. a schema requirement can live in another cartridge ───────
+       The sandbox still FETCHES the transmission network - ensureTopology
+       is in its body - but the schema it is validated against lives in
+       the module, which moved. So the parity proof found the product
+       named by the sandbox's bytes and the schema nowhere in them.
+
+       The fetch is genuinely per-cartridge and stays checked per
+       cartridge. The schema is a property of the COMPOSITION: the bytes
+       that fetch and the bytes that validate ship together and are loaded
+       together. Falling back to the composition for the schema keeps the
+       real guarantee - a product is validated before it is believed -
+       without asserting a layout the composition no longer has. */
+    {
+      const parity = 'tools/proofs/202609012214-data-contract-parity.proof.mjs';
+      const p = read(parity);
+      const OLD = '    const schema = p.schema_in_bytes || schemaFromModule(source, p.product);';
+      if (p.split(OLD).length - 1 !== 1) throw new Error('parity schema anchor is not unique');
+      write(parity, p.replace(OLD, [
+        '    /* The schema may be declared by a module in a sibling cartridge:',
+        '       since 202609012350 the network modules live in the cartridge',
+        '       the shell loads first, while the fetch stayed in the sandbox.',
+        '       Both ship in the same composition and load together, so the',
+        '       composition is where the requirement is looked for. */',
+        '    const schema = p.schema_in_bytes',
+        '      || schemaFromModule(source, p.product)',
+        '      || schemaFromModule(compositionSource, p.product);',
+      ].join('\n')));
+
+      const p2 = read(parity);
+      const SRC_ANCHOR = '  const source = read(rel);';
+      if (p2.split(SRC_ANCHOR).length - 1 !== 1) throw new Error('parity source anchor is not unique');
+      write(parity, p2.replace(SRC_ANCHOR, [
+        '  const source = read(rel);',
+        '  /* every cartridge this composition serves, for the sibling lookup */',
+        '  const compositionSource = (current.cartridges || [])',
+        "    .map(c => read(path.join('atlas', String(c.path).replace('./', ''))))",
+        "    .join('\\n');",
+      ].join('\n')));
+    }
+
     /* ── 6. the gate ─────────────────────────────────────────────────── */
     const proof = read(sandboxProof);
     const TAIL = 'console.log(`\\n${passed}/${passed + failures.length} checks passed`);';
