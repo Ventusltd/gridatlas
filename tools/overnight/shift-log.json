@@ -1902,6 +1902,121 @@
       "reason": "gate red: local CI (proofs, deep scan, stamps, cvaa)",
       "finished_at": "2026-09-02T00:06:00.047Z",
       "output": "S\n  \u001b[32mPASS\u001b[0m  scope ledger           PASS\n  \u001b[32mPASS\u001b[0m  composed cartridges    656/656\n  \u001b[32mPASS\u001b[0m  parts integrity        59/59\n  \u001b[32mPASS\u001b[0m  all versions           86/86\n  \u001b[31mFAIL\u001b[0m  module parity          failed\n  \u001b[32mPASS\u001b[0m  grid scope             33/33\n  \u001b[32mPASS\u001b[0m  network topology       47/47\n  \u001b[32mPASS\u001b[0m  assembler              31/31\n  \u001b[32mPASS\u001b[0m  source registry        42/42\n  \u001b[32mPASS\u001b[0m  map-click network      13/13\n  \u001b[32mPASS\u001b[0m  declared connections   23/23\n  \u001b[32mPASS\u001b[0m  sizing arithmetic      ok\n  \u001b[32mPASS\u001b[0m  data-contract parity   15/15\n  \u001b[32mPASS\u001b[0m  electrical distance    52/52\n  \u001b[32mPASS\u001b[0m  rating envelope        40/40\n  \u001b[32mPASS\u001b[0m  injection response (powerflow) 53/53\n  \u001b[32mPASS\u001b[0m  planned change         79/79\n  \u001b[32mPASS\u001b[0m  owner boundary         72/72\n\n\u001b[1mPASS 4 - checks that decline to check, and report success\u001b[0m\n  140 proof/verifier files read across 3 repositories\n  \u001b[32mno check skips its assertions on a missing dependency without a named opt-in\u001b[0m\n\n\u001b[1mPASS 5 - a stamp is a clock\u001b[0m\n\n  \u001b[1mgridatlas\u001b[0m  337 commits, 185 stamped more than 15 min from the commit clock; worst 17d96ed 202608300453 vs 202608300926 (-273 min)\n    \u001b[32mno file in the working tree is stamped ahead of 202609020005 UTC\u001b[0m\n    cvaa: not-immune, 101 finding(s) across 10 failing vaccine(s)\n    monotonic-utc-generations: 69 commit(s) off the clock, 10 out of order (history; reported, not amended)\n\n  \u001b[1mpipelinenews\u001b[0m  391 commits, 144 stamped more than 15 min from the commit clock; worst acc1309 202609010232 vs 202609010718 (-286 min)\n    \u001b[32mno file in the working tree is stamped ahead of 202609020005 UTC\u001b[0m\n    cvaa: not-immune, 171 finding(s) across 6 failing vaccine(s)\n    monotonic-utc-generations: 98 commit(s) off the clock, 22 out of order (history; reported, not amended)\n\n  \u001b[1mdata-grid-gb\u001b[0m  10 commits, 6 stamped more than 15 min from the commit clock; worst 04e0d62 202609012130 vs 202609011835 (+175 min)\n    \u001b[32mno file in the working tree is stamped ahead of 202609020005 UTC\u001b[0m\n    cvaa: not-immune, 8 finding(s) across 3 failing vaccine(s)\n    monotonic-utc-generations: 5 commit(s) off the clock, 1 out of order (history; reported, not amended)\n\n\u001b[31m1 flaw(s) found across 3 repositories.\u001b[0m\nsld-sandbox.js:45\r\n  if (!geodesy) throw new Error('grid-scope requires the geodesy module');\r\n                ^\r\n\r\nError: grid-scope requires the geodesy module\r\n    at sld-sandbox.js:45:23\r\n    at sld-sandbox.js:179:3\r\n    at Script.runInContext (node:vm:149:12)\r\n    at Object.runInContext (node:vm:301:6)\r\n    at file:///C:/Users/vikra/OneDrive/Documents/GitHub/gridatlas/tools/proofs/modules/202609011950-module-parity.proof.mjs:134:4\r\n\r\nNode.js v24.19.0\r\nwarning: unshare -rn unavailable; antibodies run without a network namespace\nwarning: unshare -rn unavailable; antibodies run without a network namespace\nwarning: unshare -rn unavailable; antibodies run without a network namespace\n"
+    },
+    {
+      "step": "202609012350-owner-boundary.mjs",
+      "id": "owner-boundary",
+      "version": "v9.76",
+      "started_at": "2026-09-02T00:06:31.147Z",
+      "dry": false,
+      "stages": [
+        {
+          "name": "applied",
+          "at": "2026-09-02T00:06:31.910Z",
+          "changed": [
+            "atlas/parts/202609012045-sld-sandbox-body.js",
+            "tools/ci/202609012200-local-ci.mjs",
+            "tools/proofs/202609012150-all-versions.proof.mjs",
+            "tools/proofs/202609012214-data-contract-parity.proof.mjs",
+            "tools/proofs/202609012345-sld-sandbox.proof.mjs",
+            "tools/proofs/modules/202609011950-module-parity.proof.mjs",
+            "atlas/parts/202609012350-substation-intelligence-body.js",
+            "atlas/parts/202609012350-substation-intelligence-seed-parts.json"
+          ]
+        },
+        {
+          "name": "syntax checked",
+          "at": "2026-09-02T00:06:32.185Z"
+        },
+        {
+          "name": "step proof 202609012350-owner-boundary.proof.mjs",
+          "at": "2026-09-02T00:06:32.292Z",
+          "status": 0
+        },
+        {
+          "name": "composed",
+          "at": "2026-09-02T00:06:32.592Z",
+          "generation": "202609020006",
+          "version": "v9.76",
+          "previous": "202609012345"
+        },
+        {
+          "name": "gate sandbox proof",
+          "at": "2026-09-02T00:06:33.272Z",
+          "status": 0
+        },
+        {
+          "name": "gate run-current",
+          "at": "2026-09-02T00:06:34.261Z",
+          "status": 0
+        },
+        {
+          "name": "gate parts integrity",
+          "at": "2026-09-02T00:06:34.334Z",
+          "status": 0
+        },
+        {
+          "name": "gate all versions",
+          "at": "2026-09-02T00:06:34.522Z",
+          "status": 0
+        },
+        {
+          "name": "gate data-contract parity",
+          "at": "2026-09-02T00:06:34.578Z",
+          "status": 0
+        },
+        {
+          "name": "gate local CI (proofs, deep scan, stamps, cvaa)",
+          "at": "2026-09-02T00:07:01.882Z",
+          "status": 0
+        },
+        {
+          "name": "gate step proof after compose 202609012350-owner-boundary.proof.mjs",
+          "at": "2026-09-02T00:07:01.992Z",
+          "status": 0
+        },
+        {
+          "name": "committed",
+          "at": "2026-09-02T00:07:02.150Z",
+          "commit": "9028585",
+          "subject_stamp": "202609020006",
+          "clock_at_commit": "202609020007"
+        },
+        {
+          "name": "pushed",
+          "at": "2026-09-02T00:07:04.408Z"
+        }
+      ],
+      "actions": [
+        {
+          "name": "202608312212 GridAtlas cartridge proof",
+          "status": "completed",
+          "conclusion": "success",
+          "url": "https://github.com/Ventusltd/gridatlas/actions/runs/33573972564"
+        },
+        {
+          "name": "202608310050 GridAtlas next-version builders",
+          "status": "completed",
+          "conclusion": "success",
+          "url": "https://github.com/Ventusltd/gridatlas/actions/runs/33573972611"
+        },
+        {
+          "name": "pages build and deployment",
+          "status": "completed",
+          "conclusion": "success",
+          "url": "https://github.com/Ventusltd/gridatlas/actions/runs/33573970493"
+        }
+      ],
+      "live": {
+        "generation": "202609020006",
+        "version": "v9.76",
+        "cartridge_sha_matches": true,
+        "at": "2026-09-02T00:08:05.475Z"
+      },
+      "generation": "202609020006",
+      "commit": "9028585cccee1507ff52d62661d019ac5a165214",
+      "finished_at": "2026-09-02T00:08:06.028Z",
+      "outcome": "live"
     }
   ]
 }
