@@ -157,8 +157,7 @@ export default {
         '  const GEODESY = (window.__GRIDATLAS_MODULES__ || {}).geodesy;',
         '  if (!GEODESY) throw new Error("substation-intelligence requires the geodesy module");',
         '  const distanceKm = GEODESY.distanceKm;',
-      ].join('
-')));
+      ].join('\n')));
     }
 
     /* ── 2. the parts seed it should always have had ─────────────────── */
