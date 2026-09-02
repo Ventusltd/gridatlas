@@ -2167,6 +2167,123 @@
       "reason": "gate red: all versions",
       "finished_at": "2026-09-02T00:17:14.999Z",
       "output": "9-8.js (202609012250): reads ordinary voltages identically\n  [PASS] 202609012250-sld-sandbox-v9-8.js (202609012250): \"33000;750\" is read correctly\n  [PASS] 202609012250-sld-sandbox-v9-8.js (202609012250): \"33000;11000;415\" is read correctly\n  [PASS] 202609012308-sld-sandbox-v9-8.js (202609012308): exposes its measuring surface\n  [PASS] 202609012308-sld-sandbox-v9-8.js (202609012308): agrees on all 8 cases, exactly\n  [PASS] 202609012308-sld-sandbox-v9-8.js (202609012308): reads ordinary voltages identically\n  [PASS] 202609012308-sld-sandbox-v9-8.js (202609012308): \"33000;750\" is read correctly\n  [PASS] 202609012308-sld-sandbox-v9-8.js (202609012308): \"33000;11000;415\" is read correctly\n  [PASS] 202609012317-sld-sandbox-v9-8.js (202609012317): exposes its measuring surface\n  [PASS] 202609012317-sld-sandbox-v9-8.js (202609012317): agrees on all 8 cases, exactly\n  [PASS] 202609012317-sld-sandbox-v9-8.js (202609012317): reads ordinary voltages identically\n  [PASS] 202609012317-sld-sandbox-v9-8.js (202609012317): \"33000;750\" is read correctly\n  [PASS] 202609012317-sld-sandbox-v9-8.js (202609012317): \"33000;11000;415\" is read correctly\n  [PASS] 202609012345-sld-sandbox-v9-8.js (202609012345): exposes its measuring surface\n  [PASS] 202609012345-sld-sandbox-v9-8.js (202609012345): agrees on all 8 cases, exactly\n  [PASS] 202609012345-sld-sandbox-v9-8.js (202609012345): reads ordinary voltages identically\n  [PASS] 202609012345-sld-sandbox-v9-8.js (202609012345): \"33000;750\" is read correctly\n  [PASS] 202609012345-sld-sandbox-v9-8.js (202609012345): \"33000;11000;415\" is read correctly\n  [FAIL] 202609020006-sld-sandbox-v9-8.js (202609020006): exposes its measuring surface — a version whose surface cannot be found is not being compared\n  [PASS] 202609020017-sld-sandbox-v9-8.js (202609020017): exposes its measuring surface\n  [PASS] 202609020017-sld-sandbox-v9-8.js (202609020017): agrees on all 8 cases, exactly\n  [PASS] 202609020017-sld-sandbox-v9-8.js (202609020017): reads ordinary voltages identically\n  [PASS] 202609020017-sld-sandbox-v9-8.js (202609020017): \"33000;750\" is read correctly\n  [PASS] 202609020017-sld-sandbox-v9-8.js (202609020017): \"33000;11000;415\" is read correctly\n  [FAIL] every version that measures was actually compared — 15 of 16\n\nthe versions the page lists are the versions that shipped\n\n  [PASS] the ledger is not empty and is strictly increasing, except after the one stamp typed ahead\n  [PASS] the versions in the ledger are strictly increasing without exception\n  [PASS] its newest entry is the composition actually being served\n  [PASS] every composition manifest from the ledger era onward appears in it\n         61 versions listed, 19 composition manifests retained, 46 versions older than the retained set\n\n85/87 checks passed\n\nFAILURES\n  202609020006-sld-sandbox-v9-8.js (202609020006): exposes its measuring surface — a version whose surface cannot be found is not being compared\n  every version that measures was actually compared — 15 of 16\n"
+    },
+    {
+      "step": "202609020015-powerflow-stopship.mjs",
+      "id": "powerflow-stopship",
+      "version": "v9.77",
+      "started_at": "2026-09-02T00:18:23.615Z",
+      "dry": false,
+      "stages": [
+        {
+          "name": "tooling committed",
+          "at": "2026-09-02T00:18:24.370Z",
+          "commit": "df5a47d"
+        },
+        {
+          "name": "applied",
+          "at": "2026-09-02T00:18:24.454Z",
+          "changed": [
+            "atlas/parts/202609012045-sld-sandbox-body.js",
+            "tools/ci/202609012200-local-ci.mjs",
+            "tools/proofs/202609020006-sld-sandbox.proof.mjs",
+            "atlas/modules/202609020015-injection-response.js",
+            "tools/proofs/modules/202609020015-injection-response.proof.mjs"
+          ]
+        },
+        {
+          "name": "syntax checked",
+          "at": "2026-09-02T00:18:24.658Z"
+        },
+        {
+          "name": "step proof 202609020015-injection-response.proof.mjs",
+          "at": "2026-09-02T00:18:24.771Z",
+          "status": 0
+        },
+        {
+          "name": "composed",
+          "at": "2026-09-02T00:18:25.110Z",
+          "generation": "202609020018",
+          "version": "v9.77",
+          "previous": "202609020006"
+        },
+        {
+          "name": "gate sandbox proof",
+          "at": "2026-09-02T00:18:25.772Z",
+          "status": 0
+        },
+        {
+          "name": "gate run-current",
+          "at": "2026-09-02T00:18:26.737Z",
+          "status": 0
+        },
+        {
+          "name": "gate parts integrity",
+          "at": "2026-09-02T00:18:26.817Z",
+          "status": 0
+        },
+        {
+          "name": "gate all versions",
+          "at": "2026-09-02T00:18:27.008Z",
+          "status": 0
+        },
+        {
+          "name": "gate data-contract parity",
+          "at": "2026-09-02T00:18:27.063Z",
+          "status": 0
+        },
+        {
+          "name": "gate local CI (proofs, deep scan, stamps, cvaa)",
+          "at": "2026-09-02T00:18:54.298Z",
+          "status": 0
+        },
+        {
+          "name": "gate step proof after compose 202609020015-injection-response.proof.mjs",
+          "at": "2026-09-02T00:18:54.419Z",
+          "status": 0
+        },
+        {
+          "name": "committed",
+          "at": "2026-09-02T00:18:54.577Z",
+          "commit": "60d1938",
+          "subject_stamp": "202609020018",
+          "clock_at_commit": "202609020018"
+        },
+        {
+          "name": "pushed",
+          "at": "2026-09-02T00:18:56.666Z"
+        }
+      ],
+      "actions": [
+        {
+          "name": "202608310050 GridAtlas next-version builders",
+          "status": "completed",
+          "conclusion": "success",
+          "url": "https://github.com/Ventusltd/gridatlas/actions/runs/33574821630"
+        },
+        {
+          "name": "202608312212 GridAtlas cartridge proof",
+          "status": "completed",
+          "conclusion": "success",
+          "url": "https://github.com/Ventusltd/gridatlas/actions/runs/33574821628"
+        },
+        {
+          "name": "pages build and deployment",
+          "status": "completed",
+          "conclusion": "success",
+          "url": "https://github.com/Ventusltd/gridatlas/actions/runs/33574820496"
+        }
+      ],
+      "live": {
+        "generation": "202609020018",
+        "version": "v9.77",
+        "cartridge_sha_matches": true,
+        "at": "2026-09-02T00:19:57.650Z"
+      },
+      "generation": "202609020018",
+      "commit": "60d193827d336a40c91ec64cce4bc56e50074bcb",
+      "finished_at": "2026-09-02T00:19:58.041Z",
+      "outcome": "live"
     }
   ]
 }
