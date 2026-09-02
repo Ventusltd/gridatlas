@@ -1704,6 +1704,66 @@
       "reason": "gate red: sandbox proof",
       "finished_at": "2026-09-02T00:02:46.612Z",
       "output": "ervation error is published for review\n  [PASS] the served bytes claim no headroom anywhere in the flow module\n\nthe grid computation without a project, and a dash that gets out of the way\n\n  [PASS] a tool is added to the shell tray, which the cartridge does not own\n  [PASS] the tool does not duplicate itself if the cartridge runs twice\n  [PASS] arming is explicit, as it is for the scope\n  [PASS] an unarmed click still does nothing new\n  [PASS] the point query never measures a distance itself\n  [PASS] the block it writes is found by the filler, which selects by class\n  [PASS] the reader is told that nearest MAPPED is not nearest\n  [PASS] the reader is told it is a straight line and not a cable route\n  [PASS] the point answer never claims anything can connect\n  [PASS] an absent connection-points cartridge is an absence, not a guess\n  [PASS] the layers dash can be collapsed without entering fullscreen\n  [PASS] the collapsed choice is remembered, and every storage access is guarded\n  [PASS] the map is told to resize when the dash moves under it\n  [PASS] the toggle is reachable and labelled for assistive technology\n  [PASS] both new surfaces are published for review\n\nwhat is published as planned, kept apart from what exists\n\n  [PASS] the planned-change module is in the served cartridge\n  [PASS] the parsed product is kept so the module can read it\n  [PASS] a missing product is an absence, not a guess\n  [PASS] planned rows are reported in their OWN sentence, not in the circuit counts\n  [PASS] the page says a planned row is not a circuit today\n  [PASS] the page refuses commitment, consent and connection-date readings\n  [PASS] planned rows are stated as excluded from the counts above\n  [PASS] the planned state is published for review\n  [PASS] nothing in the planned sentence grades what it found\n\nthe computation left the sandbox, and ownership arrived\n\n  [PASS] the five network modules are no longer in the sandbox cartridge\n  [PASS] the sandbox cartridge is back under the 400 kB boundary with room to spare  309924 bytes\n  [PASS] the sandbox still CALLS them, from the cartridge that now carries them\n  [PASS] the card names the owners present\n  [PASS] a seam is named as a seam, with both ends said to differ\n  [PASS] a null owner is reported as unknown and never taken from the site\n  [PASS] an asset whose owner matches neither end is kept out of the boundary count\n  [PASS] the page refuses the counterparty reading\n  [PASS] the ownership state is published for review\n  [PASS] substation-intelligence is assembled from parts, not a monolith\n  [PASS] the five network modules are in the cartridge that owns the network\n  [PASS] the new owner-boundary module is there too\n  [PASS] it still carries the V8 engine verbatim, which is its slot contract\n  [PASS] it is under the boundary as well  186975 bytes\n\n617/618 checks passed\n\nFAILURES\n  the COMPOSITION declares an Earth radius exactly ONCE -- 3 declarations across ' + (CURRENT.cartridges || []).length + ' cartridges\n"
+    },
+    {
+      "step": "202609012350-owner-boundary.mjs",
+      "id": "owner-boundary",
+      "version": "v9.76",
+      "started_at": "2026-09-02T00:03:49.099Z",
+      "dry": false,
+      "stages": [
+        {
+          "name": "applied",
+          "at": "2026-09-02T00:03:49.842Z",
+          "changed": [
+            "atlas/parts/202609012045-sld-sandbox-body.js",
+            "tools/ci/202609012200-local-ci.mjs",
+            "tools/proofs/202609012345-sld-sandbox.proof.mjs",
+            "atlas/parts/202609012350-substation-intelligence-body.js",
+            "atlas/parts/202609012350-substation-intelligence-seed-parts.json"
+          ]
+        },
+        {
+          "name": "syntax checked",
+          "at": "2026-09-02T00:03:50.002Z"
+        },
+        {
+          "name": "step proof 202609012350-owner-boundary.proof.mjs",
+          "at": "2026-09-02T00:03:50.113Z",
+          "status": 0
+        },
+        {
+          "name": "composed",
+          "at": "2026-09-02T00:03:50.431Z",
+          "generation": "202609020003",
+          "version": "v9.76",
+          "previous": "202609012345"
+        },
+        {
+          "name": "gate sandbox proof",
+          "at": "2026-09-02T00:03:51.140Z",
+          "status": 0
+        },
+        {
+          "name": "gate run-current",
+          "at": "2026-09-02T00:03:52.139Z",
+          "status": 0
+        },
+        {
+          "name": "gate parts integrity",
+          "at": "2026-09-02T00:03:52.213Z",
+          "status": 0
+        },
+        {
+          "name": "gate all versions",
+          "at": "2026-09-02T00:03:52.398Z",
+          "status": 1
+        }
+      ],
+      "outcome": "failed",
+      "reason": "gate red: all versions",
+      "finished_at": "2026-09-02T00:03:52.398Z",
+      "output": "9-8.js (202609012249): reads ordinary voltages identically\n  [PASS] 202609012249-sld-sandbox-v9-8.js (202609012249): \"33000;750\" is read correctly\n  [PASS] 202609012249-sld-sandbox-v9-8.js (202609012249): \"33000;11000;415\" is read correctly\n  [PASS] 202609012250-sld-sandbox-v9-8.js (202609012250): exposes its measuring surface\n  [PASS] 202609012250-sld-sandbox-v9-8.js (202609012250): agrees on all 8 cases, exactly\n  [PASS] 202609012250-sld-sandbox-v9-8.js (202609012250): reads ordinary voltages identically\n  [PASS] 202609012250-sld-sandbox-v9-8.js (202609012250): \"33000;750\" is read correctly\n  [PASS] 202609012250-sld-sandbox-v9-8.js (202609012250): \"33000;11000;415\" is read correctly\n  [PASS] 202609012308-sld-sandbox-v9-8.js (202609012308): exposes its measuring surface\n  [PASS] 202609012308-sld-sandbox-v9-8.js (202609012308): agrees on all 8 cases, exactly\n  [PASS] 202609012308-sld-sandbox-v9-8.js (202609012308): reads ordinary voltages identically\n  [PASS] 202609012308-sld-sandbox-v9-8.js (202609012308): \"33000;750\" is read correctly\n  [PASS] 202609012308-sld-sandbox-v9-8.js (202609012308): \"33000;11000;415\" is read correctly\n  [PASS] 202609012317-sld-sandbox-v9-8.js (202609012317): exposes its measuring surface\n  [PASS] 202609012317-sld-sandbox-v9-8.js (202609012317): agrees on all 8 cases, exactly\n  [PASS] 202609012317-sld-sandbox-v9-8.js (202609012317): reads ordinary voltages identically\n  [PASS] 202609012317-sld-sandbox-v9-8.js (202609012317): \"33000;750\" is read correctly\n  [PASS] 202609012317-sld-sandbox-v9-8.js (202609012317): \"33000;11000;415\" is read correctly\n  [PASS] 202609012345-sld-sandbox-v9-8.js (202609012345): exposes its measuring surface\n  [PASS] 202609012345-sld-sandbox-v9-8.js (202609012345): agrees on all 8 cases, exactly\n  [PASS] 202609012345-sld-sandbox-v9-8.js (202609012345): reads ordinary voltages identically\n  [PASS] 202609012345-sld-sandbox-v9-8.js (202609012345): \"33000;750\" is read correctly\n  [PASS] 202609012345-sld-sandbox-v9-8.js (202609012345): \"33000;11000;415\" is read correctly\n  [FAIL] 202609020003-sld-sandbox-v9-8.js (202609020003): exposes its measuring surface — a version whose surface cannot be found is not being compared\n  [FAIL] every version that measures was actually compared — 14 of 15\n\nthe versions the page lists are the versions that shipped\n\n  [PASS] the ledger is not empty and is strictly increasing, except after the one stamp typed ahead\n  [PASS] the versions in the ledger are strictly increasing without exception\n  [PASS] its newest entry is the composition actually being served\n  [PASS] every composition manifest from the ledger era onward appears in it\n         60 versions listed, 18 composition manifests retained, 46 versions older than the retained set\n\n80/82 checks passed\n\nFAILURES\n  202609020003-sld-sandbox-v9-8.js (202609020003): exposes its measuring surface — a version whose surface cannot be found is not being compared\n  every version that measures was actually compared — 14 of 15\n"
     }
   ]
 }
