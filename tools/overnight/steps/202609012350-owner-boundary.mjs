@@ -296,6 +296,52 @@ const composedSource = (await Promise.all(
     readPublished(join(REPO, 'atlas', String(entry.path).replace(/^\\.\\//, ''))))
 )).join('\\n');`);
 
+      /* The harness must compose the way the page does.
+         --------------------------------------------------------------
+         runAdapter evaluated the sandbox cartridge ALONE, which was a
+         faithful model only while the sandbox carried every module it
+         used. It no longer does: grid-scope requires geodesy, and geodesy
+         is now supplied by the cartridge the shell loads first. Running
+         the sandbox by itself throws "grid-scope requires the geodesy
+         module" - correctly, because that is what a page missing the
+         first script would do.
+
+         So the modules the OTHER cartridges contribute are evaluated
+         first, in composition order. Not those cartridges whole: the
+         substation cartridge carries the 92 kB V8 engine, which expects a
+         real browser and is not what this proof is about. The modules are
+         the dependency; the engine is not. */
+      const SIBLING = `
+/* Modules contributed by the other cartridges in this composition, in the
+   order the shell loads them. The sandbox cannot be evaluated without
+   them, and pretending otherwise would prove a page that does not exist. */
+const SIBLING_MODULES = await (async () => {
+  const out = [];
+  for (const entry of (CURRENT.cartridges || [])) {
+    if (entry.id === 'sld-sandbox' || !entry.assembled_from) continue;
+    const manifestPath = join(REPO, 'atlas',
+      String(entry.assembled_from).replace(/^\\.\\//, ''));
+    let manifest;
+    try { manifest = JSON.parse(await readFile(manifestPath, 'utf8')); }
+    catch { continue; }
+    for (const part of (manifest.assembled_from || [])) {
+      if (part.role !== 'module') continue;
+      out.push(await readFile(join(REPO, part.path), 'utf8'));
+    }
+  }
+  return out.join('\\n');
+})();
+`;
+      let text = withComposed;
+      const SIBLING_ANCHOR = 'function runAdapter(source, initSpy) {';
+      if (text.split(SIBLING_ANCHOR).length - 1 !== 1) throw new Error('runAdapter anchor is not unique');
+      text = text.replace(SIBLING_ANCHOR, `${SIBLING}\n${SIBLING_ANCHOR}`);
+      const RUN_ANCHOR = '  vm.createContext(box);\n  vm.runInContext(source, box);';
+      if (text.split(RUN_ANCHOR).length - 1 !== 1) throw new Error('runInContext anchor is not unique');
+      text = text.replace(RUN_ANCHOR, '  vm.createContext(box);\n'
+        + '  if (SIBLING_MODULES) vm.runInContext(SIBLING_MODULES, box);\n'
+        + '  vm.runInContext(source, box);');
+
       /* Retarget only the named checks, by rewriting the single argument
          they read. A blanket substitution of cartridgeSource would break
          every check that legitimately asks about the sandbox itself. */
@@ -309,7 +355,6 @@ const composedSource = (await Promise.all(
         'the served bytes never read resistance or susceptance into the flow model',
         'the planned-change module is in the served cartridge',
       ];
-      let text = withComposed;
       for (const label of RETARGET) {
         const at = text.indexOf(`check('${label}'`);
         if (at < 0) throw new Error(`cannot retarget a check that is not there: ${label}`);
