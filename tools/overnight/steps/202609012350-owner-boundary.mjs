@@ -592,6 +592,48 @@ const SIBLING_MODULES = await (async () => {
       ].join('\n')));
     }
 
+    /* ── 6d. module-parity loads the sandbox too ─────────────────────
+       The last harness with the same root cause. It compares the geodesy
+       module against the measurement the served sandbox exposes, and it
+       cannot get that measurement out of a cartridge whose geodesy now
+       arrives from a sibling. Same fix, same reason. */
+    {
+      const parity = 'tools/proofs/modules/202609011950-module-parity.proof.mjs';
+      const p = read(parity);
+      const ANCHOR = 'const sandboxBox = sandboxContext();\n'
+        + 'vm.createContext(sandboxBox);\n'
+        + "vm.runInContext(sandboxSource, sandboxBox, { filename: 'sld-sandbox.js' });";
+      if (p.split(ANCHOR).length - 1 !== 1) throw new Error('module-parity anchor is not unique');
+      write(parity, p.replace(ANCHOR, [
+        '/* The modules the composition supplies from another cartridge. Since',
+        '   202609012350 the sandbox does not carry its own geodesy, so running',
+        '   it alone throws before it registers anything to compare against. */',
+        'const composition = JSON.parse(',
+        "  await readFile(join(REPO, 'atlas', 'current.json'), 'utf8'));",
+        'const siblingModules = await (async () => {',
+        '  const out = [];',
+        '  for (const entry of (composition.cartridges || [])) {',
+        "    if (entry.id === 'sld-sandbox' || !entry.assembled_from) continue;",
+        '    let manifest;',
+        '    try {',
+        '      manifest = JSON.parse(await readFile(',
+        "        join(REPO, 'atlas', String(entry.assembled_from).replace(/^\\.\\//, '')), 'utf8'));",
+        '    } catch { continue; }',
+        '    for (const part of (manifest.assembled_from || [])) {',
+        "      if (part.role !== 'module') continue;",
+        "      out.push(await readFile(join(REPO, part.path), 'utf8'));",
+        '    }',
+        '  }',
+        "  return out.join('\\n');",
+        '})();',
+        '',
+        'const sandboxBox = sandboxContext();',
+        'vm.createContext(sandboxBox);',
+        "if (siblingModules) vm.runInContext(siblingModules, sandboxBox, { filename: 'siblings.js' });",
+        "vm.runInContext(sandboxSource, sandboxBox, { filename: 'sld-sandbox.js' });",
+      ].join('\n')));
+    }
+
     /* ── 6. the gate ─────────────────────────────────────────────────── */
     const proof = read(sandboxProof);
     const TAIL = 'console.log(`\\n${passed}/${passed + failures.length} checks passed`);';
