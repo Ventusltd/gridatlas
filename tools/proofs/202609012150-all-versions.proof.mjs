@@ -309,14 +309,6 @@ for (const surface of SURFACES) {
   }
 
   const box = cartridgeContext();
-  /* Modules the CURRENT composition supplies from another cartridge.
-     Older artefacts are loaded untouched: they were self-contained
-     when they shipped, and rewriting how they load would compare a
-     version against something that never existed. */
-  if (surface.file === currentSandboxFile && siblingModules) {
-    try { vm.runInContext(siblingModules, box, { filename: 'siblings.js' }); }
-    catch (_) { /* reported by the surface check below if it matters */ }
-  }
   /* The load THROWS, and that is expected: these cartridges are carried
      engine slots and the V8 engine will not boot under a stub. They
      register their measuring surface on window before they reach the
@@ -327,7 +319,35 @@ for (const surface of SURFACES) {
   try { vm.runInContext(source, box, { filename: surface.file }); }
   catch (_) { /* the carried engine will not boot under a stub */ }
 
-  const measure = box.window.__GRIDATLAS_NEON_LINKS__?.measure;
+  /* Bare first, then with the modules a sibling cartridge supplies.
+     ----------------------------------------------------------------------
+     Every artefact up to 202609012345 was self-contained and must keep
+     being loaded exactly as it shipped, or the comparison stops comparing
+     what actually ran. From the generation that moved the computation out
+     of the sandbox, a cartridge cannot register its surface without the
+     modules the FIRST-loading cartridge now provides.
+
+     Hardcoding that boundary generation would rot. Retrying instead is
+     self-adjusting and states the fact plainly: an artefact that needs
+     siblings is reported as needing them, and one that does not is never
+     given them. */
+  let measure = box.window.__GRIDATLAS_NEON_LINKS__?.measure;
+  let neededSiblings = false;
+  if (typeof measure?.distanceKm !== 'function' && siblingModules) {
+    const retry = cartridgeContext();
+    vm.createContext(retry);
+    try { vm.runInContext(siblingModules, retry, { filename: 'siblings.js' }); }
+    catch (_) { /* the surface check below reports the consequence */ }
+    try { vm.runInContext(source, retry, { filename: surface.file }); }
+    catch (_) { /* the carried engine will not boot under a stub */ }
+    const retried = retry.window.__GRIDATLAS_NEON_LINKS__?.measure;
+    if (typeof retried?.distanceKm === 'function') {
+      measure = retried;
+      neededSiblings = true;
+      console.log(`  [composed] ${surface.file}: needs modules from a sibling cartridge`);
+    }
+  }
+  void neededSiblings;
   check(`${surface.file} (${surface.version}): exposes its measuring surface`,
     typeof measure?.distanceKm === 'function',
     'a version whose surface cannot be found is not being compared');
