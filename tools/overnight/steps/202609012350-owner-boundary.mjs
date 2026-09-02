@@ -158,6 +158,20 @@ export default {
         '  if (!GEODESY) throw new Error("substation-intelligence requires the geodesy module");',
         '  const distanceKm = GEODESY.distanceKm;',
       ].join('\n')));
+
+      /* The constant it declared for that haversine is now unused, and an
+         unused radius is exactly the second declaration this estate has
+         spent two generations removing. DEG stays: PART 2 uses it. */
+      const withDelegate = read(SUB_BODY);
+      const UNUSED = '  const EARTH_RADIUS_KM = 6378.137;\n';
+      if (withDelegate.split(UNUSED).length - 1 !== 1) {
+        throw new Error('the substation body does not declare its own radius exactly once');
+      }
+      if (/EARTH_RADIUS_KM/.test(withDelegate.split(UNUSED).join(''))) {
+        throw new Error('the substation body still uses EARTH_RADIUS_KM elsewhere; '
+          + 'removing the declaration would break it');
+      }
+      write(SUB_BODY, withDelegate.split(UNUSED).join(''));
     }
 
     /* ── 2. the parts seed it should always have had ─────────────────── */
@@ -415,16 +429,30 @@ const SIBLING_MODULES = await (async () => {
         if (text.split(RADIUS_OLD).length - 1 !== 1) {
           throw new Error('the Earth-radius check is not in the shape this step expects');
         }
-        text = text.split(RADIUS_OLD).join(
-          '/* comment-stripped, the same way `code` is, so a radius named only\n'
-          + '   in prose is not counted as a declaration */\n'
-          + 'const composedCode = composedSource\n'
-          + "  .replace(/\\/\\*[\\s\\S]*?\\*\\//g, '')\n"
-          + "  .replace(/(^|[^:])\\/\\/[^\\n]*/g, '$1');\n"
-          + "check('the COMPOSITION declares an Earth radius exactly ONCE',\n"
-          + '  (composedCode.match(/=\\s*6378\\.137/g) || []).length === 1,\n'
-          + '  `${(composedCode.match(/=\\s*6378\\.137/g) || []).length} declarations across '
-          + "' + (CURRENT.cartridges || []).length + ' cartridges`);");
+        text = text.split(RADIUS_OLD).join([
+          '/* Comment-stripped, the same way `code` is, so a radius named only',
+          '   in prose is not counted as a declaration.',
+          '',
+          '   The carried V8 engine declares its own radius at its line 32 and',
+          '   is carried VERBATIM by contract - a cartridge in a replace-script',
+          '   slot reproduces the shell script it supersedes byte for byte, and',
+          '   editing it would break the one guarantee that slot makes. So it',
+          '   is subtracted rather than counted: the claim is that the estate',
+          '   declares ONE radius in its own code, not that the shell it wraps',
+          '   has none. Pretending otherwise would mean either a false pass or',
+          '   an unfixable failure. */',
+          'const carriedEngine = await readFile(join(REPO, \'atlas\', \'releases\',',
+          "  '202608300453-atlas-v9', 'ventus-corev8engine.js'), 'utf8');",
+          'const composedCode = composedSource',
+          '  .split(carriedEngine.split(\'\\r\\n\').join(\'\\n\')).join(\' \')',
+          "  .replace(/\\/\\*[\\s\\S]*?\\*\\//g, '')",
+          "  .replace(/(^|[^:])\\/\\/[^\\n]*/g, '$1');",
+          "check('the estate declares an Earth radius exactly ONCE across the composition',",
+          '  (composedCode.match(/=\\s*6378\\.137/g) || []).length === 1,',
+          '  `${(composedCode.match(/=\\s*6378\\.137/g) || []).length} declarations outside the carried engine`);',
+          "check('and the carried engine still has its own, untouched',",
+          '  (carriedEngine.match(/=\\s*6378\\.137/g) || []).length === 1);',
+        ].join('\n'));
       }
 
       /* One of them changes MEANING, not just target.
