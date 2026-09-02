@@ -65,6 +65,16 @@ const SUB_CARTRIDGE = 'atlas/cartridges/202609012045-substation-intelligence-v9-
 
 /* The five that read the published network, and the new sixth. */
 const MOVING = [
+  /* Geodesy moves as well, and this is the definitive close of the
+     duplicate-geodesy class. The substation body has computed distance
+     with 2*R*asin(sqrt(a)) since 202609012045 while the estate's canonical
+     form is R*2*atan2(sqrt(a),sqrt(1-a)); the two agree algebraically and
+     differ in the last place. It was invisible while that half of the
+     cartridge was a monolith, and the all-versions proof found it the
+     moment this cut extracted it into a part. Moving geodesy into the
+     FIRST-loading cartridge means one implementation serves both, rather
+     than the two agreeing by inspection. */
+  'atlas/modules/202609011950-geodesy.js',
   'atlas/modules/202609012245-network-topology.js',
   'atlas/modules/202609012245-electrical-distance.js',
   'atlas/modules/202609012250-rating-envelope.js',
@@ -112,6 +122,44 @@ export default {
     /* PART 2 exactly as it shipped, its leading blank lines trimmed so the
        assembler's own joiner controls the spacing. */
     write(SUB_BODY, tail.replace(/^\n+/, ''));
+
+    /* ── 1b. the substation body delegates its geodesy ───────────────
+       Its own copy used the asin form. Replacing it with a delegation is
+       the fix the estate already made in the sandbox at v9.67, applied to
+       the half that was still a monolith and therefore unexamined. A
+       missing module is a hard throw, not a silent fallback: a fallback
+       is how two implementations survive. */
+    {
+      const OWN = [
+        '  function distanceKm(lon1, lat1, lon2, lat2) {',
+        '    const dLat = (lat2 - lat1) * DEG;',
+        '    const dLon = (lon2 - lon1) * DEG;',
+        '    const a = Math.sin(dLat / 2) ** 2',
+        '      + Math.cos(lat1 * DEG) * Math.cos(lat2 * DEG) * Math.sin(dLon / 2) ** 2;',
+        '    return 2 * EARTH_RADIUS_KM * Math.asin(Math.sqrt(a));',
+        '  }',
+      ].join('\n');
+      const subBody = read(SUB_BODY);
+      if (subBody.split(OWN).length - 1 !== 1) {
+        throw new Error('the substation body does not carry its own haversine in the shape this step expects');
+      }
+      write(SUB_BODY, subBody.split(OWN).join([
+        '  /* ONE geodesy, and it is the module\'s.',
+        '     --------------------------------------------------------------',
+        '     This carried its own haversine using 2*R*asin(sqrt(a)) while the',
+        '     estate canonical form is R*2*atan2(sqrt(a), sqrt(1-a)). They',
+        '     agree algebraically and differ in the last place, and the',
+        '     difference was invisible for as long as this half of the',
+        '     cartridge was a monolith the all-versions scan could not read.',
+        '     202609012350 extracted it, the scan found it immediately, and',
+        '     the answer is not to retype the right form here but to stop',
+        '     having a second implementation at all. */',
+        '  const GEODESY = (window.__GRIDATLAS_MODULES__ || {}).geodesy;',
+        '  if (!GEODESY) throw new Error("substation-intelligence requires the geodesy module");',
+        '  const distanceKm = GEODESY.distanceKm;',
+      ].join('
+')));
+    }
 
     /* ── 2. the parts seed it should always have had ─────────────────── */
     write(SUB_SEED, JSON.stringify({
