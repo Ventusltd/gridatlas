@@ -2728,12 +2728,12 @@ check('the rating state is published for review',
 console.log('\na declared powerflow, and what it refuses to say\n');
 
 check('the injection-response module is in the served cartridge',
-  /gridatlas\.module\.injection-response\.v1/.test(composedSource));
+  /gridatlas\.module\.injection-response\.v2/.test(composedSource));
 check('it is evaluated before the body that calls it',
   cartridgeSource.indexOf('gridatlas.module.injection-response.v1')
     < cartridgeSource.indexOf('function flowModule('));
 check('the served bytes never read resistance or susceptance into the flow model', (() => {
-  const start = composedSource.indexOf('gridatlas.module.injection-response.v1');
+  const start = composedSource.indexOf('gridatlas.module.injection-response.v2');
   const end = composedSource.indexOf('NS.injectionResponse = Object.freeze');
   if (start < 0 || end < 0) return false;
   const mod = composedSource.slice(start, end);
@@ -2746,8 +2746,8 @@ check('the card states the model assumptions where the reader sees them',
 check('the card says plainly it is not a loading',
   /not a loading/.test(cartridgeSource)
   && /whether there is room/.test(cartridgeSource));
-check('an answer that fails its own Kirchhoff check is discarded, not printed',
-  /r\.validation && r\.validation\.passes \? r : null/.test(cartridgeSource));
+check('an answer that fails its own acceptance is discarded, not printed',
+  /r\.publishable === true \? r :/.test(cartridgeSource));
 check('the powerflow uses the capacity the deep link carries',
   /currentCapacityMw/.test(cartridgeSource)
   && /currentCapacityMw = Number\.isFinite\(stated\)/.test(cartridgeSource));
@@ -2888,7 +2888,7 @@ check('the ownership state is published for review',
     /gridatlas\.module\.network-topology\.v1/.test(subSource)
     && /gridatlas\.module\.electrical-distance\.v1/.test(subSource)
     && /gridatlas\.module\.rating-envelope\.v1/.test(subSource)
-    && /gridatlas\.module\.injection-response\.v1/.test(subSource)
+    && /gridatlas\.module\.injection-response\.v2/.test(subSource)
     && /gridatlas\.module\.planned-change/.test(subSource));
   check('the new owner-boundary module is there too',
     /gridatlas\.module\.owner-boundary/.test(subSource));
@@ -2897,6 +2897,37 @@ check('the ownership state is published for review',
   check('it is under the boundary as well',
     subSource.length < 400000, `${subSource.length} bytes`);
 }
+
+console.log('\nthe powerflow stop-ship, closed\n');
+
+check('the successor powerflow module is what ships',
+  /gridatlas\.module\.injection-response\.v2/.test(composedSource)
+  && !/gridatlas\.module\.injection-response\.v1/.test(composedSource));
+check('the card asks for a DECLARED sink, never the first bus to hand',
+  /mod\.sinkFor\(model, here\)/.test(cartridgeSource)
+  && !/model\.buses\.find\(b => b !== model\.busOf\(here\)\)/.test(cartridgeSource));
+check('the card gates on publishable, not on one bus balancing',
+  /r\.publishable === true \? r :/.test(cartridgeSource)
+  && !/r\.validation && r\.validation\.passes \? r : null/.test(cartridgeSource));
+check('an unavailable answer is stated to the reader, not swallowed',
+  /not available here/.test(cartridgeSource)
+  && /rather than one that has not converged/.test(cartridgeSource));
+check('the card names the component the transfer was solved in',
+  /solved in a component of/.test(cartridgeSource));
+check('refusals are counted for review',
+  /powerflow\.refused \+= 1;/.test(cartridgeSource));
+/* Pinned in fragments: these are concatenated string literals in the
+   module source, so the sentence never appears contiguously there -
+   the module proof matches the runtime string, which does. */
+check('the served module refuses a cross-component transfer',
+  /connected components of the published network/.test(composedSource));
+check('the served module accepts on all three conditions, not one',
+  /worst_bus_error_mw/.test(composedSource)
+  && /solved\.residual < 1e-6/.test(composedSource));
+check('the served module keys edges on the published row, not its values',
+  /if \(seen\.has\(entry\.row\)\) continue;/.test(composedSource));
+check('the sink rule is published so a reader can see what was assumed',
+  /bus in the SAME component as the injection/.test(composedSource));
 
 console.log(`\n${passed}/${passed + failures.length} checks passed`);
 if (failures.length) {
