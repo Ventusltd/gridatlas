@@ -398,6 +398,35 @@ const SIBLING_MODULES = await (async () => {
           + text.slice(end);
       }
 
+      /* "Exactly ONE Earth radius" is now a property of the COMPOSITION.
+         --------------------------------------------------------------
+         The check counted declarations in the sandbox, which was the
+         right place to count while geodesy lived there. It now lives in
+         the cartridge the shell loads first, so the sandbox declares
+         zero - and zero is not the answer this check wants to accept
+         either, because "no radius anywhere" would pass a composition
+         that had lost its geodesy entirely. Counting across the whole
+         composition asks the question that was always meant: there is
+         one Earth radius in the served bytes, and exactly one. */
+      {
+        const RADIUS_OLD = "check('the served cartridge declares an Earth radius exactly ONCE',\n"
+          + '  (code.match(/=\\s*6378\\.137/g) || []).length === 1,\n'
+          + '  `${(code.match(/=\\s*6378\\.137/g) || []).length} declarations`);';
+        if (text.split(RADIUS_OLD).length - 1 !== 1) {
+          throw new Error('the Earth-radius check is not in the shape this step expects');
+        }
+        text = text.split(RADIUS_OLD).join(
+          '/* comment-stripped, the same way `code` is, so a radius named only\n'
+          + '   in prose is not counted as a declaration */\n'
+          + 'const composedCode = composedSource\n'
+          + "  .replace(/\\/\\*[\\s\\S]*?\\*\\//g, '')\n"
+          + "  .replace(/(^|[^:])\\/\\/[^\\n]*/g, '$1');\n"
+          + "check('the COMPOSITION declares an Earth radius exactly ONCE',\n"
+          + '  (composedCode.match(/=\\s*6378\\.137/g) || []).length === 1,\n'
+          + '  `${(composedCode.match(/=\\s*6378\\.137/g) || []).length} declarations across '
+          + "' + (CURRENT.cartridges || []).length + ' cartridges`);");
+      }
+
       /* One of them changes MEANING, not just target.
          --------------------------------------------------------------
          It asserted the module appears before `const DECLARED = ` in the
