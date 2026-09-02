@@ -1569,6 +1569,51 @@
       "reason": "gate red: all versions",
       "finished_at": "2026-09-01T23:58:29.999Z",
       "output": "5\" is read correctly\n  [PASS] 202609012250-sld-sandbox-v9-8.js (202609012250): exposes its measuring surface\n  [PASS] 202609012250-sld-sandbox-v9-8.js (202609012250): agrees on all 8 cases, exactly\n  [PASS] 202609012250-sld-sandbox-v9-8.js (202609012250): reads ordinary voltages identically\n  [PASS] 202609012250-sld-sandbox-v9-8.js (202609012250): \"33000;750\" is read correctly\n  [PASS] 202609012250-sld-sandbox-v9-8.js (202609012250): \"33000;11000;415\" is read correctly\n  [PASS] 202609012308-sld-sandbox-v9-8.js (202609012308): exposes its measuring surface\n  [PASS] 202609012308-sld-sandbox-v9-8.js (202609012308): agrees on all 8 cases, exactly\n  [PASS] 202609012308-sld-sandbox-v9-8.js (202609012308): reads ordinary voltages identically\n  [PASS] 202609012308-sld-sandbox-v9-8.js (202609012308): \"33000;750\" is read correctly\n  [PASS] 202609012308-sld-sandbox-v9-8.js (202609012308): \"33000;11000;415\" is read correctly\n  [PASS] 202609012317-sld-sandbox-v9-8.js (202609012317): exposes its measuring surface\n  [PASS] 202609012317-sld-sandbox-v9-8.js (202609012317): agrees on all 8 cases, exactly\n  [PASS] 202609012317-sld-sandbox-v9-8.js (202609012317): reads ordinary voltages identically\n  [PASS] 202609012317-sld-sandbox-v9-8.js (202609012317): \"33000;750\" is read correctly\n  [PASS] 202609012317-sld-sandbox-v9-8.js (202609012317): \"33000;11000;415\" is read correctly\n  [PASS] 202609012345-sld-sandbox-v9-8.js (202609012345): exposes its measuring surface\n  [PASS] 202609012345-sld-sandbox-v9-8.js (202609012345): agrees on all 8 cases, exactly\n  [PASS] 202609012345-sld-sandbox-v9-8.js (202609012345): reads ordinary voltages identically\n  [PASS] 202609012345-sld-sandbox-v9-8.js (202609012345): \"33000;750\" is read correctly\n  [PASS] 202609012345-sld-sandbox-v9-8.js (202609012345): \"33000;11000;415\" is read correctly\n  [PASS] 202609012358-sld-sandbox-v9-8.js (202609012358): exposes its measuring surface\n  [PASS] 202609012358-sld-sandbox-v9-8.js (202609012358): agrees on all 8 cases, exactly\n  [PASS] 202609012358-sld-sandbox-v9-8.js (202609012358): reads ordinary voltages identically\n  [PASS] 202609012358-sld-sandbox-v9-8.js (202609012358): \"33000;750\" is read correctly\n  [PASS] 202609012358-sld-sandbox-v9-8.js (202609012358): \"33000;11000;415\" is read correctly\n  [PASS] every version that measures was actually compared\n\nthe versions the page lists are the versions that shipped\n\n  [PASS] the ledger is not empty and is strictly increasing, except after the one stamp typed ahead\n  [PASS] the versions in the ledger are strictly increasing without exception\n  [PASS] its newest entry is the composition actually being served\n  [PASS] every composition manifest from the ledger era onward appears in it\n         60 versions listed, 18 composition manifests retained, 46 versions older than the retained set\n\n85/86 checks passed\n\nFAILURES\n  every measuring artefact uses the estate haversine form, not only its radius — atlas/parts/202609012350-substation-intelligence-body.js\n"
+    },
+    {
+      "step": "202609012350-owner-boundary.mjs",
+      "id": "owner-boundary",
+      "version": "v9.76",
+      "started_at": "2026-09-02T00:01:33.913Z",
+      "dry": false,
+      "stages": [
+        {
+          "name": "applied",
+          "at": "2026-09-02T00:01:34.650Z",
+          "changed": [
+            "atlas/parts/202609012045-sld-sandbox-body.js",
+            "tools/ci/202609012200-local-ci.mjs",
+            "tools/proofs/202609012345-sld-sandbox.proof.mjs",
+            "atlas/parts/202609012350-substation-intelligence-body.js",
+            "atlas/parts/202609012350-substation-intelligence-seed-parts.json"
+          ]
+        },
+        {
+          "name": "syntax checked",
+          "at": "2026-09-02T00:01:34.812Z"
+        },
+        {
+          "name": "step proof 202609012350-owner-boundary.proof.mjs",
+          "at": "2026-09-02T00:01:34.921Z",
+          "status": 0
+        },
+        {
+          "name": "composed",
+          "at": "2026-09-02T00:01:35.230Z",
+          "generation": "202609020001",
+          "version": "v9.76",
+          "previous": "202609012345"
+        },
+        {
+          "name": "gate sandbox proof",
+          "at": "2026-09-02T00:01:35.287Z",
+          "status": 1
+        }
+      ],
+      "outcome": "failed",
+      "reason": "gate red: sandbox proof",
+      "finished_at": "2026-09-02T00:01:35.287Z",
+      "output": "\npre-snapped config adapter, carried forward\n\n  [PASS] the original init is still called and its return passed through\n  [PASS] the rewritten config is byte-identical to the original adapter's\n  [PASS] all five topology layers are un-snapped, and only those  132,220,275,400,66\n  [PASS] layers outside the closure keep their snap flag\n  [PASS] preload flags survive the rewrite\n  [PASS] the public state object keeps its original schema and generation  202608292126\n  [PASS] applied is true after a successful init\n  [PASS] a shell that no longer matches the expected snap contract fails closed\n  [PASS] the failure is recorded rather than swallowed  1\n\nthe measurement\n\nevalmachine.<anonymous>:45\r\n  if (!geodesy) throw new Error('grid-scope requires the geodesy module');\r\n                ^\r\n\r\nError: grid-scope requires the geodesy module\r\n    at evalmachine.<anonymous>:45:23\r\n    at evalmachine.<anonymous>:179:3\r\n    at Script.runInContext (node:vm:149:12)\r\n    at Object.runInContext (node:vm:301:6)\r\n    at file:///C:/Users/vikra/OneDrive/Documents/GitHub/gridatlas/tools/proofs/202609020001-sld-sandbox.proof.mjs:273:4\r\n\r\nNode.js v24.19.0\r\n"
     }
   ]
 }

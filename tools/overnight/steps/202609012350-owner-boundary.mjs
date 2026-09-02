@@ -336,11 +336,32 @@ const SIBLING_MODULES = await (async () => {
       const SIBLING_ANCHOR = 'function runAdapter(source, initSpy) {';
       if (text.split(SIBLING_ANCHOR).length - 1 !== 1) throw new Error('runAdapter anchor is not unique');
       text = text.replace(SIBLING_ANCHOR, `${SIBLING}\n${SIBLING_ANCHOR}`);
-      const RUN_ANCHOR = '  vm.createContext(box);\n  vm.runInContext(source, box);';
-      if (text.split(RUN_ANCHOR).length - 1 !== 1) throw new Error('runInContext anchor is not unique');
-      text = text.replace(RUN_ANCHOR, '  vm.createContext(box);\n'
-        + '  if (SIBLING_MODULES) vm.runInContext(SIBLING_MODULES, box);\n'
-        + '  vm.runInContext(source, box);');
+      /* THREE places evaluate the cartridge, not one. Patching only the
+         first left the other two throwing the same "grid-scope requires
+         the geodesy module" from a different line - the module has to be
+         in the context wherever the cartridge is run, and a proof that
+         evaluates the same bytes three different ways must model the same
+         page all three times. */
+      const RUN_SITES = [
+        ['  vm.createContext(box);\n  vm.runInContext(source, box);',
+         '  vm.createContext(box);\n'
+         + '  if (SIBLING_MODULES) vm.runInContext(SIBLING_MODULES, box);\n'
+         + '  vm.runInContext(source, box);'],
+        ['vm.createContext(sandbox);\nvm.runInContext(cartridgeSource, sandbox);',
+         'vm.createContext(sandbox);\n'
+         + 'if (SIBLING_MODULES) vm.runInContext(SIBLING_MODULES, sandbox);\n'
+         + 'vm.runInContext(cartridgeSource, sandbox);'],
+        ['  vm.createContext(box);\n  vm.runInContext(cartridgeSource, box);',
+         '  vm.createContext(box);\n'
+         + '  if (SIBLING_MODULES) vm.runInContext(SIBLING_MODULES, box);\n'
+         + '  vm.runInContext(cartridgeSource, box);'],
+      ];
+      for (const [from, to] of RUN_SITES) {
+        if (text.split(from).length - 1 !== 1) {
+          throw new Error(`vm call site anchor is not unique: ${from.slice(0, 40)}`);
+        }
+        text = text.replace(from, () => to);
+      }
 
       /* Retarget only the named checks, by rewriting the single argument
          they read. A blanket substitution of cartridgeSource would break
