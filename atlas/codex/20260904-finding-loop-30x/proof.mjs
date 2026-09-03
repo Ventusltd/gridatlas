@@ -1,5 +1,6 @@
 import {
   coverageBoundary,
+  createDistanceFinding,
   createFindingLoop,
   createProjectIndex,
   createProjectRegister,
@@ -236,6 +237,24 @@ for (const [label, value] of [
   check(label, rejected);
 }
 
+const markinchSegmentDistance = createDistanceFinding({
+  type: 'mapped_segment', distance_km: 2.470, selection_revision: 1,
+  provenance: [evidence], qualifiers: ['MARKINCH_COMMITTED_FIXTURE']
+});
+check('distance finding preserves the committed straight-line value',
+  markinchSegmentDistance.value === 2.470 && markinchSegmentDistance.unit === 'km');
+check('distance finding declares method and semantic boundary',
+  markinchSegmentDistance.qualifiers.includes('STRAIGHT_LINE_DISTANCE')
+    && markinchSegmentDistance.qualifiers.includes('PROXIMITY_IS_NOT_CONNECTION'));
+for (const value of [null, '2.470', -1, Number.NaN]) {
+  let rejected = false;
+  try {
+    createDistanceFinding({ type: 'mapped_segment', distance_km: value,
+      selection_revision: 1, provenance: [evidence] });
+  } catch { rejected = true; }
+  check('distance builder rejects a non-canonical distance', rejected);
+}
+
 const store = createSelectionStore();
 store.select(location);
 store.select(accepted);
@@ -390,4 +409,4 @@ check('distinct nearest candidate is available', unique.status === 'available' &
 const absent = resolveNearestCandidate([], { idField: 'site_code' });
 check('empty population is withheld', absent.reason === 'NO_CANDIDATE' && absent.value === null);
 
-console.log(JSON.stringify({ status: 'PASS', iteration: 19, checks }));
+console.log(JSON.stringify({ status: 'PASS', iteration: 20, checks }));

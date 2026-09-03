@@ -303,6 +303,33 @@ export function coverageBoundary({ predicate, located, total }) {
   });
 }
 
+/** Build a qualified straight-line distance measurement from pinned evidence. */
+export function createDistanceFinding({
+  type, distance_km: distanceKm, selection_revision: selectionRevision,
+  provenance, qualifiers = []
+}) {
+  if (!['nearest_connection_point', 'mapped_segment'].includes(type)) {
+    throw new TypeError('distance finding type is unsupported');
+  }
+  if (typeof distanceKm !== 'number' || !Number.isFinite(distanceKm) || distanceKm < 0) {
+    throw new TypeError('distance_km must be a finite non-negative number');
+  }
+  if (!Array.isArray(qualifiers)
+      || qualifiers.some((item) => typeof item !== 'string' || !item.trim())) {
+    throw new TypeError('distance qualifiers must be non-empty strings');
+  }
+  return validateFinding({
+    type,
+    evidence_class: 'measurement',
+    status: 'available',
+    selection_revision: selectionRevision,
+    value: distanceKm,
+    unit: 'km',
+    qualifiers: [...qualifiers, 'STRAIGHT_LINE_DISTANCE', 'PROXIMITY_IS_NOT_CONNECTION'],
+    provenance
+  });
+}
+
 /** Selection history creates a fresh revision whenever state is restored. */
 export function createSelectionStore() {
   let state = Object.freeze({ revision: 0, selection: null });
