@@ -192,15 +192,34 @@ function validateAtlasLayout(scopeState) {
   }
 }
 
-function lint() {
+function lint({ quiet = false } = {}) {
   const scopeState = validateScopeLedger();
   validateWorkflowBudget(scopeState.master);
   validateAtlasLayout(scopeState);
-  console.log(`scope-ledger=PASS active=${scopeState.active?.name || 'none'} master=${scopeState.master.data.status}`);
+  /* Under --stdout the caller is diffing this stream against STATE.md, so
+     the ledger line goes to stderr, where it is still read by a human and
+     still fails the run if it throws, but is not in the bytes compared. */
+  const line = `scope-ledger=PASS active=${scopeState.active?.name || 'none'} master=${scopeState.master.data.status}`;
+  if (quiet) console.error(line); else console.log(line);
   return scopeState;
 }
 
-function renderState(scopeState) {
+/* `--stdout` renders WITHOUT writing.
+   ------------------------------------------------------------------------
+   AGENTS.md asks, before every handover: "Prove `node tools/scope/loop.mjs
+   state --stdout` exactly matches STATE.md". That proof could not fail.
+   Only `process.argv[2]` was ever read, so `--stdout` was silently ignored,
+   the command took its normal path, and its normal path WRITES STATE.md -
+   the very file the operator is about to compare it against.
+
+   Demonstrated rather than argued: replace STATE.md with the single line
+   "DELIBERATELY WRONG", run `state --stdout`, and the file comes back
+   correct. A drifted STATE.md was repaired by the check that existed to
+   detect it, and the operator saw a match every time.
+
+   So the flag is read now, and with it nothing is written: the rendered
+   text goes to stdout and the caller diffs it. */
+function renderState(scopeState, { toStdout = false } = {}) {
   const rootReleaseCount = existingDirectories(ROOT).filter(name => RELEASE_PATTERN.test(name)).length;
   const atlasReleaseCount = existingDirectories(path.join(ROOT, 'atlas', 'releases')).filter(name => RELEASE_PATTERN.test(name)).length;
   let composition = 'not-created';
@@ -211,6 +230,13 @@ function renderState(scopeState) {
   }
   const rows = scopeState.scopes.map(item => `| ${item.data.scope} | ${item.data.generation} | ${item.data.status} | ${item.name} |`).join('\n');
   const state = `# GridAtlas durable state\n\n- Master: \`${scopeState.master.data.status}\`\n- Active scope: \`${scopeState.active?.name || 'none'}\`\n- Composition: \`${composition}\`\n- Top-level full release copies: \`${rootReleaseCount}\`\n- Immutable releases under atlas/releases: \`${atlasReleaseCount}\`\n- Active workflows: \`${ACTIVE_WORKFLOWS.length}\`\n- Historical workflows archived: \`21\`\n- Last-known-green shell: \`${CURRENT_RELEASE}\`\n\n| Scope | Generation | Status | Ledger file |\n|---:|---:|---|---|\n${rows}\n\nThis file is generated deterministically by \`node tools/scope/loop.mjs state\`.\n`;
+  if (toStdout) {
+    /* Exactly the bytes that would have been written, and nothing else on
+       this stream - a caller diffing this against STATE.md must not have to
+       strip a status line out of it first. */
+    process.stdout.write(state);
+    return;
+  }
   writeText(path.join(ROOT, 'STATE.md'), state);
   console.log('STATE.md=UPDATED');
 }
@@ -228,9 +254,22 @@ function next(scopeState) {
 }
 
 const command = process.argv[2] || 'lint';
+const flags = new Set(process.argv.slice(3));
+/* An unrecognised flag is a typo, not a no-op. `--stdout` was ignored for
+   as long as it has been in AGENTS.md; a silently discarded flag is how a
+   governance check becomes a formality. */
+for (const flag of flags) {
+  if (flag !== '--stdout') {
+    console.error(`[scope-loop:${command}] unknown flag ${flag}`);
+    process.exit(1);
+  }
+}
 try {
   if (command === 'lint') lint();
-  else if (command === 'state') renderState(lint());
+  else if (command === 'state') {
+    const toStdout = flags.has('--stdout');
+    renderState(lint({ quiet: toStdout }), { toStdout });
+  }
   else if (command === 'next') next(lint());
   else throw new Error(`unknown command ${command}`);
 } catch (error) {
