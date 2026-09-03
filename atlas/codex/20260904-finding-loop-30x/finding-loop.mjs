@@ -360,6 +360,25 @@ export function orderCandidates(rows, { idField, distanceField = 'distance_km' }
   return Object.freeze(copy);
 }
 
+/** Withhold a nearest claim when the evidence cannot distinguish the leaders. */
+export function resolveNearestCandidate(rows, {
+  idField, distanceField = 'distance_km', toleranceKm = 1e-9
+}) {
+  if (!Number.isFinite(toleranceKm) || toleranceKm < 0) {
+    throw new TypeError('tie tolerance must be non-negative');
+  }
+  const ordered = orderCandidates(rows, { idField, distanceField });
+  if (ordered.length === 0) {
+    return Object.freeze({ status: 'withheld', reason: 'NO_CANDIDATE', value: null });
+  }
+  if (ordered.length > 1
+      && Math.abs(ordered[1][distanceField] - ordered[0][distanceField]) <= toleranceKm) {
+    return Object.freeze({ status: 'withheld', reason: 'AMBIGUOUS_TIE', value: null,
+      candidate_ids: Object.freeze([ordered[0][idField], ordered[1][idField]]) });
+  }
+  return Object.freeze({ status: 'available', reason: null, value: ordered[0] });
+}
+
 /** One owner connects selection revisions to findings and rejects late results. */
 export function createFindingLoop(query) {
   if (typeof query !== 'function') throw new TypeError('query function is required');

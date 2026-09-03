@@ -11,8 +11,9 @@ import {
   validateSubstationSelection,
   validateFinding,
   validateProvenance,
-  nearbyProjects
-  ,orderCandidates
+  nearbyProjects,
+  orderCandidates,
+  resolveNearestCandidate
 } from './finding-loop.mjs';
 
 let checks = 0;
@@ -269,4 +270,20 @@ for (const [label, rows] of [
   check(label, rejected);
 }
 
-console.log(JSON.stringify({ status: 'PASS', iteration: 11, checks }));
+const tied = resolveNearestCandidate([
+  { site_code: 'B', distance_km: 2 },
+  { site_code: 'A', distance_km: 2 }
+], { idField: 'site_code' });
+check('equal nearest candidates are withheld as ambiguous',
+  tied.status === 'withheld' && tied.reason === 'AMBIGUOUS_TIE' && tied.value === null);
+check('ambiguous candidate identities remain inspectable',
+  tied.candidate_ids.join(',') === 'A,B');
+const unique = resolveNearestCandidate([
+  { site_code: 'A', distance_km: 2 },
+  { site_code: 'B', distance_km: 2.1 }
+], { idField: 'site_code' });
+check('distinct nearest candidate is available', unique.status === 'available' && unique.value.site_code === 'A');
+const absent = resolveNearestCandidate([], { idField: 'site_code' });
+check('empty population is withheld', absent.reason === 'NO_CANDIDATE' && absent.value === null);
+
+console.log(JSON.stringify({ status: 'PASS', iteration: 12, checks }));
