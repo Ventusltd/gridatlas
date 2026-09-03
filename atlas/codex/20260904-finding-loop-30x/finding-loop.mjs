@@ -326,6 +326,24 @@ export function createProjectRegister(rows, provenance) {
   return Object.freeze({ source, projects: Object.freeze(projects) });
 }
 
+/** Exact identity lookup without replacing the complete nearby-search population. */
+export function createProjectIndex(register) {
+  if (!register || !Array.isArray(register.projects) || !register.source) {
+    throw new TypeError('validated project register is required');
+  }
+  const byId = new Map(register.projects.map((project) => [project.repd_ref, project]));
+  if (byId.size !== register.projects.length) throw new TypeError('project index lost identity');
+  return Object.freeze({
+    source: register.source,
+    size: byId.size,
+    get(repdRef) {
+      if (typeof repdRef !== 'string' || !repdRef.trim()) throw new TypeError('repd_ref is required');
+      return byId.get(repdRef) || null;
+    },
+    all: () => register.projects
+  });
+}
+
 /** Search every row in the pinned register through an injected canonical distance owner. */
 export function nearbyProjects({ register, longitude, latitude, distanceKm, limit = 10 }) {
   if (typeof distanceKm !== 'function' || !Number.isInteger(limit) || limit < 1) {

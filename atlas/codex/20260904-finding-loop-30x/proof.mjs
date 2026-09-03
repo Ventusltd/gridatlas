@@ -1,6 +1,7 @@
 import {
   coverageBoundary,
   createFindingLoop,
+  createProjectIndex,
   createProjectRegister,
   createSelectionStore,
   decodeSelection,
@@ -219,6 +220,17 @@ try {
 } catch { duplicateProjectRejected = true; }
 check('duplicate register identity fails closed', duplicateProjectRejected);
 
+const projectIndex = createProjectIndex(register);
+check('project index retains the complete register',
+  projectIndex.size === 2 && projectIndex.all().length === 2);
+check('project index resolves exact identity',
+  projectIndex.get('A').repd_ref === 'A' && projectIndex.get('A').longitude === 1);
+check('project index reports absence without guessing', projectIndex.get('MISSING') === null);
+check('indexed project rows remain immutable', Object.isFrozen(projectIndex.get('B')));
+let blankLookupRejected = false;
+try { projectIndex.get(' '); } catch { blankLookupRejected = true; }
+check('blank exact lookup is rejected', blankLookupRejected);
+
 const loop = createFindingLoop(async ({ revision }) => [{
   type: 'nearest_connection_point', evidence_class: 'measurement', status: 'available',
   selection_revision: revision, value: 3.2, unit: 'km',
@@ -286,4 +298,4 @@ check('distinct nearest candidate is available', unique.status === 'available' &
 const absent = resolveNearestCandidate([], { idField: 'site_code' });
 check('empty population is withheld', absent.reason === 'NO_CANDIDATE' && absent.value === null);
 
-console.log(JSON.stringify({ status: 'PASS', iteration: 12, checks }));
+console.log(JSON.stringify({ status: 'PASS', iteration: 13, checks }));
