@@ -580,10 +580,15 @@ export function orderCandidates(rows, { idField, distanceField = 'distance_km' }
     throw new TypeError('candidate rows and identity field are required');
   }
   const copy = rows.map((row) => {
-    if (row === null || typeof row !== 'object' || Array.isArray(row)) {
-      throw new TypeError('candidate row must be an object');
+    if (row === null || typeof row !== 'object' || Array.isArray(row)
+        || (Object.getPrototypeOf(row) !== Object.prototype && Object.getPrototypeOf(row) !== null)
+        || Object.getOwnPropertySymbols(row).length) {
+      throw new TypeError('candidate row must be a plain string-keyed object');
     }
     const descriptors = Object.getOwnPropertyDescriptors(row);
+    if (Object.entries(descriptors).some(([, descriptor]) => !Object.hasOwn(descriptor, 'value'))) {
+      throw new TypeError('candidate fields must be data properties');
+    }
     if (!Object.hasOwn(descriptors, idField) || !Object.hasOwn(descriptors[idField], 'value')
         || !Object.hasOwn(descriptors, distanceField)
         || !Object.hasOwn(descriptors[distanceField], 'value')) {
@@ -596,7 +601,9 @@ export function orderCandidates(rows, { idField, distanceField = 'distance_km' }
         || typeof distance !== 'number' || !Number.isFinite(distance) || distance < 0) {
       throw new TypeError('candidate identity and non-negative distance are required');
     }
-    return Object.freeze({ ...row, [idField]: identity, [distanceField]: distance });
+    const snapshot = Object.fromEntries(Object.entries(descriptors)
+      .map(([field, descriptor]) => [field, descriptor.value]));
+    return Object.freeze({ ...snapshot, [idField]: identity, [distanceField]: distance });
   });
   copy.sort((left, right) => left[distanceField] - right[distanceField]
     || (left[idField] < right[idField] ? -1 : left[idField] > right[idField] ? 1 : 0));

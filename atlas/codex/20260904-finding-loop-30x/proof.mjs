@@ -547,6 +547,23 @@ const codePointOrdered = orderCandidates([
 ], { idField: 'feature_id' });
 check('candidate tie-break uses deterministic code-point order',
   codePointOrdered.map((row) => row.feature_id).join(',') === 'Z,a');
+let candidateGetterReads = 0;
+const candidateWithGetter = Object.defineProperties({}, {
+  feature_id: { value: 'A', enumerable: true },
+  distance_km: { value: 1, enumerable: true },
+  payload: { get() { candidateGetterReads += 1; return 'unsafe'; }, enumerable: true }
+});
+let accessorCandidateRejected = false;
+try { orderCandidates([candidateWithGetter], { idField: 'feature_id' }); } catch { accessorCandidateRejected = true; }
+check('candidate accessors are rejected without execution',
+  accessorCandidateRejected && candidateGetterReads === 0);
+let candidateProxyReads = 0;
+const proxiedCandidate = new Proxy({ feature_id: 'A', distance_km: 1, label: 'safe' }, {
+  get(target, key, receiver) { candidateProxyReads += 1; return Reflect.get(target, key, receiver); }
+});
+const snapshottedCandidate = orderCandidates([proxiedCandidate], { idField: 'feature_id' })[0];
+check('candidate output snapshots data descriptors without property reads',
+  candidateProxyReads === 0 && snapshottedCandidate.label === 'safe');
 
 const tied = resolveNearestCandidate([
   { site_code: 'B', distance_km: 2 },
@@ -564,4 +581,4 @@ check('distinct nearest candidate is available', unique.status === 'available' &
 const absent = resolveNearestCandidate([], { idField: 'site_code' });
 check('empty population is withheld', absent.reason === 'NO_CANDIDATE' && absent.value === null);
 
-console.log(JSON.stringify({ status: 'PASS', iteration: 27, checks }));
+console.log(JSON.stringify({ status: 'PASS', iteration: 28, checks }));
