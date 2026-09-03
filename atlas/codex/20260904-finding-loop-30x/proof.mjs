@@ -254,6 +254,19 @@ check('nearby traversal reads and sorts the full register',
   nearby.map((row) => row.repd_ref).join(',') === 'A,B');
 check('nearby results retain operable project identity',
   nearby.every((row) => row.repd_ref && row.source_release === digest));
+for (const [label, longitude, latitude] of [
+  ['nearby traversal rejects null longitude', null, 50],
+  ['nearby traversal rejects numeric-string longitude', '0', 50],
+  ['nearby traversal rejects boolean latitude', 0, false],
+  ['nearby traversal rejects out-of-range latitude', 0, 91]
+]) {
+  let calls = 0;
+  let rejected = false;
+  try {
+    nearbyProjects({ register, longitude, latitude, distanceKm: () => { calls += 1; return 0; } });
+  } catch { rejected = true; }
+  check(label, rejected && calls === 0);
+}
 let duplicateProjectRejected = false;
 try {
   createProjectRegister([
@@ -377,4 +390,4 @@ check('distinct nearest candidate is available', unique.status === 'available' &
 const absent = resolveNearestCandidate([], { idField: 'site_code' });
 check('empty population is withheld', absent.reason === 'NO_CANDIDATE' && absent.value === null);
 
-console.log(JSON.stringify({ status: 'PASS', iteration: 18, checks }));
+console.log(JSON.stringify({ status: 'PASS', iteration: 19, checks }));

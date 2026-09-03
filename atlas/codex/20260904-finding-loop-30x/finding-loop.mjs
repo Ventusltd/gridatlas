@@ -391,6 +391,15 @@ export function nearbyProjects({ register, longitude, latitude, distanceKm, limi
   if (typeof distanceKm !== 'function' || !Number.isInteger(limit) || limit < 1) {
     throw new TypeError('canonical distance function and positive integer limit are required');
   }
+  if (typeof longitude !== 'number' || !Number.isFinite(longitude)
+      || longitude < -180 || longitude > 180
+      || typeof latitude !== 'number' || !Number.isFinite(latitude)
+      || latitude < -90 || latitude > 90) {
+    throw new TypeError('nearby query requires finite in-range numeric coordinates');
+  }
+  if (!register || !Array.isArray(register.projects) || !register.source) {
+    throw new TypeError('validated project register is required');
+  }
   const rows = register.projects.map((project) => ({
     repd_ref: project.repd_ref,
     source_release: register.source.sha256,
