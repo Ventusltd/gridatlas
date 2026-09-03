@@ -2362,6 +2362,41 @@ check('it states the sample and grades nothing',
 check('with neither number available it says nothing at all',
   /if \(!Number\.isFinite\(considered\) && !network\) return '';/.test(cartridgeSource));
 
+console.log('\nthe corridor estimate sits beside the straight line, never over it\n');
+
+check('the straight-line distance is still printed, and is still first',
+  /\$\{n\.km\.toFixed\(2\)\} km straight`\n\s*\+ corridorBeside\(n\.km\)/
+    .test(cartridgeSource));
+check('the estimate is additive: nothing replaces the measurement',
+  /corridorBeside\(n\.km\)/.test(cartridgeSource)
+  && /km straight/.test(cartridgeSource));
+check('it is labelled an estimate wherever it appears',
+  /km corridor estimate /.test(cartridgeSource));
+check('the factor and the calibration travel with the number',
+  /&times;\$\{estimate\.factor\}/.test(cartridgeSource)
+  && /\$\{basis\.within_15_pct\}% of GB transmission /.test(cartridgeSource)
+  && /cable circuits within 15% of published length/.test(cartridgeSource));
+check('THE SAMPLE ON THE CARD IS THE SITE PAIRS, not the circuit count',
+  /\$\{basis\.distinct_site_pairs\} distinct site pairs/.test(cartridgeSource)
+  && !/95 circuits/.test(cartridgeSource));
+check('no corridor number is written into the sentence',
+  (() => {
+    const at = cartridgeSource.indexOf('function corridorBeside(km) {');
+    const body = cartridgeSource.slice(at, cartridgeSource.indexOf('function nearestScope', at));
+    return at > 0 && !/1\.245|\b59\b|\b73\b|\b8\.45\b/.test(
+      body.replace(/\/\*[\s\S]*?\*\//g, ' '));
+  })());
+check('the standing caveat is rendered with it, not left in the module',
+  /escapeHtml\(module\.caveat\)/.test(cartridgeSource));
+check('and so is the reason it is not an overhead-line answer',
+  /escapeHtml\(module\.not_for_overhead\)/.test(cartridgeSource));
+check('a withheld estimate says why rather than printing nothing',
+  /No corridor estimate at this /.test(cartridgeSource)
+  && /escapeHtml\(estimate\.withheld\)/.test(cartridgeSource));
+check('an absent module costs the estimate and not the card',
+  /if \(!module\) return '';/.test(cartridgeSource));
+check('the sandbox never carries its own copy of the factor',
+  !/1\.245/.test(cartridgeSource.replace(/\/\*[\s\S]*?\*\//g, ' ')));
 console.log('\nthe card keeper\n');
 
 /* Five links on the map and a card with no distances: the popup that had

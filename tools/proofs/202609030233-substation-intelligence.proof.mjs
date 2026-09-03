@@ -265,6 +265,65 @@ check('ratings are labelled site-wide, because the product does not split them',
 check('the label explains what remains site-wide when the fault is bus-scoped',
   /remain site-wide across the/.test(source));
 
+console.log('\na straight line is not a route, and the estimate says what it is\n');
+
+/* The corridor scalar. Exercised as arithmetic in its own context, because a
+   regex over the source would prove only that the number is written down. */
+const corrBox = { window: {}, console, Math, JSON, Number, String, Array, Object,
+  Map, Set, Boolean, Error, RegExp };
+corrBox.window.window = corrBox.window;
+vm.createContext(corrBox);
+vm.runInContext(await readFile(join(REPO, 'atlas', 'modules',
+  '202609030205-corridor-estimate.js'), 'utf8'), corrBox, { filename: 'corridor.js' });
+const corridor = corrBox.window.__GRIDATLAS_MODULES__.corridorEstimate;
+
+check('the module loaded and froze its surface',
+  !!corridor && Object.isFrozen(corridor));
+check('it is in the served bytes',
+  /gridatlas\.module\.corridor-estimate\.v1/.test(source));
+check('the factor is the calibrated 1.245',
+  corridor.factor === 1.245);
+check('the estimate is the arithmetic, not a lookup',
+  Math.abs(corridor.forCable(15.76).km - 15.76 * 1.245) < 1e-12
+  && corridor.forCable(15.76).km.toFixed(1) === '19.6');
+check('the straight-line distance is carried through untouched',
+  corridor.forCable(15.76).straight_km === 15.76);
+
+check('THE SAMPLE IS 59 DISTINCT SITE PAIRS, not 95 circuits',
+  corridor.basis.distinct_site_pairs === 59
+  && corridor.basis.circuits === 95
+  && /parallel circuits between the same two sites duplicate the geometry/
+    .test(corridor.basis.sample_note));
+check('the error the calibration actually achieved travels with it',
+  corridor.basis.median_absolute_error_pct === 8.45
+  && corridor.basis.within_15_pct === 73);
+
+check('under a kilometre it withholds rather than scaling',
+  corridor.forCable(0.4).km === null
+  && /site-centroid resolution dominates/.test(corridor.forCable(0.4).withheld));
+check('and says what the numbers were in that band',
+  /0\.59 km/.test(corridor.basis.below_minimum)
+  && /52\.5%/.test(corridor.basis.below_minimum));
+check('at the boundary it answers, so the rule is a threshold and not a gap',
+  corridor.forCable(1).km !== null);
+check('nothing, zero and a negative are null, never zero kilometres',
+  corridor.forCable(null) === null && corridor.forCable(0) === null
+  && corridor.forCable(-5) === null && corridor.forCable('x') === null);
+
+check('IT OFFERS NO OVERHEAD ANSWER AT ALL',
+  typeof corridor.forOverhead === 'undefined'
+  && !/function forOverhead/.test(source));
+check('and publishes 1.13 as the reason the cable factor is not that answer',
+  corridor.overhead_factor === 1.13
+  && /crosses open country/.test(corridor.not_for_overhead));
+check('the standing caveat is exactly the four things it is not',
+  /Indicative highway-corridor screening only/.test(corridor.caveat)
+  && /Not a connection offer/.test(corridor.caveat)
+  && /not a constructability assessment/.test(corridor.caveat)
+  && /not a consenting design/.test(corridor.caveat));
+check('and it grades nothing',
+  !/\b(good|poor|strong|weak|excellent|viable|attractive)\b/i
+    .test(corridor.caveat + ' ' + corridor.not_an_assessment));
 console.log('\nevery superlative carries the sample it was drawn from\n');
 
 /* F4. "Nearest 400 kV substation: Cowley - 15.76 km" was nearest among the
