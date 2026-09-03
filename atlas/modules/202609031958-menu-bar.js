@@ -232,7 +232,17 @@
     var doc = document;
     if (install(doc)) return;
     /* The chrome is built by a later cartridge, so wait for it rather than
-       racing it. Bounded: if it never arrives, this module simply did nothing. */
+       racing it. Bounded: if it never arrives, this module simply did nothing.
+
+       The guard is not defensive noise. This module is executed inside the
+       cartridge proofs under node:vm against a window stub, and the first cut
+       of it called setInterval unconditionally - which threw there and took the
+       sld-sandbox proof down with it. "Fails soft" was in the comment and not
+       in the code; the proof caught the difference. Where there is no timer
+       there is also no chrome coming, so doing nothing is the correct answer
+       rather than a degraded one. */
+    if (typeof window.setInterval !== 'function'
+      || typeof window.clearInterval !== 'function') return;
     var tries = 0;
     var timer = window.setInterval(function () {
       tries += 1;
