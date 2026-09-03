@@ -1,8 +1,32 @@
 import fs from 'node:fs';
 import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { chromium, request } from 'playwright';
 
 const BASE = String(process.env.GRIDATLAS_BASE_URL || 'https://ventusltd.github.io/gridatlas/').replace(/\/?$/, '/');
+
+/* The composition this verifier expects the live surface to reach is READ from
+   the composition this repository declares, never written down here.
+   ------------------------------------------------------------------------
+   It used to be a literal: generation 202608301624, composition_version v9.5.
+   That was true on 2026-08-30 and false by the next cut. Measured against the
+   live surface on 2026-09-03, thirty-odd generations later:
+
+     live      generation 202609030234  v9.88
+     literal   generation 202608301624  v9.5     -> can never match again
+
+   So waitForDeployedCurrent could only ever spend four minutes polling and
+   then throw. That is why state/live-set.json still carries
+   verified_at 2026-08-30T04:07:46Z while its atlas_composition pointer was
+   restamped on every one of those generations: the attestation is not stale
+   because nobody ran the verifier, it is stale because the verifier could not
+   pass. An expectation that has to be edited by hand on every cut will be
+   wrong by the second one.
+
+   fileURLToPath, never new URL().pathname: on Windows the latter yields
+   "/C:/Users/..." and join() then produces "C:\C:\Users\...". */
+const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..');
+const DECLARED = JSON.parse(fs.readFileSync(path.join(ROOT, 'atlas', 'current.json'), 'utf8'));
 const report = {
   schema: 'gridatlas.live-cartridge-verification.v1',
   base_url: BASE,
@@ -35,13 +59,19 @@ async function waitForDeployedCurrent() {
       const response = await api.get(`${BASE}atlas/current.json?scope_verify=${Date.now()}`);
       if (response.ok()) {
         const current = await response.json();
-        if (current?.schema === 'gridatlas.current.v2' && current?.generation === '202608301624' && current?.composition_version === 'v9.5' && current?.scope_closure?.status === 'DONE' && current?.cartridge_order?.includes('uk-gazetteer-flyto')) {
+        const sameOrder = Array.isArray(current?.cartridge_order)
+          && JSON.stringify(current.cartridge_order) === JSON.stringify(DECLARED.cartridge_order);
+        if (current?.schema === 'gridatlas.current.v2' && current?.generation === DECLARED.generation && current?.composition_version === DECLARED.composition_version && current?.scope_closure?.status === 'DONE' && sameOrder) {
           return current;
         }
+        report.deployed_generation_seen = current?.generation ?? null;
       }
       await new Promise(resolve => setTimeout(resolve, 10_000));
     }
-    throw new Error('public atlas/current.json did not reach the closed cartridge composition');
+    /* Name both generations. "did not reach the composition" sent a previous
+       reader looking for a broken deploy when the expectation was the thing
+       that was wrong. */
+    throw new Error(`public atlas/current.json did not reach the declared composition: expected ${DECLARED.generation} ${DECLARED.composition_version}, last saw ${report.deployed_generation_seen ?? 'nothing'}`);
   } finally {
     await api.dispose();
   }
