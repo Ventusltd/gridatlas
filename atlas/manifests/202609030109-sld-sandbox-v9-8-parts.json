@@ -1,0 +1,46 @@
+{
+ "schema": "gridatlas.cartridge-parts.v1",
+ "generation": "202609030109",
+ "cartridge": "./cartridges/202609030109-sld-sandbox-v9-8.js",
+ "sha256": "ad158ff080f3e4acb4818c5147d0dee5099a8a6554dce5a6468db48a90983e9e",
+ "bytes": 336990,
+ "assembled_from": [
+  {
+   "role": "module",
+   "path": "atlas/modules/202609012040-grid-scope.js",
+   "bytes": 6878,
+   "sha256": "a4f96c30c9240424be54af575ccb8090cbc05d1067c41b5ff7c1e51414544979"
+  },
+  {
+   "role": "module",
+   "path": "atlas/modules/202609012217-source-registry.js",
+   "bytes": 10146,
+   "sha256": "22080f1a774879d926b39a4bff3471c2aba50f7c128fc6fd7b6463840780f4e3"
+  },
+  {
+   "role": "module",
+   "path": "atlas/modules/202609012128-declared-connections.js",
+   "bytes": 15127,
+   "sha256": "667d76a036ceedd7066bdb68f6f47fc73cd6b4e60c819f50b551e5d8c8aafeb0"
+  },
+  {
+   "role": "module",
+   "path": "atlas/modules/202609012205-sizing-arithmetic.js",
+   "bytes": 27726,
+   "sha256": "bbaf6453475be4c586e349782411cb88702399a6372cd413da5e4945dd7a0f48"
+  },
+  {
+   "role": "module",
+   "path": "atlas/modules/202609030048-pipeline-news-layers.js",
+   "bytes": 19550,
+   "sha256": "075fb2e50723bcd22cd69621adcded4a975342c38724a9c52502555c27836281"
+  },
+  {
+   "role": "part",
+   "path": "atlas/parts/202609012045-sld-sandbox-body.js",
+   "bytes": 256825,
+   "sha256": "3f9cb3340bd87e88e2bff6a197982f39b25fe686dabcf1a83787bf7e0bce3c50"
+  }
+ ],
+ "rule": "edit a part and rebuild under a new generation; this file is not edited by hand"
+}

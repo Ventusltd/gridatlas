@@ -127,11 +127,45 @@
     const point = state.byName(name);
     if (!point) return null;
     const connectionKv = options && Number(options.connectionKv);
+    /* connection-points.v3 publishes `circuits` and `transformers` as
+       LANDINGS - one per node-end at the site - not as machines. A
+       transformer's two windings are both at the site by construction, so
+       almost every transformer is counted twice: Cowley publishes 10 for
+       its five machines, and 484 of the 525 sites that hold a transformer
+       are overstated, 2,944 landings against 1,550 units (1.90x).
+
+       This cartridge holds no node pairs, so it cannot deduplicate on its
+       own; the caller may pass `units` derived from the node/branch model
+       by the network-topology module, which does hold them. Where it does,
+       the machine count is stated. Where it does not, the published figure
+       is still shown but is named for what it is, because a landing tally
+       presented as a machine count is the defect, not the tally. */
+    /* Number(null) is 0, not NaN, so `Number(units && units.x)` reports a
+       finite ZERO the moment no units are passed - which is every call
+       that does not supply them. The proof caught it saying "0 circuits"
+       for a site publishing eight. Read the field only when there is one. */
+    const units = (options && options.units) || null;
+    const unitCount = (field) => {
+      if (!units) return null;
+      const value = Number(units[field]);
+      return Number.isFinite(value) ? value : null;
+    };
+    const transformerUnits = unitCount('transformers');
+    const circuitUnits = unitCount('circuits');
     const parts = [];
-    if (point.circuits) {
+    if (circuitUnits !== null) {
+      parts.push(circuitUnits + (circuitUnits === 1 ? ' circuit' : ' circuits'));
+    } else if (point.circuits) {
       parts.push(point.circuits + (point.circuits === 1 ? ' circuit' : ' circuits'));
     }
-    if (point.transformers) parts.push(point.transformers + ' transformers');
+    if (transformerUnits !== null) {
+      parts.push(transformerUnits
+        + (transformerUnits === 1 ? ' transformer' : ' transformers'));
+    } else if (point.transformers) {
+      parts.push(point.transformers + ' transformer winding connections at the site '
+        + '(a transformer whose windings are both here is published at each of them, '
+        + 'so this is not a count of machines)');
+    }
     const rating = point.circuit_winter_rating_mva;
     if (rating) {
       /* The product does not split ratings by voltage, and a site with

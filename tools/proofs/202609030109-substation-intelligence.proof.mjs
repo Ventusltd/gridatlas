@@ -7,6 +7,7 @@
  */
 
 import { readFile } from 'node:fs/promises';
+import { existsSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { dirname, join, resolve } from 'node:path';
 import vm from 'node:vm';
@@ -15,8 +16,18 @@ const HERE = dirname(fileURLToPath(import.meta.url));
 const REPO = resolve(HERE, '..', '..');
 const CURRENT = JSON.parse(await readFile(join(REPO, 'atlas', 'current.json'), 'utf8'));
 const RELEASE = join(REPO, 'atlas', 'releases', CURRENT.shell.release_id);
-const CARTRIDGE = join(REPO, 'atlas', 'cartridges',
-  '202609012045-substation-intelligence-v9-63.js');
+/* Resolved from atlas/current.json, never named.
+   ----------------------------------------------------------------------
+   This read '202609012045-substation-intelligence-v9-63.js' - the
+   cartridge cut at 202609012045 - while the composition served
+   202609020018, three generations later. It therefore passed against
+   bytes nobody was serving, which is the exact drift run-current.mjs and
+   recompose.mjs were both written to stop, reproduced inside a proof.
+   The composed path is read from the file the loader reads. */
+const CARTRIDGE_ENTRY = (CURRENT.cartridges || [])
+  .find(entry => entry.id === 'substation-intelligence');
+if (!CARTRIDGE_ENTRY) throw new Error('substation-intelligence is not in the composition');
+const CARTRIDGE = join(REPO, 'atlas', CARTRIDGE_ENTRY.path.replace(/^\.\//, ''));
 
 const bridgeRejections = [];
 process.on('unhandledRejection', (reason) => {
@@ -185,6 +196,89 @@ check('ratings are labelled site-wide, because the product does not split them',
   /circuit winter ratings across the site/.test(source));
 check('the label explains what remains site-wide when the fault is bus-scoped',
   /remain site-wide across the/.test(source));
+
+console.log('\na count of machines, not a count of landings\n');
+/* F3. The site card said "6 circuits, 10 transformers" for Cowley, which
+   holds five machines. A site owns BOTH ends of a transformer - the two
+   windings are in the same yard - so every internal transformer was
+   published once per winding and counted twice. Measured against
+   gb-transmission-network.v1: 2,944 landings for 1,550 site-held units,
+   1.90x, at 484 of the 525 sites that hold one.
+
+   Run against the REAL product where it is on disk. A fixture would only
+   prove the code agrees with a shape written here. */
+const topologyModule = context.window.__GRIDATLAS_MODULES__?.networkTopology || null;
+check('the composed cartridge carries the network-topology module', !!topologyModule);
+check('the site-wide counts declare that they are units, not landings',
+  /counts_are_units/.test(source) && /physical units/.test(source));
+check('the per-voltage lists are still landings, and are not deduplicated',
+  /band\.transformers\.push\(published\)/.test(source));
+check('the summariser never presents a landing tally as a machine count',
+  /transformer winding connections at the site/.test(source)
+  && !/point\.transformers \+ ' transformers'/.test(source));
+
+/* Number(null) is 0. The first cut of this fix read the unit counts with
+   Number(units && units.circuits), which is a finite ZERO whenever no units
+   are passed, and every existing caller passes none - so a site publishing
+   eight circuits reported none. Both branches are exercised here. */
+check('given no units the summariser still reports the product own figures',
+  !!api && /^8 circuits /.test(api.summarise('Cottam Substation').sentence));
+check('given units it reports the machines rather than the landings',
+  !!api && / 5 transformers /.test(api.summarise('Cottam Substation',
+    { units: { circuits: 6, transformers: 5 } }).sentence));
+check('and a zero unit count is a real zero, not a missing one',
+  !!api && /^0 circuits /.test(api.summarise('Cottam Substation',
+    { units: { circuits: 0 } }).sentence));
+
+const PRODUCT_FILE = (() => {
+  for (const base of [resolve(REPO, '..'), resolve(REPO, '..', '..')]) {
+    const candidate = join(base, 'data-grid-gb', 'derived',
+      'gb-transmission-network.v1.json');
+    if (existsSync(candidate)) return candidate;
+  }
+  return null;
+})();
+check('the published node/branch product is on disk for a real-data check',
+  !!PRODUCT_FILE);
+if (topologyModule && PRODUCT_FILE) {
+  const gbProduct = JSON.parse(await readFile(PRODUCT_FILE, 'utf8'));
+  const gb = topologyModule.index(gbProduct);
+  const cowl = gb.at('COWL');
+  const landings = cowl.by_voltage.flatMap(band => band.transformers);
+  check('Cowley publishes ten transformer landings',
+    cowl.counts.transformer_landings === 10 && landings.length === 10);
+  check('Cowley reports FIVE transformers, not ten',
+    cowl.counts.transformers === 5);
+  check('and they are the five machines the operator publishes',
+    landings.filter(t => t.from_node === 'COWL41').length === 5
+    && landings.filter(t => t.from_node === 'COWL41')
+      .every(t => (t.to_node === 'COWL11' || t.to_node === 'COWL12')
+        && t.rating_mva >= 269 && t.rating_mva <= 278));
+  const at400 = cowl.by_voltage.find(b => b.voltage_kv === 400);
+  const at132 = cowl.by_voltage.find(b => b.voltage_kv === 132);
+  check('at 400 kV it still says five, and at 132 kV five - the same machines',
+    at400.transformers.length === 5 && at132.transformers.length === 5);
+  check('a voltage-filtered query sees one winding and is not halved',
+    gb.at('COWL', { voltageKv: 400 }).counts.transformers === 5);
+  check('Cowley six circuits are unchanged, because it owns one end of each',
+    cowl.counts.circuits === 6 && cowl.counts.circuit_landings === 6);
+
+  let sites = 0, differing = 0, units = 0, ends = 0;
+  for (const site of gbProduct.sites) {
+    const facts = gb.at(site.code);
+    if (!facts || !facts.counts.transformer_landings) continue;
+    sites += 1;
+    units += facts.counts.transformers;
+    ends += facts.counts.transformer_landings;
+    if (facts.counts.transformers !== facts.counts.transformer_landings) differing += 1;
+  }
+  check('estate-wide: 2,944 landings resolve to 1,550 site-held units',
+    ends === 2944 && units === 1550);
+  check('and 484 of the 525 sites that hold a transformer were overstated',
+    sites === 525 && differing === 484);
+  console.log(`         ${ends} landings -> ${units} units at ${sites} sites, `
+    + `${differing} of them previously overstated (${(ends / units).toFixed(2)}x)`);
+}
 
 console.log(`\n${passed}/${passed + failures.length} checks passed`);
 if (bridgeRejections.length) {

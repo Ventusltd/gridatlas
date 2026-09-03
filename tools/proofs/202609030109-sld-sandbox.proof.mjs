@@ -2506,7 +2506,7 @@ console.log('\nthe published network parameters\n');
 check('the card asks the substation cartridge and renders only what it returns',
   // v9.63 passes the connection voltage, so the call spans two lines.
   /window\.__GRIDATLAS_NETWORK__\?\.summarise\?\.\(/.test(cartridgeSource)
-  && /networkName, \{ connectionKv \}\)/.test(cartridgeSource));
+  && /networkName, \{ connectionKv, units: publishedUnits \}\)/.test(cartridgeSource));
 check('a circuit connection is not attributed to a substation',
   /currentDeclared\?\.kind !== 'circuit'/.test(cartridgeSource));
 check('the metric caveat, the attribution and the refusal travel with the numbers',
@@ -2657,7 +2657,7 @@ check('the scope publishes its state',
 console.log('\nthe connection voltage reaches the network query\n');
 
 check('the card tells the cartridge what voltage the connection is made at',
-  /summarise\?\.\(\n?\s*networkName, \{ connectionKv \}\)/.test(cartridgeSource));
+  /summarise\?\.\(\n?\s*networkName, \{ connectionKv, units: publishedUnits \}\)/.test(cartridgeSource));
 check('a circuit connection has no busbar voltage to pass',
   /currentDeclared\?\.kind !== 'circuit'\n\s*\? \(currentDeclared\?\.kv/.test(cartridgeSource));
 check('a bus-scoped answer is badged with its voltage, not as site-wide',

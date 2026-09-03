@@ -93,6 +93,55 @@
     return Object.keys(published).length ? published : null;
   }
 
+  /* A published branch is seen once from EACH of its ends, so a site that
+     owns both ends of a branch publishes it twice.
+     ------------------------------------------------------------------
+     A transformer's two windings are at the same site by construction, so
+     almost every transformer lands twice: 1,394 of the 1,472 published
+     transformers have both ends at one site. Counting landings therefore
+     reported 2,944 machines where 1,550 site-held machines exist, and
+     Cowley - five machines, COWL41 to COWL11 and COWL12, 269 to 278 MVA -
+     said ten.
+
+     It is NOT only transformers. Measured against
+     gb-transmission-network.v1 on 2026-09-03:
+
+       transformers      2,944 landings -> 1,550 units, 484 of 525 sites differ
+       circuits          2,784 landings -> 2,638 units,  78 of 636 sites differ
+       planned changes   4,460 landings -> 3,696 units, 282 of 645 sites differ
+
+     so the same correction is applied to all three site-wide aggregates.
+     The PER-VOLTAGE lists are untouched and must stay as they are: "at
+     400 kV, 5 transformers" and "at 132 kV, 5 transformers" are the same
+     five machines seen from each winding, which is what a reader standing
+     at a busbar is asking for.
+
+     Halving was rejected: it is wrong at 57 of the 525 sites that hold a
+     transformer, and 24 of them publish an odd number of landings, so
+     halving would invent a fractional machine. The pair is keyed instead,
+     and a pair seen from BOTH directions was published twice while a pair
+     seen from one - which is what a voltage-filtered query sees of an
+     internal machine - was published once. */
+  function physicalUnits(records) {
+    const pairs = new Map();
+    for (const record of records) {
+      const near = String(record.from_node);
+      const far = String(record.to_node);
+      const forward = near < far;
+      const key = forward ? near + '\u0000' + far : far + '\u0000' + near;
+      if (!pairs.has(key)) pairs.set(key, { forward: 0, reverse: 0 });
+      const seen = pairs.get(key);
+      if (forward) seen.forward += 1; else seen.reverse += 1;
+    }
+    let units = 0;
+    for (const seen of pairs.values()) {
+      units += (seen.forward && seen.reverse)
+        ? Math.max(seen.forward, seen.reverse)
+        : seen.forward + seen.reverse;
+    }
+    return units;
+  }
+
   function parametersOf(row) {
     const published = {};
     for (const [key, field] of [['r_pct', 'r_pct_100mva'], ['x_pct', 'x_pct_100mva'],
@@ -290,11 +339,22 @@
         neighbours: [...neighbours.values()].sort((a, b) => b.circuits - a.circuits),
         counts: {
           nodes: siteNodes.length,
-          circuits: voltages.reduce((sum, band) => sum + band.circuits.length, 0),
-          transformers: voltages.reduce((sum, band) => sum + band.transformers.length, 0),
-          planned_changes: voltages.reduce((sum, band) => sum + band.planned_changes.length, 0),
+          /* Physical units, deduplicated across the two ends a site may
+             hold of the same branch. The landing tallies are published
+             beside them so a reader can see the difference rather than
+             wonder which number the per-voltage lists add up to. */
+          circuits: physicalUnits(voltages.flatMap(band => band.circuits)),
+          transformers: physicalUnits(voltages.flatMap(band => band.transformers)),
+          planned_changes: physicalUnits(voltages.flatMap(band => band.planned_changes)),
+          circuit_landings: voltages.reduce((sum, band) => sum + band.circuits.length, 0),
+          transformer_landings: voltages.reduce((sum, band) => sum + band.transformers.length, 0),
+          planned_change_landings: voltages.reduce((sum, band) => sum + band.planned_changes.length, 0),
           neighbour_sites: neighbours.size
         },
+        counts_are_units: 'A site holds both ends of a transformer and of any '
+          + 'internal circuit, so the same branch lands twice. The counts above '
+          + 'are physical units; the landing tallies beside them are what the '
+          + 'per-voltage lists contain.',
         impedance_basis: IMPEDANCE_BASIS,
         not_an_assessment: NOT_AN_ASSESSMENT
       };
