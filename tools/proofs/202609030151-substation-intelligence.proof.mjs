@@ -42,6 +42,58 @@ function check(label, condition) {
   else { failures.push(label); console.log('  [FAIL] ' + label); }
 }
 
+const pinBox = { window: {}, console, Math, JSON, Number, String, Array, Object,
+  Map, Set, Boolean, Error, RegExp, Promise, Uint8Array, ArrayBuffer,
+  TextEncoder, crypto: webcrypto };
+pinBox.window.window = pinBox.window;
+pinBox.window.crypto = webcrypto;
+vm.createContext(pinBox);
+vm.runInContext(await readFile(join(REPO, 'atlas', 'modules',
+  '202609030137-pinned-products.js'), 'utf8'), pinBox, { filename: 'pins.js' });
+const pins = pinBox.window.__GRIDATLAS_MODULES__.pinnedProducts;
+
+/* Every product this proof measures is read THROUGH THE PIN.
+   ------------------------------------------------------------------------
+   A neighbouring checkout is used only when its bytes hash to the pinned
+   digest AND match its recorded length - that is the fast path on a
+   developer's machine, and it is verified rather than assumed. Otherwise the
+   pinned URL is fetched, which is what a runner does and what the Atlas
+   itself does. If neither yields the pinned bytes, the caller is told why and
+   every dependent check FAILS with that reason. A skip is not a pass. */
+async function readPinned(id) {
+  const entry = pins.pin(id);
+  if (!entry) return { ok: false, why: `no pin for ${id}` };
+  const { createHash } = await import('node:crypto');
+  const digestOf = (buffer) => createHash('sha256').update(buffer).digest('hex');
+
+  for (const base of [resolve(REPO, '..'), resolve(REPO, '..', '..')]) {
+    const candidate = join(base, entry.repository, entry.path);
+    if (!existsSync(candidate)) continue;
+    const buffer = await readFile(candidate);
+    if (digestOf(buffer) === entry.sha256 && buffer.length === entry.bytes) {
+      return { ok: true, source: 'the checkout beside this repository',
+        digest: entry.sha256, bytes: buffer.length, text: buffer.toString('utf8') };
+    }
+    console.log(`         ${candidate} is not the pinned ${id}; fetching instead`);
+  }
+
+  const url = pins.url(id);
+  try {
+    const response = await fetch(url, { cache: 'no-store' });
+    if (!response.ok) return { ok: false, why: `${url} answered HTTP ${response.status}` };
+    const buffer = Buffer.from(await response.arrayBuffer());
+    const digest = digestOf(buffer);
+    if (digest !== entry.sha256 || buffer.length !== entry.bytes) {
+      return { ok: false, why: `${url} served ${buffer.length} bytes / ${digest}, `
+        + `not the pinned ${entry.bytes} / ${entry.sha256}` };
+    }
+    return { ok: true, source: 'the pinned URL', digest, bytes: buffer.length,
+      text: buffer.toString('utf8') };
+  } catch (error) {
+    return { ok: false, why: `${url} could not be read: ${String(error?.message || error)}` };
+  }
+}
+
 const shellHtml = await readFile(join(RELEASE, 'index.html'), 'utf8');
 const loaded = new Set(
   [...shellHtml.matchAll(/<script[^>]+src="([^"]+)"/g)]
@@ -95,25 +147,23 @@ check('no grading language in anything the file can emit', (() => {
 })());
 
 console.log('\nit runs, and answers only from the product\n');
-const product = {
-  schema: 'data-grid-gb.connection-points.v3',
-  counts: { connection_points: 1, with_location: 1 },
-  connection_points: [{
-    site_code: 'COTT', name: 'COTTAM', transmission_owner: 'NGET',
-    voltages_kv: [400], circuits: 8, transformers: 0,
-    circuit_winter_rating_mva: { min: 2780, max: 3326 },
-    fault_current: { peak: { scenarios: 10, winters: ['2025/26', '2033/34'],
-      locations: ['COTT4 M1', 'COTT4 M3'],
-      metrics: { three_phase_rms_break_current_ka: { min: 38.13, max: 50.61, unit: 'kA' },
-                 three_phase_initial_peak_current_ka: { min: 102, max: 136, unit: 'kA' } } } },
-    fault_current_by_voltage: { '400': { peak: { scenarios: 10,
-      winters: ['2025/26', '2033/34'], locations: ['COTT4 M1', 'COTT4 M3'],
-      metrics: { three_phase_rms_break_current_ka: { min: 38.13, max: 50.61, unit: 'kA' } } } } },
-    reactive_compensation: { units: 2 },
-    planned_changes: 17, planned_change_years: ['2028', '2031'],
-    location: { lat: 53.3, lon: -0.78, matched_by: 'exact_name' }
-  }]
-};
+
+/* THE REAL PRODUCT, NOT A SHAPE WRITTEN HERE.
+   ------------------------------------------------------------------------
+   This ran against a one-site stub. That stopped being possible the moment
+   the loader began refusing bytes that are not the pinned product, and the
+   fixture was the wrong answer anyway: the numbers in it - Cottam's 8
+   circuits, 38.13-50.61 kA, 17 planned changes - were copied out of the real
+   product and could drift from it silently. The loader is now given the bytes
+   the composition pins, so the summariser is measured against what ships. */
+const CONNECTION_POINTS = await readPinned('connection-points.v3');
+check('the connection-points product this proof measures is the product the pin names',
+  CONNECTION_POINTS.ok, CONNECTION_POINTS.ok
+    ? `${CONNECTION_POINTS.bytes} bytes from ${CONNECTION_POINTS.source}`
+    : CONNECTION_POINTS.why);
+const productText = CONNECTION_POINTS.ok ? CONNECTION_POINTS.text : '{}';
+const product = JSON.parse(productText);
+
 let fetched = null;
 const context = {
   window: {}, document: { addEventListener() {}, getElementById: () => null,
@@ -125,7 +175,7 @@ const context = {
   location: { search: '', href: 'https://example.invalid/' },
   fetch: async (url, options) => { fetched = { url, options };
     return { ok: true, status: 200, json: async () => product,
-      text: async () => JSON.stringify(product), headers: { get: () => null } }; },
+      text: async () => productText, headers: { get: () => null } }; },
   Response: class {}, Headers: class {}, Request: class {},
   addEventListener() {}, requestAnimationFrame: () => 0
 };
@@ -143,7 +193,12 @@ const api = context.window.__GRIDATLAS_NETWORK__;
 check('it publishes its own state object', Boolean(api));
 if (api) {
   await api.ready;
-  check('it loaded the product', api.loaded === true && api.points === 1);
+  check('it loaded the product',
+    api.loaded === true && api.points === (product.connection_points || []).length
+    && api.points === 886);
+  check('and located exactly what the product locates',
+    api.located === (product.connection_points || []).filter(p => p.location).length
+    && api.located === 502);
   check('it revalidated the fetch it made',
     fetched && fetched.options && fetched.options.cache === 'no-cache');
   const summary = api.summarise('Cottam Substation');
@@ -152,10 +207,22 @@ if (api) {
     summary && /three-phase RMS break current 38\.1\u201350\.6 kA/.test(summary.sentence));
   check('it does not conflate the peak current metric into the same claim',
     summary && !/102/.test(summary.sentence));
+  /* 2,780 was the FIXTURE's number and it was wrong. The hand-written stub
+     this proof used until now claimed Cottam's winter range as 2,780-3,326
+     MVA; the product publishes 2,009-3,326. The fixture had been copied out
+     of the product at some point and drifted from it, and this check passed
+     the whole time against a minimum nobody serves. Reading the pinned
+     product instead is what surfaced it. */
   check('circuits, ratings and planned changes are all there',
     summary && /8 circuits/.test(summary.sentence)
-    && /2,780\u20133,326 MVA/.test(summary.sentence)
+    && /2,009\u20133,326 MVA/.test(summary.sentence)
     && /17 changes/.test(summary.sentence));
+  check('and the range is the one the product publishes, not one copied into a fixture',
+    (() => {
+      const cott = (product.connection_points || []).find(p => p.site_code === 'COTT');
+      return cott.circuit_winter_rating_mva.min === 2009
+        && cott.circuit_winter_rating_mva.max === 3326;
+    })());
   check('an unknown substation returns null, never a guess',
     api.summarise('Somewhere Nobody Published') === null);
 }
@@ -216,15 +283,6 @@ check('no runtime data URL in this cartridge names a branch',
 check('the pinned-products module is in the served bytes',
   /gridatlas\.module\.pinned-products\.v1/.test(source));
 
-const pinBox = { window: {}, console, Math, JSON, Number, String, Array, Object,
-  Map, Set, Boolean, Error, RegExp, Promise, Uint8Array, ArrayBuffer,
-  TextEncoder, crypto: webcrypto };
-pinBox.window.window = pinBox.window;
-pinBox.window.crypto = webcrypto;
-vm.createContext(pinBox);
-vm.runInContext(await readFile(join(REPO, 'atlas', 'modules',
-  '202609030137-pinned-products.js'), 'utf8'), pinBox, { filename: 'pins.js' });
-const pins = pinBox.window.__GRIDATLAS_MODULES__.pinnedProducts;
 
 check('it froze its surface and named its schema',
   Object.isFrozen(pins) && pins.schema === 'gridatlas.module.pinned-products.v1');
@@ -246,9 +304,20 @@ check('its digest arithmetic is the arithmetic, checked against node',
   })());
 check('bytes that disagree with the recorded digest are a MISMATCH',
   (await pins.verify('connection-points.v3', 'not the product')).state === 'MISMATCH');
-check('and the mismatch says which bytes it got and which it wanted',
-  /hash to [0-9a-f]{64}, not the recorded [0-9a-f]{64}/
+check('a short response is named as a length, not left to the digest',
+  /is 1 bytes, not the recorded 2896561/
     .test((await pins.verify('connection-points.v3', 'x')).detail || ''));
+check('and bytes of the right length that hash wrong say so as a digest',
+  await (async () => {
+    /* Same length as the pinned product, different content, so the length
+       test passes and the digest is the thing that catches it. */
+    const wrong = 'x'.repeat(pins.pin('connection-points.v3').bytes);
+    const seal = await pins.verify('connection-points.v3', wrong);
+    return seal.state === 'MISMATCH'
+      && /hash to [0-9a-f]{64}, not the recorded [0-9a-f]{64}/.test(seal.detail);
+  })());
+check('bytes_seen is BYTES, not UTF-16 code units',
+  (await pins.verify('connection-points.v3', 'é')).bytes_seen === 2);
 check('an unknown id is unverified rather than quietly accepted',
   /^unverified/.test((await pins.verify('no-such-product', 'x')).state));
 check('a pin says which bytes were read and nothing about whether they are right',
@@ -299,41 +368,74 @@ check('and a zero unit count is a real zero, not a missing one',
   !!api && /^0 circuits /.test(api.summarise('Cottam Substation',
     { units: { circuits: 0 } }).sentence));
 
-const PRODUCT_FILE = (() => {
-  for (const base of [resolve(REPO, '..'), resolve(REPO, '..', '..')]) {
-    const candidate = join(base, 'data-grid-gb', 'derived',
-      'gb-transmission-network.v1.json');
-    if (existsSync(candidate)) return candidate;
-  }
-  return null;
-})();
-check('the published node/branch product is on disk for a real-data check',
-  !!PRODUCT_FILE);
-if (topologyModule && PRODUCT_FILE) {
-  const gbProduct = JSON.parse(await readFile(PRODUCT_FILE, 'utf8'));
-  const gb = topologyModule.index(gbProduct);
-  const cowl = gb.at('COWL');
-  const landings = cowl.by_voltage.flatMap(band => band.transformers);
-  check('Cowley publishes ten transformer landings',
-    cowl.counts.transformer_landings === 10 && landings.length === 10);
-  check('Cowley reports FIVE transformers, not ten',
-    cowl.counts.transformers === 5);
-  check('and they are the five machines the operator publishes',
-    landings.filter(t => t.from_node === 'COWL41').length === 5
-    && landings.filter(t => t.from_node === 'COWL41')
-      .every(t => (t.to_node === 'COWL11' || t.to_node === 'COWL12')
-        && t.rating_mva >= 269 && t.rating_mva <= 278));
-  const at400 = cowl.by_voltage.find(b => b.voltage_kv === 400);
-  const at132 = cowl.by_voltage.find(b => b.voltage_kv === 132);
-  check('at 400 kV it still says five, and at 132 kV five - the same machines',
-    at400.transformers.length === 5 && at132.transformers.length === 5);
-  check('a voltage-filtered query sees one winding and is not halved',
-    gb.at('COWL', { voltageKv: 400 }).counts.transformers === 5);
-  check('Cowley six circuits are unchanged, because it owns one end of each',
-    cowl.counts.circuits === 6 && cowl.counts.circuit_landings === 6);
+/* THE PRODUCT IS READ THROUGH THE PIN, OR IT IS NOT READ.
+   ------------------------------------------------------------------------
+   Two defects met here, and the second is the worse one.
+
+   The first: this resolved the product by probing ../data-grid-gb and
+   ../../data-grid-gb. That is a neighbouring checkout, which the runner does
+   not have, so the proof went red in CI for five generations while passing on
+   the laptop that happened to have the neighbour. A path on a disk is not a
+   product.
+
+   The second: the real-data checks below were guarded by
+   `if (topologyModule && PRODUCT_FILE)`. With the product absent they did not
+   fail - they did not RUN. "Cowley reports FIVE transformers, not ten" had
+   therefore never executed on a runner in its life, and because run-current
+   exits at the first failing proof, the whole sandbox proof behind it never
+   ran either. A missing input that makes a proof QUIETER is the exact shape
+   this estate keeps recording, and it is worse than a red, because a red is
+   visible.
+
+   Both are fixed by reading through the pin the composition already declares.
+   The invariant, asserted below either way: THE PRODUCT THE PROOF READS IS THE
+   PRODUCT THE PIN NAMES, BY COMMIT AND BY DIGEST. A neighbouring checkout is
+   used when it is present AND its bytes hash to the pin - that is the fast
+   path on a developer's machine and it is verified, not assumed. Otherwise the
+   pinned URL is fetched, which is what the runner does and what the Atlas
+   itself does. If neither yields the pinned bytes the checks below FAIL, with
+   the reason, one by one. A skip is not a pass. */
+const PRODUCT = await readPinned('gb-transmission-network.v1');
+check('the product this proof measures is the product the pin names',
+  PRODUCT.ok, PRODUCT.ok
+    ? `${PRODUCT.bytes} bytes from ${PRODUCT.source}, sha256 ${PRODUCT.digest}`
+    : PRODUCT.why);
+if (PRODUCT.ok) {
+  console.log(`         read ${PRODUCT.bytes} bytes from ${PRODUCT.source}`);
+}
+
+/* Every check below states its own reason when the product could not be read,
+   rather than vanishing. `measured` runs the assertion only when there is
+   something to measure and fails it, loudly, when there is not. */
+const measured = (label, assertion) => {
+  if (!PRODUCT.ok) { check(label, false, 'not measured: ' + PRODUCT.why); return; }
+  check(label, assertion());
+};
+
+{
+  const gbProduct = PRODUCT.ok ? JSON.parse(PRODUCT.text) : null;
+  const gb = gbProduct && topologyModule ? topologyModule.index(gbProduct) : null;
+  const cowl = gb ? gb.at('COWL') : null;
+  const landings = cowl ? cowl.by_voltage.flatMap(band => band.transformers) : [];
+  measured('Cowley publishes ten transformer landings',
+    () => cowl.counts.transformer_landings === 10 && landings.length === 10);
+  measured('Cowley reports FIVE transformers, not ten',
+    () => cowl.counts.transformers === 5);
+  measured('and they are the five machines the operator publishes',
+    () => landings.filter(t => t.from_node === 'COWL41').length === 5
+      && landings.filter(t => t.from_node === 'COWL41')
+        .every(t => (t.to_node === 'COWL11' || t.to_node === 'COWL12')
+          && t.rating_mva >= 269 && t.rating_mva <= 278));
+  measured('at 400 kV it still says five, and at 132 kV five - the same machines',
+    () => cowl.by_voltage.find(b => b.voltage_kv === 400).transformers.length === 5
+      && cowl.by_voltage.find(b => b.voltage_kv === 132).transformers.length === 5);
+  measured('a voltage-filtered query sees one winding and is not halved',
+    () => gb.at('COWL', { voltageKv: 400 }).counts.transformers === 5);
+  measured('Cowley six circuits are unchanged, because it owns one end of each',
+    () => cowl.counts.circuits === 6 && cowl.counts.circuit_landings === 6);
 
   let sites = 0, differing = 0, units = 0, ends = 0;
-  for (const site of gbProduct.sites) {
+  for (const site of (gbProduct ? gbProduct.sites : [])) {
     const facts = gb.at(site.code);
     if (!facts || !facts.counts.transformer_landings) continue;
     sites += 1;
@@ -341,12 +443,14 @@ if (topologyModule && PRODUCT_FILE) {
     ends += facts.counts.transformer_landings;
     if (facts.counts.transformers !== facts.counts.transformer_landings) differing += 1;
   }
-  check('estate-wide: 2,944 landings resolve to 1,550 site-held units',
-    ends === 2944 && units === 1550);
-  check('and 484 of the 525 sites that hold a transformer were overstated',
-    sites === 525 && differing === 484);
-  console.log(`         ${ends} landings -> ${units} units at ${sites} sites, `
-    + `${differing} of them previously overstated (${(ends / units).toFixed(2)}x)`);
+  measured('estate-wide: 2,944 landings resolve to 1,550 site-held units',
+    () => ends === 2944 && units === 1550);
+  measured('and 484 of the 525 sites that hold a transformer were overstated',
+    () => sites === 525 && differing === 484);
+  if (PRODUCT.ok) {
+    console.log(`         ${ends} landings -> ${units} units at ${sites} sites, `
+      + `${differing} of them previously overstated (${(ends / units).toFixed(2)}x)`);
+  }
 }
 
 console.log(`\n${passed}/${passed + failures.length} checks passed`);

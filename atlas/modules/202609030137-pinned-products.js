@@ -93,11 +93,18 @@
      Only a real disagreement between the bytes and the recorded digest
      refuses, because refusing on absence would make the Atlas unusable
      anywhere but production while proving nothing about the bytes. */
-  async function digestHex(text) {
+  function encode(text) {
+    try {
+      return typeof TextEncoder === 'function'
+        ? new TextEncoder().encode(text) : null;
+    } catch (_) { return null; }
+  }
+
+  async function digestBytes(bytes) {
     try {
       const subtle = (window.crypto || {}).subtle;
-      if (!subtle || typeof TextEncoder !== 'function') return null;
-      const digest = await subtle.digest('SHA-256', new TextEncoder().encode(text));
+      if (!subtle || !bytes) return null;
+      const digest = await subtle.digest('SHA-256', bytes);
       return Array.from(new Uint8Array(digest))
         .map(byte => byte.toString(16).padStart(2, '0')).join('');
     } catch (_) {
@@ -106,22 +113,39 @@
     }
   }
 
+  async function digestHex(text) {
+    return digestBytes(encode(text));
+  }
+
   /**
    * @returns { state, sha256, expected, ref, bytes_seen, bytes_expected }
    *   state is 'verified', 'MISMATCH', or a stated reason it is unverified.
    *   Only 'MISMATCH' means the caller must refuse.
+   *
+   * `bytes_seen` is BYTES. The first cut of this module reported
+   * `text.length`, which is UTF-16 code units: the node/branch product is
+   * 10,069,964 characters and 10,069,966 bytes, so the field disagreed with
+   * the `bytes` it was being compared against by two, on a file that was
+   * entirely correct. A length is checked as well as a digest because
+   * truncation is the failure a length names immediately and a digest only
+   * says "different" about.
    */
   async function verify(id, text) {
     const entry = pin(id);
-    const seen = typeof text === 'string' ? text.length : null;
+    const bytes = encode(text);
+    const seen = bytes ? bytes.length : null;
     if (!entry) {
       return { state: 'unverified: no pin for ' + String(id), sha256: null,
         expected: null, ref: null, bytes_seen: seen, bytes_expected: null };
     }
-    const digest = await digestHex(text);
+    const digest = await digestBytes(bytes);
     const answer = { sha256: digest, expected: entry.sha256, ref: entry.ref,
       bytes_seen: seen, bytes_expected: entry.bytes };
-    if (digest === null) {
+    if (seen !== null && seen !== entry.bytes) {
+      answer.state = 'MISMATCH';
+      answer.detail = 'the response at ' + entry.ref + ' is ' + seen
+        + ' bytes, not the recorded ' + entry.bytes;
+    } else if (digest === null) {
       answer.state = 'unverified: no subtle crypto in this context';
     } else if (digest === entry.sha256) {
       answer.state = 'verified';
