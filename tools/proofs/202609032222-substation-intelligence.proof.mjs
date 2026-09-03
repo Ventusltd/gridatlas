@@ -695,6 +695,57 @@ check('nothing here grades a connection',
     /\/\*[\s\S]*?\*\//g, '')));
 
 
+
+/* Resolved the same way the menu module is: from the composition's OWN parts
+   manifest, so a restamp cannot leave this proof reading a module the served
+   cartridge no longer carries. */
+const TIDY_MODULE = (() => {
+  const parts = JSON.parse(fsReadSync(join(REPO, 'atlas', 'manifests',
+    `${CURRENT.generation}-substation-intelligence-v9-63-parts.json`)));
+  const hit = (parts.assembled_from || []).find(p => /arrival-tidy\.js$/.test(p.path));
+  if (!hit) throw new Error('the composition carries no arrival-tidy module');
+  return hit.path.split('/').pop();
+})();
+const tidySrc = await readFile(join(REPO, 'atlas', 'modules', TIDY_MODULE), 'utf8');
+
+/* THE ARRIVAL TIDIES UP AFTER ITSELF.
+
+   A deep link is not a search. Measured on v9.96 at 393x852, arriving at
+   ?repd_ref=12588 the way a shared link arrives: the map canvas was topmost
+   at 13 per cent of 3,200 sampled viewport points and the app's own controls
+   at 87 - and three of those controls were the search that had ALREADY
+   answered. The results list was still open, the box still held "12588",
+   a reference the reader never typed, and the identity was on screen three
+   times.
+
+   Each clause is asserted separately because each is a different way for
+   this to be wrong. Dismissing a FAILED arrival would leave a reader with a
+   map and no account of it. Clearing a box the reader has touched would take
+   their typing away. Hiding by anything other than the shell's own display
+   toggle would make the panel unrecoverable by the Escape key and the map
+   click that already restore it. */
+check('the arrival tidy is carried by this cartridge',
+  /function arrivalTidy\(\)/.test(tidySrc));
+check('it acts only on an arrival nobody typed',
+  /get\('repd_ref'\)/.test(tidySrc) && /if \(!ref\) return;/.test(tidySrc));
+check('it dismisses a resolved arrival and leaves a failed one alone',
+  /if \(state !== 'resolved'\) return state === 'failed';/.test(tidySrc));
+check('it hides with the shell own display toggle, not a new mechanism',
+  /results\.style\.display = 'none';/.test(tidySrc));
+check('it clears the box only while the box still holds the ref',
+  /if \(input\.value === ref\) input\.value = '';/.test(tidySrc));
+check('a reader touching the box retires it permanently',
+  /addEventListener\('focus', retire/.test(tidySrc)
+  && /addEventListener\('input', retire/.test(tidySrc)
+  && /if \(!typed\) \{/.test(tidySrc));
+check('it does nothing where there is no observer, rather than throwing',
+  /if \(typeof MutationObserver !== 'function'\) return;/.test(tidySrc));
+check('and it publishes its own state for review',
+  /window\.__GRIDATLAS_ARRIVAL_TIDY__ = \{/.test(tidySrc));
+check('nothing in the arrival tidy grades a connection',
+  !/\b(strong|weak|remote|excellent|poor|good|bad)\b/i.test(
+    tidySrc.replace(/\/\*[\s\S]*?\*\//g, '')));
+
 console.log(`\n${passed}/${passed + failures.length} checks passed`);
 if (bridgeRejections.length) {
   console.log(`(${bridgeRejections.length} rejection(s) from the carried engine under the `
