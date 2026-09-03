@@ -1055,6 +1055,69 @@ export function createColdProjectBootstrap({ loadProjectIndex, loadEngine, clock
   });
 }
 
+/** Shared accessible presentation model; surfaces render these semantics unchanged. */
+export function presentArrivalState(state, { surface, width, height }) {
+  if (!['map', 'pipeline', 'world'].includes(surface)
+      || !Number.isInteger(width) || width < 1
+      || !Number.isInteger(height) || height < 1
+      || state === null || typeof state !== 'object') {
+    throw new TypeError('surface, viewport and arrival state are required');
+  }
+  const base = {
+    surface,
+    layout: width < 768 ? 'mobile' : 'desktop',
+    viewport: Object.freeze({ width, height }),
+    minimum_target_px: 44,
+    phase: state.phase,
+    aria_live: 'polite'
+  };
+  if (state.phase === 'NEVER_MEASURED') {
+    return Object.freeze({ ...base, busy: false, message: 'Select a project to measure grid proximity.' });
+  }
+  if (state.phase === 'MEASURING') {
+    return Object.freeze({ ...base, busy: true, message: 'Measuring grid proximity…' });
+  }
+  if (state.phase === 'REASON' && !state.result) {
+    return Object.freeze({ ...base, busy: false,
+      message: `Grid proximity unavailable: ${state.reason}.` });
+  }
+  const cards = Object.freeze((state.result?.profiles || []).map((scoped) => {
+    if (scoped.state === 'REASON') {
+      return Object.freeze({ status: 'UNAVAILABLE', reason: scoped.reason,
+        predicate: scoped.predicate });
+    }
+    const finding = scoped.finding;
+    return Object.freeze({
+      status: 'MEASURED',
+      target_label: scoped.target.target_name || `Source feature ${scoped.target.target_id}`,
+      target_id: scoped.target.target_id,
+      voltage_kv: scoped.target.voltage_kv,
+      distance: `${finding.value.toFixed(2)} km straight`,
+      method: scoped.scope.geometry,
+      predicate: scoped.scope.predicate,
+      candidate_count: scoped.scope.candidate_count,
+      coverage: `${scoped.scope.located_count}/${scoped.scope.total_count}`,
+      evidence: finding.provenance
+    });
+  }));
+  return Object.freeze({
+    ...base,
+    busy: false,
+    message: state.phase === 'RESULT' ? 'Grid proximity measured.'
+      : `Grid proximity incomplete: ${state.reason}.`,
+    identity: state.identity,
+    project: state.project,
+    elapsed_ms: state.elapsed_ms,
+    cards,
+    road_route: Object.freeze({
+      status: 'NOT_COMPUTED', reason: 'AUTHORITATIVE_ROAD_GRAPH_UNAVAILABLE'
+    }),
+    corridor_estimate: Object.freeze({
+      status: 'NOT_COMPUTED', reason: 'CALIBRATION_1_245_NOT_APPLICABLE'
+    })
+  });
+}
+
 /** One owner connects selection revisions to findings and rejects late results. */
 export function createFindingLoop(query) {
   if (typeof query !== 'function') throw new TypeError('query function is required');

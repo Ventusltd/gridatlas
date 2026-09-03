@@ -28,6 +28,7 @@ import {
   nearbyProjects,
   orderCandidates,
   parseProjectDeepLink,
+  presentArrivalState,
   projectFindingRequest,
   PROJECT_TECHNOLOGIES,
   resolveNearestCandidate
@@ -736,6 +737,30 @@ check('overlapping cold arrivals reject the late result without overwriting curr
   currentColdResult.phase === 'RESULT' && staleColdResult.phase === 'STALE'
     && raceBootstrap.read() === currentColdResult
     && raceEvents.map((event) => event.phase).join(',') === 'MEASURING,MEASURING,RESULT');
+
+const mobileMeasuring = presentArrivalState(coldEvents[0], {
+  surface: 'map', width: 393, height: 852
+});
+check('393x852 cold state is visibly busy and screen-reader announced',
+  mobileMeasuring.layout === 'mobile' && mobileMeasuring.busy
+    && mobileMeasuring.phase === 'MEASURING'
+    && mobileMeasuring.aria_live === 'polite'
+    && mobileMeasuring.minimum_target_px === 44);
+const surfaceModels = ['map', 'pipeline', 'world'].map((surface) =>
+  presentArrivalState(coldResult, { surface, width: 1400, height: 900 }));
+check('Map, Pipeline and World presentations share identical finding semantics',
+  surfaceModels.every((model) => JSON.stringify(model.cards) === JSON.stringify(surfaceModels[0].cards)
+    && model.road_route.status === 'NOT_COMPUTED'
+    && model.corridor_estimate.status === 'NOT_COMPUTED'));
+check('presentation distinguishes scoped Markinch measurements',
+  surfaceModels[0].cards[0].target_label === 'Glenrothes Substation'
+    && surfaceModels[0].cards[0].distance === '2.49 km straight'
+    && surfaceModels[0].cards[1].target_label === 'Source feature grid_substations:2033'
+    && surfaceModels[0].cards[1].distance === '28.82 km straight');
+check('presentation never fabricates an Unnamed target or routed distance',
+  !JSON.stringify(surfaceModels).includes('Unnamed')
+    && !JSON.stringify(surfaceModels).includes('35.9 km')
+    && !JSON.stringify(surfaceModels).includes('road distance'));
 let staleReleaseRejected = false;
 try {
   projectFindingRequest({ kind: 'project', repd_ref: 'A', source_release: 'b'.repeat(64) }, projectIndex);
@@ -870,4 +895,4 @@ check('distinct nearest candidate is available', unique.status === 'available' &
 const absent = resolveNearestCandidate([], { idField: 'site_code' });
 check('empty population is withheld', absent.reason === 'NO_CANDIDATE' && absent.value === null);
 
-console.log(JSON.stringify({ status: 'PASS', iteration: 35, checks }));
+console.log(JSON.stringify({ status: 'PASS', iteration: 36, checks }));
