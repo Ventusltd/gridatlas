@@ -2424,14 +2424,46 @@ check('the search lane publishes the technology and capacity it resolved',
 check('absent coordinates are absent, not Null Island',
   /rawLon === null \? NaN : Number\(rawLon\)/.test(cartridgeSource)
   && /Math\.abs\(lon\) < 1e-9 && Math\.abs\(lat\) < 1e-9/.test(cartridgeSource));
-check('the identity fallback is gated on repd_ref being present',
-  /&& q\.get\('repd_ref'\)/.test(cartridgeSource));
+/* Was: "the identity fallback is GATED ON repd_ref being present", asserting
+   `&& q.get('repd_ref')` on a condition that also required the link to be
+   malformed. That gate is the defect. A deep link with a correct repd_ref and
+   wrong coordinates printed a real project's address, postcode and planning
+   status over a measurement 30 km away, with the camera on the register and
+   the pin drawn off-screen, so nothing on screen contradicted it - and the URL
+   carries the state, so a share propagated it. The check is made STRICTER: the
+   register must be consulted for EVERY repd_ref link, and the old conditional
+   form must be absent from the served bytes. */
+check('the register is consulted for every repd_ref link, not only a malformed one',
+  /if \(q\.get\('repd_ref'\)\) \{/.test(cartridgeSource)
+  && !/!coordsUsable\(\) \|\| !isProjectTech\(tech\)\) && q\.get\('repd_ref'\)/
+    .test(cartridgeSource));
+check('the register point overwrites the link point, unconditionally',
+  /lon = rLon;/.test(cartridgeSource) && /lat = rLat;/.test(cartridgeSource)
+  && /link\.origin_source = 'register'/.test(cartridgeSource));
+/* The page held both points all along and never subtracted them. It must be
+   measured BEFORE the overwrite or it is always zero - asserted by position,
+   not by presence, because presence alone would pass on the broken order. */
+check('the discrepancy is measured before the point is overwritten',
+  (() => {
+    const measured = cartridgeSource.indexOf('link.origin_discrepancy_km');
+    const overwritten = cartridgeSource.indexOf('lon = rLon;');
+    return measured > 0 && overwritten > measured;
+  })());
+check('and it is measured on the one geodesy, not a second haversine',
+  /distanceKm\(lon, lat, rLon, rLat\)/.test(cartridgeSource));
+/* origin_source is the field a reader, a proof and a later lane all read to
+   know which source the numbers came from. It was set only inside the branch
+   the false case skipped, so it was silent in exactly the case that needed it.
+   Every terminal path through the lane must now publish it. */
+check('every path publishes which source the origin came from',
+  (cartridgeSource.match(/link\.origin_source = '(register|link)'/g) || []).length >= 3);
 check('the lane waits for the search cartridge and honours terminal states',
   /window\.__GRIDATLAS_PLACE_SEARCH__\?\.deep_link/.test(cartridgeSource)
   && /dl\.status === 'RESOLVED'/.test(cartridgeSource)
   && /dl\.status === 'FAILED' \|\| dl\.status === 'ABSENT'/.test(cartridgeSource));
 check('a resolved identity supplies coordinates, technology, name and capacity',
-  /lon = Number\(resolved\.longitude\)/.test(cartridgeSource)
+  /const rLon = Number\(resolved\.longitude\)/.test(cartridgeSource)
+  && /const rLat = Number\(resolved\.latitude\)/.test(cartridgeSource)
   && /tech = resolved\.technology/.test(cartridgeSource)
   && /if \(resolved\.name\) name = String\(resolved\.name\)/.test(cartridgeSource)
   && /if \(Number\.isFinite\(cap\) && cap > 0\) stated = cap/.test(cartridgeSource));
