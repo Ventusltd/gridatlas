@@ -3577,11 +3577,28 @@ check('the five network modules are no longer in the sandbox cartridge',
    out. Trimmed twice by hand before the cut to get there. */
 const CARTRIDGE_BOUNDARY = 409600;
 const CARTRIDGE_CEILING = Math.floor(CARTRIDGE_BOUNDARY * 0.9);
+/* THE WARNING LIGHT REPORTED THE WRONG NUMBER, AND IT IS THE NUMBER THREE
+   LANES ARE STEERING BY TONIGHT.
+
+   This check ASSERTS against CARTRIDGE_CEILING and REPORTED against
+   CARTRIDGE_BOUNDARY. At 368,605 characters it printed "40995 characters
+   clear" while the true headroom against the thing that actually fails the
+   build was 35 - overstated 1,171-fold, in the same call that the comment
+   above says exists "so a reader can watch it close rather than discover it
+   closed". A gauge that is wrong in the safe direction is worse than no
+   gauge: it is read, and believed, right up to the failure.
+
+   Both numbers are now printed, each against the limit it belongs to, and
+   the one that can fail the build is first. The ceiling itself is unchanged
+   and is not to be raised - the answer to a full cartridge is to move
+   computation out, which is what the note above already says. */
 check('the sandbox cartridge is under the 400 kB composer boundary with a '
   + 'tenth of it still in hand',
   cartridgeSource.length < CARTRIDGE_CEILING,
-  `${cartridgeSource.length} of ${CARTRIDGE_BOUNDARY}, `
-  + `${CARTRIDGE_BOUNDARY - cartridgeSource.length} characters clear`);
+  `${cartridgeSource.length} of ${CARTRIDGE_CEILING} (the enforced ceiling), `
+  + `${CARTRIDGE_CEILING - cartridgeSource.length} characters clear; `
+  + `${CARTRIDGE_BOUNDARY - cartridgeSource.length} clear of the `
+  + `${CARTRIDGE_BOUNDARY} composer boundary`);
 check('the sandbox still CALLS them, from the cartridge that now carries them',
   /window\.__GRIDATLAS_MODULES__\?\.networkTopology/.test(cartridgeSource)
   && /window\.__GRIDATLAS_MODULES__\?\.ownerBoundary/.test(cartridgeSource));
