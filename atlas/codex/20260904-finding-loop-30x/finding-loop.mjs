@@ -357,6 +357,75 @@ export function createDistanceFinding({
   });
 }
 
+/** Attach inspectable target identity and population scope to a distance finding. */
+export function createScopedDistanceFinding({
+  type, distance_km: distanceKm, selection_revision: selectionRevision,
+  provenance, qualifiers = [], target, scope
+}) {
+  if (target === null || typeof target !== 'object' || Array.isArray(target)
+      || scope === null || typeof scope !== 'object' || Array.isArray(scope)) {
+    throw new TypeError('distance target and scope are required');
+  }
+  const targetFields = ['target_id', 'target_name', 'operator', 'voltage_kv', 'longitude', 'latitude'];
+  const targetDescriptors = Object.getOwnPropertyDescriptors(target);
+  if (targetFields.some((field) => !Object.hasOwn(targetDescriptors, field)
+      || !Object.hasOwn(targetDescriptors[field], 'value'))) {
+    throw new TypeError('distance target fields must be data properties');
+  }
+  const targetId = targetDescriptors.target_id.value;
+  const targetName = targetDescriptors.target_name.value;
+  const operator = targetDescriptors.operator.value;
+  const voltageKv = targetDescriptors.voltage_kv.value;
+  const longitude = targetDescriptors.longitude.value;
+  const latitude = targetDescriptors.latitude.value;
+  if (typeof targetId !== 'string' || !targetId || targetId !== targetId.trim()
+      || CONTROL_CHARACTER.test(targetId)) throw new TypeError('target_id is invalid');
+  for (const [field, value] of [['target_name', targetName], ['operator', operator]]) {
+    if (value !== null && (typeof value !== 'string' || !value || value !== value.trim()
+        || CONTROL_CHARACTER.test(value))) throw new TypeError(`${field} is invalid`);
+  }
+  if (!Array.isArray(voltageKv) || voltageKv.length === 0
+      || voltageKv.some((value) => !Number.isInteger(value) || value <= 0)) {
+    throw new TypeError('voltage_kv must be positive integer values');
+  }
+  validateCoordinateSelection({
+    kind: 'location', longitude, latitude, coordinate_origin: 'mapped_feature'
+  });
+  const scopeFields = ['candidate_count', 'geometry', 'located_count', 'predicate', 'total_count'];
+  const scopeDescriptors = Object.getOwnPropertyDescriptors(scope);
+  if (scopeFields.some((field) => !Object.hasOwn(scopeDescriptors, field)
+      || !Object.hasOwn(scopeDescriptors[field], 'value'))) {
+    throw new TypeError('distance scope fields must be data properties');
+  }
+  const candidateCount = scopeDescriptors.candidate_count.value;
+  const geometry = scopeDescriptors.geometry.value;
+  if (!Number.isInteger(candidateCount) || candidateCount < 1
+      || geometry !== 'ellipsoidal_straight_line') {
+    throw new TypeError('distance scope candidate count or geometry is invalid');
+  }
+  const coverage = coverageBoundary({
+    predicate: scopeDescriptors.predicate.value,
+    located: scopeDescriptors.located_count.value,
+    total: scopeDescriptors.total_count.value
+  });
+  if (candidateCount > coverage.located) throw new TypeError('candidate count exceeds coverage');
+  return Object.freeze({
+    finding: createDistanceFinding({
+      type, distance_km: distanceKm, selection_revision: selectionRevision,
+      provenance, qualifiers
+    }),
+    target: Object.freeze({
+      target_id: targetId, target_name: targetName, operator,
+      voltage_kv: Object.freeze([...voltageKv]), longitude, latitude
+    }),
+    scope: Object.freeze({
+      predicate: coverage.predicate, candidate_count: candidateCount,
+      located_count: coverage.located, total_count: coverage.total,
+      coverage_ratio: coverage.ratio, geometry
+    })
+  });
+}
+
 /** Road distance is unavailable until a pinned graph and routing receipt exist. */
 export function createRoadRouteFinding(selectionRevision) {
   return validateFinding({

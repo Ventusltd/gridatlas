@@ -5,6 +5,7 @@ import {
   coverageBoundary,
   classifyProjectTechnology,
   createDistanceFinding,
+  createScopedDistanceFinding,
   createFindingLoop,
   createProjectIndex,
   createProjectRegister,
@@ -233,6 +234,57 @@ check('1.245 calibration is withheld for straight-line substation geometry',
 let inventedCorridorBasisRejected = false;
 try { createCorridorEstimateFinding(1, 'road_graph'); } catch { inventedCorridorBasisRejected = true; }
 check('corridor estimator rejects an unproved basis', inventedCorridorBasisRejected);
+
+const substationDigest = '87976435766a58ddf19c99540b58cd7f18a224148af42ba55075d8851f9e6251';
+const substationBytes = readFileSync(new URL(
+  '../../../atlas/releases/202608300453-atlas-v9/data/grid_substations.geojson', import.meta.url
+));
+check('substation fixture is pinned to immutable release bytes',
+  substationBytes.length === 1192748
+    && createHash('sha256').update(substationBytes).digest('hex') === substationDigest);
+const substationEvidence = Object.freeze({
+  source_id: 'grid_substations',
+  release: 'atlas/releases/202608300453-atlas-v9/data/grid_substations.geojson',
+  sha256: substationDigest, bytes: 1192748
+});
+const glenrothesDistance = createScopedDistanceFinding({
+  type: 'nearest_connection_point', distance_km: 2.485885849,
+  selection_revision: 1, provenance: [substationEvidence],
+  qualifiers: ['MARKINCH', 'ANY_VOLTAGE_AT_OR_ABOVE_33_KV'],
+  target: {
+    target_id: 'grid_substations:417', target_name: 'Glenrothes Substation',
+    operator: 'SP Energy Networks', voltage_kv: [275, 33],
+    longitude: -3.2009994, latitude: 56.2070307
+  },
+  scope: {
+    predicate: 'valid point geometry and any voltage_kv >= 33',
+    candidate_count: 5799, located_count: 5799, total_count: 5800,
+    geometry: 'ellipsoidal_straight_line'
+  }
+});
+const nearest400Distance = createScopedDistanceFinding({
+  type: 'nearest_connection_point', distance_km: 28.819562529,
+  selection_revision: 1, provenance: [substationEvidence],
+  qualifiers: ['MARKINCH', 'ANY_VOLTAGE_AT_OR_ABOVE_400_KV'],
+  target: {
+    target_id: 'grid_substations:2033', target_name: null, operator: null,
+    voltage_kv: [400], longitude: -2.9662713, latitude: 55.9665186
+  },
+  scope: {
+    predicate: 'valid point geometry and any voltage_kv >= 400',
+    candidate_count: 278, located_count: 5799, total_count: 5800,
+    geometry: 'ellipsoidal_straight_line'
+  }
+});
+check('Markinch any-voltage and 400 kV substation findings remain distinct',
+  glenrothesDistance.finding.value === 2.485885849
+    && glenrothesDistance.target.target_id === 'grid_substations:417'
+    && nearest400Distance.finding.value === 28.819562529
+    && nearest400Distance.target.target_id === 'grid_substations:2033'
+    && glenrothesDistance.scope.predicate !== nearest400Distance.scope.predicate);
+check('unnamed 400 kV source remains identified by source feature',
+  nearest400Distance.target.target_name === null
+    && nearest400Distance.target.target_id === 'grid_substations:2033');
 
 const pinned = validateProvenance(evidence);
 check('pinned provenance is accepted and frozen',
@@ -597,4 +649,4 @@ check('distinct nearest candidate is available', unique.status === 'available' &
 const absent = resolveNearestCandidate([], { idField: 'site_code' });
 check('empty population is withheld', absent.reason === 'NO_CANDIDATE' && absent.value === null);
 
-console.log(JSON.stringify({ status: 'PASS', iteration: 29, checks }));
+console.log(JSON.stringify({ status: 'PASS', iteration: 30, checks }));
