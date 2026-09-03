@@ -117,3 +117,11 @@ export function validateSubstationSelection(input) {
   }
   return Object.freeze({ kind: 'substation', site_code: siteCode, source_release: sourceRelease });
 }
+
+/** Dispatch the discriminated union without coercing an unknown kind. */
+export function validateAnySelection(input) {
+  if (input?.kind === 'project') return validateSelection(input);
+  if (input?.kind === 'location') return validateCoordinateSelection(input);
+  if (input?.kind === 'substation') return validateSubstationSelection(input);
+  throw new TypeError('selection kind is unsupported');
+}

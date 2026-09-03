@@ -1,4 +1,5 @@
 import {
+  validateAnySelection,
   validateCoordinateSelection,
   validateSelection,
   validateSubstationSelection
@@ -76,4 +77,14 @@ for (const [label, value] of [
   check(label, rejected);
 }
 
-console.log(JSON.stringify({ status: 'PASS', iteration: 3, checks }));
+check('union dispatch accepts an exact project',
+  validateAnySelection({ kind: 'project', repd_ref: '13599', source_release: digest }).kind === 'project');
+check('union dispatch accepts an explicit location',
+  validateAnySelection({ kind: 'location', longitude: 0, latitude: 0, coordinate_origin: 'mapped_feature' }).kind === 'location');
+check('union dispatch accepts an exact substation',
+  validateAnySelection({ kind: 'substation', site_code: 'TEST-SITE', source_release: digest }).kind === 'substation');
+let unsupportedRejected = false;
+try { validateAnySelection({ kind: 'asset', id: 'plausible' }); } catch { unsupportedRejected = true; }
+check('union dispatch rejects unknown kinds', unsupportedRejected);
+
+console.log(JSON.stringify({ status: 'PASS', iteration: 4, checks }));
