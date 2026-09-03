@@ -1,5 +1,6 @@
 import {
   coverageBoundary,
+  classifyProjectTechnology,
   createDistanceFinding,
   createFindingLoop,
   createProjectIndex,
@@ -16,6 +17,7 @@ import {
   nearbyProjects,
   orderCandidates,
   projectFindingRequest,
+  PROJECT_TECHNOLOGIES,
   resolveNearestCandidate
 } from './finding-loop.mjs';
 
@@ -264,8 +266,8 @@ check('history restoration creates a new revision', restored.revision === 3);
 check('selection state is an atomic replacement', !Object.hasOwn(restored, 'previous'));
 
 const register = createProjectRegister([
-  { repd_ref: 'B', longitude: 2, latitude: 50 },
-  { repd_ref: 'A', longitude: 1, latitude: 50 }
+  { repd_ref: 'B', longitude: 2, latitude: 50, technology: 'bess' },
+  { repd_ref: 'A', longitude: 1, latitude: 50, technology: 'solar' }
 ], { ...evidence, source_id: 'project_register' });
 const nearby = nearbyProjects({ register, longitude: 0, latitude: 50,
   distanceKm: (_lon, _lat, projectLon) => projectLon });
@@ -289,8 +291,8 @@ for (const [label, longitude, latitude] of [
 let duplicateProjectRejected = false;
 try {
   createProjectRegister([
-    { repd_ref: 'A', longitude: 0, latitude: 0 },
-    { repd_ref: 'A', longitude: 1, latitude: 1 }
+    { repd_ref: 'A', longitude: 0, latitude: 0, technology: 'solar' },
+    { repd_ref: 'A', longitude: 1, latitude: 1, technology: 'solar' }
   ], { ...evidence, source_id: 'project_register' });
 } catch { duplicateProjectRejected = true; }
 check('duplicate register identity fails closed', duplicateProjectRejected);
@@ -313,6 +315,34 @@ check('project request resolves through exact repd_ref',
   projectRequest.project.repd_ref === 'A' && projectRequest.kind === 'project_finding_request');
 check('project request retains its source evidence',
   projectRequest.source.sha256 === digest && projectRequest.source.source_id === 'project_register');
+
+const technologyFixtures = [
+  ['12453', -1.085062, 53.580258, 'bess'],
+  ['12588', -1.348973, 51.813209, 'solar'],
+  ['14926', -2.34505, 57.23695, 'hydrogen'],
+  ['16442', -4.47957, 57.33581, 'hydro'],
+  ['6865', -1.22867, 51.65795, 'flywheel'],
+  ['6611', -4.71921, 53.3037, 'tidal'],
+  ['932', -2.75237, 53.3257, 'biomass'],
+  ['11288', -2.40905, 53.4352, 'caes'],
+  ['6277', -1.22446, 53.79499, 'act'],
+  ['4692', -4.75366, 50.36924, 'geothermal'],
+  ['15205', -0.36839, 50.81255, 'other']
+].map(([repd_ref, longitude, latitude, technology]) => ({ repd_ref, longitude, latitude, technology }));
+const technologyRegister = createProjectRegister(technologyFixtures,
+  { ...evidence, source_id: 'project_register' });
+check('published wider-fleet vocabulary covers eleven technologies',
+  new Set(technologyRegister.projects.map((row) => row.technology)).size === 11
+    && PROJECT_TECHNOLOGIES.every((technology) =>
+      technologyRegister.projects.some((row) => row.technology === technology)));
+check('every published technology survives the adapter exactly',
+  technologyRegister.projects.every((row) => row.technology === row.source_technology
+    && row.technology_status === 'known'));
+const unknownTechnology = classifyProjectTechnology('future_test_fixture');
+check('unknown technology remains explicit and preserves its source token',
+  unknownTechnology.technology === 'unknown'
+    && unknownTechnology.source_technology === 'future_test_fixture'
+    && unknownTechnology.status === 'unknown');
 let staleReleaseRejected = false;
 try {
   projectFindingRequest({ kind: 'project', repd_ref: 'A', source_release: 'b'.repeat(64) }, projectIndex);
@@ -414,4 +444,4 @@ check('distinct nearest candidate is available', unique.status === 'available' &
 const absent = resolveNearestCandidate([], { idField: 'site_code' });
 check('empty population is withheld', absent.reason === 'NO_CANDIDATE' && absent.value === null);
 
-console.log(JSON.stringify({ status: 'PASS', iteration: 21, checks }));
+console.log(JSON.stringify({ status: 'PASS', iteration: 22, checks }));

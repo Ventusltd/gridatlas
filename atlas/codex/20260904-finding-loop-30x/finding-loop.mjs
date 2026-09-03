@@ -21,6 +21,11 @@ const EVIDENCE_CLASS_BY_TYPE = Object.freeze({
   unknown: 'unknown'
 });
 const PROVENANCE_FIELDS = Object.freeze(['bytes', 'release', 'sha256', 'source_id']);
+export const PROJECT_TECHNOLOGIES = Object.freeze([
+  'act', 'bess', 'biomass', 'caes', 'flywheel', 'geothermal',
+  'hydro', 'hydrogen', 'other', 'solar', 'tidal'
+]);
+const PROJECT_TECHNOLOGY_SET = new Set(PROJECT_TECHNOLOGIES);
 
 /**
  * Validate the transport contract for an exact project selection.
@@ -360,6 +365,20 @@ export function createSelectionStore() {
   });
 }
 
+/** Adapt the complete published project vocabulary without guessing aliases. */
+export function classifyProjectTechnology(input) {
+  if (typeof input !== 'string' || !input || input !== input.trim()
+      || CONTROL_CHARACTER.test(input)) {
+    throw new TypeError('project technology must be a canonical string');
+  }
+  const known = PROJECT_TECHNOLOGY_SET.has(input);
+  return Object.freeze({
+    technology: known ? input : 'unknown',
+    source_technology: input,
+    status: known ? 'known' : 'unknown'
+  });
+}
+
 /** Build a complete, pinned project index. Duplicate identities fail closed. */
 export function createProjectRegister(rows, provenance) {
   const source = validateProvenance(provenance);
@@ -371,13 +390,19 @@ export function createProjectRegister(rows, provenance) {
     const repdRef = String(row?.repd_ref || '').trim();
     const longitude = Number(row?.longitude);
     const latitude = Number(row?.latitude);
+    const technology = classifyProjectTechnology(row?.technology);
     if (!repdRef || seen.has(repdRef)) throw new TypeError('repd_ref must be present and unique');
     if (!Number.isFinite(longitude) || longitude < -180 || longitude > 180
         || !Number.isFinite(latitude) || latitude < -90 || latitude > 90) {
       throw new TypeError('project register coordinates are invalid');
     }
     seen.add(repdRef);
-    return Object.freeze({ repd_ref: repdRef, longitude, latitude });
+    return Object.freeze({
+      repd_ref: repdRef, longitude, latitude,
+      technology: technology.technology,
+      source_technology: technology.source_technology,
+      technology_status: technology.status
+    });
   });
   return Object.freeze({ source, projects: Object.freeze(projects) });
 }
