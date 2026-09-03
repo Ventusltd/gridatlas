@@ -442,6 +442,49 @@ export function projectFindingRequest(selection, projectIndex) {
   });
 }
 
+/** Convert a legacy project deep link into one exact selection plus advisory transport. */
+export function parseProjectDeepLink(input, projectIndex) {
+  if (typeof input !== 'string' || !input.trim()) throw new TypeError('project deep link is required');
+  const url = new URL(input, 'https://candidate.invalid/atlas/');
+  const allowed = new Set([
+    'repd_ref', 'project', 'technology', 'capacity_mw', 'latitude', 'longitude'
+  ]);
+  const names = [...url.searchParams.keys()];
+  if (names.some((name) => !allowed.has(name)
+      || url.searchParams.getAll(name).length !== 1)) {
+    throw new TypeError('project deep link has unknown or duplicate fields');
+  }
+  const repdRef = url.searchParams.get('repd_ref');
+  const selection = validateSelection({
+    kind: 'project', repd_ref: repdRef, source_release: projectIndex?.source?.sha256
+  });
+  const request = projectFindingRequest(selection, projectIndex);
+  const transportedTechnology = url.searchParams.get('technology');
+  const diagnostics = [];
+  let technology = null;
+  if (transportedTechnology !== null) {
+    technology = classifyProjectTechnology(transportedTechnology);
+    if (technology.status === 'unknown') diagnostics.push('UNKNOWN_TRANSPORT_TECHNOLOGY');
+    if (technology.source_technology !== request.project.source_technology) {
+      diagnostics.push('TRANSPORT_TECHNOLOGY_DIFFERS_FROM_REGISTER');
+    }
+  } else {
+    diagnostics.push('TECHNOLOGY_NOT_TRANSPORTED');
+  }
+  const transport = Object.freeze(Object.fromEntries(
+    ['project', 'technology', 'capacity_mw', 'latitude', 'longitude']
+      .map((name) => [name, url.searchParams.get(name)])
+  ));
+  return Object.freeze({
+    kind: 'project_deep_link',
+    selection,
+    project: request.project,
+    transport,
+    technology,
+    diagnostics: Object.freeze(diagnostics)
+  });
+}
+
 /** Search every row in the pinned register through an injected canonical distance owner. */
 export function nearbyProjects({ register, longitude, latitude, distanceKm, limit = 10 }) {
   if (typeof distanceKm !== 'function' || !Number.isInteger(limit) || limit < 1) {

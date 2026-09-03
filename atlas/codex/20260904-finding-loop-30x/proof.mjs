@@ -16,6 +16,7 @@ import {
   validateProvenance,
   nearbyProjects,
   orderCandidates,
+  parseProjectDeepLink,
   projectFindingRequest,
   PROJECT_TECHNOLOGIES,
   resolveNearestCandidate
@@ -343,6 +344,57 @@ check('unknown technology remains explicit and preserves its source token',
   unknownTechnology.technology === 'unknown'
     && unknownTechnology.source_technology === 'future_test_fixture'
     && unknownTechnology.status === 'unknown');
+
+const gridRegisterDigest = 'c8a5c59be878c52014a272eb0e4d09af06a0d301d10a8d6b5d0b116b5d1bb6bc';
+const gridRegisterSource = Object.freeze({
+  source_id: 'project_register',
+  release: '202608290716:data/repd_browser_registry_202608290716.json',
+  sha256: gridRegisterDigest, bytes: 9328402
+});
+const markinchRegister = createProjectRegister([{
+  repd_ref: '155', longitude: -3.162255, latitude: 56.20118, technology: 'biomass'
+}], gridRegisterSource);
+const markinchIndex = createProjectIndex(markinchRegister);
+const markinchLink = 'https://ventusltd.github.io/gridatlas/atlas/?repd_ref=155'
+  + '&project=Markinch+Biomass+CHP+Plant&technology=biomass&capacity_mw=65'
+  + '&latitude=56.20118&longitude=-3.162255';
+const markinchArrival = parseProjectDeepLink(markinchLink, markinchIndex);
+check('Markinch deep link establishes identity only through repd_ref',
+  markinchArrival.selection.repd_ref === '155'
+    && Object.keys(markinchArrival.selection).join(',') === 'kind,repd_ref,source_release');
+check('Markinch transport technology survives as the typed register vocabulary',
+  markinchArrival.project.technology === 'biomass'
+    && markinchArrival.technology.technology === 'biomass'
+    && markinchArrival.diagnostics.length === 0);
+
+let deepLinkConsoleErrors = 0;
+const originalConsoleError = console.error;
+console.error = () => { deepLinkConsoleErrors += 1; };
+try {
+  const allTechnologyIndex = createProjectIndex(technologyRegister);
+  for (const fixture of technologyFixtures) {
+    const arrival = parseProjectDeepLink(
+      `?repd_ref=${fixture.repd_ref}&technology=${fixture.technology}`,
+      allTechnologyIndex
+    );
+    check(`${fixture.technology} deep link canonicalizes without fallback`,
+      arrival.project.technology === fixture.technology && arrival.diagnostics.length === 0);
+  }
+  const futureRegister = createProjectRegister([{
+    repd_ref: 'future-fixture', longitude: 0, latitude: 0,
+    technology: 'future_test_fixture'
+  }], gridRegisterSource);
+  const futureArrival = parseProjectDeepLink(
+    '?repd_ref=future-fixture&technology=future_test_fixture',
+    createProjectIndex(futureRegister)
+  );
+  check('unknown deep-link technology is explicit rather than rejected',
+    futureArrival.project.technology === 'unknown'
+      && futureArrival.diagnostics.includes('UNKNOWN_TRANSPORT_TECHNOLOGY'));
+} finally {
+  console.error = originalConsoleError;
+}
+check('complete technology deep-link adaptation emits no console error', deepLinkConsoleErrors === 0);
 let staleReleaseRejected = false;
 try {
   projectFindingRequest({ kind: 'project', repd_ref: 'A', source_release: 'b'.repeat(64) }, projectIndex);
@@ -444,4 +496,4 @@ check('distinct nearest candidate is available', unique.status === 'available' &
 const absent = resolveNearestCandidate([], { idField: 'site_code' });
 check('empty population is withheld', absent.reason === 'NO_CANDIDATE' && absent.value === null);
 
-console.log(JSON.stringify({ status: 'PASS', iteration: 22, checks }));
+console.log(JSON.stringify({ status: 'PASS', iteration: 23, checks }));
