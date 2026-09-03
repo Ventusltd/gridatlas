@@ -120,7 +120,7 @@ function note(menu, text) {
 const map = new maplibregl.Map({
   container: 'map',
   style: {
-    version: 8, glyphs: null, sources: {},
+    version: 8, sources: {},   /* no glyphs key at all: null fails validation */
     layers: [{ id: 'void', type: 'background', paint: { 'background-color': '#000' } }]
   },
   center: [-2.6, 54.2], zoom: 5.2, attributionControl: false, antialias: true
