@@ -761,10 +761,17 @@ console.log('\nthe version ledger\n');
    session, and they were visible only in git. The ledger is extracted from
    the repository history at BUILD time and carried by the page - pinned
    history, not prose, nothing fetched at runtime. */
-const vl = cartridgeSource;
+/* The ledger moved out of the sandbox body into a module in the cartridge
+   the shell evaluates first - 13,655 characters of pure data in the cartridge
+   with the least room. It is still in the SERVED bytes, which is what these
+   checks are about, so they read the composition rather than one cartridge. */
+const vl = composedSource;
 check('the ledger exists and is embedded, not fetched',
   /const VERSION_LEDGER = \[/.test(vl)
   && !/fetch\([^)]*ledger/i.test(vl));
+check('the sandbox reads it rather than carrying a second copy',
+  /versionLedger\?\.entries \|\| \[\]/.test(cartridgeSource)
+  && !/const VERSION_LEDGER = \[/.test(cartridgeSource));
 check('it spans the whole reviewed session', (() => {
   const m = vl.match(/const VERSION_LEDGER = (\[[^\n]*\]);/);
   if (!m) return false;
