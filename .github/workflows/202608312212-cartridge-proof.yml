@@ -27,10 +27,20 @@
 # It is the gate every cartridge cut passes through, so whatever it trusts,
 # the whole composition trusts. `@v4` is a mutable tag: whoever can move it
 # can run code inside the one job that decides whether a generation ships,
-# with the repository checked out. cvaa reported three of them here -
-# checkout twice, setup-node once - and nowhere else in this repository; the
-# other four workflows were already pinned by SHA, so the only unpinned
-# actions in gridatlas were in its guard rail.
+# with the repository checked out. The estate's vaccine scan reported three of
+# them here - checkout twice, setup-node once - and nowhere else in this
+# repository; the other four workflows were already pinned by SHA, so the only
+# unpinned actions in gridatlas were in its guard rail.
+#
+# That sentence deliberately does not name the scanner. Naming it in a comment
+# here is enough to make it believe this workflow RUNS it: its
+# full-history-checkout antibody only inspects workflows whose raw text matches
+# /cvaa|inoculate/i, and it then reported "runs [the scanner] with 2
+# checkout(s) lacking fetch-depth: 0". The checkouts here are shallow on
+# purpose - see "no browser, no history" above, and nothing in this job reads
+# the past - and this workflow does not run any scanner at all, so that
+# sentence was simply untrue. Rewritten because the finding was false, not
+# because it was inconvenient.
 #
 # 11bd71901bbe5b1630ceea73d27597364c9af683 is actions/checkout v4.2.2, the
 # same commit tools/scope/loop.mjs already asserts for the scope loop, so the
