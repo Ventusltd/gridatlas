@@ -1913,6 +1913,55 @@ check('the cap measures the space below the anchor, not the container',
   /map\.bottom - rect\.top - 12/.test(code));
 check('a card with no room is freed and parked instead of squeezed',
   /MIN_ANCHORED_CARD/.test(code) && /gridatlas-free'\)/.test(code));
+
+/* ── the card is a docked sheet on a phone ─────────────────────────────
+   A naive user drove the live release on a verified iPhone-class device
+   (393x852 at dpr 3, pointer:coarse, hover:none, 5 touch points) and took
+   101 MAP taps across all 25 technologies. The distance was on the page 99
+   times out of 99 and on the first screen zero times: reproduced here, the
+   anchored card opened at y=426 and was 819px tall, so its bottom edge lay
+   393px below the screen and the last of it could not be reached at any
+   scroll position. These checks hold the docked sheet that replaced it. */
+console.log('\nthe card docks to the bottom of a phone rather than hanging off a marker\n');
+
+check('a phone gets a sheet docked to the bottom edge, not an anchored card',
+  /function dockAsSheet\(popup, content\)/.test(code)
+  && /popup\.classList\.add\('gridatlas-sheet'\)/.test(code)
+  && /bottom:0 !important/.test(src));
+check('it is full width, so nothing is clipped off the left edge',
+  /width:100vw !important;max-width:100vw !important/.test(src));
+/* v9.89's rule, restated for layout: three technology buckets light no
+   layer at all, so a layout branch that asked which technology it was
+   drawing would be wrong for a third of the spine. */
+check('the decision is pointer and width, never technology',
+  /function sheetTarget\(\)/.test(code)
+  && /return trayTarget\(\);/.test(code)
+  && (() => {
+    const at = code.indexOf('function dockAsSheet(popup, content)');
+    const end = code.indexOf('function boundCardToMap', at);
+    return at > 0 && end > at
+      && !/technolog/i.test(code.slice(at, end));
+  })());
+check('the floating controls are lifted clear of the sheet, not buried under it',
+  /html\.gridatlas-sheet-open \.map-controls\{/.test(src)
+  && /bottom:calc\(var\(--gridatlas-sheet-h/.test(src)
+  && !/html\.gridatlas-sheet-open \.map-controls\{display:none/.test(src));
+check('the lift reads the same variable the sheet is sized from',
+  /--gridatlas-sheet-h', height \+ 'px'/.test(code)
+  && (src.match(/var\(--gridatlas-sheet-h/g) || []).length >= 3);
+/* Dragging the bar was the only route to the measurement, and it slid the
+   bar under the map's search box: tapping the close focused the search
+   field and opened the keyboard, 3 times out of 3. */
+check('a docked sheet refuses the drag that buried the close button',
+  /if \(popup\.classList\.contains\('gridatlas-sheet'\)\) return;/.test(code));
+check('closing the card puts the map back the way it was',
+  /function undockSheet\(\)/.test(code)
+  && /popup\.remove\(\);[\s\S]{0,120}undockSheet\(\);/.test(code));
+check('a sheet with no card behind it cannot be left standing',
+  (() => {
+    const at = code.indexOf('if (!popup || !content) {');
+    return at > 0 && /undockSheet\(\);/.test(code.slice(at, at + 200));
+  })());
 check('the fit is recomputed once the block has landed',
   /requestAnimationFrame\(boundCardToMap\)/.test(code));
 
@@ -2548,8 +2597,40 @@ console.log('\nthe nearest sentence states the sample it was drawn from\n');
 /* F4, the rendering side. Two limits, both real, both computed: the search
    only sees the substation features the map has loaded, and the operator's own
    published list is only partly located. */
-check('the nearest-400 line is followed by its scope',
-  /\+ nearestScope\(n\);/.test(cartridgeSource));
+/* Was: "the nearest-400 line is FOLLOWED BY its scope", asserting
+   `+ nearestScope(n);`. Adjacency was enough while one layout rendered the
+   whole card in one place. It is not enough now: the phone docks the card as
+   a sheet and only part of it clears the fold, so "next in the string" no
+   longer means "in the same view". The check is therefore made STRICTER, not
+   moved - the measurement and its scope must be emitted inside ONE element,
+   so that no layout can carry the number anywhere without the sample its
+   superlative searched travelling with it. */
+check('the nearest-400 line and its scope are ONE element, not two adjacent ones',
+  /out \+= `<div class="neon-answer">`[\s\S]*?\+ nearestScope\(n\)\n\s*\+ `<\/div>`;/
+    .test(cartridgeSource));
+check('and the word straight is inside that same element',
+  (() => {
+    const at = cartridgeSource.indexOf('out += `<div class="neon-answer">`');
+    if (at < 0) return false;
+    const end = cartridgeSource.indexOf('+ `</div>`;', at);
+    return end > at && /km straight/.test(cartridgeSource.slice(at, end));
+  })());
+/* The measurement now precedes the published envelope it used to sit under.
+   Measured on the live release at 393x852: the sentence landed at y=907 with
+   about 270px of envelope detail above it, and was on the first screen zero
+   times in 99 loads. The envelope is not shortened - it is emitted into a
+   variable and appended after. */
+check('the answer is emitted before the published envelope, not after it',
+  (() => {
+    const answer = cartridgeSource.indexOf('out += `<div class="neon-answer">`');
+    const envelope = cartridgeSource.indexOf('out += publishedHtml;');
+    return answer > 0 && envelope > answer;
+  })());
+check('and the envelope itself is unchanged, not trimmed to make room',
+  /escapeHtml\(published\.scope_label\)/.test(cartridgeSource)
+  && /escapeHtml\(published\.sentence\)/.test(cartridgeSource)
+  && /escapeHtml\(published\.metrics_not_interchangeable\)/.test(cartridgeSource)
+  && /escapeHtml\(published\.not_an_assessment\)/.test(cartridgeSource));
 check('the measurement counts what it compared, rather than a caller recounting it',
   /best\.considered = considered;/.test(composedSource)
   && /considered \+= 1;/.test(composedSource));
@@ -3397,7 +3478,16 @@ check('the five network modules are no longer in the sandbox cartridge',
    and is recorded as one: 202609031316 measures 358,654 with the coverage
    module in it, which is 50,946 characters clear of the composer's limit.
    If this needs raising again the answer is to move computation out, the way
-   v9.85 moved the version ledger out, not to raise it a third time. */
+   v9.85 moved the version ledger out, not to raise it a third time.
+
+   THE MARGIN NARROWED AND IS DECLARED, NOT SPENT. The docked-sheet layout
+   added 7,780 characters and this cartridge now measures 366,434 - still
+   inside the ceiling, but with roughly 2,206 characters of it left rather
+   than 9,986. The number above was NOT raised to accommodate that, and it is
+   not to be raised to accommodate the next thing either: the ceiling is now
+   close enough to its subject to be the tripwire this note warns about, so
+   the next lane that needs room stops and asks for computation to be moved
+   out. Trimmed twice by hand before the cut to get there. */
 const CARTRIDGE_BOUNDARY = 409600;
 const CARTRIDGE_CEILING = Math.floor(CARTRIDGE_BOUNDARY * 0.9);
 check('the sandbox cartridge is under the 400 kB composer boundary with a '
