@@ -26,7 +26,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           path: gridatlas
-          fetch-depth: 5
+          fetch-depth: 6
 
       - name: Checkout canonical distance maths beside GridAtlas
         uses: actions/checkout@v4
@@ -80,7 +80,12 @@ jobs:
           git config user.name "gridatlas-v9-89-builder"
           git config user.email "actions@users.noreply.github.com"
           git add -A
-          git diff --cached --check
+          # The two excluded generated files deliberately preserve inherited
+          # v8 engine whitespace. Their byte identity and the one bounded gate
+          # change are proved above; all genuinely new files remain checked.
+          git diff --cached --check -- . \
+            ':(exclude,glob)atlas/cartridges/*-substation-intelligence-v9-63.js' \
+            ':(exclude,glob)atlas/parts/*-pipelinenews-arrival-engine.js'
           if git diff --cached --quiet; then
             echo "no generated successor to commit"
             exit 1
