@@ -27,12 +27,25 @@ export const EXPECTED_RELEASES = Object.freeze([
 // that excludes atlas/, so a cartridge could be composed, hashed, pushed and
 // served with nobody having run its proof. It is node-only and takes seconds,
 // so there is never a reason to skip it.
+//
+// rollback-composition.yml earns its place because every other entry on this
+// list can only move the live pointer FORWARD. Ten generations were cut in
+// three hours on 2026-09-03, each one repointing the live route, and undoing
+// any of them meant hand-editing atlas/current.json at whatever hour it was
+// noticed -- the hand-editing habit tools/recompose.mjs exists to end. v9.83
+// pinned the runtime products so a bad product cannot reach a shipped
+// release; this is the other half, so a bad release cannot stay on the
+// pointer. It is the only entry with no 12-digit prefix, and deliberately: it
+// belongs to no release, it is a perpetual single-purpose path like the scope
+// loop, and stamping it for one night would make a permanent mechanism look
+// like the per-release sprawl this budget exists to cap.
 export const ACTIVE_WORKFLOWS = Object.freeze([
   '202608301321-scope-loop.yml',
   '202608301321-verify-live.yml',
   '202608310015-gridatlas-overnight-next-versions.yml',
   '202608310050-gridatlas-next-version-builders.yml',
-  '202608312212-cartridge-proof.yml'
+  '202608312212-cartridge-proof.yml',
+  'rollback-composition.yml'
 ]);
 
 export function invariant(condition, message) {
