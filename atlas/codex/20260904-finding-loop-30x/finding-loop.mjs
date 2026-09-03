@@ -339,8 +339,25 @@ export function nearbyProjects({ register, longitude, latitude, distanceKm, limi
   if (rows.some((row) => !Number.isFinite(row.distance_km) || row.distance_km < 0)) {
     throw new TypeError('canonical distance owner returned an invalid value');
   }
-  return Object.freeze(rows.sort((left, right) => left.distance_km - right.distance_km
-    || left.repd_ref.localeCompare(right.repd_ref)).slice(0, limit).map(Object.freeze));
+  return Object.freeze(orderCandidates(rows, { idField: 'repd_ref' }).slice(0, limit));
+}
+
+/** Stable ordering makes identical evidence yield identical candidates. */
+export function orderCandidates(rows, { idField, distanceField = 'distance_km' }) {
+  if (!Array.isArray(rows) || typeof idField !== 'string' || !idField) {
+    throw new TypeError('candidate rows and identity field are required');
+  }
+  const copy = rows.map((row) => {
+    const identity = String(row?.[idField] || '').trim();
+    const distance = Number(row?.[distanceField]);
+    if (!identity || !Number.isFinite(distance) || distance < 0) {
+      throw new TypeError('candidate identity and non-negative distance are required');
+    }
+    return Object.freeze({ ...row, [idField]: identity, [distanceField]: distance });
+  });
+  copy.sort((left, right) => left[distanceField] - right[distanceField]
+    || left[idField].localeCompare(right[idField], 'en'));
+  return Object.freeze(copy);
 }
 
 /** One owner connects selection revisions to findings and rejects late results. */

@@ -12,6 +12,7 @@ import {
   validateFinding,
   validateProvenance,
   nearbyProjects
+  ,orderCandidates
 } from './finding-loop.mjs';
 
 let checks = 0;
@@ -250,4 +251,22 @@ check('newer selection result is accepted', secondResult.accepted && secondResul
 check('late result from the old selection is rejected',
   !firstResult.accepted && firstResult.reason === 'STALE_SELECTION');
 
-console.log(JSON.stringify({ status: 'PASS', iteration: 10, checks }));
+const ordered = orderCandidates([
+  { feature_id: 'B', distance_km: 1 },
+  { feature_id: 'A', distance_km: 1 },
+  { feature_id: 'C', distance_km: 0.5 }
+], { idField: 'feature_id' });
+check('candidate ordering is distance then stable identity',
+  ordered.map((row) => row.feature_id).join(',') === 'C,A,B');
+check('candidate ordering does not mutate input rows', Object.isFrozen(ordered[0]));
+for (const [label, rows] of [
+  ['anonymous candidate is rejected', [{ distance_km: 1 }]],
+  ['negative distance is rejected', [{ feature_id: 'A', distance_km: -1 }]],
+  ['non-finite distance is rejected', [{ feature_id: 'A', distance_km: Number.NaN }]]
+]) {
+  let rejected = false;
+  try { orderCandidates(rows, { idField: 'feature_id' }); } catch { rejected = true; }
+  check(label, rejected);
+}
+
+console.log(JSON.stringify({ status: 'PASS', iteration: 11, checks }));
