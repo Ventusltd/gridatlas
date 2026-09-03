@@ -387,13 +387,29 @@ export function createProjectRegister(rows, provenance) {
   }
   const seen = new Set();
   const projects = rows.map((row) => {
-    const repdRef = String(row?.repd_ref || '').trim();
-    const longitude = Number(row?.longitude);
-    const latitude = Number(row?.latitude);
-    const technology = classifyProjectTechnology(row?.technology);
-    if (!repdRef || seen.has(repdRef)) throw new TypeError('repd_ref must be present and unique');
-    if (!Number.isFinite(longitude) || longitude < -180 || longitude > 180
-        || !Number.isFinite(latitude) || latitude < -90 || latitude > 90) {
+    if (row === null || typeof row !== 'object' || Array.isArray(row)
+        || (Object.getPrototypeOf(row) !== Object.prototype && Object.getPrototypeOf(row) !== null)
+        || Object.getOwnPropertySymbols(row).length) {
+      throw new TypeError('project row must be a plain string-keyed object');
+    }
+    const descriptors = Object.getOwnPropertyDescriptors(row);
+    const required = ['repd_ref', 'longitude', 'latitude', 'technology'];
+    if (required.some((field) => !Object.hasOwn(descriptors, field)
+        || !Object.hasOwn(descriptors[field], 'value'))) {
+      throw new TypeError('project row fields must be present data properties');
+    }
+    const repdRef = descriptors.repd_ref.value;
+    const longitude = descriptors.longitude.value;
+    const latitude = descriptors.latitude.value;
+    const technology = classifyProjectTechnology(descriptors.technology.value);
+    if (typeof repdRef !== 'string' || !repdRef || repdRef !== repdRef.trim()
+        || CONTROL_CHARACTER.test(repdRef) || seen.has(repdRef)) {
+      throw new TypeError('repd_ref must be canonical and unique');
+    }
+    if (typeof longitude !== 'number' || !Number.isFinite(longitude)
+        || longitude < -180 || longitude > 180
+        || typeof latitude !== 'number' || !Number.isFinite(latitude)
+        || latitude < -90 || latitude > 90) {
       throw new TypeError('project register coordinates are invalid');
     }
     seen.add(repdRef);

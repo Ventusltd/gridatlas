@@ -297,6 +297,17 @@ try {
   ], { ...evidence, source_id: 'project_register' });
 } catch { duplicateProjectRejected = true; }
 check('duplicate register identity fails closed', duplicateProjectRejected);
+for (const [label, row] of [
+  ['numeric project identity is rejected', { repd_ref: 155, longitude: 0, latitude: 0, technology: 'biomass' }],
+  ['object project identity is rejected', { repd_ref: { toString: () => '155' }, longitude: 0, latitude: 0, technology: 'biomass' }],
+  ['null project longitude is rejected', { repd_ref: 'strict-1', longitude: null, latitude: 0, technology: 'biomass' }],
+  ['string project latitude is rejected', { repd_ref: 'strict-2', longitude: 0, latitude: '0', technology: 'biomass' }],
+  ['boolean project coordinate is rejected', { repd_ref: 'strict-3', longitude: false, latitude: 0, technology: 'biomass' }]
+]) {
+  let rejected = false;
+  try { createProjectRegister([row], { ...evidence, source_id: 'project_register' }); } catch { rejected = true; }
+  check(label, rejected);
+}
 
 const projectIndex = createProjectIndex(register);
 check('project index retains the complete register',
@@ -496,4 +507,4 @@ check('distinct nearest candidate is available', unique.status === 'available' &
 const absent = resolveNearestCandidate([], { idField: 'site_code' });
 check('empty population is withheld', absent.reason === 'NO_CANDIDATE' && absent.value === null);
 
-console.log(JSON.stringify({ status: 'PASS', iteration: 23, checks }));
+console.log(JSON.stringify({ status: 'PASS', iteration: 24, checks }));
