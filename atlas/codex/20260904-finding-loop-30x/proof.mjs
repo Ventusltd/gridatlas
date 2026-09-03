@@ -9,6 +9,7 @@ import {
   createFindingLoop,
   createGridFindingEngine,
   createProjectIndex,
+  createProjectArrivalAdapter,
   createProjectRegister,
   createRoadRouteFinding,
   createCorridorEstimateFinding,
@@ -586,6 +587,44 @@ check('shared engine reproduces distinct Markinch targets and distances',
 check('shared engine withholds route and corridor outputs alongside straight-line results',
   sharedMarkinchResult.road_route.qualifiers.includes('ROAD_ROUTE_NOT_COMPUTED')
     && sharedMarkinchResult.corridor_estimate.qualifiers.includes('CALIBRATION_1_245_NOT_APPLICABLE'));
+
+let clockNow = 1000;
+let sharedEngineCalls = 0;
+const arrivalAdapter = createProjectArrivalAdapter({
+  projectIndex: markinchIndex,
+  engine: {
+    queryProfiles(input) {
+      sharedEngineCalls += 1;
+      return sharedGridEngine.queryProfiles(input);
+    }
+  },
+  clock: () => clockNow
+});
+check('cold arrival is distinguishable as never measured',
+  arrivalAdapter.read().phase === 'NEVER_MEASURED');
+const markinchArrivalPromise = arrivalAdapter.arrive(markinchLink);
+check('cold deep-link arrival exposes MEASURING before computation completes',
+  arrivalAdapter.read().phase === 'MEASURING'
+    && arrivalAdapter.read().identity.repd_ref === '155');
+clockNow = 1042;
+const markinchArrivalState = await markinchArrivalPromise;
+check('direct Markinch arrival invokes the shared engine and measures time to result',
+  sharedEngineCalls === 1 && markinchArrivalState.phase === 'RESULT'
+    && markinchArrivalState.elapsed_ms === 42);
+check('arrival state carries project identity once and does not emit Unnamed',
+  markinchArrivalState.identity.repd_ref === '155'
+    && !Object.hasOwn(markinchArrivalState.project, 'repd_ref')
+    && !JSON.stringify(markinchArrivalState).includes('Unnamed'));
+const noCandidateEngine = createGridFindingEngine({
+  projectIndex: markinchIndex, substationFeatures: [], provenance: substationEvidence
+});
+const noCandidateAdapter = createProjectArrivalAdapter({
+  projectIndex: markinchIndex, engine: noCandidateEngine, clock: () => 2000
+});
+const measuredNone = await noCandidateAdapter.arrive(markinchLink);
+check('measured-none has an explicit reason distinct from never-measured',
+  measuredNone.phase === 'REASON' && measuredNone.reason === 'NO_ELIGIBLE_SUBSTATION'
+    && noCandidateAdapter.read().phase !== 'NEVER_MEASURED');
 let staleReleaseRejected = false;
 try {
   projectFindingRequest({ kind: 'project', repd_ref: 'A', source_release: 'b'.repeat(64) }, projectIndex);
@@ -720,4 +759,4 @@ check('distinct nearest candidate is available', unique.status === 'available' &
 const absent = resolveNearestCandidate([], { idField: 'site_code' });
 check('empty population is withheld', absent.reason === 'NO_CANDIDATE' && absent.value === null);
 
-console.log(JSON.stringify({ status: 'PASS', iteration: 32, checks }));
+console.log(JSON.stringify({ status: 'PASS', iteration: 33, checks }));

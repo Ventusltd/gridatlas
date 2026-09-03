@@ -848,6 +848,92 @@ export function createGridFindingEngine({ projectIndex, substationFeatures, prov
   });
 }
 
+/** Cold-arrival state machine: every deep link is measuring, a result, or a reason. */
+export function createProjectArrivalAdapter({ projectIndex, engine, clock }) {
+  if (!projectIndex || typeof projectIndex.get !== 'function'
+      || !engine || typeof engine.queryProfiles !== 'function'
+      || typeof clock !== 'function') {
+    throw new TypeError('project index, shared engine and monotonic clock are required');
+  }
+  let request = 0;
+  let state = Object.freeze({
+    phase: 'NEVER_MEASURED', reason: 'NO_SELECTION',
+    identity: null, project: null, result: null,
+    started_ms: null, elapsed_ms: null
+  });
+  const elapsed = (started) => {
+    const ended = clock();
+    if (typeof ended !== 'number' || !Number.isFinite(ended) || ended < started) {
+      throw new TypeError('clock must be finite and monotonic');
+    }
+    return ended - started;
+  };
+  return Object.freeze({
+    read: () => state,
+    async arrive(link) {
+      const active = ++request;
+      const started = clock();
+      if (typeof started !== 'number' || !Number.isFinite(started)) {
+        throw new TypeError('clock must return a finite number');
+      }
+      let arrival;
+      try {
+        arrival = parseProjectDeepLink(link, projectIndex);
+      } catch {
+        state = Object.freeze({
+          phase: 'REASON', reason: 'INVALID_PROJECT_DEEP_LINK',
+          identity: null, project: null, result: null,
+          started_ms: started, elapsed_ms: elapsed(started)
+        });
+        return state;
+      }
+      const identity = arrival.selection;
+      const project = Object.freeze({
+        name: arrival.project.name,
+        operator: arrival.project.operator,
+        technology: arrival.project.technology,
+        source_technology: arrival.project.source_technology,
+        capacity_mw: arrival.project.capacity_mw,
+        status: arrival.project.status
+      });
+      state = Object.freeze({
+        phase: 'MEASURING', reason: null, identity, project, result: null,
+        started_ms: started, elapsed_ms: null
+      });
+      try {
+        await Promise.resolve();
+        const answer = await engine.queryProfiles({ selection: identity, revision: active });
+        if (active !== request) return Object.freeze({ phase: 'STALE', reason: 'NEWER_ARRIVAL' });
+        const result = Object.freeze({
+          profiles: Object.freeze(answer.profiles.map((profile) =>
+            profile.state === 'RESULT' ? profile.scoped_finding : Object.freeze({
+              state: 'REASON', reason: profile.reason, predicate: profile.predicate,
+              candidate_count: profile.candidate_count, total_count: profile.total_count
+            }))),
+          road_route: answer.road_route,
+          corridor_estimate: answer.corridor_estimate
+        });
+        const reasonProfile = answer.profiles.find((profile) => profile.state !== 'RESULT');
+        state = Object.freeze({
+          phase: reasonProfile ? 'REASON' : 'RESULT',
+          reason: reasonProfile?.reason || null,
+          identity, project, result,
+          started_ms: started, elapsed_ms: elapsed(started)
+        });
+        return state;
+      } catch {
+        if (active !== request) return Object.freeze({ phase: 'STALE', reason: 'NEWER_ARRIVAL' });
+        state = Object.freeze({
+          phase: 'REASON', reason: 'GRID_FINDING_FAILED',
+          identity, project, result: null,
+          started_ms: started, elapsed_ms: elapsed(started)
+        });
+        return state;
+      }
+    }
+  });
+}
+
 /** One owner connects selection revisions to findings and rejects late results. */
 export function createFindingLoop(query) {
   if (typeof query !== 'function') throw new TypeError('query function is required');
