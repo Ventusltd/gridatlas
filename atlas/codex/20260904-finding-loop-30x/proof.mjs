@@ -158,6 +158,11 @@ check('unexpected query field is rejected', unsafeQueryRejected);
 let duplicateQueryRejected = false;
 try { decodeSelection(`kind=project&repd_ref=13599&repd_ref=other&source_release=${digest}`); } catch { duplicateQueryRejected = true; }
 check('duplicate identity field is rejected', duplicateQueryRejected);
+let queryToStringReads = 0;
+let nonStringQueryRejected = false;
+try { decodeSelection({ toString() { queryToStringReads += 1; return encodeSelection(accepted); } }); } catch { nonStringQueryRejected = true; }
+check('selection decoder rejects objects without invoking toString',
+  nonStringQueryRejected && queryToStringReads === 0);
 
 const measurement = validateFinding({
   type: 'nearest_connection_point', evidence_class: 'measurement', status: 'available',
@@ -345,8 +350,8 @@ const technologyRegister = createProjectRegister(technologyFixtures,
   { ...evidence, source_id: 'project_register' });
 check('published wider-fleet vocabulary covers eleven technologies',
   new Set(technologyRegister.projects.map((row) => row.technology)).size === 11
-    && PROJECT_TECHNOLOGIES.every((technology) =>
-      technologyRegister.projects.some((row) => row.technology === technology)));
+    && technologyFixtures.every((fixture) =>
+      PROJECT_TECHNOLOGIES.includes(fixture.technology)));
 check('every published technology survives the adapter exactly',
   technologyRegister.projects.every((row) => row.technology === row.source_technology
     && row.technology_status === 'known'));
@@ -355,6 +360,10 @@ check('unknown technology remains explicit and preserves its source token',
   unknownTechnology.technology === 'unknown'
     && unknownTechnology.source_technology === 'future_test_fixture'
     && unknownTechnology.status === 'unknown');
+for (const technology of ['solar_roof', 'wind_onshore', 'wind_offshore']) {
+  check(`${technology} from the Grid register is canonical`,
+    classifyProjectTechnology(technology).technology === technology);
+}
 
 const gridRegisterDigest = 'c8a5c59be878c52014a272eb0e4d09af06a0d301d10a8d6b5d0b116b5d1bb6bc';
 const gridRegisterSource = Object.freeze({
@@ -431,6 +440,15 @@ const failedLoop = createFindingLoop(async () => { throw new Error('test fixture
 const failedResult = await failedLoop.select(location);
 check('query error becomes an explicit failed-closed finding',
   failedResult.findings[0].status === 'failed' && failedResult.findings[0].value === null);
+let hostileErrorReads = 0;
+const hostileError = Object.defineProperty({}, 'message', {
+  get() { hostileErrorReads += 1; return 'sensitive detail'; }
+});
+const hostileFailureLoop = createFindingLoop(async () => { throw hostileError; });
+const hostileFailure = await hostileFailureLoop.select(location);
+check('query failure uses a stable public code without reading hostile error fields',
+  hostileErrorReads === 0
+    && hostileFailure.findings[0].qualifiers.join(',') === 'FAILED_CLOSED,QUERY_FAILED');
 
 let releaseFirst;
 const racingLoop = createFindingLoop(({ revision }) => new Promise((resolve) => {
@@ -484,12 +502,19 @@ check('candidate ordering does not mutate input rows', Object.isFrozen(ordered[0
 for (const [label, rows] of [
   ['anonymous candidate is rejected', [{ distance_km: 1 }]],
   ['negative distance is rejected', [{ feature_id: 'A', distance_km: -1 }]],
-  ['non-finite distance is rejected', [{ feature_id: 'A', distance_km: Number.NaN }]]
+  ['non-finite distance is rejected', [{ feature_id: 'A', distance_km: Number.NaN }]],
+  ['numeric candidate identity is rejected', [{ feature_id: 1, distance_km: 1 }]],
+  ['string candidate distance is rejected', [{ feature_id: 'A', distance_km: '1' }]]
 ]) {
   let rejected = false;
   try { orderCandidates(rows, { idField: 'feature_id' }); } catch { rejected = true; }
   check(label, rejected);
 }
+const codePointOrdered = orderCandidates([
+  { feature_id: 'a', distance_km: 1 }, { feature_id: 'Z', distance_km: 1 }
+], { idField: 'feature_id' });
+check('candidate tie-break uses deterministic code-point order',
+  codePointOrdered.map((row) => row.feature_id).join(',') === 'Z,a');
 
 const tied = resolveNearestCandidate([
   { site_code: 'B', distance_km: 2 },
@@ -507,4 +532,4 @@ check('distinct nearest candidate is available', unique.status === 'available' &
 const absent = resolveNearestCandidate([], { idField: 'site_code' });
 check('empty population is withheld', absent.reason === 'NO_CANDIDATE' && absent.value === null);
 
-console.log(JSON.stringify({ status: 'PASS', iteration: 24, checks }));
+console.log(JSON.stringify({ status: 'PASS', iteration: 25, checks }));

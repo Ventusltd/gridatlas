@@ -23,7 +23,8 @@ const EVIDENCE_CLASS_BY_TYPE = Object.freeze({
 const PROVENANCE_FIELDS = Object.freeze(['bytes', 'release', 'sha256', 'source_id']);
 export const PROJECT_TECHNOLOGIES = Object.freeze([
   'act', 'bess', 'biomass', 'caes', 'flywheel', 'geothermal',
-  'hydro', 'hydrogen', 'other', 'solar', 'tidal'
+  'hydro', 'hydrogen', 'other', 'solar', 'solar_roof', 'tidal',
+  'wind_offshore', 'wind_onshore'
 ]);
 const PROJECT_TECHNOLOGY_SET = new Set(PROJECT_TECHNOLOGIES);
 
@@ -186,7 +187,8 @@ export function encodeSelection(input) {
 }
 
 export function decodeSelection(text) {
-  const query = new URLSearchParams(String(text).replace(/^\?/, ''));
+  if (typeof text !== 'string') throw new TypeError('selection query must be a string');
+  const query = new URLSearchParams(text.replace(/^\?/, ''));
   const kind = query.get('kind');
   const allowed = kind === 'project' ? PROJECT_FIELDS
     : kind === 'substation' ? SUBSTATION_FIELDS
@@ -532,15 +534,26 @@ export function orderCandidates(rows, { idField, distanceField = 'distance_km' }
     throw new TypeError('candidate rows and identity field are required');
   }
   const copy = rows.map((row) => {
-    const identity = String(row?.[idField] || '').trim();
-    const distance = Number(row?.[distanceField]);
-    if (!identity || !Number.isFinite(distance) || distance < 0) {
+    if (row === null || typeof row !== 'object' || Array.isArray(row)) {
+      throw new TypeError('candidate row must be an object');
+    }
+    const descriptors = Object.getOwnPropertyDescriptors(row);
+    if (!Object.hasOwn(descriptors, idField) || !Object.hasOwn(descriptors[idField], 'value')
+        || !Object.hasOwn(descriptors, distanceField)
+        || !Object.hasOwn(descriptors[distanceField], 'value')) {
+      throw new TypeError('candidate identity and distance must be data properties');
+    }
+    const identity = descriptors[idField].value;
+    const distance = descriptors[distanceField].value;
+    if (typeof identity !== 'string' || !identity || identity !== identity.trim()
+        || CONTROL_CHARACTER.test(identity)
+        || typeof distance !== 'number' || !Number.isFinite(distance) || distance < 0) {
       throw new TypeError('candidate identity and non-negative distance are required');
     }
     return Object.freeze({ ...row, [idField]: identity, [distanceField]: distance });
   });
   copy.sort((left, right) => left[distanceField] - right[distanceField]
-    || left[idField].localeCompare(right[idField], 'en'));
+    || (left[idField] < right[idField] ? -1 : left[idField] > right[idField] ? 1 : 0));
   return Object.freeze(copy);
 }
 
@@ -595,7 +608,7 @@ export function createFindingLoop(query) {
         const failure = validateFinding({
           type: 'unknown', evidence_class: 'unknown', status: 'failed',
           selection_revision: state.revision, value: null, unit: null,
-          qualifiers: ['FAILED_CLOSED', String(error?.message || error)], provenance: []
+          qualifiers: ['FAILED_CLOSED', 'QUERY_FAILED'], provenance: []
         });
         return Object.freeze({ accepted: true, revision: state.revision,
           findings: Object.freeze([failure]) });
