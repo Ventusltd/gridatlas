@@ -9,11 +9,23 @@ on:
       - '.github/workflows/202608310050-gridatlas-next-version-builders.yml'
       - 'tools/scope/lib.mjs'
       - 'STATE.md'
-  schedule:
-    # 01:07/01:37 BST onwards, offset from the quarter-hour observer.
-    # The source gate still prohibits any build before 01:15 BST.
-    - cron: '7,37 0-7 31 8 *'
   workflow_dispatch:
+
+# The schedule that stood here was
+#
+#     # 01:07/01:37 BST onwards, offset from the quarter-hour observer.
+#     # The source gate still prohibits any build before 01:15 BST.
+#     cron: '7,37 0-7 31 8 *'
+#
+# It named 31 August and fired for the last time that morning; the next
+# occurrence is 2027. The comment describing it as "01:07/01:37 onwards" is
+# what made it look perpetual, and that is the shape worth noticing - a
+# schedule can read as a recurring one and be a single date.
+#
+# Removed rather than rewritten: the overnight programme this offset was
+# staggered against is itself finished, so there is nothing left to be offset
+# from. This workflow keeps push and workflow_dispatch and still runs on them -
+# it ran on 8fb95a2 at 02:35Z and succeeded.
 
 permissions:
   actions: write

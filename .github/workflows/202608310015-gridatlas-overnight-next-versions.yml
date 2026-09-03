@@ -8,9 +8,27 @@ on:
       - .github/workflows/202608310015-gridatlas-overnight-next-versions.yml
       - orchestration/202608310015-gridatlas-overnight-next-versions/**
   workflow_dispatch:
-  schedule:
-    - cron: '30,45 23 30 8 *'
-    - cron: '*/15 0-7 31 8 *'
+
+# The two schedules that stood here fired for the last time on 2026-08-31:
+#
+#     cron: '30,45 23 30 8 *'
+#     cron: '*/15 0-7 31 8 *'
+#
+# Both named one calendar day in August, so after that night they could not
+# fire again until the same dates in 2027. That is the disease cvaa calls
+# no-time-based-gates: automation that dies when the session that wrote it
+# does. Measured on a clean clone at 8fb95a2, gridatlas carried three of them.
+#
+# They are removed rather than rewritten as a live schedule. This programme is
+# genuinely over - its own config declares active_until 2026-08-31T08:00:00Z
+# and its ledger's last corpus gate is 2026-08-31T03:46Z with the scope never
+# reaching the 43,000 words it required - so a recurring cron would wake a
+# controller that can only decline, on a branch two agents are cutting in, with
+# contents: write in its hand. Nothing that works is lost: push and
+# workflow_dispatch both remain, and this workflow still runs on them.
+#
+# A dead schedule is worse than no schedule, because it reads as automation
+# that is running.
 
 permissions:
   actions: write
