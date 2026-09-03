@@ -12,6 +12,7 @@ import { webcrypto } from 'node:crypto';
 import { fileURLToPath } from 'node:url';
 import { dirname, join, resolve } from 'node:path';
 import vm from 'node:vm';
+import { readFileSync as fsReadSync } from 'node:fs';
 
 const HERE = dirname(fileURLToPath(import.meta.url));
 const REPO = resolve(HERE, '..', '..');
@@ -557,6 +558,142 @@ const measured = (label, assertion) => {
       + `${differing} of them previously overstated (${(ends / units).toFixed(2)}x)`);
   }
 }
+
+
+const MENU_MODULE = (() => {
+  const parts = JSON.parse(fsReadSync(join(REPO, 'atlas', 'manifests',
+    `${CURRENT.generation}-substation-intelligence-v9-63-parts.json`)));
+  const hit = (parts.assembled_from || []).find(p => /menu-bar\.js$/.test(p.path));
+  if (!hit) throw new Error('the composition carries no menu-bar module');
+  return hit.path.split('/').pop();
+})();
+
+/* ── menu-bar ────────────────────────────────────────────────────────────
+   The product is the first impression. Six bands of chrome stood between the
+   top of a 393x852 screen and the card; this collapses them into one bar that
+   is closed at rest.
+
+   The check that matters is the third one. This module MOVES the existing
+   controls into menu panels rather than rebuilding them, so every handler and
+   every piece of state stays with the cartridge that made it. If a future edit
+   ever recreates a control instead of moving it, node identity breaks and that
+   check goes red - which is the whole safety argument, asserted rather than
+   documented. */
+const menuSrc = await readFile(join(REPO, 'atlas', 'modules',
+  MENU_MODULE), 'utf8');
+
+function stubDoc(withChrome) {
+  const mk = (tag) => {
+    const el = {
+      tagName: tag, id: '', className: '', children: [], attrs: {},
+      style: { cssText: '' }, textContent: '', _cls: new Set(), parentNode: null
+    };
+    el.classList = {
+      add: (c) => el._cls.add(c), remove: (c) => el._cls.delete(c),
+      contains: (c) => el._cls.has(c),
+      toggle: (c) => { if (el._cls.has(c)) { el._cls.delete(c); return false; }
+                       el._cls.add(c); return true; }
+    };
+    el.setAttribute = (k, v) => { el.attrs[k] = v; };
+    el.getAttribute = (k) => (k in el.attrs ? el.attrs[k] : null);
+    /* a real appendChild MOVES the node; a double that only pushes would let a
+       rebuild masquerade as a move, which is the one thing this proof exists to catch */
+    el.appendChild = (c) => {
+      if (c.parentNode && c.parentNode !== el) {
+        const i = c.parentNode.children.indexOf(c);
+        if (i >= 0) c.parentNode.children.splice(i, 1);
+      }
+      el.children.push(c); c.parentNode = el; return c;
+    };
+    el.insertBefore = (c) => { el.children.unshift(c); c.parentNode = el; return c; };
+    el.addEventListener = () => {};
+    el.querySelector = () => null;
+    el.querySelectorAll = () => [];
+    return el;
+  };
+  const doc = {
+    readyState: 'complete', _byId: {},
+    createElement: mk, getElementById: () => null,
+    addEventListener: () => {}
+  };
+  doc.head = mk('head');
+  doc.documentElement = mk('html');
+  doc.body = mk('body');
+  let stack = null;
+  if (withChrome) {
+    stack = mk('div');
+    ['Tools \u25b8', 'GRID', 'SUBS', 'SCOPE', 'CLEAR',
+     'GB PRICES \u00b7 HISTORIC', 'VERSIONS \u00b7 V9.92', 'Exit']
+      .forEach((t) => { const b = mk('button'); b.textContent = t; stack.appendChild(b); });
+    stack.parentNode = doc.body;
+  }
+  doc.querySelector = (sel) => (sel === '.map-controls' ? stack : null);
+  return { doc, stack };
+}
+
+function runMenu(withChrome) {
+  const { doc, stack } = stubDoc(withChrome);
+  const box = {
+    console, Math, JSON, Number, String, Array, Object, Boolean, Error, RegExp, Set,
+    window: { setInterval: () => 0, clearInterval: () => {} },
+    document: doc
+  };
+  box.window.window = box.window;
+  box.globalThis = box;
+  vm.createContext(box);
+  vm.runInContext(menuSrc, box, { filename: 'menu-bar.js' });
+  return { api: box.window.__GRIDATLAS_MODULES__ && box.window.__GRIDATLAS_MODULES__.menuBar,
+           doc, stack };
+}
+
+const menuWith = runMenu(true);
+const menuWithout = runMenu(false);
+
+check('menu-bar registered its surface',
+  !!menuWith.api && menuWith.api.schema === 'gridatlas.menu-bar.v1');
+
+check('menu-bar is in the served bytes',
+  /gridatlas\.menu-bar\.v1/.test(source));
+
+check('the four familiar menus, in order',
+  !!menuWith.api
+  && menuWith.api.menus.join('|') === 'File|Edit|View|About');
+
+check('every control was MOVED, not rebuilt - node identity survives',
+  (() => {
+    if (!menuWith.api || !menuWith.stack) return false;
+    if (menuWith.api.controls_moved !== 8) return false;
+    /* the originals left the stack entirely */
+    if (menuWith.stack.children.length !== 0) return false;
+    /* and the same objects are now inside the bar */
+    const bar = menuWith.doc.body.children[0];
+    if (!bar || bar.id !== 'gridatlas-menu-bar') return false;
+    let found = 0;
+    for (const menu of bar.children) {
+      const panel = menu.children[1];
+      if (panel) found += panel.children.filter(n => n.tagName === 'button').length;
+    }
+    return found === 8;
+  })());
+
+check('routing puts each control where a reader would look',
+  !!menuWith.api
+  && menuWith.api.routeFor('Exit') === 'File'
+  && menuWith.api.routeFor('CLEAR') === 'Edit'
+  && menuWith.api.routeFor('SCOPE') === 'Edit'
+  && menuWith.api.routeFor('SUBS') === 'View'
+  && menuWith.api.routeFor('GB PRICES \u00b7 HISTORIC') === 'View'
+  && menuWith.api.routeFor('VERSIONS \u00b7 V9.92') === 'About');
+
+check('with no chrome present it does nothing and throws nothing',
+  !!menuWithout.api
+  && menuWithout.api.installed === false
+  && menuWithout.api.controls_moved === 0);
+
+check('nothing here grades a connection',
+  !/\b(strong|weak|remote|excellent|poor|good|bad)\b/i.test(menuSrc.replace(
+    /\/\*[\s\S]*?\*\//g, '')));
+
 
 console.log(`\n${passed}/${passed + failures.length} checks passed`);
 if (bridgeRejections.length) {
