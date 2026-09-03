@@ -1,0 +1,53 @@
+name: 202609030251 GridAtlas Pipeline News arrival contract
+
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - 'atlas/**'
+      - 'tools/proofs/202609030251-pipelinenews-arrival-contract.mjs'
+      - '.github/workflows/202609030251-pipelinenews-arrival-contract.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'atlas/**'
+      - 'tools/proofs/202609030251-pipelinenews-arrival-contract.mjs'
+      - '.github/workflows/202609030251-pipelinenews-arrival-contract.yml'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: gridatlas-pipelinenews-arrival-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  contract:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    defaults:
+      run:
+        working-directory: gridatlas
+    steps:
+      - name: Checkout GridAtlas composition
+        uses: actions/checkout@v4
+        with:
+          path: gridatlas
+
+      - name: Checkout audited Pipeline News state beside it
+        uses: actions/checkout@v4
+        with:
+          repository: Ventusltd/pipelinenews
+          ref: 1a9868e76f970f20590a4110acc337e92d360f94
+          path: pipelinenews
+
+      - name: Use Node 24
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+
+      - name: Verify every wider-fleet technology reaches the composed Atlas
+        run: >-
+          node tools/proofs/202609030251-pipelinenews-arrival-contract.mjs
+          --pipelinenews ../pipelinenews
+          --release 202609030009-pipelinenews
