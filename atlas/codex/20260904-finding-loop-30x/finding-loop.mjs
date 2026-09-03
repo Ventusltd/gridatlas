@@ -255,3 +255,21 @@ export function validateProvenance(input) {
   }
   return Object.freeze({ source_id: sourceId, release, sha256: input.sha256, bytes: input.bytes });
 }
+
+/** Compute and expose the coverage boundary for the exact query predicate. */
+export function coverageBoundary({ predicate, located, total }) {
+  if (typeof predicate !== 'string' || !predicate.trim() || CONTROL_CHARACTER.test(predicate)) {
+    throw new TypeError('coverage predicate is required');
+  }
+  if (!Number.isInteger(located) || !Number.isInteger(total)
+      || located < 0 || total < 0 || located > total) {
+    throw new TypeError('coverage counts are invalid');
+  }
+  return Object.freeze({
+    predicate,
+    located,
+    total,
+    ratio: total === 0 ? null : located / total,
+    status: total === 0 ? 'unavailable' : 'available'
+  });
+}

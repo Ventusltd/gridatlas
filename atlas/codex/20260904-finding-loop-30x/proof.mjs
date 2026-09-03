@@ -1,4 +1,5 @@
 import {
+  coverageBoundary,
   decodeSelection,
   encodeSelection,
   validateAnySelection,
@@ -166,4 +167,23 @@ let missingEvidenceRejected = false;
 try { validateFinding({ ...measurement, provenance: [] }); } catch { missingEvidenceRejected = true; }
 check('measurement without provenance is rejected', missingEvidenceRejected);
 
-console.log(JSON.stringify({ status: 'PASS', iteration: 8, checks }));
+const coverage = coverageBoundary({
+  predicate: 'test fixture: voltage_kv >= 400', located: 2, total: 5
+});
+check('coverage exposes its exact predicate', coverage.predicate.includes('voltage_kv'));
+check('coverage exposes numerator and denominator', coverage.located === 2 && coverage.total === 5);
+check('coverage ratio is derived from those counts', coverage.ratio === 0.4);
+const emptyCoverage = coverageBoundary({ predicate: 'test fixture: none', located: 0, total: 0 });
+check('empty population is unavailable rather than zero percent',
+  emptyCoverage.status === 'unavailable' && emptyCoverage.ratio === null);
+for (const [label, value] of [
+  ['located cannot exceed total', { predicate: 'fixture', located: 6, total: 5 }],
+  ['coverage counts cannot be fractional', { predicate: 'fixture', located: 1.5, total: 5 }],
+  ['coverage predicate cannot be blank', { predicate: ' ', located: 0, total: 1 }]
+]) {
+  let rejected = false;
+  try { coverageBoundary(value); } catch { rejected = true; }
+  check(label, rejected);
+}
+
+console.log(JSON.stringify({ status: 'PASS', iteration: 9, checks }));
