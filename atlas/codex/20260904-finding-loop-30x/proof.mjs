@@ -1,4 +1,6 @@
 import {
+  decodeSelection,
+  encodeSelection,
   validateAnySelection,
   validateCoordinateSelection,
   validateSelection,
@@ -87,4 +89,17 @@ let unsupportedRejected = false;
 try { validateAnySelection({ kind: 'asset', id: 'plausible' }); } catch { unsupportedRejected = true; }
 check('union dispatch rejects unknown kinds', unsupportedRejected);
 
-console.log(JSON.stringify({ status: 'PASS', iteration: 4, checks }));
+for (const selection of [accepted, location, substation]) {
+  const encoded = encodeSelection(selection);
+  const decoded = decodeSelection(encoded);
+  check(`${selection.kind} selection round-trips canonically`,
+    JSON.stringify(decoded) === JSON.stringify(selection));
+}
+let unsafeQueryRejected = false;
+try { decodeSelection(`kind=project&repd_ref=13599&source_release=${digest}&name=plausible`); } catch { unsafeQueryRejected = true; }
+check('unexpected query field is rejected', unsafeQueryRejected);
+let duplicateQueryRejected = false;
+try { decodeSelection(`kind=project&repd_ref=13599&repd_ref=other&source_release=${digest}`); } catch { duplicateQueryRejected = true; }
+check('duplicate identity field is rejected', duplicateQueryRejected);
+
+console.log(JSON.stringify({ status: 'PASS', iteration: 5, checks }));

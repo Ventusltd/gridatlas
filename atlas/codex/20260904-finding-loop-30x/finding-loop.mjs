@@ -125,3 +125,42 @@ export function validateAnySelection(input) {
   if (input?.kind === 'substation') return validateSubstationSelection(input);
   throw new TypeError('selection kind is unsupported');
 }
+
+/** Canonical, lossless share state for the three selection variants. */
+export function encodeSelection(input) {
+  const selection = validateAnySelection(input);
+  const query = new URLSearchParams();
+  query.set('kind', selection.kind);
+  if (selection.kind === 'project') {
+    query.set('repd_ref', selection.repd_ref);
+    query.set('source_release', selection.source_release);
+  } else if (selection.kind === 'substation') {
+    query.set('site_code', selection.site_code);
+    query.set('source_release', selection.source_release);
+  } else {
+    query.set('longitude', String(selection.longitude));
+    query.set('latitude', String(selection.latitude));
+    query.set('coordinate_origin', selection.coordinate_origin);
+  }
+  return query.toString();
+}
+
+export function decodeSelection(text) {
+  const query = new URLSearchParams(String(text).replace(/^\?/, ''));
+  const kind = query.get('kind');
+  const allowed = kind === 'project' ? PROJECT_FIELDS
+    : kind === 'substation' ? SUBSTATION_FIELDS
+      : kind === 'location' ? LOCATION_FIELDS : [];
+  const names = [...query.keys()];
+  if (!allowed.length || names.length !== allowed.length
+      || names.some((name) => !allowed.includes(name) || query.getAll(name).length !== 1)) {
+    throw new TypeError('selection query has unexpected, missing, or duplicate fields');
+  }
+  if (kind === 'project') {
+    return validateSelection({ kind, repd_ref: query.get('repd_ref'), source_release: query.get('source_release') });
+  }
+  if (kind === 'substation') {
+    return validateSubstationSelection({ kind, site_code: query.get('site_code'), source_release: query.get('source_release') });
+  }
+  return validateCoordinateSelection({ kind, longitude: query.get('longitude'), latitude: query.get('latitude'), coordinate_origin: query.get('coordinate_origin') });
+}
