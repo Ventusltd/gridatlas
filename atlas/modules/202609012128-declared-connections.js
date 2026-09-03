@@ -217,8 +217,14 @@
   function nearestTransmission(origin, subs) {
     let best = null;
     let bestNamed = null;
+    /* The size of the sample this superlative is drawn from. Counted here
+       rather than recounted by a caller, because the predicate below is
+       what decides eligibility and a second implementation of it would
+       drift from this one. */
+    let considered = 0;
     for (const s of (Array.isArray(subs) ? subs : [])) {
       if (!(Array.isArray(s.kv) && s.kv[0] >= 400)) continue;
+      considered += 1;
       const km = distanceKm(origin[0], origin[1], s.at[0], s.at[1]);
       if (!best || km < best.km) {
         best = { name: s.name || 'Unnamed substation', km, at: s.at };
@@ -228,6 +234,7 @@
       }
     }
     if (best) {
+      best.considered = considered;
       best.works = worksAt(best.name);
       if (bestNamed && bestNamed.name !== best.name) {
         best.named = bestNamed;

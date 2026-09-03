@@ -2321,6 +2321,47 @@ check('the pin table is NOT carried a second time in this cartridge',
 check('and it IS in the composition, in the cartridge the shell loads first',
   /gridatlas\.module\.pinned-products\.v1/.test(composedSource));
 
+console.log('\nthe nearest sentence states the sample it was drawn from\n');
+
+/* F4, the rendering side. Two limits, both real, both computed: the search
+   only sees the substation features the map has loaded, and the operator's own
+   published list is only partly located. */
+check('the nearest-400 line is followed by its scope',
+  /\+ nearestScope\(n\);/.test(cartridgeSource));
+check('the measurement counts what it compared, rather than a caller recounting it',
+  /best\.considered = considered;/.test(composedSource)
+  && /considered \+= 1;/.test(composedSource));
+check('the scope asks the cartridge that holds the product, at 400 kV',
+  /__GRIDATLAS_NETWORK__\?\.coverage\?\.\(400\)/.test(cartridgeSource));
+/* The voltage CLASS is a literal and should be - 400 kV is what the search
+   asked for, not a count. What must never be a literal is a COUNT, because
+   counts move: 214 of 355 today, and 206 of 355 the moment the correction
+   waiting behind the pin is let through. So this names the figures that rot
+   and asserts none of them is written anywhere in the served bytes. */
+check('no coverage figure is written down anywhere in the cartridge',
+  !/(214|355|141|502|886|384|489|206)/.test(
+    cartridgeSource.replace(/\/\*[\s\S]*?\*\//g, ' ')));
+check('the four numbers the sentence prints are all interpolated',
+  (() => {
+    const at = cartridgeSource.indexOf('function nearestScope(n) {');
+    const body = cartridgeSource.slice(at, cartridgeSource.indexOf('function declaredBlockHtml', at));
+    return /\$\{considered\.toLocaleString\('en-GB'\)\}/.test(body)
+      && /\$\{network\.published\.toLocaleString\('en-GB'\)\}/.test(body)
+      && /\$\{network\.located\.toLocaleString\('en-GB'\)\}/.test(body)
+      && /\$\{network\.unlocated\.toLocaleString\('en-GB'\)\}/.test(body);
+  })());
+check('it says a nearer one may exist rather than implying none does',
+  /A nearer one may `\n\s*\+ `exist that nothing here can see\./.test(cartridgeSource));
+check('it states the sample and grades nothing',
+  (() => {
+    const at = cartridgeSource.indexOf('function nearestScope(n) {');
+    const body = cartridgeSource.slice(at, at + 2600);
+    return !/\b(good|poor|strong|weak|excellent|limited|well.connected|constrained)\b/i
+      .test(body.replace(/\/\*[\s\S]*?\*\//g, ' '));
+  })());
+check('with neither number available it says nothing at all',
+  /if \(!Number\.isFinite\(considered\) && !network\) return '';/.test(cartridgeSource));
+
 console.log('\nthe card keeper\n');
 
 /* Five links on the map and a card with no distances: the popup that had

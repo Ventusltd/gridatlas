@@ -265,6 +265,52 @@ check('ratings are labelled site-wide, because the product does not split them',
 check('the label explains what remains site-wide when the fault is bus-scoped',
   /remain site-wide across the/.test(source));
 
+console.log('\nevery superlative carries the sample it was drawn from\n');
+
+/* F4. "Nearest 400 kV substation: Cowley - 15.76 km" was nearest among the
+   points a distance search could actually see, and the card did not say so.
+   ETYS names substations and does not locate them, so the geometry comes from
+   OpenStreetMap through a GridAtlas release and a fraction of the published
+   network is invisible to any search by distance.
+
+   These checks compare the coverage the cartridge REPORTS against the payload
+   it was GIVEN, so they cannot pass on a remembered number. That matters more
+   than usual here: Codex's join correction takes located points from 502 to
+   489, and a literal in the card would go quietly false the day the pin moves. */
+check('the cartridge reports coverage at all', typeof api?.coverage === 'function');
+if (api && typeof api.coverage === 'function') {
+  const all = api.coverage(0);
+  const eligible = (point, floor) => Array.isArray(point.voltages_kv)
+    && point.voltages_kv.length && Math.max(...point.voltages_kv) >= floor;
+  const points = product.connection_points || [];
+  check('the coverage it reports is counted from the payload it was given',
+    all.published === points.length
+    && all.located === points.filter(p => p.location).length
+    && all.unlocated === all.published - all.located);
+  check('and it agrees with the state it publishes for the whole product',
+    all.published === api.points && all.located === api.located);
+
+  const at400 = api.coverage(400);
+  check('at 400 kV it counts only what a 400 kV search would consider',
+    at400.published === points.filter(p => eligible(p, 400)).length
+    && at400.located === points.filter(p => p.location && eligible(p, 400)).length);
+  check('the 400 kV band is a real subset, not the whole product',
+    at400.published > 0 && at400.published < all.published);
+  check('unlocated is the difference, never a separate count that can drift',
+    at400.unlocated === at400.published - at400.located);
+  check('the predicate is the one the distance search itself uses',
+    /Math\.max\(\.\.\.point\.voltages_kv\) >= floor/.test(source)
+    && /Math\.max\(\.\.\.point\.voltages_kv\) < minimumKv/.test(source));
+  check('it names where the numbers came from, and grades nothing',
+    /counted from the connection-points payload this session fetched/.test(source)
+    && !/\b(good|poor|strong|weak|excellent|limited)\b/i.test(at400.basis));
+  console.log(`         at 400 kV: ${at400.located} of ${at400.published} published `
+    + `carry coordinates, ${at400.unlocated} cannot be measured to`);
+  console.log(`         whole product: ${all.located} of ${all.published}`);
+}
+check('an unloaded product reports no coverage rather than zeroes',
+  /if \(!state\.loaded\) return null;\n\s*const floor/.test(source));
+
 console.log('\nthe runtime data is pinned to a commit, and checked by content\n');
 
 /* F5. Three runtime fetches named a BRANCH and the only defence was a schema

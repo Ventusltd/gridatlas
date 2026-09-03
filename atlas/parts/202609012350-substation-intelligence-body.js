@@ -61,6 +61,10 @@
 
   const byName = new Map();
   const located = [];
+  /* Every point, not only the ones that survived the name join. `byName`
+     keeps the first of a colliding key, so counting from it would report a
+     smaller network than the operator publishes. */
+  const published = [];
 
   const ready = (async () => {
     try {
@@ -86,6 +90,7 @@
       for (const point of product.connection_points || []) {
         const key = normalise(point.name);
         if (key && !byName.has(key)) byName.set(key, point);
+        published.push(point);
         if (point.location) located.push(point);
       }
       state.points = (product.connection_points || []).length;
@@ -138,6 +143,38 @@
      governing different switchgear, so a range spanning both is
      meaningless to the engineer reading it - and the more correctly the
      metric is named, the more readily the eye trusts it. */
+  /* WHAT A DISTANCE SEARCH COULD SEE, at the voltage it was asked for.
+     ------------------------------------------------------------------
+     ETYS names substations and does not locate them; the only geometry
+     this estate holds comes from OpenStreetMap through a GridAtlas
+     release. So a proportion of what the operator publishes is invisible
+     to any search by distance, and a card that says "nearest" without
+     saying that is asserting something it cannot know.
+
+     COMPUTED, never written down. The numbers move when the product moves
+     - Codex's join correction takes located from 502 to 489 - and a
+     sentence with a literal in it would go quietly false the day the pin
+     is bumped. This counts the payload that was actually fetched, using
+     exactly the predicate state.nearest uses to decide what is eligible,
+     so the denominator on the card is the denominator of the search. */
+  state.coverage = (minimumKv) => {
+    if (!state.loaded) return null;
+    const floor = Number(minimumKv) || 0;
+    const eligible = (point) => Array.isArray(point.voltages_kv)
+      && point.voltages_kv.length
+      && Math.max(...point.voltages_kv) >= floor;
+    const inBand = published.filter(eligible);
+    const seen = located.filter(eligible);
+    return {
+      minimum_kv: floor,
+      published: inBand.length,
+      located: seen.length,
+      unlocated: inBand.length - seen.length,
+      /* Named rather than computed by the reader, and never graded. */
+      basis: 'counted from the connection-points payload this session fetched'
+    };
+  };
+
   state.summarise = (name, options) => {
     const point = state.byName(name);
     if (!point) return null;
