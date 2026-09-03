@@ -14,6 +14,7 @@ import {
   createProjectRegisterFromDocument,
   createRoadRouteFinding,
   createCorridorEstimateFinding,
+  createColdProjectBootstrap,
   createSelectionStore,
   decodeSelection,
   encodeSelection,
@@ -676,6 +677,65 @@ const measuredNone = await noCandidateAdapter.arrive(markinchLink);
 check('measured-none has an explicit reason distinct from never-measured',
   measuredNone.phase === 'REASON' && measuredNone.reason === 'NO_ELIGIBLE_SUBSTATION'
     && noCandidateAdapter.read().phase !== 'NEVER_MEASURED');
+
+let resolveColdIndex;
+let resolveColdEngine;
+const coldEvents = [];
+let coldClock = 3000;
+const coldBootstrap = createColdProjectBootstrap({
+  loadProjectIndex: () => new Promise((resolve) => { resolveColdIndex = resolve; }),
+  loadEngine: () => new Promise((resolve) => { resolveColdEngine = resolve; }),
+  clock: () => coldClock,
+  onState: (event) => coldEvents.push(event)
+});
+const coldPromise = coldBootstrap.arrive(markinchLink);
+check('cold bootstrap visibly emits MEASURING before register load resolves',
+  coldEvents.length === 1 && coldEvents[0].phase === 'MEASURING'
+    && coldBootstrap.read() === coldEvents[0]);
+resolveColdIndex(markinchIndex);
+await Promise.resolve();
+resolveColdEngine(sharedGridEngine);
+coldClock = 3250;
+const coldResult = await coldPromise;
+check('cold bootstrap time includes source loading and computation',
+  coldResult.phase === 'RESULT' && coldResult.elapsed_ms === 250
+    && coldEvents.map((event) => event.phase).join(',') === 'MEASURING,RESULT');
+
+const failedColdEvents = [];
+const failedColdBootstrap = createColdProjectBootstrap({
+  loadProjectIndex: async () => { throw new Error('fixture load failure'); },
+  loadEngine: async () => sharedGridEngine,
+  clock: () => 4000,
+  onState: (event) => failedColdEvents.push(event)
+});
+const failedColdResult = await failedColdBootstrap.arrive(markinchLink);
+check('cold source failure emits an explicit public reason',
+  failedColdResult.phase === 'REASON'
+    && failedColdResult.reason === 'SOURCE_OR_COMPUTE_FAILED'
+    && failedColdEvents.map((event) => event.phase).join(',') === 'MEASURING,REASON');
+
+let releaseStaleIndex;
+let coldLoadCount = 0;
+const raceEvents = [];
+const raceBootstrap = createColdProjectBootstrap({
+  loadProjectIndex: () => {
+    coldLoadCount += 1;
+    if (coldLoadCount === 1) return new Promise((resolve) => { releaseStaleIndex = resolve; });
+    return Promise.resolve(markinchIndex);
+  },
+  loadEngine: async () => sharedGridEngine,
+  clock: () => 5000,
+  onState: (event) => raceEvents.push(event)
+});
+const staleColdPromise = raceBootstrap.arrive(markinchLink);
+const currentColdPromise = raceBootstrap.arrive(markinchLink);
+const currentColdResult = await currentColdPromise;
+releaseStaleIndex(markinchIndex);
+const staleColdResult = await staleColdPromise;
+check('overlapping cold arrivals reject the late result without overwriting current state',
+  currentColdResult.phase === 'RESULT' && staleColdResult.phase === 'STALE'
+    && raceBootstrap.read() === currentColdResult
+    && raceEvents.map((event) => event.phase).join(',') === 'MEASURING,MEASURING,RESULT');
 let staleReleaseRejected = false;
 try {
   projectFindingRequest({ kind: 'project', repd_ref: 'A', source_release: 'b'.repeat(64) }, projectIndex);
@@ -810,4 +870,4 @@ check('distinct nearest candidate is available', unique.status === 'available' &
 const absent = resolveNearestCandidate([], { idField: 'site_code' });
 check('empty population is withheld', absent.reason === 'NO_CANDIDATE' && absent.value === null);
 
-console.log(JSON.stringify({ status: 'PASS', iteration: 34, checks }));
+console.log(JSON.stringify({ status: 'PASS', iteration: 35, checks }));
