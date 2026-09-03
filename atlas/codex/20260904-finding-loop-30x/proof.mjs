@@ -1,4 +1,8 @@
-import { validateCoordinateSelection, validateSelection } from './finding-loop.mjs';
+import {
+  validateCoordinateSelection,
+  validateSelection,
+  validateSubstationSelection
+} from './finding-loop.mjs';
 
 let checks = 0;
 function check(label, condition) {
@@ -55,4 +59,21 @@ for (const [label, value] of [
   check(label, rejected);
 }
 
-console.log(JSON.stringify({ status: 'PASS', iteration: 2, checks }));
+const substation = validateSubstationSelection({
+  kind: 'substation', site_code: 'TEST-SITE', source_release: digest
+});
+check('exact substation selection is accepted', substation.site_code === 'TEST-SITE');
+check('substation output is immutable', Object.isFrozen(substation));
+for (const [label, value] of [
+  ['missing site_code is rejected', { kind: 'substation', source_release: digest }],
+  ['blank site_code is rejected', { kind: 'substation', site_code: ' ', source_release: digest }],
+  ['display label cannot replace site_code', { kind: 'substation', site_code: '', source_release: digest, name: 'Plausible Site' }],
+  ['coordinates are not substation identity', { kind: 'substation', site_code: 'TEST-SITE', source_release: digest, latitude: 52 }],
+  ['wrong substation source digest is rejected', { kind: 'substation', site_code: 'TEST-SITE', source_release: 'bad' }]
+]) {
+  let rejected = false;
+  try { validateSubstationSelection(value); } catch { rejected = true; }
+  check(label, rejected);
+}
+
+console.log(JSON.stringify({ status: 'PASS', iteration: 3, checks }));

@@ -1,5 +1,6 @@
 const PROJECT_FIELDS = Object.freeze(['kind', 'repd_ref', 'source_release']);
 const LOCATION_FIELDS = Object.freeze(['coordinate_origin', 'kind', 'latitude', 'longitude']);
+const SUBSTATION_FIELDS = Object.freeze(['kind', 'site_code', 'source_release']);
 const SHA256 = /^[0-9a-f]{64}$/;
 const CONTROL_CHARACTER = /[\u0000-\u001f\u007f]/;
 
@@ -82,4 +83,37 @@ export function validateCoordinateSelection(input) {
   return Object.freeze({
     kind: 'location', longitude, latitude, coordinate_origin: input.coordinate_origin
   });
+}
+
+/** Validate an exact connection-point selection without guessing from a label. */
+export function validateSubstationSelection(input) {
+  if (input === null || typeof input !== 'object' || Array.isArray(input)) {
+    throw new TypeError('substation selection must be an object');
+  }
+  const prototype = Object.getPrototypeOf(input);
+  if (prototype !== Object.prototype && prototype !== null) {
+    throw new TypeError('substation selection must be a plain object');
+  }
+  if (Object.getOwnPropertySymbols(input).length) {
+    throw new TypeError('substation selection cannot contain symbol fields');
+  }
+  const descriptors = Object.getOwnPropertyDescriptors(input);
+  const fields = Object.keys(descriptors).sort();
+  if (fields.length !== SUBSTATION_FIELDS.length
+      || fields.some((field, index) => field !== SUBSTATION_FIELDS[index])) {
+    throw new TypeError('substation selection has unexpected or missing fields');
+  }
+  if (SUBSTATION_FIELDS.some((field) => !Object.hasOwn(descriptors[field], 'value'))) {
+    throw new TypeError('substation selection fields must be data properties');
+  }
+  const { kind, site_code: siteCode, source_release: sourceRelease } = input;
+  if (kind !== 'substation') throw new TypeError('selection kind must be substation');
+  if (typeof siteCode !== 'string' || siteCode.length === 0
+      || siteCode !== siteCode.trim() || CONTROL_CHARACTER.test(siteCode)) {
+    throw new TypeError('site_code must be a non-empty canonical string');
+  }
+  if (typeof sourceRelease !== 'string' || !SHA256.test(sourceRelease)) {
+    throw new TypeError('source_release must be a lowercase SHA-256 digest');
+  }
+  return Object.freeze({ kind: 'substation', site_code: siteCode, source_release: sourceRelease });
 }
