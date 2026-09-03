@@ -2,10 +2,10 @@
 
 - Master: `done`
 - Active scope: `none`
-- Composition: `202609030234 · 202608300453-atlas-v9 · streaming-parquet-bridge → uk-gazetteer-flyto → substation-intelligence → sld-sandbox`
+- Composition: `202609030317 · 202608300453-atlas-v9 · streaming-parquet-bridge → uk-gazetteer-flyto → substation-intelligence → sld-sandbox`
 - Top-level full release copies: `0`
 - Immutable releases under atlas/releases: `8`
-- Active workflows: `6`
+- Active workflows: `7`
 - Historical workflows archived: `21`
 - Last-known-green shell: `202608300453-atlas-v9`
 

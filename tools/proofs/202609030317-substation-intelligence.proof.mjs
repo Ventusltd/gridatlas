@@ -1,5 +1,5 @@
 /**
- * Proof for the substation intelligence cartridge, generation 202609012045.
+ * Proof for the substation intelligence cartridge, generation 202609030317.
  *
  * The first check here is the one whose absence took the Atlas down on
  * v9.57: every composed cartridge's slot must be a script the shell
@@ -109,11 +109,17 @@ check('every cartridge in the order is in the cartridge list',
   CURRENT.cartridge_order.every(id => CURRENT.cartridges.some(c => c.id === id)));
 
 const source = await readFile(CARTRIDGE, 'utf8');
-const engine = (await readFile(join(RELEASE, 'ventus-corev8engine.js'), 'utf8'))
-  .replace(/\r\n/g, '\n');
+const composedParts = JSON.parse(await readFile(join(REPO, 'atlas',
+  CARTRIDGE_ENTRY.assembled_from.replace(/^\.\//, '')), 'utf8'));
+const engineEntry = (composedParts.assembled_from || [])
+  .find(entry => entry.role === 'carried_shell_script');
+const engine = engineEntry
+  ? (await readFile(join(REPO, engineEntry.path), 'utf8')).replace(/\r\n/g, '\n')
+  : '';
 
-console.log('\nthe engine, carried forward\n');
-check('the engine is present byte for byte', source.includes(engine));
+console.log('\nthe engine successor, declared by the parts manifest\n');
+check('the declared engine successor is present byte for byte',
+  Boolean(engineEntry) && source.includes(engine));
 check('it is carried whole, not excerpted', engine.length > 80000);
 check('the intelligence runs after it, not inside it',
   source.indexOf(engine) < source.indexOf('PART 2 - the network'));
@@ -557,6 +563,33 @@ const measured = (label, assertion) => {
       + `${differing} of them previously overstated (${(ends / units).toFixed(2)}x)`);
   }
 }
+
+console.log('\nPipeline News arrival vocabulary and the unchanged grid pin\n');
+
+const allowedMatch = engine.match(
+  /allowedTechnologies\s*=\s*new\s+Set\(\s*\[([^\]]*)\]\s*\)/);
+const acceptedTechnology = new Set(allowedMatch
+  ? [...allowedMatch[1].matchAll(/["']([\w_]+)["']/g)].map(match => match[1])
+  : []);
+const expectedSpine = ["bess","solar","wind_offshore","wind_onshore"];
+const expectedWiderFleet = ["act","biomass","caes","flywheel","geothermal","hydro","hydrogen","other","tidal"];
+check('the composed engine declares its bounded arrival vocabulary', Boolean(allowedMatch));
+check('the four Pipeline News spine technologies remain accepted',
+  expectedSpine.every(value => acceptedTechnology.has(value)));
+check('all nine wider-fleet technology values are accepted',
+  expectedWiderFleet.every(value => acceptedTechnology.has(value)));
+check('the obsolete four-value-only gate is gone',
+  acceptedTechnology.size >= expectedSpine.length + expectedWiderFleet.length);
+const connectionPointPin = pins.pin('connection-points.v3');
+const transmissionPin = pins.pin('gb-transmission-network.v1');
+check('the connection-points pin did not move in this arrival-only cut',
+  connectionPointPin?.ref === '1c9909d1138704b29235c27fd769436dda8a0b18'
+  && connectionPointPin?.sha256 === '11e28859a6d17cc8ee4047c2032d55d043be98f7123743f3b2b03225e07a4c0c'
+  && connectionPointPin?.bytes === 2896561);
+check('the transmission-network pin did not move in this arrival-only cut',
+  transmissionPin?.ref === '1c9909d1138704b29235c27fd769436dda8a0b18'
+  && transmissionPin?.sha256 === 'fc331cc20b061f85adf18d890762a164328a1c5e84acef6a23d35d36f849fc8a'
+  && transmissionPin?.bytes === 10069966);
 
 console.log(`\n${passed}/${passed + failures.length} checks passed`);
 if (bridgeRejections.length) {
