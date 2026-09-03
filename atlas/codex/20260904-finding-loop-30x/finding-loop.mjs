@@ -1011,17 +1011,44 @@ export function createColdProjectBootstrap({ loadProjectIndex, loadEngine, clock
         phase: 'MEASURING', reason: null, identity: null, project: null,
         result: null, started_ms: started, elapsed_ms: null
       });
+      const stale = () => Object.freeze({ phase: 'STALE', reason: 'NEWER_ARRIVAL' });
+      const fail = (reason, identity = null, project = null) => emit({
+        phase: 'REASON', reason, identity, project, result: null,
+        started_ms: started, elapsed_ms: finishTime(started)
+      });
+      let projectIndex;
+      try { projectIndex = await loadProjectIndex(); } catch {
+        if (request !== activeRequest) return stale();
+        return fail('PROJECT_REGISTER_LOAD_FAILED');
+      }
+      if (request !== activeRequest) return stale();
+      let arrival;
+      try { arrival = parseProjectDeepLink(link, projectIndex); } catch {
+        return fail('INVALID_PROJECT_DEEP_LINK');
+      }
+      const identity = arrival.selection;
+      const project = Object.freeze({
+        name: arrival.project.name, operator: arrival.project.operator,
+        technology: arrival.project.technology,
+        source_technology: arrival.project.source_technology,
+        capacity_mw: arrival.project.capacity_mw, status: arrival.project.status
+      });
+      let engine;
+      try { engine = await loadEngine(projectIndex); } catch {
+        if (request !== activeRequest) return stale();
+        return fail('GRID_SOURCE_LOAD_FAILED', identity, project);
+      }
+      if (request !== activeRequest) return stale();
+      if (!engine || typeof engine.queryProfiles !== 'function') {
+        return fail('GRID_SOURCE_LOAD_FAILED', identity, project);
+      }
+      let answer;
+      try { answer = await engine.queryProfiles({ selection: identity, revision: request }); } catch {
+        if (request !== activeRequest) return stale();
+        return fail('GRID_COMPUTE_FAILED', identity, project);
+      }
+      if (request !== activeRequest) return stale();
       try {
-        const projectIndex = await loadProjectIndex();
-        if (request !== activeRequest) return Object.freeze({ phase: 'STALE', reason: 'NEWER_ARRIVAL' });
-        const arrival = parseProjectDeepLink(link, projectIndex);
-        const engine = await loadEngine(projectIndex);
-        if (request !== activeRequest) return Object.freeze({ phase: 'STALE', reason: 'NEWER_ARRIVAL' });
-        if (!engine || typeof engine.queryProfiles !== 'function') {
-          throw new TypeError('loaded grid engine is invalid');
-        }
-        const answer = await engine.queryProfiles({ selection: arrival.selection, revision: request });
-        if (request !== activeRequest) return Object.freeze({ phase: 'STALE', reason: 'NEWER_ARRIVAL' });
         const reasonProfile = answer.profiles.find((profile) => profile.state !== 'RESULT');
         const result = Object.freeze({
           profiles: Object.freeze(answer.profiles.map((profile) =>
@@ -1034,22 +1061,11 @@ export function createColdProjectBootstrap({ loadProjectIndex, loadEngine, clock
         });
         return emit({
           phase: reasonProfile ? 'REASON' : 'RESULT', reason: reasonProfile?.reason || null,
-          identity: arrival.selection,
-          project: Object.freeze({
-            name: arrival.project.name, operator: arrival.project.operator,
-            technology: arrival.project.technology,
-            source_technology: arrival.project.source_technology,
-            capacity_mw: arrival.project.capacity_mw, status: arrival.project.status
-          }),
-          result, started_ms: started, elapsed_ms: finishTime(started)
-        });
-      } catch {
-        if (request !== activeRequest) return Object.freeze({ phase: 'STALE', reason: 'NEWER_ARRIVAL' });
-        return emit({
-          phase: 'REASON', reason: 'SOURCE_OR_COMPUTE_FAILED', identity: null,
-          project: null, result: null,
+          identity, project, result,
           started_ms: started, elapsed_ms: finishTime(started)
         });
+      } catch {
+        return fail('GRID_RESULT_INVALID', identity, project);
       }
     }
   });
@@ -1062,6 +1078,12 @@ export function presentArrivalState(state, { surface, width, height }) {
       || !Number.isInteger(height) || height < 1
       || state === null || typeof state !== 'object') {
     throw new TypeError('surface, viewport and arrival state are required');
+  }
+  if (!['NEVER_MEASURED', 'MEASURING', 'RESULT', 'REASON'].includes(state.phase)
+      || (state.phase === 'REASON'
+        && (typeof state.reason !== 'string' || !state.reason || CONTROL_CHARACTER.test(state.reason)))
+      || (state.phase === 'RESULT' && (!state.identity || !state.project || !state.result))) {
+    throw new TypeError('arrival state is invalid');
   }
   const base = {
     surface,

@@ -715,8 +715,31 @@ const failedColdBootstrap = createColdProjectBootstrap({
 const failedColdResult = await failedColdBootstrap.arrive(markinchLink);
 check('cold source failure emits an explicit public reason',
   failedColdResult.phase === 'REASON'
-    && failedColdResult.reason === 'SOURCE_OR_COMPUTE_FAILED'
+    && failedColdResult.reason === 'PROJECT_REGISTER_LOAD_FAILED'
     && failedColdEvents.map((event) => event.phase).join(',') === 'MEASURING,REASON');
+
+const engineLoadEvents = [];
+const engineLoadFailure = createColdProjectBootstrap({
+  loadProjectIndex: async () => markinchIndex,
+  loadEngine: async () => { throw new Error('fixture engine load failure'); },
+  clock: () => 4500,
+  onState: (event) => engineLoadEvents.push(event)
+});
+const engineLoadState = await engineLoadFailure.arrive(markinchLink);
+check('grid source failure preserves resolved project identity and facts',
+  engineLoadState.reason === 'GRID_SOURCE_LOAD_FAILED'
+    && engineLoadState.identity.repd_ref === '155'
+    && engineLoadState.project.name === 'Markinch Biomass CHP Plant');
+const computeFailure = createColdProjectBootstrap({
+  loadProjectIndex: async () => markinchIndex,
+  loadEngine: async () => ({ queryProfiles() { throw new Error('fixture compute failure'); } }),
+  clock: () => 4600,
+  onState: () => {}
+});
+const computeFailureState = await computeFailure.arrive(markinchLink);
+check('compute failure has a distinct stable reason and keeps identity',
+  computeFailureState.reason === 'GRID_COMPUTE_FAILED'
+    && computeFailureState.identity.repd_ref === '155');
 
 let releaseStaleIndex;
 let coldLoadCount = 0;
@@ -764,6 +787,10 @@ check('presentation never fabricates an Unnamed target or routed distance',
   !JSON.stringify(surfaceModels).includes('Unnamed')
     && !JSON.stringify(surfaceModels).includes('35.9 km')
     && !JSON.stringify(surfaceModels).includes('road distance'));
+let malformedArrivalStateRejected = false;
+try { presentArrivalState({ phase: 'plausible' }, { surface: 'map', width: 393, height: 852 }); } catch { malformedArrivalStateRejected = true; }
+check('presentation rejects an unknown state instead of rendering undefined reason',
+  malformedArrivalStateRejected);
 
 for (const [surface, factory, viewport] of [
   ['map', createMapFindingAdapter, { width: 393, height: 852 }],
@@ -926,4 +953,4 @@ check('distinct nearest candidate is available', unique.status === 'available' &
 const absent = resolveNearestCandidate([], { idField: 'site_code' });
 check('empty population is withheld', absent.reason === 'NO_CANDIDATE' && absent.value === null);
 
-console.log(JSON.stringify({ status: 'PASS', iteration: 37, checks }));
+console.log(JSON.stringify({ status: 'PASS', iteration: 38, checks }));
