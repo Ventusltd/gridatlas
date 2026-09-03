@@ -40,18 +40,32 @@ name: 202608312212 GridAtlas cartridge proof
 
 on:
   workflow_dispatch:
+  # STATE.md IS ON THIS LIST BECAUSE A STEP BELOW ASSERTS IT.
+  #
+  # The v9.89 cut moved the composition without regenerating STATE.md, and
+  # this gate caught it - correctly, at "STATE.md was regenerated before it was
+  # committed". The regeneration that fixed it then touched STATE.md and
+  # nothing else, so it matched no path here and the gate did not run at all.
+  # The composition's last runner conclusion stayed the failure, and the commit
+  # that actually fixed it was never checked by anything.
+  #
+  # A file a gate asserts must be a file that wakes the gate. Otherwise the
+  # only commits it can judge are the ones that happen to touch something else,
+  # which is the same shape as a check that skips when its input is missing.
   push:
     branches: [main]
     paths:
       - 'atlas/**'
       - 'tools/proofs/**'
       - 'tools/scope/**'
+      - 'STATE.md'
       - '.github/workflows/202608312212-cartridge-proof.yml'
   pull_request:
     paths:
       - 'atlas/**'
       - 'tools/proofs/**'
       - 'tools/scope/**'
+      - 'STATE.md'
 
 permissions:
   contents: read
