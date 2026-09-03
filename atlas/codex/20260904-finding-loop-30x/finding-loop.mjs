@@ -29,6 +29,27 @@ export const PROJECT_TECHNOLOGIES = Object.freeze([
   'wind_offshore', 'wind_onshore'
 ]);
 const PROJECT_TECHNOLOGY_SET = new Set(PROJECT_TECHNOLOGIES);
+const EARTH_RADIUS_KM = 6378.137;
+
+/** Estate-standard spherical haversine using the fixed WGS-84 semi-major radius. */
+export function haversineR6378137Km(longitude1, latitude1, longitude2, latitude2) {
+  for (const [name, value, minimum, maximum] of [
+    ['longitude1', longitude1, -180, 180], ['latitude1', latitude1, -90, 90],
+    ['longitude2', longitude2, -180, 180], ['latitude2', latitude2, -90, 90]
+  ]) {
+    if (typeof value !== 'number' || !Number.isFinite(value)
+        || value < minimum || value > maximum) {
+      throw new TypeError(`${name} is invalid`);
+    }
+  }
+  const radians = (degrees) => degrees * Math.PI / 180;
+  const latitudeDelta = radians(latitude2 - latitude1);
+  const longitudeDelta = radians(longitude2 - longitude1);
+  const a = Math.sin(latitudeDelta / 2) ** 2
+    + Math.cos(radians(latitude1)) * Math.cos(radians(latitude2))
+      * Math.sin(longitudeDelta / 2) ** 2;
+  return EARTH_RADIUS_KM * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+}
 
 /**
  * Validate the transport contract for an exact project selection.
@@ -400,7 +421,7 @@ export function createScopedDistanceFinding({
   const candidateCount = scopeDescriptors.candidate_count.value;
   const geometry = scopeDescriptors.geometry.value;
   if (!Number.isInteger(candidateCount) || candidateCount < 1
-      || geometry !== 'ellipsoidal_straight_line') {
+      || geometry !== 'haversine_r6378_137_km') {
     throw new TypeError('distance scope candidate count or geometry is invalid');
   }
   const coverage = coverageBoundary({

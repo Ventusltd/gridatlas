@@ -14,6 +14,7 @@ import {
   createSelectionStore,
   decodeSelection,
   encodeSelection,
+  haversineR6378137Km,
   validateAnySelection,
   validateCoordinateSelection,
   validateSelection,
@@ -247,44 +248,92 @@ const substationEvidence = Object.freeze({
   release: 'atlas/releases/202608300453-atlas-v9/data/grid_substations.geojson',
   sha256: substationDigest, bytes: 1192748
 });
+const substationDocument = JSON.parse(substationBytes);
+const markinchGeometryRecord = JSON.parse(readFileSync(new URL(
+  '../../../data/repd_browser_registry_202608290716.json', import.meta.url
+))).records.find((row) => row.repd_ref === '155');
+const voltageKv = (feature) => String(feature.properties?.voltage || '')
+  .split(';').filter(Boolean).map((value) => Number(value) / 1000)
+  .filter((value) => Number.isInteger(value) && value > 0);
+const validPoint = (feature) => feature.geometry?.type === 'Point'
+  && Array.isArray(feature.geometry.coordinates)
+  && feature.geometry.coordinates.length >= 2
+  && typeof feature.geometry.coordinates[0] === 'number'
+  && typeof feature.geometry.coordinates[1] === 'number';
+const substationCandidates = (minimumKv, namedOnly = false) => substationDocument.features
+  .filter((feature) => validPoint(feature)
+    && voltageKv(feature).some((value) => value >= minimumKv)
+    && (!namedOnly || String(feature.properties?.name || '').trim()))
+  .map((feature) => ({
+    feature,
+    distance_km: haversineR6378137Km(
+      markinchGeometryRecord.longitude, markinchGeometryRecord.latitude,
+      feature.geometry.coordinates[0], feature.geometry.coordinates[1]
+    )
+  }))
+  .sort((left, right) => left.distance_km - right.distance_km
+    || (left.feature.id < right.feature.id ? -1 : left.feature.id > right.feature.id ? 1 : 0));
+const candidates33 = substationCandidates(33);
+const candidates400 = substationCandidates(400);
+const namedCandidates400 = substationCandidates(400, true);
+check('substation candidate populations are derived from pinned geometry and voltage',
+  substationDocument.features.length === 5800
+    && candidates33.length === 5799 && candidates400.length === 278
+    && namedCandidates400.length === 238);
+const targetFromFeature = (entry) => ({
+  target_id: entry.feature.id,
+  target_name: entry.feature.properties?.name?.trim() || null,
+  operator: entry.feature.properties?.operator?.trim() || null,
+  voltage_kv: voltageKv(entry.feature),
+  longitude: entry.feature.geometry.coordinates[0],
+  latitude: entry.feature.geometry.coordinates[1]
+});
 const glenrothesDistance = createScopedDistanceFinding({
-  type: 'nearest_connection_point', distance_km: 2.485885849,
+  type: 'nearest_connection_point', distance_km: candidates33[0].distance_km,
   selection_revision: 1, provenance: [substationEvidence],
   qualifiers: ['MARKINCH', 'ANY_VOLTAGE_AT_OR_ABOVE_33_KV'],
-  target: {
-    target_id: 'grid_substations:417', target_name: 'Glenrothes Substation',
-    operator: 'SP Energy Networks', voltage_kv: [275, 33],
-    longitude: -3.2009994, latitude: 56.2070307
-  },
+  target: targetFromFeature(candidates33[0]),
   scope: {
     predicate: 'valid point geometry and any voltage_kv >= 33',
     candidate_count: 5799, located_count: 5799, total_count: 5800,
-    geometry: 'ellipsoidal_straight_line'
+    geometry: 'haversine_r6378_137_km'
   }
 });
 const nearest400Distance = createScopedDistanceFinding({
-  type: 'nearest_connection_point', distance_km: 28.819562529,
+  type: 'nearest_connection_point', distance_km: candidates400[0].distance_km,
   selection_revision: 1, provenance: [substationEvidence],
   qualifiers: ['MARKINCH', 'ANY_VOLTAGE_AT_OR_ABOVE_400_KV'],
-  target: {
-    target_id: 'grid_substations:2033', target_name: null, operator: null,
-    voltage_kv: [400], longitude: -2.9662713, latitude: 55.9665186
-  },
+  target: targetFromFeature(candidates400[0]),
   scope: {
     predicate: 'valid point geometry and any voltage_kv >= 400',
-    candidate_count: 278, located_count: 5799, total_count: 5800,
-    geometry: 'ellipsoidal_straight_line'
+    candidate_count: 278, located_count: 278, total_count: 5800,
+    geometry: 'haversine_r6378_137_km'
+  }
+});
+const nearestNamed400Distance = createScopedDistanceFinding({
+  type: 'nearest_connection_point', distance_km: namedCandidates400[0].distance_km,
+  selection_revision: 1, provenance: [substationEvidence],
+  qualifiers: ['MARKINCH', 'NAMED_AND_ANY_VOLTAGE_AT_OR_ABOVE_400_KV'],
+  target: targetFromFeature(namedCandidates400[0]),
+  scope: {
+    predicate: 'valid point geometry, non-empty name, and any voltage_kv >= 400',
+    candidate_count: 238, located_count: 238, total_count: 5800,
+    geometry: 'haversine_r6378_137_km'
   }
 });
 check('Markinch any-voltage and 400 kV substation findings remain distinct',
-  glenrothesDistance.finding.value === 2.485885849
+  Math.abs(glenrothesDistance.finding.value - 2.485885849) < 1e-9
     && glenrothesDistance.target.target_id === 'grid_substations:417'
-    && nearest400Distance.finding.value === 28.819562529
+    && Math.abs(nearest400Distance.finding.value - 28.819562529) < 1e-9
     && nearest400Distance.target.target_id === 'grid_substations:2033'
     && glenrothesDistance.scope.predicate !== nearest400Distance.scope.predicate);
 check('unnamed 400 kV source remains identified by source feature',
   nearest400Distance.target.target_name === null
     && nearest400Distance.target.target_id === 'grid_substations:2033');
+check('nearest named 400 kV companion is independently scoped',
+  nearestNamed400Distance.target.target_name === 'Smeaton Substation'
+    && Math.abs(nearestNamed400Distance.finding.value - 33.503070342) < 1e-9
+    && nearestNamed400Distance.scope.candidate_count === 238);
 
 const pinned = validateProvenance(evidence);
 check('pinned provenance is accepted and frozen',
@@ -649,4 +698,4 @@ check('distinct nearest candidate is available', unique.status === 'available' &
 const absent = resolveNearestCandidate([], { idField: 'site_code' });
 check('empty population is withheld', absent.reason === 'NO_CANDIDATE' && absent.value === null);
 
-console.log(JSON.stringify({ status: 'PASS', iteration: 30, checks }));
+console.log(JSON.stringify({ status: 'PASS', iteration: 31, checks }));
