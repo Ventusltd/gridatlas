@@ -5,7 +5,8 @@ import {
   validateCoordinateSelection,
   validateSelection,
   validateSubstationSelection,
-  validateFinding
+  validateFinding,
+  validateProvenance
 } from './finding-loop.mjs';
 
 let checks = 0;
@@ -20,6 +21,9 @@ function rejects(label, value) {
 }
 
 const digest = 'a'.repeat(64);
+const evidence = Object.freeze({
+  source_id: 'test_fixture', release: 'fixture-v1', sha256: digest, bytes: 12
+});
 const accepted = validateSelection({
   kind: 'project',
   repd_ref: '13599',
@@ -105,7 +109,7 @@ check('duplicate identity field is rejected', duplicateQueryRejected);
 
 const measurement = validateFinding({
   type: 'nearest_connection_point', evidence_class: 'measurement', status: 'available',
-  selection_revision: 1, value: 3.2, unit: 'km', qualifiers: ['test fixture'], provenance: []
+  selection_revision: 1, value: 3.2, unit: 'km', qualifiers: ['test fixture'], provenance: [evidence]
 });
 check('typed available finding is accepted', measurement.value === 3.2);
 check('finding collections are immutable',
@@ -138,11 +142,28 @@ for (const [type, evidenceClass] of [
   const value = type === 'unknown' ? null : 'test fixture';
   const status = type === 'unknown' ? 'withheld' : 'available';
   const finding = validateFinding({ type, evidence_class: evidenceClass, status,
-    selection_revision: 2, value, unit: null, qualifiers: [], provenance: [] });
+    selection_revision: 2, value, unit: null, qualifiers: [],
+    provenance: type === 'unknown' ? [] : [evidence] });
   check(`${type} accepts only its evidence class`, finding.evidence_class === evidenceClass);
   let mismatchRejected = false;
   try { validateFinding({ ...finding, evidence_class: evidenceClass === 'unknown' ? 'measurement' : 'unknown' }); } catch { mismatchRejected = true; }
   check(`${type} rejects a mismatched evidence class`, mismatchRejected);
 }
 
-console.log(JSON.stringify({ status: 'PASS', iteration: 7, checks }));
+const pinned = validateProvenance(evidence);
+check('pinned provenance is accepted and frozen',
+  pinned.sha256 === digest && pinned.bytes === 12 && Object.isFrozen(pinned));
+for (const [label, value] of [
+  ['missing provenance digest is rejected', { source_id: 'x', release: 'v1', bytes: 1 }],
+  ['negative provenance length is rejected', { ...evidence, bytes: -1 }],
+  ['extra provenance fields are rejected', { ...evidence, url: 'https://example.invalid' }]
+]) {
+  let rejected = false;
+  try { validateProvenance(value); } catch { rejected = true; }
+  check(label, rejected);
+}
+let missingEvidenceRejected = false;
+try { validateFinding({ ...measurement, provenance: [] }); } catch { missingEvidenceRejected = true; }
+check('measurement without provenance is rejected', missingEvidenceRejected);
+
+console.log(JSON.stringify({ status: 'PASS', iteration: 8, checks }));

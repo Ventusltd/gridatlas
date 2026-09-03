@@ -20,6 +20,7 @@ const EVIDENCE_CLASS_BY_TYPE = Object.freeze({
   model_result: 'model_result',
   unknown: 'unknown'
 });
+const PROVENANCE_FIELDS = Object.freeze(['bytes', 'release', 'sha256', 'source_id']);
 
 /**
  * Validate the transport contract for an exact project selection.
@@ -212,6 +213,9 @@ export function validateFinding(input) {
     throw new TypeError('qualifiers must be strings');
   }
   if (!Array.isArray(input.provenance)) throw new TypeError('provenance must be an array');
+  if (input.evidence_class !== 'unknown' && input.provenance.length === 0) {
+    throw new TypeError('evidenced findings require provenance');
+  }
   if (input.status === 'available' ? input.value === null : input.value !== null || input.unit !== null) {
     throw new TypeError('finding value contradicts its status');
   }
@@ -220,6 +224,34 @@ export function validateFinding(input) {
   }
   return Object.freeze({ ...input,
     qualifiers: Object.freeze([...input.qualifiers]),
-    provenance: Object.freeze([...input.provenance])
+    provenance: Object.freeze(input.provenance.map(validateProvenance))
   });
+}
+
+/** Validate a byte-pinned evidence source. */
+export function validateProvenance(input) {
+  if (input === null || typeof input !== 'object' || Array.isArray(input)
+      || (Object.getPrototypeOf(input) !== Object.prototype && Object.getPrototypeOf(input) !== null)
+      || Object.getOwnPropertySymbols(input).length) {
+    throw new TypeError('provenance must be a plain string-keyed object');
+  }
+  const descriptors = Object.getOwnPropertyDescriptors(input);
+  const fields = Object.keys(descriptors).sort();
+  if (fields.length !== PROVENANCE_FIELDS.length
+      || fields.some((field, index) => field !== PROVENANCE_FIELDS[index])
+      || PROVENANCE_FIELDS.some((field) => !Object.hasOwn(descriptors[field], 'value'))) {
+    throw new TypeError('provenance fields are unexpected, missing, or unsafe');
+  }
+  const sourceId = String(input.source_id || '').trim();
+  const release = String(input.release || '').trim();
+  if (!sourceId || !release || CONTROL_CHARACTER.test(sourceId) || CONTROL_CHARACTER.test(release)) {
+    throw new TypeError('source identity and release are required');
+  }
+  if (typeof input.sha256 !== 'string' || !SHA256.test(input.sha256)) {
+    throw new TypeError('provenance sha256 is invalid');
+  }
+  if (!Number.isInteger(input.bytes) || input.bytes < 0) {
+    throw new TypeError('provenance bytes are invalid');
+  }
+  return Object.freeze({ source_id: sourceId, release, sha256: input.sha256, bytes: input.bytes });
 }
