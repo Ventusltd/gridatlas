@@ -82,6 +82,52 @@ run(process.execPath, [
 run(process.execPath, [path.join(ROOT, 'tools', 'scope', 'verify-compose.mjs')]);`;
 replaceOnce('SLD engine-successor proof patch', oldProofBoundary, newProofBoundary);
 
+const oldValidationBoundary = `run(process.execPath, [
+  path.join(ROOT, 'tools', 'releases',
+    '202609030251-patch-sld-proof-for-engine-successor.mjs'),
+  '--generation', generation
+]);
+
+run(process.execPath, [path.join(ROOT, 'tools', 'scope', 'verify-compose.mjs')]);`;
+const newValidationBoundary = `run(process.execPath, [
+  path.join(ROOT, 'tools', 'releases',
+    '202609030251-patch-sld-proof-for-engine-successor.mjs'),
+  '--generation', generation
+]);
+
+/* The build workflow is one-shot and must leave before the repository's
+   active-workflow budget is checked. The permanent two-repository contract
+   earns a declared place in that budget. */
+const oneShotWorkflow = path.join(ROOT, '.github', 'workflows',
+  '202609030251-build-grid-data-v9-89.yml');
+fs.rmSync(oneShotWorkflow, { force: true });
+const scopeLibPath = path.join(ROOT, 'tools', 'scope', 'lib.mjs');
+const scopeLibBefore = fs.readFileSync(scopeLibPath, 'utf8');
+const workflowBudgetTail = \`  '202608312212-cartridge-proof.yml'\\n]);\`;
+const workflowBudgetSuccessor = \`  '202608312212-cartridge-proof.yml',\\n  // v9.89: every Pipeline News arrival vocabulary is checked against the\\n  // composed Atlas receiver; this is permanent, node-only and bounded.\\n  '202609030251-pipelinenews-arrival-contract.yml'\\n]);\`;
+if (!scopeLibBefore.includes("'202609030251-pipelinenews-arrival-contract.yml'")) {
+  const count = scopeLibBefore.split(workflowBudgetTail).length - 1;
+  if (count !== 1) die(\`workflow budget tail: expected one match, found \${count}\`);
+  fs.writeFileSync(scopeLibPath,
+    scopeLibBefore.replace(workflowBudgetTail, workflowBudgetSuccessor), 'utf8');
+}
+
+run(process.execPath, [path.join(ROOT, 'tools', 'scope', 'verify-compose.mjs')]);`;
+replaceOnce('one-shot retirement and permanent workflow budget',
+  oldValidationBoundary, newValidationBoundary);
+
+const oldTrailingRetirement = `const oneShotWorkflow = path.join(ROOT, '.github', 'workflows',
+  '202609030251-build-grid-data-v9-89.yml');
+fs.rmSync(oneShotWorkflow, { force: true });
+
+console.log(JSON.stringify({`;
+const newTrailingRetirement = `if (fs.existsSync(oneShotWorkflow)) {
+  die('one-shot workflow survived the lint boundary');
+}
+
+console.log(JSON.stringify({`;
+replaceOnce('trailing one-shot retirement', oldTrailingRetirement, newTrailingRetirement);
+
 fs.writeFileSync(cutterPath, source, 'utf8');
 const checked = spawnSync(process.execPath, ['--check', cutterPath], {
   cwd: ROOT, encoding: 'utf8'
