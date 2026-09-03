@@ -433,11 +433,39 @@ export function createProjectRegister(rows, provenance) {
       throw new TypeError('project register coordinates are invalid');
     }
     seen.add(repdRef);
+    const optionalString = (field) => {
+      if (!Object.hasOwn(descriptors, field)) return null;
+      if (!Object.hasOwn(descriptors[field], 'value')) {
+        throw new TypeError(`project ${field} must be a data property`);
+      }
+      const value = descriptors[field].value;
+      if (value === null) return null;
+      if (typeof value !== 'string' || !value || value !== value.trim()
+          || CONTROL_CHARACTER.test(value)) {
+        throw new TypeError(`project ${field} must be a canonical string or null`);
+      }
+      return value;
+    };
+    let capacityMw = null;
+    if (Object.hasOwn(descriptors, 'capacity_mw')) {
+      if (!Object.hasOwn(descriptors.capacity_mw, 'value')) {
+        throw new TypeError('project capacity_mw must be a data property');
+      }
+      capacityMw = descriptors.capacity_mw.value;
+      if (capacityMw !== null && (typeof capacityMw !== 'number'
+          || !Number.isFinite(capacityMw) || capacityMw < 0)) {
+        throw new TypeError('project capacity_mw must be a non-negative number or null');
+      }
+    }
     return Object.freeze({
       repd_ref: repdRef, longitude, latitude,
       technology: technology.technology,
       source_technology: technology.source_technology,
-      technology_status: technology.status
+      technology_status: technology.status,
+      name: optionalString('name'),
+      operator: optionalString('operator'),
+      capacity_mw: capacityMw,
+      status: optionalString('status')
     });
   });
   return Object.freeze({ source, projects: Object.freeze(projects) });
@@ -483,7 +511,7 @@ export function parseProjectDeepLink(input, projectIndex) {
   if (typeof input !== 'string' || !input.trim()) throw new TypeError('project deep link is required');
   const url = new URL(input, 'https://candidate.invalid/atlas/');
   const allowed = new Set([
-    'repd_ref', 'project', 'technology', 'capacity_mw', 'latitude', 'longitude'
+    'repd_ref', 'project', 'technology', 'capacity_mw', 'latitude', 'longitude', 'zoom'
   ]);
   const names = [...url.searchParams.keys()];
   if (names.some((name) => !allowed.has(name)
@@ -508,7 +536,7 @@ export function parseProjectDeepLink(input, projectIndex) {
     diagnostics.push('TECHNOLOGY_NOT_TRANSPORTED');
   }
   const transport = Object.freeze(Object.fromEntries(
-    ['project', 'technology', 'capacity_mw', 'latitude', 'longitude']
+    ['project', 'technology', 'capacity_mw', 'latitude', 'longitude', 'zoom']
       .map((name) => [name, url.searchParams.get(name)])
   ));
   return Object.freeze({

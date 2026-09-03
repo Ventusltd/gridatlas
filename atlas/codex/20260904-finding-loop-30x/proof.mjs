@@ -1,3 +1,6 @@
+import { createHash } from 'node:crypto';
+import { readFileSync } from 'node:fs';
+
 import {
   coverageBoundary,
   classifyProjectTechnology,
@@ -374,18 +377,34 @@ for (const technology of ['solar_roof', 'wind_onshore', 'wind_offshore']) {
 }
 
 const gridRegisterDigest = 'c8a5c59be878c52014a272eb0e4d09af06a0d301d10a8d6b5d0b116b5d1bb6bc';
+const gridRegisterBytes = readFileSync(new URL('../../../data/repd_browser_registry_202608290716.json', import.meta.url));
+check('Markinch register fixture is pinned to immutable repository bytes',
+  gridRegisterBytes.length === 9328402
+    && createHash('sha256').update(gridRegisterBytes).digest('hex') === gridRegisterDigest);
+const gridRegisterDocument = JSON.parse(gridRegisterBytes);
+const markinchRecord = gridRegisterDocument.records.find((row) => row.repd_ref === '155');
+check('Markinch evidence row is resolved from the pinned register',
+  markinchRecord.name === 'Markinch Biomass CHP Plant'
+    && markinchRecord.source_row_sha256 === '36c59cc66e5e9e6de64184c57155c2fa362f4896d2643a14a04b9720944ef9c4');
 const gridRegisterSource = Object.freeze({
   source_id: 'project_register',
   release: '202608290716:data/repd_browser_registry_202608290716.json',
   sha256: gridRegisterDigest, bytes: 9328402
 });
 const markinchRegister = createProjectRegister([{
-  repd_ref: '155', longitude: -3.162255, latitude: 56.20118, technology: 'biomass'
+  repd_ref: markinchRecord.repd_ref,
+  longitude: markinchRecord.longitude,
+  latitude: markinchRecord.latitude,
+  technology: markinchRecord.technology,
+  name: markinchRecord.name,
+  operator: markinchRecord.repd_operator_or_applicant,
+  capacity_mw: markinchRecord.capacity_mw,
+  status: markinchRecord.status
 }], gridRegisterSource);
 const markinchIndex = createProjectIndex(markinchRegister);
 const markinchLink = 'https://ventusltd.github.io/gridatlas/atlas/?repd_ref=155'
   + '&project=Markinch+Biomass+CHP+Plant&technology=biomass&capacity_mw=65'
-  + '&latitude=56.20118&longitude=-3.162255';
+  + '&latitude=56.20118&longitude=-3.162255&zoom=12';
 const markinchArrival = parseProjectDeepLink(markinchLink, markinchIndex);
 check('Markinch deep link establishes identity only through repd_ref',
   markinchArrival.selection.repd_ref === '155'
@@ -394,6 +413,11 @@ check('Markinch transport technology survives as the typed register vocabulary',
   markinchArrival.project.technology === 'biomass'
     && markinchArrival.technology.technology === 'biomass'
     && markinchArrival.diagnostics.length === 0);
+check('Markinch canonical row preserves presentation facts without URL authority',
+  markinchArrival.project.name === 'Markinch Biomass CHP Plant'
+    && markinchArrival.project.operator === 'RWE'
+    && markinchArrival.project.capacity_mw === 65
+    && markinchArrival.transport.zoom === '12');
 
 let deepLinkConsoleErrors = 0;
 const originalConsoleError = console.error;
@@ -540,4 +564,4 @@ check('distinct nearest candidate is available', unique.status === 'available' &
 const absent = resolveNearestCandidate([], { idField: 'site_code' });
 check('empty population is withheld', absent.reason === 'NO_CANDIDATE' && absent.value === null);
 
-console.log(JSON.stringify({ status: 'PASS', iteration: 26, checks }));
+console.log(JSON.stringify({ status: 'PASS', iteration: 27, checks }));
