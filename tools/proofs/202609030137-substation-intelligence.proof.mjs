@@ -8,6 +8,7 @@
 
 import { readFile } from 'node:fs/promises';
 import { existsSync } from 'node:fs';
+import { webcrypto } from 'node:crypto';
 import { fileURLToPath } from 'node:url';
 import { dirname, join, resolve } from 'node:path';
 import vm from 'node:vm';
@@ -67,7 +68,7 @@ check('the intelligence runs after it, not inside it',
 
 console.log('\nthe product contract\n');
 check('it reads the data repository product',
-  /Ventusltd\/data-grid-gb\//.test(source)
+  /repository: 'data-grid-gb'/.test(source)
   && /derived\/connection-points\.v3\.json/.test(source));
 check('it requires the v3 schema it was written against',
   /const REQUIRED_SCHEMA = 'data-grid-gb\.connection-points\.v3';/.test(source));
@@ -196,6 +197,74 @@ check('ratings are labelled site-wide, because the product does not split them',
   /circuit winter ratings across the site/.test(source));
 check('the label explains what remains site-wide when the fault is bus-scoped',
   /remain site-wide across the/.test(source));
+
+console.log('\nthe runtime data is pinned to a commit, and checked by content\n');
+
+/* F5. Three runtime fetches named a BRANCH and the only defence was a schema
+   string, which defends shape and is blind to values. On 2026-09-03 that
+   stopped being theoretical: data-grid-gb commit b91e45b publishes COWLEY's
+   transformers as 5 rather than 10 and ABHAM's as 2 rather than 4, under the
+   IDENTICAL schema `data-grid-gb.connection-points.v3`. An immutable release
+   would have changed what it said with none of its own bytes changing.
+
+   The pin table is exercised in its own context, with real WebCrypto, so the
+   MISMATCH path is executed rather than described. The primary context above
+   deliberately has NO crypto, which is how the absent-digest path gets
+   exercised too: the product still loads there, and says it could not check. */
+check('no runtime data URL in this cartridge names a branch',
+  !/raw\.githubusercontent\.com\/Ventusltd\/[a-z0-9-]+\/main\//.test(source));
+check('the pinned-products module is in the served bytes',
+  /gridatlas\.module\.pinned-products\.v1/.test(source));
+
+const pinBox = { window: {}, console, Math, JSON, Number, String, Array, Object,
+  Map, Set, Boolean, Error, RegExp, Promise, Uint8Array, ArrayBuffer,
+  TextEncoder, crypto: webcrypto };
+pinBox.window.window = pinBox.window;
+pinBox.window.crypto = webcrypto;
+vm.createContext(pinBox);
+vm.runInContext(await readFile(join(REPO, 'atlas', 'modules',
+  '202609030137-pinned-products.js'), 'utf8'), pinBox, { filename: 'pins.js' });
+const pins = pinBox.window.__GRIDATLAS_MODULES__.pinnedProducts;
+
+check('it froze its surface and named its schema',
+  Object.isFrozen(pins) && pins.schema === 'gridatlas.module.pinned-products.v1');
+check('every pinned product names a 40-character commit, never a branch',
+  pins.ids.length === 3
+  && pins.ids.every(id => /^[0-9a-f]{40}$/.test(pins.pin(id).ref)));
+check('and a 64-character SHA-256 of the bytes served at that commit',
+  pins.ids.every(id => /^[0-9a-f]{64}$/.test(pins.pin(id).sha256)));
+check('the URL it builds is the commit, not the branch',
+  pins.url('connection-points.v3')
+    === 'https://raw.githubusercontent.com/Ventusltd/data-grid-gb/'
+      + '1c9909d1138704b29235c27fd769436dda8a0b18/derived/connection-points.v3.json');
+check('its digest arithmetic is the arithmetic, checked against node',
+  await (async () => {
+    const sample = 'the quick brown fox';
+    const { createHash } = await import('node:crypto');
+    return await pins.digestHex(sample)
+      === createHash('sha256').update(sample, 'utf8').digest('hex');
+  })());
+check('bytes that disagree with the recorded digest are a MISMATCH',
+  (await pins.verify('connection-points.v3', 'not the product')).state === 'MISMATCH');
+check('and the mismatch says which bytes it got and which it wanted',
+  /hash to [0-9a-f]{64}, not the recorded [0-9a-f]{64}/
+    .test((await pins.verify('connection-points.v3', 'x')).detail || ''));
+check('an unknown id is unverified rather than quietly accepted',
+  /^unverified/.test((await pins.verify('no-such-product', 'x')).state));
+check('a pin says which bytes were read and nothing about whether they are right',
+  /says nothing about whether those bytes are right/.test(pins.not_an_assessment));
+
+check('a MISMATCH refuses to answer rather than reading on',
+  /refusing to answer from bytes this composition has not seen/.test(source));
+check('and an uncomposed pin table is a refusal, not a guessed URL',
+  /has no pinned ref to read and will not guess one/.test(source));
+if (api) {
+  check('the load published which pinned bytes it read',
+    !!api.product_pin
+    && api.product_pin.ref === '1c9909d1138704b29235c27fd769436dda8a0b18');
+  check('and where there is no crypto it says so, and still reads the product',
+    /^unverified/.test(api.product_pin?.state || '') && api.loaded === true);
+}
 
 console.log('\na count of machines, not a count of landings\n');
 /* F3. The site card said "6 circuits, 10 transformers" for Cowley, which

@@ -5,8 +5,13 @@
   'use strict';
 
   const GENERATION = '202609012045';
-  const PRODUCT = 'https://raw.githubusercontent.com/Ventusltd/data-grid-gb/'
-    + 'main/derived/connection-points.v3.json';
+  /* Pinned to a commit and hashed. The reasoning, the table and the
+     digest arithmetic are in the pinned-products module beside this file;
+     what matters here is that `main` was the ref and the schema string was
+     the whole defence, and a schema string is blind to values. */
+  const PINS = (window.__GRIDATLAS_MODULES__ || {}).pinnedProducts || null;
+  const PRODUCT_ID = 'connection-points.v3';
+  const PRODUCT = PINS ? PINS.url(PRODUCT_ID) : null;
   const REQUIRED_SCHEMA = 'data-grid-gb.connection-points.v3';
   /* Appendix D publishes eight current metrics and they are NOT
      interchangeable, so one is quoted and named rather than any of them
@@ -59,9 +64,19 @@
 
   const ready = (async () => {
     try {
+      if (!PRODUCT) throw new Error('the pinned-products module is not composed, '
+        + 'so this cartridge has no pinned ref to read and will not guess one');
       const response = await fetch(PRODUCT, { cache: 'no-cache' });
       if (!response.ok) throw new Error('HTTP ' + response.status);
-      const product = await response.json();
+      const text = await response.text();
+      const seal = await PINS.verify(PRODUCT_ID, text);
+      state.product_pin = seal;
+      if (seal.state === 'MISMATCH') {
+        state.failures.push(seal.detail
+          + '; refusing to answer from bytes this composition has not seen');
+        return false;
+      }
+      const product = JSON.parse(text);
       state.product_schema = product?.schema || null;
       if (product?.schema !== REQUIRED_SCHEMA) {
         state.failures.push('schema is ' + String(product?.schema)

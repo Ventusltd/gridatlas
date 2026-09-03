@@ -486,7 +486,7 @@ console.log('\nGB prices, available historic record\n');
 const gb = cartridgeSource;
 check('the panel exists', /const GB_ID = 'gridatlas-gb-conditions'/.test(gb));
 check('it reads the repository that owns the data, not a copy',
-  /data-gb-electricity\/main\/derived\/price-decade-rollup\.json/.test(gb)
+  /PINS\.url\(GB_PIN_ID\)/.test(gb)
   && !/live_grid_price\.json/.test(gb)
   && !/uk_energy_tracking_v6\/derived\/decade-summary/.test(gb));
 check('the second-source-of-truth rule is written down where it applies',
@@ -2290,6 +2290,30 @@ check('it is recorded on its own surface, not in the ledger that means the arriv
 check('the record names what was asked for and whether it was honoured',
   /requested: tech \|\| null,\n\s*enabled: technologyKnown,/.test(cartridgeSource));
 
+console.log('\nthe two products this cartridge fetches are pinned too\n');
+
+/* F5, this side of it. The 10 MB node/branch model and the GB price rollup
+   were both fetched from `main`, so an immutable release could change what
+   it said with none of its own bytes changing. The pin table lives in the
+   substation cartridge, which the shell evaluates first; this one reads it. */
+check('no runtime data URL in this cartridge names a branch',
+  !/raw\.githubusercontent\.com\/Ventusltd\/[a-z0-9-]+\/main\//.test(cartridgeSource));
+check('both products are addressed through the shared pin table',
+  /const TOPOLOGY_PRODUCT = PINS \? PINS\.url\(TOPOLOGY_ID\) : null;/.test(cartridgeSource)
+  && /const GB_ROLLUP = PINS \? PINS\.url\(GB_PIN_ID\) : null;/.test(cartridgeSource));
+check('the node/branch bytes are verified before they are parsed',
+  /topology\.pin = await PINS\.verify\(TOPOLOGY_ID, text\);/.test(cartridgeSource)
+  && /if \(topology\.pin\.state === 'MISMATCH'\) throw new Error/.test(cartridgeSource));
+check('and the price rollup is not rendered from bytes that failed the digest',
+  /if \(gbLoader\.pin\.state === 'MISMATCH'\) gbLoader\.error = gbLoader\.pin\.detail;/
+    .test(cartridgeSource));
+check('an absent pin table fails the loader rather than guessing a URL',
+  /no pinned ref: pinned-products is not composed/.test(cartridgeSource));
+check('the pin table is NOT carried a second time in this cartridge',
+  !/gridatlas\.module\.pinned-products\.v1/.test(cartridgeSource));
+check('and it IS in the composition, in the cartridge the shell loads first',
+  /gridatlas\.module\.pinned-products\.v1/.test(composedSource));
+
 console.log('\nthe card keeper\n');
 
 /* Five links on the map and a card with no distances: the popup that had
@@ -2426,11 +2450,15 @@ check('and in a cartridge the shell evaluates BEFORE the sandbox that calls it',
 check('the loader state lives on the window for the source registry',
   /window\.__GRIDATLAS_TOPOLOGY__ = topology;/.test(cartridgeSource)
   && /const topology = \{ state: 'idle'/.test(cartridgeSource));
-check('the product is named once, at data-grid-gb main, and is the v1 schema', (() => {
-  const urls = cartridgeSource.match(/main\/derived\/gb-transmission-network\.v1\.json/g) || [];
+/* Was: "named once, at data-grid-gb MAIN". A branch was the defect - see
+   the pinned-products module - so what is asserted now is that the product
+   is named once, through the pin table, and is still the v1 schema. */
+check('the product is named once, through the pin table, and is the v1 schema', (() => {
+  const urls = cartridgeSource.match(/PINS\.url\(TOPOLOGY_ID\)/g) || [];
   const declared = cartridgeSource.match(/product: 'derived\/gb-transmission-network\.v1\.json'/g) || [];
   return urls.length === 1 && declared.length === 1
-    && /raw\.githubusercontent\.com\/Ventusltd\/data-grid-gb\/'\s*\n\s*\+ 'main\/derived\/gb-transmission-network\.v1\.json'/.test(cartridgeSource);
+    && /const TOPOLOGY_ID = 'gb-transmission-network\.v1';/.test(cartridgeSource)
+    && !/main\/derived\/gb-transmission-network\.v1\.json/.test(cartridgeSource);
 })());
 check('it is fetched on first use, inside ensureTopology, and nowhere at load', (() => {
   const at = cartridgeSource.indexOf('fetch(TOPOLOGY_PRODUCT)');
