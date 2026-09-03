@@ -1,5 +1,8 @@
 import {
   coverageBoundary,
+  createFindingLoop,
+  createProjectRegister,
+  createSelectionStore,
   decodeSelection,
   encodeSelection,
   validateAnySelection,
@@ -7,7 +10,8 @@ import {
   validateSelection,
   validateSubstationSelection,
   validateFinding,
-  validateProvenance
+  validateProvenance,
+  nearbyProjects
 } from './finding-loop.mjs';
 
 let checks = 0;
@@ -186,4 +190,64 @@ for (const [label, value] of [
   check(label, rejected);
 }
 
-console.log(JSON.stringify({ status: 'PASS', iteration: 9, checks }));
+const store = createSelectionStore();
+store.select(location);
+store.select(accepted);
+const restored = store.back();
+check('selection history restores the prior typed state', restored.selection.kind === 'location');
+check('history restoration creates a new revision', restored.revision === 3);
+check('selection state is an atomic replacement', !Object.hasOwn(restored, 'previous'));
+
+const register = createProjectRegister([
+  { repd_ref: 'B', longitude: 2, latitude: 50 },
+  { repd_ref: 'A', longitude: 1, latitude: 50 }
+], { ...evidence, source_id: 'project_register' });
+const nearby = nearbyProjects({ register, longitude: 0, latitude: 50,
+  distanceKm: (_lon, _lat, projectLon) => projectLon });
+check('nearby traversal reads and sorts the full register',
+  nearby.map((row) => row.repd_ref).join(',') === 'A,B');
+check('nearby results retain operable project identity',
+  nearby.every((row) => row.repd_ref && row.source_release === digest));
+let duplicateProjectRejected = false;
+try {
+  createProjectRegister([
+    { repd_ref: 'A', longitude: 0, latitude: 0 },
+    { repd_ref: 'A', longitude: 1, latitude: 1 }
+  ], { ...evidence, source_id: 'project_register' });
+} catch { duplicateProjectRejected = true; }
+check('duplicate register identity fails closed', duplicateProjectRejected);
+
+const loop = createFindingLoop(async ({ revision }) => [{
+  type: 'nearest_connection_point', evidence_class: 'measurement', status: 'available',
+  selection_revision: revision, value: 3.2, unit: 'km',
+  qualifiers: ['test fixture', 'proximity is not a connection'], provenance: [evidence]
+}]);
+const loopResult = await loop.select(location);
+check('finding loop returns the current revision',
+  loopResult.accepted && loopResult.findings[0].selection_revision === 1);
+check('finding loop preserves the result qualification',
+  loopResult.findings[0].qualifiers.includes('proximity is not a connection'));
+const failedLoop = createFindingLoop(async () => { throw new Error('test fixture source failure'); });
+const failedResult = await failedLoop.select(location);
+check('query error becomes an explicit failed-closed finding',
+  failedResult.findings[0].status === 'failed' && failedResult.findings[0].value === null);
+
+let releaseFirst;
+const racingLoop = createFindingLoop(({ revision }) => new Promise((resolve) => {
+  if (revision === 1) releaseFirst = () => resolve([{
+    ...measurement, selection_revision: revision
+  }]);
+  else resolve([{ ...measurement, selection_revision: revision }]);
+}));
+const firstRequest = racingLoop.select(location);
+const secondRequest = racingLoop.select(validateCoordinateSelection({
+  kind: 'location', longitude: 1, latitude: 51, coordinate_origin: 'user_input'
+}));
+const secondResult = await secondRequest;
+releaseFirst();
+const firstResult = await firstRequest;
+check('newer selection result is accepted', secondResult.accepted && secondResult.revision === 2);
+check('late result from the old selection is rejected',
+  !firstResult.accepted && firstResult.reason === 'STALE_SELECTION');
+
+console.log(JSON.stringify({ status: 'PASS', iteration: 10, checks }));

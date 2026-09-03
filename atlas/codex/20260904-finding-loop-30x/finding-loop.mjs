@@ -273,3 +273,107 @@ export function coverageBoundary({ predicate, located, total }) {
     status: total === 0 ? 'unavailable' : 'available'
   });
 }
+
+/** Selection history creates a fresh revision whenever state is restored. */
+export function createSelectionStore() {
+  let state = Object.freeze({ revision: 0, selection: null });
+  const history = [];
+  let cursor = -1;
+  const apply = (selection) => {
+    state = Object.freeze({ revision: state.revision + 1, selection: validateAnySelection(selection) });
+    return state;
+  };
+  return Object.freeze({
+    read: () => state,
+    select(selection) {
+      history.splice(cursor + 1);
+      history.push(validateAnySelection(selection));
+      cursor = history.length - 1;
+      return apply(history[cursor]);
+    },
+    back() {
+      if (cursor < 1) return null;
+      cursor -= 1;
+      return apply(history[cursor]);
+    },
+    forward() {
+      if (cursor >= history.length - 1) return null;
+      cursor += 1;
+      return apply(history[cursor]);
+    }
+  });
+}
+
+/** Build a complete, pinned project index. Duplicate identities fail closed. */
+export function createProjectRegister(rows, provenance) {
+  const source = validateProvenance(provenance);
+  if (source.source_id !== 'project_register' || !Array.isArray(rows)) {
+    throw new TypeError('a pinned project_register array is required');
+  }
+  const seen = new Set();
+  const projects = rows.map((row) => {
+    const repdRef = String(row?.repd_ref || '').trim();
+    const longitude = Number(row?.longitude);
+    const latitude = Number(row?.latitude);
+    if (!repdRef || seen.has(repdRef)) throw new TypeError('repd_ref must be present and unique');
+    if (!Number.isFinite(longitude) || longitude < -180 || longitude > 180
+        || !Number.isFinite(latitude) || latitude < -90 || latitude > 90) {
+      throw new TypeError('project register coordinates are invalid');
+    }
+    seen.add(repdRef);
+    return Object.freeze({ repd_ref: repdRef, longitude, latitude });
+  });
+  return Object.freeze({ source, projects: Object.freeze(projects) });
+}
+
+/** Search every row in the pinned register through an injected canonical distance owner. */
+export function nearbyProjects({ register, longitude, latitude, distanceKm, limit = 10 }) {
+  if (typeof distanceKm !== 'function' || !Number.isInteger(limit) || limit < 1) {
+    throw new TypeError('canonical distance function and positive integer limit are required');
+  }
+  const rows = register.projects.map((project) => ({
+    repd_ref: project.repd_ref,
+    source_release: register.source.sha256,
+    distance_km: distanceKm(longitude, latitude, project.longitude, project.latitude)
+  }));
+  if (rows.some((row) => !Number.isFinite(row.distance_km) || row.distance_km < 0)) {
+    throw new TypeError('canonical distance owner returned an invalid value');
+  }
+  return Object.freeze(rows.sort((left, right) => left.distance_km - right.distance_km
+    || left.repd_ref.localeCompare(right.repd_ref)).slice(0, limit).map(Object.freeze));
+}
+
+/** One owner connects selection revisions to findings and rejects late results. */
+export function createFindingLoop(query) {
+  if (typeof query !== 'function') throw new TypeError('query function is required');
+  const selections = createSelectionStore();
+  let activeRequest = 0;
+  return Object.freeze({
+    read: selections.read,
+    back: selections.back,
+    forward: selections.forward,
+    async select(selection) {
+      const state = selections.select(selection);
+      const request = ++activeRequest;
+      try {
+        const answer = await query(Object.freeze({ selection: state.selection, revision: state.revision }));
+        if (request !== activeRequest) return Object.freeze({ accepted: false, reason: 'STALE_SELECTION' });
+        if (!Array.isArray(answer)) throw new TypeError('query result must be an array');
+        const findings = answer.map(validateFinding);
+        if (findings.some((finding) => finding.selection_revision !== state.revision)) {
+          throw new TypeError('query result revision does not match its selection');
+        }
+        return Object.freeze({ accepted: true, revision: state.revision, findings: Object.freeze(findings) });
+      } catch (error) {
+        if (request !== activeRequest) return Object.freeze({ accepted: false, reason: 'STALE_SELECTION' });
+        const failure = validateFinding({
+          type: 'unknown', evidence_class: 'unknown', status: 'failed',
+          selection_revision: state.revision, value: null, unit: null,
+          qualifiers: ['FAILED_CLOSED', String(error?.message || error)], provenance: []
+        });
+        return Object.freeze({ accepted: true, revision: state.revision,
+          findings: Object.freeze([failure]) });
+      }
+    }
+  });
+}
