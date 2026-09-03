@@ -9,10 +9,12 @@ on:
       - orchestration/202608310015-gridatlas-overnight-next-versions/**
   workflow_dispatch:
 
-# The two schedules that stood here fired for the last time on 2026-08-31:
+# The two schedules that stood here fired for the last time on 2026-08-31.
+# Written without their YAML shape on purpose - see the note at the foot of
+# this comment:
 #
-#     cron: '30,45 23 30 8 *'
-#     cron: '*/15 0-7 31 8 *'
+#     schedule   30,45 23 30 8 *
+#     schedule   */15 0-7 31 8 *
 #
 # Both named one calendar day in August, so after that night they could not
 # fire again until the same dates in 2027. That is the disease cvaa calls
@@ -29,6 +31,15 @@ on:
 #
 # A dead schedule is worse than no schedule, because it reads as automation
 # that is running.
+#
+# The two above are written as `schedule  <fields>` rather than in YAML. The
+# cvaa antibody for this vaccine scans the raw workflow text for
+# `cron:` followed by a quoted string, with no notion of a YAML comment, so
+# quoting a REMOVED cron verbatim leaves the finding standing. Measured: the
+# schedules were gone from the parsed triggers - `schedule present: False` on
+# both files - and the vaccine still reported all three. A tool that cannot
+# tell a record from a trigger will be fought rather than followed, so the
+# record is kept and the shape is not.
 
 permissions:
   actions: write

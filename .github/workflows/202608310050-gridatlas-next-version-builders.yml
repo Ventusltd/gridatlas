@@ -11,11 +11,12 @@ on:
       - 'STATE.md'
   workflow_dispatch:
 
-# The schedule that stood here was
+# The schedule that stood here was, written without its YAML shape so that a
+# record of it is not mistaken for the thing itself:
 #
 #     # 01:07/01:37 BST onwards, offset from the quarter-hour observer.
 #     # The source gate still prohibits any build before 01:15 BST.
-#     cron: '7,37 0-7 31 8 *'
+#     schedule   7,37 0-7 31 8 *
 #
 # It named 31 August and fired for the last time that morning; the next
 # occurrence is 2027. The comment describing it as "01:07/01:37 onwards" is
