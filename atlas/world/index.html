@@ -1,0 +1,325 @@
+<!doctype html>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
+<title>GridAtlas World</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/maplibre-gl@3.6.2/dist/maplibre-gl.css">
+<style>
+  :root { color-scheme: dark; }
+  html, body { margin:0; padding:0; height:100%; background:#000; overflow:hidden;
+    font:12px/1.35 ui-monospace,SFMono-Regular,Menlo,monospace; color:#cfeef6;
+    -webkit-text-size-adjust:100%; }
+
+  /* THE WORLD IS THE PAGE. One bar of chrome, closed at rest, everything else map. */
+  #map { position:fixed; inset:0; top:34px; background:#000; }
+  #hud { position:fixed; inset:auto 0 0 0; padding:6px 10px calc(6px + env(safe-area-inset-bottom));
+    background:linear-gradient(transparent,rgba(0,0,0,.82) 40%); pointer-events:none;
+    display:flex; gap:14px; flex-wrap:wrap; font-size:11px; color:#8fd8e8; }
+  #hud b { color:#eafcff; font-weight:600; }
+
+  nav#bar { position:fixed; top:0; left:0; right:0; height:34px; z-index:40; display:flex;
+    background:rgba(4,10,13,.94); border-bottom:1px solid rgba(80,220,240,.26);
+    backdrop-filter:blur(6px); -webkit-backdrop-filter:blur(6px); }
+  .m { position:relative; }
+  .t { appearance:none; background:transparent; border:0; color:#cfeef6; font:inherit;
+    letter-spacing:.06em; text-transform:uppercase; min-height:34px; padding:0 11px; cursor:pointer; }
+  .t:hover, .m.open .t { background:rgba(80,220,240,.16); color:#eafcff; }
+  .p { display:none; position:absolute; top:100%; left:0; min-width:230px; max-height:70vh;
+    overflow:auto; padding:6px; background:rgba(4,10,13,.98);
+    border:1px solid rgba(80,220,240,.3); border-top:0; box-shadow:0 12px 34px rgba(0,0,0,.6); }
+  .m.open .p { display:block; }
+  .p button, .p label { display:flex; align-items:center; gap:8px; width:100%; min-height:44px;
+    box-sizing:border-box; background:transparent; border:0; color:#cfeef6; font:inherit;
+    text-align:left; padding:0 10px; cursor:pointer; }
+  .p button:hover, .p label:hover { background:rgba(80,220,240,.14); color:#eafcff; }
+  .p hr { border:0; border-top:1px solid rgba(80,220,240,.18); margin:5px 2px; }
+  .p .note { padding:6px 10px; color:#7fa6b0; font-style:italic; }
+  .sw { width:11px; height:11px; border-radius:2px; flex:0 0 auto; }
+
+  @media (max-width:700px) { .t { padding:0 8px; font-size:11px; } }
+</style>
+
+<nav id="bar" aria-label="World menu"></nav>
+<div id="map"></div>
+<div id="hud">
+  <span>fps <b id="fps">—</b></span>
+  <span>circuits <b id="nlines">0</b></span>
+  <span>carriers <b id="nparts">0</b></span>
+  <span>cores <b id="cores">—</b></span>
+  <span>gpu <b id="gpu">—</b></span>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/maplibre-gl@3.6.2/dist/maplibre-gl.js"></script>
+<script>
+/* ══════════════════════════════════════════════════════════════════════
+   GridAtlas World - a 2D world that is alive, not a document about one.
+
+   The rule this is built to: text documents physics, it is not physics. So
+   nothing here describes what the grid does. It draws it moving, on the GPU,
+   and the machine's own numbers are on screen while it happens.
+
+   ONE BAR OF CHROME, CLOSED AT REST. Six menus, the conventional desktop
+   pattern. The map is the product and the first impression; the bar is 34px
+   and everything else is world.
+
+   WHY A CUSTOM WEBGL LAYER. The carriers moving along every circuit are one
+   instanced draw call on the GPU, not DOM, not markers, not a per-frame
+   GeoJSON rewrite. That is the difference between a few hundred moving things
+   and tens of thousands of them, and it is why this is a simulation surface
+   rather than a picture.
+   ══════════════════════════════════════════════════════════════════════ */
+'use strict';
+
+const DATA = './grid_400kv.geojson';
+const MENUS = ['File', 'Edit', 'Scope', 'View', 'Select layers', 'About'];
+
+/* ── the bar ──────────────────────────────────────────────────────────── */
+const bar = document.getElementById('bar');
+const panels = {};
+MENUS.forEach(name => {
+  const m = document.createElement('div'); m.className = 'm';
+  const t = document.createElement('button'); t.className = 't'; t.type = 'button';
+  t.textContent = name; t.setAttribute('aria-expanded', 'false');
+  const p = document.createElement('div'); p.className = 'p';
+  t.addEventListener('click', e => {
+    e.stopPropagation();
+    const wasOpen = m.classList.contains('open');
+    closeAll();
+    if (!wasOpen) { m.classList.add('open'); t.setAttribute('aria-expanded', 'true'); }
+  });
+  m.append(t, p); bar.appendChild(m); panels[name] = p;
+});
+function closeAll() {
+  bar.querySelectorAll('.m.open').forEach(m => {
+    m.classList.remove('open');
+    const t = m.querySelector('.t'); if (t) t.setAttribute('aria-expanded', 'false');
+  });
+}
+document.addEventListener('click', closeAll);   /* self-minimising, per the brief */
+
+function item(menu, label, fn) {
+  const b = document.createElement('button');
+  b.type = 'button'; b.textContent = label;
+  b.addEventListener('click', () => { fn(); closeAll(); });
+  panels[menu].appendChild(b); return b;
+}
+function toggle(menu, label, colour, on, fn) {
+  const l = document.createElement('label');
+  const c = document.createElement('input'); c.type = 'checkbox'; c.checked = on;
+  c.style.cssText = 'width:18px;height:18px;accent-color:#4fd7ee';
+  const sw = document.createElement('span'); sw.className = 'sw'; sw.style.background = colour;
+  const s = document.createElement('span'); s.textContent = label;
+  c.addEventListener('change', () => fn(c.checked));
+  l.append(c, sw, s); panels[menu].appendChild(l); return c;
+}
+function note(menu, text) {
+  const d = document.createElement('div'); d.className = 'note'; d.textContent = text;
+  panels[menu].appendChild(d);
+}
+
+/* ── the map ──────────────────────────────────────────────────────────── */
+const map = new maplibregl.Map({
+  container: 'map',
+  style: {
+    version: 8, glyphs: null, sources: {},
+    layers: [{ id: 'void', type: 'background', paint: { 'background-color': '#000' } }]
+  },
+  center: [-2.6, 54.2], zoom: 5.2, attributionControl: false, antialias: true
+});
+map.addControl(new maplibregl.AttributionControl({ compact: true }), 'bottom-right');
+
+/* ── the living layer: carriers advancing along every circuit, on the GPU ── */
+class Flow {
+  constructor(segments) {
+    this.id = 'flow'; this.type = 'custom'; this.renderingMode = '2d';
+    this.segments = segments;      // [ax,ay,bx,by] in mercator, flattened
+    this.n = segments.length / 4;
+    this.speed = 1.0; this.running = true; this.t = 0;
+  }
+  onAdd(_, gl) {
+    const vs = `#version 300 es
+      precision highp float;
+      layout(location=0) in vec4 seg;      // ax ay bx by
+      layout(location=1) in float phase;
+      uniform mat4 u_matrix; uniform float u_t; uniform float u_size;
+      out float v_a;
+      void main(){
+        float f = fract(phase + u_t);
+        vec2 p = mix(seg.xy, seg.zw, f);
+        gl_Position = u_matrix * vec4(p, 0.0, 1.0);
+        gl_PointSize = u_size;
+        v_a = 1.0 - abs(f - 0.5) * 1.2;    // brightest mid-span
+      }`;
+    const fs = `#version 300 es
+      precision highp float;
+      in float v_a; out vec4 o;
+      void main(){
+        vec2 d = gl_PointCoord - 0.5;
+        float r = 1.0 - smoothstep(0.18, 0.5, length(d));
+        o = vec4(0.42, 0.92, 1.0, r * v_a * 0.9);
+      }`;
+    const mk = (t, s) => { const sh = gl.createShader(t); gl.shaderSource(sh, s); gl.compileShader(sh); return sh; };
+    this.prog = gl.createProgram();
+    gl.attachShader(this.prog, mk(gl.VERTEX_SHADER, vs));
+    gl.attachShader(this.prog, mk(gl.FRAGMENT_SHADER, fs));
+    gl.linkProgram(this.prog);
+    this.uM = gl.getUniformLocation(this.prog, 'u_matrix');
+    this.uT = gl.getUniformLocation(this.prog, 'u_t');
+    this.uS = gl.getUniformLocation(this.prog, 'u_size');
+
+    this.bSeg = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER, this.bSeg);
+    gl.bufferData(gl.ARRAY_BUFFER, this.segments, gl.STATIC_DRAW);
+
+    const ph = new Float32Array(this.n);
+    for (let i = 0; i < this.n; i++) ph[i] = Math.random();
+    this.bPh = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER, this.bPh);
+    gl.bufferData(gl.ARRAY_BUFFER, ph, gl.STATIC_DRAW);
+  }
+  render(gl, matrix) {
+    if (this.running) this.t = (this.t + 0.0025 * this.speed) % 1;
+    gl.useProgram(this.prog);
+    gl.uniformMatrix4fv(this.uM, false, matrix);
+    gl.uniform1f(this.uT, this.t);
+    gl.uniform1f(this.uS, Math.max(2.0, Math.min(7.0, map.getZoom() - 2.2)));
+    gl.bindBuffer(gl.ARRAY_BUFFER, this.bSeg);
+    gl.enableVertexAttribArray(0); gl.vertexAttribPointer(0, 4, gl.FLOAT, false, 0, 0);
+    gl.bindBuffer(gl.ARRAY_BUFFER, this.bPh);
+    gl.enableVertexAttribArray(1); gl.vertexAttribPointer(1, 1, gl.FLOAT, false, 0, 0);
+    gl.enable(gl.BLEND); gl.blendFunc(gl.SRC_ALPHA, gl.ONE);
+    gl.drawArrays(gl.POINTS, 0, this.n);
+    if (this.running) map.triggerRepaint();
+  }
+}
+
+/* ── build the world ──────────────────────────────────────────────────── */
+let flow = null;
+const stat = (id, v) => { document.getElementById(id).textContent = v; };
+
+map.on('load', async () => {
+  stat('cores', navigator.hardwareConcurrency || '?');
+  const gl = map.painter.context.gl;
+  const dbg = gl.getExtension('WEBGL_debug_renderer_info');
+  const rend = dbg ? gl.getParameter(dbg.UNMASKED_RENDERER_WEBGL) : gl.getParameter(gl.RENDERER);
+  stat('gpu', String(rend).replace(/\s*\(.*$/, '').slice(0, 28));
+
+  let fc;
+  try {
+    const r = await fetch(DATA, { cache: 'force-cache' });
+    if (!r.ok) throw new Error('HTTP ' + r.status);
+    fc = await r.json();
+  } catch (e) {
+    note('About', 'network: ' + e.message);
+    return;
+  }
+
+  map.addSource('grid', { type: 'geojson', data: fc });
+  map.addLayer({ id: 'grid-line', type: 'line', source: 'grid',
+    paint: { 'line-color': '#1d6f86', 'line-width': ['interpolate', ['linear'], ['zoom'], 4, 0.5, 10, 2.2],
+             'line-opacity': 0.85 } });
+
+  /* every segment of every circuit, in mercator, flattened for one draw call */
+  const segs = [];
+  for (const f of fc.features || []) {
+    const g = f.geometry; if (!g) continue;
+    const lines = g.type === 'MultiLineString' ? g.coordinates
+                : g.type === 'LineString' ? [g.coordinates] : [];
+    for (const line of lines) {
+      for (let i = 1; i < line.length; i++) {
+        const a = maplibregl.MercatorCoordinate.fromLngLat(line[i - 1]);
+        const b = maplibregl.MercatorCoordinate.fromLngLat(line[i]);
+        segs.push(a.x, a.y, b.x, b.y);
+      }
+    }
+  }
+  flow = new Flow(new Float32Array(segs));
+  map.addLayer(flow);
+  stat('nlines', (fc.features || []).length.toLocaleString());
+  stat('nparts', flow.n.toLocaleString());
+
+  /* ── menus, wired to the world ── */
+  item('File', 'Reload the world', () => location.reload());
+  item('File', 'Copy this view as a link', () => {
+    const c = map.getCenter();
+    const u = location.origin + location.pathname
+      + `?lng=${c.lng.toFixed(5)}&lat=${c.lat.toFixed(5)}&z=${map.getZoom().toFixed(2)}`;
+    navigator.clipboard && navigator.clipboard.writeText(u);
+  });
+
+  item('Edit', 'Pause the flow', function () {
+    flow.running = !flow.running;
+    this.textContent = flow.running ? 'Pause the flow' : 'Resume the flow';
+    if (flow.running) map.triggerRepaint();
+  });
+  item('Edit', 'Faster', () => { flow.speed = Math.min(8, flow.speed * 1.6); });
+  item('Edit', 'Slower', () => { flow.speed = Math.max(0.12, flow.speed / 1.6); });
+
+  item('Scope', 'Measure from a point I choose', () => {
+    scoping = true; map.getCanvas().style.cursor = 'crosshair';
+  });
+  item('Scope', 'Clear what I measured', () => {
+    if (map.getLayer('scope-pt')) map.removeLayer('scope-pt');
+    if (map.getSource('scope')) map.removeSource('scope');
+  });
+  note('Scope', 'Straight-line only. A straight line is not a route.');
+
+  item('View', 'Fit the whole network', () => map.fitBounds(bounds(fc), { padding: 40, duration: 900 }));
+  item('View', 'Full screen', () => {
+    const el = document.documentElement;
+    if (!document.fullscreenElement) el.requestFullscreen && el.requestFullscreen().catch(() => {});
+    else document.exitFullscreen && document.exitFullscreen();
+  });
+
+  toggle('Select layers', 'Circuits', '#1d6f86', true,
+    v => map.setLayoutProperty('grid-line', 'visibility', v ? 'visible' : 'none'));
+  toggle('Select layers', 'Carriers in motion', '#6bebff', true, v => {
+    flow.running = v; if (v) map.triggerRepaint();
+    map.setLayoutProperty('flow', 'visibility', v ? 'visible' : 'none');
+  });
+  note('Select layers', 'More layers port in here as each one is clicked and confirmed.');
+
+  note('About', 'GridAtlas World - the network drawn moving, on the GPU.');
+  note('About', `${(fc.features || []).length.toLocaleString()} circuits, ` +
+    `${flow.n.toLocaleString()} carriers, one instanced draw call.`);
+  note('About', 'Circuit geometry: the estate 400 kV shared runtime product.');
+  note('About', 'Nothing here grades a connection.');
+
+  map.fitBounds(bounds(fc), { padding: 40, duration: 0 });
+});
+
+function bounds(fc) {
+  let w = 180, s = 90, e = -180, n = -90;
+  for (const f of fc.features || []) {
+    const g = f.geometry; if (!g) continue;
+    const ls = g.type === 'MultiLineString' ? g.coordinates : g.type === 'LineString' ? [g.coordinates] : [];
+    for (const l of ls) for (const [x, y] of l) {
+      if (x < w) w = x; if (x > e) e = x; if (y < s) s = y; if (y > n) n = y;
+    }
+  }
+  return [[w, s], [e, n]];
+}
+
+/* ── scope: click the world, measure from there ───────────────────────── */
+let scoping = false;
+map.on('click', ev => {
+  if (!scoping) return;
+  scoping = false; map.getCanvas().style.cursor = '';
+  const pt = { type: 'FeatureCollection', features: [
+    { type: 'Feature', geometry: { type: 'Point', coordinates: [ev.lngLat.lng, ev.lngLat.lat] }, properties: {} }] };
+  if (map.getSource('scope')) map.getSource('scope').setData(pt);
+  else {
+    map.addSource('scope', { type: 'geojson', data: pt });
+    map.addLayer({ id: 'scope-pt', type: 'circle', source: 'scope',
+      paint: { 'circle-radius': 7, 'circle-color': '#ff9d3c', 'circle-opacity': 0.9,
+               'circle-stroke-width': 2, 'circle-stroke-color': '#ffd9a8' } });
+  }
+});
+
+/* ── the machine's own numbers, on screen while it runs ───────────────── */
+let frames = 0, last = performance.now();
+(function tick(now) {
+  frames++;
+  if (now - last >= 500) { stat('fps', Math.round(frames * 1000 / (now - last))); frames = 0; last = now; }
+  requestAnimationFrame(tick);
+})(performance.now());
+</script>
