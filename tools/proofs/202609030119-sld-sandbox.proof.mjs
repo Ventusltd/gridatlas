@@ -2192,6 +2192,55 @@ check('the deep link is a named function so retry re-runs it, not the page',
   && /runDeepLink\(\);/.test(cartridgeSource));
 
 
+console.log('\na link with coordinates and no identity moves the camera\n');
+
+/* Reg2. Nothing flew. The premise is established from the OTHER TWO LANES'
+   real bytes rather than asserted, because "no other lane flies" is the whole
+   reason this one has to. */
+check('the shell stands down before any flyTo when there is no repd_ref',
+  await (async () => {
+    const engine = await readFile(join(REPO, 'atlas', 'releases',
+      '202608300453-atlas-v9', 'ventus-corev8engine.js'), 'utf8');
+    const at = engine.indexOf('async function focusCanonicalProjectDeepLink()');
+    if (at < 0) return false;
+    const body = engine.slice(at, at + 4000);
+    const bailsOut = body.indexOf("test(repdRef)) return;");
+    const firstMove = body.indexOf('flyTo');
+    return bailsOut > 0 && firstMove > 0 && bailsOut < firstMove;
+  })());
+check('and the search lane stands down at the same test, reporting ABSENT',
+  await (async () => {
+    const lane = (CURRENT.cartridges || []).find(c => c.id === 'uk-gazetteer-flyto');
+    if (!lane) return false;
+    const source = await readFile(join(REPO, 'atlas',
+      lane.path.replace(/^\.\//, '')), 'utf8');
+    const at = source.indexOf('async function receiveExactRepdDeepLink(');
+    if (at < 0) return false;
+    const body = source.slice(at, at + 1200);
+    const bailsOut = body.indexOf("status: 'ABSENT'");
+    const firstMove = body.indexOf('flyTo');
+    return bailsOut > 0 && (firstMove < 0 || bailsOut < firstMove);
+  })());
+check('so this cartridge flies, and only when there is no repd_ref',
+  /if \(q\.get\('repd_ref'\) === null\) \{\n\s*try \{\n\s*const arrivalZoom/
+    .test(cartridgeSource)
+  && /map\.flyTo\(\{ center: \[lon, lat\], zoom: arrivalZoom,/.test(cartridgeSource));
+check('the centre is the link\'s, and the zoom the link\'s where it is usable',
+  /const arrivalZoom = zoomUsable \? requestedZoom : 12;/.test(cartridgeSource));
+check('a reader who asked for reduced motion still arrives',
+  /zoom: arrivalZoom,\n\s*duration: 1200, essential: true \}\);/.test(cartridgeSource));
+check('the move it made is published, with the reason it had to',
+  /link\.camera_from_link = \{ longitude: lon, latitude: lat,/.test(cartridgeSource)
+  && /no repd_ref, so no other lane flies/.test(cartridgeSource));
+check('the camera is set BEFORE the zoom is honoured and before the tech gate',
+  (() => {
+    const fly = cartridgeSource.indexOf('link.camera_from_link');
+    const zoom = cartridgeSource.indexOf('honourRequestedZoom(map);\n        if (!isProjectTech(tech))');
+    return fly > 0 && zoom > 0 && fly < zoom;
+  })());
+check('a failed camera is recorded rather than taking the arrival with it',
+  /noteFailure\('deep link camera: '/.test(cartridgeSource));
+
 console.log('\nthe card keeper\n');
 
 /* Five links on the map and a card with no distances: the popup that had
