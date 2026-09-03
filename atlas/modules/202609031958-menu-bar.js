@@ -123,8 +123,17 @@
       'box-sizing:border-box;margin:0 0 4px 0;text-align:left}',
       '#' + BAR_ID + ' .gm-panel > *:last-child{margin-bottom:0}',
       '#' + BAR_ID + ' .gm-empty{color:#7fa6b0;padding:10px 12px;font-style:italic}',
-      /* the bar owns one band; the map takes everything under it */
-      '.gridatlas-menu-hosted .map-controls{display:none !important}',
+      /* ADDITIVE, NOT DESTRUCTIVE.
+         This rule used to be `.map-controls{display:none}`. Two independent
+         testers on two browsers found what that cost: adopt() moves DIRECT
+         CHILDREN, but #gridatlas-mobile-tray - holding SCOPE and CLEAR - is
+         nested inside .map-controls, and so is the radius result panel. Hiding
+         the container buried all three. Scope and Clear measured 0x0 on mobile
+         and were absent from the desktop DOM; Radius Search armed correctly and
+         then had nowhere to show its answer.
+         Nothing is hidden until everything inside is provably adopted. A menu
+         that adds a way in is worth having. One that removes the only way in is
+         not, however tidy it looks. */
       '.gridatlas-menu-hosted .map-container{top:44px !important}'
     ].join('');
     (doc.head || doc.documentElement).appendChild(style);
@@ -190,11 +199,23 @@
     /* Direct children only. Nested structure is left intact and moved whole, so
        a control that is really a group keeps its group. */
     var moved = 0;
+    /* Clone the control into the menu rather than moving it, so the original
+       keeps working wherever the cartridge put it. A moved node is the same
+       node - which is right - but it is only in one place, and this bar is no
+       longer the only place a reader can reach these. The menu row forwards to
+       the original by clicking it, so behaviour still belongs to the cartridge. */
     Array.prototype.slice.call(stack.children).forEach(function (node) {
       var label = node.textContent || node.getAttribute('aria-label') || '';
       var target = panels[routeFor(label)];
       if (!target) return;
-      target.appendChild(node);
+      var row = doc.createElement('button');
+      row.type = 'button';
+      row.textContent = String(label).replace(/\s+/g, ' ').trim().slice(0, 40);
+      row.addEventListener('click', function () {
+        var hit = node.querySelector ? (node.querySelector('button') || node) : node;
+        if (hit && hit.click) hit.click();
+      });
+      target.appendChild(row);
       moved += 1;
     });
 
@@ -228,7 +249,34 @@
     return true;
   }
 
+  /* WITHDRAWN, on the evidence of two independent testers on two browsers.
+
+     The bar's own mechanics were correct - one menu open at a time, closing on
+     any choice, closing on a map click - and on DESKTOP it was a real
+     improvement. On MOBILE it was a net loss, and mobile is first:
+
+       SCOPE and CLEAR measured 0x0 and could not be clicked anywhere. They sit
+       in #gridatlas-mobile-tray, NESTED inside .map-controls, and adopt() moves
+       only DIRECT CHILDREN - so hiding the container buried them.
+
+       Radius Search armed correctly and then had nowhere to show its answer,
+       because its result panel is in that same hidden container.
+
+       Two of four menus shipped reading "nothing here yet".
+
+     Making it additive instead would have returned every original bar to a
+     screen that already gives the map only 31.7%, which is more chrome, not
+     less. The menu is the right idea in the wrong host: these controls are
+     entangled with containers and panels that a bar cannot safely hide.
+
+     It is built properly in atlas/world/, where nothing is entangled and the
+     map keeps 96% of the screen. This stays as the record of why.
+
+     104/104 checks passed against the state described above. A proof can only
+     test what someone thought to assert; two people clicking cannot be fooled
+     that way. */
   function start() {
+    if (true) return;
     var doc = document;
     if (install(doc)) return;
     /* The chrome is built by a later cartridge, so wait for it rather than

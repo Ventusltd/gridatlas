@@ -659,22 +659,22 @@ check('the four familiar menus, in order',
   !!menuWith.api
   && menuWith.api.menus.join('|') === 'File|Edit|View|About');
 
-check('every control was MOVED, not rebuilt - node identity survives',
+check('the bar is WITHDRAWN on the live Atlas, and inert by construction',
   (() => {
-    if (!menuWith.api || !menuWith.stack) return false;
-    if (menuWith.api.controls_moved !== 8) return false;
-    /* the originals left the stack entirely */
-    if (menuWith.stack.children.length !== 0) return false;
-    /* and the same objects are now inside the bar */
-    const bar = menuWith.doc.body.children[0];
-    if (!bar || bar.id !== 'gridatlas-menu-bar') return false;
-    let found = 0;
-    for (const menu of bar.children) {
-      const panel = menu.children[1];
-      if (panel) found += panel.children.filter(n => n.tagName === 'button').length;
-    }
-    return found === 8;
+    /* Two testers on two browsers found the bar was a net loss on mobile:
+       SCOPE and CLEAR nested inside .map-controls measured 0x0 once the
+       container was hidden, and adopt() only ever moved direct children.
+       The module stays as the record; it must install nothing. */
+    if (!menuWith.api) return false;
+    if (menuWith.api.installed !== false) return false;      // never installs
+    if (menuWith.api.controls_moved !== 0) return false;     // moves nothing
+    if (!menuWith.stack) return false;
+    return menuWith.stack.children.length === 8;             // originals untouched
   })());
+
+check('withdrawal leaves the original controls exactly where the cartridge put them',
+  !!menuWith.stack
+  && menuWith.stack.children.filter(n => n.tagName === 'button').length === 8);
 
 check('routing puts each control where a reader would look',
   !!menuWith.api
