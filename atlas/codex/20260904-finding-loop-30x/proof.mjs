@@ -1008,4 +1008,4 @@ check('distinct nearest candidate is available', unique.status === 'available' &
 const absent = resolveNearestCandidate([], { idField: 'site_code' });
 check('empty population is withheld', absent.reason === 'NO_CANDIDATE' && absent.value === null);
 
-console.log(JSON.stringify({ status: 'PASS', iteration: 39, checks }));
+console.log(JSON.stringify({ status: 'PASS', iteration: 40, checks }));
