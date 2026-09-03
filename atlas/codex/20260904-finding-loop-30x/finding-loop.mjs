@@ -446,8 +446,14 @@ export function createFindingLoop(query) {
   let activeRequest = 0;
   return Object.freeze({
     read: selections.read,
-    back: selections.back,
-    forward: selections.forward,
+    back() {
+      activeRequest += 1;
+      return selections.back();
+    },
+    forward() {
+      activeRequest += 1;
+      return selections.forward();
+    },
     async select(selection) {
       const state = selections.select(selection);
       const request = ++activeRequest;

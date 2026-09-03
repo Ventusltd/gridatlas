@@ -320,6 +320,29 @@ check('newer selection result is accepted', secondResult.accepted && secondResul
 check('late result from the old selection is rejected',
   !firstResult.accepted && firstResult.reason === 'STALE_SELECTION');
 
+let releaseAfterBack;
+const navigationLoop = createFindingLoop(({ revision }) => {
+  if (revision === 3) return new Promise((resolve) => {
+    releaseAfterBack = () => resolve([{ ...measurement, selection_revision: revision }]);
+  });
+  return Promise.resolve([{ ...measurement, selection_revision: revision }]);
+});
+await navigationLoop.select(location);
+await navigationLoop.select(accepted);
+const pendingBeforeBack = navigationLoop.select(validateCoordinateSelection({
+  kind: 'location', longitude: 2, latitude: 52, coordinate_origin: 'user_input'
+}));
+const stateAfterBack = navigationLoop.back();
+check('history navigation restores state through the loop owner',
+  stateAfterBack.selection.kind === 'project' && stateAfterBack.revision === 4);
+releaseAfterBack();
+const resultAfterBack = await pendingBeforeBack;
+check('back navigation cancels an in-flight finding result',
+  !resultAfterBack.accepted && resultAfterBack.reason === 'STALE_SELECTION');
+const stateAfterForward = navigationLoop.forward();
+check('forward navigation creates a fresh selection revision',
+  stateAfterForward.selection.kind === 'location' && stateAfterForward.revision === 5);
+
 const ordered = orderCandidates([
   { feature_id: 'B', distance_km: 1 },
   { feature_id: 'A', distance_km: 1 },
@@ -354,4 +377,4 @@ check('distinct nearest candidate is available', unique.status === 'available' &
 const absent = resolveNearestCandidate([], { idField: 'site_code' });
 check('empty population is withheld', absent.reason === 'NO_CANDIDATE' && absent.value === null);
 
-console.log(JSON.stringify({ status: 'PASS', iteration: 17, checks }));
+console.log(JSON.stringify({ status: 'PASS', iteration: 18, checks }));
