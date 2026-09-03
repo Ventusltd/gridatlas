@@ -8,10 +8,13 @@ import {
   createScopedDistanceFinding,
   createFindingLoop,
   createGridFindingEngine,
+  createMapFindingAdapter,
+  createPipelineFindingAdapter,
   createProjectIndex,
   createProjectArrivalAdapter,
   createProjectRegister,
   createProjectRegisterFromDocument,
+  createWorldFindingAdapter,
   createRoadRouteFinding,
   createCorridorEstimateFinding,
   createColdProjectBootstrap,
@@ -761,6 +764,34 @@ check('presentation never fabricates an Unnamed target or routed distance',
   !JSON.stringify(surfaceModels).includes('Unnamed')
     && !JSON.stringify(surfaceModels).includes('35.9 km')
     && !JSON.stringify(surfaceModels).includes('road distance'));
+
+for (const [surface, factory, viewport] of [
+  ['map', createMapFindingAdapter, { width: 393, height: 852 }],
+  ['pipeline', createPipelineFindingAdapter, { width: 1400, height: 900 }],
+  ['world', createWorldFindingAdapter, { width: 1400, height: 900 }]
+]) {
+  const rendered = [];
+  let adapterEngineCalls = 0;
+  const adapter = factory({
+    loadProjectIndex: async () => markinchIndex,
+    loadEngine: async () => ({
+      queryProfiles(input) {
+        adapterEngineCalls += 1;
+        return sharedGridEngine.queryProfiles(input);
+      }
+    }),
+    clock: () => 6000,
+    viewport: () => viewport,
+    render: (model) => rendered.push(model)
+  });
+  await adapter.arrive(markinchLink);
+  check(`${surface} adapter renders MEASURING then RESULT through shared compute`,
+    rendered.map((model) => model.phase).join(',') === 'MEASURING,RESULT'
+      && adapterEngineCalls === 1 && adapter.read() === rendered[1]);
+  check(`${surface} adapter presents explicit route withholding`,
+    adapter.read().road_route.status === 'NOT_COMPUTED'
+      && adapter.read().cards[1].target_id === 'grid_substations:2033');
+}
 let staleReleaseRejected = false;
 try {
   projectFindingRequest({ kind: 'project', repd_ref: 'A', source_release: 'b'.repeat(64) }, projectIndex);
@@ -895,4 +926,4 @@ check('distinct nearest candidate is available', unique.status === 'available' &
 const absent = resolveNearestCandidate([], { idField: 'site_code' });
 check('empty population is withheld', absent.reason === 'NO_CANDIDATE' && absent.value === null);
 
-console.log(JSON.stringify({ status: 'PASS', iteration: 36, checks }));
+console.log(JSON.stringify({ status: 'PASS', iteration: 37, checks }));

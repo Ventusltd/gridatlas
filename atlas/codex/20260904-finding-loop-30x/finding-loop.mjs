@@ -1118,6 +1118,43 @@ export function presentArrivalState(state, { surface, width, height }) {
   });
 }
 
+function createSurfaceFindingAdapter(surface, {
+  loadProjectIndex, loadEngine, clock, render, viewport
+}) {
+  if (typeof render !== 'function' || typeof viewport !== 'function') {
+    throw new TypeError('surface adapter render and viewport functions are required');
+  }
+  let presentation = presentArrivalState({ phase: 'NEVER_MEASURED' }, {
+    surface, ...viewport()
+  });
+  const bootstrap = createColdProjectBootstrap({
+    loadProjectIndex, loadEngine, clock,
+    onState(state) {
+      presentation = presentArrivalState(state, { surface, ...viewport() });
+      render(presentation);
+    }
+  });
+  return Object.freeze({
+    arrive: bootstrap.arrive,
+    read: () => presentation
+  });
+}
+
+/** Map consumer delegates loading, computation and state semantics to the shared owner. */
+export function createMapFindingAdapter(options) {
+  return createSurfaceFindingAdapter('map', options);
+}
+
+/** Pipeline consumer delegates loading, computation and state semantics to the shared owner. */
+export function createPipelineFindingAdapter(options) {
+  return createSurfaceFindingAdapter('pipeline', options);
+}
+
+/** World consumer delegates loading, computation and state semantics to the shared owner. */
+export function createWorldFindingAdapter(options) {
+  return createSurfaceFindingAdapter('world', options);
+}
+
 /** One owner connects selection revisions to findings and rejects late results. */
 export function createFindingLoop(query) {
   if (typeof query !== 'function') throw new TypeError('query function is required');
