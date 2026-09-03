@@ -2554,6 +2554,33 @@ check('the camera is set BEFORE the zoom is honoured and before the tech gate',
 check('a failed camera is recorded rather than taking the arrival with it',
   /noteFailure\('deep link camera: '/.test(cartridgeSource));
 
+/* THE ZOOM IS A FRAMING, NOT A NUMBER.
+
+   Measured on the live release, arriving at ?repd_ref=17699 with zoom=12 the
+   way Pipeline News sends it: requested_zoom 12, zoom_applied "already there",
+   and the map sitting at exactly 12 on a 1400x900 desktop and on a 393x852
+   phone alike. Web Mercator makes that two different pictures - 12 shows about
+   3.6x more ground across 1400 px than across 393 - so a link built on a phone
+   opens wide and empty on a desktop, which is what the architect saw.
+
+   The parameter is a constant the sending product writes, not a camera a
+   person chose, so it states an intended FRAMING. It is widened by the
+   viewport against the 393 px reference this estate designs to, and clamped to
+   what the payload can render. The clamp is asserted separately: an unclamped
+   log2 on a very wide screen would sail past MapLibre's maximum and the
+   arrival would land nowhere. */
+check('the arrival zoom is framed by the viewport, not restated',
+  /const framed = \(\) => Math\.min\(18, Math\.max\(3, requestedZoom/
+    .test(cartridgeSource)
+  && /Math\.log2\(Math\.max\(innerWidth, 320\) \/ 393\)\)\);/.test(cartridgeSource));
+check('and the framed zoom is what is compared and what is applied',
+  /if \(Math\.abs\(map\.getZoom\(\) - framed\(\)\) < 0\.01\) \{/.test(cartridgeSource)
+  && /map\.easeTo\(\{ zoom: framed\(\), duration: 400 \}\);/.test(cartridgeSource)
+  && /link\.zoom_applied = framed\(\);/.test(cartridgeSource)
+  && !/map\.easeTo\(\{ zoom: requestedZoom/.test(cartridgeSource));
+check('the requested value is still published unchanged, so the two are readable apart',
+  /link\.requested_zoom = zoomUsable \? requestedZoom : null;/.test(cartridgeSource));
+
 console.log('\nan unrecognised technology costs one layer, not the arrival\n');
 
 /* Reg3, as it actually is rather than as it was reported.

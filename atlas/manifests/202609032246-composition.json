@@ -1,15 +1,23 @@
 {
- "schema": "gridatlas.current.v2",
+ "schema": "gridatlas.composition-manifest.v1",
  "generation": "202609032246",
- "previous_generation": "202609032222",
- "architecture": "IMMUTABLE_SHELL_PLUS_HASHED_CARTRIDGES",
+ "parent_generation": "202609032222",
  "live_route": "/gridatlas/atlas/",
- "release_id": "202608300453-atlas-v9",
- "release_route": "/gridatlas/atlas/releases/202608300453-atlas-v9/",
  "shell": {
   "release_id": "202608300453-atlas-v9",
   "index": "./releases/202608300453-atlas-v9/index.html",
-  "base": "./releases/202608300453-atlas-v9/"
+  "base": "./releases/202608300453-atlas-v9/",
+  "hashes": {
+   "index_html": "87a3aaf463843ce33ed5c151096395715cbc80f2575bcb7208f271e94d2ec467",
+   "css": "1d4be1b676666192183e772562f8cb7ee91e0c6e2ee8919f5f9d6d257f59a8b4",
+   "engine": "9a75901ebdff05e094650e39973fc0f59204724753d393a734bb8cda7bc875ba",
+   "maplibre_worker_bridge": "3d54ab069800da7c052571ce62f76ad208c103d5886b56acbef62d8b999ecaed",
+   "pre_snapped_adapter": "e5de4131cefe26415afe88cd644099fbe2d673be23a04faab63d3e60ae6fd50c"
+  }
+ },
+ "shared_runtime": {
+  "path": "./releases/cartridges/5f5fbec83f9ce307b47ddc6e7277743f0bba1a2445b0f3ca50a9a1806146e993/grid_400kv.geojson",
+  "sha256": "5f5fbec83f9ce307b47ddc6e7277743f0bba1a2445b0f3ca50a9a1806146e993"
  },
  "cartridge_order": [
   "streaming-parquet-bridge",
@@ -581,70 +589,43 @@
    "assembled_from": "./manifests/202609032246-substation-intelligence-v9-63-parts.json"
   }
  ],
- "last_known_green": {
-  "release_id": "202608300453-atlas-v9",
-  "route": "/gridatlas/atlas/releases/202608300453-atlas-v9/"
+ "acceptance": {
+  "full_application_copies_created": 0,
+  "immutable_shell_modified": false,
+  "exact_repd_identity_lane_preserved": true,
+  "repd_results_first": true,
+  "postcode_stale_response_guard": true,
+  "uk_location_result_class": "LOCATION_ONLY",
+  "global_location_result_class": "LOCATION_ONLY",
+  "external_location_failure_isolated": true,
+  "golden_browser_verification": "PENDING_THIS_GENERATION",
+  "parquet_on_demand_preserved": true,
+  "response_established_before_body_reconstruction": true,
+  "a_road_browser_budget_seconds": 15,
+  "a_road_heap_budget_mb": 400,
+  "v8_feature_hash_fidelity_required": true,
+  "search_cartridge_preserved": true,
+  "bridge_payload_cache_released_after_serialisation": true,
+  "pre_snapped_adapter_behaviour_preserved": true,
+  "distance_parity_with_grid_distance_maths": "EXACT",
+  "minimum_substation_kv": 33,
+  "beta_scope_stated_on_card": true,
+  "connection_factors_named_on_card": true,
+  "offshore_wind_excluded_from_links": true,
+  "cards_fit_after_drag_and_restore": true,
+  "shell_modified": false,
+  "scope": "the arrival frames the project by the viewport, so a shared link is not wide and empty on a desktop",
+  "proof": "tools/proofs/202609032246-sld-sandbox.proof.mjs, tools/proofs/202609032246-substation-intelligence.proof.mjs"
  },
- "contracts": {
-  "new_full_application_folders": 0,
-  "cartridge_sha256_required": true,
-  "cartridge_order_explicit": true,
-  "shell_mutation_forbidden": true
- },
- "provenance": {
-  "pipelinenews_repository": "https://github.com/Ventusltd/pipelinenews",
-  "pipelinenews_tree": "83d9c430b283f8beaa8c0a05e42b14d4a4784623",
-  "cvaa_guide": "https://github.com/Ventusltd/cvaa/blob/main/202608301321-gridatlas-amnesia-vaccine.txt",
-  "sandbox_source": "https://github.com/Ventusltd/globalgrid2050/blob/main/solar-bess-topology-v7/gis-sld-financial-sandbox/gis-sld-v5-ui.js",
-  "cvaa_commit": "d2ebc01f6eab41f2a84b0c53c4cfae0d2625ec5e",
-  "v8_oracle_commit": "f2f343a92ee972cc74ed23b4b99d8a22896791ad"
- },
- "search_lanes": {
-  "repd": {
-   "external_requests": 0,
-   "identity_claims": "EXACT_REPD_REF_ONLY",
-   "first": true
-  },
-  "uk_gazetteer": {
-   "provider": "postcodes.io",
-   "endpoints": [
-    "postcodes",
-    "outcodes",
-    "places"
-   ],
-   "identity_claims": "none",
-   "result_class": "LOCATION_ONLY"
-  },
-  "global_gazetteer": {
-   "provider": "Nominatim / OpenStreetMap",
-   "endpoint": "search",
-   "activation": "Enter or search button",
-   "identity_claims": "none",
-   "result_class": "LOCATION_ONLY"
-  }
- },
- "composition_manifest": "./manifests/202609032246-composition.json",
- "scope_closure": {
-  "generation": "202609010726",
-  "status": "DONE",
-  "scope": "GridAtlas v9.42 the price panel revalidates",
-  "schedule_retired": true
+ "version": "v9.98",
+ "composition_id": "202609032246-gridatlas-v9.98",
+ "source_pattern": {
+  "repository": "Ventusltd/gridatlas",
+  "path": "atlas/releases/202608300453-atlas-v9/202608292126-pre-snapped-config-adapter.js",
+  "source_sha256": "07d33eda5b3279a03df4c0a0aded61e4363c46734dda991aa5f48ae0d55097da",
+  "transformation": "carry the pre-snap config rewrite verbatim; add a measured link layer and on-card beta distances"
  },
  "composition_version": "v9.98",
- "composition_id": "202609032246-gridatlas-v9.98",
- "transport": {
-  "response_contract": "HEADERS_BEFORE_PARQUET_BODY",
-  "engine_timeout_seconds": 15,
-  "duckdb_prewarm": "AFTER_400KV_SOURCE_READY",
-  "data_plane": "PARQUET_DUCKDB_ON_DEMAND",
-  "highway_layers": [
-   "motorways",
-   "trunk_roads",
-   "primary_roads"
-  ],
-  "v8_oracle_commit": "f2f343a92ee972cc74ed23b4b99d8a22896791ad",
-  "fidelity_workflow": ".github/workflows/202608301931-layer-fidelity.yml",
-  "payload_cache": "RELEASE_AFTER_SERIALISATION"
- },
- "composition_note": "Measured on the live release: zoom=12 arrives at exactly 12 on both a 393x852 phone and a 1400x900 desktop, which is 3.6x more ground on the desktop. The zoom is now widened by the viewport against a 393 px reference and clamped to 3-18."
+ "note": "Measured on the live release: zoom=12 arrives at exactly 12 on both a 393x852 phone and a 1400x900 desktop, which is 3.6x more ground on the desktop. The zoom is now widened by the viewport against a 393 px reference and clamped to 3-18.",
+ "cut_at_utc": "2026-09-03T22:46:50.521Z"
 }
