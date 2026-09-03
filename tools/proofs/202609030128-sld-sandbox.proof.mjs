@@ -425,6 +425,8 @@ check('the engine is asked about anything not in the list',
   && /function isProjectTech\(tech\)/.test(cartridgeSource));
 check('an unknown technology is recorded rather than ignored',
   /deep link: unknown technology/.test(cartridgeSource));
+check('and recording it no longer means abandoning the arrival',
+  !cartridgeSource.includes("link.failures.push('deep link: unknown technology"));
 check('non-project layers do not', !T.has('naei_emitter') && !T.has('supermarket'));
 
 console.log('\nwhat a voltage class means\n');
@@ -2235,11 +2237,58 @@ check('the move it made is published, with the reason it had to',
 check('the camera is set BEFORE the zoom is honoured and before the tech gate',
   (() => {
     const fly = cartridgeSource.indexOf('link.camera_from_link');
-    const zoom = cartridgeSource.indexOf('honourRequestedZoom(map);\n        if (!isProjectTech(tech))');
-    return fly > 0 && zoom > 0 && fly < zoom;
+    const zoom = cartridgeSource.indexOf('honourRequestedZoom(map);');
+    const gate = cartridgeSource.indexOf('const technologyKnown = isProjectTech(tech);');
+    return fly > 0 && zoom > fly && gate > zoom;
   })());
 check('a failed camera is recorded rather than taking the arrival with it',
   /noteFailure\('deep link camera: '/.test(cartridgeSource));
+
+console.log('\nan unrecognised technology costs one layer, not the arrival\n');
+
+/* Reg3, as it actually is rather than as it was reported.
+
+   The whitelist the brief named - `allowedTechnologies` with four values,
+   throwing "canonical project technology is invalid" - is in the CARRIED V8
+   ENGINE, which atlas/releases is immutable for and which this cartridge's
+   sibling carries byte for byte as its slot contract. It cannot be widened
+   from this lane, and widening it would not help: the product it gates
+   publishes atlas partitions for exactly those four technologies. That is
+   recorded in the session notes, not fixed here.
+
+   What IS in this lane is `PROJECT_TECHS`, and the `return` that used to
+   follow it. */
+check('the register vocabulary carries the id the register uses for a category it has no bucket for',
+  /'other'\n  \]\);/.test(cartridgeSource));
+check('an unrecognised technology no longer returns out of the arrival',
+  (() => {
+    const at = cartridgeSource.indexOf('const technologyKnown = isProjectTech(tech);');
+    if (at < 0) return false;
+    /* The old shape was `if (!isProjectTech(tech)) { ...; return; }`. The
+       whole point is that no early return survives between the coordinate
+       guard and the arrival, so the region is read rather than the line. */
+    const guard = cartridgeSource.indexOf('if (!coordsUsable()) return;');
+    const arrival = cartridgeSource.indexOf('const enableBoth = () => {');
+    if (guard < 0 || arrival < 0 || !(guard < at && at < arrival)) return false;
+    const between = cartridgeSource.slice(at, arrival);
+    return !/\breturn;/.test(between);
+  })());
+check('and it costs exactly the one layer that needs to know',
+  /if \(technologyKnown\) enableTechnologyLayer\(tech\);/.test(cartridgeSource)
+  && /enableSubstationLayer\(\);\n\s*if \(technologyKnown\)/.test(cartridgeSource));
+check('the substation layer, the card and the measurement are not technology-gated',
+  (() => {
+    const at = cartridgeSource.indexOf('const technologyKnown = isProjectTech(tech);');
+    const rest = cartridgeSource.slice(at, at + 6000);
+    return /enableSubstationLayer\(\);/.test(rest)
+      && /ensureArrivalCard\(/.test(cartridgeSource);
+  })());
+check('it is recorded on its own surface, not in the ledger that means the arrival lost something',
+  /link\.technology_layer = \{/.test(cartridgeSource)
+  && /the arrival '\n\s*\+ 'continues and this layer alone is not switched on'/
+    .test(cartridgeSource));
+check('the record names what was asked for and whether it was honoured',
+  /requested: tech \|\| null,\n\s*enabled: technologyKnown,/.test(cartridgeSource));
 
 console.log('\nthe card keeper\n');
 
