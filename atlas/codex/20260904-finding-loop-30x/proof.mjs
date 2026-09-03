@@ -127,4 +127,22 @@ for (const [label, value] of [
   check(label, rejected);
 }
 
-console.log(JSON.stringify({ status: 'PASS', iteration: 6, checks }));
+for (const [type, evidenceClass] of [
+  ['declared_connection', 'published_fact'],
+  ['nearest_connection_point', 'measurement'],
+  ['mapped_segment', 'measurement'],
+  ['published_network_fact', 'published_fact'],
+  ['model_result', 'model_result'],
+  ['unknown', 'unknown']
+]) {
+  const value = type === 'unknown' ? null : 'test fixture';
+  const status = type === 'unknown' ? 'withheld' : 'available';
+  const finding = validateFinding({ type, evidence_class: evidenceClass, status,
+    selection_revision: 2, value, unit: null, qualifiers: [], provenance: [] });
+  check(`${type} accepts only its evidence class`, finding.evidence_class === evidenceClass);
+  let mismatchRejected = false;
+  try { validateFinding({ ...finding, evidence_class: evidenceClass === 'unknown' ? 'measurement' : 'unknown' }); } catch { mismatchRejected = true; }
+  check(`${type} rejects a mismatched evidence class`, mismatchRejected);
+}
+
+console.log(JSON.stringify({ status: 'PASS', iteration: 7, checks }));

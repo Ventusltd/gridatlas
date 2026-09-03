@@ -12,6 +12,14 @@ const FINDING_TYPES = new Set([
   'published_network_fact', 'model_result', 'unknown'
 ]);
 const EVIDENCE_CLASSES = new Set(['published_fact', 'measurement', 'model_result', 'unknown']);
+const EVIDENCE_CLASS_BY_TYPE = Object.freeze({
+  declared_connection: 'published_fact',
+  nearest_connection_point: 'measurement',
+  mapped_segment: 'measurement',
+  published_network_fact: 'published_fact',
+  model_result: 'model_result',
+  unknown: 'unknown'
+});
 
 /**
  * Validate the transport contract for an exact project selection.
@@ -190,6 +198,9 @@ export function validateFinding(input) {
   }
   if (!FINDING_TYPES.has(input.type) || !EVIDENCE_CLASSES.has(input.evidence_class)) {
     throw new TypeError('finding discriminator is invalid');
+  }
+  if (EVIDENCE_CLASS_BY_TYPE[input.type] !== input.evidence_class) {
+    throw new TypeError('finding type and evidence class disagree');
   }
   if (!['available', 'withheld', 'failed'].includes(input.status)) {
     throw new TypeError('finding status is invalid');
