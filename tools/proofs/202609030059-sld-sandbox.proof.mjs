@@ -2929,6 +2929,36 @@ check('the served module keys edges on the published row, not its values',
 check('the sink rule is published so a reader can see what was assumed',
   /bus in the SAME component as the injection/.test(composedSource));
 
+/* -- PIPELINE NEWS (REPD) layer section -------------------------------
+   The section that summons the rest of the pipeline around a selection.
+   Its one real hazard is the attribute it hangs its controls on: the
+   engine delegates a change listener on #scada-ui-container and routes
+   anything carrying data-layer-id into its own handleLayerToggle, which
+   has no config for these ids. The first two checks are that boundary.
+   The timer guard is the third: this file is run here in a bare vm with
+   no DOM and no timers, and an unguarded setInterval took the whole
+   proof down rather than failing one check. */
+check('the pipeline-news section is in the served bytes',
+  /gridatlas\.pipeline-news-layers\.v1/.test(composedSource));
+check('its controls do not carry the attribute the engine dispatches on',
+  /data-pn-layer/.test(composedSource)
+  && !/setAttribute\('data-layer-id', control\.id\)/.test(composedSource));
+check('it does not assume a timer exists',
+  /typeof setInterval === 'function'/.test(composedSource));
+check('it reads the engine register rather than fetching a file that is not served',
+  /const REGISTER_SOURCE = 'src-repd'/.test(composedSource)
+  && !/REGISTER_URLS/.test(composedSource));
+check('it hydrates the register by ticking the engine control, not by adding a source',
+  /input\[type=checkbox\]\[data-layer-id="' \+ REGISTER_PRIMER/.test(composedSource));
+check('it measures on the estate radius, not its own',
+  /geodesy\.distanceKm\(selection\.lon, selection\.lat/.test(composedSource));
+check('the wider fleet is named by the register classification, not a nickname',
+  /SPINE_TECHS = new Set/.test(composedSource));
+check('proximity is stated as proximity and nothing more',
+  /not a connection, a circuit or a queue position/.test(composedSource));
+check('the radius is on the label rather than left for the reader to assume',
+  /within ' \+ RADIUS_KM \+ ' km/.test(composedSource));
+
 console.log(`\n${passed}/${passed + failures.length} checks passed`);
 if (failures.length) {
   console.error('\nFAILURES');
