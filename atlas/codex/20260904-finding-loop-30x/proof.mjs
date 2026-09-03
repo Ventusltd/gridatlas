@@ -76,6 +76,30 @@ for (const [label, value] of [
   check(label, rejected);
 }
 
+for (const [label, longitude, latitude] of [
+  ['null direct longitude is rejected', null, 0],
+  ['empty direct longitude is rejected', '', 0],
+  ['boolean direct longitude is rejected', false, 0],
+  ['numeric-string direct latitude is rejected', 0, '52']
+]) {
+  let rejected = false;
+  try {
+    validateCoordinateSelection({ kind: 'location', longitude, latitude, coordinate_origin: 'user_input' });
+  } catch { rejected = true; }
+  check(label, rejected);
+}
+check('canonical URL decimals are explicitly parsed',
+  decodeSelection('kind=location&longitude=-1.5&latitude=52.4&coordinate_origin=user_input').longitude === -1.5);
+for (const query of [
+  'kind=location&longitude=&latitude=0&coordinate_origin=user_input',
+  'kind=location&longitude=01&latitude=0&coordinate_origin=user_input',
+  'kind=location&longitude=1e2&latitude=0&coordinate_origin=user_input'
+]) {
+  let rejected = false;
+  try { decodeSelection(query); } catch { rejected = true; }
+  check('non-canonical URL coordinate is rejected', rejected);
+}
+
 const substation = validateSubstationSelection({
   kind: 'substation', site_code: 'TEST-SITE', source_release: digest
 });
@@ -312,4 +336,4 @@ check('distinct nearest candidate is available', unique.status === 'available' &
 const absent = resolveNearestCandidate([], { idField: 'site_code' });
 check('empty population is withheld', absent.reason === 'NO_CANDIDATE' && absent.value === null);
 
-console.log(JSON.stringify({ status: 'PASS', iteration: 14, checks }));
+console.log(JSON.stringify({ status: 'PASS', iteration: 15, checks }));

@@ -90,12 +90,13 @@ export function validateCoordinateSelection(input) {
   if (!['user_input', 'mapped_feature'].includes(input.coordinate_origin)) {
     throw new TypeError('coordinate_origin is invalid');
   }
-  const longitude = Number(input.longitude);
-  const latitude = Number(input.latitude);
-  if (!Number.isFinite(longitude) || longitude < -180 || longitude > 180) {
+  const { longitude, latitude } = input;
+  if (typeof longitude !== 'number' || !Number.isFinite(longitude)
+      || longitude < -180 || longitude > 180) {
     throw new TypeError('longitude is invalid');
   }
-  if (!Number.isFinite(latitude) || latitude < -90 || latitude > 90) {
+  if (typeof latitude !== 'number' || !Number.isFinite(latitude)
+      || latitude < -90 || latitude > 90) {
     throw new TypeError('latitude is invalid');
   }
   return Object.freeze({
@@ -180,7 +181,18 @@ export function decodeSelection(text) {
   if (kind === 'substation') {
     return validateSubstationSelection({ kind, site_code: query.get('site_code'), source_release: query.get('source_release') });
   }
-  return validateCoordinateSelection({ kind, longitude: query.get('longitude'), latitude: query.get('latitude'), coordinate_origin: query.get('coordinate_origin') });
+  const parseCoordinate = (name) => {
+    const raw = query.get(name);
+    if (!/^-?(?:0|[1-9]\d*)(?:\.\d+)?$/.test(raw || '')) {
+      throw new TypeError(`${name} is not a canonical decimal`);
+    }
+    const value = Number(raw);
+    if (String(value) !== raw) throw new TypeError(`${name} is not canonically encoded`);
+    return value;
+  };
+  return validateCoordinateSelection({ kind,
+    longitude: parseCoordinate('longitude'), latitude: parseCoordinate('latitude'),
+    coordinate_origin: query.get('coordinate_origin') });
 }
 
 /** Validate the common result envelope before any view can render it. */
