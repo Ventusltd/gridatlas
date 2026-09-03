@@ -3399,7 +3399,16 @@ check('the layers dash can be collapsed without entering fullscreen',
 check('the collapsed choice is remembered, and every storage access is guarded',
   /localStorage\.getItem\(KEY\)/.test(cartridgeSource)
   && /localStorage\.setItem\(KEY/.test(cartridgeSource)
-  && (cartridgeSource.match(/catch \(_\) \{ collapsed = false; \}/) || []).length === 1);
+  /* This pinned `catch (_) { collapsed = false; }` while the default was
+     open, and it caught this change - correctly. The behaviour it exists to
+     protect is that a browser which THROWS on storage lands on the same
+     screen as one that has simply never been here, so it is pinned to the
+     first-arrival default rather than to the word `false`, and both are
+     required to be the same literal. Weakening it to "some assignment
+     happens" would have let the two drift apart, which is the only way this
+     check can be wrong. */
+  && (cartridgeSource.match(/catch \(_\) \{ collapsed = true; \}/) || []).length === 1
+  && /let collapsed = true;/.test(cartridgeSource));
 check('the map is told to resize when the dash moves under it',
   /window\.map\.resize\(\)/.test(cartridgeSource));
 check('the toggle is reachable and labelled for assistive technology',
@@ -3443,6 +3452,25 @@ check('and the hidden state is published rather than left to be inspected',
   /hidden_by_fullscreen/.test(cartridgeSource));
 check('the toggle is a 44 px touch target',
   /#gridatlas-dash-toggle\{[^}]*min-height:44px;min-width:44px;/.test(cartridgeSource));
+/* THE PANEL IS CLOSED WHEN NOBODY HAS ASKED FOR IT.
+
+   Measured on the live v9.95 at 393x852 by sampling 3,200 points of the
+   viewport and asking the DOM which element is topmost at each: the map
+   canvas was on top at 29.3 per cent of them and the app's own controls at
+   70.7, with .scada-wrapper and the layer key it holds accounting for 31.6.
+   The directive is that the product is the first impression, so the panel
+   opens closed - and a reader who has expressed a preference keeps it,
+   which is the difference between minimising a panel and removing it.
+
+   Both halves are asserted. A default that ignored the stored value would
+   pass the first line of this check and take the reader's choice away on
+   every visit. */
+check('the layer panel is closed on a first arrival',
+  /let collapsed = true;/.test(cartridgeSource)
+  && !/let collapsed = false;/.test(cartridgeSource));
+check('and a stored choice still wins over that default',
+  /const v = window\.localStorage\.getItem\(KEY\);/.test(cartridgeSource)
+  && /if \(v !== null\) collapsed = v === '1';/.test(cartridgeSource));
 check('the refusal path does not read `link`, which is in its dead zone there',
   await (async () => {
     /* `link` is declared at the bottom of the body and the collapse control
