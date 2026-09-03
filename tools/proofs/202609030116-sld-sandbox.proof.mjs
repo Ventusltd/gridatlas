@@ -2812,6 +2812,54 @@ check('the map is told to resize when the dash moves under it',
 check('the toggle is reachable and labelled for assistive technology',
   /aria-pressed/.test(cartridgeSource) && /aria-label/.test(cartridgeSource)
   && /focus-visible/.test(cartridgeSource));
+check('HIDE LAYERS collapses the layer panel and NOT the application', await (async () => {
+  /* Reg1. The control read `document.querySelector('.dashboard')` and
+     collapsed it to max-height:0 with overflow:hidden. In the shipped shell
+     `.dashboard` opens at index.html:22 and contains BOTH `.map-container`
+     (line 36, which holds #map) and `.scada-wrapper` (line 112, which holds
+     the layer keys and the legend). So HIDE LAYERS took the WebGL canvas
+     down with the checkboxes, and because the choice is remembered in
+     localStorage the reload that a reader reaches for blanked it again.
+
+     This reads the SHELL, not the cartridge, because the containment is a
+     fact about the page and not about the code that acts on it. */
+  const shell = await readFile(join(REPO, 'atlas', 'releases',
+    '202608300453-atlas-v9', 'index.html'), 'utf8');
+  const dashAt = shell.indexOf('<div class="dashboard">');
+  const mapAt = shell.indexOf('<div class="map-container"');
+  const wrapperAt = shell.indexOf('<div class="scada-wrapper">');
+  const dashboardStillContainsTheMap = dashAt >= 0 && mapAt > dashAt;
+  const theWrapperIsSeparateFromTheMap = wrapperAt > mapAt;
+  return dashboardStillContainsTheMap
+    && theWrapperIsSeparateFromTheMap
+    && /\.scada-wrapper\[data-gridatlas-collapsed="1"\]\{max-height:0;/.test(cartridgeSource)
+    && !/\.dashboard\[data-gridatlas-collapsed/.test(cartridgeSource);
+})());
+check('the control targets the wrapper by name, and says so for a reader',
+  /const dash = document\.querySelector\('\.scada-wrapper'\);/.test(cartridgeSource)
+  && /target: '\.scada-wrapper'/.test(cartridgeSource));
+check('a shell without that wrapper gets NO control, never a fallback to .dashboard',
+  /installed: false, target: '\.scada-wrapper'/.test(cartridgeSource)
+  && !/querySelector\('\.scada-wrapper'\) \|\| document\.querySelector\('\.dashboard'\)/
+    .test(cartridgeSource));
+check('the toggle hides itself while a fullscreen element is present',
+  /toggle\.hidden = full;/.test(cartridgeSource)
+  && /document\.addEventListener\('fullscreenchange', reflectFullscreen\)/.test(cartridgeSource)
+  && /webkitfullscreenchange', reflectFullscreen/.test(cartridgeSource));
+check('and the hidden state is published rather than left to be inspected',
+  /hidden_by_fullscreen/.test(cartridgeSource));
+check('the toggle is a 44 px touch target',
+  /#gridatlas-dash-toggle\{[^}]*min-height:44px;min-width:44px;/.test(cartridgeSource));
+check('the refusal path does not read `link`, which is in its dead zone there',
+  await (async () => {
+    /* `link` is declared at the bottom of the body and the collapse control
+       runs on the way past, so a failure ledger push there is a
+       ReferenceError at load - the whole cartridge, not just the control. */
+    const control = cartridgeSource.slice(
+      cartridgeSource.indexOf('function dashCollapse()'),
+      cartridgeSource.indexOf('let topologyPromise = null;'));
+    return control.length > 200 && !/\blink\./.test(control);
+  })());
 check('both new surfaces are published for review',
   /window\.__GRIDATLAS_POINT_QUERY__ = pointQuery;/.test(cartridgeSource)
   && /window\.__GRIDATLAS_DASH__ = \{/.test(cartridgeSource));
