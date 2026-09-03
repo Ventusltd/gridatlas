@@ -181,6 +181,12 @@ for (const [label, value] of [
   ['zero revision is rejected', { ...measurement, selection_revision: 0 }],
   ['available null value is rejected', { ...measurement, value: null }],
   ['withheld numeric value is rejected', { ...withheld, value: 12, unit: 'km' }],
+  ['unknown available value is rejected', { ...withheld, status: 'available', value: 42, unit: 'MW' }],
+  ['NaN finding value is rejected', { ...measurement, value: Number.NaN }],
+  ['infinite finding value is rejected', { ...measurement, value: Number.POSITIVE_INFINITY }],
+  ['object finding value is rejected', { ...measurement, value: { km: 3.2 } }],
+  ['distance finding with wrong unit is rejected', { ...measurement, unit: 'miles' }],
+  ['unknown finding with provenance is rejected', { ...withheld, provenance: [evidence] }],
   ['extra presentation field is rejected', { ...measurement, headline: 'plausible' }]
 ]) {
   let rejected = false;
@@ -196,10 +202,12 @@ for (const [type, evidenceClass] of [
   ['model_result', 'model_result'],
   ['unknown', 'unknown']
 ]) {
-  const value = type === 'unknown' ? null : 'test fixture';
+  const distanceType = ['nearest_connection_point', 'mapped_segment'].includes(type);
+  const value = type === 'unknown' ? null : distanceType ? 1.25 : 'test fixture';
+  const unit = distanceType ? 'km' : null;
   const status = type === 'unknown' ? 'withheld' : 'available';
   const finding = validateFinding({ type, evidence_class: evidenceClass, status,
-    selection_revision: 2, value, unit: null, qualifiers: [],
+    selection_revision: 2, value, unit, qualifiers: [],
     provenance: type === 'unknown' ? [] : [evidence] });
   check(`${type} accepts only its evidence class`, finding.evidence_class === evidenceClass);
   let mismatchRejected = false;
@@ -532,4 +540,4 @@ check('distinct nearest candidate is available', unique.status === 'available' &
 const absent = resolveNearestCandidate([], { idField: 'site_code' });
 check('empty population is withheld', absent.reason === 'NO_CANDIDATE' && absent.value === null);
 
-console.log(JSON.stringify({ status: 'PASS', iteration: 25, checks }));
+console.log(JSON.stringify({ status: 'PASS', iteration: 26, checks }));

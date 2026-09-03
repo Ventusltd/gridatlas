@@ -244,15 +244,33 @@ export function validateFinding(input) {
   if (!Number.isInteger(input.selection_revision) || input.selection_revision < 1) {
     throw new TypeError('selection_revision must be a positive integer');
   }
-  if (!Array.isArray(input.qualifiers) || input.qualifiers.some((item) => typeof item !== 'string')) {
-    throw new TypeError('qualifiers must be strings');
+  if (!Array.isArray(input.qualifiers)
+      || input.qualifiers.some((item) => typeof item !== 'string'
+        || !item || item !== item.trim() || CONTROL_CHARACTER.test(item))) {
+    throw new TypeError('qualifiers must be canonical strings');
   }
   if (!Array.isArray(input.provenance)) throw new TypeError('provenance must be an array');
   if (input.evidence_class !== 'unknown' && input.provenance.length === 0) {
     throw new TypeError('evidenced findings require provenance');
   }
-  if (input.status === 'available' ? input.value === null : input.value !== null || input.unit !== null) {
-    throw new TypeError('finding value contradicts its status');
+  if (input.status === 'available') {
+    if (input.type === 'unknown' || input.value === null
+        || !['string', 'number', 'boolean'].includes(typeof input.value)
+        || (typeof input.value === 'number' && !Number.isFinite(input.value))
+        || (typeof input.value === 'string' && (!input.value || input.value !== input.value.trim()
+          || CONTROL_CHARACTER.test(input.value)))) {
+      throw new TypeError('available finding value is invalid for its type');
+    }
+  } else if (input.value !== null || input.unit !== null) {
+    throw new TypeError('withheld and failed findings cannot carry a value or unit');
+  }
+  if (['nearest_connection_point', 'mapped_segment'].includes(input.type)
+      && input.status === 'available'
+      && (typeof input.value !== 'number' || input.value < 0 || input.unit !== 'km')) {
+    throw new TypeError('distance measurement requires a non-negative number in km');
+  }
+  if (input.type === 'unknown' && input.provenance.length !== 0) {
+    throw new TypeError('unknown finding cannot claim evidence provenance');
   }
   if (input.unit !== null && (typeof input.unit !== 'string' || !input.unit.trim())) {
     throw new TypeError('unit must be null or a non-empty string');
