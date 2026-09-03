@@ -2397,6 +2397,55 @@ check('an absent module costs the estimate and not the card',
   /if \(!module\) return '';/.test(cartridgeSource));
 check('the sandbox never carries its own copy of the factor',
   !/1\.245/.test(cartridgeSource.replace(/\/\*[\s\S]*?\*\//g, ' ')));
+console.log('\na 44 px action, and a long press that defers to everything\n');
+
+check('the action is on the card, and only when there is something to show',
+  /out \+= corridorAction\(\);/.test(cartridgeSource)
+  && /if \(!corridorTargets\(\)\.length\) return '';/.test(cartridgeSource));
+check('it is a real button with an accessible name and a dialog relationship',
+  /<button type="button" class="gridatlas-corridor-open" /.test(cartridgeSource)
+  && /aria-haspopup="dialog"/.test(cartridgeSource)
+  && /Explore route corridors/.test(cartridgeSource));
+check('the target is 44 px, and so is every control inside the sheet',
+  /\.gridatlas-corridor-open\{[^']*min-height:44px/.test(cartridgeSource)
+  && /min-height:44px;min-width:44px;cursor:pointer;/.test(cartridgeSource));
+check('the sheet is a labelled dialog, closable by button and by Escape',
+  /setAttribute\('role', 'dialog'\)/.test(cartridgeSource)
+  && /data-gridatlas-corridor-close/.test(cartridgeSource)
+  && /event\.key === 'Escape'/.test(cartridgeSource));
+check('it honours a reader who asked for reduced motion',
+  /prefers-reduced-motion:reduce\)\{#' \+ CORRIDOR_SHEET \+ '\{transition:none;\}/
+    .test(cartridgeSource));
+check('visibility is toggled with hidden, not by rewriting display',
+  /sheet\.hidden = true;/.test(cartridgeSource)
+  && /sheet\.hidden = false;/.test(cartridgeSource));
+
+/* The gesture. The engine binds no contextmenu anywhere - shell, index.html
+   or any composed part - so the desktop slot is genuinely free. touchstart is
+   NOT free: this cartridge binds one for dragging the SLD array, its rotate
+   handle and its route pins, so the long press has to stand down for it. */
+check('the desktop slot it takes is one nothing else binds',
+  (cartridgeSource.match(/'contextmenu'/g) || []).length === 1);
+check('the long press cancels on movement, with a stated threshold',
+  /Math\.abs\(touch\.clientX - from\.x\) > 10/.test(cartridgeSource)
+  && /Math\.abs\(touch\.clientY - from\.y\) > 10/.test(cartridgeSource));
+check('a second finger is not a long press',
+  /if \(event\.touches\.length !== 1\) return;/.test(cartridgeSource));
+check('AND IT NEVER FIRES DURING AN SLD DRAG, checked twice',
+  (cartridgeSource.match(/if \(sld && sld\.dragging\) return;/g) || []).length === 2);
+check('touchend and touchcancel disarm it',
+  /addEventListener\('touchend', cancel/.test(cartridgeSource)
+  && /addEventListener\('touchcancel', cancel/.test(cartridgeSource));
+check('the listeners are passive, so they cannot block a scroll or a pan',
+  (cartridgeSource.match(/\{ passive: true \}/g) || []).length >= 4);
+check('the sheet states the basis and the caveat, not just the number',
+  /distinct site pairs\. `/.test(cartridgeSource)
+  && /escapeHtml\(module\.caveat\)/.test(cartridgeSource)
+  && /escapeHtml\(module\.not_for_overhead\)/.test(cartridgeSource));
+check('an absent corridor module leaves the measured distances standing',
+  /The corridor module is not loaded, so only the /.test(cartridgeSource));
+check('its state is published for review',
+  /window\.__GRIDATLAS_CORRIDOR_SHEET__ = \{/.test(cartridgeSource));
 console.log('\nthe card keeper\n');
 
 /* Five links on the map and a card with no distances: the popup that had
