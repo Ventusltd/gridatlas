@@ -344,6 +344,19 @@ export function createProjectIndex(register) {
   });
 }
 
+/** Resolve a project selection into a query request through exact identity. */
+export function projectFindingRequest(selection, projectIndex) {
+  const selected = validateSelection(selection);
+  const project = projectIndex.get(selected.repd_ref);
+  if (!project) throw new TypeError('project is absent from the pinned register');
+  return Object.freeze({
+    kind: 'project_finding_request',
+    selection: selected,
+    project,
+    source: projectIndex.source
+  });
+}
+
 /** Search every row in the pinned register through an injected canonical distance owner. */
 export function nearbyProjects({ register, longitude, latitude, distanceKm, limit = 10 }) {
   if (typeof distanceKm !== 'function' || !Number.isInteger(limit) || limit < 1) {

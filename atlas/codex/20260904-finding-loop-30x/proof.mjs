@@ -14,6 +14,7 @@ import {
   validateProvenance,
   nearbyProjects,
   orderCandidates,
+  projectFindingRequest,
   resolveNearestCandidate
 } from './finding-loop.mjs';
 
@@ -231,6 +232,19 @@ let blankLookupRejected = false;
 try { projectIndex.get(' '); } catch { blankLookupRejected = true; }
 check('blank exact lookup is rejected', blankLookupRejected);
 
+const projectRequest = projectFindingRequest({
+  kind: 'project', repd_ref: 'A', source_release: digest
+}, projectIndex);
+check('project request resolves through exact repd_ref',
+  projectRequest.project.repd_ref === 'A' && projectRequest.kind === 'project_finding_request');
+check('project request retains its source evidence',
+  projectRequest.source.sha256 === digest && projectRequest.source.source_id === 'project_register');
+let absentProjectRejected = false;
+try {
+  projectFindingRequest({ kind: 'project', repd_ref: 'MISSING', source_release: digest }, projectIndex);
+} catch { absentProjectRejected = true; }
+check('absent exact project fails instead of falling back to coordinates', absentProjectRejected);
+
 const loop = createFindingLoop(async ({ revision }) => [{
   type: 'nearest_connection_point', evidence_class: 'measurement', status: 'available',
   selection_revision: revision, value: 3.2, unit: 'km',
@@ -298,4 +312,4 @@ check('distinct nearest candidate is available', unique.status === 'available' &
 const absent = resolveNearestCandidate([], { idField: 'site_code' });
 check('empty population is withheld', absent.reason === 'NO_CANDIDATE' && absent.value === null);
 
-console.log(JSON.stringify({ status: 'PASS', iteration: 13, checks }));
+console.log(JSON.stringify({ status: 'PASS', iteration: 14, checks }));
