@@ -746,6 +746,108 @@ export function resolveNearestCandidate(rows, {
   return Object.freeze({ status: 'available', reason: null, value: ordered[0] });
 }
 
+/** One shared substation computation owner for Map, Pipeline and World adapters. */
+export function createGridFindingEngine({ projectIndex, substationFeatures, provenance }) {
+  const source = validateProvenance(provenance);
+  if (!projectIndex || typeof projectIndex.get !== 'function'
+      || !Array.isArray(substationFeatures)) {
+    throw new TypeError('project index and substation feature array are required');
+  }
+  const totalCount = substationFeatures.length;
+  const substations = substationFeatures.map((feature) => {
+    const id = feature?.id;
+    const coordinates = feature?.geometry?.type === 'Point'
+      ? feature.geometry.coordinates : null;
+    const voltageText = feature?.properties?.voltage;
+    if (typeof id !== 'string' || !id || !Array.isArray(coordinates)
+        || coordinates.length < 2 || typeof coordinates[0] !== 'number'
+        || typeof coordinates[1] !== 'number' || typeof voltageText !== 'string') return null;
+    const voltages = voltageText.split(';').map((value) => Number(value) / 1000)
+      .filter((value) => Number.isInteger(value) && value > 0);
+    if (voltages.length === 0) return null;
+    const canonicalNullable = (value) => typeof value === 'string' && value.trim()
+      ? value.trim() : null;
+    return Object.freeze({
+      id,
+      longitude: coordinates[0], latitude: coordinates[1],
+      voltage_kv: Object.freeze(voltages),
+      name: canonicalNullable(feature.properties?.name),
+      operator: canonicalNullable(feature.properties?.operator)
+    });
+  }).filter(Boolean);
+
+  const query = ({ selection, revision, minimum_voltage_kv: minimumVoltageKv, named_only: namedOnly = false }) => {
+    if (!Number.isInteger(revision) || revision < 1
+        || !Number.isInteger(minimumVoltageKv) || minimumVoltageKv < 1
+        || typeof namedOnly !== 'boolean') {
+      throw new TypeError('grid query revision, voltage and named_only are invalid');
+    }
+    const request = projectFindingRequest(selection, projectIndex);
+    const candidates = substations.filter((site) =>
+      site.voltage_kv.some((voltage) => voltage >= minimumVoltageKv)
+        && (!namedOnly || site.name !== null))
+      .map((site) => ({
+        ...site,
+        distance_km: haversineR6378137Km(
+          request.project.longitude, request.project.latitude,
+          site.longitude, site.latitude
+        )
+      }))
+      .sort((left, right) => left.distance_km - right.distance_km
+        || (left.id < right.id ? -1 : left.id > right.id ? 1 : 0));
+    const predicate = `valid point geometry${namedOnly ? ', non-empty name,' : ' and'} any voltage_kv >= ${minimumVoltageKv}`;
+    if (candidates.length === 0) {
+      return Object.freeze({
+        state: 'REASON', reason: 'NO_ELIGIBLE_SUBSTATION',
+        selection: request.selection, project: request.project,
+        predicate, candidate_count: 0, total_count: totalCount
+      });
+    }
+    const nearest = candidates[0];
+    return Object.freeze({
+      state: 'RESULT', reason: null,
+      selection: request.selection, project: request.project,
+      scoped_finding: createScopedDistanceFinding({
+        type: 'nearest_connection_point', distance_km: nearest.distance_km,
+        selection_revision: revision, provenance: [source],
+        qualifiers: [
+          `MINIMUM_VOLTAGE_${minimumVoltageKv}_KV`,
+          namedOnly ? 'NAMED_TARGET_REQUIRED' : 'UNNAMED_TARGET_ALLOWED'
+        ],
+        target: {
+          target_id: nearest.id, target_name: nearest.name,
+          operator: nearest.operator, voltage_kv: nearest.voltage_kv,
+          longitude: nearest.longitude, latitude: nearest.latitude
+        },
+        scope: {
+          predicate, candidate_count: candidates.length,
+          located_count: candidates.length, total_count: totalCount,
+          geometry: 'haversine_r6378_137_km'
+        }
+      })
+    });
+  };
+
+  return Object.freeze({
+    source,
+    query,
+    queryProfiles({ selection, revision }) {
+      const profiles = Object.freeze([
+        query({ selection, revision, minimum_voltage_kv: 33 }),
+        query({ selection, revision, minimum_voltage_kv: 400 }),
+        query({ selection, revision, minimum_voltage_kv: 400, named_only: true })
+      ]);
+      return Object.freeze({
+        state: profiles.every((profile) => profile.state === 'RESULT') ? 'RESULT' : 'REASON',
+        selection: validateSelection(selection), revision,
+        profiles,
+        road_route: createRoadRouteFinding(revision),
+        corridor_estimate: createCorridorEstimateFinding(revision, 'straight_line_to_substation')
+      });
+    }
+  });
+}
+
 /** One owner connects selection revisions to findings and rejects late results. */
 export function createFindingLoop(query) {
   if (typeof query !== 'function') throw new TypeError('query function is required');

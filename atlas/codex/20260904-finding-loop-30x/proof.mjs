@@ -7,6 +7,7 @@ import {
   createDistanceFinding,
   createScopedDistanceFinding,
   createFindingLoop,
+  createGridFindingEngine,
   createProjectIndex,
   createProjectRegister,
   createRoadRouteFinding,
@@ -564,6 +565,27 @@ try {
   console.error = originalConsoleError;
 }
 check('complete technology deep-link adaptation emits no console error', deepLinkConsoleErrors === 0);
+const sharedGridEngine = createGridFindingEngine({
+  projectIndex: markinchIndex,
+  substationFeatures: substationDocument.features,
+  provenance: substationEvidence
+});
+const sharedMarkinchResult = sharedGridEngine.queryProfiles({
+  selection: markinchArrival.selection, revision: 1
+});
+check('shared engine computes all Markinch voltage profiles from one source',
+  sharedMarkinchResult.state === 'RESULT'
+    && sharedMarkinchResult.profiles.length === 3
+    && sharedMarkinchResult.profiles.every((profile) => profile.state === 'RESULT'));
+check('shared engine reproduces distinct Markinch targets and distances',
+  sharedMarkinchResult.profiles[0].scoped_finding.target.target_id === 'grid_substations:417'
+    && Math.abs(sharedMarkinchResult.profiles[0].scoped_finding.finding.value - 2.485885849) < 1e-9
+    && sharedMarkinchResult.profiles[1].scoped_finding.target.target_id === 'grid_substations:2033'
+    && Math.abs(sharedMarkinchResult.profiles[1].scoped_finding.finding.value - 28.819562529) < 1e-9
+    && sharedMarkinchResult.profiles[2].scoped_finding.target.target_name === 'Smeaton Substation');
+check('shared engine withholds route and corridor outputs alongside straight-line results',
+  sharedMarkinchResult.road_route.qualifiers.includes('ROAD_ROUTE_NOT_COMPUTED')
+    && sharedMarkinchResult.corridor_estimate.qualifiers.includes('CALIBRATION_1_245_NOT_APPLICABLE'));
 let staleReleaseRejected = false;
 try {
   projectFindingRequest({ kind: 'project', repd_ref: 'A', source_release: 'b'.repeat(64) }, projectIndex);
@@ -698,4 +720,4 @@ check('distinct nearest candidate is available', unique.status === 'available' &
 const absent = resolveNearestCandidate([], { idField: 'site_code' });
 check('empty population is withheld', absent.reason === 'NO_CANDIDATE' && absent.value === null);
 
-console.log(JSON.stringify({ status: 'PASS', iteration: 31, checks }));
+console.log(JSON.stringify({ status: 'PASS', iteration: 32, checks }));
