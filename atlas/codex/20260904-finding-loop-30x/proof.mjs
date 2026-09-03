@@ -874,6 +874,25 @@ check('substation source-feature selection survives durable share-state round tr
   decodedJourneySubstation.source_feature_id === 'grid_substations:417'
     && fullGridEngine.getSubstation(decodedJourneySubstation.source_feature_id).target_name
       === 'Glenrothes Substation');
+
+const candidateWorkflow = readFileSync(new URL(
+  '../../../.github/workflows/20260904-finding-loop-candidate.yml', import.meta.url
+), 'utf8');
+check('candidate CI uses exact reviewed action pins and discards checkout credentials',
+  candidateWorkflow.includes('actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683')
+    && candidateWorkflow.includes('actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020')
+    && candidateWorkflow.includes('actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02')
+    && candidateWorkflow.includes('persist-credentials: false'));
+check('candidate CI covers immutable inputs and both proof owners',
+  candidateWorkflow.includes("- 'atlas/**'")
+    && candidateWorkflow.includes("- 'data/repd_browser_registry_202608290716.json'")
+    && candidateWorkflow.includes("- 'tools/proofs/**'")
+    && candidateWorkflow.includes('node atlas/codex/20260904-finding-loop-30x/proof.mjs')
+    && candidateWorkflow.includes('node tools/proofs/run-current.mjs'));
+check('candidate CI checks the committed base-to-head patch and cannot deploy',
+  candidateWorkflow.includes('git diff --check 7e3bdcbdab58ab22bdcd4d8aedc068baa7d02c6d HEAD')
+    && candidateWorkflow.includes('contents: read')
+    && !/contents:\s*write|pages:\s*write|deploy|schedule:/.test(candidateWorkflow));
 let staleReleaseRejected = false;
 try {
   projectFindingRequest({ kind: 'project', repd_ref: 'A', source_release: 'b'.repeat(64) }, projectIndex);
@@ -1008,4 +1027,4 @@ check('distinct nearest candidate is available', unique.status === 'available' &
 const absent = resolveNearestCandidate([], { idField: 'site_code' });
 check('empty population is withheld', absent.reason === 'NO_CANDIDATE' && absent.value === null);
 
-console.log(JSON.stringify({ status: 'PASS', iteration: 40, checks }));
+console.log(JSON.stringify({ status: 'PASS', iteration: 41, checks }));

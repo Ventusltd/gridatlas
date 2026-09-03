@@ -3,11 +3,15 @@ name: Finding loop candidate proof
 on:
   push:
     paths:
-      - 'atlas/codex/20260904-finding-loop-30x/**'
+      - 'atlas/**'
+      - 'data/repd_browser_registry_202608290716.json'
+      - 'tools/proofs/**'
       - '.github/workflows/20260904-finding-loop-candidate.yml'
   pull_request:
     paths:
-      - 'atlas/codex/20260904-finding-loop-30x/**'
+      - 'atlas/**'
+      - 'data/repd_browser_registry_202608290716.json'
+      - 'tools/proofs/**'
       - '.github/workflows/20260904-finding-loop-candidate.yml'
   workflow_dispatch:
 
@@ -25,9 +29,12 @@ jobs:
     steps:
       - name: Check out exact workflow revision
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          fetch-depth: 0
+          persist-credentials: false
 
       - name: Use pinned Node runtime action
-        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v4.4.0
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
         with:
           node-version: '24'
 
@@ -50,12 +57,12 @@ jobs:
           set -euo pipefail
           node tools/proofs/run-current.mjs | tee candidate-receipt/current-cartridge-proofs.txt
 
-      - name: Check patch whitespace
-        run: git diff --check
+      - name: Check full candidate patch whitespace
+        run: git diff --check 7e3bdcbdab58ab22bdcd4d8aedc068baa7d02c6d HEAD
 
       - name: Upload exact-head proof receipt
         if: always()
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v4.4.3
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
           name: finding-loop-candidate-${{ github.sha }}
           path: candidate-receipt/
