@@ -1,0 +1,180 @@
+# Move the live composition back to a generation that has already shipped.
+#
+# WHY THIS EXISTS
+#
+# Every other automation in this repository moves atlas/current.json forward.
+# On 2026-09-03 ten generations were cut in three hours, each one repointing
+# the live route, and there was no reverse path at all: undoing a bad one
+# meant hand-editing the pointer at whatever hour somebody noticed, which is
+# precisely the hand-editing habit tools/recompose.mjs was written to end.
+#
+# v9.83 pinned the runtime products by commit and digest so a bad PRODUCT
+# cannot reach a shipped release. This is the other half, so a bad RELEASE
+# cannot stay on the pointer.
+#
+# WHY IT IS NOT TIMESTAMPED
+#
+# Every other workflow here carries a 12-digit generation because it belongs
+# to one release. This one belongs to no release: it is a perpetual,
+# single-purpose path, the same class as scope-loop and verify-live, and
+# naming it for the night it was written would make it look like the sprawl
+# the workflow budget exists to prevent.
+#
+# WHY IT IS NOT AUTOMATIC
+#
+# Nothing decides on its own that a release is bad. The decision is a person's;
+# this only makes carrying it out fast and checked. `confirm` must be typed
+# exactly, because the one thing worse than no rollback is an accidental one.
+#
+# WHAT GATES IT
+#
+# The same gates as an ordinary cut, run BEFORE anything is pushed: the
+# composition must verify, the composed cartridge must pass its own proof, the
+# scope ledger and workflow budget must hold, and STATE.md must already be
+# what the generator produces. A rollback that cannot pass the proof is not a
+# safe place to land, and pushing it first and finding out afterwards would
+# repeat the failure it is meant to answer.
+
+name: Rollback GridAtlas composition
+
+run-name: Roll back to ${{ inputs.to_generation }}
+
+on:
+  workflow_dispatch:
+    inputs:
+      to_generation:
+        description: 'Generation to restore, 12 digits, must be an ancestor of the live one'
+        required: true
+        type: string
+      reason:
+        description: 'Why the live composition is being moved back'
+        required: true
+        type: string
+      confirm:
+        description: 'Type ROLL BACK to confirm the live route will move'
+        required: true
+        type: string
+
+permissions: {}
+
+concurrency:
+  group: gridatlas-rollback-composition
+  cancel-in-progress: false
+
+jobs:
+  rollback:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    permissions:
+      contents: write
+    defaults:
+      run:
+        working-directory: gridatlas
+    steps:
+      - name: Refuse an unconfirmed pointer move
+        working-directory: .
+        env:
+          CONFIRM: ${{ inputs.confirm }}
+          TO_GENERATION: ${{ inputs.to_generation }}
+        run: |
+          set -eu
+          test "$CONFIRM" = "ROLL BACK" || { echo "confirm must be exactly: ROLL BACK" >&2; exit 1; }
+          echo "$TO_GENERATION" | grep -Eq '^[0-9]{12}$' || { echo "to_generation must be 12 digits" >&2; exit 1; }
+
+      - name: Checkout main
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          ref: main
+          fetch-depth: 0
+          path: gridatlas
+
+      # Beside it, not inside it: run-current.mjs resolves ../grid-distance-maths
+      # for the parity check that guards every distance the cartridge produces.
+      - name: Checkout the canonical geodesy beside it
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          repository: Ventusltd/grid-distance-maths
+          path: grid-distance-maths
+          persist-credentials: false
+
+      - name: Node
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v4
+        with:
+          node-version: '24'
+
+      # The tool refuses a target that is not an ancestor, and refuses one whose
+      # cartridges no longer hash to what that generation recorded. Both are
+      # checked against committed bytes, never the working copy.
+      - name: Restore the named generation
+        env:
+          TO_GENERATION: ${{ inputs.to_generation }}
+          REASON: ${{ inputs.reason }}
+        run: node tools/rollback.mjs --to "$TO_GENERATION" --reason "$REASON"
+
+      - name: Regenerate durable state
+        run: node tools/scope/loop.mjs state
+
+      - name: The restored composition matches what is declared and hashed
+        run: node tools/scope/verify-compose.mjs
+
+      - name: The restored cartridge passes its own proof
+        run: node tools/proofs/run-current.mjs
+
+      - name: The scope ledger and workflow budget still hold
+        run: node tools/scope/loop.mjs lint
+
+      - name: Nothing outside the composition was touched
+        run: |
+          set -eu
+          git status --porcelain=v1 | sed -E 's/^.. //' | LC_ALL=C sort > /tmp/changed.txt
+          cat /tmp/changed.txt
+          while IFS= read -r path; do
+            [ -z "$path" ] && continue
+            case "$path" in
+              atlas/current.json|atlas/state/live-set.json|atlas/manifests/*-composition.json|STATE.md) ;;
+              *) echo "a rollback must not change $path" >&2; exit 1 ;;
+            esac
+          done < /tmp/changed.txt
+
+      - name: Commit the restored generation
+        id: commit
+        env:
+          TO_GENERATION: ${{ inputs.to_generation }}
+          REASON: ${{ inputs.reason }}
+        run: |
+          set -eu
+          GENERATION="$(node -p "require('./atlas/current.json').generation")"
+          VERSION="$(node -p "require('./atlas/current.json').composition_version")"
+          git config user.name 'gridatlas-rollback'
+          git config user.email 'actions@users.noreply.github.com'
+          git add -- atlas/current.json atlas/state/live-set.json atlas/manifests STATE.md
+          git commit -m "${GENERATION}-gridatlas-${VERSION}: roll back the live composition to ${TO_GENERATION}
+
+          ${REASON}
+
+          Restored by .github/workflows/rollback-composition.yml, run ${GITHUB_RUN_ID}.
+          The shipped generation ${TO_GENERATION} is not rewritten; this is a new
+          generation carrying its composition, and previous_generation still names
+          what it replaced."
+          git push origin HEAD:main
+          echo "generation=$GENERATION" >> "$GITHUB_OUTPUT"
+          echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+
+      - name: Record what moved
+        if: always()
+        env:
+          TO_GENERATION: ${{ inputs.to_generation }}
+          REASON: ${{ inputs.reason }}
+          GENERATION: ${{ steps.commit.outputs.generation }}
+          SHA: ${{ steps.commit.outputs.sha }}
+        run: |
+          {
+            echo '## GridAtlas composition rollback'
+            echo
+            echo "- restored generation: \`${TO_GENERATION}\`"
+            echo "- cut as: \`${GENERATION:-not reached}\`"
+            echo "- commit: \`${SHA:-none}\`"
+            echo "- reason: ${REASON}"
+            echo
+            echo 'The cartridge proof runs again on the pushed commit; that run is the gate.'
+          } >> "$GITHUB_STEP_SUMMARY"

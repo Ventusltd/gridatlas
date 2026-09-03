@@ -27,6 +27,11 @@ export const EXPECTED_RELEASES = Object.freeze([
 // that excludes atlas/, so a cartridge could be composed, hashed, pushed and
 // served with nobody having run its proof. It is node-only and takes seconds,
 // so there is never a reason to skip it.
+//
+// rollback-composition.yml earns its place because every other entry can
+// only move the live pointer forwards. It cuts a new, append-only generation
+// from a previously shipped and digest-verified composition, so a bad release
+// can be withdrawn without hand-editing atlas/current.json.
 export const ACTIVE_WORKFLOWS = Object.freeze([
   '202608301321-scope-loop.yml',
   '202608301321-verify-live.yml',
@@ -35,7 +40,8 @@ export const ACTIVE_WORKFLOWS = Object.freeze([
   '202608312212-cartridge-proof.yml',
   // v9.89: every Pipeline News arrival vocabulary is checked against the
   // composed Atlas receiver; this is permanent, node-only and bounded.
-  '202609030251-pipelinenews-arrival-contract.yml'
+  '202609030251-pipelinenews-arrival-contract.yml',
+  'rollback-composition.yml'
 ]);
 
 export function invariant(condition, message) {
