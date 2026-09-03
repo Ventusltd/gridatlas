@@ -1,0 +1,131 @@
+name: 202609030327 Integrate current main into v9.89 candidate
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - codex/202609030251-grid-data-v9-89
+    paths:
+      - '.github/workflows/202609030327-integrate-current-main-v9-89.yml'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: gridatlas-v9-89-integrate-main
+  cancel-in-progress: false
+
+jobs:
+  integrate-and-prove:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    defaults:
+      run:
+        working-directory: gridatlas
+    steps:
+      - name: Checkout the proven v9.89 candidate
+        uses: actions/checkout@v4
+        with:
+          path: gridatlas
+          fetch-depth: 0
+
+      - name: Checkout canonical distance maths beside GridAtlas
+        uses: actions/checkout@v4
+        with:
+          repository: Ventusltd/grid-distance-maths
+          path: grid-distance-maths
+
+      - name: Checkout the audited Pipeline News state beside GridAtlas
+        uses: actions/checkout@v4
+        with:
+          repository: Ventusltd/pipelinenews
+          ref: 1a9868e76f970f20590a4110acc337e92d360f94
+          path: pipelinenews
+
+      - name: Use Node 24
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+
+      - name: Merge the exact reviewed main head and resolve two derived files
+        env:
+          REVIEWED_MAIN: cc449d584eb3896c10ff180ca020c5a515595308
+        run: |
+          git config user.name "gridatlas-v9-89-integrator"
+          git config user.email "actions@users.noreply.github.com"
+          git fetch origin main
+          git cat-file -e "$REVIEWED_MAIN^{commit}"
+          git merge-base --is-ancestor 8fb95a2138010851039a1d648e730f1e10889576 "$REVIEWED_MAIN"
+
+          set +e
+          git merge --no-commit --no-ff "$REVIEWED_MAIN"
+          merge_status=$?
+          set -e
+
+          mapfile -t conflicts < <(git diff --name-only --diff-filter=U | sort)
+          printf 'merge status %s; conflicts: %s\n' "$merge_status" "${conflicts[*]:-none}"
+          expected=(STATE.md tools/scope/lib.mjs)
+          if [[ "${conflicts[*]}" != "${expected[*]}" ]]; then
+            echo "unexpected merge conflict set"
+            git merge --abort || true
+            exit 1
+          fi
+
+          git checkout --ours -- STATE.md tools/scope/lib.mjs
+          node <<'NODE'
+          const fs = require('node:fs');
+          const file = 'tools/scope/lib.mjs';
+          let text = fs.readFileSync(file, 'utf8').replace(/\r\n/g, '\n');
+          if (!text.includes("'202609030251-pipelinenews-arrival-contract.yml'")) {
+            throw new Error('candidate arrival workflow is missing from the workflow budget');
+          }
+          if (!text.includes("'rollback-composition.yml'")) {
+            const marker = 'export const ACTIVE_WORKFLOWS = Object.freeze([';
+            const comment = `//\n// rollback-composition.yml earns its place because every other entry can\n// only move the live pointer forwards. It cuts a new, append-only generation\n// from a previously shipped and digest-verified composition, so a bad release\n// can be withdrawn without hand-editing atlas/current.json.\n`;
+            if (!text.includes(marker)) throw new Error('workflow budget marker is missing');
+            text = text.replace(marker, `${comment}${marker}`);
+            const tail = "  '202609030251-pipelinenews-arrival-contract.yml'\n]);";
+            const next = "  '202609030251-pipelinenews-arrival-contract.yml',\n  'rollback-composition.yml'\n]);";
+            if (!text.includes(tail)) throw new Error('arrival workflow budget tail is missing');
+            text = text.replace(tail, next);
+          }
+          fs.writeFileSync(file, text, 'utf8');
+          NODE
+
+          rm .github/workflows/202609030327-integrate-current-main-v9-89.yml
+          git add -A
+          if git diff --name-only --diff-filter=U | grep .; then
+            echo "unresolved merge paths remain"
+            exit 1
+          fi
+
+      - name: Regenerate state and prove the merged candidate
+        run: |
+          node tools/scope/loop.mjs state
+          node tools/scope/verify-compose.mjs
+          node tools/proofs/run-current.mjs
+          node tools/scope/loop.mjs lint
+          cp STATE.md /tmp/STATE.md.before
+          node tools/scope/loop.mjs state
+          cmp -s /tmp/STATE.md.before STATE.md
+          node tools/proofs/202609030251-pipelinenews-arrival-contract.mjs \
+            --pipelinenews ../pipelinenews \
+            --release 202609030009-pipelinenews
+          node --check tools/scope/verify-live.mjs
+          node tools/rollback.mjs --to 202609030234 \
+            --reason "v9.89 integration dry-run" --dry-run
+          if git ls-files --eol | grep -E 'i/crlf|i/mixed|w/crlf|w/mixed'; then
+            echo "a tracked text file is not LF"
+            exit 1
+          fi
+
+      - name: Commit the reviewed-main integration
+        run: |
+          git add -A
+          git diff --cached --check -- . \
+            ':(exclude,glob)atlas/cartridges/*-substation-intelligence-v9-63.js' \
+            ':(exclude,glob)atlas/parts/*-pipelinenews-arrival-engine.js'
+          git commit -m "merge: retain current safety controls in v9.89 candidate" \
+            -m "Merge main through cc449d584eb3896c10ff180ca020c5a515595308. Preserve the append-only rollback mechanism and the derived live-composition verifier alongside the proven Pipeline News arrival contract. All 806 cartridge checks, the 16-check cross-repository contract and rollback dry-run pass before push."
+          git push origin HEAD:${GITHUB_REF_NAME}
