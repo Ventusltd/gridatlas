@@ -9,7 +9,7 @@ const FINDING_FIELDS = Object.freeze([
 ]);
 const FINDING_TYPES = new Set([
   'declared_connection', 'nearest_connection_point', 'mapped_segment',
-  'published_network_fact', 'model_result', 'unknown'
+  'published_network_fact', 'model_result', 'road_route', 'corridor_estimate', 'unknown'
 ]);
 const EVIDENCE_CLASSES = new Set(['published_fact', 'measurement', 'model_result', 'unknown']);
 const EVIDENCE_CLASS_BY_TYPE = Object.freeze({
@@ -18,6 +18,8 @@ const EVIDENCE_CLASS_BY_TYPE = Object.freeze({
   mapped_segment: 'measurement',
   published_network_fact: 'published_fact',
   model_result: 'model_result',
+  road_route: 'unknown',
+  corridor_estimate: 'unknown',
   unknown: 'unknown'
 });
 const PROVENANCE_FIELDS = Object.freeze(['bytes', 'release', 'sha256', 'source_id']);
@@ -254,7 +256,7 @@ export function validateFinding(input) {
     throw new TypeError('evidenced findings require provenance');
   }
   if (input.status === 'available') {
-    if (input.type === 'unknown' || input.value === null
+    if (input.evidence_class === 'unknown' || input.value === null
         || !['string', 'number', 'boolean'].includes(typeof input.value)
         || (typeof input.value === 'number' && !Number.isFinite(input.value))
         || (typeof input.value === 'string' && (!input.value || input.value !== input.value.trim()
@@ -269,7 +271,7 @@ export function validateFinding(input) {
       && (typeof input.value !== 'number' || input.value < 0 || input.unit !== 'km')) {
     throw new TypeError('distance measurement requires a non-negative number in km');
   }
-  if (input.type === 'unknown' && input.provenance.length !== 0) {
+  if (input.evidence_class === 'unknown' && input.provenance.length !== 0) {
     throw new TypeError('unknown finding cannot claim evidence provenance');
   }
   if (input.unit !== null && (typeof input.unit !== 'string' || !input.unit.trim())) {
@@ -352,6 +354,31 @@ export function createDistanceFinding({
     unit: 'km',
     qualifiers: [...qualifiers, 'STRAIGHT_LINE_DISTANCE', 'PROXIMITY_IS_NOT_CONNECTION'],
     provenance
+  });
+}
+
+/** Road distance is unavailable until a pinned graph and routing receipt exist. */
+export function createRoadRouteFinding(selectionRevision) {
+  return validateFinding({
+    type: 'road_route', evidence_class: 'unknown', status: 'withheld',
+    selection_revision: selectionRevision, value: null, unit: null,
+    qualifiers: ['ROAD_ROUTE_NOT_COMPUTED', 'AUTHORITATIVE_ROAD_GRAPH_UNAVAILABLE'],
+    provenance: []
+  });
+}
+
+/** Refuse to reuse the 1.245 buried-circuit calibration for incompatible geometry. */
+export function createCorridorEstimateFinding(selectionRevision, basis) {
+  const disallowed = new Set([
+    'arbitrary_click_to_line', 'straight_line_to_substation',
+    'overhead_or_unknown_asset', 'unvalidated_route'
+  ]);
+  if (!disallowed.has(basis)) throw new TypeError('corridor estimate basis is unsupported');
+  return validateFinding({
+    type: 'corridor_estimate', evidence_class: 'unknown', status: 'withheld',
+    selection_revision: selectionRevision, value: null, unit: null,
+    qualifiers: ['CORRIDOR_ESTIMATE_NOT_COMPUTED', 'CALIBRATION_1_245_NOT_APPLICABLE', basis],
+    provenance: []
   });
 }
 

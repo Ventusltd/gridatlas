@@ -8,6 +8,8 @@ import {
   createFindingLoop,
   createProjectIndex,
   createProjectRegister,
+  createRoadRouteFinding,
+  createCorridorEstimateFinding,
   createSelectionStore,
   decodeSelection,
   encodeSelection,
@@ -217,6 +219,20 @@ for (const [type, evidenceClass] of [
   try { validateFinding({ ...finding, evidence_class: evidenceClass === 'unknown' ? 'measurement' : 'unknown' }); } catch { mismatchRejected = true; }
   check(`${type} rejects a mismatched evidence class`, mismatchRejected);
 }
+
+const roadRoute = createRoadRouteFinding(1);
+check('road route is explicitly not computed without an authoritative graph',
+  roadRoute.type === 'road_route' && roadRoute.status === 'withheld'
+    && roadRoute.value === null && roadRoute.unit === null
+    && roadRoute.qualifiers.includes('ROAD_ROUTE_NOT_COMPUTED'));
+const corridorEstimate = createCorridorEstimateFinding(1, 'straight_line_to_substation');
+check('1.245 calibration is withheld for straight-line substation geometry',
+  corridorEstimate.type === 'corridor_estimate' && corridorEstimate.value === null
+    && corridorEstimate.qualifiers.includes('CALIBRATION_1_245_NOT_APPLICABLE')
+    && !JSON.stringify(corridorEstimate).includes('35.9'));
+let inventedCorridorBasisRejected = false;
+try { createCorridorEstimateFinding(1, 'road_graph'); } catch { inventedCorridorBasisRejected = true; }
+check('corridor estimator rejects an unproved basis', inventedCorridorBasisRejected);
 
 const pinned = validateProvenance(evidence);
 check('pinned provenance is accepted and frozen',
@@ -581,4 +597,4 @@ check('distinct nearest candidate is available', unique.status === 'available' &
 const absent = resolveNearestCandidate([], { idField: 'site_code' });
 check('empty population is withheld', absent.reason === 'NO_CANDIDATE' && absent.value === null);
 
-console.log(JSON.stringify({ status: 'PASS', iteration: 28, checks }));
+console.log(JSON.stringify({ status: 'PASS', iteration: 29, checks }));
