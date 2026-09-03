@@ -313,6 +313,11 @@ check('project request resolves through exact repd_ref',
   projectRequest.project.repd_ref === 'A' && projectRequest.kind === 'project_finding_request');
 check('project request retains its source evidence',
   projectRequest.source.sha256 === digest && projectRequest.source.source_id === 'project_register');
+let staleReleaseRejected = false;
+try {
+  projectFindingRequest({ kind: 'project', repd_ref: 'A', source_release: 'b'.repeat(64) }, projectIndex);
+} catch { staleReleaseRejected = true; }
+check('project request rejects a selection from another register release', staleReleaseRejected);
 let absentProjectRejected = false;
 try {
   projectFindingRequest({ kind: 'project', repd_ref: 'MISSING', source_release: digest }, projectIndex);
@@ -409,4 +414,4 @@ check('distinct nearest candidate is available', unique.status === 'available' &
 const absent = resolveNearestCandidate([], { idField: 'site_code' });
 check('empty population is withheld', absent.reason === 'NO_CANDIDATE' && absent.value === null);
 
-console.log(JSON.stringify({ status: 'PASS', iteration: 20, checks }));
+console.log(JSON.stringify({ status: 'PASS', iteration: 21, checks }));

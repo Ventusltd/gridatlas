@@ -403,6 +403,10 @@ export function createProjectIndex(register) {
 /** Resolve a project selection into a query request through exact identity. */
 export function projectFindingRequest(selection, projectIndex) {
   const selected = validateSelection(selection);
+  if (!projectIndex || !projectIndex.source
+      || selected.source_release !== projectIndex.source.sha256) {
+    throw new TypeError('project selection and register release do not match');
+  }
   const project = projectIndex.get(selected.repd_ref);
   if (!project) throw new TypeError('project is absent from the pinned register');
   return Object.freeze({
