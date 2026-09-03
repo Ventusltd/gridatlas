@@ -32,7 +32,10 @@ export const ACTIVE_WORKFLOWS = Object.freeze([
   '202608301321-verify-live.yml',
   '202608310015-gridatlas-overnight-next-versions.yml',
   '202608310050-gridatlas-next-version-builders.yml',
-  '202608312212-cartridge-proof.yml'
+  '202608312212-cartridge-proof.yml',
+  // v9.89: every Pipeline News arrival vocabulary is checked against the
+  // composed Atlas receiver; this is permanent, node-only and bounded.
+  '202609030251-pipelinenews-arrival-contract.yml'
 ]);
 
 export function invariant(condition, message) {

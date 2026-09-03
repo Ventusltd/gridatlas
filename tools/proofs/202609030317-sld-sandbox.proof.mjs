@@ -1435,24 +1435,36 @@ check('and the header still explains why it was removed',
 /* Comment-stripped, the same way `code` is, so a radius named only
    in prose is not counted as a declaration.
 
-   The carried V8 engine declares its own radius at its line 32 and
-   is carried VERBATIM by contract - a cartridge in a replace-script
-   slot reproduces the shell script it supersedes byte for byte, and
-   editing it would break the one guarantee that slot makes. So it
-   is subtracted rather than counted: the claim is that the estate
-   declares ONE radius in its own code, not that the shell it wraps
-   has none. Pretending otherwise would mean either a false pass or
-   an unfixable failure. */
-const carriedEngine = await readFile(join(REPO, 'atlas', 'releases',
-  '202608300453-atlas-v9', 'ventus-corev8engine.js'), 'utf8');
+   The carried V8 engine declares its own radius at its line 32. From
+   v9.89 the parts manifest may name a generation-stamped successor
+   whose only permitted divergence is separately proven. The proof
+   therefore subtracts the exact engine bytes declared by the current
+   parts manifest, not a hard-coded historical path. The claim remains
+   that the estate declares ONE radius in its own code, in addition to
+   the shell radius carried through the engine slot. */
+const substationEntry = (CURRENT.cartridges || [])
+  .find(entry => entry.id === 'substation-intelligence');
+const substationPartsPath = substationEntry?.assembled_from
+  ? join(REPO, 'atlas', String(substationEntry.assembled_from).replace(/^\.\//, ''))
+  : null;
+const substationParts = substationPartsPath
+  ? JSON.parse(await readFile(substationPartsPath, 'utf8'))
+  : null;
+const carriedEngineEntry = (substationParts?.assembled_from || [])
+  .find(entry => entry.role === 'carried_shell_script');
+const carriedEngine = carriedEngineEntry
+  ? await readPublished(join(REPO, carriedEngineEntry.path))
+  : '';
 const composedCode = composedSource
-  .split(carriedEngine.split('\r\n').join('\n')).join(' ')
+  .split(carriedEngine).join(' ')
   .replace(/\/\*[\s\S]*?\*\//g, '')
   .replace(/(^|[^:])\/\/[^\n]*/g, '$1');
 check('the estate declares an Earth radius exactly ONCE across the composition',
   (composedCode.match(/=\s*6378\.137/g) || []).length === 1,
   `${(composedCode.match(/=\s*6378\.137/g) || []).length} declarations outside the carried engine`);
-check('and the carried engine still has its own, untouched',
+check('the parts manifest declares the engine successor whose shell radius is excluded',
+  Boolean(carriedEngineEntry) && carriedEngine.length > 80000);
+check("and that engine successor still has the shell's one Earth radius",
   (carriedEngine.match(/=\s*6378\.137/g) || []).length === 1);
 check('the body takes the radius and the distance from the geodesy module',
   /const R_ATLAS = GEODESY\.EARTH_RADIUS_KM;/.test(src)
@@ -3198,8 +3210,9 @@ check('the ownership state is published for review',
     && /gridatlas\.module\.planned-change/.test(subSource));
   check('the new owner-boundary module is there too',
     /gridatlas\.module\.owner-boundary/.test(subSource));
-  check('it still carries the V8 engine verbatim, which is its slot contract',
-    subSource.includes('PART 2 - the network, as its operator publishes it'));
+  check('it carries the parts-manifest engine successor through the same shell slot',
+    Boolean(carriedEngineEntry) && subSource.includes(carriedEngine)
+    && subSource.includes('PART 2 - the network, as its operator publishes it'));
   check('it is under the boundary as well',
     subSource.length < 400000, `${subSource.length} bytes`);
 }
