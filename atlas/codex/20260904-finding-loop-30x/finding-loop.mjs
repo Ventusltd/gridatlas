@@ -139,9 +139,25 @@ export function validateSubstationSelection(input) {
 
 /** Dispatch the discriminated union without coercing an unknown kind. */
 export function validateAnySelection(input) {
-  if (input?.kind === 'project') return validateSelection(input);
-  if (input?.kind === 'location') return validateCoordinateSelection(input);
-  if (input?.kind === 'substation') return validateSubstationSelection(input);
+  if (input === null || typeof input !== 'object' || Array.isArray(input)) {
+    throw new TypeError('selection must be an object');
+  }
+  const prototype = Object.getPrototypeOf(input);
+  if (prototype !== Object.prototype && prototype !== null
+      || Object.getOwnPropertySymbols(input).length) {
+    throw new TypeError('selection must be a plain string-keyed object');
+  }
+  const descriptors = Object.getOwnPropertyDescriptors(input);
+  if (!Object.hasOwn(descriptors, 'kind') || !Object.hasOwn(descriptors.kind, 'value')) {
+    throw new TypeError('selection kind must be a data property');
+  }
+  const copy = Object.fromEntries(Object.entries(descriptors).map(([key, descriptor]) => {
+    if (!Object.hasOwn(descriptor, 'value')) throw new TypeError(`selection field ${key} must be a data property`);
+    return [key, descriptor.value];
+  }));
+  if (descriptors.kind.value === 'project') return validateSelection(copy);
+  if (descriptors.kind.value === 'location') return validateCoordinateSelection(copy);
+  if (descriptors.kind.value === 'substation') return validateSubstationSelection(copy);
   throw new TypeError('selection kind is unsupported');
 }
 

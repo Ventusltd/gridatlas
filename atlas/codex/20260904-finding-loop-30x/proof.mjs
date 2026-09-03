@@ -126,6 +126,21 @@ check('union dispatch accepts an exact substation',
 let unsupportedRejected = false;
 try { validateAnySelection({ kind: 'asset', id: 'plausible' }); } catch { unsupportedRejected = true; }
 check('union dispatch rejects unknown kinds', unsupportedRejected);
+let getterReads = 0;
+const getterSelection = Object.defineProperties({}, {
+  kind: { get() { getterReads += 1; return 'project'; }, enumerable: true },
+  repd_ref: { value: '13599', enumerable: true },
+  source_release: { value: digest, enumerable: true }
+});
+let getterRejected = false;
+try { validateAnySelection(getterSelection); } catch { getterRejected = true; }
+check('kind accessor is rejected without executing it', getterRejected && getterReads === 0);
+let proxyReads = 0;
+const proxiedSelection = new Proxy({
+  kind: 'project', repd_ref: '13599', source_release: digest
+}, { get(target, key, receiver) { proxyReads += 1; return Reflect.get(target, key, receiver); } });
+check('dispatch validates a descriptor snapshot without property reads',
+  validateAnySelection(proxiedSelection).repd_ref === '13599' && proxyReads === 0);
 
 for (const selection of [accepted, location, substation]) {
   const encoded = encodeSelection(selection);
@@ -336,4 +351,4 @@ check('distinct nearest candidate is available', unique.status === 'available' &
 const absent = resolveNearestCandidate([], { idField: 'site_code' });
 check('empty population is withheld', absent.reason === 'NO_CANDIDATE' && absent.value === null);
 
-console.log(JSON.stringify({ status: 'PASS', iteration: 15, checks }));
+console.log(JSON.stringify({ status: 'PASS', iteration: 16, checks }));
