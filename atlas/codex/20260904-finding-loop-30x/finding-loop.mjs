@@ -588,6 +588,48 @@ export function createProjectRegister(rows, provenance) {
   return Object.freeze({ source, projects: Object.freeze(projects) });
 }
 
+/** Boundary adapter from the immutable Grid registry document into strict core rows. */
+export function createProjectRegisterFromDocument(document, provenance) {
+  const source = validateProvenance(provenance);
+  if (document === null || typeof document !== 'object' || Array.isArray(document)
+      || !Array.isArray(document.records)
+      || document.schema !== 'gridatlas.browser-registry.v1'
+      || typeof document.generation !== 'string' || !/^\d{12}$/.test(document.generation)
+      || source.source_id !== 'project_register'
+      || source.release !== `${document.generation}:data/repd_browser_registry_${document.generation}.json`) {
+    throw new TypeError('project register document and pinned generation disagree');
+  }
+  const rows = document.records.map((record) => {
+    if (record === null || typeof record !== 'object' || Array.isArray(record)) {
+      throw new TypeError('project register source row is invalid');
+    }
+    if (typeof record.name !== 'string' || !record.name
+        || record.name !== record.name.trim() || CONTROL_CHARACTER.test(record.name)
+        || (record.repd_operator_or_applicant !== null
+          && (typeof record.repd_operator_or_applicant !== 'string'
+            || !record.repd_operator_or_applicant
+            || record.repd_operator_or_applicant !== record.repd_operator_or_applicant.trim()
+            || CONTROL_CHARACTER.test(record.repd_operator_or_applicant)))
+        || typeof record.capacity_mw !== 'number' || !Number.isFinite(record.capacity_mw)
+        || record.capacity_mw < 0
+        || typeof record.status !== 'string' || !record.status
+        || record.status !== record.status.trim() || CONTROL_CHARACTER.test(record.status)) {
+      throw new TypeError('project register source facts are malformed');
+    }
+    return {
+      repd_ref: record.repd_ref,
+      longitude: record.longitude,
+      latitude: record.latitude,
+      technology: record.technology,
+      name: record.name,
+      operator: record.repd_operator_or_applicant,
+      capacity_mw: record.capacity_mw,
+      status: record.status
+    };
+  });
+  return createProjectRegister(rows, source);
+}
+
 /** Exact identity lookup without replacing the complete nearby-search population. */
 export function createProjectIndex(register) {
   if (!register || !Array.isArray(register.projects) || !register.source) {

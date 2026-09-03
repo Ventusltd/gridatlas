@@ -11,6 +11,7 @@ import {
   createProjectIndex,
   createProjectArrivalAdapter,
   createProjectRegister,
+  createProjectRegisterFromDocument,
   createRoadRouteFinding,
   createCorridorEstimateFinding,
   createSelectionStore,
@@ -510,6 +511,56 @@ const gridRegisterSource = Object.freeze({
   release: '202608290716:data/repd_browser_registry_202608290716.json',
   sha256: gridRegisterDigest, bytes: 9328402
 });
+const fullGridRegister = createProjectRegisterFromDocument(gridRegisterDocument, gridRegisterSource);
+check('full pinned Grid register survives the strict boundary adapter',
+  fullGridRegister.projects.length === 11069
+    && new Set(fullGridRegister.projects.map((row) => row.technology)).size === 14);
+let malformedDocumentRejected = false;
+try {
+  createProjectRegisterFromDocument({
+    schema: 'gridatlas.browser-registry.v1', generation: '202608290716',
+    records: [{ repd_ref: 'x', longitude: 0, latitude: 0, technology: 'solar',
+      name: 'fixture', repd_operator_or_applicant: null, capacity_mw: '65', status: 'operational' }]
+  }, gridRegisterSource);
+} catch { malformedDocumentRejected = true; }
+check('register boundary rejects malformed published facts instead of dropping them',
+  malformedDocumentRejected);
+const fullGridIndex = createProjectIndex(fullGridRegister);
+const fullGridEngine = createGridFindingEngine({
+  projectIndex: fullGridIndex,
+  substationFeatures: substationDocument.features,
+  provenance: substationEvidence
+});
+for (const technology of PROJECT_TECHNOLOGIES) {
+  const representative = fullGridRegister.projects.find((row) => row.technology === technology);
+  const result = fullGridEngine.queryProfiles({
+    selection: {
+      kind: 'project', repd_ref: representative.repd_ref,
+      source_release: fullGridRegister.source.sha256
+    },
+    revision: 1
+  });
+  check(`${technology} real project invokes the shared grid engine`,
+    result.state === 'RESULT' && result.profiles.every((profile) => profile.state === 'RESULT'));
+}
+const unknownEngineRegister = createProjectRegister([{
+  repd_ref: 'unknown-test-fixture', longitude: -1, latitude: 52,
+  technology: 'future_test_fixture'
+}], gridRegisterSource);
+const unknownEngine = createGridFindingEngine({
+  projectIndex: createProjectIndex(unknownEngineRegister),
+  substationFeatures: substationDocument.features,
+  provenance: substationEvidence
+});
+const unknownEngineResult = unknownEngine.queryProfiles({
+  selection: {
+    kind: 'project', repd_ref: 'unknown-test-fixture',
+    source_release: gridRegisterSource.sha256
+  }, revision: 1
+});
+check('unknown project technology does not block shared grid computation',
+  unknownEngineResult.state === 'RESULT'
+    && unknownEngineResult.profiles.every((profile) => profile.state === 'RESULT'));
 const markinchRegister = createProjectRegister([{
   repd_ref: markinchRecord.repd_ref,
   longitude: markinchRecord.longitude,
@@ -759,4 +810,4 @@ check('distinct nearest candidate is available', unique.status === 'available' &
 const absent = resolveNearestCandidate([], { idField: 'site_code' });
 check('empty population is withheld', absent.reason === 'NO_CANDIDATE' && absent.value === null);
 
-console.log(JSON.stringify({ status: 'PASS', iteration: 33, checks }));
+console.log(JSON.stringify({ status: 'PASS', iteration: 34, checks }));
