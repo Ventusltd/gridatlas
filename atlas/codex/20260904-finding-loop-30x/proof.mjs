@@ -4,7 +4,8 @@ import {
   validateAnySelection,
   validateCoordinateSelection,
   validateSelection,
-  validateSubstationSelection
+  validateSubstationSelection,
+  validateFinding
 } from './finding-loop.mjs';
 
 let checks = 0;
@@ -102,4 +103,28 @@ let duplicateQueryRejected = false;
 try { decodeSelection(`kind=project&repd_ref=13599&repd_ref=other&source_release=${digest}`); } catch { duplicateQueryRejected = true; }
 check('duplicate identity field is rejected', duplicateQueryRejected);
 
-console.log(JSON.stringify({ status: 'PASS', iteration: 5, checks }));
+const measurement = validateFinding({
+  type: 'nearest_connection_point', evidence_class: 'measurement', status: 'available',
+  selection_revision: 1, value: 3.2, unit: 'km', qualifiers: ['test fixture'], provenance: []
+});
+check('typed available finding is accepted', measurement.value === 3.2);
+check('finding collections are immutable',
+  Object.isFrozen(measurement.qualifiers) && Object.isFrozen(measurement.provenance));
+const withheld = validateFinding({
+  type: 'unknown', evidence_class: 'unknown', status: 'withheld',
+  selection_revision: 1, value: null, unit: null, qualifiers: ['SOURCE_UNAVAILABLE'], provenance: []
+});
+check('typed withheld finding has no numeric answer', withheld.value === null);
+for (const [label, value] of [
+  ['unknown finding type is rejected', { ...measurement, type: 'answer' }],
+  ['zero revision is rejected', { ...measurement, selection_revision: 0 }],
+  ['available null value is rejected', { ...measurement, value: null }],
+  ['withheld numeric value is rejected', { ...withheld, value: 12, unit: 'km' }],
+  ['extra presentation field is rejected', { ...measurement, headline: 'plausible' }]
+]) {
+  let rejected = false;
+  try { validateFinding(value); } catch { rejected = true; }
+  check(label, rejected);
+}
+
+console.log(JSON.stringify({ status: 'PASS', iteration: 6, checks }));

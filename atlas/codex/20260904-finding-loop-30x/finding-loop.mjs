@@ -3,6 +3,15 @@ const LOCATION_FIELDS = Object.freeze(['coordinate_origin', 'kind', 'latitude', 
 const SUBSTATION_FIELDS = Object.freeze(['kind', 'site_code', 'source_release']);
 const SHA256 = /^[0-9a-f]{64}$/;
 const CONTROL_CHARACTER = /[\u0000-\u001f\u007f]/;
+const FINDING_FIELDS = Object.freeze([
+  'evidence_class', 'provenance', 'qualifiers', 'selection_revision',
+  'status', 'type', 'unit', 'value'
+]);
+const FINDING_TYPES = new Set([
+  'declared_connection', 'nearest_connection_point', 'mapped_segment',
+  'published_network_fact', 'model_result', 'unknown'
+]);
+const EVIDENCE_CLASSES = new Set(['published_fact', 'measurement', 'model_result', 'unknown']);
 
 /**
  * Validate the transport contract for an exact project selection.
@@ -163,4 +172,43 @@ export function decodeSelection(text) {
     return validateSubstationSelection({ kind, site_code: query.get('site_code'), source_release: query.get('source_release') });
   }
   return validateCoordinateSelection({ kind, longitude: query.get('longitude'), latitude: query.get('latitude'), coordinate_origin: query.get('coordinate_origin') });
+}
+
+/** Validate the common result envelope before any view can render it. */
+export function validateFinding(input) {
+  if (input === null || typeof input !== 'object' || Array.isArray(input)
+      || (Object.getPrototypeOf(input) !== Object.prototype && Object.getPrototypeOf(input) !== null)
+      || Object.getOwnPropertySymbols(input).length) {
+    throw new TypeError('finding must be a plain string-keyed object');
+  }
+  const descriptors = Object.getOwnPropertyDescriptors(input);
+  const fields = Object.keys(descriptors).sort();
+  if (fields.length !== FINDING_FIELDS.length
+      || fields.some((field, index) => field !== FINDING_FIELDS[index])
+      || FINDING_FIELDS.some((field) => !Object.hasOwn(descriptors[field], 'value'))) {
+    throw new TypeError('finding fields are unexpected, missing, or unsafe');
+  }
+  if (!FINDING_TYPES.has(input.type) || !EVIDENCE_CLASSES.has(input.evidence_class)) {
+    throw new TypeError('finding discriminator is invalid');
+  }
+  if (!['available', 'withheld', 'failed'].includes(input.status)) {
+    throw new TypeError('finding status is invalid');
+  }
+  if (!Number.isInteger(input.selection_revision) || input.selection_revision < 1) {
+    throw new TypeError('selection_revision must be a positive integer');
+  }
+  if (!Array.isArray(input.qualifiers) || input.qualifiers.some((item) => typeof item !== 'string')) {
+    throw new TypeError('qualifiers must be strings');
+  }
+  if (!Array.isArray(input.provenance)) throw new TypeError('provenance must be an array');
+  if (input.status === 'available' ? input.value === null : input.value !== null || input.unit !== null) {
+    throw new TypeError('finding value contradicts its status');
+  }
+  if (input.unit !== null && (typeof input.unit !== 'string' || !input.unit.trim())) {
+    throw new TypeError('unit must be null or a non-empty string');
+  }
+  return Object.freeze({ ...input,
+    qualifiers: Object.freeze([...input.qualifiers]),
+    provenance: Object.freeze([...input.provenance])
+  });
 }
