@@ -48,7 +48,7 @@ jobs:
         with:
           node-version: '24'
 
-      - name: Merge the exact reviewed main head and resolve two derived files
+      - name: Merge the exact reviewed main head and resolve its measured conflict
         env:
           REVIEWED_MAIN: cc449d584eb3896c10ff180ca020c5a515595308
         run: |
@@ -65,14 +65,14 @@ jobs:
 
           mapfile -t conflicts < <(git diff --name-only --diff-filter=U | sort)
           printf 'merge status %s; conflicts: %s\n' "$merge_status" "${conflicts[*]:-none}"
-          expected=(STATE.md tools/scope/lib.mjs)
+          expected=(tools/scope/lib.mjs)
           if [[ "${conflicts[*]}" != "${expected[*]}" ]]; then
             echo "unexpected merge conflict set"
             git merge --abort || true
             exit 1
           fi
 
-          git checkout --ours -- STATE.md tools/scope/lib.mjs
+          git checkout --ours -- tools/scope/lib.mjs
           node <<'NODE'
           const fs = require('node:fs');
           const file = 'tools/scope/lib.mjs';
