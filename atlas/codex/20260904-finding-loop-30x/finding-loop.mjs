@@ -1,4 +1,5 @@
 const PROJECT_FIELDS = Object.freeze(['kind', 'repd_ref', 'source_release']);
+const LOCATION_FIELDS = Object.freeze(['coordinate_origin', 'kind', 'latitude', 'longitude']);
 const SHA256 = /^[0-9a-f]{64}$/;
 const CONTROL_CHARACTER = /[\u0000-\u001f\u007f]/;
 
@@ -43,4 +44,42 @@ export function validateSelection(input) {
   }
 
   return Object.freeze({ kind: 'project', repd_ref: repdRef, source_release: sourceRelease });
+}
+
+/** Validate an explicitly unidentified coordinate selection. */
+export function validateCoordinateSelection(input) {
+  if (input === null || typeof input !== 'object' || Array.isArray(input)) {
+    throw new TypeError('coordinate selection must be an object');
+  }
+  const prototype = Object.getPrototypeOf(input);
+  if (prototype !== Object.prototype && prototype !== null) {
+    throw new TypeError('coordinate selection must be a plain object');
+  }
+  if (Object.getOwnPropertySymbols(input).length) {
+    throw new TypeError('coordinate selection cannot contain symbol fields');
+  }
+  const descriptors = Object.getOwnPropertyDescriptors(input);
+  const fields = Object.keys(descriptors).sort();
+  if (fields.length !== LOCATION_FIELDS.length
+      || fields.some((field, index) => field !== LOCATION_FIELDS[index])) {
+    throw new TypeError('coordinate selection has unexpected or missing fields');
+  }
+  if (LOCATION_FIELDS.some((field) => !Object.hasOwn(descriptors[field], 'value'))) {
+    throw new TypeError('coordinate selection fields must be data properties');
+  }
+  if (input.kind !== 'location') throw new TypeError('coordinate selection kind must be location');
+  if (!['user_input', 'mapped_feature'].includes(input.coordinate_origin)) {
+    throw new TypeError('coordinate_origin is invalid');
+  }
+  const longitude = Number(input.longitude);
+  const latitude = Number(input.latitude);
+  if (!Number.isFinite(longitude) || longitude < -180 || longitude > 180) {
+    throw new TypeError('longitude is invalid');
+  }
+  if (!Number.isFinite(latitude) || latitude < -90 || latitude > 90) {
+    throw new TypeError('latitude is invalid');
+  }
+  return Object.freeze({
+    kind: 'location', longitude, latitude, coordinate_origin: input.coordinate_origin
+  });
 }

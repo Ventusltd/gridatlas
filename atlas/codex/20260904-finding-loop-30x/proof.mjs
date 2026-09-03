@@ -1,4 +1,4 @@
-import { validateSelection } from './finding-loop.mjs';
+import { validateCoordinateSelection, validateSelection } from './finding-loop.mjs';
 
 let checks = 0;
 function check(label, condition) {
@@ -36,4 +36,23 @@ rejects('accessor fields are rejected', Object.defineProperties({}, {
 }));
 rejects('arrays are rejected', ['project', '13599', digest]);
 
-console.log(JSON.stringify({ status: 'PASS', iteration: 1, checks }));
+const location = validateCoordinateSelection({
+  kind: 'location', longitude: -1.5, latitude: 52.4, coordinate_origin: 'user_input'
+});
+check('coordinate-only selection is accepted', location.kind === 'location');
+check('coordinate-only selection carries no asset identity',
+  !Object.hasOwn(location, 'repd_ref') && !Object.hasOwn(location, 'site_code'));
+check('coordinate output is immutable', Object.isFrozen(location));
+for (const [label, value] of [
+  ['out-of-range longitude is rejected', { kind: 'location', longitude: 181, latitude: 0, coordinate_origin: 'user_input' }],
+  ['out-of-range latitude is rejected', { kind: 'location', longitude: 0, latitude: 91, coordinate_origin: 'user_input' }],
+  ['non-finite coordinates are rejected', { kind: 'location', longitude: 'not-a-number', latitude: 0, coordinate_origin: 'user_input' }],
+  ['project authority is rejected for a location', { kind: 'location', longitude: 0, latitude: 0, coordinate_origin: 'project_register' }],
+  ['asset identity is rejected on a location', { kind: 'location', longitude: 0, latitude: 0, coordinate_origin: 'user_input', repd_ref: '13599' }]
+]) {
+  let rejected = false;
+  try { validateCoordinateSelection(value); } catch { rejected = true; }
+  check(label, rejected);
+}
+
+console.log(JSON.stringify({ status: 'PASS', iteration: 2, checks }));
