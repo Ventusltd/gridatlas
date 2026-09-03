@@ -1,6 +1,6 @@
 const PROJECT_FIELDS = Object.freeze(['kind', 'repd_ref', 'source_release']);
 const LOCATION_FIELDS = Object.freeze(['coordinate_origin', 'kind', 'latitude', 'longitude']);
-const SUBSTATION_FIELDS = Object.freeze(['kind', 'site_code', 'source_release']);
+const SUBSTATION_FIELDS = Object.freeze(['kind', 'source_feature_id', 'source_release']);
 const SHA256 = /^[0-9a-f]{64}$/;
 const CONTROL_CHARACTER = /[\u0000-\u001f\u007f]/;
 const FINDING_FIELDS = Object.freeze([
@@ -154,16 +154,18 @@ export function validateSubstationSelection(input) {
   if (SUBSTATION_FIELDS.some((field) => !Object.hasOwn(descriptors[field], 'value'))) {
     throw new TypeError('substation selection fields must be data properties');
   }
-  const { kind, site_code: siteCode, source_release: sourceRelease } = input;
+  const { kind, source_feature_id: sourceFeatureId, source_release: sourceRelease } = input;
   if (kind !== 'substation') throw new TypeError('selection kind must be substation');
-  if (typeof siteCode !== 'string' || siteCode.length === 0
-      || siteCode !== siteCode.trim() || CONTROL_CHARACTER.test(siteCode)) {
-    throw new TypeError('site_code must be a non-empty canonical string');
+  if (typeof sourceFeatureId !== 'string' || sourceFeatureId.length === 0
+      || sourceFeatureId !== sourceFeatureId.trim() || CONTROL_CHARACTER.test(sourceFeatureId)) {
+    throw new TypeError('source_feature_id must be a non-empty canonical string');
   }
   if (typeof sourceRelease !== 'string' || !SHA256.test(sourceRelease)) {
     throw new TypeError('source_release must be a lowercase SHA-256 digest');
   }
-  return Object.freeze({ kind: 'substation', site_code: siteCode, source_release: sourceRelease });
+  return Object.freeze({
+    kind: 'substation', source_feature_id: sourceFeatureId, source_release: sourceRelease
+  });
 }
 
 /** Dispatch the discriminated union without coercing an unknown kind. */
@@ -199,7 +201,7 @@ export function encodeSelection(input) {
     query.set('repd_ref', selection.repd_ref);
     query.set('source_release', selection.source_release);
   } else if (selection.kind === 'substation') {
-    query.set('site_code', selection.site_code);
+    query.set('source_feature_id', selection.source_feature_id);
     query.set('source_release', selection.source_release);
   } else {
     query.set('longitude', String(selection.longitude));
@@ -225,7 +227,10 @@ export function decodeSelection(text) {
     return validateSelection({ kind, repd_ref: query.get('repd_ref'), source_release: query.get('source_release') });
   }
   if (kind === 'substation') {
-    return validateSubstationSelection({ kind, site_code: query.get('site_code'), source_release: query.get('source_release') });
+    return validateSubstationSelection({
+      kind, source_feature_id: query.get('source_feature_id'),
+      source_release: query.get('source_release')
+    });
   }
   const parseCoordinate = (name) => {
     const raw = query.get(name);
@@ -817,6 +822,10 @@ export function createGridFindingEngine({ projectIndex, substationFeatures, prov
       operator: canonicalNullable(feature.properties?.operator)
     });
   }).filter(Boolean);
+  const substationById = new Map(substations.map((site) => [site.id, site]));
+  if (substationById.size !== substations.length) {
+    throw new TypeError('substation source feature identity is not unique');
+  }
 
   const query = ({ selection, revision, minimum_voltage_kv: minimumVoltageKv, named_only: namedOnly = false }) => {
     if (!Number.isInteger(revision) || revision < 1
@@ -873,6 +882,19 @@ export function createGridFindingEngine({ projectIndex, substationFeatures, prov
   return Object.freeze({
     source,
     query,
+    getSubstation(sourceFeatureId) {
+      if (typeof sourceFeatureId !== 'string' || !sourceFeatureId
+          || sourceFeatureId !== sourceFeatureId.trim()
+          || CONTROL_CHARACTER.test(sourceFeatureId)) {
+        throw new TypeError('source_feature_id is required');
+      }
+      const site = substationById.get(sourceFeatureId);
+      if (!site) return null;
+      return Object.freeze({
+        target_id: site.id, target_name: site.name, operator: site.operator,
+        voltage_kv: site.voltage_kv, longitude: site.longitude, latitude: site.latitude
+      });
+    },
     queryProfiles({ selection, revision }) {
       const profiles = Object.freeze([
         query({ selection, revision, minimum_voltage_kv: 33 }),
@@ -1175,6 +1197,101 @@ export function createPipelineFindingAdapter(options) {
 /** World consumer delegates loading, computation and state semantics to the shared owner. */
 export function createWorldFindingAdapter(options) {
   return createSurfaceFindingAdapter('world', options);
+}
+
+/** Operable project → finding → substation → nearby → project journey with history requery. */
+export function createOperableFindingJourney({ projectIndex, projectRegister, engine }) {
+  if (!projectIndex || typeof projectIndex.get !== 'function'
+      || !projectRegister || !Array.isArray(projectRegister.projects)
+      || !engine || typeof engine.queryProfiles !== 'function'
+      || typeof engine.getSubstation !== 'function' || !engine.source
+      || projectIndex.source?.sha256 !== projectRegister.source?.sha256) {
+    throw new TypeError('journey requires the shared indexes and engine');
+  }
+  const selections = createSelectionStore();
+  let state = Object.freeze({ phase: 'NEVER_MEASURED', revision: 0 });
+  const projectResult = (selectionState) => {
+    const answer = engine.queryProfiles({
+      selection: selectionState.selection, revision: selectionState.revision
+    });
+    if (!answer || !Array.isArray(answer.profiles)) {
+      throw new TypeError('journey engine result is invalid');
+    }
+    state = Object.freeze({
+      phase: answer.state === 'RESULT' ? 'PROJECT_RESULT' : 'PROJECT_REASON',
+      revision: selectionState.revision,
+      selection: selectionState.selection,
+      project: projectIndex.get(selectionState.selection.repd_ref),
+      profiles: answer.profiles,
+      road_route: answer.road_route,
+      corridor_estimate: answer.corridor_estimate
+    });
+    return state;
+  };
+  const restore = (selectionState) => {
+    if (selectionState === null) return null;
+    if (selectionState.selection.kind === 'project') return projectResult(selectionState);
+    if (selectionState.selection.kind === 'substation') {
+      const target = engine.getSubstation(selectionState.selection.source_feature_id);
+      if (!target) throw new TypeError('restored substation target is unavailable');
+      state = Object.freeze({
+        phase: 'SUBSTATION', revision: selectionState.revision,
+        selection: selectionState.selection, target
+      });
+      return state;
+    }
+    throw new TypeError('journey cannot restore this selection kind');
+  };
+  return Object.freeze({
+    read: () => state,
+    openProject(selection) {
+      return projectResult(selections.select(selection));
+    },
+    openFinding(profileIndex) {
+      if (state.phase !== 'PROJECT_RESULT' || !Number.isInteger(profileIndex)
+          || profileIndex < 0 || profileIndex >= state.profiles.length
+          || state.profiles[profileIndex].state !== 'RESULT') {
+        throw new TypeError('available finding profile is required');
+      }
+      const target = state.profiles[profileIndex].scoped_finding.target;
+      const selectionState = selections.select({
+        kind: 'substation', source_feature_id: target.target_id,
+        source_release: engine.source.sha256
+      });
+      state = Object.freeze({
+        phase: 'SUBSTATION', revision: selectionState.revision,
+        selection: selectionState.selection, target
+      });
+      return state;
+    },
+    openNearby(limit = 10) {
+      if (state.phase !== 'SUBSTATION') throw new TypeError('substation state is required');
+      const projects = nearbyProjects({
+        register: projectRegister,
+        longitude: state.target.longitude,
+        latitude: state.target.latitude,
+        distanceKm: haversineR6378137Km,
+        limit
+      });
+      state = Object.freeze({
+        phase: 'NEARBY_PROJECTS', revision: state.revision,
+        substation: state.selection, target: state.target, projects
+      });
+      return state;
+    },
+    openNearbyProject(repdRef) {
+      if (state.phase !== 'NEARBY_PROJECTS' || typeof repdRef !== 'string'
+          || !state.projects.some((project) => project.repd_ref === repdRef)) {
+        throw new TypeError('project must come from the current nearby result');
+      }
+      return projectResult(selections.select({
+        kind: 'project', repd_ref: repdRef,
+        source_release: projectRegister.source.sha256
+      }));
+    },
+    back: () => restore(selections.back()),
+    forward: () => restore(selections.forward())
+  });
 }
 
 /** One owner connects selection revisions to findings and rejects late results. */

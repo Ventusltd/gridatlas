@@ -9,6 +9,7 @@ import {
   createFindingLoop,
   createGridFindingEngine,
   createMapFindingAdapter,
+  createOperableFindingJourney,
   createPipelineFindingAdapter,
   createProjectIndex,
   createProjectArrivalAdapter,
@@ -81,7 +82,7 @@ const location = validateCoordinateSelection({
 });
 check('coordinate-only selection is accepted', location.kind === 'location');
 check('coordinate-only selection carries no asset identity',
-  !Object.hasOwn(location, 'repd_ref') && !Object.hasOwn(location, 'site_code'));
+  !Object.hasOwn(location, 'repd_ref') && !Object.hasOwn(location, 'source_feature_id'));
 check('coordinate output is immutable', Object.isFrozen(location));
 for (const [label, value] of [
   ['out-of-range longitude is rejected', { kind: 'location', longitude: 181, latitude: 0, coordinate_origin: 'user_input' }],
@@ -120,16 +121,17 @@ for (const query of [
 }
 
 const substation = validateSubstationSelection({
-  kind: 'substation', site_code: 'TEST-SITE', source_release: digest
+  kind: 'substation', source_feature_id: 'grid_substations:fixture', source_release: digest
 });
-check('exact substation selection is accepted', substation.site_code === 'TEST-SITE');
+check('exact substation selection is accepted',
+  substation.source_feature_id === 'grid_substations:fixture');
 check('substation output is immutable', Object.isFrozen(substation));
 for (const [label, value] of [
-  ['missing site_code is rejected', { kind: 'substation', source_release: digest }],
-  ['blank site_code is rejected', { kind: 'substation', site_code: ' ', source_release: digest }],
-  ['display label cannot replace site_code', { kind: 'substation', site_code: '', source_release: digest, name: 'Plausible Site' }],
-  ['coordinates are not substation identity', { kind: 'substation', site_code: 'TEST-SITE', source_release: digest, latitude: 52 }],
-  ['wrong substation source digest is rejected', { kind: 'substation', site_code: 'TEST-SITE', source_release: 'bad' }]
+  ['missing source feature id is rejected', { kind: 'substation', source_release: digest }],
+  ['blank source feature id is rejected', { kind: 'substation', source_feature_id: ' ', source_release: digest }],
+  ['display label cannot replace source identity', { kind: 'substation', source_feature_id: '', source_release: digest, name: 'Plausible Site' }],
+  ['coordinates are not substation identity', { kind: 'substation', source_feature_id: 'grid_substations:fixture', source_release: digest, latitude: 52 }],
+  ['wrong substation source digest is rejected', { kind: 'substation', source_feature_id: 'grid_substations:fixture', source_release: 'bad' }]
 ]) {
   let rejected = false;
   try { validateSubstationSelection(value); } catch { rejected = true; }
@@ -141,7 +143,9 @@ check('union dispatch accepts an exact project',
 check('union dispatch accepts an explicit location',
   validateAnySelection({ kind: 'location', longitude: 0, latitude: 0, coordinate_origin: 'mapped_feature' }).kind === 'location');
 check('union dispatch accepts an exact substation',
-  validateAnySelection({ kind: 'substation', site_code: 'TEST-SITE', source_release: digest }).kind === 'substation');
+  validateAnySelection({
+    kind: 'substation', source_feature_id: 'grid_substations:fixture', source_release: digest
+  }).kind === 'substation');
 let unsupportedRejected = false;
 try { validateAnySelection({ kind: 'asset', id: 'plausible' }); } catch { unsupportedRejected = true; }
 check('union dispatch rejects unknown kinds', unsupportedRejected);
@@ -819,6 +823,57 @@ for (const [surface, factory, viewport] of [
     adapter.read().road_route.status === 'NOT_COMPUTED'
       && adapter.read().cards[1].target_id === 'grid_substations:2033');
 }
+
+let journeyQueries = 0;
+const journeyEngine = Object.freeze({
+  source: fullGridEngine.source,
+  getSubstation: fullGridEngine.getSubstation,
+  queryProfiles(input) {
+    journeyQueries += 1;
+    return fullGridEngine.queryProfiles(input);
+  }
+});
+const journey = createOperableFindingJourney({
+  projectIndex: fullGridIndex, projectRegister: fullGridRegister, engine: journeyEngine
+});
+const journeyProject = journey.openProject({
+  kind: 'project', repd_ref: '155', source_release: fullGridRegister.source.sha256
+});
+check('journey opens Markinch through the shared finding engine',
+  journeyProject.phase === 'PROJECT_RESULT' && journeyQueries === 1
+    && journeyProject.profiles[0].scoped_finding.target.target_id === 'grid_substations:417');
+const journeySubstation = journey.openFinding(0);
+check('finding target becomes an exact substation selection',
+  journeySubstation.phase === 'SUBSTATION'
+    && journeySubstation.selection.source_feature_id === 'grid_substations:417'
+    && journeySubstation.selection.source_release === substationDigest);
+const journeyNearby = journey.openNearby();
+check('substation opens an operable nearby-project population',
+  journeyNearby.phase === 'NEARBY_PROJECTS'
+    && journeyNearby.projects.length === 10);
+const chosenNearbyRef = journeyNearby.projects[0].repd_ref;
+const journeyLoopedProject = journey.openNearbyProject(chosenNearbyRef);
+check('nearby identity loops back to a freshly computed project result',
+  journeyLoopedProject.phase === 'PROJECT_RESULT' && journeyQueries === 2
+    && journeyLoopedProject.selection.repd_ref === chosenNearbyRef
+    && journeyLoopedProject.revision === 3);
+const journeyHistorySubstation = journey.back();
+const journeyHistoryProject = journey.back();
+check('history restores the substation then requeries the prior project revision',
+  journeyHistorySubstation.phase === 'SUBSTATION'
+    && journeyHistoryProject.phase === 'PROJECT_RESULT'
+    && journeyHistoryProject.selection.repd_ref === '155'
+    && journeyQueries === 3 && journeyHistoryProject.revision === 5);
+const journeyForwardSubstation = journey.forward();
+check('history can move forward to the exact substation selection',
+  journeyForwardSubstation.phase === 'SUBSTATION'
+    && journeyForwardSubstation.selection.source_feature_id === 'grid_substations:417');
+const encodedJourneySubstation = encodeSelection(journeyForwardSubstation.selection);
+const decodedJourneySubstation = decodeSelection(encodedJourneySubstation);
+check('substation source-feature selection survives durable share-state round trip',
+  decodedJourneySubstation.source_feature_id === 'grid_substations:417'
+    && fullGridEngine.getSubstation(decodedJourneySubstation.source_feature_id).target_name
+      === 'Glenrothes Substation');
 let staleReleaseRejected = false;
 try {
   projectFindingRequest({ kind: 'project', repd_ref: 'A', source_release: 'b'.repeat(64) }, projectIndex);
@@ -953,4 +1008,4 @@ check('distinct nearest candidate is available', unique.status === 'available' &
 const absent = resolveNearestCandidate([], { idField: 'site_code' });
 check('empty population is withheld', absent.reason === 'NO_CANDIDATE' && absent.value === null);
 
-console.log(JSON.stringify({ status: 'PASS', iteration: 38, checks }));
+console.log(JSON.stringify({ status: 'PASS', iteration: 39, checks }));
