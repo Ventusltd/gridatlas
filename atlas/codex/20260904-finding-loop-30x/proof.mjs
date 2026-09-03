@@ -204,7 +204,10 @@ check('pinned provenance is accepted and frozen',
 for (const [label, value] of [
   ['missing provenance digest is rejected', { source_id: 'x', release: 'v1', bytes: 1 }],
   ['negative provenance length is rejected', { ...evidence, bytes: -1 }],
-  ['extra provenance fields are rejected', { ...evidence, url: 'https://example.invalid' }]
+  ['extra provenance fields are rejected', { ...evidence, url: 'https://example.invalid' }],
+  ['numeric source identity is rejected', { ...evidence, source_id: 155 }],
+  ['object release is rejected without coercion', { ...evidence, release: { toString: () => 'v1' } }],
+  ['whitespace-changing release is rejected', { ...evidence, release: ' v1 ' }]
 ]) {
   let rejected = false;
   try { validateProvenance(value); } catch { rejected = true; }
@@ -351,4 +354,4 @@ check('distinct nearest candidate is available', unique.status === 'available' &
 const absent = resolveNearestCandidate([], { idField: 'site_code' });
 check('empty population is withheld', absent.reason === 'NO_CANDIDATE' && absent.value === null);
 
-console.log(JSON.stringify({ status: 'PASS', iteration: 16, checks }));
+console.log(JSON.stringify({ status: 'PASS', iteration: 17, checks }));

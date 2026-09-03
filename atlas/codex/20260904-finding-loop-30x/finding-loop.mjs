@@ -270,10 +270,11 @@ export function validateProvenance(input) {
       || PROVENANCE_FIELDS.some((field) => !Object.hasOwn(descriptors[field], 'value'))) {
     throw new TypeError('provenance fields are unexpected, missing, or unsafe');
   }
-  const sourceId = String(input.source_id || '').trim();
-  const release = String(input.release || '').trim();
-  if (!sourceId || !release || CONTROL_CHARACTER.test(sourceId) || CONTROL_CHARACTER.test(release)) {
-    throw new TypeError('source identity and release are required');
+  const { source_id: sourceId, release } = input;
+  if (typeof sourceId !== 'string' || !sourceId || sourceId !== sourceId.trim()
+      || typeof release !== 'string' || !release || release !== release.trim()
+      || CONTROL_CHARACTER.test(sourceId) || CONTROL_CHARACTER.test(release)) {
+    throw new TypeError('source identity and release must be canonical strings');
   }
   if (typeof input.sha256 !== 'string' || !SHA256.test(input.sha256)) {
     throw new TypeError('provenance sha256 is invalid');
