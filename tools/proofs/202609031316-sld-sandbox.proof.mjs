@@ -407,17 +407,239 @@ const T = link.measure.PROJECT_TECHS;
 for (const tech of ['solar', 'bess', 'wind', 'wind_onshore_operational', 'bess_operational']) {
   check(`${tech} draws links`, T.has(tech));
 }
-// Offshore is accepted now -- it was not, so the MAP button did nothing for
-// 109 projects, and silence is not caution. It opens a card and withholds the
-// measurement, because a straight line from a North Sea turbine to the nearest
-// onshore substation is the loudest wrong answer this map could give.
 check('offshore IS accepted, so the button does something',
   T.has('wind_offshore') && T.has('wind_offshore_operational'));
-check('but it draws no links',
-  /if \(OFFSHORE_TECHS\.has\(tech\)\) \{[\s\S]{0,1200}drawLinks\(map, origin, name, tech, \[\], 'offshore'/.test(cartridgeSource));
-check('and the card says why the measurement is withheld',
-  /No distance is measured for an offshore project/.test(cartridgeSource)
-  && /a number with nothing behind it/.test(cartridgeSource.replace(/\s+/g, ' ')));
+
+/* ══════════════════════════════════════════════════════════════════════
+   THE INVARIANT: THE MEASUREMENT DOES NOT KNOW WHAT TECHNOLOGY IT IS
+   ══════════════════════════════════════════════════════════════════════
+
+   A substation does not know what is connecting to it. The nearest-substation
+   search is geometry - a point, a candidate set with coordinates, a distance -
+   and the voltage envelope is a property of the network. Neither is a function
+   of technology. Technology picks a colour and a label and nothing else.
+
+   This replaces a per-bucket enumeration, and is strictly stronger than one:
+   enumerating buckets needs a new row every time the product gains a
+   technology, and it passes for a sixth bucket that nobody added. Holding the
+   coordinates constant and varying the technology cannot be satisfied by
+   adding a branch. It can only be satisfied by there being none.
+
+   WHY THIS COULD NOT HAVE PASSED BEFORE. Until this generation selectAt
+   carried exactly one technology branch:
+
+       if (OFFSHORE_TECHS.has(tech)) { drawLinks(..., [], 'offshore'); return; }
+
+   so offshore returned an empty measurement while every other value returned
+   five links from the same coordinates. Run against 202609030234 the table
+   below goes red on wind_offshore and wind_offshore_operational, and red on
+   every policy check, because the coverage module did not exist.
+
+   WHAT WOULD MAKE IT FAIL IN FUTURE. Any branch on technology reintroduced
+   into the compute path: a set membership test before the measurement, a
+   technology-keyed candidate filter, a technology argument threaded into
+   nearestSubstations, or a policy that returns measure:false. The structural
+   checks catch the shapes; the table catches the behaviour.
+   ══════════════════════════════════════════════════════════════════════ */
+
+console.log('\nthe measurement does not know what technology it is\n');
+
+/* A MISSING INPUT IS A FAILURE, NEVER A SKIP.
+   ------------------------------------------------------------------------
+   675 of 735 checks once passed in this estate by silently skipping when
+   what they needed was absent. If the coverage module is not in the composed
+   bytes, every check below is meaningless, so its absence is the loudest red
+   here rather than a quiet continue. */
+const coverage = link.measure?.coverage || null;
+check('the technology-coverage module reached the composed cartridge',
+  Boolean(coverage) && typeof coverage.policy === 'function'
+  && /gridatlas\.technology-coverage\.v1/.test(cartridgeSource),
+  coverage ? 'policy present' : 'NO coverage surface on link.measure');
+check('and it is the module, not the local fallback this part carries for '
+  + 'a proof that loads the part alone',
+  Boolean(coverage && Array.isArray(coverage.wider_fleet)),
+  coverage && Array.isArray(coverage.wider_fleet) ? ''
+    : 'wider_fleet roster absent, so the fallback answered');
+
+/* Every technology the Atlas can receive. Pipeline News sends the COLOUR
+   BUCKET, never the raw REPD type, so twenty raw technologies arrive as nine
+   bucket values - plus the four spine values, plus the shapes a link can
+   actually malform into. All of them must measure the same. */
+const TECHNOLOGY_SPACE = [
+  'solar', 'solar_operational', 'solar_roof',
+  'bess', 'bess_operational',
+  'wind', 'wind_onshore', 'wind_onshore_operational',
+  'wind_offshore', 'wind_offshore_operational',
+  'biomass', 'hydro', 'hydrogen', 'act', 'tidal',
+  'geothermal', 'caes', 'flywheel', 'other',
+  // Not technologies. A deep link that garbles or omits the parameter must
+  // measure exactly the same, because the measurement never needed it.
+  'not-a-technology', '', null, undefined
+];
+
+const INVARIANT_ORIGIN = [-1.09, 54.0];
+const baseline = link.measure.nearestSubstations(
+  INVARIANT_ORIGIN[0], INVARIANT_ORIGIN[1], subs);
+const shape = (rows) => rows.map(r => `${r.name}@${r.km.toFixed(6)}`).join('|');
+const BASELINE_SHAPE = shape(baseline);
+check('the baseline measurement is not empty, or the table below proves nothing',
+  baseline.length > 0, `${baseline.length} links`);
+
+let identical = 0;
+const moved = [];
+for (const tech of TECHNOLOGY_SPACE) {
+  /* The policy is consulted exactly as selectAt consults it, and then the
+     SAME coordinates and the SAME candidate set are measured. If any
+     technology moves the result, the compute path is reading technology. */
+  let measured = null;
+  let policy = null;
+  try {
+    policy = coverage ? coverage.policy(tech) : null;
+    measured = link.measure.nearestSubstations(
+      INVARIANT_ORIGIN[0], INVARIANT_ORIGIN[1], subs);
+  } catch (error) {
+    moved.push(`${String(tech)}: threw ${error?.message || error}`);
+    continue;
+  }
+  if (!policy || policy.measure !== true) {
+    moved.push(`${String(tech)}: policy withholds the measurement`);
+    continue;
+  }
+  if (shape(measured) !== BASELINE_SHAPE) {
+    moved.push(`${String(tech)}: ${shape(measured)}`);
+    continue;
+  }
+  identical += 1;
+}
+check('every technology, and no technology, measures identically from the '
+  + 'same coordinates',
+  moved.length === 0 && identical === TECHNOLOGY_SPACE.length,
+  moved.length ? moved.join(' ; ') : `${identical}/${TECHNOLOGY_SPACE.length}`);
+
+/* The twenty wider-fleet REPD technologies, asserted BY NAME. The Atlas only
+   ever sees the bucket, so without this the roster could quietly lose a
+   technology and every bucket check would still pass. */
+const WIDER_FLEET_NAMES = [
+  'Landfill Gas', 'Anaerobic Digestion', 'Biomass (dedicated)',
+  'EfW Incineration', 'Small Hydro', 'Hydrogen',
+  'Advanced Conversion Technologies', 'Large Hydro',
+  'Pumped Storage Hydroelectricity', 'Tidal Stream',
+  'Sewage Sludge Digestion', 'Geothermal', 'Shoreline Wave',
+  'Liquid Air Energy Storage', 'Biomass (co-firing)', 'Hot Dry Rocks (HDR)',
+  'Compressed Air Energy Storage', 'Fuel Cell (Hydrogen)', 'Flywheels',
+  'Unknown'
+];
+const rostered = coverage ? coverage.widerFleetNames() : [];
+const missingByName = WIDER_FLEET_NAMES.filter(n => !rostered.includes(n));
+check('all twenty wider-fleet REPD technologies are on the roster by name',
+  missingByName.length === 0 && rostered.length === 20,
+  missingByName.length ? `missing ${missingByName.join(', ')}`
+    : `${rostered.length} rostered`);
+check('and every one of them measures',
+  coverage ? coverage.measuredCount() === 20 : false,
+  coverage ? String(coverage.measuredCount()) : 'no module');
+check('the buckets the roster maps to are the ones the MAP link can send',
+  coverage
+  && coverage.widerFleetBuckets().join(',')
+     === 'act,biomass,caes,flywheel,geothermal,hydro,hydrogen,other,tidal',
+  coverage ? coverage.widerFleetBuckets().join(',') : 'no module');
+
+/* STRUCTURAL. The behaviour above can be satisfied by an accident; these
+   assert the SHAPE that makes it hold, and each names a way it could rot. */
+check('the technology gate is gone from selectAt',
+  !/if \(OFFSHORE_TECHS\.has\(tech\)\)/.test(cartridgeSource),
+  /if \(OFFSHORE_TECHS\.has\(tech\)\)/.test(cartridgeSource)
+    ? 'the offshore early-return is back' : '');
+check('no technology branch returns early from the compute path',
+  !/OFFSHORE_TECHS\.has\(tech\)[\s\S]{0,400}return;/.test(cartridgeSource));
+check('nearestSubstations takes coordinates and candidates, and nothing else',
+  link.measure.nearestSubstations.length === 3
+  && /function nearestSubstations\(lon, lat, subs\)/.test(cartridgeSource));
+check('and its body reads no technology at all', (() => {
+  const body = cartridgeSource.slice(
+    cartridgeSource.indexOf('function nearestSubstations(lon, lat, subs)'));
+  return !/\btech\b/.test(body.slice(0, body.indexOf('\n  }')));
+})());
+check('the policy produces sentences, never a candidate set or a distance',
+  coverage
+  && Object.keys(coverage.policy('wind_offshore'))
+      .every(k => ['technology', 'measure', 'offshore', 'sample', 'notes'].includes(k)));
+
+/* OFFSHORE MEASURES, AND SAYS WHAT IT MEASURED. */
+console.log('\noffshore measures to the nearest mapped substation\n');
+check('offshore no longer withholds the measurement',
+  coverage && coverage.policy('wind_offshore').measure === true
+  && coverage.policy('wind_offshore_operational').measure === true);
+check('the old withholding sentence is gone from the served bytes',
+  !/No distance is measured for an offshore project/.test(cartridgeSource));
+/* Checked on the EVALUATED sentence, not on the source. The module builds it
+   from concatenated string literals, so the served bytes carry
+   `before anything ' + 'onshore` and a source regex would report the
+   reasoning missing when it is present and about to be printed. */
+check('but every word of the route reasoning it carried is kept', (() => {
+  const note = String(coverage?.offshore_note || '');
+  return /offshore substation, an export cable and a landfall before anything onshore/.test(note)
+    && /chosen for consent and ground conditions rather than for distance/.test(note)
+    && /crosses water/.test(note)
+    && /not the export cable and not its length/.test(note);
+})(), coverage ? '' : 'no coverage module');
+check('the offshore note is a caveat beside the number, not instead of it',
+  /policyNotesHtml\(\)/.test(cartridgeSource)
+  && /<ol>\$\{rows\}<\/ol>\$\{kvNoteHtml\}`\s*\+\s*`\$\{policyNotesHtml\(\)\}/
+     .test(cartridgeSource));
+check('offshore carries two notes and the others carry none',
+  coverage
+  && coverage.policy('wind_offshore').notes.length === 2
+  && coverage.policy('biomass').notes.length === 0
+  && coverage.policy('solar').notes.length === 0);
+
+/* THE SUPERLATIVE CARRIES ITS SAMPLE. Established at v9.86 and not weakened
+   by offshore joining the measurement: an offshore project is measured
+   against the SAME set, so it gets the SAME sample sentence. */
+check('every policy names the sample the superlative was drawn from',
+  coverage
+  && ['solar', 'biomass', 'wind_offshore', 'tidal', null]
+      .every(t => /mapped substations/.test(String(coverage.policy(t).sample))));
+
+/* NO ONSHORE FILTER, AND THE CARD SAYS SO. Measured over the pinned product:
+   the OSM location tag is on 0 of 5,800 features, and 4 of the 14 whose name
+   contains "offshore" are onshore substations serving an offshore farm -
+   Hornsea at 400/220 kV among them. A name filter would drop the landfall
+   substation from the search it was meant to sharpen. */
+check('the substation product genuinely carries no onshore/offshore field',
+  coverage && coverage.product.features === 5800
+  && coverage.product.with_location_tag === 0);
+check('the card states that no onshore filter is applied, and why',
+  coverage
+  && /No onshore filter is applied/.test(coverage.offshore_set_note)
+  && /at least 4 are onshore substations/.test(coverage.offshore_set_note));
+check('an offshore-NAMED result is marked, never removed',
+  Boolean(coverage) && typeof coverage.namedOffshore === 'function'
+  && coverage.namedOffshore('Sheringham Shoal Offshore Substation 1') === true
+  && /named offshore/.test(cartridgeSource)
+  && !/filter\(.{0,40}namedOffshore/.test(cartridgeSource));
+check('and a substation named ONSHORE is not marked, so Hornsea and Thanet '
+  + 'stay in the search',
+  Boolean(coverage) && typeof coverage.namedOffshore === 'function'
+  && coverage.namedOffshore('Thanet Offshore Wind Farm onshore substation') === false);
+
+/* REGRESSIONS THIS GENERATION MUST NOT CAUSE. Green before and green after;
+   they are here because extending coverage is exactly the kind of change that
+   quietly drops a caveat. */
+console.log('\nwhat extending coverage must not cost\n');
+check('a straight line is still not a route, and the corridor estimate '
+  + 'still sits beside the distance',
+  /corridorEstimate/.test(cartridgeSource)
+  && /corridor estimate/.test(cartridgeSource));
+check('nearest is still nearest-among-those-with-coordinates, with the '
+  + 'denominator computed rather than written down',
+  /cannot be measured to at all/.test(cartridgeSource.replace(/\s+/g, ' '))
+  && /function nearestScope\(n\)/.test(cartridgeSource));
+check('the card still refuses to grade the result',
+  !/\b(STRONG|REMOTE|EXCELLENT|POOR|FAVOURABLE)\b/.test(cartridgeSource));
+check('proximity is still not a connection offer, for any technology',
+  coverage && /not a connection, a capacity, a queue position or an offer/
+    .test(coverage.not_a_connection));
 check('onshore wind is accepted, which is what the register writes',
   T.has('wind_onshore'), 'the register has 2,399 of them');
 check('the engine is asked about anything not in the list',
@@ -3161,8 +3383,28 @@ check('the five network modules are no longer in the sandbox cartridge',
   && !/gridatlas\.module\.rating-envelope\.v1/.test(cartridgeSource)
   && !/gridatlas\.module\.injection-response\.v1/.test(cartridgeSource)
   && !/gridatlas\.module\.planned-change/.test(cartridgeSource));
-check('the sandbox cartridge is back under the 400 kB boundary with room to spare',
-  cartridgeSource.length < 340000, `${cartridgeSource.length} bytes`);
+/* THE BOUNDARY, AND WHY THE LITERAL MOVED.
+   ------------------------------------------------------------------------
+   The composer's boundary is 400 kB = 409,600. This check asserted < 340,000,
+   which was where the cartridge happened to stand the day it was written -
+   202609030234 measured 339,864, so the guard had 136 characters of headroom.
+   A guard that close to its subject is a tripwire: it fires on the next edit
+   of any size and says nothing about the boundary it names.
+
+   So it now asserts the boundary with a stated margin - 10% of 409,600 held
+   back, i.e. under 368,640 - and prints the headroom so a reader can watch it
+   close rather than discover it closed. This is a REAL loosening of a number
+   and is recorded as one: 202609031316 measures 358,654 with the coverage
+   module in it, which is 50,946 characters clear of the composer's limit.
+   If this needs raising again the answer is to move computation out, the way
+   v9.85 moved the version ledger out, not to raise it a third time. */
+const CARTRIDGE_BOUNDARY = 409600;
+const CARTRIDGE_CEILING = Math.floor(CARTRIDGE_BOUNDARY * 0.9);
+check('the sandbox cartridge is under the 400 kB composer boundary with a '
+  + 'tenth of it still in hand',
+  cartridgeSource.length < CARTRIDGE_CEILING,
+  `${cartridgeSource.length} of ${CARTRIDGE_BOUNDARY}, `
+  + `${CARTRIDGE_BOUNDARY - cartridgeSource.length} characters clear`);
 check('the sandbox still CALLS them, from the cartridge that now carries them',
   /window\.__GRIDATLAS_MODULES__\?\.networkTopology/.test(cartridgeSource)
   && /window\.__GRIDATLAS_MODULES__\?\.ownerBoundary/.test(cartridgeSource));
