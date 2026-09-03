@@ -22,6 +22,19 @@
 # only ever happens on one laptop.
 #
 # Deliberately cheap otherwise: node, no browser, no history.
+#
+# THE ACTIONS ARE PINNED BY COMMIT, and this workflow is the reason to care.
+# It is the gate every cartridge cut passes through, so whatever it trusts,
+# the whole composition trusts. `@v4` is a mutable tag: whoever can move it
+# can run code inside the one job that decides whether a generation ships,
+# with the repository checked out. cvaa reported three of them here -
+# checkout twice, setup-node once - and nowhere else in this repository; the
+# other four workflows were already pinned by SHA, so the only unpinned
+# actions in gridatlas were in its guard rail.
+#
+# 11bd71901bbe5b1630ceea73d27597364c9af683 is actions/checkout v4.2.2, the
+# same commit tools/scope/loop.mjs already asserts for the scope loop, so the
+# repository now names one checkout everywhere.
 
 name: 202608312212 GridAtlas cartridge proof
 
@@ -56,19 +69,19 @@ jobs:
         working-directory: gridatlas
     steps:
       - name: Checkout the pushed state
-        uses: actions/checkout@v4
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
         with:
           path: gridatlas
 
       # Beside it, not inside it: the proof resolves ../grid-distance-maths.
       - name: Checkout the canonical geodesy beside it
-        uses: actions/checkout@v4
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
         with:
           repository: Ventusltd/grid-distance-maths
           path: grid-distance-maths
 
       - name: Node
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v4
         with:
           node-version: '24'
 
