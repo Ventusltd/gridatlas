@@ -463,9 +463,20 @@ export async function proveMenuBar(menuPath, servedSource = '') {
   check('the old action stack is emptied only after nested controls move',
     complete.stack.getAttribute('data-gridatlas-menu-emptied') === '1'
     && panel('Scope').contains(clear));
-  check('one identity surface remains and the duplicate SCADA brand is marked out',
-    api.one_identity_surface === true && panel('About').contains(complete.header)
-    && complete.brand.getAttribute('data-gridatlas-menu-duplicate') === '1');
+  check('one identity surface remains: the VENTUS masthead is fused into the bar itself '
+    + '(not moved into a closed panel, generation 202609041250) and the real SCADA brand is '
+    + 'restored -- not cloned, not hidden as a duplicate -- into the Grid panel head',
+    api.one_identity_surface === true
+    && bar.querySelector('.gm-brand-slot')?.contains(complete.header)
+    && panel('Grid')?.querySelector('.gm-panel-head')?.contains(complete.brand)
+    && !complete.brand.hasAttribute('data-gridatlas-menu-duplicate'));
+  check('the v8 fullscreen letterhead stands down once the bar hosts the masthead: '
+    + '#fs-letterhead paints only under body.fs-active, and the deep-link arrival\'s '
+    + 'enterFullscreen() is the only caller that sets it -- every phone, no desktop -- so '
+    + 'without this rule a second 15px wordmark painted at x=254 over SCOPE, GRID and ABOUT '
+    + 'on an iPhone 13 viewport while the fused masthead sat correctly at x=165',
+    /\.gridatlas-menu-hosted #fs-letterhead\{display:none!important\}/.test(styleText)
+    && bar.querySelector('.gm-brand-slot')?.contains(complete.header));
   check('install is idempotent and document listeners are not multiplied',
     api.listeners === 2 && api.install() === true && api.listeners === 2
     && (complete.doc.listeners.click || []).length === 1

@@ -1395,11 +1395,28 @@ check("the deep link enables the project's own technology layer",
 // the hook and no table is consulted first. The labels carry live counts --
 // "Solar PV [2819 | 52.3GW]" -- so matching them was matching prose that moves
 // with the data.
-check('the control is found by the layer id the engine tags it with',
-  /input\.dataset\?\.layerId === tech/.test(pinSrc));
+//
+// 202609041221: the hook is now the RESOLVED layer id, not the raw bucket.
+// wind_onshore and wind_offshore are Pipeline buckets Pipeline News sends;
+// neither has ever been a data-layer-id the engine tags a control with, so
+// `input.dataset?.layerId === tech` (tech = 'wind_onshore') never matched
+// anything and 2,508 of 7,680 register rows arrived with the project's own
+// layer dark while `technology_layer.enabled` read true regardless. One
+// table (layerIdForBucket) resolves the bucket to the id that actually
+// exists ('wind') before either lookup runs.
+check('the control is found by the RESOLVED layer id, not the raw bucket',
+  /input\.dataset\?\.layerId === layerId/.test(pinSrc)
+  && !/input\.dataset\?\.layerId === tech\b/.test(pinSrc));
 check('the data attribute is tried before any label text',
-  pinSrc.indexOf('dataset?.layerId === tech')
-    < pinSrc.indexOf('TECH_LABEL_FALLBACK[tech]'));
+  pinSrc.indexOf('dataset?.layerId === layerId')
+    < pinSrc.indexOf('TECH_LABEL_FALLBACK[layerId]'));
+check('the bucket is resolved through one table, consulted before either lookup',
+  pinSrc.indexOf('const layerId = layerIdForBucket(tech);')
+    < pinSrc.indexOf('dataset?.layerId === layerId'));
+check('wind_onshore and wind_offshore both resolve to the engine\'s one combined wind layer',
+  /wind_onshore: 'wind',\s*\n\s*wind_offshore: 'wind',/.test(pinSrc));
+check('other resolves to no layer at all, rather than a guess',
+  /other: null(?:\s|\/\/[^\n]*)*\}\)/.test(pinSrc));
 check('a label fallback remains for a control the engine has not tagged',
   /TECH_LABEL_FALLBACK = \{[\s\S]*?solar: "Solar PV \[/.test(pinSrc));
 check('battery and wind are in the fallback too',
@@ -2745,8 +2762,38 @@ check('it is recorded on its own surface, not in the ledger that means the arriv
   /link\.technology_layer = \{/.test(cartridgeSource)
   && /the arrival '\n\s*\+ 'continues and this layer alone is not switched on'/
     .test(cartridgeSource));
-check('the record names what was asked for and whether it was honoured',
-  /requested: tech \|\| null,\n\s*enabled: technologyKnown,/.test(cartridgeSource));
+/* 202609041221: `enabled: technologyKnown` was the defect that hid the
+   defect. technologyKnown is PROJECT_TECHS membership -- which is true for
+   wind_onshore, wind_offshore and other -- and this field was read as
+   whether the layer was actually on. It was set here, synchronously,
+   before enableTechnologyLayer ever ran, so it reported enabled: true for
+   2,508 of 7,680 register rows while the DOM search for the control
+   failed every time, on a bucket ('wind_onshore') that has never been a
+   data-layer-id. The record now starts honest -- enabled: false, because
+   nothing has been switched on yet -- and is corrected once, in the one
+   place a control is actually found or explicitly said not to exist:
+   enableTechnologyLayer. */
+check('the record starts honest: not yet enabled, because nothing has been switched on yet',
+  /requested: tech \|\| null,\n\s*layer_id: technologyKnown \? layerIdForBucket\(tech\) : null,\n\s*enabled: false,/
+    .test(cartridgeSource));
+check('enabled is never synthesised from PROJECT_TECHS membership again',
+  !/enabled: technologyKnown,\n/.test(cartridgeSource));
+check('enableTechnologyLayer is the only place that writes enabled: true, and only after a control is found',
+  (() => {
+    const fn = cartridgeSource.slice(
+      cartridgeSource.indexOf('function enableTechnologyLayer(tech) {'),
+      cartridgeSource.indexOf('function enableTechnologyLayer(tech) {')
+        + cartridgeSource.slice(cartridgeSource.indexOf('function enableTechnologyLayer(tech) {'))
+          .indexOf('\n  }\n'));
+    const trueCount = (cartridgeSource.match(/enabled: true/g) || []).length;
+    return trueCount === 1
+      && /if \(!box\) \{ noteFailure\('layer control not found: ' \+ layerId\); return false; \}[\s\S]*?enabled: true/
+        .test(fn);
+  })());
+check('a bucket with no layer at all is said plainly, not searched for and not counted as a failure',
+  /if \(layerId === null\) \{[\s\S]{0,260}GridAtlas has no map layer for the/
+    .test(cartridgeSource)
+  && !/noteFailure\('layer control not found: ' \+ tech\)/.test(cartridgeSource));
 
 console.log('\nthe two products this cartridge fetches are pinned too\n');
 
@@ -3149,8 +3196,13 @@ check('recovery moves entries rather than deleting them',
   && /link\.failures = kept;/.test(cartridgeSource));
 check('the subs control recovers its own earlier miss on success',
   /link\.substation_layer_enabled = true;\n      recoverFailures\(\/\^subs: control not found\$\//.test(cartridgeSource));
-check('the technology control recovers exactly its own entry, escaped',
-  /link\.project_layer_enabled = tech;\n      recoverFailures\(new RegExp\('\^layer control not found: '/.test(cartridgeSource));
+check('the technology control recovers exactly its own entry, escaped, by the RESOLVED layer id',
+  (() => {
+    const set = cartridgeSource.indexOf('link.project_layer_enabled = layerId;');
+    const recover = cartridgeSource.indexOf(
+      "recoverFailures(new RegExp('^layer control not found: '\n        + String(layerId)");
+    return set > 0 && recover > set && recover - set < 600;
+  })());
 check('the late-controls observer recovers the budget note it outlived',
   /link\.layer_controls_arrived_late = true;\n        recoverFailures\(\/\^the engine had not rendered its layer controls within\//.test(cartridgeSource));
 
@@ -3325,7 +3377,9 @@ check('an active failure is recorded once, by a named helper',
   && /if \(!link\.failures\.includes\(message\)\) link\.failures\.push\(message\);/
     .test(cartridgeSource)
   && /noteFailure\('subs: control not found'\)/.test(cartridgeSource)
-  && /noteFailure\('layer control not found: ' \+ tech\)/.test(cartridgeSource));
+  // 202609041236: by the RESOLVED layer id, not the raw Pipeline bucket --
+  // see layerIdForBucket above.
+  && /noteFailure\('layer control not found: ' \+ layerId\)/.test(cartridgeSource));
 
 /* Behavioural, not regex: a fresh context with a DOM that answers the
    attribute selector, and the real functions called against it. */

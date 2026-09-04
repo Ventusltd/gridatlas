@@ -64,6 +64,9 @@
   var forwardingLayerChoice = false;
   var observer = null;
   var timer = null;
+  var brandSlot = null;    // holds the v8 .hud-header (VENTUS wordmark), fused into the bar itself
+  var gridHead = null;     // holds the v8 .scada-brand + .status-legend, restored at the top of Grid
+  var gridBody = null;     // holds the layer groups, so gridHead never enters the 2-column flow
 
   function array(value) {
     return Array.prototype.slice.call(value || []);
@@ -175,13 +178,45 @@
       '#' + BAR_ID + ' .gm-menu.gm-open>.gm-title{background:rgba(80,220,240,.16);color:#fff}',
       '#' + BAR_ID + ' .gm-title:focus-visible,#' + BAR_ID + ' .gm-panel :focus-visible{',
       'outline:2px solid #6bebff;outline-offset:-2px}',
+      '#' + BAR_ID + ' .gm-side{display:flex;align-items:stretch;flex:1 1 0;min-width:0}',
+      '#' + BAR_ID + ' .gm-side-left{justify-content:flex-start}',
+      '#' + BAR_ID + ' .gm-side-right{justify-content:flex-end}',
+      /* The VENTUS masthead, fused into the centre of this same 36px strip
+         (see buildBar) rather than a second row, so it costs no map height
+         on a phone and can never be torn out into a closed panel again. */
+      /* "The VENTUS logo is the best part" -- the architect's own words.
+         It is the hero of this strip: sized and weighted to outrank the
+         six menu titles either side of it, not a corner credit shrunk to
+         fit. Same face, tracking and two-line lockup as the v8 masthead
+         and the fullscreen letterhead it is carried from verbatim. */
+      '#' + BAR_ID + ' .gm-brand-slot{flex:0 1 auto;min-width:0;max-width:64%;',
+      'display:flex;align-items:center;justify-content:center;overflow:hidden;',
+      'padding:0 6px;text-align:center}',
+      '#' + BAR_ID + ' .gm-brand-slot .hud-header{display:flex!important;',
+      'position:static!important;width:auto!important;align-items:center;',
+      'justify-content:center;gap:11px;margin:0!important;padding:0!important;',
+      'background:none!important;border:0!important}',
+      '#' + BAR_ID + ' .gm-brand-slot .hud-header>div{flex:0 0 auto;line-height:1.05}',
+      '#' + BAR_ID + ' .gm-brand-slot .hud-header small{font-size:6.5px;white-space:nowrap}',
+      '#' + BAR_ID + ' .gm-brand-slot .hud-header .hud-val{font-size:10.5px;',
+      'text-shadow:none}',
+      '#' + BAR_ID + ' .gm-brand-slot .ventus-main{font-size:14px;font-weight:800;',
+      'letter-spacing:.2em;margin:0;color:#fff}',
+      '#' + BAR_ID + ' .gm-brand-slot .ventus-sub{font-size:5.5px;letter-spacing:.14em}',
       '#' + BAR_ID + ' .gm-panel{position:absolute;top:100%;left:0;min-width:240px;',
       'max-width:min(92vw,420px);max-height:min(72dvh,620px);overflow:auto;',
       'overscroll-behavior:contain;padding:6px;background:rgba(4,10,13,.98);',
       'border:1px solid rgba(80,220,240,.32);border-top:0;',
       'box-shadow:0 12px 34px rgba(0,0,0,.68);box-sizing:border-box}',
       '#' + BAR_ID + ' .gm-panel[hidden]{display:none!important}',
-      '#' + BAR_ID + ' .gm-menu:nth-last-child(-n+2)>.gm-panel{left:auto;right:0}',
+      /* Right-align every panel whose title lives in the right-hand group,
+         not "the last two of six flat siblings" -- that positional rule is
+         what let the About panel resolve to a negative x once the six
+         titles stopped being one undifferentiated row (measured live:
+         x=-95 at 1568px, a quarter of its own Versions control
+         unreachable). clampPanel() below is the second, JS-measured
+         guarantee: this CSS is the common case, not the only defence. */
+      '#' + BAR_ID + ' .gm-side-right .gm-panel{left:auto;right:0}',
       '#' + BAR_ID + ' .gm-panel button,#' + BAR_ID + ' .gm-panel [role="button"]{',
       'display:flex;align-items:center;width:100%;min-height:44px;box-sizing:border-box;',
       'position:static!important;inset:auto!important;transform:none!important;margin:0 0 3px;',
@@ -193,25 +228,59 @@
       '#' + BAR_ID + ' .gm-layer-group{margin:5px 0 2px;padding:6px 8px 3px;',
       'border-top:1px solid #19343b;color:#6fa2ae;font-size:10px;letter-spacing:.08em;',
       'text-transform:uppercase}',
-      '#' + BAR_ID + ' .gm-layer{display:flex;align-items:flex-start;gap:8px;min-height:44px;',
-      'box-sizing:border-box;padding:7px 9px;color:#cfeef6;cursor:pointer;line-height:1.35}',
+      /* Every layer control's OWN <input> covers its whole label (see
+         layerCheckbox / buildLayerControls): a measured audit found the raw
+         v8 checkboxes at 17x17px, the input element itself and not just a
+         padded label, so a re-measurement of the input's own rect is the
+         bar this has to clear, not only a centre-point hit test. */
+      '#' + BAR_ID + ' .gm-layer{position:relative;display:flex;align-items:center;gap:10px;',
+      'min-height:44px;box-sizing:border-box;padding:7px 9px;color:#cfeef6;cursor:pointer;',
+      'line-height:1.35}',
       '#' + BAR_ID + ' .gm-layer:hover{background:rgba(80,220,240,.12)}',
-      '#' + BAR_ID + ' .gm-layer input{width:18px;height:18px;flex:0 0 auto;margin:1px 0 0;',
-      'accent-color:#4fd7ee}',
+      '#' + BAR_ID + ' .gm-layer input{position:absolute;inset:0;width:100%;height:100%;',
+      'margin:0;opacity:0;cursor:pointer;z-index:1}',
+      '#' + BAR_ID + ' .gm-layer-box{width:20px;height:20px;flex:0 0 auto;',
+      'border:1.5px solid #4a8b96;border-radius:4px;position:relative;',
+      'background:rgba(255,255,255,.04)}',
+      '#' + BAR_ID + ' .gm-layer input:checked~.gm-layer-box{background:#4fd7ee;',
+      'border-color:#4fd7ee}',
+      '#' + BAR_ID + ' .gm-layer input:checked~.gm-layer-box::after{content:"";',
+      'position:absolute;left:6px;top:2px;width:5px;height:10px;',
+      'border:solid #04141a;border-width:0 2px 2px 0;transform:rotate(38deg)}',
+      '#' + BAR_ID + ' .gm-layer input:focus-visible~.gm-layer-box{outline:2px solid #6bebff;',
+      'outline-offset:2px}',
       '#' + BAR_ID + ' .gm-layer-name{overflow-wrap:anywhere}',
+      /* The restored SCADA panel: a branded head (the real .scada-brand and
+         .status-legend nodes, moved in once -- see install()) above a
+         scrollable body that never mixes with the head's own layout. */
+      '#' + BAR_ID + ' .gm-panel-grid{padding:0;overflow:hidden;display:flex;',
+      'flex-direction:column;min-width:min(94vw,360px);max-width:min(96vw,900px)}',
+      '#' + BAR_ID + ' .gm-panel-head{flex:0 0 auto;padding:8px 8px 0}',
+      '#' + BAR_ID + ' .gm-panel-head .scada-brand{padding:0 0 6px;margin:0 0 6px}',
+      '#' + BAR_ID + ' .gm-panel-head .status-legend{padding:0 0 8px;margin:0;border:0}',
+      '#' + BAR_ID + ' .gm-panel-body{flex:1 1 auto;overflow:auto;',
+      'overscroll-behavior:contain;padding:6px;min-height:0}',
+      '@media(min-width:560px){#' + BAR_ID + ' .gm-panel-body{column-count:2;',
+      'column-gap:14px}',
+      '#' + BAR_ID + ' .gm-panel-body .gm-layer-group{break-inside:avoid}',
+      '#' + BAR_ID + ' .gm-panel-body .gm-layer{break-inside:avoid}}',
+      '@media(min-width:900px){#' + BAR_ID + ' .gm-panel-body{column-count:3}}',
       '#' + BAR_ID + ' .search-bar-wrapper{position:static!important;display:grid!important;',
       'grid-template-columns:minmax(150px,1fr) auto;width:min(82vw,390px);gap:5px;margin:2px 0 6px}',
       '#' + BAR_ID + ' .search-bar-wrapper>div{position:relative}',
       '#' + BAR_ID + ' .search-input{width:100%!important;min-height:44px;box-sizing:border-box}',
       '#' + BAR_ID + ' .search-results{position:static!important;max-height:42vh;overflow:auto}',
-      '#' + BAR_ID + ' .hud-header{display:flex!important;position:static!important;',
-      'width:min(82vw,390px);box-sizing:border-box;margin:0 0 5px}',
-      '#' + BAR_ID + ' .status-legend{display:flex;flex-wrap:wrap;gap:7px;padding:8px}',
       '#' + BAR_ID + ' .disclaimer-box,#' + BAR_ID + ' .podcast-shoutout{',
       'display:block!important;position:static!important;max-width:380px;padding:8px;',
       'box-sizing:border-box;text-align:left;pointer-events:auto}',
       '.gridatlas-menu-hosted .map-controls[data-gridatlas-menu-emptied="1"]{display:none!important}',
-      '.gridatlas-menu-hosted .scada-brand[data-gridatlas-menu-duplicate="1"]{display:none!important}',
+      /* The raw v8 SCADA panel is superseded by the restored Grid dropdown
+         above -- one identity surface, per this module's own rule -- and
+         its own open/close toggle was measured live as inert (the label
+         never flips, the container height never changes). Rather than
+         depend on that toggle's correctness, hide the raw panel outright
+         and unconditionally whenever this bar is hosted. */
+      '.gridatlas-menu-hosted .scada-wrapper{display:none!important}',
       /* v9.90 made the mobile project card a fixed, full-width bottom sheet.
          The old SCADA layer panel remained underneath it, so a visible layer
          checkbox could lose the hit test to text in the project card. Keep the
@@ -233,14 +302,40 @@
          second hard-coded constant, because the bar itself drops from 36px
          to 34px under the @media rule below and a fixed number sized for
          one breakpoint would leave the credit covered, or needlessly far
-         down, at the other. 44px is only the pre-JS fallback. */
+         down, at the other. 44px is only the pre-JS fallback. Z-INDEX, not
+         only top: measured live, an open dropdown panel painted over the
+         credit's right two-thirds (elementFromPoint at 50/70/90% of its
+         width resolved to the panel's own button) even though the credit's
+         TOP already cleared the bar -- the two are siblings in the same
+         stacking context and the panel simply painted after it. The credit
+         must outrank every panel this bar can ever open, present or future,
+         so its z-index is set once here rather than chased per panel. */
       '.gridatlas-menu-hosted .custom-map-attrib{',
-      'top:var(--gridatlas-menu-bar-clear,44px)!important}',
+      'top:var(--gridatlas-menu-bar-clear,44px)!important;z-index:10025!important}',
+      /* The v8 fullscreen letterhead stands down once this bar hosts the
+         brand. #fs-letterhead is painted only under body.fs-active, and
+         fs-active is set by exactly one caller: the deep-link arrival's
+         enterFullscreen(), which runs when trayTarget() is true. That is
+         every phone and no desktop -- so the duplicate was invisible to
+         every desktop check and present on every phone arrival. Measured
+         on an iPhone 13 viewport at 202609041250: the fused masthead sat
+         correctly at x=165 (11px) while this one painted at x=254 (15px),
+         over the SCOPE, GRID and ABOUT titles in the right side group.
+         The brand is not lost by hiding it -- it is the same wordmark,
+         still on screen, now in the bar at every width and in every
+         fullscreen state, which is what fusing it there was for. */
+      '.gridatlas-menu-hosted #fs-letterhead{display:none!important}',
       '@media(max-width:700px){#' + BAR_ID + '{height:34px}',
       '#' + BAR_ID + ' .gm-title{min-height:34px;padding:0 6px;font-size:9px;letter-spacing:.025em}',
+      '#' + BAR_ID + ' .gm-brand-slot{max-width:48%;padding:0 2px}',
+      '#' + BAR_ID + ' .gm-brand-slot .hud-header>div:first-child,',
+      '#' + BAR_ID + ' .gm-brand-slot .hud-header>div:last-child{display:none}',
+      '#' + BAR_ID + ' .gm-brand-slot .ventus-main{font-size:11px;letter-spacing:.14em}',
+      '#' + BAR_ID + ' .gm-brand-slot .ventus-sub{font-size:4.5px}',
       '#' + BAR_ID + ' .gm-panel{position:fixed;top:34px;left:4px!important;right:4px!important;',
       'width:auto;max-width:none;max-height:calc(100dvh - 40px);padding-bottom:',
-      'calc(6px + env(safe-area-inset-bottom))}}'
+      'calc(6px + env(safe-area-inset-bottom))}',
+      '#' + BAR_ID + ' .gm-panel-grid{max-width:none}}'
     ].join('');
     (doc.head || doc.documentElement).appendChild(style);
   }
@@ -273,6 +368,7 @@
       if (panel) panel.hidden = true;
     });
     state.closed_at_rest = true;
+    openPanelRefs = null;
     if (focusTitle && typeof focusTitle.focus === 'function') focusTitle.focus();
   }
 
@@ -295,21 +391,73 @@
     Object.keys(layerTargets).forEach(syncLayer);
   }
 
+  /* Measured live: the About panel resolved to x=-95 at 1568px width, a
+     quarter of its own control off the left edge of the window -- the CSS
+     right:0 anchor (now scoped to the right-hand group, see installStyle)
+     covers the common case, but this is the second, JS-measured guarantee
+     that no panel this bar ever opens can resolve outside the viewport,
+     regardless of how its title happens to be positioned. Runs after the
+     panel is laid out (post layout, not pre-measured), clears any earlier
+     override before measuring so a panel that no longer overflows is not
+     left pinned from a previous, narrower viewport. */
+  function clampPanel(doc, menu, panel) {
+    if (!panel || typeof panel.getBoundingClientRect !== 'function') return;
+    if (!menu || typeof menu.getBoundingClientRect !== 'function') return;
+    panel.style.left = '';
+    panel.style.right = '';
+    var view = doc.defaultView || (typeof window !== 'undefined' ? window : null);
+    var vw = (view && view.innerWidth) || doc.documentElement.clientWidth;
+    if (!vw) return;
+    var margin = 4;
+    var panelRect = panel.getBoundingClientRect();
+    var desiredLeft = panelRect.left;
+    if (panelRect.left < margin) desiredLeft = margin;
+    else if (panelRect.right > vw - margin) desiredLeft = Math.max(margin, vw - margin - panelRect.width);
+    if (Math.round(desiredLeft) === Math.round(panelRect.left)) return;
+    var menuRect = menu.getBoundingClientRect();
+    panel.style.left = (desiredLeft - menuRect.left) + 'px';
+    panel.style.right = 'auto';
+  }
+
+  var openPanelRefs = null;    // {menu, panel} while a panel is open, so a resize can re-clamp it
+
   function openMenu(menu, title, panel) {
     var wasOpen = menu.classList.contains('gm-open');
     closeAll();
-    if (wasOpen) return;
+    if (wasOpen) { openPanelRefs = null; return; }
     if (title.textContent === 'Grid') syncAll();
     menu.classList.add('gm-open');
     title.setAttribute('aria-expanded', 'true');
     panel.hidden = false;
     state.closed_at_rest = false;
+    openPanelRefs = { menu: menu, panel: panel };
+    clampPanel(title.ownerDocument || document, menu, panel);
   }
 
   function buildBar(doc) {
     var nav = doc.createElement('nav');
     nav.id = BAR_ID;
     nav.setAttribute('aria-label', 'Atlas menu');
+
+    /* Three zones, not six flat siblings. The architect's complaint was
+       that the VENTUS identity had been torn out of view -- moved into a
+       closed About panel, so the reader saw the v8 masthead for the first
+       ~1.5s of every arrival and then watched it vanish. Fusing the brand
+       into the CENTRE of the same 36px strip the menu titles already live
+       in restores it permanently, at every width, with no extra row and
+       therefore no map height stolen on a phone. Two flex:1 side groups
+       keep the brand visually centred regardless of the (unequal) width
+       of "File Edit View" versus "Scope Grid About", and give every panel
+       a real left- or right-hand anchor to resolve against -- the flat
+       row's "last two of six" rule is what let the About panel resolve to
+       a negative x once the titles no longer filled the bar edge to edge. */
+    var left = doc.createElement('div');
+    left.className = 'gm-side gm-side-left';
+    var right = doc.createElement('div');
+    right.className = 'gm-side gm-side-right';
+    var brand = doc.createElement('div');
+    brand.className = 'gm-brand-slot';
+    brandSlot = brand;
 
     MENUS.forEach(function (name, index) {
       var menu = doc.createElement('div');
@@ -328,16 +476,36 @@
       panel.hidden = true;
       panel.setAttribute('role', 'group');
       panel.setAttribute('aria-labelledby', title.id);
+      if (name === 'Grid') {
+        /* The real v8 SCADA panel, restored: a branded head (Ventus /
+           Cables & Connectivity(r) / the status legend -- the exact shell
+           nodes, moved in rather than cloned) above a scrollable body that
+           carries the layer groups in the two-column shape v8 used. The
+           head never enters that column flow. */
+        var head = doc.createElement('div');
+        head.className = 'gm-panel-head';
+        var body = doc.createElement('div');
+        body.className = 'gm-panel-body';
+        panel.appendChild(head);
+        panel.appendChild(body);
+        panel.classList.add('gm-panel-grid');
+        gridHead = head;
+        gridBody = body;
+      }
       title.addEventListener('click', function (event) {
         event.stopPropagation();
         openMenu(menu, title, panel);
       });
       menu.appendChild(title);
       menu.appendChild(panel);
-      nav.appendChild(menu);
+      (index < 3 ? left : right).appendChild(menu);
       panels[name] = panel;
       titles.push(title);
     });
+
+    nav.appendChild(left);
+    nav.appendChild(brand);
+    nav.appendChild(right);
 
     nav.addEventListener('keydown', function (event) {
       var active = doc.activeElement;
@@ -376,26 +544,45 @@
     panel.appendChild(heading);
   }
 
+  /* A measured audit found the v8 panel's own checkboxes at 17x17 px --
+     the input element itself, not just its label. A label with a tall
+     min-height passes a hit-test at its centre but still measures 17x17
+     if something re-measures the <input> node's own rect, the way the
+     live audit did. So the proxy <input> here is stretched, invisible,
+     over the FULL label (position:absolute;inset:0) -- its own
+     getBoundingClientRect() is therefore the whole >=44px control, under
+     any measurement method -- and a separate, normally-sized box (built
+     from CSS alone, no image) carries the visible tick. */
+  function layerCheckbox(kind) {
+    var proxy = document.createElement('input');
+    proxy.type = kind;
+    var box = document.createElement('span');
+    box.className = 'gm-layer-box';
+    box.setAttribute('aria-hidden', 'true');
+    return { proxy: proxy, box: box };
+  }
+
   function buildLayerControls(found) {
     var lastGroup = '';
     found.controls.forEach(function (original) {
       var key = layerKey(original);
       var group = layerGroup(original);
       if (group !== lastGroup) {
-        appendGroup(panels.Grid, group);
+        appendGroup(gridBody, group);
         lastGroup = group;
       }
       var label = document.createElement('label');
       label.className = 'gm-layer';
       label.setAttribute('data-gridatlas-layer-key', key);
-      var proxy = document.createElement('input');
-      proxy.type = 'checkbox';
+      var built = layerCheckbox('checkbox');
+      var proxy = built.proxy;
       proxy.setAttribute('data-gridatlas-layer-proxy', key);
       var name = document.createElement('span');
       name.className = 'gm-layer-name';
       label.appendChild(proxy);
+      label.appendChild(built.box);
       label.appendChild(name);
-      panels.Grid.appendChild(label);
+      gridBody.appendChild(label);
       layerTargets[key] = original;
       layerProxies[key] = proxy;
       proxy.addEventListener('change', function () {
@@ -414,12 +601,12 @@
     });
 
     var basemaps = array(found.host.querySelectorAll('input[type="radio"][name="bm"]'));
-    if (basemaps.length) appendGroup(panels.Grid, 'Basemap');
+    if (basemaps.length) appendGroup(gridBody, 'Basemap');
     basemaps.forEach(function (original) {
       var label = document.createElement('label');
       label.className = 'gm-layer';
-      var proxy = document.createElement('input');
-      proxy.type = 'radio';
+      var built = layerCheckbox('radio');
+      var proxy = built.proxy;
       proxy.name = 'gridatlas-menu-basemap';
       proxy.value = original.value;
       proxy.checked = !!original.checked;
@@ -431,8 +618,9 @@
         closeAll();
       });
       label.appendChild(proxy);
+      label.appendChild(built.box);
       label.appendChild(name);
-      panels.Grid.appendChild(label);
+      gridBody.appendChild(label);
     });
   }
 
@@ -452,19 +640,8 @@
     return '';
   }
 
-  function collapseDashboard(doc) {
-    var wrapper = doc.querySelector('.scada-wrapper');
-    var toggle = doc.getElementById('gridatlas-dash-toggle');
-    if (!wrapper) return;
-    if (!wrapper.hasAttribute('data-gridatlas-collapsed')) {
-      if (toggle && typeof toggle.click === 'function') toggle.click();
-      else wrapper.setAttribute('data-gridatlas-collapsed', '1');
-    }
-  }
-
   function adoptLate(doc) {
     if (!bar) return;
-    move(panels.View, doc.getElementById('gridatlas-dash-toggle'));
     move(panels.View, doc.getElementById('gridatlas-gb-conditions'));
     move(panels.About, doc.getElementById('gridatlas-version-ledger'));
     move(panels.View, doc.getElementById('btn-fullscreen-exit'), 'Exit full screen');
@@ -488,17 +665,18 @@
 
     move(panels.Scope, doc.getElementById('btn-gridpoint'));
 
-    var statusLegend = doc.querySelector('.status-legend');
     var disclaimer = doc.querySelector('.disclaimer-box');
     var shoutout = doc.querySelector('.podcast-shoutout');
-    move(panels.About, statusLegend);
     move(panels.About, disclaimer);
     move(panels.About, shoutout);
 
-    var duplicateBrand = doc.querySelector('.scada-brand');
-    if (duplicateBrand) duplicateBrand.setAttribute('data-gridatlas-menu-duplicate', '1');
+    /* The real .scada-brand (VENTUS, again) and .status-legend move once,
+       into the restored SCADA panel's head, during install() below -- not
+       hidden as a "duplicate" and not here, so a late DOM rebuild cannot
+       repeatedly fight over one node's location. */
 
-    collapseDashboard(doc);
+    var dashToggle = doc.getElementById('gridatlas-dash-toggle');
+    if (dashToggle) dashToggle.hidden = true;   // superseded; measured inert (defect C)
 
     var stack = doc.querySelector('.map-controls');
     if (stack) {
@@ -535,20 +713,42 @@
     move(panels.Scope, ready.nodes.radiusAreaButton);
     move(panels.Scope, ready.nodes.zoneButton);
     move(panels.Scope, ready.nodes.measureButton);
-    move(panels.About, ready.nodes.header);
+
+    /* The VENTUS masthead: fused into the bar's own centre (see buildBar),
+       never a closed panel -- the architect's "VENTUS branding has been
+       lost" was this node being moved into a collapsed About panel, and
+       the measured "flash then vanish" (present for ~1.5s, then torn out)
+       was that same move happening after the raw v8 page had already
+       painted it once. Moving it here, into brandSlot, keeps it visible
+       through the whole transition: raw markup, then fused into the bar,
+       never hidden in between. */
+    move(brandSlot, ready.nodes.header);
+
+    /* The restored SCADA panel's head: the real .scada-brand (VENTUS,
+       again, exactly as v8 rendered it) and .status-legend, moved once --
+       not cloned, not hidden as a duplicate. gridHead sits above gridBody
+       (built by buildLayerControls) and never enters its column flow. */
+    move(gridHead, doc.querySelector('.scada-brand'));
+    move(gridHead, doc.querySelector('.status-legend'));
 
     ready.nodes.host.insertBefore(bar, ready.nodes.host.firstChild);
     doc.documentElement.classList.add('gridatlas-menu-hosted');
     syncAttribClearance(doc);
     if (typeof ResizeObserver === 'function') {
-      var barResize = new ResizeObserver(function () { syncAttribClearance(doc); });
+      var barResize = new ResizeObserver(function () {
+        syncAttribClearance(doc);
+        if (openPanelRefs) clampPanel(doc, openPanelRefs.menu, openPanelRefs.panel);
+      });
       barResize.observe(bar);
       state.attrib_clearance_source = 'ResizeObserver';
     } else if (doc.defaultView && typeof doc.defaultView.addEventListener === 'function') {
       /* No ResizeObserver: a viewport resize is the only other way the
          bar's own height changes (the @media breakpoint), so fall back to
          watching that. */
-      doc.defaultView.addEventListener('resize', function () { syncAttribClearance(doc); });
+      doc.defaultView.addEventListener('resize', function () {
+        syncAttribClearance(doc);
+        if (openPanelRefs) clampPanel(doc, openPanelRefs.menu, openPanelRefs.panel);
+      });
       state.attrib_clearance_source = 'resize-listener';
     }
 

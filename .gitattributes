@@ -100,3 +100,15 @@ atlas/cartridges/202609040337-substation-intelligence-v9-63.js -whitespace
 # v9.107 moves stylesheet bytes only; its recomposed network cartridge still
 # carries the same 58 historical V8 trailing-space lines byte-for-byte.
 atlas/cartridges/202609040403-substation-intelligence-v9-63.js -whitespace
+# v9.108 restamps this cartridge for the menu-bar attribution-clearance fix
+# only; the carried V8 engine input and its 58 trailing-space lines are
+# byte-identical to the exemption above.
+atlas/cartridges/202609041221-substation-intelligence-v9-63.js -whitespace
+# v9.109 restamps this cartridge to carry the version-ledger's own new
+# entry forward (the technology-bucket fix landed in sld-sandbox); the
+# carried V8 engine input and its 58 trailing-space lines are unchanged.
+atlas/cartridges/202609041244-substation-intelligence-v9-63.js -whitespace
+# v9.110 restamps this cartridge for the menu-bar/masthead/SCADA-panel
+# restoration only (atlas/modules/202609031958-menu-bar.js); the carried
+# V8 engine input and its 58 trailing-space lines are unchanged.
+atlas/cartridges/202609041250-substation-intelligence-v9-63.js -whitespace
