@@ -1,0 +1,17 @@
+{
+ "schema": "cvaa.serial-release-cutter.v1",
+ "generation": "202609042220",
+ "note": "Declares the release-cutting behaviour of tools/scope/promote.mjs, invoked only by .github/workflows/202609042220-promotion-lane-promote.yml. Checked against vaccines/202609032335-serial-release-cutter.md in Ventusltd/cvaa. This is the SAME serial-cut discipline tools/recompose.mjs already enforces for composing a generation (it never rewrites an existing composition: 'if (fs.existsSync(compositionPath)) die(...)' at tools/recompose.mjs line 188-190, and its generation is read from the clock rather than typed, tools/recompose.mjs line 65/78); promote.mjs applies the identical discipline one step later, to the act of moving refs/heads/main, using atlas/current.json's last_known_green record as its own ledger of what this lane has already promoted.",
+ "execution": "serial",
+ "execution_evidence": "the promotion lane declares 'concurrency: { group: gridatlas-promotion-lane, cancel-in-progress: false }', so a second dispatch queues behind the first rather than racing it; promote.mjs additionally re-reads refs/heads/main's tip immediately before pushing and refuses if it no longer matches expected_parent.",
+ "no_op": "reject",
+ "no_op_evidence": "tools/scope/promote.mjs mode=check: if the requested commit is already the tip of main (nothing would move), it exits non-zero with 'no-op: <commit> is already the tip of main' and no new promotion record is written.",
+ "same_input_replay": "same-release",
+ "same_input_replay_evidence": "tools/scope/promote.mjs mode=check: if generation and commit both equal atlas/current.json's current last_known_green, it exits 0 printing 'already promoted: <generation> at <commit> is the current last_known_green', writes nothing, and pushes nothing — replaying the same input is idempotent and names the same release.",
+ "divergent_reuse": "reject",
+ "divergent_reuse_evidence": "tools/scope/promote.mjs mode=check: if the requested generation equals last_known_green.generation but the requested commit differs from last_known_green.commit, it exits non-zero with 'divergent reuse: generation <g> was already promoted at a different commit' — a generation identity is written once, the same rule tools/recompose.mjs enforces for a composition file at line 188-190.",
+ "expected_parent": "bb7eb7ed2f34f0e57fc1dd52e08aa2b9dadf42b5",
+ "expected_parent_evidence": "the exact Git object id of refs/heads/main at the moment this contract was written (2026-09-04, from 'git rev-parse main' in this checkout). tools/scope/promote.mjs mode=write refreshes this field to the new tip of main in the same commit that writes last_known_green, every time a promotion succeeds, so the declaration never goes stale; a promotion whose --expected-parent argument does not match the live tip of origin/main at run time is refused before anything is pushed. (This exact write path was exercised locally against a throwaway --proof-run-id and then reverted, rather than left committed with fabricated run evidence; see docs/promotion-lane.md.)",
+ "input_sha256": "d2ed2d4dd659717c17b985c8f32a57c0400588218124f6dcf9090be991570e28",
+ "input_sha256_evidence": "sha256 of the published (LF-normalised) bytes of atlas/current.json at that same commit, taken with tools/scope/lib.mjs's own sha256PublishedFile — the identical function verify-compose.mjs and loop.mjs already use to hash cartridges, so this contract hashes its input the same way the rest of the estate does. Refreshed alongside expected_parent by tools/scope/promote.mjs mode=write."
+}

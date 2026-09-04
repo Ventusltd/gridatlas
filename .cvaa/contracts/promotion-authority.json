@@ -1,0 +1,23 @@
+{
+ "schema": "cvaa.promotion-authority.v1",
+ "generation": "202609042220",
+ "note": "Declares what .github/workflows/202609042220-promotion-lane-build.yml (the build lane) and .github/workflows/202609042220-promotion-lane-promote.yml (the promotion lane) actually do. Checked against vaccines/202609032337-promotion-authority-separated.md in Ventusltd/cvaa. gridatlas serves main directly to GitHub Pages (classic Pages, no build step), so 'promote' here means exactly one thing: fast-forwarding refs/heads/main to a commit that has already been proved.",
+ "build": {
+  "workflow": ".github/workflows/202609042220-promotion-lane-build.yml",
+  "branch_only": true,
+  "branch_only_evidence": "triggers are 'push: branches: [\"candidate/**\"]' and 'pull_request:' only — no 'push: branches: [main]' and no 'workflow_dispatch' that could target main.",
+  "permissions": "read",
+  "permissions_evidence": "job-level 'permissions: contents: read' is the only permission block in the file; there is no 'contents: write', no 'pages: write', no 'id-token: write'.",
+  "may_promote": false,
+  "may_promote_evidence": "the workflow has no step that runs 'git push', 'gh api .../pages/builds', or touches refs/heads/main; its last step uploads a JSON proof receipt as a workflow artifact and writes it to GITHUB_STEP_SUMMARY. It cannot write to the repository and cannot dispatch the promotion lane."
+ },
+ "promotion": {
+  "workflow": ".github/workflows/202609042220-promotion-lane-promote.yml",
+  "explicit_dispatch": true,
+  "explicit_dispatch_evidence": "the only trigger is 'workflow_dispatch', with two required inputs, 'generation' and 'proof_run_id'; there is no push, schedule, or pull_request trigger.",
+  "authority": "gridatlas-release-authority",
+  "authority_evidence": "the job runs as the named principal 'gridatlas-release-authority' (git author identity of the promotion commit; the actual invoking GitHub identity is the account or App that owns the token in the GRIDATLAS_PROMOTION_TOKEN secret, which is the only credential this lane accepts, checked at the top of the job) — a build-lane run has no access to this secret and no dispatch trigger that could reach this workflow.",
+  "may_push_main": true,
+  "may_push_main_evidence": "the job's 'permissions: contents: write' is declared ONLY on this workflow, never on the build lane, and only this workflow contains a step that runs 'git push origin <commit>:refs/heads/main'."
+ }
+}
