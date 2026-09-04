@@ -70,3 +70,9 @@
 *.html   text eol=lf
 *.css    text eol=lf
 *.txt    text eol=lf
+
+# This composed cartridge carries the immutable V8 engine byte-for-byte. The
+# source engine contains historical end-of-line spaces, so treating those
+# carried bytes as newly authored whitespace would require changing the slot
+# contract. Keep the bytes/digests reproducible and exempt this exact artefact.
+atlas/cartridges/202609040021-substation-intelligence-v9-63.js -whitespace
