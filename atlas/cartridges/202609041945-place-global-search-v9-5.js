@@ -1,3 +1,13 @@
+/**
+ * place-global-search-v9-5, generation 202609041945 (UTC).
+ *
+ * ASSEMBLED by tools/build-cartridge.mjs from the parts below. Do not edit
+ * this file: edit a part and rebuild under a new generation. Each part is
+ * hashed in manifests/202609041945-place-global-search-v9-5-parts.json.
+ *
+ *   part                   atlas/parts/202609040229-place-global-search-arrival-identity.js
+ */
+
 (() => {
   'use strict';
 

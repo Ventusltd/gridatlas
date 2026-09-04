@@ -127,9 +127,21 @@ const enginePart = (partsManifest.assembled_from || [])[0];
 const engine = enginePart
   ? (await readFile(join(REPO, enginePart.path), 'utf8')).replace(/\r\n/g, '\n')
   : '';
+/* Hashed on LF-normalised content, which is the basis the composition
+   manifest actually declares: "LF-normalised content, as served; the
+   repository hashes git blob bytes, not the CRLF working copy".
+   ---------------------------------------------------------------------------
+   This check read raw bytes and so failed on every Windows checkout, where
+   core.autocrlf gives the working copy CRLF endings - 1,436 of them in this
+   file. The shell was never modified; measured 202609041500, the raw digest
+   is c4a7f575... and the LF digest is 9a75901e..., an exact match for the
+   published one. Note the line above already normalises the engine PART the
+   same way: the proof was normalising one side of its own comparison and not
+   the other. A check that is permanently red for an environmental reason is
+   worse than no check, because it teaches a reader to skip the suite. */
 const immutableEnginePath = join(RELEASE, 'ventus-corev8engine.js');
-const immutableEngineBytes = await readFile(immutableEnginePath);
-const immutableEngineHash = createHash('sha256').update(immutableEngineBytes).digest('hex');
+const immutableEngineSource = (await readFile(immutableEnginePath, 'utf8')).replace(/\r\n/g, '\n');
+const immutableEngineHash = createHash('sha256').update(immutableEngineSource, 'utf8').digest('hex');
 
 console.log('\nthe engine successor, with the immutable shell preserved\n');
 check('the parts manifest names the reviewed exact-REPD delegation successor',

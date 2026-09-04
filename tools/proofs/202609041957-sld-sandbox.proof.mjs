@@ -1187,12 +1187,27 @@ check('three triggers still boot exactly once', (() => {
    layers the whole arrival depends on stayed off. */
 check('the deep link waits for the controls before ticking them',
   /await waitForLayerControls\(12000\);[\s\S]{0,40}enableBoth\(\);/.test(bootSrc));
+/* The budget moved to visible time at v9.112 so a background tab cannot spend
+   it before anyone can see the result. This check's PROPERTY is unchanged and
+   is if anything stricter now: the wait must still terminate. Visible time
+   alone would not guarantee that - a tab never made visible would poll for
+   ever - so the loop carries an absolute wall-clock ceiling alongside the
+   visible-time budget, and both are asserted here. */
 check('the wait is bounded, not a hang',
-  /while \(Date\.now\(\) - started < budgetMs\)/.test(bootSrc));
+  /while \(elapsed < budgetMs && Date\.now\(\) - started < HARD_CEILING_MS\)/.test(bootSrc)
+  && /const HARD_CEILING_MS = 600000;/.test(bootSrc));
+check('the budget itself is charged in visible time, so a tab nobody can see '
+    + 'does not burn the arrival before it is looked at',
+  /if \(document\.visibilityState === 'visible'\) elapsed \+= 200;/.test(bootSrc));
 check('it waits for a tagged control, the same hook it will tick',
   /const LAYER_CONTROL = 'input\[type=checkbox\]\[data-layer-id\]';/.test(bootSrc)
   && /document\.querySelector\(LAYER_CONTROL\)/.test(bootSrc));
-check('how long the engine took is published', /link\.layer_controls_ready_ms = Date\.now\(\) - started;/.test(bootSrc));
+check('how long the engine took is published, on BOTH clocks: wall time is what '
+    + 'the reader sat through, visible time is what the budget was spent from, '
+    + 'and publishing only one makes a background arrival look instant or a '
+    + 'foreground one look slow',
+  /link\.layer_controls_ready_ms = Date\.now\(\) - started;/.test(bootSrc)
+  && /link\.layer_controls_ready_visible_ms = elapsed;/.test(bootSrc));
 check('giving up says what could not be switched on, and why',
   /had not rendered its layer controls within/.test(bootSrc));
 check('the published state carries both new facts',

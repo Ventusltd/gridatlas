@@ -8,10 +8,15 @@ import vm from 'node:vm';
 import { fileURLToPath } from 'node:url';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..');
-const GENERATION = '202609040337';
+/* Two generations, deliberately. The RUNTIME was restamped at 202609041945,
+   where the search lane stopped building its own DuckDB runtime and started
+   sharing the page's. The CONTRACT is the behavioural promise, which did not
+   change, so current.json still points at 202609040337 and so does this. */
+const GENERATION = '202609041945';
+const CONTRACT_GENERATION = '202609040337';
 const ID = 'uk-gazetteer-flyto';
 const RUNTIME = `atlas/cartridges/${GENERATION}-place-global-search-v9-5.js`;
-const CONTRACT = `ui/cartridges/${GENERATION}-global-gazetteer-flyto-v9-106.mjs`;
+const CONTRACT = `ui/cartridges/${CONTRACT_GENERATION}-global-gazetteer-flyto-v9-106.mjs`;
 const MANIFEST_DIGEST = '8850567ff9f1d2b6996b4e0d9707320030f3466a0b821cdcfc5325322b8be8c8';
 
 const source = await readFile(path.join(ROOT, RUNTIME), 'utf8');
@@ -22,7 +27,7 @@ assert.ok(entry, `${ID} is not in the current composition`);
 assert.equal(entry.generation, GENERATION);
 assert.equal(entry.path, `./cartridges/${GENERATION}-place-global-search-v9-5.js`);
 assert.equal(entry.contract,
-  `../ui/cartridges/${GENERATION}-global-gazetteer-flyto-v9-106.mjs`);
+  `../ui/cartridges/${CONTRACT_GENERATION}-global-gazetteer-flyto-v9-106.mjs`);
 assert.equal(createHash('sha256').update(source).digest('hex'), entry.sha256,
   'the proof is not reading the composed search runtime bytes');
 assert.match(contractSource, /publishesResolvedTechnologyAndCapacity: true/);
@@ -33,9 +38,16 @@ assert.match(contractSource, /identityFailureRetryRequiresSharedArrivalEpoch: tr
 assert.match(source, /generation: RUNTIME_GENERATION/,
   'the public runtime state must use the composed generation');
 
-const importLine = 'const duckdb = await import(DUCKDB_MODULE);';
+/* The seam moved into the shared broker at 202609041945: this lane no longer
+   builds its own runtime, it asks sharedDuckDBRuntime(moduleUrl) for the one
+   the page already has. The assertion still insists there is exactly ONE way a
+   runtime enters this cartridge - that singularity is the property worth
+   guarding, and it is what stopped the page paying for two heaps. */
+const importLine = 'const duckdb = await import(moduleUrl);';
 assert.equal(source.split(importLine).length - 1, 1,
   'the DuckDB test seam must replace exactly one import');
+assert.equal(source.split('await import(DUCKDB_MODULE)').length - 1, 0,
+  'a second, direct DuckDB import reappeared alongside the shared broker');
 const executableSource = source.replace(importLine,
   'const duckdb = window.__GRIDATLAS_TEST_DUCKDB__;');
 

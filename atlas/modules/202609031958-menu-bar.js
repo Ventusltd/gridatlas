@@ -640,6 +640,40 @@
     return '';
   }
 
+  /* The two chips that must NOT be swallowed by a menu on a phone.
+     ------------------------------------------------------------------------
+     GRID and SUBS were put on the map deliberately, and the reason is on the
+     record: the grid-line and substation switches live in the SCADA panel
+     below the map, "which a phone never scrolls to; activation looked
+     broken" (composition manifest, mobile_tray, from phone acceptance on
+     2026-09-01). Moving every tray button into a dropdown re-created a milder
+     form of exactly that fault - measured at an iPhone 13 viewport on
+     202609041330, zero layer controls were reachable without first opening a
+     menu.
+
+     So on a touch screen or a narrow window these two stay where they were
+     designed to be. Everything else still routes into the menus, and desktop
+     is unchanged: there the chips are redundant with a menu that is already
+     one click away and always visible. */
+  function chipStaysOnMap(node) {
+    var text = cleanText(node && node.textContent).toLowerCase();
+    if (!/\bgrid\b|\bsubs\b/.test(text)) return false;
+    /* An UNKNOWN width is not a phone. Reading `(window.innerWidth || 0) <= 700`
+       makes a missing or zero width report narrow, which is the wrong way for
+       a default to fail: it would strand these chips on the map in any host
+       that does not publish a width, including a headless proof fixture. The
+       width has to be a real positive number before it argues for a phone. */
+    var coarse = false;
+    try {
+      coarse = !!(window.matchMedia && window.matchMedia('(pointer: coarse)').matches);
+    } catch (error) {
+      coarse = false;
+    }
+    var width = Number(window.innerWidth);
+    var narrow = isFinite(width) && width > 0 && width <= 700;
+    return coarse || narrow;
+  }
+
   function adoptLate(doc) {
     if (!bar) return;
     move(panels.View, doc.getElementById('gridatlas-gb-conditions'));
@@ -657,6 +691,7 @@
     var tray = doc.getElementById('gridatlas-mobile-tray');
     if (tray) {
       array(tray.querySelectorAll('button')).forEach(function (button) {
+        if (chipStaysOnMap(button)) return;   // one tap on a phone, not two
         var route = trayRoute(button);
         if (route) move(panels[route], button);
         else button.hidden = true;       // Tools only revealed the controls now in menus

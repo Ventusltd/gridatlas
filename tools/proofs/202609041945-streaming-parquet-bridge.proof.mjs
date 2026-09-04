@@ -9,10 +9,17 @@ import vm from 'node:vm';
 import { fileURLToPath } from 'node:url';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..');
-const GENERATION = '202608301825';
+/* Two generations, deliberately, because they are two different things.
+   The RUNTIME is restamped every time these bytes change - at 202609041945 it
+   gained the shared DuckDB broker. The CONTRACT is the behavioural promise the
+   cartridge makes, which did not change, so current.json still points at
+   202608301825 and this proof must too. Folding them back into one constant is
+   how a proof ends up asserting against a file that does not exist. */
+const GENERATION = '202609041945';
+const CONTRACT_GENERATION = '202608301825';
 const ID = 'streaming-parquet-bridge';
 const RUNTIME = `atlas/cartridges/${GENERATION}-streaming-parquet-bridge-v9-5.js`;
-const CONTRACT = `ui/cartridges/${GENERATION}-streaming-parquet-bridge-v9-5.mjs`;
+const CONTRACT = `ui/cartridges/${CONTRACT_GENERATION}-streaming-parquet-bridge-v9-5.mjs`;
 
 const source = await readFile(path.join(ROOT, RUNTIME), 'utf8');
 const contractSource = await readFile(path.join(ROOT, CONTRACT), 'utf8');
@@ -129,11 +136,21 @@ const fixtureSha = createHash('sha256').update(fixtureBytes).digest('hex');
 const pinnedManifestSha = '3246dbdaa042ae8352ec9b7128cb6c2fe65e4f1aba0534302510661828df2526';
 assert.equal(source.split(pinnedManifestSha).length - 1, 1,
   'the composed bridge manifest pin changed without this proof changing');
-assert.equal(source.split('const duckdb = await import(DUCKDB_MODULE);').length - 1, 1,
+/* The seam moved at 202609041945 and this proof moved with it, deliberately.
+   The import now lives inside sharedDuckDBRuntime(moduleUrl) - the broker that
+   makes this cartridge and the search lane share ONE runtime instead of each
+   building their own, which was costing a phone two 5.92 MB WebAssembly heaps.
+   So the injection point is the broker's import, not the old direct one, and
+   the assertion below still insists there is exactly ONE place a runtime can
+   enter this cartridge. That is the property worth guarding: not the literal
+   text, but that the seam is singular. */
+assert.equal(source.split('const duckdb = await import(moduleUrl);').length - 1, 1,
   'the DuckDB seam changed without this proof changing');
+assert.equal(source.split('await import(DUCKDB_MODULE)').length - 1, 0,
+  'a second, direct DuckDB import reappeared alongside the shared broker');
 const instrumentedSource = source
   .replace(pinnedManifestSha, fixtureSha)
-  .replace('const duckdb = await import(DUCKDB_MODULE);',
+  .replace('const duckdb = await import(moduleUrl);',
     'const duckdb = window.__GRIDATLAS_TEST_DUCKDB__;');
 
 let querySql = '';
