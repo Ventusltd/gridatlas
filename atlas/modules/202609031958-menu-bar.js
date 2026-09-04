@@ -61,6 +61,7 @@
   var titles = [];
   var layerTargets = Object.create(null);
   var layerProxies = Object.create(null);
+  var forwardingLayerChoice = false;
   var observer = null;
   var timer = null;
 
@@ -85,7 +86,11 @@
     var span = label && label.querySelector
       ? label.querySelector('[data-base-label], [data-pn-label], span') : null;
     var base = span && span.getAttribute ? span.getAttribute('data-base-label') : '';
-    var text = cleanText(base || (span && span.textContent)
+    /* The V8 panel exposes WAIT/LOAD/OK/FAIL beside every layer.  The first
+       menu implementation preferred data-base-label, which deliberately
+       strips that live suffix.  That made a successful load and a failed
+       load indistinguishable in the only layer surface left on a phone. */
+    var text = cleanText((span && span.textContent) || base
       || (label && label.textContent) || layerKey(input).split(':').slice(1).join(':'));
     return text || layerKey(input);
   }
@@ -362,10 +367,15 @@
       layerProxies[key] = proxy;
       proxy.addEventListener('change', function () {
         if (!!original.checked !== !!proxy.checked && typeof original.click === 'function') {
-          original.click();
+          /* original.click() must remain the implementation: its delegated
+             engine listener owns hydration.  Suppress only the document-level
+             outside-click closer while that synchronous forwarding runs, so
+             the reader can see the tick and its live load state. */
+          forwardingLayerChoice = true;
+          try { original.click(); }
+          finally { forwardingLayerChoice = false; }
         }
         syncLayer(key);
-        closeAll();
       });
       syncLayer(key);
     });
@@ -500,9 +510,13 @@
     /* One document click listener and one change listener, installed once.
        The retry path cannot multiply effects. */
     doc.addEventListener('click', function (event) {
-      if (!bar.contains(event.target)) closeAll();
+      if (!bar.contains(event.target)) {
+        if (!forwardingLayerChoice) closeAll();
+      }
       else if (event.target && /^(BUTTON|INPUT)$/.test(event.target.tagName || '')) {
-        if (event.target.type !== 'text' && !event.target.classList.contains('gm-title')) {
+        if (event.target.type !== 'text'
+          && !event.target.classList.contains('gm-title')
+          && !event.target.hasAttribute('data-gridatlas-layer-proxy')) {
           window.setTimeout ? window.setTimeout(closeAll, 0) : closeAll();
         }
       }
@@ -520,6 +534,8 @@
     state.failure = null;
     state.one_identity_surface = true;
     state.mobile_sheet_hit_target_guard = true;
+    state.layer_status_mirrored = true;
+    state.layer_menu_stays_open = true;
 
     if (typeof MutationObserver === 'function') {
       observer = new MutationObserver(function () {

@@ -1940,6 +1940,8 @@ check('the layer dashboard survives fullscreen',
   /function keepLayersInFullscreen/.test(code) && /fullscreenchange/.test(code));
 check('the dashboard is moved, not cloned, so its listeners live',
   /full\.appendChild\(dashboard\)/.test(code) && /home\.parent\.insertBefore/.test(code));
+check('fullscreen relocation rejects an ancestor-to-descendant DOM cycle',
+  /full && !full\.contains\(dashboard\) && !dashboard\.contains\(full\)/.test(code));
 check('a missing dashboard is reported', /'fullscreen: dashboard not found'/.test(code));
 
 check('the block goes on the content, never inside the bar',

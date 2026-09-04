@@ -422,16 +422,28 @@ export async function proveMenuBar(menuPath, servedSource = '') {
 
   title('Grid').click();
   const proxy = panel('Grid').querySelector('[data-gridatlas-layer-proxy="engine:engine-0"]');
+  const proxyName = proxy.parentNode.querySelector('.gm-layer-name');
+  check('the Grid proxy mirrors the V8 live WAIT state rather than hiding it',
+    proxyName.textContent === 'Engine 0 [WAIT]'
+    && proxy.getAttribute('aria-label') === 'Engine 0 [WAIT]');
   proxy.click();
   check('a Grid proxy executes the original handler and reflects original state',
     complete.originals[0].checked === true && complete.originals[0].hits === 1
     && proxy.checked === true);
-  check('a layer choice self-closes the menu',
-    title('Grid').getAttribute('aria-expanded') === 'false'
-    && bar.querySelectorAll('.gm-menu.gm-open').length === 0);
+  check('a layer choice remains open so a phone reader can see the tick',
+    title('Grid').getAttribute('aria-expanded') === 'true'
+    && bar.querySelectorAll('.gm-menu.gm-open').length === 1
+    && api.layer_menu_stays_open === true);
+
+  complete.originals[0].parentNode.querySelector('[data-base-label]').textContent = 'Engine 0 [OK]';
+  title('Grid').click();
+  title('Grid').click();
+  check('reopening Grid mirrors the V8 terminal load state visibly and accessibly',
+    proxyName.textContent === 'Engine 0 [OK]'
+    && proxy.getAttribute('aria-label') === 'Engine 0 [OK]'
+    && api.layer_status_mirrored === true);
 
   complete.originals[0].click();
-  title('Grid').click();
   check('opening Grid resynchronises state changed through the original UI',
     proxy.checked === complete.originals[0].checked && proxy.checked === false);
   title('View').click();
