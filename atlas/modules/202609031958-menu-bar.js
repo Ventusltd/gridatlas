@@ -221,6 +221,21 @@
       'html.gridatlas-sheet-open #' + BAR_ID + ' .gm-panel{pointer-events:auto!important}',
       'body:not(.fs-active) #' + BAR_ID + ' #btn-fullscreen-exit{display:none!important}',
       'body.fs-active #' + BAR_ID + ' #btn-fullscreen-exit{display:flex!important}',
+      /* The shell's own .custom-map-attrib (OpenStreetMap / CARTO / Open
+         Charge Map credit) only ever cleared this bar while body.fs-active
+         was set. At rest -- and on every Pipeline News deep-link arrival,
+         which does not always reach fs-active -- the credit painted at its
+         default top:10px and sat directly under the bar, invisible under
+         the ABOUT title. A licence credit that is painted but covered is
+         not attribution. Clear it whenever this bar is hosted, not only in
+         fullscreen; --gridatlas-menu-bar-clear is kept in step with the
+         bar's own rendered height (see syncAttribClearance) rather than a
+         second hard-coded constant, because the bar itself drops from 36px
+         to 34px under the @media rule below and a fixed number sized for
+         one breakpoint would leave the credit covered, or needlessly far
+         down, at the other. 44px is only the pre-JS fallback. */
+      '.gridatlas-menu-hosted .custom-map-attrib{',
+      'top:var(--gridatlas-menu-bar-clear,44px)!important}',
       '@media(max-width:700px){#' + BAR_ID + '{height:34px}',
       '#' + BAR_ID + ' .gm-title{min-height:34px;padding:0 6px;font-size:9px;letter-spacing:.025em}',
       '#' + BAR_ID + ' .gm-panel{position:fixed;top:34px;left:4px!important;right:4px!important;',
@@ -228,6 +243,24 @@
       'calc(6px + env(safe-area-inset-bottom))}}'
     ].join('');
     (doc.head || doc.documentElement).appendChild(style);
+  }
+
+  function syncAttribClearance(doc) {
+    /* Measured, not asserted: the bar is 36px at rest and 34px under the
+       @media(max-width:700px) rule in installStyle, and either number could
+       change again. Reading the live box keeps the credit clear of the bar
+       at whatever height it actually rendered, on the phone width the
+       fixture failed on as much as on desktop. Guarded so the DOM-fixture
+       proof, which stubs neither getBoundingClientRect nor a CSSOM style
+       object, runs through this as a no-op. */
+    if (!bar || typeof bar.getBoundingClientRect !== 'function') return;
+    var root = doc.documentElement;
+    if (!root || !root.style || typeof root.style.setProperty !== 'function') return;
+    var rect = bar.getBoundingClientRect();
+    var height = Math.ceil(rect.height) || 36;
+    var clearance = height + 8;   // clear of the bar's own border-bottom, not flush against it
+    root.style.setProperty('--gridatlas-menu-bar-clear', clearance + 'px');
+    state.attrib_clearance_px = clearance;
   }
 
   function closeAll(focusTitle) {
@@ -506,6 +539,18 @@
 
     ready.nodes.host.insertBefore(bar, ready.nodes.host.firstChild);
     doc.documentElement.classList.add('gridatlas-menu-hosted');
+    syncAttribClearance(doc);
+    if (typeof ResizeObserver === 'function') {
+      var barResize = new ResizeObserver(function () { syncAttribClearance(doc); });
+      barResize.observe(bar);
+      state.attrib_clearance_source = 'ResizeObserver';
+    } else if (doc.defaultView && typeof doc.defaultView.addEventListener === 'function') {
+      /* No ResizeObserver: a viewport resize is the only other way the
+         bar's own height changes (the @media breakpoint), so fall back to
+         watching that. */
+      doc.defaultView.addEventListener('resize', function () { syncAttribClearance(doc); });
+      state.attrib_clearance_source = 'resize-listener';
+    }
 
     /* One document click listener and one change listener, installed once.
        The retry path cannot multiply effects. */
