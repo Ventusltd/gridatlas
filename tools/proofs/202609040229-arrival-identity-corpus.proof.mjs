@@ -10,7 +10,20 @@ import vm from 'node:vm';
 import { fileURLToPath } from 'node:url';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..');
-const GENERATION = '202609040337';
+/* Two generations, deliberately, because they are two different things.
+   CONTRACT_GENERATION is the gazetteer contract's own stamp: the file
+   ui/cartridges/202609040337-global-gazetteer-flyto-v9-106.mjs, which
+   current.json still names because the behavioural promise has not changed.
+   The COMPOSITION is whatever is live, and it is READ from current.json below
+   rather than typed here. This proof used to pin the composition to the same
+   literal and assert current.generation equalled it - true for one generation
+   and false for every one after, so from v9.109 onwards it failed on that
+   line and never reached its mobile, state, scope and line-ending checks. An
+   external reviewer (2026-09-04) caught it: "the failed proof is stale, not
+   evidence that v9.116 is broken." recompose.mjs carries proofs named after a
+   cartridge forward; this one is named after a corpus, so nobody restamped
+   it. Anchoring to current.json cannot go stale at all. */
+const CONTRACT_GENERATION = '202609040337';
 const PIPELINE_COMMIT = '3493be1c4ebf3dabbc94135db17f433bb7892a8e';
 const RELEASE = 'releases/202609040144-pipelinenews';
 const SPINE_REL = `${RELEASE}/data/202608270055-8ab1807551bc-v8-fast-projects.json`;
@@ -37,9 +50,19 @@ const pipeline = candidates.find((candidate) =>
   && existsSync(path.join(candidate, SENDER_REL)));
 assert.ok(pipeline, `exact Pipeline 0144 corpus not found beside ${ROOT}`);
 
-const git = spawnSync('git', ['-C', pipeline, 'rev-parse', 'HEAD'], { encoding: 'utf8' });
-assert.equal(git.status, 0, git.stderr || 'Pipeline commit could not be read');
-assert.equal(git.stdout.trim(), PIPELINE_COMMIT, 'Pipeline corpus checkout moved');
+/* The producer commit must be IN the neighbouring checkout's history - not
+   BE its HEAD. This asserted HEAD === PIPELINE_COMMIT, which demanded that a
+   whole other repository never advance, and failed the moment it did (a
+   fast-forward of 45 commits on 2026-09-04). The property that protects the
+   corpus is the one already asserted below and beneath: each corpus file
+   exists at the producer commit, and its served bytes match a recorded
+   SHA-256. An ancestor check keeps the provenance; the byte hashes keep the
+   content; neither breaks when a colleague pulls. */
+const git = spawnSync('git', ['-C', pipeline, 'merge-base', '--is-ancestor', PIPELINE_COMMIT, 'HEAD'],
+  { encoding: 'utf8' });
+assert.equal(git.status, 0,
+  `Pipeline producer commit ${PIPELINE_COMMIT.slice(0, 8)} is not in the checkout's history`
+  + (git.stderr ? `: ${git.stderr.trim()}` : ''));
 for (const relativePath of [SPINE_REL, WIDER_REL, SENDER_REL]) {
   const object = spawnSync('git', ['-C', pipeline, 'cat-file', '-e',
     `${PIPELINE_COMMIT}:${relativePath}`], { encoding: 'utf8' });
@@ -64,13 +87,23 @@ assert.equal(parquetBytes.length, 1454200);
 assert.equal(sha256(parquetBytes), '174040c37f3d63742d6fdd7af722a8cfdf3fb53de3ff85ff1142d22fdac4866b');
 
 const current = JSON.parse(await readFile(path.join(ROOT, 'atlas', 'current.json'), 'utf8'));
+const GENERATION = current.generation;
+assert.match(GENERATION, /^\d{12}$/u, 'current.json must name a 12-digit UTC generation');
 const manifest = JSON.parse(await readFile(path.join(ROOT, 'atlas', 'manifests',
   `${GENERATION}-composition.json`), 'utf8'));
 const contractSource = await readFile(path.join(ROOT, 'ui', 'cartridges',
-  `${GENERATION}-global-gazetteer-flyto-v9-106.mjs`), 'utf8');
-assert.equal(current.generation, GENERATION);
+  `${CONTRACT_GENERATION}-global-gazetteer-flyto-v9-106.mjs`), 'utf8');
 assert.equal(manifest.generation, GENERATION);
-assert.equal(manifest.parent_generation, '202609040219');
+// The live composition still binds the gazetteer lane to the contract this
+// proof reads - the thing the old literal was actually protecting.
+const gazetteer = current.cartridges.find(({ id }) => id === 'uk-gazetteer-flyto');
+assert.ok(gazetteer, 'uk-gazetteer-flyto is not in the live composition');
+assert.equal(gazetteer.contract,
+  `../ui/cartridges/${CONTRACT_GENERATION}-global-gazetteer-flyto-v9-106.mjs`);
+// A parent is an earlier clock reading, never a typed one; which earlier one
+// is the composer's business, not this proof's.
+assert.match(String(manifest.parent_generation), /^\d{12}$/u);
+assert.ok(manifest.parent_generation < GENERATION, 'parent must precede the composition');
 assert.equal(manifest.acceptance.pipeline_map_link_corpus.producer_commit, PIPELINE_COMMIT);
 assert.equal(manifest.acceptance.pipeline_map_link_corpus.producer_release, RELEASE);
 assert.equal(manifest.acceptance.pipeline_map_link_corpus.unique_clickable_refs, 8743);
@@ -79,7 +112,7 @@ assert.doesNotMatch(JSON.stringify(manifest),
   /offshore-opens-a-card-and-withholds-the-measurement/u);
 assert.doesNotMatch(JSON.stringify(manifest), /opens a card, draws no links/u);
 assert.match(JSON.stringify(manifest), /offshore-measures-with-route-caveat/u);
-assert.match(contractSource, new RegExp(`generation: '${GENERATION}'`));
+assert.match(contractSource, new RegExp(`generation: '${CONTRACT_GENERATION}'`));
 assert.match(contractSource, /sourceGeneration: '202609040229'/u);
 assert.match(contractSource, /identityFailureRetryRequiresSharedArrivalEpoch: true/u);
 assert.match(placeSource,
