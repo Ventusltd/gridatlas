@@ -84,3 +84,8 @@ atlas/cartridges/202609040046-substation-intelligence-v9-63.js -whitespace
 atlas/cartridges/202609040047-substation-intelligence-v9-63.js -whitespace
 atlas/cartridges/202609040058-substation-intelligence-v9-63.js -whitespace
 atlas/cartridges/202609040134-substation-intelligence-v9-63.js -whitespace
+# This successor also preserves the untouched V8 engine bytes, including its
+# historical trailing spaces. Limit the exemption to the new immutable input
+# and the one generated cartridge which contains it.
+atlas/parts/202609040212-ventus-corev8engine-layer-availability.js -whitespace
+atlas/cartridges/202609040219-substation-intelligence-v9-63.js -whitespace
