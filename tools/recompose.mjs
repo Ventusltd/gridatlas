@@ -372,6 +372,10 @@ for (const proof of proofs) {
 }
 const composition = {
   ...previousComposition,
+  // Rejection belongs to the generation that failed review. Inheriting it
+  // would quarantine every successor even after the defect was repaired;
+  // undefined is omitted by writeJson/JSON.stringify.
+  candidate_status: undefined,
   generation,
   parent_generation: previousGeneration,
   cartridge_order: current.cartridge_order,

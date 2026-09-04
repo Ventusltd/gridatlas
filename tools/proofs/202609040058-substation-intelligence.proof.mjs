@@ -183,11 +183,18 @@ const productText = CONNECTION_POINTS.ok ? CONNECTION_POINTS.text : '{}';
 const product = JSON.parse(productText);
 
 let fetched = null;
+/* The carried browser shell owns a permanent one-second clock interval. It is
+   unrelated to the network module under proof and must not keep the exact-head
+   CI process alive after every assertion has completed. Browser behavior is
+   exercised separately by the bounded Playwright gate. */
+const proofSetInterval = () => 0;
+const proofClearInterval = () => {};
 const context = {
   window: {}, document: { addEventListener() {}, getElementById: () => null,
     querySelector: () => null, querySelectorAll: () => [], createElement: () => ({ style: {} }),
     body: { classList: { add() {}, remove() {} } }, head: { appendChild() {} } },
-  console, setTimeout, clearTimeout, setInterval, clearInterval, performance,
+  console, setTimeout, clearTimeout,
+  setInterval: proofSetInterval, clearInterval: proofClearInterval, performance,
   Math, JSON, Date, Promise, Map, Set, URL, Error, RegExp, Array, Object, Number, String,
   TextDecoder, TextEncoder, Uint8Array, ArrayBuffer, navigator: { userAgent: 'proof' },
   location: { search: '', href: 'https://example.invalid/' },

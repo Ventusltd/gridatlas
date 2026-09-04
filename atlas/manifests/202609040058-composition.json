@@ -1,6 +1,6 @@
 {
  "schema": "gridatlas.composition-manifest.v1",
- "generation": "202609040021",
+ "generation": "202609040058",
  "parent_generation": "202609032315",
  "live_route": "/gridatlas/atlas/",
  "shell": {
@@ -68,13 +68,13 @@
   },
   {
    "id": "sld-sandbox",
-   "generation": "202609040021",
-   "version": "v9.100",
+   "generation": "202609040058",
+   "version": "v9.103",
    "type": "script",
    "slot": "replace-script",
    "replace_script": "202608292126-pre-snapped-config-adapter.js",
-   "path": "./cartridges/202609040021-sld-sandbox-v9-8.js",
-   "sha256": "26e43cf0ca6278a981950076cd18b60939cd13a75c999c9ab6e2c6f0a4d81ea6",
+   "path": "./cartridges/202609040058-sld-sandbox-v9-8.js",
+   "sha256": "c022e892aea7230a25f5eb081fa9a3e09752b17d3d876d8b7fab4a45e818e386",
    "capabilities": [
     "pre-snapped-config-adapter-carried-forward",
     "project-or-substation-selection",
@@ -510,7 +510,7 @@
     "archetypes": "West Burton builds a 400 kV customer substation and a 10 km cable to an existing transmission bay; Little Crow loops into a distribution circuit already crossing its land. Both are NSIPs; only one is a 400 kV story",
     "rule": "the state is taken from the public record, never from whether OSM happens to have mapped the asset"
    },
-   "assembled_from": "./manifests/202609040021-sld-sandbox-v9-8-parts.json",
+   "assembled_from": "./manifests/202609040058-sld-sandbox-v9-8-parts.json",
    "data_sources": [
     {
      "repository": "Ventusltd/data-grid-gb",
@@ -530,15 +530,17 @@
   },
   {
    "id": "substation-intelligence",
-   "generation": "202609040021",
-   "version": "v9.100",
+   "generation": "202609040058",
+   "version": "v9.103",
    "type": "script",
    "slot": "replace-script",
    "replace_script": "ventus-corev8engine.js",
-   "path": "./cartridges/202609040021-substation-intelligence-v9-63.js",
-   "sha256": "98a8117fe3547a72816e1ab5f00ec205c355041a70f09ea5ce01528b536eca7c",
+   "path": "./cartridges/202609040058-substation-intelligence-v9-63.js",
+   "sha256": "20862b3058e73561e0ef98d69c92cd80adb383dc120adeea5043377a91ae14cf",
    "capabilities": [
-    "v8-engine-carried-forward-verbatim",
+    "immutable-v8-shell-preserved-with-reviewed-receiver-successor",
+    "canonical-deep-link-technology-vocabulary",
+    "non-spine-links-deferred-to-exact-repd-receiver",
     "eight-fault-current-metrics-never-conflated",
     "rms-break-current-quoted-by-name",
     "substation-lookup-by-name-and-by-position",
@@ -556,7 +558,7 @@
    "supersedes_shell_script": {
     "name": "ventus-corev8engine.js",
     "sha256": "9a75901ebdff05e094650e39973fc0f59204724753d393a734bb8cda7bc875ba",
-    "behaviour": "carried forward verbatim; the engine is unchanged, the intelligence runs after it"
+    "behaviour": "the immutable release file remains byte-identical; this cartridge carries a reviewed successor that accepts the canonical link vocabulary and defers non-spine identities to the exact REPD receiver before the intelligence runs"
    },
    "data_source": {
     "repository": "Ventusltd/data-grid-gb",
@@ -586,7 +588,7 @@
     "closed_by": "the owner product's per-voltage split, quoted at the connection voltage",
     "still_site_wide": "circuit winter ratings are not split by voltage in the product and are now labelled site-wide (Blackhillock publishes 23-1,995 MVA)"
    },
-   "assembled_from": "./manifests/202609040021-substation-intelligence-v9-63-parts.json"
+   "assembled_from": "./manifests/202609040058-substation-intelligence-v9-63-parts.json"
   }
  ],
  "acceptance": {
@@ -598,7 +600,7 @@
   "uk_location_result_class": "LOCATION_ONLY",
   "global_location_result_class": "LOCATION_ONLY",
   "external_location_failure_isolated": true,
-  "golden_browser_verification": "REJECTED_PRE_PROMOTION: never live; the mobile project card could cover the engine layer panel",
+  "golden_browser_verification": "PENDING_THIS_GENERATION",
   "parquet_on_demand_preserved": true,
   "response_established_before_body_reconstruction": true,
   "a_road_browser_budget_seconds": 15,
@@ -611,22 +613,32 @@
   "minimum_substation_kv": 33,
   "beta_scope_stated_on_card": true,
   "connection_factors_named_on_card": true,
-  "offshore_wind_excluded_from_links": true,
+  "offshore_wind_excluded_from_links": false,
+  "offshore_wind_measured_with_route_caveat": true,
+  "pipeline_coordinate_receiver": "MEASURE_LINK_FIRST_VERIFY_IDENTITY_CONCURRENTLY",
+  "pipeline_map_link_corpus": {
+   "producer_commit": "25f03422d12ed6e5bfca860a825d6273c2e0c296",
+   "derived_valid_spine": 7652,
+   "derived_wider": 1104,
+   "derived_total": 8756,
+   "result": "PASS"
+  },
+  "mobile_layer_hit_target_browser_fixture": "PASS_393x852",
+  "transit_bridge_execution": "PASS_POPULATED_SOURCE",
   "cards_fit_after_drag_and_restore": true,
   "shell_modified": false,
-  "scope": "Consolidate the existing interface into exactly File, Edit, View, Scope, Grid, and About menus; expose all 60 engine and 3 Pipeline News layer controls through their original handlers; preserve nested Scope and Clear actions; remain closed at rest and fail closed unless all 63 unique layer controls exist.",
-  "proof": "tools/proofs/202609040021-substation-intelligence.proof.mjs, tools/proofs/202609040021-sld-sandbox.proof.mjs"
+  "scope": "A late REPD identity can no longer resurrect an abandoned deep-link arrival: every user selection and clear invalidates the pending token, while intended first and corrected selections carry the current token through asynchronous measurement.",
+  "proof": "tools/proofs/202609040058-substation-intelligence.proof.mjs, tools/proofs/202609040058-sld-sandbox.proof.mjs, tools/proofs/202608301825-streaming-parquet-bridge.proof.mjs, tools/proofs/menu-bar-mobile-hit.browser.mjs"
  },
- "version": "v9.100",
- "composition_id": "202609040021-gridatlas-v9.100",
+ "version": "v9.103",
+ "composition_id": "202609040058-gridatlas-v9.103",
  "source_pattern": {
   "repository": "Ventusltd/gridatlas",
   "path": "atlas/releases/202608300453-atlas-v9/202608292126-pre-snapped-config-adapter.js",
   "source_sha256": "07d33eda5b3279a03df4c0a0aded61e4363c46734dda991aa5f48ae0d55097da",
   "transformation": "carry the pre-snap config rewrite verbatim; add a measured link layer and on-card beta distances"
  },
- "composition_version": "v9.100",
- "note": "REJECTED PRE-PROMOTION, never live: the menu candidate preserved the controls but the mobile project card could cover the engine layer panel. Its immutable files remain audit evidence.",
- "candidate_status": "REJECTED_PRE_PROMOTION",
- "cut_at_utc": "2026-09-04T00:21:47.286Z"
+ "composition_version": "v9.103",
+ "note": "v9.103 is the first promotion candidate in this lane. v9.100-v9.102 remain immutable rejected pre-promotion evidence; the live lineage skips them back to v9.99.",
+ "cut_at_utc": "2026-09-04T00:58:13.998Z"
 }

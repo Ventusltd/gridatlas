@@ -104,6 +104,19 @@ const targetManifestPath = path.join(ATLAS, 'manifests', `${target}-composition.
 if (!fs.existsSync(targetManifestPath)) die(`no composition manifest for ${target}`);
 const targetComposition = readJson(targetManifestPath);
 
+/* A cut can exist as immutable audit evidence without ever having been live.
+   Such a generation must be retained, but it is not a rollback destination.
+   Check this before ancestry so a quarantined candidate fails for the real
+   reason even after the live lineage deliberately skips it. */
+const targetStatus = String(targetComposition.candidate_status || '');
+const targetBrowserStatus = String(
+  targetComposition.acceptance?.golden_browser_verification || '');
+if (targetStatus === 'REJECTED_PRE_PROMOTION'
+  || targetBrowserStatus.startsWith('REJECTED_PRE_PROMOTION')) {
+  die(`${target} is REJECTED_PRE_PROMOTION and was never live; `
+    + 'rollback targets must be deployed generations');
+}
+
 /* ---- the target must be an ancestor, walked rather than assumed ---- */
 const lineage = [];
 let walk = fromGeneration;

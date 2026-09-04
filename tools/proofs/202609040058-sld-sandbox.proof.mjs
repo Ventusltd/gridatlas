@@ -27,6 +27,7 @@
 
 import { readFile } from 'node:fs/promises';
 import { createHash } from 'node:crypto';
+import { spawnSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
 import { basename, dirname, join, resolve } from 'node:path';
 import vm from 'node:vm';
@@ -51,6 +52,8 @@ const ORIGINAL = join(REPO, 'atlas', 'releases', '202608300453-atlas-v9',
   '202608292126-pre-snapped-config-adapter.js');
 const FINANCE_ORACLE = join(REPO, 'tools', 'proofs', 'fixtures',
   '202609010002-original-sld-finance.json');
+const CARTRIDGE_WORKFLOW = await readFile(join(REPO, '.github', 'workflows',
+  '202608312212-cartridge-proof.yml'), 'utf8');
 
 let passed = 0;
 const failures = [];
@@ -1040,7 +1043,10 @@ check('generations are strictly increasing, except after the one stamp recorded 
     || Object.prototype.hasOwnProperty.call(TYPED_AHEAD, ledger[i - 1].g));
 })());
 check('the rollback doctrine is stated where the versions are',
-  /never repaired in place, an earlier one is composed again/.test(vl.replace(/\s+/g, ' ')));
+  /A deployed bad composition is never repaired in place; '\s*\+ '\s*an earlier deployed one is composed again/.test(vl));
+check('the ledger distinguishes immutable evidence from a live deployment',
+  /immutable audit evidence, not a promise '\s*\+ '\s*that it was live/.test(vl)
+  && /REJECTED_PRE_PROMOTION entries were never live and are '\s*\+ '\s*not rollback targets/.test(vl));
 check('the pre-scope era is counted, not hidden',
   /const PRE_SCOPE_COMPOSITIONS = \d+;/.test(vl)
   && /earlier compositions predate/.test(vl.replace(/\s+/g, ' ')));
@@ -1055,6 +1061,30 @@ check('it reports its state to assistive technology',
   vl.split('LEDGER_ID')[1] !== undefined
   && /aria-expanded/.test(vl));
 check('the published state carries the ledger size', 'version_ledger' in link);
+const runtimeLedger = sandbox.window.__GRIDATLAS_MODULES__?.versionLedger?.entries || [];
+check('the three never-live candidates are labelled, not advertised as ordinary versions',
+  JSON.stringify(runtimeLedger.filter(entry => entry.status === 'REJECTED_PRE_PROMOTION')
+    .map(entry => entry.v)) === JSON.stringify(['v9.100', 'v9.101', 'v9.102'])
+  && /REJECTED_PRE_PROMOTION/.test(vl)
+  && /never live: a late identity could restore an arrival/.test(vl));
+check('the visible ledger renders each rejection status and its reason',
+  /class="vl-status"/.test(cartridgeSource)
+  && /class="vl-reason"/.test(cartridgeSource)
+  && /entry\.status === 'REJECTED_PRE_PROMOTION'/.test(cartridgeSource)
+  && /entry\.reason \? '<div class="vl-reason">' \+ entry\.reason/.test(cartridgeSource));
+check('the current candidate is not mislabelled as one of the rejected predecessors',
+  runtimeLedger[runtimeLedger.length - 1]?.v === VERSION
+  && runtimeLedger[runtimeLedger.length - 1]?.status !== 'REJECTED_PRE_PROMOTION');
+
+const rejectedRollback = spawnSync(process.execPath, [
+  join(REPO, 'tools', 'rollback.mjs'), '--to', '202609040046',
+  '--reason', 'generation proof deliberately rejects this dry run', '--dry-run'
+], { cwd: REPO, encoding: 'utf8' });
+check('rollback explicitly refuses the rejected v9.101 generation',
+  rejectedRollback.status !== 0
+  && /202609040046 is REJECTED_PRE_PROMOTION and was never live/.test(
+    String(rejectedRollback.stderr || rejectedRollback.stdout)),
+  String(rejectedRollback.stderr || rejectedRollback.stdout).trim());
 
 
 console.log('\nsaying what is happening\n');
@@ -1081,7 +1111,7 @@ check('and promises the layers will arrive on their own',
   /layers will switch on by themselves/.test(st));
 check('failure offers a way forward', /again\.textContent = 'Try again';/.test(st));
 check('the retry re-runs the arrival instead of reloading the engine',
-  /retryArrival = \(\) => \{ runArrivalSelection\(currentArrival\)\.then/.test(st));
+  /retryArrival = \(\) => \{ runDeepLink\(\); \};/.test(st));
 check('the reason a reload is the wrong answer is written down',
   /repeats the[\s\S]{0,12}whole 35\.7 MB boot/.test(st));
 check('it is announced to assistive technology',
@@ -2337,6 +2367,17 @@ await new Promise(resolve => setImmediate(resolve));
    native touch events for map features. The short-viewport CSS is injected by
    the cartridge because the attested shell is intentionally immutable. */
 const mobile = cartridgeSource;
+check('exact-head CI installs dependencies from the locked npm graph',
+  /npm ci --ignore-scripts --no-audit --no-fund/.test(CARTRIDGE_WORKFLOW));
+check('exact-head CI installs only the Playwright-pinned Chromium build',
+  /npx --no-install playwright install --with-deps chromium/.test(CARTRIDGE_WORKFLOW)
+  && /"playwright": "1\.62\.1"/.test(
+    await readFile(join(REPO, 'package.json'), 'utf8')));
+check('exact-head CI executes the 393x852 production hit-target proof',
+  /node tools\/proofs\/menu-bar-mobile-hit\.browser\.mjs/.test(CARTRIDGE_WORKFLOW));
+check('browser installation and execution have bounded step timeouts',
+  /Install the one browser this gate exercises[\s\S]{0,180}timeout-minutes: 4/.test(CARTRIDGE_WORKFLOW)
+  && /A docked mobile card cannot intercept a layer control[\s\S]{0,180}timeout-minutes: 2/.test(CARTRIDGE_WORKFLOW));
 check('the project card starts one pointer interaction for mouse, pen and touch',
   /bar\.addEventListener\('pointerdown',/.test(mobile)
   && !/bar\.addEventListener\('mousedown',/.test(mobile));
@@ -2446,7 +2487,7 @@ check('only a ref-only link waits for identity before it can measure',
 check('a resolved discrepancy replaces one frozen arrival and recomputes it',
   /const verifiedArrival = Object\.freeze\(\{/.test(cartridgeSource)
   && /currentArrival = verifiedArrival;/.test(cartridgeSource)
-  && /await runArrivalSelection\(verifiedArrival\);/.test(cartridgeSource)
+  && /await runArrivalSelection\(verifiedArrival, false, epoch\);/.test(cartridgeSource)
   && /status = 'RECOMPUTED'/.test(cartridgeSource));
 check('the discrepancy is measured before the frozen selection is replaced',
   (() => {
@@ -2478,6 +2519,47 @@ check('an unresolved identity is recorded, never silent',
 check('the consumption is published for the next debugger',
   /link\.deep_link_identity = 'resolved-by-search-lane'/.test(cartridgeSource)
   && /link\.identity_verification = \{/.test(cartridgeSource));
+
+console.log('\na late identity cannot resurrect an abandoned arrival\n');
+
+check('clear and ordinary selection both invalidate the production arrival gate',
+  /function clearLinks\(\) \{\n    invalidatePendingArrival\('clear'\);/.test(cartridgeSource)
+  && /else \{\n        invalidatePendingArrival\('new-selection'\);\n      \}/.test(cartridgeSource));
+check('both internal selections carry their arrival token through the async measurement',
+  /runArrivalSelection\(currentArrival,[\s\S]{0,120}, epoch\)/.test(cartridgeSource)
+  && /runArrivalSelection\(verifiedArrival, false, epoch\)/.test(cartridgeSource)
+  && /!arrivalGate\.isCurrent\(expectedArrivalEpoch\)/.test(cartridgeSource));
+check('the late identity continuation is the exported production coordinator',
+  /continueVerifiedArrival\(arrivalGate, epoch, identityVerification,/.test(cartridgeSource)
+  && typeof link.measure.continueVerifiedArrival === 'function');
+
+async function abandonedArrival(reason) {
+  const gate = link.measure.createArrivalGate();
+  const token = gate.begin();
+  let resolveIdentity;
+  const verification = new Promise(resolve => { resolveIdentity = resolve; });
+  const effects = { flyTo: 0, reselect: 0 };
+  const continuation = link.measure.continueVerifiedArrival(
+    gate, token, verification, async () => {
+      effects.flyTo += 1;
+      effects.reselect += 1;
+    });
+  gate.invalidate(reason);
+  resolveIdentity({ resolved: { longitude: -3.1, latitude: 56.2 } });
+  const applied = await continuation;
+  return { applied, effects, state: gate.snapshot() };
+}
+
+const selectionRace = await abandonedArrival('new-selection');
+check('a user selection wins when the old identity resolves late',
+  selectionRace.applied === false
+  && selectionRace.effects.flyTo === 0 && selectionRace.effects.reselect === 0,
+  JSON.stringify(selectionRace));
+const clearRace = await abandonedArrival('clear');
+check('a clear stays clear when the old identity resolves late',
+  clearRace.applied === false
+  && clearRace.effects.flyTo === 0 && clearRace.effects.reselect === 0,
+  JSON.stringify(clearRace));
 
 
 console.log('\nthe arrival surface\n');
@@ -3063,7 +3145,7 @@ console.log('\nthe measurement does not wait for the layers\n');
 
 check('the arrival measures before it awaits the layer controls',
   /const layersReady = arrive\(\);/.test(cartridgeSource)
-  && /await runArrivalSelection\(currentArrival, Boolean\(repdRef && !identityVerification\)\);/
+  && /const firstSelectionCurrent = await runArrivalSelection\(currentArrival,[\s\S]{0,100}epoch\);/
     .test(cartridgeSource)
   && /await layersReady;/.test(cartridgeSource)
   && !/await arrive\(\);/.test(cartridgeSource));
@@ -3075,8 +3157,8 @@ check('the waiting message no longer claims the distances need the layers',
 check('a late-layers notice never covers a drawn answer',
   /if \(link\.links_drawn > 0\) \{\n      \/\/ The answer is already on the map/.test(cartridgeSource));
 check('retry still re-runs the measurement and the layers',
-  /retryArrival = \(\) => \{ runArrivalSelection\(currentArrival\)\.then\(\(\) => arrive\(\)\); \};/
-    .test(cartridgeSource));
+  /retryArrival = \(\) => \{ runDeepLink\(\); \};/.test(cartridgeSource)
+  && /const layersReady = arrive\(\);/.test(cartridgeSource));
 
 
 console.log('\nthe sales surface answers immediately\n');
@@ -3275,7 +3357,7 @@ check('arming is explicit, not automatic',
 check('the tray carries both a scope and a clear',
   /\\u25ce Scope/.test(cartridgeSource) && /\\u2715 Clear/.test(cartridgeSource));
 check('selecting a project clears any standing scope',
-  /async function selectAt\(origin, name, tech, fromSubstation, statedMw\) \{\n      clearScope\(\);/
+  /async function selectAt\(origin, name, tech, fromSubstation, statedMw,[\s\S]{0,500}clearScope\(\);/
     .test(cartridgeSource));
 check('the card prints what the scope is not, in bold, from the result itself',
   /<b>\$\{escapeHtml\(result\.what_this_is_not\)\}<\/b>/.test(cartridgeSource));

@@ -11,7 +11,7 @@
 # that needed a painted basemap, a symbol layer throwing once per frame for
 # want of a glyph atlas. Guarding that by hand is not guarding it.
 #
-# TWO REPOSITORIES, DELIBERATELY.
+# THREE REPOSITORIES AND ONE LOCKED BROWSER, DELIBERATELY.
 #
 # The proof's parity check measures every distance the cartridge produces
 # against Ventusltd/grid-distance-maths, the canonical geodesy for the estate,
@@ -21,7 +21,10 @@
 # so. Checking out both is what makes the parity real rather than a thing that
 # only ever happens on one laptop.
 #
-# Deliberately cheap otherwise: node, no browser, no history.
+# The 393x852 layer-control regression only exists in browser hit testing: a
+# docked project sheet can be visually beneath a control yet still win
+# `elementFromPoint`. Playwright is locked in package-lock.json and installs
+# Chromium only; there is no browser matrix or unbounded crawl.
 #
 # THE ACTIONS ARE PINNED BY COMMIT, and this workflow is the reason to care.
 # It is the gate every cartridge cut passes through, so whatever it trusts,
@@ -112,6 +115,13 @@ jobs:
         with:
           node-version: '24'
 
+      - name: Install the locked browser harness
+        run: npm ci --ignore-scripts --no-audit --no-fund
+
+      - name: Install the one browser this gate exercises
+        run: npx --no-install playwright install --with-deps chromium
+        timeout-minutes: 4
+
       # Every digest in this repository is of git blob content, which is LF. A
       # runner checks out LF, so a mismatch here is a real mismatch and not a
       # line-ending artefact -- unlike a Windows working copy, where it is
@@ -123,6 +133,10 @@ jobs:
 
       - name: The composed cartridge passes its own proof
         run: node tools/proofs/run-current.mjs
+
+      - name: A docked mobile card cannot intercept a layer control
+        run: node tools/proofs/menu-bar-mobile-hit.browser.mjs
+        timeout-minutes: 2
 
       - name: The scope ledger and workflow budget still hold
         run: |

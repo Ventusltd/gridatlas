@@ -600,7 +600,7 @@
   "uk_location_result_class": "LOCATION_ONLY",
   "global_location_result_class": "LOCATION_ONLY",
   "external_location_failure_isolated": true,
-  "golden_browser_verification": "PENDING_THIS_GENERATION",
+  "golden_browser_verification": "REJECTED_PRE_PROMOTION: never live; late identity reconciliation could restore an abandoned arrival",
   "parquet_on_demand_preserved": true,
   "response_established_before_body_reconstruction": true,
   "a_road_browser_budget_seconds": 15,
@@ -639,6 +639,7 @@
   "transformation": "carry the pre-snap config rewrite verbatim; add a measured link layer and on-card beta distances"
  },
  "composition_version": "v9.102",
- "note": "v9.102 is the proof-corrected immutable successor to the structural v9.101 cut. Earlier cartridges and the V8 release remain byte-identical.",
+ "note": "REJECTED PRE-PROMOTION, never live: hostile review found that late identity reconciliation could fly back to an arrival after a user selection or clear. Its immutable files remain audit evidence.",
+ "candidate_status": "REJECTED_PRE_PROMOTION",
  "cut_at_utc": "2026-09-04T00:47:36.390Z"
 }

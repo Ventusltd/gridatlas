@@ -1,7 +1,7 @@
 {
  "schema": "gridatlas.current.v2",
- "generation": "202609040047",
- "previous_generation": "202609040046",
+ "generation": "202609040058",
+ "previous_generation": "202609032315",
  "architecture": "IMMUTABLE_SHELL_PLUS_HASHED_CARTRIDGES",
  "live_route": "/gridatlas/atlas/",
  "release_id": "202608300453-atlas-v9",
@@ -60,13 +60,13 @@
   },
   {
    "id": "sld-sandbox",
-   "generation": "202609040047",
-   "version": "v9.102",
+   "generation": "202609040058",
+   "version": "v9.103",
    "type": "script",
    "slot": "replace-script",
    "replace_script": "202608292126-pre-snapped-config-adapter.js",
-   "path": "./cartridges/202609040047-sld-sandbox-v9-8.js",
-   "sha256": "090587dd49db53b257a018b19ab07dc72cb20dbf4c0d3952942fcfae0dd82b03",
+   "path": "./cartridges/202609040058-sld-sandbox-v9-8.js",
+   "sha256": "c022e892aea7230a25f5eb081fa9a3e09752b17d3d876d8b7fab4a45e818e386",
    "capabilities": [
     "pre-snapped-config-adapter-carried-forward",
     "project-or-substation-selection",
@@ -502,7 +502,7 @@
     "archetypes": "West Burton builds a 400 kV customer substation and a 10 km cable to an existing transmission bay; Little Crow loops into a distribution circuit already crossing its land. Both are NSIPs; only one is a 400 kV story",
     "rule": "the state is taken from the public record, never from whether OSM happens to have mapped the asset"
    },
-   "assembled_from": "./manifests/202609040047-sld-sandbox-v9-8-parts.json",
+   "assembled_from": "./manifests/202609040058-sld-sandbox-v9-8-parts.json",
    "data_sources": [
     {
      "repository": "Ventusltd/data-grid-gb",
@@ -522,13 +522,13 @@
   },
   {
    "id": "substation-intelligence",
-   "generation": "202609040047",
-   "version": "v9.102",
+   "generation": "202609040058",
+   "version": "v9.103",
    "type": "script",
    "slot": "replace-script",
    "replace_script": "ventus-corev8engine.js",
-   "path": "./cartridges/202609040047-substation-intelligence-v9-63.js",
-   "sha256": "5f022cf8aeef738a877358b5d624bd188be47a7ecbe8facedc7427b09e5dd8d7",
+   "path": "./cartridges/202609040058-substation-intelligence-v9-63.js",
+   "sha256": "20862b3058e73561e0ef98d69c92cd80adb383dc120adeea5043377a91ae14cf",
    "capabilities": [
     "immutable-v8-shell-preserved-with-reviewed-receiver-successor",
     "canonical-deep-link-technology-vocabulary",
@@ -580,7 +580,7 @@
     "closed_by": "the owner product's per-voltage split, quoted at the connection voltage",
     "still_site_wide": "circuit winter ratings are not split by voltage in the product and are now labelled site-wide (Blackhillock publishes 23-1,995 MVA)"
    },
-   "assembled_from": "./manifests/202609040047-substation-intelligence-v9-63-parts.json"
+   "assembled_from": "./manifests/202609040058-substation-intelligence-v9-63-parts.json"
   }
  ],
  "last_known_green": {
@@ -625,15 +625,15 @@
    "result_class": "LOCATION_ONLY"
   }
  },
- "composition_manifest": "./manifests/202609040047-composition.json",
+ "composition_manifest": "./manifests/202609040058-composition.json",
  "scope_closure": {
   "generation": "202609010726",
   "status": "DONE",
   "scope": "GridAtlas v9.42 the price panel revalidates",
   "schedule_retired": true
  },
- "composition_version": "v9.102",
- "composition_id": "202609040047-gridatlas-v9.102",
+ "composition_version": "v9.103",
+ "composition_id": "202609040058-gridatlas-v9.103",
  "transport": {
   "response_contract": "HEADERS_BEFORE_PARQUET_BODY",
   "engine_timeout_seconds": 15,
@@ -648,5 +648,5 @@
   "fidelity_workflow": ".github/workflows/202608301931-layer-fidelity.yml",
   "payload_cache": "RELEASE_AFTER_SERIALISATION"
  },
- "composition_note": "v9.102 is the proof-corrected immutable successor to the structural v9.101 cut. Earlier cartridges and the V8 release remain byte-identical."
+ "composition_note": "v9.103 is the first promotion candidate in this lane. v9.100-v9.102 remain immutable rejected pre-promotion evidence; the live lineage skips them back to v9.99."
 }
