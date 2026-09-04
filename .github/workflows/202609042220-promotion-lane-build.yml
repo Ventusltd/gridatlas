@@ -1,0 +1,112 @@
+# BUILD LANE — proves a candidate. Cannot promote it.
+#
+# An external review on 2026-09-04 found that v9.115 and v9.116 reached
+# main -- and so the served site, since gridatlas serves main straight to
+# GitHub Pages with no build workflow of its own -- before their own proof
+# workflow had finished failing. "The supposed gate is currently a
+# post-deployment alarm." This workflow is half of the fix: it runs BEFORE
+# anything reaches main, on the branch a candidate is composed on, and it
+# has no power to change what is served.
+#
+# WHAT THIS WORKFLOW CAN DO: check out a candidate/** branch or a pull
+# request, run every proof this repository already has for the composed
+# generation, and publish one proof receipt -- as a workflow artifact and
+# as a short PR-comment-ready file. Nothing else.
+#
+# WHAT THIS WORKFLOW CANNOT DO, BY CONSTRUCTION, NOT BY CONVENTION:
+#   - it declares `permissions: contents: read` and nothing else, at both
+#     workflow and job level, so its GITHUB_TOKEN cannot write to this
+#     repository even if a step tried to;
+#   - it has no step that runs `git push`, `gh api .../pages/builds`, or
+#     `gh workflow run`; it cannot reach the promotion lane, which accepts
+#     only `workflow_dispatch` from a human or an authorised caller;
+#   - its triggers are `push: branches: [candidate/**]` and `pull_request:`
+#     only -- it never runs against `main` and cannot be dispatched.
+#
+# See .cvaa/contracts/promotion-authority.json (build.branch_only,
+# build.permissions, build.may_promote) and
+# tools/proofs/promotion-lane.proof.mjs, which parses this exact file and
+# fails if either of the above stops being true.
+#
+# THE ACTIONS ARE PINNED BY COMMIT, matching every other workflow in this
+# repository (202608312212-cartridge-proof.yml's own comment explains why:
+# a mutable tag is a place to run code inside the job that decides whether a
+# generation is even eligible for promotion).
+
+name: 202609042220 GridAtlas promotion build lane
+
+on:
+  push:
+    branches:
+      - 'candidate/**'
+  pull_request:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: gridatlas-promotion-build-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout the candidate commit
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+
+      - name: Node
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v4
+        with:
+          node-version: '24'
+          cache: npm
+
+      - name: Install the locked browser harness
+        run: npm ci --ignore-scripts --no-audit --no-fund
+
+      # Both engines: deep-link-visibility.browser.mjs runs on chromium AND
+      # webkit (it pins the 393px iPhone viewport class on webkit because
+      # Playwright's isMobile emulation is Chromium-only). Only chromium is
+      # needed by the other browser proof, so installing both here rather
+      # than splitting the step keeps one cache key.
+      - name: Install the pinned browser runtimes
+        run: npx --no-install playwright install --with-deps chromium webkit
+        timeout-minutes: 6
+
+      - name: Run every proof and write one receipt
+        id: receipt
+        run: |
+          set -euo pipefail
+          mkdir -p work
+          node tools/proofs/promotion-receipt.mjs --out work/promotion-receipt.json
+          echo "overall=$(node -p "require('./work/promotion-receipt.json').overall")" >> "$GITHUB_OUTPUT"
+          echo "generation=$(node -p "require('./work/promotion-receipt.json').generation")" >> "$GITHUB_OUTPUT"
+
+      - name: Post the receipt to the step summary
+        if: always()
+        run: cat work/promotion-receipt.json.md >> "$GITHUB_STEP_SUMMARY" 2>/dev/null || true
+
+      - name: Retain the proof receipt as a workflow artifact
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v4.4.3
+        with:
+          name: promotion-receipt-${{ github.run_id }}
+          path: |
+            work/promotion-receipt.json
+            work/promotion-receipt.json.md
+          if-no-files-found: error
+          retention-days: 90
+          compression-level: 6
+
+      # The step above already failed the job if any proof failed (this
+      # tool's own exit code); this step exists only so the failure reads in
+      # the job list as "proofs failed", not as an opaque non-zero exit on a
+      # step named after the tool.
+      - name: Fail the job if any proof in the receipt failed
+        if: steps.receipt.outputs.overall != 'PASS'
+        run: |
+          echo "one or more proofs failed for generation ${{ steps.receipt.outputs.generation }}; see the receipt artifact" >&2
+          exit 1

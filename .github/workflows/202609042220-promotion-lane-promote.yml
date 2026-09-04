@@ -1,0 +1,222 @@
+# PROMOTION LANE — the only path that may move refs/heads/main.
+#
+# gridatlas serves `main` directly to GitHub Pages (classic Pages, no build
+# workflow). There is no separate "deploy" step to gate: for this repository,
+# PROMOTION *IS* FAST-FORWARDING MAIN. Nothing else in this file, or in
+# tools/scope/promote.mjs, does anything more exotic than that one Git
+# operation, performed only after re-verifying what is about to become live.
+#
+# WHY IT EXISTS: an external review on 2026-09-04 found that v9.115 and
+# v9.116 deployed despite a failed proof workflow, because the only "gate"
+# (202608312212-cartridge-proof.yml) runs AFTER a push has already changed
+# main, and nothing stopped a push -- from a workflow or from a local
+# `tools/recompose.mjs` run -- reaching main directly. This workflow is
+# invoked explicitly, by name, by a human or an authorised caller; nothing
+# else in this repository can reach it.
+#
+# WHAT GATES A PROMOTION, IN ORDER, EACH ONE ABLE TO STOP IT BEFORE MAIN
+# MOVES:
+#   1. explicit dispatch with two required inputs -- generation and
+#      proof_run_id -- so a promotion always names both what it is
+#      promoting and the exact proof run it is trusting;
+#   2. the named proof run is read back from the GitHub API (read-only;
+#      this job's token is never given write scope to ANYTHING but this
+#      repository's contents, and the API call only reads) and must be a
+#      completed, successful run of the build lane
+#      (202609042220-promotion-lane-build.yml), for the exact commit this
+#      promotion names;
+#   3. that run's own proof-receipt artifact is downloaded and re-checked
+#      (generation, commit and overall=PASS all cross-checked against the
+#      dispatch inputs and the API's own head_sha) -- a green run conclusion
+#      alone is trusted less than the receipt the run actually produced;
+#   4. tools/scope/promote.mjs mode=check refuses a no-op, a divergent
+#      reuse of an already-promoted generation, or a main that has moved
+#      since (see .cvaa/contracts/serial-release-cutter.json);
+#   5. the candidate commit is checked out and tools/scope/verify-compose.mjs
+#      plus tools/proofs/run-current.mjs run again, independently of
+#      whatever the build lane measured;
+#   6. ONLY THEN: a plain (never --force) `git push` fast-forwards main.
+#      Git itself refuses this if main is no longer an ancestor relationship
+#      away, which is the same protection step 4 already gives with a
+#      clearer message, kept here as the guarantee that actually holds even
+#      if step 4 raced.
+#
+# NAMED AUTHORITY: this job runs under the `gridatlas-release-authority`
+# GitHub Environment. Whatever required-reviewer or allowed-actor rule that
+# environment carries is configured in repository settings, not in this
+# file -- THIS WORKFLOW FILE CANNOT PROVE THAT RULE EXISTS, only that the
+# job is bound to that environment name and cannot proceed without whatever
+# protection the environment enforces. This is stated plainly rather than
+# implied: tools/proofs/promotion-lane.proof.mjs checks the file for
+# `environment: gridatlas-release-authority`.
+#
+# CREDENTIAL: this job authenticates with `secrets.GRIDATLAS_PROMOTION_TOKEN`
+# only. Unlike every other push-capable workflow in this repository (which
+# falls back to `secrets.GRIDATLAS_SCOPE_TOKEN || github.token`), there is
+# deliberately no fallback here: a promotion with no dedicated token
+# configured fails closed rather than quietly promoting with the default
+# token, which would dilute the isolation .cvaa/contracts/promotion-
+# authority.json declares.
+
+name: 202609042220 GridAtlas promotion lane
+
+run-name: Promote generation ${{ inputs.generation }} (proof run ${{ inputs.proof_run_id }})
+
+on:
+  workflow_dispatch:
+    inputs:
+      generation:
+        description: '12-digit UTC generation to promote (must match the candidate commit''s atlas/current.json)'
+        required: true
+        type: string
+      proof_run_id:
+        description: 'Run ID of the 202609042220-promotion-lane-build.yml run that proved the exact commit being promoted'
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+concurrency:
+  group: gridatlas-promotion-lane
+  cancel-in-progress: false
+
+jobs:
+  promote:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    environment: gridatlas-release-authority
+    permissions:
+      contents: write
+    env:
+      GH_TOKEN: ${{ secrets.GRIDATLAS_PROMOTION_TOKEN }}
+      GENERATION: ${{ inputs.generation }}
+      PROOF_RUN_ID: ${{ inputs.proof_run_id }}
+    steps:
+      - name: Refuse to run without the dedicated promotion credential
+        run: |
+          set -euo pipefail
+          test -n "${GH_TOKEN:-}" || { echo "GRIDATLAS_PROMOTION_TOKEN is not configured; refusing to fall back to the default token" >&2; exit 1; }
+
+      - name: Validate dispatch inputs
+        run: |
+          set -euo pipefail
+          echo "$GENERATION" | grep -Eq '^[0-9]{12}$' || { echo "generation must be 12 digits (UTC)" >&2; exit 1; }
+          echo "$PROOF_RUN_ID" | grep -Eq '^[0-9]+$' || { echo "proof_run_id must be a run id" >&2; exit 1; }
+
+      - name: Checkout main with full history
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          ref: main
+          fetch-depth: 0
+          token: ${{ secrets.GRIDATLAS_PROMOTION_TOKEN }}
+
+      - name: Node
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v4
+        with:
+          node-version: '24'
+
+      - name: Record the tip of main before anything else runs
+        id: parent
+        run: |
+          set -euo pipefail
+          echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+
+      # Read-only: this step only ever performs GET requests against the
+      # Actions API. It cannot write to this or any other repository.
+      - name: Read the named proof run back through the GitHub API (read-only)
+        id: run_info
+        run: |
+          set -euo pipefail
+          run_json="$(gh api "repos/${GITHUB_REPOSITORY}/actions/runs/${PROOF_RUN_ID}")"
+          conclusion="$(printf '%s' "$run_json" | jq -r '.conclusion // "null"')"
+          status="$(printf '%s' "$run_json" | jq -r '.status // "null"')"
+          head_sha="$(printf '%s' "$run_json" | jq -r '.head_sha // "null"')"
+          path="$(printf '%s' "$run_json" | jq -r '.path // "null"')"
+          event="$(printf '%s' "$run_json" | jq -r '.event // "null"')"
+          test "$path" = ".github/workflows/202609042220-promotion-lane-build.yml" \
+            || { echo "run ${PROOF_RUN_ID} is not a run of the promotion build lane (path=$path)" >&2; exit 1; }
+          test "$status" = "completed" || { echo "run ${PROOF_RUN_ID} has status $status, not completed" >&2; exit 1; }
+          test "$conclusion" = "success" || { echo "run ${PROOF_RUN_ID} concluded $conclusion, not success" >&2; exit 1; }
+          case "$event" in push|pull_request) ;; *) echo "run ${PROOF_RUN_ID} fired on unexpected event $event" >&2; exit 1;; esac
+          echo "$head_sha" | grep -Eq '^[0-9a-f]{40}$' || { echo "run ${PROOF_RUN_ID} has no exact head_sha" >&2; exit 1; }
+          echo "commit=$head_sha" >> "$GITHUB_OUTPUT"
+
+      - name: Download and re-check the run's own proof receipt
+        run: |
+          set -euo pipefail
+          rm -rf work/receipt && mkdir -p work/receipt
+          gh run download "${PROOF_RUN_ID}" --name "promotion-receipt-${PROOF_RUN_ID}" --dir work/receipt
+          test "$(jq -r .generation work/receipt/promotion-receipt.json)" = "$GENERATION" \
+            || { echo "receipt names a different generation than requested" >&2; exit 1; }
+          test "$(jq -r .commit work/receipt/promotion-receipt.json)" = "${{ steps.run_info.outputs.commit }}" \
+            || { echo "receipt names a different commit than the run's head_sha" >&2; exit 1; }
+          test "$(jq -r .overall work/receipt/promotion-receipt.json)" = "PASS" \
+            || { echo "receipt overall status is not PASS" >&2; exit 1; }
+
+      - name: Fetch the exact candidate commit
+        run: git fetch origin "${{ steps.run_info.outputs.commit }}"
+
+      - name: Refuse a no-op, a divergent reuse, or a main that has moved
+        id: check
+        run: |
+          node tools/scope/promote.mjs check \
+            --generation "$GENERATION" \
+            --commit "${{ steps.run_info.outputs.commit }}" \
+            --expected-parent "${{ steps.parent.outputs.sha }}"
+
+      - name: Re-verify the candidate's own composition, independently of the build lane
+        if: steps.check.outputs.replay != 'true'
+        run: |
+          set -euo pipefail
+          git checkout --detach "${{ steps.run_info.outputs.commit }}"
+          node tools/scope/verify-compose.mjs
+          node tools/proofs/run-current.mjs
+          git checkout main
+
+      - name: Fast-forward main (fast-forward only; never --force)
+        if: steps.check.outputs.replay != 'true'
+        run: git push origin "${{ steps.run_info.outputs.commit }}:refs/heads/main"
+
+      - name: Write the enriched last_known_green and regenerate STATE.md
+        if: steps.check.outputs.replay != 'true'
+        run: |
+          set -euo pipefail
+          git fetch origin main
+          git checkout main
+          git reset --hard origin/main
+          test "$(git rev-parse HEAD)" = "${{ steps.run_info.outputs.commit }}"
+          node tools/scope/promote.mjs write \
+            --generation "$GENERATION" \
+            --commit "${{ steps.run_info.outputs.commit }}" \
+            --proof-run-id "$PROOF_RUN_ID" \
+            --proof-run-url "https://github.com/${GITHUB_REPOSITORY}/actions/runs/${PROOF_RUN_ID}"
+          node tools/scope/loop.mjs state
+          node tools/scope/loop.mjs lint
+
+      - name: Commit the promotion record and fast-forward again
+        if: steps.check.outputs.replay != 'true'
+        run: |
+          set -euo pipefail
+          git config user.name 'gridatlas-release-authority'
+          git config user.email 'actions@users.noreply.github.com'
+          git add atlas/current.json .cvaa/contracts/serial-release-cutter.json STATE.md
+          git commit -m "$GENERATION-gridatlas: promote to main via the gated promotion lane, proof run ${PROOF_RUN_ID}
+
+          Fast-forwarded refs/heads/main to ${{ steps.run_info.outputs.commit }}, proved by
+          .github/workflows/202609042220-promotion-lane-build.yml run ${PROOF_RUN_ID}, and recorded the
+          enriched last_known_green in atlas/current.json in this same commit alongside the regenerated
+          STATE.md, per AGENTS.md."
+          git push origin HEAD:main
+
+      - name: Record what was promoted
+        if: always()
+        run: |
+          {
+            echo '## GridAtlas promotion'
+            echo
+            echo "- generation: \`${GENERATION}\`"
+            echo "- commit: \`${{ steps.run_info.outputs.commit }}\`"
+            echo "- proof run: https://github.com/${GITHUB_REPOSITORY}/actions/runs/${PROOF_RUN_ID}"
+            echo "- replay (no-op, nothing pushed): \`${{ steps.check.outputs.replay }}\`"
+          } >> "$GITHUB_STEP_SUMMARY"
