@@ -5,9 +5,9 @@
 - Composition: `202609042123 · 202608300453-atlas-v9 · streaming-parquet-bridge → uk-gazetteer-flyto → substation-intelligence → sld-sandbox`
 - Top-level full release copies: `0`
 - Immutable releases under atlas/releases: `8`
-- Active workflows: `6`
+- Active workflows: `8`
 - Historical workflows archived: `21`
-- Last-known-green shell: `202608300453-atlas-v9`
+- Last-known-green (promotion lane): `202608300453-atlas-v9 (shell pointer only; no generation has been promoted through the gated lane yet)`
 
 | Scope | Generation | Status | Ledger file |
 |---:|---:|---|---|

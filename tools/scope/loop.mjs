@@ -4,7 +4,7 @@ import {
   ROOT, SCOPE_DIR, MASTER_NAME, CURRENT_RELEASE, SHARED_400KV_CARTRIDGE,
   EXPECTED_RELEASES, ACTIVE_WORKFLOWS, invariant, listScopeDocuments,
   masterDocument, numberedScopes, activeScope, readJson, sha256File, sha256PublishedFile,
-  writeText, githubOutput, relativePosix
+  writeText, githubOutput, relativePosix, describeLastKnownGreen
 } from './lib.mjs';
 
 const RELEASE_PATTERN = /^\d{12}-atlas-v9$/;
@@ -223,13 +223,15 @@ function renderState(scopeState, { toStdout = false } = {}) {
   const rootReleaseCount = existingDirectories(ROOT).filter(name => RELEASE_PATTERN.test(name)).length;
   const atlasReleaseCount = existingDirectories(path.join(ROOT, 'atlas', 'releases')).filter(name => RELEASE_PATTERN.test(name)).length;
   let composition = 'not-created';
+  let lastKnownGreen = `${CURRENT_RELEASE} (no atlas/current.json)`;
   const currentPath = path.join(ROOT, 'atlas', 'current.json');
   if (fs.existsSync(currentPath)) {
     const current = readJson(currentPath);
     composition = `${current.generation} · ${current.release_id} · ${(current.cartridge_order || []).join(' → ') || 'shell only'}`;
+    lastKnownGreen = describeLastKnownGreen(current);
   }
   const rows = scopeState.scopes.map(item => `| ${item.data.scope} | ${item.data.generation} | ${item.data.status} | ${item.name} |`).join('\n');
-  const state = `# GridAtlas durable state\n\n- Master: \`${scopeState.master.data.status}\`\n- Active scope: \`${scopeState.active?.name || 'none'}\`\n- Composition: \`${composition}\`\n- Top-level full release copies: \`${rootReleaseCount}\`\n- Immutable releases under atlas/releases: \`${atlasReleaseCount}\`\n- Active workflows: \`${ACTIVE_WORKFLOWS.length}\`\n- Historical workflows archived: \`21\`\n- Last-known-green shell: \`${CURRENT_RELEASE}\`\n\n| Scope | Generation | Status | Ledger file |\n|---:|---:|---|---|\n${rows}\n\nThis file is generated deterministically by \`node tools/scope/loop.mjs state\`.\n`;
+  const state = `# GridAtlas durable state\n\n- Master: \`${scopeState.master.data.status}\`\n- Active scope: \`${scopeState.active?.name || 'none'}\`\n- Composition: \`${composition}\`\n- Top-level full release copies: \`${rootReleaseCount}\`\n- Immutable releases under atlas/releases: \`${atlasReleaseCount}\`\n- Active workflows: \`${ACTIVE_WORKFLOWS.length}\`\n- Historical workflows archived: \`21\`\n- Last-known-green (promotion lane): \`${lastKnownGreen}\`\n\n| Scope | Generation | Status | Ledger file |\n|---:|---:|---|---|\n${rows}\n\nThis file is generated deterministically by \`node tools/scope/loop.mjs state\`.\n`;
   if (toStdout) {
     /* Exactly the bytes that would have been written, and nothing else on
        this stream - a caller diffing this against STATE.md must not have to

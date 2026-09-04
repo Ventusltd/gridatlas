@@ -39,12 +39,29 @@ export const EXPECTED_RELEASES = Object.freeze([
 // belongs to no release, it is a perpetual single-purpose path like the scope
 // loop, and stamping it for one night would make a permanent mechanism look
 // like the per-release sprawl this budget exists to cap.
+//
+// 202609042220-promotion-lane-build.yml and 202609042220-promotion-lane-promote.yml
+// earn their place together: an external review on 2026-09-04 found that
+// v9.115 and v9.116 reached main -- and so the served site, since gridatlas
+// serves main straight to Pages -- before their own proof workflow had
+// finished failing. Every entry above this pair can already run node/proof
+// steps before a push, but nothing stopped a push (or a locally run
+// tools/recompose.mjs) from reaching main by itself. These two split that:
+// the build lane (candidate/** and pull_request, contents:read, no push
+// step -- see .cvaa/contracts/promotion-authority.json) produces a proof
+// receipt and nothing else; the promotion lane (workflow_dispatch only,
+// two required inputs, contents:write only here) is the sole path that can
+// fast-forward main, and only after re-checking the named proof run and the
+// composition it names. On this branch neither workflow has ever run in
+// GitHub Actions or touched main; see docs/promotion-lane.md.
 export const ACTIVE_WORKFLOWS = Object.freeze([
   '202608301321-scope-loop.yml',
   '202608301321-verify-live.yml',
   '202608310015-gridatlas-overnight-next-versions.yml',
   '202608310050-gridatlas-next-version-builders.yml',
   '202608312212-cartridge-proof.yml',
+  '202609042220-promotion-lane-build.yml',
+  '202609042220-promotion-lane-promote.yml',
   'rollback-composition.yml'
 ]);
 
@@ -235,4 +252,33 @@ export function githubOutput(values) {
 
 export function relativePosix(filePath) {
   return path.relative(ROOT, filePath).split(path.sep).join('/');
+}
+
+/* Renders atlas/current.json's `last_known_green` for STATE.md.
+   ------------------------------------------------------------------------
+   Before the promotion lane, this pointer named only the immutable shell
+   release ("202608300453-atlas-v9") -- the shell every generation is built
+   on, not the generation that was actually live. A reader could not tell
+   from it which cartridges were composed, which commit shipped them, or
+   whether anything had ever verified them before they went out.
+   tools/scope/promote.mjs (run only by the promotion lane, never by hand)
+   writes the enriched shape once a generation has actually been promoted
+   through a gated dispatch: { generation, version, commit, proof_run_id,
+   proof_run_url, promoted_at_utc, pinned_route }. Both shapes are read here
+   because nothing has been promoted through the new lane yet -- inventing
+   the enriched fields for a generation that never went through it would be
+   exactly the kind of manufactured record this repository's proofs exist to
+   catch. */
+export function describeLastKnownGreen(current) {
+  const green = current?.last_known_green;
+  if (!green || typeof green !== 'object') return 'none recorded';
+  const ENRICHED_KEYS = ['generation', 'version', 'commit', 'proof_run_id', 'proof_run_url', 'promoted_at_utc', 'pinned_route'];
+  if (ENRICHED_KEYS.every(key => key in green)) {
+    return `${green.generation} · ${green.version} · ${String(green.commit).slice(0, 12)} · `
+      + `proof run ${green.proof_run_id} · promoted ${green.promoted_at_utc} · ${green.pinned_route}`;
+  }
+  if (typeof green.release_id === 'string' && typeof green.route === 'string') {
+    return `${green.release_id} (shell pointer only; no generation has been promoted through the gated lane yet)`;
+  }
+  return 'malformed last_known_green';
 }
