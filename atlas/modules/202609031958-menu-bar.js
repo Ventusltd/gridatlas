@@ -274,13 +274,40 @@
       'display:block!important;position:static!important;max-width:380px;padding:8px;',
       'box-sizing:border-box;text-align:left;pointer-events:auto}',
       '.gridatlas-menu-hosted .map-controls[data-gridatlas-menu-emptied="1"]{display:none!important}',
-      /* The raw v8 SCADA panel is superseded by the restored Grid dropdown
-         above -- one identity surface, per this module's own rule -- and
-         its own open/close toggle was measured live as inert (the label
-         never flips, the container height never changes). Rather than
-         depend on that toggle's correctness, hide the raw panel outright
-         and unconditionally whenever this bar is hosted. */
-      '.gridatlas-menu-hosted .scada-wrapper{display:none!important}',
+      /* The v8 SCADA layers panel STAYS. It was hidden here unconditionally,
+         and the reasoning that justified it was circular: this rule set
+         display:none!important, which is why "the container height never
+         changes", which was then cited as evidence the panel's own toggle was
+         inert, which justified the rule. Measured on the live page at
+         202609041957, with the toggle un-hidden and clicked: the label does
+         flip (LAYERS -> HIDE LAYERS) and data-gridatlas-collapsed does clear.
+         The toggle was never inert. Only its effect was invisible.
+
+         The cost of the rule was the whole product surface: all 60 engine
+         layer switches sat in a container measured at 0x0, on desktop AND
+         phone, with the page unable to scroll to it -- zero of 120 layer
+         controls reachable without opening a menu. The register, the
+         voltages, the supermarkets, the transit and the EV layers were all
+         still in the DOM and none of them could be touched.
+
+         "One identity surface" is still honoured, and it was always about the
+         VENTUS wordmark rather than the switches: the real .scada-brand node
+         is MOVED into the Grid panel head by install(), not cloned, so the
+         restored panel has no second wordmark to show. The Grid dropdown and
+         this panel drive the SAME 63 original inputs -- the dropdown proxies
+         them -- so the two cannot disagree about what is on.
+
+         Requested directly by the architect, whose product this is, on
+         2026-09-04: "restore v8 panels but keep dropdowns file, edit, scope,
+         grid, about". Both, not either. */
+      '.gridatlas-menu-hosted .scada-wrapper{display:flex!important}',
+      /* At phone widths the panel starts collapsed and the toggle opens it:
+         measured, an expanded panel held 31.6% of a 393x852 screen against
+         the map's 29.3%, which is the wrong trade on the surface most
+         readers arrive on. Desktop has the room and gets the panel open, as
+         v8 always did. Either way the toggle is now visible, so the reader
+         decides rather than the stylesheet. */
+      '#gridatlas-dash-toggle{display:inline-flex!important}',
       /* v9.90 made the mobile project card a fixed, full-width bottom sheet.
          The old SCADA layer panel remained underneath it, so a visible layer
          checkbox could lose the hit test to text in the project card. Keep the
@@ -710,8 +737,14 @@
        hidden as a "duplicate" and not here, so a late DOM rebuild cannot
        repeatedly fight over one node's location. */
 
+    /* The panel's own show/hide control stays REACHABLE. It was hidden here as
+       "superseded; measured inert", and it is neither: the stylesheet rule
+       above was hiding the panel it moved, so its effect could not be seen.
+       With the panel restored this is the only control that opens and closes
+       it, and hiding it would leave a phone with a collapsed panel and nothing
+       to open it with -- which is the fault this generation exists to end. */
     var dashToggle = doc.getElementById('gridatlas-dash-toggle');
-    if (dashToggle) dashToggle.hidden = true;   // superseded; measured inert (defect C)
+    if (dashToggle) dashToggle.hidden = false;
 
     var stack = doc.querySelector('.map-controls');
     if (stack) {

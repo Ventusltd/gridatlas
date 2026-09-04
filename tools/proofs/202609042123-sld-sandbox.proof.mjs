@@ -3647,8 +3647,15 @@ check('the collapsed choice is remembered, and every storage access is guarded',
      required to be the same literal. Weakening it to "some assignment
      happens" would have let the two drift apart, which is the only way this
      check can be wrong. */
-  && (cartridgeSource.match(/catch \(_\) \{ collapsed = true; \}/) || []).length === 1
-  && /let collapsed = true;/.test(cartridgeSource));
+  /* v9.116: the first-arrival default became width-derived (open on a desktop,
+     closed on a phone), so there is no longer a literal to pin in two places.
+     The property is now held MORE strongly: the storage catch assigns nothing,
+     so a throwing browser keeps exactly the default computed above it, and
+     the two cannot drift because there is only one of them. The old literal
+     `let collapsed = true;` must be gone, or the width-derived default would
+     be shadowed by it. */
+  && (cartridgeSource.match(/catch \(_\) \{ \/\* the width-derived default above stands \*\/ \}/) || []).length === 1
+  && !/let collapsed = true;/.test(cartridgeSource));
 check('the map is told to resize when the dash moves under it',
   /window\.map\.resize\(\)/.test(cartridgeSource));
 check('the toggle is reachable and labelled for assistive technology',
@@ -3705,8 +3712,16 @@ check('the toggle is a 44 px touch target',
    Both halves are asserted. A default that ignored the stored value would
    pass the first line of this check and take the reader's choice away on
    every visit. */
-check('the layer panel is closed on a first arrival',
-  /let collapsed = true;/.test(cartridgeSource)
+/* v9.116: closed on a first arrival ON A PHONE, open on a desktop - the
+   architect asked for the v8 panel back beneath the menus, and a desktop has
+   the room v8 always used. The phone default keeps its measured justification
+   (an open panel held 31.6% of a 393x852 screen against the map's 29.3%). An
+   unknown width is not a phone: the width must be a real positive number
+   before it argues for closed. */
+check('the layer panel is closed on a first arrival on a phone, and open on a desktop',
+  /let collapsed = coarse \|\| \(isFinite\(width\) && width > 0 && width <= 700\);/.test(cartridgeSource)
+  && /matchMedia\('\(pointer: coarse\)'\)/.test(cartridgeSource)
+  && !/let collapsed = true;/.test(cartridgeSource)
   && !/let collapsed = false;/.test(cartridgeSource));
 check('and a stored choice still wins over that default',
   /const v = window\.localStorage\.getItem\(KEY\);/.test(cartridgeSource)
