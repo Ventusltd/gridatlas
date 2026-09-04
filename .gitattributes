@@ -89,3 +89,11 @@ atlas/cartridges/202609040134-substation-intelligence-v9-63.js -whitespace
 # and the one generated cartridge which contains it.
 atlas/parts/202609040212-ventus-corev8engine-layer-availability.js -whitespace
 atlas/cartridges/202609040219-substation-intelligence-v9-63.js -whitespace
+# This exact successor preserves the same untouched V8 bytes while removing
+# only the obsolete cross-domain deep-link fetch block.
+atlas/parts/202609040229-ventus-corev8engine-exact-repd-delegation.js -whitespace
+# The composed SLD successor retains its body's terminal blank byte exactly;
+# scope the diff exemption to this source and its immutable composed output.
+atlas/parts/202609040229-sld-sandbox-arrival-identity.js -whitespace
+atlas/cartridges/202609040337-sld-sandbox-v9-8.js -whitespace
+atlas/cartridges/202609040337-substation-intelligence-v9-63.js -whitespace
