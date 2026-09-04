@@ -97,3 +97,6 @@ atlas/parts/202609040229-ventus-corev8engine-exact-repd-delegation.js -whitespac
 atlas/parts/202609040229-sld-sandbox-arrival-identity.js -whitespace
 atlas/cartridges/202609040337-sld-sandbox-v9-8.js -whitespace
 atlas/cartridges/202609040337-substation-intelligence-v9-63.js -whitespace
+# v9.107 moves stylesheet bytes only; its recomposed network cartridge still
+# carries the same 58 historical V8 trailing-space lines byte-for-byte.
+atlas/cartridges/202609040403-substation-intelligence-v9-63.js -whitespace
