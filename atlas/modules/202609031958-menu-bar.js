@@ -160,7 +160,8 @@
       'padding-right:env(safe-area-inset-right);box-sizing:border-box;',
       'background:rgba(4,10,13,.95);border-bottom:1px solid rgba(80,220,240,.3);',
       'font:11px/1 ui-monospace,SFMono-Regular,Menlo,monospace;',
-      '-webkit-backdrop-filter:blur(7px);backdrop-filter:blur(7px)}',
+      '-webkit-backdrop-filter:blur(7px);backdrop-filter:blur(7px);',
+      'isolation:isolate;pointer-events:auto}',
       '#' + BAR_ID + ' .gm-menu{position:relative;min-width:0}',
       '#' + BAR_ID + ' .gm-title{appearance:none;border:0;background:transparent;color:#cfeef6;',
       'min-height:36px;padding:0 11px;cursor:pointer;font:inherit;letter-spacing:.05em;',
@@ -206,6 +207,13 @@
       'box-sizing:border-box;text-align:left;pointer-events:auto}',
       '.gridatlas-menu-hosted .map-controls[data-gridatlas-menu-emptied="1"]{display:none!important}',
       '.gridatlas-menu-hosted .scada-brand[data-gridatlas-menu-duplicate="1"]{display:none!important}',
+      /* v9.90 made the mobile project card a fixed, full-width bottom sheet.
+         The old SCADA layer panel remained underneath it, so a visible layer
+         checkbox could lose the hit test to text in the project card. Keep the
+         conventional menu and its fixed phone panel in the higher, interactive
+         stacking context whenever that sheet is open. */
+      'html.gridatlas-sheet-open #' + BAR_ID + '{z-index:10020!important;pointer-events:auto!important}',
+      'html.gridatlas-sheet-open #' + BAR_ID + ' .gm-panel{pointer-events:auto!important}',
       'body:not(.fs-active) #' + BAR_ID + ' #btn-fullscreen-exit{display:none!important}',
       'body.fs-active #' + BAR_ID + ' #btn-fullscreen-exit{display:flex!important}',
       '@media(max-width:700px){#' + BAR_ID + '{height:34px}',
@@ -511,6 +519,7 @@
     state.waiting_for = [];
     state.failure = null;
     state.one_identity_surface = true;
+    state.mobile_sheet_hit_target_guard = true;
 
     if (typeof MutationObserver === 'function') {
       observer = new MutationObserver(function () {

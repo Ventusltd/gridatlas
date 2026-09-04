@@ -18,7 +18,8 @@
  *
  *   The generation is read from the clock (UTC). --generation is accepted
  *   only within five minutes of now; --replace-module old=new swaps a
- *   module for its successor; --add-module appends one after the last.
+ *   module for its successor; --replace-part old=new can replace a carried
+ *   engine or body with an immutable successor; --add-module appends one.
  *
  * A restamped cartridge with a parts manifest is REASSEMBLED from the same
  * part list through tools/build-cartridge.mjs, so an edited part actually
@@ -90,6 +91,12 @@ const replaceModules = argv('--replace-module', { many: true })
   .map(pair => {
     const [from, to] = String(pair).split('=');
     if (!from || !to) die(`--replace-module wants old/path.js=new/path.js, got ${pair}`);
+    return { from, to };
+  });
+const replaceParts = argv('--replace-part', { many: true })
+  .map(pair => {
+    const [from, to] = String(pair).split('=');
+    if (!from || !to) die(`--replace-part wants old/path.js=new/path.js, got ${pair}`);
     return { from, to };
   });
 const scope = argv('--scope');
@@ -200,6 +207,19 @@ for (const id of restamp) {
     /* Reassembled, not copied: the point of restamping an assembled
        cartridge is that one of its parts moved. */
     const parts = readJson(partsManifest).assembled_from || [];
+
+    /* A carried shell script is immutable at its release path, but the
+       cartridge that supersedes its slot may deliberately carry a reviewed
+       successor. Replace the input path in THIS generation's derived parts
+       list; never rewrite the earlier parts manifest or payload. */
+    for (const swap of replaceParts) {
+      const entry = parts.find(e => e.path === swap.from);
+      if (!entry) continue;
+      if (!fs.existsSync(path.join(ROOT, swap.to))) die(`no such replacement part: ${swap.to}`);
+      entry.path = swap.to;
+      swap.applied = true;
+      console.log(`  ~part      ${swap.from} -> ${swap.to}  (in ${id})`);
+    }
 
     /* A cartridge can gain a module at a cut.
        -------------------------------------------------------------------
@@ -331,6 +351,9 @@ for (const id of restamp) {
 /* A swap that matched no restamped cartridge is a typo, not a no-op. */
 for (const swap of replaceModules) {
   if (!swap.applied) die(`--replace-module: ${swap.from} is not a module of any restamped cartridge`);
+}
+for (const swap of replaceParts) {
+  if (!swap.applied) die(`--replace-part: ${swap.from} is not a part of any restamped cartridge`);
 }
 
 current.previous_generation = previousGeneration;

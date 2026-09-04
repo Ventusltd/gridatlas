@@ -94,7 +94,16 @@ jobs:
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
         with:
           repository: Ventusltd/grid-distance-maths
+          ref: 30d2f817a4b007b7c3be334f3aff308331a848b8
           path: grid-distance-maths
+          persist-credentials: false
+
+      - name: Checkout the immutable Pipeline map-link corpus beside it
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          repository: Ventusltd/pipelinenews
+          ref: 25f03422d12ed6e5bfca860a825d6273c2e0c296
+          path: pipelinenews
           persist-credentials: false
 
       - name: Node

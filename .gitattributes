@@ -76,3 +76,9 @@
 # carried bytes as newly authored whitespace would require changing the slot
 # contract. Keep the bytes/digests reproducible and exempt this exact artefact.
 atlas/cartridges/202609040021-substation-intelligence-v9-63.js -whitespace
+# The receiver successor deliberately preserves every untouched V8 byte,
+# including those historical spaces. Exempt only the exact carried input and
+# the two cartridges assembled from it; authored modules remain checked.
+atlas/parts/202609040045-ventus-corev8engine-deep-link-receiver.js -whitespace
+atlas/cartridges/202609040046-substation-intelligence-v9-63.js -whitespace
+atlas/cartridges/202609040047-substation-intelligence-v9-63.js -whitespace

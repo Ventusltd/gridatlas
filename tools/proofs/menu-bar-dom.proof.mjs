@@ -343,6 +343,7 @@ export async function proveMenuBar(menuPath, servedSource = '') {
   const complete = run(source);
   const api = complete.api;
   const bar = complete.doc.getElementById('gridatlas-menu-bar');
+  const styleText = complete.doc.getElementById('gridatlas-menu-bar-css')?.textContent || '';
   const titleNodes = bar ? bar.querySelectorAll('.gm-title') : [];
   const title = (name) => titleNodes.find((node) => node.textContent === name);
   const panel = (name) => title(name)?.parentNode.querySelector('.gm-panel');
@@ -461,6 +462,12 @@ export async function proveMenuBar(menuPath, servedSource = '') {
     /@media\(max-width:700px\)/.test(source)
     && /max-height:calc\(100dvh - 40px\)/.test(source)
     && /overflow:auto/.test(source));
+  check('the Grid menu remains the hit target above the v9.90 mobile project sheet',
+    api?.mobile_sheet_hit_target_guard === true
+    && /html\.gridatlas-sheet-open #gridatlas-menu-bar\{z-index:10020!important;pointer-events:auto!important\}/
+      .test(styleText)
+    && /html\.gridatlas-sheet-open #gridatlas-menu-bar \.gm-panel\{pointer-events:auto!important\}/
+      .test(styleText));
   check('nothing in menu output grades a connection',
     !/\b(strong|weak|remote|excellent|poor|good|bad)\b/i.test(
       source.replace(/\/\*[\s\S]*?\*\//g, '')));

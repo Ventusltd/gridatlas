@@ -110,6 +110,120 @@ assert.equal(state.duckdb_runtime_started, false,
 assert.ok(establishmentMs < 1000, `streamed response establishment took ${establishmentMs} ms`);
 await streamed.body.cancel();
 
+/* The fast-header check above deliberately leaves the manifest unresolved, so
+   it cannot prove that the historic V8 URL actually reaches the differently
+   named V9 partition. Execute a second, deterministic copy of the composed
+   bridge with only its external DuckDB/manifest dependencies replaced. This
+   runs the real legacyStem -> alias -> resolvePartition -> query -> streamed
+   GeoJSON path through to a populated source payload. */
+const fixtureManifest = {
+  schema: 'data-gridatlas.v8-transplant-manifest.v1',
+  closure: { sources: 56, layers: 60, features: 541282 },
+  artifacts: [{
+    path: 'partitions/uk_metros_trams_root.parquet',
+    sha256: 'a'.repeat(64),
+  }],
+};
+const fixtureBytes = new TextEncoder().encode(JSON.stringify(fixtureManifest));
+const fixtureSha = createHash('sha256').update(fixtureBytes).digest('hex');
+const pinnedManifestSha = '3246dbdaa042ae8352ec9b7128cb6c2fe65e4f1aba0534302510661828df2526';
+assert.equal(source.split(pinnedManifestSha).length - 1, 1,
+  'the composed bridge manifest pin changed without this proof changing');
+assert.equal(source.split('const duckdb = await import(DUCKDB_MODULE);').length - 1, 1,
+  'the DuckDB seam changed without this proof changing');
+const instrumentedSource = source
+  .replace(pinnedManifestSha, fixtureSha)
+  .replace('const duckdb = await import(DUCKDB_MODULE);',
+    'const duckdb = window.__GRIDATLAS_TEST_DUCKDB__;');
+
+let querySql = '';
+let manifestCalls = 0;
+const fakeDuckdb = {
+  getJsDelivrBundles: () => ({}),
+  selectBundle: async () => ({ mainModule: 'fixture.wasm', mainWorker: 'fixture.worker.js' }),
+  LogLevel: { WARNING: 'warning' },
+  ConsoleLogger: class ConsoleLogger {},
+  AsyncDuckDB: class AsyncDuckDB {
+    async instantiate() {}
+    async connect() {
+      return {
+        query: async (sql) => {
+          querySql = String(sql);
+          return {
+            toArray: () => [{
+              source_id: 'uk_metros_trams_root',
+              feature_index: 0,
+              feature_id: 'dlr-fixture-0',
+              geometry_json: JSON.stringify({
+                type: 'LineString',
+                coordinates: [[-0.1, 51.5], [-0.08, 51.51]],
+              }),
+              properties_json: JSON.stringify({ operator: 'Docklands Light Railway' }),
+            }],
+          };
+        },
+        close: async () => {},
+      };
+    }
+  },
+};
+const nativeFetch2 = async (input) => {
+  const url = String(input?.url || input);
+  assert.match(url, /202608291237-data-gridatlas\/data\/manifest\.json$/);
+  manifestCalls += 1;
+  return new Response(fixtureBytes, { status: 200 });
+};
+const windowObject2 = {
+  location: { href: 'https://ventusltd.github.io/gridatlas/atlas/' },
+  fetch: nativeFetch2,
+  __GRIDATLAS_TEST_DUCKDB__: fakeDuckdb,
+};
+windowObject2.window = windowObject2;
+const context2 = vm.createContext({
+  window: windowObject2,
+  URL,
+  Blob,
+  Worker: class Worker {},
+  crypto: globalThis.crypto,
+  TextEncoder,
+  TextDecoder,
+  ReadableStream,
+  Response,
+  DOMException,
+  Promise,
+  Map,
+  Set,
+  JSON,
+  console,
+  performance,
+  queueMicrotask() {},
+  setInterval,
+  clearInterval,
+  setTimeout,
+  clearTimeout,
+});
+vm.runInContext(instrumentedSource, context2, { filename: `${RUNTIME}:full-source-load` });
+const fullResponse = await windowObject2.fetch(
+  'https://ventusltd.github.io/gridatlas/atlas/data/uk_metros_trams.geojson',
+);
+const fullPayload = await fullResponse.json();
+const fullState = windowObject2.__GRIDATLAS_MAP_READY__;
+const metroPath = '/gridatlas/atlas/data/uk_metros_trams.geojson';
+assert.equal(fullPayload.type, 'FeatureCollection');
+assert.equal(fullPayload.features.length, 1);
+assert.equal(fullPayload.features[0].properties.operator, 'Docklands Light Railway');
+assert.match(querySql,
+  /read_parquet\('https:\/\/ventusltd\.github\.io\/data-gridatlas\/202608291237-data-gridatlas\/data\/partitions\/uk_metros_trams_root\.parquet'\)/);
+assert.equal(fullState.loaded_on_demand[metroPath].parquet,
+  'partitions/uk_metros_trams_root.parquet');
+assert.equal(fullState.loaded_on_demand[metroPath].rows, 1);
+assert.equal(fullState.loaded_on_demand[metroPath].sha256, 'a'.repeat(64));
+assert.equal(fullState.parquet_requests, 1);
+assert.equal(fullState.released_payloads, 1);
+assert.equal(fullState.failures.length, 0);
+assert.equal(fullState.stream_failures.length, 0);
+assert.equal(manifestCalls, 1);
+
 const controller = new AbortController();
 controller.abort();
 await assert.rejects(
@@ -130,4 +244,6 @@ console.log(JSON.stringify({
   map_ready_requests: state.map_ready_requests,
   streamed_responses: state.streamed_responses,
   duckdb_started_before_body: state.duckdb_runtime_started,
+  metro_partition: fullState.loaded_on_demand[metroPath].parquet,
+  metro_rows_reconstructed: fullPayload.features.length,
 }, null, 2));

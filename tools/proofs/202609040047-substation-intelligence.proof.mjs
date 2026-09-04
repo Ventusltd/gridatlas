@@ -8,7 +8,7 @@
 
 import { readFile } from 'node:fs/promises';
 import { existsSync } from 'node:fs';
-import { webcrypto } from 'node:crypto';
+import { createHash, webcrypto } from 'node:crypto';
 import { fileURLToPath } from 'node:url';
 import { dirname, join, resolve } from 'node:path';
 import vm from 'node:vm';
@@ -110,14 +110,31 @@ check('every cartridge in the order is in the cartridge list',
   CURRENT.cartridge_order.every(id => CURRENT.cartridges.some(c => c.id === id)));
 
 const source = await readFile(CARTRIDGE, 'utf8');
-const engine = (await readFile(join(RELEASE, 'ventus-corev8engine.js'), 'utf8'))
-  .replace(/\r\n/g, '\n');
+const partsManifest = JSON.parse(await readFile(join(REPO, 'atlas', 'manifests',
+  `${CURRENT.generation}-substation-intelligence-v9-63-parts.json`), 'utf8'));
+const enginePart = (partsManifest.assembled_from || [])[0];
+const engine = enginePart
+  ? (await readFile(join(REPO, enginePart.path), 'utf8')).replace(/\r\n/g, '\n')
+  : '';
+const immutableEnginePath = join(RELEASE, 'ventus-corev8engine.js');
+const immutableEngineBytes = await readFile(immutableEnginePath);
+const immutableEngineHash = createHash('sha256').update(immutableEngineBytes).digest('hex');
 
-console.log('\nthe engine, carried forward\n');
-check('the engine is present byte for byte', source.includes(engine));
+console.log('\nthe engine successor, with the immutable shell preserved\n');
+check('the parts manifest names the reviewed deep-link receiver successor',
+  /202609040045-ventus-corev8engine-deep-link-receiver\.js$/.test(enginePart?.path || ''));
+check('the successor is present byte for byte', Boolean(engine) && source.includes(engine));
 check('it is carried whole, not excerpted', engine.length > 80000);
 check('the intelligence runs after it, not inside it',
   source.indexOf(engine) < source.indexOf('PART 2 - the network'));
+check('the immutable V8 shell remains byte-identical to its published digest',
+  immutableEngineHash === '9a75901ebdff05e094650e39973fc0f59204724753d393a734bb8cda7bc875ba');
+check('the successor accepts the complete canonical technology vocabulary',
+  /'solar_operational'[\s\S]*'bess_operational'[\s\S]*'wind'[\s\S]*'biomass'[\s\S]*'tidal'[\s\S]*'hydrogen'[\s\S]*'hydro'[\s\S]*'flywheel'[\s\S]*'act'[\s\S]*'geothermal'[\s\S]*'caes'[\s\S]*'other'/.test(engine));
+check('non-spine technologies defer to the exact REPD receiver rather than throw',
+  /const partitionTechnologies = new Set/.test(engine)
+  && /status: 'DEFERRED_TO_EXACT_REPD_RECEIVER'/.test(engine)
+  && /if \(!partitionTechnologies\.has\(requestedTechnology\)\)/.test(engine));
 
 console.log('\nthe product contract\n');
 check('it reads the data repository product',

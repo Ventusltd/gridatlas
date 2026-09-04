@@ -26,6 +26,7 @@
  */
 
 import { readFile } from 'node:fs/promises';
+import { createHash } from 'node:crypto';
 import { fileURLToPath } from 'node:url';
 import { basename, dirname, join, resolve } from 'node:path';
 import vm from 'node:vm';
@@ -1080,7 +1081,7 @@ check('and promises the layers will arrive on their own',
   /layers will switch on by themselves/.test(st));
 check('failure offers a way forward', /again\.textContent = 'Try again';/.test(st));
 check('the retry re-runs the arrival instead of reloading the engine',
-  /retryArrival = \(\) => \{ runArrivalSelection\(\)\.then/.test(st));
+  /retryArrival = \(\) => \{ runArrivalSelection\(currentArrival\)\.then/.test(st));
 check('the reason a reload is the wrong answer is written down',
   /repeats the[\s\S]{0,12}whole 35\.7 MB boot/.test(st));
 check('it is announced to assistive technology',
@@ -1341,7 +1342,7 @@ console.log('\nthe project pin\n');
 // cartridge so that it does not depend on that layer at all.
 const pinSrc = cartridgeSource;
 check("the deep link enables the project's own technology layer",
-  /enableSubstationLayer\(\);[\s\S]{0,240}enableTechnologyLayer\(tech\);/.test(pinSrc));
+  /enableSubstationLayer\(\);[\s\S]{0,240}enableTechnologyLayer\(currentArrival\.tech\);/.test(pinSrc));
 // The engine tags each control with the layer it drives, so the technology is
 // the hook and no table is consulted first. The labels carry live counts --
 // "Solar PV [2819 | 52.3GW]" -- so matching them was matching prose that moves
@@ -1665,17 +1666,23 @@ check('and the header still explains why it was removed',
    declares ONE radius in its own code, not that the shell it wraps
    has none. Pretending otherwise would mean either a false pass or
    an unfixable failure. */
-const carriedEngine = await readFile(join(REPO, 'atlas', 'releases',
+const immutableEngine = await readFile(join(REPO, 'atlas', 'releases',
   '202608300453-atlas-v9', 'ventus-corev8engine.js'), 'utf8');
+const receiverEntry = (CURRENT.cartridges || [])
+  .find(entry => entry.id === 'substation-intelligence');
+const receiverParts = JSON.parse(await readFile(join(REPO, 'atlas',
+  String(receiverEntry.assembled_from).replace(/^\.\//, '')), 'utf8'));
+const receiverEnginePart = (receiverParts.assembled_from || [])[0];
+const servedEngine = await readFile(join(REPO, receiverEnginePart.path), 'utf8');
 const composedCode = composedSource
-  .split(carriedEngine.split('\r\n').join('\n')).join(' ')
+  .split(servedEngine.split('\r\n').join('\n')).join(' ')
   .replace(/\/\*[\s\S]*?\*\//g, '')
   .replace(/(^|[^:])\/\/[^\n]*/g, '$1');
 check('the estate declares an Earth radius exactly ONCE across the composition',
   (composedCode.match(/=\s*6378\.137/g) || []).length === 1,
   `${(composedCode.match(/=\s*6378\.137/g) || []).length} declarations outside the carried engine`);
-check('and the carried engine still has its own, untouched',
-  (carriedEngine.match(/=\s*6378\.137/g) || []).length === 1);
+check('and the immutable engine still has its own, untouched',
+  (immutableEngine.match(/=\s*6378\.137/g) || []).length === 1);
 check('the body takes the radius and the distance from the geodesy module',
   /const R_ATLAS = GEODESY\.EARTH_RADIUS_KM;/.test(src)
   && /return GEODESY\.distanceKm\(/.test(src));
@@ -1739,7 +1746,7 @@ check('the measurement is split out of the click handler',
   /async function selectAt\(/.test(code) && /link\.selectAt = selectAt/.test(code));
 check('a deep link runs the same path as a click',
   /new URLSearchParams\(window\.location\.search\)/.test(code)
-  && /selectAt\(\[lon, lat\], name, tech, false,/.test(code));
+  && /selectAt\(\[arrival\.lon, arrival\.lat\], arrival\.name,/.test(code));
 check('it only fires for a technology that draws links',
   /PROJECT_TECHS\.has\(tech\)/.test(code));
 check('it waits for the engine card rather than racing it',
@@ -2424,39 +2431,37 @@ check('the search lane publishes the technology and capacity it resolved',
 check('absent coordinates are absent, not Null Island',
   /rawLon === null \? NaN : Number\(rawLon\)/.test(cartridgeSource)
   && /Math\.abs\(lon\) < 1e-9 && Math\.abs\(lat\) < 1e-9/.test(cartridgeSource));
-/* Was: "the identity fallback is GATED ON repd_ref being present", asserting
-   `&& q.get('repd_ref')` on a condition that also required the link to be
-   malformed. That gate is the defect. A deep link with a correct repd_ref and
-   wrong coordinates printed a real project's address, postcode and planning
-   status over a measurement 30 km away, with the camera on the register and
-   the pin drawn off-screen, so nothing on screen contradicted it - and the URL
-   carries the state, so a share propagated it. The check is made STRICTER: the
-   register must be consulted for EVERY repd_ref link, and the old conditional
-   form must be absent from the served bytes. */
-check('the register is consulted for every repd_ref link, not only a malformed one',
-  /if \(q\.get\('repd_ref'\)\) \{/.test(cartridgeSource)
-  && !/!coordsUsable\(\) \|\| !isProjectTech\(tech\)\) && q\.get\('repd_ref'\)/
+/* v9.91 made identity authoritative by serialising it before every answer.
+   That prevented a wrong-coordinate answer but also put a 35.7 MB boot in
+   front of 8,743 links that already carried valid geometry. Geometry answers
+   first now; identity remains authoritative as a concurrent verifier. */
+check('every valid ref-plus-coordinate link starts identity verification without awaiting it',
+  /if \(receiverPlan\.route === 'MEASURE_LINK_FIRST' && repdRef\) \{/.test(cartridgeSource)
+  && /identityVerification = waitForResolvedIdentity\(\{ announce: false \}\)/
+    .test(cartridgeSource)
+  && /link\.origin_source = 'link-supplied'/.test(cartridgeSource));
+check('only a ref-only link waits for identity before it can measure',
+  /else if \(receiverPlan\.route === 'WAIT_FOR_REGISTER'\) \{[\s\S]{0,320}const resolved = await waitForResolvedIdentity\(\);/
     .test(cartridgeSource));
-check('the register point overwrites the link point, unconditionally',
-  /lon = rLon;/.test(cartridgeSource) && /lat = rLat;/.test(cartridgeSource)
-  && /link\.origin_source = 'register'/.test(cartridgeSource));
-/* The page held both points all along and never subtracted them. It must be
-   measured BEFORE the overwrite or it is always zero - asserted by position,
-   not by presence, because presence alone would pass on the broken order. */
-check('the discrepancy is measured before the point is overwritten',
+check('a resolved discrepancy replaces one frozen arrival and recomputes it',
+  /const verifiedArrival = Object\.freeze\(\{/.test(cartridgeSource)
+  && /currentArrival = verifiedArrival;/.test(cartridgeSource)
+  && /await runArrivalSelection\(verifiedArrival\);/.test(cartridgeSource)
+  && /status = 'RECOMPUTED'/.test(cartridgeSource));
+check('the discrepancy is measured before the frozen selection is replaced',
   (() => {
-    const measured = cartridgeSource.indexOf('link.origin_discrepancy_km');
-    const overwritten = cartridgeSource.indexOf('lon = rLon;');
+    const measured = cartridgeSource.indexOf('link.origin_discrepancy_km = discrepancyKm');
+    const overwritten = cartridgeSource.indexOf('currentArrival = verifiedArrival;');
     return measured > 0 && overwritten > measured;
   })());
 check('and it is measured on the one geodesy, not a second haversine',
-  /distanceKm\(lon, lat, rLon, rLat\)/.test(cartridgeSource));
-/* origin_source is the field a reader, a proof and a later lane all read to
-   know which source the numbers came from. It was set only inside the branch
-   the false case skipped, so it was silent in exactly the case that needed it.
-   Every terminal path through the lane must now publish it. */
-check('every path publishes which source the origin came from',
-  (cartridgeSource.match(/link\.origin_source = '(register|link)'/g) || []).length >= 3);
+  /distanceKm\(currentArrival\.lon, currentArrival\.lat, rLon, rLat\)/
+    .test(cartridgeSource));
+check('every terminal verification path publishes which origin remains active',
+  /link-supplied-register-/.test(cartridgeSource)
+  && /link-supplied-register-verified/.test(cartridgeSource)
+  && /register-corrected-after-link/.test(cartridgeSource)
+  && /link\.origin_source = 'register'/.test(cartridgeSource));
 check('the lane waits for the search cartridge and honours terminal states',
   /window\.__GRIDATLAS_PLACE_SEARCH__\?\.deep_link/.test(cartridgeSource)
   && /dl\.status === 'RESOLVED'/.test(cartridgeSource)
@@ -2464,13 +2469,15 @@ check('the lane waits for the search cartridge and honours terminal states',
 check('a resolved identity supplies coordinates, technology, name and capacity',
   /const rLon = Number\(resolved\.longitude\)/.test(cartridgeSource)
   && /const rLat = Number\(resolved\.latitude\)/.test(cartridgeSource)
-  && /tech = resolved\.technology/.test(cartridgeSource)
-  && /if \(resolved\.name\) name = String\(resolved\.name\)/.test(cartridgeSource)
-  && /if \(Number\.isFinite\(cap\) && cap > 0\) stated = cap/.test(cartridgeSource));
+  && /const rTech = typeof resolved\.technology/.test(cartridgeSource)
+  && /const rName = resolved\.name \? String\(resolved\.name\)/.test(cartridgeSource)
+  && /const rStated = Number\.isFinite\(rCap\)/.test(cartridgeSource));
 check('an unresolved identity is recorded, never silent',
-  /identity lane still not terminal after 10 minutes/.test(cartridgeSource));
+  /identity lane still not terminal after 10 minutes/.test(cartridgeSource)
+  && /supplied_coordinates_kept: true/.test(cartridgeSource));
 check('the consumption is published for the next debugger',
-  /link\.deep_link_identity = 'resolved-by-search-lane'/.test(cartridgeSource));
+  /link\.deep_link_identity = 'resolved-by-search-lane'/.test(cartridgeSource)
+  && /link\.identity_verification = \{/.test(cartridgeSource));
 
 
 console.log('\nthe arrival surface\n');
@@ -2484,9 +2491,11 @@ check('an arrival on touch enters the shell fullscreen',
   && /link\.arrival_fullscreen = true/.test(cartridgeSource));
 check('the map is resized after entering fullscreen',
   /setTimeout\(\(\) => \{ try \{ map\.resize\(\); \}/.test(cartridgeSource));
-check('the identity wait has no budget parameter and runs to terminal',
-  /async function waitForResolvedIdentity\(\) \{/.test(cartridgeSource)
+check('the identity wait runs to terminal and can stay silent behind a visible answer',
+  /async function waitForResolvedIdentity\(options = \{\}\) \{/.test(cartridgeSource)
+  && /const announce = options\.announce !== false;/.test(cartridgeSource)
   && /await waitForResolvedIdentity\(\);/.test(cartridgeSource)
+  && /waitForResolvedIdentity\(\{ announce: false \}\)/.test(cartridgeSource)
   && !/waitForResolvedIdentity\(120000\)/.test(cartridgeSource));
 check('the wait says what it is waiting for',
   /Resolving the project against the register/.test(cartridgeSource));
@@ -2533,10 +2542,10 @@ check('and the search lane stands down at the same test, reporting ABSENT',
     const firstMove = body.indexOf('flyTo');
     return bailsOut > 0 && (firstMove < 0 || bailsOut < firstMove);
   })());
-check('so this cartridge flies, and only when there is no repd_ref',
-  /if \(q\.get\('repd_ref'\) === null\) \{\n\s*try \{\n\s*const arrivalZoom/
-    .test(cartridgeSource)
-  && /map\.flyTo\(\{ center: \[lon, lat\], zoom: arrivalZoom,/.test(cartridgeSource));
+check('this cartridge flies every usable answer, including while a ref is verified',
+  /map\.flyTo\(\{ center: \[lon, lat\], zoom: arrivalZoom,/.test(cartridgeSource)
+  && /supplied coordinates while register verification runs/.test(cartridgeSource)
+  && !/if \(q\.get\('repd_ref'\) === null\)/.test(cartridgeSource));
 check('the centre is the link\'s, and the zoom the link\'s where it is usable',
   /const arrivalZoom = zoomUsable \? requestedZoom : 12;/.test(cartridgeSource));
 check('a reader who asked for reduced motion still arrives',
@@ -2548,7 +2557,7 @@ check('the camera is set BEFORE the zoom is honoured and before the tech gate',
   (() => {
     const fly = cartridgeSource.indexOf('link.camera_from_link');
     const zoom = cartridgeSource.indexOf('honourRequestedZoom(map);');
-    const gate = cartridgeSource.indexOf('const technologyKnown = isProjectTech(tech);');
+    const gate = cartridgeSource.indexOf('let technologyKnown = isProjectTech(tech);');
     return fly > 0 && zoom > fly && gate > zoom;
   })());
 check('a failed camera is recorded rather than taking the arrival with it',
@@ -2585,13 +2594,11 @@ console.log('\nan unrecognised technology costs one layer, not the arrival\n');
 
 /* Reg3, as it actually is rather than as it was reported.
 
-   The whitelist the brief named - `allowedTechnologies` with four values,
-   throwing "canonical project technology is invalid" - is in the CARRIED V8
-   ENGINE, which atlas/releases is immutable for and which this cartridge's
-   sibling carries byte for byte as its slot contract. It cannot be widened
-   from this lane, and widening it would not help: the product it gates
-   publishes atlas partitions for exactly those four technologies. That is
-   recorded in the session notes, not fixed here.
+   The original whitelist - `allowedTechnologies` with four values, throwing
+   "canonical project technology is invalid" - remains immutable in the V8
+   release. Its reviewed cartridge successor accepts the complete canonical
+   vocabulary and defers non-partition values to the exact-REPD receiver; the
+   four real partition products remain the only ones it fetches.
 
    What IS in this lane is `PROJECT_TECHS`, and the `return` that used to
    follow it. */
@@ -2599,7 +2606,7 @@ check('the register vocabulary carries the id the register uses for a category i
   /'other'\n  \]\);/.test(cartridgeSource));
 check('an unrecognised technology no longer returns out of the arrival',
   (() => {
-    const at = cartridgeSource.indexOf('const technologyKnown = isProjectTech(tech);');
+    const at = cartridgeSource.indexOf('let technologyKnown = isProjectTech(tech);');
     if (at < 0) return false;
     /* The old shape was `if (!isProjectTech(tech)) { ...; return; }`. The
        whole point is that no early return survives between the coordinate
@@ -2611,11 +2618,11 @@ check('an unrecognised technology no longer returns out of the arrival',
     return !/\breturn;/.test(between);
   })());
 check('and it costs exactly the one layer that needs to know',
-  /if \(technologyKnown\) enableTechnologyLayer\(tech\);/.test(cartridgeSource)
+  /if \(technologyKnown\) enableTechnologyLayer\(currentArrival\.tech\);/.test(cartridgeSource)
   && /enableSubstationLayer\(\);\n\s*if \(technologyKnown\)/.test(cartridgeSource));
 check('the substation layer, the card and the measurement are not technology-gated',
   (() => {
-    const at = cartridgeSource.indexOf('const technologyKnown = isProjectTech(tech);');
+    const at = cartridgeSource.indexOf('let technologyKnown = isProjectTech(tech);');
     const rest = cartridgeSource.slice(at, at + 6000);
     return /enableSubstationLayer\(\);/.test(rest)
       && /ensureArrivalCard\(/.test(cartridgeSource);
@@ -2831,7 +2838,7 @@ console.log('\nthe arrival card\n');
 check('a card is opened from the link fields only when none exists',
   /function ensureArrivalCard\(lon, lat, name, tech, statedMw\)/.test(cartridgeSource)
   && /if \(document\.querySelector\('\.maplibregl-popup-content'\)\) return;/.test(cartridgeSource)
-  && /ensureArrivalCard\(lon, lat, name, tech, stated\);/.test(cartridgeSource));
+  && /ensureArrivalCard\(arrival\.lon, arrival\.lat, arrival\.name,/.test(cartridgeSource));
 check('the fallback card states its provenance',
   /Card built from the\s*'\s*\+\s*'arrival link\./.test(cartridgeSource));
 check('the fallback yields when the register card lands',
@@ -2848,8 +2855,8 @@ check('the fallback card is opened before the measurement runs', (() => {
   // Ordering, not adjacency: v9.55 puts the provisional declared block and
   // the ring between the card and the measurement, which is still the card
   // first. Compare positions rather than pinning neighbouring lines.
-  const card = cartridgeSource.indexOf('ensureArrivalCard(lon, lat, name, tech, stated);');
-  const measure = cartridgeSource.indexOf('await selectAt([lon, lat], name, tech, false,');
+  const card = cartridgeSource.indexOf('ensureArrivalCard(arrival.lon, arrival.lat, arrival.name,');
+  const measure = cartridgeSource.indexOf('await selectAt([arrival.lon, arrival.lat], arrival.name,');
   return card > 0 && measure > card;
 })());
 check('a terminally failed identity lane does not spend the popup budget',
@@ -3056,7 +3063,9 @@ console.log('\nthe measurement does not wait for the layers\n');
 
 check('the arrival measures before it awaits the layer controls',
   /const layersReady = arrive\(\);/.test(cartridgeSource)
-  && /await runArrivalSelection\(\);\n        await layersReady;/.test(cartridgeSource)
+  && /await runArrivalSelection\(currentArrival, Boolean\(repdRef && !identityVerification\)\);/
+    .test(cartridgeSource)
+  && /await layersReady;/.test(cartridgeSource)
   && !/await arrive\(\);/.test(cartridgeSource));
 check('the substation payload is warmed at install',
   /try \{ loadSubstations\(\); \} catch \(_\)/.test(cartridgeSource));
@@ -3066,7 +3075,8 @@ check('the waiting message no longer claims the distances need the layers',
 check('a late-layers notice never covers a drawn answer',
   /if \(link\.links_drawn > 0\) \{\n      \/\/ The answer is already on the map/.test(cartridgeSource));
 check('retry still re-runs the measurement and the layers',
-  /retryArrival = \(\) => \{ runArrivalSelection\(\)\.then\(\(\) => arrive\(\)\); \};/.test(cartridgeSource));
+  /retryArrival = \(\) => \{ runArrivalSelection\(currentArrival\)\.then\(\(\) => arrive\(\)\); \};/
+    .test(cartridgeSource));
 
 
 console.log('\nthe sales surface answers immediately\n');
@@ -3077,7 +3087,8 @@ check('a declared connection is knowable from the link alone',
 check('it is shown before the measurement is attempted',
   /currentDeclared = provisionalDeclaredConnection\(currentRepdRef\);\n          if \(currentDeclared\) injectDeclaredOnly\(\);/.test(cartridgeSource));
 check('the ring is drawn on arrival, not after the payload',
-  /if \(capturedMap\) setPin\(capturedMap, \[lon, lat\], name, tech\);/.test(cartridgeSource));
+  /if \(capturedMap\) setPin\(capturedMap,[\s\S]{0,100}\[arrival\.lon, arrival\.lat\], arrival\.name, arrival\.tech\);/
+    .test(cartridgeSource));
 check('a pending distance says it is being measured, never that none exists',
   /The distance is being measured now\./.test(cartridgeSource)
   && /d\.pending/.test(cartridgeSource));
@@ -3634,8 +3645,9 @@ check('the ownership state is published for review',
     && /gridatlas\.module\.planned-change/.test(subSource));
   check('the new owner-boundary module is there too',
     /gridatlas\.module\.owner-boundary/.test(subSource));
-  check('it still carries the V8 engine verbatim, which is its slot contract',
-    subSource.includes('PART 2 - the network, as its operator publishes it'));
+  check('it carries the reviewed V8 receiver successor before network intelligence',
+    subSource.includes("status: 'DEFERRED_TO_EXACT_REPD_RECEIVER'")
+    && subSource.includes('PART 2 - the network, as its operator publishes it'));
   check('it is under the boundary as well',
     subSource.length < 400000, `${subSource.length} bytes`);
 }
@@ -3700,6 +3712,88 @@ check('proximity is stated as proximity and nothing more',
   /not a connection, a circuit or a queue position/.test(composedSource));
 check('the radius is on the label rather than left for the reader to assume',
   /within ' \+ RADIUS_KM \+ ' km/.test(composedSource));
+
+console.log('\nthe complete Pipeline News map-link corpus\n');
+
+/* Pipeline owns the links and GridAtlas owns the receiver. Check the actual
+   immutable Pipeline products rather than a sample copied into this repo.
+   CI checks Pipeline out beside GridAtlas at the exact integration commit;
+   PIPELINENEWS_REPO only selects an equivalent checkout for local replay. */
+{
+  const candidates = [process.env.PIPELINENEWS_REPO, resolve(REPO, '..', 'pipelinenews')]
+    .filter(Boolean);
+  let pipelineRoot = null;
+  let spineText = null;
+  let widerText = null;
+  for (const candidate of candidates) {
+    try {
+      spineText = await readFile(join(candidate, 'releases', '202609032329-pipelinenews',
+        'data', '202608270055-8ab1807551bc-v8-fast-projects.json'), 'utf8');
+      widerText = await readFile(join(candidate, 'releases', '202609032329-pipelinenews',
+        'data', '202609030009-wider-fleet.json'), 'utf8');
+      pipelineRoot = candidate;
+      break;
+    } catch (_) { /* try the next exact checkout */ }
+  }
+  check('the immutable Pipeline corpus is present beside the receiver',
+    Boolean(pipelineRoot && spineText && widerText), candidates.join(', '));
+  if (spineText && widerText) {
+    check('the two corpus files are the exact reviewed bytes',
+      createHash('sha256').update(spineText).digest('hex')
+        === 'c06aedef176d2d38fd135806306a8ef81b4af9994c7be31e8bd760304149f862'
+      && createHash('sha256').update(widerText).digest('hex')
+        === '14b562b413adfbe59ca37d6a4e264d5d14a285efcb99a5d908f6b26bb2ff2ac3');
+    const packed = JSON.parse(spineText);
+    const spine = packed.rows.map(row => Object.fromEntries(
+      packed.fields.map((field, index) => [field,
+        packed.dictionaries[field]
+          ? (packed.dictionaries[field][row[index]] ?? '') : row[index]])))
+      .filter(row => row.geometry_status === 'valid');
+    const wider = JSON.parse(widerText);
+    const links = [
+      ...spine.map(row => ({ source: 'spine', ref: row.repd_ref,
+        technology: row.technology, longitude: row.longitude, latitude: row.latitude })),
+      ...wider.map(row => ({ source: 'wider', ref: row.ref,
+        technology: row.t, longitude: row.ll?.[0], latitude: row.ll?.[1] }))
+    ];
+    const started = performance.now();
+    const plans = links.map(row => link.measure.deepLinkPlan(
+      row.longitude, row.latitude, row.ref));
+    const dispatchMs = performance.now() - started;
+    const refCount = links.filter(row => String(row.ref || '').trim()).length;
+    const receiverSource = await readPublished(join(REPO, 'atlas',
+      String(receiverEntry.path).replace(/^\.\//, '')));
+    const allowedBlock = receiverSource.match(
+      /const allowedTechnologies = new Set\(\[([\s\S]*?)\]\);/)?.[1] || '';
+    const engineVocabulary = new Set(
+      [...allowedBlock.matchAll(/'([^']+)'/g)].map(match => match[1]));
+    const missingTechnologies = [...new Set(links.map(row => row.technology))]
+      .filter(technology => !engineVocabulary.has(technology));
+    check('the corpus size is derived as 7,652 valid spine plus 1,104 wider links',
+      spine.length === 7652 && wider.length === 1104
+      && links.length === spine.length + wider.length && links.length === 8756,
+      `${spine.length} + ${wider.length} = ${links.length}`);
+    check('the 8,743 referenced links remain distinguishable from coordinate-only links',
+      refCount === 8743, String(refCount));
+    check('every published point takes the product receiver\'s measure-first route',
+      plans.length === links.length
+      && plans.every(plan => plan.coordinates_usable
+        && plan.route === 'MEASURE_LINK_FIRST'),
+      `${plans.filter(plan => plan.route === 'MEASURE_LINK_FIRST').length}/${plans.length}`);
+    check('all emitted technology values are accepted by the engine successor',
+      missingTechnologies.length === 0,
+      missingTechnologies.length ? missingTechnologies.join(', ') : 'complete');
+    check('dispatching the complete corpus performs no register wait and stays below 500 ms',
+      dispatchMs < 500 && plans.every(plan => plan.route !== 'WAIT_FOR_REGISTER'),
+      `${dispatchMs.toFixed(1)} ms`);
+    const markinch = links.find(row => String(row.ref) === '155');
+    check('Markinch ref 155 is in the immutable corpus and measures from its supplied point',
+      Boolean(markinch)
+      && link.measure.deepLinkPlan(markinch.longitude, markinch.latitude, markinch.ref).route
+        === 'MEASURE_LINK_FIRST',
+      markinch ? `${markinch.longitude},${markinch.latitude}` : 'missing');
+  }
+}
 
 console.log(`\n${passed}/${passed + failures.length} checks passed`);
 if (failures.length) {
