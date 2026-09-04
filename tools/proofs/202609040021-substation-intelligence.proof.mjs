@@ -569,128 +569,24 @@ const MENU_MODULE = (() => {
 })();
 
 /* ── menu-bar ────────────────────────────────────────────────────────────
-   The product is the first impression. Six bands of chrome stood between the
-   top of a 393x852 screen and the card; this collapses them into one bar that
-   is closed at rest.
-
-   The check that matters is the third one. This module MOVES the existing
-   controls into menu panels rather than rebuilding them, so every handler and
-   every piece of state stays with the cartridge that made it. If a future edit
-   ever recreates a control instead of moving it, node identity breaks and that
-   check goes red - which is the whole safety argument, asserted rather than
-   documented. */
+   The v9.94 retrofit hid an owner container after adopting only direct
+   children. Scope and Clear were nested, so they vanished while its shallow
+   proof stayed green. This successor is exercised against a DOM-shaped test:
+   60 engine layers plus three Pipeline News layers, nested tools, real event
+   forwarding, menu navigation and incomplete/duplicate fail-closed cases. */
 const menuSrc = await readFile(join(REPO, 'atlas', 'modules',
   MENU_MODULE), 'utf8');
+const { proveMenuBar } = await import('./menu-bar-dom.proof.mjs');
+const menuEvidence = await proveMenuBar(
+  join(REPO, 'atlas', 'modules', MENU_MODULE), source);
 
-function stubDoc(withChrome) {
-  const mk = (tag) => {
-    const el = {
-      tagName: tag, id: '', className: '', children: [], attrs: {},
-      style: { cssText: '' }, textContent: '', _cls: new Set(), parentNode: null
-    };
-    el.classList = {
-      add: (c) => el._cls.add(c), remove: (c) => el._cls.delete(c),
-      contains: (c) => el._cls.has(c),
-      toggle: (c) => { if (el._cls.has(c)) { el._cls.delete(c); return false; }
-                       el._cls.add(c); return true; }
-    };
-    el.setAttribute = (k, v) => { el.attrs[k] = v; };
-    el.getAttribute = (k) => (k in el.attrs ? el.attrs[k] : null);
-    /* a real appendChild MOVES the node; a double that only pushes would let a
-       rebuild masquerade as a move, which is the one thing this proof exists to catch */
-    el.appendChild = (c) => {
-      if (c.parentNode && c.parentNode !== el) {
-        const i = c.parentNode.children.indexOf(c);
-        if (i >= 0) c.parentNode.children.splice(i, 1);
-      }
-      el.children.push(c); c.parentNode = el; return c;
-    };
-    el.insertBefore = (c) => { el.children.unshift(c); c.parentNode = el; return c; };
-    el.addEventListener = () => {};
-    el.querySelector = () => null;
-    el.querySelectorAll = () => [];
-    return el;
-  };
-  const doc = {
-    readyState: 'complete', _byId: {},
-    createElement: mk, getElementById: () => null,
-    addEventListener: () => {}
-  };
-  doc.head = mk('head');
-  doc.documentElement = mk('html');
-  doc.body = mk('body');
-  let stack = null;
-  if (withChrome) {
-    stack = mk('div');
-    ['Tools \u25b8', 'GRID', 'SUBS', 'SCOPE', 'CLEAR',
-     'GB PRICES \u00b7 HISTORIC', 'VERSIONS \u00b7 V9.92', 'Exit']
-      .forEach((t) => { const b = mk('button'); b.textContent = t; stack.appendChild(b); });
-    stack.parentNode = doc.body;
-  }
-  doc.querySelector = (sel) => (sel === '.map-controls' ? stack : null);
-  return { doc, stack };
-}
-
-function runMenu(withChrome) {
-  const { doc, stack } = stubDoc(withChrome);
-  const box = {
-    console, Math, JSON, Number, String, Array, Object, Boolean, Error, RegExp, Set,
-    window: { setInterval: () => 0, clearInterval: () => {} },
-    document: doc
-  };
-  box.window.window = box.window;
-  box.globalThis = box;
-  vm.createContext(box);
-  vm.runInContext(menuSrc, box, { filename: 'menu-bar.js' });
-  return { api: box.window.__GRIDATLAS_MODULES__ && box.window.__GRIDATLAS_MODULES__.menuBar,
-           doc, stack };
-}
-
-const menuWith = runMenu(true);
-const menuWithout = runMenu(false);
-
-check('menu-bar registered its surface',
-  !!menuWith.api && menuWith.api.schema === 'gridatlas.menu-bar.v1');
-
-check('menu-bar is in the served bytes',
-  /gridatlas\.menu-bar\.v1/.test(source));
-
-check('the four familiar menus, in order',
-  !!menuWith.api
-  && menuWith.api.menus.join('|') === 'File|Edit|View|About');
-
-check('the bar is WITHDRAWN on the live Atlas, and inert by construction',
-  (() => {
-    /* Two testers on two browsers found the bar was a net loss on mobile:
-       SCOPE and CLEAR nested inside .map-controls measured 0x0 once the
-       container was hidden, and adopt() only ever moved direct children.
-       The module stays as the record; it must install nothing. */
-    if (!menuWith.api) return false;
-    if (menuWith.api.installed !== false) return false;      // never installs
-    if (menuWith.api.controls_moved !== 0) return false;     // moves nothing
-    if (!menuWith.stack) return false;
-    return menuWith.stack.children.length === 8;             // originals untouched
-  })());
-
-check('withdrawal leaves the original controls exactly where the cartridge put them',
-  !!menuWith.stack
-  && menuWith.stack.children.filter(n => n.tagName === 'button').length === 8);
-
-check('routing puts each control where a reader would look',
-  !!menuWith.api
-  && menuWith.api.routeFor('Exit') === 'File'
-  && menuWith.api.routeFor('CLEAR') === 'Edit'
-  && menuWith.api.routeFor('SCOPE') === 'Edit'
-  && menuWith.api.routeFor('SUBS') === 'View'
-  && menuWith.api.routeFor('GB PRICES \u00b7 HISTORIC') === 'View'
-  && menuWith.api.routeFor('VERSIONS \u00b7 V9.92') === 'About');
-
-check('with no chrome present it does nothing and throws nothing',
-  !!menuWithout.api
-  && menuWithout.api.installed === false
-  && menuWithout.api.controls_moved === 0);
-
-check('nothing here grades a connection',
+check('the repaired menu passes its DOM behaviour proof',
+  menuEvidence.status === 'PASS' && menuEvidence.checks >= 24);
+check('the menu proves the complete 60 + 3 control inventory',
+  menuEvidence.layers === 63);
+check('the six familiar menus are exact, ordered and no alias survives',
+  menuEvidence.menus.join('|') === 'File|Edit|View|Scope|Grid|About');
+check('nothing in the menu grades a connection',
   !/\b(strong|weak|remote|excellent|poor|good|bad)\b/i.test(menuSrc.replace(
     /\/\*[\s\S]*?\*\//g, '')));
 
