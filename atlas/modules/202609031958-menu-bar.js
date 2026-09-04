@@ -180,7 +180,15 @@
       'outline:2px solid #6bebff;outline-offset:-2px}',
       '#' + BAR_ID + ' .gm-side{display:flex;align-items:stretch;flex:1 1 0;min-width:0}',
       '#' + BAR_ID + ' .gm-side-left{justify-content:flex-start}',
-      '#' + BAR_ID + ' .gm-side-right{justify-content:flex-end}',
+      /* All six titles now run in ONE contiguous group in .gm-side-left (see
+         buildBar) -- the architect, 2026-09-04, twice: "have all the menus
+         together, not split with the Ventus logo, but keep the logo". The
+         right-hand group is kept only as an empty element so nothing that
+         looks for it throws; it must take no space, or the single left group
+         would be squeezed to half the bar by the shared flex:1 1 0 above.
+         Same fix as the shared estate-menu module
+         (spiders/species/seer-spider/estate-menu/estate-menu.js, buildBar). */
+      '#' + BAR_ID + ' .gm-side-right{flex:0 0 0;width:0;overflow:hidden}',
       /* The VENTUS masthead, fused into the centre of this same 36px strip
          (see buildBar) rather than a second row, so it costs no map height
          on a phone and can never be torn out into a closed panel again. */
@@ -189,6 +197,16 @@
          six menu titles either side of it, not a corner credit shrunk to
          fit. Same face, tracking and two-line lockup as the v8 masthead
          and the fullscreen letterhead it is carried from verbatim. */
+      /* Centred INDEPENDENTLY of the titles, not by flex-balancing two side
+         groups any more (that trick only worked while three titles sat each
+         side). Taken out of flow and centred on the bar itself, exactly the
+         technique the shared estate-menu module uses for the same wordmark
+         (estate-menu.js .gm-brand-slot, generation 202609042153): position
+         absolute, left 50%, translateX(-50%). The sizing/display rule below
+         (flex/max-width/etc.) still applies to it for its own children's
+         layout; position:absolute only removes it from the nav's flex flow. */
+      '#' + BAR_ID + ' .gm-brand-slot{position:absolute!important;left:50%!important;top:0!important;',
+      'bottom:0!important;transform:translateX(-50%);pointer-events:none}',
       '#' + BAR_ID + ' .gm-brand-slot{flex:0 1 auto;min-width:0;max-width:64%;',
       'display:flex;align-items:center;justify-content:center;overflow:hidden;',
       'padding:0 6px;text-align:center}',
@@ -352,14 +370,36 @@
          still on screen, now in the bar at every width and in every
          fullscreen state, which is what fusing it there was for. */
       '.gridatlas-menu-hosted #fs-letterhead{display:none!important}',
-      '@media(max-width:700px){#' + BAR_ID + '{height:34px}',
+      /* A phone cannot hold six titles and a centred wordmark on one line
+         without one crossing the other -- the same problem the shared
+         estate-menu module solved the same way (estate-menu.js, generation
+         202609042153): the wordmark keeps a row of its own, centred on the
+         full width of the bar, and the titles run in a second row beneath
+         it. height:auto (not the old fixed 34px) plus padding-top reserving
+         the wordmark row's own height is what makes the bar really two rows
+         tall here; syncAttribClearance() measures that real rendered height
+         at runtime (it always did), so --gridatlas-menu-bar-clear reflects
+         whatever the two rows actually come to, not a second hard number. */
+      '@media(max-width:700px){#' + BAR_ID + '{flex-wrap:wrap;height:auto!important;',
+      'padding-top:30px!important}',
       '#' + BAR_ID + ' .gm-title{min-height:34px;padding:0 6px;font-size:9px;letter-spacing:.025em}',
-      '#' + BAR_ID + ' .gm-brand-slot{max-width:48%;padding:0 2px}',
+      '#' + BAR_ID + ' .gm-brand-slot{left:0!important;right:0!important;top:0!important;',
+      'bottom:auto!important;height:30px;transform:none;max-width:none!important;padding:0 2px}',
       '#' + BAR_ID + ' .gm-brand-slot .hud-header>div:first-child,',
       '#' + BAR_ID + ' .gm-brand-slot .hud-header>div:last-child{display:none}',
       '#' + BAR_ID + ' .gm-brand-slot .ventus-main{font-size:11px;letter-spacing:.14em}',
       '#' + BAR_ID + ' .gm-brand-slot .ventus-sub{font-size:4.5px}',
-      '#' + BAR_ID + ' .gm-panel{position:fixed;top:34px;left:4px!important;right:4px!important;',
+      '#' + BAR_ID + ' .gm-side-left{flex:0 0 100%;justify-content:center}',
+      /* A panel now opens below TWO rows, not one: top:34px (the old
+         single-row height) would have opened it under the wordmark row
+         and over the titles. --gridatlas-menu-bar-clear already measures
+         the bar's real rendered height every time it can change
+         (syncAttribClearance, via ResizeObserver / resize) for exactly this
+         reason -- it is the same variable .custom-map-attrib already reads
+         below -- so the panel reads it too, rather than a second hard
+         number that would go stale the moment either row's height did. */
+      '#' + BAR_ID + ' .gm-panel{position:fixed;top:var(--gridatlas-menu-bar-clear,64px);',
+      'left:4px!important;right:4px!important;',
       'width:auto;max-width:none;max-height:calc(100dvh - 40px);padding-bottom:',
       'calc(6px + env(safe-area-inset-bottom))}',
       '#' + BAR_ID + ' .gm-panel-grid{max-width:none}}'
@@ -466,18 +506,26 @@
     nav.id = BAR_ID;
     nav.setAttribute('aria-label', 'Atlas menu');
 
-    /* Three zones, not six flat siblings. The architect's complaint was
-       that the VENTUS identity had been torn out of view -- moved into a
+    /* The VENTUS identity had earlier been torn out of view -- moved into a
        closed About panel, so the reader saw the v8 masthead for the first
        ~1.5s of every arrival and then watched it vanish. Fusing the brand
        into the CENTRE of the same 36px strip the menu titles already live
        in restores it permanently, at every width, with no extra row and
-       therefore no map height stolen on a phone. Two flex:1 side groups
-       keep the brand visually centred regardless of the (unequal) width
-       of "File Edit View" versus "Scope Grid About", and give every panel
-       a real left- or right-hand anchor to resolve against -- the flat
-       row's "last two of six" rule is what let the About panel resolve to
-       a negative x once the titles no longer filled the bar edge to edge. */
+       therefore no map height stolen on a phone.
+
+       UPDATED 2026-09-04: the brand no longer relies on two flex:1 side
+       groups balancing around it -- it is taken out of the flex flow
+       entirely and centred on the bar itself via position:absolute (see
+       the .gm-brand-slot rule in installStyle), because the architect asked
+       twice for the six titles to run together as ONE group rather than
+       split three-and-three either side of the logo. All six now live in
+       .gm-side-left; .gm-side-right is kept only as an empty element so
+       nothing that looks for it throws, and is collapsed to zero width so
+       it cannot squeeze the left group. Every panel therefore anchors left
+       by default; clampPanel() (already relied on below as "the second,
+       JS-measured guarantee") is what keeps a title near the right edge --
+       About, in particular -- from resolving its panel off-screen, exactly
+       as it already did before this change for the same reason. */
     var left = doc.createElement('div');
     left.className = 'gm-side gm-side-left';
     var right = doc.createElement('div');
@@ -525,7 +573,14 @@
       });
       menu.appendChild(title);
       menu.appendChild(panel);
-      (index < 3 ? left : right).appendChild(menu);
+      /* All six titles in ONE contiguous group, not split three-and-three
+         either side of the brand -- the architect, 2026-09-04, twice: "have
+         all the menus together, not split with the Ventus logo, but keep the
+         logo". The brand stays, centred independently (see the .gm-brand-slot
+         position:absolute rule in installStyle); the right-hand group is kept
+         as an empty element so nothing that looks for it throws, and it takes
+         no space. */
+      left.appendChild(menu);
       panels[name] = panel;
       titles.push(title);
     });
@@ -725,7 +780,16 @@
       });
     }
 
-    move(panels.Scope, doc.getElementById('btn-gridpoint'));
+    var gridpoint = doc.getElementById('btn-gridpoint');
+    if (move(panels.Scope, gridpoint) && panels.Scope.firstChild !== gridpoint) {
+      /* "Grid At Point" sorts before this panel's other four tools
+         (Measure, Poly Zone, Radius Area, Radius Search), but this button
+         is not always present when the panel's own moves run above -- it
+         is added by a different cartridge (sld-sandbox), at its own timing.
+         move() only ever appends, so once it does exist it is repositioned
+         to the front here, the one time it actually moves into the bar. */
+      panels.Scope.insertBefore(gridpoint, panels.Scope.firstChild);
+    }
 
     var disclaimer = doc.querySelector('.disclaimer-box');
     var shoutout = doc.querySelector('.podcast-shoutout');
@@ -777,10 +841,24 @@
     move(panels.File, ready.nodes.exportButton);
     move(panels.Edit, ready.nodes.statusButton);
     move(panels.View, ready.nodes.fullscreenButton);
-    move(panels.Scope, ready.nodes.radiusButton);
-    move(panels.Scope, ready.nodes.radiusAreaButton);
-    move(panels.Scope, ready.nodes.zoneButton);
+    /* The alphabetical rule from the shared estate-menu module applied to
+       this panel's own list of tools -- moved in the order their VISIBLE
+       labels sort (case-insensitive, en-GB), read once from the live shell:
+       "Radius Search", "Radius Area", "Poly Zone", "Measure" -- so this
+       call order is Measure, Poly Zone, Radius Area, Radius Search. (A
+       fifth Scope tool, Grid At Point, is moved in adoptLate() below,
+       asynchronously, and is repositioned there rather than reordered here
+       because it does not always exist yet at this point.) NOT applied to
+       the 63 layer proxies in the Grid panel below (buildLayerControls) --
+       those keep the engine's own grouping, unchanged -- nor to the
+       Clear/Scope/Grid/Subs mobile-tray chips a DIFFERENT cartridge
+       (sld-sandbox) contributes into this panel at its own async timing;
+       reaching into that cartridge's routing was judged out of scope for a
+       change confined to this module. */
     move(panels.Scope, ready.nodes.measureButton);
+    move(panels.Scope, ready.nodes.zoneButton);
+    move(panels.Scope, ready.nodes.radiusAreaButton);
+    move(panels.Scope, ready.nodes.radiusButton);
 
     /* The VENTUS masthead: fused into the bar's own centre (see buildBar),
        never a closed panel -- the architect's "VENTUS branding has been

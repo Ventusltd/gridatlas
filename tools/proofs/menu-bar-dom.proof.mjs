@@ -391,6 +391,20 @@ export async function proveMenuBar(menuPath, servedSource = '') {
     && titleNodes.every((node) => node.getAttribute('aria-expanded') === 'false')
     && bar.querySelectorAll('.gm-menu.gm-open').length === 0
     && api.closed_at_rest === true);
+  check('the six titles are ONE contiguous group, not split either side of the brand '
+    + '(the architect, 2026-09-04, twice: "have all the menus together, not split with '
+    + 'the Ventus logo, but keep the logo")',
+    bar?.querySelector('.gm-side-left')?.querySelectorAll('.gm-menu').length === 6
+    && bar?.querySelector('.gm-side-right')?.querySelectorAll('.gm-menu').length === 0
+    && titleNodes.map((node) => node.textContent).join('|') === 'File|Edit|View|Scope|Grid|About');
+  check('the brand slot is present, sits outside the six-title group, and holds the real .hud-header node',
+    !!bar?.querySelector('.gm-brand-slot')
+    && !bar.querySelector('.gm-side-left')?.contains(bar.querySelector('.gm-brand-slot'))
+    && !bar.querySelector('.gm-side-right')?.contains(bar.querySelector('.gm-brand-slot'))
+    && bar.querySelector('.gm-brand-slot').contains(complete.header));
+  check('no second wordmark: exactly one .hud-header and one .gm-brand-slot exist in the whole document',
+    complete.doc.querySelectorAll('.hud-header').length === 1
+    && complete.doc.querySelectorAll('.gm-brand-slot').length === 1);
   check('every title exposes its popup, state and controlled panel',
     titleNodes.every((node) => node.getAttribute('aria-haspopup') === 'menu'
       && node.getAttribute('aria-controls')
