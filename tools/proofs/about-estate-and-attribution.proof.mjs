@@ -144,7 +144,25 @@ check(
   'the menu hands over a command that can actually be run',
   composed.includes('git clone https://github.com/Ventusltd/ventus-grid-engine')
   && composed.includes('node verify.mjs'),
-  'clone, install, run the engine\'s own fail-closed gate'
+  'clone, then run the engine\'s own fail-closed gate'
+);
+/* Measured 202609050250: the engine declares no dependencies and no proof in it
+   opens a socket, so the gate runs from a clone with no install and no network.
+   An install step in this command would imply a dependency that does not exist
+   and would make the offline claim false, so its absence is asserted. */
+/* Assert the COMMAND, not the file: the note above it explains why there is no
+   install step, so a file-wide search for "npm install" matches the
+   explanation and fails on prose. Read the string the button actually copies. */
+const runValue = (() => {
+  const at = composed.indexOf('var RUN_COMMAND =');
+  if (at < 0) return null;
+  const end = composed.indexOf(';', at);
+  return end < 0 ? null : composed.slice(at, end);
+})();
+check(
+  'the command claims no install step, because none is needed',
+  Boolean(runValue) && !/npm\s+(install|i)\b/.test(runValue),
+  runValue ? runValue.replace(/\s+/g, ' ').slice(17, 140) : 'RUN_COMMAND not found'
 );
 check(
   'it is copied, never executed, and says so by doing nothing else',

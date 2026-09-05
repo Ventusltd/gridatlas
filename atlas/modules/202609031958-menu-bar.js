@@ -697,16 +697,22 @@
          anyone's machine, and the person or agent that pastes it into a
          terminal is the one who decides to. That is the whole of the
          approval step, and it belongs to them. */
+      /* No `npm install`. Measured 202609050250: the engine declares no
+         dependencies and no proof in it opens a socket, so `node verify.mjs`
+         runs its whole fail-closed gate -- 8 proofs, 133 checks -- from a
+         clone, offline, on any machine with node. The earlier version of this
+         command included an install step, which implied a network dependency
+         that does not exist and would have made the offline claim false. */
       var RUN_COMMAND =
         'git clone https://github.com/Ventusltd/ventus-grid-engine'
-        + ' && cd ventus-grid-engine && npm install && node verify.mjs';
+        + ' && cd ventus-grid-engine && node verify.mjs';
 
-      appendGroup(panel, 'Run the engine yourself');
+      appendGroup(panel, 'Run the engine yourself · offline, no dependencies');
       var run = document.createElement('button');
       run.setAttribute('data-gm-engine', '1');
       run.setAttribute('type', 'button');
       run.title = RUN_COMMAND;
-      run.textContent = '⧉ Copy: clone the engine and run its proofs';
+      run.textContent = '⧉ Copy: clone the engine and run its 133 checks';
       run.addEventListener('click', function () {
         var done = function (ok) {
           run.textContent = ok
