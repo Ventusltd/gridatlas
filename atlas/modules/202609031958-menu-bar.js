@@ -1534,7 +1534,21 @@
     }
     var width = Number(window.innerWidth);
     var narrow = isFinite(width) && width > 0 && width <= 700;
-    return coarse || narrow;
+    /* DESKTOP TOO, ON THE ARCHITECT'S INSTRUCTION.
+       "in mobile view the Grid and subs buttons are nice show them on desktop
+       TOO". Everything measured above is still true and is deliberately still
+       computed; what changed is the conclusion drawn from it for a wide
+       screen. The old argument was that on desktop these two are redundant
+       with a menu that is always one click away. That is correct and it is
+       not the point: GRID and SUBS are the two layers a reader toggles most,
+       and a control used constantly belongs under the cursor rather than one
+       click inside a menu. Redundancy with a menu is a reason to keep a
+       shortcut, not to remove one.
+
+       `coarse` and `narrow` are left in place and still read, so the phone
+       measurement they encode -- and the reason it was made -- stays in the
+       record rather than being deleted along with its conclusion. */
+    return true;
   }
 
   function adoptLate(doc) {

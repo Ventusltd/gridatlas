@@ -101,6 +101,18 @@ function inspectPdf(buffer, expect) {
        means the strip is painted on the record). */
     widthMatchesCapture: !!(imageMatch && width === Number(imageMatch[1])),
     stripOutsideImage: !!(imageMatch && height > Number(imageMatch[2])),
+    /* THE CHECK THAT WAS MISSING, AND IT MATTERED.
+       widthMatchesCapture compares the PDF PAGE to the IMAGE INSIDE IT. Those
+       are equal by construction, so it passes even when the capture holds a
+       fraction of the screen -- and it did: a 393x852 viewport at dpr 3 is
+       1179x2556 real pixels, and an unconstrained getDisplayMedia returned
+       786x1704. The receipt said "1:1"; the file held 44% of the screen. The
+       only honest comparison is against the READER'S OWN PIXELS. */
+    screenPixelWidth: expect ? Math.round(expect.width * expect.dpr) : null,
+    capturedEveryScreenPixel: !!(imageMatch && expect
+      && Number(imageMatch[1]) >= Math.round(expect.width * expect.dpr)),
+    captureScale: (imageMatch && expect)
+      ? Number(imageMatch[1]) / Math.round(expect.width * expect.dpr) : null,
     bytes: buffer.length,
     expect
   };
@@ -120,7 +132,11 @@ function inspectSource(text) {
     /* A source print with no cartridge in it is not a print of THIS app. */
     carriesCartridge: /substation-intelligence/.test(text),
     carriesLivePage: text.includes('THE LIVE PAGE AS IT STOOD'),
-    declaresGaps: text.includes('NOT READ') || true,
+    /* `|| true` was here. A check that cannot fail is worse than no check:
+       it reports green forever and reads, to anyone scanning the summary, as
+       evidence that gaps are declared. An independent review of the offline
+       evidence caught it. */
+    declaresGaps: text.includes('NOT READ') || text.includes('NOT READ: none'),
     notReadCount: notRead ? Number(notRead) : 0,
     state
   };
@@ -214,11 +230,16 @@ for (let index = 0; index < TOTAL; index += 1) {
     if (mode === 'pdf') {
       record.pdf = inspectPdf(buffer, spec.geometry);
       record.ok = record.pdf.startsPdf && record.pdf.endsEof && record.pdf.flate
-        && record.pdf.widthMatchesCapture && record.pdf.stripOutsideImage;
+        && record.pdf.widthMatchesCapture && record.pdf.stripOutsideImage
+        && record.pdf.capturedEveryScreenPixel;
     } else {
       record.source = inspectSource(buffer.toString('utf8'));
       record.ok = record.source.marksTeleprint && record.source.files > 0
-        && record.source.carriesCartridge && record.source.bytes > 20000;
+        && record.source.carriesCartridge && record.source.bytes > 20000
+        /* A teleprint too large to attach to a chat has failed at the only job
+           it has. Measured: 13,237,685 bytes before code and data were
+           separated, 1,983,950 after. */
+        && record.source.bytes < 8 * 1024 * 1024;
     }
 
     /* One screenshot per session, offline, so a human can see what the app
