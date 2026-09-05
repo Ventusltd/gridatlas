@@ -1,7 +1,7 @@
 {
  "schema": "gridatlas.current.v2",
- "generation": "202609050249",
- "previous_generation": "202609050244",
+ "generation": "202609050301",
+ "previous_generation": "202609050249",
  "architecture": "IMMUTABLE_SHELL_PLUS_HASHED_CARTRIDGES",
  "live_route": "/gridatlas/atlas/",
  "release_id": "202608300453-atlas-v9",
@@ -61,13 +61,13 @@
   },
   {
    "id": "sld-sandbox",
-   "generation": "202609050249",
-   "version": "v9.119",
+   "generation": "202609050301",
+   "version": "v9.120",
    "type": "script",
    "slot": "replace-script",
    "replace_script": "202608292126-pre-snapped-config-adapter.js",
-   "path": "./cartridges/202609050249-sld-sandbox-v9-8.js",
-   "sha256": "6225b587fb4988befb77e4899b58674a66b23ab409a516615a5d6fd0b3f38927",
+   "path": "./cartridges/202609050301-sld-sandbox-v9-8.js",
+   "sha256": "f1b809e4242722304c81849d30c20b4f1f1423ad2b0ea15b1042f488fe4926f0",
    "capabilities": [
     "pre-snapped-config-adapter-carried-forward",
     "project-or-substation-selection",
@@ -503,7 +503,7 @@
     "archetypes": "West Burton builds a 400 kV customer substation and a 10 km cable to an existing transmission bay; Little Crow loops into a distribution circuit already crossing its land. Both are NSIPs; only one is a 400 kV story",
     "rule": "the state is taken from the public record, never from whether OSM happens to have mapped the asset"
    },
-   "assembled_from": "./manifests/202609050249-sld-sandbox-v9-8-parts.json",
+   "assembled_from": "./manifests/202609050301-sld-sandbox-v9-8-parts.json",
    "data_sources": [
     {
      "repository": "Ventusltd/data-grid-gb",
@@ -523,13 +523,13 @@
   },
   {
    "id": "substation-intelligence",
-   "generation": "202609050249",
-   "version": "v9.119",
+   "generation": "202609050301",
+   "version": "v9.120",
    "type": "script",
    "slot": "replace-script",
    "replace_script": "ventus-corev8engine.js",
-   "path": "./cartridges/202609050249-substation-intelligence-v9-63.js",
-   "sha256": "fd3a1655f09f76941e51d92d73753c3c242bbc7391de10de3903ddca95001ebf",
+   "path": "./cartridges/202609050301-substation-intelligence-v9-63.js",
+   "sha256": "a1bfbf4d11e4c8600118831f1702029b967dc6505609ddd81f18fea3ed2c064b",
    "capabilities": [
     "immutable-v8-shell-preserved-with-reviewed-receiver-successor",
     "canonical-deep-link-technology-vocabulary",
@@ -586,7 +586,7 @@
     "closed_by": "the owner product's per-voltage split, quoted at the connection voltage",
     "still_site_wide": "circuit winter ratings are not split by voltage in the product and are now labelled site-wide (Blackhillock publishes 23-1,995 MVA)"
    },
-   "assembled_from": "./manifests/202609050249-substation-intelligence-v9-63-parts.json"
+   "assembled_from": "./manifests/202609050301-substation-intelligence-v9-63-parts.json"
   }
  ],
  "last_known_green": {
@@ -631,15 +631,15 @@
    "result_class": "LOCATION_ONLY"
   }
  },
- "composition_manifest": "./manifests/202609050249-composition.json",
+ "composition_manifest": "./manifests/202609050301-composition.json",
  "scope_closure": {
   "generation": "202609010726",
   "status": "DONE",
   "scope": "GridAtlas v9.42 the price panel revalidates",
   "schedule_retired": true
  },
- "composition_version": "v9.119",
- "composition_id": "202609050249-gridatlas-v9.119",
+ "composition_version": "v9.120",
+ "composition_id": "202609050301-gridatlas-v9.120",
  "transport": {
   "response_contract": "HEADERS_BEFORE_PARQUET_BODY",
   "engine_timeout_seconds": 15,
@@ -654,5 +654,5 @@
   "fidelity_workflow": ".github/workflows/202608301931-layer-fidelity.yml",
   "payload_cache": "RELEASE_AFTER_SERIALISATION"
  },
- "composition_note": "Measured: the engine declares no dependencies and no proof in it opens a socket, so node verify.mjs runs all 133 checks from a clone, offline. The command shipped an hour earlier included npm install, which implied a network dependency that does not exist and would have made the offline claim false."
+ "composition_note": "View is where this application already keeps readings of the network over time - GB prices historic is moved into it by adoptLate - so a price and constraint time series belongs beside it. About would have filed it as provenance, which it is not: it is something to look at."
 }

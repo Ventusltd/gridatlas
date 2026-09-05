@@ -192,6 +192,28 @@ check(
   'appendEngineModules(panels.File)'
 );
 
+/* 2c. The published study, in View.
+      "add this to the appropriate menuw on gridatlas and pipeline news" -- the
+      architect, 2026-09-05, of the GB electricity price and grid constraint
+      series. View is where this application already keeps readings of the
+      network over time: GB prices · historic is moved into it by adoptLate.
+      About would have filed it as provenance, which it is not. */
+check(
+  'the GB price and constraint study is carried',
+  composed.includes('great_britain_electricity_price_grid_constraint_trends_2016_2026.html'),
+  'globalgrid2050.com/data/grid_studies_public/'
+);
+check(
+  'it is in View, beside the price control, not in About',
+  composed.includes('state.studies = appendStudies(panels.View)'),
+  'appendStudies(panels.View)'
+);
+check(
+  'the studies group is appended once',
+  /panel\.querySelector\('\[data-gm-study\]'\)/.test(composed),
+  'data-gm-study guard'
+);
+
 /* 3. Nothing this generation touched may remove what was already proven.
       The v8 layers panel and the six menu titles are the two things earlier
       generations exist to protect; assert them here so this cut cannot pass

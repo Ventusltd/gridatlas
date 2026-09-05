@@ -228,7 +228,8 @@
       /* The estate links are anchors so they are real links -- middle-click,
          copy, open in a new tab all work -- and they take the panel's own
          button look rather than a second one. Only the underline has to go. */
-      '#' + BAR_ID + ' .gm-panel a[data-gm-estate],#' + BAR_ID + ' .gm-panel a[data-gm-engine]',
+      '#' + BAR_ID + ' .gm-panel a[data-gm-estate],#' + BAR_ID + ' .gm-panel a[data-gm-engine],',
+      '#' + BAR_ID + ' .gm-panel a[data-gm-study]',
       '{text-decoration:none}',
       /* Module paths are long. They stay on one row and lose their middle
          rather than wrapping a 44px control into three lines on a phone. */
@@ -762,6 +763,35 @@
     });
   }
 
+  /* Published studies, in View, beside the price control the reader is already
+     using. A study is a reading of the network over time, and View is where
+     this application keeps readings -- GB prices · historic is already there.
+     Putting it in About would file it as provenance, which it is not: it is
+     something to look at. */
+  var STUDY_LINKS = [
+    { href: 'https://globalgrid2050.com/data/grid_studies_public/'
+        + 'great_britain_electricity_price_grid_constraint_trends_2016_2026.html',
+      text: 'GB electricity price & grid constraint trends · 2016–2026' }
+  ];
+
+  function appendStudies(panel) {
+    if (!panel || panel.querySelector('[data-gm-study]')) return 0;
+    appendGroup(panel, 'Studies');
+    var added = 0;
+    STUDY_LINKS.forEach(function (item) {
+      var a = document.createElement('a');
+      a.setAttribute('data-gm-study', '1');
+      a.setAttribute('role', 'button');
+      a.href = item.href;
+      a.target = '_blank';
+      a.rel = 'noopener';
+      a.textContent = item.text;
+      panel.appendChild(a);
+      added += 1;
+    });
+    return added;
+  }
+
   function appendEstateLinks(panel) {
     if (!panel || panel.querySelector('[data-gm-estate]')) return 0;
     appendGroup(panel, 'Estate');
@@ -943,6 +973,7 @@
 
     state.estate_links = appendEstateLinks(panels.About);
     appendEngineModules(panels.File);
+    state.studies = appendStudies(panels.View);
 
     /* The map attribution moves off the map and into About, LAST, in small
        print.
