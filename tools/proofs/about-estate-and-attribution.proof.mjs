@@ -1,0 +1,180 @@
+/**
+ * The About panel carries the attribution and the estate's published method.
+ *
+ * Two things this generation exists to do, both asserted against the COMPOSED
+ * bytes named by atlas/current.json -- never against the module part. A fix
+ * written into a part and never composed is this estate's most expensive
+ * recurring defect: the iOS arrival fix of 202609041957 existed in a part for
+ * hours while the served cartridge did not have it.
+ *
+ *   1. `.custom-map-attrib` is moved into the About panel. Measured live at
+ *      generation 202609042123 it rendered at x=15 y=47, 401x24 px -- a boxed
+ *      band under the menu bar, over the top-left of the map, exactly where a
+ *      reader arriving on a deep link looks first.
+ *
+ *   2. About gains an Estate group linking the estate's published method: the
+ *      engine graph, the federation map and the spider printer. The
+ *      publication boundary is explicit that method is never withheld
+ *      (seed-data/07_CRITICALITY_AND_PUBLICATION_BOUNDARY.md, section 6).
+ *
+ * Run: node tools/proofs/about-estate-and-attribution.proof.mjs
+ */
+import { readFile } from 'node:fs/promises';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+
+const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..');
+const ATLAS = path.join(ROOT, 'atlas');
+
+const checks = [];
+function check(name, ok, detail) {
+  checks.push({ name, ok: Boolean(ok), detail: detail === undefined ? '' : String(detail) });
+}
+
+const current = JSON.parse(await readFile(path.join(ATLAS, 'current.json'), 'utf8'));
+
+/* The cartridge the menu bar is composed into, read from the composition
+   rather than named here, so this proof cannot drift onto a stale file. */
+const entry = (current.cartridges || []).find(c => /substation-intelligence/.test(c.path || ''));
+check('composition names a substation-intelligence cartridge', Boolean(entry), entry && entry.path);
+if (!entry) { report(); }
+
+const composedPath = path.join(ATLAS, entry.path.replace(/^\.\//, ''));
+const composed = await readFile(composedPath, 'utf8');
+check('composed cartridge is readable', composed.length > 0, `${entry.path} ${composed.length} bytes`);
+
+/* 1. The attribution move. */
+check(
+  'composed bytes move .custom-map-attrib into the About panel',
+  /var attrib = doc\.querySelector\('\.custom-map-attrib'\);/.test(composed)
+  && /if \(!bar \|\| !bar\.contains\(attrib\)\) move\(panels\.About, attrib\);/.test(composed),
+  'the node is adopted into About, not cloned or rewritten'
+);
+check(
+  'composed bytes style the attribution once inside a panel',
+  composed.includes(".gm-panel .custom-map-attrib{position:static!important;"),
+  'panel-scoped rule present'
+);
+/* His instruction was "in small print at the bottom", so bottom is asserted,
+   not assumed: the estate links must be appended before it, and the
+   attribution must be re-appended on later passes so a late DOM rebuild
+   cannot float it back above the controls. */
+const iLinks = composed.indexOf('state.estate_links = appendEstateLinks(panels.About)');
+const iAttrib = composed.indexOf("var attrib = doc.querySelector('.custom-map-attrib')");
+check(
+  'the attribution is appended AFTER the estate links, so it sits at the bottom',
+  iLinks > -1 && iAttrib > iLinks,
+  `estate links at ${iLinks}, attribution at ${iAttrib}`
+);
+/* This one is here because getting it wrong crashed the tab.
+   adoptLate runs from a MutationObserver. An unconditional appendChild inside
+   it is itself a mutation, so it re-enters adoptLate and appends again -- a
+   feedback loop that crashed the renderer under the 393x852 arrival gate while
+   the previous generation passed the same gate in the same harness. The guard
+   must make the second and every later pass a NO-OP. */
+check(
+  'a later adoption pass only re-appends when the node is not already last',
+  /panels\.About\.lastElementChild !== attrib/.test(composed),
+  'lastElementChild guard closes the MutationObserver feedback loop'
+);
+check(
+  'the engine fetch is guarded synchronously, not by the DOM it has yet to write',
+  /var engineFetchStarted = false;/.test(composed)
+  && /if \(!panel \|\| !window\.fetch \|\| engineFetchStarted\) return;/.test(composed)
+  && /engineFetchStarted = true;/.test(composed),
+  'one request, not one per mutation'
+);
+check(
+  'it is small print',
+  /\.gm-panel \.custom-map-attrib\{[^}]*font:10px/.test(composed.replace(/',\s*'/g, '')),
+  '10px in the panel-scoped rule'
+);
+
+/* 2. The Estate group. Each URL is asserted individually: a single combined
+      check would pass while two of the three had been dropped. */
+const links = [
+  ['engine graph', 'https://ventusltd.github.io/ventus-grid-engine/?graph=engine-graph'],
+  ['federation map', 'https://ventusltd.github.io/data-federation-map-for-globalgrid2050-all-repos/dashboard/sandbox/spider_full_po_test.html'],
+  ['spider printer', 'https://ventusltd.github.io/spiders/spider_printer_v1/']
+];
+for (const [name, href] of links) {
+  check(`composed bytes carry the ${name} link`, composed.includes(href), href);
+}
+check('estate links are marked so they are appended once', composed.includes('data-gm-estate'), 'data-gm-estate');
+check('estate links sit under an Estate group heading', /appendGroup\(panel,\s*'Estate'\)/.test(composed), "appendGroup(panel, 'Estate')");
+check(
+  'estate links are anchors carrying the panel button role',
+  /a\.setAttribute\('role',\s*'button'\)/.test(composed),
+  'role="button" so they inherit the panel look'
+);
+
+/* 2b. The File panel lists the engine's own modules.
+      "the menus must be neat, it should allow AI and humans to develop and
+      use" -- the architect, 2026-09-05. The list is fetched from the engine's
+      published graph rather than restated in this repository, so the menu
+      cannot drift away from the maths it names. Both surfaces are served from
+      ventusltd.github.io, so the request is same-origin. */
+check(
+  'composed bytes fetch the engine graph rather than restating its modules',
+  composed.includes('https://ventusltd.github.io/ventus-grid-engine/genome/engine-graph.json'),
+  'ENGINE_GRAPH_URL'
+);
+check(
+  'each module links into the graph focused on itself',
+  composed.includes('https://ventusltd.github.io/ventus-grid-engine/?graph=engine-graph&focus='),
+  'uses the ?focus= contract published 202609050305'
+);
+check(
+  'only the canonical modules are listed',
+  /node\.type === 'canonical'/.test(composed),
+  'canonical nodes only'
+);
+check('the engine rows are marked so they are appended once', composed.includes('data-gm-engine'), 'data-gm-engine');
+check(
+  'the modules are listed alphabetically, as every non-version group here is',
+  /localeCompare\(String\(b\.label\), 'en-GB'\)/.test(composed),
+  'en-GB localeCompare'
+);
+check(
+  'an unreachable engine leaves the menu exactly as it was',
+  /\.catch\(function \(\) \{/.test(composed) && /state\.engine_modules = 0;/.test(composed),
+  'the fetch failure path adds no group and throws nothing'
+);
+check(
+  'the engine group goes in File, not About',
+  composed.includes('appendEngineModules(panels.File)'),
+  'appendEngineModules(panels.File)'
+);
+
+/* 3. Nothing this generation touched may remove what was already proven.
+      The v8 layers panel and the six menu titles are the two things earlier
+      generations exist to protect; assert them here so this cut cannot pass
+      by having quietly dropped them. */
+check('the six menu titles survive', /'File',\s*'Edit',\s*'View',\s*'Scope',\s*'Grid',\s*'About'/.test(composed), 'MENUS unchanged');
+check('the Scope tools survive', /move\(panels\.Scope,\s*ready\.nodes\.zoneButton\)/.test(composed), 'zoneButton still routed to Scope');
+check('the v8 layer controls survive', composed.includes('buildLayerControls(ready.found)'), 'buildLayerControls still called');
+
+/* 4. The part and the composed bytes must agree. If they do not, the
+      composition did not pick up the edit, which is the failure mode this
+      whole proof exists to catch. */
+const part = await readFile(path.join(ATLAS, 'modules', '202609031958-menu-bar.js'), 'utf8');
+check(
+  'the module part and the composed cartridge agree on the estate links',
+  part.includes('data-gm-estate') === composed.includes('data-gm-estate'),
+  'part and composed bytes both carry it, or neither do'
+);
+
+report();
+
+function report() {
+  const failed = checks.filter(c => !c.ok);
+  for (const c of checks) {
+    console.log(`${c.ok ? 'ok  ' : 'FAIL'}  ${c.name}${c.detail ? '  -- ' + c.detail : ''}`);
+  }
+  console.log(`\n${checks.length - failed.length}/${checks.length} checks passed`);
+  if (failed.length) {
+    console.error(`\n${failed.length} FAILED`);
+    process.exit(1);
+  }
+  process.exit(0);
+}

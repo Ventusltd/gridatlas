@@ -1,0 +1,46 @@
+{
+ "schema": "gridatlas.cartridge-parts.v1",
+ "generation": "202609050238",
+ "cartridge": "./cartridges/202609050238-sld-sandbox-v9-8.js",
+ "sha256": "b1415884a3d3c9a18dfd97b9d80fdc9cd609200aa8527556c23c212a956be0f2",
+ "bytes": 363011,
+ "assembled_from": [
+  {
+   "role": "module",
+   "path": "atlas/modules/202609012040-grid-scope.js",
+   "bytes": 6878,
+   "sha256": "a4f96c30c9240424be54af575ccb8090cbc05d1067c41b5ff7c1e51414544979"
+  },
+  {
+   "role": "module",
+   "path": "atlas/modules/202609012217-source-registry.js",
+   "bytes": 10146,
+   "sha256": "22080f1a774879d926b39a4bff3471c2aba50f7c128fc6fd7b6463840780f4e3"
+  },
+  {
+   "role": "module",
+   "path": "atlas/modules/202609012128-declared-connections.js",
+   "bytes": 15461,
+   "sha256": "a44520ebd644e725f644e7f3aea76839982c82d577022ac04583c5bc3346a371"
+  },
+  {
+   "role": "module",
+   "path": "atlas/modules/202609012205-sizing-arithmetic.js",
+   "bytes": 27726,
+   "sha256": "bbaf6453475be4c586e349782411cb88702399a6372cd413da5e4945dd7a0f48"
+  },
+  {
+   "role": "module",
+   "path": "atlas/modules/202609031310-technology-coverage.js",
+   "bytes": 15092,
+   "sha256": "6db7d5ae1619da0e0c63e55dd67eeead9234ea9c21968765de05beec125ee02f"
+  },
+  {
+   "role": "part",
+   "path": "atlas/parts/202609041234-sld-sandbox-technology-buckets.js",
+   "bytes": 286957,
+   "sha256": "38fa65a2283d3cbbe93cbc9ab2def8677e78262a947d01dcdbb12979b25e5161"
+  }
+ ],
+ "rule": "edit a part and rebuild under a new generation; this file is not edited by hand"
+}

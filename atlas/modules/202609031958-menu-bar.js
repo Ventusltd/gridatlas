@@ -225,6 +225,22 @@
       'letter-spacing:.03em;text-transform:none;cursor:pointer}',
       '#' + BAR_ID + ' .gm-panel button:hover,#' + BAR_ID + ' .gm-panel [role="button"]:hover{',
       'background:rgba(80,220,240,.14);color:#fff}',
+      /* The estate links are anchors so they are real links -- middle-click,
+         copy, open in a new tab all work -- and they take the panel's own
+         button look rather than a second one. Only the underline has to go. */
+      '#' + BAR_ID + ' .gm-panel a[data-gm-estate],#' + BAR_ID + ' .gm-panel a[data-gm-engine]',
+      '{text-decoration:none}',
+      /* Module paths are long. They stay on one row and lose their middle
+         rather than wrapping a 44px control into three lines on a phone. */
+      '#' + BAR_ID + ' .gm-panel a[data-gm-engine]{white-space:nowrap;overflow:hidden;',
+      'text-overflow:ellipsis;display:block;line-height:30px;min-height:44px}',
+      /* The attribution, once moved into About, is prose in a panel of
+         controls: it keeps its own small type and wraps rather than being
+         clipped to one 44px row. */
+      '#' + BAR_ID + ' .gm-panel .custom-map-attrib{position:static!important;',
+      'inset:auto!important;margin:4px 0 2px;padding:6px 8px;max-width:none;',
+      'background:transparent;border:0;white-space:normal;line-height:1.45;',
+      'font:10px/1.45 ui-monospace,SFMono-Regular,Menlo,monospace;color:#8fb6c0}',
       '#' + BAR_ID + ' .gm-layer-group{margin:5px 0 2px;padding:6px 8px 3px;',
       'border-top:1px solid #19343b;color:#6fa2ae;font-size:10px;letter-spacing:.08em;',
       'text-transform:uppercase}',
@@ -571,6 +587,112 @@
     panel.appendChild(heading);
   }
 
+  /* The estate's other published surfaces, reachable from About.
+     ------------------------------------------------------------------------
+     These are method, not client material, and the publication boundary is
+     explicit that method is never withheld: "the mathematics, the method and
+     the derivations; the schemas, the object models and the contracts; the
+     code, the solvers and the validation suites" are published openly in all
+     cases (seed-data/07_CRITICALITY_AND_PUBLICATION_BOUNDARY.md, section 6).
+     The engine graph is the first of them: it is where a reader, human or
+     machine, sees which engine owns a calculation and which copies of it
+     exist elsewhere in the estate.
+
+     They are anchors carrying role="button" so they inherit the panel's own
+     button styling rather than introducing a second look, and they open in a
+     new tab so a reader never loses the map they were reading. */
+  var ESTATE_LINKS = [
+    { href: 'https://ventusltd.github.io/ventus-grid-engine/?graph=engine-graph',
+      text: 'Grid engine · the maths' },
+    { href: 'https://ventusltd.github.io/data-federation-map-for-globalgrid2050-all-repos/dashboard/sandbox/spider_full_po_test.html',
+      text: 'Federation map' },
+    { href: 'https://ventusltd.github.io/spiders/spider_printer_v1/',
+      text: 'Spider printer' }
+  ];
+
+  /* The engine's own modules, listed in File, each linking into the graph.
+     ------------------------------------------------------------------------
+     "we are heading towards a grid OS in our website the menus must be neat,
+     it should allow AI and humans to develop and use" -- the architect,
+     2026-09-05. A File menu that lists the mathematics an application runs on,
+     and opens each one, is the first honest step towards that: it is what an
+     IDE's File menu is for, and the publication boundary already says the
+     method is published in all cases.
+
+     The list is FETCHED from the engine's own published graph, never restated
+     here. Both surfaces are served from ventusltd.github.io, so this is a
+     same-origin request. If it fails -- offline, or the engine moved -- no
+     group is added and the menu is exactly what it was; a File panel that
+     silently lacks one group is a far better failure than a menu bar that
+     throws during install. */
+  var ENGINE_GRAPH_URL =
+    'https://ventusltd.github.io/ventus-grid-engine/genome/engine-graph.json';
+  var ENGINE_VIEW_URL =
+    'https://ventusltd.github.io/ventus-grid-engine/?graph=engine-graph&focus=';
+
+  /* Set SYNCHRONOUSLY, before the fetch is issued. The DOM marker below cannot
+     do this job on its own: adoptLate runs from a MutationObserver, so between
+     the request going out and the rows arriving there are hundreds of further
+     calls, and a guard that only checks the DOM starts a request on every one
+     of them. */
+  var engineFetchStarted = false;
+
+  function appendEngineModules(panel) {
+    if (!panel || !window.fetch || engineFetchStarted) return;
+    if (panel.querySelector('[data-gm-engine]')) return;
+    engineFetchStarted = true;
+    fetch(ENGINE_GRAPH_URL, { cache: 'no-cache' }).then(function (response) {
+      if (!response.ok) throw new Error('HTTP ' + response.status);
+      return response.json();
+    }).then(function (graph) {
+      var nodes = (graph && graph.nodes) || [];
+      var canonical = [];
+      nodes.forEach(function (node) {
+        if (node && node.type === 'canonical' && node.label) canonical.push(node);
+      });
+      if (!canonical.length || panel.querySelector('[data-gm-engine]')) return;
+      /* Alphabetical, as every non-version group in this estate is. */
+      canonical.sort(function (a, b) { return String(a.label).localeCompare(String(b.label), 'en-GB'); });
+      appendGroup(panel, 'Engine · the maths this runs on');
+      canonical.forEach(function (node) {
+        var a = document.createElement('a');
+        a.setAttribute('data-gm-engine', '1');
+        a.setAttribute('role', 'button');
+        a.href = ENGINE_VIEW_URL + encodeURIComponent(node.label);
+        a.target = '_blank';
+        a.rel = 'noopener';
+        a.textContent = node.label;
+        /* The node's own one-line reason, as the graph publishes it. */
+        if (node.reason) a.title = node.reason;
+        panel.appendChild(a);
+      });
+      state.engine_modules = canonical.length;
+    }).catch(function () {
+      /* Deliberately silent. See the note above: the menu must survive the
+         engine being unreachable, and a reader who cannot reach it is not
+         helped by an error row in a File menu. */
+      state.engine_modules = 0;
+    });
+  }
+
+  function appendEstateLinks(panel) {
+    if (!panel || panel.querySelector('[data-gm-estate]')) return 0;
+    appendGroup(panel, 'Estate');
+    var added = 0;
+    ESTATE_LINKS.forEach(function (item) {
+      var a = document.createElement('a');
+      a.setAttribute('data-gm-estate', '1');
+      a.setAttribute('role', 'button');
+      a.href = item.href;
+      a.target = '_blank';
+      a.rel = 'noopener';
+      a.textContent = item.text;
+      panel.appendChild(a);
+      added += 1;
+    });
+    return added;
+  }
+
   /* A measured audit found the v8 panel's own checkboxes at 17x17 px --
      the input element itself, not just its label. A label with a tall
      min-height passes a hit-test at its centre but still measures 17x17
@@ -731,6 +853,40 @@
     var shoutout = doc.querySelector('.podcast-shoutout');
     move(panels.About, disclaimer);
     move(panels.About, shoutout);
+
+    state.estate_links = appendEstateLinks(panels.About);
+    appendEngineModules(panels.File);
+
+    /* The map attribution moves off the map and into About, LAST, in small
+       print.
+       ----------------------------------------------------------------------
+       Measured live at generation 202609042123, 2026-09-05: .custom-map-attrib
+       rendered at x=15 y=47, 401x24 px -- a boxed band immediately under the
+       menu bar, over the top-left of the map, which is where a reader arriving
+       on a deep link looks first. On a 393x852 phone it wrapped to two lines
+       and the architect photographed the consequence: opening EDIT drew
+       "Status Colours" UNDERNEATH the attribution box, the two overlapping in
+       the same space. His instruction, verbatim: "Attribution bar clashes move
+       that to about and in small print at the bottom".
+
+       The credit is owed and is not dropped: it is the same node, moved once,
+       text intact, so OpenStreetMap, CARTO and Open Charge Map are still named
+       on the page and one tap away. It is appended AFTER the estate links, and
+       re-appended on every later adoption pass, so a late DOM rebuild cannot
+       leave it above the controls again. appendChild on a node already in the
+       panel moves it to the end rather than duplicating it. */
+    var attrib = doc.querySelector('.custom-map-attrib');
+    if (attrib) {
+      if (!bar || !bar.contains(attrib)) move(panels.About, attrib);
+      else if (panels.About.lastElementChild !== attrib) panels.About.appendChild(attrib);
+      /* The `lastElementChild` test is not tidiness, it is the difference
+         between this working and crashing the tab. adoptLate runs from a
+         MutationObserver, so an unconditional appendChild here IS a mutation,
+         which re-enters adoptLate, which appends again: a feedback loop that
+         crashed the renderer outright under the 393x852 arrival gate, while
+         the previous generation passed the same gate in the same harness.
+         Once the node is already last, this is a no-op and the loop closes. */
+    }
 
     /* The real .scada-brand (VENTUS, again) and .status-legend move once,
        into the restored SCADA panel's head, during install() below -- not
