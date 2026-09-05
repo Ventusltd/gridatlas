@@ -882,118 +882,78 @@
     style.textContent = [
       '#gridatlas-print-furniture{display:none}',
       '#gridatlas-print-map{display:none}',
+      /* A SCREEN GRAB, NOT A SLIDE.
+         ------------------------------------------------------------------------
+         This block used to hide the entire page -- `body > *{display:none}` --
+         and print the map raster edge to edge, as a presentation slide. The
+         architect printed one and the layer panel was gone: "The layers are
+         vital otherwise the reader doesnt know what is being shown on the map",
+         and then the contract itself: "Keep EVERYTHING IN THE PRINT, DONT TRY TO
+         BE CLEVER, JUST A SCREEN GRAP OF WHAT THE USER SEES ... just print what
+         is already being rendered on the display".
+
+         So nothing is hidden any more. The one substitution that remains is not
+         a choice: a WebGL canvas built without preserveDrawingBuffer is
+         transparent to every rasteriser outside the frame that drew it, so its
+         OWN captured pixels are laid in its OWN box. Everything else on the
+         sheet is the live DOM at the size it had on screen. */
       '@media print{',
-      /* The captured raster, laid over the map area at `contain` so it keeps
-         its aspect on whatever paper the reader chose, under the furniture
-         (z-index 8 against the furniture's 9) and over the live canvas. */
-      '  #gridatlas-print-map{display:block;position:fixed;inset:0;',
-      '    width:100%!important;height:100%!important;max-width:none;',
-      '    max-height:none;object-fit:cover;background:#0b1416;z-index:8}',
-      /* NOTHING BUT THE SLIDE.
-         `#BAR_ID{display:none}` hid the menu bar and nothing else, so under
-         print media the whole layers dashboard was still in the tree: a
-         677x449 control block of checkboxes reading "Compressed Air Storage
-         [WAIT]" and "SELECT A PROJECT", plus #gridatlas-dash-toggle -- and
-         that button carries z-index:9999 against this furniture's 9, so it
-         painted OVER the footer and truncated the generation stamp to
-         "generation 202609051211 - 2026-09-". Seen on a real sheet in the
-         architect's Firefox print preview 2026-09-05.
-         Both print elements are appended directly to <body> (see the two
-         doc.body.appendChild calls above), so hiding every OTHER body child
-         is exact, and does not depend on knowing the name of each control
-         some future cartridge adds. */
-      '  body > *{display:none!important}',
-      '  body > #gridatlas-print-map,body > #gridatlas-print-furniture{',
-      '    display:block!important}',
-      /* `body > *` is specificity (0,0,1) and line 327 of this same module
-         declares `#gridatlas-dash-toggle{display:inline-flex!important}` at
-         (0,1,0). Both are !important, so specificity decides and the button
-         won -- it survived the rule above and printed over the footer.
-         `html #id` is (0,1,1) and wins regardless of source order, which
-         matters because these blocks are injected by different modules and
-         their order is not guaranteed. Written as a list so a control added
-         later is hidden by name rather than by luck. */
-      '  html #gridatlas-dash-toggle,html #gridatlas-dash,',
-      '  html .gridatlas-dash-panel,html #gridatlas-fullscreen{',
-      '    display:none!important;visibility:hidden!important}',
-      '  #' + BAR_ID + '{display:none!important}',
-      /* The map now runs to the paper edge, so the furniture sits ON it and
-         must be legible over a dark basemap. Light text, and a scrim band at
-         each end rather than a full wash, so the map is not dimmed. */
-      '  #gridatlas-print-furniture{display:block;position:fixed;inset:0;',
-      '    padding:7mm 8mm;box-sizing:border-box;pointer-events:none;z-index:9;',
-      '    font:11px/1.4 ui-monospace,SFMono-Regular,Menlo,monospace;color:#eaf4f6;',
-      '    text-shadow:0 1px 3px rgba(0,0,0,.85)}',
+      '  @page{size:auto;margin:0}',
+      /* The reader's paper is not a layout instruction. The view keeps the
+         width and height it had on screen -- published by printView() as
+         --gpf-vw / --gpf-vh -- so nothing reflows to paper width, which is
+         what turned a 1390px-wide desktop view into a phone-shaped column. */
+      '  html{background:#fff!important;height:auto!important;',
+      '    overflow:visible!important}',
+      '  body{background:#0b1416!important;margin:0!important;padding:0!important;',
+      '    width:var(--gpf-vw,100%)!important;height:auto!important;',
+      '    min-height:0!important;overflow:visible!important;display:block!important}',
+      '  body>.dashboard{width:var(--gpf-vw,100%)!important;',
+      '    height:var(--gpf-vh,100vh)!important;max-height:none!important;',
+      '    min-height:0!important;overflow:hidden!important}',
+      /* The captured raster sits in the canvas's own box, at its own size.
+         Only ever shown when a capture actually succeeded: the body class is
+         added by printView() after the PNG decodes, so a failed capture prints
+         the live canvas exactly as before rather than a hole. */
+      '  #gridatlas-print-map{display:block!important;position:absolute!important;',
+      '    left:0!important;top:0!important;width:100%!important;height:100%!important;',
+      '    max-width:none!important;max-height:none!important;object-fit:fill;',
+      '    z-index:1;pointer-events:none}',
+      '  body.gridatlas-print-raster .maplibregl-canvas{visibility:hidden!important}',
+      /* PROVENANCE BELOW THE RECORD, NEVER ON TOP OF IT.
+         The furniture used to be position:fixed;inset:0 with scrim bands at
+         both ends, painted over the map -- which was fine when the map WAS the
+         sheet, and is not fine now that the sheet is the reader's screen: a
+         band over the top covers the menu bar and a band over the bottom covers
+         the legend. "I like the headers and footers thats nice ... KEEP THAT",
+         so it is kept, as a strip AFTER the view. Nothing the reader was
+         looking at is obscured, and the stamp is still on the sheet. */
+      '  #gridatlas-print-furniture{display:block!important;position:static!important;',
+      '    width:var(--gpf-vw,100%)!important;box-sizing:border-box!important;',
+      '    inset:auto!important;padding:5mm 7mm 6mm!important;background:#040a0c!important;',
+      '    color:#eaf4f6!important;z-index:auto!important;',
+      '    font:11px/1.45 ui-monospace,SFMono-Regular,Menlo,monospace!important}',
       '  #gridatlas-print-furniture::before,#gridatlas-print-furniture::after{',
-      '    content:"";position:absolute;left:0;right:0;height:26mm}',
-      '  #gridatlas-print-furniture::before{top:0;',
-      '    background:linear-gradient(180deg,rgba(4,10,12,.78),rgba(4,10,12,0))}',
-      '  #gridatlas-print-furniture::after{bottom:0;',
-      '    background:linear-gradient(0deg,rgba(4,10,12,.78),rgba(4,10,12,0))}',
-      '  #gridatlas-print-furniture .gpf-head{letter-spacing:.28em;font-size:13px}',
+      '    content:none!important}',
+      '  #gridatlas-print-furniture .gpf-head{letter-spacing:.28em;font-size:11px}',
       '  #gridatlas-print-furniture .gpf-brand{font-weight:700;margin-right:10px}',
       '  #gridatlas-print-furniture .gpf-sub{opacity:.65;letter-spacing:.16em}',
-      '  #gridatlas-print-furniture .gpf-title{margin-top:4mm;font-size:20px;',
-      '    letter-spacing:.02em;max-width:70%}',
-      '  #gridatlas-print-furniture .gpf-foot{position:absolute;left:10mm;right:10mm;',
-      '    bottom:8mm;display:flex;justify-content:space-between;gap:8mm;',
-      '    font-size:9px;opacity:.75}',
-      /* FIT THE PAGE, whatever the page is.
-         "make sure print always fits to page in landscape or portrait on
-         mobile, or desktop and sizes to fit the page" -- the architect.
-
-         The first version of this forced A4 landscape, which is the opposite
-         of fitting: it overrides the reader's own paper and orientation, and
-         on a phone printing to A5 or Letter it clips. `size:auto` accepts
-         whatever the reader chose, and the layout then fills that page rather
-         than assuming its shape.
-
-         WHICH BOX FLEXES, AND WHICH BOX MUST NOT.
-         v9.121 put `flex:1 1 auto;min-height:0;height:auto` on
-         `.map-container, .maplibregl-map, .maplibregl-canvas-container`
-         together, reasoning that body becomes a flex column so the map takes
-         the remaining height. THAT PREMISE WAS FALSE FOR THIS DOM. The shell
-         is `body > .dashboard > .map-container > #map`, and `.dashboard` is
-         already the flex column (`display:flex;flex-direction:column;
-         height:100dvh` in ventusv8.css). Making body a flex column therefore
-         reaches `.dashboard`, never the map. `.map-container` is
-         `position:relative;display:block`, so `flex:1 1 auto` on `#map` is
-         inert -- and `height:auto!important` overrode `#map{height:100%}` and
-         collapsed it, because its only child is `position:absolute` and
-         contributes no height.
-
-         Measured at 202609050354 under print emulation: `.maplibregl-canvas`
-         was 385x0 on a 393x852 phone and 1392x0 on a 1400x900 desktop, and
-         `Page.printToPDF` produced ZERO image XObjects on both. A sheet with
-         no map on it.
-
-         So `.map-container` keeps the flex line -- that part is correct and
-         is what makes the sheet fit the paper, since it IS a flex child of
-         `.dashboard` -- while the map chain is given an EXPLICIT print height
-         instead of `auto`. Same measurement after: 385x838 and 1392x518, two
-         full-resolution image XObjects, one page, both viewports. */
-      /* EDGE TO EDGE. "CAN THE PRINT COVER THE WHOLE PAGE LIKE A PROPER
-         PRESENTATION SLIDE OR BROCHURE AND NOT LEAVE ANY WHITE SPACE?" --
-         the architect, having watched an 8mm margin and object-fit:contain
-         letterbox a 1390x518 capture into the middle of a landscape sheet
-         with a white band above and below it.
-         margin:0 removes the paper margin; object-fit:cover above fills the
-         sheet instead of fitting inside it. Cover crops rather than
-         letterboxes, so a little ground at the long edge is lost -- that is
-         the trade the question asks for, and the capture is still the exact
-         pixels that were on the screen. */
-      '  @page{size:auto;margin:0}',
-      '  html,body{background:#fff!important;height:100%!important;',
-      '    margin:0!important;padding:0!important;overflow:hidden!important}',
-      '  body{display:flex!important;flex-direction:column!important}',
-      '  .map-container{',
-      '    flex:1 1 auto!important;min-height:0!important;width:100%!important;',
-      '    max-height:100%!important}',
+      '  #gridatlas-print-furniture .gpf-title{margin-top:2mm;font-size:15px;',
+      '    letter-spacing:.02em}',
+      '  #gridatlas-print-furniture .gpf-foot{position:static;margin-top:2mm;',
+      '    display:flex;justify-content:space-between;gap:6mm;',
+      '    font-size:8.5px;opacity:.75}',
+      /* The map chain is given an explicit print height rather than `auto`.
+         Measured at 202609050354: with `height:auto` the canvas was 385x0 on a
+         393x852 phone and 1392x0 on a 1400x900 desktop, and Page.printToPDF
+         produced ZERO image XObjects -- a sheet with no map on it. The height
+         has to be stated. */
+      '  .map-container{position:relative!important;width:100%!important;',
+      '    height:100%!important;max-height:100%!important;min-height:0!important}',
       '  #map,.maplibregl-map,.maplibregl-canvas-container{',
       '    height:100%!important;width:100%!important;max-height:100%!important}',
-      '  .maplibregl-canvas{width:100%!important;height:100%!important;',
-      '    object-fit:contain}',
-      /* Nothing may spill onto a second sheet: a slide is one page. */
+      '  .maplibregl-canvas{width:100%!important;height:100%!important}',
+      /* One sheet. The view plus its strip is the record; nothing may spill. */
       '  body>*{break-inside:avoid;page-break-inside:avoid}',
       '  body{page-break-after:avoid}',
       '}'
@@ -1023,23 +983,69 @@
      -- a tainted canvas, no handle, a blank read -- the sheet is printed
      anyway with the live canvas, which is no worse than before and still
      carries the furniture, title and credit. */
+  /* The raster goes in the CANVAS'S OWN BOX, not over the page.
+     ------------------------------------------------------------------------
+     It used to be appended to <body> and stretched `position:fixed;inset:0`,
+     because everything else was hidden and the map WAS the sheet. Now that the
+     sheet is the reader's screen, a full-viewport image would cover the menu
+     bar, the layer panel and the legend -- the very things the architect said
+     were missing. So it is inserted as a sibling of the canvas, inside the
+     positioned canvas container, and fills exactly that box.
+
+     Falls back to <body> only if the container cannot be found, which keeps a
+     sheet with a map on it rather than none. */
   function buildPrintMap(doc, dataUrl) {
     dropById(doc, 'gridatlas-print-map');
     var image = doc.createElement('img');
     image.id = 'gridatlas-print-map';
     image.alt = '';
     image.src = dataUrl;
-    doc.body.appendChild(image);
+    var canvas = doc.querySelector('.maplibregl-canvas');
+    var host = canvas && canvas.parentNode;
+    if (host && host.appendChild) host.appendChild(image);
+    else doc.body.appendChild(image);
     return image;
+  }
+
+  /* PUBLISH THE SCREEN'S OWN SIZE TO THE STYLESHEET.
+     ------------------------------------------------------------------------
+     A print stylesheet cannot read the viewport: @media print measures the
+     PAPER, so `100vw` inside it is the sheet, not the screen. Without these
+     two custom properties the layout reflows to paper width, which is what
+     turned a 1390px-wide desktop view into a phone-shaped column on the sheet.
+     Read once, at the moment Print is pressed, from the box the reader is
+     actually looking at. */
+  function pinViewportSize(doc) {
+    var root = doc.documentElement;
+    if (!root || !root.style || !root.style.setProperty) return;
+    var width = Number(window.innerWidth) || (root.clientWidth || 0);
+    var height = Number(window.innerHeight) || (root.clientHeight || 0);
+    if (width > 0) root.style.setProperty('--gpf-vw', width + 'px');
+    if (height > 0) root.style.setProperty('--gpf-vh', height + 'px');
+  }
+
+  function unpinViewportSize(doc) {
+    var root = doc.documentElement;
+    if (!root || !root.style || !root.style.removeProperty) return;
+    root.style.removeProperty('--gpf-vw');
+    root.style.removeProperty('--gpf-vh');
   }
 
   function printView(doc) {
     installPrintStyle(doc);
+    pinViewportSize(doc);
     var furniture = buildPrintFurniture(doc);
     var shot = null;
     var clean = function () {
       if (furniture && furniture.parentNode) furniture.parentNode.removeChild(furniture);
       if (shot && shot.parentNode) shot.parentNode.removeChild(shot);
+      /* The canvas is only hidden while a raster stands in for it. Removing
+         the class with the image keeps the two facts in one place: a failed
+         capture never leaves an invisible map behind. */
+      if (doc.body && doc.body.classList) {
+        doc.body.classList.remove('gridatlas-print-raster');
+      }
+      unpinViewportSize(doc);
       window.removeEventListener('afterprint', clean);
     };
     window.addEventListener('afterprint', clean);
@@ -1056,6 +1062,9 @@
     captureMap(doc, function (dataUrl) {
       if (dataUrl) {
         shot = buildPrintMap(doc, dataUrl);
+        if (doc.body && doc.body.classList) {
+          doc.body.classList.add('gridatlas-print-raster');
+        }
         /* Wait for the browser to decode it: printing a raster it has not
            finished reading is the same blank sheet by another route. */
         if (shot.decode) { shot.decode().then(go, go); return; }
@@ -1195,15 +1204,31 @@
   }
 
   function buildMapPdf(jpegBinary, pixelWidth, pixelHeight, heading, leftFoot, rightFoot) {
-    /* Long edge 1190pt (A3-ish) so a 1390px capture is not upscaled by the
-       reader, and the page keeps the image ratio exactly: no letterbox, no
-       crop, no white space. */
-    var longest = 1190;
-    var wide = pixelWidth >= pixelHeight;
-    var pageW = wide ? longest : Math.round(longest * pixelWidth / pixelHeight);
-    var pageH = wide ? Math.round(longest * pixelHeight / pixelWidth) : longest;
-    var band = Math.min(90, Math.round(pageH * 0.11));
-    var rightX = Math.max(24, pageW - 24 - String(rightFoot).length * 4.45);
+    /* ONE PAGE UNIT PER CAPTURED PIXEL. NO PAPER, NO REDUCTION.
+       -------------------------------------------------------------------
+       This scaled the long edge to 1190pt, "A3-ish". That is a paper
+       assumption, and on a 1390x518 desktop capture it emitted a 1190x443
+       page -- a 14% REDUCTION of the record. "THE PRINT MUST BE HIGH RES OF
+       WHAT THE USER SEES NOT A REDUCED CRAP VERSION", "WE ARE NOT USING
+       PAPER", "THIS IS A CALL FOR A 2026 era TELEPRINTER".
+
+       A teleprinter emits the record as it was. So the page is exactly the
+       captured raster: one PDF unit per pixel, no scaling in either
+       direction, and the canvas is captured at devicePixelRatio -- 1149x2514
+       on a phone at dpr 3, native on a desktop at dpr 1. Nothing is resampled
+       on the way out, and a viewer showing it at 100% shows the reader's own
+       pixels. */
+    var pageW = pixelWidth;
+    var pageH = pixelHeight;
+    /* Furniture scaled to the record rather than to an assumed sheet, so a
+       2514px-tall phone capture and a 518px-tall desktop one both carry a
+       legible credit rather than one sized for A3. */
+    var unit = Math.max(1, Math.min(pageW, pageH) / 520);
+    var band = Math.round(Math.min(pageH * 0.14, 46 * unit));
+    var headSize = Math.round(13 * unit);
+    var footSize = Math.round(8 * unit);
+    var pad = Math.round(14 * unit);
+    var rightX = Math.max(pad, pageW - pad - String(rightFoot).length * footSize * 0.56);
 
     var content = [
       'q', pageW + ' 0 0 ' + pageH + ' 0 0 cm', '/Im0 Do', 'Q',
@@ -1212,9 +1237,12 @@
       'q', '/GsA gs', '0.02 0.06 0.07 rg',
       '0 ' + (pageH - band) + ' ' + pageW + ' ' + band + ' re f',
       '0 0 ' + pageW + ' ' + band + ' re f', 'Q',
-      'BT /F1 15 Tf 1 1 1 rg 24 ' + (pageH - 30) + ' Td (' + pdfEscape(heading) + ') Tj ET',
-      'BT /F1 8 Tf 0.86 0.93 0.94 rg 24 18 Td (' + pdfEscape(leftFoot) + ') Tj ET',
-      'BT /F1 8 Tf 0.86 0.93 0.94 rg ' + rightX + ' 18 Td (' + pdfEscape(rightFoot) + ') Tj ET'
+      'BT /F1 ' + headSize + ' Tf 1 1 1 rg ' + pad + ' ' + (pageH - pad - headSize)
+        + ' Td (' + pdfEscape(heading) + ') Tj ET',
+      'BT /F1 ' + footSize + ' Tf 0.86 0.93 0.94 rg ' + pad + ' ' + Math.round(pad * 0.7)
+        + ' Td (' + pdfEscape(leftFoot) + ') Tj ET',
+      'BT /F1 ' + footSize + ' Tf 0.86 0.93 0.94 rg ' + rightX + ' ' + Math.round(pad * 0.7)
+        + ' Td (' + pdfEscape(rightFoot) + ') Tj ET'
     ].join('\n');
 
     var objects = [
@@ -1315,7 +1343,7 @@
         URL.revokeObjectURL(url);
         if (link.parentNode) link.parentNode.removeChild(link);
       }, 30000);
-      say('\u2713 PDF saved \u00b7 ' + built.pageW + '\u00d7' + built.pageH + 'pt');
+      say('\u2713 PDF saved \u00b7 ' + built.pageW + '\u00d7' + built.pageH + ' px, 1:1');
     });
   }
 
