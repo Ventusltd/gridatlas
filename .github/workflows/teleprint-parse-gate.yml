@@ -1,0 +1,105 @@
+# THE PARSE GATE, OFF THE LAPTOP.
+#
+# On 2026-09-05 a cartridge went live that did not parse: a single-quoted
+# string carrying a raw line break. window.initVentusMap never ran, and the
+# Atlas served no map, no menu bar and no layer controls in every browser. The
+# architect found it on the live site.
+#
+# The fix -- a build that parses what it emits, and a runner that parses every
+# cartridge the composition names -- lived only in a working directory. The
+# engine repository has no workflows at all, and no workflow here referenced
+# it, so the one check that would have caught the outage could not be reached
+# from anywhere except this machine. That is the hole this closes.
+#
+# WHAT IT ACTUALLY GUARDS, AND WHAT IT CANNOT.
+#
+# Pages here is served from the branch, not from a deployment job: whatever is
+# on main is what the world downloads, the moment it is pushed. So on `push`
+# this workflow runs AFTER the bytes are already public. It is a DETECTOR
+# there, not a gate, and saying otherwise would be the same kind of comfortable
+# false claim it exists to prevent. Its blocking uses are `pull_request`, where
+# it runs before the merge, and `workflow_dispatch`, which is how it gets fired
+# from a phone.
+#
+# It answers exactly one question -- can the served bytes be parsed, and is the
+# vendored part still the part its own header claims to be built from. It says
+# nothing about whether the page WORKS; that is the browser proofs' job, and
+# 202608312212-cartridge-proof.yml is where it belongs.
+#
+# THE ENGINE IS PINNED BY COMMIT, like every other repository this estate
+# checks out beside itself. An unpinned engine would mean this gate's verdict
+# changes when someone else's repository changes, which makes a green run
+# unattributable. `teleprinter_ref` overrides it for a dispatch, so a new
+# engine can be checked against these cartridges before it is pinned here.
+name: teleprint parse gate
+
+on:
+  workflow_dispatch:
+    inputs:
+      teleprinter_ref:
+        description: 'Ventusltd/teleprinter ref to check these cartridges against'
+        required: false
+        default: '1e9c61f4b5871e5dd19eb72ecd1c2b1de429a39e'
+  push:
+    branches: [main]
+    paths:
+      - 'atlas/**'
+      - '.github/workflows/teleprint-parse-gate.yml'
+  pull_request:
+    paths:
+      - 'atlas/**'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: gridatlas-teleprint-parse-gate-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  parse:
+    runs-on: ubuntu-24.04
+    # No browser, no npm install, no network beyond the two checkouts: this is
+    # meant to be the cheapest thing in the estate so there is never a reason
+    # to skip it.
+    timeout-minutes: 6
+    steps:
+      - name: Check out the composition
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          path: gridatlas
+
+      # Beside it, not inside it: ci.mjs is run from the engine repository and
+      # is handed the composition as its argument.
+      - name: Check out the print engine
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          repository: Ventusltd/teleprinter
+          ref: ${{ github.event.inputs.teleprinter_ref || '1e9c61f4b5871e5dd19eb72ecd1c2b1de429a39e' }}
+          path: teleprinter
+
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v4
+        with:
+          node-version: '24'
+
+      # Nine checks, including a negative control that corrupts a copy of a
+      # driver with the exact 2026-09-05 defect and requires the build to
+      # refuse for that reason. A gate never seen to fail is not known to work,
+      # so the control runs here too rather than only on a laptop.
+      - name: Parse the served bytes
+        run: node teleprinter/drivers/gridatlas/ci.mjs "$GITHUB_WORKSPACE/gridatlas" --json parse-gate.json
+
+      # The verdict is small and it is the whole point of the run, so it is
+      # kept whether the step passed or failed -- a red run with no artefact
+      # tells the next reader nothing.
+      - name: Keep the verdict
+        if: always()
+        # The same commit 202608301321-verify-live.yml already pins in this
+        # repository. Reusing the pin this repo has already reviewed is better
+        # than importing a different one from a neighbouring repository, and
+        # far better than inventing a SHA that looks plausible.
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v4.4.3
+        with:
+          name: teleprint-parse-gate
+          path: parse-gate.json
+          if-no-files-found: warn
