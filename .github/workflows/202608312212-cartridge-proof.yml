@@ -60,6 +60,7 @@ on:
     paths:
       - 'atlas/**'
       - 'tools/proofs/**'
+      - 'tools/v9_5/**'
       - 'tools/scope/**'
       - 'STATE.md'
       - '.github/workflows/202608312212-cartridge-proof.yml'
@@ -67,6 +68,7 @@ on:
     paths:
       - 'atlas/**'
       - 'tools/proofs/**'
+      - 'tools/v9_5/**'
       - 'tools/scope/**'
       - 'STATE.md'
 
@@ -91,6 +93,9 @@ jobs:
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
         with:
           path: gridatlas
+
+      - name: Reject incompatible legacy transport compositions before writes
+        run: python3 -m unittest discover -s tools/v9_5 -p "test_legacy_input.py"
 
       # Beside it, not inside it: the proof resolves ../grid-distance-maths.
       - name: Checkout the canonical geodesy beside it
