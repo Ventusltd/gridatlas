@@ -1165,6 +1165,160 @@
     }
   }
 
+  /* A PDF THE PAGE WRITES ITSELF.
+     ------------------------------------------------------------------------
+     "get the PDF PRINTER UP AND RUNNING so the WORLD CAN TAKE THE DATA" --
+     the architect, after Firefox rendered the print preview correctly and
+     then produced NO FILE AT ALL when Print was pressed with a physical
+     printer selected.
+
+     Every route to a PDF before this one went through the browser print
+     pipeline: window.print(), a dialog, a destination, a driver. That
+     pipeline differs in every browser, it is the part this code does not
+     own, and on his machine it is the part that failed. So this does not use
+     it at all. It writes the PDF bytes here and hands the reader a file.
+
+     ONE PAGE, SIZED TO THE IMAGE. The MediaBox takes the captured raster's
+     own aspect ratio, so the map covers the sheet corner to corner with no
+     margin AND nothing is cropped -- the brochure that object-fit:cover can
+     only approximate on paper, done exactly.
+
+     The image is embedded as JPEG with /DCTDecode, which is why there is no
+     compressor in this file: the canvas already produces JPEG bytes and PDF
+     reads that stream natively. */
+  function pdfEscape(text) {
+    return String(text == null ? '' : text)
+      .replace(/\\/g, '\\\\')
+      .replace(/\(/g, '\\(')
+      .replace(/\)/g, '\\)')
+      .replace(/[^\x20-\x7e]/g, '');
+  }
+
+  function buildMapPdf(jpegBinary, pixelWidth, pixelHeight, heading, leftFoot, rightFoot) {
+    /* Long edge 1190pt (A3-ish) so a 1390px capture is not upscaled by the
+       reader, and the page keeps the image ratio exactly: no letterbox, no
+       crop, no white space. */
+    var longest = 1190;
+    var wide = pixelWidth >= pixelHeight;
+    var pageW = wide ? longest : Math.round(longest * pixelWidth / pixelHeight);
+    var pageH = wide ? Math.round(longest * pixelHeight / pixelWidth) : longest;
+    var band = Math.min(90, Math.round(pageH * 0.11));
+    var rightX = Math.max(24, pageW - 24 - String(rightFoot).length * 4.45);
+
+    var content = [
+      'q', pageW + ' 0 0 ' + pageH + ' 0 0 cm', '/Im0 Do', 'Q',
+      /* Scrim bands at 55% alpha so the text reads over a dark basemap
+         without dimming the map itself. */
+      'q', '/GsA gs', '0.02 0.06 0.07 rg',
+      '0 ' + (pageH - band) + ' ' + pageW + ' ' + band + ' re f',
+      '0 0 ' + pageW + ' ' + band + ' re f', 'Q',
+      'BT /F1 15 Tf 1 1 1 rg 24 ' + (pageH - 30) + ' Td (' + pdfEscape(heading) + ') Tj ET',
+      'BT /F1 8 Tf 0.86 0.93 0.94 rg 24 18 Td (' + pdfEscape(leftFoot) + ') Tj ET',
+      'BT /F1 8 Tf 0.86 0.93 0.94 rg ' + rightX + ' 18 Td (' + pdfEscape(rightFoot) + ') Tj ET'
+    ].join('\n');
+
+    var objects = [
+      '<< /Type /Catalog /Pages 2 0 R >>',
+      '<< /Type /Pages /Kids [3 0 R] /Count 1 >>',
+      '<< /Type /Page /Parent 2 0 R /MediaBox [0 0 ' + pageW + ' ' + pageH + ']'
+        + ' /Resources << /XObject << /Im0 5 0 R >> /Font << /F1 6 0 R >>'
+        + ' /ExtGState << /GsA 7 0 R >> >> /Contents 4 0 R >>',
+      '<< /Length ' + content.length + ' >>\nstream\n' + content + '\nendstream',
+      '<< /Type /XObject /Subtype /Image /Width ' + pixelWidth + ' /Height ' + pixelHeight
+        + ' /ColorSpace /DeviceRGB /BitsPerComponent 8 /Filter /DCTDecode /Length '
+        + jpegBinary.length + ' >>\nstream\n' + jpegBinary + '\nendstream',
+      '<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica /Encoding /WinAnsiEncoding >>',
+      '<< /Type /ExtGState /ca 0.55 >>'
+    ];
+
+    var out = '%PDF-1.4\n%\u00e2\u00e3\u00cf\u00d3\n';
+    var offsets = [];
+    var i;
+    for (i = 0; i < objects.length; i += 1) {
+      offsets.push(out.length);
+      out += (i + 1) + ' 0 obj\n' + objects[i] + '\nendobj\n';
+    }
+    var xref = out.length;
+    out += 'xref\n0 ' + (objects.length + 1) + '\n0000000000 65535 f \n';
+    for (i = 0; i < offsets.length; i += 1) {
+      out += ('0000000000' + offsets[i]).slice(-10) + ' 00000 n \n';
+    }
+    out += 'trailer\n<< /Size ' + (objects.length + 1) + ' /Root 1 0 R >>\n'
+      + 'startxref\n' + xref + '\n%%EOF\n';
+
+    var bytes = new Uint8Array(out.length);
+    for (i = 0; i < out.length; i += 1) bytes[i] = out.charCodeAt(i) & 0xff;
+    return { bytes: bytes, pageW: pageW, pageH: pageH };
+  }
+
+  /* JPEG rather than PNG: /DCTDecode embeds the bytes verbatim, so no
+     compressor is needed here, and a basemap raster is what JPEG is for.
+     Same render-frame discipline as captureMap -- a canvas without
+     preserveDrawingBuffer is transparent to any reader outside the frame
+     that drew it. */
+  function captureMapJpeg(doc, then) {
+    var map = mapHandle();
+    var canvas = doc.querySelector('.maplibregl-canvas')
+      || (map && map.getCanvas ? map.getCanvas() : null);
+    if (!canvas) { then(null, null); return; }
+    var grab = function () {
+      var url = null;
+      try { url = canvas.toDataURL('image/jpeg', 0.92); } catch (_) { url = null; }
+      if (!url || url.indexOf('data:image/jpeg') !== 0 || looksBlank(canvas)) {
+        then(null, canvas);
+        return;
+      }
+      then(url, canvas);
+    };
+    if (map && map.once && map.triggerRepaint) {
+      map.once('render', grab);
+      map.triggerRepaint();
+    } else {
+      grab();
+    }
+  }
+
+  function pdfFileStamp() {
+    var d = new Date();
+    var pad = function (n) { return (n < 10 ? '0' : '') + n; };
+    return d.getUTCFullYear() + pad(d.getUTCMonth() + 1) + pad(d.getUTCDate())
+      + pad(d.getUTCHours()) + pad(d.getUTCMinutes());
+  }
+
+  function savePdf(doc, button) {
+    var say = function (text) { button.textContent = text; };
+    say('... building PDF');
+    captureMapJpeg(doc, function (jpegDataUrl, canvas) {
+      if (!jpegDataUrl) {
+        say('\u2298 The map could not be captured \u2014 try again once it has drawn');
+        return;
+      }
+      var binary;
+      try {
+        binary = atob(jpegDataUrl.slice(jpegDataUrl.indexOf(',') + 1));
+      } catch (_) {
+        say('\u2298 The capture could not be decoded');
+        return;
+      }
+      var built = buildMapPdf(binary, canvas.width, canvas.height,
+        'GlobalGrid2050 \u00b7 Grid Atlas', attributionText(doc), (generationText() || 'generation unknown')
+          + ' · ' + new Date().toISOString().slice(0, 16).replace('T', ' ') + ' UTC');
+      var blob = new Blob([built.bytes], { type: 'application/pdf' });
+      var url = URL.createObjectURL(blob);
+      var link = doc.createElement('a');
+      link.id = 'gridatlas-pdf-download';
+      link.href = url;
+      link.download = 'globalgrid2050-grid-atlas-' + pdfFileStamp() + '.pdf';
+      doc.body.appendChild(link);
+      link.click();
+      setTimeout(function () {
+        URL.revokeObjectURL(url);
+        if (link.parentNode) link.parentNode.removeChild(link);
+      }, 30000);
+      say('\u2713 PDF saved \u00b7 ' + built.pageW + '\u00d7' + built.pageH + 'pt');
+    });
+  }
+
   function appendExport(panel, doc) {
     if (!panel || panel.querySelector('[data-gm-export]')) return 0;
     appendGroup(panel, 'Export this view');
@@ -1188,6 +1342,14 @@
     print.addEventListener('click', function () { printView(doc); });
     panel.appendChild(print);
 
+    var pdf = doc.createElement('button');
+    pdf.id = 'gridatlas-export-pdf';
+    pdf.setAttribute('data-gm-export', 'pdf');
+    pdf.setAttribute('type', 'button');
+    pdf.textContent = '\u2913 Save this view as a PDF';
+    pdf.addEventListener('click', function () { savePdf(doc, pdf); });
+    panel.appendChild(pdf);
+
     var image = doc.createElement('button');
     image.id = 'gridatlas-export-image';
     image.setAttribute('data-gm-export', 'image');
@@ -1196,7 +1358,7 @@
     image.addEventListener('click', function () { saveImage(doc, image); });
     panel.appendChild(image);
 
-    return 2;
+    return 3;
   }
 
   function appendEstateLinks(panel) {
