@@ -76,6 +76,24 @@ async function ensureDir(dir) {
   await fs.mkdir(dir, { recursive: true });
 }
 
+/* THE APP ALREADY KNOWS WHAT WENT WRONG; ASK IT.
+   When Print source code threw a ReferenceError, #gridatlas-teleprint-status
+   read "Source could not be prepared: headerLines is not defined" -- the whole
+   diagnosis, on screen. This runner recorded only "Timeout 120000ms exceeded",
+   because the status read sat inside the try and a timeout jumped past it. It
+   cost an investigation that the app had already done. */
+async function readAppStatus(page) {
+  if (!page) return null;
+  try {
+    return await page.evaluate(() => {
+      const node = document.getElementById('gridatlas-teleprint-status');
+      return node ? node.textContent : null;
+    });
+  } catch (_) {
+    return null;
+  }
+}
+
 /* A PDF is inspected structurally rather than trusted. Every one of these can
    fail on a real defect: a truncated writer, a blank capture, a page that is
    not the size of the capture, furniture painted over the record. */
@@ -109,8 +127,12 @@ function inspectPdf(buffer, expect) {
        786x1704. The receipt said "1:1"; the file held 44% of the screen. The
        only honest comparison is against the READER'S OWN PIXELS. */
     screenPixelWidth: expect ? Math.round(expect.width * expect.dpr) : null,
+    screenPixelHeight: expect ? Math.round(expect.height * expect.dpr) : null,
+    /* BOTH AXES. This was width-only, so a capture that was full width and
+       short in height counted as complete. */
     capturedEveryScreenPixel: !!(imageMatch && expect
-      && Number(imageMatch[1]) >= Math.round(expect.width * expect.dpr)),
+      && Number(imageMatch[1]) >= Math.round(expect.width * expect.dpr)
+      && Number(imageMatch[2]) >= Math.round(expect.height * expect.dpr)),
     captureScale: (imageMatch && expect)
       ? Number(imageMatch[1]) / Math.round(expect.width * expect.dpr) : null,
     bytes: buffer.length,
@@ -161,6 +183,9 @@ for (let index = 0; index < TOTAL; index += 1) {
      "close used sessions to free up ram" -- and equally, a reused profile
      carries a warm cache and a granted permission into the next run, which
      would make session 50 prove less than session 1. */
+  /* Held outside the try so the failure path can still ask the app what it
+     thinks went wrong. */
+  let pageRef = null;
   const browser = await chromium.launch({
     headless: true,
     channel: 'chrome',
@@ -178,6 +203,7 @@ for (let index = 0; index < TOTAL; index += 1) {
       permissions: []
     });
     const page = await context.newPage();
+    pageRef = page;
     const url = BASE + spec.link;
     await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 90000 });
     await page.locator('#gridatlas-menu-bar').waitFor({ timeout: 90000 });
@@ -265,15 +291,23 @@ for (let index = 0; index < TOTAL; index += 1) {
        looked like when the file was produced. */
     await page.screenshot({ path: path.join(OUT, `${label}.png`), fullPage: false });
 
-    const status = await page.evaluate(() => {
-      const node = document.getElementById('gridatlas-teleprint-status');
-      return node ? node.textContent : null;
-    });
-    record.appStatus = status;
-    console.log(`${record.ok ? 'PASS' : 'FAIL'} ${label} ${record.bytes} bytes :: ${status || ''}`);
+    record.appStatus = await readAppStatus(page);
+    console.log(`${record.ok ? 'PASS' : 'FAIL'} ${label} ${record.bytes} bytes :: ${record.appStatus || ''}`);
     await context.close().catch(() => {});
   } catch (error) {
+    /* A session that threw has NOT passed, whatever was set before the throw.
+       Without this the summary read "6 passed, 0 failed" while every printed
+       line said FAIL -- record.ok had already been set true earlier in the try,
+       and a later error left it standing. A summary that disagrees with its own
+       lines is worse than no summary. */
+    record.ok = false;
     record.error = String((error && error.message) || error);
+    /* THE APP ALREADY SAID WHAT WAS WRONG. Its status line read "Source could
+       not be prepared: headerLines is not defined" while this recorded only
+       "Timeout 120000ms exceeded", because the read sat inside the try and a
+       timeout jumped straight past it. Reading it on the failure path turns a
+       three-minute investigation into a line in the summary. */
+    try { record.appStatus = await readAppStatus(pageRef); } catch (_) { /* gone */ }
     console.log(`FAIL ${label} :: ${record.error.split('\n')[0]}`);
   } finally {
     await browser.close().catch(() => {});
