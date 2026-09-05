@@ -792,6 +792,217 @@
     return added;
   }
 
+  /* Export: print a slide, or save an image of exactly what is on screen.
+     ------------------------------------------------------------------------
+     "allow the user to export screenshot prints via file save or file print
+     and they should produce beautiful slides of what's on display be it mobile
+     or desktop" -- the architect, 2026-09-05.
+
+     Two things this must get right, and both are failure modes this estate has
+     already paid for:
+
+     1. THE IMAGE MUST NOT BE BLANK. The map is a WebGL canvas created without
+        preserveDrawingBuffer, so reading it after the frame is composited
+        returns an empty image. The capture therefore happens INSIDE a render
+        frame, and the result is then CHECKED -- decoded and sampled for
+        non-transparent pixels -- before it is offered. If it comes back blank
+        the reader is told and sent to print instead. Handing someone an empty
+        PNG that looks like a successful save is worse than refusing.
+
+     2. THE CREDIT MUST TRAVEL WITH THE ARTEFACT. This generation moved the
+        attribution into About, which is right for the screen and wrong for an
+        export: OpenStreetMap, CARTO and Open Charge Map require attribution on
+        the thing that leaves the building. Both paths re-place it, visibly, on
+        the exported artefact. */
+  function exportStamp() {
+    var now = new Date();
+    return now.toISOString().replace('T', ' ').slice(0, 16) + ' UTC';
+  }
+
+  function attributionText(doc) {
+    var node = doc.querySelector('.custom-map-attrib');
+    return cleanText(node && node.textContent)
+      || 'Data © OpenStreetMap contributors | © CARTO | EV data © Open Charge Map';
+  }
+
+  function generationText() {
+    var current = window.__GRIDATLAS_CURRENT__;
+    var generation = current && current.generation;
+    return generation ? 'generation ' + generation : '';
+  }
+
+  /* The slide furniture: a title, the identity of whatever is on screen, the
+     credit, and the stamp. Created only while printing and removed after, so
+     nothing about the live page changes. */
+  function buildPrintFurniture(doc) {
+    var box = doc.createElement('div');
+    box.id = 'gridatlas-print-furniture';
+    var selected = doc.querySelector('.project-popup .name, .gm-panel .project-name');
+    var title = cleanText(selected && selected.textContent) || 'GlobalGrid2050 · Grid Atlas';
+    box.innerHTML =
+      '<div class="gpf-head"><span class="gpf-brand">VENTUS</span>'
+      + '<span class="gpf-sub">GLOBAL GRID 2050 · GRID ATLAS</span></div>'
+      + '<div class="gpf-title"></div>'
+      + '<div class="gpf-foot"><span class="gpf-attrib"></span>'
+      + '<span class="gpf-stamp"></span></div>';
+    box.querySelector('.gpf-title').textContent = title;
+    box.querySelector('.gpf-attrib').textContent = attributionText(doc);
+    box.querySelector('.gpf-stamp').textContent =
+      [generationText(), exportStamp()].filter(Boolean).join(' · ');
+    doc.body.appendChild(box);
+    return box;
+  }
+
+  function installPrintStyle(doc) {
+    if (doc.getElementById('gridatlas-print-css')) return;
+    var style = doc.createElement('style');
+    style.id = 'gridatlas-print-css';
+    style.textContent = [
+      '#gridatlas-print-furniture{display:none}',
+      '@media print{',
+      /* The bar and every open panel are interface, not content. The map and
+         the furniture are the slide. */
+      '  #' + BAR_ID + '{display:none!important}',
+      '  #gridatlas-print-furniture{display:block;position:fixed;inset:0;',
+      '    padding:8mm;box-sizing:border-box;pointer-events:none;z-index:9;',
+      '    font:11px/1.4 ui-monospace,SFMono-Regular,Menlo,monospace;color:#0b1416}',
+      '  #gridatlas-print-furniture .gpf-head{letter-spacing:.28em;font-size:13px}',
+      '  #gridatlas-print-furniture .gpf-brand{font-weight:700;margin-right:10px}',
+      '  #gridatlas-print-furniture .gpf-sub{opacity:.65;letter-spacing:.16em}',
+      '  #gridatlas-print-furniture .gpf-title{margin-top:4mm;font-size:20px;',
+      '    letter-spacing:.02em;max-width:70%}',
+      '  #gridatlas-print-furniture .gpf-foot{position:absolute;left:10mm;right:10mm;',
+      '    bottom:8mm;display:flex;justify-content:space-between;gap:8mm;',
+      '    font-size:9px;opacity:.75}',
+      /* FIT THE PAGE, whatever the page is.
+         "make sure print always fits to page in landscape or portrait on
+         mobile, or desktop and sizes to fit the page" -- the architect.
+
+         The first version of this forced A4 landscape, which is the opposite
+         of fitting: it overrides the reader's own paper and orientation, and
+         on a phone printing to A5 or Letter it clips. `size:auto` accepts
+         whatever the reader chose, and the layout then fills that page rather
+         than assuming its shape.
+
+         The map cannot be given a fixed height for the same reason. Body
+         becomes a flex column at the full height of the page box, the
+         furniture takes its natural height at either end, and the map takes
+         what is left -- `min-height:0` because a flex child will otherwise
+         refuse to shrink below its content and push the footer off the sheet.
+         A phone-shaped canvas and a wide desktop one both end up filling the
+         printable area of whatever paper is in front of them. */
+      '  @page{size:auto;margin:8mm}',
+      '  html,body{background:#fff!important;height:100%!important;',
+      '    margin:0!important;padding:0!important;overflow:hidden!important}',
+      '  body{display:flex!important;flex-direction:column!important}',
+      '  .map-container,.maplibregl-map,.maplibregl-canvas-container{',
+      '    flex:1 1 auto!important;min-height:0!important;width:100%!important;',
+      '    height:auto!important;max-height:100%!important}',
+      '  .maplibregl-canvas{width:100%!important;height:100%!important;',
+      '    object-fit:contain}',
+      /* Nothing may spill onto a second sheet: a slide is one page. */
+      '  body>*{break-inside:avoid;page-break-inside:avoid}',
+      '  body{page-break-after:avoid}',
+      '}'
+    ].join('');
+    doc.head.appendChild(style);
+  }
+
+  function printView(doc) {
+    installPrintStyle(doc);
+    var furniture = buildPrintFurniture(doc);
+    var clean = function () {
+      if (furniture && furniture.parentNode) furniture.parentNode.removeChild(furniture);
+      window.removeEventListener('afterprint', clean);
+    };
+    window.addEventListener('afterprint', clean);
+    /* Give the browser a frame to apply the print stylesheet before the dialog
+       measures the page; without it the map is measured at its screen size. */
+    window.setTimeout(function () { window.print(); }, 60);
+    /* afterprint is not fired by every browser, notably some mobile ones, so
+       the furniture is removed on a timer as well. It is display:none off
+       print anyway, so a late removal changes nothing a reader can see. */
+    window.setTimeout(clean, 20000);
+  }
+
+  /* Was anything actually drawn? A canvas read outside a render frame returns
+     a fully transparent image, which encodes to a small PNG and downloads
+     perfectly happily. Sample it rather than trust it. */
+  function looksBlank(canvas) {
+    try {
+      var probe = document.createElement('canvas');
+      probe.width = 40; probe.height = 40;
+      var context = probe.getContext('2d');
+      context.drawImage(canvas, 0, 0, 40, 40);
+      var data = context.getImageData(0, 0, 40, 40).data;
+      for (var i = 3; i < data.length; i += 4) if (data[i] !== 0) return false;
+      return true;
+    } catch (_) {
+      /* A tainted canvas throws here. That is not blank, and treating it as
+         blank would send the reader to print for no reason. */
+      return false;
+    }
+  }
+
+  function saveImage(doc, button) {
+    var map = window.__GRIDATLAS_MAP__ || (window.map && window.map.getCanvas ? window.map : null);
+    var canvas = doc.querySelector('.maplibregl-canvas')
+      || (map && map.getCanvas ? map.getCanvas() : null);
+    var say = function (text) { button.textContent = text; };
+
+    if (!canvas) { say('⊘ No map canvas to save — use Print'); return; }
+
+    var grab = function () {
+      var url;
+      try { url = canvas.toDataURL('image/png'); } catch (_) { url = null; }
+      if (!url || looksBlank(canvas)) {
+        /* Refused, and the reason is said out loud. The alternative is a file
+           that opens as an empty rectangle an hour later, in front of someone
+           else. */
+        say('⊘ The map could not be captured — use Print instead');
+        return;
+      }
+      var link = doc.createElement('a');
+      link.href = url;
+      link.download = 'gridatlas-' + exportStamp().replace(/[^0-9]/g, '').slice(0, 12) + '.png';
+      doc.body.appendChild(link);
+      link.click();
+      doc.body.removeChild(link);
+      say('✓ Image saved');
+      window.setTimeout(function () { say('⤓ Save an image of this view'); }, 4000);
+    };
+
+    /* Inside a render frame, which is what makes the read non-blank on a
+       canvas created without preserveDrawingBuffer. */
+    if (map && map.once && map.triggerRepaint) {
+      map.once('render', grab);
+      map.triggerRepaint();
+    } else {
+      grab();
+    }
+  }
+
+  function appendExport(panel, doc) {
+    if (!panel || panel.querySelector('[data-gm-export]')) return 0;
+    appendGroup(panel, 'Export this view');
+
+    var print = doc.createElement('button');
+    print.setAttribute('data-gm-export', '1');
+    print.setAttribute('type', 'button');
+    print.textContent = '⎙ Print · or save as PDF';
+    print.addEventListener('click', function () { printView(doc); });
+    panel.appendChild(print);
+
+    var image = doc.createElement('button');
+    image.setAttribute('data-gm-export', '1');
+    image.setAttribute('type', 'button');
+    image.textContent = '⤓ Save an image of this view';
+    image.addEventListener('click', function () { saveImage(doc, image); });
+    panel.appendChild(image);
+
+    return 2;
+  }
+
   function appendEstateLinks(panel) {
     if (!panel || panel.querySelector('[data-gm-estate]')) return 0;
     appendGroup(panel, 'Estate');
@@ -973,6 +1184,7 @@
 
     state.estate_links = appendEstateLinks(panels.About);
     appendEngineModules(panels.File);
+    state.export_controls = appendExport(panels.File, doc);
     state.studies = appendStudies(panels.View);
 
     /* The map attribution moves off the map and into About, LAST, in small

@@ -214,6 +214,87 @@ check(
   'data-gm-study guard'
 );
 
+/* 2d. Export: print a slide, or save an image of what is on screen.
+      Two obligations, both of which this estate has already broken once:
+
+      THE IMAGE MUST NOT BE BLANK. The map is a WebGL canvas created without
+      preserveDrawingBuffer, so a read outside a render frame returns a fully
+      transparent image that still encodes to a valid PNG and downloads
+      happily. The capture happens inside a render frame AND the result is
+      sampled before it is offered.
+
+      THE CREDIT MUST TRAVEL WITH THE ARTEFACT. This generation moved the
+      attribution into About, which is right for the screen and wrong for an
+      export: OpenStreetMap and CARTO require attribution on the thing that
+      leaves the building. */
+check(
+  'the File panel offers print and image export',
+  composed.includes('data-gm-export') && /appendExport\(panels\.File, doc\)/.test(composed),
+  'appendExport(panels.File, doc)'
+);
+check(
+  'the image is captured inside a render frame, not after compositing',
+  /map\.once\('render', grab\)/.test(composed) && /map\.triggerRepaint\(\)/.test(composed),
+  'the canvas has no preserveDrawingBuffer, so the frame is where the pixels are'
+);
+check(
+  'a blank capture is refused rather than downloaded',
+  /function looksBlank\(canvas\)/.test(composed)
+  && /looksBlank\(canvas\)/.test(composed)
+  && composed.includes('The map could not be captured'),
+  'sampled for non-transparent pixels before it is offered'
+);
+check(
+  'a tainted canvas is not mistaken for a blank one',
+  composed.includes('A tainted canvas throws here'),
+  'the catch returns false, so the reader is not sent to print for no reason'
+);
+check(
+  'the exported artefact carries the attribution the screen moved into About',
+  /function attributionText\(doc\)/.test(composed)
+  && composed.includes('gpf-attrib')
+  && composed.includes('OpenStreetMap contributors'),
+  'credit travels with the thing that leaves the building'
+);
+check(
+  'the print slide carries the generation and a UTC stamp',
+  /function generationText\(\)/.test(composed) && /function exportStamp\(\)/.test(composed)
+  && composed.includes('gpf-stamp'),
+  'an exported slide says which build and when'
+);
+/* "make sure print always fits to page in landscape or portrait on mobile, or
+   desktop and sizes to fit the page". Forcing A4 landscape, which the first
+   version did, is the OPPOSITE of fitting: it overrides the reader's own paper
+   and clips on anything smaller. */
+check(
+  'the print takes whatever page the reader chose, rather than forcing one',
+  composed.includes('@page{size:auto;margin:8mm}')
+  && !composed.includes('size:A4 landscape'),
+  'size:auto, so portrait or landscape and any paper both fit'
+);
+check(
+  'the map sizes to the printable area instead of a fixed height',
+  composed.includes('flex:1 1 auto!important;min-height:0!important')
+  && !/height:170mm/.test(composed),
+  'min-height:0 or the flex child refuses to shrink and pushes the footer off the sheet'
+);
+check(
+  'a slide is one page, never two',
+  composed.includes('break-inside:avoid;page-break-inside:avoid'),
+  'nothing spills onto a second sheet'
+);
+check(
+  'printing hides the interface',
+  composed.includes("display:none!important"),
+  'the bar is interface, not content'
+);
+check(
+  'the print furniture is removed afterwards, and does not rely on afterprint alone',
+  composed.includes("window.addEventListener('afterprint', clean)")
+  && /window\.setTimeout\(clean, 20000\)/.test(composed),
+  'some mobile browsers never fire afterprint'
+);
+
 /* 3. Nothing this generation touched may remove what was already proven.
       The v8 layers panel and the six menu titles are the two things earlier
       generations exist to protect; assert them here so this cut cannot pass
