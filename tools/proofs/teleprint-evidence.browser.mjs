@@ -236,10 +236,14 @@ for (let index = 0; index < TOTAL; index += 1) {
       record.source = inspectSource(buffer.toString('utf8'));
       record.ok = record.source.marksTeleprint && record.source.files > 0
         && record.source.carriesCartridge && record.source.bytes > 20000
-        /* A teleprint too large to attach to a chat has failed at the only job
-           it has. Measured: 13,237,685 bytes before code and data were
-           separated, 1,983,950 after. */
-        && record.source.bytes < 8 * 1024 * 1024;
+        /* NO UPPER SIZE CHECK, DELIBERATELY. One was here, at 8 MB, on the
+           reasoning that a teleprint too large to upload has failed at its
+           job. The architect overruled it: "a printer prints what it's given
+           it doesn't rely on human induced limits and it's a digital printer
+           that doesn't run out of paper 2MB is nothing for vital evidence like
+           that". A chat's upload limit is the chat's constraint. The size is
+           still RECORDED on every run, so a sudden jump is visible. */
+        ;
     }
 
     /* One screenshot per session, offline, so a human can see what the app
