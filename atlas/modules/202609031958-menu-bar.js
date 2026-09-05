@@ -646,27 +646,108 @@
       return response.json();
     }).then(function (graph) {
       var nodes = (graph && graph.nodes) || [];
-      var canonical = [];
+      if (!nodes.length || panel.querySelector('[data-gm-engine]')) return;
+
+      /* EVERY node, not only the canonical eleven.
+         ------------------------------------------------------------------
+         The first version of this listed `type === 'canonical'` and the
+         architect caught it in one line: "Why are the mjs files not there?"
+         The graph publishes 44 nodes -- 11 canonical, 1 extract, 1 reference
+         and 31 fragments -- and every .mjs in the estate is in the three
+         groups the filter had thrown away: sizing-arithmetic.mjs is an
+         extract, grid-distance-maths/src/geodesy.mjs a reference,
+         atlas-pointer-deep-link.mjs and wider-fleet.mjs are fragments.
+
+         The fragments are the most useful rows here, not the least: they are
+         where a calculation has been copied and left to drift, which is the
+         defect class this estate keeps paying for. A File menu that hides
+         them shows the tidy half of the truth. Groups are ordered canonical
+         first, then the rest, and the graph's own kind_labels are used for
+         the headings where it publishes them, so this menu does not invent a
+         vocabulary the graph does not use. */
+      var ORDER = ['canonical', 'extract', 'reference', 'fragment'];
+      var FALLBACK_LABEL = {
+        canonical: 'Engine · the maths this runs on',
+        extract: 'Extracts',
+        reference: 'References',
+        fragment: 'Copies elsewhere in the estate'
+      };
+      var kindLabels = (graph && graph.kind_labels) || {};
+      var byKind = {};
       nodes.forEach(function (node) {
-        if (node && node.type === 'canonical' && node.label) canonical.push(node);
+        if (!node || !node.label) return;
+        var kind = node.type || 'other';
+        if (!byKind[kind]) byKind[kind] = [];
+        byKind[kind].push(node);
       });
-      if (!canonical.length || panel.querySelector('[data-gm-engine]')) return;
-      /* Alphabetical, as every non-version group in this estate is. */
-      canonical.sort(function (a, b) { return String(a.label).localeCompare(String(b.label), 'en-GB'); });
-      appendGroup(panel, 'Engine · the maths this runs on');
-      canonical.forEach(function (node) {
-        var a = document.createElement('a');
-        a.setAttribute('data-gm-engine', '1');
-        a.setAttribute('role', 'button');
-        a.href = ENGINE_VIEW_URL + encodeURIComponent(node.label);
-        a.target = '_blank';
-        a.rel = 'noopener';
-        a.textContent = node.label;
-        /* The node's own one-line reason, as the graph publishes it. */
-        if (node.reason) a.title = node.reason;
-        panel.appendChild(a);
+      var kinds = ORDER.filter(function (k) { return byKind[k]; })
+        .concat(Object.keys(byKind).filter(function (k) { return ORDER.indexOf(k) < 0; }).sort());
+
+      /* Hand over something that RUNS, not only something that reads.
+         ------------------------------------------------------------------
+         "The MJS apps that AI and humans can deploy as an IDE via menu ...
+         or text they could execute with AI in approved terminals or
+         powershells or IDE lets hand power to the people" -- the architect,
+         2026-09-05.
+
+         This is one command, and it is one that actually works today: it
+         clones the engine, installs it and runs its own fail-closed gate,
+         which currently reports 8 proofs and 133 checks. It is copied to the
+         clipboard rather than executed -- nothing here runs anything on
+         anyone's machine, and the person or agent that pastes it into a
+         terminal is the one who decides to. That is the whole of the
+         approval step, and it belongs to them. */
+      var RUN_COMMAND =
+        'git clone https://github.com/Ventusltd/ventus-grid-engine'
+        + ' && cd ventus-grid-engine && npm install && node verify.mjs';
+
+      appendGroup(panel, 'Run the engine yourself');
+      var run = document.createElement('button');
+      run.setAttribute('data-gm-engine', '1');
+      run.setAttribute('type', 'button');
+      run.title = RUN_COMMAND;
+      run.textContent = '⧉ Copy: clone the engine and run its proofs';
+      run.addEventListener('click', function () {
+        var done = function (ok) {
+          run.textContent = ok
+            ? '✓ Copied — paste it into a terminal'
+            : '⧉ ' + RUN_COMMAND;
+        };
+        try {
+          if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(RUN_COMMAND).then(function () { done(true); },
+              function () { done(false); });
+          } else {
+            /* No clipboard permission: show the command in full so it can
+               still be selected by hand. A control that silently does
+               nothing is worse than one that shows its own payload. */
+            done(false);
+          }
+        } catch (_) { done(false); }
       });
-      state.engine_modules = canonical.length;
+      panel.appendChild(run);
+
+      var total = 0;
+      kinds.forEach(function (kind) {
+        var group = byKind[kind];
+        /* Alphabetical, as every non-version group in this estate is. */
+        group.sort(function (a, b) { return String(a.label).localeCompare(String(b.label), 'en-GB'); });
+        appendGroup(panel, (FALLBACK_LABEL[kind] || kindLabels[kind] || kind) + ' · ' + group.length);
+        group.forEach(function (node) {
+          var a = document.createElement('a');
+          a.setAttribute('data-gm-engine', '1');
+          a.setAttribute('role', 'button');
+          a.href = ENGINE_VIEW_URL + encodeURIComponent(node.label);
+          a.target = '_blank';
+          a.rel = 'noopener';
+          a.textContent = node.label;
+          /* The node's own one-line reason, as the graph publishes it. */
+          if (node.reason) a.title = node.reason;
+          panel.appendChild(a);
+          total += 1;
+        });
+      });
+      state.engine_modules = total;
     }).catch(function () {
       /* Deliberately silent. See the note above: the menu must survive the
          engine being unreachable, and a reader who cannot reach it is not

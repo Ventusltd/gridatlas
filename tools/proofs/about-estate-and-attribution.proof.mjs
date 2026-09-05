@@ -124,10 +124,38 @@ check(
   composed.includes('https://ventusltd.github.io/ventus-grid-engine/?graph=engine-graph&focus='),
   'uses the ?focus= contract published 202609050305'
 );
+/* The first cut of this listed only `type === 'canonical'` and the architect
+   caught it in one line: "Why are the mjs files not there?" Every .mjs in the
+   estate is an extract, a reference or a fragment, so filtering to canonical
+   hid all four of them. The fragments matter most: they are where a
+   calculation has been copied and left to drift. */
 check(
-  'only the canonical modules are listed',
-  /node\.type === 'canonical'/.test(composed),
-  'canonical nodes only'
+  'every kind of node is listed, not only the canonical ones',
+  !/node\.type === 'canonical'/.test(composed)
+  && /var ORDER = \['canonical', 'extract', 'reference', 'fragment'\]/.test(composed),
+  'canonical first, then extract, reference, fragment, then anything new'
+);
+check(
+  'a kind the graph adds later still appears rather than being dropped',
+  /Object\.keys\(byKind\)\.filter\(function \(k\) \{ return ORDER\.indexOf\(k\) < 0; \}\)/.test(composed),
+  'unknown kinds are appended, not filtered out'
+);
+check(
+  'the menu hands over a command that can actually be run',
+  composed.includes('git clone https://github.com/Ventusltd/ventus-grid-engine')
+  && composed.includes('node verify.mjs'),
+  'clone, install, run the engine\'s own fail-closed gate'
+);
+check(
+  'it is copied, never executed, and says so by doing nothing else',
+  /navigator\.clipboard\.writeText\(RUN_COMMAND\)/.test(composed)
+  && !/eval\(/.test(composed.slice(composed.indexOf('RUN_COMMAND'), composed.indexOf('RUN_COMMAND') + 2000)),
+  'the person who pastes it is the one who approves it'
+);
+check(
+  'a browser with no clipboard permission shows the command instead of failing silently',
+  composed.includes("done(false);"),
+  'the control reveals its own payload'
 );
 check('the engine rows are marked so they are appended once', composed.includes('data-gm-engine'), 'data-gm-engine');
 check(
