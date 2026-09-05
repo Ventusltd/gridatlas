@@ -888,13 +888,48 @@
          (z-index 8 against the furniture's 9) and over the live canvas. */
       '  #gridatlas-print-map{display:block;position:fixed;inset:0;',
       '    width:100%!important;height:100%!important;max-width:none;',
-      '    max-height:none;object-fit:contain;background:#fff;z-index:8}',
-      /* The bar and every open panel are interface, not content. The map and
-         the furniture are the slide. */
+      '    max-height:none;object-fit:cover;background:#0b1416;z-index:8}',
+      /* NOTHING BUT THE SLIDE.
+         `#BAR_ID{display:none}` hid the menu bar and nothing else, so under
+         print media the whole layers dashboard was still in the tree: a
+         677x449 control block of checkboxes reading "Compressed Air Storage
+         [WAIT]" and "SELECT A PROJECT", plus #gridatlas-dash-toggle -- and
+         that button carries z-index:9999 against this furniture's 9, so it
+         painted OVER the footer and truncated the generation stamp to
+         "generation 202609051211 - 2026-09-". Seen on a real sheet in the
+         architect's Firefox print preview 2026-09-05.
+         Both print elements are appended directly to <body> (see the two
+         doc.body.appendChild calls above), so hiding every OTHER body child
+         is exact, and does not depend on knowing the name of each control
+         some future cartridge adds. */
+      '  body > *{display:none!important}',
+      '  body > #gridatlas-print-map,body > #gridatlas-print-furniture{',
+      '    display:block!important}',
+      /* `body > *` is specificity (0,0,1) and line 327 of this same module
+         declares `#gridatlas-dash-toggle{display:inline-flex!important}` at
+         (0,1,0). Both are !important, so specificity decides and the button
+         won -- it survived the rule above and printed over the footer.
+         `html #id` is (0,1,1) and wins regardless of source order, which
+         matters because these blocks are injected by different modules and
+         their order is not guaranteed. Written as a list so a control added
+         later is hidden by name rather than by luck. */
+      '  html #gridatlas-dash-toggle,html #gridatlas-dash,',
+      '  html .gridatlas-dash-panel,html #gridatlas-fullscreen{',
+      '    display:none!important;visibility:hidden!important}',
       '  #' + BAR_ID + '{display:none!important}',
+      /* The map now runs to the paper edge, so the furniture sits ON it and
+         must be legible over a dark basemap. Light text, and a scrim band at
+         each end rather than a full wash, so the map is not dimmed. */
       '  #gridatlas-print-furniture{display:block;position:fixed;inset:0;',
-      '    padding:8mm;box-sizing:border-box;pointer-events:none;z-index:9;',
-      '    font:11px/1.4 ui-monospace,SFMono-Regular,Menlo,monospace;color:#0b1416}',
+      '    padding:7mm 8mm;box-sizing:border-box;pointer-events:none;z-index:9;',
+      '    font:11px/1.4 ui-monospace,SFMono-Regular,Menlo,monospace;color:#eaf4f6;',
+      '    text-shadow:0 1px 3px rgba(0,0,0,.85)}',
+      '  #gridatlas-print-furniture::before,#gridatlas-print-furniture::after{',
+      '    content:"";position:absolute;left:0;right:0;height:26mm}',
+      '  #gridatlas-print-furniture::before{top:0;',
+      '    background:linear-gradient(180deg,rgba(4,10,12,.78),rgba(4,10,12,0))}',
+      '  #gridatlas-print-furniture::after{bottom:0;',
+      '    background:linear-gradient(0deg,rgba(4,10,12,.78),rgba(4,10,12,0))}',
       '  #gridatlas-print-furniture .gpf-head{letter-spacing:.28em;font-size:13px}',
       '  #gridatlas-print-furniture .gpf-brand{font-weight:700;margin-right:10px}',
       '  #gridatlas-print-furniture .gpf-sub{opacity:.65;letter-spacing:.16em}',
@@ -937,7 +972,17 @@
          `.dashboard` -- while the map chain is given an EXPLICIT print height
          instead of `auto`. Same measurement after: 385x838 and 1392x518, two
          full-resolution image XObjects, one page, both viewports. */
-      '  @page{size:auto;margin:8mm}',
+      /* EDGE TO EDGE. "CAN THE PRINT COVER THE WHOLE PAGE LIKE A PROPER
+         PRESENTATION SLIDE OR BROCHURE AND NOT LEAVE ANY WHITE SPACE?" --
+         the architect, having watched an 8mm margin and object-fit:contain
+         letterbox a 1390x518 capture into the middle of a landscape sheet
+         with a white band above and below it.
+         margin:0 removes the paper margin; object-fit:cover above fills the
+         sheet instead of fitting inside it. Cover crops rather than
+         letterboxes, so a little ground at the long edge is lost -- that is
+         the trade the question asks for, and the capture is still the exact
+         pixels that were on the screen. */
+      '  @page{size:auto;margin:0}',
       '  html,body{background:#fff!important;height:100%!important;',
       '    margin:0!important;padding:0!important;overflow:hidden!important}',
       '  body{display:flex!important;flex-direction:column!important}',
