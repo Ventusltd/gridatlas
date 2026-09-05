@@ -39,7 +39,7 @@ on:
       teleprinter_ref:
         description: 'Ventusltd/teleprinter ref to check these cartridges against'
         required: false
-        default: '1e9c61f4b5871e5dd19eb72ecd1c2b1de429a39e'
+        default: '11aa2a05471347d2413380bdad5879d572a1c98f'
   push:
     branches: [main]
     paths:
@@ -75,7 +75,7 @@ jobs:
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
         with:
           repository: Ventusltd/teleprinter
-          ref: ${{ github.event.inputs.teleprinter_ref || '1e9c61f4b5871e5dd19eb72ecd1c2b1de429a39e' }}
+          ref: ${{ github.event.inputs.teleprinter_ref || '11aa2a05471347d2413380bdad5879d572a1c98f' }}
           path: teleprinter
 
       - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v4
