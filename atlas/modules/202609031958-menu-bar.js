@@ -825,16 +825,38 @@
       || 'Data © OpenStreetMap contributors | © CARTO | EV data © Open Charge Map';
   }
 
+  /* THE GENERATION IS READ FROM WHAT THE COMPOSER ACTUALLY PUBLISHES.
+     v9.121 read `window.__GRIDATLAS_CURRENT__`, which exists nowhere in this
+     estate: the loader in atlas/index.html writes
+     `window.__GRIDATLAS_ATLAS__` and stamps
+     `document.documentElement.dataset.gridatlasGeneration`. So the stamp on
+     every printed sheet silently lost the build it came from -- measured at
+     202609050354, the furniture read "2026-09-05 10:35 UTC" and nothing else.
+     A slide that cannot be traced back to a composition is not evidence.
+     Both published sources are read, because the dataset attribute survives a
+     later document.write while a global would not. */
   function generationText() {
-    var current = window.__GRIDATLAS_CURRENT__;
-    var generation = current && current.generation;
+    var atlas = window.__GRIDATLAS_ATLAS__;
+    var generation = (atlas && atlas.generation)
+      || (document.documentElement && document.documentElement.dataset
+        && document.documentElement.dataset.gridatlasGeneration);
     return generation ? 'generation ' + generation : '';
   }
 
   /* The slide furniture: a title, the identity of whatever is on screen, the
      credit, and the stamp. Created only while printing and removed after, so
      nothing about the live page changes. */
+  /* Printing twice must not leave two of anything. Both export overlays are
+     addressed by id, and a second Print before the first one's cleanup timer
+     has run would otherwise append a duplicate id and stack two stamps on the
+     sheet. */
+  function dropById(doc, id) {
+    var existing = doc.getElementById(id);
+    if (existing && existing.parentNode) existing.parentNode.removeChild(existing);
+  }
+
   function buildPrintFurniture(doc) {
+    dropById(doc, 'gridatlas-print-furniture');
     var box = doc.createElement('div');
     box.id = 'gridatlas-print-furniture';
     var selected = doc.querySelector('.project-popup .name, .gm-panel .project-name');
@@ -859,7 +881,14 @@
     style.id = 'gridatlas-print-css';
     style.textContent = [
       '#gridatlas-print-furniture{display:none}',
+      '#gridatlas-print-map{display:none}',
       '@media print{',
+      /* The captured raster, laid over the map area at `contain` so it keeps
+         its aspect on whatever paper the reader chose, under the furniture
+         (z-index 8 against the furniture's 9) and over the live canvas. */
+      '  #gridatlas-print-map{display:block;position:fixed;inset:0;',
+      '    width:100%!important;height:100%!important;max-width:none;',
+      '    max-height:none;object-fit:contain;background:#fff;z-index:8}',
       /* The bar and every open panel are interface, not content. The map and
          the furniture are the slide. */
       '  #' + BAR_ID + '{display:none!important}',
@@ -884,20 +913,39 @@
          whatever the reader chose, and the layout then fills that page rather
          than assuming its shape.
 
-         The map cannot be given a fixed height for the same reason. Body
-         becomes a flex column at the full height of the page box, the
-         furniture takes its natural height at either end, and the map takes
-         what is left -- `min-height:0` because a flex child will otherwise
-         refuse to shrink below its content and push the footer off the sheet.
-         A phone-shaped canvas and a wide desktop one both end up filling the
-         printable area of whatever paper is in front of them. */
+         WHICH BOX FLEXES, AND WHICH BOX MUST NOT.
+         v9.121 put `flex:1 1 auto;min-height:0;height:auto` on
+         `.map-container, .maplibregl-map, .maplibregl-canvas-container`
+         together, reasoning that body becomes a flex column so the map takes
+         the remaining height. THAT PREMISE WAS FALSE FOR THIS DOM. The shell
+         is `body > .dashboard > .map-container > #map`, and `.dashboard` is
+         already the flex column (`display:flex;flex-direction:column;
+         height:100dvh` in ventusv8.css). Making body a flex column therefore
+         reaches `.dashboard`, never the map. `.map-container` is
+         `position:relative;display:block`, so `flex:1 1 auto` on `#map` is
+         inert -- and `height:auto!important` overrode `#map{height:100%}` and
+         collapsed it, because its only child is `position:absolute` and
+         contributes no height.
+
+         Measured at 202609050354 under print emulation: `.maplibregl-canvas`
+         was 385x0 on a 393x852 phone and 1392x0 on a 1400x900 desktop, and
+         `Page.printToPDF` produced ZERO image XObjects on both. A sheet with
+         no map on it.
+
+         So `.map-container` keeps the flex line -- that part is correct and
+         is what makes the sheet fit the paper, since it IS a flex child of
+         `.dashboard` -- while the map chain is given an EXPLICIT print height
+         instead of `auto`. Same measurement after: 385x838 and 1392x518, two
+         full-resolution image XObjects, one page, both viewports. */
       '  @page{size:auto;margin:8mm}',
       '  html,body{background:#fff!important;height:100%!important;',
       '    margin:0!important;padding:0!important;overflow:hidden!important}',
       '  body{display:flex!important;flex-direction:column!important}',
-      '  .map-container,.maplibregl-map,.maplibregl-canvas-container{',
+      '  .map-container{',
       '    flex:1 1 auto!important;min-height:0!important;width:100%!important;',
-      '    height:auto!important;max-height:100%!important}',
+      '    max-height:100%!important}',
+      '  #map,.maplibregl-map,.maplibregl-canvas-container{',
+      '    height:100%!important;width:100%!important;max-height:100%!important}',
       '  .maplibregl-canvas{width:100%!important;height:100%!important;',
       '    object-fit:contain}',
       /* Nothing may spill onto a second sheet: a slide is one page. */
@@ -908,21 +956,70 @@
     doc.head.appendChild(style);
   }
 
+  /* THE SHEET NEEDS A RASTER, NOT A LIVE CANVAS.
+     ------------------------------------------------------------------------
+     Giving the map chain a print height was necessary and not sufficient. With
+     the height restored, `Page.printToPDF` on the pinned candidate emitted an
+     image XObject of exactly the map's size -- 383x838 -- and every one of its
+     962,862 inflated bytes was (0,0,0), behind an /SMask whose 320,954 bytes
+     were all zero. A fully transparent rectangle the shape of the map. The
+     reader still gets a blank sheet; the only difference is that the blankness
+     now has dimensions.
+
+     The cause is the one saveImage() already knew about. The map is a WebGL
+     canvas created without preserveDrawingBuffer, so its drawing buffer is
+     gone by the time anything outside the frame that drew it goes looking --
+     and the print rasteriser is outside that frame, exactly as toDataURL was.
+     No stylesheet can fix that, because it is not a layout problem.
+
+     So printing captures the map the same way saving does: inside a render
+     frame, into a PNG, which is placed over the map for print media only and
+     removed afterwards. A raster survives rasterisation. If the capture fails
+     -- a tainted canvas, no handle, a blank read -- the sheet is printed
+     anyway with the live canvas, which is no worse than before and still
+     carries the furniture, title and credit. */
+  function buildPrintMap(doc, dataUrl) {
+    dropById(doc, 'gridatlas-print-map');
+    var image = doc.createElement('img');
+    image.id = 'gridatlas-print-map';
+    image.alt = '';
+    image.src = dataUrl;
+    doc.body.appendChild(image);
+    return image;
+  }
+
   function printView(doc) {
     installPrintStyle(doc);
     var furniture = buildPrintFurniture(doc);
+    var shot = null;
     var clean = function () {
       if (furniture && furniture.parentNode) furniture.parentNode.removeChild(furniture);
+      if (shot && shot.parentNode) shot.parentNode.removeChild(shot);
       window.removeEventListener('afterprint', clean);
     };
     window.addEventListener('afterprint', clean);
-    /* Give the browser a frame to apply the print stylesheet before the dialog
-       measures the page; without it the map is measured at its screen size. */
-    window.setTimeout(function () { window.print(); }, 60);
-    /* afterprint is not fired by every browser, notably some mobile ones, so
-       the furniture is removed on a timer as well. It is display:none off
-       print anyway, so a late removal changes nothing a reader can see. */
-    window.setTimeout(clean, 20000);
+    var go = function () {
+      /* Give the browser a frame to apply the print stylesheet before the
+         dialog measures the page; without it the map is measured at its
+         screen size. */
+      window.setTimeout(function () { window.print(); }, 60);
+      /* afterprint is not fired by every browser, notably some mobile ones,
+         so the furniture is removed on a timer as well. It is display:none
+         off print anyway, so a late removal changes nothing a reader sees. */
+      window.setTimeout(clean, 20000);
+    };
+    captureMap(doc, function (dataUrl) {
+      if (dataUrl) {
+        shot = buildPrintMap(doc, dataUrl);
+        /* Wait for the browser to decode it: printing a raster it has not
+           finished reading is the same blank sheet by another route. */
+        if (shot.decode) { shot.decode().then(go, go); return; }
+        shot.onload = go;
+        shot.onerror = go;
+        return;
+      }
+      go();
+    });
   }
 
   /* Was anything actually drawn? A canvas read outside a render frame returns
@@ -944,8 +1041,49 @@
     }
   }
 
+  /* THE MAP HANDLE IS THE ONE THE ESTATE ACTUALLY PUBLISHES.
+     v9.121 read `window.__GRIDATLAS_MAP__ || (window.map && ...)`. Neither
+     resolves: `__GRIDATLAS_MAP__` is assigned nowhere in this estate, and
+     `window.map` is the DIV `<div id="map">` by named-element reflection,
+     whose `.getCanvas` is undefined. `map` was therefore null on every
+     attempt, the render-frame guard was skipped, and the canvas was read
+     OUTSIDE a frame -- the exact failure the guard exists to prevent. Every
+     save on both viewports refused with "the map could not be captured".
+     The search cartridge publishes `window.__GRIDATLAS_V9_MAP__`, and that
+     is the handle. The guard was sound; only the lookup was wrong.
+
+     Both export paths need it, so it is looked up in one place. */
+  function mapHandle() {
+    var map = window.__GRIDATLAS_V9_MAP__;
+    if (map && map.getCanvas) return map;
+    return (window.map && window.map.getCanvas) ? window.map : null;
+  }
+
+  /* Capture the map INSIDE a render frame and hand the result to `then`.
+     A canvas created without preserveDrawingBuffer is transparent to every
+     reader outside the frame that drew it -- the browser's own print
+     rasteriser included. */
+  function captureMap(doc, then) {
+    var map = mapHandle();
+    var canvas = doc.querySelector('.maplibregl-canvas')
+      || (map && map.getCanvas ? map.getCanvas() : null);
+    if (!canvas) { then(null, null); return; }
+    var grab = function () {
+      var url = null;
+      try { url = canvas.toDataURL('image/png'); } catch (_) { url = null; }
+      if (!url || looksBlank(canvas)) { then(null, canvas); return; }
+      then(url, canvas);
+    };
+    if (map && map.once && map.triggerRepaint) {
+      map.once('render', grab);
+      map.triggerRepaint();
+    } else {
+      grab();
+    }
+  }
+
   function saveImage(doc, button) {
-    var map = window.__GRIDATLAS_MAP__ || (window.map && window.map.getCanvas ? window.map : null);
+    var map = mapHandle();
     var canvas = doc.querySelector('.maplibregl-canvas')
       || (map && map.getCanvas ? map.getCanvas() : null);
     var say = function (text) { button.textContent = text; };
@@ -986,15 +1124,28 @@
     if (!panel || panel.querySelector('[data-gm-export]')) return 0;
     appendGroup(panel, 'Export this view');
 
+    /* EACH CONTROL IS NAMED, BECAUSE ITS LABEL IS NOT A NAME.
+       Both controls carried `data-gm-export="1"` and nothing else, so the only
+       way anything outside this function could tell them apart was by reading
+       their text. saveImage() REWRITES that text on click -- to "Image saved",
+       or to the refusal -- so a caller that found the button by its words lost
+       it the moment it used it. The first outcome proof written for this
+       feature did exactly that, and its failures were unattributable as a
+       result. An id and a typed data attribute are stable across the click,
+       across a relabelling, and across translation. The attribute keeps the
+       name `data-gm-export` so the "already built" guard above and every
+       existing check that looks for it still see it. */
     var print = doc.createElement('button');
-    print.setAttribute('data-gm-export', '1');
+    print.id = 'gridatlas-export-print';
+    print.setAttribute('data-gm-export', 'print');
     print.setAttribute('type', 'button');
     print.textContent = '⎙ Print · or save as PDF';
     print.addEventListener('click', function () { printView(doc); });
     panel.appendChild(print);
 
     var image = doc.createElement('button');
-    image.setAttribute('data-gm-export', '1');
+    image.id = 'gridatlas-export-image';
+    image.setAttribute('data-gm-export', 'image');
     image.setAttribute('type', 'button');
     image.textContent = '⤓ Save an image of this view';
     image.addEventListener('click', function () { saveImage(doc, image); });
