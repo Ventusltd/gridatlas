@@ -272,9 +272,17 @@ assert.equal(inheritedTrailingWhitespace.length, 58,
 assert.deepEqual(trailingWhitespaceLines(lf(OLD_SUBSTATION)),
   inheritedTrailingWhitespace,
   'the prior cartridge did not preserve exactly the receiver whitespace');
+// The active engine can legitimately advance independently of the historical
+// stylesheet hoist (Claude259 changes the polygon hit radii). Compare the
+// composed bytes with their declared, hashed carried source, while retaining
+// the original hoist's 58-line regression above.
+const currentCarry = substationParts.find(part => part.role === 'carried_shell_script');
+assert.ok(currentCarry, 'current composition must name its carried engine');
+assert.equal(digest(lf(currentCarry.path)), currentCarry.sha256,
+  'the carried engine must match its declared source identity');
 assert.deepEqual(trailingWhitespaceLines(substationSource),
-  inheritedTrailingWhitespace,
-  'the new cartridge introduced or removed trailing whitespace');
+  trailingWhitespaceLines(lf(currentCarry.path)),
+  'the current cartridge introduced or removed whitespace outside its carried engine');
 // Named by the CARTRIDGE'S OWN generation, not the whole composition's --
 // substation-intelligence and sld-sandbox are cut independently, so
 // current.generation (a pointer to whichever cartridge was cut most

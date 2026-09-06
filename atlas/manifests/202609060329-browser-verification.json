@@ -1,0 +1,374 @@
+{
+  "status": "PASS",
+  "generation": "202609060329",
+  "viewport": {
+    "width": 393,
+    "height": 852
+  },
+  "cases": [
+    {
+      "label": "supplied-point active-register absence",
+      "url": "http://127.0.0.1:53462/atlas/?repd_ref=12453&project=Thorpe+Marsh+Power+Station+-+Battery+Energy+Storage&technology=bess&capacity_mw=1450&latitude=53.5802575&longitude=-1.0850616&zoom=12",
+      "manifest_attempts": 0,
+      "induced_failure": null,
+      "page_errors": [],
+      "console_errors": [],
+      "material_request_failures": [],
+      "obsolete_pipeline_requests": [],
+      "runtime_generation": "202609060329",
+      "owner_generation": "202609060329",
+      "source_generation": "202609040229",
+      "owner": {
+        "repd_ref": "12453",
+        "name": "Thorpe Marsh Power Station - Battery Energy Storage",
+        "technology": "bess",
+        "capacity_mw": 1450,
+        "longitude": -1.0850616,
+        "latitude": 53.5802575,
+        "supplied_status": null,
+        "owner_epoch": 1,
+        "status": "NOT_IN_ACTIVE_REGISTER",
+        "resolved": false,
+        "mapped": false,
+        "supplied_point_usable": true,
+        "identity_source": "ARRIVAL_LINK",
+        "official_active_register_match": false,
+        "statement": "No exact identity in the active-register snapshot; supplied arrival fields retained."
+      },
+      "query_count": 1,
+      "retry_count": 0,
+      "menus": [
+        "File",
+        "Edit",
+        "View",
+        "Scope",
+        "Grid",
+        "About"
+      ],
+      "links_drawn": 5,
+      "nearest_km": 0.175,
+      "origin_source": "link-supplied-not-in-active-register",
+      "verification": {
+        "status": "NOT_IN_ACTIVE_REGISTER",
+        "repd_ref": "12453",
+        "supplied_coordinates_kept": true,
+        "arrival_fields": {
+          "name": "Thorpe Marsh Power Station - Battery Energy Storage",
+          "technology": "bess",
+          "capacity_mw": 1450,
+          "supplied_status": null
+        },
+        "official_active_register_match": false,
+        "message": null
+      },
+      "status_message": null,
+      "failures": [],
+      "arrival_retry": null,
+      "reconciliation": {
+        "status": "MEASUREMENT_CLAIMED",
+        "epoch": 1,
+        "owner_epoch": 1
+      },
+      "gate": {
+        "epoch": 1,
+        "activeKey": "deep-link:?repd_ref=12453&project=Thorpe+Marsh+Power+Station+-+Battery+Energy+Storage&technology=bess&capacity_mw=1450&latitude=53.5802575&longitude=-1.0850616&zoom=12",
+        "invalidations": []
+      },
+      "popup_text": "\u22ee\u22ee Thorpe Marsh Power Station - Battery Energy Storage \u2212 \u00d7 Thorpe Marsh Power Station - Battery Energy Storage bess 1450 MW REPD 12453 \u00b7 not in the active-register snapshot; project details and point are from the arrival link. Card and point built from the arrival link. Nearest 400 kV substation: Unnamed substation \u00b7 0.31 km straight No corridor estimate at this separation: under about a kilometre the site-centroid resolution dominates: median published length 0.59 km against a median error of 52.5%, so a straight line between centroids is not measuring route factor and no estimate is offered. (nearest named: Thorpe Marsh Substation \u00b7 0.60 km. A new 400 kV four-bay substation is under construction here (public record).) Scope: nearest of the 278 mapped substations at 400 kV or above that this search could see; the operator publishes 355 connection points at that class and 214 of them carry coordinates, so 141 cannot be measured to at all. A nearer one may exist that nothing here can see. Transmission network: none of the substations named here joins by name to a published NESO site, so nothing is stated about their circuits. Explore route corridors \u203a NEAREST SUBSTATIONS \u226533 KV BETA 0.18 km Unnamed substation 275 kV 0.18 km Thorpe Marsh 66 kV 0.31 km Unnamed substation 400 kV 0.60 km Thorpe Marsh Substation 400 kV 0.70 km Trumfleet Generation 66 kV 400 kV transmission, bulk power. 275 kV transmission, bulk power. 66 kV largely legacy industrial distribution, much of it being reinforced to 132 kV and above. Descriptions of the network, not advice about this scheme. HIDE THE PROJECT RING LAY OUT A SCHEME HERE \u25b8 Beta analytics, not an actual grid connection. Straight-line distance to mapped geometry \u2014 not a cable route, not a connection length, and no route has been walked. A real connection depends on factors that must be studied: network impedance and fault level, thermal headroom, existing committed connections and queue position, right of way, wayleaves and easements, crossings, terrain, land control and consent. None of those can be inferred from a distance. A mapped substation does not confirm capacity, voltage suitability or acceptance by any network party, and absence from a mapped layer is not absence on the ground.",
+      "visible_measurement": true
+    },
+    {
+      "label": "ref-only active-register absence",
+      "url": "http://127.0.0.1:53462/atlas/?repd_ref=12453",
+      "manifest_attempts": 0,
+      "induced_failure": null,
+      "page_errors": [],
+      "console_errors": [],
+      "material_request_failures": [],
+      "obsolete_pipeline_requests": [],
+      "runtime_generation": "202609060329",
+      "owner_generation": "202609060329",
+      "source_generation": "202609040229",
+      "owner": {
+        "repd_ref": "12453",
+        "name": null,
+        "technology": null,
+        "capacity_mw": null,
+        "longitude": null,
+        "latitude": null,
+        "supplied_status": null,
+        "owner_epoch": 1,
+        "status": "NOT_IN_ACTIVE_REGISTER",
+        "resolved": false,
+        "mapped": false,
+        "supplied_point_usable": false,
+        "identity_source": "ARRIVAL_LINK",
+        "official_active_register_match": false,
+        "statement": "No exact identity in the active-register snapshot; supplied arrival fields retained."
+      },
+      "query_count": 1,
+      "retry_count": 0,
+      "menus": [
+        "File",
+        "Edit",
+        "View",
+        "Scope",
+        "Grid",
+        "About"
+      ],
+      "links_drawn": 0,
+      "nearest_km": null,
+      "origin_source": "not-in-active-register-no-supplied-point",
+      "verification": {
+        "status": "NOT_IN_ACTIVE_REGISTER",
+        "repd_ref": "12453",
+        "supplied_coordinates_kept": false,
+        "official_active_register_match": false
+      },
+      "status_message": "REPD 12453 is not in the active-register snapshot, and this link supplies no coordinates from which to measure. No official status or location is inferred.",
+      "failures": [],
+      "arrival_retry": null,
+      "reconciliation": {
+        "status": "MEASUREMENT_CLAIMED",
+        "epoch": 1,
+        "owner_epoch": 1
+      },
+      "gate": {
+        "epoch": 1,
+        "activeKey": "deep-link:?repd_ref=12453",
+        "invalidations": []
+      },
+      "popup_text": "",
+      "visible_measurement": false
+    },
+    {
+      "label": "failed owner retries to official match",
+      "url": "http://127.0.0.1:53462/atlas/?repd_ref=12588",
+      "manifest_attempts": 2,
+      "induced_failure": {
+        "pageErrors": [],
+        "consoleErrors": [
+          "Failed to load resource: net::ERR_FAILED",
+          "[V9 EXACT REPD DEEP LINK] TypeError: Failed to fetch\n    at gridAtlasMaplibreWorkerFetch (blob:http://127.0.0.1:53462/6b5c80a9-0c4f-467b-87ad-b06c3212c37d:284:39)\n    at blob:http://127.0.0.1:53462/e66176c8-882d-4c47-b4b1-4860ef578517:131:30\n    at verifyManifest (blob:http://127.0.0.1:53462/e66176c8-882d-4c47-b4b1-4860ef578517:143:7)\n    at blob:http://127.0.0.1:53462/e66176c8-882d-4c47-b4b1-4860ef578517:188:13\n    at runtime (blob:http://127.0.0.1:53462/e66176c8-882d-4c47-b4b1-4860ef578517:195:7)\n    at queryOfficialRepd (blob:http://127.0.0.1:53462/e66176c8-882d-4c47-b4b1-4860ef578517:284:34)\n    at receiveExactRepdDeepLink (blob:http://127.0.0.1:53462/e66176c8-882d-4c47-b4b1-4860ef578517:670:29)\n    at window.addEventListener.once (blob:http://127.0.0.1:53462/e66176c8-882d-4c47-b4b1-4860ef578517:791:12)"
+        ],
+        "requestFailures": [
+          {
+            "url": "https://ventusltd.github.io/gridatlas/data/repd_v9_manifest_202608290716.json",
+            "error": "net::ERR_FAILED"
+          }
+        ]
+      },
+      "page_errors": [],
+      "console_errors": [],
+      "material_request_failures": [],
+      "obsolete_pipeline_requests": [],
+      "runtime_generation": "202609060329",
+      "owner_generation": "202609060329",
+      "source_generation": "202609040229",
+      "owner": {
+        "status": "RESOLVED",
+        "owner_epoch": 3,
+        "repd_ref": "12588",
+        "resolved": true,
+        "mapped": true,
+        "name": "Botley West, Botley - Botley West Solar Project",
+        "postcode": "OX29 4DZ",
+        "longitude": -1.348973,
+        "latitude": 51.813209,
+        "technology": "solar",
+        "capacity_mw": 840,
+        "status_value": "application submitted",
+        "identity_source": "OFFICIAL_ACTIVE_REGISTER",
+        "official_active_register_match": true
+      },
+      "query_count": 1,
+      "retry_count": 1,
+      "menus": [
+        "File",
+        "Edit",
+        "View",
+        "Scope",
+        "Grid",
+        "About"
+      ],
+      "links_drawn": 5,
+      "nearest_km": 3.432,
+      "origin_source": "register",
+      "verification": null,
+      "status_message": null,
+      "failures": [],
+      "arrival_retry": {
+        "status": "RESOLVED",
+        "invalidated_epoch": 2,
+        "owner_epoch": 3,
+        "measurement_epoch": 3
+      },
+      "reconciliation": {
+        "status": "MEASUREMENT_CLAIMED",
+        "epoch": 3,
+        "owner_epoch": 3
+      },
+      "gate": {
+        "epoch": 3,
+        "activeKey": "deep-link:?repd_ref=12588",
+        "invalidations": [
+          {
+            "epoch": 2,
+            "reason": "identity-retry"
+          }
+        ]
+      },
+      "popup_text": "\u22ee\u22ee Botley West, Botley - Botley West Solar Project \u2212 \u00d7 Botley West, Botley - Botley West Solar Project solar 840 MW Botley West, Botley, Oxford \u00b7 OX29 4DZ \u00b7 Oxfordshire REPD 12588 \u00b7 application submitted Nearest 400 kV substation: Cowley Substation \u00b7 15.76 km straight \u00b7 ~19.6 km corridor estimate (\u00d71.245, 73% of GB transmission cable circuits within 15% of published length, 59 distinct site pairs). Indicative highway-corridor screening only. Not a connection offer, not a constructability assessment and not a consenting design. Calibrated on cable circuits, which follow the highway network. Overhead line crosses open country and measures 1.13; this factor is not applied to an overhead-line question. Scope: nearest of the 278 mapped substations at 400 kV or above that this search could see; the operator publishes 355 connection points at that class and 214 of them carry coordinates, so 141 cannot be measured to at all. A nearer one may exist that nothing here can see. COWLEY SUBSTATION SITE-WIDE NESO PUBLISHED Site-wide published envelope across the 400/132 kV buses at this site, not a value for any one bus. 6 circuits \u00b7 10 transformer winding connections at the site (a transformer whose windings are both here is published at each of them, so this is not a count of machines) \u00b7 circuit winter ratings across the site 1,180\u20132,779 MVA \u00b7 three-phase RMS break current 12.4\u201349.4 kA across every busbar at this site over 15 peak-demand rows at 3 buses (2025/26 to 2033/34) \u00b7 5 reactive compensation units \u00b7 14 changes published for 2026\u20132030. Appendix D publishes eight current metrics and they are not interchangeable; this is one published breaker-duty metric, and switchgear carries several relevant ratings besides it. NESO Electricity Ten Year Statement 2025, appendices B and D, via Ventusltd/data-grid-gb. Published parameters. Not a statement about whether any project can connect here. Transmission network: loading the published node/branch model (about 10 MB, once per session). This card fills in when it arrives. Explore route corridors \u203a NEAREST SUBSTATIONS \u226533 KV BETA 3.43 km Yarnton Substation 132 kV 3.81 km Eynsham 33 kV 4.56 km Green Lane Electricity Substation 33 kV 6.00 km Lovelace Road 33 kV 8.61 km West Oxford Substation 132 kV 132 kV distribution in England and Wales, transmission in Scotland. 33 kV primary distribution; the usual class for a utility-scale solar or storage connection. Descriptions of the network, not advice about this scheme. HIDE THE PROJECT RING LAY OUT A SCHEME HERE \u25b8 Beta analytics, not an actual grid connection. Straight-line distance to mapped geometry \u2014 not a cable route, not a connection length, and no route has been walked. A real connection depends on factors that must be studied: network impedance and fault level, thermal headroom, existing committed connections and queue position, right of way, wayleaves and easements, crossings, terrain, land control and consent. None of those can be inferred from a distance. A mapped substation does not confirm capacity, voltage suitability or acceptance by any network party, and absence from a mapped layer is not absence on the ground.",
+      "visible_measurement": true
+    },
+    {
+      "label": "failed owner retries to active-register absence",
+      "url": "http://127.0.0.1:53462/atlas/?repd_ref=12453",
+      "manifest_attempts": 2,
+      "induced_failure": {
+        "pageErrors": [],
+        "consoleErrors": [
+          "Failed to load resource: net::ERR_FAILED",
+          "[V9 EXACT REPD DEEP LINK] TypeError: Failed to fetch\n    at gridAtlasMaplibreWorkerFetch (blob:http://127.0.0.1:53462/201d84fb-283d-411a-ad30-d7599de2dfb6:284:39)\n    at blob:http://127.0.0.1:53462/4bda4319-f328-441d-9189-3ba180f75721:131:30\n    at verifyManifest (blob:http://127.0.0.1:53462/4bda4319-f328-441d-9189-3ba180f75721:143:7)\n    at blob:http://127.0.0.1:53462/4bda4319-f328-441d-9189-3ba180f75721:188:13\n    at runtime (blob:http://127.0.0.1:53462/4bda4319-f328-441d-9189-3ba180f75721:195:7)\n    at queryOfficialRepd (blob:http://127.0.0.1:53462/4bda4319-f328-441d-9189-3ba180f75721:284:34)\n    at receiveExactRepdDeepLink (blob:http://127.0.0.1:53462/4bda4319-f328-441d-9189-3ba180f75721:670:29)\n    at window.addEventListener.once (blob:http://127.0.0.1:53462/4bda4319-f328-441d-9189-3ba180f75721:791:12)"
+        ],
+        "requestFailures": [
+          {
+            "url": "https://ventusltd.github.io/gridatlas/data/repd_v9_manifest_202608290716.json",
+            "error": "net::ERR_FAILED"
+          }
+        ]
+      },
+      "page_errors": [],
+      "console_errors": [],
+      "material_request_failures": [],
+      "obsolete_pipeline_requests": [],
+      "runtime_generation": "202609060329",
+      "owner_generation": "202609060329",
+      "source_generation": "202609040229",
+      "owner": {
+        "repd_ref": "12453",
+        "name": null,
+        "technology": null,
+        "capacity_mw": null,
+        "longitude": null,
+        "latitude": null,
+        "supplied_status": null,
+        "owner_epoch": 3,
+        "status": "NOT_IN_ACTIVE_REGISTER",
+        "resolved": false,
+        "mapped": false,
+        "supplied_point_usable": false,
+        "identity_source": "ARRIVAL_LINK",
+        "official_active_register_match": false,
+        "statement": "No exact identity in the active-register snapshot; supplied arrival fields retained."
+      },
+      "query_count": 1,
+      "retry_count": 1,
+      "menus": [
+        "File",
+        "Edit",
+        "View",
+        "Scope",
+        "Grid",
+        "About"
+      ],
+      "links_drawn": 0,
+      "nearest_km": null,
+      "origin_source": "not-in-active-register-no-supplied-point",
+      "verification": {
+        "status": "NOT_IN_ACTIVE_REGISTER",
+        "repd_ref": "12453",
+        "supplied_coordinates_kept": false,
+        "official_active_register_match": false
+      },
+      "status_message": "REPD 12453 is not in the active-register snapshot, and this link supplies no coordinates from which to measure. No official status or location is inferred.",
+      "failures": [],
+      "arrival_retry": {
+        "status": "NOT_IN_ACTIVE_REGISTER",
+        "invalidated_epoch": 2,
+        "owner_epoch": 3,
+        "measurement_epoch": 3
+      },
+      "reconciliation": {
+        "status": "MEASUREMENT_CLAIMED",
+        "epoch": 3,
+        "owner_epoch": 3
+      },
+      "gate": {
+        "epoch": 3,
+        "activeKey": "deep-link:?repd_ref=12453",
+        "invalidations": [
+          {
+            "epoch": 2,
+            "reason": "identity-retry"
+          }
+        ]
+      },
+      "popup_text": "",
+      "visible_measurement": false
+    },
+    {
+      "label": "official active-register match",
+      "url": "http://127.0.0.1:53462/atlas/?repd_ref=12588&project=Botley+West%2C+Botley+-+Botley+West+Solar+Project&technology=solar&capacity_mw=840&latitude=51.8132088&longitude=-1.3489728&zoom=12",
+      "manifest_attempts": 0,
+      "induced_failure": null,
+      "page_errors": [],
+      "console_errors": [],
+      "material_request_failures": [],
+      "obsolete_pipeline_requests": [],
+      "runtime_generation": "202609060329",
+      "owner_generation": "202609060329",
+      "source_generation": "202609040229",
+      "owner": {
+        "status": "RESOLVED",
+        "owner_epoch": 1,
+        "repd_ref": "12588",
+        "resolved": true,
+        "mapped": true,
+        "name": "Botley West, Botley - Botley West Solar Project",
+        "postcode": "OX29 4DZ",
+        "longitude": -1.348973,
+        "latitude": 51.813209,
+        "technology": "solar",
+        "capacity_mw": 840,
+        "status_value": "application submitted",
+        "identity_source": "OFFICIAL_ACTIVE_REGISTER",
+        "official_active_register_match": true
+      },
+      "query_count": 1,
+      "retry_count": 0,
+      "menus": [
+        "File",
+        "Edit",
+        "View",
+        "Scope",
+        "Grid",
+        "About"
+      ],
+      "links_drawn": 5,
+      "nearest_km": 3.432,
+      "origin_source": "link-supplied-register-verified",
+      "verification": {
+        "status": "VERIFIED",
+        "repd_ref": "12588",
+        "discrepancy_km": 0,
+        "recomputed": false
+      },
+      "status_message": null,
+      "failures": [],
+      "arrival_retry": null,
+      "reconciliation": {
+        "status": "MEASUREMENT_CLAIMED",
+        "epoch": 1,
+        "owner_epoch": 1
+      },
+      "gate": {
+        "epoch": 1,
+        "activeKey": "deep-link:?repd_ref=12588&project=Botley+West%2C+Botley+-+Botley+West+Solar+Project&technology=solar&capacity_mw=840&latitude=51.8132088&longitude=-1.3489728&zoom=12",
+        "invalidations": []
+      },
+      "popup_text": "\u22ee\u22ee Botley West, Botley - Botley West Solar Project \u2212 \u00d7 Botley West, Botley - Botley West Solar Project solar 840 MW Botley West, Botley, Oxford \u00b7 OX29 4DZ \u00b7 Oxfordshire REPD 12588 \u00b7 application submitted Nearest 400 kV substation: Cowley Substation \u00b7 15.76 km straight \u00b7 ~19.6 km corridor estimate (\u00d71.245, 73% of GB transmission cable circuits within 15% of published length, 59 distinct site pairs). Indicative highway-corridor screening only. Not a connection offer, not a constructability assessment and not a consenting design. Calibrated on cable circuits, which follow the highway network. Overhead line crosses open country and measures 1.13; this factor is not applied to an overhead-line question. Scope: nearest of the 278 mapped substations at 400 kV or above that this search could see; the operator publishes 355 connection points at that class and 214 of them carry coordinates, so 141 cannot be measured to at all. A nearer one may exist that nothing here can see. COWLEY SUBSTATION SITE-WIDE NESO PUBLISHED Site-wide published envelope across the 400/132 kV buses at this site, not a value for any one bus. 6 circuits \u00b7 5 transformers \u00b7 circuit winter ratings across the site 1,180\u20132,779 MVA \u00b7 three-phase RMS break current 12.4\u201349.4 kA across every busbar at this site over 15 peak-demand rows at 3 buses (2025/26 to 2033/34) \u00b7 5 reactive compensation units \u00b7 14 changes published for 2026\u20132030. Appendix D publishes eight current metrics and they are not interchangeable; this is one published breaker-duty metric, and switchgear carries several relevant ratings besides it. NESO Electricity Ten Year Statement 2025, appendices B and D, via Ventusltd/data-grid-gb. Published parameters. Not a statement about whether any project can connect here. COWLEY ETYS TOPOLOGY Joined by name from Cowley Substation to NESO site COWL (NGET); declared voltages 400, 132 kV. At the site: 6 circuits and 5 transformers, counted as units. The per-voltage lines below count landings, one for each end held here, so a transformer with both windings at this site appears under both of its voltages. At 400 kV: 6 circuits, 5 transformers, 14 published changes (2026, 2028, 2030). At 132 kV: 0 circuits, 5 transformers. Circuit ratings: winter 1180-2779 MVA, summer 877-2219 MVA, across 6 circuits. Each figure is one circuit's rating in that season. They are not added together: the sum of the circuits at a site is not a quantity that exists in the network, and a rating is not what is free on the circuit. Transmission owner: NGET. Ownership is a published fact about an asset. It is not a statement about who a project would contract with, which depends on connection agreements and commercial terms no appendix contains. Published as planned: 2026 2 addition, 2 change, 2 removed; 2028 1 addition, 2 change, 1 removed; 2030 2 addition, 2 removed. These are rows NESO publishes for a future year. None of them is a circuit today, a commitment, a consent, or a connection date, and none is counted among the circuits above. On the published network: 6 sites one circuit away, 9 more at two. A hop is a published circuit, not a distance - a site one hop away may be a hundred kilometres away. Circuits reach: CULHAM JET (1), DIDCOT (1), EAST CLAYDON (1), LEIGHTON BUZZARD (1), MINETY (1), WALHAM (1). Counts, lengths, ratings and impedances are what the network operator publishes about this site. None of them states whether any project can connect here, which depends on queue position, committed connections, consent and commercial terms that no published appendix contains. Counts are branches landing on this site's nodes at the stated voltage, from ETYS Appendix B via Ventusltd/data-grid-gb. Explore route corridors \u203a NEAREST SUBSTATIONS \u226533 KV BETA 3.43 km Yarnton Substation 132 kV 3.81 km Eynsham 33 kV 4.56 km Green Lane Electricity Substation 33 kV 6.00 km Lovelace Road 33 kV 8.61 km West Oxford Substation 132 kV 132 kV distribution in England and Wales, transmission in Scotland. 33 kV primary distribution; the usual class for a utility-scale solar or storage connection. Descriptions of the network, not advice about this scheme. HIDE THE PROJECT RING LAY OUT A SCHEME HERE \u25b8 Beta analytics, not an actual grid connection. Straight-line distance to mapped geometry \u2014 not a cable route, not a connection length, and no route has been walked. A real connection depends on factors that must be studied: network impedance and fault level, thermal headroom, existing committed connections and queue position, right of way, wayleaves and easements, crossings, terrain, land control and consent. None of those can be inferred from a distance. A mapped substation does not confirm capacity, voltage suitability or acceptance by any network party, and absence from a mapped layer is not absence on the ground.",
+      "visible_measurement": true
+    }
+  ]
+}

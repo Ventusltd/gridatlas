@@ -1,6 +1,7 @@
 /**
  * Proof for the neon links + SLD layout sandbox cartridge. The generation
- * under test is read from this file's own name, never restated.
+ * of the SLD cartridge is read from this file's own name. Composition
+ * provenance and its version ledger follow atlas/current.json independently.
  *
  * No dependencies. The repository carries playwright and no DOM library, so
  * rather than add one this stubs the small surface the cartridge actually
@@ -36,18 +37,15 @@ import vm from 'node:vm';
 const HERE = dirname(fileURLToPath(import.meta.url));
 const REPO = resolve(HERE, '..', '..');
 
-/* The generation is READ, never restated.
-   ------------------------------------------------------------------------
-   run-current.mjs resolves this file as `<generation>-sld-sandbox.proof.mjs`
-   from the generation in atlas/current.json, so the twelve digits in this
-   file's own name ARE the generation under test. Every generation cut by
-   hand tonight left one of these identity lines pointing at the generation
-   before it; deriving costs nothing and cannot drift. */
+/* Cartridge and composition clocks differ legitimately: an unchanged SLD
+   cartridge keeps this proof filename while a sibling module advances the
+   current composition. Test this cartridge's bytes, and the CURRENT manifest
+   and ledger; never compare a historical manifest to a current version. */
 const GENERATION = basename(fileURLToPath(import.meta.url)).slice(0, 12);
 const CURRENT = JSON.parse(
   await readFile(join(REPO, 'atlas', 'current.json'), 'utf8'));
 const COMPOSITION = JSON.parse(await readFile(join(REPO, 'atlas', 'manifests',
-  `${GENERATION}-composition.json`), 'utf8'));
+  `${CURRENT.generation}-composition.json`), 'utf8'));
 const VERSION = CURRENT.composition_version;
 const CARTRIDGE = join(REPO, 'atlas', 'cartridges',
   `${GENERATION}-sld-sandbox-v9-8.js`);
@@ -214,6 +212,50 @@ const SIBLING_MODULES = await (async () => {
    about handlers and ownership continue to inspect cartridgeSource. */
 const uiSource = `${cartridgeSource}\n${SIBLING_MODULES}`;
 
+/* Browser timers are queued, never run on Node's wall clock. These fixtures
+   exercise synchronous adapter/measurement behaviour; browser interaction
+   proofs own actual scheduling. Retain cancellation and callback arguments
+   so a test can explicitly advance a queued callback when required. */
+function installBrowserPrimitives(box) {
+  let nextId = 0;
+  const pending = new Map();
+  const schedule = (repeat) => (callback, delay = 0, ...args) => {
+    if (typeof callback !== 'function') throw new TypeError('fixture timer requires a function');
+    const id = ++nextId;
+    pending.set(id, { callback, delay: Number(delay), args, repeat });
+    return id;
+  };
+  const timers = {
+    setTimeout: schedule(false), setInterval: schedule(true),
+    clearTimeout: id => pending.delete(id), clearInterval: id => pending.delete(id)
+  };
+  Object.assign(box, { TextEncoder, TextDecoder }, timers);
+  Object.assign(box.window, { TextEncoder, TextDecoder }, timers);
+  return {
+    pending,
+    run(id) {
+      const timer = pending.get(id);
+      if (!timer) return false;
+      if (!timer.repeat) pending.delete(id);
+      timer.callback(...timer.args);
+      return true;
+    }
+  };
+}
+
+{
+  const box = { window: {} };
+  const clock = installBrowserPrimitives(box);
+  const seen = [];
+  const timeout = box.setTimeout(value => seen.push(value), 10, 'once');
+  const interval = box.window.setInterval(value => seen.push(value), 20, 'repeat');
+  check('fixture browser timers queue callbacks until explicitly advanced', seen.length === 0);
+  clock.run(timeout); clock.run(timeout); clock.run(interval);
+  box.clearInterval(interval); clock.run(interval);
+  check('fixture timer callbacks retain arguments and cancellation',
+    seen.join('|') === 'once|repeat' && clock.pending.size === 0);
+}
+
 function runAdapter(source, initSpy) {
   const box = {
     window: { initVentusMap: initSpy, maplibregl: { Map: class { getContainer() { return makeElement(); } isStyleLoaded() { return false; } once() {} on() {} } },
@@ -225,6 +267,7 @@ function runAdapter(source, initSpy) {
     MutationObserver: MutationObserverStub
   };
   box.globalThis = box;
+  installBrowserPrimitives(box);
   vm.createContext(box);
   if (SIBLING_MODULES) vm.runInContext(SIBLING_MODULES, box);
   vm.runInContext(source, box);
@@ -283,6 +326,7 @@ check('the failure is recorded rather than swallowed',
 
 console.log('\nthe measurement\n');
 
+installBrowserPrimitives(sandbox);
 vm.createContext(sandbox);
 if (SIBLING_MODULES) vm.runInContext(SIBLING_MODULES, sandbox);
 vm.runInContext(cartridgeSource, sandbox);
@@ -1017,9 +1061,7 @@ check('the sandbox reads it rather than carrying a second copy',
   /versionLedger\?\.entries \|\| \[\]/.test(cartridgeSource)
   && !/const VERSION_LEDGER = \[/.test(cartridgeSource));
 check('it spans the whole reviewed session', (() => {
-  const m = vl.match(/const VERSION_LEDGER = (\[[^\n]*\]);/);
-  if (!m) return false;
-  const ledger = JSON.parse(m[1]);
+  const ledger = sandbox.window.__GRIDATLAS_MODULES__.versionLedger.entries;
   const versions = ledger.map(e => e.v);
   /* The newest entry must be the COMPOSED version, and it is compared
      against current.json rather than against a string inside this same
@@ -1030,12 +1072,11 @@ check('it spans the whole reviewed session', (() => {
      failed loudly; anchoring to the composition cannot go stale at all. */
   const newest = ledger[ledger.length - 1];
   return versions.includes('v9.16') && versions.includes('v9.39')
-    && newest.v === VERSION && newest.g === GENERATION
+    && newest.v === VERSION && newest.g === CURRENT.generation
     && ledger.length >= 25;
 })());
 check('every entry carries a generation, a version and a scope', (() => {
-  const m = vl.match(/const VERSION_LEDGER = (\[[^\n]*\]);/);
-  const ledger = JSON.parse(m[1]);
+  const ledger = sandbox.window.__GRIDATLAS_MODULES__.versionLedger.entries;
   return ledger.every(e => /^\d{12}$/.test(e.g) && /^v9\.\d+$/.test(e.v)
     && typeof e.s === 'string' && e.s.length > 0);
 })());
@@ -1049,14 +1090,12 @@ check('every entry carries a generation, a version and a scope', (() => {
    have no such excuse and must always increase. */
 const TYPED_AHEAD = Object.freeze({ '202609012250': 'v9.67, typed at 22:50, cut at 18:51 UTC' });
 check('versions are strictly increasing', (() => {
-  const m = vl.match(/const VERSION_LEDGER = (\[[^\n]*\]);/);
-  const ledger = JSON.parse(m[1]);
+  const ledger = sandbox.window.__GRIDATLAS_MODULES__.versionLedger.entries;
   const minor = v => Number(v.slice(3));
   return ledger.every((e, i) => i === 0 || minor(e.v) > minor(ledger[i - 1].v));
 })());
 check('generations are strictly increasing, except after the one stamp recorded as typed ahead', (() => {
-  const m = vl.match(/const VERSION_LEDGER = (\[[^\n]*\]);/);
-  const ledger = JSON.parse(m[1]);
+  const ledger = sandbox.window.__GRIDATLAS_MODULES__.versionLedger.entries;
   return ledger.every((e, i) => i === 0 || e.g > ledger[i - 1].g
     || Object.prototype.hasOwnProperty.call(TYPED_AHEAD, ledger[i - 1].g));
 })());
@@ -2510,7 +2549,16 @@ check('the tray reports its state to assistive technology',
 check('the tray publishes its state', /link\.mobile_tray = \{\n      installed: true/.test(cartridgeSource));
 check('touch targets stay 44px inside the tray',
   new RegExp('#\\$\\{TRAY_ID\\} button\\{min-height:44px').test(uiSource));
-check('the desktop is left alone', /installed: false, reason: 'fine pointer, wide window'/.test(cartridgeSource));
+check('desktop retains Grid and Subs while only narrow or coarse windows collapse tools', (() => {
+  const start = cartridgeSource.indexOf('function installMobileTray()');
+  const end = cartridgeSource.indexOf('link.mobile_tray = {', start + 1);
+  const prefix = cartridgeSource.slice(start, end);
+  return /const collapse = trayTarget\(\);/.test(prefix)
+    && !/if \(!trayTarget\(\)\) return/.test(prefix)
+    && /if \(collapse\) stack\.classList\.add\('gm-tools-collapsed'\)/.test(cartridgeSource)
+    && /reason: collapse \? 'coarse pointer or narrow window' : 'chips only, fine pointer'/.test(cartridgeSource)
+    && /subs_quick: true/.test(cartridgeSource);
+})());
 
 
 console.log('\narrival by identity\n');
@@ -3333,11 +3381,11 @@ console.log('\nthe manifest knows who it is, and the Subs control is found by it
 
 /* Codex pre-promotion findings, 202609011823. Both proven where they
    live: the manifest by reading it, the lookup by running it. */
-const manifestPath = join(REPO, 'atlas', 'manifests', `${GENERATION}-composition.json`);
+const manifestPath = join(REPO, 'atlas', 'manifests', `${CURRENT.generation}-composition.json`);
 const manifestText = await readFile(manifestPath, 'utf8');
 const manifest = JSON.parse(manifestText);
 check('the manifest states this generation everywhere it states one',
-  manifest.generation === GENERATION && manifest.version === VERSION
+  manifest.generation === CURRENT.generation && manifest.version === VERSION
   && manifest.composition_version === VERSION
   // Derived from the generation under test, not restated: a hard-coded
   // identity here is the same drift this check exists to catch.
@@ -3345,7 +3393,7 @@ check('the manifest states this generation everywhere it states one',
 check('no identity from an older composition survives anywhere in it',
   !/v9\.39|202609010106/.test(manifestText));
 check('the acceptance receipt names this generation\'s proofs',
-  manifest.acceptance.proof.includes(GENERATION)
+  manifest.acceptance.proof.includes(CURRENT.generation)
   && !/420 checks/.test(manifest.acceptance.proof));
 check('the golden browser field records this generation\'s five mobile arrival cases',
   manifest.acceptance.golden_browser_verification
@@ -3376,7 +3424,7 @@ check('the manifest records the clock it was cut at, and the stamp agrees with i
   if (Number.isNaN(cut.getTime())) return false;
   const asStamp = cut.toISOString().replace(/[-:T]/g, '').slice(0, 12);
   const minutes = (s) => Date.UTC(+s.slice(0, 4), +s.slice(4, 6) - 1, +s.slice(6, 8), +s.slice(8, 10), +s.slice(10, 12)) / 60000;
-  return Math.abs(minutes(asStamp) - minutes(GENERATION)) <= 5;
+  return Math.abs(minutes(asStamp) - minutes(CURRENT.generation)) <= 5;
 })(), manifest.cut_at_utc || 'absent');
 check('the manifest chains by pointer, not by sort order',
   manifest.parent_generation === CURRENT.previous_generation
@@ -3412,12 +3460,12 @@ console.log('\nrun against a DOM, not a regular expression\n');
     fetch: async () => ({ ok: false, status: 404, json: async () => ({}) }), URL,
     Math, JSON, Number, String, Array, Object, Set, Map, Boolean, Error, RegExp,
     requestAnimationFrame: () => 0, cancelAnimationFrame: () => {},
-    setTimeout, clearTimeout, setInterval, clearInterval,
     MutationObserver: MutationObserverStub
   };
   box.window.maplibregl = maplibregl;
   box.maplibregl = maplibregl;
   box.globalThis = box;
+  installBrowserPrimitives(box);
   vm.createContext(box);
   if (SIBLING_MODULES) vm.runInContext(SIBLING_MODULES, box);
   vm.runInContext(cartridgeSource, box);
@@ -3906,9 +3954,9 @@ check('the sink rule is published so a reader can see what was assumed',
    engine delegates a change listener on #scada-ui-container and routes
    anything carrying data-layer-id into its own handleLayerToggle, which
    has no config for these ids. The first two checks are that boundary.
-   The timer guard is the third: this file is run here in a bare vm with
-   no DOM and no timers, and an unguarded setInterval took the whole
-   proof down rather than failing one check. */
+   The timer guard is exercised separately with the served module in a bare
+   VM without DOM or timers. The full composition above needs browser timer
+   primitives for other modules, which must not conceal this contract. */
 check('the pipeline-news section is in the served bytes',
   /gridatlas\.pipeline-news-layers\.v1/.test(composedSource));
 check('its controls do not carry the attribute the engine dispatches on',
@@ -3916,6 +3964,26 @@ check('its controls do not carry the attribute the engine dispatches on',
   && !/setAttribute\('data-layer-id', control\.id\)/.test(composedSource));
 check('it does not assume a timer exists',
   /typeof setInterval === 'function'/.test(composedSource));
+{
+  const substation = CURRENT.cartridges.find(entry => entry.id === 'substation-intelligence');
+  const parts = JSON.parse(await readPublished(join(REPO, 'atlas', substation.assembled_from)));
+  const entry = parts.assembled_from.find(part => /-pipeline-news-layers\.js$/.test(part.path));
+  if (!entry) throw new Error('served Pipeline News module absent from manifest');
+  const bareSource = await readPublished(join(REPO, entry.path));
+  const bare = { window: { __GRIDATLAS_MODULES__: { geodesy: {} } } };
+  vm.createContext(bare);
+  let bareError = null;
+  try { vm.runInContext(bareSource, bare); } catch (error) { bareError = error; }
+  check('served Pipeline News module loads without DOM or timers',
+    !bareError && bare.window.__GRIDATLAS_MODULES__.pipelineNewsLayers?.schema
+      === 'gridatlas.module.pipeline-news-layers.v1', String(bareError || ''));
+  let refusesUnguarded = false;
+  try {
+    vm.runInNewContext('setInterval(() => {}, 400);\n' + bareSource,
+      { window: { __GRIDATLAS_MODULES__: { geodesy: {} } } });
+  } catch (error) { refusesUnguarded = /setInterval is not defined/.test(String(error)); }
+  check('the bare fixture rejects an unguarded timer negative control', refusesUnguarded);
+}
 check('it reads the engine register rather than fetching a file that is not served',
   /const REGISTER_SOURCE = 'src-repd'/.test(composedSource)
   && !/REGISTER_URLS/.test(composedSource));
