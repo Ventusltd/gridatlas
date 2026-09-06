@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import vm from 'node:vm';
 const context={window:{}};
-vm.runInNewContext(fs.readFileSync(new URL('../../atlas/modules/202609060413-map-pdf.js',import.meta.url),'utf8'),context);
+vm.runInNewContext(fs.readFileSync(new URL('../../atlas/modules/202609060420-map-pdf.js',import.meta.url),'utf8'),context);
 const {buildMapPdf,wrapPdfText}=context.window.__GRIDATLAS_MODULES__.mapPdf;
 test('PDF preserves native dimensions, original JPEG bytes and exact xref offsets',()=>{
   const jpeg='\xff\xd8\x00\x80binary\xff\xd9';
