@@ -45,7 +45,8 @@ export const ACTIVE_WORKFLOWS = Object.freeze([
   '202608310015-gridatlas-overnight-next-versions.yml',
   '202608310050-gridatlas-next-version-builders.yml',
   '202608312212-cartridge-proof.yml',
-  'rollback-composition.yml'
+  'rollback-composition.yml',
+  'teleprint-parse-gate.yml'
 ]);
 
 export function invariant(condition, message) {

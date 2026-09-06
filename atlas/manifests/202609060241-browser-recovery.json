@@ -1,0 +1,134 @@
+{
+  "schema": "gridatlas.recovered-browser-receipt.v1",
+  "generation": "202609060241",
+  "status": "PASS",
+  "scope": "Recovered pre-crash local Chromium five-arrival proof; not a fresh browser run or deployed acceptance. Current working tree remains blocked: committed place-global-search cartridge missing and filesystem denied restore. Missing cartridge identity checked against HEAD Git blob only.",
+  "evidenceDirectory": "C:\\Users\\vikra\\OneDrive\\Desktop\\offline-screenshots\\next30-20260906\\atlas241-golden",
+  "originalCurrentSha256": "36e619a5c7aa02d1fe76ef0d611899c527e030a426de640d1cfde81bf4e4f7e6",
+  "cartridges": [
+    {
+      "path": "./cartridges/202609041945-streaming-parquet-bridge-v9-5.js",
+      "sha256": "4a6b594f7705bc4d7d62cbe69d2e40726d12f9a759896430cfe5eb00d830d23e",
+      "bytes": 13316
+    },
+    {
+      "path": "./cartridges/202609041945-place-global-search-v9-5.js",
+      "sha256": "21ab1507e98ee29961d03236e8b7853298104a33ecb1986d4d10ffc420a99c1c",
+      "bytes": 34731
+    },
+    {
+      "path": "./cartridges/202609051540-sld-sandbox-v9-8.js",
+      "sha256": "da6af52c46a76f37c62beccc2dacd8693348ae3d4a3666eea484f0515a019aa0",
+      "bytes": 364209
+    },
+    {
+      "path": "./cartridges/202609060241-substation-intelligence-v9-63.js",
+      "sha256": "73668bd862f638587886882a43615dec3e93f7c33e638caaaae91b0bb4b7ec1a",
+      "bytes": 365764
+    }
+  ],
+  "files": [
+    {
+      "name": "1-phone.png",
+      "sha256": "6718588edaff30a50b6350bb3d30fb1ea7269eaec5ad0b9e2ef575746b470b42",
+      "bytes": 47054
+    },
+    {
+      "name": "1-result.json",
+      "sha256": "d95f73b039124fe2edea577e0a591234e73f4283d158eb989d2a8b5f1ca898fc",
+      "bytes": 3958
+    },
+    {
+      "name": "2-phone.png",
+      "sha256": "595b8faed734ca91fa577557539e53dff7382d3c62173a03297c1ccb58280d60",
+      "bytes": 53677
+    },
+    {
+      "name": "2-result.json",
+      "sha256": "d4dcc883346a3c65506998cf8e14550a611039bfe2ad6266ef24fdf1f981334a",
+      "bytes": 1559
+    },
+    {
+      "name": "3-phone.png",
+      "sha256": "67a298027b19ef7bd4abe1ad2f0487c40cf722297fc58192f2b44303ba548ac9",
+      "bytes": 54607
+    },
+    {
+      "name": "3-result.json",
+      "sha256": "b046a3a2406595eb5298a248795a996cd1fde29816f0c5793261516fdda893c5",
+      "bytes": 4548
+    },
+    {
+      "name": "4-phone.png",
+      "sha256": "595b8faed734ca91fa577557539e53dff7382d3c62173a03297c1ccb58280d60",
+      "bytes": 53677
+    },
+    {
+      "name": "4-result.json",
+      "sha256": "16505d71eb2b2c57a87c18efd2700d5873051ba571b6dddebc189ec4392e7253",
+      "bytes": 1753
+    },
+    {
+      "name": "5-phone.png",
+      "sha256": "358d55ecd38695a33f9ce76e8ea9ab5ebe5b2d095a8c2613d3a263becb16e4de",
+      "bytes": 55703
+    },
+    {
+      "name": "5-result.json",
+      "sha256": "31579f085896a92e5b2489dc2e5ed33db425d974fc40ce8c70f11dcde00d3be2",
+      "bytes": 6294
+    },
+    {
+      "name": "receipts.json",
+      "sha256": "4e5ea58ca8c6b9d675e0ff351446ad6e4a7d3009fb9f0990c0664875c71073e7",
+      "bytes": 22796
+    },
+    {
+      "name": "source-pins.json",
+      "sha256": "7e2adb6203f25f4ede6829305ee9d06d1768b795b53cce4a7806d95f1ce4fb79",
+      "bytes": 904
+    },
+    {
+      "name": "verdict.json",
+      "sha256": "1c3385e7963bacf0051ebc3a9c9282f77ba156f9d3f172495c5586959dd2cece",
+      "bytes": 24473
+    }
+  ],
+  "cases": [
+    {
+      "label": "supplied-point active-register absence",
+      "runtime_generation": "202609060241",
+      "owner_generation": "202609060241",
+      "page_errors": [],
+      "failures": []
+    },
+    {
+      "label": "ref-only active-register absence",
+      "runtime_generation": "202609060241",
+      "owner_generation": "202609060241",
+      "page_errors": [],
+      "failures": []
+    },
+    {
+      "label": "failed owner retries to official match",
+      "runtime_generation": "202609060241",
+      "owner_generation": "202609060241",
+      "page_errors": [],
+      "failures": []
+    },
+    {
+      "label": "failed owner retries to active-register absence",
+      "runtime_generation": "202609060241",
+      "owner_generation": "202609060241",
+      "page_errors": [],
+      "failures": []
+    },
+    {
+      "label": "official active-register match",
+      "runtime_generation": "202609060241",
+      "owner_generation": "202609060241",
+      "page_errors": [],
+      "failures": []
+    }
+  ]
+}
