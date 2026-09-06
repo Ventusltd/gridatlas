@@ -146,6 +146,15 @@ jobs:
         run: node tools/proofs/202609040229-arrival-identity.browser.mjs
         timeout-minutes: 10
 
+      - name: Distant measured transmission endpoints are rendered without duplicate links
+        env:
+          CHROME_CHANNEL: chromium
+          TEST_OUTPUT: transmission-link-artifacts
+        run: |
+          node --test tools/proofs/transmission-links.test.mjs
+          node tools/proofs/transmission-links.browser.cjs
+        timeout-minutes: 3
+
       - name: A docked mobile card cannot intercept a layer control
         run: node tools/proofs/menu-bar-mobile-hit.browser.mjs
         timeout-minutes: 2
