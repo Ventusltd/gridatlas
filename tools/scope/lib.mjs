@@ -45,7 +45,13 @@ export const ACTIVE_WORKFLOWS = Object.freeze([
   '202608310015-gridatlas-overnight-next-versions.yml',
   '202608310050-gridatlas-next-version-builders.yml',
   '202608312212-cartridge-proof.yml',
-  'rollback-composition.yml'
+  'rollback-composition.yml',
+  /* Added 2026-09-05 by 78e49b0 when the parse gate left the laptop, but never
+     registered here, so the budget invariant has failed on every run since -
+     which also meant STATE.md could not be regenerated and the AGENTS.md rule
+     requiring it alongside a current.json change became unsatisfiable. The
+     workflow is intended; the list had simply not been told about it. */
+  'teleprint-parse-gate.yml'
 ]);
 
 export function invariant(condition, message) {
