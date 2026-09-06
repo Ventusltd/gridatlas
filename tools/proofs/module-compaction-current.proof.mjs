@@ -12,7 +12,10 @@ const composition=JSON.parse(read('atlas/'+current.composition_manifest.replace(
 const pin=composition.acceptance.module_compaction;
 assert(pin,'Compaction receipt must be part of this composition');
 const raw=read(pin.path);assert.equal(hash(raw),pin.sha256);
-const record=JSON.parse(raw);assert.equal(record.generation,current.generation);
+const record=JSON.parse(raw);
+// Compaction is an immutable operation receipt. Later compositions may carry those exact modules.
+// Membership, source/output hashes and executable equivalence below prove that inheritance.
+assert(/^\d{12}$/.test(record.generation)&&record.generation<=current.generation);
 assert.equal(record.modules.length,5);
 const cartridge=current.cartridges.find(c=>c.id==='substation-intelligence');
 const assembled=read('atlas/'+cartridge.path.replace(/^\.\//,''));
