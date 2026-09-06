@@ -800,6 +800,40 @@ window.initVentusMap = function({ config, center, zoom }) {
         const repdRef = String(params.get('repd_ref') || '').trim();
         if (!/^[A-Za-z0-9-]{1,40}$/.test(repdRef)) return;
 
+        /* ARRIVING FROM A PROJECT SHOWS THE PROJECT'S GRID.
+         *
+         * The card that greets a deep link states the nearest substation and
+         * the distance to it - and then the map drew none of it. Measured on
+         * the live build, arriving at REPD 9873: the style carried 192 layers
+         * and rendered 8 features, with l-400, l-275, l-132, l-66, l-11kv and
+         * l-subs every one of them visibility "none". The network the engine
+         * had just measured against was switched off.
+         *
+         * Nobody had turned them off; they are lazy. handleLayerToggle is what
+         * hydrates a layer, and until this nothing called it on arrival, so a
+         * developer following a MAP link from PipelineNews landed on an empty
+         * map and had to know to open GRID and tick six boxes.
+         *
+         * Only the transmission set and the substations are switched on. The
+         * distribution voltages stay off because they are large and are not
+         * what a connection question starts from, and the reader can still tick
+         * them. This changes a DEFAULT, not what is available. */
+        try {
+            const arrivalLayers = ['subs', '400', '275', '132'];
+            const switchOn = () => {
+                for (const id of arrivalLayers) {
+                    if (!map.getLayer(`l-${id}`)) continue;
+                    const box = document.querySelector(`input[data-layer-id="${id}"]`);
+                    if (box && !box.checked) box.checked = true;
+                    try { handleLayerToggle(id, true); } catch (e) { /* one layer must not stop the rest */ }
+                }
+            };
+            if (map.isStyleLoaded()) switchOn();
+            else map.once('load', switchOn);
+        } catch (error) {
+            console.warn('[ARRIVAL LAYERS] not switched on', error);
+        }
+
         try {
             const requestedTechnology = String(params.get('technology') || '').trim();
             const allowedTechnologies = new Set([
