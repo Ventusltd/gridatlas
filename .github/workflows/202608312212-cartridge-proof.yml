@@ -134,7 +134,9 @@ jobs:
       # copy rather than the bytes served before that was fixed, the proof
       # itself among them.
       - name: The composition matches what is declared and hashed
-        run: node tools/scope/verify-compose.mjs
+        run: |
+          node --test tools/proofs/composition-contract.test.mjs
+          node tools/scope/verify-compose.mjs
 
       - name: The composed cartridge passes its own proof
         run: node tools/proofs/run-current.mjs
