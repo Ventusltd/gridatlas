@@ -460,9 +460,17 @@ export async function proveMenuBar(menuPath, servedSource = '') {
   check('arrow navigation advances across the conventional menu titles',
     complete.doc.activeElement === title('Edit'));
 
-  check('the old action stack is emptied only after nested controls move',
-    complete.stack.getAttribute('data-gridatlas-menu-emptied') === '1'
-    && panel('Scope').contains(clear));
+  // The composed mobile tray deliberately retains two live controls in this
+  // stack. Hiding its parent would make Grid/Subs unreachable. The older
+  // empty-stack assertion rejected the correct, visible tray instead.
+  const remainingActions = complete.stack.querySelectorAll('button,input,select,textarea,a')
+    .filter((node) => !node.hidden);
+  check('nested controls move while the retained mobile Grid/Subs tray stays reachable',
+    !complete.stack.hasAttribute('data-gridatlas-menu-emptied')
+    && panel('Scope').contains(clear)
+    && remainingActions.length === 2
+    && remainingActions.map(node => node.textContent).join('|') === 'Grid|Subs'
+    && remainingActions.every(node => node.parentNode.id === 'gridatlas-mobile-tray'));
   check('one identity surface remains: the VENTUS masthead is fused into the bar itself '
     + '(not moved into a closed panel, generation 202609041250) and the real SCADA brand is '
     + 'restored -- not cloned, not hidden as a duplicate -- into the Grid panel head',
