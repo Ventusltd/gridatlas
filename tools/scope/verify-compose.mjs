@@ -1,5 +1,6 @@
 import fs from 'node:fs';
 import path from 'node:path';
+import {validateCompositionContract} from './composition-contract.mjs';
 import {
   ROOT, CURRENT_RELEASE, EXPECTED_RELEASES, SHARED_400KV_CARTRIDGE,
   invariant, readJson, sha256PublishedFile, relativePosix
@@ -26,6 +27,7 @@ try {
   }
 
   invariant(current.architecture === 'IMMUTABLE_SHELL_PLUS_HASHED_CARTRIDGES', 'architecture mismatch');
+  validateCompositionContract(current);
   invariant(current.release_id === CURRENT_RELEASE, 'release identity mismatch');
   const releases = releaseDirectories(path.join(ROOT, 'atlas', 'releases'));
   invariant(JSON.stringify(releases) === JSON.stringify([...EXPECTED_RELEASES].sort()), `immutable release closure mismatch: ${JSON.stringify(releases)}`);

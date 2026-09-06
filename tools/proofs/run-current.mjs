@@ -17,12 +17,14 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
+import {validateCompositionContract} from '../scope/composition-contract.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..');
 const current = JSON.parse(
   fs.readFileSync(path.join(ROOT, 'atlas', 'current.json'), 'utf8'));
 
 const failures = [];
+validateCompositionContract(current);
 let ran = 0;
 
 for (const id of current.cartridge_order || []) {

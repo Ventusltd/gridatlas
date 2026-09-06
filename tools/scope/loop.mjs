@@ -1,4 +1,5 @@
 import fs from 'node:fs';
+import {validateCompositionContract} from './composition-contract.mjs';
 import path from 'node:path';
 import {
   ROOT, SCOPE_DIR, MASTER_NAME, CURRENT_RELEASE, SHARED_400KV_CARTRIDGE,
@@ -159,6 +160,7 @@ function validateAtlasLayout(scopeState) {
   verifyReleaseChecksums(path.join(releaseRoot, CURRENT_RELEASE));
 
   if (scope2Done) {
+    validateCompositionContract(current);
     invariant(current.schema === 'gridatlas.current.v2', 'modular atlas/current.json schema is not v2');
     invariant(current.architecture === 'IMMUTABLE_SHELL_PLUS_HASHED_CARTRIDGES', 'modular architecture marker is missing');
     invariant(current.shell?.index === `./releases/${CURRENT_RELEASE}/index.html`, 'shell index mismatch');
