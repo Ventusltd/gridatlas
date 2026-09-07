@@ -1,0 +1,179 @@
+{
+ "schema": "gridatlas.coordinate-systems.v1",
+ "generation": "202609070400",
+ "purpose": "Every source the Atlas draws from, and the coordinate system it actually arrives in. REPD is the majority source but not the only one, and it is the only one measured in metres. A source whose CRS is assumed rather than declared is how an offshore project ends up with no point at all.",
+ "measured_utc": "2026-09-07T03:00:00Z",
+ "sources": [
+  {
+   "id": "repd",
+   "name": "DESNZ Renewable Energy Planning Database",
+   "role": "primary project register",
+   "path": "globalgrid2050/repd.csv",
+   "crs": "EPSG:27700",
+   "crs_name": "OSGB36 / British National Grid",
+   "units": "metres",
+   "axis_columns": [
+    "X-coordinate",
+    "Y-coordinate"
+   ],
+   "geometry": "none — tabular easting/northing",
+   "transform_to_wgs84": "proj4 EPSG:27700 -> EPSG:4326, as used by uk_offshore_wind_atlas.md",
+   "rows": 15170,
+   "caveat": "The coordinate columns are free text, not numbers. Measured values include the literal strings 'Offshore', 'Scotland', 'England' and postcodes such as 'DD4 0AD', as well as blanks. parseFloat returns NaN for these and the arrival then has no point.",
+   "unmappable_rows": 13180,
+   "offshore_rows": 98,
+   "offshore_rows_unmappable": 55
+  },
+  {
+   "id": "crown-estate-england-wales",
+   "name": "The Crown Estate offshore wind leases (England, Wales, NI)",
+   "role": "offshore geometry where REPD has none",
+   "path": "testcode/sandbox/capsules/grid-compute/results/202609051344/crown-estate-wind-sites.geojson",
+   "crs": "EPSG:4326",
+   "crs_declared": true,
+   "units": "degrees",
+   "geometry": "Polygon",
+   "features": 72,
+   "key_properties": [
+    "Name_Prop",
+    "Name_Ten",
+    "Wind_Round",
+    "Lease_Stat",
+    "km2"
+   ],
+   "caveat": "Lease areas, not points. A representative point must be taken with point-on-surface, never a centroid: a centroid of a concave or multipart lease can fall outside the lease itself, and an arrival must land on the site it names."
+  },
+  {
+   "id": "crown-estate-scotland",
+   "name": "Crown Estate Scotland offshore wind leases",
+   "role": "offshore geometry where REPD has none",
+   "path": "testcode/sandbox/capsules/grid-compute/results/202609051344/crown-estate-scotland-wind-sites.geojson",
+   "crs": "EPSG:4326",
+   "crs_declared": true,
+   "units": "degrees",
+   "geometry": "Polygon",
+   "features": 58,
+   "key_properties": [
+    "Property_Description",
+    "Tenant_Name",
+    "Capacity_MW",
+    "Project_Phase"
+   ],
+   "caveat": "Scotland is leased separately from the rest of Great Britain. Reconciling REPD against only the Crown Estate file leaves every Scottish offshore project unmatched."
+  },
+  {
+   "id": "atlas-offshore-partition",
+   "name": "Pipeline News offshore atlas partition",
+   "role": "derived points already serving the MAP link",
+   "path": "globalgrid2050/uk_renewables_pipeline/<stamp>/data/v9.1/atlas/wind_offshore-part-001.geojson",
+   "crs": "EPSG:4326",
+   "crs_declared": false,
+   "crs_basis": "RFC 7946 default. Correct, but undeclared.",
+   "units": "degrees",
+   "geometry": "Point",
+   "features": 94,
+   "caveat": "Holds points for Hornsea 3, Bowdun and Berwick Bank, but not for every offshore ref Pipeline News lists. A ref absent here is a ref whose MAP link is emitted with no latitude or longitude."
+  },
+  {
+   "id": "grid-topology",
+   "name": "Transmission circuits by voltage",
+   "role": "the network the arrival measures against",
+   "path": "gridatlas/atlas/releases/<release>/data/grid_{400,275,220,132,66}kv.geojson",
+   "crs": "EPSG:4326",
+   "crs_declared": false,
+   "crs_basis": "RFC 7946 default",
+   "units": "degrees",
+   "geometry": "LineString",
+   "features": {
+    "400kv": 4106,
+    "275kv": 2935
+   },
+   "interconnector_tagged_circuits": 3,
+   "caveat": "Interconnectors appear here only where a circuit name happens to say so, e.g. 'The Interconnector (Tandragee - Louth) 275kV'. That is a naming coincidence, not an interconnector dataset."
+  },
+  {
+   "id": "grid-substations",
+   "name": "Substations",
+   "role": "the arrival search target",
+   "path": "gridatlas/atlas/releases/<release>/data/grid_substations.geojson",
+   "crs": "EPSG:4326",
+   "crs_declared": false,
+   "units": "degrees",
+   "geometry": "Point",
+   "loaded_in_browser": 5800,
+   "minimum_kv": 33
+  },
+  {
+   "id": "interconnectors",
+   "name": "GB interconnectors (BMRS reference)",
+   "role": "named links with no geometry yet",
+   "path": "data-interconnectors/reference/interconnector_cables.csv",
+   "crs": null,
+   "units": null,
+   "geometry": "NONE",
+   "rows": 16,
+   "named": [
+    "IFA (INTFR, France, 2.0 GW)",
+    "IFA2 (INTIFA2, 1.0)",
+    "ElecLink (INTELEC, 1.0)",
+    "BritNed (INTNED, Netherlands, 1.0)",
+    "Nemo Link (INTNEM, Belgium, 1.0)",
+    "North Sea Link (INTNSL, Norway, 1.4)",
+    "Viking Link (INTVKL, Denmark, 1.4)",
+    "East West (INTEW, Ireland, 0.5)",
+    "Greenlink (INTGRNL, 0.5)",
+    "Moyle (INTIRL, 0.5)"
+   ],
+   "key_columns": [
+    "bmrsCode",
+    "country",
+    "interconnectorName",
+    "capacityGW",
+    "status"
+   ],
+   "caveat": "This is a flow-data reference keyed by BMRS code. It carries capacity and status but no landing point, no converter station and no cable route, so BritNed and Nemo Link cannot be drawn from it. Converter-station points and subsea route lines must be sourced before an interconnector layer can exist.",
+   "status": "GEOMETRY_NOT_SOURCED — flow data present, coordinates absent",
+   "operational": 10,
+   "future": 6,
+   "future_links": [
+    "NeuConnect (Germany, 1.4)",
+    "Tarchon Energy (Germany, 1.4)",
+    "LionLink (Netherlands, 2.0)",
+    "Nautilus (Belgium, 1.4)",
+    "MaresConnect (Ireland, 0.75)",
+    "LirIC (Northern Ireland, 0.7)"
+   ],
+   "what_exists": "Electricity flow data only. Every link is keyed by BMRS code and carries capacity, country and status, and the estate already tracks import/export series against these codes.",
+   "what_is_missing": "Both ends. No converter-station point on either coast, and therefore no route.",
+   "geometry_sources_to_obtain": [
+    "The SPV that owns each link — BritNed Development Ltd (National Grid + TenneT), Nemo Link Ltd (National Grid + Elia), Greenlink Interconnector Ltd — publishes converter-station locations in its planning and consent material.",
+    "National Grid (GB landfall and converter sites) and the counterpart TSO — TenneT, Elia, Statnett, Energinet, EirGrid — for the far end.",
+    "Marine licence and consent applications carry the cable corridor where a route, not a straight line, is wanted."
+   ],
+   "first_useful_step": "Two points per link — GB converter station and counterpart converter station, both WGS84 — is all the engine needs. A straight line between them is the intended first output, not a stopgap: it states the separation between converter stations exactly, and it is honest so long as it is labelled a straight line rather than a cable route. Computing the bends of the consented corridor is a later stage that refines the same geometry; it does not replace it."
+  },
+  {
+   "id": "arrival-deep-link",
+   "name": "Pipeline News to Atlas arrival",
+   "role": "what a MAP button carries",
+   "crs": "EPSG:4326",
+   "units": "degrees",
+   "parameters": [
+    "repd_ref",
+    "technology",
+    "latitude",
+    "longitude",
+    "zoom"
+   ],
+   "caveat": "Measured on the live page: 17 of 20 links carried a coordinate and fired; 3 of 20 carried only repd_ref and technology and failed the arrival invariant. A link without a coordinate has no fallback once the register row is found but cannot be mapped."
+  }
+ ],
+ "rules": [
+  "Declare the CRS of every source, even when RFC 7946 makes WGS84 the default. An assumed CRS is the failure that hides.",
+  "REPD is the only source in metres. Convert EPSG:27700 to EPSG:4326 before comparison, never compare an easting to a longitude.",
+  "Treat a REPD coordinate cell as text until it parses as a finite number. 'Offshore' and 'DD4 0AD' both appear in that column.",
+  "Reduce a lease polygon with point-on-surface, not centroid, and record which source supplied the point.",
+  "Where two sources disagree, keep both and name the one used. Never silently prefer one identity over another.",
+  "A subsea link is drawn as a straight line between converter stations and labelled as one. That line measures separation, not cable length; the consented corridor is longer, and computing its bends is a later refinement of the same geometry rather than a correction of it."
+ ]
+}
