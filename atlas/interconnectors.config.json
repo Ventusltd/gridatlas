@@ -1,0 +1,65 @@
+{
+ "schema": "gridatlas.interconnector-layer.v1",
+ "generation": "202609070500",
+ "status": "DATA_READY_RENDERER_NOT_WIRED",
+ "honest_note": "This config declares the layer and the data exists beside it, but the Atlas creates its map layers in cartridge code, not from config. Nothing draws until a cartridge reads this file. It is committed now so the data and the intent are versioned together, and so the wiring is a small, reviewable change rather than a rewrite.",
+
+ "layer": {
+  "id": "l-interconnectors",
+  "control_label": "Interconnectors",
+  "menu": "Grid",
+  "source_id": "src-interconnectors",
+  "source": "./data/interconnectors.geojson",
+  "crs": "EPSG:4326",
+  "default_visibility": "none",
+  "minimum_zoom": 0
+ },
+
+ "reuse_offshore_rendering": {
+  "why": "An interconnector is shaped exactly like an offshore project as far as the Atlas is concerned: a name, a technology, a reference and a point. Reusing the offshore path means no new styling, no new card and no new MAP behaviour.",
+  "midpoint_carries": ["name", "technology", "repd_ref", "capacity_mw"],
+  "technology_value": "interconnector",
+  "reference_value": "the BMRS code, e.g. INTNED, standing in for a REPD ref",
+  "arrival_point": "the midpoint of the straight line between converter stations",
+  "consequence": "The MAP button, the arrival and the grid engine treat an interconnector exactly as they treat a wind farm, with no branch of their own."
+ },
+
+ "geometry_contract": {
+  "kind": "STRAIGHT_LINE_CONVERTER_TO_CONVERTER",
+  "must_be_labelled": "A straight line, never a cable route.",
+  "what_it_measures": "Separation between converter stations, not cable length.",
+  "measured_route_factor": {
+   "BritNed": {
+    "straight_line_km": 234.9,
+    "known_submarine_cable_km": 245,
+    "factor": 1.043,
+    "source": "BritNed Development Ltd v ABB AB [2018] EWHC 2616 (Ch)",
+    "reading": "The straight line is within 4.3 per cent of the surveyed submarine cable on this link. That is one observation and not a constant: measure each link before applying a factor to it."
+   }
+  },
+  "future": "Bend computation refines this same geometry; it does not replace it."
+ },
+
+ "both_sides_compute": {
+  "intent": "Fire the existing grid engine from each converter station in turn, so a link reports what it connects to at both ends rather than only the GB end.",
+  "gb_end": "Already in our own substation data for all ten links.",
+  "far_end": "From OpenStreetMap power=converter, fetched by tools/interconnectors/fetch_far_end_converters.py.",
+  "caution": "The 25 km arrival radius applies at each end. A converter station sits inside a substation compound, so the GB end should find links immediately; a far end in another TSO's network will find nothing, because we hold no continental substation data. Report that as no data rather than as no connection."
+ },
+
+ "sources": {
+  "gb_ends": "gridatlas atlas/releases/<release>/data/grid_substations.geojson",
+  "far_ends": "OpenStreetMap Overpass, power=converter, bbox 48.0/-11.5 to 62.5/13.0",
+  "flow_data": "data-interconnectors reference/interconnector_cables.csv — 16 links by BMRS code, 10 operational",
+  "existing_ui": "globalgrid2050 grid_engine/202609060305-interconnectors/index.html — the Interconnector Workbench, which names all ten links and currently carries no coordinates. This data is what it is missing."
+ },
+
+ "coverage": {
+  "links": 10,
+  "gb_ends_found": 10,
+  "far_ends_found": 2,
+  "drawable": 2,
+  "drawable_links": ["BritNed", "ElecLink"],
+  "why_the_rest_are_missing": "OpenStreetMap holds 596 power=converter elements in the bbox but only 43 carry a name, and the unnamed ones cannot be matched to a link. The remaining eight need either a named OSM element or a TSO navigational publication, which is the stronger source because a TSO is obliged to tell mariners where its assets are."
+ }
+}
