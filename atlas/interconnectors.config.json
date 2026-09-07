@@ -1,8 +1,8 @@
 {
  "schema": "gridatlas.interconnector-layer.v1",
- "generation": "202609070500",
- "status": "DATA_READY_RENDERER_NOT_WIRED",
- "honest_note": "This config declares the layer and the data exists beside it, but the Atlas creates its map layers in cartridge code, not from config. Nothing draws until a cartridge reads this file. It is committed now so the data and the intent are versioned together, and so the wiring is a small, reviewable change rather than a rewrite.",
+ "generation": "202609071232",
+ "status": "RENDERED_AND_ARRIVAL_WIRED",
+ "honest_note": "Rendered by the sld-sandbox cartridge since v9.143 (202609071005): a dashed line converter to converter and a node mid-line. Arrival wired in v9.146 (202609071232): a MAP link carrying interconnector=<BMRS> hands over from the project lane, the span is framed, and each converter is measured within its own search budget. This config declares the layer; the cartridge draws it.",
  "layer": {
   "id": "l-interconnectors",
   "control_label": "Interconnectors",
@@ -23,8 +23,9 @@
   ],
   "technology_value": "interconnector",
   "reference_value": "the BMRS code, e.g. INTNED, standing in for a REPD ref",
-  "arrival_point": "the midpoint of the straight line between converter stations",
-  "consequence": "The MAP button, the arrival and the grid engine treat an interconnector exactly as they treat a wind farm, with no branch of their own."
+  "arrival_point": "SUPERSEDED: not the midpoint; see arrival_model",
+  "consequence": "SUPERSEDED: an interconnector has its own arrival branch; see arrival_model",
+  "status": "SUPERSEDED - see arrival_model"
  },
  "geometry_contract": {
   "kind": "STRAIGHT_LINE_CONVERTER_TO_CONVERTER",
@@ -45,7 +46,8 @@
   "intent": "Fire the existing grid engine from each converter station in turn, so a link reports what it connects to at both ends rather than only the GB end.",
   "gb_end": "Already in our own substation data for all ten links.",
   "far_end": "From OpenStreetMap power=converter, fetched by tools/interconnectors/fetch_far_end_converters.py.",
-  "caution": "The 25 km arrival radius applies at each end. A converter station sits inside a substation compound, so the GB end should find links immediately; a far end in another TSO's network will find nothing, because we hold no continental substation data. Report that as no data rather than as no connection."
+  "caution": "The per-end search budget is the radius box value (the engine's onshore limit, 10 km at boot on the measured run; 40 km when the box is empty). A converter sits inside a substation compound, so the GB end scores ~0 km; a far end has no payload and is reported as absent coverage.",
+  "status": "WIRED in v9.146"
  },
  "sources": {
   "gb_ends": "gridatlas atlas/releases/<release>/data/grid_substations.geojson",
@@ -90,5 +92,14 @@
    ],
    "reading": "Every continental link is a net import to GB across the period; all three Ireland and Northern Ireland links are net exports from GB. Stated as a measurement over 2020-2026, not as a claim about any single year."
   }
+ },
+ "arrival_model": {
+  "superseded": "An earlier version of this file said the MAP button, the arrival and the grid engine would treat an interconnector exactly as a wind farm, arriving at the midpoint. That was wrong and was measured wrong: a BritNed midpoint is 59.2 km from the nearest substation and the far end resolves to Lowestoft at 165.9 km because the payload is GB only.",
+  "model": "-distance-interconnectors-distance+: the span is unbounded; each converter is searched within the ordinary onshore budget, which the radius box overrides. 40km <- Grain --[ BritNed 234.9 km ]-- Maasvlakte -> 40km",
+  "link_shape": "?interconnector=INTNED&technology=interconnector&anchor=midpoint|gb_converter&latitude=..&longitude=..&zoom=7|10 - never repd_ref",
+  "anchor": "the node drawn mid-line is a label anchor, not a location; measured, it is the planar mean of the converter coordinates, 1.44 km from the great-circle midpoint on BritNed",
+  "gb_end": "measured against the arrival lane's published qualifying substations once the payload has arrived; Grain at 0 km with 20 within 10 km, Bicker Fen at 0.001 km with 8 within 10 km (offline, 2026-09-07)",
+  "far_end": "no substation payload outside GB; reported as absent coverage, never as absence of connection",
+  "no_far_converter": "no line is drawn; the map flies to the GB converter, measures it, and states the other end is not located"
  }
 }
