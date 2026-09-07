@@ -8,6 +8,17 @@ The address/fly-to cartridge searches project name, official REPD address, offic
 
 Live route: https://ventusltd.github.io/gridatlas/
 
+## CI and CD
+
+`docs/CI-CD-PLAN.md` is the plan: an overnight worker on an external drive that
+drives the live and offline application in five lanes, and GitHub Actions that
+reconcile the data sources on a timer. Outcome classes are kept apart there —
+product, harness, dependency — because only the first is a bug in the code.
+
+Offshore coordinates are reconciled by `tools/offshore/reconcile_offshore_coordinates.py`,
+run annually and on demand by `.github/workflows/offshore-coordinate-reconcile.yml`,
+writing `atlas/data/offshore-coordinates.json`.
+
 ## Coordinate systems
 
 The Atlas draws from more than one register, and they do not arrive in the same
