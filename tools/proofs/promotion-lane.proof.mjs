@@ -121,6 +121,32 @@ check('build lane publishes the proof receipt as a workflow artifact',
   /actions\/upload-artifact/.test(build) && /promotion-receipt/.test(build),
   'no upload-artifact step naming the promotion receipt');
 
+// A clean runner must have the same sibling corpus/parity inputs as the
+// cartridge gate. Their absence caused run 33926160697 to fail 2 checks.
+function checkout(text, repository) {
+  return text.split(/\n\s*- name:/).find(step =>
+    step.includes(`repository: ${repository}`)) || '';
+}
+const cartridgeGate = stripYamlComments(read('.github/workflows/202608312212-cartridge-proof.yml'));
+for (const repo of ['grid-distance-maths', 'pipelinenews']) {
+  const step = checkout(buildCode, `Ventusltd/${repo}`);
+  const gateStep = checkout(cartridgeGate, `Ventusltd/${repo}`);
+  const pin = step.match(/\bref:\s*([a-f0-9]{40})\b/)?.[1];
+  const gatePin = gateStep.match(/\bref:\s*([a-f0-9]{40})\b/)?.[1];
+  check(`build checks out pinned ${repo} beside GridAtlas`,
+    Boolean(pin && pin === gatePin) && step.includes(`path: ${repo}`)
+      && step.includes('persist-credentials: false'),
+    'missing sibling checkout or pin differs from the cartridge gate');
+}
+check('build commands execute in the nested candidate checkout',
+  /defaults:\s*\n\s*run:\s*\n\s*working-directory: gridatlas/.test(buildCode)
+    && /Checkout the candidate commit[\s\S]*?path: gridatlas\s/.test(buildCode));
+check('npm cache resolves the nested candidate lockfile',
+  buildCode.includes('cache-dependency-path: gridatlas/package-lock.json'));
+check('receipt artifact paths resolve from the Actions workspace root',
+  buildCode.includes('gridatlas/work/promotion-receipt.json\n')
+    && buildCode.includes('gridatlas/work/promotion-receipt.json.md'));
+
 // The receipt tool itself: confirm it actually runs the four named proofs
 // and reads its stamp from the clock, since the workflow only ever asserts
 // that it calls this file.
