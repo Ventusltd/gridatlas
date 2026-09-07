@@ -1,7 +1,7 @@
 {
  "schema": "gridatlas.current.v2",
- "generation": "202609071232",
- "previous_generation": "202609071213",
+ "generation": "202609072337",
+ "previous_generation": "202609072329",
  "architecture": "IMMUTABLE_SHELL_PLUS_HASHED_CARTRIDGES",
  "live_route": "/gridatlas/atlas/",
  "release_id": "202608300453-atlas-v9",
@@ -62,13 +62,13 @@
   },
   {
    "id": "sld-sandbox",
-   "generation": "202609071232",
-   "version": "v9.146",
+   "generation": "202609072337",
+   "version": "v9.148",
    "type": "script",
    "slot": "replace-script",
    "replace_script": "202608292126-pre-snapped-config-adapter.js",
-   "path": "./cartridges/202609071232-sld-sandbox-v9-8.js",
-   "sha256": "8916fa66f2cae3b1fe153dbb9e57af37c24081a151b199dfbdb1ed1801aee34b",
+   "path": "./cartridges/202609072337-sld-sandbox-v9-8.js",
+   "sha256": "ee3aeca75bf52ff96afd36029936c6cf51f67cf02e5aeb8cea2feca9cdb89ca8",
    "capabilities": [
     "pre-snapped-config-adapter-carried-forward",
     "project-or-substation-selection",
@@ -667,8 +667,9 @@
   "live_pointer_unchanged": true,
   "proof": "tools/proofs/export-print-and-image-outcomes.browser.mjs --route atlas/v/202609051329"
  },
- "promoted_from": "atlas/v/202609071232/",
- "promoted_utc": "2026-09-07T23:36:07.245Z",
- "superseded_generation": "202609060259",
- "promotion_evidence": "615 offline repeat runs with the network cut and 20 hosted runs green on the candidate pairs; the substation finder and the 400 kV engine passing throughout. Every cartridge verified by hash at promotion."
+ "promoted_from": "atlas/v/202609072337/",
+ "promoted_utc": "2026-09-07T23:45:24.000Z",
+ "superseded_generation": "202609071232",
+ "promotion_evidence": "Recovered promotion. The 202609071232 promotion was committed and pushed to publish/202609062246 only, a branch GitHub Pages does not serve, so root continued to serve 202609060259; verified live before this write. Root now goes straight to the newest composition. All four cartridges verified three ways before the pointer moved: sha256 of the committed git blob == sha256 on disk == the hash recorded here, and each cartridge parses under node --check. Shell 202608300453-atlas-v9 confirmed present in tree.",
+ "promoted_by": "recovery of session 607453dc after the publishing branch was found not to be the branch Pages serves"
 }

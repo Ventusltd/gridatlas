@@ -45,6 +45,11 @@ export const ACTIVE_WORKFLOWS = Object.freeze([
   '202608310015-gridatlas-overnight-next-versions.yml',
   '202608310050-gridatlas-next-version-builders.yml',
   '202608312212-cartridge-proof.yml',
+  /* Added by 98dd908 as the annual offshore coordinate reconciliation, and left
+     unregistered exactly as the parse gate below was, so the budget invariant
+     kept failing and STATE.md still could not be regenerated. Intended
+     workflow, missing registration. */
+  'offshore-coordinate-reconcile.yml',
   'rollback-composition.yml',
   /* Added 2026-09-05 by 78e49b0 when the parse gate left the laptop, but never
      registered here, so the budget invariant has failed on every run since -
