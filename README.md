@@ -29,11 +29,15 @@ The short version:
 | Atlas arrival deep link | EPSG:4326 | degrees | `latitude` / `longitude` |
 
 REPD is the majority source and the only one measured in metres, so it must be
-transformed before it is compared with anything else. Its coordinate columns are
-also free text rather than numbers: measured values include the literal strings
-`Offshore`, `Scotland`, `England` and postcodes such as `DD4 0AD`. 55 of the 98
-offshore rows carry no usable easting or northing, which is why an offshore
-project can reach the Atlas with no point to fly to.
+transformed before it is compared with anything else. Its coordinates are near
+complete — 13,970 of 13,995 rows carry a finite easting and northing. Wind
+Offshore is the worst technology at 8 per cent unmappable (8 of 101 rows), then
+Tidal Stream at 6; every other technology measures 0.
+
+Parse that file with a real CSV reader. Site names contain commas inside quoted
+fields, so `split(',')` shifts every later column and makes the coordinate
+columns appear to hold region names like `England`. This README asserted exactly
+that artefact in its first commit, and the figures above replace it.
 
 The Crown Estate files are the reconciliation for exactly that gap, and they are
 leased separately for Scotland — matching REPD against only one of the two files

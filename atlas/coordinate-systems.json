@@ -18,11 +18,13 @@
    ],
    "geometry": "none — tabular easting/northing",
    "transform_to_wgs84": "proj4 EPSG:27700 -> EPSG:4326, as used by uk_offshore_wind_atlas.md",
-   "rows": 15170,
-   "caveat": "The coordinate columns are free text, not numbers. Measured values include the literal strings 'Offshore', 'Scotland', 'England' and postcodes such as 'DD4 0AD', as well as blanks. parseFloat returns NaN for these and the arrival then has no point.",
-   "unmappable_rows": 13180,
-   "offshore_rows": 98,
-   "offshore_rows_unmappable": 55
+   "rows": 13995,
+   "caveat": "REPD coordinates are near complete: 13,970 of 13,995 rows carry a finite easting and northing. Wind Offshore is the worst technology at 8 per cent unmappable (8 of 101 rows), then Tidal Stream at 6; every other technology measures 0. A ref absent from the register snapshot entirely is a separate case from a ref present without a coordinate.",
+   "unmappable_rows": 25,
+   "offshore_rows": 101,
+   "offshore_rows_unmappable": 8,
+   "mappable_rows": 13970,
+   "parsing_requirement": "Parse this file with a real CSV reader. Site names contain commas inside quoted fields, so split(',') shifts every later column and makes the coordinate columns appear to hold region names such as 'England' or 'Scotland'. That artefact was produced and published once during this catalogue's own drafting; the figures above are from a quote-aware parse."
   },
   {
    "id": "crown-estate-england-wales",
@@ -175,5 +177,14 @@
   "Reduce a lease polygon with point-on-surface, not centroid, and record which source supplied the point.",
   "Where two sources disagree, keep both and name the one used. Never silently prefer one identity over another.",
   "A subsea link is drawn as a straight line between converter stations and labelled as one. That line measures separation, not cable length; the consented corridor is longer, and computing its bends is a later refinement of the same geometry rather than a correction of it."
+ ],
+ "corrections": [
+  {
+   "utc": "2026-09-07T03:25:00Z",
+   "what": "First published figures for REPD coordinate health were wrong.",
+   "wrong": "15,170 rows, 13,180 unmappable (87%), 55 of 98 offshore unmappable, literal 'Offshore'/'Scotland' in coordinate cells.",
+   "right": "13,995 rows, 25 unmappable (0.2%), 8 of 101 offshore unmappable, no non-numeric value in any coordinate cell.",
+   "cause": "split(',') on a CSV whose quoted Site Name fields contain commas. The column shift, not the register, produced the region names."
+  }
  ]
 }
