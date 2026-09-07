@@ -1,0 +1,54 @@
+{
+  "schema": "gridatlas.module-compaction.v1",
+  "generation": "202609060329",
+  "sourceCommit": "66b445b908005bcf3cb542de6bbd47090d855e76",
+  "parser": {
+    "name": "Acorn bundled in Node",
+    "version": "8.17.0",
+    "node": "v24.19.0",
+    "sha256": "f4ecbb1935ad718f988d8463ec28dedefa31329b397e29c68c8cf6a3050459cd"
+  },
+  "rule": "Only inter-token whitespace and non-license comments removed; token text and full AST equal. Original modules and all CSS/string/regex literals retained.",
+  "modules": [
+    {
+      "input": "atlas/modules/202609031958-menu-bar.js",
+      "output": "atlas/modules/202609060329-menu-bar.js",
+      "sourceSha256": "0531678926f3063465c80398a48a9f0545a24f490fcb2c60d72f94f25d01e234",
+      "sha256": "f4621e39154d30b68e7e53e4ce49f21da03fb03ac13ca507f4aacc885b4018f7",
+      "sourceCharacters": 89898,
+      "characters": 45881
+    },
+    {
+      "input": "atlas/modules/202609020015-injection-response.js",
+      "output": "atlas/modules/202609060329-injection-response.js",
+      "sourceSha256": "c4c5614ddf962f2c686553a824c5c1337ee1413aaf479ddbaf92a120621afa39",
+      "sha256": "d42969e3e00a745f19a79ab62bd94b80fc834e36da468f19645b90be18012860",
+      "sourceCharacters": 24377,
+      "characters": 12125
+    },
+    {
+      "input": "atlas/modules/202609012245-network-topology.js",
+      "output": "atlas/modules/202609060329-network-topology.js",
+      "sourceSha256": "d279e5338c4b325ab431e8727a4be1936b306ac5503597383c1cca658fa39875",
+      "sha256": "20610dd6801825d160d22d9eb4d982087d448de2d579821ec226dd641bd467ab",
+      "sourceCharacters": 16483,
+      "characters": 8338
+    },
+    {
+      "input": "atlas/modules/202609030048-pipeline-news-layers.js",
+      "output": "atlas/modules/202609060329-pipeline-news-layers.js",
+      "sourceSha256": "075fb2e50723bcd22cd69621adcded4a975342c38724a9c52502555c27836281",
+      "sha256": "8d560cc391029ce95a5615e1467a76ac874646285ab44c347a24b5ec5e5a0bc2",
+      "sourceCharacters": 19547,
+      "characters": 12181
+    },
+    {
+      "input": "atlas/modules/202609012350-owner-boundary.js",
+      "output": "atlas/modules/202609060329-owner-boundary.js",
+      "sourceSha256": "29a9f42930f7720fcfd82982e83919e864af79b701d5323cfd49ed5bcd67a478",
+      "sha256": "336fa6c59f47ad824112daaccc5d5bff4b7622e261fae99a346312776e68ba90",
+      "sourceCharacters": 14657,
+      "characters": 8593
+    }
+  ]
+}

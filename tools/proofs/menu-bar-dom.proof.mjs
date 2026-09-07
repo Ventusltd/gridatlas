@@ -460,8 +460,10 @@ export async function proveMenuBar(menuPath, servedSource = '') {
   check('arrow navigation advances across the conventional menu titles',
     complete.doc.activeElement === title('Edit'));
 
-  check('the old action stack is emptied only after nested controls move',
-    complete.stack.getAttribute('data-gridatlas-menu-emptied') === '1'
+  const remainingActions = complete.stack.querySelectorAll('button,input,select,textarea,a')
+    .filter(node => !node.hidden);
+  check('the old action stack is hidden only when no original visible control remains',
+    (complete.stack.getAttribute('data-gridatlas-menu-emptied') === '1') === (remainingActions.length === 0)
     && panel('Scope').contains(clear));
   check('one identity surface remains: the VENTUS masthead is fused into the bar itself '
     + '(not moved into a closed panel, generation 202609041250) and the real SCADA brand is '

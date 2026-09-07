@@ -5,7 +5,7 @@
 # Every digest in this repository is taken over git blob content, which is LF,
 # and GitHub Pages serves those same bytes. On a Windows checkout with
 # core.autocrlf=true git writes CRLF into the working copy instead, so the file
-# on disk is not the file that ships — and anything that reads the disk to
+# on disk is not the file that ships â€” and anything that reads the disk to
 # answer a question about what ships gets a different answer depending on whose
 # machine it runs on.
 #
@@ -18,7 +18,7 @@
 #                                       Pages never serves
 #   the cartridge proof                 compared the shell adapter raw, and so
 #                                       passed on Windows and failed on the
-#                                       runner — where it was right to fail
+#                                       runner â€” where it was right to fail
 #
 # Each was fixed by normalising at the point of comparison. This fixes the
 # cause: with `* text=auto eol=lf` the working copy is LF too, so there is no
@@ -53,7 +53,7 @@
 
 # Shell scripts are executed by Linux runners. A CR at the end of a shebang
 # line makes the kernel look for an interpreter whose name ends in a carriage
-# return, and the error it gives — "bad interpreter" — names a file that
+# return, and the error it gives â€” "bad interpreter" â€” names a file that
 # appears to exist.
 *.sh     text eol=lf
 *.bash   text eol=lf
@@ -128,3 +128,4 @@ atlas/cartridges/202609050244-substation-intelligence-v9-63.js -whitespace
 atlas/cartridges/202609050249-substation-intelligence-v9-63.js -whitespace
 atlas/cartridges/202609050301-substation-intelligence-v9-63.js -whitespace
 atlas/cartridges/202609050354-substation-intelligence-v9-63.js -whitespace
+atlas/cartridges/202609060329-substation-intelligence-v9-63.js -whitespace
