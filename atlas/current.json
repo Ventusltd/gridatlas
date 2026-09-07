@@ -1,7 +1,7 @@
 {
  "schema": "gridatlas.current.v2",
- "generation": "202609060259",
- "previous_generation": "202609051624",
+ "generation": "202609071232",
+ "previous_generation": "202609071213",
  "architecture": "IMMUTABLE_SHELL_PLUS_HASHED_CARTRIDGES",
  "live_route": "/gridatlas/atlas/",
  "release_id": "202608300453-atlas-v9",
@@ -39,13 +39,13 @@
   },
   {
    "id": "uk-gazetteer-flyto",
-   "generation": "202609041945",
-   "version": "v9.112",
+   "generation": "202609071213",
+   "version": "v9.145",
    "type": "script",
    "slot": "replace-script",
    "replace_script": "202608291818-place-postcode-search.js",
-   "path": "./cartridges/202609041945-place-global-search-v9-5.js",
-   "sha256": "21ab1507e98ee29961d03236e8b7853298104a33ecb1986d4d10ffc420a99c1c",
+   "path": "./cartridges/202609071213-place-global-search-v9-5.js",
+   "sha256": "15f324e5c279050882f7e3ce83a915c070b6ed19095efcac4ae20af4ef19fdfa",
    "contract": "../ui/cartridges/202609040337-global-gazetteer-flyto-v9-106.mjs",
    "capabilities": [
     "exact-repd-first",
@@ -57,17 +57,18 @@
    ],
    "result_class": "LOCATION_ONLY",
    "sets_deep_link": false,
-   "assembled_from": "./manifests/202609041945-place-global-search-v9-5-parts.json"
+   "assembled_from": "./manifests/202609041945-place-global-search-v9-5-parts.json",
+   "bytes": 41120
   },
   {
    "id": "sld-sandbox",
-   "generation": "202609051540",
-   "version": "v9.135",
+   "generation": "202609071232",
+   "version": "v9.146",
    "type": "script",
    "slot": "replace-script",
    "replace_script": "202608292126-pre-snapped-config-adapter.js",
-   "path": "./cartridges/202609051540-sld-sandbox-v9-8.js",
-   "sha256": "da6af52c46a76f37c62beccc2dacd8693348ae3d4a3666eea484f0515a019aa0",
+   "path": "./cartridges/202609071232-sld-sandbox-v9-8.js",
+   "sha256": "8916fa66f2cae3b1fe153dbb9e57af37c24081a151b199dfbdb1ed1801aee34b",
    "capabilities": [
     "pre-snapped-config-adapter-carried-forward",
     "project-or-substation-selection",
@@ -503,7 +504,7 @@
     "archetypes": "West Burton builds a 400 kV customer substation and a 10 km cable to an existing transmission bay; Little Crow loops into a distribution circuit already crossing its land. Both are NSIPs; only one is a 400 kV story",
     "rule": "the state is taken from the public record, never from whether OSM happens to have mapped the asset"
    },
-   "assembled_from": "./manifests/202609051540-sld-sandbox-v9-8-parts.json",
+   "assembled_from": "./manifests/202609050354-sld-sandbox-v9-8-parts.json",
    "data_sources": [
     {
      "repository": "Ventusltd/data-grid-gb",
@@ -519,17 +520,18 @@
      "fetched": "when a project card opens its GB conditions panel; revalidated with no-cache every open",
      "upstream": "Elexon settlement prices as the owner repository publishes them"
     }
-   ]
+   ],
+   "bytes": 382999
   },
   {
    "id": "substation-intelligence",
-   "generation": "202609060259",
-   "version": "v9.139",
+   "generation": "202609062358",
+   "version": "v9.140",
    "type": "script",
    "slot": "replace-script",
    "replace_script": "ventus-corev8engine.js",
-   "path": "./cartridges/202609060259-substation-intelligence-v9-63.js",
-   "sha256": "5b387a4bbcc89b8e2c64ae71db6d064ab0a368d825e3b06ae93d700d09b80980",
+   "path": "./cartridges/202609062358-substation-intelligence-v9-63.js",
+   "sha256": "d94b0de50deddac77643325b10fbe490ce44b8c406dbc6c67e6e7cadbdaa8ec6",
    "capabilities": [
     "immutable-v8-shell-preserved-with-reviewed-receiver-successor",
     "canonical-deep-link-technology-vocabulary",
@@ -586,7 +588,8 @@
     "closed_by": "the owner product's per-voltage split, quoted at the connection voltage",
     "still_site_wide": "circuit winter ratings are not split by voltage in the product and are now labelled site-wide (Blackhillock publishes 23-1,995 MVA)"
    },
-   "assembled_from": "./manifests/202609060259-substation-intelligence-v9-63-parts.json"
+   "assembled_from": "./manifests/202609051329-substation-intelligence-v9-63-parts.json",
+   "bytes": 451935
   }
  ],
  "last_known_green": {
@@ -631,15 +634,15 @@
    "result_class": "LOCATION_ONLY"
   }
  },
- "composition_manifest": "./manifests/202609060259-composition.json",
+ "composition_manifest": "./manifests/202609071232-composition.json",
  "scope_closure": {
   "generation": "202609010726",
   "status": "DONE",
   "scope": "GridAtlas v9.42 the price panel revalidates",
   "schedule_retired": true
  },
- "composition_version": "v9.139",
- "composition_id": "202609060259-gridatlas-v9.139",
+ "composition_version": "v9.126",
+ "composition_id": "202609051329-gridatlas-v9.126",
  "transport": {
   "response_contract": "HEADERS_BEFORE_PARQUET_BODY",
   "engine_timeout_seconds": 15,
@@ -654,5 +657,18 @@
   "fidelity_workflow": ".github/workflows/202608301931-layer-fidelity.yml",
   "payload_cache": "RELEASE_AFTER_SERIALISATION"
  },
- "composition_note": "Poly Zone corners would not grab: hover tested the corner first and the press tested the add-a-point dot first and returned, so the cursor promised a grab the press refused. There was also no touch path at all."
+ "composition_note": "Candidate only. Print fills the sheet and Save an image captures the map: the print rule gives the map chain an explicit height instead of auto, the save path reads the handle the estate publishes, the stamp reads the generation the loader publishes, and each export control carries an id.",
+ "pinned_by": {
+  "schema": "gridatlas.pinned-composition.v1",
+  "generation": "202609051329",
+  "version": "v9.126",
+  "route": "/gridatlas/atlas/v/202609051329/",
+  "why": "an unshipped candidate composed at its own route so print and save can be measured against the live route side by side; atlas/current.json is untouched and the live route still serves 202609050354",
+  "live_pointer_unchanged": true,
+  "proof": "tools/proofs/export-print-and-image-outcomes.browser.mjs --route atlas/v/202609051329"
+ },
+ "promoted_from": "atlas/v/202609071232/",
+ "promoted_utc": "2026-09-07T23:36:07.245Z",
+ "superseded_generation": "202609060259",
+ "promotion_evidence": "615 offline repeat runs with the network cut and 20 hosted runs green on the candidate pairs; the substation finder and the 400 kV engine passing throughout. Every cartridge verified by hash at promotion."
 }
