@@ -66,6 +66,16 @@ KNOWN_CABLE_KM = {
     }
 }
 
+# The estate already tracks what flows through these links. uk_energy_tracking_v6
+# carries import/export MWh per link per year, keyed by the same BMRS code this
+# tool keys on, with its sign convention stated in the file: imports positive,
+# exports negative. Joining on that code puts the electricity and the geometry
+# in one artefact instead of two half-answers.
+FLOW_INDEX = [
+    "globalgrid2050/uk_energy_tracking_v6/generation_history/interconnectors/generation_interconnector_index.json",
+    "../globalgrid2050/uk_energy_tracking_v6/generation_history/interconnectors/generation_interconnector_index.json",
+]
+
 GB_SUBSTATIONS = [
     "gridatlas/atlas/releases/202608292311-atlas-v9/data/grid_substations.geojson",
     "atlas/releases/202608292311-atlas-v9/data/grid_substations.geojson",
@@ -136,6 +146,46 @@ def load_gb_substations(root: Path) -> list[dict]:
     raise SystemExit("grid_substations.geojson not found")
 
 
+def load_flows(root: Path) -> tuple[dict, dict]:
+    """Import/export MWh per BMRS code, and the source's own contract."""
+    for candidate in FLOW_INDEX:
+        path = root / candidate
+        if not path.is_file():
+            continue
+        payload = json.loads(path.read_text(encoding="utf-8"))
+        totals: dict[str, dict] = {}
+        for row in payload.get("rows") or []:
+            code = row.get("bmrsCode")
+            if not code:
+                continue
+            bucket = totals.setdefault(
+                code,
+                {"country": row.get("country"), "name": row.get("interconnector"),
+                 "import_mwh": 0.0, "export_mwh": 0.0, "years": []},
+            )
+            bucket["import_mwh"] += row.get("importMWh") or 0.0
+            bucket["export_mwh"] += row.get("exportMWh") or 0.0
+            if row.get("year") is not None:
+                bucket["years"].append(row["year"])
+        for bucket in totals.values():
+            years = bucket.pop("years")
+            bucket["years"] = f"{min(years)}-{max(years)}" if years else None
+            bucket["net_mwh"] = round(bucket["import_mwh"] + bucket["export_mwh"], 1)
+            bucket["import_mwh"] = round(bucket["import_mwh"], 1)
+            bucket["export_mwh"] = round(bucket["export_mwh"], 1)
+        contract = {
+            "source": str(path.as_posix()),
+            "title": payload.get("title"),
+            "label_contract": payload.get("labelContract"),
+            "sign_convention": payload.get("signConvention"),
+            "generated_utc": payload.get("generatedUTC"),
+        }
+        print(f"  flow data: {len(totals)} links from {path.name}")
+        return totals, contract
+    print("  flow data: not found (geometry only)", file=sys.stderr)
+    return {}, {}
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--root", default=".")
@@ -146,6 +196,7 @@ def main() -> int:
 
     root = Path(args.root).resolve()
     gb = load_gb_substations(root)
+    flows, flow_contract = load_flows(root)
     elements = fetch_converters(Path(args.cache), args.offline)
 
     converters = []
@@ -192,6 +243,15 @@ def main() -> int:
             "crs": "EPSG:4326",
         }
 
+        flow = flows.get(spec["bmrs"])
+        if flow:
+            row["country"] = flow["country"]
+            row["flow_years"] = flow["years"]
+            row["import_mwh"] = flow["import_mwh"]
+            row["export_mwh"] = flow["export_mwh"]
+            row["net_mwh"] = flow["net_mwh"]
+            row["net_direction"] = "net import to GB" if flow["net_mwh"] > 0 else "net export from GB"
+
         if gb_hit and far_hit:
             straight = haversine_km(gb_hit["lon"], gb_hit["lat"], far_hit["lon"], far_hit["lat"])
             row["straight_line_km"] = round(straight, 2)
@@ -221,6 +281,7 @@ def main() -> int:
         ),
         "far_end_source": "OpenStreetMap Overpass, power=converter",
         "bbox": {"south": BBOX[0], "west": BBOX[1], "north": BBOX[2], "east": BBOX[3]},
+        "flow_data": flow_contract,
         "links": len(results),
         "drawable": len(drawable),
         "gb_ends_found": sum(1 for r in results if r["gb_lon"] is not None),
@@ -255,6 +316,12 @@ def main() -> int:
             "straight_line_km": row["straight_line_km"],
             "geometry_kind": row["geometry_kind"],
             "far_end_source": row["far_source"],
+            "country": row.get("country"),
+            "flow_years": row.get("flow_years"),
+            "import_mwh": row.get("import_mwh"),
+            "export_mwh": row.get("export_mwh"),
+            "net_mwh": row.get("net_mwh"),
+            "net_direction": row.get("net_direction"),
         }
         if "route_factor" in row:
             common["known_submarine_cable_km"] = row["known_submarine_cable_km"]
