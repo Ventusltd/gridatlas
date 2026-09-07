@@ -1,0 +1,139 @@
+name: Offshore coordinates reconcile
+
+# REPD locates almost everything it lists. Wind Offshore is the exception, and
+# those leftover rows are the ones whose MAP button reaches the Atlas with no
+# point to fly to. The Crown Estate leases the seabed under them and publishes
+# the lease polygons, so the gap closes from data the estate already holds.
+#
+# The register is refreshed by DESNZ on its own cadence and the Crown Estate
+# adds leasing rounds occasionally, so this runs once a year on a timer and on
+# demand whenever either source changes. It discovers its inputs by glob rather
+# than by fixed filename, so a lease file added under a new name is picked up
+# without editing this workflow.
+#
+# It never edits repd.csv. The register is the register; the output is a
+# separate, explicitly derived coordinate set.
+
+on:
+  # Once a year. Deliberately not on the 1st at midnight, and not on the hour.
+  schedule:
+    - cron: '23 4 14 2 *'   # 14 February, 04:23 UTC
+  workflow_dispatch:
+    inputs:
+      commit:
+        description: 'Commit the regenerated coordinate set back to main'
+        type: boolean
+        default: true
+  push:
+    branches: [main]
+    paths:
+      - 'tools/offshore/**'
+      - '.github/workflows/offshore-coordinate-reconcile.yml'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: offshore-coordinate-reconcile
+  cancel-in-progress: false
+
+jobs:
+  reconcile:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Check out gridatlas
+        uses: actions/checkout@v4
+        with:
+          path: gridatlas
+
+      # The register and the lease files live in sibling repositories. Checking
+      # them out beside this one is what lets the same script run unchanged on a
+      # developer machine and here.
+      - name: Check out globalgrid2050 (holds repd.csv)
+        uses: actions/checkout@v4
+        with:
+          repository: Ventusltd/globalgrid2050
+          path: globalgrid2050
+
+      - name: Check out testcode (holds the Crown Estate lease geojson)
+        uses: actions/checkout@v4
+        with:
+          repository: Ventusltd/testcode
+          path: testcode
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Report what the sources look like today
+        run: |
+          echo "repd.csv:        $(wc -l < globalgrid2050/repd.csv) lines"
+          echo "lease geojson:"
+          find testcode -iname '*crown*.geojson' -print | sed 's/^/  /'
+
+      # Check BEFORE writing. --check recomputes from the live sources and
+      # compares against the COMMITTED file; running it afterwards would only
+      # ever compare the new file against itself and could never fail.
+      #
+      # Fewer recovered projects than the committed set is a regression,
+      # whether from a renamed lease file, a changed column, or a matcher that
+      # quietly got narrower. Fail loudly rather than commit it.
+      - name: Fail if coverage regressed
+        run: |
+          python gridatlas/tools/offshore/reconcile_offshore_coordinates.py \
+            --root "$GITHUB_WORKSPACE" \
+            --out gridatlas/atlas/data/offshore-coordinates.json \
+            --check
+
+      - name: Reconcile
+        run: |
+          python gridatlas/tools/offshore/reconcile_offshore_coordinates.py \
+            --root "$GITHUB_WORKSPACE" \
+            --out gridatlas/atlas/data/offshore-coordinates.json
+
+      - name: Summarise
+        run: |
+          python - <<'PY'
+          import json
+          d = json.load(open('gridatlas/atlas/data/offshore-coordinates.json'))
+          r = d['register']
+          print(f"register        {r['mappable']}/{r['rows']} mappable")
+          print(f"offshore gaps   {r['offshore_unmappable']} of {r['offshore_rows']}")
+          print(f"recovered       {d['recovered']}")
+          print(f"still unmatched {d['still_unmatched']}")
+          for row in d['coordinates']:
+              if row['longitude'] is None:
+                  print(f"  {row['repd_ref']:<8}{row['site_name'][:36]:<38} NO LEASE MATCH")
+              else:
+                  print(f"  {row['repd_ref']:<8}{row['site_name'][:36]:<38} {row['longitude']}, {row['latitude']}")
+          PY
+
+      - name: Publish the coordinate set as an artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: offshore-coordinates
+          path: gridatlas/atlas/data/offshore-coordinates.json
+          if-no-files-found: warn
+
+      - name: Commit the regenerated set
+        if: github.event_name == 'schedule' || inputs.commit
+        working-directory: gridatlas
+        run: |
+          if git diff --quiet -- atlas/data/offshore-coordinates.json; then
+            echo "no change"
+            exit 0
+          fi
+          git config user.name  "gridatlas-ci"
+          git config user.email "gridatlas-ci@users.noreply.github.com"
+          git add atlas/data/offshore-coordinates.json
+          RECOVERED=$(python -c "import json;print(json.load(open('atlas/data/offshore-coordinates.json'))['recovered'])")
+          UNMATCHED=$(python -c "import json;print(json.load(open('atlas/data/offshore-coordinates.json'))['still_unmatched'])")
+          git commit -m "Offshore coordinates: ${RECOVERED} recovered, ${UNMATCHED} still unmatched
+
+          Regenerated from DESNZ REPD and the Crown Estate lease geometry by
+          tools/offshore/reconcile_offshore_coordinates.py. Points are derived
+          with point-on-surface over the lease polygon and are labelled derived;
+          repd.csv is not edited by this workflow."
+          git push
