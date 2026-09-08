@@ -1,9 +1,9 @@
 {
  "schema": "gridatlas.offshore-landfall.v1",
- "generated_utc": "2026-09-08T00:55:00Z",
+ "generated_utc": "2026-09-08T04:15:00Z",
  "status": "PARTIAL",
  "statement": "Where an offshore wind farm's export cable comes ashore, and the onshore substation it connects at, from the developer's own consent documents. A landfall is not the nearest coast to the array: it is a consented location, often tens of kilometres from the geometrically nearest shore. Nothing here is derived from proximity. A project whose landfall is not yet fixed says so rather than carrying a guess.",
- "coverage": "4 of 97 offshore wind rows. This file was cut short by a session budget and is a beginning, not a survey. The remaining 93 are unresearched, not absent.",
+ "coverage": "8 of 97 offshore wind rows. Cut short by a session budget: this is a beginning, not a survey. The remaining rows are unresearched, not absent.",
  "companion": "atlas/data/neso-connection-sites.json carries the NESO-registered connection site for 78 of the 97, which is the contractual fact; this file carries the physical landfall, which the registers do not publish.",
  "records": [
   {
@@ -81,6 +81,84 @@
     {"url": "https://www.ossianwindfarm.com/the-project", "publisher": "Ossian OWF Ltd (SSE Renewables / CIP / Marubeni)", "date": "2026", "supports": "both"},
     {"url": "https://national-infrastructure-consenting.planninginspectorate.gov.uk/projects/EN0210006", "publisher": "Planning Inspectorate", "date": "2026-03-27", "supports": "both"},
     {"url": "https://marine.gov.scot/sites/default/files/250221_-_ossian_offshore_wind_farm_-_eia_scoping_opinion_-_scop-0068_-_ossian_transmission_infrastructure_scoping_report_-_part_5_-_updated.pdf", "publisher": "Marine Directorate Scotland / Ossian scoping report", "date": "2025-02-21", "supports": "landfall"}
+   ]
+  },
+  {
+   "repd_ref": "10918",
+   "project": "Mona Offshore Wind Farm",
+   "landfall_name": "Llanddulas, Conwy, north Wales; transition joint bays south of the A547. Abergele and Pensarn lie on the cable route, not at the landfall.",
+   "landfall_longitude": -3.643,
+   "landfall_latitude": 53.287,
+   "landfall_precision": "SETTLEMENT_CENTROID",
+   "onshore_substation": "Bodelwyddan",
+   "onshore_substation_note": "National Grid Bodelwyddan 400 kV substation, Denbighshire, is the point of interconnection. A new Mona onshore substation is built immediately south of it and connects north by up to two 400 kV HVAC circuits; National Grid separately extends Bodelwyddan under works outside the Mona DCO.",
+   "onshore_substation_operator": "National Grid Electricity Transmission",
+   "connection_voltage_kv": 400,
+   "confidence": "HIGH",
+   "notes": "Bound to the applicant's own DCO document J4. HVAC throughout, so no converters: inter-array up to 132 kV, export cables up to 275 kV, 400 kV into Bodelwyddan, onshore route about 15 km. The trenchless landfall passes under the Gwrych Estate wall, the A547, the A55 and the railway. DCO granted 4 July 2025, corrected 23 October 2025. Ownership has changed: JERA Nex bp acquired EnBW's stake and signed the Crown Estate lease on 16 January 2026. Independently corroborated by NESO's TEC register, which records Mona at Bodelwyddan 400kV - two sources, one answer.",
+   "sources": [
+    {"url": "https://nsip-documents.planninginspectorate.gov.uk/published-documents/EN010137-000358-J4_Mona_Grid%20Connection%20and%20Cable%20Detail%20Statement.pdf", "publisher": "Mona Offshore Wind Ltd via Planning Inspectorate (EN010137), DCO document J4 Grid Connection and Cable Detail Statement", "date": "2023", "supports": "both"},
+    {"url": "https://nsip-documents.planninginspectorate.gov.uk/published-documents/EN010137-001756-S_D5_20_Mona_Onshore%20Substation%20Site%20Selection%20Summary%20Note.pdf", "publisher": "Mona Offshore Wind Ltd, Onshore Substation Site Selection Summary Note", "date": "2024", "supports": "substation"},
+    {"url": "https://national-infrastructure-consenting.planninginspectorate.gov.uk/projects/EN010137", "publisher": "Planning Inspectorate", "date": "2025-10-24", "supports": "both"}
+   ]
+  },
+  {
+   "repd_ref": "10919",
+   "project": "Morgan Offshore Wind Farm",
+   "landfall_name": "Lytham St Annes, Lancashire - the beach between Squires Gate Lane and St Annes North Beach car park, with transition joint bays at or near Blackpool Airport. NOT Blackpool or Fleetwood.",
+   "landfall_longitude": -3.033,
+   "landfall_latitude": 53.75,
+   "landfall_precision": "SETTLEMENT_CENTROID",
+   "landfall_derivation": "St Annes-on-Sea settlement centroid; the consented landfall lies about 2-3 km north of it by Squires Gate Lane",
+   "onshore_substation": "Penwortham",
+   "onshore_substation_note": "Existing National Grid Penwortham substation, Lancashire, is the point of interconnection. A new Morgan onshore substation is built near Newton-with-Scales, south-east of Kirkham, with up to four 400 kV underground circuits onward to Penwortham. A separate new Morecambe onshore substation sits alongside it.",
+   "onshore_substation_operator": "National Grid Electricity Transmission",
+   "connection_voltage_kv": 400,
+   "confidence": "HIGH",
+   "project_status_caveat": "DISCONTINUED BY THE DEVELOPER. On 16 January 2026 JERA Nex bp announced it would not proceed with the Agreement for Lease, and JERA Nex bp and EnBW are concluding project activities - despite the generation DCO (EN010136) having been granted on 29 August 2025. REPD still carries it as awaiting construction. These are published facts about a project that may never be built, and that is worth recording as exactly that.",
+   "notes": "The landfall and substation are NOT in the generation DCO at all: EN010136 covers only turbines, offshore platforms, foundations and inter-array cables. All onshore infrastructure sits in the joint Morgan and Morecambe Transmission Assets DCO, EN020032, still at decision stage with a deadline of 14 September 2026. Six coastal zones were assessed - Lytham St Annes, Banks, Southport, Ainsdale, Formby and south of Formby - and Lytham St Annes was the only one shortlisted, with trenchless installation under the Lytham St Annes Dunes SSSI, the A584, the railway and the golf course. Onshore corridors about 17 km. Corroborated by NESO's TEC register, which records Morgan at Penwortham 400kV.",
+   "sources": [
+    {"url": "https://nsip-documents.planninginspectorate.gov.uk/published-documents/EN020032-000425-F1.4.1_MMTA_ES_Selection%20and%20Refinement%20of%20Cable%20Landfall.pdf", "publisher": "Morgan and Morecambe Transmission Assets ES Vol 1 Annex 4.1 via Planning Inspectorate (EN020032)", "date": "2024", "supports": "landfall"},
+    {"url": "https://nsip-documents.planninginspectorate.gov.uk/published-documents/EN020032-000661-F1.4.3_MMTA_ES_Site%20Selection%20and%20Refinement%20of%20Onshore%20Infrastructure_ES01.pdf", "publisher": "Morgan and Morecambe Transmission Assets ES Vol 1 Annex 4.3", "date": "2024", "supports": "substation"},
+    {"url": "https://national-infrastructure-consenting.planninginspectorate.gov.uk/projects/EN020032", "publisher": "Planning Inspectorate", "date": "2026-08-27", "supports": "both"}
+   ]
+  },
+  {
+   "repd_ref": "10920",
+   "project": "Morven North Offshore Wind Farm",
+   "landfall_name": "NOT FIXED. For the Hawthorn Pit link the preferred of two remaining options is Central, south of Nose's Point (Blast Beach, Seaham, County Durham); the alternative is North, above Seaham. A third, east of Easington Colliery, is excluded as unviable. No landfall is published for the Branxton link.",
+   "landfall_longitude": null,
+   "landfall_latitude": null,
+   "landfall_precision": "UNKNOWN",
+   "onshore_substation": null,
+   "onshore_substation_note": "NOT ASSIGNABLE. Morven has TWO points of connection - National Grid's existing Hawthorn Pit 400 kV substation in County Durham, and a Branxton onshore substation in East Lothian - and the applicant's own May 2026 EIA states it is presently unknown which grid project will export which array. At each the project builds its own HVDC converter station; for Hawthorn Pit, three search areas around the Jade Business Park and the A19 Cold Hesledon junction.",
+   "onshore_substation_operator": "National Grid Electricity Transmission for Hawthorn Pit; not established for Branxton - East Lothian is SP Transmission's licence area but no fetched document names the owner, and it is left null rather than inferred",
+   "connection_voltage_kv": 400,
+   "confidence": "LOW",
+   "notes": "THIS CORRECTS AN ASSUMPTION MADE EARLIER IN THIS ESTATE: Morven is NOT an Aberdeenshire or Peterhead connection. The Holistic Network Design offered two connections, Hawthorn Pit and Branxton, and that is what drove splitting the site into North and South. NESO's TEC register independently records Morven A at Hawthorn Pit 400kV, which agrees. Landfall is only at non-statutory consultation stage - round two closed 30 November 2025, down-selection to follow with further consultation in late 2026 and a DCO application after. Morven North is about 61 km offshore, 511 km2, up to 96 turbines. HVDC at either dual 320 kV monopole or single 525 kV bipole, undecided; no equipment ordered, and the applicant cites a six-year lead time. Developer is a JERA Nex bp and EnBW 50:50 joint venture. NESO has prioritised it as Gate 2 Phase 2 with a 2031-2035 connection window.",
+   "sources": [
+    {"url": "https://www.morvenoffshorewind.com/wp-content/uploads/2026/05/MVN_EIA_Non-Technical-Summary.pdf", "publisher": "Morven Offshore Wind Ltd, Morven North EIA Non-Technical Summary", "date": "2026-05", "supports": "substation"},
+    {"url": "https://www.morvenoffshorewind.com/wp-content/uploads/2025/10/Morven-Hawthorn-Pit-Grid-Connection-Project-consultation-brochure-NEW-COV-20.11.25-RY.pdf", "publisher": "Morven Offshore Wind Ltd, Hawthorn Pit Grid Connection consultation brochure", "date": "2025-11", "supports": "both"},
+    {"url": "https://www.morvenoffshorewind.com/wp-content/uploads/2025/09/EN0210005-000004-Morven-Hawthorn-Pit-Grid-Connection-Project-Scoping-Report.pdf", "publisher": "Morven Offshore Wind Ltd via Planning Inspectorate (EN0210005), scoping report", "date": "2025-02", "supports": "both"}
+   ]
+  },
+  {
+   "repd_ref": "21087",
+   "project": "Morven South Offshore Wind Farm",
+   "landfall_name": "NOT FIXED - the same position as Morven North.",
+   "landfall_longitude": null,
+   "landfall_latitude": null,
+   "landfall_precision": "UNKNOWN",
+   "onshore_substation": null,
+   "onshore_substation_note": "NOT ASSIGNABLE - the same two candidate connections as Morven North, Hawthorn Pit and Branxton, with the pairing undecided.",
+   "onshore_substation_operator": "National Grid Electricity Transmission for Hawthorn Pit; not established for Branxton",
+   "connection_voltage_kv": 400,
+   "confidence": "LOW",
+   "notes": "The southern array of the same split ScotWind E1a site: about 86 km from shore, 347 km2, up to 95 turbines. Only one bridge-linked HVDC platform is built across the two projects. Section 36 and marine licence applications for both arrays went to Scottish Ministers in May 2026, and the two grid connection projects are consented separately with neither tied to a named array. Ofgem's HNDFUE asset classification lists the circuit E1a to Branxton as a 1,500 MW HVDC link to a Branxton onshore substation, which matches the second connection.",
+   "sources": [
+    {"url": "https://www.morvenoffshorewind.com/wp-content/uploads/2026/05/MVN_EIA_Vol-1_Ch-4_Site-Selection-and-Consideration-of-Alternatives.pdf", "publisher": "Morven Offshore Wind Ltd, EIA Vol 1 Ch 4 Site Selection and Consideration of Alternatives", "date": "2026-05", "supports": "substation"},
+    {"url": "https://www.ofgem.gov.uk/sites/default/files/2024-04/HNDFUE%20Asset%20Classification%20Decision.pdf", "publisher": "Ofgem, HNDFUE Asset Classification Decision", "date": "2024-04", "supports": "substation"},
+    {"url": "https://www.morvenoffshorewind.com/wp-content/uploads/2026/05/MVN_A5_Planning-Statement-and-Needs-Case.pdf", "publisher": "Morven Offshore Wind Ltd, Planning Statement and Needs Case", "date": "2026-05", "supports": "substation"}
    ]
   }
  ]
