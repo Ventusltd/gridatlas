@@ -212,6 +212,7 @@ for (const { tech, row } of sample) {
         const a = window.__GRIDATLAS_NEON_LINKS__?.arrival_engine;
         return a && a.terminal !== false ? a : null;
       },
+      undefined,
       { timeout: TIMEOUT }
     ).then(h => h.jsonValue()).catch(() => null);
 
