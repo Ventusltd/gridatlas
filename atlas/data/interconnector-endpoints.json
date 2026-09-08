@@ -1,6 +1,6 @@
 {
  "schema": "gridatlas.interconnector-endpoints.v1",
- "generated_utc": "2026-09-07T03:46:03Z",
+ "generated_utc": "2026-09-08T01:37:56Z",
  "purpose": "Converter-station pairs for GB interconnectors. GB ends come from our own substation data; far ends are queried from OpenStreetMap power=converter. The line between them is a straight line and is labelled as one: it measures separation between converter stations, not cable length.",
  "far_end_source": "OpenStreetMap Overpass, power=converter",
  "bbox": {
@@ -33,14 +33,14 @@
    "far_lat": null,
    "far_source": null,
    "crs": "EPSG:4326",
+   "drawable": false,
+   "missing": "far end",
    "country": "France",
    "flow_years": "2020-2026",
    "import_mwh": 44404675.6,
    "export_mwh": -7113011.9,
    "net_mwh": 37291663.7,
-   "net_direction": "net import to GB",
-   "drawable": false,
-   "missing": "far end"
+   "net_direction": "net import to GB"
   },
   {
    "link": "IFA2",
@@ -54,14 +54,14 @@
    "far_lat": null,
    "far_source": null,
    "crs": "EPSG:4326",
+   "drawable": false,
+   "missing": "far end",
    "country": "France",
    "flow_years": "2020-2026",
    "import_mwh": 23335091.7,
    "export_mwh": -6968684.3,
    "net_mwh": 16366407.3,
-   "net_direction": "net import to GB",
-   "drawable": false,
-   "missing": "far end"
+   "net_direction": "net import to GB"
   },
   {
    "link": "ElecLink",
@@ -75,17 +75,17 @@
    "far_lat": 50.92029,
    "far_source": "OpenStreetMap way/775577826",
    "crs": "EPSG:4326",
+   "straight_line_km": 59.93,
+   "midpoint_lon": 1.37813,
+   "midpoint_lat": 51.01346,
+   "geometry_kind": "STRAIGHT_LINE_CONVERTER_TO_CONVERTER",
+   "drawable": true,
    "country": "France",
    "flow_years": "2020-2026",
    "import_mwh": 19748067.4,
    "export_mwh": -4586523.3,
    "net_mwh": 15161544.2,
-   "net_direction": "net import to GB",
-   "straight_line_km": 59.93,
-   "midpoint_lon": 1.37813,
-   "midpoint_lat": 51.01346,
-   "geometry_kind": "STRAIGHT_LINE_CONVERTER_TO_CONVERTER",
-   "drawable": true
+   "net_direction": "net import to GB"
   },
   {
    "link": "BritNed",
@@ -99,12 +99,6 @@
    "far_lat": 51.95741,
    "far_source": "OpenStreetMap way/230124965",
    "crs": "EPSG:4326",
-   "country": "Netherlands",
-   "flow_years": "2020-2026",
-   "import_mwh": 20052382.2,
-   "export_mwh": -8921782.7,
-   "net_mwh": 11130599.5,
-   "net_direction": "net import to GB",
    "straight_line_km": 234.9,
    "midpoint_lon": 2.36873,
    "midpoint_lat": 51.69895,
@@ -112,7 +106,13 @@
    "drawable": true,
    "known_submarine_cable_km": 245,
    "route_factor": 1.043,
-   "route_factor_source": "BritNed Development Ltd v ABB AB [2018] EWHC 2616 (Ch)"
+   "route_factor_source": "BritNed Development Ltd v ABB AB [2018] EWHC 2616 (Ch)",
+   "country": "Netherlands",
+   "flow_years": "2020-2026",
+   "import_mwh": 20052382.2,
+   "export_mwh": -8921782.7,
+   "net_mwh": 11130599.5,
+   "net_direction": "net import to GB"
   },
   {
    "link": "Nemo Link",
@@ -126,14 +126,14 @@
    "far_lat": null,
    "far_source": null,
    "crs": "EPSG:4326",
+   "drawable": false,
+   "missing": "far end",
    "country": "Belgium",
    "flow_years": "2020-2026",
    "import_mwh": 24974314.2,
    "export_mwh": -7008715.2,
    "net_mwh": 17965599.0,
-   "net_direction": "net import to GB",
-   "drawable": false,
-   "missing": "far end"
+   "net_direction": "net import to GB"
   },
   {
    "link": "North Sea Link",
@@ -147,14 +147,14 @@
    "far_lat": null,
    "far_source": null,
    "crs": "EPSG:4326",
+   "drawable": false,
+   "missing": "far end",
    "country": "Norway",
    "flow_years": "2020-2026",
    "import_mwh": 36944177.2,
    "export_mwh": -4158320.0,
    "net_mwh": 32785857.2,
-   "net_direction": "net import to GB",
-   "drawable": false,
-   "missing": "far end"
+   "net_direction": "net import to GB"
   },
   {
    "link": "Viking Link",
@@ -168,14 +168,14 @@
    "far_lat": null,
    "far_source": null,
    "crs": "EPSG:4326",
+   "drawable": false,
+   "missing": "far end",
    "country": "Denmark",
    "flow_years": "2020-2026",
    "import_mwh": 11833004.2,
    "export_mwh": -4657323.2,
    "net_mwh": 7175680.9,
-   "net_direction": "net import to GB",
-   "drawable": false,
-   "missing": "far end"
+   "net_direction": "net import to GB"
   },
   {
    "link": "East West",
@@ -189,14 +189,14 @@
    "far_lat": null,
    "far_source": null,
    "crs": "EPSG:4326",
+   "drawable": false,
+   "missing": "far end",
    "country": "Ireland",
    "flow_years": "2020-2026",
    "import_mwh": 1993006.2,
    "export_mwh": -8595238.7,
    "net_mwh": -6602232.4,
-   "net_direction": "net export from GB",
-   "drawable": false,
-   "missing": "far end"
+   "net_direction": "net export from GB"
   },
   {
    "link": "Greenlink",
@@ -210,14 +210,14 @@
    "far_lat": null,
    "far_source": null,
    "crs": "EPSG:4326",
+   "drawable": false,
+   "missing": "far end",
    "country": "Ireland",
    "flow_years": "2020-2026",
    "import_mwh": 377047.7,
    "export_mwh": -4485280.5,
    "net_mwh": -4108232.8,
-   "net_direction": "net export from GB",
-   "drawable": false,
-   "missing": "far end"
+   "net_direction": "net export from GB"
   },
   {
    "link": "Moyle",
@@ -231,14 +231,14 @@
    "far_lat": null,
    "far_source": null,
    "crs": "EPSG:4326",
+   "drawable": false,
+   "missing": "far end",
    "country": "Northern Ireland",
    "flow_years": "2020-2026",
    "import_mwh": 2714532.0,
    "export_mwh": -11049208.8,
    "net_mwh": -8334676.8,
-   "net_direction": "net export from GB",
-   "drawable": false,
-   "missing": "far end"
+   "net_direction": "net export from GB"
   }
  ]
 }

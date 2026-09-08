@@ -83,8 +83,8 @@ GB_SUBSTATIONS = [
 
 
 def haversine_km(lon1: float, lat1: float, lon2: float, lat2: float) -> float:
-    """Great-circle distance on a sphere of the WGS84 mean radius."""
-    radius = 6371.0088
+    """Great-circle distance on the estate's declared WGS84 sphere."""
+    radius = 6378.137
     p1, p2 = math.radians(lat1), math.radians(lat2)
     dp = math.radians(lat2 - lat1)
     dl = math.radians(lon2 - lon1)

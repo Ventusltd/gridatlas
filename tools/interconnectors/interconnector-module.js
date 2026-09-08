@@ -39,7 +39,8 @@
   };
   window.__GRIDATLAS_INTERCONNECTORS__ = state;
 
-  const EARTH_KM = 6371.0088;
+  // Match the estate-wide Ventus distance contract used by the onshore engine.
+  const EARTH_KM = 6378.137;
   const rad = (d) => (d * Math.PI) / 180;
   function haversineKm(lon1, lat1, lon2, lat2) {
     const p1 = rad(lat1), p2 = rad(lat2);
