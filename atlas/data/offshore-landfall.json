@@ -1,0 +1,87 @@
+{
+ "schema": "gridatlas.offshore-landfall.v1",
+ "generated_utc": "2026-09-08T00:55:00Z",
+ "status": "PARTIAL",
+ "statement": "Where an offshore wind farm's export cable comes ashore, and the onshore substation it connects at, from the developer's own consent documents. A landfall is not the nearest coast to the array: it is a consented location, often tens of kilometres from the geometrically nearest shore. Nothing here is derived from proximity. A project whose landfall is not yet fixed says so rather than carrying a guess.",
+ "coverage": "4 of 97 offshore wind rows. This file was cut short by a session budget and is a beginning, not a survey. The remaining 93 are unresearched, not absent.",
+ "companion": "atlas/data/neso-connection-sites.json carries the NESO-registered connection site for 78 of the 97, which is the contractual fact; this file carries the physical landfall, which the registers do not publish.",
+ "records": [
+  {
+   "repd_ref": "9873",
+   "project": "Berwick Bank Offshore Wind Farm",
+   "landfall_name": "Skateraw, East Lothian (about 130 m north-west of Skateraw harbour); a second landfall at Cambois, Northumberland serves the separate Blyth connection",
+   "landfall_longitude": -2.42504,
+   "landfall_latitude": 55.97421,
+   "landfall_precision": "PUBLISHED_COORDINATE",
+   "landfall_derivation": "OSGB36 grid reference 373571 E, 675772 N published in the onshore EIA, converted to WGS84 by Helmert transform",
+   "onshore_substation": "Branxton",
+   "onshore_substation_note": "SP Energy Networks 400 kV grid substation south-west of Torness, adjacent to the existing Innerwick cable sealing end compound; NEW, built by SPEN for this connection. The project also builds its own substation or converter station north-east of Innerwick (55.96304 N, -2.43303 W), 1.5 km from landfall and 1.8 km from Branxton.",
+   "onshore_substation_operator": "SP Transmission (SPEN); the English connection at Blyth is National Grid ET",
+   "connection_voltage_kv": 400,
+   "confidence": "HIGH",
+   "notes": "Landfall, the developer's own substation and the Branxton connection point are all fixed and consented: PPiP December 2023, offshore consent July 2025, AMM application 25/01386/AMM live January 2026. Onshore cabling is 275 kV landfall to substation and 400 kV substation to Branxton. The design envelope deliberately leaves the developer's own substation as either HVAC or an HVDC converter station, so the technology is NOT determined and no cable or converter supplier is publicly contracted.",
+   "sources": [
+    {"url": "https://berwickbank-eia.com/onshore-eia/vol1-ch05-proposed-development-description/part-0.html", "publisher": "Berwick Bank Wind Farm Ltd (SSE Renewables), Onshore EIA Report Vol 1 Ch 5", "date": "2023", "supports": "both"},
+    {"url": "https://berwickbank-eia.com/onshore-eia/vol1-ch01-Introduction/part-0.html", "publisher": "Berwick Bank Onshore EIA Report Vol 1 Ch 1", "date": "2023", "supports": "substation"},
+    {"url": "https://www.berwickbank.com/planning-overview", "publisher": "Berwick Bank Wind Farm / SSE Renewables", "date": "2025", "supports": "both"},
+    {"url": "https://elcc.scot/2026/01/berwick-bank-wind-farm-update/", "publisher": "East Lammermuir Community Council", "date": "2026-01", "supports": "substation"}
+   ]
+  },
+  {
+   "repd_ref": "13419",
+   "project": "Bellrock Offshore Wind Farm",
+   "landfall_name": "Cowie, north of Stonehaven, Aberdeenshire; announced landing zone between Findon and St Cyrus",
+   "landfall_longitude": null,
+   "landfall_latitude": null,
+   "landfall_precision": "UNKNOWN",
+   "onshore_substation": "Hurlie",
+   "onshore_substation_note": "SSEN Transmission's NEW 400 kV air-insulated substation at Fetteresso Forest west of Stonehaven (AB39 3UX), on the new Kintore to Tealing 400 kV line. Aberdeenshire Council REFUSED its planning application (APP/2024/1951) on 2026-01-30 and SSEN appealed on 2026-02-27 (PPA-110-2474), so the substation itself is not consented.",
+   "onshore_substation_operator": "SSEN Transmission",
+   "connection_voltage_kv": 400,
+   "confidence": "MEDIUM",
+   "notes": "The landfall was pinpointed on 2026-09-03 alongside a scoping report; the Offshore Transmission Development Area application is not due until end-2027, so it is proposed rather than consented. Grid connection date 2032. The 400 kV figure comes from SSEN's designation of Hurlie, not from a Bellrock document. Ownership: Bellrock is developed by Nadara (Renantis, formerly Falck Renewables, with Ventient), NOT by Orsted; the ScotWind lease was BlueFloat Energy with Renantis. HVAC or HVDC is still under study.",
+   "sources": [
+    {"url": "https://bellrockwind.co.uk/the-project/", "publisher": "Bellrock Offshore Wind Farm Ltd (Nadara)", "date": "2026", "supports": "both"},
+    {"url": "https://www.offshorewind.biz/2026/09/03/nadara-pinpoints-landfall-location-for-1-8-gw-floating-wind-project-starts-preparing-for-offshore-transmission-licence-application/", "publisher": "OffshoreWind.biz", "date": "2026-09-03", "supports": "landfall"},
+    {"url": "https://www.ssen-transmission.co.uk/projects/project-map/hurlie-400kv-substation/", "publisher": "SSEN Transmission", "date": "2026", "supports": "substation"}
+   ]
+  },
+  {
+   "repd_ref": "13432",
+   "project": "Marram Wind",
+   "landfall_name": "NOT FIXED: three named options carried through the submitted EIA, all near Peterhead, Aberdeenshire - Lunderton North, Lunderton South and Scotstown. The landfall search area ran from Sandhaven west of Fraserburgh to Sandford Bay south of Peterhead.",
+   "landfall_longitude": null,
+   "landfall_latitude": null,
+   "landfall_precision": "UNKNOWN",
+   "onshore_substation": "Netherton Hub",
+   "onshore_substation_note": "SSEN 400 kV grid substation at Longside near Peterhead, a SEPARATE SSEN project and not part of MarramWind's own consent applications. MarramWind additionally builds three co-located onshore substations or HVDC converter stations of its own, linked onward to Netherton Hub by a corridor about 99 m wide.",
+   "onshore_substation_operator": "SSEN Transmission",
+   "connection_voltage_kv": 400,
+   "confidence": "MEDIUM",
+   "notes": "Substation HIGH, landfall MEDIUM: three options remain open, deliberately, because of competition for landfall space around Peterhead. The full 3 GW connection to Netherton Hub was confirmed by NESO's Beyond 2030 report in March 2024, superseding an earlier New Deer connection point, and a staged connection has been proposed. Offshore export cables are 275 kV HVAC or plus-minus 320/525 kV HVDC for the parts furthest from shore; the onshore link to Netherton Hub is 400 kV AC. ScottishPower Renewables took full control after acquiring Shell's 50 per cent stake in late 2025. NESO's TEC register independently records Marram at Longside, which is the same site.",
+   "sources": [
+    {"url": "https://marine.gov.scot/sites/default/files/chapter_4_-_project_description.pdf", "publisher": "MarramWind Ltd / WSP, EIA Report Vol 1 Ch 4, via Marine Directorate Scotland", "date": "2025-12-08", "supports": "both"},
+    {"url": "https://marine.gov.scot/sites/default/files/chapter_19_-_ground_conditions_and_contamination.pdf", "publisher": "MarramWind EIA Report Vol 1 Ch 19", "date": "2025-12", "supports": "landfall"},
+    {"url": "https://marine.gov.scot/sites/default/files/outline_construction_method_statement.pdf", "publisher": "MarramWind EIA Vol 4 Outline Construction Method Statement", "date": "2025-12", "supports": "substation"}
+   ]
+  },
+  {
+   "repd_ref": "13429",
+   "project": "Ossian",
+   "landfall_name": null,
+   "landfall_longitude": null,
+   "landfall_latitude": null,
+   "landfall_precision": "UNKNOWN",
+   "onshore_substation": null,
+   "onshore_substation_operator": null,
+   "connection_voltage_kv": null,
+   "confidence": "LOW",
+   "notes": "NOT ESTABLISHABLE, and recorded as such rather than left blank. Ossian's transmission is in flux. The only landfall ever named in the public record was English - the Lincolnshire coast south of Mablethorpe, with converter stations near the new Weston Marsh substation - and that DCO (EN0210006, about 400 km of HVDC) was WITHDRAWN on 2026-03-27 after a grid redesign, the project refocusing on a Scottish connection. The developer states only 'a landfall in Angus or Aberdeenshire'. Reporting mentions a connection near Brechin, and SSEN Transmission has a live New East Coast 275 kV Substation search area within 14 km of Brechin and Bridge of Dun on the Kintore to Tealing line - but SSEN's page does not name Ossian, so Ossian is deliberately NOT bound to it. NESO's TEC register separately records Ossian 1 at Brechin 400/275 kV, which is consistent but is a contractual connection point rather than a consented landfall.",
+   "sources": [
+    {"url": "https://www.ossianwindfarm.com/the-project", "publisher": "Ossian OWF Ltd (SSE Renewables / CIP / Marubeni)", "date": "2026", "supports": "both"},
+    {"url": "https://national-infrastructure-consenting.planninginspectorate.gov.uk/projects/EN0210006", "publisher": "Planning Inspectorate", "date": "2026-03-27", "supports": "both"},
+    {"url": "https://marine.gov.scot/sites/default/files/250221_-_ossian_offshore_wind_farm_-_eia_scoping_opinion_-_scop-0068_-_ossian_transmission_infrastructure_scoping_report_-_part_5_-_updated.pdf", "publisher": "Marine Directorate Scotland / Ossian scoping report", "date": "2025-02-21", "supports": "landfall"}
+   ]
+  }
+ ]
+}
