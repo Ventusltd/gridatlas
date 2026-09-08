@@ -40,8 +40,6 @@ function arg(flag, fallback) {
 const CASES = Number(arg('--cases', '60'));
 const ENGINE = arg('--engine', 'chromium');
 const VIEWPORT = { width: Number(arg('--width', '393')), height: Number(arg('--height', '852')) };
-const REPD_MANIFEST_URL =
-  'https://ventusltd.github.io/gridatlas/data/repd_v9_manifest_202608290716.json';
 
 const MIME = new Map([
   ['.html', 'text/html; charset=utf-8'], ['.js', 'text/javascript; charset=utf-8'],
@@ -69,16 +67,29 @@ const base = `http://127.0.0.1:${server.address().port}`;
 const current = JSON.parse(await readFile(path.join(ROOT, 'atlas', 'current.json'), 'utf8'));
 console.log(`generation ${current.generation} · ${ENGINE} · ${VIEWPORT.width}x${VIEWPORT.height} · ${CASES} cases\n`);
 
-const manifest = await (await fetch(REPD_MANIFEST_URL)).json();
-const rows = (manifest.projects || manifest.rows || manifest.features || [])
-  .map(r => (r.properties ? { ...r.properties, ...r } : r))
-  .filter(r => r && (r.repd_ref || r.ref || r.repd_id));
+/* This used to read the rows out of repd_v9_manifest_202608290716.json, which
+   has never contained any: it is a descriptor carrying generation, schema,
+   closure counts and the paths to the real data. `manifest.projects ||
+   manifest.rows || manifest.features` was therefore always [], the sample was
+   always empty, and this sweep printed "arrived 0 · no identity 0 · page error
+   0 (of 0)" and exited 0 — reporting green having tested nothing, on every run
+   since it was written. The corpus is the browser registry, which is on disk,
+   so this now needs no network at all. */
+const registry = JSON.parse(await readFile(path.join(ROOT, 'data', 'repd_browser_registry_202608290716.json'), 'utf8'));
+const rows = (registry.records || []).filter(r => r && (r.repd_ref || r.ref || r.repd_id));
 
 /* Spread the sample across the corpus rather than taking the first N, so a
    defect confined to one technology or one region cannot be sampled away. */
 const step = Math.max(1, Math.floor(rows.length / CASES));
 const sample = [];
 for (let i = 0; i < rows.length && sample.length < CASES; i += step) sample.push(rows[i]);
+
+/* An empty sample is a broken harness, not a passing run. */
+if (!sample.length) {
+  console.error(`no cases selected from ${rows.length} registry rows — harness fault, not a green run`);
+  server.close();
+  process.exit(2);
+}
 
 const browser = await playwright[ENGINE].launch();
 const context = await browser.newContext({ viewport: VIEWPORT, deviceScaleFactor: 3, isMobile: true, hasTouch: true });

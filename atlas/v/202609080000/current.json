@@ -8,8 +8,8 @@
  "release_route": "/gridatlas/atlas/releases/202608300453-atlas-v9/",
  "shell": {
   "release_id": "202608300453-atlas-v9",
-  "index": "./releases/202608300453-atlas-v9/index.html",
-  "base": "./releases/202608300453-atlas-v9/"
+  "index": "../../releases/202608300453-atlas-v9/index.html",
+  "base": "../../releases/202608300453-atlas-v9/"
  },
  "cartridge_order": [
   "streaming-parquet-bridge",
@@ -25,9 +25,9 @@
    "type": "script",
    "slot": "replace-script",
    "replace_script": "202608292311-maplibre-worker-bridge.js",
-   "path": "./cartridges/202609041945-streaming-parquet-bridge-v9-5.js",
+   "path": "../../cartridges/202609041945-streaming-parquet-bridge-v9-5.js",
    "sha256": "4a6b594f7705bc4d7d62cbe69d2e40726d12f9a759896430cfe5eb00d830d23e",
-   "contract": "../ui/cartridges/202608301825-streaming-parquet-bridge-v9-5.mjs",
+   "contract": "../../ui/cartridges/202608301825-streaming-parquet-bridge-v9-5.mjs",
    "capabilities": [
     "response-before-body-reconstruction",
     "duckdb-runtime-prewarm-after-400kv",
@@ -44,9 +44,9 @@
    "type": "script",
    "slot": "replace-script",
    "replace_script": "202608291818-place-postcode-search.js",
-   "path": "./cartridges/202609071213-place-global-search-v9-5.js",
+   "path": "../../cartridges/202609071213-place-global-search-v9-5.js",
    "sha256": "15f324e5c279050882f7e3ce83a915c070b6ed19095efcac4ae20af4ef19fdfa",
-   "contract": "../ui/cartridges/202609040337-global-gazetteer-flyto-v9-106.mjs",
+   "contract": "../../ui/cartridges/202609040337-global-gazetteer-flyto-v9-106.mjs",
    "capabilities": [
     "exact-repd-first",
     "uk-postcode",
@@ -67,7 +67,7 @@
    "type": "script",
    "slot": "replace-script",
    "replace_script": "202608292126-pre-snapped-config-adapter.js",
-   "path": "./cartridges/202609080000-sld-sandbox-v9-8.js",
+   "path": "../../cartridges/202609080000-sld-sandbox-v9-8.js",
    "sha256": "640ed3b4e05a3966f91c1ff4f56e7d10ef565d976fd64b092eedd9c8e3d7f94b",
    "capabilities": [
     "pre-snapped-config-adapter-carried-forward",
@@ -536,7 +536,7 @@
    "type": "script",
    "slot": "replace-script",
    "replace_script": "ventus-corev8engine.js",
-   "path": "./cartridges/202609062358-substation-intelligence-v9-63.js",
+   "path": "../../cartridges/202609062358-substation-intelligence-v9-63.js",
    "sha256": "d94b0de50deddac77643325b10fbe490ce44b8c406dbc6c67e6e7cadbdaa8ec6",
    "capabilities": [
     "immutable-v8-shell-preserved-with-reviewed-receiver-successor",
@@ -640,7 +640,7 @@
    "result_class": "LOCATION_ONLY"
   }
  },
- "composition_manifest": "./manifests/202609080000-composition.json",
+ "composition_manifest": "../../manifests/202609080000-composition.json",
  "scope_closure": {
   "generation": "202609010726",
   "status": "DONE",
@@ -672,10 +672,5 @@
   "why": "an unshipped candidate composed at its own route so print and save can be measured against the live route side by side; atlas/current.json is untouched and the live route still serves 202609050354",
   "live_pointer_unchanged": true,
   "proof": "tools/proofs/export-print-and-image-outcomes.browser.mjs --route atlas/v/202609051329"
- },
- "promoted_from": "atlas/v/202609080000/",
- "promoted_utc": "2026-09-08T00:07:13.000Z",
- "superseded_generation": "202609072337",
- "promotion_evidence": "Verified against the arrival-engine sweep before the pointer moved: every case names an engine, no case is SILENT. Cartridge sha256 identical on disk, in the git blob and in this manifest; parses under node --check.",
- "promoted_by": "recovery of session 607453dc after the publishing branch was found not to be the branch Pages serves"
+ }
 }
