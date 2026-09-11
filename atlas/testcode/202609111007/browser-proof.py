@@ -12,13 +12,14 @@ def check(name, ok, detail=None):
 with sync_playwright() as p:
  browser=p.chromium.launch(headless=True,executable_path=shutil.which('google-chrome') or shutil.which('chromium'),args=['--no-sandbox','--use-angle=swiftshader','--enable-unsafe-swiftshader'])
  context=browser.new_context(viewport={'width':393,'height':740},is_mobile=True,has_touch=True,device_scale_factor=1)
+ context.set_default_timeout(15000)
  page=context.new_page()
  if not LIVE:
   for name, mime in [('index.html','text/html'),('satellite.js','text/javascript')]:
    data=(HERE/name).read_text()
    route_url=URL+'**' if name=='index.html' else URL+name+'*'
-   def handler(route, request=None, *, data=data,mime=mime,name=name):
-    clean=route.request.url.split('?')[0]
+   def handler(route, request, *, data=data, mime=mime, name=name):
+    clean=request.url.split('?')[0]
     if clean in [URL,URL+name]: route.fulfill(body=data,content_type=mime)
     else: route.continue_()
    page.route(route_url,handler)
@@ -71,16 +72,16 @@ with sync_playwright() as p:
   check('Search has no satellite obstruction',not page.locator('#sat-test-s2').is_visible())
   snap('search-results')
   page.locator('#search-input').press('Escape');page.locator('#search-input').fill('')
-  # Generic geometry for layout tests; use the public polygon fixture when present.
   fixture=HERE/'EN010101-boundary.geojson'
   if fixture.exists(): data=fixture.read_bytes(); name=fixture.name
   else:
    data=json.dumps({'type':'Polygon','coordinates':[[[-.593475,53.569066],[-.559087,53.569066],[-.559087,53.585988],[-.593475,53.585988],[-.593475,53.569066]]]}).encode();name='survey-test-boundary.geojson'
+  report['boundary_fixture']=name
   satellite(True)
   page.locator('#survey-file').set_input_files({'name':name,'mimeType':'application/geo+json','buffer':data})
   page.wait_for_function('window.__GRIDATLAS_SATELLITE_TEST__.snapshot().boundary !== null')
   check('Boundary parsed and drawn',page.evaluate('()=>!!window.__GRIDATLAS_V9_MAP__.getLayer("survey-boundary-line")'))
-  check('No status inferred from boundary',state()['boundary']['name']==name)
+  check('Boundary retains supplied filename',state()['boundary']['name']==name)
   page.locator('#satellite-survey details').filter(has=page.locator('#survey-file')).evaluate('e=>e.open=true')
   page.locator('#survey-fit').click();page.wait_for_timeout(400)
   toggle_quick(r'^⚡\s*Grid$','l-400');toggle_quick(r'^[◉◎]\s*Subs$','l-subs')
@@ -115,7 +116,7 @@ with sync_playwright() as p:
   check('No imagery HTTP errors',not report['imagery_http_errors'],report['imagery_http_errors'])
  except Exception as e:
   check('Browser journey completed',False,str(e))
-  try:page.screenshot(path=str(OUT/'failure.png'));(OUT/'failure.html').write_text(page.content())
+  try:page.screenshot(path=str(OUT/'failure.png'),timeout=5000);(OUT/'failure.html').write_text(page.content())
   except Exception:pass
  finally:
   report['success']=all(c['pass'] for c in report['checks']);(OUT/'report.json').write_text(json.dumps(report,indent=2))
