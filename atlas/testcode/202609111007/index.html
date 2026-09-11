@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>GridAtlas Satellite survey test 202609111007</title>
+<style>html,body{height:100%;margin:0;background:#000;color:#00ffff;font:13px monospace}#gridatlas-loader{display:grid;place-items:center;height:100%;padding:24px;text-align:center}</style></head>
+<body><main id="gridatlas-loader">GridAtlas Satellite survey test · verifying unchanged production cartridges…</main>
+<script type="module">
+// Isolated draggable-control successor to 202609110242. Only this loader and satellite.js are new.
+// Production /atlas/, its immutable shell, all four cartridges and homepage are unchanged.
+const CLOSE = '</scr' + 'ipt>';
+const atlasBase = new URL('../../', location.href);
+const testBase = new URL('./', location.href);
+const entries = [
+  [
+    "streaming-parquet-bridge",
+    "202608292311-maplibre-worker-bridge.js",
+    "202609041945-streaming-parquet-bridge-v9-5.js",
+    "4a6b594f7705bc4d7d62cbe69d2e40726d12f9a759896430cfe5eb00d830d23e"
+  ],
+  [
+    "uk-gazetteer-flyto",
+    "202608291818-place-postcode-search.js",
+    "202609071213-place-global-search-v9-5.js",
+    "15f324e5c279050882f7e3ce83a915c070b6ed19095efcac4ae20af4ef19fdfa"
+  ],
+  [
+    "substation-intelligence",
+    "ventus-corev8engine.js",
+    "202609062358-substation-intelligence-v9-63.js",
+    "d94b0de50deddac77643325b10fbe490ce44b8c406dbc6c67e6e7cadbdaa8ec6"
+  ],
+  [
+    "sld-sandbox",
+    "202608292126-pre-snapped-config-adapter.js",
+    "202609080850-sld-sandbox-v9-8.js",
+    "5d2b383ffd409e133970c0c62945624b927d12882af3823f8fda6855a7aa34f0"
+  ]
+];
+const assert = (ok, message) => { if (!ok) throw Error(message); };
+const escape = value => String(value).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;');
+async function hash(bytes) { return [...new Uint8Array(await crypto.subtle.digest('SHA-256', bytes))].map(n=>n.toString(16).padStart(2,'0')).join(''); }
+async function script(url, expected) {
+  const r=await fetch(url); assert(r.ok,'Script HTTP '+r.status);
+  const bytes=await r.arrayBuffer(); assert(await hash(bytes)===expected,'Script hash mismatch: '+url);
+  return URL.createObjectURL(new Blob([bytes],{type:'text/javascript'}));
+}
+try {
+  const base = new URL('releases/202608300453-atlas-v9/', atlasBase);
+  const r=await fetch(new URL('index.html',base)); assert(r.ok,'Shell HTTP '+r.status);
+  let html=await r.text();
+  html=html.replace(/<head([^>]*)>/i,m=>m+'\n<base href="'+escape(base.href)+'">');
+  const pattern=/<script\b[^>]*\bsrc=(["'])([^"']+)\1[^>]*>\s*<\/script>/gi;
+  for (const [id, slot, path, expected] of entries) {
+    const blob=await script(new URL('cartridges/'+path,atlasBase),expected);
+    let found=false;
+    html=html.replace(pattern,(whole,q,src)=>{
+      if (String(src).split('/').pop()!==slot) return whole;
+      assert(!found,'Duplicate shell slot '+id); found=true;
+      return '<script data-gridatlas-cartridge="'+escape(id)+'" src="'+escape(blob)+'">'+CLOSE;
+    });
+    assert(found,'Missing shell slot '+id);
+  }
+  const addon=await script(new URL('satellite.js',testBase),'da489d2c10713ec97b432e600383cdab0db50c04f60ece91a29b158fd56d950c');
+  const state={schema:'gridatlas.current.v2',generation:'202609080850',release_id:'202608300453-atlas-v9',architecture:'IMMUTABLE_SHELL_PLUS_HASHED_CARTRIDGES',cartridge_order:entries.map(e=>e[0]),loaded_cartridges:entries.map(e=>({id:e[0],sha256:e[3]}))};
+  html=html.replace(/<body([^>]*)>/i,m=>m+'\n<script>window.__GRIDATLAS_ATLAS__='+JSON.stringify(state)+';document.documentElement.dataset.gridatlasTest="202609111007";'+CLOSE);
+  html=html.replace(/<\/body>/i,'<script src="'+escape(addon)+'">'+CLOSE+'\n</body>');
+  document.open();document.write(html);document.close();
+} catch(error) {
+  console.error('[SATELLITE TEST]',error);
+  document.getElementById('gridatlas-loader').textContent='Satellite test failed: '+error.message;
+}
+</script></body></html>
