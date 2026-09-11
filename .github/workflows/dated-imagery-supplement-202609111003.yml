@@ -8,11 +8,11 @@ permissions:
 jobs:
   imagery:
     runs-on: ubuntu-latest
-    timeout-minutes: 7
+    timeout-minutes: 5
     steps:
       - name: Install readers
         run: python -m pip install --quiet requests rasterio shapely pillow numpy
-      - name: Acquire optical and radar crops
+      - name: Acquire bounded radar crops
         run: |
           mkdir -p evidence
           cat > /tmp/supplement.py <<'PY'
@@ -22,50 +22,37 @@ jobs:
           from rasterio.windows import from_bounds,Window
           from rasterio.warp import transform_bounds
           from shapely.geometry import shape,Point
-          from PIL import Image
           O=Path('evidence');R='https://planetarycomputer.microsoft.com'
           B=[-.5934378261928394,53.568868835658115,-.5591190552311492,53.585988691836576];P=[B[0]-.002,B[1]-.0015,B[2]+.002,B[3]+.0015];C=[-.5798341064963216,53.576947668884735]
           def j(u,p=None):
             q=requests.get(u,params=p,timeout=20);q.raise_for_status();return q.json()
-          def search(coll,start,end):
-            d=j(R+'/api/stac/v1/search',{'collections':coll,'bbox':','.join(map(str,B)),'datetime':start+'/'+end,'sortby':'-datetime','limit':100})
-            return [f for f in d.get('features',[]) if shape(f['geometry']).covers(Point(C))]
-          todo=[]
-          for coll,start,end in [('sentinel-2-l2a','2026-08-01T00:00:00Z','2026-08-15T23:59:59Z'),('sentinel-1-rtc','2026-08-15T00:00:00Z','2026-09-11T09:57:00Z')]:
-            fs=search(coll,start,end)
-            if coll=='sentinel-2-l2a':
-              seen=set();chosen=[]
-              for f in fs:
-                day=f['properties']['datetime'][:10]
-                if day not in seen:chosen.append(f);seen.add(day)
-            else:
-              matching=[f for f in fs if f['properties'].get('sat:relative_orbit')==81 and f['properties'].get('platform')=='sentinel-1d']
-              if not matching:matching=[f for f in fs if f['properties'].get('sat:relative_orbit')==81]
-              chosen=([matching[0],matching[-1]] if len(matching)>1 else matching)
-            for f in chosen:todo.append((coll,f))
-          (O/'supplement-items.json').write_text(json.dumps([f for c,f in todo]))
-          def crop(x):
-            coll,f=x;pr=f['properties'];meta={'id':f['id'],'collection':coll,'date':pr['datetime'],'scene_cloud_pct':pr.get('eo:cloud_cover'),'platform':pr.get('platform'),'orbit':pr.get('sat:relative_orbit'),'files':{},'errors':[],'source':R+'/api/stac/v1/collections/'+coll+'/items/'+f['id']}
-            assets=[('visual',[1,2,3]),('SCL',[1])] if coll=='sentinel-2-l2a' else [('vv',[1]),('vh',[1])]
-            for asset,ix in assets:
+          coll='sentinel-1-rtc'
+          d=j(R+'/api/stac/v1/search',{'collections':coll,'bbox':','.join(map(str,B)),'datetime':'2026-08-15T00:00:00Z/2026-09-11T09:57:00Z','sortby':'-datetime','limit':100})
+          fs=[f for f in d.get('features',[]) if shape(f['geometry']).covers(Point(C))]
+          matching=[f for f in fs if f['properties'].get('sat:relative_orbit')==81 and f['properties'].get('platform','').lower()=='sentinel-1d']
+          chosen=([matching[0],matching[-1]] if len(matching)>1 else matching)
+          (O/'radar-items.json').write_text(json.dumps(chosen))
+          def crop(f):
+            pr=f['properties'];meta={'id':f['id'],'collection':coll,'date':pr['datetime'],'platform':pr.get('platform'),'orbit':pr.get('sat:relative_orbit'),'orbit_state':pr.get('sat:orbit_state'),'files':{},'errors':[],'source':R+'/api/stac/v1/collections/'+coll+'/items/'+f['id']}
+            for asset in ['vv','vh']:
               try:
                 href=f['assets'][asset]['href'];url=j(R+'/api/sas/v1/sign',{'href':href})['href']
-                with rasterio.Env(GDAL_DISABLE_READDIR_ON_OPEN='EMPTY_DIR',GDAL_HTTP_TIMEOUT=15,GDAL_HTTP_MAX_RETRY=1,GDAL_HTTP_RETRY_DELAY=1,CPL_VSIL_CURL_ALLOWED_EXTENSIONS='.tif'):
+                with rasterio.Env(GDAL_DISABLE_READDIR_ON_OPEN='EMPTY_DIR',GDAL_HTTP_TIMEOUT=18,GDAL_HTTP_MAX_RETRY=1,GDAL_HTTP_RETRY_DELAY=1,CPL_VSIL_CURL_ALLOWED_EXTENSIONS='.tif,.tiff'):
                   with rasterio.open(url) as src:
                     b=transform_bounds('EPSG:4326',src.crs,*P,densify_pts=21);w=from_bounds(*b,transform=src.transform);w=Window(math.floor(w.col_off),math.floor(w.row_off),math.ceil(w.width)+1,math.ceil(w.height)+1).intersection(Window(0,0,src.width,src.height))
-                    a=src.read(ix,window=w);t=src.window_transform(w);name=f['id']+'-'+asset+'.tif'
-                    with rasterio.open(O/name,'w',driver='GTiff',width=a.shape[2],height=a.shape[1],count=len(ix),dtype=a.dtype,crs=src.crs,transform=t,compress='deflate',nodata=src.nodata) as dst:dst.write(a)
-                    meta['files'][asset]={'file':name,'crs':str(src.crs),'transform':list(t),'shape':list(a.shape),'native_pixel_m':abs(t.a),'unsigned_source':href}
-                    if asset=='visual':Image.fromarray(np.moveaxis(a,0,-1).astype('uint8')).save(O/(f['id']+'-visual.png'))
-              except Exception as e:meta['errors'].append(asset+': '+str(e).split('?')[0][:180])
+                    a=src.read(1,window=w);t=src.window_transform(w);name=f['id']+'-'+asset+'.tif'
+                    with rasterio.open(O/name,'w',driver='GTiff',width=a.shape[1],height=a.shape[0],count=1,dtype=a.dtype,crs=src.crs,transform=t,compress='deflate',nodata=src.nodata) as dst:dst.write(a,1)
+                    meta['files'][asset]={'file':name,'crs':str(src.crs),'transform':list(t),'shape':list(a.shape),'pixel_spacing_m':abs(t.a),'unsigned_source':href}
+              except Exception as e:meta['errors'].append(asset+': '+str(e).split('?')[0][-220:])
             print('RESULT',meta['id'],meta['date'],list(meta['files']),meta['errors'],flush=True);return meta
-          with concurrent.futures.ThreadPoolExecutor(max_workers=3) as pool:r=list(pool.map(crop,todo))
-          (O/'supplement-report.json').write_text(json.dumps(r,indent=2))
+          with concurrent.futures.ThreadPoolExecutor(max_workers=2) as pool:r=list(pool.map(crop,chosen))
+          (O/'radar-report.json').write_text(json.dumps(r,indent=2))
+          assert len(r)==2 and all(len(m['files'])==2 for m in r),'Radar retrieval incomplete: see report'
           PY
           python /tmp/supplement.py
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: dated-imagery-supplement
+          name: dated-radar-survey
           path: evidence/
           retention-days: 7
