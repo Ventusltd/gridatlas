@@ -1,6 +1,6 @@
 """Build a satellite-only successor from the verified, unchanged test renderer."""
 from pathlib import Path
-import hashlib, json, re
+import hashlib, json
 HERE = Path(__file__).resolve().parent
 OLD = HERE.parent / '202609110242'
 assert hashlib.sha256((OLD/'satellite.js').read_bytes()).hexdigest() == '8bff3b7b1c5e26038f5229066863486be32cf8b0124badad28a7326723d4fe4a', 'Unexpected baseline renderer'
@@ -14,9 +14,10 @@ s = s.replace("metrics.searches++;\n        const found = await json(ROOT + '/ap
 s = s.replace("const item = rows.find(f => finite(f.properties['eo:cloud_cover']) && f.properties['eo:cloud_cover'] <= 35) || rows[0];", "catalogue = rows;\n        const item = preferredId ? rows.find(f => f.id === preferredId) : selectionPolicy === 'latest' ? rows[0] : (rows.find(f => finite(f.properties['eo:cloud_cover']) && f.properties['eo:cloud_cover'] <= 35) || rows[0]);")
 s = s.replace("if (!item.assets?.tilejson?.href)", "sceneOptions(item.id);\n        if (!item.assets?.tilejson?.href)")
 s = s.replace("'Finding recent S2 at map centre; current map retained…'", "'Finding dated S2 scenes at map centre; current map retained…'")
-s += (HERE/'dock-ui.js').read_text()
+# Observe the host, not this self-sizing dock: avoid compact/expand feedback loops.
+s += (HERE/'dock-ui.js').read_text().replace('resize.observe(panel);','')
 assert 'async function sentinel(preferredId' in s
-assert 'let scheduled = false;' in s
+assert 'function schedulePosition()' in s
 (HERE/'satellite.js').write_text(s)
 h = hashlib.sha256((HERE/'satellite.js').read_bytes()).hexdigest()
 index = (OLD/'index.html').read_text().replace('202609110242','202609110849')
