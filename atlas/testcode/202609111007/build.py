@@ -3,12 +3,12 @@ import hashlib, json, pathlib, re
 HERE = pathlib.Path(__file__).resolve().parent
 BASE = HERE.parent / '202609110849'
 VERSION = HERE.name
-prior = (BASE / 'satellite.js').read_text()
-assert hashlib.sha256(prior.encode()).hexdigest() == 'd6538943d9327f9c6cc57704f4972c0f65ea68f0e38e41dfc7fbe456419a19cbb' if False else prior.startswith('/* Satellite-only test cartridge.')
+raw = (BASE / 'satellite.js').read_bytes()
+assert hashlib.sha1(b'blob '+str(len(raw)).encode()+b'\0'+raw).hexdigest() == '7c47ce3035e31ef62ee75238d676e442344c9aae', 'Inherited helper file changed'
+prior = raw.decode()
 assert prior.count('  async function sentinel(') == 1
 prefix = prior.split('  async function sentinel(', 1)[0].replace("const VERSION = '202609110849'", "const VERSION = '" + VERSION + "'")
 js = prefix + (HERE / 'survey-ui.js').read_text()
-# Remove obsolete floating-panel status wording, without changing engine files.
 js = js.replace("'Dark map · satellite test ' + VERSION", "'Dark map | Satellite survey ' + VERSION")
 (HERE / 'satellite.js').write_text(js)
 html = (BASE / 'index.html').read_text().replace('202609110849', VERSION)
