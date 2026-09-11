@@ -1,0 +1,29 @@
+name: Dual site satellite scan
+on:
+  push:
+    branches: ['test/satellite-survey-202609111007']
+    paths:
+      - 'atlas/testcode/202609111007/dual-site-scan.py'
+      - '.github/workflows/dual-site-satellite-scan-20260911.yml'
+permissions:
+  contents: read
+jobs:
+  scan:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: test/satellite-survey-202609111007
+          sparse-checkout: |
+            atlas/testcode/202609111007/dual-site-scan.py
+      - run: |
+          python -m pip install playwright==1.55.0
+          python -m playwright install --with-deps chromium
+      - run: python atlas/testcode/202609111007/dual-site-scan.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: dual-site-satellite-scan
+          path: dual-site-scan/
+          retention-days: 7
