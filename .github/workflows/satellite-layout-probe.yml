@@ -1,0 +1,92 @@
+name: Satellite layout browser probe
+on:
+  push:
+    branches: ['test/satellite-layout-202609110242']
+    paths: ['.github/workflows/satellite-layout-probe.yml', 'atlas/testcode/202609110242/**']
+permissions:
+  contents: read
+jobs:
+  browser:
+    runs-on: ubuntu-latest
+    timeout-minutes: 7
+    steps:
+      - name: Install browser driver
+        run: |
+          python -m pip install playwright==1.55.0 requests
+          if ! command -v google-chrome >/dev/null; then python -m playwright install --with-deps chromium; fi
+      - name: Read-only live page probe
+        env:
+          PROBE_SHA: ${{ github.sha }}
+        run: |
+          mkdir -p evidence
+          cat > /tmp/probe.py <<'PY'
+          import json, os, shutil, time, pathlib, requests
+          from playwright.sync_api import sync_playwright
+          out=pathlib.Path('evidence')
+          root='https://ventusltd.github.io/gridatlas/atlas/'
+          raw='https://raw.githubusercontent.com/Ventusltd/gridatlas/'+os.environ['PROBE_SHA']+'/'
+          path='atlas/testcode/202609110242/'
+          candidate=requests.get(raw+path+'index.html',timeout=30)
+          is_candidate=candidate.status_code==200
+          target=root+'testcode/'+('202609110242/' if is_candidate else '202609110310/')
+          report={'target':target,'candidate':is_candidate,'sha':os.environ['PROBE_SHA'],'errors':[],'failed_requests':[],'http_errors':[]}
+          with sync_playwright() as p:
+            args={'headless':True,'args':['--use-angle=swiftshader','--enable-unsafe-swiftshader','--no-sandbox']}
+            if shutil.which('google-chrome'): args['executable_path']=shutil.which('google-chrome')
+            browser=p.chromium.launch(**args)
+            context=browser.new_context(viewport={'width':393,'height':852},device_scale_factor=1,is_mobile=True,has_touch=True)
+            page=context.new_page()
+            page.on('pageerror',lambda e:report['errors'].append(str(e)))
+            page.on('requestfailed',lambda r:report['failed_requests'].append({'url':r.url,'failure':r.failure}))
+            page.on('response',lambda r:report['http_errors'].append({'url':r.url,'status':r.status}) if r.status>=400 else None)
+            if is_candidate:
+              page.route(target+'**',lambda route:route.fulfill(body=candidate.text,content_type='text/html') if route.request.url.split('?')[0]==target else route.continue_())
+              add=requests.get(raw+path+'satellite.js',timeout=30)
+              if add.status_code==200:
+                page.route(target+'satellite.js*',lambda route:route.fulfill(body=add.text,content_type='text/javascript'))
+            started=time.time()
+            try:
+              response=page.goto(target+'?repd_ref=9873&technology=wind_offshore&latitude=56.4431397&longitude=-1.4664021&zoom=12',wait_until='domcontentloaded',timeout=60000)
+              report['document_status']=response.status if response else None
+              page.wait_for_selector('#sat-test-panel',timeout=60000)
+              page.wait_for_timeout(15000)
+              report['initial_seconds']=round(time.time()-started,2)
+              def snapshot(name):
+                page.screenshot(path=str(out/(name+'.png')),full_page=False)
+                state=page.evaluate('''() => {
+                  const rect=e=>{const r=e.getBoundingClientRect();return {x:r.x,y:r.y,width:r.width,height:r.height}};
+                  const map=window.__GRIDATLAS_SATELLITE_TEST_MAP__||window.__GRIDATLAS_V9_MAP__;
+                  return {title:document.title,status:document.querySelector('#sat-test-status')?.textContent,buttons:[...document.querySelectorAll('button,input[type=radio]')].map(e=>({id:e.id,text:e.textContent?.trim(),name:e.name,value:e.value,rect:rect(e)})).filter(e=>e.rect.width&&e.rect.height),panel:document.querySelector('#sat-test-panel')?rect(document.querySelector('#sat-test-panel')):null,globals:Object.keys(window).filter(k=>k.startsWith('__GRIDATLAS')),layers:map?.getStyle()?.layers.map(l=>({id:l.id,type:l.type,source:l.source,visibility:l.layout?.visibility})),satState:window.__GRIDATLAS_SATELLITE_TEST__?.snapshot?.()};
+                }''')
+                report[name]=state
+                print('SNAPSHOT',name,json.dumps(state,ensure_ascii=False))
+              snapshot('portrait-dark')
+              page.locator('#sat-test-esri').click(timeout=10000)
+              page.wait_for_timeout(10000)
+              snapshot('portrait-esri')
+              page.locator('#sat-test-s2').click(timeout=10000)
+              page.wait_for_timeout(25000)
+              snapshot('portrait-sentinel')
+              page.set_viewport_size({'width':852,'height':393})
+              page.wait_for_timeout(1500)
+              snapshot('landscape')
+              report['stac_probe']=page.evaluate('''async()=>{const r=await fetch('https://planetarycomputer.microsoft.com/api/stac/v1/search?collections=sentinel-2-l2a&bbox=-1.55,51.7,-1.2,51.95&limit=1');const j=await r.json();const f=j.features?.[0];return {status:r.status,id:f?.id,properties:f?.properties,assets:f?.assets,links:f?.links}}''')
+              print('STAC',json.dumps(report['stac_probe']))
+              (out/'page.html').write_text(page.content())
+            except Exception as e:
+              report['probe_error']=str(e)
+              try: page.screenshot(path=str(out/'failure.png')); (out/'failure.html').write_text(page.content())
+              except Exception: pass
+            finally:
+              (out/'report.json').write_text(json.dumps(report,indent=2))
+              print('REPORT',json.dumps(report,ensure_ascii=False))
+              browser.close()
+          PY
+          python /tmp/probe.py
+      - name: Upload screenshots and network evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: satellite-browser-evidence
+          path: evidence/
+          retention-days: 7
