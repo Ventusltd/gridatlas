@@ -17,7 +17,7 @@ with sync_playwright() as p:
   for name, mime in [('index.html','text/html'),('satellite.js','text/javascript')]:
    data=(HERE/name).read_text()
    route_url=URL+'**' if name=='index.html' else URL+name+'*'
-   def handler(route,data=data,mime=mime,name=name):
+   def handler(route, request=None, *, data=data,mime=mime,name=name):
     clean=route.request.url.split('?')[0]
     if clean in [URL,URL+name]: route.fulfill(body=data,content_type=mime)
     else: route.continue_()
@@ -71,7 +71,7 @@ with sync_playwright() as p:
   check('Search has no satellite obstruction',not page.locator('#sat-test-s2').is_visible())
   snap('search-results')
   page.locator('#search-input').press('Escape');page.locator('#search-input').fill('')
-  # Generic geometry for layout tests; replace with supplied public polygon when provided.
+  # Generic geometry for layout tests; use the public polygon fixture when present.
   fixture=HERE/'EN010101-boundary.geojson'
   if fixture.exists(): data=fixture.read_bytes(); name=fixture.name
   else:
