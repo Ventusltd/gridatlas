@@ -8,7 +8,7 @@
   const cache = new Map();
   const owners = [null, null];
   let map, panel, status, active = null, mode = 'dark', request = 0, controller;
-  const metrics = { searches: 0, tilejson: 0, reused: 0, sourceAdds: 0, tileErrors: 0 };
+  const metrics = { searches: 0, tilejson: 0, reused: 0, sourceAdds: 0, tileErrors: 0, loadedTileEvents: 0 };
   const finite = n => typeof n === 'number' && Number.isFinite(n);
   const visible = (id, on) => { if (map.getLayer(id)) map.setLayoutProperty(id, 'visibility', on ? 'visible' : 'none'); };
   const say = text => { if (status.textContent !== text) status.textContent = text; panel.title = text; schedulePosition(); };
@@ -69,7 +69,8 @@
       const abort = () => done(new DOMException('Cancelled', 'AbortError'));
       const data = e => {
         if (e.sourceId !== sourceId) return;
-        if (e.tile && e.sourceDataType === 'content') sawTile = true;
+        // MapLibre 3.6 tile-completion events do not set sourceDataType.
+        if (e.tile?.state === 'loaded') { sawTile = true; metrics.loadedTileEvents++; }
         if (sawTile && map.isSourceLoaded(sourceId)) done();
       };
       const errorEvent = e => { if (e.sourceId === sourceId) metrics.tileErrors++; };
