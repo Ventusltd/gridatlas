@@ -6,6 +6,7 @@
   const SOURCE = ['sat-test-s2-0', 'sat-test-s2-1'];
   const LAYER = SOURCE.map(id => id + '-layer');
   const cache = new Map();
+  const owners = [null, null];
   let map, panel, status, active = null, mode = 'dark', request = 0, controller;
   const metrics = { searches: 0, tilejson: 0, reused: 0, sourceAdds: 0, tileErrors: 0 };
   const finite = n => typeof n === 'number' && Number.isFinite(n);
@@ -56,7 +57,8 @@
     orderImagery(); updateButtons();
     say(next === 'esri' ? 'Esri World Imagery · capture date varies' : 'Dark map · satellite test ' + VERSION);
   }
-  function removeSlot(slot) {
+  function removeSlot(slot, owner) {
+    if (owner !== undefined && owners[slot] !== owner) return;
     if (map.getLayer(LAYER[slot])) map.removeLayer(LAYER[slot]);
     if (map.getSource(SOURCE[slot])) map.removeSource(SOURCE[slot]);
   }
@@ -78,14 +80,14 @@
   async function sentinel() {
     cancel(); const token = request;
     const centre = map.getCenter(), point = [centre.lng, centre.lat];
-    if (map.getZoom() < 8) { say('Zoom in to a project (level 8+) before loading S2.'); return; }
+    if (map.getZoom() < 6) { say('Zoom in to a project (level 6+) before loading S2.'); return; }
     if (active && covers(active.item, point) && Date.now() - active.fetched < 300000) {
       metrics.reused++; mode = 's2'; visible('l-sat', true);
       LAYER.forEach((id, i) => visible(id, i === active.slot));
-      orderImagery(); updateButtons(); say(sceneText(active.item) + ' · Esri outside scene'); return;
+      orderImagery(); updateButtons(); say(sceneText(active.item) + ' · Copernicus / Microsoft PC; Esri outside scene'); return;
     }
-    controller = new AbortController(); const signal = controller.signal;
-    let metadataTimer = setTimeout(() => controller?.abort(), 25000), stage = null;
+    const ownController = new AbortController(); controller = ownController; const signal = ownController.signal;
+    let metadataTimer = setTimeout(() => ownController.abort(), 25000), stage = null;
     say('Finding recent S2 at map centre; current map retained…');
     try {
       const key = point.map(x => x.toFixed(3)).join(',');
@@ -112,12 +114,12 @@
       if (signal.aborted || token !== request) return;
       if (active?.item.id === result.item.id) {
         active.fetched = result.fetched; mode = 's2'; visible('l-sat', true);
-        LAYER.forEach((id, i) => visible(id, i === active.slot)); updateButtons(); say(sceneText(active.item) + ' · Esri outside scene'); return;
+        LAYER.forEach((id, i) => visible(id, i === active.slot)); updateButtons(); say(sceneText(active.item) + ' · Copernicus / Microsoft PC; Esri outside scene'); return;
       }
-      stage = active ? 1 - active.slot : 0; removeSlot(stage);
+      stage = active ? 1 - active.slot : 0; removeSlot(stage); owners[stage] = token;
       const tj = result.tj;
       map.addSource(SOURCE[stage], { type: 'raster', tiles: tj.tiles, bounds: result.bounds, tileSize: 256,
-        minzoom: 8, maxzoom: Math.min(14, finite(tj.maxzoom) ? tj.maxzoom : 14),
+        minzoom: 6, maxzoom: Math.min(14, finite(tj.maxzoom) ? tj.maxzoom : 14),
         attribution: 'Contains modified Copernicus Sentinel data; Microsoft Planetary Computer' });
       metrics.sourceAdds++;
       const ready = awaitTiles(SOURCE[stage], signal);
@@ -125,16 +127,16 @@
       map.addLayer({ id: LAYER[stage], type: 'raster', source: SOURCE[stage], paint: { 'raster-opacity': 0.001, 'raster-opacity-transition': { duration: 180 }, 'raster-fade-duration': 180 } });
       orderImagery(); say('Loading ' + sceneText(result.item) + '; current map retained…');
       await ready;
-      if (signal.aborted || token !== request) { removeSlot(stage); return; }
+      if (signal.aborted || token !== request) { removeSlot(stage, token); return; }
       active = { ...result, slot: stage }; mode = 's2';
       visible('l-sat', true); LAYER.forEach((id, i) => visible(id, i === stage));
       map.setPaintProperty(LAYER[stage], 'raster-opacity', 1);
-      updateButtons(); say(sceneText(active.item) + ' · Esri outside scene');
+      updateButtons(); say(sceneText(active.item) + ' · Copernicus / Microsoft PC; Esri outside scene');
     } catch (e) {
-      if (stage !== null && active?.slot !== stage) removeSlot(stage);
+      if (stage !== null && active?.slot !== stage) removeSlot(stage, token);
       if (token === request && e.name !== 'AbortError') say('S2: ' + e.message);
       if (token === request && e.name === 'AbortError') say('S2 request timed out; current map retained.');
-    } finally { clearTimeout(metadataTimer); }
+    } finally { clearTimeout(metadataTimer); if (controller === ownController) controller = null; }
   }
   let scheduled = false;
   function schedulePosition() { if (!scheduled) { scheduled = true; requestAnimationFrame(() => { scheduled = false; position(); }); } }
@@ -185,7 +187,7 @@
     new MutationObserver(records => { if (records.some(r => !panel.contains(r.target) && (r.type === 'childList' || r.target.matches?.('.maplibregl-popup,.maplibregl-popup-content,.gm-panel,.search-bar-wrapper,body,#gridatlas-dash-toggle')))) schedulePosition(); }).observe(document.body, { subtree: true, childList: true, attributes: true, attributeFilter: ['class', 'style', 'hidden'] });
     window.addEventListener('resize', schedulePosition); window.visualViewport?.addEventListener('resize', schedulePosition);
     document.addEventListener('click', () => setTimeout(schedulePosition, 50));
-    map.on('moveend', () => { if (mode === 's2' && active) { const c = map.getCenter(); say(covers(active.item, [c.lng, c.lat]) ? sceneText(active.item) + ' · Esri outside scene' : 'Outside S2 scene; Esri shown. Press RECENT S2 for this location.'); } });
+    map.on('moveend', () => { if (mode === 's2' && active) { const c = map.getCenter(); say(covers(active.item, [c.lng, c.lat]) ? sceneText(active.item) + ' · Copernicus / Microsoft PC; Esri outside scene' : 'Outside S2 scene; Esri shown. Press RECENT S2 for this location.'); } });
     window.__GRIDATLAS_SATELLITE_TEST__ = { snapshot: () => ({ version: VERSION, mode, scene: active?.item.id || null, bounds: active?.bounds || null, ...metrics }) };
     updateButtons(); say('Dark map · satellite test ' + VERSION);
   }

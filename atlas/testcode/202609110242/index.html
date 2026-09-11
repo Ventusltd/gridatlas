@@ -58,7 +58,7 @@ try {
     });
     assert(found,'Missing shell slot '+id);
   }
-  const addon=await script(new URL('satellite.js',testBase),'8b1a7fa9bcb0b7422bfab6b301fc149bee502f24248053157643bf69bee20393');
+  const addon=await script(new URL('satellite.js',testBase),'2dc395d7252e8ad2cce5bfd565eb8f245742bc58ae01076500cfc25a42e08aee');
   const state={schema:'gridatlas.current.v2',generation:'202609080850',release_id:'202608300453-atlas-v9',architecture:'IMMUTABLE_SHELL_PLUS_HASHED_CARTRIDGES',cartridge_order:entries.map(e=>e[0]),loaded_cartridges:entries.map(e=>({id:e[0],sha256:e[3]}))};
   html=html.replace(/<body([^>]*)>/i,m=>m+'\n<script>window.__GRIDATLAS_ATLAS__='+JSON.stringify(state)+';document.documentElement.dataset.gridatlasTest="202609110242";'+CLOSE);
   html=html.replace(/<\/body>/i,'<script src="'+escape(addon)+'">'+CLOSE+'\n</body>');

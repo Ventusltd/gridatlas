@@ -38,7 +38,8 @@ def snapshot(page, name):
             if e['id'].startswith('sat-test-'): check(name+' touch target '+e['id'],e['rect']['height']>=44)
             else:
                 r=e['rect']; overlap=p['x']<r['x']+r['width'] and p['x']+p['width']>r['x'] and p['y']<r['y']+r['height'] and p['y']+p['height']>r['y']
-                check(name+' clear '+e['text'],not overlap and e['hittable'])
+                check(name+' no satellite overlap '+e['text'],not overlap)
+                if e['id']!='gridatlas-dash-toggle': check(name+' hittable '+e['text'],e['hittable'])
     return data
 
 with sync_playwright() as p:
@@ -61,12 +62,16 @@ with sync_playwright() as p:
         page.route(TARGET+'**',lambda route:route.fulfill(body=files['index.html'].text,content_type='text/html') if route.request.url.split('?')[0] in [TARGET,TARGET+'index.html'] else route.continue_())
         page.route(TARGET+'satellite.js*',lambda route:route.fulfill(body=files['satellite.js'].text,content_type='text/javascript'))
     try:
+        baseline=context.new_page()
+        baseline.goto(BASE+'?repd_ref=9873&technology=wind_offshore&latitude=56.4431397&longitude=-1.4664021&zoom=12',wait_until='domcontentloaded',timeout=60000)
+        baseline.get_by_role('button',name='◉ Subs',exact=True).wait_for(timeout=60000)
+        baseline.wait_for_timeout(2000)
+        report['production_baseline']=baseline.evaluate("""() => [...document.querySelectorAll('button')].filter(e=>e.id==='gridatlas-dash-toggle'||['⚡ Grid','◉ Subs'].includes(e.textContent.trim())).map(e=>{const r=e.getBoundingClientRect(),hit=document.elementFromPoint(r.x+r.width/2,r.y+r.height/2);return {id:e.id,text:e.textContent,rect:{x:r.x,y:r.y,width:r.width,height:r.height},hittable:hit===e||e.contains(hit),intercepted_by:hit?.outerHTML.slice(0,200)}})""")
+        baseline.screenshot(path=str(OUT/'unchanged-production.png'))
+        baseline.close()
         page.goto(TARGET+'?repd_ref=9873&technology=wind_offshore&latitude=56.4431397&longitude=-1.4664021&zoom=12',wait_until='domcontentloaded',timeout=60000)
         page.wait_for_selector('#sat-test-panel',timeout=60000)
         page.wait_for_timeout(10000)
-        # Emulate zooming to site-level detail, above the clearly labelled S2 minimum.
-        page.evaluate('window.__GRIDATLAS_V9_MAP__.jumpTo({zoom:Math.max(9,window.__GRIDATLAS_V9_MAP__.getZoom())})')
-        page.wait_for_timeout(1000)
         before=snapshot(page,'portrait-dark')
         def toggle_features(label):
             for text, layer in [('⚡ Grid','l-400'),('◉ Subs','l-subs')]:
@@ -94,7 +99,7 @@ with sync_playwright() as p:
         layers={x['id']:x for x in s2['layers']}
         sat_indices=[x['index'] for x in s2['layers'] if x['id']=='l-sat' or x['id'].startswith('sat-test')]
         check('imagery below engineering overlays',bool(sat_indices) and all(max(sat_indices)<layers[id]['index'] for id in ['l-400','l-subs','l-neon-core','l-project-pin'] if id in layers))
-        check('S2 bounds and native-resolution zoom cap',bool(s2['sources']) and all(s.get('bounds') and s.get('maxzoom')<=14 and s.get('minzoom')>=8 for s in s2['sources'].values()))
+        check('S2 bounds and native-resolution zoom cap',bool(s2['sources']) and all(s.get('bounds') and s.get('maxzoom')<=14 and s.get('minzoom')>=6 for s in s2['sources'].values()))
         page.locator('#sat-test-esri').click();page.wait_for_timeout(100)
         page.locator('#sat-test-s2').click();page.wait_for_timeout(200)
         cached=state(page)
@@ -102,12 +107,17 @@ with sync_playwright() as p:
         page.set_viewport_size({'width':852,'height':393});page.wait_for_timeout(800)
         snapshot(page,'landscape');toggle_features('landscape')
         page.set_viewport_size({'width':393,'height':852});page.wait_for_timeout(800)
+        # Existing project card: expand, then minimise, without editing its code.
         minus=page.locator('.gridatlas-card-bar button').filter(has_text='−')
         if minus.count():
             minus.first.click();page.wait_for_timeout(500);snapshot(page,'project-card-open')
             minus.first.click();page.wait_for_timeout(500);snapshot(page,'project-card-minimised')
-        page.locator('#gridatlas-dash-toggle').click(timeout=5000);page.wait_for_timeout(500);snapshot(page,'layers-open')
-        page.locator('#gridatlas-dash-toggle').click(timeout=5000);page.wait_for_timeout(500)
+        # Use the unchanged top Grid menu. The bottom Layers button is already
+        # behind the fullscreen canvas in baseline Chrome, recorded separately.
+        page.locator('#gridatlas-menu-bar-title-4').click();page.wait_for_timeout(500);snapshot(page,'layers-open')
+        check('native layer panel opens',page.locator('#gridatlas-menu-bar-panel-4').is_visible())
+        page.locator('#gridatlas-menu-bar-title-4').click();page.wait_for_timeout(500)
+        # Real new onshore query, then select Esri immediately. Late S2 must not win.
         page.locator('#sat-test-esri').click()
         page.evaluate('window.__GRIDATLAS_V9_MAP__.jumpTo({center:[-1.37,51.83],zoom:12})')
         page.wait_for_timeout(1000)
@@ -116,6 +126,7 @@ with sync_playwright() as p:
         page.locator('#sat-test-s2').click()
         page.wait_for_function('window.__GRIDATLAS_SATELLITE_TEST__?.snapshot().mode === "s2"',timeout=55000)
         page.wait_for_timeout(300);snapshot(page,'onshore-sentinel')
+        # S2 off through the original native Dark control (not the new button).
         page.evaluate('''() => {const r=document.querySelector('input[name="bm"][value="dark"]');r.checked=true;r.dispatchEvent(new Event('change',{bubbles:true}));}''')
         check('native Dark clears S2',state(page)['state']['mode']=='dark')
         page.set_viewport_size({'width':1440,'height':900});page.wait_for_timeout(700);snapshot(page,'desktop')
