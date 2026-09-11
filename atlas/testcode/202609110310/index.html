@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>GridAtlas test 202609110310 · dual satellite</title>
+  <style>
+    html,body{height:100%;margin:0;background:#000;color:#00ffff;font:13px monospace}
+    #gridatlas-loader{display:grid;place-items:center;height:100%;padding:24px;text-align:center}
+    #gridatlas-loader strong{color:#ffae00}
+  </style>
+</head>
+<body data-gridatlas-router="loading">
+  <main id="gridatlas-loader"><div><strong>GRIDATLAS TESTCODE 202609110310</strong><br>loading pinned live generation 202609080850 + satellite test only…</div></main>
+  <script type="module">
+    /* TEST ONLY. Production /atlas/ is not modified.
+       Base = exact live composition found on the homepage route at creation time:
+       atlas/current.json blob 290a7a346a1b9cc8cea81695c47671af29a51de7, generation 202609080850.
+       Only extra behaviour: a test bootstrap captures the MapLibre instance and
+       adds an Esri / recent Sentinel-2 basemap selector. */
+    const SCRIPT_CLOSE = '</scr' + 'ipt>';
+    const loader = document.getElementById('gridatlas-loader');
+    const atlasBase = new URL('../../', window.location.href);
+
+    const current = {
+      schema:'gridatlas.current.v2', generation:'202609080850', architecture:'IMMUTABLE_SHELL_PLUS_HASHED_CARTRIDGES',
+      shell:{index:'releases/202608300453-atlas-v9/index.html',base:'releases/202608300453-atlas-v9/'},
+      cartridge_order:['streaming-parquet-bridge','uk-gazetteer-flyto','substation-intelligence','sld-sandbox'],
+      cartridges:[
+        {id:'streaming-parquet-bridge',type:'script',slot:'replace-script',replace_script:'202608292311-maplibre-worker-bridge.js',path:'cartridges/202609041945-streaming-parquet-bridge-v9-5.js',sha256:'4a6b594f7705bc4d7d62cbe69d2e40726d12f9a759896430cfe5eb00d830d23e'},
+        {id:'uk-gazetteer-flyto',type:'script',slot:'replace-script',replace_script:'202608291818-place-postcode-search.js',path:'cartridges/202609071213-place-global-search-v9-5.js',sha256:'15f324e5c279050882f7e3ce83a915c070b6ed19095efcac4ae20af4ef19fdfa'},
+        {id:'substation-intelligence',type:'script',slot:'replace-script',replace_script:'ventus-corev8engine.js',path:'cartridges/202609062358-substation-intelligence-v9-63.js',sha256:'d94b0de50deddac77643325b10fbe490ce44b8c406dbc6c67e6e7cadbdaa8ec6'},
+        {id:'sld-sandbox',type:'script',slot:'replace-script',replace_script:'202608292126-pre-snapped-config-adapter.js',path:'cartridges/202609080850-sld-sandbox-v9-8.js',sha256:'5d2b383ffd409e133970c0c62945624b927d12882af3823f8fda6855a7aa34f0'}
+      ]
+    };
+
+    const invariant=(ok,msg)=>{if(!ok)throw new Error(msg)};
+    const escapeAttribute=v=>String(v).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;');
+    async function sha256Hex(bytes){const d=await crypto.subtle.digest('SHA-256',bytes);return [...new Uint8Array(d)].map(v=>v.toString(16).padStart(2,'0')).join('')}
+
+    const satelliteBootstrap = String.raw`
+(function(){
+  const ESRI='https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}';
+  const OriginalMap=maplibregl.Map;
+  class TestMap extends OriginalMap{
+    constructor(options){
+      super(options);
+      window.__GRIDATLAS_SATELLITE_TEST_MAP__=this;
+      this.once('load',()=>installSatelliteTest(this));
+    }
+  }
+  maplibregl.Map=TestMap;
+
+  function firstOverlayAnchor(map){
+    if(map.getLayer('l-sat')) return 'l-sat';
+    const layers=(map.getStyle()&&map.getStyle().layers)||[];
+    const candidate=layers.find(l=>l.type!=='background' && !String(l.id).includes('background'));
+    return candidate&&candidate.id;
+  }
+  function ensureEsri(map){
+    if(map.getLayer('l-sat')) return 'l-sat';
+    if(!map.getSource('sat-esri-test')) map.addSource('sat-esri-test',{type:'raster',tiles:[ESRI],tileSize:256,attribution:'Esri World Imagery'});
+    if(!map.getLayer('sat-esri-test-layer')) map.addLayer({id:'sat-esri-test-layer',type:'raster',source:'sat-esri-test',layout:{visibility:'none'}},firstOverlayAnchor(map));
+    return 'sat-esri-test-layer';
+  }
+  function setVisible(map,id,on){if(id&&map.getLayer(id))map.setLayoutProperty(id,'visibility',on?'visible':'none')}
+  function setStatus(text){const e=document.getElementById('sat-test-status');if(e)e.textContent=text}
+
+  async function recentSentinel(map){
+    const c=map.getCenter(), d=0.12, now=new Date(), start=new Date(now.getTime()-60*86400000);
+    const bbox=[c.lng-d,c.lat-d,c.lng+d,c.lat+d].join(',');
+    const iso=d=>d.toISOString();
+    const url='https://planetarycomputer.microsoft.com/api/stac/v1/search?collections=sentinel-2-l2a&bbox='+encodeURIComponent(bbox)+'&datetime='+encodeURIComponent(iso(start)+'/'+iso(now))+'&limit=50';
+    setStatus('Sentinel-2: finding recent scene…');
+    const r=await fetch(url); if(!r.ok)throw new Error('STAC HTTP '+r.status);
+    const j=await r.json();
+    const rows=(j.features||[]).filter(f=>f.properties&&f.properties.datetime);
+    if(!rows.length)throw new Error('no Sentinel-2 scene in last 60 days');
+    rows.sort((a,b)=>new Date(b.properties.datetime)-new Date(a.properties.datetime));
+    const lowCloud=rows.filter(f=>Number(f.properties['eo:cloud_cover'])<=35);
+    const item=(lowCloud[0]||rows[0]);
+    const tilejson=item.assets&&item.assets.tilejson&&item.assets.tilejson.href;
+    if(!tilejson)throw new Error('scene has no tilejson asset');
+    const tr=await fetch(tilejson); if(!tr.ok)throw new Error('TileJSON HTTP '+tr.status);
+    const tj=await tr.json(); if(!tj.tiles||!tj.tiles[0])throw new Error('TileJSON has no tile template');
+
+    if(map.getLayer('sat-s2-recent-layer'))map.removeLayer('sat-s2-recent-layer');
+    if(map.getSource('sat-s2-recent'))map.removeSource('sat-s2-recent');
+    const esriLayer=ensureEsri(map);
+    map.addSource('sat-s2-recent',{type:'raster',tiles:[tj.tiles[0]],tileSize:256,attribution:'Copernicus Sentinel-2 via Microsoft Planetary Computer'});
+    map.addLayer({id:'sat-s2-recent-layer',type:'raster',source:'sat-s2-recent'},esriLayer);
+    setVisible(map,esriLayer,false);
+    const dt=String(item.properties.datetime).slice(0,10), cloud=Number(item.properties['eo:cloud_cover']);
+    setStatus('Sentinel-2 '+dt+' · cloud '+(Number.isFinite(cloud)?cloud.toFixed(1)+'%':'n/a')+' · 10 m');
+  }
+
+  function installSatelliteTest(map){
+    const host=map.getContainer(); if(!host||document.getElementById('sat-test-panel'))return;
+    if(getComputedStyle(host).position==='static')host.style.position='relative';
+    const p=document.createElement('div');p.id='sat-test-panel';
+    p.style.cssText='position:absolute;left:8px;bottom:34px;z-index:2147483000;background:#000e;border:1px solid #00ffff;padding:7px;font:11px monospace;color:#fff;max-width:min(360px,80vw)';
+    p.innerHTML='<b style="color:#00ffff">SATELLITE TEST</b> <button id="sat-test-esri" style="margin-left:6px">ESRI</button> <button id="sat-test-s2">RECENT S2</button><div id="sat-test-status" style="color:#aaa;margin-top:4px">Dark map · test generation 202609110310</div>';
+    host.appendChild(p);
+    p.addEventListener('click',async ev=>{
+      ev.stopPropagation();
+      if(ev.target.id==='sat-test-esri'){
+        try{const e=ensureEsri(map);setVisible(map,'sat-s2-recent-layer',false);setVisible(map,e,true);setStatus('Esri World Imagery · high resolution · capture date varies by location');}catch(err){setStatus('Esri failed: '+err.message)}
+      }
+      if(ev.target.id==='sat-test-s2'){
+        try{await recentSentinel(map)}catch(err){setStatus('Sentinel-2 failed: '+err.message)}
+      }
+    });
+  }
+})();`;
+
+    try{
+      const shellUrl=new URL(current.shell.index,atlasBase), shellBase=new URL(current.shell.base,atlasBase).href;
+      const sr=await fetch(shellUrl,{cache:'no-store'}); invariant(sr.ok,'immutable shell HTTP '+sr.status);
+      let html=await sr.text();
+      html=html.replace(/<head([^>]*)>/i,m=>m+'\n<base href="'+escapeAttribute(shellBase)+'">');
+      const byId=new Map(current.cartridges.map(x=>[x.id,x]));
+      const scriptPattern=new RegExp('<script\\b[^>]*\\bsrc=(["\\\'])([^"\\\']+)\\1[^>]*>\\s*<\\/script>','gi');
+      for(const id of current.cartridge_order){
+        const c=byId.get(id); invariant(c,id+': missing');
+        const r=await fetch(new URL(c.path,atlasBase),{cache:'no-store'}); invariant(r.ok,id+': HTTP '+r.status);
+        const bytes=await r.arrayBuffer(); invariant(await sha256Hex(bytes)===c.sha256,id+': SHA-256 mismatch');
+        const blob=URL.createObjectURL(new Blob([bytes],{type:'text/javascript'}));
+        let replaced=false;
+        html=html.replace(scriptPattern,(full,q,src)=>{
+          if(replaced||String(src).split('/').pop()!==c.replace_script)return full;
+          replaced=true; return '<script data-gridatlas-cartridge="'+escapeAttribute(id)+'" src="'+escapeAttribute(blob)+'">'+SCRIPT_CLOSE;
+        });
+        invariant(replaced,id+': shell slot not found');
+      }
+      const boot='<script>'+satelliteBootstrap.replace(/<\/script>/gi,'<\\/script>')+SCRIPT_CLOSE;
+      const maplibreTag=/(<script\b[^>]*maplibre-gl[^>]*>\s*<\/script>)/i;
+      invariant(maplibreTag.test(html),'MapLibre script tag not found');
+      html=html.replace(maplibreTag,'$1\n'+boot);
+      html=html.replace(/<body([^>]*)>/i,m=>m+'\n<script>document.documentElement.dataset.gridatlasTest="202609110310";'+SCRIPT_CLOSE);
+      document.open();document.write(html);document.close();
+    }catch(err){
+      console.error('[GRIDATLAS SAT TEST]',err);loader.innerHTML='<div><strong>GRIDATLAS TEST FAILED</strong><br>'+String(err.message||err).replace(/[<>&]/g,'')+'</div>';
+    }
+  </script>
+</body>
+</html>
