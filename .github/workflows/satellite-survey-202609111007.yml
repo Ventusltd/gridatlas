@@ -1,0 +1,60 @@
+name: Satellite survey browser proof
+on:
+  push:
+    branches: ['test/satellite-survey-202609111007']
+    paths:
+      - '.github/workflows/satellite-survey-202609111007.yml'
+      - 'atlas/testcode/202609111007/survey-ui.js'
+      - 'atlas/testcode/202609111007/build.py'
+      - 'atlas/testcode/202609111007/browser-proof.py'
+      - 'atlas/testcode/202609111007/EN010101-boundary.geojson'
+permissions:
+  contents: write
+concurrency:
+  group: satellite-survey-202609111007
+  cancel-in-progress: true
+jobs:
+  browser:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: test/satellite-survey-202609111007
+          fetch-depth: 2
+          sparse-checkout: |
+            atlas/testcode/202609110849
+            atlas/testcode/202609111007
+      - name: Read state and build isolated files
+        run: |
+          git status --short --branch
+          git log -2 --oneline
+          cat AGENTS.md STATE.md
+          python -c 'import json; print(json.load(open("atlas/current.json"))["generation"])'
+          mkdir -p evidence
+          python atlas/testcode/202609111007/build.py
+          node --check atlas/testcode/202609111007/satellite.js
+          python -m py_compile atlas/testcode/202609111007/browser-proof.py
+          git diff --exit-code -- atlas/current.json STATE.md atlas/index.html index.html
+      - name: Install browser driver
+        run: |
+          python -m pip install playwright==1.55.0
+          if ! command -v google-chrome >/dev/null; then python -m playwright install --with-deps chromium; fi
+      - name: Browser layout and dated imagery
+        run: python atlas/testcode/202609111007/browser-proof.py
+      - name: Keep generated test files on test branch
+        if: always()
+        run: |
+          test -f atlas/testcode/202609111007/manifest.json || exit 0
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -- atlas/testcode/202609111007/index.html atlas/testcode/202609111007/satellite.js atlas/testcode/202609111007/manifest.json
+          if ! git diff --cached --quiet; then git commit -m 'build(test): generated menu-only satellite survey'; git push origin HEAD:test/satellite-survey-202609111007; fi
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: satellite-survey-browser-evidence
+          path: |
+            evidence/
+            atlas/testcode/202609111007/
+          retention-days: 7
