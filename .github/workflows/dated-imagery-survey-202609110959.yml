@@ -1,0 +1,117 @@
+name: Dated imagery survey
+on:
+  push:
+    branches: ['test/dated-imagery-202609110959']
+    paths: ['.github/workflows/dated-imagery-survey-202609110959.yml']
+permissions:
+  contents: read
+jobs:
+  imagery:
+    runs-on: ubuntu-latest
+    timeout-minutes: 9
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          fetch-depth: 2
+          sparse-checkout: atlas/testcode/202609110849
+      - name: Read composition; no application changes
+        run: |
+          git status --short --branch
+          git log -2 --oneline
+          cat AGENTS.md STATE.md
+          python -c 'import json; print(json.load(open("atlas/current.json"))["generation"])'
+      - name: Install image readers
+        run: python -m pip install --quiet requests rasterio shapely pyproj pillow numpy
+      - name: Acquire bounded native imagery crops and source metadata
+        run: |
+          mkdir -p evidence
+          cat > /tmp/acquire.py <<'PY'
+          import os,json,time,math,traceback,concurrent.futures
+          from pathlib import Path
+          from datetime import datetime,timezone
+          import requests,numpy as np,rasterio
+          from rasterio.windows import from_bounds,Window
+          from rasterio.warp import transform_bounds
+          from shapely.geometry import shape,box,Point
+          from PIL import Image
+          OUT=Path('evidence'); ROOT='https://planetarycomputer.microsoft.com'
+          # Public development boundary envelope. No commercial annotations.
+          BBOX=[-0.5934378261928394,53.568868835658115,-0.5591190552311492,53.585988691836576]
+          PAD=[BBOX[0]-.002,BBOX[1]-.0015,BBOX[2]+.002,BBOX[3]+.0015]
+          CENTRE=[-.5798341064963216,53.576947668884735]
+          END='2026-09-11T09:57:00Z'
+          report={'retrieved_utc':datetime.now(timezone.utc).isoformat(),'bbox':BBOX,'crop_bbox':PAD,'sources':[],'errors':[]}
+          def get_json(url,params=None):
+            r=requests.get(url,params=params,timeout=25);r.raise_for_status();return r.json()
+          def search(coll,start,end,tag,limit=100):
+            q={'collections':coll,'bbox':','.join(map(str,BBOX)),'datetime':start+'/'+end,'sortby':'-datetime','limit':limit}
+            data=get_json(ROOT+'/api/stac/v1/search',q)
+            (OUT/(tag+'-catalogue.json')).write_text(json.dumps(data))
+            rows=[f for f in data.get('features',[]) if shape(f['geometry']).covers(Point(CENTRE))]
+            rows.sort(key=lambda f:f['properties'].get('datetime',''),reverse=True)
+            print('CATALOGUE',tag,len(rows),flush=True)
+            return rows
+          def unique_days(rows):
+            seen=set();out=[]
+            for f in rows:
+              day=f['properties']['datetime'][:10]
+              if day not in seen:out.append(f);seen.add(day)
+            return out
+          try:
+            recent=unique_days(search('sentinel-2-l2a','2026-08-01T00:00:00Z',END,'recent'))
+            selected=recent[:13]
+            for start,end,tag in [('2026-02-01','2026-02-28','february'),('2026-04-01','2026-04-30','april'),('2026-06-01','2026-06-30','june'),('2026-07-01','2026-07-31','july'),('2025-08-01','2025-09-11','previous-year')]:
+              rows=unique_days(search('sentinel-2-l2a',start+'T00:00:00Z',end+'T23:59:59Z',tag))
+              rows.sort(key=lambda f:float(f['properties'].get('eo:cloud_cover',100)))
+              selected.extend(rows[:2] if tag=='previous-year' else rows[:1])
+            items={f['id']:f for f in selected}
+            (OUT/'selected-items.json').write_text(json.dumps(list(items.values())))
+          except Exception as e:
+            report['errors'].append('catalogue: '+str(e));items={}
+          def crop(f):
+            fid=f['id'];props=f['properties'];meta={'id':fid,'date':props['datetime'],'scene_cloud_pct':props.get('eo:cloud_cover'),'platform':props.get('platform'),'footprint_covers_envelope':shape(f['geometry']).covers(box(*BBOX)),'files':{},'errors':[],'source':ROOT+'/api/stac/v1/collections/sentinel-2-l2a/items/'+fid}
+            for asset,indexes in [('visual',[1,2,3]),('SCL',[1])]:
+              try:
+                href=f['assets'][asset]['href'];signed=get_json(ROOT+'/api/sas/v1/sign',{'href':href})['href']
+                with rasterio.Env(GDAL_DISABLE_READDIR_ON_OPEN='EMPTY_DIR',GDAL_HTTP_TIMEOUT=18,GDAL_HTTP_MAX_RETRY=1,GDAL_HTTP_RETRY_DELAY=1,CPL_VSIL_CURL_ALLOWED_EXTENSIONS='.tif'):
+                  with rasterio.open(signed) as src:
+                    b=transform_bounds('EPSG:4326',src.crs,*PAD,densify_pts=21)
+                    w=from_bounds(*b,transform=src.transform)
+                    w=Window(math.floor(w.col_off),math.floor(w.row_off),math.ceil(w.width)+1,math.ceil(w.height)+1).intersection(Window(0,0,src.width,src.height))
+                    data=src.read(indexes,window=w);tf=src.window_transform(w)
+                    name=fid+'-'+asset+'.tif'
+                    profile={'driver':'GTiff','width':data.shape[2],'height':data.shape[1],'count':len(indexes),'dtype':data.dtype,'crs':src.crs,'transform':tf,'compress':'deflate','nodata':0}
+                    with rasterio.open(OUT/name,'w',**profile) as dst:dst.write(data)
+                    meta['files'][asset]={'file':name,'crs':str(src.crs),'transform':list(tf),'shape':list(data.shape),'native_pixel_m':abs(tf.a),'unsigned_source':href}
+                    if asset=='visual':Image.fromarray(np.moveaxis(data,0,-1).astype('uint8')).save(OUT/(fid+'-visual.png'))
+              except Exception as e:meta['errors'].append(asset+': '+str(e).split('?')[0][:240])
+            print('CROP',fid,meta['scene_cloud_pct'],list(meta['files']),meta['errors'],flush=True)
+            return meta
+          with concurrent.futures.ThreadPoolExecutor(max_workers=3) as pool:
+            report['sources']=list(pool.map(crop,items.values()))
+          # Query the current Esri service metadata and source dates separately from RGB.
+          esri='https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer'
+          try:
+            data=get_json(esri,{'f':'json'});(OUT/'esri-service.json').write_text(json.dumps(data))
+            ident=get_json(esri+'/identify',{'f':'json','geometry':','.join(map(str,CENTRE)),'geometryType':'esriGeometryPoint','sr':4326,'mapExtent':','.join(map(str,PAD)),'imageDisplay':'1200,1000,96','tolerance':2,'returnGeometry':'false','layers':'all'})
+            (OUT/'esri-identify.json').write_text(json.dumps(ident))
+            export=get_json(esri+'/export',{'f':'json','bbox':','.join(map(str,PAD)),'bboxSR':4326,'imageSR':3857,'size':'1200,1050','format':'png32','transparent':'false'})
+            (OUT/'esri-export.json').write_text(json.dumps(export))
+            if export.get('href'):
+              r=requests.get(export['href'],timeout=35);r.raise_for_status();(OUT/'esri-current-context.png').write_bytes(r.content)
+          except Exception as e:report['errors'].append('Esri: '+str(e).split('?')[0][:240])
+          try:
+            s1=search('sentinel-1-rtc','2026-08-15T00:00:00Z',END,'radar',50)
+            report['radar_available']=[{'id':f['id'],'date':f['properties'].get('datetime'),'orbit':f['properties'].get('sat:relative_orbit'),'assets':list(f.get('assets',{}))} for f in s1[:6]]
+          except Exception as e:report['errors'].append('radar catalogue: '+str(e)[:200])
+          (OUT/'acquisition-report.json').write_text(json.dumps(report,indent=2))
+          print('SUMMARY',len(report['sources']),report['errors'],flush=True)
+          PY
+          python /tmp/acquire.py
+      - name: Store survey evidence without deploying application
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: dated-imagery-survey
+          path: evidence/
+          retention-days: 7
