@@ -1,60 +1,86 @@
-name: Satellite survey browser proof
+name: Satellite survey published proof
 on:
   push:
     branches: ['test/satellite-survey-202609111007']
-    paths:
-      - '.github/workflows/satellite-survey-202609111007.yml'
-      - 'atlas/testcode/202609111007/survey-ui.js'
-      - 'atlas/testcode/202609111007/build.py'
-      - 'atlas/testcode/202609111007/browser-proof.py'
-      - 'atlas/testcode/202609111007/EN010101-boundary.geojson'
+    paths: ['.github/workflows/satellite-survey-202609111007.yml']
 permissions:
-  contents: write
-concurrency:
-  group: satellite-survey-202609111007
-  cancel-in-progress: true
+  contents: read
 jobs:
   browser:
     runs-on: ubuntu-latest
-    timeout-minutes: 8
+    timeout-minutes: 9
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
-          ref: test/satellite-survey-202609111007
+          ref: ece848117a6d21b7fccb232557194877698c48a9
           fetch-depth: 2
+          sparse-checkout-cone-mode: false
           sparse-checkout: |
-            atlas/testcode/202609110849
-            atlas/testcode/202609111007
-      - name: Read state and build isolated files
+            /AGENTS.md
+            /STATE.md
+            /index.html
+            /.github/**
+            /tools/scope/**
+            /scope-of-works/**
+            /atlas/index.html
+            /atlas/current.json
+            /atlas/releases/*/index.html
+            /atlas/releases/202608300453-atlas-v9/**
+            /atlas/releases/cartridges/**
+            /atlas/cartridges/202609041945-streaming-parquet-bridge-v9-5.js
+            /atlas/cartridges/202609071213-place-global-search-v9-5.js
+            /atlas/cartridges/202609062358-substation-intelligence-v9-63.js
+            /atlas/cartridges/202609080850-sld-sandbox-v9-8.js
+            /atlas/testcode/202609111007/**
+            /releases/current-v5.json
+            /state/live-set.json
+      - name: Verify publication scope and deterministic state
         run: |
-          git status --short --branch
-          git log -2 --oneline
-          cat AGENTS.md STATE.md
-          python -c 'import json; print(json.load(open("atlas/current.json"))["generation"])'
           mkdir -p evidence
-          python atlas/testcode/202609111007/build.py
+          git status --short --branch
+          git diff --name-status HEAD~1 HEAD | tee evidence/changed-paths.txt
+          python - <<'PY'
+          import subprocess
+          names=subprocess.check_output(['git','diff','--name-only','HEAD~1','HEAD'],text=True).splitlines()
+          assert len(names)==7 and all(n.startswith('atlas/testcode/202609111007/') for n in names), names
+          PY
           node --check atlas/testcode/202609111007/satellite.js
-          python -m py_compile atlas/testcode/202609111007/browser-proof.py
-          git diff --exit-code -- atlas/current.json STATE.md atlas/index.html index.html
+          node tools/scope/loop.mjs lint > evidence/scope-lint.log 2>&1
+          node tools/scope/loop.mjs state --stdout > evidence/state-check.md 2> evidence/state-error.log
+          cmp STATE.md evidence/state-check.md
+          git diff --exit-code -- STATE.md atlas/current.json atlas/index.html index.html
+      - name: Verify exact served bytes
+        run: |
+          python - <<'PY'
+          import hashlib,json,time,urllib.request
+          from pathlib import Path
+          root='https://ventusltd.github.io/gridatlas/atlas/testcode/202609111007/'
+          results={}
+          for name in ['index.html','satellite.js','manifest.json']:
+              local=Path('atlas/testcode/202609111007',name).read_bytes()
+              deadline=time.monotonic()+90
+              while True:
+                  try:
+                      with urllib.request.urlopen(root+name+'?verify=ece8481',timeout=15) as r: remote=r.read()
+                      if remote==local: break
+                  except Exception: pass
+                  if time.monotonic()>deadline: raise RuntimeError('Served bytes mismatch: '+name)
+                  time.sleep(5)
+              results[name]={'match':True,'sha256':hashlib.sha256(local).hexdigest()}
+          Path('evidence/served-byte-verification.json').write_text(json.dumps(results,indent=2))
+          print(json.dumps(results))
+          PY
       - name: Install browser driver
         run: |
           python -m pip install playwright==1.55.0
           if ! command -v google-chrome >/dev/null; then python -m playwright install --with-deps chromium; fi
-      - name: Browser layout and dated imagery
+      - name: Actual published browser URL without interception
+        env:
+          LIVE_TEST: '1'
         run: python atlas/testcode/202609111007/browser-proof.py
-      - name: Keep generated test files on test branch
-        if: always()
-        run: |
-          test -f atlas/testcode/202609111007/manifest.json || exit 0
-          git config user.name 'github-actions[bot]'
-          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add -- atlas/testcode/202609111007/index.html atlas/testcode/202609111007/satellite.js atlas/testcode/202609111007/manifest.json
-          if ! git diff --cached --quiet; then git commit -m 'build(test): generated menu-only satellite survey'; git push origin HEAD:test/satellite-survey-202609111007; fi
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: satellite-survey-browser-evidence
-          path: |
-            evidence/
-            atlas/testcode/202609111007/
+          name: satellite-survey-published-evidence
+          path: evidence/
           retention-days: 7
