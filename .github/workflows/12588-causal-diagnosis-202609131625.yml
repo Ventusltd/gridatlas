@@ -1,0 +1,30 @@
+name: Botley 12588 controlled dependency diagnosis
+on:
+  push:
+    branches: ['test/12588-load-diagnosis-202609131625']
+    paths: ['.github/workflows/12588-causal-diagnosis-202609131625.yml', 'tools/diagnostics/202609131625-12588-causal.py']
+permissions:
+  contents: read
+jobs:
+  causal:
+    runs-on: ubuntu-latest
+    timeout-minutes: 7
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          fetch-depth: 1
+          sparse-checkout: tools/diagnostics
+      - name: Install browser driver
+        run: |
+          python -m pip install playwright==1.55.0
+          if ! command -v google-chrome >/dev/null; then python -m playwright install --with-deps chromium; fi
+      - name: Read-only dependency isolation on actual published URL
+        run: |
+          mkdir -p causal-evidence
+          python tools/diagnostics/202609131625-12588-causal.py > causal-evidence/runner.log 2>&1
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: botley-12588-causal-diagnosis
+          path: causal-evidence/
+          retention-days: 7
