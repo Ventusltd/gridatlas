@@ -1,0 +1,37 @@
+name: Botley 12588 live load diagnosis
+on:
+  push:
+    branches: ['test/12588-load-diagnosis-202609131625']
+    paths: ['.github/workflows/12588-load-diagnosis-202609131625.yml', 'tools/diagnostics/202609131625-12588-load.py']
+permissions:
+  contents: read
+jobs:
+  diagnose:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          fetch-depth: 3
+          sparse-checkout: |
+            tools/diagnostics
+            atlas/current.json
+          sparse-checkout-cone-mode: false
+      - name: Record scope
+        run: |
+          mkdir -p latency-evidence
+          git status --short --branch > latency-evidence/git-status.txt
+          git log -3 --oneline > latency-evidence/git-history.txt
+          cat AGENTS.md STATE.md > latency-evidence/operating-contract.txt || true
+      - name: Install headless driver
+        run: |
+          python -m pip install playwright==1.55.0
+          if ! command -v google-chrome >/dev/null; then python -m playwright install --with-deps chromium; fi
+      - name: Time actual published URL without response substitution
+        run: python tools/diagnostics/202609131625-12588-load.py > latency-evidence/runner.log 2>&1
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: botley-12588-load-diagnosis
+          path: latency-evidence/
+          retention-days: 7
