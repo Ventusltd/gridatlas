@@ -8,8 +8,8 @@
  "release_route": "/gridatlas/atlas/releases/202608300453-atlas-v9/",
  "shell": {
   "release_id": "202608300453-atlas-v9",
-  "index": "./releases/202608300453-atlas-v9/index.html",
-  "base": "./releases/202608300453-atlas-v9/"
+  "index": "../../releases/202608300453-atlas-v9/index.html",
+  "base": "../../releases/202608300453-atlas-v9/"
  },
  "cartridge_order": [
   "streaming-parquet-bridge",
@@ -25,9 +25,9 @@
    "type": "script",
    "slot": "replace-script",
    "replace_script": "202608292311-maplibre-worker-bridge.js",
-   "path": "./cartridges/202609041945-streaming-parquet-bridge-v9-5.js",
+   "path": "../../cartridges/202609041945-streaming-parquet-bridge-v9-5.js",
    "sha256": "4a6b594f7705bc4d7d62cbe69d2e40726d12f9a759896430cfe5eb00d830d23e",
-   "contract": "../ui/cartridges/202608301825-streaming-parquet-bridge-v9-5.mjs",
+   "contract": "../../ui/cartridges/202608301825-streaming-parquet-bridge-v9-5.mjs",
    "capabilities": [
     "response-before-body-reconstruction",
     "duckdb-runtime-prewarm-after-400kv",
@@ -44,9 +44,9 @@
    "type": "script",
    "slot": "replace-script",
    "replace_script": "202608291818-place-postcode-search.js",
-   "path": "./cartridges/202609071213-place-global-search-v9-5.js",
+   "path": "../../cartridges/202609071213-place-global-search-v9-5.js",
    "sha256": "15f324e5c279050882f7e3ce83a915c070b6ed19095efcac4ae20af4ef19fdfa",
-   "contract": "../ui/cartridges/202609040337-global-gazetteer-flyto-v9-106.mjs",
+   "contract": "../../ui/cartridges/202609040337-global-gazetteer-flyto-v9-106.mjs",
    "capabilities": [
     "exact-repd-first",
     "uk-postcode",
@@ -57,7 +57,7 @@
    ],
    "result_class": "LOCATION_ONLY",
    "sets_deep_link": false,
-   "assembled_from": "./manifests/202609041945-place-global-search-v9-5-parts.json",
+   "assembled_from": "../../manifests/202609041945-place-global-search-v9-5-parts.json",
    "bytes": 41120
   },
   {
@@ -67,7 +67,7 @@
    "type": "script",
    "slot": "replace-script",
    "replace_script": "202608292126-pre-snapped-config-adapter.js",
-   "path": "./cartridges/202609200022-sld-sandbox-v9-8.js",
+   "path": "../../cartridges/202609200022-sld-sandbox-v9-8.js",
    "sha256": "145c71b5739a5a910fb17dbb5266bdca0eeef17d6e47d5ed37cc545745722882",
    "capabilities": [
     "pre-snapped-config-adapter-carried-forward",
@@ -523,7 +523,7 @@
     "archetypes": "West Burton builds a 400 kV customer substation and a 10 km cable to an existing transmission bay; Little Crow loops into a distribution circuit already crossing its land. Both are NSIPs; only one is a 400 kV story",
     "rule": "the state is taken from the public record, never from whether OSM happens to have mapped the asset"
    },
-   "assembled_from": "./manifests/202609050354-sld-sandbox-v9-8-parts.json",
+   "assembled_from": "../../manifests/202609050354-sld-sandbox-v9-8-parts.json",
    "data_sources": [
     {
      "repository": "Ventusltd/data-grid-gb",
@@ -549,7 +549,7 @@
    "type": "script",
    "slot": "replace-script",
    "replace_script": "ventus-corev8engine.js",
-   "path": "./cartridges/202609062358-substation-intelligence-v9-63.js",
+   "path": "../../cartridges/202609062358-substation-intelligence-v9-63.js",
    "sha256": "d94b0de50deddac77643325b10fbe490ce44b8c406dbc6c67e6e7cadbdaa8ec6",
    "capabilities": [
     "immutable-v8-shell-preserved-with-reviewed-receiver-successor",
@@ -607,7 +607,7 @@
     "closed_by": "the owner product's per-voltage split, quoted at the connection voltage",
     "still_site_wide": "circuit winter ratings are not split by voltage in the product and are now labelled site-wide (Blackhillock publishes 23-1,995 MVA)"
    },
-   "assembled_from": "./manifests/202609051329-substation-intelligence-v9-63-parts.json",
+   "assembled_from": "../../manifests/202609051329-substation-intelligence-v9-63-parts.json",
    "bytes": 451935
   }
  ],
@@ -653,7 +653,7 @@
    "result_class": "LOCATION_ONLY"
   }
  },
- "composition_manifest": "./manifests/202609200022-composition.json",
+ "composition_manifest": "../../manifests/202609200022-composition.json",
  "scope_closure": {
   "generation": "202609010726",
   "status": "DONE",
@@ -685,10 +685,5 @@
   "why": "an unshipped candidate composed at its own route so print and save can be measured against the live route side by side; atlas/current.json is untouched and the live route still serves 202609050354",
   "live_pointer_unchanged": true,
   "proof": "tools/proofs/export-print-and-image-outcomes.browser.mjs --route atlas/v/202609051329"
- },
- "promoted_from": "atlas/v/202609200022/",
- "promoted_utc": "2026-09-20T00:29:59.000Z",
- "superseded_generation": "202609080850",
- "promotion_evidence": "Both faults reproduced on the live composition in a real browser at a true 1366 and a true 390 before the change (a plain visit told of a project nobody sent; the placeholder sentence sat under the menu bar, the search box and its results); the candidate driven at its own route after: a plain visit says nothing, the placeholder sentence is whole and clear every 12 px, and a real project link still flies, measures and opens its card.",
- "promoted_by": "systems lane session, at the owner's word, 2026-09-20"
+ }
 }
