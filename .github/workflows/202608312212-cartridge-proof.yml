@@ -78,6 +78,36 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  user-layer-clicks:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    strategy:
+      fail-fast: false
+      matrix:
+        width: [1440, 393]
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020
+        with:
+          node-version: '24'
+      - run: npm ci --ignore-scripts --no-audit --no-fund
+      - run: npx --no-install playwright install --with-deps chromium
+      - name: Every published layer paints, accepts a feature click, opens and closes a card, and switches off
+        run: node tools/proofs/all-layer-clicks.browser.mjs --width ${{ matrix.width }} --out work/layer-clicks-${{ matrix.width }}
+      - name: Menus, drawing tools, exports, search, fullscreen and Pipeline controls work
+        run: node tools/proofs/all-controls.browser.mjs ${{ matrix.width == 393 && '--mobile' || '--desktop' }}
+      - name: Preserve interaction receipts and screenshots
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: layer-clicks-${{ matrix.width }}
+          path: |
+            work/layer-clicks-${{ matrix.width }}
+            work/controls-audit
+          retention-days: 14
+      # Android-sized touch Chromium is an emulation, not a physical-device claim.
+      # CuPy parity is run locally on the RTX GPU through verify-layers-local.ps1;
+      # a hosted CPU runner must never label its browser test a GPU run.
   proof:
     runs-on: ubuntu-24.04
     # Browser installation and five cold mobile arrivals share this outer

@@ -1,0 +1,119 @@
+import {chromium} from 'playwright';
+import fs from 'node:fs';
+import path from 'node:path';
+import {createServer} from 'node:http';
+import assert from 'node:assert/strict';
+import {createHash} from 'node:crypto';
+const root=path.resolve(import.meta.dirname,'../..');
+const out=path.resolve(process.argv.includes('--out')?process.argv[process.argv.indexOf('--out')+1]:path.join(root,'work/controls-audit'));fs.mkdirSync(out,{recursive:true});
+const server=createServer((req,res)=>{try{let p=path.resolve(root,'.'+decodeURIComponent(new URL(req.url,'http://localhost').pathname));if(!p.startsWith(root+path.sep))throw Error();if(fs.statSync(p).isDirectory())p=path.join(p,'index.html');res.setHeader('content-type',({'.html':'text/html','.js':'text/javascript','.mjs':'text/javascript','.json':'application/json','.geojson':'application/geo+json','.css':'text/css','.wasm':'application/wasm'})[path.extname(p)]||'application/octet-stream');res.end(fs.readFileSync(p));}catch{res.writeHead(404).end();}});
+await new Promise(r=>server.listen(0,'127.0.0.1',r));
+const baseUrl=process.argv.includes('--url')?process.argv[process.argv.indexOf('--url')+1]:`http://127.0.0.1:${server.address().port}/atlas/`;
+const browser=await chromium.launch({channel:process.argv.includes('--channel')?process.argv[process.argv.indexOf('--channel')+1]:process.platform==='win32'?'chrome':undefined,headless:true});
+const report={startedAt:new Date().toISOString(),compositionSha256:createHash('sha256').update(fs.readFileSync(path.join(root,'atlas/current.json'))).digest('hex'),browser:await browser.version(),physicalAndroid:false,profiles:[]};
+const profiles=process.argv.includes('--mobile')?[393]:process.argv.includes('--desktop')?[1440]:[1440,393];
+try{for(const width of profiles){
+ const mobile=width<700,prefix=mobile?'android-emulation':'desktop';
+ const context=await browser.newContext({viewport:{width,height:mobile?852:1000},isMobile:mobile,hasTouch:mobile,acceptDownloads:true,...(mobile?{userAgent:'Mozilla/5.0 (Linux; Android 14; Pixel 8) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Mobile Safari/537.36'}:{})});
+ await context.addInitScript(()=>{window.__auditPrints=0;addEventListener('beforeprint',()=>window.__auditPrints++);});
+ const page=await context.newPage();page.setDefaultTimeout(6000);
+ const r={profile:prefix,width,errors:[],dialogs:[],downloads:[],menus:{},checks:[]};report.profiles.push(r);
+ page.on('pageerror',e=>r.errors.push(String(e)));page.on('dialog',async d=>{r.dialogs.push(d.message());await d.dismiss();});page.on('download',async d=>{r.downloads.push(d.suggestedFilename());await d.saveAs(path.join(out,prefix+'-'+d.suggestedFilename()));});
+ const save=()=>fs.writeFileSync(path.join(out,prefix+'.json'),JSON.stringify({browser:report.browser,...r},null,2));
+ const tap=async loc=>mobile?await loc.tap():await loc.click();
+ const snap=async name=>page.screenshot({path:path.join(out,prefix+'-'+name+'.png')});
+ const state=()=>page.evaluate(()=>({fullscreen:document.fullscreenElement?.id,bodyClass:document.body.className,visible:[...document.querySelectorAll('button,input,select,[role=button]')].filter(e=>e.getBoundingClientRect().width&&e.getBoundingClientRect().height&&getComputedStyle(e).visibility!=='hidden').map(e=>({id:e.id,text:(e.innerText||e.getAttribute('aria-label')||e.getAttribute('placeholder')||'').slice(0,130),type:e.type,value:e.value,checked:e.checked,class:e.className})),panels:[...document.querySelectorAll('[id]')].filter(e=>/radius|measure|zone|status|export/.test(e.id)&&e.getBoundingClientRect().width&&e.getBoundingClientRect().height).map(e=>({id:e.id,text:e.innerText?.slice(0,300)}))}));
+ async function check(name,fn){const c={name};r.checks.push(c);try{c.before=await state();await fn(c);await page.waitForTimeout(200);c.after=await state();c.completed=true;await snap(name.replace(/[^a-z0-9-]/gi,'-'));}catch(e){c.completed=false;c.error=String(e);await snap(name+'-failed').catch(()=>{});}save();console.log(prefix,name,c.completed,c.error||'');}
+ async function menu(name){const l=page.getByRole('button',{name,exact:true});if(await l.getAttribute('aria-expanded')!=='true')await tap(l);}
+ await page.goto(baseUrl,{waitUntil:'domcontentloaded',timeout:60000});
+ await page.waitForFunction(()=>window.__GRIDATLAS_V9_MAP__&&document.querySelectorAll('[data-gridatlas-layer-proxy]').length>=60,null,{timeout:90000});
+ r.generation=await page.evaluate(()=>window.__GRIDATLAS_ATLAS__.generation);r.inventory=await state();save();
+ for(const name of ['File','Edit','View','Scope','Grid','About'])await check('menu-'+name,async c=>{await menu(name);r.menus[name]=await page.locator('.gm-open .gm-panel').evaluateAll(xs=>xs.map(x=>({text:x.innerText,controls:[...x.querySelectorAll('button,input,select,summary,a')].map(e=>({tag:e.tagName,id:e.id,text:e.innerText||e.getAttribute('aria-label'),type:e.type,href:e.getAttribute('href'),disabled:e.disabled}))})));c.open=await page.getByRole('button',{name,exact:true}).getAttribute('aria-expanded');});
+ for(const [name,id] of [['Edit','btn-status'],['Scope','btn-radius'],['Scope','btn-radius-area'],['Scope','btn-zonedraw'],['Scope','btn-measure']])await check(id,async c=>{
+  for(const close of await page.locator('.maplibregl-popup-close-button').all())if(await close.isVisible())await tap(close);
+  await menu(name);await tap(page.locator('#'+id));await page.keyboard.press('Escape');
+  const canvas=page.locator('.maplibregl-canvas');const b=await canvas.boundingBox();
+  if(id!=='btn-status')for(const [fx,fy] of [[.45,.48],[.62,.55],[.53,.66]]){if(mobile)await page.touchscreen.tap(b.x+b.width*fx,b.y+b.height*fy);else await page.mouse.click(b.x+b.width*fx,b.y+b.height*fy);await page.waitForTimeout(400);}
+  await page.waitForTimeout(500);c.activated=await state();c.sources=await page.evaluate(()=>Object.fromEntries(Object.entries(window.__GRIDATLAS_V9_MAP__.getStyle().sources).filter(([k])=>/measure|radius|zone/.test(k)).map(([k])=>[k,window.__GRIDATLAS_V9_MAP__.getSource(k)._data])));await snap(id+'-active');
+  const undo=id==='btn-measure'?'btn-measure-undo':id==='btn-zonedraw'?'btn-zonedraw-undo':null;
+  if(undo&&await page.locator('#'+undo).isVisible()){await tap(page.locator('#'+undo));await page.waitForTimeout(150);c.undo=await state();c.pointsAfterUndo=await page.evaluate(id=>window.__GRIDATLAS_V9_MAP__.getSource(id==='btn-measure'?'src-measure-points':'src-zonedraw-points')._data.features.length,id);}
+  const sourceFor={'btn-radius':'src-radius-circle','btn-radius-area':'src-radius-area','btn-zonedraw':'src-zonedraw-fill','btn-measure':'src-measure-line'}[id];if(sourceFor)assert.ok(c.sources[sourceFor]?.features?.length>0,'tool geometry must exist');
+  if(id==='btn-status')assert.equal(await page.locator('#btn-status').getAttribute('aria-pressed'),'true');
+  await menu(name);await tap(page.locator('#'+id));
+ });
+ await check('fullscreen',async c=>{await menu('View');await tap(page.locator('#btn-fullscreen'));await page.waitForFunction(()=>!!document.fullscreenElement);c.entered=await state();await menu('View');await tap(page.locator('#btn-fullscreen-exit'));await page.waitForFunction(()=>!document.fullscreenElement);});
+ await check('basemaps',async c=>{c.radios=[];for(const value of ['sat','dark']){await menu('Grid');const input=page.locator('input[name="gridatlas-menu-basemap"][value="'+value+'"]');await input.scrollIntoViewIfNeeded();await tap(input);await page.waitForTimeout(300);c.radios.push({value,checked:await input.isChecked(),layers:await page.evaluate(()=>window.__GRIDATLAS_V9_MAP__.getStyle().layers.filter(x=>/sat|dark/.test(x.id)))});}});
+ await check('csv-export',async c=>{await menu('File');await tap(page.locator('#btn-export'));await page.waitForTimeout(800);c.downloads=[...r.downloads];c.dialogs=[...r.dialogs];});
+ for(const [men,sel] of [['View','#gridatlas-gb-conditions button'],['About','#gridatlas-version-ledger button']])await check('expand-'+men,async c=>{await menu(men);await tap(page.locator(sel).first());c.text=await page.locator('.gm-open .gm-panel').innerText();await tap(page.locator(sel).first());});
+ await check('layer-panel-toggle',async c=>{await page.keyboard.press('Escape');await tap(page.locator('#gridatlas-dash-toggle'));c.hidden=await state();await tap(page.locator('#gridatlas-dash-toggle'));});
+ for(const id of ['gridatlas-export-image','gridatlas-export-pdf','gridatlas-export-print'])await check(id,async c=>{
+  await menu('File');const downloads=r.downloads.length;
+  if(id.endsWith('print'))await page.evaluate(()=>{
+   // Native headless print can clean its temporary raster before a later DOM
+   // sample. Observe the real call and decoded raster, then invoke native print.
+   const nativePrint=window.print.bind(window);
+   window.__auditPrintCall=null;
+   window.print=function(...args){
+    const image=document.getElementById('gridatlas-print-map');
+    window.__auditPrintCall={width:image?.naturalWidth||0,height:image?.naturalHeight||0,png:!!image?.src.startsWith('data:image/png')};
+    return nativePrint(...args);
+   };
+  });
+  const downloadPromise=id.endsWith('print')?null:page.waitForEvent('download',{timeout:15000});
+  await tap(page.locator('#'+id));
+  if(id.endsWith('print')){
+   await page.waitForFunction(()=>window.__auditPrintCall,null,{timeout:15000});
+   c.printCall=await page.evaluate(()=>window.__auditPrintCall);
+   assert.ok(c.printCall.png&&c.printCall.width>0&&c.printCall.height>0,'native print must receive a decoded map raster');
+   c.limitation='Native OS print dialog and physical printer not verified in headless Chrome';
+  }else{await downloadPromise;c.downloads=r.downloads.slice(downloads);assert.equal(c.downloads.length,1);}
+  c.label=await page.locator('#'+id).innerText();
+ });
+ await check('csv-export-loaded',async c=>{await menu('Grid');const solar=page.locator('[data-gridatlas-layer-proxy="engine:solar"]');c.available=await solar.count();if(!c.available)throw Error('solar selector unavailable');await solar.scrollIntoViewIfNeeded();await tap(solar);await page.waitForFunction(()=>/\[(OK|\d)/.test(document.getElementById('lbl-solar')?.textContent||''),null,{timeout:60000});await menu('File');const promise=page.waitForEvent('download',{timeout:10000});await tap(page.locator('#btn-export'));const d=await promise;await d.saveAs(path.join(out,prefix+'-'+d.suggestedFilename()));c.download=d.suggestedFilename();});
+ await check('search',async c=>{await page.keyboard.press('Escape');await page.locator('#search-input').fill('London');await tap(page.locator('#search-btn'));await page.locator('.search-result-item').first().waitFor({timeout:20000});c.results=await page.locator('#search-results').innerText();c.beforeCenter=await page.evaluate(()=>window.__GRIDATLAS_V9_MAP__.getCenter());await tap(page.locator('.search-result-item').first());await page.waitForTimeout(1700);c.center=await page.evaluate(()=>window.__GRIDATLAS_V9_MAP__.getCenter());assert.notDeepEqual(c.center,c.beforeCenter);});
+ await page.goto(`${baseUrl.split('?' )[0]}?technology=solar&latitude=52.6369&longitude=-1.1398&zoom=10&project=GRIDATLAS_PROOF_controls&capacity_mw=10`,{waitUntil:'domcontentloaded'});
+ await page.locator('.gridatlas-card-bar .min').first().waitFor({timeout:60000});
+ await page.waitForFunction(()=>window.__GRIDATLAS_PIPELINE_LAYERS__?.selection,null,{timeout:60000});
+ async function pipelineFrame(id){return page.evaluate(id=>{
+  const m=window.__GRIDATLAS_V9_MAP__,l=m.getLayer('l-pn-'+id),source=l&&m.getSource(l.source),bounds=m.getBounds(),canvas=m.getCanvas(),rect=canvas.getBoundingClientRect();
+  const points=(source?._data?.features||[]).map(f=>({coordinates:f.geometry?.coordinates,name:f.properties?.name}));
+  const inBounds=points.filter(f=>Array.isArray(f.coordinates)&&bounds.contains(f.coordinates));
+  return {center:m.getCenter(),zoom:m.getZoom(),bounds:bounds.toArray(),canvas:{x:rect.x,y:rect.y,width:rect.width,height:rect.height},moving:m.isMoving(),zooming:m.isZooming(),loaded:m.loaded(),tilesLoaded:m.areTilesLoaded(),sourceLoaded:!!l&&m.isSourceLoaded(l.source),layer:l?{id:l.id,minzoom:l.minzoom,maxzoom:l.maxzoom,filter:l.filter,visibility:m.getLayoutProperty(l.id,'visibility')||'visible'}:null,features:points.length,inBounds:inBounds.length,points,rendered:l?m.queryRenderedFeatures({layers:[l.id]}).length:0};
+ },id);}
+ async function settledFrame(id){
+  let previous='',stable=0;const samples=[];
+  for(let i=0;i<40;i++){
+   const frame=await pipelineFrame(id);samples.push({center:frame.center,zoom:frame.zoom,moving:frame.moving,sourceLoaded:frame.sourceLoaded,rendered:frame.rendered,inBounds:frame.inBounds,tilesLoaded:frame.tilesLoaded});
+   const signature=JSON.stringify([frame.center,frame.zoom]);stable=!frame.moving&&signature===previous?stable+1:0;previous=signature;
+   if(stable>=3)return {frame,samples};await page.waitForTimeout(200);
+  }
+  throw Error('Pipeline camera did not settle: '+JSON.stringify(samples));
+ }
+ for(const id of ['same','wider','all'])await check('pipeline-'+id,async c=>{
+  await menu('Grid');const input=page.locator('[data-gridatlas-layer-proxy="pipeline:'+id+'"]');assert.equal(await input.count(),1);
+  await input.scrollIntoViewIfNeeded();c.initialChecked=await input.isChecked();if(!c.initialChecked)await tap(input);
+  await page.waitForFunction(id=>{const m=window.__GRIDATLAS_V9_MAP__,l=m.getLayer('l-pn-'+id);return l&&m.getSource(l.source)?._data?.features?.length>0;},id,{timeout:60000});
+  c.label=await input.getAttribute('aria-label');await tap(page.getByRole('button',{name:'Grid',exact:true}));
+  c.beforeFraming=await settledFrame(id);c.zoomOut=[];
+  // A 25 km search is not a promise that its points lie inside the arrival's
+  // tighter camera. Exercise real wheel input until all source points fit;
+  // record the original bounds so zero offscreen results cannot mask a failure.
+  for(let attempt=0;c.beforeFraming.frame.features>0&&attempt<8;attempt++){
+   const frame=attempt?c.zoomOut.at(-1).settled.frame:c.beforeFraming.frame;
+   if(frame.inBounds===frame.features)break;
+   const hit=await page.evaluate(()=>{const canvas=window.__GRIDATLAS_V9_MAP__.getCanvas(),r=canvas.getBoundingClientRect();for(const [fx,fy] of [[.5,.18],[.25,.3],[.75,.3],[.15,.55]]){const x=r.x+r.width*fx,y=r.y+r.height*fy;if(document.elementFromPoint(x,y)===canvas)return{x,y};}return null;});
+   assert.ok(hit,'zoom gesture needs an unobstructed canvas point');await page.mouse.move(hit.x,hit.y);await page.mouse.wheel(0,500);
+   await page.waitForTimeout(250);c.zoomOut.push({hit,deltaY:500,settled:await settledFrame(id)});
+  }
+  c.framed=await pipelineFrame(id);save();
+  assert.equal(c.framed.inBounds,c.framed.features,'test must frame the whole 25 km cohort before asserting paint');
+  await page.waitForFunction(id=>{const m=window.__GRIDATLAS_V9_MAP__,l=m.getLayer('l-pn-'+id);return l&&m.isSourceLoaded(l.source)&&m.queryRenderedFeatures({layers:[l.id]}).length>0;},id,{timeout:30000});
+  c.afterRender=await settledFrame(id);c.data={features:c.afterRender.frame.features,visibility:c.afterRender.frame.layer.visibility,rendered:c.afterRender.frame.rendered};
+  assert.ok(c.data.features>0);assert.ok(c.data.rendered>0);assert.equal(c.data.visibility,'visible');
+  await menu('Grid');await input.scrollIntoViewIfNeeded();await tap(input);await page.waitForFunction(id=>window.__GRIDATLAS_V9_MAP__.getLayoutProperty('l-pn-'+id,'visibility')==='none',id);assert.equal(await input.isChecked(),false);
+ });
+ await check('card-minimise-restore-close',async c=>{if(await page.getByRole('button',{name:'Grid',exact:true}).getAttribute('aria-expanded')==='true')await tap(page.getByRole('button',{name:'Grid',exact:true}));const popup=page.locator('.maplibregl-popup').filter({has:page.locator('.gridatlas-card-bar')}).first();c.initialMin=(await popup.getAttribute('class')).includes('gridatlas-min');await tap(popup.locator('.min'));await page.waitForTimeout(350);assert.equal((await popup.getAttribute('class')).includes('gridatlas-min'),!c.initialMin);await tap(popup.locator('.min'));await page.waitForTimeout(350);assert.equal((await popup.getAttribute('class')).includes('gridatlas-min'),c.initialMin);c.restored=await popup.boundingBox();await snap('card-restored');await tap(popup.locator('.close'));await page.waitForTimeout(350);assert.equal(await popup.count(),0);});
+ for(const name of ['File','View','Scope','About']){await menu(name);r.menus[name]=await page.locator('.gm-open .gm-panel').evaluateAll(xs=>xs.map(x=>({text:x.innerText,controls:[...x.querySelectorAll('button,input,select,summary,a')].map(e=>({tag:e.tagName,id:e.id,text:e.innerText||e.getAttribute('aria-label'),type:e.type,href:e.getAttribute('href'),disabled:e.disabled}))})));}
+ r.final=await state();save();await context.close();
+}}finally{fs.writeFileSync(path.join(out,'report.json'),JSON.stringify(report,null,2));await browser.close();await new Promise(r=>server.close(r));}
+if(report.profiles.some(r=>r.errors.length||r.checks.some(c=>!c.completed)))process.exitCode=1;

@@ -1,6 +1,6 @@
 {
  "schema": "gridatlas.current.v2",
- "generation": "202609241334",
+ "generation": "202609241251",
  "previous_generation": "202609200022",
  "architecture": "IMMUTABLE_SHELL_PLUS_HASHED_CARTRIDGES",
  "live_route": "/gridatlas/atlas/",
@@ -77,13 +77,13 @@
   },
   {
    "id": "sld-sandbox",
-   "generation": "202609241334",
+   "generation": "202609241251",
    "version": "v9.156",
    "type": "script",
    "slot": "replace-script",
    "replace_script": "202608292126-pre-snapped-config-adapter.js",
-   "path": "./cartridges/202609241334-sld-sandbox-v9-8.js",
-   "sha256": "7812953671d8bb22a566de5e98fd3137da2d23411c5aecd526df5afa111ca4ca",
+   "path": "./cartridges/202609241251-sld-sandbox-v9-8.js",
+   "sha256": "5d5ba5a662770e369eca98becea17502698ef698449500f562d6274945478cc5",
    "capabilities": [
     "pre-snapped-config-adapter-carried-forward",
     "project-or-substation-selection",
@@ -218,8 +218,7 @@
     "a-plain-visit-says-nothing",
     "status-box-places-itself-clear-of-the-top-furniture",
     "card-top-and-side-bounds-with-effective-scroll-height",
-    "ordinary-feature-card-close-clear-of-mobile-search",
-    "ordinary-card-styles-returned-when-project-controls-arrive"
+    "ordinary-feature-card-close-clear-of-mobile-search"
    ],
    "immutable_shell_modified": false,
    "supersedes_shell_script": {
@@ -557,7 +556,7 @@
      "upstream": "Elexon settlement prices as the owner repository publishes them"
     }
    ],
-   "bytes": 435218,
+   "bytes": 433970,
    "derived_from": "./cartridges/202609200022-sld-sandbox-v9-8.js"
   },
   {
@@ -671,7 +670,7 @@
    "result_class": "LOCATION_ONLY"
   }
  },
- "composition_manifest": "./manifests/202609241334-composition.json",
+ "composition_manifest": "./manifests/202609241251-composition.json",
  "scope_closure": {
   "generation": "202609010726",
   "status": "DONE",
@@ -679,7 +678,7 @@
   "schedule_retired": true
  },
  "composition_version": "v9.156",
- "composition_id": "202609241334-gridatlas-v9.156",
+ "composition_id": "202609241251-gridatlas-v9.156",
  "transport": {
   "response_contract": "HEADERS_BEFORE_PARQUET_BODY",
   "engine_timeout_seconds": 15,
@@ -696,5 +695,23 @@
  },
  "composition_note": "Restore DLR, UK Metro and Trams station controls by explicitly selecting the existing point station partition, validated against geometry, filters, GPU/CPU census and real browser clicks. Historical shell and datasets preserved. Keep project cards within the map and apply their calculated scrolling height despite the shared !important style.",
  "superseded_generation": "202609200022",
- "candidate_predecessor": "202609241251"
+ "acceptance": {
+  "full_application_copies_created": 0,
+  "immutable_shell_modified": false,
+  "browser_proof": "tools/proofs/all-layer-clicks.browser.mjs",
+  "gpu_proof": "tools/proofs/layer-census-gpu.py",
+  "pipeline_map_link_corpus": {
+   "producer_commit": "3493be1c4ebf3dabbc94135db17f433bb7892a8e",
+   "producer_release": "releases/202609040144-pipelinenews",
+   "derived_source_points": 8756,
+   "served_coordinate_rows": 8753,
+   "unique_clickable_refs": 8743,
+   "matched_active_register": 6313,
+   "not_in_active_register": 2430,
+   "spine_absent": 2419,
+   "wider_absent": 11,
+   "result": "PASS"
+  }
+ },
+ "parent_generation": "202609200022"
 }

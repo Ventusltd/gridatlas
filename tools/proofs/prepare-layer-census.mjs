@@ -1,0 +1,12 @@
+import fs from 'node:fs';
+import vm from 'node:vm';
+import path from 'node:path';
+const root=path.resolve(import.meta.dirname,'../..');
+const current=JSON.parse(fs.readFileSync(path.join(root,'atlas/current.json')));
+const html=fs.readFileSync(path.join(root,'atlas',current.shell.index),'utf8');
+const code=html.slice(html.indexOf('    const ukConfig ='),html.lastIndexOf('</script>'));
+let config;
+vm.runInNewContext(code,{window:{initVentusMap:o=>{config=o.config;}}},{timeout:1000});
+fs.mkdirSync(path.join(root,'work'),{recursive:true});
+fs.writeFileSync(path.join(root,'work/layer-config.json'),JSON.stringify(config,null,2));
+console.log('Captured',config.flatMap(g=>g.layers).length,'real shell layer definitions');
