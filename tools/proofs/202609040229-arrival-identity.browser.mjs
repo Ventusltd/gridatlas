@@ -196,6 +196,13 @@ try {
       })}`, { cause: error });
     }
 
+    // Mobile project cards intentionally arrive minimised. Verify the actual
+    // reader action before asserting that their measurement text is visible.
+    const restore = page.locator('.maplibregl-popup.gridatlas-min .gridatlas-card-bar .min');
+    if (fixture.measures && await restore.count()) {
+      await restore.tap();
+      await page.waitForFunction(() => !document.querySelector('.maplibregl-popup.gridatlas-min'));
+    }
     const result = await page.evaluate(() => {
       const state = window.__GRIDATLAS_PLACE_SEARCH__;
       const owner = state.deep_link;
