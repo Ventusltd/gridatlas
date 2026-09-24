@@ -25,7 +25,7 @@ try {
   foreach ($Width in @(1440,393)) {
     Invoke-Checked node @('tools/proofs/all-layer-clicks.browser.mjs','--width',"$Width",'--out',"$OutputDirectory/browser-$Width")
   }
-  Invoke-Checked node @('tools/proofs/all-controls.browser.mjs')
+  Invoke-Checked node @('tools/proofs/all-controls.browser.mjs','--out',"$OutputDirectory/controls")
   Invoke-Checked node @('tools/scope/loop.mjs','lint')
   Write-Output "PASS: CPU/CuPy parity and real Chrome desktop/Android touch-emulation layer interactions. Receipts: $OutputDirectory"
 } finally { Pop-Location }

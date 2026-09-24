@@ -696,5 +696,24 @@
  },
  "composition_note": "Restore DLR, UK Metro and Trams station controls by explicitly selecting the existing point station partition, validated against geometry, filters, GPU/CPU census and real browser clicks. Historical shell and datasets preserved. Keep project cards within the map and apply their calculated scrolling height despite the shared !important style.",
  "superseded_generation": "202609200022",
- "candidate_predecessor": "202609241251"
+ "candidate_predecessor": "202609241251",
+ "parent_generation": "202609200022",
+ "acceptance": {
+  "full_application_copies_created": 0,
+  "immutable_shell_modified": false,
+  "browser_proof": "tools/proofs/all-layer-clicks.browser.mjs",
+  "gpu_proof": "tools/proofs/layer-census-gpu.py",
+  "pipeline_map_link_corpus": {
+   "producer_commit": "3493be1c4ebf3dabbc94135db17f433bb7892a8e",
+   "producer_release": "releases/202609040144-pipelinenews",
+   "derived_source_points": 8756,
+   "served_coordinate_rows": 8753,
+   "unique_clickable_refs": 8743,
+   "matched_active_register": 6313,
+   "not_in_active_register": 2430,
+   "spine_absent": 2419,
+   "wider_absent": 11,
+   "result": "PASS"
+  }
+ }
 }

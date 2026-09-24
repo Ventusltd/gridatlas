@@ -94,9 +94,28 @@ new cartridges, a bounded popup module, a new composition, tests and CI wiring.
 
 The first hosted run passed both 60-layer sweeps. Its control audit sampled a
 temporary print image after native headless printing had already removed it,
-and sampled one Pipeline layer before its source finished rendering. The audit
-now observes the decoded raster at the actual native print call (calling native
-print through), and waits for source loading plus a rendered feature. Actual
+and assumed the arrival viewport contained the Pipeline cohort. A subsequent
+30-second wait still failed. Diagnostics measured an arrival frame containing
+only 1 of 62 same-technology points; the exact earlier CI frame was not recorded.
+The audit now observes the decoded raster at the actual native print call
+(calling native print through), records source/camera bounds, frames the cohort
+using bounded real wheel input, and waits for source loading plus rendering. Actual
 PNG/PDF downloads are awaited as events. Both 26-control profiles pass locally
 with the CI Chromium 151 build as well as the earlier Chrome 153 run. Output
 directories can be selected with `--out`, and failures also save screenshots.
+
+## Final pre-release cut
+
+Generation `202609241334` retains the transit bridge and adds ownership cleanup
+when an ordinary popup asynchronously acquires project controls. Temporary native
+close-button styling and header padding are returned to their previous values,
+so the project has its own single control bar. Targeted ordinary/project/transit
+cases pass on both screen profiles. Earlier `202609241251` candidate files and
+receipts remain unchanged as historical evidence; only the final cut is composed.
+
+Additional files in the final cut:
+
+- `atlas/cartridges/202609241334-sld-sandbox-v9-8.js`
+- `atlas/manifests/202609241334-composition.json`
+- `atlas/modules/202609241334-popup-viewport.js`
+- `tools/proofs/202609241334-sld-sandbox.proof.mjs`
