@@ -89,3 +89,14 @@ new cartridges, a bounded popup module, a new composition, tests and CI wiring.
 - `tools/proofs/receipts/202609241251-local-gpu.json`
 - `tools/proofs/verify-layers-local.ps1`
 - `ui/cartridges/202609241251-streaming-parquet-bridge-v9-5.mjs`
+
+## Hosted browser timing correction
+
+The first hosted run passed both 60-layer sweeps. Its control audit sampled a
+temporary print image after native headless printing had already removed it,
+and sampled one Pipeline layer before its source finished rendering. The audit
+now observes the decoded raster at the actual native print call (calling native
+print through), and waits for source loading plus a rendered feature. Actual
+PNG/PDF downloads are awaited as events. Both 26-control profiles pass locally
+with the CI Chromium 151 build as well as the earlier Chrome 153 run. Output
+directories can be selected with `--out`, and failures also save screenshots.
