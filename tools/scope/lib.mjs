@@ -56,7 +56,12 @@ export const ACTIVE_WORKFLOWS = Object.freeze([
      which also meant STATE.md could not be regenerated and the AGENTS.md rule
      requiring it alongside a current.json change became unsatisfiable. The
      workflow is intended; the list had simply not been told about it. */
-  'teleprint-parse-gate.yml'
+  'teleprint-parse-gate.yml',
+  /* Added 2026-09-29. Fails a pull request that adds a file over 5 MB unless
+     the path is in .github/large-files-allowlist.txt. Runs on pull_request
+     only, so nothing that pushes to main is affected. Perpetual, so it carries
+     no 12-digit prefix, like rollback-composition.yml. */
+  'pr-file-size-guard.yml'
 ]);
 
 export function invariant(condition, message) {
