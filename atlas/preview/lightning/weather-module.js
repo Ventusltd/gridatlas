@@ -65,7 +65,10 @@
     title.id='lbl-uk_lightning';
     title.textContent='Lightning (satellite flashes) [WAIT]';
     label.append(input,box,title);
-    body.append(group,label);
+    // Front-load the public Weather overlay so it is visible immediately
+    // when Grid opens on desktop and phone, without scrolling through 63 layers.
+    // These independent nodes do not alter any original input or handler.
+    body.prepend(group,label);
 
     function status(word,details) {
       state.status=word;
