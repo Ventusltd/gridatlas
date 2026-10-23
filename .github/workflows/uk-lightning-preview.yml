@@ -21,7 +21,7 @@ jobs:
         with:
           node-version: '24'
       - run: npm ci --ignore-scripts --no-audit --no-fund
-      - run: npx --no-install playwright install --with-deps chromium
+      - run: npx --no-install playwright install chromium
       - name: Compare baseline and lightning preview on desktop/mobile
         run: node tools/proofs/uk-lightning-preview.browser.mjs
       - name: Preserve comparative screenshots and receipts
