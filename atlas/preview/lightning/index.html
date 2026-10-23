@@ -80,6 +80,18 @@
         loaded.push({ id, sha256: cartridge.sha256, blob_url: blobUrl });
       }
 
+      // Preview-only weather extension: SHA-256 verified before injection.
+      // The extension waits for the ORIGINAL 60+3 menu to install and leaves
+      // the immutable UK config, existing menu scripts and handlers untouched.
+      invariant(current.weather_module?.path && /^[a-f0-9]{64}$/.test(current.weather_module.sha256 || ''), 'weather module manifest is missing');
+      const weatherUrl = new URL(current.weather_module.path, window.location.href);
+      const weatherResponse = await fetch(weatherUrl, { cache: 'no-store' });
+      invariant(weatherResponse.ok, 'weather module HTTP ' + weatherResponse.status);
+      const weatherBytes = await weatherResponse.arrayBuffer();
+      invariant(await sha256Hex(weatherBytes) === current.weather_module.sha256, 'weather module SHA-256 mismatch');
+      const weatherBlob = URL.createObjectURL(new Blob([weatherBytes], { type: 'text/javascript' }));
+      html = html.replace(/<\/body>/i, '<script data-gridatlas-weather="uk-lightning" src="' + escapeAttribute(weatherBlob) + '">' + SCRIPT_CLOSE + '</body>');
+
       const publicState = JSON.stringify({
         schema: current.schema,
         generation: current.generation,
