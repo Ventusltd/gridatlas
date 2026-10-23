@@ -1,6 +1,6 @@
 {
   "schema": "gridatlas.current.v2",
-  "generation": "202610230100",
+  "generation": "202610230230",
   "previous_generation": "202609241334",
   "architecture": "IMMUTABLE_SHELL_PLUS_HASHED_CARTRIDGES",
   "live_route": "/gridatlas/atlas/",
@@ -78,13 +78,13 @@
     },
     {
       "id": "sld-sandbox",
-      "generation": "202610230100",
+      "generation": "202609241334",
       "version": "v9.156",
       "type": "script",
       "slot": "replace-script",
       "replace_script": "202608292126-pre-snapped-config-adapter.js",
-      "path": "../../cartridges/202610221600-sld-sandbox-v9-8.js",
-      "sha256": "fd97b7c8dd8dedc23d29540c80203c6087265abd7ba9c1a1ffc5a47349faec7c",
+      "path": "../../cartridges/202609241334-sld-sandbox-v9-8.js",
+      "sha256": "7812953671d8bb22a566de5e98fd3137da2d23411c5aecd526df5afa111ca4ca",
       "capabilities": [
         "pre-snapped-config-adapter-carried-forward",
         "project-or-substation-selection",
@@ -220,8 +220,7 @@
         "status-box-places-itself-clear-of-the-top-furniture",
         "card-top-and-side-bounds-with-effective-scroll-height",
         "ordinary-feature-card-close-clear-of-mobile-search",
-        "ordinary-card-styles-returned-when-project-controls-arrive",
-        "uk-public-optical-lightning-geojson-layer"
+        "ordinary-card-styles-returned-when-project-controls-arrive"
       ],
       "immutable_shell_modified": false,
       "supersedes_shell_script": {
@@ -701,5 +700,10 @@
   "preview_only": true,
   "preview_route": "/gridatlas/atlas/preview/lightning/",
   "baseline_route": "/gridatlas/atlas/",
-  "preview_purpose": "Side-by-side UK weather layer browser comparison. Never the live atlas pointer."
+  "preview_purpose": "Independent lightning MapLibre overlay after baseline menu installs; exactly 60+3 original layer controls.",
+  "weather_module": {
+    "path": "./weather-module.js",
+    "sha256": "dca2639c1e9dcc1e4d640b233a88ced8f17278fb112642d3b2eee3b724b37287",
+    "id": "uk-weather-lightning"
+  }
 }
