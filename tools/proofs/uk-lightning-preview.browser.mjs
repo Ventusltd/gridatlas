@@ -40,14 +40,25 @@ async function openProfile(width,mode) {
  let requests=0;
  const jsErrors=[];
  const page=await context.newPage();
+ const networkFailures=[];
+ const consoleErrors=[];
  page.on('pageerror',e=>jsErrors.push(String(e)));
+ page.on('requestfailed',r=>networkFailures.push(r.url()+' '+(r.failure()?.errorText||'')));
+ page.on('console',m=>{if(m.type()==='error')consoleErrors.push(m.text().slice(0,260));});
  await page.route(sourceUrl,async route=>{
   requests++;
   await route.fulfill({status:200,contentType:'application/geo+json',headers:{'Access-Control-Allow-Origin':'*'},body:JSON.stringify(fixture)});
  });
  const url=origin+(mode==='baseline'?'/atlas/':'/atlas/preview/lightning/');
  await page.goto(url,{waitUntil:'domcontentloaded',timeout:60000});
- await page.waitForFunction(()=>window.__GRIDATLAS_V9_MAP__&&document.querySelectorAll('[data-gridatlas-layer-proxy]').length>=60,null,{timeout:90000});
+ try {
+  await page.waitForFunction(()=>window.__GRIDATLAS_V9_MAP__&&document.querySelectorAll('[data-gridatlas-layer-proxy]').length>=60,null,{timeout:35000});
+ } catch(error) {
+  const state=await page.evaluate(()=>({title:document.title,url:location.href,router:document.body?.dataset?.gridatlasRouter,body:document.body?.innerText?.slice(0,1400),generation:window.__GRIDATLAS_ATLAS__?.generation,map:!!window.__GRIDATLAS_V9_MAP__,proxies:document.querySelectorAll('[data-gridatlas-layer-proxy]').length,scripts:[...document.scripts].map(s=>s.src?.slice(-160)).filter(Boolean).slice(-12)}));
+  console.error('GRIDATLAS_LOAD_DIAGNOSTIC',JSON.stringify({mode,width,state,networkFailures:networkFailures.slice(-25),consoleErrors:consoleErrors.slice(-25),jsErrors:jsErrors.slice(-25)}));
+  await page.screenshot({path:path.join(out,mode+'-'+width+'-load-failure.png'),fullPage:true}).catch(()=>{});
+  throw error;
+ }
  const gen=await page.evaluate(()=>window.__GRIDATLAS_ATLAS__.generation);
  assert.equal(gen,mode==='baseline'?result.baseline:result.preview,mode+' generation mismatch');
  const layerIds=await page.locator('#scada-ui-container input[data-layer-id]').evaluateAll(xs=>xs.map(x=>x.dataset.layerId).sort());
