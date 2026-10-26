@@ -1,0 +1,354 @@
+{
+  "startedAt": "2026-10-26T23:00:10.824Z",
+  "baseline": "http://127.0.0.1:8141/gridatlas/atlas/",
+  "candidate": "http://127.0.0.1:8141/gridatlas/atlas/",
+  "thresholdPct": 0.1,
+  "channelTolerance": 16,
+  "geometryTolerancePx": 1,
+  "shim": "/tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/lightning/harness/offline-shim.mjs",
+  "lightningDataDir": null,
+  "fixtures": null,
+  "maskMap": true,
+  "masks": [
+    "#clock",
+    "#date",
+    "#days"
+  ],
+  "additive": [
+    "[data-lightning-group]"
+  ],
+  "viewports": {
+    "desktop-1440x900": {
+      "states": {
+        "deeplink": {
+          "noteBaseline": {
+            "outcome": "deep link http://127.0.0.1:8141/gridatlas/atlas/?technology=solar&latitude=52.6369&longitude=-1.1398&zoom=10&project=GRIDATLAS_PROOF_controls&capacity_mw=10 -> card present"
+          },
+          "noteCandidate": {
+            "outcome": "deep link http://127.0.0.1:8141/gridatlas/atlas/?technology=solar&latitude=52.6369&longitude=-1.1398&zoom=10&project=GRIDATLAS_PROOF_controls&capacity_mw=10 -> card present"
+          },
+          "pixel": {
+            "width": 1440,
+            "height": 900,
+            "sameSize": true,
+            "changed": 14,
+            "masked": 536612,
+            "considered": 759388,
+            "changedPct": 0.0018435898381328121,
+            "bbox": {
+              "x": 545,
+              "y": 443,
+              "w": 1,
+              "h": 14
+            },
+            "bands": [
+              {
+                "fromY": 443,
+                "toY": 456
+              }
+            ],
+            "bandCount": 1,
+            "diffPng": "/tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/visual-challenge-B/parity/runs/selfcheck-baseline-deeplink-3/diff/desktop-1440x900.deeplink.diff.png"
+          },
+          "geometry": {
+            "compared": 56,
+            "diffs": [],
+            "originalDiffs": [],
+            "additiveHostDiffs": 0,
+            "additive": []
+          },
+          "pass": true,
+          "extras": {
+            "elementCountBaseline": 1526,
+            "elementCountCandidate": 1526,
+            "movedElements": [],
+            "additiveHostGrowth": [],
+            "styleChangedElements": [],
+            "signatureDivergence": null,
+            "scrollDiffs": [],
+            "hitTargetDiffs": [],
+            "occluderChanged": [],
+            "hitTargetsCompared": 17,
+            "hitTargetsPreexistingNotSelf": [
+              {
+                "name": "attribution",
+                "result": "OUT-OF-VIEWPORT",
+                "clippedBy": [
+                  "div#map-container.map-container 4,4,1432,520"
+                ],
+                "rect": {
+                  "x": 0,
+                  "y": 0,
+                  "width": 0,
+                  "height": 0
+                }
+              },
+              {
+                "name": "layers-first-pipeline-row",
+                "result": "OUT-OF-VIEWPORT",
+                "clippedBy": [
+                  "div#scada-ui-container.scada-keys 17,541,1406,342",
+                  "body 0,0,1440,900",
+                  "html.gridatlas-menu-hosted 0,0,1440,900"
+                ],
+                "rect": {
+                  "x": 29,
+                  "y": 1812,
+                  "width": 685,
+                  "height": 19
+                }
+              }
+            ],
+            "styleElementsEqual": true,
+            "styleLinksEqual": true,
+            "lightningTargets": [],
+            "additiveNodes": [],
+            "pass": true
+          },
+          "maskCounts": {
+            "baseline": {
+              "mask": 3,
+              "mask-map": 1,
+              "overlay": 7
+            },
+            "candidate": {
+              "mask": 3,
+              "mask-map": 1,
+              "overlay": 7
+            }
+          }
+        }
+      },
+      "settleBaseline": {
+        "composed": {
+          "generation": "202609241334",
+          "router": null,
+          "title": "GlobalGrid2050 | UK Region v8 (Experimental)"
+        },
+        "menuInstalled": true,
+        "waits": [
+          {
+            "wait": "goto:domcontentloaded",
+            "at_ms": 29
+          },
+          {
+            "wait": "composer:document.write-complete",
+            "at_ms": 209,
+            "generation": "202609241334",
+            "router": null,
+            "title": "GlobalGrid2050 | UK Region v8 (Experimental)"
+          },
+          {
+            "wait": "shim:waitForComposition(menuBar.installed)",
+            "at_ms": 1295,
+            "engine": 120,
+            "pn": 6,
+            "scada": true,
+            "curtain": true,
+            "menuInstalled": true,
+            "map": true,
+            "waitedMs": 1086
+          },
+          {
+            "wait": "menu-bar:6-titles+>=60-proxies",
+            "at_ms": 1414
+          },
+          {
+            "wait": "weather-module:installed-or-absent",
+            "at_ms": 1491
+          },
+          {
+            "0": "a",
+            "1": "b",
+            "2": "s",
+            "3": "e",
+            "4": "n",
+            "5": "t",
+            "wait": "uk-lightning:installed-or-absent",
+            "at_ms": 1554
+          },
+          {
+            "wait": "networkidle",
+            "at_ms": 3872
+          },
+          {
+            "wait": "fixed-settle:3000ms",
+            "at_ms": 6873
+          }
+        ]
+      },
+      "settleCandidate": {
+        "composed": {
+          "generation": "202609241334",
+          "router": null,
+          "title": "GlobalGrid2050 | UK Region v8 (Experimental)"
+        },
+        "menuInstalled": true,
+        "waits": [
+          {
+            "wait": "goto:domcontentloaded",
+            "at_ms": 26
+          },
+          {
+            "wait": "composer:document.write-complete",
+            "at_ms": 153,
+            "generation": "202609241334",
+            "router": null,
+            "title": "GlobalGrid2050 | UK Region v8 (Experimental)"
+          },
+          {
+            "wait": "shim:waitForComposition(menuBar.installed)",
+            "at_ms": 1541,
+            "engine": 120,
+            "pn": 6,
+            "scada": true,
+            "curtain": true,
+            "menuInstalled": true,
+            "map": true,
+            "waitedMs": 1387
+          },
+          {
+            "wait": "menu-bar:6-titles+>=60-proxies",
+            "at_ms": 1654
+          },
+          {
+            "wait": "weather-module:installed-or-absent",
+            "at_ms": 1772
+          },
+          {
+            "0": "a",
+            "1": "b",
+            "2": "s",
+            "3": "e",
+            "4": "n",
+            "5": "t",
+            "wait": "uk-lightning:installed-or-absent",
+            "at_ms": 1918
+          },
+          {
+            "wait": "networkidle",
+            "at_ms": 4264
+          },
+          {
+            "wait": "fixed-settle:3000ms",
+            "at_ms": 7266
+          }
+        ]
+      },
+      "networkBaseline": {
+        "127.0.0.1:8141": {
+          "requests": 42,
+          "ok": 42,
+          "failed": 0,
+          "http4xx5xx": 0,
+          "fixture": 0,
+          "sampleFailure": null,
+          "sample": "http://127.0.0.1:8141/gridatlas/atlas/"
+        },
+        "cdn.jsdelivr.net": {
+          "requests": 10,
+          "ok": 0,
+          "failed": 0,
+          "http4xx5xx": 0,
+          "fixture": 10,
+          "sampleFailure": null,
+          "sample": "https://cdn.jsdelivr.net/npm/maplibre-gl@3.6.2/dist/maplibre-gl.css"
+        },
+        "raw.githubusercontent.com": {
+          "requests": 3,
+          "ok": 0,
+          "failed": 3,
+          "http4xx5xx": 0,
+          "fixture": 0,
+          "sampleFailure": "net::ERR_BLOCKED_BY_CLIENT.Inspector",
+          "sample": "https://raw.githubusercontent.com/Ventusltd/data-grid-gb/1c9909d1138704b29235c27fd769436dda8a0b18/derived/connection-points.v3.json"
+        },
+        "basemaps.cartocdn.com": {
+          "requests": 2,
+          "ok": 0,
+          "failed": 0,
+          "http4xx5xx": 0,
+          "fixture": 2,
+          "sampleFailure": null,
+          "sample": "https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json"
+        },
+        "ventusltd.github.io": {
+          "requests": 3,
+          "ok": 0,
+          "failed": 2,
+          "http4xx5xx": 0,
+          "fixture": 1,
+          "sampleFailure": "net::ERR_BLOCKED_BY_CLIENT.Inspector",
+          "sample": "https://ventusltd.github.io/ventus-grid-engine/genome/engine-graph.json"
+        },
+        "extensions.duckdb.org": {
+          "requests": 1,
+          "ok": 0,
+          "failed": 1,
+          "http4xx5xx": 0,
+          "fixture": 0,
+          "sampleFailure": "net::ERR_BLOCKED_BY_CLIENT.Inspector",
+          "sample": "https://extensions.duckdb.org/v1.1.1/wasm_eh/parquet.duckdb_extension.wasm"
+        }
+      },
+      "networkCandidate": {
+        "127.0.0.1:8141": {
+          "requests": 42,
+          "ok": 42,
+          "failed": 0,
+          "http4xx5xx": 0,
+          "fixture": 0,
+          "sampleFailure": null,
+          "sample": "http://127.0.0.1:8141/gridatlas/atlas/"
+        },
+        "cdn.jsdelivr.net": {
+          "requests": 11,
+          "ok": 0,
+          "failed": 1,
+          "http4xx5xx": 0,
+          "fixture": 10,
+          "sampleFailure": "net::ERR_ABORTED",
+          "sample": "https://cdn.jsdelivr.net/npm/maplibre-gl@3.6.2/dist/maplibre-gl.css"
+        },
+        "raw.githubusercontent.com": {
+          "requests": 3,
+          "ok": 0,
+          "failed": 3,
+          "http4xx5xx": 0,
+          "fixture": 0,
+          "sampleFailure": "net::ERR_BLOCKED_BY_CLIENT.Inspector",
+          "sample": "https://raw.githubusercontent.com/Ventusltd/data-grid-gb/1c9909d1138704b29235c27fd769436dda8a0b18/derived/connection-points.v3.json"
+        },
+        "basemaps.cartocdn.com": {
+          "requests": 2,
+          "ok": 0,
+          "failed": 0,
+          "http4xx5xx": 0,
+          "fixture": 2,
+          "sampleFailure": null,
+          "sample": "https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json"
+        },
+        "ventusltd.github.io": {
+          "requests": 3,
+          "ok": 0,
+          "failed": 2,
+          "http4xx5xx": 0,
+          "fixture": 1,
+          "sampleFailure": "net::ERR_BLOCKED_BY_CLIENT.Inspector",
+          "sample": "https://ventusltd.github.io/ventus-grid-engine/genome/engine-graph.json"
+        },
+        "extensions.duckdb.org": {
+          "requests": 1,
+          "ok": 0,
+          "failed": 1,
+          "http4xx5xx": 0,
+          "fixture": 0,
+          "sampleFailure": "net::ERR_BLOCKED_BY_CLIENT.Inspector",
+          "sample": "https://extensions.duckdb.org/v1.1.1/wasm_eh/parquet.duckdb_extension.wasm"
+        }
+      }
+    }
+  },
+  "verdict": "PASS",
+  "failures": []
+}
