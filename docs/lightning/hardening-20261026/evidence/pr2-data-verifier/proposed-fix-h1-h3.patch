@@ -1,0 +1,34 @@
+--- wt/history.py	2026-10-26 22:09:43.201723071 +0000
++++ scratch-fix/history.py	2026-10-26 22:27:14.865186282 +0000
+@@ -379,7 +379,8 @@
+     changed_files = 0
+     summaries: dict[str, dict] = {}
+     split_days: list[str] = []
+-    for day in sorted(set(disk) | set(incoming_by_day)):
++    indexed = {d for d, r in old_rows.items() if d >= cutoff.isoformat() and (r.get("path") or r.get("parts"))}
++    for day in sorted(set(disk) | set(incoming_by_day) | indexed):  # indexed days must still exist on disk
+         on_disk = disk.get(day, {"file": None, "parts": {}})
+         old_row = old_rows.get(day)
+         verifiable = (
+@@ -388,11 +389,11 @@
+             and bool(old_row.get("sha256") or old_row.get("parts"))
+         )
+         if verifiable:
++            _verify_unchanged(archive_dir, old_row)  # raises when a listed shard is missing or altered
+             listed = {old_row["path"]} if old_row.get("path") else {p["path"] for p in old_row.get("parts") or []}
+             present = ({on_disk["file"].relative_to(archive_dir).as_posix()} if on_disk["file"] else set()) | {
+                 p.relative_to(archive_dir).as_posix() for p in on_disk["parts"].values()}
+             if listed == present:
+-                _verify_unchanged(archive_dir, old_row)
+                 summaries[day] = {
+                     "count": old_row["count"], "bytes": old_row.get("bytes"), "sha256": old_row.get("sha256"),
+                     "path": old_row.get("path"), "parts": old_row.get("parts"),
+@@ -558,6 +559,8 @@
+     """Scan windows (one per examined range) from a collect.py run record."""
+     if record.get("outcome") != "success" or int(record.get("products_examined") or 0) < 1:
+         return []
++    if record.get("slots_parsed") is False:
++        return []  # the window is the requested range, not examined slots: coverage stays unknown
+     return [successful_scan(r["start_utc"], r["end_utc"], 1) for r in record.get("scanned_ranges", [])
+             if parse_utc(r["end_utc"]) > parse_utc(r["start_utc"])]
+ 

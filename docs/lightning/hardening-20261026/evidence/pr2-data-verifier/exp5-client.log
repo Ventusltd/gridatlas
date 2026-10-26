@@ -1,0 +1,45 @@
+--- D06: archive missing/unavailable -> explicit fallback, never zero ---
+[index404] 24h {"mode":"feed","fallback":"feed","indexError":"HTTP 404","state":"PARTIAL","stale":false,"reasons":["archive unavailable (HTTP 404); live feed shown","tail not yet ingested"],"total":0,"archivedDayCount":null,"failures":0,"searched":"13%","unknownDays":0}
+   caption.refresh: Refresh live feed 2026-10-26 13:05 UTC (last collection window 2026-10-26 10:05 UTC → 2026-10-26 13:05 UTC; 7-day retention; archive not yet published: HTTP 404)
+[index404] 30d -> throws: History index unavailable: HTTP 404
+   requests: [ 'history/index.json', 'uk_lightning.geojson', 'history/index.json' ]
+[index500] 24h {"mode":"feed","fallback":"feed","indexError":"HTTP 500","state":"PARTIAL","stale":false,"reasons":["archive unavailable (HTTP 500); live feed shown","tail not yet ingested"],"total":0,"archivedDayCount":null,"failures":0,"searched":"13%","unknownDays":0}
+   caption.refresh: Refresh live feed 2026-10-26 13:05 UTC (last collection window 2026-10-26 10:05 UTC → 2026-10-26 13:05 UTC; 7-day retention; archive not yet published: HTTP 500)
+[index500] 30d -> throws: History index unavailable: HTTP 500
+   requests: [ 'history/index.json', 'uk_lightning.geojson', 'history/index.json' ]
+[indexNet] 24h {"mode":"feed","fallback":"feed","indexError":"Failed to fetch","state":"PARTIAL","stale":false,"reasons":["archive unavailable (Failed to fetch); live feed shown","tail not yet ingested"],"total":0,"archivedDayCount":null,"failures":0,"searched":"13%","unknownDays":0}
+   caption.refresh: Refresh live feed 2026-10-26 13:05 UTC (last collection window 2026-10-26 10:05 UTC → 2026-10-26 13:05 UTC; 7-day retention; archive not yet published: Failed to fetch)
+[indexNet] 30d -> throws: History index unavailable: Failed to fetch
+   requests: [ 'history/index.json', 'uk_lightning.geojson', 'history/index.json' ]
+[indexBadJson] 24h {"mode":"feed","fallback":"feed","indexError":"Unexpected token <","state":"PARTIAL","stale":false,"reasons":["archive unavailable (Unexpected token <); live feed shown","tail not yet ingested"],"total":0,"archivedDayCount":null,"failures":0,"searched":"13%","unknownDays":0}
+   caption.refresh: Refresh live feed 2026-10-26 13:05 UTC (last collection window 2026-10-26 10:05 UTC → 2026-10-26 13:05 UTC; 7-day retention; archive not yet published: Unexpected token <)
+[indexBadJson] 30d -> throws: History index unavailable: Unexpected token <
+   requests: [ 'history/index.json', 'uk_lightning.geojson', 'history/index.json' ]
+[indexV3] 24h {"mode":"feed","fallback":"feed","indexError":"Unsupported lightning index schema: uk-lightning-history-index.v3","state":"PARTIAL","stale":false,"reasons":["archive unavailable (Unsupported lightning index schema: uk-lightning-history-index.v3); live feed shown","tail not yet ingested"],"total":0,"archivedDayCount":null,"failures":0,"searched":"13%","unknownDays":0}
+   caption.refresh: Refresh live feed 2026-10-26 13:05 UTC (last collection window 2026-10-26 10:05 UTC → 2026-10-26 13:05 UTC; 7-day retention; archive not yet published: Unsupported lightning index schema: uk-lightning-history-index.v3)
+[indexV3] 30d -> throws: History index unavailable: Unsupported lightning index schema: uk-lightning-history-index.v3
+   requests: [ 'history/index.json', 'uk_lightning.geojson', 'history/index.json' ]
+[bothDown] 24h -> throws: History index unavailable: Failed to fetch; live feed unavailable: Failed to fetch
+--- D07: never searched vs searched-zero vs partial, with the real archive ---
+[ok] 7d {"mode":"detail","fallback":null,"indexError":null,"state":"PARTIAL","stale":false,"reasons":["tail not yet ingested","head before archive start","1 dates without a scan window"],"total":408,"archivedDayCount":408,"failures":0,"searched":"56%","unknownDays":1}
+   dailyCounts: [{"date":"2026-10-19","count":null,"coverage":"none","scanned_seconds":0},{"date":"2026-10-20","count":0,"coverage":"partial","scanned_seconds":4685},{"date":"2026-10-21","count":31,"coverage":"full","scanned_seconds":86400},{"date":"2026-10-22","count":67,"coverage":"partial","scanned_seconds":81609},{"date":"2026-10-23","count":189,"coverage":"partial","scanned_seconds":42472},{"date":"2026-10-24","count":118,"coverage":"partial","scanned_seconds":50269},{"date":"2026-10-25","count":3,"coverage":"partial","scanned_seconds":51158},{"date":"2026-10-26","count":0,"coverage":"partial","scanned_seconds":20683}]
+   | Window  2026-10-19 13:10 UTC → 2026-10-26 13:10 UTC (7 days, latest)
+   | Actual  first 2026-10-21 12:32:19 UTC · last 2026-10-25 11:15:58 UTC
+   | Flashes 408 archived in window · 408 drawn
+   | Refresh archive 2026-10-26 13:05 UTC (0h 4min ago; expected every 1 h)
+   | Searched EUMETSAT 56% of window · 18 successful runs · 2026-10-20 22:41 UTC → 2026-10-26 13:00 UTC
+   | Not yet ingested: last 0h 10min of window (unknown, not zero) · Unknown: 2026-10-19 to 2026-10-20 precede archive start 2026-10-20 (not zero) · Unknown: 1 of 8 UTC dates have no collection run
+   | Times UTC · Optical flashes seen by MTG Lightning Imager (EUMETSAT L2-LFL), not confirmed ground strikes · Missing days are unknown, not zero · UK box −11.0,49.5 → 3.0,61.5
+[ok] 10-12 Oct (never searched) {"mode":"detail","fallback":null,"indexError":null,"state":"UNKNOWN","stale":false,"reasons":["0% searched"],"total":0,"archivedDayCount":0,"failures":0,"searched":"0%","unknownDays":3}
+   | Searched EUMETSAT 0% of window — no collection run covers these dates | Unknown: 2026-10-10 to 2026-10-12 precede archive start 2026-10-20 (not zero) · Unknown: 3 of 3 UTC dates have no collection run
+[ok] 21 Oct (full day searched, 31 flashes) {"mode":"detail","fallback":null,"indexError":null,"state":"READY·DETAIL","stale":false,"reasons":[],"total":31,"archivedDayCount":31,"failures":0,"searched":"100%","unknownDays":0}
+[ok] 20 Oct 22:45-23:45 (searched by seed window, zero flashes) {"mode":"detail","fallback":null,"indexError":null,"state":"EMPTY-COVERED","stale":false,"reasons":[],"total":0,"archivedDayCount":0,"failures":0,"searched":"100%","unknownDays":0}
+   | Actual  no archived flashes within this window
+[shard404] 7d {"mode":"detail","fallback":null,"indexError":null,"state":"FAIL","stale":false,"reasons":["1 of 5 day files failed"],"total":219,"archivedDayCount":408,"failures":1,"searched":"56%","unknownDays":1}
+   | Not yet ingested: last 0h 10min of window (unknown, not zero) · Unknown: 2026-10-19 to 2026-10-20 precede archive start 2026-10-20 (not zero) · Unknown: 1 of 8 UTC dates have no collection run · 1 of 5 day files failed (2026-10-23); points incomplete, counts from index
+--- D07: cutoff clamp-and-flag ---
+[ok] 1 Oct-5 Nov 2025 -> clamped.start true window 2025-10-26T00:00:00.000Z -> 2025-11-05T00:00:00.000Z state UNKNOWN
+[ok] 1-20 Oct 2025 -> beforeArchive true state BEFORE-ARCHIVE | Window predates the archive (began 2026-10-20; retention from 2025-10-26) — nothing can be shown; not zero lightning
+--- STALE after next_update_due (generated 13:05:58 + 3 h) ---
+[ok] at 13:10 stale? false
+[ok] at 16:10 (3h04 after generated, past next_update_due 16:05:58) stale? true | Refresh archive 2026-10-26 13:05 UTC (3h 4min ago; expected every 1 h) · STALE
