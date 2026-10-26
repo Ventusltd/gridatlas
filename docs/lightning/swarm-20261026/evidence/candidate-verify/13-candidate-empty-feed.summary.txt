@@ -1,0 +1,31 @@
+{
+ "labels": "Lightning flashes (optical) [UNKNOWN | 24h]",
+ "features": 0,
+ "visibility": "none",
+ "stateText": "PARTIAL · 0 FLASHES DRAWN · SEARCHED 13%",
+ "dot": "rgb(255, 204, 0)",
+ "caption": [
+  "Window  2026-10-25 19:56 UTC → 2026-10-26 19:56 UTC (24 hours, latest)",
+  "Actual  no flashes in the live feed in this window",
+  "Flashes 0 in window (live feed, 7-day retention)",
+  "Refresh live feed 2026-10-26 13:05 UTC (last collection window 2026-10-26 10:05 UTC → 2026-10-26 13:05 UTC; latest detection unknown; 7-day retention; archive not yet published: HTTP 404; earlier hours unknown, not zero)",
+  "Searched EUMETSAT 13% of window · 1 successful runs · 2026-10-26 10:05 UTC → 2026-10-26 13:05 UTC",
+  "Not yet ingested: last 6h 51min of window (unknown, not zero)"
+ ],
+ "last": {
+  "state": "PARTIAL",
+  "stale": false,
+  "mode": "feed",
+  "period": "24h",
+  "drawn": 0,
+  "cluster": false,
+  "cap": 40000,
+  "cap_source": "live feed",
+  "index_count": 0,
+  "failures": 0,
+  "reasons": [
+   "tail not yet ingested"
+  ]
+ },
+ "pageErrors": []
+}

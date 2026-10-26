@@ -1,0 +1,1543 @@
+{
+  "started": "2026-10-26T17:15:30.943Z",
+  "harness": "lead offline-shim.mjs (MapLibre 3.6.2 npm tarball sha256 c46084df…, background-only style, data-gridatlas clone); no force:true",
+  "runs": [
+    {
+      "viewport": "desktop-1440x900",
+      "url": "http://127.0.0.1:8103/gridatlas/atlas/",
+      "page_errors": [],
+      "steps": {
+        "composition": {
+          "engine": 120,
+          "pn": 6,
+          "scada": true,
+          "curtain": true,
+          "menuInstalled": true,
+          "map": true,
+          "waitedMs": 4941
+        },
+        "counts": {
+          "generation": "202609241334",
+          "scada": {
+            "engine": 60,
+            "pn": 3,
+            "checkboxes": 63,
+            "radios": 2,
+            "groups": [
+              "Topology (GeoJSON)",
+              "Assets (GeoJSON)",
+              "Supermarkets (GeoJSON)",
+              "Transit (GeoJSON)",
+              "Leisure & Sports (GeoJSON)",
+              "Global Data Backbone",
+              "Global Supply Chain & Chokepoints",
+              "Highway Infrastructure",
+              "EV (GeoJSON)",
+              "Heavy Industry",
+              "REPD (GeoJSON)",
+              "Basemap",
+              "PIPELINE NEWS (REPD)"
+            ]
+          },
+          "curtain": {
+            "engine": 60,
+            "pn": 3,
+            "groups": 13
+          },
+          "grid": {
+            "proxies": 63,
+            "engine_proxies": 60,
+            "pn_proxies": 3,
+            "radios": 2,
+            "groups": [
+              "Topology (GeoJSON)",
+              "Assets (GeoJSON)",
+              "Supermarkets (GeoJSON)",
+              "Transit (GeoJSON)",
+              "Leisure & Sports (GeoJSON)",
+              "Global Data Backbone",
+              "Global Supply Chain & Chokepoints",
+              "Highway Infrastructure",
+              "EV (GeoJSON)",
+              "Heavy Industry",
+              "REPD (GeoJSON)",
+              "PIPELINE NEWS (REPD)",
+              "Basemap"
+            ]
+          },
+          "document": {
+            "engine": 120,
+            "pn": 6,
+            "proxies": 63
+          },
+          "menu": {
+            "installed": true,
+            "failure": null,
+            "inspect": {
+              "engine": 60,
+              "pipeline": 3,
+              "total": 63,
+              "unique": 63,
+              "complete": true
+            },
+            "counts": [
+              60,
+              3,
+              63,
+              63
+            ],
+            "tries": 3,
+            "banner": null
+          },
+          "collapsed": null,
+          "sheet": false,
+          "fs": false,
+          "viewport": [
+            1440,
+            900
+          ]
+        },
+        "shot_arrival": "F-desktop-1440x900-arrival.png",
+        "hit_400_on_arrival": {
+          "sel": "#scada-ui-container input[data-layer-id=\"400\"]",
+          "rect": [
+            31,
+            559,
+            17,
+            17
+          ],
+          "top": "INPUT",
+          "hit_ok": true,
+          "in_viewport": true
+        },
+        "hit_scada_400": {
+          "sel": "#scada-ui-container input[data-layer-id=\"400\"]",
+          "rect": [
+            31,
+            559,
+            17,
+            17
+          ],
+          "top": "INPUT",
+          "hit_ok": true,
+          "in_viewport": true
+        },
+        "hit_scada_dc": {
+          "sel": "#scada-ui-container input[data-layer-id=\"dc\"]",
+          "rect": [
+            740,
+            640,
+            17,
+            17
+          ],
+          "top": "INPUT",
+          "hit_ok": true,
+          "in_viewport": true
+        },
+        "hit_scada_caes": {
+          "sel": "#scada-ui-container input[data-layer-id=\"caes\"]",
+          "rect": [
+            31,
+            738,
+            17,
+            17
+          ],
+          "top": "INPUT",
+          "hit_ok": true,
+          "in_viewport": true
+        },
+        "hit_scada_pn_all": {
+          "sel": "#scada-ui-container input[data-pn-layer=\"all\"]",
+          "rect": [
+            31,
+            848,
+            17,
+            17
+          ],
+          "top": "INPUT",
+          "hit_ok": true,
+          "in_viewport": true
+        },
+        "scada_dc_before": {
+          "scada": false,
+          "curtain": false,
+          "proxy": false,
+          "label": "Data Ctrs [OK]",
+          "vis": "none"
+        },
+        "scada_dc_after": {
+          "scada": true,
+          "curtain": true,
+          "proxy": true,
+          "label": "Data Ctrs [OK]",
+          "vis": "visible"
+        },
+        "scada_dc_revert": {
+          "scada": false,
+          "curtain": false,
+          "proxy": false,
+          "label": "Data Ctrs [OK]",
+          "vis": "none"
+        },
+        "grid_hit_400": {
+          "sel": "[data-gridatlas-layer-proxy=\"engine:400\"]",
+          "rect": [
+            991,
+            136,
+            145,
+            57
+          ],
+          "top": "INPUT",
+          "hit_ok": true,
+          "in_viewport": true
+        },
+        "grid_hit_dc": {
+          "sel": "[data-gridatlas-layer-proxy=\"engine:dc\"]",
+          "rect": [
+            991,
+            327,
+            145,
+            57
+          ],
+          "top": "INPUT",
+          "hit_ok": true,
+          "in_viewport": true
+        },
+        "grid_proxy_dc": {
+          "scada": true,
+          "curtain": true,
+          "proxy": true,
+          "label": "Data Ctrs [OK]",
+          "vis": "visible",
+          "hidden": false,
+          "expanded": "true"
+        },
+        "grid_proxy_dc_revert": {
+          "scada": false,
+          "curtain": false,
+          "proxy": false,
+          "label": "Data Ctrs [OK]",
+          "vis": "none",
+          "hidden": false,
+          "expanded": "true"
+        },
+        "shot_grid": "F-desktop-1440x900-grid-open.png",
+        "basemap_sat_closes": {
+          "hidden": true,
+          "expanded": "false"
+        },
+        "basemap_restored": true,
+        "kbd_arrowdown_focus": "engine:400",
+        "kbd_space": {
+          "original_400": true,
+          "panel_hidden": false
+        },
+        "kbd_escape": {
+          "panel_hidden": true,
+          "focus": "gridatlas-menu-bar-title-4",
+          "original_400": false
+        },
+        "tray": [],
+        "counts_final": {
+          "generation": "202609241334",
+          "scada": {
+            "engine": 60,
+            "pn": 3,
+            "checkboxes": 63,
+            "radios": 2,
+            "groups": [
+              "Topology (GeoJSON)",
+              "Assets (GeoJSON)",
+              "Supermarkets (GeoJSON)",
+              "Transit (GeoJSON)",
+              "Leisure & Sports (GeoJSON)",
+              "Global Data Backbone",
+              "Global Supply Chain & Chokepoints",
+              "Highway Infrastructure",
+              "EV (GeoJSON)",
+              "Heavy Industry",
+              "REPD (GeoJSON)",
+              "Basemap",
+              "PIPELINE NEWS (REPD)"
+            ]
+          },
+          "curtain": {
+            "engine": 60,
+            "pn": 3,
+            "groups": 13
+          },
+          "grid": {
+            "proxies": 63,
+            "engine_proxies": 60,
+            "pn_proxies": 3,
+            "radios": 2,
+            "groups": [
+              "Topology (GeoJSON)",
+              "Assets (GeoJSON)",
+              "Supermarkets (GeoJSON)",
+              "Transit (GeoJSON)",
+              "Leisure & Sports (GeoJSON)",
+              "Global Data Backbone",
+              "Global Supply Chain & Chokepoints",
+              "Highway Infrastructure",
+              "EV (GeoJSON)",
+              "Heavy Industry",
+              "REPD (GeoJSON)",
+              "PIPELINE NEWS (REPD)",
+              "Basemap"
+            ]
+          },
+          "document": {
+            "engine": 120,
+            "pn": 6,
+            "proxies": 63
+          },
+          "menu": {
+            "installed": true,
+            "failure": null,
+            "inspect": {
+              "engine": 60,
+              "pipeline": 3,
+              "total": 63,
+              "unique": 63,
+              "complete": true
+            },
+            "counts": [
+              60,
+              3,
+              63,
+              63
+            ],
+            "tries": 3,
+            "banner": null
+          },
+          "collapsed": null,
+          "sheet": false,
+          "fs": false,
+          "viewport": [
+            1440,
+            900
+          ]
+        }
+      },
+      "shim": {
+        "served": {
+          "maplibre": 2,
+          "style": 1,
+          "duckdb": 1
+        },
+        "aborted": [
+          "https://raw.githubusercontent.com/Ventusltd/data-grid-gb/1c9909d1138704b29235c27fd769436dda8a0b18/derived/connection-points.v3.json",
+          "https://ventusltd.github.io/ventus-grid-engine/genome/engine-graph.json",
+          "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/5/10/15",
+          "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/5/9/15",
+          "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/5/10/16",
+          "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/5/9/16",
+          "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/5/10/14",
+          "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/5/11/15",
+          "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/5/9/14",
+          "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/5/11/16",
+          "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/5/11/14",
+          "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/5/10/17",
+          "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/5/9/17",
+          "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/5/11/17",
+          "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/5/10/13",
+          "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/5/9/13",
+          "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/5/11/13",
+          "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/5/10/18",
+          "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/5/9/18",
+          "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/5/11/18"
+        ],
+        "missing": [
+          "https://cdn.jsdelivr.net/npm/@duckdb/duckdb-wasm@1.29.0/+esm"
+        ]
+      }
+    },
+    {
+      "viewport": "android-393x852",
+      "url": "http://127.0.0.1:8103/gridatlas/atlas/",
+      "page_errors": [],
+      "steps": {
+        "composition": {
+          "engine": 120,
+          "pn": 6,
+          "scada": true,
+          "curtain": true,
+          "menuInstalled": true,
+          "map": true,
+          "waitedMs": 7674
+        },
+        "counts": {
+          "generation": "202609241334",
+          "scada": {
+            "engine": 60,
+            "pn": 3,
+            "checkboxes": 63,
+            "radios": 2,
+            "groups": [
+              "Topology (GeoJSON)",
+              "Assets (GeoJSON)",
+              "Supermarkets (GeoJSON)",
+              "Transit (GeoJSON)",
+              "Leisure & Sports (GeoJSON)",
+              "Global Data Backbone",
+              "Global Supply Chain & Chokepoints",
+              "Highway Infrastructure",
+              "EV (GeoJSON)",
+              "Heavy Industry",
+              "REPD (GeoJSON)",
+              "Basemap",
+              "PIPELINE NEWS (REPD)"
+            ]
+          },
+          "curtain": {
+            "engine": 60,
+            "pn": 3,
+            "groups": 13
+          },
+          "grid": {
+            "proxies": 63,
+            "engine_proxies": 60,
+            "pn_proxies": 3,
+            "radios": 2,
+            "groups": [
+              "Topology (GeoJSON)",
+              "Assets (GeoJSON)",
+              "Supermarkets (GeoJSON)",
+              "Transit (GeoJSON)",
+              "Leisure & Sports (GeoJSON)",
+              "Global Data Backbone",
+              "Global Supply Chain & Chokepoints",
+              "Highway Infrastructure",
+              "EV (GeoJSON)",
+              "Heavy Industry",
+              "REPD (GeoJSON)",
+              "PIPELINE NEWS (REPD)",
+              "Basemap"
+            ]
+          },
+          "document": {
+            "engine": 120,
+            "pn": 6,
+            "proxies": 63
+          },
+          "menu": {
+            "installed": true,
+            "failure": null,
+            "inspect": {
+              "engine": 60,
+              "pipeline": 3,
+              "total": 63,
+              "unique": 63,
+              "complete": true
+            },
+            "counts": [
+              60,
+              3,
+              63,
+              63
+            ],
+            "tries": 5,
+            "banner": null
+          },
+          "collapsed": "1",
+          "sheet": false,
+          "fs": false,
+          "viewport": [
+            393,
+            852
+          ]
+        },
+        "shot_arrival": "F-android-393x852-arrival.png",
+        "hit_400_on_arrival": {
+          "sel": "#scada-ui-container input[data-layer-id=\"400\"]",
+          "rect": [
+            30,
+            866,
+            17,
+            17
+          ],
+          "top": null,
+          "hit_ok": false,
+          "in_viewport": false
+        },
+        "toggle_hit": {
+          "sel": "#gridatlas-dash-toggle",
+          "rect": [
+            290,
+            796,
+            91,
+            44
+          ],
+          "top": "BUTTON#gridatlas-dash-toggle",
+          "hit_ok": true,
+          "in_viewport": true
+        },
+        "toggle_after": {
+          "text": "▾ HIDE LAYERS",
+          "wrapper_h": 350
+        },
+        "shot_layers_open": "F-android-393x852-layers-open.png",
+        "hit_scada_400": {
+          "sel": "#scada-ui-container input[data-layer-id=\"400\"]",
+          "rect": [
+            31,
+            529,
+            17,
+            17
+          ],
+          "top": "INPUT",
+          "hit_ok": true,
+          "in_viewport": true
+        },
+        "hit_scada_dc": {
+          "sel": "#scada-ui-container input[data-layer-id=\"dc\"]",
+          "rect": [
+            31,
+            818,
+            17,
+            17
+          ],
+          "top": "INPUT",
+          "hit_ok": true,
+          "in_viewport": true
+        },
+        "hit_scada_caes": {
+          "sel": "#scada-ui-container input[data-layer-id=\"caes\"]",
+          "rect": [
+            31,
+            664,
+            17,
+            17
+          ],
+          "top": "INPUT",
+          "hit_ok": true,
+          "in_viewport": true
+        },
+        "hit_scada_pn_all": {
+          "sel": "#scada-ui-container input[data-pn-layer=\"all\"]",
+          "rect": [
+            31,
+            800,
+            17,
+            17
+          ],
+          "top": "INPUT",
+          "hit_ok": true,
+          "in_viewport": true
+        },
+        "scada_dc_before": {
+          "scada": false,
+          "curtain": false,
+          "proxy": false,
+          "label": "Data Ctrs [OK]",
+          "vis": "none"
+        },
+        "scada_dc_after": {
+          "scada": true,
+          "curtain": true,
+          "proxy": true,
+          "label": "Data Ctrs [OK]",
+          "vis": "visible"
+        },
+        "scada_dc_revert": {
+          "scada": false,
+          "curtain": false,
+          "proxy": false,
+          "label": "Data Ctrs [OK]",
+          "vis": "none"
+        },
+        "grid_hit_400": {
+          "sel": "[data-gridatlas-layer-proxy=\"engine:400\"]",
+          "rect": [
+            -38,
+            125,
+            469,
+            57
+          ],
+          "top": "INPUT",
+          "hit_ok": true,
+          "in_viewport": false
+        },
+        "grid_hit_dc": {
+          "sel": "[data-gridatlas-layer-proxy=\"engine:dc\"]",
+          "rect": [
+            -38,
+            234,
+            469,
+            57
+          ],
+          "top": "INPUT",
+          "hit_ok": true,
+          "in_viewport": false
+        },
+        "grid_proxy_dc": {
+          "scada": true,
+          "curtain": true,
+          "proxy": true,
+          "label": "Data Ctrs [OK]",
+          "vis": "visible",
+          "hidden": false,
+          "expanded": "true"
+        },
+        "grid_proxy_dc_revert": {
+          "scada": false,
+          "curtain": false,
+          "proxy": false,
+          "label": "Data Ctrs [OK]",
+          "vis": "none",
+          "hidden": false,
+          "expanded": "true"
+        },
+        "shot_grid": "F-android-393x852-grid-open.png",
+        "basemap_sat_closes": {
+          "hidden": true,
+          "expanded": "false"
+        },
+        "basemap_restored": true,
+        "tray": [
+          {
+            "text": "⚡ Grid",
+            "rect": [
+              15,
+              419,
+              66,
+              44
+            ],
+            "hit_ok": true
+          },
+          {
+            "text": "◉ Subs",
+            "rect": [
+              85,
+              419,
+              66,
+              44
+            ],
+            "hit_ok": true
+          }
+        ],
+        "counts_final": {
+          "generation": "202609241334",
+          "scada": {
+            "engine": 60,
+            "pn": 3,
+            "checkboxes": 63,
+            "radios": 2,
+            "groups": [
+              "Topology (GeoJSON)",
+              "Assets (GeoJSON)",
+              "Supermarkets (GeoJSON)",
+              "Transit (GeoJSON)",
+              "Leisure & Sports (GeoJSON)",
+              "Global Data Backbone",
+              "Global Supply Chain & Chokepoints",
+              "Highway Infrastructure",
+              "EV (GeoJSON)",
+              "Heavy Industry",
+              "REPD (GeoJSON)",
+              "Basemap",
+              "PIPELINE NEWS (REPD)"
+            ]
+          },
+          "curtain": {
+            "engine": 60,
+            "pn": 3,
+            "groups": 13
+          },
+          "grid": {
+            "proxies": 63,
+            "engine_proxies": 60,
+            "pn_proxies": 3,
+            "radios": 2,
+            "groups": [
+              "Topology (GeoJSON)",
+              "Assets (GeoJSON)",
+              "Supermarkets (GeoJSON)",
+              "Transit (GeoJSON)",
+              "Leisure & Sports (GeoJSON)",
+              "Global Data Backbone",
+              "Global Supply Chain & Chokepoints",
+              "Highway Infrastructure",
+              "EV (GeoJSON)",
+              "Heavy Industry",
+              "REPD (GeoJSON)",
+              "PIPELINE NEWS (REPD)",
+              "Basemap"
+            ]
+          },
+          "document": {
+            "engine": 120,
+            "pn": 6,
+            "proxies": 63
+          },
+          "menu": {
+            "installed": true,
+            "failure": null,
+            "inspect": {
+              "engine": 60,
+              "pipeline": 3,
+              "total": 63,
+              "unique": 63,
+              "complete": true
+            },
+            "counts": [
+              60,
+              3,
+              63,
+              63
+            ],
+            "tries": 5,
+            "banner": null
+          },
+          "collapsed": null,
+          "sheet": false,
+          "fs": false,
+          "viewport": [
+            393,
+            852
+          ]
+        }
+      },
+      "shim": {
+        "served": {
+          "maplibre": 2,
+          "style": 1,
+          "duckdb": 1
+        },
+        "aborted": [
+          "https://raw.githubusercontent.com/Ventusltd/data-grid-gb/1c9909d1138704b29235c27fd769436dda8a0b18/derived/connection-points.v3.json",
+          "https://ventusltd.github.io/ventus-grid-engine/genome/engine-graph.json",
+          "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/5/10/15",
+          "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/5/9/15",
+          "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/5/10/16",
+          "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/5/9/16",
+          "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/5/11/15",
+          "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/5/11/16"
+        ],
+        "missing": [
+          "https://cdn.jsdelivr.net/npm/@duckdb/duckdb-wasm@1.29.0/+esm"
+        ]
+      }
+    },
+    {
+      "viewport": "android-360x740",
+      "url": "http://127.0.0.1:8103/gridatlas/atlas/",
+      "page_errors": [],
+      "steps": {
+        "composition": {
+          "engine": 120,
+          "pn": 6,
+          "scada": true,
+          "curtain": true,
+          "menuInstalled": true,
+          "map": true,
+          "waitedMs": 4447
+        },
+        "counts": {
+          "generation": "202609241334",
+          "scada": {
+            "engine": 60,
+            "pn": 3,
+            "checkboxes": 63,
+            "radios": 2,
+            "groups": [
+              "Topology (GeoJSON)",
+              "Assets (GeoJSON)",
+              "Supermarkets (GeoJSON)",
+              "Transit (GeoJSON)",
+              "Leisure & Sports (GeoJSON)",
+              "Global Data Backbone",
+              "Global Supply Chain & Chokepoints",
+              "Highway Infrastructure",
+              "EV (GeoJSON)",
+              "Heavy Industry",
+              "REPD (GeoJSON)",
+              "Basemap",
+              "PIPELINE NEWS (REPD)"
+            ]
+          },
+          "curtain": {
+            "engine": 60,
+            "pn": 3,
+            "groups": 13
+          },
+          "grid": {
+            "proxies": 63,
+            "engine_proxies": 60,
+            "pn_proxies": 3,
+            "radios": 2,
+            "groups": [
+              "Topology (GeoJSON)",
+              "Assets (GeoJSON)",
+              "Supermarkets (GeoJSON)",
+              "Transit (GeoJSON)",
+              "Leisure & Sports (GeoJSON)",
+              "Global Data Backbone",
+              "Global Supply Chain & Chokepoints",
+              "Highway Infrastructure",
+              "EV (GeoJSON)",
+              "Heavy Industry",
+              "REPD (GeoJSON)",
+              "PIPELINE NEWS (REPD)",
+              "Basemap"
+            ]
+          },
+          "document": {
+            "engine": 120,
+            "pn": 6,
+            "proxies": 63
+          },
+          "menu": {
+            "installed": true,
+            "failure": null,
+            "inspect": {
+              "engine": 60,
+              "pipeline": 3,
+              "total": 63,
+              "unique": 63,
+              "complete": true
+            },
+            "counts": [
+              60,
+              3,
+              63,
+              63
+            ],
+            "tries": 3,
+            "banner": null
+          },
+          "collapsed": "1",
+          "sheet": false,
+          "fs": false,
+          "viewport": [
+            360,
+            740
+          ]
+        },
+        "shot_arrival": "F-android-360x740-arrival.png",
+        "hit_400_on_arrival": {
+          "sel": "#scada-ui-container input[data-layer-id=\"400\"]",
+          "rect": [
+            30,
+            754,
+            17,
+            17
+          ],
+          "top": null,
+          "hit_ok": false,
+          "in_viewport": false
+        },
+        "toggle_hit": {
+          "sel": "#gridatlas-dash-toggle",
+          "rect": [
+            257,
+            684,
+            91,
+            44
+          ],
+          "top": "BUTTON#gridatlas-dash-toggle",
+          "hit_ok": true,
+          "in_viewport": true
+        },
+        "toggle_after": {
+          "text": "▾ HIDE LAYERS",
+          "wrapper_h": 307
+        },
+        "shot_layers_open": "F-android-360x740-layers-open.png",
+        "hit_scada_400": {
+          "sel": "#scada-ui-container input[data-layer-id=\"400\"]",
+          "rect": [
+            31,
+            460,
+            17,
+            17
+          ],
+          "top": "INPUT",
+          "hit_ok": true,
+          "in_viewport": true
+        },
+        "hit_scada_dc": {
+          "sel": "#scada-ui-container input[data-layer-id=\"dc\"]",
+          "rect": [
+            31,
+            574,
+            17,
+            17
+          ],
+          "top": "INPUT",
+          "hit_ok": true,
+          "in_viewport": true
+        },
+        "hit_scada_caes": {
+          "sel": "#scada-ui-container input[data-layer-id=\"caes\"]",
+          "rect": [
+            31,
+            574,
+            17,
+            17
+          ],
+          "top": "INPUT",
+          "hit_ok": true,
+          "in_viewport": true
+        },
+        "hit_scada_pn_all": {
+          "sel": "#scada-ui-container input[data-pn-layer=\"all\"]",
+          "rect": [
+            31,
+            688,
+            17,
+            17
+          ],
+          "top": "INPUT",
+          "hit_ok": true,
+          "in_viewport": true
+        },
+        "scada_dc_before": {
+          "scada": false,
+          "curtain": false,
+          "proxy": false,
+          "label": "Data Ctrs [OK]",
+          "vis": "none"
+        },
+        "scada_dc_after": {
+          "scada": true,
+          "curtain": true,
+          "proxy": true,
+          "label": "Data Ctrs [OK]",
+          "vis": "visible"
+        },
+        "scada_dc_revert": {
+          "scada": false,
+          "curtain": false,
+          "proxy": false,
+          "label": "Data Ctrs [OK]",
+          "vis": "none"
+        },
+        "grid_hit_400": {
+          "sel": "[data-gridatlas-layer-proxy=\"engine:400\"]",
+          "rect": [
+            -33,
+            125,
+            426,
+            57
+          ],
+          "top": "INPUT",
+          "hit_ok": true,
+          "in_viewport": false
+        },
+        "grid_hit_dc": {
+          "sel": "[data-gridatlas-layer-proxy=\"engine:dc\"]",
+          "rect": [
+            -33,
+            277,
+            426,
+            57
+          ],
+          "top": "INPUT",
+          "hit_ok": true,
+          "in_viewport": false
+        },
+        "grid_proxy_dc": {
+          "scada": true,
+          "curtain": true,
+          "proxy": true,
+          "label": "Data Ctrs [OK]",
+          "vis": "visible",
+          "hidden": false,
+          "expanded": "true"
+        },
+        "grid_proxy_dc_revert": {
+          "scada": false,
+          "curtain": false,
+          "proxy": false,
+          "label": "Data Ctrs [OK]",
+          "vis": "none",
+          "hidden": false,
+          "expanded": "true"
+        },
+        "shot_grid": "F-android-360x740-grid-open.png",
+        "basemap_sat_closes": {
+          "hidden": true,
+          "expanded": "false"
+        },
+        "basemap_restored": true,
+        "tray": [
+          {
+            "text": "⚡ Grid",
+            "rect": [
+              15,
+              350,
+              66,
+              44
+            ],
+            "hit_ok": true
+          },
+          {
+            "text": "◉ Subs",
+            "rect": [
+              85,
+              350,
+              66,
+              44
+            ],
+            "hit_ok": true
+          }
+        ],
+        "counts_final": {
+          "generation": "202609241334",
+          "scada": {
+            "engine": 60,
+            "pn": 3,
+            "checkboxes": 63,
+            "radios": 2,
+            "groups": [
+              "Topology (GeoJSON)",
+              "Assets (GeoJSON)",
+              "Supermarkets (GeoJSON)",
+              "Transit (GeoJSON)",
+              "Leisure & Sports (GeoJSON)",
+              "Global Data Backbone",
+              "Global Supply Chain & Chokepoints",
+              "Highway Infrastructure",
+              "EV (GeoJSON)",
+              "Heavy Industry",
+              "REPD (GeoJSON)",
+              "Basemap",
+              "PIPELINE NEWS (REPD)"
+            ]
+          },
+          "curtain": {
+            "engine": 60,
+            "pn": 3,
+            "groups": 13
+          },
+          "grid": {
+            "proxies": 63,
+            "engine_proxies": 60,
+            "pn_proxies": 3,
+            "radios": 2,
+            "groups": [
+              "Topology (GeoJSON)",
+              "Assets (GeoJSON)",
+              "Supermarkets (GeoJSON)",
+              "Transit (GeoJSON)",
+              "Leisure & Sports (GeoJSON)",
+              "Global Data Backbone",
+              "Global Supply Chain & Chokepoints",
+              "Highway Infrastructure",
+              "EV (GeoJSON)",
+              "Heavy Industry",
+              "REPD (GeoJSON)",
+              "PIPELINE NEWS (REPD)",
+              "Basemap"
+            ]
+          },
+          "document": {
+            "engine": 120,
+            "pn": 6,
+            "proxies": 63
+          },
+          "menu": {
+            "installed": true,
+            "failure": null,
+            "inspect": {
+              "engine": 60,
+              "pipeline": 3,
+              "total": 63,
+              "unique": 63,
+              "complete": true
+            },
+            "counts": [
+              60,
+              3,
+              63,
+              63
+            ],
+            "tries": 3,
+            "banner": null
+          },
+          "collapsed": null,
+          "sheet": false,
+          "fs": false,
+          "viewport": [
+            360,
+            740
+          ]
+        }
+      },
+      "shim": {
+        "served": {
+          "maplibre": 2,
+          "style": 1,
+          "duckdb": 1
+        },
+        "aborted": [
+          "https://raw.githubusercontent.com/Ventusltd/data-grid-gb/1c9909d1138704b29235c27fd769436dda8a0b18/derived/connection-points.v3.json",
+          "https://ventusltd.github.io/ventus-grid-engine/genome/engine-graph.json",
+          "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/5/10/15",
+          "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/5/9/15",
+          "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/5/10/16",
+          "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/5/9/16"
+        ],
+        "missing": [
+          "https://cdn.jsdelivr.net/npm/@duckdb/duckdb-wasm@1.29.0/+esm"
+        ]
+      }
+    },
+    {
+      "viewport": "android-393x852-sheet",
+      "url": "http://127.0.0.1:8103/gridatlas/atlas/?technology=solar&latitude=52.6369&longitude=-1.1398&zoom=10&project=GRIDATLAS_PROOF_menu_contracts&capacity_mw=10",
+      "page_errors": [],
+      "steps": {
+        "composition": {
+          "engine": 120,
+          "pn": 6,
+          "scada": true,
+          "curtain": true,
+          "menuInstalled": true,
+          "map": true,
+          "waitedMs": 6604
+        },
+        "sheet_open": true,
+        "counts": {
+          "generation": "202609241334",
+          "scada": {
+            "engine": 60,
+            "pn": 3,
+            "checkboxes": 63,
+            "radios": 2,
+            "groups": [
+              "Topology (GeoJSON)",
+              "Assets (GeoJSON)",
+              "Supermarkets (GeoJSON)",
+              "Transit (GeoJSON)",
+              "Leisure & Sports (GeoJSON)",
+              "Global Data Backbone",
+              "Global Supply Chain & Chokepoints",
+              "Highway Infrastructure",
+              "EV (GeoJSON)",
+              "Heavy Industry",
+              "REPD (GeoJSON)",
+              "Basemap",
+              "PIPELINE NEWS (REPD)"
+            ]
+          },
+          "curtain": {
+            "engine": 60,
+            "pn": 3,
+            "groups": 13
+          },
+          "grid": {
+            "proxies": 63,
+            "engine_proxies": 60,
+            "pn_proxies": 3,
+            "radios": 2,
+            "groups": [
+              "Topology (GeoJSON)",
+              "Assets (GeoJSON)",
+              "Supermarkets (GeoJSON)",
+              "Transit (GeoJSON)",
+              "Leisure & Sports (GeoJSON)",
+              "Global Data Backbone",
+              "Global Supply Chain & Chokepoints",
+              "Highway Infrastructure",
+              "EV (GeoJSON)",
+              "Heavy Industry",
+              "REPD (GeoJSON)",
+              "PIPELINE NEWS (REPD)",
+              "Basemap"
+            ]
+          },
+          "document": {
+            "engine": 120,
+            "pn": 6,
+            "proxies": 63
+          },
+          "menu": {
+            "installed": true,
+            "failure": null,
+            "inspect": {
+              "engine": 60,
+              "pipeline": 3,
+              "total": 63,
+              "unique": 63,
+              "complete": true
+            },
+            "counts": [
+              60,
+              3,
+              63,
+              63
+            ],
+            "tries": 6,
+            "banner": null
+          },
+          "collapsed": "1",
+          "sheet": true,
+          "fs": true,
+          "viewport": [
+            393,
+            852
+          ]
+        },
+        "geometry": {
+          "sheet": [
+            0,
+            782,
+            393,
+            70
+          ],
+          "sheet_min": true,
+          "toggle": [
+            290,
+            730,
+            91,
+            44
+          ],
+          "map_controls": [
+            10,
+            730,
+            135,
+            44
+          ],
+          "scada_wrapper": [
+            4,
+            4,
+            385,
+            0
+          ],
+          "fullscreenElement": true
+        },
+        "shot": "F-android-393x852-sheet-arrival.png",
+        "hit_toggle": {
+          "sel": "#gridatlas-dash-toggle",
+          "rect": [
+            290,
+            730,
+            91,
+            44
+          ],
+          "top": "CANVAS.maplibregl-canvas",
+          "hit_ok": false,
+          "in_viewport": true
+        },
+        "hit_chips": [
+          {
+            "text": "⚡ Grid",
+            "hit_ok": true,
+            "top": "BUTTON#"
+          },
+          {
+            "text": "◉ Subs",
+            "hit_ok": true,
+            "top": "BUTTON#"
+          }
+        ],
+        "hit_grid_400": {
+          "sel": "[data-gridatlas-layer-proxy=\"engine:400\"]",
+          "rect": [
+            -45,
+            120,
+            482,
+            57
+          ],
+          "top": "INPUT",
+          "hit_ok": true,
+          "in_viewport": false
+        },
+        "grid_proxy_dc_with_sheet": {
+          "scada": true,
+          "curtain": true,
+          "proxy": true,
+          "label": "Data Ctrs [OK]",
+          "vis": "visible",
+          "hidden": false,
+          "expanded": "true"
+        },
+        "shot_grid": "F-android-393x852-sheet-grid-open.png",
+        "error_shot": "F-android-393x852-sheet-error.png"
+      },
+      "shim": {
+        "served": {
+          "maplibre": 2,
+          "style": 1,
+          "duckdb": 1,
+          "data-gridatlas": 1
+        },
+        "aborted": [
+          "https://raw.githubusercontent.com/Ventusltd/data-grid-gb/1c9909d1138704b29235c27fd769436dda8a0b18/derived/connection-points.v3.json",
+          "https://raw.githubusercontent.com/Ventusltd/data-grid-gb/1c9909d1138704b29235c27fd769436dda8a0b18/derived/gb-transmission-network.v1.json",
+          "https://ventusltd.github.io/ventus-grid-engine/genome/engine-graph.json"
+        ],
+        "missing": [
+          "https://cdn.jsdelivr.net/npm/@duckdb/duckdb-wasm@1.29.0/+esm"
+        ]
+      },
+      "error": "locator.tap: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('#gridatlas-dash-toggle')\u001b[22m\n\u001b[2m    - locator resolved to <button type=\"button\" aria-pressed=\"true\" id=\"gridatlas-dash-toggle\" aria-label=\"Show the layers panel\">▴ LAYERS</button>\u001b[22m\n\u001b[2m  - attempting tap action\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is visible, enabled and stable\u001b[22m\n\u001b[2m      - scrolling into view if needed\u001b[22m\n\u001b[2m      - done scrolling\u001b[22m\n\u001b[2m      - <canvas tabindex=\"0\" width=\"1080\" role=\"region\" height=\"2343\" aria-label=\"Map\" class=\"maplibregl-canvas\"></canvas> from <div class=\"dashboard\">…</div> subtree intercepts pointer events\u001b[22m\n\u001b[2m    - retrying tap action\u001b[22m\n\u001b[2m    - waiting 20ms\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is visible, enabled and stable\u001b[22m\n\u001b["
+    },
+    {
+      "viewport": "android-360x740-sheet",
+      "url": "http://127.0.0.1:8103/gridatlas/atlas/?technology=solar&latitude=52.6369&longitude=-1.1398&zoom=10&project=GRIDATLAS_PROOF_menu_contracts&capacity_mw=10",
+      "page_errors": [],
+      "steps": {
+        "composition": {
+          "engine": 120,
+          "pn": 6,
+          "scada": true,
+          "curtain": true,
+          "menuInstalled": true,
+          "map": true,
+          "waitedMs": 17860
+        },
+        "sheet_open": true,
+        "counts": {
+          "generation": "202609241334",
+          "scada": {
+            "engine": 60,
+            "pn": 3,
+            "checkboxes": 63,
+            "radios": 2,
+            "groups": [
+              "Topology (GeoJSON)",
+              "Assets (GeoJSON)",
+              "Supermarkets (GeoJSON)",
+              "Transit (GeoJSON)",
+              "Leisure & Sports (GeoJSON)",
+              "Global Data Backbone",
+              "Global Supply Chain & Chokepoints",
+              "Highway Infrastructure",
+              "EV (GeoJSON)",
+              "Heavy Industry",
+              "REPD (GeoJSON)",
+              "Basemap",
+              "PIPELINE NEWS (REPD)"
+            ]
+          },
+          "curtain": {
+            "engine": 60,
+            "pn": 3,
+            "groups": 13
+          },
+          "grid": {
+            "proxies": 63,
+            "engine_proxies": 60,
+            "pn_proxies": 3,
+            "radios": 2,
+            "groups": [
+              "Topology (GeoJSON)",
+              "Assets (GeoJSON)",
+              "Supermarkets (GeoJSON)",
+              "Transit (GeoJSON)",
+              "Leisure & Sports (GeoJSON)",
+              "Global Data Backbone",
+              "Global Supply Chain & Chokepoints",
+              "Highway Infrastructure",
+              "EV (GeoJSON)",
+              "Heavy Industry",
+              "REPD (GeoJSON)",
+              "PIPELINE NEWS (REPD)",
+              "Basemap"
+            ]
+          },
+          "document": {
+            "engine": 120,
+            "pn": 6,
+            "proxies": 63
+          },
+          "menu": {
+            "installed": true,
+            "failure": null,
+            "inspect": {
+              "engine": 60,
+              "pipeline": 3,
+              "total": 63,
+              "unique": 63,
+              "complete": true
+            },
+            "counts": [
+              60,
+              3,
+              63,
+              63
+            ],
+            "tries": 8,
+            "banner": null
+          },
+          "collapsed": "1",
+          "sheet": true,
+          "fs": true,
+          "viewport": [
+            360,
+            740
+          ]
+        },
+        "geometry": {
+          "sheet": [
+            0,
+            670,
+            360,
+            70
+          ],
+          "sheet_min": true,
+          "toggle": [
+            257,
+            618,
+            91,
+            44
+          ],
+          "map_controls": [
+            10,
+            618,
+            135,
+            44
+          ],
+          "scada_wrapper": [
+            4,
+            4,
+            352,
+            0
+          ],
+          "fullscreenElement": true
+        },
+        "shot": "F-android-360x740-sheet-arrival.png",
+        "hit_toggle": {
+          "sel": "#gridatlas-dash-toggle",
+          "rect": [
+            257,
+            618,
+            91,
+            44
+          ],
+          "top": "CANVAS.maplibregl-canvas",
+          "hit_ok": false,
+          "in_viewport": true
+        },
+        "hit_chips": [
+          {
+            "text": "⚡ Grid",
+            "hit_ok": true,
+            "top": "BUTTON#"
+          },
+          {
+            "text": "◉ Subs",
+            "hit_ok": true,
+            "top": "BUTTON#"
+          }
+        ],
+        "hit_grid_400": {
+          "sel": "[data-gridatlas-layer-proxy=\"engine:400\"]",
+          "rect": [
+            -40,
+            120,
+            439,
+            57
+          ],
+          "top": "INPUT",
+          "hit_ok": true,
+          "in_viewport": false
+        },
+        "grid_proxy_dc_with_sheet": {
+          "scada": true,
+          "curtain": true,
+          "proxy": true,
+          "label": "Data Ctrs [OK]",
+          "vis": "visible",
+          "hidden": false,
+          "expanded": "true"
+        },
+        "shot_grid": "F-android-360x740-sheet-grid-open.png",
+        "error_shot": "F-android-360x740-sheet-error.png"
+      },
+      "shim": {
+        "served": {
+          "maplibre": 2,
+          "style": 1,
+          "duckdb": 1,
+          "data-gridatlas": 1
+        },
+        "aborted": [
+          "https://raw.githubusercontent.com/Ventusltd/data-grid-gb/1c9909d1138704b29235c27fd769436dda8a0b18/derived/connection-points.v3.json",
+          "https://raw.githubusercontent.com/Ventusltd/data-grid-gb/1c9909d1138704b29235c27fd769436dda8a0b18/derived/gb-transmission-network.v1.json",
+          "https://ventusltd.github.io/ventus-grid-engine/genome/engine-graph.json"
+        ],
+        "missing": [
+          "https://cdn.jsdelivr.net/npm/@duckdb/duckdb-wasm@1.29.0/+esm"
+        ]
+      },
+      "error": "locator.tap: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('#gridatlas-dash-toggle')\u001b[22m\n\u001b[2m    - locator resolved to <button type=\"button\" aria-pressed=\"true\" id=\"gridatlas-dash-toggle\" aria-label=\"Show the layers panel\">▴ LAYERS</button>\u001b[22m\n\u001b[2m  - attempting tap action\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is visible, enabled and stable\u001b[22m\n\u001b[2m      - scrolling into view if needed\u001b[22m\n\u001b[2m      - done scrolling\u001b[22m\n\u001b[2m      - <canvas tabindex=\"0\" width=\"1080\" role=\"region\" height=\"2220\" aria-label=\"Map\" class=\"maplibregl-canvas\"></canvas> from <div class=\"dashboard\">…</div> subtree intercepts pointer events\u001b[22m\n\u001b[2m    - retrying tap action\u001b[22m\n\u001b[2m    - waiting 20ms\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is visible, enabled and stable\u001b[22m\n\u001b["
+    },
+    {
+      "viewport": "desktop-1440x900-failclosed-engine61",
+      "variant": "engine61",
+      "url": "http://127.0.0.1:8103/gridatlas/atlas/",
+      "page_errors": [],
+      "steps": {
+        "error_shot": "F-desktop-1440x900-failclosed-engine61-error.png"
+      },
+      "error": "page.waitForFunction: Timeout 60000ms exceeded.\n    at /tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/lightning/evidence/atlas-menu-contracts/menu-contracts.final.mjs:166:16",
+      "shim": {
+        "served": {
+          "maplibre": 2,
+          "style": 1,
+          "duckdb": 1
+        },
+        "aborted": [
+          "https://raw.githubusercontent.com/Ventusltd/data-grid-gb/1c9909d1138704b29235c27fd769436dda8a0b18/derived/connection-points.v3.json",
+          "https://ventusltd.github.io/ventus-grid-engine/genome/engine-graph.json"
+        ],
+        "missing": [
+          "https://cdn.jsdelivr.net/npm/@duckdb/duckdb-wasm@1.29.0/+esm"
+        ]
+      }
+    },
+    {
+      "viewport": "desktop-1440x900-failclosed-pipeline4",
+      "variant": "pipeline4",
+      "url": "http://127.0.0.1:8103/gridatlas/atlas/",
+      "page_errors": [],
+      "steps": {
+        "error_shot": "F-desktop-1440x900-failclosed-pipeline4-error.png"
+      },
+      "error": "page.waitForFunction: Timeout 60000ms exceeded.\n    at /tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/lightning/evidence/atlas-menu-contracts/menu-contracts.final.mjs:166:16",
+      "shim": {
+        "served": {
+          "maplibre": 2,
+          "style": 1,
+          "duckdb": 1
+        },
+        "aborted": [
+          "https://raw.githubusercontent.com/Ventusltd/data-grid-gb/1c9909d1138704b29235c27fd769436dda8a0b18/derived/connection-points.v3.json",
+          "https://ventusltd.github.io/ventus-grid-engine/genome/engine-graph.json"
+        ],
+        "missing": [
+          "https://cdn.jsdelivr.net/npm/@duckdb/duckdb-wasm@1.29.0/+esm"
+        ]
+      }
+    },
+    {
+      "viewport": "desktop-1440x900-failclosed-neutral",
+      "variant": "neutral",
+      "url": "http://127.0.0.1:8103/gridatlas/atlas/",
+      "page_errors": [],
+      "steps": {
+        "error_shot": "F-desktop-1440x900-failclosed-neutral-error.png"
+      },
+      "error": "page.waitForFunction: Timeout 60000ms exceeded.\n    at /tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/lightning/evidence/atlas-menu-contracts/menu-contracts.final.mjs:166:16",
+      "shim": {
+        "served": {
+          "maplibre": 2,
+          "style": 1,
+          "duckdb": 1
+        },
+        "aborted": [
+          "https://raw.githubusercontent.com/Ventusltd/data-grid-gb/1c9909d1138704b29235c27fd769436dda8a0b18/derived/connection-points.v3.json",
+          "https://ventusltd.github.io/ventus-grid-engine/genome/engine-graph.json"
+        ],
+        "missing": [
+          "https://cdn.jsdelivr.net/npm/@duckdb/duckdb-wasm@1.29.0/+esm"
+        ]
+      }
+    }
+  ]
+}

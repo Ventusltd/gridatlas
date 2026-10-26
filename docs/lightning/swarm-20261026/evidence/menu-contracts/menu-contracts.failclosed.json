@@ -1,0 +1,307 @@
+{
+  "started": "2026-10-26T17:34:57.229Z",
+  "runs": [
+    {
+      "viewport": "desktop-1440x900",
+      "test": "fail-closed-engine61",
+      "attempt": 1,
+      "page_errors": [],
+      "steps": {
+        "injection": {
+          "menu_installed_at_injection": false,
+          "menu_tries_at_injection": 2,
+          "pn_groups_at_injection": 0,
+          "engine_now": 61,
+          "pn_now": 0,
+          "after_ms": 4440
+        },
+        "outcome": {
+          "installed": false,
+          "failure": "menu not installed: expected 60 engine + 3 Pipeline News layer controls; found 61 + 3",
+          "tries": 160,
+          "waiting_for": [
+            "63 unique layer controls"
+          ],
+          "inspect": {
+            "engine": 61,
+            "pipeline": 3,
+            "total": 64,
+            "unique": 64,
+            "complete": false
+          },
+          "bar": false,
+          "banner": "menu not installed: expected 60 engine + 3 Pipeline News layer controls; found 61 + 3. Original controls remain available.",
+          "scada_engine": 61,
+          "scada_pn": 3,
+          "scada_checkboxes": 64,
+          "proxies": 0,
+          "map_controls_display": "flex",
+          "hud_header_parent": "dashboard",
+          "scada_wrapper_display": "flex"
+        },
+        "shot": "G-failclosed-engine61.png",
+        "hit_dc": {
+          "sel": "#scada-ui-container input[data-layer-id=\"dc\"]",
+          "rect": [
+            740,
+            704,
+            17,
+            17
+          ],
+          "top": "INPUT",
+          "hit_ok": true,
+          "in_viewport": true
+        },
+        "dc_after_click": {
+          "scada": true,
+          "curtain": true,
+          "label": "Data Ctrs [OK]",
+          "vis": "visible"
+        },
+        "hit_injected": {
+          "sel": "#menu-contracts-injected-input",
+          "rect": [
+            31,
+            760,
+            17,
+            17
+          ],
+          "top": "INPUT#menu-contracts-injected-input",
+          "hit_ok": true,
+          "in_viewport": true
+        },
+        "injected_click": {
+          "checked": true,
+          "label": "Lightning (injected) [WAIT]",
+          "engine_checked": 1,
+          "pn_checked": 0,
+          "pn_state_active": [],
+          "pn_failures": [],
+          "proxies": 0,
+          "menu": {
+            "engine": 61,
+            "pipeline": 3,
+            "total": 64,
+            "unique": 64,
+            "complete": false
+          }
+        },
+        "injected_click_new_page_errors": []
+      },
+      "shim": {
+        "served": {
+          "maplibre": 2,
+          "style": 1,
+          "duckdb": 1
+        },
+        "aborted": [
+          "https://raw.githubusercontent.com/Ventusltd/data-grid-gb/1c9909d1138704b29235c27fd769436dda8a0b18/derived/connection-points.v3.json"
+        ],
+        "missing": [
+          "https://cdn.jsdelivr.net/npm/@duckdb/duckdb-wasm@1.29.0/+esm"
+        ]
+      }
+    },
+    {
+      "viewport": "desktop-1440x900",
+      "test": "fail-closed-pipeline4",
+      "attempt": 1,
+      "page_errors": [],
+      "steps": {
+        "injection": {
+          "menu_installed_at_injection": false,
+          "menu_tries_at_injection": 1,
+          "pn_groups_at_injection": 0,
+          "engine_now": 60,
+          "pn_now": 1,
+          "after_ms": 1145
+        },
+        "outcome": {
+          "installed": false,
+          "failure": "menu not installed: expected 60 engine + 3 Pipeline News layer controls; found 60 + 4",
+          "tries": 160,
+          "waiting_for": [
+            "63 unique layer controls"
+          ],
+          "inspect": {
+            "engine": 60,
+            "pipeline": 4,
+            "total": 64,
+            "unique": 64,
+            "complete": false
+          },
+          "bar": false,
+          "banner": "menu not installed: expected 60 engine + 3 Pipeline News layer controls; found 60 + 4. Original controls remain available.",
+          "scada_engine": 60,
+          "scada_pn": 4,
+          "scada_checkboxes": 64,
+          "proxies": 0,
+          "map_controls_display": "flex",
+          "hud_header_parent": "dashboard",
+          "scada_wrapper_display": "flex"
+        },
+        "shot": "G-failclosed-pipeline4.png",
+        "hit_dc": {
+          "sel": "#scada-ui-container input[data-layer-id=\"dc\"]",
+          "rect": [
+            740,
+            704,
+            17,
+            17
+          ],
+          "top": "INPUT",
+          "hit_ok": true,
+          "in_viewport": true
+        },
+        "dc_after_click": {
+          "scada": true,
+          "curtain": true,
+          "label": "Data Ctrs [OK]",
+          "vis": "visible"
+        },
+        "hit_injected": {
+          "sel": "#menu-contracts-injected-input",
+          "rect": [
+            31,
+            760,
+            17,
+            17
+          ],
+          "top": "INPUT#menu-contracts-injected-input",
+          "hit_ok": true,
+          "in_viewport": true
+        },
+        "injected_click": {
+          "checked": true,
+          "label": "Lightning (injected) [WAIT]",
+          "engine_checked": 0,
+          "pn_checked": 1,
+          "pn_state_active": [],
+          "pn_failures": [],
+          "proxies": 0,
+          "menu": {
+            "engine": 60,
+            "pipeline": 4,
+            "total": 64,
+            "unique": 64,
+            "complete": false
+          }
+        },
+        "injected_click_new_page_errors": []
+      },
+      "shim": {
+        "served": {
+          "maplibre": 2,
+          "style": 1,
+          "duckdb": 1
+        },
+        "aborted": [
+          "https://raw.githubusercontent.com/Ventusltd/data-grid-gb/1c9909d1138704b29235c27fd769436dda8a0b18/derived/connection-points.v3.json"
+        ],
+        "missing": [
+          "https://cdn.jsdelivr.net/npm/@duckdb/duckdb-wasm@1.29.0/+esm"
+        ]
+      }
+    },
+    {
+      "viewport": "desktop-1440x900",
+      "test": "fail-closed-neutral",
+      "attempt": 1,
+      "page_errors": [],
+      "steps": {
+        "injection": {
+          "menu_installed_at_injection": false,
+          "menu_tries_at_injection": 3,
+          "pn_groups_at_injection": 0,
+          "engine_now": 60,
+          "pn_now": 0,
+          "after_ms": 4368
+        },
+        "outcome": {
+          "installed": true,
+          "failure": null,
+          "tries": 5,
+          "waiting_for": [],
+          "inspect": {
+            "engine": 60,
+            "pipeline": 3,
+            "total": 63,
+            "unique": 63,
+            "complete": true
+          },
+          "bar": true,
+          "banner": null,
+          "scada_engine": 60,
+          "scada_pn": 3,
+          "scada_checkboxes": 64,
+          "proxies": 63,
+          "map_controls_display": "none",
+          "hud_header_parent": "gm-brand-slot",
+          "scada_wrapper_display": "flex"
+        },
+        "shot": "G-failclosed-neutral.png",
+        "hit_dc": {
+          "sel": "#scada-ui-container input[data-layer-id=\"dc\"]",
+          "rect": [
+            740,
+            640,
+            17,
+            17
+          ],
+          "top": "INPUT",
+          "hit_ok": true,
+          "in_viewport": true
+        },
+        "dc_after_click": {
+          "scada": true,
+          "curtain": true,
+          "label": "Data Ctrs [OK]",
+          "vis": "visible"
+        },
+        "hit_injected": {
+          "sel": "#menu-contracts-injected-input",
+          "rect": [
+            31,
+            794,
+            17,
+            17
+          ],
+          "top": "INPUT#menu-contracts-injected-input",
+          "hit_ok": true,
+          "in_viewport": true
+        },
+        "injected_click": {
+          "checked": true,
+          "label": "Lightning (injected) [WAIT]",
+          "engine_checked": 0,
+          "pn_checked": 0,
+          "pn_state_active": [],
+          "pn_failures": [],
+          "proxies": 63,
+          "menu": {
+            "engine": 60,
+            "pipeline": 3,
+            "total": 63,
+            "unique": 63,
+            "complete": true
+          }
+        },
+        "injected_click_new_page_errors": []
+      },
+      "shim": {
+        "served": {
+          "maplibre": 2,
+          "style": 1,
+          "duckdb": 1
+        },
+        "aborted": [
+          "https://raw.githubusercontent.com/Ventusltd/data-grid-gb/1c9909d1138704b29235c27fd769436dda8a0b18/derived/connection-points.v3.json",
+          "https://ventusltd.github.io/ventus-grid-engine/genome/engine-graph.json"
+        ],
+        "missing": [
+          "https://cdn.jsdelivr.net/npm/@duckdb/duckdb-wasm@1.29.0/+esm"
+        ]
+      }
+    }
+  ]
+}
