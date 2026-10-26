@@ -1,0 +1,265 @@
+{
+  "started": "2026-10-26T17:42:34.206Z",
+  "runs": [
+    {
+      "viewport": "android-393x852",
+      "test": "bottom-sheet",
+      "fullscreen_path": "CSS-only (element-fullscreen API removed: what a gesture-less deep-link arrival gets on a real phone)",
+      "page_errors": [],
+      "steps": {
+        "composition": {
+          "engine": 120,
+          "pn": 6,
+          "scada": true,
+          "curtain": true,
+          "menuInstalled": true,
+          "map": true,
+          "waitedMs": 14668
+        },
+        "sheet_open": true,
+        "state": {
+          "fs_active": true,
+          "fullscreenElement": null,
+          "sheet": [
+            0,
+            782,
+            393,
+            70
+          ],
+          "sheet_min": true,
+          "toggle": [
+            290,
+            730,
+            91,
+            44
+          ],
+          "toggle_hidden": false,
+          "map_controls": [
+            10,
+            730,
+            135,
+            44
+          ],
+          "collapsed": "1",
+          "inspect": {
+            "engine": 60,
+            "pipeline": 3,
+            "total": 63,
+            "unique": 63,
+            "complete": true
+          }
+        },
+        "shot": "G-android-393x852-sheet-cssfs.png",
+        "hit_toggle": {
+          "sel": "#gridatlas-dash-toggle",
+          "rect": [
+            290,
+            730,
+            91,
+            44
+          ],
+          "top": "BUTTON#gridatlas-dash-toggle",
+          "hit_ok": true,
+          "in_viewport": true
+        },
+        "hit_chips": [
+          {
+            "text": "⚡ Grid",
+            "rect": [
+              10,
+              730,
+              66,
+              44
+            ],
+            "hit_ok": true,
+            "top": "BUTTON#"
+          },
+          {
+            "text": "◉ Subs",
+            "rect": [
+              80,
+              730,
+              66,
+              44
+            ],
+            "hit_ok": true,
+            "top": "BUTTON#"
+          }
+        ]
+      },
+      "error": "locator.tap: Timeout 12000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('button', { name: 'Grid', exact: true })\u001b[22m\n\u001b[2m    - locator resolved to <button type=\"button\" class=\"gm-title\" aria-haspopup=\"menu\" aria-expanded=\"false\" id=\"gridatlas-menu-bar-title-4\" aria-controls=\"gridatlas-menu-bar-panel-4\">Grid</button>\u001b[22m\n\u001b[2m  - attempting tap action\u001b[22m\n\u001b[2m    - waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m    - element is visible, enabled and stable\u001b[22m\n\u001b[2m    - scrolling into view if needed\u001b[22m\n\u001b[2m    - done scrolling\u001b[22m\n\u001b[2m    - performing tap action\u001b[22m\n\n    at /tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/lightning/evidence/atlas-menu-contracts/menu-contracts.failclosed.mjs:92:67",
+      "shim": {
+        "served": {
+          "maplibre": 2,
+          "style": 1,
+          "duckdb": 1,
+          "data-gridatlas": 1
+        },
+        "aborted": [
+          "https://raw.githubusercontent.com/Ventusltd/data-grid-gb/1c9909d1138704b29235c27fd769436dda8a0b18/derived/connection-points.v3.json",
+          "https://raw.githubusercontent.com/Ventusltd/data-grid-gb/1c9909d1138704b29235c27fd769436dda8a0b18/derived/gb-transmission-network.v1.json",
+          "https://ventusltd.github.io/ventus-grid-engine/genome/engine-graph.json"
+        ],
+        "missing": [
+          "https://cdn.jsdelivr.net/npm/@duckdb/duckdb-wasm@1.29.0/+esm"
+        ]
+      }
+    },
+    {
+      "viewport": "android-360x740",
+      "test": "bottom-sheet",
+      "fullscreen_path": "CSS-only (element-fullscreen API removed: what a gesture-less deep-link arrival gets on a real phone)",
+      "page_errors": [],
+      "steps": {
+        "composition": {
+          "engine": 120,
+          "pn": 6,
+          "scada": true,
+          "curtain": true,
+          "menuInstalled": true,
+          "map": true,
+          "waitedMs": 18051
+        },
+        "sheet_open": true,
+        "state": {
+          "fs_active": true,
+          "fullscreenElement": null,
+          "sheet": [
+            0,
+            670,
+            360,
+            70
+          ],
+          "sheet_min": true,
+          "toggle": [
+            257,
+            618,
+            91,
+            44
+          ],
+          "toggle_hidden": false,
+          "map_controls": [
+            10,
+            618,
+            135,
+            44
+          ],
+          "collapsed": "1",
+          "inspect": {
+            "engine": 60,
+            "pipeline": 3,
+            "total": 63,
+            "unique": 63,
+            "complete": true
+          }
+        },
+        "shot": "G-android-360x740-sheet-cssfs.png",
+        "hit_toggle": {
+          "sel": "#gridatlas-dash-toggle",
+          "rect": [
+            257,
+            618,
+            91,
+            44
+          ],
+          "top": "BUTTON#gridatlas-dash-toggle",
+          "hit_ok": true,
+          "in_viewport": true
+        },
+        "hit_chips": [
+          {
+            "text": "⚡ Grid",
+            "rect": [
+              10,
+              618,
+              66,
+              44
+            ],
+            "hit_ok": true,
+            "top": "BUTTON#"
+          },
+          {
+            "text": "◉ Subs",
+            "rect": [
+              80,
+              618,
+              66,
+              44
+            ],
+            "hit_ok": true,
+            "top": "BUTTON#"
+          }
+        ],
+        "hit_grid_400": {
+          "sel": "[data-gridatlas-layer-proxy=\"engine:400\"]",
+          "rect": [
+            -40,
+            120,
+            439,
+            57
+          ],
+          "top": "INPUT",
+          "hit_ok": true,
+          "in_viewport": true
+        },
+        "grid_proxy_dc": {
+          "original": true,
+          "proxy": true,
+          "panel_hidden": false
+        },
+        "shot_grid": "G-android-360x740-sheet-cssfs-grid.png",
+        "scada_under_sheet": {
+          "collapsed": null,
+          "wrapper": [
+            4,
+            4,
+            352,
+            307
+          ],
+          "host": [
+            17,
+            17,
+            326,
+            281
+          ],
+          "sheet": [
+            0,
+            670,
+            360,
+            70
+          ],
+          "first_400": [
+            31,
+            35,
+            17,
+            17
+          ],
+          "first_in_viewport": true,
+          "top_at_first": "CANVAS#.maplibregl-canvas",
+          "first_hit_ok": false,
+          "doc_scrollHeight": 740,
+          "scrollY": 0,
+          "inner": 740,
+          "tap_400": "REFUSED: Timeout 8000ms exceeded."
+        },
+        "shot_layers": "G-android-360x740-sheet-cssfs-layers-open.png"
+      },
+      "shim": {
+        "served": {
+          "maplibre": 2,
+          "style": 1,
+          "duckdb": 1,
+          "data-gridatlas": 1
+        },
+        "aborted": [
+          "https://raw.githubusercontent.com/Ventusltd/data-grid-gb/1c9909d1138704b29235c27fd769436dda8a0b18/derived/connection-points.v3.json",
+          "https://raw.githubusercontent.com/Ventusltd/data-grid-gb/1c9909d1138704b29235c27fd769436dda8a0b18/derived/gb-transmission-network.v1.json",
+          "https://ventusltd.github.io/ventus-grid-engine/genome/engine-graph.json"
+        ],
+        "missing": [
+          "https://cdn.jsdelivr.net/npm/@duckdb/duckdb-wasm@1.29.0/+esm"
+        ]
+      }
+    }
+  ]
+}

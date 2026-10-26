@@ -1,0 +1,68 @@
+### node tools/scope/loop.mjs lint
+scope-ledger=PASS active=none master=done
+exit=0
+
+### node tools/scope/loop.mjs state --stdout | diff - STATE.md
+scope-ledger=PASS active=none master=done
+diff exit=0 (0 = identical)
+
+### node tools/proofs/202610261949-sld-sandbox.proof.mjs
+SLD exact delta (202609241334 bytes + \n + 202610261949 uk-lightning-overlay module), SHA-256, byte budget, static negatives, static positives and syntax PASS; browser verification runs separately.
+exit=0
+
+### node tools/proofs/run-current.mjs
+
+=== streaming-parquet-bridge 202609241251 ===
+{
+  "status": "PASS",
+  "generation": "202609241251",
+  "composed_sha256": "60be8215ba873ac2886786bf6e3fd51e5764e7c5e26684fde71ebe9974a329a2",
+  "response_establishment_ms": 5.904,
+  "map_ready_requests": 1,
+  "streamed_responses": 1,
+  "duckdb_started_before_body": false,
+  "metro_partition": "partitions/uk_metros_trams_local_unwired.parquet",
+  "metro_rows_reconstructed": 1
+}
+
+=== uk-gazetteer-flyto 202609071213 ===
+{
+  "status": "PASS",
+  "generation": "202609071213",
+  "composed_sha256": "15f324e5c279050882f7e3ce83a915c070b6ed19095efcac4ae20af4ef19fdfa",
+  "resolved_identity": {
+    "repd_ref": "12588",
+    "technology": "solar",
+    "capacity_mw": 840,
+    "longitude": -1.3489728,
+    "latitude": 51.8132088
+  },
+  "terminal_states": [
+    "RESOLVED",
+    "NOT_IN_ACTIVE_REGISTER",
+    "ABSENT",
+    "FAILED"
+  ],
+  "mismatched_identity": "NOT_IN_ACTIVE_REGISTER"
+}
+
+=== substation-intelligence 202609062358 ===
+Published engine byte integrity and syntax PASS; browser coverage runs separately.
+
+=== sld-sandbox 202609241334 ===
+SLD exact delta, SHA-256 and syntax PASS; browser layout regression runs separately.
+
+proofs run: 4
+every composed cartridge passed its generation-matched proof
+exit=0
+
+### node tools/scope/verify-compose.mjs
+{"composition":"PASS","generation":"202609241334","release_id":"202608300453-atlas-v9","immutable_releases":8,"cartridges":["streaming-parquet-bridge","uk-gazetteer-flyto","substation-intelligence","sld-sandbox"]}
+exit=0
+
+### cmp atlas/index.html atlas/v/202610261949/index.html
+exit=0 (0 = byte-identical)
+
+### module byte size
+23973 bytes  atlas/modules/202610261949-uk-lightning-overlay.js
+459192 bytes  atlas/cartridges/202610261949-sld-sandbox-v9-8.js

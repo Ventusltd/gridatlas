@@ -1,0 +1,42 @@
+{
+ "candidate_composition": "PASS",
+ "generation": "202610261949",
+ "cartridges": [
+  {
+   "id": "streaming-parquet-bridge",
+   "generation": "202609241251",
+   "file": "atlas/cartridges/202609241251-streaming-parquet-bridge-v9-5.js",
+   "bytes": 13589,
+   "sha256": "60be8215ba873ac2886786bf6e3fd51e5764e7c5e26684fde71ebe9974a329a2"
+  },
+  {
+   "id": "uk-gazetteer-flyto",
+   "generation": "202609071213",
+   "file": "atlas/cartridges/202609071213-place-global-search-v9-5.js",
+   "bytes": 41120,
+   "sha256": "15f324e5c279050882f7e3ce83a915c070b6ed19095efcac4ae20af4ef19fdfa"
+  },
+  {
+   "id": "substation-intelligence",
+   "generation": "202609062358",
+   "file": "atlas/cartridges/202609062358-substation-intelligence-v9-63.js",
+   "bytes": 451935,
+   "sha256": "d94b0de50deddac77643325b10fbe490ce44b8c406dbc6c67e6e7cadbdaa8ec6"
+  },
+  {
+   "id": "sld-sandbox",
+   "generation": "202610261949",
+   "file": "atlas/cartridges/202610261949-sld-sandbox-v9-8.js",
+   "bytes": 459192,
+   "sha256": "b7d4d6657b1d52624b51a90da477291dbd079fa83adf97b678f4610cd8725f85"
+  }
+ ],
+ "live_pointer": "202609241334",
+ "manifest": {
+  "parent_generation": "202609241334",
+  "composition_id": "202610261949-gridatlas-v9.158",
+  "cut_at_utc": "2026-10-26T19:49:33.906Z",
+  "scope": "Append the UK lightning overlay module (EUMETSAT MTG LI optical flashes; OFF by default; appended last to the Layers panel, fullscreen curtain and Grid footer; .json archive index and day files by fetch, live feed by XMLHttpRequest; 10,000-point phone and 40,000-point desktop caps with clusters above) to the sld-sandbox cartridge as an exact byte delta: live bytes, one newline, the module.",
+  "proof": "tools/proofs/202610261949-sld-sandbox.proof.mjs"
+ }
+}

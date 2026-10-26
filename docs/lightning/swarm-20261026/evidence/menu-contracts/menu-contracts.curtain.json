@@ -1,0 +1,447 @@
+{
+  "started": "2026-10-26T17:10:10.518Z",
+  "runs": [
+    {
+      "viewport": "desktop-1440x900-truefullscreen",
+      "emulation": "Chromium, element fullscreen granted",
+      "steps": {
+        "arrival": {
+          "collapsed": null,
+          "inspect": {
+            "engine": 60,
+            "pipeline": 3,
+            "total": 63,
+            "unique": 63,
+            "complete": true
+          },
+          "requestFullscreen_available": true,
+          "fs_curtain_parent": "BODY",
+          "fs_curtain_inside_map_container": false
+        },
+        "shot_arrival": "desktop-1440x900-truefullscreen-20-arrival.png",
+        "fullscreen_state": {
+          "fs_active_body": true,
+          "fullscreenElement": "map-container",
+          "curtain_inside_fullscreen_element": false,
+          "scada_inside_fullscreen_element": false,
+          "bar_inside_fullscreen_element": true,
+          "curtain_display": "block",
+          "letterhead_display": "none",
+          "dash_toggle_hidden": true,
+          "map_container_class": "map-container is-fullscreen"
+        },
+        "curtain_tab": {
+          "rect": [
+            1007,
+            607,
+            374,
+            44
+          ],
+          "top": "DIV#fs-curtain-tab.",
+          "hit_ok": true
+        },
+        "shot_grid_fs": "desktop-1440x900-truefullscreen-21-fullscreen-grid-open.png",
+        "curtain_after_tab": {
+          "curtain_open": true,
+          "rect": [
+            0,
+            0,
+            1440,
+            630
+          ],
+          "transform": "matrix(1, 0, 0, 1, 0, 0)",
+          "zIndex": "505",
+          "position": "fixed",
+          "tab_text": "⬆ Close",
+          "keys_cols": "696px 696px",
+          "scrollHeight": 1420,
+          "clientHeight": 629
+        },
+        "shot_curtain": "desktop-1440x900-truefullscreen-22-fullscreen-curtain-open.png",
+        "hit_curtain_400": {
+          "rect": [
+            30,
+            66,
+            17,
+            17
+          ],
+          "top": "CANVAS#.maplibregl-canvas",
+          "hit_ok": false
+        },
+        "hit_curtain_dc": {
+          "rect": [
+            742,
+            147,
+            17,
+            17
+          ],
+          "top": "CANVAS#.maplibregl-canvas",
+          "hit_ok": false
+        },
+        "curtain_click_dc": {
+          "performed": false,
+          "refusal": "locator.click: Timeout 30000ms exceeded. | <canvas tabindex=\"0\" width=\"1440\" height=\"900\" role=\"region\" aria-label=\"Map\" class=\"maplibregl-canvas\"></canvas> from <div class=\"dashboard\">…</div> subtree in"
+        },
+        "curtain_append": {
+          "probe": {
+            "rect": [
+              728,
+              1302,
+              696,
+              98
+            ],
+            "group_index": 13
+          },
+          "shift": {
+            "total": 63,
+            "moved": 0,
+            "examples": []
+          }
+        },
+        "curtain_prepend": {
+          "probe": {
+            "rect": [
+              16,
+              48,
+              696,
+              206
+            ],
+            "group_index": 0
+          },
+          "shift": {
+            "total": 63,
+            "moved": 63,
+            "examples": [
+              "engine:400 [30,66.1,16.9,16.9]->[742,66.1,16.9,16.9]",
+              "engine:275 [30,93.1,16.9,16.9]->[742,93.1,16.9,16.9]",
+              "engine:220 [30,120.1,16.9,16.9]->[742,120.1,16.9,16.9]",
+              "engine:132 [30,147.1,16.9,16.9]->[742,147.1,16.9,16.9]"
+            ]
+          }
+        },
+        "exit_button": {
+          "parent": "gridatlas-menu-bar-panel-2",
+          "rect": [
+            108,
+            94,
+            226,
+            44
+          ],
+          "display": "flex"
+        },
+        "exit_performed": true,
+        "after_exit": {
+          "fs_active": false,
+          "fullscreenElement": false,
+          "curtain_display": "none",
+          "inspect": {
+            "engine": 60,
+            "pipeline": 3,
+            "total": 63,
+            "unique": 63,
+            "complete": true
+          },
+          "installed": true,
+          "curtain_groups": 13
+        }
+      },
+      "page_errors": []
+    },
+    {
+      "viewport": "android-393x852-truefullscreen",
+      "emulation": "Chromium, element fullscreen granted",
+      "steps": {
+        "arrival": {
+          "collapsed": "1",
+          "inspect": {
+            "engine": 60,
+            "pipeline": 3,
+            "total": 63,
+            "unique": 63,
+            "complete": true
+          },
+          "requestFullscreen_available": true,
+          "fs_curtain_parent": "BODY",
+          "fs_curtain_inside_map_container": false
+        },
+        "shot_arrival": "android-393x852-truefullscreen-20-arrival.png",
+        "fullscreen_state": {
+          "fs_active_body": true,
+          "fullscreenElement": "map-container",
+          "curtain_inside_fullscreen_element": false,
+          "scada_inside_fullscreen_element": false,
+          "bar_inside_fullscreen_element": true,
+          "curtain_display": "block",
+          "letterhead_display": "none",
+          "dash_toggle_hidden": false,
+          "map_container_class": "map-container is-fullscreen"
+        },
+        "curtain_tab": {
+          "rect": [
+            5,
+            792,
+            383,
+            44
+          ],
+          "top": "DIV#fs-curtain-tab.",
+          "hit_ok": true
+        },
+        "shot_grid_fs": "android-393x852-truefullscreen-21-fullscreen-grid-open.png",
+        "curtain_after_tab": {
+          "curtain_open": true,
+          "rect": [
+            0,
+            0,
+            393,
+            596
+          ],
+          "transform": "matrix(1, 0, 0, 1, 0, 0)",
+          "zIndex": "505",
+          "position": "fixed",
+          "tab_text": "⬆ Close",
+          "keys_cols": "361px",
+          "scrollHeight": 2187,
+          "clientHeight": 595
+        },
+        "shot_curtain": "android-393x852-truefullscreen-22-fullscreen-curtain-open.png",
+        "hit_curtain_400": {
+          "rect": [
+            30,
+            66,
+            17,
+            17
+          ],
+          "top": "CANVAS#.maplibregl-canvas",
+          "hit_ok": false
+        },
+        "hit_curtain_dc": {
+          "rect": [
+            30,
+            365,
+            17,
+            17
+          ],
+          "top": "CANVAS#.maplibregl-canvas",
+          "hit_ok": false
+        },
+        "curtain_click_dc": {
+          "performed": false,
+          "refusal": "locator.tap: Timeout 30000ms exceeded. | <canvas tabindex=\"0\" width=\"1080\" role=\"region\" height=\"2343\" aria-label=\"Map\" class=\"maplibregl-canvas\"></canvas> from <div class=\"dashboard\">…</div> subtree i"
+        },
+        "curtain_append": {
+          "probe": {
+            "rect": [
+              16,
+              2179,
+              361,
+              44
+            ],
+            "group_index": 13
+          },
+          "shift": {
+            "total": 63,
+            "moved": 0,
+            "examples": []
+          }
+        },
+        "curtain_prepend": {
+          "probe": {
+            "rect": [
+              16,
+              48,
+              361,
+              44
+            ],
+            "group_index": 0
+          },
+          "shift": {
+            "total": 63,
+            "moved": 63,
+            "examples": [
+              "engine:400 [30,66.1,16.9,16.9]->[30,122.1,16.9,16.9]",
+              "engine:275 [30,93.1,16.9,16.9]->[30,149.1,16.9,16.9]",
+              "engine:220 [30,120.1,16.9,16.9]->[30,176.1,16.9,16.9]",
+              "engine:132 [30,147.1,16.9,16.9]->[30,203.1,16.9,16.9]"
+            ]
+          }
+        },
+        "exit_button": {
+          "parent": "gridatlas-menu-bar-panel-2",
+          "rect": [
+            11,
+            93,
+            371,
+            44
+          ],
+          "display": "flex"
+        },
+        "exit_performed": true,
+        "after_exit": {
+          "fs_active": false,
+          "fullscreenElement": false,
+          "curtain_display": "none",
+          "inspect": {
+            "engine": 60,
+            "pipeline": 3,
+            "total": 63,
+            "unique": 63,
+            "complete": true
+          },
+          "installed": true,
+          "curtain_groups": 13
+        }
+      },
+      "page_errors": []
+    },
+    {
+      "viewport": "iphone-emulation-390x844-cssfullscreen",
+      "emulation": "Chromium emulating iOS Safari: iPhone UA, 390x844, element-fullscreen API removed (WebKit binary absent: BLOCKED_HARNESS)",
+      "steps": {
+        "arrival": {
+          "collapsed": "1",
+          "inspect": {
+            "engine": 60,
+            "pipeline": 3,
+            "total": 63,
+            "unique": 63,
+            "complete": true
+          },
+          "requestFullscreen_available": false,
+          "fs_curtain_parent": "BODY",
+          "fs_curtain_inside_map_container": false
+        },
+        "shot_arrival": "iphone-emulation-390x844-cssfullscreen-20-arrival.png",
+        "fullscreen_state": {
+          "fs_active_body": true,
+          "fullscreenElement": null,
+          "curtain_inside_fullscreen_element": null,
+          "scada_inside_fullscreen_element": null,
+          "bar_inside_fullscreen_element": null,
+          "curtain_display": "block",
+          "letterhead_display": "none",
+          "dash_toggle_hidden": false,
+          "map_container_class": "map-container is-fullscreen"
+        },
+        "curtain_tab": {
+          "rect": [
+            5,
+            784,
+            380,
+            44
+          ],
+          "top": "DIV#fs-curtain-tab.",
+          "hit_ok": true
+        },
+        "shot_grid_fs": "iphone-emulation-390x844-cssfullscreen-21-fullscreen-grid-open.png",
+        "curtain_after_tab": {
+          "curtain_open": true,
+          "rect": [
+            0,
+            0,
+            390,
+            591
+          ],
+          "transform": "matrix(1, 0, 0, 1, 0, 0)",
+          "zIndex": "505",
+          "position": "fixed",
+          "tab_text": "⬆ Close",
+          "keys_cols": "358px",
+          "scrollHeight": 2187,
+          "clientHeight": 590
+        },
+        "shot_curtain": "iphone-emulation-390x844-cssfullscreen-22-fullscreen-curtain-open.png",
+        "hit_curtain_400": {
+          "rect": [
+            30,
+            66,
+            17,
+            17
+          ],
+          "top": "INPUT#.",
+          "hit_ok": true
+        },
+        "hit_curtain_dc": {
+          "rect": [
+            30,
+            365,
+            17,
+            17
+          ],
+          "top": "INPUT#.",
+          "hit_ok": true
+        },
+        "curtain_click_dc": {
+          "performed": true,
+          "curtain": true,
+          "scada": true,
+          "proxy": true,
+          "fs_label": "Data Ctrs [OK]"
+        },
+        "curtain_append": {
+          "probe": {
+            "rect": [
+              16,
+              2179,
+              358,
+              44
+            ],
+            "group_index": 13
+          },
+          "shift": {
+            "total": 63,
+            "moved": 0,
+            "examples": []
+          },
+          "probe_hit": {
+            "rect": [
+              30,
+              544,
+              17,
+              17
+            ],
+            "top": "INPUT#.",
+            "hit_ok": true
+          },
+          "probe_click": {
+            "probe_checked": true,
+            "engine_checked": 0,
+            "pn_checked": 0,
+            "menu": {
+              "engine": 60,
+              "pipeline": 3,
+              "total": 63,
+              "unique": 63,
+              "complete": true
+            },
+            "installed": true
+          },
+          "shot": "iphone-emulation-390x844-cssfullscreen-23-curtain-append-probe.png"
+        },
+        "curtain_prepend": {
+          "probe": {
+            "rect": [
+              16,
+              -1605,
+              358,
+              44
+            ],
+            "group_index": 0
+          },
+          "shift": {
+            "total": 63,
+            "moved": 63,
+            "examples": [
+              "engine:400 [30,66.1,16.9,16.9]->[30,122.1,16.9,16.9]",
+              "engine:275 [30,93.1,16.9,16.9]->[30,149.1,16.9,16.9]",
+              "engine:220 [30,120.1,16.9,16.9]->[30,176.1,16.9,16.9]",
+              "engine:132 [30,147.1,16.9,16.9]->[30,203.1,16.9,16.9]"
+            ]
+          }
+        },
+        "error_shot": "iphone-emulation-390x844-cssfullscreen-97-error.png"
+      },
+      "page_errors": [],
+      "error": "locator.click: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('button', { name: 'View', exact: true })\u001b[22m\n\u001b[2m    - locator resolved to <button type=\"button\" class=\"gm-title\" aria-haspopup=\"menu\" aria-expanded=\"false\" id=\"gridatlas-menu-bar-title-2\" aria-controls=\"gridatlas-menu-bar-panel-2\">View</button>\u001b[22m\n\u001b[2m  - attempting click action\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is visible, enabled and stable\u001b[22m\n\u001b[2m      - scrolling into view if needed\u001b[22m\n\u001b[2m      - done scrolling\u001b[22m\n\u001b[2m      - <div id=\"fs-curtain\" class=\"curtain-open\">…</div> intercepts pointer events\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m    - waiting 20ms\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is visible, enabled and stable\u001b[22m\n\u001b[2m      - scrolling into view if needed\u001b[22m\n\u001b[2m      - done scrolling\u001b[22m\n\u001b[2m      - <div id=\"fs-curtain\" class=\"curtain-open\">…</div"
+    }
+  ]
+}

@@ -1,0 +1,919 @@
+{
+  "started": "2026-10-26T17:05:11.885Z",
+  "runs": [
+    {
+      "viewport": "desktop-1440x900",
+      "steps": {
+        "scada_baseline": {
+          "count": 63,
+          "scrollHeight": 1361,
+          "clientHeight": 342,
+          "first": [
+            14,
+            18,
+            16.9,
+            16.9
+          ],
+          "last_pn": [
+            14,
+            1326.1,
+            16.9,
+            16.9
+          ]
+        },
+        "scada_append": {
+          "probe": {
+            "rel_top": 1254,
+            "rel_left": 709,
+            "width": 697,
+            "height": 98,
+            "scrollHeight": 1361,
+            "clientHeight": 342,
+            "needs_scroll": true,
+            "group_index": 13
+          },
+          "shift": {
+            "total": 63,
+            "moved": 0,
+            "examples": []
+          },
+          "shot": "desktop-1440x900-10-scada-append-probe.png"
+        },
+        "scada_after_remove": {
+          "total": 63,
+          "moved": 0,
+          "examples": []
+        },
+        "scada_prepend": {
+          "probe": {
+            "rel_top": 0,
+            "rel_left": 0,
+            "width": 697,
+            "height": 206,
+            "scrollHeight": 1631,
+            "clientHeight": 342,
+            "needs_scroll": false,
+            "group_index": 0
+          },
+          "shift": {
+            "total": 63,
+            "moved": 63,
+            "examples": [
+              "engine:400 [14,18,16.9,16.9]->[723,18,16.9,16.9]",
+              "engine:275 [14,45,16.9,16.9]->[723,45,16.9,16.9]",
+              "engine:220 [14,72,16.9,16.9]->[723,72,16.9,16.9]",
+              "engine:132 [14,99,16.9,16.9]->[723,99,16.9,16.9]"
+            ]
+          },
+          "shot": "desktop-1440x900-11-scada-prepend-probe.png"
+        },
+        "grid_baseline": {
+          "count": 63,
+          "scrollHeight": 1443,
+          "clientHeight": 512,
+          "column_count": "3",
+          "first": [
+            -10.7,
+            36.4,
+            144.9,
+            57.2
+          ],
+          "last_pn": [
+            240.2,
+            1213,
+            144.9,
+            95.4
+          ]
+        },
+        "grid_append": {
+          "probe": {
+            "label_rect_viewport": [
+              1259,
+              1527,
+              111,
+              59
+            ],
+            "body_rect": [
+              1002,
+              100,
+              374,
+              512
+            ],
+            "panel_rect": [
+              1001,
+              40,
+              376,
+              620
+            ],
+            "body_scrollHeight": 1495,
+            "body_clientHeight": 512,
+            "visible_without_scroll": false
+          },
+          "shift_within_body": {
+            "total": 63,
+            "moved": 19,
+            "examples": [
+              "engine:solar [240.2,21.4,144.9,57.2]->[240.2,-0.6,144.9,57.2]",
+              "engine:solar_operational [240.2,61,144.9,95.4]->[240.2,39,144.9,95.4]",
+              "engine:solar_roof [240.2,136.6,144.9,76.1]->[240.2,114.6,144.9,76.1]",
+              "engine:wind [240.2,197.3,144.9,57.2]->[240.2,175.3,144.9,57.2]"
+            ]
+          },
+          "body_rect_after": [
+            1002,
+            100,
+            374,
+            512
+          ],
+          "body_clientHeight_after": 512,
+          "shot": "desktop-1440x900-12-grid-append-probe.png"
+        },
+        "grid_prepend": {
+          "probe": {
+            "label_rect_viewport": [
+              1008,
+              143,
+              111,
+              59
+            ],
+            "body_rect": [
+              1002,
+              100,
+              374,
+              512
+            ],
+            "panel_rect": [
+              1001,
+              40,
+              376,
+              620
+            ],
+            "body_scrollHeight": 1488,
+            "body_clientHeight": 512,
+            "visible_without_scroll": true
+          },
+          "shift_within_body": {
+            "total": 63,
+            "moved": 44,
+            "examples": [
+              "engine:400 [-10.7,36.4,144.9,57.2]->[-10.7,131.9,144.9,57.2]",
+              "engine:275 [-10.7,80.4,144.9,57.2]->[-10.7,175.9,144.9,57.2]",
+              "engine:220 [-10.7,124.4,144.9,57.2]->[-10.7,219.9,144.9,57.2]",
+              "engine:132 [-10.7,168.4,144.9,57.2]->[-10.7,263.9,144.9,57.2]"
+            ]
+          },
+          "body_rect_after": [
+            1002,
+            100,
+            374,
+            512
+          ],
+          "body_clientHeight_after": 512,
+          "shot": "desktop-1440x900-12-grid-prepend-probe.png"
+        },
+        "grid_head": {
+          "probe": {
+            "label_rect_viewport": [
+              1010,
+              127,
+              358,
+              44
+            ],
+            "body_rect": [
+              1002,
+              171,
+              374,
+              441
+            ],
+            "panel_rect": [
+              1001,
+              40,
+              376,
+              620
+            ],
+            "body_scrollHeight": 1443,
+            "body_clientHeight": 441,
+            "visible_without_scroll": false
+          },
+          "shift_within_body": {
+            "total": 63,
+            "moved": 0,
+            "examples": []
+          },
+          "body_rect_after": [
+            1002,
+            171,
+            374,
+            441
+          ],
+          "body_clientHeight_after": 441,
+          "shot": "desktop-1440x900-12-grid-head-probe.png"
+        },
+        "grid_footer": {
+          "probe": {
+            "label_rect_viewport": [
+              1008,
+              562,
+              362,
+              44
+            ],
+            "body_rect": [
+              1002,
+              100,
+              374,
+              428
+            ],
+            "panel_rect": [
+              1001,
+              40,
+              376,
+              620
+            ],
+            "body_scrollHeight": 1443,
+            "body_clientHeight": 428,
+            "visible_without_scroll": false
+          },
+          "shift_within_body": {
+            "total": 63,
+            "moved": 0,
+            "examples": []
+          },
+          "body_rect_after": [
+            1002,
+            100,
+            374,
+            428
+          ],
+          "body_clientHeight_after": 428,
+          "shot": "desktop-1440x900-12-grid-footer-probe.png"
+        },
+        "fullscreen_button": {
+          "visible": true,
+          "parent": "gridatlas-menu-bar-panel-2",
+          "text": "⛶"
+        },
+        "fs_active": {
+          "body": true,
+          "fullscreenElement": true,
+          "curtain_display": "block",
+          "curtain_open": false,
+          "letterhead_display": "none",
+          "exit_btn_visible": false
+        },
+        "curtain_tab": {
+          "rect": [
+            1007,
+            607,
+            374,
+            44
+          ],
+          "display": "flex",
+          "position": "static",
+          "text": "⬇ Layers",
+          "parent": "gridatlas-menu-bar-panel-4",
+          "top_at_centre": "DIV#fs-curtain-tab"
+        },
+        "curtain_opened_by_real_tab": true,
+        "curtain_geometry": {
+          "curtain": [
+            0,
+            0,
+            1440,
+            630
+          ],
+          "keys": [
+            16,
+            48,
+            1408,
+            1356
+          ],
+          "keys_cols": "696px 696px",
+          "curtain_scrollHeight": 1420,
+          "curtain_clientHeight": 629,
+          "groups": 13,
+          "last_group": "PIPELINE NEWS (REPD)"
+        },
+        "curtain_shot": "desktop-1440x900-13-fullscreen-curtain-open.png",
+        "curtain_hit_dc": {
+          "rect": [
+            742,
+            147,
+            17,
+            17
+          ],
+          "top": "CANVAS#",
+          "hit_ok": false
+        },
+        "error_shot": "desktop-1440x900-98-geometry-error.png"
+      },
+      "page_errors": [],
+      "error": "locator.click: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('#fs-curtain-keys input[data-layer-id=\"dc\"]')\u001b[22m\n\u001b[2m    - locator resolved to <input type=\"checkbox\" data-layer-id=\"dc\"/>\u001b[22m\n\u001b[2m  - attempting click action\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is visible, enabled and stable\u001b[22m\n\u001b[2m      - scrolling into view if needed\u001b[22m\n\u001b[2m      - done scrolling\u001b[22m\n\u001b[2m      - <canvas tabindex=\"0\" width=\"1440\" height=\"900\" role=\"region\" aria-label=\"Map\" class=\"maplibregl-canvas\"></canvas> from <div class=\"dashboard\">…</div> subtree intercepts pointer events\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m    - waiting 20ms\u001b[22m\n\u001b[2m    - waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m    - element is visible, enabled and stable\u001b[22m\n\u001b[2m    - scrolling into view if needed\u001b[22m\n\u001b[2m    - done scrolling\u001b[22m\n\u001b[2m    - <canvas tabindex=\"0\" width=\"1440\" height=\"900\" role=\"region\" aria-label=\"Map\" class=\"maplibregl-canvas\"></canvas> from <div class=\"dashboard\">…</div> subtree intercepts pointer events\u001b[22m\n\u001b[2m  2 × retrying click action\u001b[22m\n\u001b[2m      - waiting 100ms\u001b[22m\n\u001b[2m      - waiti"
+    },
+    {
+      "viewport": "android-393x852",
+      "steps": {
+        "scada_baseline": {
+          "count": 63,
+          "scrollHeight": 2156,
+          "clientHeight": 324,
+          "first": [
+            14,
+            18,
+            16.9,
+            16.9
+          ],
+          "last_pn": [
+            14,
+            2121.1,
+            16.9,
+            16.9
+          ]
+        },
+        "scada_append": {
+          "probe": {
+            "rel_top": 2159,
+            "rel_left": 0,
+            "width": 359,
+            "height": 44,
+            "scrollHeight": 2212,
+            "clientHeight": 324,
+            "needs_scroll": true,
+            "group_index": 13
+          },
+          "shift": {
+            "total": 63,
+            "moved": 0,
+            "examples": []
+          },
+          "shot": "android-393x852-10-scada-append-probe.png"
+        },
+        "scada_after_remove": {
+          "total": 63,
+          "moved": 0,
+          "examples": []
+        },
+        "scada_prepend": {
+          "probe": {
+            "rel_top": 0,
+            "rel_left": 0,
+            "width": 359,
+            "height": 44,
+            "scrollHeight": 2212,
+            "clientHeight": 324,
+            "needs_scroll": false,
+            "group_index": 0
+          },
+          "shift": {
+            "total": 63,
+            "moved": 63,
+            "examples": [
+              "engine:400 [14,18,16.9,16.9]->[14,74,16.9,16.9]",
+              "engine:275 [14,45,16.9,16.9]->[14,101,16.9,16.9]",
+              "engine:220 [14,72,16.9,16.9]->[14,128,16.9,16.9]",
+              "engine:132 [14,99,16.9,16.9]->[14,155,16.9,16.9]"
+            ]
+          },
+          "shot": "android-393x852-11-scada-prepend-probe.png"
+        },
+        "grid_baseline": {
+          "count": 63,
+          "scrollHeight": 3224,
+          "clientHeight": 698,
+          "column_count": "auto",
+          "first": [
+            -48.1,
+            26.4,
+            469.3,
+            57.2
+          ],
+          "last_pn": [
+            -48.1,
+            3051.4,
+            469.3,
+            57.2
+          ]
+        },
+        "grid_append": {
+          "probe": {
+            "label_rect_viewport": [
+              16,
+              3343,
+              361,
+              44
+            ],
+            "body_rect": [
+              10,
+              99,
+              373,
+              698
+            ],
+            "panel_rect": [
+              9,
+              39,
+              375,
+              812
+            ],
+            "body_scrollHeight": 3295,
+            "body_clientHeight": 698,
+            "visible_without_scroll": false
+          },
+          "shift_within_body": {
+            "total": 63,
+            "moved": 0,
+            "examples": []
+          },
+          "body_rect_after": [
+            10,
+            99,
+            373,
+            698
+          ],
+          "body_clientHeight_after": 698,
+          "shot": "android-393x852-12-grid-append-probe.png"
+        },
+        "grid_prepend": {
+          "probe": {
+            "label_rect_viewport": [
+              16,
+              132,
+              361,
+              44
+            ],
+            "body_rect": [
+              10,
+              99,
+              373,
+              698
+            ],
+            "panel_rect": [
+              9,
+              39,
+              375,
+              812
+            ],
+            "body_scrollHeight": 3295,
+            "body_clientHeight": 698,
+            "visible_without_scroll": true
+          },
+          "shift_within_body": {
+            "total": 63,
+            "moved": 63,
+            "examples": [
+              "engine:400 [-48.1,26.4,469.3,57.2]->[-48.1,97.4,469.3,57.2]",
+              "engine:275 [-48.1,70.4,469.3,57.2]->[-48.1,141.4,469.3,57.2]",
+              "engine:220 [-48.1,114.4,469.3,57.2]->[-48.1,185.4,469.3,57.2]",
+              "engine:132 [-48.1,158.4,469.3,57.2]->[-48.1,229.4,469.3,57.2]"
+            ]
+          },
+          "body_rect_after": [
+            10,
+            99,
+            373,
+            698
+          ],
+          "body_clientHeight_after": 698,
+          "shot": "android-393x852-12-grid-prepend-probe.png"
+        },
+        "grid_head": {
+          "probe": {
+            "label_rect_viewport": [
+              18,
+              126,
+              357,
+              44
+            ],
+            "body_rect": [
+              10,
+              170,
+              373,
+              627
+            ],
+            "panel_rect": [
+              9,
+              39,
+              375,
+              812
+            ],
+            "body_scrollHeight": 3224,
+            "body_clientHeight": 627,
+            "visible_without_scroll": false
+          },
+          "shift_within_body": {
+            "total": 63,
+            "moved": 0,
+            "examples": []
+          },
+          "body_rect_after": [
+            10,
+            170,
+            373,
+            627
+          ],
+          "body_clientHeight_after": 627,
+          "shot": "android-393x852-12-grid-head-probe.png"
+        },
+        "grid_footer": {
+          "probe": {
+            "label_rect_viewport": [
+              16,
+              747,
+              361,
+              44
+            ],
+            "body_rect": [
+              10,
+              99,
+              373,
+              614
+            ],
+            "panel_rect": [
+              9,
+              39,
+              375,
+              812
+            ],
+            "body_scrollHeight": 3224,
+            "body_clientHeight": 614,
+            "visible_without_scroll": false
+          },
+          "shift_within_body": {
+            "total": 63,
+            "moved": 0,
+            "examples": []
+          },
+          "body_rect_after": [
+            10,
+            99,
+            373,
+            614
+          ],
+          "body_clientHeight_after": 614,
+          "shot": "android-393x852-12-grid-footer-probe.png"
+        },
+        "fullscreen_button": {
+          "visible": true,
+          "parent": "gridatlas-menu-bar-panel-2",
+          "text": "⛶"
+        },
+        "fs_active": {
+          "body": true,
+          "fullscreenElement": true,
+          "curtain_display": "block",
+          "curtain_open": false,
+          "letterhead_display": "none",
+          "exit_btn_visible": false
+        },
+        "curtain_tab": {
+          "rect": [
+            5,
+            792,
+            383,
+            44
+          ],
+          "display": "flex",
+          "position": "static",
+          "text": "⬇ Layers",
+          "parent": "gridatlas-menu-bar-panel-4",
+          "top_at_centre": "DIV#fs-curtain-tab"
+        },
+        "curtain_opened_by_real_tab": true,
+        "curtain_geometry": {
+          "curtain": [
+            0,
+            0,
+            393,
+            596
+          ],
+          "keys": [
+            16,
+            48,
+            361,
+            2123
+          ],
+          "keys_cols": "361px",
+          "curtain_scrollHeight": 2187,
+          "curtain_clientHeight": 595,
+          "groups": 13,
+          "last_group": "PIPELINE NEWS (REPD)"
+        },
+        "curtain_shot": "android-393x852-13-fullscreen-curtain-open.png",
+        "curtain_hit_dc": {
+          "rect": [
+            30,
+            365,
+            17,
+            17
+          ],
+          "top": "CANVAS#",
+          "hit_ok": false
+        },
+        "error_shot": "android-393x852-98-geometry-error.png"
+      },
+      "page_errors": [],
+      "error": "locator.tap: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('#fs-curtain-keys input[data-layer-id=\"dc\"]')\u001b[22m\n\u001b[2m    - locator resolved to <input type=\"checkbox\" data-layer-id=\"dc\"/>\u001b[22m\n\u001b[2m  - attempting tap action\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is visible, enabled and stable\u001b[22m\n\u001b[2m      - scrolling into view if needed\u001b[22m\n\u001b[2m      - done scrolling\u001b[22m\n\u001b[2m      - <canvas tabindex=\"0\" width=\"1080\" role=\"region\" height=\"2343\" aria-label=\"Map\" class=\"maplibregl-canvas\"></canvas> from <div class=\"dashboard\">…</div> subtree intercepts pointer events\u001b[22m\n\u001b[2m    - retrying tap action\u001b[22m\n\u001b[2m    - waiting 20ms\u001b[22m\n\u001b[2m    - waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m    - element is visible, enabled and stable\u001b[22m\n\u001b[2m    - scrolling into view if needed\u001b[22m\n\u001b[2m    - done scrolling\u001b[22m\n\u001b[2m    - <canvas tabindex=\"0\" width=\"1080\" role=\"region\" height=\"2343\" aria-label=\"Map\" class=\"maplibregl-canvas\"></canvas> from <div class=\"dashboard\">…</div> subtree intercepts pointer events\u001b[22m\n\u001b[2m  2 × retrying tap action\u001b[22m\n\u001b[2m      - waiting 100ms\u001b[22m\n\u001b[2m      - waiting for"
+    },
+    {
+      "viewport": "android-360x740",
+      "steps": {
+        "scada_baseline": {
+          "count": 63,
+          "scrollHeight": 2189,
+          "clientHeight": 281,
+          "first": [
+            14,
+            18,
+            16.9,
+            16.9
+          ],
+          "last_pn": [
+            14,
+            2154.1,
+            16.9,
+            16.9
+          ]
+        },
+        "scada_append": {
+          "probe": {
+            "rel_top": 2192,
+            "rel_left": 0,
+            "width": 326,
+            "height": 44,
+            "scrollHeight": 2245,
+            "clientHeight": 281,
+            "needs_scroll": true,
+            "group_index": 13
+          },
+          "shift": {
+            "total": 63,
+            "moved": 0,
+            "examples": []
+          },
+          "shot": "android-360x740-10-scada-append-probe.png"
+        },
+        "scada_after_remove": {
+          "total": 63,
+          "moved": 0,
+          "examples": []
+        },
+        "scada_prepend": {
+          "probe": {
+            "rel_top": 0,
+            "rel_left": 0,
+            "width": 326,
+            "height": 44,
+            "scrollHeight": 2245,
+            "clientHeight": 281,
+            "needs_scroll": false,
+            "group_index": 0
+          },
+          "shift": {
+            "total": 63,
+            "moved": 63,
+            "examples": [
+              "engine:400 [14,18,16.9,16.9]->[14,74,16.9,16.9]",
+              "engine:275 [14,45,16.9,16.9]->[14,101,16.9,16.9]",
+              "engine:220 [14,72,16.9,16.9]->[14,128,16.9,16.9]",
+              "engine:132 [14,99,16.9,16.9]->[14,155,16.9,16.9]"
+            ]
+          },
+          "shot": "android-360x740-11-scada-prepend-probe.png"
+        },
+        "grid_baseline": {
+          "count": 63,
+          "scrollHeight": 3224,
+          "clientHeight": 586,
+          "column_count": "auto",
+          "first": [
+            -43.2,
+            26.4,
+            426.4,
+            57.2
+          ],
+          "last_pn": [
+            -43.2,
+            3051.4,
+            426.4,
+            57.2
+          ]
+        },
+        "grid_append": {
+          "probe": {
+            "label_rect_viewport": [
+              16,
+              3343,
+              328,
+              44
+            ],
+            "body_rect": [
+              10,
+              99,
+              340,
+              586
+            ],
+            "panel_rect": [
+              9,
+              39,
+              342,
+              700
+            ],
+            "body_scrollHeight": 3295,
+            "body_clientHeight": 586,
+            "visible_without_scroll": false
+          },
+          "shift_within_body": {
+            "total": 63,
+            "moved": 0,
+            "examples": []
+          },
+          "body_rect_after": [
+            10,
+            99,
+            340,
+            586
+          ],
+          "body_clientHeight_after": 586,
+          "shot": "android-360x740-12-grid-append-probe.png"
+        },
+        "grid_prepend": {
+          "probe": {
+            "label_rect_viewport": [
+              16,
+              132,
+              328,
+              44
+            ],
+            "body_rect": [
+              10,
+              99,
+              340,
+              586
+            ],
+            "panel_rect": [
+              9,
+              39,
+              342,
+              700
+            ],
+            "body_scrollHeight": 3295,
+            "body_clientHeight": 586,
+            "visible_without_scroll": true
+          },
+          "shift_within_body": {
+            "total": 63,
+            "moved": 63,
+            "examples": [
+              "engine:400 [-43.2,26.4,426.4,57.2]->[-43.2,97.4,426.4,57.2]",
+              "engine:275 [-43.2,70.4,426.4,57.2]->[-43.2,141.4,426.4,57.2]",
+              "engine:220 [-43.2,114.4,426.4,57.2]->[-43.2,185.4,426.4,57.2]",
+              "engine:132 [-43.2,158.4,426.4,57.2]->[-43.2,229.4,426.4,57.2]"
+            ]
+          },
+          "body_rect_after": [
+            10,
+            99,
+            340,
+            586
+          ],
+          "body_clientHeight_after": 586,
+          "shot": "android-360x740-12-grid-prepend-probe.png"
+        },
+        "grid_head": {
+          "probe": {
+            "label_rect_viewport": [
+              18,
+              126,
+              324,
+              44
+            ],
+            "body_rect": [
+              10,
+              170,
+              340,
+              515
+            ],
+            "panel_rect": [
+              9,
+              39,
+              342,
+              700
+            ],
+            "body_scrollHeight": 3224,
+            "body_clientHeight": 515,
+            "visible_without_scroll": false
+          },
+          "shift_within_body": {
+            "total": 63,
+            "moved": 0,
+            "examples": []
+          },
+          "body_rect_after": [
+            10,
+            170,
+            340,
+            515
+          ],
+          "body_clientHeight_after": 515,
+          "shot": "android-360x740-12-grid-head-probe.png"
+        },
+        "grid_footer": {
+          "probe": {
+            "label_rect_viewport": [
+              16,
+              635,
+              328,
+              44
+            ],
+            "body_rect": [
+              10,
+              99,
+              340,
+              502
+            ],
+            "panel_rect": [
+              9,
+              39,
+              342,
+              700
+            ],
+            "body_scrollHeight": 3224,
+            "body_clientHeight": 502,
+            "visible_without_scroll": false
+          },
+          "shift_within_body": {
+            "total": 63,
+            "moved": 0,
+            "examples": []
+          },
+          "body_rect_after": [
+            10,
+            99,
+            340,
+            502
+          ],
+          "body_clientHeight_after": 502,
+          "shot": "android-360x740-12-grid-footer-probe.png"
+        },
+        "fullscreen_button": {
+          "visible": true,
+          "parent": "gridatlas-menu-bar-panel-2",
+          "text": "⛶"
+        },
+        "fs_active": {
+          "body": true,
+          "fullscreenElement": true,
+          "curtain_display": "block",
+          "curtain_open": false,
+          "letterhead_display": "none",
+          "exit_btn_visible": false
+        },
+        "curtain_tab": {
+          "rect": [
+            5,
+            680,
+            350,
+            44
+          ],
+          "display": "flex",
+          "position": "static",
+          "text": "⬇ Layers",
+          "parent": "gridatlas-menu-bar-panel-4",
+          "top_at_centre": "DIV#fs-curtain-tab"
+        },
+        "curtain_opened_by_real_tab": true,
+        "curtain_geometry": {
+          "curtain": [
+            0,
+            0,
+            360,
+            518
+          ],
+          "keys": [
+            16,
+            48,
+            328,
+            2123
+          ],
+          "keys_cols": "328px",
+          "curtain_scrollHeight": 2187,
+          "curtain_clientHeight": 517,
+          "groups": 13,
+          "last_group": "PIPELINE NEWS (REPD)"
+        },
+        "curtain_shot": "android-360x740-13-fullscreen-curtain-open.png",
+        "curtain_hit_dc": {
+          "rect": [
+            30,
+            365,
+            17,
+            17
+          ],
+          "top": "CANVAS#",
+          "hit_ok": false
+        },
+        "error_shot": "android-360x740-98-geometry-error.png"
+      },
+      "page_errors": [],
+      "error": "locator.tap: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('#fs-curtain-keys input[data-layer-id=\"dc\"]')\u001b[22m\n\u001b[2m    - locator resolved to <input type=\"checkbox\" data-layer-id=\"dc\"/>\u001b[22m\n\u001b[2m  - attempting tap action\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is visible, enabled and stable\u001b[22m\n\u001b[2m      - scrolling into view if needed\u001b[22m\n\u001b[2m      - done scrolling\u001b[22m\n\u001b[2m      - <canvas tabindex=\"0\" width=\"1080\" role=\"region\" height=\"2220\" aria-label=\"Map\" class=\"maplibregl-canvas\"></canvas> from <div class=\"dashboard\">…</div> subtree intercepts pointer events\u001b[22m\n\u001b[2m    - retrying tap action\u001b[22m\n\u001b[2m    - waiting 20ms\u001b[22m\n\u001b[2m    - waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m    - element is visible, enabled and stable\u001b[22m\n\u001b[2m    - scrolling into view if needed\u001b[22m\n\u001b[2m    - done scrolling\u001b[22m\n\u001b[2m    - <canvas tabindex=\"0\" width=\"1080\" role=\"region\" height=\"2220\" aria-label=\"Map\" class=\"maplibregl-canvas\"></canvas> from <div class=\"dashboard\">…</div> subtree intercepts pointer events\u001b[22m\n\u001b[2m  2 × retrying tap action\u001b[22m\n\u001b[2m      - waiting 100ms\u001b[22m\n\u001b[2m      - waiting for"
+    }
+  ]
+}

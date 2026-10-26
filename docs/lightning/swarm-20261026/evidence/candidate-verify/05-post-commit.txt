@@ -1,0 +1,26 @@
+### post-commit re-verification in /tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/lightning/evidence/atlas-implant-builder/wt at 2026-10-26T20:04:04Z, HEAD fda6b10 on candidate/202610261949-uk-lightning-additive
+lint:
+scope-ledger=PASS active=none master=done
+state diff (empty=identical):
+scope-ledger=PASS active=none master=done
+(identical)
+proof:
+SLD exact delta (202609241334 bytes + \n + 202610261949 uk-lightning-overlay module), SHA-256, byte budget, static negatives, static positives and syntax PASS; browser verification runs separately.
+run-current:
+proofs run: 4
+every composed cartridge passed its generation-matched proof
+verify-compose:
+{"composition":"PASS","generation":"202609241334","release_id":"202608300453-atlas-v9","immutable_releases":8,"cartridges":["streaming-parquet-bridge","uk-gazetteer-flyto","substation-intelligence","sld-sandbox"]}
+cmp:
+identical
+baseline sha256:
+     31 OK
+module bytes:
+23973
+git status (worktree):
+## candidate/202610261949-uk-lightning-additive...origin/main [ahead 2]
+main clone:
+## main...origin/main
+c08f3a6
+/home/claude/gridatlas                                                                                                  c08f3a6 [main]
+/tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/lightning/evidence/atlas-implant-builder/wt  fda6b10 [candidate/202610261949-uk-lightning-additive]

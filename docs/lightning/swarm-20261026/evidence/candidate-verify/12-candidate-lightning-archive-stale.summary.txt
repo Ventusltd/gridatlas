@@ -1,0 +1,62 @@
+{
+ "labels": "Lightning flashes (optical) [408 | 7d STALE]",
+ "features": 408,
+ "visibility": "visible",
+ "cluster": false,
+ "stateText": "PARTIAL · 408 FLASHES DRAWN · SEARCHED 56% · STALE",
+ "dot": "rgb(255, 204, 0)",
+ "caption": [
+  "Window  2026-10-19 19:55 UTC → 2026-10-26 19:55 UTC (7 days, latest)",
+  "Actual  first 2026-10-21 12:32:19 UTC · last 2026-10-25 11:15:58 UTC",
+  "Flashes 408 archived in window · 408 drawn as points (index count 408 within the 40,000-point cap for this desktop)",
+  "Refresh archive 2026-10-26 09:37 UTC (10h 18min ago; expected every 1 h) · STALE",
+  "Searched EUMETSAT 56% of window · 17 successful runs · 2026-10-20 22:41 UTC → 2026-10-26 13:00 UTC",
+  "Not yet ingested: last 6h 55min of window (unknown, not zero) · Unknown: 2026-10-19 to 2026-10-20 precede archive start 2026-10-20 22:41 UTC (not zero) · Unknown: 1 of 8 UTC dates have no collection run"
+ ],
+ "requests": [
+  "https://raw.githubusercontent.com/Ventusltd/lightning/main/data/history/index.json",
+  "https://raw.githubusercontent.com/Ventusltd/lightning/main/data/history/days/2026/10/25.json",
+  "https://raw.githubusercontent.com/Ventusltd/lightning/main/data/history/days/2026/10/21.json",
+  "https://raw.githubusercontent.com/Ventusltd/lightning/main/data/history/days/2026/10/22.json",
+  "https://raw.githubusercontent.com/Ventusltd/lightning/main/data/history/days/2026/10/23.json",
+  "https://raw.githubusercontent.com/Ventusltd/lightning/main/data/history/days/2026/10/24.json"
+ ],
+ "bridge": {
+  "intercepted": 0,
+  "failures": 0
+ },
+ "last": {
+  "state": "PARTIAL",
+  "stale": true,
+  "mode": "detail",
+  "period": "7d",
+  "drawn": 408,
+  "cluster": false,
+  "cap": 40000,
+  "cap_source": "index",
+  "index_count": 408,
+  "failures": 0,
+  "reasons": [
+   "tail not yet ingested",
+   "head before archive start",
+   "1 dates without a scan window"
+  ]
+ },
+ "moduleErrors": [],
+ "beforePoints": null,
+ "offAgain": {
+  "layer": false,
+  "styleLayers": 100
+ },
+ "afterReload": [
+  false,
+  false,
+  false
+ ],
+ "pageErrors": [],
+ "toggles_on": [
+  true,
+  true,
+  true
+ ]
+}

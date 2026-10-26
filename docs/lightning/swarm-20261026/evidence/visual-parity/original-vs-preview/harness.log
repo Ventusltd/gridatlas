@@ -1,0 +1,213 @@
+[2026-10-26T17:29:44.720Z] chromium 153.0.8010.12 | out=/tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/lightning/evidence/atlas-visual-parity/runs/original-vs-preview | shim=/tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/lightning/harness/offline-shim.mjs | fixtures=none | threshold=0.1% channel>16 | geometry tol=1px
+[2026-10-26T17:29:44.721Z] masks=["#clock","#date","#days"] + live-count suffixes + map canvas (.maplibregl-canvas); additive=["[data-weather-group],[data-weather-native-group],[data-gridatlas-layer-key=\"weather:uk_lightning\"]"]
+[2026-10-26T17:29:44.722Z] [original] viewport desktop-1440x900: desktop Chromium, mouse pointer
+[2026-10-26T17:29:44.732Z] fixtures: NONE (all external requests go to the network as-is)
+[2026-10-26T17:29:45.403Z]   offline shim installed on page (/tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/lightning/harness/offline-shim.mjs)
+[2026-10-26T17:29:45.520Z]   wait goto:domcontentloaded @117ms
+[2026-10-26T17:29:46.427Z]   wait composer:document.write-complete @1024ms {"generation":"202609241334","router":null,"title":"GlobalGrid2050 | UK Region v8 (Experimental)"}
+[2026-10-26T17:29:48.984Z]   wait shim:waitForComposition(menuBar.installed) @3581ms {"engine":120,"pn":6,"scada":true,"curtain":true,"menuInstalled":true,"map":true,"waitedMs":2553}
+[2026-10-26T17:29:50.091Z]   wait menu-bar:6-titles+>=60-proxies @4688ms
+[2026-10-26T17:29:50.907Z]   wait weather-module:installed-or-absent @5504ms
+[2026-10-26T17:29:52.684Z]   wait networkidle @7281ms
+[2026-10-26T17:29:55.685Z]   wait fixed-settle:3000ms @10282ms
+[2026-10-26T17:29:56.046Z]   [original/desktop-1440x900/initial] 
+[2026-10-26T17:29:56.844Z]   [original/desktop-1440x900/layers] already open on arrival (desktop default); screenshot equals initial state apart from clocks
+[2026-10-26T17:29:58.638Z]   [original/desktop-1440x900/grid] opened "Grid" by real click (aria-expanded=true)
+[2026-10-26T17:29:59.953Z]   [original/desktop-1440x900/about] opened "About" by real click (aria-expanded=true)
+[2026-10-26T17:30:05.266Z]   [original/desktop-1440x900/fullscreen] opened "View" by real click (aria-expanded=true); entered fullscreen by real click on #btn-fullscreen (body.fs-active); curtain opened by real click on #fs-curtain-tab
+[2026-10-26T17:30:07.452Z]   wait goto:domcontentloaded @173ms
+[2026-10-26T17:30:08.713Z]   wait composer:document.write-complete @1434ms {"generation":"202609241334","router":null,"title":"GlobalGrid2050 | UK Region v8 (Experimental)"}
+[2026-10-26T17:30:16.776Z]   wait shim:waitForComposition(menuBar.installed) @9497ms {"engine":120,"pn":6,"scada":true,"curtain":true,"menuInstalled":true,"map":true,"waitedMs":8063}
+[2026-10-26T17:30:19.757Z]   wait menu-bar:6-titles+>=60-proxies @12478ms
+[2026-10-26T17:30:22.112Z]   wait weather-module:installed-or-absent @14833ms
+[2026-10-26T17:30:22.112Z]   wait networkidle @14833ms
+[2026-10-26T17:30:25.145Z]   wait fixed-settle:3000ms @17866ms
+[2026-10-26T17:30:31.217Z]   [original/desktop-1440x900/deeplink] deep link http://127.0.0.1:8102/gridatlas/atlas/?technology=solar&latitude=52.6369&longitude=-1.1398&zoom=10&project=GRIDATLAS_PROOF_controls&capacity_mw=10 -> card present
+[2026-10-26T17:30:31.257Z] [original] viewport android-393x852: Android Chrome emulation (Pixel 8 geometry, touch, mobile UA)
+[2026-10-26T17:30:31.267Z] fixtures: NONE (all external requests go to the network as-is)
+[2026-10-26T17:30:31.378Z]   offline shim installed on page (/tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/lightning/harness/offline-shim.mjs)
+[2026-10-26T17:30:31.479Z]   wait goto:domcontentloaded @101ms
+[2026-10-26T17:30:32.142Z]   wait composer:document.write-complete @764ms {"generation":"202609241334","router":null,"title":"GlobalGrid2050 | UK Region v8 (Experimental)"}
+[2026-10-26T17:30:34.624Z]   wait shim:waitForComposition(menuBar.installed) @3246ms {"engine":120,"pn":6,"scada":true,"curtain":true,"menuInstalled":true,"map":true,"waitedMs":2482}
+[2026-10-26T17:30:35.222Z]   wait menu-bar:6-titles+>=60-proxies @3844ms
+[2026-10-26T17:30:35.741Z]   wait weather-module:installed-or-absent @4363ms
+[2026-10-26T17:30:35.771Z]   wait networkidle @4393ms
+[2026-10-26T17:30:38.773Z]   wait fixed-settle:3000ms @7395ms
+[2026-10-26T17:30:39.150Z]   [original/android-393x852/initial] 
+[2026-10-26T17:30:40.216Z]   [original/android-393x852/layers] opened by real tap on #gridatlas-dash-toggle
+[2026-10-26T17:30:41.626Z]   [original/android-393x852/grid] opened "Grid" by real tap (aria-expanded=true)
+[2026-10-26T17:30:42.582Z]   [original/android-393x852/about] opened "About" by real tap (aria-expanded=true)
+[2026-10-26T17:30:46.077Z]   [original/android-393x852/fullscreen] opened "View" by real tap (aria-expanded=true); entered fullscreen by real click on #btn-fullscreen (body.fs-active); curtain opened by real click on #fs-curtain-tab
+[2026-10-26T17:30:47.397Z]   wait goto:domcontentloaded @134ms
+[2026-10-26T17:30:47.915Z]   wait composer:document.write-complete @652ms {"generation":"202609241334","router":null,"title":"GlobalGrid2050 | UK Region v8 (Experimental)"}
+[2026-10-26T17:30:51.377Z]   wait shim:waitForComposition(menuBar.installed) @4114ms {"engine":120,"pn":6,"scada":true,"curtain":true,"menuInstalled":true,"map":true,"waitedMs":3462}
+[2026-10-26T17:30:52.532Z]   wait menu-bar:6-titles+>=60-proxies @5269ms
+[2026-10-26T17:30:52.897Z]   wait weather-module:installed-or-absent @5634ms
+[2026-10-26T17:30:52.946Z]   wait networkidle @5683ms
+[2026-10-26T17:30:55.969Z]   wait fixed-settle:3000ms @8706ms
+[2026-10-26T17:30:58.486Z]   [original/android-393x852/deeplink] deep link http://127.0.0.1:8102/gridatlas/atlas/?technology=solar&latitude=52.6369&longitude=-1.1398&zoom=10&project=GRIDATLAS_PROOF_controls&capacity_mw=10 -> card present
+[2026-10-26T17:30:58.513Z] [original] viewport android-360x740: Android Chrome emulation (small phone geometry, touch, mobile UA)
+[2026-10-26T17:30:58.540Z] fixtures: NONE (all external requests go to the network as-is)
+[2026-10-26T17:30:59.060Z]   offline shim installed on page (/tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/lightning/harness/offline-shim.mjs)
+[2026-10-26T17:30:59.111Z]   wait goto:domcontentloaded @51ms
+[2026-10-26T17:30:59.682Z]   wait composer:document.write-complete @622ms {"generation":"202609241334","router":null,"title":"GlobalGrid2050 | UK Region v8 (Experimental)"}
+[2026-10-26T17:31:01.931Z]   wait shim:waitForComposition(menuBar.installed) @2871ms {"engine":120,"pn":6,"scada":true,"curtain":true,"menuInstalled":true,"map":true,"waitedMs":2249}
+[2026-10-26T17:31:02.223Z]   wait menu-bar:6-titles+>=60-proxies @3163ms
+[2026-10-26T17:31:02.320Z]   wait weather-module:installed-or-absent @3260ms
+[2026-10-26T17:31:02.870Z]   wait networkidle @3810ms
+[2026-10-26T17:31:05.871Z]   wait fixed-settle:3000ms @6811ms
+[2026-10-26T17:31:06.690Z]   [original/android-360x740/initial] 
+[2026-10-26T17:31:07.772Z]   [original/android-360x740/layers] opened by real tap on #gridatlas-dash-toggle
+[2026-10-26T17:31:09.071Z]   [original/android-360x740/grid] opened "Grid" by real tap (aria-expanded=true)
+[2026-10-26T17:31:10.686Z]   [original/android-360x740/about] opened "About" by real tap (aria-expanded=true)
+[2026-10-26T17:31:13.815Z]   [original/android-360x740/fullscreen] opened "View" by real tap (aria-expanded=true); entered fullscreen by real click on #btn-fullscreen (body.fs-active); curtain opened by real click on #fs-curtain-tab
+[2026-10-26T17:31:15.490Z]   wait goto:domcontentloaded @139ms
+[2026-10-26T17:31:16.026Z]   wait composer:document.write-complete @675ms {"generation":"202609241334","router":null,"title":"GlobalGrid2050 | UK Region v8 (Experimental)"}
+[2026-10-26T17:31:23.335Z]   wait shim:waitForComposition(menuBar.installed) @7984ms {"engine":120,"pn":6,"scada":true,"curtain":true,"menuInstalled":true,"map":true,"waitedMs":7309}
+[2026-10-26T17:31:23.662Z]   wait menu-bar:6-titles+>=60-proxies @8311ms
+[2026-10-26T17:31:25.911Z]   wait weather-module:installed-or-absent @10560ms
+[2026-10-26T17:31:25.912Z]   wait networkidle @10561ms
+[2026-10-26T17:31:28.928Z]   wait fixed-settle:3000ms @13577ms
+[2026-10-26T17:31:32.045Z]   [original/android-360x740/deeplink] deep link http://127.0.0.1:8102/gridatlas/atlas/?technology=solar&latitude=52.6369&longitude=-1.1398&zoom=10&project=GRIDATLAS_PROOF_controls&capacity_mw=10 -> card present
+[2026-10-26T17:31:32.086Z] [original] viewport iphone-390x844-geometry-only: GEOMETRY-ONLY: Chromium with an iPhone user agent. WebKit is not installed, so Safari rendering, 100dvh/safe-area are NOT represented. Element.requestFullscreen/webkitRequestFullscreen are removed by an init script to mirror iOS Safari (no element fullscreen on a div), so the shell takes its CSS-only fullscreen path (enterFullscreen, substation-intelligence cartridge lines 449-451) and the #fs-curtain surface is painted.
+[2026-10-26T17:31:32.139Z] fixtures: NONE (all external requests go to the network as-is)
+[2026-10-26T17:31:32.140Z]   init-script: element Fullscreen API removed (iOS Safari emulation; CSS-only fullscreen path)
+[2026-10-26T17:31:32.240Z]   offline shim installed on page (/tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/lightning/harness/offline-shim.mjs)
+[2026-10-26T17:31:32.294Z]   wait goto:domcontentloaded @54ms
+[2026-10-26T17:31:33.589Z]   wait composer:document.write-complete @1349ms {"generation":"202609241334","router":null,"title":"GlobalGrid2050 | UK Region v8 (Experimental)"}
+[2026-10-26T17:31:35.964Z]   wait shim:waitForComposition(menuBar.installed) @3724ms {"engine":120,"pn":6,"scada":true,"curtain":true,"menuInstalled":true,"map":true,"waitedMs":2374}
+[2026-10-26T17:31:36.742Z]   wait menu-bar:6-titles+>=60-proxies @4502ms
+[2026-10-26T17:31:38.259Z]   wait weather-module:installed-or-absent @6019ms
+[2026-10-26T17:31:38.924Z]   wait networkidle @6684ms
+[2026-10-26T17:31:41.925Z]   wait fixed-settle:3000ms @9685ms
+[2026-10-26T17:31:42.528Z]   [original/iphone-390x844-geometry-only/initial] 
+[2026-10-26T17:31:43.202Z]   [original/iphone-390x844-geometry-only/layers] opened by real tap on #gridatlas-dash-toggle
+[2026-10-26T17:31:44.273Z]   [original/iphone-390x844-geometry-only/grid] opened "Grid" by real tap (aria-expanded=true)
+[2026-10-26T17:31:45.593Z]   [original/iphone-390x844-geometry-only/about] opened "About" by real tap (aria-expanded=true)
+[2026-10-26T17:31:49.331Z]   [original/iphone-390x844-geometry-only/fullscreen] opened "View" by real tap (aria-expanded=true); entered fullscreen by real click on #btn-fullscreen (body.fs-active); curtain opened by real click on #fs-curtain-tab
+[2026-10-26T17:31:57.471Z]   wait goto:domcontentloaded @93ms
+[2026-10-26T17:31:57.882Z]   wait composer:document.write-complete @504ms {"generation":"202609241334","router":null,"title":"GlobalGrid2050 | UK Region v8 (Experimental)"}
+[2026-10-26T17:32:03.043Z]   wait shim:waitForComposition(menuBar.installed) @5665ms {"engine":120,"pn":6,"scada":true,"curtain":true,"menuInstalled":true,"map":true,"waitedMs":5161}
+[2026-10-26T17:32:03.791Z]   wait menu-bar:6-titles+>=60-proxies @6413ms
+[2026-10-26T17:32:04.078Z]   wait weather-module:installed-or-absent @6700ms
+[2026-10-26T17:32:04.128Z]   wait networkidle @6750ms
+[2026-10-26T17:32:07.255Z]   wait fixed-settle:3000ms @9877ms
+[2026-10-26T17:32:10.221Z]   [original/iphone-390x844-geometry-only/deeplink] deep link http://127.0.0.1:8102/gridatlas/atlas/?technology=solar&latitude=52.6369&longitude=-1.1398&zoom=10&project=GRIDATLAS_PROOF_controls&capacity_mw=10 -> card present
+[2026-10-26T17:32:10.342Z] [preview-v5] viewport desktop-1440x900: desktop Chromium, mouse pointer
+[2026-10-26T17:32:10.359Z] fixtures: NONE (all external requests go to the network as-is)
+[2026-10-26T17:32:10.443Z]   offline shim installed on page (/tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/lightning/harness/offline-shim.mjs)
+[2026-10-26T17:32:10.492Z]   wait goto:domcontentloaded @49ms
+[2026-10-26T17:32:11.113Z]   wait composer:document.write-complete @670ms {"generation":"202610261500","router":null,"title":"GlobalGrid2050 | UK Region v8 (Experimental)"}
+[2026-10-26T17:32:15.429Z]   wait shim:waitForComposition(menuBar.installed) @4986ms {"engine":120,"pn":6,"scada":true,"curtain":true,"menuInstalled":true,"map":true,"waitedMs":4316}
+[2026-10-26T17:32:17.217Z]   wait menu-bar:6-titles+>=60-proxies @6774ms
+[2026-10-26T17:32:19.399Z]   wait weather-module:installed-or-absent @8956ms
+[2026-10-26T17:32:19.399Z]   wait networkidle @8956ms
+[2026-10-26T17:32:22.400Z]   wait fixed-settle:3000ms @11957ms
+[2026-10-26T17:32:23.039Z]   [preview-v5/desktop-1440x900/initial] 
+[2026-10-26T17:32:23.256Z]   [preview-v5/desktop-1440x900/layers] already open on arrival (desktop default); screenshot equals initial state apart from clocks
+[2026-10-26T17:32:24.722Z]   [preview-v5/desktop-1440x900/grid] opened "Grid" by real click (aria-expanded=true)
+[2026-10-26T17:32:27.031Z]   [preview-v5/desktop-1440x900/about] opened "About" by real click (aria-expanded=true)
+[2026-10-26T17:32:31.635Z]   [preview-v5/desktop-1440x900/fullscreen] opened "View" by real click (aria-expanded=true); entered fullscreen by real click on #btn-fullscreen (body.fs-active); curtain opened by real click on #fs-curtain-tab
+[2026-10-26T17:32:33.854Z]   wait goto:domcontentloaded @346ms
+[2026-10-26T17:32:34.489Z]   wait composer:document.write-complete @981ms {"generation":"202610261500","router":null,"title":"GlobalGrid2050 | UK Region v8 (Experimental)"}
+[2026-10-26T17:32:44.325Z]   wait shim:waitForComposition(menuBar.installed) @10817ms {"engine":120,"pn":6,"scada":true,"curtain":true,"menuInstalled":true,"map":true,"waitedMs":9836}
+[2026-10-26T17:32:47.150Z]   wait menu-bar:6-titles+>=60-proxies @13642ms
+[2026-10-26T17:32:49.946Z]   wait weather-module:installed-or-absent @16438ms
+[2026-10-26T17:32:49.946Z]   wait networkidle @16438ms
+[2026-10-26T17:32:52.955Z]   wait fixed-settle:3000ms @19447ms
+[2026-10-26T17:32:59.036Z]   [preview-v5/desktop-1440x900/deeplink] deep link http://127.0.0.1:8102/gridatlas/atlas/preview/lightning/?technology=solar&latitude=52.6369&longitude=-1.1398&zoom=10&project=GRIDATLAS_PROOF_controls&capacity_mw=10 -> card present
+[2026-10-26T17:32:59.426Z] [preview-v5] viewport android-393x852: Android Chrome emulation (Pixel 8 geometry, touch, mobile UA)
+[2026-10-26T17:32:59.450Z] fixtures: NONE (all external requests go to the network as-is)
+[2026-10-26T17:32:59.813Z]   offline shim installed on page (/tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/lightning/harness/offline-shim.mjs)
+[2026-10-26T17:32:59.872Z]   wait goto:domcontentloaded @59ms
+[2026-10-26T17:33:00.296Z]   wait composer:document.write-complete @483ms {"generation":"202610261500","router":null,"title":"GlobalGrid2050 | UK Region v8 (Experimental)"}
+[2026-10-26T17:33:03.069Z]   wait shim:waitForComposition(menuBar.installed) @3256ms {"engine":120,"pn":6,"scada":true,"curtain":true,"menuInstalled":true,"map":true,"waitedMs":2773}
+[2026-10-26T17:33:04.174Z]   wait menu-bar:6-titles+>=60-proxies @4361ms
+[2026-10-26T17:33:07.023Z]   wait weather-module:installed-or-absent @7210ms
+[2026-10-26T17:33:07.023Z]   wait networkidle @7210ms
+[2026-10-26T17:33:10.024Z]   wait fixed-settle:3000ms @10211ms
+[2026-10-26T17:33:10.603Z]   [preview-v5/android-393x852/initial] 
+[2026-10-26T17:33:11.824Z]   [preview-v5/android-393x852/layers] opened by real tap on #gridatlas-dash-toggle
+[2026-10-26T17:33:12.993Z]   [preview-v5/android-393x852/grid] opened "Grid" by real tap (aria-expanded=true)
+[2026-10-26T17:33:14.277Z]   [preview-v5/android-393x852/about] opened "About" by real tap (aria-expanded=true)
+[2026-10-26T17:33:17.715Z]   [preview-v5/android-393x852/fullscreen] opened "View" by real tap (aria-expanded=true); entered fullscreen by real click on #btn-fullscreen (body.fs-active); curtain opened by real click on #fs-curtain-tab
+[2026-10-26T17:33:18.894Z]   wait goto:domcontentloaded @112ms
+[2026-10-26T17:33:19.650Z]   wait composer:document.write-complete @868ms {"generation":"202610261500","router":null,"title":"GlobalGrid2050 | UK Region v8 (Experimental)"}
+[2026-10-26T17:33:23.140Z]   wait shim:waitForComposition(menuBar.installed) @4358ms {"engine":120,"pn":6,"scada":true,"curtain":true,"menuInstalled":true,"map":true,"waitedMs":3490}
+[2026-10-26T17:33:23.566Z]   wait menu-bar:6-titles+>=60-proxies @4784ms
+[2026-10-26T17:33:26.435Z]   wait weather-module:installed-or-absent @7653ms
+[2026-10-26T17:33:26.435Z]   wait networkidle @7653ms
+[2026-10-26T17:33:29.437Z]   wait fixed-settle:3000ms @10655ms
+[2026-10-26T17:33:32.366Z]   [preview-v5/android-393x852/deeplink] deep link http://127.0.0.1:8102/gridatlas/atlas/preview/lightning/?technology=solar&latitude=52.6369&longitude=-1.1398&zoom=10&project=GRIDATLAS_PROOF_controls&capacity_mw=10 -> card present
+[2026-10-26T17:33:32.395Z] [preview-v5] viewport android-360x740: Android Chrome emulation (small phone geometry, touch, mobile UA)
+[2026-10-26T17:33:32.438Z] fixtures: NONE (all external requests go to the network as-is)
+[2026-10-26T17:33:33.307Z]   offline shim installed on page (/tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/lightning/harness/offline-shim.mjs)
+[2026-10-26T17:33:33.639Z]   wait goto:domcontentloaded @332ms
+[2026-10-26T17:33:35.296Z]   wait composer:document.write-complete @1989ms {"generation":"202610261500","router":null,"title":"GlobalGrid2050 | UK Region v8 (Experimental)"}
+[2026-10-26T17:33:37.071Z]   wait shim:waitForComposition(menuBar.installed) @3764ms {"engine":120,"pn":6,"scada":true,"curtain":true,"menuInstalled":true,"map":true,"waitedMs":1775}
+[2026-10-26T17:33:37.476Z]   wait menu-bar:6-titles+>=60-proxies @4169ms
+[2026-10-26T17:33:37.942Z]   wait weather-module:installed-or-absent @4635ms
+[2026-10-26T17:33:39.578Z]   wait networkidle @6271ms
+[2026-10-26T17:33:42.605Z]   wait fixed-settle:3000ms @9298ms
+[2026-10-26T17:33:43.640Z]   [preview-v5/android-360x740/initial] 
+[2026-10-26T17:33:44.839Z]   [preview-v5/android-360x740/layers] opened by real tap on #gridatlas-dash-toggle
+[2026-10-26T17:33:46.248Z]   [preview-v5/android-360x740/grid] opened "Grid" by real tap (aria-expanded=true)
+[2026-10-26T17:33:47.650Z]   [preview-v5/android-360x740/about] opened "About" by real tap (aria-expanded=true)
+[2026-10-26T17:33:51.829Z]   [preview-v5/android-360x740/fullscreen] opened "View" by real tap (aria-expanded=true); entered fullscreen by real click on #btn-fullscreen (body.fs-active); curtain opened by real click on #fs-curtain-tab
+[2026-10-26T17:33:53.680Z]   wait goto:domcontentloaded @106ms
+[2026-10-26T17:33:54.669Z]   wait composer:document.write-complete @1095ms {"generation":"202610261500","router":null,"title":"GlobalGrid2050 | UK Region v8 (Experimental)"}
+[2026-10-26T17:33:58.470Z]   wait shim:waitForComposition(menuBar.installed) @4896ms {"engine":120,"pn":6,"scada":true,"curtain":true,"menuInstalled":true,"map":true,"waitedMs":3801}
+[2026-10-26T17:33:59.599Z]   wait menu-bar:6-titles+>=60-proxies @6025ms
+[2026-10-26T17:34:01.115Z]   wait weather-module:installed-or-absent @7541ms
+[2026-10-26T17:34:01.115Z]   wait networkidle @7541ms
+[2026-10-26T17:34:04.127Z]   wait fixed-settle:3000ms @10553ms
+[2026-10-26T17:34:07.176Z]   [preview-v5/android-360x740/deeplink] deep link http://127.0.0.1:8102/gridatlas/atlas/preview/lightning/?technology=solar&latitude=52.6369&longitude=-1.1398&zoom=10&project=GRIDATLAS_PROOF_controls&capacity_mw=10 -> card present
+[2026-10-26T17:34:07.215Z] [preview-v5] viewport iphone-390x844-geometry-only: GEOMETRY-ONLY: Chromium with an iPhone user agent. WebKit is not installed, so Safari rendering, 100dvh/safe-area are NOT represented. Element.requestFullscreen/webkitRequestFullscreen are removed by an init script to mirror iOS Safari (no element fullscreen on a div), so the shell takes its CSS-only fullscreen path (enterFullscreen, substation-intelligence cartridge lines 449-451) and the #fs-curtain surface is painted.
+[2026-10-26T17:34:07.263Z] fixtures: NONE (all external requests go to the network as-is)
+[2026-10-26T17:34:07.264Z]   init-script: element Fullscreen API removed (iOS Safari emulation; CSS-only fullscreen path)
+[2026-10-26T17:34:07.591Z]   offline shim installed on page (/tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/lightning/harness/offline-shim.mjs)
+[2026-10-26T17:34:07.872Z]   wait goto:domcontentloaded @281ms
+[2026-10-26T17:34:08.752Z]   wait composer:document.write-complete @1161ms {"generation":"202610261500","router":null,"title":"GlobalGrid2050 | UK Region v8 (Experimental)"}
+[2026-10-26T17:34:11.629Z]   wait shim:waitForComposition(menuBar.installed) @4038ms {"engine":120,"pn":6,"scada":true,"curtain":true,"menuInstalled":true,"map":true,"waitedMs":2877}
+[2026-10-26T17:34:12.775Z]   wait menu-bar:6-titles+>=60-proxies @5184ms
+[2026-10-26T17:34:13.656Z]   wait weather-module:installed-or-absent @6065ms
+[2026-10-26T17:34:14.157Z]   wait networkidle @6565ms
+[2026-10-26T17:34:17.169Z]   wait fixed-settle:3000ms @9578ms
+[2026-10-26T17:34:17.691Z]   [preview-v5/iphone-390x844-geometry-only/initial] 
+[2026-10-26T17:34:18.724Z]   [preview-v5/iphone-390x844-geometry-only/layers] opened by real tap on #gridatlas-dash-toggle
+[2026-10-26T17:34:20.011Z]   [preview-v5/iphone-390x844-geometry-only/grid] opened "Grid" by real tap (aria-expanded=true)
+[2026-10-26T17:34:21.599Z]   [preview-v5/iphone-390x844-geometry-only/about] opened "About" by real tap (aria-expanded=true)
+[2026-10-26T17:34:25.430Z]   [preview-v5/iphone-390x844-geometry-only/fullscreen] opened "View" by real tap (aria-expanded=true); entered fullscreen by real click on #btn-fullscreen (body.fs-active); curtain opened by real click on #fs-curtain-tab
+[2026-10-26T17:34:33.914Z]   wait goto:domcontentloaded @62ms
+[2026-10-26T17:34:34.238Z]   wait composer:document.write-complete @386ms {"generation":"202610261500","router":null,"title":"GlobalGrid2050 | UK Region v8 (Experimental)"}
+[2026-10-26T17:34:40.314Z]   wait shim:waitForComposition(menuBar.installed) @6462ms {"engine":120,"pn":6,"scada":true,"curtain":true,"menuInstalled":true,"map":true,"waitedMs":6076}
+[2026-10-26T17:34:41.539Z]   wait menu-bar:6-titles+>=60-proxies @7687ms
+[2026-10-26T17:34:42.172Z]   wait weather-module:installed-or-absent @8320ms
+[2026-10-26T17:34:42.174Z]   wait networkidle @8322ms
+[2026-10-26T17:34:45.185Z]   wait fixed-settle:3000ms @11333ms
+[2026-10-26T17:34:47.659Z]   [preview-v5/iphone-390x844-geometry-only/deeplink] deep link http://127.0.0.1:8102/gridatlas/atlas/preview/lightning/?technology=solar&latitude=52.6369&longitude=-1.1398&zoom=10&project=GRIDATLAS_PROOF_controls&capacity_mw=10 -> card present
+[2026-10-26T17:34:49.786Z] DIFF desktop-1440x900/initial: pixels 1.473% (6621/449399, masked 846601) geometry diffs 35 -> FAIL
+[2026-10-26T17:34:50.680Z] DIFF desktop-1440x900/layers: pixels 1.473% (6621/449399, masked 846601) geometry diffs 35 -> FAIL
+[2026-10-26T17:34:51.874Z] DIFF desktop-1440x900/grid: pixels 3.698% (21512/581713, masked 714287) geometry diffs 37 -> FAIL
+[2026-10-26T17:34:52.398Z] DIFF desktop-1440x900/about: pixels 1.206% (6621/548941, masked 747059) geometry diffs 35 -> FAIL
+[2026-10-26T17:34:53.937Z] DIFF desktop-1440x900/fullscreen: pixels 2.701% (18216/674492, masked 621508) geometry diffs 39 -> FAIL
+[2026-10-26T17:34:55.222Z] DIFF desktop-1440x900/deeplink: pixels 1.097% (6625/603872, masked 692128) geometry diffs 35 -> FAIL
+[2026-10-26T17:34:55.515Z] DIFF android-393x852/initial: pixels 0.000% (0/46837, masked 287999) geometry diffs 36 -> FAIL
+[2026-10-26T17:34:56.372Z] DIFF android-393x852/layers: pixels 3.512% (5410/154048, masked 180788) geometry diffs 36 -> FAIL
+[2026-10-26T17:34:57.335Z] DIFF android-393x852/grid: pixels 3.076% (8980/291967, masked 42869) geometry diffs 37 -> FAIL
+[2026-10-26T17:34:57.889Z] DIFF android-393x852/about: pixels 0.000% (0/180890, masked 153946) geometry diffs 36 -> FAIL
+[2026-10-26T17:34:59.702Z] DIFF android-393x852/fullscreen: pixels 3.557% (8281/232834, masked 102002) geometry diffs 40 -> FAIL
+[2026-10-26T17:35:00.298Z] DIFF android-393x852/deeplink: pixels 0.000% (0/45542, masked 289294) geometry diffs 39 -> FAIL
+[2026-10-26T17:35:01.212Z] DIFF android-360x740/initial: pixels 0.000% (0/44377, masked 222023) geometry diffs 36 -> FAIL
+[2026-10-26T17:35:01.673Z] DIFF android-360x740/layers: pixels 3.685% (4707/127748, masked 138652) geometry diffs 36 -> FAIL
+[2026-10-26T17:35:02.311Z] DIFF android-360x740/grid: pixels 3.027% (6913/228356, masked 38044) geometry diffs 37 -> FAIL
+[2026-10-26T17:35:02.852Z] DIFF android-360x740/about: pixels 0.000% (0/173172, masked 93228) geometry diffs 36 -> FAIL
+[2026-10-26T17:35:03.651Z] DIFF android-360x740/fullscreen: pixels 3.619% (6460/178498, masked 87902) geometry diffs 40 -> FAIL
+[2026-10-26T17:35:05.136Z] DIFF android-360x740/deeplink: pixels 0.000% (0/40914, masked 225486) geometry diffs 39 -> FAIL
+[2026-10-26T17:35:05.739Z] DIFF iphone-390x844-geometry-only/initial: pixels 0.000% (0/46633, masked 282527) geometry diffs 36 -> FAIL
+[2026-10-26T17:35:06.896Z] DIFF iphone-390x844-geometry-only/layers: pixels 3.526% (5351/151774, masked 177386) geometry diffs 36 -> FAIL
+[2026-10-26T17:35:07.732Z] DIFF iphone-390x844-geometry-only/grid: pixels 3.127% (8968/286770, masked 42390) geometry diffs 37 -> FAIL
+[2026-10-26T17:35:08.207Z] DIFF iphone-390x844-geometry-only/about: pixels 0.000% (0/179522, masked 149638) geometry diffs 36 -> FAIL
+[2026-10-26T17:35:09.523Z] DIFF iphone-390x844-geometry-only/fullscreen: pixels 4.287% (9805/228740, masked 100420) geometry diffs 40 -> FAIL
+[2026-10-26T17:35:09.978Z] DIFF iphone-390x844-geometry-only/deeplink: pixels 0.000% (0/45714, masked 283446) geometry diffs 39 -> FAIL
+[2026-10-26T17:35:09.996Z] VERDICT FAIL (24 failure records) -> /tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/lightning/evidence/atlas-visual-parity/runs/original-vs-preview/SUMMARY.md
