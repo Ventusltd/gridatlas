@@ -58,3 +58,25 @@ The opt-in agent teams setting may be version-dependent; if it is unavailable, u
 6. Preserve the independent `Ventusltd/lightning` collector and its GitHub Actions schedule.
 
 Tracking issue: https://github.com/Ventusltd/gridatlas/issues/28
+
+
+## Added requirement: exact lightning observation period and one-year historical access
+
+Owner also found the lightning legend did not say **which period** its flash count described. This must be corrected without replacing the original GridAtlas controls or style.
+
+**Approved research reference (do not transplant its markup or CSS):**
+https://globalgrid2050.com/uk_energy_tracking_v6/ and
+- Ventusltd/globalgrid2050/uk_energy_tracking_v6/price_history_chart/control_price_history/control_price_history.js
+- Ventusltd/globalgrid2050/uk_energy_tracking_v6/price_history_chart/load_price_history_data/load_price_history_data.js
+- Ventusltd/globalgrid2050/uk_energy_tracking_v6/generation_history/load_generation_history_data.js
+- Ventusltd/globalgrid2050/uk_energy_tracking_v6/generation_history/generation_daily_mwh_by_technology_fuelhh_index.json
+
+**Isolated proposed data implementation:** draft https://github.com/Ventusltd/lightning/pull/1 and docs/HISTORY_ONE_YEAR.md within that branch. It introduces separate UTC-dated GeoJSON-in-JSON files, an index and a DOM-free date-window loader, with period options 12h, 24h, 48h, 7d, 30d, 3 months, 6 months, 12 months and custom start/end. Long ranges use daily counts in the lightweight index and short ranges load actual dated points.
+
+**Non-negotiable honest labels:** distinguish selected start/end UTC, first and last *actual detections within the selection*, events in the archive vs rendered (with any cap), ingestion time, original EUMETSAT query window, and missing-historical-data/partial-coverage warning. EUMETSAT LI optical flashes are not confirmed ground strikes. Missing days mean UNKNOWN, not "zero lightning". Do not claim a complete prior year: the first archive is prospective plus a partial 7-day seed. Historic backfill must use genuine source products.
+
+**Technical discovery:** the original legacy fetch bridge classifies all paths ending in .geojson, even external ones. The proposed daily historical files end with .json and contain valid GeoJSON FeatureCollections. That bypasses the interception without changing original bridge bytes. Agent transport review must verify this against the production composition and consider the easiest correct method of fetching the short live-window feed too. Do not reintroduce a copied bridge just to fix lightning.
+
+**Review responsibilities:** source/retention/coverage to data-archive agent; date picker, label, pagination and exact observation ranges to time-window UX agent; mobile performance and archival growth to budget agent; screenshot/pixel parity and original behaviour to UI guardian; separate independent final veto remains mandatory.
+
+**Release sequence:** validate data contract in its own repo (draft PR, not merged), then read-only architecture/UX reviews, then owner-approved isolated GridAtlas implant. No auto-merge. GridAtlas live production pointer stays unchanged.
