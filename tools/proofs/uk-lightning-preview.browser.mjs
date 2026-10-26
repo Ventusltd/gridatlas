@@ -26,7 +26,7 @@ const server=createServer((req,res)=>{
 await new Promise(done=>server.listen(0,'127.0.0.1',done));
 const origin='http://127.0.0.1:'+server.address().port;
 const browser=await chromium.launch({headless:true});
-const result={baseline:'202609241334',preview:'202610231505',profiles:[]};
+const result={baseline:'202609241334',preview:'202610261500',profiles:[]};
 const sourceUrl='https://raw.githubusercontent.com/Ventusltd/lightning/main/data/uk_lightning.geojson';
 const fixture={type:'FeatureCollection',features:[
  {type:'Feature',id:'test-real-observation-1',geometry:{type:'Point',coordinates:[-3.9177,49.515301]},properties:{name:'Lightning flash 2026-10-21 12:32 UTC',time_utc:'2026-10-21T12:32:19.282Z',raw_tech:'EUMETSAT optical flash (not a confirmed ground strike)',status:'Satellite detection',source:'EUMETSAT',source_product:'MTG LI L2-LFL'}},
@@ -100,6 +100,17 @@ try {
   assert(menuContract?.complete&&menuContract?.engine===60&&menuContract?.pipeline===3,'Menu 60+3 contract violated');
 
   const page=preview.page;
+  const native=page.locator('#scada-ui-container input[data-weather-layer="uk_lightning"]');
+  const fs=page.locator('#fs-curtain-keys input[data-weather-layer="uk_lightning"]');
+  assert.equal(await native.count(),1,'Lightning missing from the actual LAYERS panel');
+  assert.equal(await fs.count(),1,'Lightning missing from fullscreen layer controls');
+  const nativeStructure=await page.evaluate(()=>({
+    firstGroup:document.querySelector('#scada-ui-container')?.firstElementChild?.getAttribute('data-weather-native-group'),
+    fullFirst:document.querySelector('#fs-curtain-keys')?.firstElementChild?.getAttribute('data-weather-native-group')
+  }));
+  assert.equal(nativeStructure.firstGroup,'layers','Weather is not the first native LAYERS group');
+  assert.equal(nativeStructure.fullFirst,'fullscreen','Weather is not the first fullscreen layer group');
+  record.preview.nativeStructure=nativeStructure;
   const grid=page.getByRole('button',{name:'Grid',exact:true});
   if(await grid.getAttribute('aria-expanded')!=='true')await grid.click();
   const toggle=page.locator('[data-gridatlas-layer-proxy="weather:uk_lightning"]');
@@ -122,6 +133,8 @@ try {
   record.preview.weatherPosition=weatherPosition;
   await page.screenshot({path:path.join(out,'preview-'+width+'-weather-first.png')});
   await toggle.click();
+  assert.equal(await native.isChecked(),true,'Menu ON not synchronised to actual LAYERS');
+  assert.equal(await fs.isChecked(),true,'Menu ON not synchronised to fullscreen');
   await page.waitForFunction(()=>/\[(OK|FAIL|EMPTY)\]/.test(document.getElementById('lbl-uk_lightning')?.textContent||''),null,{timeout:60000});
   const status=await page.locator('#lbl-uk_lightning').textContent();
   assert(status.includes('[OK]'),'UK lightning hydration failed: '+status);
@@ -136,6 +149,21 @@ try {
   await toggle.scrollIntoViewIfNeeded();
   await toggle.click();
   assert.equal(await page.evaluate(()=>window.__GRIDATLAS_V9_MAP__.getLayoutProperty('l-uk_lightning','visibility')),'none');
+  assert.equal(await native.isChecked(),false,'Menu OFF not synchronised to actual LAYERS');
+  if(await grid.getAttribute('aria-expanded')==='true')await grid.click();
+  const dash=page.locator('#gridatlas-dash-toggle');
+  if(!(await native.isVisible())&&await dash.count())await dash.click();
+  assert.equal(await native.isVisible(),true,'Actual LAYERS Weather checkbox is not visible');
+  await native.scrollIntoViewIfNeeded();
+  await page.screenshot({path:path.join(out,'preview-'+width+'-native-layers-weather-visible.png')});
+  await native.click();
+  assert.equal(await toggle.isChecked(),true,'LAYERS ON not synchronised to Grid dropdown');
+  assert.equal(await fs.isChecked(),true,'LAYERS ON not synchronised to fullscreen');
+  assert.equal(await page.evaluate(()=>window.__GRIDATLAS_V9_MAP__.getLayoutProperty('l-uk_lightning','visibility')),'visible');
+  await native.click();
+  assert.equal(await toggle.isChecked(),false,'LAYERS OFF not synchronised to Grid dropdown');
+  assert.equal(await page.evaluate(()=>window.__GRIDATLAS_V9_MAP__.getLayoutProperty('l-uk_lightning','visibility')),'none');
+  record.preview.nativeLayersToggle='PASS: visible, clickable, synchronised in both directions';
   record.pass=true;
   await preview.context.close();
   console.log(JSON.stringify(record));
