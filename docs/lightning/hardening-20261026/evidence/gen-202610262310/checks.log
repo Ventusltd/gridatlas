@@ -1,0 +1,110 @@
+== lint
+scope-ledger=PASS active=none master=done
+exit=0
+== state
+scope-ledger=PASS active=none master=done
+cmp=0
+== new proof
+SLD exact delta (202609241334 bytes + \n + 202610262310 uk-lightning-overlay module), SHA-256, byte budget, static negatives, static positives and syntax PASS; browser verification runs separately.
+exit=0
+== predecessor proof
+SLD exact delta (202609241334 bytes + \n + 202610261949 uk-lightning-overlay module), SHA-256, byte budget, static negatives, static positives and syntax PASS; browser verification runs separately.
+exit=0
+== run-current
+
+=== streaming-parquet-bridge 202609241251 ===
+{
+  "status": "PASS",
+  "generation": "202609241251",
+  "composed_sha256": "60be8215ba873ac2886786bf6e3fd51e5764e7c5e26684fde71ebe9974a329a2",
+  "response_establishment_ms": 1.893,
+  "map_ready_requests": 1,
+  "streamed_responses": 1,
+  "duckdb_started_before_body": false,
+  "metro_partition": "partitions/uk_metros_trams_local_unwired.parquet",
+  "metro_rows_reconstructed": 1
+}
+
+=== uk-gazetteer-flyto 202609071213 ===
+{
+  "status": "PASS",
+  "generation": "202609071213",
+  "composed_sha256": "15f324e5c279050882f7e3ce83a915c070b6ed19095efcac4ae20af4ef19fdfa",
+  "resolved_identity": {
+    "repd_ref": "12588",
+    "technology": "solar",
+    "capacity_mw": 840,
+    "longitude": -1.3489728,
+    "latitude": 51.8132088
+  },
+  "terminal_states": [
+    "RESOLVED",
+    "NOT_IN_ACTIVE_REGISTER",
+    "ABSENT",
+    "FAILED"
+  ],
+  "mismatched_identity": "NOT_IN_ACTIVE_REGISTER"
+}
+
+=== substation-intelligence 202609062358 ===
+Published engine byte integrity and syntax PASS; browser coverage runs separately.
+
+=== sld-sandbox 202609241334 ===
+SLD exact delta, SHA-256 and syntax PASS; browser layout regression runs separately.
+
+proofs run: 4
+every composed cartridge passed its generation-matched proof
+exit=0
+== verify-compose
+{"composition":"PASS","generation":"202609241334","release_id":"202608300453-atlas-v9","immutable_releases":8,"cartridges":["streaming-parquet-bridge","uk-gazetteer-flyto","substation-intelligence","sld-sandbox"]}
+exit=0
+== verify-candidate
+{
+ "candidate": "202610262310",
+ "composition_version": "v9.159",
+ "composition_id": "202610262310-gridatlas-v9.159",
+ "parent_generation": "202609241334",
+ "candidate_predecessor": "202610261949",
+ "golden_browser_verification": "PENDING_THIS_GENERATION",
+ "cartridges": [
+  {
+   "id": "streaming-parquet-bridge",
+   "generation": "202609241251",
+   "bytes": 13589,
+   "sha256": "60be8215ba873ac2886786bf6e3fd51e5764e7c5e26684fde71ebe9974a329a2",
+   "same_as_live": true
+  },
+  {
+   "id": "uk-gazetteer-flyto",
+   "generation": "202609071213",
+   "bytes": 41120,
+   "sha256": "15f324e5c279050882f7e3ce83a915c070b6ed19095efcac4ae20af4ef19fdfa",
+   "same_as_live": true
+  },
+  {
+   "id": "substation-intelligence",
+   "generation": "202609062358",
+   "bytes": 451935,
+   "sha256": "d94b0de50deddac77643325b10fbe490ce44b8c406dbc6c67e6e7cadbdaa8ec6",
+   "same_as_live": true
+  },
+  {
+   "id": "sld-sandbox",
+   "generation": "202610262310",
+   "bytes": 459203,
+   "sha256": "bdd0a44552ab2bdc3e2269443ee792ec70d6b50922bbf180b26a6af15f4f3b39",
+   "same_as_live": false
+  }
+ ],
+ "result": "PASS",
+ "failures": []
+}
+exit=0
+== loader cmp
+cmp=0
+== module identity
+atlas/modules/202610262310-uk-lightning-overlay.js /tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/opus-fix-designer/fixed-module-A.js differ: char 45, line 1
+cmp=1
+23984 atlas/modules/202610262310-uk-lightning-overlay.js
+== protected diff vs fda6b10
+(empty = unchanged)
