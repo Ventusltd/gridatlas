@@ -1,0 +1,6107 @@
+{
+  "route": "http://127.0.0.1:8151/wt/atlas/v/202610261949/",
+  "gen": "202610261949",
+  "harness": "lead-shim (offline-shim.mjs); Chromium 153.0.8010.12 headless; phones = Chromium emulation, not WebKit",
+  "node": "v22.23.4",
+  "startedAt": "2026-10-26T23:11:15.879Z",
+  "fakeClockDefault": "2026-10-26T18:40:00Z",
+  "cases": {
+    "T1-custom-during-first-load": {
+      "profile": "desktop",
+      "fixture": "/tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/lightning/fixtures/lightning-archive/data",
+      "clock": "2026-10-26T18:40:00Z",
+      "composition": {
+        "engine": 120,
+        "pn": 6,
+        "scada": true,
+        "curtain": true,
+        "menuInstalled": true,
+        "map": true,
+        "waitedMs": 4469
+      },
+      "steps": [
+        {
+          "what": "ON; index delayed 6 s",
+          "label": "Lightning flashes (optical) [LOAD]",
+          "status": "LOADING",
+          "checked": true,
+          "caps": {
+            "window": "",
+            "actual": "",
+            "flashes": "",
+            "refresh": "",
+            "searched": "",
+            "warning": "",
+            "footer": ""
+          },
+          "chips": {
+            "12h": {
+              "active": false,
+              "disabled": false
+            },
+            "24h": {
+              "active": true,
+              "disabled": false
+            },
+            "48h": {
+              "active": false,
+              "disabled": false
+            },
+            "7d": {
+              "active": false,
+              "disabled": false
+            },
+            "30d": {
+              "active": false,
+              "disabled": false
+            },
+            "3m": {
+              "active": false,
+              "disabled": false
+            },
+            "6m": {
+              "active": false,
+              "disabled": false
+            },
+            "12m": {
+              "active": false,
+              "disabled": false
+            },
+            "custom": {
+              "active": false,
+              "disabled": false
+            }
+          },
+          "nav": {
+            "apply": {
+              "disabled": false,
+              "hidden": false
+            },
+            "prev": {
+              "disabled": true,
+              "hidden": false
+            },
+            "latest": {
+              "disabled": true,
+              "hidden": false
+            },
+            "next": {
+              "disabled": true,
+              "hidden": false
+            },
+            "points": {
+              "disabled": false,
+              "hidden": true
+            }
+          },
+          "captionVisible": true,
+          "pageErrors": 0
+        },
+        {
+          "what": "CUSTOM tapped during first LOADING",
+          "label": "Lightning flashes (optical) [FAIL]",
+          "status": "LOADING",
+          "checked": true,
+          "caps": {
+            "window": "",
+            "actual": "",
+            "flashes": "",
+            "refresh": "",
+            "searched": "",
+            "warning": "",
+            "footer": ""
+          },
+          "chips": {
+            "12h": {
+              "active": false,
+              "disabled": false
+            },
+            "24h": {
+              "active": false,
+              "disabled": false
+            },
+            "48h": {
+              "active": false,
+              "disabled": false
+            },
+            "7d": {
+              "active": false,
+              "disabled": false
+            },
+            "30d": {
+              "active": false,
+              "disabled": false
+            },
+            "3m": {
+              "active": false,
+              "disabled": false
+            },
+            "6m": {
+              "active": false,
+              "disabled": false
+            },
+            "12m": {
+              "active": false,
+              "disabled": false
+            },
+            "custom": {
+              "active": true,
+              "disabled": false
+            }
+          },
+          "nav": {
+            "apply": {
+              "disabled": false,
+              "hidden": false
+            },
+            "prev": {
+              "disabled": true,
+              "hidden": false
+            },
+            "latest": {
+              "disabled": true,
+              "hidden": false
+            },
+            "next": {
+              "disabled": true,
+              "hidden": false
+            },
+            "points": {
+              "disabled": false,
+              "hidden": true
+            }
+          },
+          "captionVisible": true,
+          "pageErrors": 1
+        },
+        {
+          "what": "after the delayed first load landed",
+          "label": "Lightning flashes (optical) [UNKNOWN | 24h]",
+          "status": "PARTIAL · 0 FLASHES DRAWN · SEARCHED 43%",
+          "checked": true,
+          "caps": {
+            "window": "Window 2026-10-25 18:40 UTC → 2026-10-26 18:40 UTC (24 hours, latest)",
+            "actual": "Actual no archived flashes within this window",
+            "flashes": "Flashes 0 archived in window",
+            "refresh": "Refresh archive 2026-10-26 18:37 UTC (0h 3min ago; expected every 1 h)",
+            "searched": "Searched EUMETSAT 43% of window · 4 successful runs · 2026-10-25 18:40 UTC → 2026-10-26 13:00 UTC",
+            "warning": "Not yet ingested: last 5h 40min of window (unknown, not zero)",
+            "footer": "Times UTC · Optical flashes seen by MTG Lightning Imager (EUMETSAT L2-LFL), not confirmed ground strikes · Missing days are unknown, not zero · UK box −11.0,49.5 → 3.0,61.5"
+          },
+          "chips": {
+            "12h": {
+              "active": false,
+              "disabled": false
+            },
+            "24h": {
+              "active": false,
+              "disabled": false
+            },
+            "48h": {
+              "active": false,
+              "disabled": false
+            },
+            "7d": {
+              "active": false,
+              "disabled": false
+            },
+            "30d": {
+              "active": false,
+              "disabled": false
+            },
+            "3m": {
+              "active": false,
+              "disabled": false
+            },
+            "6m": {
+              "active": false,
+              "disabled": false
+            },
+            "12m": {
+              "active": false,
+              "disabled": false
+            },
+            "custom": {
+              "active": true,
+              "disabled": false
+            }
+          },
+          "nav": {
+            "apply": {
+              "disabled": false,
+              "hidden": false
+            },
+            "prev": {
+              "disabled": true,
+              "hidden": false
+            },
+            "latest": {
+              "disabled": true,
+              "hidden": false
+            },
+            "next": {
+              "disabled": true,
+              "hidden": false
+            },
+            "points": {
+              "disabled": false,
+              "hidden": true
+            }
+          },
+          "captionVisible": true,
+          "pageErrors": 1
+        }
+      ],
+      "pageErrors": [
+        "Cannot read properties of null (reading 'colour')"
+      ],
+      "lightningRequests": [
+        "history/index.json",
+        "history/days/2026/10/25.json"
+      ],
+      "shim": {
+        "served": {
+          "maplibre": 2,
+          "style": 1,
+          "duckdb": 3,
+          "lightning-data": 2
+        },
+        "aborted": [
+          "https://raw.githubusercontent.com/Ventusltd/data-grid-gb/1c9909d1138704b29235c27fd769436dda8a0b18/derived/connection-points.v3.json",
+          "https://ventusltd.github.io/ventus-grid-engine/genome/engine-graph.json"
+        ],
+        "missing": []
+      },
+      "invariants": {
+        "case": "T1-custom-during-first-load",
+        "profile": "desktop",
+        "before": {
+          "inspect": {
+            "engine": 60,
+            "pipeline": 3,
+            "total": 63,
+            "unique": 63,
+            "complete": true
+          },
+          "proxies": 63,
+          "markers": 63,
+          "ok": true,
+          "lightningRequestsSoFar": 0,
+          "when": "before"
+        },
+        "after": {
+          "inspect": {
+            "engine": 60,
+            "pipeline": 3,
+            "total": 63,
+            "unique": 63,
+            "complete": true
+          },
+          "proxies": 63,
+          "markers": 63,
+          "ok": true,
+          "lightningRequestsSoFar": 2,
+          "when": "after"
+        },
+        "requestsBeforeFirstOn": 0,
+        "offGesture": {
+          "ok": true
+        },
+        "requestsWhileOffAfter11min": [],
+        "checkedAfterOff": false,
+        "ok": true
+      }
+    },
+    "T2-malformed-index-timestamp": {
+      "profile": "desktop",
+      "fixture": "/tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/opus-browser-tests/fixtures/SYNTHETIC-hostile-index-timestamp/data",
+      "clock": "2026-10-26T18:40:00Z",
+      "composition": {
+        "engine": 120,
+        "pn": 6,
+        "scada": true,
+        "curtain": true,
+        "menuInstalled": true,
+        "map": true,
+        "waitedMs": 4190
+      },
+      "steps": [
+        {
+          "what": "ON 24h",
+          "label": "Lightning flashes (optical) [UNKNOWN | 24h]",
+          "status": "PARTIAL · 0 FLASHES DRAWN · SEARCHED 43%",
+          "checked": true,
+          "caps": {
+            "window": "Window 2026-10-25 18:40 UTC → 2026-10-26 18:40 UTC (24 hours, latest)",
+            "actual": "Actual no archived flashes within this window",
+            "flashes": "Flashes 0 archived in window",
+            "refresh": "Refresh archive 2026-10-26 18:37 UTC (0h 3min ago; expected every 1 h)",
+            "searched": "Searched EUMETSAT 43% of window · 4 successful runs · 2026-10-25 18:40 UTC → 2026-10-26 13:00 UTC",
+            "warning": "Not yet ingested: last 5h 40min of window (unknown, not zero)",
+            "footer": "Times UTC · Optical flashes seen by MTG Lightning Imager (EUMETSAT L2-LFL), not confirmed ground strikes · Missing days are unknown, not zero · UK box −11.0,49.5 → 3.0,61.5"
+          },
+          "chips": {
+            "12h": {
+              "active": false,
+              "disabled": false
+            },
+            "24h": {
+              "active": true,
+              "disabled": false
+            },
+            "48h": {
+              "active": false,
+              "disabled": false
+            },
+            "7d": {
+              "active": false,
+              "disabled": false
+            },
+            "30d": {
+              "active": false,
+              "disabled": false
+            },
+            "3m": {
+              "active": false,
+              "disabled": false
+            },
+            "6m": {
+              "active": false,
+              "disabled": false
+            },
+            "12m": {
+              "active": false,
+              "disabled": false
+            },
+            "custom": {
+              "active": false,
+              "disabled": false
+            }
+          },
+          "nav": {
+            "apply": {
+              "disabled": false,
+              "hidden": false
+            },
+            "prev": {
+              "disabled": false,
+              "hidden": false
+            },
+            "latest": {
+              "disabled": true,
+              "hidden": false
+            },
+            "next": {
+              "disabled": true,
+              "hidden": false
+            },
+            "points": {
+              "disabled": false,
+              "hidden": true
+            }
+          },
+          "captionVisible": true,
+          "pageErrors": 0
+        },
+        {
+          "what": "12M (overview reads first_observation_utc)",
+          "label": "Lightning flashes (optical) [LOAD]",
+          "status": "LOADING",
+          "checked": true,
+          "caps": {
+            "window": "Window 2026-10-25 18:40 UTC → 2026-10-26 18:40 UTC (24 hours, latest)",
+            "actual": "Actual no archived flashes within this window",
+            "flashes": "Flashes 0 archived in window",
+            "refresh": "Refresh archive 2026-10-26 18:37 UTC (0h 3min ago; expected every 1 h)",
+            "searched": "Searched EUMETSAT 43% of window · 4 successful runs · 2026-10-25 18:40 UTC → 2026-10-26 13:00 UTC",
+            "warning": "Not yet ingested: last 5h 40min of window (unknown, not zero)",
+            "footer": "Times UTC · Optical flashes seen by MTG Lightning Imager (EUMETSAT L2-LFL), not confirmed ground strikes · Missing days are unknown, not zero · UK box −11.0,49.5 → 3.0,61.5"
+          },
+          "chips": {
+            "12h": {
+              "active": false,
+              "disabled": false
+            },
+            "24h": {
+              "active": false,
+              "disabled": false
+            },
+            "48h": {
+              "active": false,
+              "disabled": false
+            },
+            "7d": {
+              "active": false,
+              "disabled": false
+            },
+            "30d": {
+              "active": false,
+              "disabled": false
+            },
+            "3m": {
+              "active": false,
+              "disabled": false
+            },
+            "6m": {
+              "active": false,
+              "disabled": false
+            },
+            "12m": {
+              "active": true,
+              "disabled": false
+            },
+            "custom": {
+              "active": false,
+              "disabled": false
+            }
+          },
+          "nav": {
+            "apply": {
+              "disabled": false,
+              "hidden": false
+            },
+            "prev": {
+              "disabled": true,
+              "hidden": false
+            },
+            "latest": {
+              "disabled": true,
+              "hidden": false
+            },
+            "next": {
+              "disabled": true,
+              "hidden": false
+            },
+            "points": {
+              "disabled": false,
+              "hidden": true
+            }
+          },
+          "captionVisible": true,
+          "settledMs": null,
+          "note": "still loading after 10000 ms"
+        },
+        {
+          "what": "7D after 12M",
+          "gesture": {
+            "ok": true
+          },
+          "label": "Lightning flashes (optical) [LOAD]",
+          "status": "LOADING",
+          "checked": true,
+          "caps": {
+            "window": "Window 2026-10-25 18:40 UTC → 2026-10-26 18:40 UTC (24 hours, latest)",
+            "actual": "Actual no archived flashes within this window",
+            "flashes": "Flashes 0 archived in window",
+            "refresh": "Refresh archive 2026-10-26 18:37 UTC (0h 3min ago; expected every 1 h)",
+            "searched": "Searched EUMETSAT 43% of window · 4 successful runs · 2026-10-25 18:40 UTC → 2026-10-26 13:00 UTC",
+            "warning": "Not yet ingested: last 5h 40min of window (unknown, not zero)",
+            "footer": "Times UTC · Optical flashes seen by MTG Lightning Imager (EUMETSAT L2-LFL), not confirmed ground strikes · Missing days are unknown, not zero · UK box −11.0,49.5 → 3.0,61.5"
+          },
+          "chips": {
+            "12h": {
+              "active": false,
+              "disabled": false
+            },
+            "24h": {
+              "active": false,
+              "disabled": false
+            },
+            "48h": {
+              "active": false,
+              "disabled": false
+            },
+            "7d": {
+              "active": false,
+              "disabled": false
+            },
+            "30d": {
+              "active": false,
+              "disabled": false
+            },
+            "3m": {
+              "active": false,
+              "disabled": false
+            },
+            "6m": {
+              "active": false,
+              "disabled": false
+            },
+            "12m": {
+              "active": true,
+              "disabled": false
+            },
+            "custom": {
+              "active": false,
+              "disabled": false
+            }
+          },
+          "nav": {
+            "apply": {
+              "disabled": false,
+              "hidden": false
+            },
+            "prev": {
+              "disabled": true,
+              "hidden": false
+            },
+            "latest": {
+              "disabled": true,
+              "hidden": false
+            },
+            "next": {
+              "disabled": true,
+              "hidden": false
+            },
+            "points": {
+              "disabled": false,
+              "hidden": true
+            }
+          },
+          "captionVisible": true,
+          "settledMs": null,
+          "note": "still loading after 10000 ms"
+        },
+        {
+          "what": "24H after 7D",
+          "gesture": {
+            "ok": true
+          },
+          "label": "Lightning flashes (optical) [LOAD]",
+          "status": "LOADING",
+          "checked": true,
+          "caps": {
+            "window": "Window 2026-10-25 18:40 UTC → 2026-10-26 18:40 UTC (24 hours, latest)",
+            "actual": "Actual no archived flashes within this window",
+            "flashes": "Flashes 0 archived in window",
+            "refresh": "Refresh archive 2026-10-26 18:37 UTC (0h 3min ago; expected every 1 h)",
+            "searched": "Searched EUMETSAT 43% of window · 4 successful runs · 2026-10-25 18:40 UTC → 2026-10-26 13:00 UTC",
+            "warning": "Not yet ingested: last 5h 40min of window (unknown, not zero)",
+            "footer": "Times UTC · Optical flashes seen by MTG Lightning Imager (EUMETSAT L2-LFL), not confirmed ground strikes · Missing days are unknown, not zero · UK box −11.0,49.5 → 3.0,61.5"
+          },
+          "chips": {
+            "12h": {
+              "active": false,
+              "disabled": false
+            },
+            "24h": {
+              "active": false,
+              "disabled": false
+            },
+            "48h": {
+              "active": false,
+              "disabled": false
+            },
+            "7d": {
+              "active": false,
+              "disabled": false
+            },
+            "30d": {
+              "active": false,
+              "disabled": false
+            },
+            "3m": {
+              "active": false,
+              "disabled": false
+            },
+            "6m": {
+              "active": false,
+              "disabled": false
+            },
+            "12m": {
+              "active": true,
+              "disabled": false
+            },
+            "custom": {
+              "active": false,
+              "disabled": false
+            }
+          },
+          "nav": {
+            "apply": {
+              "disabled": false,
+              "hidden": false
+            },
+            "prev": {
+              "disabled": true,
+              "hidden": false
+            },
+            "latest": {
+              "disabled": true,
+              "hidden": false
+            },
+            "next": {
+              "disabled": true,
+              "hidden": false
+            },
+            "points": {
+              "disabled": false,
+              "hidden": true
+            }
+          },
+          "captionVisible": true,
+          "settledMs": null,
+          "note": "still loading after 10000 ms"
+        }
+      ],
+      "pageErrors": [
+        "Invalid time value",
+        "Invalid time value",
+        "Invalid time value"
+      ],
+      "lightningRequests": [
+        "history/index.json",
+        "history/days/2026/10/25.json"
+      ],
+      "shim": {
+        "served": {
+          "maplibre": 2,
+          "style": 1,
+          "duckdb": 3,
+          "lightning-data": 2
+        },
+        "aborted": [
+          "https://raw.githubusercontent.com/Ventusltd/data-grid-gb/1c9909d1138704b29235c27fd769436dda8a0b18/derived/connection-points.v3.json",
+          "https://ventusltd.github.io/ventus-grid-engine/genome/engine-graph.json"
+        ],
+        "missing": []
+      },
+      "invariants": {
+        "case": "T2-malformed-index-timestamp",
+        "profile": "desktop",
+        "before": {
+          "inspect": {
+            "engine": 60,
+            "pipeline": 3,
+            "total": 63,
+            "unique": 63,
+            "complete": true
+          },
+          "proxies": 63,
+          "markers": 63,
+          "ok": true,
+          "lightningRequestsSoFar": 0,
+          "when": "before"
+        },
+        "after": {
+          "inspect": {
+            "engine": 60,
+            "pipeline": 3,
+            "total": 63,
+            "unique": 63,
+            "complete": true
+          },
+          "proxies": 63,
+          "markers": 63,
+          "ok": true,
+          "lightningRequestsSoFar": 2,
+          "when": "after"
+        },
+        "requestsBeforeFirstOn": 0,
+        "offGesture": {
+          "ok": true
+        },
+        "requestsWhileOffAfter11min": [],
+        "checkedAfterOff": false,
+        "ok": true
+      }
+    },
+    "T3-feed-revalidation": {
+      "profile": "desktop",
+      "fixture": "/tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/opus-browser-tests/runs/202610261949-20261026T231115/T3-feed/data",
+      "clock": "2026-10-26T18:40:00Z",
+      "composition": {
+        "engine": 120,
+        "pn": 6,
+        "scada": true,
+        "curtain": true,
+        "menuInstalled": true,
+        "map": true,
+        "waitedMs": 3618
+      },
+      "steps": [
+        {
+          "what": "ON 24h (feed fallback)",
+          "label": "Lightning flashes (optical) [UNKNOWN | 24h]",
+          "status": "PARTIAL · 0 FLASHES DRAWN · SEARCHED 13%",
+          "checked": true,
+          "caps": {
+            "window": "Window 2026-10-25 18:40 UTC → 2026-10-26 18:40 UTC (24 hours, latest)",
+            "actual": "Actual no flashes in the live feed in this window",
+            "flashes": "Flashes 0 in window (live feed, 7-day retention)",
+            "refresh": "Refresh live feed 2026-10-26 13:05 UTC (last collection window 2026-10-26 10:05 UTC → 2026-10-26 13:05 UTC; latest detection 2026-10-25 11:15:58 UTC; 7-day retention; archive not yet published: HTTP 404; earlier hours unknown, not zero)",
+            "searched": "Searched EUMETSAT 13% of window · 1 successful runs · 2026-10-26 10:05 UTC → 2026-10-26 13:05 UTC",
+            "warning": "Not yet ingested: last 5h 34min of window (unknown, not zero)",
+            "footer": "Times UTC · Optical flashes seen by MTG Lightning Imager (EUMETSAT L2-LFL), not confirmed ground strikes · Missing days are unknown, not zero · UK box −11.0,49.5 → 3.0,61.5"
+          },
+          "chips": {
+            "12h": {
+              "active": false,
+              "disabled": false
+            },
+            "24h": {
+              "active": true,
+              "disabled": false
+            },
+            "48h": {
+              "active": false,
+              "disabled": false
+            },
+            "7d": {
+              "active": false,
+              "disabled": false
+            },
+            "30d": {
+              "active": false,
+              "disabled": true
+            },
+            "3m": {
+              "active": false,
+              "disabled": true
+            },
+            "6m": {
+              "active": false,
+              "disabled": true
+            },
+            "12m": {
+              "active": false,
+              "disabled": true
+            },
+            "custom": {
+              "active": false,
+              "disabled": false
+            }
+          },
+          "nav": {
+            "apply": {
+              "disabled": false,
+              "hidden": false
+            },
+            "prev": {
+              "disabled": false,
+              "hidden": false
+            },
+            "latest": {
+              "disabled": true,
+              "hidden": false
+            },
+            "next": {
+              "disabled": true,
+              "hidden": false
+            },
+            "points": {
+              "disabled": false,
+              "hidden": true
+            }
+          },
+          "captionVisible": true,
+          "settledMs": 444
+        },
+        {
+          "what": "OFF",
+          "label": "Lightning flashes (optical) [WAIT]",
+          "status": "PARTIAL · 0 FLASHES DRAWN · SEARCHED 13%",
+          "checked": false,
+          "caps": {
+            "window": "Window  2026-10-25 18:40 UTC → 2026-10-26 18:40 UTC (24 hours, latest)",
+            "actual": "Actual  no flashes in the live feed in this window",
+            "flashes": "Flashes 0 in window (live feed, 7-day retention)",
+            "refresh": "Refresh live feed 2026-10-26 13:05 UTC (last collection window 2026-10-26 10:05 UTC → 2026-10-26 13:05 UTC; latest detection 2026-10-25 11:15:58 UTC; 7-day retention; archive not yet published: HTTP 404; earlier hours unknown, not zero)",
+            "searched": "Searched EUMETSAT 13% of window · 1 successful runs · 2026-10-26 10:05 UTC → 2026-10-26 13:05 UTC",
+            "warning": "Not yet ingested: last 5h 34min of window (unknown, not zero)",
+            "footer": "Times UTC · Optical flashes seen by MTG Lightning Imager (EUMETSAT L2-LFL), not confirmed ground strikes · Missing days are unknown, not zero · UK box −11.0,49.5 → 3.0,61.5"
+          },
+          "chips": {
+            "12h": {
+              "active": false,
+              "disabled": false
+            },
+            "24h": {
+              "active": true,
+              "disabled": false
+            },
+            "48h": {
+              "active": false,
+              "disabled": false
+            },
+            "7d": {
+              "active": false,
+              "disabled": false
+            },
+            "30d": {
+              "active": false,
+              "disabled": true
+            },
+            "3m": {
+              "active": false,
+              "disabled": true
+            },
+            "6m": {
+              "active": false,
+              "disabled": true
+            },
+            "12m": {
+              "active": false,
+              "disabled": true
+            },
+            "custom": {
+              "active": false,
+              "disabled": false
+            }
+          },
+          "nav": {
+            "apply": {
+              "disabled": false,
+              "hidden": false
+            },
+            "prev": {
+              "disabled": false,
+              "hidden": false
+            },
+            "latest": {
+              "disabled": true,
+              "hidden": false
+            },
+            "next": {
+              "disabled": true,
+              "hidden": false
+            },
+            "points": {
+              "disabled": false,
+              "hidden": true
+            }
+          },
+          "captionVisible": false,
+          "pageErrors": 0
+        },
+        {
+          "what": "ON again after the feed changed",
+          "label": "Lightning flashes (optical) [UNKNOWN | 24h]",
+          "status": "PARTIAL · 0 FLASHES DRAWN · SEARCHED 13%",
+          "checked": true,
+          "caps": {
+            "window": "Window 2026-10-25 18:40 UTC → 2026-10-26 18:40 UTC (24 hours, latest)",
+            "actual": "Actual no flashes in the live feed in this window",
+            "flashes": "Flashes 0 in window (live feed, 7-day retention)",
+            "refresh": "Refresh live feed 2026-10-26 13:05 UTC (last collection window 2026-10-26 10:05 UTC → 2026-10-26 13:05 UTC; latest detection 2026-10-25 11:15:58 UTC; 7-day retention; archive not yet published: HTTP 404; earlier hours unknown, not zero)",
+            "searched": "Searched EUMETSAT 13% of window · 1 successful runs · 2026-10-26 10:05 UTC → 2026-10-26 13:05 UTC",
+            "warning": "Not yet ingested: last 5h 34min of window (unknown, not zero)",
+            "footer": "Times UTC · Optical flashes seen by MTG Lightning Imager (EUMETSAT L2-LFL), not confirmed ground strikes · Missing days are unknown, not zero · UK box −11.0,49.5 → 3.0,61.5"
+          },
+          "chips": {
+            "12h": {
+              "active": false,
+              "disabled": false
+            },
+            "24h": {
+              "active": true,
+              "disabled": false
+            },
+            "48h": {
+              "active": false,
+              "disabled": false
+            },
+            "7d": {
+              "active": false,
+              "disabled": false
+            },
+            "30d": {
+              "active": false,
+              "disabled": true
+            },
+            "3m": {
+              "active": false,
+              "disabled": true
+            },
+            "6m": {
+              "active": false,
+              "disabled": true
+            },
+            "12m": {
+              "active": false,
+              "disabled": true
+            },
+            "custom": {
+              "active": false,
+              "disabled": false
+            }
+          },
+          "nav": {
+            "apply": {
+              "disabled": false,
+              "hidden": false
+            },
+            "prev": {
+              "disabled": false,
+              "hidden": false
+            },
+            "latest": {
+              "disabled": true,
+              "hidden": false
+            },
+            "next": {
+              "disabled": true,
+              "hidden": false
+            },
+            "points": {
+              "disabled": false,
+              "hidden": true
+            }
+          },
+          "captionVisible": true,
+          "settledMs": 321
+        }
+      ],
+      "pageErrors": [],
+      "lightningRequests": [
+        "history/index.json",
+        "uk_lightning.geojson",
+        "history/index.json"
+      ],
+      "shim": {
+        "served": {
+          "maplibre": 2,
+          "style": 1,
+          "duckdb": 3,
+          "lightning-data": 3
+        },
+        "aborted": [
+          "https://raw.githubusercontent.com/Ventusltd/data-grid-gb/1c9909d1138704b29235c27fd769436dda8a0b18/derived/connection-points.v3.json",
+          "https://ventusltd.github.io/ventus-grid-engine/genome/engine-graph.json"
+        ],
+        "missing": [
+          "https://raw.githubusercontent.com/Ventusltd/lightning/main/data/history/index.json"
+        ]
+      },
+      "invariants": {
+        "case": "T3-feed-revalidation",
+        "profile": "desktop",
+        "before": {
+          "inspect": {
+            "engine": 60,
+            "pipeline": 3,
+            "total": 63,
+            "unique": 63,
+            "complete": true
+          },
+          "proxies": 63,
+          "markers": 63,
+          "ok": true,
+          "lightningRequestsSoFar": 0,
+          "when": "before"
+        },
+        "after": {
+          "inspect": {
+            "engine": 60,
+            "pipeline": 3,
+            "total": 63,
+            "unique": 63,
+            "complete": true
+          },
+          "proxies": 63,
+          "markers": 63,
+          "ok": true,
+          "lightningRequestsSoFar": 3,
+          "when": "after"
+        },
+        "requestsBeforeFirstOn": 0,
+        "offGesture": {
+          "ok": true
+        },
+        "requestsWhileOffAfter11min": [],
+        "checkedAfterOff": false,
+        "ok": true
+      }
+    },
+    "T4-feed-stale": {
+      "profile": "desktop",
+      "fixture": "/tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/lightning/fixtures/lightning-archive-no-index/data",
+      "clock": "2026-10-26T18:40:00Z",
+      "composition": {
+        "engine": 120,
+        "pn": 6,
+        "scada": true,
+        "curtain": true,
+        "menuInstalled": true,
+        "map": true,
+        "waitedMs": 3608
+      },
+      "steps": [
+        {
+          "what": "7D at 18:40Z (feed collection ended 13:05:58Z, 5 h 34 min earlier)",
+          "label": "Lightning flashes (optical) [408 | 7d]",
+          "status": "PARTIAL · 408 FLASHES DRAWN · SEARCHED 2%",
+          "checked": true,
+          "caps": {
+            "window": "Window 2026-10-19 18:40 UTC → 2026-10-26 18:40 UTC (7 days, latest)",
+            "actual": "Actual first 2026-10-21 12:32:19 UTC · last 2026-10-25 11:15:58 UTC",
+            "flashes": "Flashes 408 in window (live feed, 7-day retention) · 408 drawn as points (live feed count 408 within the 40,000-point cap for this desktop)",
+            "refresh": "Refresh live feed 2026-10-26 13:05 UTC (last collection window 2026-10-26 10:05 UTC → 2026-10-26 13:05 UTC; latest detection 2026-10-25 11:15:58 UTC; 7-day retention; archive not yet published: HTTP 404; earlier hours unknown, not zero)",
+            "searched": "Searched EUMETSAT 2% of window · 1 successful runs · 2026-10-26 10:05 UTC → 2026-10-26 13:05 UTC",
+            "warning": "Not yet ingested: last 5h 34min of window (unknown, not zero)",
+            "footer": "Times UTC · Optical flashes seen by MTG Lightning Imager (EUMETSAT L2-LFL), not confirmed ground strikes · Missing days are unknown, not zero · UK box −11.0,49.5 → 3.0,61.5"
+          },
+          "chips": {
+            "12h": {
+              "active": false,
+              "disabled": false
+            },
+            "24h": {
+              "active": false,
+              "disabled": false
+            },
+            "48h": {
+              "active": false,
+              "disabled": false
+            },
+            "7d": {
+              "active": true,
+              "disabled": false
+            },
+            "30d": {
+              "active": false,
+              "disabled": true
+            },
+            "3m": {
+              "active": false,
+              "disabled": true
+            },
+            "6m": {
+              "active": false,
+              "disabled": true
+            },
+            "12m": {
+              "active": false,
+              "disabled": true
+            },
+            "custom": {
+              "active": false,
+              "disabled": false
+            }
+          },
+          "nav": {
+            "apply": {
+              "disabled": false,
+              "hidden": false
+            },
+            "prev": {
+              "disabled": true,
+              "hidden": false
+            },
+            "latest": {
+              "disabled": true,
+              "hidden": false
+            },
+            "next": {
+              "disabled": true,
+              "hidden": false
+            },
+            "points": {
+              "disabled": false,
+              "hidden": true
+            }
+          },
+          "captionVisible": true,
+          "settledMs": 316
+        }
+      ],
+      "pageErrors": [],
+      "lightningRequests": [
+        "history/index.json",
+        "uk_lightning.geojson",
+        "history/index.json"
+      ],
+      "shim": {
+        "served": {
+          "maplibre": 2,
+          "style": 1,
+          "duckdb": 3,
+          "lightning-data": 3
+        },
+        "aborted": [
+          "https://raw.githubusercontent.com/Ventusltd/data-grid-gb/1c9909d1138704b29235c27fd769436dda8a0b18/derived/connection-points.v3.json",
+          "https://ventusltd.github.io/ventus-grid-engine/genome/engine-graph.json"
+        ],
+        "missing": [
+          "https://raw.githubusercontent.com/Ventusltd/lightning/main/data/history/index.json"
+        ]
+      },
+      "invariants": {
+        "case": "T4-feed-stale",
+        "profile": "desktop",
+        "before": {
+          "inspect": {
+            "engine": 60,
+            "pipeline": 3,
+            "total": 63,
+            "unique": 63,
+            "complete": true
+          },
+          "proxies": 63,
+          "markers": 63,
+          "ok": true,
+          "lightningRequestsSoFar": 0,
+          "when": "before"
+        },
+        "after": {
+          "inspect": {
+            "engine": 60,
+            "pipeline": 3,
+            "total": 63,
+            "unique": 63,
+            "complete": true
+          },
+          "proxies": 63,
+          "markers": 63,
+          "ok": true,
+          "lightningRequestsSoFar": 3,
+          "when": "after"
+        },
+        "requestsBeforeFirstOn": 0,
+        "offGesture": {
+          "ok": true
+        },
+        "requestsWhileOffAfter11min": [],
+        "checkedAfterOff": false,
+        "ok": true
+      }
+    },
+    "T4-feed-fresh-control": {
+      "profile": "desktop",
+      "fixture": "/tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/lightning/fixtures/lightning-archive-no-index/data",
+      "clock": "2026-10-26T14:00:00Z",
+      "composition": {
+        "engine": 120,
+        "pn": 6,
+        "scada": true,
+        "curtain": true,
+        "menuInstalled": true,
+        "map": true,
+        "waitedMs": 4306
+      },
+      "steps": [
+        {
+          "what": "7D at 14:00Z (feed 54 min old) control",
+          "label": "Lightning flashes (optical) [408 | 7d]",
+          "status": "PARTIAL · 408 FLASHES DRAWN · SEARCHED 2%",
+          "checked": true,
+          "caps": {
+            "window": "Window 2026-10-19 14:00 UTC → 2026-10-26 14:00 UTC (7 days, latest)",
+            "actual": "Actual first 2026-10-21 12:32:19 UTC · last 2026-10-25 11:15:58 UTC",
+            "flashes": "Flashes 408 in window (live feed, 7-day retention) · 408 drawn as points (live feed count 408 within the 40,000-point cap for this desktop)",
+            "refresh": "Refresh live feed 2026-10-26 13:05 UTC (last collection window 2026-10-26 10:05 UTC → 2026-10-26 13:05 UTC; latest detection 2026-10-25 11:15:58 UTC; 7-day retention; archive not yet published: HTTP 404; earlier hours unknown, not zero)",
+            "searched": "Searched EUMETSAT 2% of window · 1 successful runs · 2026-10-26 10:05 UTC → 2026-10-26 13:05 UTC",
+            "warning": "Not yet ingested: last 0h 54min of window (unknown, not zero)",
+            "footer": "Times UTC · Optical flashes seen by MTG Lightning Imager (EUMETSAT L2-LFL), not confirmed ground strikes · Missing days are unknown, not zero · UK box −11.0,49.5 → 3.0,61.5"
+          },
+          "chips": {
+            "12h": {
+              "active": false,
+              "disabled": false
+            },
+            "24h": {
+              "active": false,
+              "disabled": false
+            },
+            "48h": {
+              "active": false,
+              "disabled": false
+            },
+            "7d": {
+              "active": true,
+              "disabled": false
+            },
+            "30d": {
+              "active": false,
+              "disabled": true
+            },
+            "3m": {
+              "active": false,
+              "disabled": true
+            },
+            "6m": {
+              "active": false,
+              "disabled": true
+            },
+            "12m": {
+              "active": false,
+              "disabled": true
+            },
+            "custom": {
+              "active": false,
+              "disabled": false
+            }
+          },
+          "nav": {
+            "apply": {
+              "disabled": false,
+              "hidden": false
+            },
+            "prev": {
+              "disabled": true,
+              "hidden": false
+            },
+            "latest": {
+              "disabled": true,
+              "hidden": false
+            },
+            "next": {
+              "disabled": true,
+              "hidden": false
+            },
+            "points": {
+              "disabled": false,
+              "hidden": true
+            }
+          },
+          "captionVisible": true,
+          "settledMs": 1020
+        }
+      ],
+      "pageErrors": [],
+      "lightningRequests": [
+        "history/index.json",
+        "uk_lightning.geojson",
+        "history/index.json"
+      ],
+      "shim": {
+        "served": {
+          "maplibre": 2,
+          "style": 1,
+          "duckdb": 3,
+          "lightning-data": 3
+        },
+        "aborted": [
+          "https://raw.githubusercontent.com/Ventusltd/data-grid-gb/1c9909d1138704b29235c27fd769436dda8a0b18/derived/connection-points.v3.json",
+          "https://ventusltd.github.io/ventus-grid-engine/genome/engine-graph.json"
+        ],
+        "missing": [
+          "https://raw.githubusercontent.com/Ventusltd/lightning/main/data/history/index.json"
+        ]
+      },
+      "invariants": {
+        "case": "T4-feed-fresh-control",
+        "profile": "desktop",
+        "before": {
+          "inspect": {
+            "engine": 60,
+            "pipeline": 3,
+            "total": 63,
+            "unique": 63,
+            "complete": true
+          },
+          "proxies": 63,
+          "markers": 63,
+          "ok": true,
+          "lightningRequestsSoFar": 0,
+          "when": "before"
+        },
+        "after": {
+          "inspect": {
+            "engine": 60,
+            "pipeline": 3,
+            "total": 63,
+            "unique": 63,
+            "complete": true
+          },
+          "proxies": 63,
+          "markers": 63,
+          "ok": true,
+          "lightningRequestsSoFar": 3,
+          "when": "after"
+        },
+        "requestsBeforeFirstOn": 0,
+        "offGesture": {
+          "ok": true
+        },
+        "requestsWhileOffAfter11min": [],
+        "checkedAfterOff": false,
+        "ok": true
+      }
+    },
+    "T5-feed-prev": {
+      "profile": "desktop",
+      "fixture": "/tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/lightning/fixtures/lightning-archive-no-index/data",
+      "clock": "2026-10-26T18:40:00Z",
+      "composition": {
+        "engine": 120,
+        "pn": 6,
+        "scada": true,
+        "curtain": true,
+        "menuInstalled": true,
+        "map": true,
+        "waitedMs": 4397
+      },
+      "steps": [
+        {
+          "what": "48H latest",
+          "label": "Lightning flashes (optical) [63 | 48h]",
+          "status": "PARTIAL · 63 FLASHES DRAWN · SEARCHED 6%",
+          "checked": true,
+          "caps": {
+            "window": "Window 2026-10-24 18:40 UTC → 2026-10-26 18:40 UTC (48 hours, latest)",
+            "actual": "Actual first 2026-10-24 18:43:44 UTC · last 2026-10-25 11:15:58 UTC",
+            "flashes": "Flashes 63 in window (live feed, 7-day retention) · 63 drawn as points (live feed count 63 within the 40,000-point cap for this desktop)",
+            "refresh": "Refresh live feed 2026-10-26 13:05 UTC (last collection window 2026-10-26 10:05 UTC → 2026-10-26 13:05 UTC; latest detection 2026-10-25 11:15:58 UTC; 7-day retention; archive not yet published: HTTP 404; earlier hours unknown, not zero)",
+            "searched": "Searched EUMETSAT 6% of window · 1 successful runs · 2026-10-26 10:05 UTC → 2026-10-26 13:05 UTC",
+            "warning": "Not yet ingested: last 5h 34min of window (unknown, not zero)",
+            "footer": "Times UTC · Optical flashes seen by MTG Lightning Imager (EUMETSAT L2-LFL), not confirmed ground strikes · Missing days are unknown, not zero · UK box −11.0,49.5 → 3.0,61.5"
+          },
+          "chips": {
+            "12h": {
+              "active": false,
+              "disabled": false
+            },
+            "24h": {
+              "active": false,
+              "disabled": false
+            },
+            "48h": {
+              "active": true,
+              "disabled": false
+            },
+            "7d": {
+              "active": false,
+              "disabled": false
+            },
+            "30d": {
+              "active": false,
+              "disabled": true
+            },
+            "3m": {
+              "active": false,
+              "disabled": true
+            },
+            "6m": {
+              "active": false,
+              "disabled": true
+            },
+            "12m": {
+              "active": false,
+              "disabled": true
+            },
+            "custom": {
+              "active": false,
+              "disabled": false
+            }
+          },
+          "nav": {
+            "apply": {
+              "disabled": false,
+              "hidden": false
+            },
+            "prev": {
+              "disabled": false,
+              "hidden": false
+            },
+            "latest": {
+              "disabled": true,
+              "hidden": false
+            },
+            "next": {
+              "disabled": true,
+              "hidden": false
+            },
+            "points": {
+              "disabled": false,
+              "hidden": true
+            }
+          },
+          "captionVisible": true,
+          "settledMs": 365
+        },
+        {
+          "what": "PREV #1",
+          "label": "Lightning flashes (optical) [UNKNOWN | 48h]",
+          "status": "UNKNOWN",
+          "checked": true,
+          "caps": {
+            "window": "Window 2026-10-22 18:40 UTC → 2026-10-24 18:40 UTC (48 hours, end exclusive)",
+            "actual": "Actual first 2026-10-22 18:41:15 UTC · last 2026-10-24 18:35:25 UTC",
+            "flashes": "Flashes 255 in window (live feed, 7-day retention) · 255 drawn as points (live feed count 255 within the 40,000-point cap for this desktop)",
+            "refresh": "Refresh live feed 2026-10-26 13:05 UTC (last collection window 2026-10-26 10:05 UTC → 2026-10-26 13:05 UTC; latest detection 2026-10-25 11:15:58 UTC; 7-day retention; archive not yet published: HTTP 404; earlier hours unknown, not zero)",
+            "searched": "Searched EUMETSAT 0% of window — no collection run covers these dates",
+            "warning": "",
+            "footer": "Times UTC · Optical flashes seen by MTG Lightning Imager (EUMETSAT L2-LFL), not confirmed ground strikes · Missing days are unknown, not zero · UK box −11.0,49.5 → 3.0,61.5"
+          },
+          "chips": {
+            "12h": {
+              "active": false,
+              "disabled": false
+            },
+            "24h": {
+              "active": false,
+              "disabled": false
+            },
+            "48h": {
+              "active": true,
+              "disabled": false
+            },
+            "7d": {
+              "active": false,
+              "disabled": false
+            },
+            "30d": {
+              "active": false,
+              "disabled": true
+            },
+            "3m": {
+              "active": false,
+              "disabled": true
+            },
+            "6m": {
+              "active": false,
+              "disabled": true
+            },
+            "12m": {
+              "active": false,
+              "disabled": true
+            },
+            "custom": {
+              "active": false,
+              "disabled": false
+            }
+          },
+          "nav": {
+            "apply": {
+              "disabled": false,
+              "hidden": false
+            },
+            "prev": {
+              "disabled": false,
+              "hidden": false
+            },
+            "latest": {
+              "disabled": false,
+              "hidden": false
+            },
+            "next": {
+              "disabled": false,
+              "hidden": false
+            },
+            "points": {
+              "disabled": false,
+              "hidden": true
+            }
+          },
+          "captionVisible": true,
+          "settledMs": 306
+        },
+        {
+          "what": "PREV #2",
+          "label": "Lightning flashes (optical) [UNKNOWN | 48h]",
+          "status": "UNKNOWN",
+          "checked": true,
+          "caps": {
+            "window": "Window 2026-10-20 18:40 UTC → 2026-10-22 18:40 UTC (48 hours, end exclusive)",
+            "actual": "Actual first 2026-10-21 12:32:19 UTC · last 2026-10-22 18:24:10 UTC",
+            "flashes": "Flashes 90 in window (live feed, 7-day retention) · 90 drawn as points (live feed count 90 within the 40,000-point cap for this desktop)",
+            "refresh": "Refresh live feed 2026-10-26 13:05 UTC (last collection window 2026-10-26 10:05 UTC → 2026-10-26 13:05 UTC; latest detection 2026-10-25 11:15:58 UTC; 7-day retention; archive not yet published: HTTP 404; earlier hours unknown, not zero)",
+            "searched": "Searched EUMETSAT 0% of window — no collection run covers these dates",
+            "warning": "",
+            "footer": "Times UTC · Optical flashes seen by MTG Lightning Imager (EUMETSAT L2-LFL), not confirmed ground strikes · Missing days are unknown, not zero · UK box −11.0,49.5 → 3.0,61.5"
+          },
+          "chips": {
+            "12h": {
+              "active": false,
+              "disabled": false
+            },
+            "24h": {
+              "active": false,
+              "disabled": false
+            },
+            "48h": {
+              "active": true,
+              "disabled": false
+            },
+            "7d": {
+              "active": false,
+              "disabled": false
+            },
+            "30d": {
+              "active": false,
+              "disabled": true
+            },
+            "3m": {
+              "active": false,
+              "disabled": true
+            },
+            "6m": {
+              "active": false,
+              "disabled": true
+            },
+            "12m": {
+              "active": false,
+              "disabled": true
+            },
+            "custom": {
+              "active": false,
+              "disabled": false
+            }
+          },
+          "nav": {
+            "apply": {
+              "disabled": false,
+              "hidden": false
+            },
+            "prev": {
+              "disabled": false,
+              "hidden": false
+            },
+            "latest": {
+              "disabled": false,
+              "hidden": false
+            },
+            "next": {
+              "disabled": false,
+              "hidden": false
+            },
+            "points": {
+              "disabled": false,
+              "hidden": true
+            }
+          },
+          "captionVisible": true,
+          "settledMs": 308
+        },
+        {
+          "what": "PREV #3",
+          "label": "Lightning flashes (optical) [FAIL]",
+          "status": "FAIL · 48 hours needs the archive (archive not yet published); the live feed keeps 7 days",
+          "checked": true,
+          "caps": {
+            "window": "Window 2026-10-18 18:40 UTC → 2026-10-20 18:40 UTC (48 hours, end exclusive)",
+            "actual": "",
+            "flashes": "",
+            "refresh": "",
+            "searched": "",
+            "warning": "Archive unavailable: HTTP 404 at 2026-10-26 18:40 UTC — nothing shown (unknown, not zero)",
+            "footer": "Times UTC · Optical flashes seen by MTG Lightning Imager (EUMETSAT L2-LFL), not confirmed ground strikes · Missing days are unknown, not zero · UK box −11.0,49.5 → 3.0,61.5"
+          },
+          "chips": {
+            "12h": {
+              "active": false,
+              "disabled": false
+            },
+            "24h": {
+              "active": false,
+              "disabled": false
+            },
+            "48h": {
+              "active": true,
+              "disabled": false
+            },
+            "7d": {
+              "active": false,
+              "disabled": false
+            },
+            "30d": {
+              "active": false,
+              "disabled": true
+            },
+            "3m": {
+              "active": false,
+              "disabled": true
+            },
+            "6m": {
+              "active": false,
+              "disabled": true
+            },
+            "12m": {
+              "active": false,
+              "disabled": true
+            },
+            "custom": {
+              "active": false,
+              "disabled": false
+            }
+          },
+          "nav": {
+            "apply": {
+              "disabled": false,
+              "hidden": false
+            },
+            "prev": {
+              "disabled": true,
+              "hidden": false
+            },
+            "latest": {
+              "disabled": false,
+              "hidden": false
+            },
+            "next": {
+              "disabled": false,
+              "hidden": false
+            },
+            "points": {
+              "disabled": false,
+              "hidden": true
+            }
+          },
+          "captionVisible": true,
+          "settledMs": 303
+        },
+        {
+          "what": "PREV disabled before press 4"
+        }
+      ],
+      "pageErrors": [],
+      "lightningRequests": [
+        "history/index.json",
+        "uk_lightning.geojson",
+        "history/index.json",
+        "history/index.json",
+        "history/index.json",
+        "history/index.json"
+      ],
+      "shim": {
+        "served": {
+          "maplibre": 2,
+          "style": 1,
+          "duckdb": 3,
+          "lightning-data": 6
+        },
+        "aborted": [
+          "https://raw.githubusercontent.com/Ventusltd/data-grid-gb/1c9909d1138704b29235c27fd769436dda8a0b18/derived/connection-points.v3.json",
+          "https://ventusltd.github.io/ventus-grid-engine/genome/engine-graph.json"
+        ],
+        "missing": [
+          "https://raw.githubusercontent.com/Ventusltd/lightning/main/data/history/index.json"
+        ]
+      },
+      "invariants": {
+        "case": "T5-feed-prev",
+        "profile": "desktop",
+        "before": {
+          "inspect": {
+            "engine": 60,
+            "pipeline": 3,
+            "total": 63,
+            "unique": 63,
+            "complete": true
+          },
+          "proxies": 63,
+          "markers": 63,
+          "ok": true,
+          "lightningRequestsSoFar": 0,
+          "when": "before"
+        },
+        "after": {
+          "inspect": {
+            "engine": 60,
+            "pipeline": 3,
+            "total": 63,
+            "unique": 63,
+            "complete": true
+          },
+          "proxies": 63,
+          "markers": 63,
+          "ok": true,
+          "lightningRequestsSoFar": 6,
+          "when": "after"
+        },
+        "requestsBeforeFirstOn": 0,
+        "offGesture": {
+          "ok": true
+        },
+        "requestsWhileOffAfter11min": [],
+        "checkedAfterOff": false,
+        "ok": true
+      }
+    },
+    "T6-long-chips-feed-phone393": {
+      "profile": "p393",
+      "fixture": "/tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/lightning/fixtures/lightning-archive-no-index/data",
+      "clock": "2026-10-26T18:40:00Z",
+      "composition": {
+        "engine": 120,
+        "pn": 6,
+        "scada": true,
+        "curtain": true,
+        "menuInstalled": true,
+        "map": true,
+        "waitedMs": 3743
+      },
+      "layersOpened": true,
+      "steps": [
+        {
+          "what": "7D (owner screen)",
+          "label": "Lightning flashes (optical) [408 | 7d]",
+          "status": "PARTIAL · 408 FLASHES DRAWN · SEARCHED 2%",
+          "checked": true,
+          "caps": {
+            "window": "Window 2026-10-19 18:40 UTC → 2026-10-26 18:40 UTC (7 days, latest)",
+            "actual": "Actual first 2026-10-21 12:32:19 UTC · last 2026-10-25 11:15:58 UTC",
+            "flashes": "Flashes 408 in window (live feed, 7-day retention) · 408 drawn as points (live feed count 408 within the 10,000-point cap for this phone)",
+            "refresh": "Refresh live feed 2026-10-26 13:05 UTC (last collection window 2026-10-26 10:05 UTC → 2026-10-26 13:05 UTC; latest detection 2026-10-25 11:15:58 UTC; 7-day retention; archive not yet published: HTTP 404; earlier hours unknown, not zero)",
+            "searched": "Searched EUMETSAT 2% of window · 1 successful runs · 2026-10-26 10:05 UTC → 2026-10-26 13:05 UTC",
+            "warning": "Not yet ingested: last 5h 34min of window (unknown, not zero)",
+            "footer": "Times UTC · Optical flashes seen by MTG Lightning Imager (EUMETSAT L2-LFL), not confirmed ground strikes · Missing days are unknown, not zero · UK box −11.0,49.5 → 3.0,61.5"
+          },
+          "chips": {
+            "12h": {
+              "active": false,
+              "disabled": false
+            },
+            "24h": {
+              "active": false,
+              "disabled": false
+            },
+            "48h": {
+              "active": false,
+              "disabled": false
+            },
+            "7d": {
+              "active": true,
+              "disabled": false
+            },
+            "30d": {
+              "active": false,
+              "disabled": true
+            },
+            "3m": {
+              "active": false,
+              "disabled": true
+            },
+            "6m": {
+              "active": false,
+              "disabled": true
+            },
+            "12m": {
+              "active": false,
+              "disabled": true
+            },
+            "custom": {
+              "active": false,
+              "disabled": false
+            }
+          },
+          "nav": {
+            "apply": {
+              "disabled": false,
+              "hidden": false
+            },
+            "prev": {
+              "disabled": true,
+              "hidden": false
+            },
+            "latest": {
+              "disabled": true,
+              "hidden": false
+            },
+            "next": {
+              "disabled": true,
+              "hidden": false
+            },
+            "points": {
+              "disabled": false,
+              "hidden": true
+            }
+          },
+          "captionVisible": true,
+          "settledMs": 306
+        },
+        {
+          "what": "tap 30D",
+          "gesture": {
+            "ok": false,
+            "error": "locator.tap: Timeout 3000ms exceeded."
+          },
+          "disabledBefore": true,
+          "label": "Lightning flashes (optical) [408 | 7d]",
+          "status": "PARTIAL · 408 FLASHES DRAWN · SEARCHED 2%",
+          "checked": true,
+          "caps": {
+            "window": "Window 2026-10-19 18:40 UTC → 2026-10-26 18:40 UTC (7 days, latest)",
+            "actual": "Actual first 2026-10-21 12:32:19 UTC · last 2026-10-25 11:15:58 UTC",
+            "flashes": "Flashes 408 in window (live feed, 7-day retention) · 408 drawn as points (live feed count 408 within the 10,000-point cap for this phone)",
+            "refresh": "Refresh live feed 2026-10-26 13:05 UTC (last collection window 2026-10-26 10:05 UTC → 2026-10-26 13:05 UTC; latest detection 2026-10-25 11:15:58 UTC; 7-day retention; archive not yet published: HTTP 404; earlier hours unknown, not zero)",
+            "searched": "Searched EUMETSAT 2% of window · 1 successful runs · 2026-10-26 10:05 UTC → 2026-10-26 13:05 UTC",
+            "warning": "Not yet ingested: last 5h 34min of window (unknown, not zero)",
+            "footer": "Times UTC · Optical flashes seen by MTG Lightning Imager (EUMETSAT L2-LFL), not confirmed ground strikes · Missing days are unknown, not zero · UK box −11.0,49.5 → 3.0,61.5"
+          },
+          "chips": {
+            "12h": {
+              "active": false,
+              "disabled": false
+            },
+            "24h": {
+              "active": false,
+              "disabled": false
+            },
+            "48h": {
+              "active": false,
+              "disabled": false
+            },
+            "7d": {
+              "active": true,
+              "disabled": false
+            },
+            "30d": {
+              "active": false,
+              "disabled": true
+            },
+            "3m": {
+              "active": false,
+              "disabled": true
+            },
+            "6m": {
+              "active": false,
+              "disabled": true
+            },
+            "12m": {
+              "active": false,
+              "disabled": true
+            },
+            "custom": {
+              "active": false,
+              "disabled": false
+            }
+          },
+          "nav": {
+            "apply": {
+              "disabled": false,
+              "hidden": false
+            },
+            "prev": {
+              "disabled": true,
+              "hidden": false
+            },
+            "latest": {
+              "disabled": true,
+              "hidden": false
+            },
+            "next": {
+              "disabled": true,
+              "hidden": false
+            },
+            "points": {
+              "disabled": false,
+              "hidden": true
+            }
+          },
+          "captionVisible": true
+        },
+        {
+          "what": "tap 3M",
+          "gesture": {
+            "ok": false,
+            "error": "locator.tap: Timeout 3000ms exceeded."
+          },
+          "disabledBefore": true,
+          "label": "Lightning flashes (optical) [408 | 7d]",
+          "status": "PARTIAL · 408 FLASHES DRAWN · SEARCHED 2%",
+          "checked": true,
+          "caps": {
+            "window": "Window 2026-10-19 18:40 UTC → 2026-10-26 18:40 UTC (7 days, latest)",
+            "actual": "Actual first 2026-10-21 12:32:19 UTC · last 2026-10-25 11:15:58 UTC",
+            "flashes": "Flashes 408 in window (live feed, 7-day retention) · 408 drawn as points (live feed count 408 within the 10,000-point cap for this phone)",
+            "refresh": "Refresh live feed 2026-10-26 13:05 UTC (last collection window 2026-10-26 10:05 UTC → 2026-10-26 13:05 UTC; latest detection 2026-10-25 11:15:58 UTC; 7-day retention; archive not yet published: HTTP 404; earlier hours unknown, not zero)",
+            "searched": "Searched EUMETSAT 2% of window · 1 successful runs · 2026-10-26 10:05 UTC → 2026-10-26 13:05 UTC",
+            "warning": "Not yet ingested: last 5h 34min of window (unknown, not zero)",
+            "footer": "Times UTC · Optical flashes seen by MTG Lightning Imager (EUMETSAT L2-LFL), not confirmed ground strikes · Missing days are unknown, not zero · UK box −11.0,49.5 → 3.0,61.5"
+          },
+          "chips": {
+            "12h": {
+              "active": false,
+              "disabled": false
+            },
+            "24h": {
+              "active": false,
+              "disabled": false
+            },
+            "48h": {
+              "active": false,
+              "disabled": false
+            },
+            "7d": {
+              "active": true,
+              "disabled": false
+            },
+            "30d": {
+              "active": false,
+              "disabled": true
+            },
+            "3m": {
+              "active": false,
+              "disabled": true
+            },
+            "6m": {
+              "active": false,
+              "disabled": true
+            },
+            "12m": {
+              "active": false,
+              "disabled": true
+            },
+            "custom": {
+              "active": false,
+              "disabled": false
+            }
+          },
+          "nav": {
+            "apply": {
+              "disabled": false,
+              "hidden": false
+            },
+            "prev": {
+              "disabled": true,
+              "hidden": false
+            },
+            "latest": {
+              "disabled": true,
+              "hidden": false
+            },
+            "next": {
+              "disabled": true,
+              "hidden": false
+            },
+            "points": {
+              "disabled": false,
+              "hidden": true
+            }
+          },
+          "captionVisible": true
+        },
+        {
+          "what": "tap 6M",
+          "gesture": {
+            "ok": false,
+            "error": "locator.tap: Timeout 3000ms exceeded."
+          },
+          "disabledBefore": true,
+          "label": "Lightning flashes (optical) [408 | 7d]",
+          "status": "PARTIAL · 408 FLASHES DRAWN · SEARCHED 2%",
+          "checked": true,
+          "caps": {
+            "window": "Window 2026-10-19 18:40 UTC → 2026-10-26 18:40 UTC (7 days, latest)",
+            "actual": "Actual first 2026-10-21 12:32:19 UTC · last 2026-10-25 11:15:58 UTC",
+            "flashes": "Flashes 408 in window (live feed, 7-day retention) · 408 drawn as points (live feed count 408 within the 10,000-point cap for this phone)",
+            "refresh": "Refresh live feed 2026-10-26 13:05 UTC (last collection window 2026-10-26 10:05 UTC → 2026-10-26 13:05 UTC; latest detection 2026-10-25 11:15:58 UTC; 7-day retention; archive not yet published: HTTP 404; earlier hours unknown, not zero)",
+            "searched": "Searched EUMETSAT 2% of window · 1 successful runs · 2026-10-26 10:05 UTC → 2026-10-26 13:05 UTC",
+            "warning": "Not yet ingested: last 5h 34min of window (unknown, not zero)",
+            "footer": "Times UTC · Optical flashes seen by MTG Lightning Imager (EUMETSAT L2-LFL), not confirmed ground strikes · Missing days are unknown, not zero · UK box −11.0,49.5 → 3.0,61.5"
+          },
+          "chips": {
+            "12h": {
+              "active": false,
+              "disabled": false
+            },
+            "24h": {
+              "active": false,
+              "disabled": false
+            },
+            "48h": {
+              "active": false,
+              "disabled": false
+            },
+            "7d": {
+              "active": true,
+              "disabled": false
+            },
+            "30d": {
+              "active": false,
+              "disabled": true
+            },
+            "3m": {
+              "active": false,
+              "disabled": true
+            },
+            "6m": {
+              "active": false,
+              "disabled": true
+            },
+            "12m": {
+              "active": false,
+              "disabled": true
+            },
+            "custom": {
+              "active": false,
+              "disabled": false
+            }
+          },
+          "nav": {
+            "apply": {
+              "disabled": false,
+              "hidden": false
+            },
+            "prev": {
+              "disabled": true,
+              "hidden": false
+            },
+            "latest": {
+              "disabled": true,
+              "hidden": false
+            },
+            "next": {
+              "disabled": true,
+              "hidden": false
+            },
+            "points": {
+              "disabled": false,
+              "hidden": true
+            }
+          },
+          "captionVisible": true
+        },
+        {
+          "what": "tap 12M",
+          "gesture": {
+            "ok": false,
+            "error": "locator.tap: Timeout 3000ms exceeded."
+          },
+          "disabledBefore": true,
+          "label": "Lightning flashes (optical) [408 | 7d]",
+          "status": "PARTIAL · 408 FLASHES DRAWN · SEARCHED 2%",
+          "checked": true,
+          "caps": {
+            "window": "Window 2026-10-19 18:40 UTC → 2026-10-26 18:40 UTC (7 days, latest)",
+            "actual": "Actual first 2026-10-21 12:32:19 UTC · last 2026-10-25 11:15:58 UTC",
+            "flashes": "Flashes 408 in window (live feed, 7-day retention) · 408 drawn as points (live feed count 408 within the 10,000-point cap for this phone)",
+            "refresh": "Refresh live feed 2026-10-26 13:05 UTC (last collection window 2026-10-26 10:05 UTC → 2026-10-26 13:05 UTC; latest detection 2026-10-25 11:15:58 UTC; 7-day retention; archive not yet published: HTTP 404; earlier hours unknown, not zero)",
+            "searched": "Searched EUMETSAT 2% of window · 1 successful runs · 2026-10-26 10:05 UTC → 2026-10-26 13:05 UTC",
+            "warning": "Not yet ingested: last 5h 34min of window (unknown, not zero)",
+            "footer": "Times UTC · Optical flashes seen by MTG Lightning Imager (EUMETSAT L2-LFL), not confirmed ground strikes · Missing days are unknown, not zero · UK box −11.0,49.5 → 3.0,61.5"
+          },
+          "chips": {
+            "12h": {
+              "active": false,
+              "disabled": false
+            },
+            "24h": {
+              "active": false,
+              "disabled": false
+            },
+            "48h": {
+              "active": false,
+              "disabled": false
+            },
+            "7d": {
+              "active": true,
+              "disabled": false
+            },
+            "30d": {
+              "active": false,
+              "disabled": true
+            },
+            "3m": {
+              "active": false,
+              "disabled": true
+            },
+            "6m": {
+              "active": false,
+              "disabled": true
+            },
+            "12m": {
+              "active": false,
+              "disabled": true
+            },
+            "custom": {
+              "active": false,
+              "disabled": false
+            }
+          },
+          "nav": {
+            "apply": {
+              "disabled": false,
+              "hidden": false
+            },
+            "prev": {
+              "disabled": true,
+              "hidden": false
+            },
+            "latest": {
+              "disabled": true,
+              "hidden": false
+            },
+            "next": {
+              "disabled": true,
+              "hidden": false
+            },
+            "points": {
+              "disabled": false,
+              "hidden": true
+            }
+          },
+          "captionVisible": true
+        }
+      ],
+      "pageErrors": [],
+      "lightningRequests": [
+        "history/index.json",
+        "uk_lightning.geojson",
+        "history/index.json"
+      ],
+      "shim": {
+        "served": {
+          "maplibre": 2,
+          "style": 1,
+          "duckdb": 3,
+          "lightning-data": 3
+        },
+        "aborted": [
+          "https://raw.githubusercontent.com/Ventusltd/data-grid-gb/1c9909d1138704b29235c27fd769436dda8a0b18/derived/connection-points.v3.json",
+          "https://ventusltd.github.io/ventus-grid-engine/genome/engine-graph.json"
+        ],
+        "missing": [
+          "https://raw.githubusercontent.com/Ventusltd/lightning/main/data/history/index.json"
+        ]
+      },
+      "invariants": {
+        "case": "T6-long-chips-feed-phone393",
+        "profile": "p393",
+        "before": {
+          "inspect": {
+            "engine": 60,
+            "pipeline": 3,
+            "total": 63,
+            "unique": 63,
+            "complete": true
+          },
+          "proxies": 63,
+          "markers": 63,
+          "ok": true,
+          "lightningRequestsSoFar": 0,
+          "when": "before"
+        },
+        "after": {
+          "inspect": {
+            "engine": 60,
+            "pipeline": 3,
+            "total": 63,
+            "unique": 63,
+            "complete": true
+          },
+          "proxies": 63,
+          "markers": 63,
+          "ok": true,
+          "lightningRequestsSoFar": 3,
+          "when": "after"
+        },
+        "requestsBeforeFirstOn": 0,
+        "offGesture": {
+          "ok": true
+        },
+        "requestsWhileOffAfter11min": [],
+        "checkedAfterOff": false,
+        "ok": true
+      }
+    },
+    "T7-feed-coverage-wording": {
+      "profile": "desktop",
+      "fixture": "/tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/lightning/fixtures/lightning-archive-no-index/data",
+      "clock": "2026-10-26T18:40:00Z",
+      "composition": {
+        "engine": 120,
+        "pn": 6,
+        "scada": true,
+        "curtain": true,
+        "menuInstalled": true,
+        "map": true,
+        "waitedMs": 3923
+      },
+      "steps": [
+        {
+          "what": "7D feed",
+          "label": "Lightning flashes (optical) [408 | 7d]",
+          "status": "PARTIAL · 408 FLASHES DRAWN · SEARCHED 2%",
+          "checked": true,
+          "caps": {
+            "window": "Window 2026-10-19 18:40 UTC → 2026-10-26 18:40 UTC (7 days, latest)",
+            "actual": "Actual first 2026-10-21 12:32:19 UTC · last 2026-10-25 11:15:58 UTC",
+            "flashes": "Flashes 408 in window (live feed, 7-day retention) · 408 drawn as points (live feed count 408 within the 40,000-point cap for this desktop)",
+            "refresh": "Refresh live feed 2026-10-26 13:05 UTC (last collection window 2026-10-26 10:05 UTC → 2026-10-26 13:05 UTC; latest detection 2026-10-25 11:15:58 UTC; 7-day retention; archive not yet published: HTTP 404; earlier hours unknown, not zero)",
+            "searched": "Searched EUMETSAT 2% of window · 1 successful runs · 2026-10-26 10:05 UTC → 2026-10-26 13:05 UTC",
+            "warning": "Not yet ingested: last 5h 34min of window (unknown, not zero)",
+            "footer": "Times UTC · Optical flashes seen by MTG Lightning Imager (EUMETSAT L2-LFL), not confirmed ground strikes · Missing days are unknown, not zero · UK box −11.0,49.5 → 3.0,61.5"
+          },
+          "chips": {
+            "12h": {
+              "active": false,
+              "disabled": false
+            },
+            "24h": {
+              "active": false,
+              "disabled": false
+            },
+            "48h": {
+              "active": false,
+              "disabled": false
+            },
+            "7d": {
+              "active": true,
+              "disabled": false
+            },
+            "30d": {
+              "active": false,
+              "disabled": true
+            },
+            "3m": {
+              "active": false,
+              "disabled": true
+            },
+            "6m": {
+              "active": false,
+              "disabled": true
+            },
+            "12m": {
+              "active": false,
+              "disabled": true
+            },
+            "custom": {
+              "active": false,
+              "disabled": false
+            }
+          },
+          "nav": {
+            "apply": {
+              "disabled": false,
+              "hidden": false
+            },
+            "prev": {
+              "disabled": true,
+              "hidden": false
+            },
+            "latest": {
+              "disabled": true,
+              "hidden": false
+            },
+            "next": {
+              "disabled": true,
+              "hidden": false
+            },
+            "points": {
+              "disabled": false,
+              "hidden": true
+            }
+          },
+          "captionVisible": true,
+          "settledMs": 438
+        }
+      ],
+      "pageErrors": [],
+      "lightningRequests": [
+        "history/index.json",
+        "uk_lightning.geojson",
+        "history/index.json"
+      ],
+      "shim": {
+        "served": {
+          "maplibre": 2,
+          "style": 1,
+          "duckdb": 3,
+          "lightning-data": 3
+        },
+        "aborted": [
+          "https://raw.githubusercontent.com/Ventusltd/data-grid-gb/1c9909d1138704b29235c27fd769436dda8a0b18/derived/connection-points.v3.json",
+          "https://ventusltd.github.io/ventus-grid-engine/genome/engine-graph.json"
+        ],
+        "missing": [
+          "https://raw.githubusercontent.com/Ventusltd/lightning/main/data/history/index.json"
+        ]
+      },
+      "invariants": {
+        "case": "T7-feed-coverage-wording",
+        "profile": "desktop",
+        "before": {
+          "inspect": {
+            "engine": 60,
+            "pipeline": 3,
+            "total": 63,
+            "unique": 63,
+            "complete": true
+          },
+          "proxies": 63,
+          "markers": 63,
+          "ok": true,
+          "lightningRequestsSoFar": 0,
+          "when": "before"
+        },
+        "after": {
+          "inspect": {
+            "engine": 60,
+            "pipeline": 3,
+            "total": 63,
+            "unique": 63,
+            "complete": true
+          },
+          "proxies": 63,
+          "markers": 63,
+          "ok": true,
+          "lightningRequestsSoFar": 3,
+          "when": "after"
+        },
+        "requestsBeforeFirstOn": 0,
+        "offGesture": {
+          "ok": true
+        },
+        "requestsWhileOffAfter11min": [],
+        "checkedAfterOff": false,
+        "ok": true
+      }
+    },
+    "T8-hide-layers-p393": {
+      "profile": "p393",
+      "fixture": "/tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/lightning/fixtures/lightning-archive/data",
+      "clock": "2026-10-26T18:40:00Z",
+      "composition": {
+        "engine": 120,
+        "pn": 6,
+        "scada": true,
+        "curtain": true,
+        "menuInstalled": true,
+        "map": true,
+        "waitedMs": 4110
+      },
+      "layersOpened": true,
+      "steps": [
+        {
+          "what": "caption-line hit test at max scroll",
+          "wheels": 1,
+          "layersOpened": true,
+          "button": {
+            "text": "▾ HIDE LAYERS",
+            "rect": [
+              249,
+              796,
+              132,
+              44
+            ]
+          },
+          "hits": [
+            {
+              "cap": "window",
+              "centre": [
+                203,
+                575
+              ],
+              "hit": "caption",
+              "text": "Window 2026-10-19 18:40 UTC → 2026-10-26 18:40 UTC (7 days, "
+            },
+            {
+              "cap": "actual",
+              "centre": [
+                203,
+                605
+              ],
+              "hit": "caption",
+              "text": "Actual first 2026-10-21 12:32:19 UTC · last 2026-10-25 11:15"
+            },
+            {
+              "cap": "flashes",
+              "centre": [
+                203,
+                643
+              ],
+              "hit": "caption",
+              "text": "Flashes 408 archived in window · 408 drawn as points (index "
+            },
+            {
+              "cap": "refresh",
+              "centre": [
+                203,
+                680
+              ],
+              "hit": "caption",
+              "text": "Refresh archive 2026-10-26 18:37 UTC (0h 3min ago; expected "
+            },
+            {
+              "cap": "searched",
+              "centre": [
+                203,
+                710
+              ],
+              "hit": "caption",
+              "text": "Searched EUMETSAT 56% of window · 17 successful runs · 2026-"
+            },
+            {
+              "cap": "warning",
+              "centre": [
+                203,
+                755
+              ],
+              "hit": "caption",
+              "text": "Not yet ingested: last 5h 40min of window (unknown, not zero"
+            },
+            {
+              "cap": "footer",
+              "centre": [
+                203,
+                806
+              ],
+              "hit": "caption",
+              "text": "Times UTC · Optical flashes seen by MTG Lightning Imager (EU"
+            }
+          ],
+          "lines": [
+            {
+              "cap": "window",
+              "line": "1/2",
+              "rect": [
+                29,
+                562,
+                318,
+                11
+              ],
+              "blocked": []
+            },
+            {
+              "cap": "window",
+              "line": "2/2",
+              "rect": [
+                29,
+                577,
+                78,
+                11
+              ],
+              "blocked": []
+            },
+            {
+              "cap": "actual",
+              "line": "1/2",
+              "rect": [
+                29,
+                592,
+                324,
+                11
+              ],
+              "blocked": []
+            },
+            {
+              "cap": "actual",
+              "line": "2/2",
+              "rect": [
+                29,
+                607,
+                72,
+                11
+              ],
+              "blocked": []
+            },
+            {
+              "cap": "flashes",
+              "line": "1/3",
+              "rect": [
+                29,
+                622,
+                312,
+                11
+              ],
+              "blocked": []
+            },
+            {
+              "cap": "flashes",
+              "line": "2/3",
+              "rect": [
+                29,
+                637,
+                318,
+                11
+              ],
+              "blocked": []
+            },
+            {
+              "cap": "flashes",
+              "line": "3/3",
+              "rect": [
+                29,
+                652,
+                36,
+                11
+              ],
+              "blocked": []
+            },
+            {
+              "cap": "refresh",
+              "line": "1/2",
+              "rect": [
+                29,
+                667,
+                300,
+                11
+              ],
+              "blocked": []
+            },
+            {
+              "cap": "refresh",
+              "line": "2/2",
+              "rect": [
+                29,
+                682,
+                114,
+                11
+              ],
+              "blocked": []
+            },
+            {
+              "cap": "searched",
+              "line": "1/2",
+              "rect": [
+                29,
+                697,
+                324,
+                11
+              ],
+              "blocked": []
+            },
+            {
+              "cap": "searched",
+              "line": "2/2",
+              "rect": [
+                29,
+                712,
+                258,
+                11
+              ],
+              "blocked": []
+            },
+            {
+              "cap": "warning",
+              "line": "1/4",
+              "rect": [
+                29,
+                727,
+                330,
+                11
+              ],
+              "blocked": []
+            },
+            {
+              "cap": "warning",
+              "line": "2/4",
+              "rect": [
+                29,
+                742,
+                342,
+                11
+              ],
+              "blocked": []
+            },
+            {
+              "cap": "warning",
+              "line": "3/4",
+              "rect": [
+                29,
+                757,
+                330,
+                11
+              ],
+              "blocked": []
+            },
+            {
+              "cap": "warning",
+              "line": "4/4",
+              "rect": [
+                29,
+                772,
+                192,
+                11
+              ],
+              "blocked": []
+            },
+            {
+              "cap": "footer",
+              "line": "1/3",
+              "rect": [
+                29,
+                786,
+                302,
+                10
+              ],
+              "blocked": []
+            },
+            {
+              "cap": "footer",
+              "line": "2/3",
+              "rect": [
+                29,
+                800,
+                335,
+                10
+              ],
+              "blocked": [
+                {
+                  "x": 263,
+                  "y": 805,
+                  "hit": "HIDE-LAYERS-BUTTON"
+                },
+                {
+                  "x": 297,
+                  "y": 805,
+                  "hit": "HIDE-LAYERS-BUTTON"
+                },
+                {
+                  "x": 330,
+                  "y": 805,
+                  "hit": "HIDE-LAYERS-BUTTON"
+                }
+              ]
+            },
+            {
+              "cap": "footer",
+              "line": "3/3",
+              "rect": [
+                29,
+                813,
+                281,
+                10
+              ],
+              "blocked": [
+                {
+                  "x": 254,
+                  "y": 818,
+                  "hit": "HIDE-LAYERS-BUTTON"
+                },
+                {
+                  "x": 282,
+                  "y": 818,
+                  "hit": "HIDE-LAYERS-BUTTON"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "pageErrors": [],
+      "lightningRequests": [
+        "history/index.json",
+        "history/days/2026/10/25.json",
+        "history/days/2026/10/21.json",
+        "history/days/2026/10/22.json",
+        "history/days/2026/10/23.json",
+        "history/days/2026/10/24.json"
+      ],
+      "shim": {
+        "served": {
+          "maplibre": 2,
+          "style": 1,
+          "duckdb": 3,
+          "lightning-data": 6
+        },
+        "aborted": [
+          "https://raw.githubusercontent.com/Ventusltd/data-grid-gb/1c9909d1138704b29235c27fd769436dda8a0b18/derived/connection-points.v3.json",
+          "https://ventusltd.github.io/ventus-grid-engine/genome/engine-graph.json"
+        ],
+        "missing": []
+      },
+      "invariants": {
+        "case": "T8-hide-layers-p393",
+        "profile": "p393",
+        "before": {
+          "inspect": {
+            "engine": 60,
+            "pipeline": 3,
+            "total": 63,
+            "unique": 63,
+            "complete": true
+          },
+          "proxies": 63,
+          "markers": 63,
+          "ok": true,
+          "lightningRequestsSoFar": 0,
+          "when": "before"
+        },
+        "after": {
+          "inspect": {
+            "engine": 60,
+            "pipeline": 3,
+            "total": 63,
+            "unique": 63,
+            "complete": true
+          },
+          "proxies": 63,
+          "markers": 63,
+          "ok": true,
+          "lightningRequestsSoFar": 6,
+          "when": "after"
+        },
+        "requestsBeforeFirstOn": 0,
+        "offGesture": {
+          "ok": true
+        },
+        "requestsWhileOffAfter11min": [],
+        "checkedAfterOff": false,
+        "ok": true
+      }
+    },
+    "T8-hide-layers-p360": {
+      "profile": "p360",
+      "fixture": "/tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/lightning/fixtures/lightning-archive/data",
+      "clock": "2026-10-26T18:40:00Z",
+      "composition": {
+        "engine": 120,
+        "pn": 6,
+        "scada": true,
+        "curtain": true,
+        "menuInstalled": true,
+        "map": true,
+        "waitedMs": 3554
+      },
+      "layersOpened": true,
+      "steps": [
+        {
+          "what": "caption-line hit test at max scroll",
+          "wheels": 1,
+          "layersOpened": true,
+          "button": {
+            "text": "▾ HIDE LAYERS",
+            "rect": [
+              216,
+              684,
+              132,
+              44
+            ]
+          },
+          "hits": [
+            {
+              "cap": "window",
+              "centre": [
+                186,
+                449
+              ],
+              "hit": "caption",
+              "text": "Window 2026-10-19 18:40 UTC → 2026-10-26 18:40 UTC (7 days, "
+            },
+            {
+              "cap": "actual",
+              "centre": [
+                186,
+                479
+              ],
+              "hit": "caption",
+              "text": "Actual first 2026-10-21 12:32:19 UTC · last 2026-10-25 11:15"
+            },
+            {
+              "cap": "flashes",
+              "centre": [
+                186,
+                516
+              ],
+              "hit": "caption",
+              "text": "Flashes 408 archived in window · 408 drawn as points (index "
+            },
+            {
+              "cap": "refresh",
+              "centre": [
+                186,
+                554
+              ],
+              "hit": "caption",
+              "text": "Refresh archive 2026-10-26 18:37 UTC (0h 3min ago; expected "
+            },
+            {
+              "cap": "searched",
+              "centre": [
+                186,
+                584
+              ],
+              "hit": "caption",
+              "text": "Searched EUMETSAT 56% of window · 17 successful runs · 2026-"
+            },
+            {
+              "cap": "warning",
+              "centre": [
+                186,
+                636
+              ],
+              "hit": "caption",
+              "text": "Not yet ingested: last 5h 40min of window (unknown, not zero"
+            },
+            {
+              "cap": "footer",
+              "centre": [
+                186,
+                694
+              ],
+              "hit": "caption",
+              "text": "Times UTC · Optical flashes seen by MTG Lightning Imager (EU"
+            }
+          ],
+          "lines": [
+            {
+              "cap": "window",
+              "line": "1/2",
+              "rect": [
+                29,
+                436,
+                300,
+                11
+              ],
+              "blocked": []
+            },
+            {
+              "cap": "window",
+              "line": "2/2",
+              "rect": [
+                29,
+                451,
+                96,
+                11
+              ],
+              "blocked": []
+            },
+            {
+              "cap": "actual",
+              "line": "1/2",
+              "rect": [
+                29,
+                466,
+                312,
+                11
+              ],
+              "blocked": []
+            },
+            {
+              "cap": "actual",
+              "line": "2/2",
+              "rect": [
+                29,
+                481,
+                90,
+                11
+              ],
+              "blocked": []
+            },
+            {
+              "cap": "flashes",
+              "line": "1/3",
+              "rect": [
+                29,
+                496,
+                312,
+                11
+              ],
+              "blocked": []
+            },
+            {
+              "cap": "flashes",
+              "line": "2/3",
+              "rect": [
+                29,
+                511,
+                288,
+                11
+              ],
+              "blocked": []
+            },
+            {
+              "cap": "flashes",
+              "line": "3/3",
+              "rect": [
+                29,
+                526,
+                66,
+                11
+              ],
+              "blocked": []
+            },
+            {
+              "cap": "refresh",
+              "line": "1/2",
+              "rect": [
+                29,
+                541,
+                300,
+                11
+              ],
+              "blocked": []
+            },
+            {
+              "cap": "refresh",
+              "line": "2/2",
+              "rect": [
+                29,
+                556,
+                114,
+                11
+              ],
+              "blocked": []
+            },
+            {
+              "cap": "searched",
+              "line": "1/2",
+              "rect": [
+                29,
+                571,
+                312,
+                11
+              ],
+              "blocked": []
+            },
+            {
+              "cap": "searched",
+              "line": "2/2",
+              "rect": [
+                29,
+                586,
+                270,
+                11
+              ],
+              "blocked": []
+            },
+            {
+              "cap": "warning",
+              "line": "1/5",
+              "rect": [
+                29,
+                601,
+                306,
+                11
+              ],
+              "blocked": []
+            },
+            {
+              "cap": "warning",
+              "line": "2/5",
+              "rect": [
+                29,
+                616,
+                270,
+                11
+              ],
+              "blocked": []
+            },
+            {
+              "cap": "warning",
+              "line": "3/5",
+              "rect": [
+                29,
+                631,
+                282,
+                11
+              ],
+              "blocked": []
+            },
+            {
+              "cap": "warning",
+              "line": "4/5",
+              "rect": [
+                29,
+                646,
+                312,
+                11
+              ],
+              "blocked": []
+            },
+            {
+              "cap": "warning",
+              "line": "5/5",
+              "rect": [
+                29,
+                661,
+                18,
+                11
+              ],
+              "blocked": []
+            },
+            {
+              "cap": "footer",
+              "line": "1/3",
+              "rect": [
+                29,
+                675,
+                302,
+                10
+              ],
+              "blocked": []
+            },
+            {
+              "cap": "footer",
+              "line": "2/3",
+              "rect": [
+                29,
+                688,
+                308,
+                10
+              ],
+              "blocked": [
+                {
+                  "x": 245,
+                  "y": 693,
+                  "hit": "HIDE-LAYERS-BUTTON"
+                },
+                {
+                  "x": 275,
+                  "y": 693,
+                  "hit": "HIDE-LAYERS-BUTTON"
+                },
+                {
+                  "x": 306,
+                  "y": 693,
+                  "hit": "HIDE-LAYERS-BUTTON"
+                }
+              ]
+            },
+            {
+              "cap": "footer",
+              "line": "3/3",
+              "rect": [
+                29,
+                702,
+                308,
+                10
+              ],
+              "blocked": [
+                {
+                  "x": 245,
+                  "y": 707,
+                  "hit": "HIDE-LAYERS-BUTTON"
+                },
+                {
+                  "x": 275,
+                  "y": 707,
+                  "hit": "HIDE-LAYERS-BUTTON"
+                },
+                {
+                  "x": 306,
+                  "y": 707,
+                  "hit": "HIDE-LAYERS-BUTTON"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "pageErrors": [],
+      "lightningRequests": [
+        "history/index.json",
+        "history/days/2026/10/25.json",
+        "history/days/2026/10/21.json",
+        "history/days/2026/10/22.json",
+        "history/days/2026/10/23.json",
+        "history/days/2026/10/24.json"
+      ],
+      "shim": {
+        "served": {
+          "maplibre": 2,
+          "style": 1,
+          "duckdb": 3,
+          "lightning-data": 6
+        },
+        "aborted": [
+          "https://raw.githubusercontent.com/Ventusltd/data-grid-gb/1c9909d1138704b29235c27fd769436dda8a0b18/derived/connection-points.v3.json",
+          "https://ventusltd.github.io/ventus-grid-engine/genome/engine-graph.json"
+        ],
+        "missing": []
+      },
+      "invariants": {
+        "case": "T8-hide-layers-p360",
+        "profile": "p360",
+        "before": {
+          "inspect": {
+            "engine": 60,
+            "pipeline": 3,
+            "total": 63,
+            "unique": 63,
+            "complete": true
+          },
+          "proxies": 63,
+          "markers": 63,
+          "ok": true,
+          "lightningRequestsSoFar": 0,
+          "when": "before"
+        },
+        "after": {
+          "inspect": {
+            "engine": 60,
+            "pipeline": 3,
+            "total": 63,
+            "unique": 63,
+            "complete": true
+          },
+          "proxies": 63,
+          "markers": 63,
+          "ok": true,
+          "lightningRequestsSoFar": 6,
+          "when": "after"
+        },
+        "requestsBeforeFirstOn": 0,
+        "offGesture": {
+          "ok": true
+        },
+        "requestsWhileOffAfter11min": [],
+        "checkedAfterOff": false,
+        "ok": true
+      }
+    },
+    "T9-out-of-box": {
+      "profile": "desktop",
+      "fixture": "/tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/opus-browser-tests/fixtures/SYNTHETIC-out-of-box/data",
+      "clock": "2026-10-26T18:40:00Z",
+      "composition": {
+        "engine": 120,
+        "pn": 6,
+        "scada": true,
+        "curtain": true,
+        "menuInstalled": true,
+        "map": true,
+        "waitedMs": 3657
+      },
+      "steps": [
+        {
+          "what": "7D",
+          "label": "Lightning flashes (optical) [411 | 7d]",
+          "status": "PARTIAL · 411 FLASHES DRAWN · SEARCHED 56%",
+          "checked": true,
+          "caps": {
+            "window": "Window 2026-10-19 18:40 UTC → 2026-10-26 18:40 UTC (7 days, latest)",
+            "actual": "Actual first 2026-10-21 12:32:19 UTC · last 2026-10-25 11:15:58 UTC",
+            "flashes": "Flashes 411 archived in window · 411 drawn as points (index count 411 within the 40,000-point cap for this desktop)",
+            "refresh": "Refresh archive 2026-10-26 18:37 UTC (0h 3min ago; expected every 1 h)",
+            "searched": "Searched EUMETSAT 56% of window · 17 successful runs · 2026-10-20 22:41 UTC → 2026-10-26 13:00 UTC",
+            "warning": "Not yet ingested: last 5h 40min of window (unknown, not zero) · Unknown: 2026-10-19 to 2026-10-20 precede archive start 2026-10-20 22:41 UTC (not zero) · Unknown: 1 of 8 UTC dates have no collection run",
+            "footer": "Times UTC · Optical flashes seen by MTG Lightning Imager (EUMETSAT L2-LFL), not confirmed ground strikes · Missing days are unknown, not zero · UK box −11.0,49.5 → 3.0,61.5"
+          },
+          "chips": {
+            "12h": {
+              "active": false,
+              "disabled": false
+            },
+            "24h": {
+              "active": false,
+              "disabled": false
+            },
+            "48h": {
+              "active": false,
+              "disabled": false
+            },
+            "7d": {
+              "active": true,
+              "disabled": false
+            },
+            "30d": {
+              "active": false,
+              "disabled": false
+            },
+            "3m": {
+              "active": false,
+              "disabled": false
+            },
+            "6m": {
+              "active": false,
+              "disabled": false
+            },
+            "12m": {
+              "active": false,
+              "disabled": false
+            },
+            "custom": {
+              "active": false,
+              "disabled": false
+            }
+          },
+          "nav": {
+            "apply": {
+              "disabled": false,
+              "hidden": false
+            },
+            "prev": {
+              "disabled": false,
+              "hidden": false
+            },
+            "latest": {
+              "disabled": true,
+              "hidden": false
+            },
+            "next": {
+              "disabled": true,
+              "hidden": false
+            },
+            "points": {
+              "disabled": false,
+              "hidden": true
+            }
+          },
+          "captionVisible": true,
+          "settledMs": 359
+        }
+      ],
+      "pageErrors": [],
+      "lightningRequests": [
+        "history/index.json",
+        "history/days/2026/10/25.json",
+        "history/days/2026/10/21.json",
+        "history/days/2026/10/22.json",
+        "history/days/2026/10/23.json",
+        "history/days/2026/10/24.json"
+      ],
+      "shim": {
+        "served": {
+          "maplibre": 2,
+          "style": 1,
+          "duckdb": 3,
+          "lightning-data": 6
+        },
+        "aborted": [
+          "https://raw.githubusercontent.com/Ventusltd/data-grid-gb/1c9909d1138704b29235c27fd769436dda8a0b18/derived/connection-points.v3.json",
+          "https://ventusltd.github.io/ventus-grid-engine/genome/engine-graph.json"
+        ],
+        "missing": []
+      },
+      "invariants": {
+        "case": "T9-out-of-box",
+        "profile": "desktop",
+        "before": {
+          "inspect": {
+            "engine": 60,
+            "pipeline": 3,
+            "total": 63,
+            "unique": 63,
+            "complete": true
+          },
+          "proxies": 63,
+          "markers": 63,
+          "ok": true,
+          "lightningRequestsSoFar": 0,
+          "when": "before"
+        },
+        "after": {
+          "inspect": {
+            "engine": 60,
+            "pipeline": 3,
+            "total": 63,
+            "unique": 63,
+            "complete": true
+          },
+          "proxies": 63,
+          "markers": 63,
+          "ok": true,
+          "lightningRequestsSoFar": 6,
+          "when": "after"
+        },
+        "requestsBeforeFirstOn": 0,
+        "offGesture": {
+          "ok": true
+        },
+        "requestsWhileOffAfter11min": [],
+        "checkedAfterOff": false,
+        "ok": true
+      }
+    },
+    "T10-shard-mismatch": {
+      "profile": "desktop",
+      "fixture": "/tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/opus-browser-tests/fixtures/SYNTHETIC-shard-mismatch/data",
+      "clock": "2026-10-26T18:40:00Z",
+      "composition": {
+        "engine": 120,
+        "pn": 6,
+        "scada": true,
+        "curtain": true,
+        "menuInstalled": true,
+        "map": true,
+        "waitedMs": 3721
+      },
+      "steps": [
+        {
+          "what": "7D",
+          "label": "Lightning flashes (optical) [408 | 7d]",
+          "status": "PARTIAL · 408 FLASHES DRAWN · SEARCHED 56%",
+          "checked": true,
+          "caps": {
+            "window": "Window 2026-10-19 18:40 UTC → 2026-10-26 18:40 UTC (7 days, latest)",
+            "actual": "Actual first 2026-10-21 12:32:19 UTC · last 2026-10-25 11:15:58 UTC",
+            "flashes": "Flashes 408 archived in window · 408 drawn as points (index count 407 within the 40,000-point cap for this desktop)",
+            "refresh": "Refresh archive 2026-10-26 18:37 UTC (0h 3min ago; expected every 1 h)",
+            "searched": "Searched EUMETSAT 56% of window · 17 successful runs · 2026-10-20 22:41 UTC → 2026-10-26 13:00 UTC",
+            "warning": "Not yet ingested: last 5h 40min of window (unknown, not zero) · Unknown: 2026-10-19 to 2026-10-20 precede archive start 2026-10-20 22:41 UTC (not zero) · Unknown: 1 of 8 UTC dates have no collection run",
+            "footer": "Times UTC · Optical flashes seen by MTG Lightning Imager (EUMETSAT L2-LFL), not confirmed ground strikes · Missing days are unknown, not zero · UK box −11.0,49.5 → 3.0,61.5"
+          },
+          "chips": {
+            "12h": {
+              "active": false,
+              "disabled": false
+            },
+            "24h": {
+              "active": false,
+              "disabled": false
+            },
+            "48h": {
+              "active": false,
+              "disabled": false
+            },
+            "7d": {
+              "active": true,
+              "disabled": false
+            },
+            "30d": {
+              "active": false,
+              "disabled": false
+            },
+            "3m": {
+              "active": false,
+              "disabled": false
+            },
+            "6m": {
+              "active": false,
+              "disabled": false
+            },
+            "12m": {
+              "active": false,
+              "disabled": false
+            },
+            "custom": {
+              "active": false,
+              "disabled": false
+            }
+          },
+          "nav": {
+            "apply": {
+              "disabled": false,
+              "hidden": false
+            },
+            "prev": {
+              "disabled": false,
+              "hidden": false
+            },
+            "latest": {
+              "disabled": true,
+              "hidden": false
+            },
+            "next": {
+              "disabled": true,
+              "hidden": false
+            },
+            "points": {
+              "disabled": false,
+              "hidden": true
+            }
+          },
+          "captionVisible": true,
+          "settledMs": 452
+        }
+      ],
+      "pageErrors": [],
+      "lightningRequests": [
+        "history/index.json",
+        "history/days/2026/10/25.json",
+        "history/days/2026/10/21.json",
+        "history/days/2026/10/22.json",
+        "history/days/2026/10/23.json",
+        "history/days/2026/10/24.json"
+      ],
+      "shim": {
+        "served": {
+          "maplibre": 2,
+          "style": 1,
+          "duckdb": 3,
+          "lightning-data": 6
+        },
+        "aborted": [
+          "https://raw.githubusercontent.com/Ventusltd/data-grid-gb/1c9909d1138704b29235c27fd769436dda8a0b18/derived/connection-points.v3.json",
+          "https://ventusltd.github.io/ventus-grid-engine/genome/engine-graph.json"
+        ],
+        "missing": []
+      },
+      "invariants": {
+        "case": "T10-shard-mismatch",
+        "profile": "desktop",
+        "before": {
+          "inspect": {
+            "engine": 60,
+            "pipeline": 3,
+            "total": 63,
+            "unique": 63,
+            "complete": true
+          },
+          "proxies": 63,
+          "markers": 63,
+          "ok": true,
+          "lightningRequestsSoFar": 0,
+          "when": "before"
+        },
+        "after": {
+          "inspect": {
+            "engine": 60,
+            "pipeline": 3,
+            "total": 63,
+            "unique": 63,
+            "complete": true
+          },
+          "proxies": 63,
+          "markers": 63,
+          "ok": true,
+          "lightningRequestsSoFar": 6,
+          "when": "after"
+        },
+        "requestsBeforeFirstOn": 0,
+        "offGesture": {
+          "ok": true
+        },
+        "requestsWhileOffAfter11min": [],
+        "checkedAfterOff": false,
+        "ok": true
+      }
+    },
+    "T11-T12-bulk-12h": {
+      "profile": "desktop",
+      "fixture": "/tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/opus-browser-tests/fixtures/SYNTHETIC-bulk-day/data",
+      "clock": "2026-10-25T06:00:00Z",
+      "composition": {
+        "engine": 120,
+        "pn": 6,
+        "scada": true,
+        "curtain": true,
+        "menuInstalled": true,
+        "map": true,
+        "waitedMs": 4325
+      },
+      "steps": [
+        {
+          "what": "12H (24 Oct 18:00 -> 25 Oct 06:00 UTC), before consent",
+          "label": "Lightning flashes (optical) [85,118 | 12h]",
+          "status": "PARTIAL · 85,118 ARCHIVED · SEARCHED 68%",
+          "checked": true,
+          "caps": {
+            "window": "Window 2026-10-24 18:00 UTC → 2026-10-25 06:00 UTC (12 hours, latest)",
+            "actual": "Actual on the 2 overlapping UTC dates: first 2026-10-24 12:58:54 UTC · last 2026-10-25 05:49:59 UTC (day-level; may lie outside a mid-day window edge)",
+            "flashes": "Flashes 85,118 archived on 2 overlapping UTC dates · none drawn (summary mode; index sum 85,118 flashes, 33,775,794 bytes exceeds the budget; LOAD POINTS draws the newest 40,000)",
+            "refresh": "Refresh archive 2026-10-26 18:37 UTC (0h 0min ago; expected every 1 h)",
+            "searched": "Searched EUMETSAT 68% of window · 3 successful runs · 2026-10-24 18:00 UTC → 2026-10-25 04:43 UTC",
+            "warning": "",
+            "footer": "Times UTC · Optical flashes seen by MTG Lightning Imager (EUMETSAT L2-LFL), not confirmed ground strikes · Missing days are unknown, not zero · UK box −11.0,49.5 → 3.0,61.5"
+          },
+          "chips": {
+            "12h": {
+              "active": true,
+              "disabled": false
+            },
+            "24h": {
+              "active": false,
+              "disabled": false
+            },
+            "48h": {
+              "active": false,
+              "disabled": false
+            },
+            "7d": {
+              "active": false,
+              "disabled": false
+            },
+            "30d": {
+              "active": false,
+              "disabled": false
+            },
+            "3m": {
+              "active": false,
+              "disabled": false
+            },
+            "6m": {
+              "active": false,
+              "disabled": false
+            },
+            "12m": {
+              "active": false,
+              "disabled": false
+            },
+            "custom": {
+              "active": false,
+              "disabled": false
+            }
+          },
+          "nav": {
+            "apply": {
+              "disabled": false,
+              "hidden": false
+            },
+            "prev": {
+              "disabled": false,
+              "hidden": false
+            },
+            "latest": {
+              "disabled": true,
+              "hidden": false
+            },
+            "next": {
+              "disabled": true,
+              "hidden": false
+            },
+            "points": {
+              "disabled": false,
+              "hidden": false
+            }
+          },
+          "captionVisible": true,
+          "settledMs": 308
+        },
+        {
+          "what": "after LOAD POINTS",
+          "gesture": {
+            "ok": true
+          },
+          "label": "Lightning flashes (optical) [85,000 | 12h]",
+          "status": "PARTIAL · 85,000 FLASHES CLUSTERED · SEARCHED 68%",
+          "checked": true,
+          "caps": {
+            "window": "Window 2026-10-24 18:00 UTC → 2026-10-25 06:00 UTC (12 hours, latest)",
+            "actual": "Actual first 2026-10-25 00:00:00 UTC · last 2026-10-25 05:49:59 UTC",
+            "flashes": "Flashes 85,118 archived in window (index) · 85,000 downloaded from the newest 1 of 2 days (budget 40,000; 1 older days not loaded) · 85,000 drawn as clusters (index count 85,000 exceeds the 40,000-point cap for this desktop)",
+            "refresh": "Refresh archive 2026-10-26 18:37 UTC (0h 0min ago; expected every 1 h)",
+            "searched": "Searched EUMETSAT 68% of window · 3 successful runs · 2026-10-24 18:00 UTC → 2026-10-25 04:43 UTC",
+            "warning": "",
+            "footer": "Times UTC · Optical flashes seen by MTG Lightning Imager (EUMETSAT L2-LFL), not confirmed ground strikes · Missing days are unknown, not zero · UK box −11.0,49.5 → 3.0,61.5"
+          },
+          "chips": {
+            "12h": {
+              "active": true,
+              "disabled": false
+            },
+            "24h": {
+              "active": false,
+              "disabled": false
+            },
+            "48h": {
+              "active": false,
+              "disabled": false
+            },
+            "7d": {
+              "active": false,
+              "disabled": false
+            },
+            "30d": {
+              "active": false,
+              "disabled": false
+            },
+            "3m": {
+              "active": false,
+              "disabled": false
+            },
+            "6m": {
+              "active": false,
+              "disabled": false
+            },
+            "12m": {
+              "active": false,
+              "disabled": false
+            },
+            "custom": {
+              "active": false,
+              "disabled": false
+            }
+          },
+          "nav": {
+            "apply": {
+              "disabled": false,
+              "hidden": false
+            },
+            "prev": {
+              "disabled": false,
+              "hidden": false
+            },
+            "latest": {
+              "disabled": true,
+              "hidden": false
+            },
+            "next": {
+              "disabled": true,
+              "hidden": false
+            },
+            "points": {
+              "disabled": false,
+              "hidden": true
+            }
+          },
+          "captionVisible": true,
+          "settledMs": 1464
+        }
+      ],
+      "pageErrors": [],
+      "lightningRequests": [
+        "history/index.json",
+        "history/days/2026/10/25.json"
+      ],
+      "shim": {
+        "served": {
+          "maplibre": 2,
+          "style": 1,
+          "duckdb": 3,
+          "lightning-data": 2
+        },
+        "aborted": [
+          "https://raw.githubusercontent.com/Ventusltd/data-grid-gb/1c9909d1138704b29235c27fd769436dda8a0b18/derived/connection-points.v3.json",
+          "https://ventusltd.github.io/ventus-grid-engine/genome/engine-graph.json"
+        ],
+        "missing": []
+      },
+      "invariants": {
+        "case": "T11-T12-bulk-12h",
+        "profile": "desktop",
+        "before": {
+          "inspect": {
+            "engine": 60,
+            "pipeline": 3,
+            "total": 63,
+            "unique": 63,
+            "complete": true
+          },
+          "proxies": 63,
+          "markers": 63,
+          "ok": true,
+          "lightningRequestsSoFar": 0,
+          "when": "before"
+        },
+        "after": {
+          "inspect": {
+            "engine": 60,
+            "pipeline": 3,
+            "total": 63,
+            "unique": 63,
+            "complete": true
+          },
+          "proxies": 63,
+          "markers": 63,
+          "ok": true,
+          "lightningRequestsSoFar": 2,
+          "when": "after"
+        },
+        "requestsBeforeFirstOn": 0,
+        "offGesture": {
+          "ok": true
+        },
+        "requestsWhileOffAfter11min": [],
+        "checkedAfterOff": false,
+        "ok": true
+      }
+    }
+  },
+  "tests": {
+    "T1": {
+      "title": "CUSTOM during the first load",
+      "result": "FAIL",
+      "asserts": [
+        {
+          "what": "no uncaught page error",
+          "ok": false,
+          "observed": [
+            "Cannot read properties of null (reading 'colour')"
+          ]
+        },
+        {
+          "what": "CUSTOM chip is the active chip",
+          "ok": true,
+          "observed": {
+            "active": true,
+            "disabled": false
+          }
+        },
+        {
+          "what": "no stale non-custom window painted under CUSTOM (window line empty or \"UTC dates … inclusive\")",
+          "ok": false,
+          "observed": "Window 2026-10-25 18:40 UTC → 2026-10-26 18:40 UTC (24 hours, latest)"
+        },
+        {
+          "what": "label not [FAIL] without a stated reason",
+          "ok": true,
+          "observed": {
+            "label": "Lightning flashes (optical) [UNKNOWN | 24h]",
+            "status": "PARTIAL · 0 FLASHES DRAWN · SEARCHED 43%",
+            "immediately": {
+              "label": "Lightning flashes (optical) [FAIL]",
+              "status": "LOADING"
+            }
+          }
+        }
+      ],
+      "seconds": 24
+    },
+    "T2": {
+      "title": "Malformed timestamp in the index",
+      "result": "FAIL",
+      "asserts": [
+        {
+          "what": "no uncaught page error",
+          "ok": false,
+          "observed": [
+            "Invalid time value",
+            "Invalid time value",
+            "Invalid time value"
+          ]
+        },
+        {
+          "what": "12M settles (not stuck LOADING/[LOAD])",
+          "ok": false,
+          "observed": {
+            "label": "Lightning flashes (optical) [LOAD]",
+            "status": "LOADING"
+          }
+        },
+        {
+          "what": "12M caption names the bad data (actual or warning line)",
+          "ok": false,
+          "observed": {
+            "actual": "Actual no archived flashes within this window",
+            "warning": "Not yet ingested: last 5h 40min of window (unknown, not zero)"
+          }
+        },
+        {
+          "what": "7D still usable afterwards (settles, window says 7 days)",
+          "ok": false,
+          "observed": {
+            "gesture": {
+              "ok": true
+            },
+            "label": "Lightning flashes (optical) [LOAD]",
+            "status": "LOADING",
+            "window": "Window 2026-10-25 18:40 UTC → 2026-10-26 18:40 UTC (24 hours, latest)"
+          }
+        },
+        {
+          "what": "24H still usable afterwards",
+          "ok": false,
+          "observed": {
+            "gesture": {
+              "ok": true
+            },
+            "label": "Lightning flashes (optical) [LOAD]",
+            "status": "LOADING",
+            "window": "Window 2026-10-25 18:40 UTC → 2026-10-26 18:40 UTC (24 hours, latest)"
+          }
+        }
+      ],
+      "seconds": 47
+    },
+    "T3": {
+      "title": "Feed revalidation (OFF then ON fetches the feed again)",
+      "result": "FAIL",
+      "asserts": [
+        {
+          "what": "first ON fetched the feed once",
+          "ok": true,
+          "observed": 1
+        },
+        {
+          "what": "second ON fetched the feed again (count +1)",
+          "ok": false,
+          "observed": {
+            "first": 1,
+            "second": 1,
+            "log": [
+              "history/index.json",
+              "uk_lightning.geojson",
+              "history/index.json"
+            ]
+          }
+        },
+        {
+          "what": "caption shows the changed feed (refresh line names 18:05 UTC)",
+          "ok": false,
+          "observed": {
+            "before": "Refresh live feed 2026-10-26 13:05 UTC (last collection window 2026-10-26 10:05 UTC → 2026-10-26 13:05 UTC; latest detection 2026-10-25 11:15:58 UTC; 7-day retention; archive not yet published: HTTP 404; earlier hours unknown, not zero)",
+            "after": "Refresh live feed 2026-10-26 13:05 UTC (last collection window 2026-10-26 10:05 UTC → 2026-10-26 13:05 UTC; latest detection 2026-10-25 11:15:58 UTC; 7-day retention; archive not yet published: HTTP 404; earlier hours unknown, not zero)"
+          }
+        }
+      ],
+      "seconds": 16
+    },
+    "T4": {
+      "title": "Feed STALE after 4 h",
+      "result": "FAIL",
+      "asserts": [
+        {
+          "what": "feed >4 h old: label or status shows STALE",
+          "ok": false,
+          "observed": {
+            "label": "Lightning flashes (optical) [408 | 7d]",
+            "status": "PARTIAL · 408 FLASHES DRAWN · SEARCHED 2%",
+            "refresh": "Refresh live feed 2026-10-26 13:05 UTC (last collection window 2026-10-26 10:05 UTC → 2026-10-26 13:05 UTC; latest detection 2026-10-25 11:15:58 UTC; 7-day retention; archive not yet published: HTTP 404; earlier hours unknown, not zero)"
+          }
+        },
+        {
+          "what": "control: feed 54 min old shows no STALE",
+          "ok": true,
+          "observed": {
+            "label": "Lightning flashes (optical) [408 | 7d]",
+            "status": "PARTIAL · 408 FLASHES DRAWN · SEARCHED 2%"
+          }
+        }
+      ],
+      "seconds": 34
+    },
+    "T5": {
+      "title": "Feed mode and PREV",
+      "result": "FAIL",
+      "asserts": [
+        {
+          "what": "press 0: no \"searched 0%\" while 63 points are drawn",
+          "ok": true,
+          "observed": {
+            "drawn": 63,
+            "searched": "Searched EUMETSAT 6% of window · 1 successful runs · 2026-10-26 10:05 UTC → 2026-10-26 13:05 UTC",
+            "status": "PARTIAL · 63 FLASHES DRAWN · SEARCHED 6%"
+          }
+        },
+        {
+          "what": "PREV #1: not FAIL",
+          "ok": true,
+          "observed": {
+            "status": "UNKNOWN",
+            "label": "Lightning flashes (optical) [UNKNOWN | 48h]",
+            "warning": ""
+          }
+        },
+        {
+          "what": "press 1: no \"searched 0%\" while 255 points are drawn",
+          "ok": false,
+          "observed": {
+            "drawn": 255,
+            "searched": "Searched EUMETSAT 0% of window — no collection run covers these dates",
+            "status": "UNKNOWN"
+          }
+        },
+        {
+          "what": "PREV #2: not FAIL",
+          "ok": true,
+          "observed": {
+            "status": "UNKNOWN",
+            "label": "Lightning flashes (optical) [UNKNOWN | 48h]",
+            "warning": ""
+          }
+        },
+        {
+          "what": "press 2: no \"searched 0%\" while 90 points are drawn",
+          "ok": false,
+          "observed": {
+            "drawn": 90,
+            "searched": "Searched EUMETSAT 0% of window — no collection run covers these dates",
+            "status": "UNKNOWN"
+          }
+        },
+        {
+          "what": "PREV #3: not FAIL",
+          "ok": false,
+          "observed": {
+            "status": "FAIL · 48 hours needs the archive (archive not yet published); the live feed keeps 7 days",
+            "label": "Lightning flashes (optical) [FAIL]",
+            "warning": "Archive unavailable: HTTP 404 at 2026-10-26 18:40 UTC — nothing shown (unknown, not zero)"
+          }
+        },
+        {
+          "what": "press 3: no \"searched 0%\" while null points are drawn",
+          "ok": true,
+          "observed": {
+            "drawn": null,
+            "searched": "",
+            "status": "FAIL · 48 hours needs the archive (archive not yet published); the live feed keeps 7 days"
+          }
+        }
+      ],
+      "presses": 3,
+      "seconds": 17
+    },
+    "T6": {
+      "title": "Long chips in feed mode (owner device 393x852, Chromium emulation)",
+      "result": "FAIL",
+      "asserts": [
+        {
+          "what": "30D: chip accepts the tap (not dead)",
+          "ok": false,
+          "observed": {
+            "gesture": {
+              "ok": false,
+              "error": "locator.tap: Timeout 3000ms exceeded."
+            },
+            "disabledBefore": true
+          }
+        },
+        {
+          "what": "30D: visible \"archive not yet published … earlier coverage unknown, not zero\"",
+          "ok": true,
+          "observed": {
+            "visible": true,
+            "status": "PARTIAL · 408 FLASHES DRAWN · SEARCHED 2%",
+            "refresh": "Refresh live feed 2026-10-26 13:05 UTC (last collection window 2026-10-26 10:05 UTC → 2026-10-26 13:05 UTC; latest detection 2026-10-25 11:15:58 UTC; 7-day retention; archive not yet published: HTTP 404; earlier hours unknown, not zero)",
+            "warning": "Not yet ingested: last 5h 34min of window (unknown, not zero)",
+            "searched": "Searched EUMETSAT 2% of window · 1 successful runs · 2026-10-26 10:05 UTC → 2026-10-26 13:05 UTC"
+          }
+        },
+        {
+          "what": "3M: chip accepts the tap (not dead)",
+          "ok": false,
+          "observed": {
+            "gesture": {
+              "ok": false,
+              "error": "locator.tap: Timeout 3000ms exceeded."
+            },
+            "disabledBefore": true
+          }
+        },
+        {
+          "what": "3M: visible \"archive not yet published … earlier coverage unknown, not zero\"",
+          "ok": true,
+          "observed": {
+            "visible": true,
+            "status": "PARTIAL · 408 FLASHES DRAWN · SEARCHED 2%",
+            "refresh": "Refresh live feed 2026-10-26 13:05 UTC (last collection window 2026-10-26 10:05 UTC → 2026-10-26 13:05 UTC; latest detection 2026-10-25 11:15:58 UTC; 7-day retention; archive not yet published: HTTP 404; earlier hours unknown, not zero)",
+            "warning": "Not yet ingested: last 5h 34min of window (unknown, not zero)",
+            "searched": "Searched EUMETSAT 2% of window · 1 successful runs · 2026-10-26 10:05 UTC → 2026-10-26 13:05 UTC"
+          }
+        },
+        {
+          "what": "6M: chip accepts the tap (not dead)",
+          "ok": false,
+          "observed": {
+            "gesture": {
+              "ok": false,
+              "error": "locator.tap: Timeout 3000ms exceeded."
+            },
+            "disabledBefore": true
+          }
+        },
+        {
+          "what": "6M: visible \"archive not yet published … earlier coverage unknown, not zero\"",
+          "ok": true,
+          "observed": {
+            "visible": true,
+            "status": "PARTIAL · 408 FLASHES DRAWN · SEARCHED 2%",
+            "refresh": "Refresh live feed 2026-10-26 13:05 UTC (last collection window 2026-10-26 10:05 UTC → 2026-10-26 13:05 UTC; latest detection 2026-10-25 11:15:58 UTC; 7-day retention; archive not yet published: HTTP 404; earlier hours unknown, not zero)",
+            "warning": "Not yet ingested: last 5h 34min of window (unknown, not zero)",
+            "searched": "Searched EUMETSAT 2% of window · 1 successful runs · 2026-10-26 10:05 UTC → 2026-10-26 13:05 UTC"
+          }
+        },
+        {
+          "what": "12M: chip accepts the tap (not dead)",
+          "ok": false,
+          "observed": {
+            "gesture": {
+              "ok": false,
+              "error": "locator.tap: Timeout 3000ms exceeded."
+            },
+            "disabledBefore": true
+          }
+        },
+        {
+          "what": "12M: visible \"archive not yet published … earlier coverage unknown, not zero\"",
+          "ok": true,
+          "observed": {
+            "visible": true,
+            "status": "PARTIAL · 408 FLASHES DRAWN · SEARCHED 2%",
+            "refresh": "Refresh live feed 2026-10-26 13:05 UTC (last collection window 2026-10-26 10:05 UTC → 2026-10-26 13:05 UTC; latest detection 2026-10-25 11:15:58 UTC; 7-day retention; archive not yet published: HTTP 404; earlier hours unknown, not zero)",
+            "warning": "Not yet ingested: last 5h 34min of window (unknown, not zero)",
+            "searched": "Searched EUMETSAT 2% of window · 1 successful runs · 2026-10-26 10:05 UTC → 2026-10-26 13:05 UTC"
+          }
+        }
+      ],
+      "seconds": 27
+    },
+    "T7": {
+      "title": "Feed coverage shown as unknown, not a percentage",
+      "result": "FAIL",
+      "asserts": [
+        {
+          "what": "status carries no \"SEARCHED n%\"",
+          "ok": false,
+          "observed": "PARTIAL · 408 FLASHES DRAWN · SEARCHED 2%"
+        },
+        {
+          "what": "searched line carries no percentage",
+          "ok": false,
+          "observed": "Searched EUMETSAT 2% of window · 1 successful runs · 2026-10-26 10:05 UTC → 2026-10-26 13:05 UTC"
+        },
+        {
+          "what": "coverage stated as unknown (searched line or status)",
+          "ok": false,
+          "observed": {
+            "searched": "Searched EUMETSAT 2% of window · 1 successful runs · 2026-10-26 10:05 UTC → 2026-10-26 13:05 UTC",
+            "status": "PARTIAL · 408 FLASHES DRAWN · SEARCHED 2%"
+          }
+        }
+      ],
+      "seconds": 17
+    },
+    "T8": {
+      "title": "HIDE LAYERS does not occlude caption lines (393x852, 360x740)",
+      "result": "FAIL",
+      "asserts": [
+        {
+          "what": "p393: Layers open",
+          "ok": true,
+          "observed": true
+        },
+        {
+          "what": "p393: [as specified] caption block \"window\" centre is hittable",
+          "ok": true,
+          "observed": {
+            "cap": "window",
+            "centre": [
+              203,
+              575
+            ],
+            "hit": "caption",
+            "text": "Window 2026-10-19 18:40 UTC → 2026-10-26 18:40 UTC (7 days, "
+          }
+        },
+        {
+          "what": "p393: [as specified] caption block \"actual\" centre is hittable",
+          "ok": true,
+          "observed": {
+            "cap": "actual",
+            "centre": [
+              203,
+              605
+            ],
+            "hit": "caption",
+            "text": "Actual first 2026-10-21 12:32:19 UTC · last 2026-10-25 11:15"
+          }
+        },
+        {
+          "what": "p393: [as specified] caption block \"flashes\" centre is hittable",
+          "ok": true,
+          "observed": {
+            "cap": "flashes",
+            "centre": [
+              203,
+              643
+            ],
+            "hit": "caption",
+            "text": "Flashes 408 archived in window · 408 drawn as points (index "
+          }
+        },
+        {
+          "what": "p393: [as specified] caption block \"refresh\" centre is hittable",
+          "ok": true,
+          "observed": {
+            "cap": "refresh",
+            "centre": [
+              203,
+              680
+            ],
+            "hit": "caption",
+            "text": "Refresh archive 2026-10-26 18:37 UTC (0h 3min ago; expected "
+          }
+        },
+        {
+          "what": "p393: [as specified] caption block \"searched\" centre is hittable",
+          "ok": true,
+          "observed": {
+            "cap": "searched",
+            "centre": [
+              203,
+              710
+            ],
+            "hit": "caption",
+            "text": "Searched EUMETSAT 56% of window · 17 successful runs · 2026-"
+          }
+        },
+        {
+          "what": "p393: [as specified] caption block \"warning\" centre is hittable",
+          "ok": true,
+          "observed": {
+            "cap": "warning",
+            "centre": [
+              203,
+              755
+            ],
+            "hit": "caption",
+            "text": "Not yet ingested: last 5h 40min of window (unknown, not zero"
+          }
+        },
+        {
+          "what": "p393: [as specified] caption block \"footer\" centre is hittable",
+          "ok": true,
+          "observed": {
+            "cap": "footer",
+            "centre": [
+              203,
+              806
+            ],
+            "hit": "caption",
+            "text": "Times UTC · Optical flashes seen by MTG Lightning Imager (EU"
+          }
+        },
+        {
+          "what": "p393: [strict] rendered line window 1/2 hittable at 9 points along its width",
+          "ok": true,
+          "observed": {
+            "cap": "window",
+            "line": "1/2",
+            "rect": [
+              29,
+              562,
+              318,
+              11
+            ],
+            "blocked": []
+          }
+        },
+        {
+          "what": "p393: [strict] rendered line window 2/2 hittable at 9 points along its width",
+          "ok": true,
+          "observed": {
+            "cap": "window",
+            "line": "2/2",
+            "rect": [
+              29,
+              577,
+              78,
+              11
+            ],
+            "blocked": []
+          }
+        },
+        {
+          "what": "p393: [strict] rendered line actual 1/2 hittable at 9 points along its width",
+          "ok": true,
+          "observed": {
+            "cap": "actual",
+            "line": "1/2",
+            "rect": [
+              29,
+              592,
+              324,
+              11
+            ],
+            "blocked": []
+          }
+        },
+        {
+          "what": "p393: [strict] rendered line actual 2/2 hittable at 9 points along its width",
+          "ok": true,
+          "observed": {
+            "cap": "actual",
+            "line": "2/2",
+            "rect": [
+              29,
+              607,
+              72,
+              11
+            ],
+            "blocked": []
+          }
+        },
+        {
+          "what": "p393: [strict] rendered line flashes 1/3 hittable at 9 points along its width",
+          "ok": true,
+          "observed": {
+            "cap": "flashes",
+            "line": "1/3",
+            "rect": [
+              29,
+              622,
+              312,
+              11
+            ],
+            "blocked": []
+          }
+        },
+        {
+          "what": "p393: [strict] rendered line flashes 2/3 hittable at 9 points along its width",
+          "ok": true,
+          "observed": {
+            "cap": "flashes",
+            "line": "2/3",
+            "rect": [
+              29,
+              637,
+              318,
+              11
+            ],
+            "blocked": []
+          }
+        },
+        {
+          "what": "p393: [strict] rendered line flashes 3/3 hittable at 9 points along its width",
+          "ok": true,
+          "observed": {
+            "cap": "flashes",
+            "line": "3/3",
+            "rect": [
+              29,
+              652,
+              36,
+              11
+            ],
+            "blocked": []
+          }
+        },
+        {
+          "what": "p393: [strict] rendered line refresh 1/2 hittable at 9 points along its width",
+          "ok": true,
+          "observed": {
+            "cap": "refresh",
+            "line": "1/2",
+            "rect": [
+              29,
+              667,
+              300,
+              11
+            ],
+            "blocked": []
+          }
+        },
+        {
+          "what": "p393: [strict] rendered line refresh 2/2 hittable at 9 points along its width",
+          "ok": true,
+          "observed": {
+            "cap": "refresh",
+            "line": "2/2",
+            "rect": [
+              29,
+              682,
+              114,
+              11
+            ],
+            "blocked": []
+          }
+        },
+        {
+          "what": "p393: [strict] rendered line searched 1/2 hittable at 9 points along its width",
+          "ok": true,
+          "observed": {
+            "cap": "searched",
+            "line": "1/2",
+            "rect": [
+              29,
+              697,
+              324,
+              11
+            ],
+            "blocked": []
+          }
+        },
+        {
+          "what": "p393: [strict] rendered line searched 2/2 hittable at 9 points along its width",
+          "ok": true,
+          "observed": {
+            "cap": "searched",
+            "line": "2/2",
+            "rect": [
+              29,
+              712,
+              258,
+              11
+            ],
+            "blocked": []
+          }
+        },
+        {
+          "what": "p393: [strict] rendered line warning 1/4 hittable at 9 points along its width",
+          "ok": true,
+          "observed": {
+            "cap": "warning",
+            "line": "1/4",
+            "rect": [
+              29,
+              727,
+              330,
+              11
+            ],
+            "blocked": []
+          }
+        },
+        {
+          "what": "p393: [strict] rendered line warning 2/4 hittable at 9 points along its width",
+          "ok": true,
+          "observed": {
+            "cap": "warning",
+            "line": "2/4",
+            "rect": [
+              29,
+              742,
+              342,
+              11
+            ],
+            "blocked": []
+          }
+        },
+        {
+          "what": "p393: [strict] rendered line warning 3/4 hittable at 9 points along its width",
+          "ok": true,
+          "observed": {
+            "cap": "warning",
+            "line": "3/4",
+            "rect": [
+              29,
+              757,
+              330,
+              11
+            ],
+            "blocked": []
+          }
+        },
+        {
+          "what": "p393: [strict] rendered line warning 4/4 hittable at 9 points along its width",
+          "ok": true,
+          "observed": {
+            "cap": "warning",
+            "line": "4/4",
+            "rect": [
+              29,
+              772,
+              192,
+              11
+            ],
+            "blocked": []
+          }
+        },
+        {
+          "what": "p393: [strict] rendered line footer 1/3 hittable at 9 points along its width",
+          "ok": true,
+          "observed": {
+            "cap": "footer",
+            "line": "1/3",
+            "rect": [
+              29,
+              786,
+              302,
+              10
+            ],
+            "blocked": []
+          }
+        },
+        {
+          "what": "p393: [strict] rendered line footer 2/3 hittable at 9 points along its width",
+          "ok": false,
+          "observed": {
+            "cap": "footer",
+            "line": "2/3",
+            "rect": [
+              29,
+              800,
+              335,
+              10
+            ],
+            "blocked": [
+              {
+                "x": 263,
+                "y": 805,
+                "hit": "HIDE-LAYERS-BUTTON"
+              },
+              {
+                "x": 297,
+                "y": 805,
+                "hit": "HIDE-LAYERS-BUTTON"
+              },
+              {
+                "x": 330,
+                "y": 805,
+                "hit": "HIDE-LAYERS-BUTTON"
+              }
+            ]
+          }
+        },
+        {
+          "what": "p393: [strict] rendered line footer 3/3 hittable at 9 points along its width",
+          "ok": false,
+          "observed": {
+            "cap": "footer",
+            "line": "3/3",
+            "rect": [
+              29,
+              813,
+              281,
+              10
+            ],
+            "blocked": [
+              {
+                "x": 254,
+                "y": 818,
+                "hit": "HIDE-LAYERS-BUTTON"
+              },
+              {
+                "x": 282,
+                "y": 818,
+                "hit": "HIDE-LAYERS-BUTTON"
+              }
+            ]
+          }
+        },
+        {
+          "what": "p360: Layers open",
+          "ok": true,
+          "observed": true
+        },
+        {
+          "what": "p360: [as specified] caption block \"window\" centre is hittable",
+          "ok": true,
+          "observed": {
+            "cap": "window",
+            "centre": [
+              186,
+              449
+            ],
+            "hit": "caption",
+            "text": "Window 2026-10-19 18:40 UTC → 2026-10-26 18:40 UTC (7 days, "
+          }
+        },
+        {
+          "what": "p360: [as specified] caption block \"actual\" centre is hittable",
+          "ok": true,
+          "observed": {
+            "cap": "actual",
+            "centre": [
+              186,
+              479
+            ],
+            "hit": "caption",
+            "text": "Actual first 2026-10-21 12:32:19 UTC · last 2026-10-25 11:15"
+          }
+        },
+        {
+          "what": "p360: [as specified] caption block \"flashes\" centre is hittable",
+          "ok": true,
+          "observed": {
+            "cap": "flashes",
+            "centre": [
+              186,
+              516
+            ],
+            "hit": "caption",
+            "text": "Flashes 408 archived in window · 408 drawn as points (index "
+          }
+        },
+        {
+          "what": "p360: [as specified] caption block \"refresh\" centre is hittable",
+          "ok": true,
+          "observed": {
+            "cap": "refresh",
+            "centre": [
+              186,
+              554
+            ],
+            "hit": "caption",
+            "text": "Refresh archive 2026-10-26 18:37 UTC (0h 3min ago; expected "
+          }
+        },
+        {
+          "what": "p360: [as specified] caption block \"searched\" centre is hittable",
+          "ok": true,
+          "observed": {
+            "cap": "searched",
+            "centre": [
+              186,
+              584
+            ],
+            "hit": "caption",
+            "text": "Searched EUMETSAT 56% of window · 17 successful runs · 2026-"
+          }
+        },
+        {
+          "what": "p360: [as specified] caption block \"warning\" centre is hittable",
+          "ok": true,
+          "observed": {
+            "cap": "warning",
+            "centre": [
+              186,
+              636
+            ],
+            "hit": "caption",
+            "text": "Not yet ingested: last 5h 40min of window (unknown, not zero"
+          }
+        },
+        {
+          "what": "p360: [as specified] caption block \"footer\" centre is hittable",
+          "ok": true,
+          "observed": {
+            "cap": "footer",
+            "centre": [
+              186,
+              694
+            ],
+            "hit": "caption",
+            "text": "Times UTC · Optical flashes seen by MTG Lightning Imager (EU"
+          }
+        },
+        {
+          "what": "p360: [strict] rendered line window 1/2 hittable at 9 points along its width",
+          "ok": true,
+          "observed": {
+            "cap": "window",
+            "line": "1/2",
+            "rect": [
+              29,
+              436,
+              300,
+              11
+            ],
+            "blocked": []
+          }
+        },
+        {
+          "what": "p360: [strict] rendered line window 2/2 hittable at 9 points along its width",
+          "ok": true,
+          "observed": {
+            "cap": "window",
+            "line": "2/2",
+            "rect": [
+              29,
+              451,
+              96,
+              11
+            ],
+            "blocked": []
+          }
+        },
+        {
+          "what": "p360: [strict] rendered line actual 1/2 hittable at 9 points along its width",
+          "ok": true,
+          "observed": {
+            "cap": "actual",
+            "line": "1/2",
+            "rect": [
+              29,
+              466,
+              312,
+              11
+            ],
+            "blocked": []
+          }
+        },
+        {
+          "what": "p360: [strict] rendered line actual 2/2 hittable at 9 points along its width",
+          "ok": true,
+          "observed": {
+            "cap": "actual",
+            "line": "2/2",
+            "rect": [
+              29,
+              481,
+              90,
+              11
+            ],
+            "blocked": []
+          }
+        },
+        {
+          "what": "p360: [strict] rendered line flashes 1/3 hittable at 9 points along its width",
+          "ok": true,
+          "observed": {
+            "cap": "flashes",
+            "line": "1/3",
+            "rect": [
+              29,
+              496,
+              312,
+              11
+            ],
+            "blocked": []
+          }
+        },
+        {
+          "what": "p360: [strict] rendered line flashes 2/3 hittable at 9 points along its width",
+          "ok": true,
+          "observed": {
+            "cap": "flashes",
+            "line": "2/3",
+            "rect": [
+              29,
+              511,
+              288,
+              11
+            ],
+            "blocked": []
+          }
+        },
+        {
+          "what": "p360: [strict] rendered line flashes 3/3 hittable at 9 points along its width",
+          "ok": true,
+          "observed": {
+            "cap": "flashes",
+            "line": "3/3",
+            "rect": [
+              29,
+              526,
+              66,
+              11
+            ],
+            "blocked": []
+          }
+        },
+        {
+          "what": "p360: [strict] rendered line refresh 1/2 hittable at 9 points along its width",
+          "ok": true,
+          "observed": {
+            "cap": "refresh",
+            "line": "1/2",
+            "rect": [
+              29,
+              541,
+              300,
+              11
+            ],
+            "blocked": []
+          }
+        },
+        {
+          "what": "p360: [strict] rendered line refresh 2/2 hittable at 9 points along its width",
+          "ok": true,
+          "observed": {
+            "cap": "refresh",
+            "line": "2/2",
+            "rect": [
+              29,
+              556,
+              114,
+              11
+            ],
+            "blocked": []
+          }
+        },
+        {
+          "what": "p360: [strict] rendered line searched 1/2 hittable at 9 points along its width",
+          "ok": true,
+          "observed": {
+            "cap": "searched",
+            "line": "1/2",
+            "rect": [
+              29,
+              571,
+              312,
+              11
+            ],
+            "blocked": []
+          }
+        },
+        {
+          "what": "p360: [strict] rendered line searched 2/2 hittable at 9 points along its width",
+          "ok": true,
+          "observed": {
+            "cap": "searched",
+            "line": "2/2",
+            "rect": [
+              29,
+              586,
+              270,
+              11
+            ],
+            "blocked": []
+          }
+        },
+        {
+          "what": "p360: [strict] rendered line warning 1/5 hittable at 9 points along its width",
+          "ok": true,
+          "observed": {
+            "cap": "warning",
+            "line": "1/5",
+            "rect": [
+              29,
+              601,
+              306,
+              11
+            ],
+            "blocked": []
+          }
+        },
+        {
+          "what": "p360: [strict] rendered line warning 2/5 hittable at 9 points along its width",
+          "ok": true,
+          "observed": {
+            "cap": "warning",
+            "line": "2/5",
+            "rect": [
+              29,
+              616,
+              270,
+              11
+            ],
+            "blocked": []
+          }
+        },
+        {
+          "what": "p360: [strict] rendered line warning 3/5 hittable at 9 points along its width",
+          "ok": true,
+          "observed": {
+            "cap": "warning",
+            "line": "3/5",
+            "rect": [
+              29,
+              631,
+              282,
+              11
+            ],
+            "blocked": []
+          }
+        },
+        {
+          "what": "p360: [strict] rendered line warning 4/5 hittable at 9 points along its width",
+          "ok": true,
+          "observed": {
+            "cap": "warning",
+            "line": "4/5",
+            "rect": [
+              29,
+              646,
+              312,
+              11
+            ],
+            "blocked": []
+          }
+        },
+        {
+          "what": "p360: [strict] rendered line warning 5/5 hittable at 9 points along its width",
+          "ok": true,
+          "observed": {
+            "cap": "warning",
+            "line": "5/5",
+            "rect": [
+              29,
+              661,
+              18,
+              11
+            ],
+            "blocked": []
+          }
+        },
+        {
+          "what": "p360: [strict] rendered line footer 1/3 hittable at 9 points along its width",
+          "ok": true,
+          "observed": {
+            "cap": "footer",
+            "line": "1/3",
+            "rect": [
+              29,
+              675,
+              302,
+              10
+            ],
+            "blocked": []
+          }
+        },
+        {
+          "what": "p360: [strict] rendered line footer 2/3 hittable at 9 points along its width",
+          "ok": false,
+          "observed": {
+            "cap": "footer",
+            "line": "2/3",
+            "rect": [
+              29,
+              688,
+              308,
+              10
+            ],
+            "blocked": [
+              {
+                "x": 245,
+                "y": 693,
+                "hit": "HIDE-LAYERS-BUTTON"
+              },
+              {
+                "x": 275,
+                "y": 693,
+                "hit": "HIDE-LAYERS-BUTTON"
+              },
+              {
+                "x": 306,
+                "y": 693,
+                "hit": "HIDE-LAYERS-BUTTON"
+              }
+            ]
+          }
+        },
+        {
+          "what": "p360: [strict] rendered line footer 3/3 hittable at 9 points along its width",
+          "ok": false,
+          "observed": {
+            "cap": "footer",
+            "line": "3/3",
+            "rect": [
+              29,
+              702,
+              308,
+              10
+            ],
+            "blocked": [
+              {
+                "x": 245,
+                "y": 707,
+                "hit": "HIDE-LAYERS-BUTTON"
+              },
+              {
+                "x": 275,
+                "y": 707,
+                "hit": "HIDE-LAYERS-BUTTON"
+              },
+              {
+                "x": 306,
+                "y": 707,
+                "hit": "HIDE-LAYERS-BUTTON"
+              }
+            ]
+          }
+        }
+      ],
+      "detail": {
+        "p393": {
+          "wheels": 1,
+          "layersOpened": true,
+          "button": {
+            "text": "▾ HIDE LAYERS",
+            "rect": [
+              249,
+              796,
+              132,
+              44
+            ]
+          },
+          "hits": [
+            {
+              "cap": "window",
+              "centre": [
+                203,
+                575
+              ],
+              "hit": "caption",
+              "text": "Window 2026-10-19 18:40 UTC → 2026-10-26 18:40 UTC (7 days, "
+            },
+            {
+              "cap": "actual",
+              "centre": [
+                203,
+                605
+              ],
+              "hit": "caption",
+              "text": "Actual first 2026-10-21 12:32:19 UTC · last 2026-10-25 11:15"
+            },
+            {
+              "cap": "flashes",
+              "centre": [
+                203,
+                643
+              ],
+              "hit": "caption",
+              "text": "Flashes 408 archived in window · 408 drawn as points (index "
+            },
+            {
+              "cap": "refresh",
+              "centre": [
+                203,
+                680
+              ],
+              "hit": "caption",
+              "text": "Refresh archive 2026-10-26 18:37 UTC (0h 3min ago; expected "
+            },
+            {
+              "cap": "searched",
+              "centre": [
+                203,
+                710
+              ],
+              "hit": "caption",
+              "text": "Searched EUMETSAT 56% of window · 17 successful runs · 2026-"
+            },
+            {
+              "cap": "warning",
+              "centre": [
+                203,
+                755
+              ],
+              "hit": "caption",
+              "text": "Not yet ingested: last 5h 40min of window (unknown, not zero"
+            },
+            {
+              "cap": "footer",
+              "centre": [
+                203,
+                806
+              ],
+              "hit": "caption",
+              "text": "Times UTC · Optical flashes seen by MTG Lightning Imager (EU"
+            }
+          ],
+          "lines": [
+            {
+              "cap": "window",
+              "line": "1/2",
+              "rect": [
+                29,
+                562,
+                318,
+                11
+              ],
+              "blocked": []
+            },
+            {
+              "cap": "window",
+              "line": "2/2",
+              "rect": [
+                29,
+                577,
+                78,
+                11
+              ],
+              "blocked": []
+            },
+            {
+              "cap": "actual",
+              "line": "1/2",
+              "rect": [
+                29,
+                592,
+                324,
+                11
+              ],
+              "blocked": []
+            },
+            {
+              "cap": "actual",
+              "line": "2/2",
+              "rect": [
+                29,
+                607,
+                72,
+                11
+              ],
+              "blocked": []
+            },
+            {
+              "cap": "flashes",
+              "line": "1/3",
+              "rect": [
+                29,
+                622,
+                312,
+                11
+              ],
+              "blocked": []
+            },
+            {
+              "cap": "flashes",
+              "line": "2/3",
+              "rect": [
+                29,
+                637,
+                318,
+                11
+              ],
+              "blocked": []
+            },
+            {
+              "cap": "flashes",
+              "line": "3/3",
+              "rect": [
+                29,
+                652,
+                36,
+                11
+              ],
+              "blocked": []
+            },
+            {
+              "cap": "refresh",
+              "line": "1/2",
+              "rect": [
+                29,
+                667,
+                300,
+                11
+              ],
+              "blocked": []
+            },
+            {
+              "cap": "refresh",
+              "line": "2/2",
+              "rect": [
+                29,
+                682,
+                114,
+                11
+              ],
+              "blocked": []
+            },
+            {
+              "cap": "searched",
+              "line": "1/2",
+              "rect": [
+                29,
+                697,
+                324,
+                11
+              ],
+              "blocked": []
+            },
+            {
+              "cap": "searched",
+              "line": "2/2",
+              "rect": [
+                29,
+                712,
+                258,
+                11
+              ],
+              "blocked": []
+            },
+            {
+              "cap": "warning",
+              "line": "1/4",
+              "rect": [
+                29,
+                727,
+                330,
+                11
+              ],
+              "blocked": []
+            },
+            {
+              "cap": "warning",
+              "line": "2/4",
+              "rect": [
+                29,
+                742,
+                342,
+                11
+              ],
+              "blocked": []
+            },
+            {
+              "cap": "warning",
+              "line": "3/4",
+              "rect": [
+                29,
+                757,
+                330,
+                11
+              ],
+              "blocked": []
+            },
+            {
+              "cap": "warning",
+              "line": "4/4",
+              "rect": [
+                29,
+                772,
+                192,
+                11
+              ],
+              "blocked": []
+            },
+            {
+              "cap": "footer",
+              "line": "1/3",
+              "rect": [
+                29,
+                786,
+                302,
+                10
+              ],
+              "blocked": []
+            },
+            {
+              "cap": "footer",
+              "line": "2/3",
+              "rect": [
+                29,
+                800,
+                335,
+                10
+              ],
+              "blocked": [
+                {
+                  "x": 263,
+                  "y": 805,
+                  "hit": "HIDE-LAYERS-BUTTON"
+                },
+                {
+                  "x": 297,
+                  "y": 805,
+                  "hit": "HIDE-LAYERS-BUTTON"
+                },
+                {
+                  "x": 330,
+                  "y": 805,
+                  "hit": "HIDE-LAYERS-BUTTON"
+                }
+              ]
+            },
+            {
+              "cap": "footer",
+              "line": "3/3",
+              "rect": [
+                29,
+                813,
+                281,
+                10
+              ],
+              "blocked": [
+                {
+                  "x": 254,
+                  "y": 818,
+                  "hit": "HIDE-LAYERS-BUTTON"
+                },
+                {
+                  "x": 282,
+                  "y": 818,
+                  "hit": "HIDE-LAYERS-BUTTON"
+                }
+              ]
+            }
+          ]
+        },
+        "p360": {
+          "wheels": 1,
+          "layersOpened": true,
+          "button": {
+            "text": "▾ HIDE LAYERS",
+            "rect": [
+              216,
+              684,
+              132,
+              44
+            ]
+          },
+          "hits": [
+            {
+              "cap": "window",
+              "centre": [
+                186,
+                449
+              ],
+              "hit": "caption",
+              "text": "Window 2026-10-19 18:40 UTC → 2026-10-26 18:40 UTC (7 days, "
+            },
+            {
+              "cap": "actual",
+              "centre": [
+                186,
+                479
+              ],
+              "hit": "caption",
+              "text": "Actual first 2026-10-21 12:32:19 UTC · last 2026-10-25 11:15"
+            },
+            {
+              "cap": "flashes",
+              "centre": [
+                186,
+                516
+              ],
+              "hit": "caption",
+              "text": "Flashes 408 archived in window · 408 drawn as points (index "
+            },
+            {
+              "cap": "refresh",
+              "centre": [
+                186,
+                554
+              ],
+              "hit": "caption",
+              "text": "Refresh archive 2026-10-26 18:37 UTC (0h 3min ago; expected "
+            },
+            {
+              "cap": "searched",
+              "centre": [
+                186,
+                584
+              ],
+              "hit": "caption",
+              "text": "Searched EUMETSAT 56% of window · 17 successful runs · 2026-"
+            },
+            {
+              "cap": "warning",
+              "centre": [
+                186,
+                636
+              ],
+              "hit": "caption",
+              "text": "Not yet ingested: last 5h 40min of window (unknown, not zero"
+            },
+            {
+              "cap": "footer",
+              "centre": [
+                186,
+                694
+              ],
+              "hit": "caption",
+              "text": "Times UTC · Optical flashes seen by MTG Lightning Imager (EU"
+            }
+          ],
+          "lines": [
+            {
+              "cap": "window",
+              "line": "1/2",
+              "rect": [
+                29,
+                436,
+                300,
+                11
+              ],
+              "blocked": []
+            },
+            {
+              "cap": "window",
+              "line": "2/2",
+              "rect": [
+                29,
+                451,
+                96,
+                11
+              ],
+              "blocked": []
+            },
+            {
+              "cap": "actual",
+              "line": "1/2",
+              "rect": [
+                29,
+                466,
+                312,
+                11
+              ],
+              "blocked": []
+            },
+            {
+              "cap": "actual",
+              "line": "2/2",
+              "rect": [
+                29,
+                481,
+                90,
+                11
+              ],
+              "blocked": []
+            },
+            {
+              "cap": "flashes",
+              "line": "1/3",
+              "rect": [
+                29,
+                496,
+                312,
+                11
+              ],
+              "blocked": []
+            },
+            {
+              "cap": "flashes",
+              "line": "2/3",
+              "rect": [
+                29,
+                511,
+                288,
+                11
+              ],
+              "blocked": []
+            },
+            {
+              "cap": "flashes",
+              "line": "3/3",
+              "rect": [
+                29,
+                526,
+                66,
+                11
+              ],
+              "blocked": []
+            },
+            {
+              "cap": "refresh",
+              "line": "1/2",
+              "rect": [
+                29,
+                541,
+                300,
+                11
+              ],
+              "blocked": []
+            },
+            {
+              "cap": "refresh",
+              "line": "2/2",
+              "rect": [
+                29,
+                556,
+                114,
+                11
+              ],
+              "blocked": []
+            },
+            {
+              "cap": "searched",
+              "line": "1/2",
+              "rect": [
+                29,
+                571,
+                312,
+                11
+              ],
+              "blocked": []
+            },
+            {
+              "cap": "searched",
+              "line": "2/2",
+              "rect": [
+                29,
+                586,
+                270,
+                11
+              ],
+              "blocked": []
+            },
+            {
+              "cap": "warning",
+              "line": "1/5",
+              "rect": [
+                29,
+                601,
+                306,
+                11
+              ],
+              "blocked": []
+            },
+            {
+              "cap": "warning",
+              "line": "2/5",
+              "rect": [
+                29,
+                616,
+                270,
+                11
+              ],
+              "blocked": []
+            },
+            {
+              "cap": "warning",
+              "line": "3/5",
+              "rect": [
+                29,
+                631,
+                282,
+                11
+              ],
+              "blocked": []
+            },
+            {
+              "cap": "warning",
+              "line": "4/5",
+              "rect": [
+                29,
+                646,
+                312,
+                11
+              ],
+              "blocked": []
+            },
+            {
+              "cap": "warning",
+              "line": "5/5",
+              "rect": [
+                29,
+                661,
+                18,
+                11
+              ],
+              "blocked": []
+            },
+            {
+              "cap": "footer",
+              "line": "1/3",
+              "rect": [
+                29,
+                675,
+                302,
+                10
+              ],
+              "blocked": []
+            },
+            {
+              "cap": "footer",
+              "line": "2/3",
+              "rect": [
+                29,
+                688,
+                308,
+                10
+              ],
+              "blocked": [
+                {
+                  "x": 245,
+                  "y": 693,
+                  "hit": "HIDE-LAYERS-BUTTON"
+                },
+                {
+                  "x": 275,
+                  "y": 693,
+                  "hit": "HIDE-LAYERS-BUTTON"
+                },
+                {
+                  "x": 306,
+                  "y": 693,
+                  "hit": "HIDE-LAYERS-BUTTON"
+                }
+              ]
+            },
+            {
+              "cap": "footer",
+              "line": "3/3",
+              "rect": [
+                29,
+                702,
+                308,
+                10
+              ],
+              "blocked": [
+                {
+                  "x": 245,
+                  "y": 707,
+                  "hit": "HIDE-LAYERS-BUTTON"
+                },
+                {
+                  "x": 275,
+                  "y": 707,
+                  "hit": "HIDE-LAYERS-BUTTON"
+                },
+                {
+                  "x": 306,
+                  "y": 707,
+                  "hit": "HIDE-LAYERS-BUTTON"
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "seconds": 31
+    },
+    "T9": {
+      "title": "Out-of-box and NaN coordinates rejected and reported",
+      "result": "FAIL",
+      "asserts": [
+        {
+          "what": "drawn count is the 408 genuine points only (3 synthetic bad records excluded)",
+          "ok": false,
+          "observed": {
+            "status": "PARTIAL · 411 FLASHES DRAWN · SEARCHED 56%",
+            "flashes": "Flashes 411 archived in window · 411 drawn as points (index count 411 within the 40,000-point cap for this desktop)",
+            "mapSourceFeatures": 411
+          }
+        },
+        {
+          "what": "caption reports records as rejected",
+          "ok": false,
+          "observed": {
+            "flashes": "Flashes 411 archived in window · 411 drawn as points (index count 411 within the 40,000-point cap for this desktop)",
+            "warning": "Not yet ingested: last 5h 40min of window (unknown, not zero) · Unknown: 2026-10-19 to 2026-10-20 precede archive start 2026-10-20 22:41 UTC (not zero) · Unknown: 1 of 8 UTC dates have no collection run"
+          }
+        },
+        {
+          "what": "no uncaught page error",
+          "ok": true,
+          "observed": []
+        }
+      ],
+      "mapSourceFeatures": 411,
+      "seconds": 16
+    },
+    "T10": {
+      "title": "Shard count/bytes/sha256 disagreeing with the index named as mismatch",
+      "result": "FAIL",
+      "asserts": [
+        {
+          "what": "caption names a mismatch",
+          "ok": false,
+          "observed": {
+            "status": "PARTIAL · 408 FLASHES DRAWN · SEARCHED 56%",
+            "warning": "Not yet ingested: last 5h 40min of window (unknown, not zero) · Unknown: 2026-10-19 to 2026-10-20 precede archive start 2026-10-20 22:41 UTC (not zero) · Unknown: 1 of 8 UTC dates have no collection run"
+          }
+        },
+        {
+          "what": "2026-10-22 (sha256 differs from index) named in the caption",
+          "ok": false,
+          "observed": {
+            "warning": "Not yet ingested: last 5h 40min of window (unknown, not zero) · Unknown: 2026-10-19 to 2026-10-20 precede archive start 2026-10-20 22:41 UTC (not zero) · Unknown: 1 of 8 UTC dates have no collection run"
+          }
+        },
+        {
+          "what": "2026-10-23 (bytes differs from index) named in the caption",
+          "ok": false,
+          "observed": {
+            "warning": "Not yet ingested: last 5h 40min of window (unknown, not zero) · Unknown: 2026-10-19 to 2026-10-20 precede archive start 2026-10-20 22:41 UTC (not zero) · Unknown: 1 of 8 UTC dates have no collection run"
+          }
+        },
+        {
+          "what": "2026-10-24 (count differs from index) named in the caption",
+          "ok": false,
+          "observed": {
+            "warning": "Not yet ingested: last 5h 40min of window (unknown, not zero) · Unknown: 2026-10-19 to 2026-10-20 precede archive start 2026-10-20 22:41 UTC (not zero) · Unknown: 1 of 8 UTC dates have no collection run"
+          }
+        }
+      ],
+      "seconds": 16
+    },
+    "T11": {
+      "title": "Sub-day (12H) caption never calls whole-day index counts \"archived in window\"",
+      "result": "FAIL",
+      "asserts": [
+        {
+          "what": "before consent: no \"archived in window\" count other than the points actually in the 12 h window",
+          "ok": true,
+          "observed": {
+            "claims": [],
+            "drawn": 0,
+            "indexWholeDaySum": 85118,
+            "flashes": "Flashes 85,118 archived on 2 overlapping UTC dates · none drawn (summary mode; index sum 85,118 flashes, 33,775,794 bytes exceeds the budget; LOAD POINTS draws the newest 40,000)"
+          }
+        },
+        {
+          "what": "after LOAD POINTS: no \"archived in window\" count other than the points actually in the 12 h window",
+          "ok": false,
+          "observed": {
+            "claims": [
+              85118
+            ],
+            "drawn": 85000,
+            "indexWholeDaySum": 85118,
+            "flashes": "Flashes 85,118 archived in window (index) · 85,000 downloaded from the newest 1 of 2 days (budget 40,000; 1 older days not loaded) · 85,000 drawn as clusters (index count 85,000 exceeds the 40,000-point cap for this desktop)"
+          }
+        }
+      ],
+      "seconds": 19
+    },
+    "T12": {
+      "title": "LOAD POINTS respects the promised cap and the 32 MB budget",
+      "result": "FAIL",
+      "asserts": [
+        {
+          "what": "LOAD POINTS offered and accepted",
+          "ok": true,
+          "observed": {
+            "ok": true
+          }
+        },
+        {
+          "what": "drawn count after consent <= promised 40,000",
+          "ok": false,
+          "observed": {
+            "drawn": 85000,
+            "status": "PARTIAL · 85,000 FLASHES CLUSTERED · SEARCHED 68%",
+            "flashes": "Flashes 85,118 archived in window (index) · 85,000 downloaded from the newest 1 of 2 days (budget 40,000; 1 older days not loaded) · 85,000 drawn as clusters (index count 85,000 exceeds the 40,000-point cap for this desktop)"
+          }
+        },
+        {
+          "what": "declared bytes of shards fetched after consent <= 32,000,000",
+          "ok": false,
+          "observed": {
+            "reqBytes": 33713273,
+            "shards": [
+              "days/2026/10/25.json"
+            ]
+          }
+        }
+      ],
+      "seconds": 0
+    },
+    "T13": {
+      "title": "menuBar.inspect() {60,3,63,63,true}, 63 proxies, 63 markers before/after every case; zero lightning requests while OFF",
+      "result": "PASS",
+      "asserts": [
+        {
+          "what": "T1-custom-during-first-load: invariants before/after, 0 requests before first ON, 0 requests in 11 min after OFF",
+          "ok": true,
+          "observed": {
+            "before": {
+              "inspect": {
+                "engine": 60,
+                "pipeline": 3,
+                "total": 63,
+                "unique": 63,
+                "complete": true
+              },
+              "proxies": 63,
+              "markers": 63,
+              "ok": true,
+              "lightningRequestsSoFar": 0,
+              "when": "before"
+            },
+            "after": {
+              "inspect": {
+                "engine": 60,
+                "pipeline": 3,
+                "total": 63,
+                "unique": 63,
+                "complete": true
+              },
+              "proxies": 63,
+              "markers": 63,
+              "ok": true,
+              "lightningRequestsSoFar": 2,
+              "when": "after"
+            },
+            "requestsBeforeFirstOn": 0,
+            "whileOff": [],
+            "checkedAfterOff": false,
+            "off": {
+              "ok": true
+            }
+          }
+        },
+        {
+          "what": "T2-malformed-index-timestamp: invariants before/after, 0 requests before first ON, 0 requests in 11 min after OFF",
+          "ok": true,
+          "observed": {
+            "before": {
+              "inspect": {
+                "engine": 60,
+                "pipeline": 3,
+                "total": 63,
+                "unique": 63,
+                "complete": true
+              },
+              "proxies": 63,
+              "markers": 63,
+              "ok": true,
+              "lightningRequestsSoFar": 0,
+              "when": "before"
+            },
+            "after": {
+              "inspect": {
+                "engine": 60,
+                "pipeline": 3,
+                "total": 63,
+                "unique": 63,
+                "complete": true
+              },
+              "proxies": 63,
+              "markers": 63,
+              "ok": true,
+              "lightningRequestsSoFar": 2,
+              "when": "after"
+            },
+            "requestsBeforeFirstOn": 0,
+            "whileOff": [],
+            "checkedAfterOff": false,
+            "off": {
+              "ok": true
+            }
+          }
+        },
+        {
+          "what": "T3-feed-revalidation: invariants before/after, 0 requests before first ON, 0 requests in 11 min after OFF",
+          "ok": true,
+          "observed": {
+            "before": {
+              "inspect": {
+                "engine": 60,
+                "pipeline": 3,
+                "total": 63,
+                "unique": 63,
+                "complete": true
+              },
+              "proxies": 63,
+              "markers": 63,
+              "ok": true,
+              "lightningRequestsSoFar": 0,
+              "when": "before"
+            },
+            "after": {
+              "inspect": {
+                "engine": 60,
+                "pipeline": 3,
+                "total": 63,
+                "unique": 63,
+                "complete": true
+              },
+              "proxies": 63,
+              "markers": 63,
+              "ok": true,
+              "lightningRequestsSoFar": 3,
+              "when": "after"
+            },
+            "requestsBeforeFirstOn": 0,
+            "whileOff": [],
+            "checkedAfterOff": false,
+            "off": {
+              "ok": true
+            }
+          }
+        },
+        {
+          "what": "T4-feed-stale: invariants before/after, 0 requests before first ON, 0 requests in 11 min after OFF",
+          "ok": true,
+          "observed": {
+            "before": {
+              "inspect": {
+                "engine": 60,
+                "pipeline": 3,
+                "total": 63,
+                "unique": 63,
+                "complete": true
+              },
+              "proxies": 63,
+              "markers": 63,
+              "ok": true,
+              "lightningRequestsSoFar": 0,
+              "when": "before"
+            },
+            "after": {
+              "inspect": {
+                "engine": 60,
+                "pipeline": 3,
+                "total": 63,
+                "unique": 63,
+                "complete": true
+              },
+              "proxies": 63,
+              "markers": 63,
+              "ok": true,
+              "lightningRequestsSoFar": 3,
+              "when": "after"
+            },
+            "requestsBeforeFirstOn": 0,
+            "whileOff": [],
+            "checkedAfterOff": false,
+            "off": {
+              "ok": true
+            }
+          }
+        },
+        {
+          "what": "T4-feed-fresh-control: invariants before/after, 0 requests before first ON, 0 requests in 11 min after OFF",
+          "ok": true,
+          "observed": {
+            "before": {
+              "inspect": {
+                "engine": 60,
+                "pipeline": 3,
+                "total": 63,
+                "unique": 63,
+                "complete": true
+              },
+              "proxies": 63,
+              "markers": 63,
+              "ok": true,
+              "lightningRequestsSoFar": 0,
+              "when": "before"
+            },
+            "after": {
+              "inspect": {
+                "engine": 60,
+                "pipeline": 3,
+                "total": 63,
+                "unique": 63,
+                "complete": true
+              },
+              "proxies": 63,
+              "markers": 63,
+              "ok": true,
+              "lightningRequestsSoFar": 3,
+              "when": "after"
+            },
+            "requestsBeforeFirstOn": 0,
+            "whileOff": [],
+            "checkedAfterOff": false,
+            "off": {
+              "ok": true
+            }
+          }
+        },
+        {
+          "what": "T5-feed-prev: invariants before/after, 0 requests before first ON, 0 requests in 11 min after OFF",
+          "ok": true,
+          "observed": {
+            "before": {
+              "inspect": {
+                "engine": 60,
+                "pipeline": 3,
+                "total": 63,
+                "unique": 63,
+                "complete": true
+              },
+              "proxies": 63,
+              "markers": 63,
+              "ok": true,
+              "lightningRequestsSoFar": 0,
+              "when": "before"
+            },
+            "after": {
+              "inspect": {
+                "engine": 60,
+                "pipeline": 3,
+                "total": 63,
+                "unique": 63,
+                "complete": true
+              },
+              "proxies": 63,
+              "markers": 63,
+              "ok": true,
+              "lightningRequestsSoFar": 6,
+              "when": "after"
+            },
+            "requestsBeforeFirstOn": 0,
+            "whileOff": [],
+            "checkedAfterOff": false,
+            "off": {
+              "ok": true
+            }
+          }
+        },
+        {
+          "what": "T6-long-chips-feed-phone393: invariants before/after, 0 requests before first ON, 0 requests in 11 min after OFF",
+          "ok": true,
+          "observed": {
+            "before": {
+              "inspect": {
+                "engine": 60,
+                "pipeline": 3,
+                "total": 63,
+                "unique": 63,
+                "complete": true
+              },
+              "proxies": 63,
+              "markers": 63,
+              "ok": true,
+              "lightningRequestsSoFar": 0,
+              "when": "before"
+            },
+            "after": {
+              "inspect": {
+                "engine": 60,
+                "pipeline": 3,
+                "total": 63,
+                "unique": 63,
+                "complete": true
+              },
+              "proxies": 63,
+              "markers": 63,
+              "ok": true,
+              "lightningRequestsSoFar": 3,
+              "when": "after"
+            },
+            "requestsBeforeFirstOn": 0,
+            "whileOff": [],
+            "checkedAfterOff": false,
+            "off": {
+              "ok": true
+            }
+          }
+        },
+        {
+          "what": "T7-feed-coverage-wording: invariants before/after, 0 requests before first ON, 0 requests in 11 min after OFF",
+          "ok": true,
+          "observed": {
+            "before": {
+              "inspect": {
+                "engine": 60,
+                "pipeline": 3,
+                "total": 63,
+                "unique": 63,
+                "complete": true
+              },
+              "proxies": 63,
+              "markers": 63,
+              "ok": true,
+              "lightningRequestsSoFar": 0,
+              "when": "before"
+            },
+            "after": {
+              "inspect": {
+                "engine": 60,
+                "pipeline": 3,
+                "total": 63,
+                "unique": 63,
+                "complete": true
+              },
+              "proxies": 63,
+              "markers": 63,
+              "ok": true,
+              "lightningRequestsSoFar": 3,
+              "when": "after"
+            },
+            "requestsBeforeFirstOn": 0,
+            "whileOff": [],
+            "checkedAfterOff": false,
+            "off": {
+              "ok": true
+            }
+          }
+        },
+        {
+          "what": "T8-hide-layers-p393: invariants before/after, 0 requests before first ON, 0 requests in 11 min after OFF",
+          "ok": true,
+          "observed": {
+            "before": {
+              "inspect": {
+                "engine": 60,
+                "pipeline": 3,
+                "total": 63,
+                "unique": 63,
+                "complete": true
+              },
+              "proxies": 63,
+              "markers": 63,
+              "ok": true,
+              "lightningRequestsSoFar": 0,
+              "when": "before"
+            },
+            "after": {
+              "inspect": {
+                "engine": 60,
+                "pipeline": 3,
+                "total": 63,
+                "unique": 63,
+                "complete": true
+              },
+              "proxies": 63,
+              "markers": 63,
+              "ok": true,
+              "lightningRequestsSoFar": 6,
+              "when": "after"
+            },
+            "requestsBeforeFirstOn": 0,
+            "whileOff": [],
+            "checkedAfterOff": false,
+            "off": {
+              "ok": true
+            }
+          }
+        },
+        {
+          "what": "T8-hide-layers-p360: invariants before/after, 0 requests before first ON, 0 requests in 11 min after OFF",
+          "ok": true,
+          "observed": {
+            "before": {
+              "inspect": {
+                "engine": 60,
+                "pipeline": 3,
+                "total": 63,
+                "unique": 63,
+                "complete": true
+              },
+              "proxies": 63,
+              "markers": 63,
+              "ok": true,
+              "lightningRequestsSoFar": 0,
+              "when": "before"
+            },
+            "after": {
+              "inspect": {
+                "engine": 60,
+                "pipeline": 3,
+                "total": 63,
+                "unique": 63,
+                "complete": true
+              },
+              "proxies": 63,
+              "markers": 63,
+              "ok": true,
+              "lightningRequestsSoFar": 6,
+              "when": "after"
+            },
+            "requestsBeforeFirstOn": 0,
+            "whileOff": [],
+            "checkedAfterOff": false,
+            "off": {
+              "ok": true
+            }
+          }
+        },
+        {
+          "what": "T9-out-of-box: invariants before/after, 0 requests before first ON, 0 requests in 11 min after OFF",
+          "ok": true,
+          "observed": {
+            "before": {
+              "inspect": {
+                "engine": 60,
+                "pipeline": 3,
+                "total": 63,
+                "unique": 63,
+                "complete": true
+              },
+              "proxies": 63,
+              "markers": 63,
+              "ok": true,
+              "lightningRequestsSoFar": 0,
+              "when": "before"
+            },
+            "after": {
+              "inspect": {
+                "engine": 60,
+                "pipeline": 3,
+                "total": 63,
+                "unique": 63,
+                "complete": true
+              },
+              "proxies": 63,
+              "markers": 63,
+              "ok": true,
+              "lightningRequestsSoFar": 6,
+              "when": "after"
+            },
+            "requestsBeforeFirstOn": 0,
+            "whileOff": [],
+            "checkedAfterOff": false,
+            "off": {
+              "ok": true
+            }
+          }
+        },
+        {
+          "what": "T10-shard-mismatch: invariants before/after, 0 requests before first ON, 0 requests in 11 min after OFF",
+          "ok": true,
+          "observed": {
+            "before": {
+              "inspect": {
+                "engine": 60,
+                "pipeline": 3,
+                "total": 63,
+                "unique": 63,
+                "complete": true
+              },
+              "proxies": 63,
+              "markers": 63,
+              "ok": true,
+              "lightningRequestsSoFar": 0,
+              "when": "before"
+            },
+            "after": {
+              "inspect": {
+                "engine": 60,
+                "pipeline": 3,
+                "total": 63,
+                "unique": 63,
+                "complete": true
+              },
+              "proxies": 63,
+              "markers": 63,
+              "ok": true,
+              "lightningRequestsSoFar": 6,
+              "when": "after"
+            },
+            "requestsBeforeFirstOn": 0,
+            "whileOff": [],
+            "checkedAfterOff": false,
+            "off": {
+              "ok": true
+            }
+          }
+        },
+        {
+          "what": "T11-T12-bulk-12h: invariants before/after, 0 requests before first ON, 0 requests in 11 min after OFF",
+          "ok": true,
+          "observed": {
+            "before": {
+              "inspect": {
+                "engine": 60,
+                "pipeline": 3,
+                "total": 63,
+                "unique": 63,
+                "complete": true
+              },
+              "proxies": 63,
+              "markers": 63,
+              "ok": true,
+              "lightningRequestsSoFar": 0,
+              "when": "before"
+            },
+            "after": {
+              "inspect": {
+                "engine": 60,
+                "pipeline": 3,
+                "total": 63,
+                "unique": 63,
+                "complete": true
+              },
+              "proxies": 63,
+              "markers": 63,
+              "ok": true,
+              "lightningRequestsSoFar": 2,
+              "when": "after"
+            },
+            "requestsBeforeFirstOn": 0,
+            "whileOff": [],
+            "checkedAfterOff": false,
+            "off": {
+              "ok": true
+            }
+          }
+        }
+      ],
+      "seconds": 0
+    }
+  }
+}
