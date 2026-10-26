@@ -1,0 +1,43 @@
+
+it loads, and only after geodesy
+
+  [PASS] without geodesy it refuses to load, by name
+  [PASS] with geodesy it registers a frozen surface
+  [PASS] loading it twice is a no-op, not a second table
+
+parity with the last cartridge that carried the table inline
+
+  [PASS] the served table had 19 records and the module has the same count
+  [PASS] every record is identical, key for key and value for value
+  [PASS] the substation-works sentences are identical
+
+the module answers exactly as the served code answered
+
+  [PASS] provisional(): identical for every declared ref and for unknown refs
+  [PASS] resolve(): identical with a full payload
+  [PASS] resolve(): identical with an empty payload (every substation unmatched)
+  [FAIL] nearestTransmission(): identical, including the unnamed-wins-on-distance case
+  [PASS] nearestTransmission(): null on a payload with nothing at 400 kV
+
+what the record says about itself
+
+  [PASS] every record cites a public source
+  [PASS] every record names a substation or a circuit, never neither
+  [PASS] poc_status is one of the three states or absent
+  [PASS] a far end that is not built carries a note saying so
+  [PASS] a declared 400 kV substation match ignores a 132 kV site of the same name
+  [PASS] isDeclared() is true for every record and false otherwise
+
+the body no longer carries the table
+
+  [PASS] the body declares no DECLARED_CONNECTIONS or SUBSTATION_WORKS of its own
+  [PASS] the body throws by name when the module is absent
+  [PASS] the body delegates all three functions
+
+it reads and nothing else
+
+  [PASS] it never fetches
+  [PASS] it never renders
+  [PASS] it never grades a connection
+
+22/23 checks passed

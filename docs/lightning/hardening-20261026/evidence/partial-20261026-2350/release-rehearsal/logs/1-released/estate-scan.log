@@ -1,0 +1,13 @@
+file:///tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/release-rehearsal/wt/tools/ci/202609012240-estate-deep-scan.mjs:28
+const git = (repo, args, max = 256) => execFileSync('git', ['-C', repo.path, ...args],
+                                                                       ^
+
+TypeError: Cannot read properties of undefined (reading 'path')
+    at git (file:///tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/release-rehearsal/wt/tools/ci/202609012240-estate-deep-scan.mjs:28:72)
+    at queryContract (file:///tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/release-rehearsal/wt/tools/ci/202609012240-estate-deep-scan.mjs:81:22)
+    at file:///tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/release-rehearsal/wt/tools/ci/202609012240-estate-deep-scan.mjs:109:18
+    at ModuleJob.run (node:internal/modules/esm/module_job:343:25)
+    at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:681:26)
+    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:117:5)
+
+Node.js v22.23.4

@@ -1,0 +1,80 @@
+{
+  "classification": "VERIFIED_LIVE_V8_MIRROR_MAP_READY_ATLAS_V9",
+  "current": {
+    "data_release": {
+      "commit": "32459230b958ff6ddbdb24365f56da83ab1cdc93",
+      "manifest_sha256": "3246dbdaa042ae8352ec9b7128cb6c2fe65e4f1aba0534302510661828df2526",
+      "release_id": "202608291237-data-gridatlas",
+      "repository": "Ventusltd/data-gridatlas"
+    },
+    "live_url": "https://ventusltd.github.io/gridatlas/202608292126-atlas-v9/",
+    "manifests": {
+      "build_sha256": "146c22dd9ec231b0d2a153230968a3a8fc7a77381cf6d5ff0a363e3b96c9e7db",
+      "map_ready_sha256": "b4444edbe4ddcfda6d3d69de9a92904d75e1c9c01115f0e4b88dffedbe0dba48",
+      "release_sha256": "b20826b523f9fbb11eb4ae3400cd03f12da11d1b4871164b05c0abe5f49bce78",
+      "sha256sums_sha256": "481e65ab73a656e92148bb18a7472a88291b86077a6d4931467ae9d557bedabb"
+    },
+    "map_ready": {
+      "browser_duckdb_before_400kv_ready": false,
+      "bytes": 9182417,
+      "cartridges": 11,
+      "critical_400kv_prefetch": true,
+      "critical_400kv_rows": 4106,
+      "rows": 31067,
+      "topology_pre_snapped": true
+    },
+    "parent_release_id": "202608291818-atlas-v9",
+    "product_oracle": {
+      "commit": "f2f343a92ee972cc74ed23b4b99d8a22896791ad",
+      "css_blob_sha1": "29a2edb490407f489c29433d84e329b1038e0657",
+      "engine_blob_sha1": "0a647c32c346770851704727bbf86fb7167e2596",
+      "index_blob_sha1": "278c3f55d3b61af9d13417c99bfb558374131143",
+      "repository": "Ventusltd/globalgrid2050",
+      "route": "/repd_grid_atlasv8/"
+    },
+    "publication_commit": "e03337510861b26344a738d9d82de9bcdcbc1510",
+    "release_id": "202608292126-atlas-v9",
+    "route": "/gridatlas/202608292126-atlas-v9/",
+    "search": {
+      "duckdb_wasm_on_demand": true,
+      "external_geocoder": false,
+      "official_repd_address": true,
+      "place_and_postcode": true
+    },
+    "source_commit": "65bf947b70f6eb3dc3997854cc3837b49d65edb1"
+  },
+  "generation": "202608292126",
+  "predecessor": {
+    "live_url": "https://ventusltd.github.io/gridatlas/202608291818-atlas-v9/",
+    "publication_commit": "31fec5ef30571c0c7c5c488d08493495fce9c731",
+    "release_id": "202608291818-atlas-v9",
+    "route": "/gridatlas/202608291818-atlas-v9/"
+  },
+  "rollback": {
+    "commit": "31fec5ef30571c0c7c5c488d08493495fce9c731",
+    "release_id": "202608291818-atlas-v9",
+    "route": "/gridatlas/202608291818-atlas-v9/"
+  },
+  "schema": "gridatlas.live-set.v4",
+  "verification": {
+    "candidate_pages_run_id": 33276984662,
+    "desktop_product_parity": true,
+    "failed_gates": 0,
+    "local_400kv_click_p95_ms": 488.9,
+    "local_classification": "VERIFIED_LOCAL_MAP_READY_400KV_REGRESSION_CLOSED",
+    "local_proof_sha256": "e03f59d62b03ae6aa9b036b9707fbc38b7d4c4a3d0ec60a0cca78b5f0b500e3a",
+    "local_v8_click_p95_ms": 526.2,
+    "machine_learning_record_sha256": "9926baa7655c10776db0f8dfaa6bcb0924d88c78a454b440a6ea738fc8670ced",
+    "machine_learning_records": 2,
+    "mobile_product_parity": true,
+    "promotion_eligible": true,
+    "public_400kv_click_p95_ms": 167.4,
+    "public_400kv_warm_toggle_p95_ms": 0.1,
+    "public_classification": "VERIFIED_PUBLIC_MAP_READY_400KV_REGRESSION_CLOSED",
+    "public_proof_sha256": "29ca8e8c5e13e2f0a93b08e7163451819a4a4beb25802faa3c65ece44615321a",
+    "public_v8_click_p95_ms": 2121.9,
+    "v8_css_byte_identical": true,
+    "v8_engine_byte_identical": true,
+    "verified_at": "2026-08-29T21:49:10.007451Z"
+  }
+}

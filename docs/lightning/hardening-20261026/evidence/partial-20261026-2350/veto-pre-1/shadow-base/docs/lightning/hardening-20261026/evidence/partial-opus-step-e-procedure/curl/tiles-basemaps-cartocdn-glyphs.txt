@@ -1,0 +1,20 @@
+label:  tiles-basemaps-cartocdn-glyphs
+url:    https://tiles.basemaps.cartocdn.com/fonts/Montserrat%20Medium/0-255.pbf
+source: atlas/cartridges/202609241334-sld-sandbox-v9-8.js:5272 (glyphs template; fontstack chosen for the probe only)
+start_utc: 2026-10-26T22:30:01.077Z
+cmd: curl -sS --max-time 25 --max-filesize 3000000 -H 'Origin: http://localhost:8000' -D <headers> -o <body> -w <metrics> 'https://tiles.basemaps.cartocdn.com/fonts/Montserrat%20Medium/0-255.pbf'
+----- curl stderr / metrics -----
+curl: (56) CONNECT tunnel failed, response 403
+http_code=000 http_connect=403 remote_ip=127.0.0.1 size_download=0 time_total=0.282871
+curl_exit=56
+end_utc:   2026-10-26T22:30:01.382Z
+----- response headers (as received by curl; proxy CONNECT reply first if any) -----
+HTTP/1.1 403 Forbidden
+Content-Type: text/plain; charset=utf-8
+X-Content-Type-Options: nosniff
+Content-Length: 85
+Connection: close
+
+/tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/opus-step-e-procedure/scripts/reachability-curls.sh: line 25: /tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/opus-step-e-procedure/curl/tiles-basemaps-cartocdn-glyphs.body: No such file or directory
+----- body bytes: 0; first 300 bytes -----
+

@@ -1,0 +1,9 @@
+# 2026-10-26T22:26:09Z read-only live checks
+{"base":"main","draft":true,"head":"data-plane/hourly-lookback-index-v2","head_sha":"f7db76cddd4dde7a635daed97c912f85ca811db1","merged":false,"number":2,"state":"open","title":"DRAFT data plane: hourly self-healing collector, index v2 with per-day coverage, shard byte caps, status heartbeat"}
+--- raw main index.json ---
+HTTP 404 https://raw.githubusercontent.com/Ventusltd/lightning/main/data/history/index.json
+--- raw main status.json ---
+HTTP 404 https://raw.githubusercontent.com/Ventusltd/lightning/main/data/status.json
+--- raw main feed ---
+HTTP 200 bytes=215536 cache-control=max-age=300
+live feed features 408 query 2026-10-26T17:30:09.316Z -> 2026-10-26T20:30:09.316Z products 17 has coverage_note: False

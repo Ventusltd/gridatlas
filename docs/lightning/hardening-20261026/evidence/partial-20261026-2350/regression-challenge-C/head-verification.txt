@@ -1,0 +1,32 @@
+# Worktree HEAD verification, 2026-10-26T22:55:57Z
+worktree: /tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/wt
+HEAD: df3cb71d8a5f54bcb7c6501fe3302b8daa869122
+pinned candidate: fda6b10f7d2672bf1bf74c4fbf6184cd36b1ec1d
+status --porcelain: []
+$ git diff --stat fda6b10 HEAD -- atlas tools .github
+(exit 0; output bytes: 0)
+$ git diff --name-only fda6b10 HEAD | cut -d/ -f1-3 | sort | uniq -c
+    268 docs/lightning/hardening-20261026
+production main: c08f3a6178752d9ccc77ce76451107f28375a8b2 dirty=[]
+servers restarted 2026-10-26T22:57:11Z: 8143 -> /home/claude, 8144 -> hardening/
+
+# Re-check 2026-10-26T23:03:57Z: HEAD moved again during this run
+HEAD: 85200fa40000e44da91700c7db239829ebc987b9
+$ git diff --stat fda6b10 HEAD -- atlas tools .github
+(output bytes: 0)
+    324 docs/lightning/hardening-20261026
+status: []
+
+# Re-check 2026-10-26T23:36:45Z: HEAD 68be91ee3ae86564756b5b7316d017b5a74e638b
+$ git diff --stat fda6b10 HEAD -- atlas tools .github
+ 18 files changed, 31986 insertions(+)
+$ git diff --name-status fda6b10 HEAD -- atlas tools .github | cut -c1 | sort | uniq -c   (A=added only; no M/D => fda6b10 files untouched)
+     18 A
+fda6b10-generation files byte-identical to blob:
+  atlas/cartridges/202610261949-sld-sandbox-v9-8.js IDENTICAL
+  atlas/modules/202610261949-uk-lightning-overlay.js IDENTICAL
+  atlas/v/202610261949/current.json IDENTICAL
+  atlas/v/202610261949/index.html IDENTICAL
+  atlas/current.json IDENTICAL
+  atlas/index.html IDENTICAL
+NOTE: the BEFORE runs (8144) served these unchanged bytes; earlier statement 'docs only' held until c01002f (23:2x), after which only additive generations were committed.

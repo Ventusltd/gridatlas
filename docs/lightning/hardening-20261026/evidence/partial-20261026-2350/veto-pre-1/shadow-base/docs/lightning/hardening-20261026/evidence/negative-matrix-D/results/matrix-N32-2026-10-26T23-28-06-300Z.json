@@ -1,0 +1,193 @@
+[
+ {
+  "id": "N32",
+  "title": "hostile INDEX and FEED metadata strings reaching the caption: HTML in first/last_observation_utc (overview), HTML in schema, HTML/garbage in feed latest_detection_utc/query_end_utc",
+  "acceptance_ids": [
+   "D15",
+   "D13",
+   "D06"
+  ],
+  "elapsedMs": 45919,
+  "pageErrors": [
+   "RangeError: Invalid time value"
+  ],
+  "steps": [
+   {
+    "step": "3m overview with first_observation_utc = <img onerror> and last = garbage",
+    "synthetic": true,
+    "label": {
+     "main": "Lightning flashes (optical) [408 | 3m]",
+     "fs": "Lightning flashes (optical) [408 | 3m]",
+     "menu": "Lightning flashes (optical) [408 | 3m]"
+    },
+    "toggles": {
+     "main": true,
+     "fs": true,
+     "menu": true
+    },
+    "stateLine": "PARTIAL · 408 ARCHIVED · SEARCHED 4%",
+    "caption": [
+     "Window  2026-07-26 18:40 UTC → 2026-10-26 18:40 UTC (3 months, latest)",
+     "Actual  on the 93 overlapping UTC dates: first 2026-10-21 12:32:19 UTC · last 2026-10-25 11:15:58 UTC (day-level; may lie outside a mid-day window edge)",
+     "Flashes 408 archived on 93 overlapping UTC dates · none drawn (summary mode; choose ≤31 days for points)",
+     "Refresh archive 2026-10-26 18:37 UTC (0h 3min ago; expected every 1 h)",
+     "Searched EUMETSAT 4% of window · 17 successful runs · 2026-10-20 22:41 UTC → 2026-10-26 13:00 UTC",
+     "Not yet ingested: last 5h 40min of window (unknown, not zero) · Unknown: 2026-07-26 to 2026-10-20 precede archive start 2026-10-20 22:41 UTC (not zero) · Unknown: 86 of 93 UTC dates have no collection run",
+     "Times UTC · Optical flashes seen by MTG Lightning Imager (EUMETSAT L2-LFL), not confirmed ground strikes · Missing days are unknown, not zero · UK box −11.0,49.5 → 3.0,61.5"
+    ],
+    "features": 0,
+    "cluster": false,
+    "visibility": "none",
+    "badCoords": 0,
+    "injected": null,
+    "markupNodes": 0,
+    "last": {
+     "state": "PARTIAL",
+     "stale": false,
+     "mode": "overview",
+     "period": "3m",
+     "drawn": 0,
+     "cluster": false,
+     "cap": 40000,
+     "cap_source": null,
+     "index_count": null,
+     "failures": 0,
+     "reasons": [
+      "tail not yet ingested",
+      "head before archive start",
+      "86 dates without a scan window"
+     ]
+    },
+    "origDiff": [],
+    "extra": {}
+   },
+   {
+    "step": "index schema = <img onerror> → reason rendered as text expected",
+    "synthetic": true,
+    "label": {
+     "main": "Lightning flashes (optical) [UNKNOWN | 24h]",
+     "fs": "Lightning flashes (optical) [UNKNOWN | 24h]",
+     "menu": "Lightning flashes (optical) [UNKNOWN | 24h]"
+    },
+    "toggles": {
+     "main": true,
+     "fs": true,
+     "menu": true
+    },
+    "stateLine": "PARTIAL · 0 FLASHES DRAWN · SEARCHED 13%",
+    "caption": [
+     "Window  2026-10-25 18:40 UTC → 2026-10-26 18:40 UTC (24 hours, latest)",
+     "Actual  no flashes in the live feed in this window",
+     "Flashes 0 in window (live feed, 7-day retention)",
+     "Refresh live feed 2026-10-26 13:05 UTC (last collection window 2026-10-26 10:05 UTC → 2026-10-26 13:05 UTC; latest detection 2026-10-25 11:15:58 UTC; 7-day retention; archive not yet published: unsupported index schema <img src=x onerror=\"window.__INJECTED=1\">; earlier hours unknown, not zero)",
+     "Searched EUMETSAT 13% of window · 1 successful runs · 2026-10-26 10:05 UTC → 2026-10-26 13:05 UTC",
+     "Not yet ingested: last 5h 34min of window (unknown, not zero)",
+     "Times UTC · Optical flashes seen by MTG Lightning Imager (EUMETSAT L2-LFL), not confirmed ground strikes · Missing days are unknown, not zero · UK box −11.0,49.5 → 3.0,61.5"
+    ],
+    "features": 0,
+    "cluster": false,
+    "visibility": "none",
+    "badCoords": 0,
+    "injected": null,
+    "markupNodes": 0,
+    "last": {
+     "state": "PARTIAL",
+     "stale": false,
+     "mode": "feed",
+     "period": "24h",
+     "drawn": 0,
+     "cluster": false,
+     "cap": 40000,
+     "cap_source": "live feed",
+     "index_count": 0,
+     "failures": 0,
+     "reasons": [
+      "tail not yet ingested"
+     ]
+    },
+    "origDiff": [],
+    "extra": {}
+   },
+   {
+    "step": "no index + feed metadata latest_detection_utc = <img onerror>, query_end_utc = garbage",
+    "synthetic": true,
+    "label": {
+     "main": "Lightning flashes (optical) [LOAD]",
+     "fs": "Lightning flashes (optical) [LOAD]",
+     "menu": "Lightning flashes (optical) [LOAD]"
+    },
+    "toggles": {
+     "main": true,
+     "fs": true,
+     "menu": true
+    },
+    "stateLine": "LOADING",
+    "caption": [
+     "",
+     "",
+     "",
+     "",
+     "",
+     "",
+     ""
+    ],
+    "features": 0,
+    "cluster": false,
+    "visibility": "none",
+    "badCoords": 0,
+    "injected": null,
+    "markupNodes": 0,
+    "last": null,
+    "origDiff": [],
+    "extra": {}
+   },
+   {
+    "step": "index cutoff_date_utc = <img onerror> → refused as text",
+    "synthetic": true,
+    "label": {
+     "main": "Lightning flashes (optical) [UNKNOWN | 24h]",
+     "fs": "Lightning flashes (optical) [UNKNOWN | 24h]",
+     "menu": "Lightning flashes (optical) [UNKNOWN | 24h]"
+    },
+    "toggles": {
+     "main": true,
+     "fs": true,
+     "menu": true
+    },
+    "stateLine": "PARTIAL · 0 FLASHES DRAWN · SEARCHED 13%",
+    "caption": [
+     "Window  2026-10-25 18:40 UTC → 2026-10-26 18:40 UTC (24 hours, latest)",
+     "Actual  no flashes in the live feed in this window",
+     "Flashes 0 in window (live feed, 7-day retention)",
+     "Refresh live feed 2026-10-26 13:05 UTC (last collection window 2026-10-26 10:05 UTC → 2026-10-26 13:05 UTC; latest detection 2026-10-25 11:15:58 UTC; 7-day retention; archive not yet published: index cutoff_date_utc missing; earlier hours unknown, not zero)",
+     "Searched EUMETSAT 13% of window · 1 successful runs · 2026-10-26 10:05 UTC → 2026-10-26 13:05 UTC",
+     "Not yet ingested: last 5h 34min of window (unknown, not zero)",
+     "Times UTC · Optical flashes seen by MTG Lightning Imager (EUMETSAT L2-LFL), not confirmed ground strikes · Missing days are unknown, not zero · UK box −11.0,49.5 → 3.0,61.5"
+    ],
+    "features": 0,
+    "cluster": false,
+    "visibility": "none",
+    "badCoords": 0,
+    "injected": null,
+    "markupNodes": 0,
+    "last": {
+     "state": "PARTIAL",
+     "stale": false,
+     "mode": "feed",
+     "period": "24h",
+     "drawn": 0,
+     "cluster": false,
+     "cap": 40000,
+     "cap_source": "live feed",
+     "index_count": 0,
+     "failures": 0,
+     "reasons": [
+      "tail not yet ingested"
+     ]
+    },
+    "origDiff": [],
+    "extra": {}
+   }
+  ]
+ }
+]

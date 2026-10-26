@@ -1,0 +1,61 @@
+T1 FAIL  CUSTOM during the first load
+    x no uncaught page error :: ["Cannot read properties of null (reading 'colour')"]
+    x no stale non-custom window painted under CUSTOM (window line empty or "UTC dates … inclusive") :: "Window 2026-10-25 18:40 UTC → 2026-10-26 18:40 UTC (24 hours, latest)"
+T2 FAIL  Malformed timestamp in the index
+    x no uncaught page error :: ["Invalid time value","Invalid time value","Invalid time value"]
+    x 12M settles (not stuck LOADING/[LOAD]) :: {"label":"Lightning flashes (optical) [LOAD]","status":"LOADING"}
+    x 12M caption names the bad data (actual or warning line) :: {"actual":"Actual no archived flashes within this window","warning":"Not yet ingested: last 5h 40min of window (unknown, not zero)"}
+    x 7D still usable afterwards (settles, window says 7 days) :: {"gesture":{"ok":true},"label":"Lightning flashes (optical) [LOAD]","status":"LOADING","window":"Window 2026-10-25 18:40 UTC → 2026-10-26 18:40 UTC (24 hours, latest)"}
+    x 24H still usable afterwards :: {"gesture":{"ok":true},"label":"Lightning flashes (optical) [LOAD]","status":"LOADING","window":"Window 2026-10-25 18:40 UTC → 2026-10-26 18:40 UTC (24 hours, latest)"}
+T3 FAIL  Feed revalidation (OFF then ON fetches the feed again)
+    x second ON fetched the feed again (count +1) :: {"first":1,"second":1,"log":["history/index.json","uk_lightning.geojson","history/index.json"]}
+    x caption shows the changed feed (refresh line names 18:05 UTC) :: {"before":"Refresh live feed 2026-10-26 13:05 UTC (last collection window 2026-10-26 10:05 UTC → 2026-10-26 13:05 UTC; latest detection 2026-10-25 11:15:58 UTC; 7-day retention; archive not yet published: HTTP 404; earlier hours unknown, not zero)","after":"Refresh live feed 2026-10-26 13:05 UTC (last collection window 2026-10-26 10:05 UTC → 2026-10-26 13:05 UTC; latest detection 2026-10-25 11:15:
+T4 FAIL  Feed STALE after 4 h
+    x feed >4 h old: label or status shows STALE :: {"label":"Lightning flashes (optical) [408 | 7d]","status":"PARTIAL · 408 FLASHES DRAWN · SEARCHED 2%","refresh":"Refresh live feed 2026-10-26 13:05 UTC (last collection window 2026-10-26 10:05 UTC → 2026-10-26 13:05 UTC; latest detection 2026-10-25 11:15:58 UTC; 7-day retention; archive not yet published: HTTP 404; earlier hours unknown, not zero)"}
+T5 FAIL  Feed mode and PREV
+    x press 1: no "searched 0%" while 255 points are drawn :: {"drawn":255,"searched":"Searched EUMETSAT 0% of window — no collection run covers these dates","status":"UNKNOWN"}
+    x press 2: no "searched 0%" while 90 points are drawn :: {"drawn":90,"searched":"Searched EUMETSAT 0% of window — no collection run covers these dates","status":"UNKNOWN"}
+    x PREV #3: not FAIL :: {"status":"FAIL · 48 hours needs the archive (archive not yet published); the live feed keeps 7 days","label":"Lightning flashes (optical) [FAIL]","warning":"Archive unavailable: HTTP 404 at 2026-10-26 18:40 UTC — nothing shown (unknown, not zero)"}
+T6 FAIL  Long chips in feed mode (owner device 393x852, Chromium emulation)
+    x 30D: chip accepts the tap (not dead) :: {"gesture":{"ok":false,"error":"locator.tap: Timeout 3000ms exceeded."},"disabledBefore":true}
+    x 3M: chip accepts the tap (not dead) :: {"gesture":{"ok":false,"error":"locator.tap: Timeout 3000ms exceeded."},"disabledBefore":true}
+    x 6M: chip accepts the tap (not dead) :: {"gesture":{"ok":false,"error":"locator.tap: Timeout 3000ms exceeded."},"disabledBefore":true}
+    x 12M: chip accepts the tap (not dead) :: {"gesture":{"ok":false,"error":"locator.tap: Timeout 3000ms exceeded."},"disabledBefore":true}
+T7 FAIL  Feed coverage shown as unknown, not a percentage
+    x status carries no "SEARCHED n%" :: "PARTIAL · 408 FLASHES DRAWN · SEARCHED 2%"
+    x searched line carries no percentage :: "Searched EUMETSAT 2% of window · 1 successful runs · 2026-10-26 10:05 UTC → 2026-10-26 13:05 UTC"
+    x coverage stated as unknown (searched line or status) :: {"searched":"Searched EUMETSAT 2% of window · 1 successful runs · 2026-10-26 10:05 UTC → 2026-10-26 13:05 UTC","status":"PARTIAL · 408 FLASHES DRAWN · SEARCHED 2%"}
+T8 FAIL  HIDE LAYERS does not occlude caption lines (393x852, 360x740)
+    x p393: [strict] rendered line footer 2/3 hittable at 9 points along its width :: {"cap":"footer","line":"2/3","rect":[29,800,335,10],"blocked":[{"x":263,"y":805,"hit":"HIDE-LAYERS-BUTTON"},{"x":297,"y":805,"hit":"HIDE-LAYERS-BUTTON"},{"x":330,"y":805,"hit":"HIDE-LAYERS-BUTTON"}]}
+    x p393: [strict] rendered line footer 3/3 hittable at 9 points along its width :: {"cap":"footer","line":"3/3","rect":[29,813,281,10],"blocked":[{"x":254,"y":818,"hit":"HIDE-LAYERS-BUTTON"},{"x":282,"y":818,"hit":"HIDE-LAYERS-BUTTON"}]}
+    x p360: [strict] rendered line footer 2/3 hittable at 9 points along its width :: {"cap":"footer","line":"2/3","rect":[29,688,308,10],"blocked":[{"x":245,"y":693,"hit":"HIDE-LAYERS-BUTTON"},{"x":275,"y":693,"hit":"HIDE-LAYERS-BUTTON"},{"x":306,"y":693,"hit":"HIDE-LAYERS-BUTTON"}]}
+    x p360: [strict] rendered line footer 3/3 hittable at 9 points along its width :: {"cap":"footer","line":"3/3","rect":[29,702,308,10],"blocked":[{"x":245,"y":707,"hit":"HIDE-LAYERS-BUTTON"},{"x":275,"y":707,"hit":"HIDE-LAYERS-BUTTON"},{"x":306,"y":707,"hit":"HIDE-LAYERS-BUTTON"}]}
+T9 FAIL  Out-of-box and NaN coordinates rejected and reported
+    x drawn count is the 408 genuine points only (3 synthetic bad records excluded) :: {"status":"PARTIAL · 411 FLASHES DRAWN · SEARCHED 56%","flashes":"Flashes 411 archived in window · 411 drawn as points (index count 411 within the 40,000-point cap for this desktop)","mapSourceFeatures":411}
+    x caption reports records as rejected :: {"flashes":"Flashes 411 archived in window · 411 drawn as points (index count 411 within the 40,000-point cap for this desktop)","warning":"Not yet ingested: last 5h 40min of window (unknown, not zero) · Unknown: 2026-10-19 to 2026-10-20 precede archive start 2026-10-20 22:41 UTC (not zero) · Unknown: 1 of 8 UTC dates have no collection run"}
+T10 FAIL  Shard count/bytes/sha256 disagreeing with the index named as mismatch
+    x caption names a mismatch :: {"status":"PARTIAL · 408 FLASHES DRAWN · SEARCHED 56%","warning":"Not yet ingested: last 5h 40min of window (unknown, not zero) · Unknown: 2026-10-19 to 2026-10-20 precede archive start 2026-10-20 22:41 UTC (not zero) · Unknown: 1 of 8 UTC dates have no collection run"}
+    x 2026-10-22 (sha256 differs from index) named in the caption :: {"warning":"Not yet ingested: last 5h 40min of window (unknown, not zero) · Unknown: 2026-10-19 to 2026-10-20 precede archive start 2026-10-20 22:41 UTC (not zero) · Unknown: 1 of 8 UTC dates have no collection run"}
+    x 2026-10-23 (bytes differs from index) named in the caption :: {"warning":"Not yet ingested: last 5h 40min of window (unknown, not zero) · Unknown: 2026-10-19 to 2026-10-20 precede archive start 2026-10-20 22:41 UTC (not zero) · Unknown: 1 of 8 UTC dates have no collection run"}
+    x 2026-10-24 (count differs from index) named in the caption :: {"warning":"Not yet ingested: last 5h 40min of window (unknown, not zero) · Unknown: 2026-10-19 to 2026-10-20 precede archive start 2026-10-20 22:41 UTC (not zero) · Unknown: 1 of 8 UTC dates have no collection run"}
+T11 FAIL  Sub-day (12H) caption never calls whole-day index counts "archived in window"
+    x after LOAD POINTS: no "archived in window" count other than the points actually in the 12 h window :: {"claims":[85118],"drawn":85000,"indexWholeDaySum":85118,"flashes":"Flashes 85,118 archived in window (index) · 85,000 downloaded from the newest 1 of 2 days (budget 40,000; 1 older days not loaded) · 85,000 drawn as clusters (index count 85,000 exceeds the 40,000-point cap for this desktop)"}
+T12 FAIL  LOAD POINTS respects the promised cap and the 32 MB budget
+    x drawn count after consent <= promised 40,000 :: {"drawn":85000,"status":"PARTIAL · 85,000 FLASHES CLUSTERED · SEARCHED 68%","flashes":"Flashes 85,118 archived in window (index) · 85,000 downloaded from the newest 1 of 2 days (budget 40,000; 1 older days not loaded) · 85,000 drawn as clusters (index count 85,000 exceeds the 40,000-point cap for this desktop)"}
+    x declared bytes of shards fetched after consent <= 32,000,000 :: {"reqBytes":33713273,"shards":["days/2026/10/25.json"]}
+T13 PASS  menuBar.inspect() {60,3,63,63,true}, 63 proxies, 63 markers before/after every case; zero lightning requests while OFF
+
+T1	FAIL	24s	CUSTOM during the first load
+T2	FAIL	47s	Malformed timestamp in the index
+T3	FAIL	16s	Feed revalidation (OFF then ON fetches the feed again)
+T4	FAIL	34s	Feed STALE after 4 h
+T5	FAIL	17s	Feed mode and PREV
+T6	FAIL	27s	Long chips in feed mode (owner device 393x852, Chromium emulation)
+T7	FAIL	17s	Feed coverage shown as unknown, not a percentage
+T8	FAIL	31s	HIDE LAYERS does not occlude caption lines (393x852, 360x740)
+T9	FAIL	16s	Out-of-box and NaN coordinates rejected and reported
+T10	FAIL	16s	Shard count/bytes/sha256 disagreeing with the index named as mismatch
+T11	FAIL	19s	Sub-day (12H) caption never calls whole-day index counts "archived in window"
+T12	FAIL	0s	LOAD POINTS respects the promised cap and the 32 MB budget
+T13	PASS	0s	menuBar.inspect() {60,3,63,63,true}, 63 proxies, 63 markers before/after every case; zero lightning requests while OFF
+out: /tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/opus-browser-tests/runs/202610261949-20261026T231115

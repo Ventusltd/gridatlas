@@ -1,0 +1,43 @@
+
+=== streaming-parquet-bridge 202609241251 ===
+{
+  "status": "PASS",
+  "generation": "202609241251",
+  "composed_sha256": "60be8215ba873ac2886786bf6e3fd51e5764e7c5e26684fde71ebe9974a329a2",
+  "response_establishment_ms": 3.782,
+  "map_ready_requests": 1,
+  "streamed_responses": 1,
+  "duckdb_started_before_body": false,
+  "metro_partition": "partitions/uk_metros_trams_local_unwired.parquet",
+  "metro_rows_reconstructed": 1
+}
+
+=== uk-gazetteer-flyto 202609071213 ===
+{
+  "status": "PASS",
+  "generation": "202609071213",
+  "composed_sha256": "15f324e5c279050882f7e3ce83a915c070b6ed19095efcac4ae20af4ef19fdfa",
+  "resolved_identity": {
+    "repd_ref": "12588",
+    "technology": "solar",
+    "capacity_mw": 840,
+    "longitude": -1.3489728,
+    "latitude": 51.8132088
+  },
+  "terminal_states": [
+    "RESOLVED",
+    "NOT_IN_ACTIVE_REGISTER",
+    "ABSENT",
+    "FAILED"
+  ],
+  "mismatched_identity": "NOT_IN_ACTIVE_REGISTER"
+}
+
+=== substation-intelligence 202609062358 ===
+Published engine byte integrity and syntax PASS; browser coverage runs separately.
+
+=== sld-sandbox 202610261949 ===
+SLD exact delta (202609241334 bytes + \n + 202610261949 uk-lightning-overlay module), SHA-256, byte budget, static negatives, static positives and syntax PASS; browser verification runs separately.
+
+proofs run: 4
+every composed cartridge passed its generation-matched proof

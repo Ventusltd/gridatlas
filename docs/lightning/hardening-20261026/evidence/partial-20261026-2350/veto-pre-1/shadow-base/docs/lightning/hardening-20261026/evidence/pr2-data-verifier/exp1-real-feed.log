@@ -1,0 +1,23 @@
+$ /usr/local/bin/python3 /tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/pr2-data-verifier/wt/history.py ingest --archive-dir /tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/pr2-data-verifier/exp1-real-feed/archive --run-record /tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/pr2-data-verifier/exp1-real-feed/run-record.constructed.json --seed-scan-windows /tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/pr2-data-verifier/wt/data/seed_scan_windows.json --result-out /tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/pr2-data-verifier/exp1-real-feed/archive-result.json --now 2026-10-26T13:05:58.649000+00:00
+Archived 408 dated optical observations; 6 files changed, 0 days expired, 0 observations older than the cutoff clamped away, split days: none.
+  exit 0
+schema: uk-lightning-history-index.v2 | has 'version' key: False
+rows: 366 2025-10-26 -> 2026-10-26 | cutoff 2025-10-26
+row key sets: [('date', 'coverage', 'scanned_seconds', 'count', 'bytes', 'path', 'sealed', 'first_observation_utc', 'last_observation_utc', 'sha256')]
+shards checked against index bytes/sha256: 5
+day files on disk == listed: ['days/2026/10/21.json', 'days/2026/10/22.json', 'days/2026/10/23.json', 'days/2026/10/24.json', 'days/2026/10/25.json']
+per-day rows with coverage != none:
+  2026-10-20 cov=partial scanned=  4685 (5.4%) count=0 sealed=True bytes=None path=None
+  2026-10-21 cov=full    scanned= 86400 (100.0%) count=31 sealed=True bytes=16667 path=days/2026/10/21.json
+  2026-10-22 cov=partial scanned= 81609 (94.5%) count=67 sealed=True bytes=35555 path=days/2026/10/22.json
+  2026-10-23 cov=partial scanned= 42472 (49.2%) count=189 sealed=True bytes=99892 path=days/2026/10/23.json
+  2026-10-24 cov=partial scanned= 50269 (58.2%) count=118 sealed=False bytes=62521 path=days/2026/10/24.json
+  2026-10-25 cov=partial scanned= 51158 (59.2%) count=3 sealed=False bytes=1926 path=days/2026/10/25.json
+  2026-10-26 cov=partial scanned= 20683 (23.9%) count=0 sealed=False bytes=None path=None
+archived_observations 408 scanned_days 7 archived_days_with_flashes 5
+scan_windows: 15 coverage_start 2026-10-20T22:41:54.847Z last_scan_end 2026-10-26T13:00:09.000Z
+first/last obs 2026-10-21T12:32:19.282Z 2026-10-25T11:15:58.149Z
+next_update_due_utc 2026-10-26T16:05:58.649Z generated 2026-10-26T13:05:58.649Z
+verify: {"rows": 366, "shards_checked": 5}  exit 0
+real shape: 216561 bytes / 408 features = 530.8 bytes per feature (incl. metadata)
+OK experiment 1

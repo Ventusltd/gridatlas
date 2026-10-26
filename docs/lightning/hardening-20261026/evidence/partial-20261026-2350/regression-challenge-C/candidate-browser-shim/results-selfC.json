@@ -1,0 +1,111 @@
+{
+  "label": "candidate-browser-shim",
+  "shim": {
+    "preload": "/tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/regression-challenge-C/runners/shim-preload.cjs",
+    "lightningDataDir": "(lead default)"
+  },
+  "generation": "202610261949",
+  "base": "http://127.0.0.1:8144/wt/atlas/v/202610261949/",
+  "live": "https://ventusltd.github.io/gridatlas/atlas/",
+  "repo": "/tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/regression-challenge-C/shadow-candidate",
+  "startedAt": "2026-10-26T23:35:26.467Z",
+  "routeBoots": true,
+  "liveReachable": null,
+  "routeProbe": {
+    "url": "http://127.0.0.1:8144/wt/atlas/v/202610261949/",
+    "viewport": {
+      "width": 1440,
+      "height": 1000
+    },
+    "elapsedMs": 7687,
+    "mapArrived": true,
+    "waitUsed": "waitForFunction(map && >=60 proxies, 60000 ms) then networkidle<=20 s then fixed 3 s",
+    "state": {
+      "title": "GlobalGrid2050 | UK Region v8 (Experimental)",
+      "generation": "202610261949",
+      "htmlGeneration": "202610261949",
+      "maplibregl": "function",
+      "map": true,
+      "menuBarInstalled": true,
+      "menuTitles": [
+        "File",
+        "Edit",
+        "View",
+        "Scope",
+        "Grid",
+        "About"
+      ],
+      "engineControls": 120,
+      "pipelineControls": 6,
+      "layerProxies": 63,
+      "scadaContainer": true,
+      "bodyText": "FILE EDIT VIEW SYSTEM TIME 23:35:19 26/10/2026 VENTUS CABLES & CONNECTIVITY® 2050 TARGET 8467 DAYS SCOPE GRID ABOUT GO TOPOLOGY (GEOJSON) 400kV [OK] 275kV [OK] 220kV [OK] 132kV [OK] 66kV [OK] 11kV (UKPN) [WAIT] Subs [OK] ASSETS (GEOJSON) Nuclear [OK] Gas [OK] Industry [OK] Data Ctrs [OK] Airports [OK] Railways [OK] SUPERMARKETS (GEOJSON) Tesco [WAIT] Sainsbury's [WAIT] Asda [WAIT] Morrisons [WAIT] Aldi [WAIT] Lidl [WAIT] Waitrose [WAIT] M&S Food [WAIT] Co-op [WAIT] Costco [WAIT] Booths [WAIT] TRANSIT (GEOJSON) Elizabeth Line [WAIT] London Underground [WAIT] DLR [WAIT] UK Metro [WAIT] Trams & L",
+      "scripts": [
+        "https://cdn.jsdelivr.net/npm/maplibre-gl@3.6.2/dist/maplibre-gl.js",
+        "blob:http://127.0.0.1:8144/d53afe56-afc3-49ce-9947-6e8a7d357485",
+        "blob:http://127.0.0.1:8144/7d7d8c03-ed67-42d9-844a-84940fa120a7",
+        "blob:http://127.0.0.1:8144/066273ce-ac0d-476d-8a3a-6c615b8a3b66",
+        "blob:http://127.0.0.1:8144/6072fd63-0cfe-4b65-9cfa-38e80f3822cb"
+      ]
+    },
+    "failedHosts": {
+      "ventusltd.github.io": {
+        "count": 1,
+        "errors": [
+          "net::ERR_BLOCKED_BY_CLIENT.Inspector"
+        ],
+        "sample": "https://ventusltd.github.io/ventus-grid-engine/genome/engine-graph.json"
+      },
+      "cdn.jsdelivr.net": {
+        "count": 1,
+        "errors": [
+          "net::ERR_ABORTED"
+        ],
+        "sample": "https://cdn.jsdelivr.net/npm/@duckdb/duckdb-wasm@1.29.0/dist/duckdb-eh.wasm"
+      }
+    },
+    "requestHosts": [
+      "127.0.0.1:8144",
+      "cdn.jsdelivr.net",
+      "raw.githubusercontent.com",
+      "basemaps.cartocdn.com",
+      "ventusltd.github.io"
+    ],
+    "consoleErrors": [
+      "Failed to load resource: net::ERR_BLOCKED_BY_CLIENT.Inspector"
+    ],
+    "pageErrors": [],
+    "screenshot": "/tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/regression-challenge-C/candidate-browser-shim/probe-route/probe-1440x1000.png"
+  },
+  "liveProbe": null,
+  "tally": {
+    "FAIL": 1
+  },
+  "playwright": "1.63.0",
+  "node": "v22.23.4",
+  "results": [
+    {
+      "id": "arrival-identity-202609040229",
+      "group": "browser",
+      "kind": "browser-self-served",
+      "tests": "five cold mobile arrivals by repd_ref with manifest retry (routes the live repd manifest URL)",
+      "target": "self-served http://127.0.0.1:<random>/atlas/ (same bytes as http://127.0.0.1:8144/wt/atlas/v/202610261949/, route prefix differs)",
+      "deps": [
+        "chromium",
+        "cdn.jsdelivr.net (maplibre-gl 3.6.2)",
+        "ventusltd.github.io/data-gridatlas partitions",
+        "ventusltd.github.io/gridatlas/data manifest"
+      ],
+      "invocation": "/opt/node22/bin/node tools/proofs/202609040229-arrival-identity.browser.mjs",
+      "env": {},
+      "exit": 1,
+      "signal": null,
+      "timedOut": false,
+      "durationMs": 6340,
+      "result": "FAIL",
+      "note": "exit 1",
+      "firstError": "name: 'Error'",
+      "log": "logs/arrival-identity-202609040229"
+    }
+  ]
+}

@@ -1,0 +1,605 @@
+{
+  "byHost": {
+    "127.0.0.1:8142": {
+      "requests": 42,
+      "ok": 42,
+      "failed": 0,
+      "http4xx5xx": 0,
+      "fixture": 0,
+      "sampleFailure": null,
+      "sample": "http://127.0.0.1:8142/wt/atlas/v/202610261949/"
+    },
+    "cdn.jsdelivr.net": {
+      "requests": 10,
+      "ok": 0,
+      "failed": 0,
+      "http4xx5xx": 0,
+      "fixture": 10,
+      "sampleFailure": null,
+      "sample": "https://cdn.jsdelivr.net/npm/maplibre-gl@3.6.2/dist/maplibre-gl.css"
+    },
+    "raw.githubusercontent.com": {
+      "requests": 3,
+      "ok": 0,
+      "failed": 3,
+      "http4xx5xx": 0,
+      "fixture": 0,
+      "sampleFailure": "net::ERR_BLOCKED_BY_CLIENT.Inspector",
+      "sample": "https://raw.githubusercontent.com/Ventusltd/data-grid-gb/1c9909d1138704b29235c27fd769436dda8a0b18/derived/connection-points.v3.json"
+    },
+    "basemaps.cartocdn.com": {
+      "requests": 2,
+      "ok": 0,
+      "failed": 0,
+      "http4xx5xx": 0,
+      "fixture": 2,
+      "sampleFailure": null,
+      "sample": "https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json"
+    },
+    "ventusltd.github.io": {
+      "requests": 3,
+      "ok": 0,
+      "failed": 2,
+      "http4xx5xx": 0,
+      "fixture": 1,
+      "sampleFailure": "net::ERR_BLOCKED_BY_CLIENT.Inspector",
+      "sample": "https://ventusltd.github.io/ventus-grid-engine/genome/engine-graph.json"
+    }
+  },
+  "shim": {
+    "served": {
+      "maplibre": 4,
+      "style": 2,
+      "duckdb": 6,
+      "data-gridatlas": 1
+    },
+    "aborted": [
+      "https://raw.githubusercontent.com/Ventusltd/data-grid-gb/1c9909d1138704b29235c27fd769436dda8a0b18/derived/connection-points.v3.json",
+      "https://ventusltd.github.io/ventus-grid-engine/genome/engine-graph.json",
+      "https://raw.githubusercontent.com/Ventusltd/data-grid-gb/1c9909d1138704b29235c27fd769436dda8a0b18/derived/gb-transmission-network.v1.json"
+    ],
+    "missing": []
+  },
+  "entries": [
+    {
+      "url": "http://127.0.0.1:8142/wt/atlas/v/202610261949/",
+      "host": "127.0.0.1:8142",
+      "status": 200,
+      "type": "document",
+      "fixture": false,
+      "fromServiceWorker": false,
+      "t": "2026-10-26T22:50:16.861Z"
+    },
+    {
+      "url": "http://127.0.0.1:8142/wt/atlas/v/202610261949/current.json",
+      "host": "127.0.0.1:8142",
+      "status": 200,
+      "type": "fetch",
+      "fixture": false,
+      "fromServiceWorker": false,
+      "t": "2026-10-26T22:50:17.164Z"
+    },
+    {
+      "url": "http://127.0.0.1:8142/wt/atlas/releases/202608300453-atlas-v9/index.html",
+      "host": "127.0.0.1:8142",
+      "status": 200,
+      "type": "fetch",
+      "fixture": false,
+      "fromServiceWorker": false,
+      "t": "2026-10-26T22:50:17.183Z"
+    },
+    {
+      "url": "http://127.0.0.1:8142/wt/atlas/cartridges/202609241251-streaming-parquet-bridge-v9-5.js",
+      "host": "127.0.0.1:8142",
+      "status": 200,
+      "type": "fetch",
+      "fixture": false,
+      "fromServiceWorker": false,
+      "t": "2026-10-26T22:50:17.197Z"
+    },
+    {
+      "url": "http://127.0.0.1:8142/wt/atlas/cartridges/202609071213-place-global-search-v9-5.js",
+      "host": "127.0.0.1:8142",
+      "status": 200,
+      "type": "fetch",
+      "fixture": false,
+      "fromServiceWorker": false,
+      "t": "2026-10-26T22:50:17.208Z"
+    },
+    {
+      "url": "http://127.0.0.1:8142/wt/atlas/cartridges/202609062358-substation-intelligence-v9-63.js",
+      "host": "127.0.0.1:8142",
+      "status": 200,
+      "type": "fetch",
+      "fixture": false,
+      "fromServiceWorker": false,
+      "t": "2026-10-26T22:50:17.217Z"
+    },
+    {
+      "url": "http://127.0.0.1:8142/wt/atlas/cartridges/202610261949-sld-sandbox-v9-8.js",
+      "host": "127.0.0.1:8142",
+      "status": 200,
+      "type": "fetch",
+      "fixture": false,
+      "fromServiceWorker": false,
+      "t": "2026-10-26T22:50:17.245Z"
+    },
+    {
+      "url": "https://cdn.jsdelivr.net/npm/maplibre-gl@3.6.2/dist/maplibre-gl.css",
+      "host": "cdn.jsdelivr.net",
+      "status": 200,
+      "type": "stylesheet",
+      "fixture": true,
+      "fromServiceWorker": false,
+      "t": "2026-10-26T22:50:17.328Z"
+    },
+    {
+      "url": "http://127.0.0.1:8142/wt/atlas/releases/202608300453-atlas-v9/ventusv8.css",
+      "host": "127.0.0.1:8142",
+      "status": 200,
+      "type": "stylesheet",
+      "fixture": false,
+      "fromServiceWorker": false,
+      "t": "2026-10-26T22:50:17.404Z"
+    },
+    {
+      "url": "https://cdn.jsdelivr.net/npm/maplibre-gl@3.6.2/dist/maplibre-gl.js",
+      "host": "cdn.jsdelivr.net",
+      "status": 200,
+      "type": "script",
+      "fixture": true,
+      "fromServiceWorker": false,
+      "t": "2026-10-26T22:50:17.500Z"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/Ventusltd/data-grid-gb/1c9909d1138704b29235c27fd769436dda8a0b18/derived/connection-points.v3.json",
+      "host": "raw.githubusercontent.com",
+      "status": null,
+      "failure": "net::ERR_BLOCKED_BY_CLIENT.Inspector",
+      "type": "fetch",
+      "fixture": false,
+      "t": "2026-10-26T22:50:17.671Z"
+    },
+    {
+      "url": "https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json",
+      "host": "basemaps.cartocdn.com",
+      "status": 200,
+      "type": "fetch",
+      "fixture": true,
+      "fromServiceWorker": false,
+      "t": "2026-10-26T22:50:17.692Z"
+    },
+    {
+      "url": "http://127.0.0.1:8142/wt/atlas/releases/202608300453-atlas-v9/data/grid_substations.geojson",
+      "host": "127.0.0.1:8142",
+      "status": 200,
+      "type": "fetch",
+      "fixture": false,
+      "fromServiceWorker": false,
+      "t": "2026-10-26T22:50:18.314Z"
+    },
+    {
+      "url": "http://127.0.0.1:8142/wt/atlas/releases/cartridges/5f5fbec83f9ce307b47ddc6e7277743f0bba1a2445b0f3ca50a9a1806146e993/grid_400kv.geojson",
+      "host": "127.0.0.1:8142",
+      "status": 200,
+      "type": "fetch",
+      "fixture": false,
+      "fromServiceWorker": false,
+      "t": "2026-10-26T22:50:18.552Z"
+    },
+    {
+      "url": "http://127.0.0.1:8142/wt/atlas/releases/202608300453-atlas-v9/data/grid_275kv.geojson",
+      "host": "127.0.0.1:8142",
+      "status": 200,
+      "type": "fetch",
+      "fixture": false,
+      "fromServiceWorker": false,
+      "t": "2026-10-26T22:50:18.925Z"
+    },
+    {
+      "url": "http://127.0.0.1:8142/wt/atlas/releases/202608300453-atlas-v9/data/grid_132kv.geojson",
+      "host": "127.0.0.1:8142",
+      "status": 200,
+      "type": "fetch",
+      "fixture": false,
+      "fromServiceWorker": false,
+      "t": "2026-10-26T22:50:18.926Z"
+    },
+    {
+      "url": "http://127.0.0.1:8142/wt/atlas/releases/202608300453-atlas-v9/data/grid_66kv.geojson",
+      "host": "127.0.0.1:8142",
+      "status": 200,
+      "type": "fetch",
+      "fixture": false,
+      "fromServiceWorker": false,
+      "t": "2026-10-26T22:50:18.926Z"
+    },
+    {
+      "url": "http://127.0.0.1:8142/wt/atlas/releases/202608300453-atlas-v9/data/grid_220kv.geojson",
+      "host": "127.0.0.1:8142",
+      "status": 200,
+      "type": "fetch",
+      "fixture": false,
+      "fromServiceWorker": false,
+      "t": "2026-10-26T22:50:18.926Z"
+    },
+    {
+      "url": "http://127.0.0.1:8142/wt/atlas/data/interconnectors.geojson",
+      "host": "127.0.0.1:8142",
+      "status": 200,
+      "type": "xhr",
+      "fixture": false,
+      "fromServiceWorker": false,
+      "t": "2026-10-26T22:50:18.953Z"
+    },
+    {
+      "url": "https://ventusltd.github.io/ventus-grid-engine/genome/engine-graph.json",
+      "host": "ventusltd.github.io",
+      "status": null,
+      "failure": "net::ERR_BLOCKED_BY_CLIENT.Inspector",
+      "type": "fetch",
+      "fixture": false,
+      "t": "2026-10-26T22:50:19.729Z"
+    },
+    {
+      "url": "http://127.0.0.1:8142/wt/atlas/releases/202608300453-atlas-v9/data/grid_substations.geojson",
+      "host": "127.0.0.1:8142",
+      "status": 200,
+      "type": "fetch",
+      "fixture": false,
+      "fromServiceWorker": false,
+      "t": "2026-10-26T22:50:19.764Z"
+    },
+    {
+      "url": "http://127.0.0.1:8142/wt/atlas/releases/202608300453-atlas-v9/data/power_plants.geojson",
+      "host": "127.0.0.1:8142",
+      "status": 200,
+      "type": "fetch",
+      "fixture": false,
+      "fromServiceWorker": false,
+      "t": "2026-10-26T22:50:20.761Z"
+    },
+    {
+      "url": "http://127.0.0.1:8142/wt/atlas/releases/202608300453-atlas-v9/data/industrial_offtakers.geojson",
+      "host": "127.0.0.1:8142",
+      "status": 200,
+      "type": "fetch",
+      "fixture": false,
+      "fromServiceWorker": false,
+      "t": "2026-10-26T22:50:20.761Z"
+    },
+    {
+      "url": "http://127.0.0.1:8142/wt/atlas/releases/202608300453-atlas-v9/data/datacentres.geojson",
+      "host": "127.0.0.1:8142",
+      "status": 200,
+      "type": "fetch",
+      "fixture": false,
+      "fromServiceWorker": false,
+      "t": "2026-10-26T22:50:21.164Z"
+    },
+    {
+      "url": "http://127.0.0.1:8142/wt/atlas/releases/202608300453-atlas-v9/data/airports.geojson",
+      "host": "127.0.0.1:8142",
+      "status": 200,
+      "type": "fetch",
+      "fixture": false,
+      "fromServiceWorker": false,
+      "t": "2026-10-26T22:50:22.340Z"
+    },
+    {
+      "url": "http://127.0.0.1:8142/wt/atlas/releases/202608300453-atlas-v9/data/railways.geojson",
+      "host": "127.0.0.1:8142",
+      "status": 200,
+      "type": "fetch",
+      "fixture": false,
+      "fromServiceWorker": false,
+      "t": "2026-10-26T22:50:22.340Z"
+    },
+    {
+      "url": "https://cdn.jsdelivr.net/npm/@duckdb/duckdb-wasm@1.29.0/+esm",
+      "host": "cdn.jsdelivr.net",
+      "status": 200,
+      "type": "script",
+      "fixture": true,
+      "fromServiceWorker": false,
+      "t": "2026-10-26T22:50:22.760Z"
+    },
+    {
+      "url": "https://cdn.jsdelivr.net/npm/@duckdb/duckdb-wasm@1.29.0/dist/duckdb-browser-eh.worker.js",
+      "host": "cdn.jsdelivr.net",
+      "status": 200,
+      "type": "other",
+      "fixture": true,
+      "fromServiceWorker": false,
+      "t": "2026-10-26T22:50:25.195Z"
+    },
+    {
+      "url": "https://cdn.jsdelivr.net/npm/@duckdb/duckdb-wasm@1.29.0/dist/duckdb-eh.wasm",
+      "host": "cdn.jsdelivr.net",
+      "status": 200,
+      "type": "fetch",
+      "fixture": true,
+      "fromServiceWorker": false,
+      "t": "2026-10-26T22:50:32.040Z"
+    },
+    {
+      "url": "http://127.0.0.1:8142/wt/atlas/v/202610261949/?technology=solar&latitude=52.7&longitude=-0.9",
+      "host": "127.0.0.1:8142",
+      "status": 200,
+      "type": "document",
+      "fixture": false,
+      "fromServiceWorker": false,
+      "t": "2026-10-26T22:50:32.158Z"
+    },
+    {
+      "url": "http://127.0.0.1:8142/wt/atlas/v/202610261949/current.json",
+      "host": "127.0.0.1:8142",
+      "status": 200,
+      "type": "fetch",
+      "fixture": false,
+      "fromServiceWorker": false,
+      "t": "2026-10-26T22:50:32.446Z"
+    },
+    {
+      "url": "http://127.0.0.1:8142/wt/atlas/releases/202608300453-atlas-v9/index.html",
+      "host": "127.0.0.1:8142",
+      "status": 200,
+      "type": "fetch",
+      "fixture": false,
+      "fromServiceWorker": false,
+      "t": "2026-10-26T22:50:32.471Z"
+    },
+    {
+      "url": "http://127.0.0.1:8142/wt/atlas/cartridges/202609241251-streaming-parquet-bridge-v9-5.js",
+      "host": "127.0.0.1:8142",
+      "status": 200,
+      "type": "fetch",
+      "fixture": false,
+      "fromServiceWorker": false,
+      "t": "2026-10-26T22:50:32.579Z"
+    },
+    {
+      "url": "http://127.0.0.1:8142/wt/atlas/cartridges/202609071213-place-global-search-v9-5.js",
+      "host": "127.0.0.1:8142",
+      "status": 200,
+      "type": "fetch",
+      "fixture": false,
+      "fromServiceWorker": false,
+      "t": "2026-10-26T22:50:32.675Z"
+    },
+    {
+      "url": "http://127.0.0.1:8142/wt/atlas/cartridges/202609062358-substation-intelligence-v9-63.js",
+      "host": "127.0.0.1:8142",
+      "status": 200,
+      "type": "fetch",
+      "fixture": false,
+      "fromServiceWorker": false,
+      "t": "2026-10-26T22:50:32.702Z"
+    },
+    {
+      "url": "http://127.0.0.1:8142/wt/atlas/cartridges/202610261949-sld-sandbox-v9-8.js",
+      "host": "127.0.0.1:8142",
+      "status": 200,
+      "type": "fetch",
+      "fixture": false,
+      "fromServiceWorker": false,
+      "t": "2026-10-26T22:50:33.252Z"
+    },
+    {
+      "url": "https://cdn.jsdelivr.net/npm/maplibre-gl@3.6.2/dist/maplibre-gl.css",
+      "host": "cdn.jsdelivr.net",
+      "status": 200,
+      "type": "stylesheet",
+      "fixture": true,
+      "fromServiceWorker": false,
+      "t": "2026-10-26T22:50:34.147Z"
+    },
+    {
+      "url": "http://127.0.0.1:8142/wt/atlas/releases/202608300453-atlas-v9/ventusv8.css",
+      "host": "127.0.0.1:8142",
+      "status": 200,
+      "type": "stylesheet",
+      "fixture": false,
+      "fromServiceWorker": false,
+      "t": "2026-10-26T22:50:34.147Z"
+    },
+    {
+      "url": "https://cdn.jsdelivr.net/npm/maplibre-gl@3.6.2/dist/maplibre-gl.js",
+      "host": "cdn.jsdelivr.net",
+      "status": 200,
+      "type": "script",
+      "fixture": true,
+      "fromServiceWorker": false,
+      "t": "2026-10-26T22:50:34.574Z"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/Ventusltd/data-grid-gb/1c9909d1138704b29235c27fd769436dda8a0b18/derived/connection-points.v3.json",
+      "host": "raw.githubusercontent.com",
+      "status": null,
+      "failure": "net::ERR_BLOCKED_BY_CLIENT.Inspector",
+      "type": "fetch",
+      "fixture": false,
+      "t": "2026-10-26T22:50:34.671Z"
+    },
+    {
+      "url": "https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json",
+      "host": "basemaps.cartocdn.com",
+      "status": 200,
+      "type": "fetch",
+      "fixture": true,
+      "fromServiceWorker": false,
+      "t": "2026-10-26T22:50:34.671Z"
+    },
+    {
+      "url": "http://127.0.0.1:8142/wt/atlas/releases/202608300453-atlas-v9/data/grid_substations.geojson",
+      "host": "127.0.0.1:8142",
+      "status": 200,
+      "type": "fetch",
+      "fixture": false,
+      "fromServiceWorker": false,
+      "t": "2026-10-26T22:50:34.928Z"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/Ventusltd/data-grid-gb/1c9909d1138704b29235c27fd769436dda8a0b18/derived/gb-transmission-network.v1.json",
+      "host": "raw.githubusercontent.com",
+      "status": null,
+      "failure": "net::ERR_BLOCKED_BY_CLIENT.Inspector",
+      "type": "fetch",
+      "fixture": false,
+      "t": "2026-10-26T22:50:36.323Z"
+    },
+    {
+      "url": "http://127.0.0.1:8142/wt/atlas/releases/cartridges/5f5fbec83f9ce307b47ddc6e7277743f0bba1a2445b0f3ca50a9a1806146e993/grid_400kv.geojson",
+      "host": "127.0.0.1:8142",
+      "status": 200,
+      "type": "fetch",
+      "fixture": false,
+      "fromServiceWorker": false,
+      "t": "2026-10-26T22:50:40.942Z"
+    },
+    {
+      "url": "http://127.0.0.1:8142/wt/atlas/releases/202608300453-atlas-v9/data/grid_275kv.geojson",
+      "host": "127.0.0.1:8142",
+      "status": 200,
+      "type": "fetch",
+      "fixture": false,
+      "fromServiceWorker": false,
+      "t": "2026-10-26T22:50:42.064Z"
+    },
+    {
+      "url": "http://127.0.0.1:8142/wt/atlas/releases/202608300453-atlas-v9/data/grid_132kv.geojson",
+      "host": "127.0.0.1:8142",
+      "status": 200,
+      "type": "fetch",
+      "fixture": false,
+      "fromServiceWorker": false,
+      "t": "2026-10-26T22:50:42.065Z"
+    },
+    {
+      "url": "http://127.0.0.1:8142/wt/atlas/releases/202608300453-atlas-v9/data/grid_220kv.geojson",
+      "host": "127.0.0.1:8142",
+      "status": 200,
+      "type": "fetch",
+      "fixture": false,
+      "fromServiceWorker": false,
+      "t": "2026-10-26T22:50:42.065Z"
+    },
+    {
+      "url": "http://127.0.0.1:8142/wt/atlas/releases/202608300453-atlas-v9/data/grid_66kv.geojson",
+      "host": "127.0.0.1:8142",
+      "status": 200,
+      "type": "fetch",
+      "fixture": false,
+      "fromServiceWorker": false,
+      "t": "2026-10-26T22:50:42.065Z"
+    },
+    {
+      "url": "http://127.0.0.1:8142/wt/atlas/data/interconnectors.geojson",
+      "host": "127.0.0.1:8142",
+      "status": 200,
+      "type": "xhr",
+      "fixture": false,
+      "fromServiceWorker": false,
+      "t": "2026-10-26T22:50:42.095Z"
+    },
+    {
+      "url": "https://ventusltd.github.io/ventus-grid-engine/genome/engine-graph.json",
+      "host": "ventusltd.github.io",
+      "status": null,
+      "failure": "net::ERR_BLOCKED_BY_CLIENT.Inspector",
+      "type": "fetch",
+      "fixture": false,
+      "t": "2026-10-26T22:50:46.659Z"
+    },
+    {
+      "url": "http://127.0.0.1:8142/wt/atlas/releases/202608300453-atlas-v9/data/grid_substations.geojson",
+      "host": "127.0.0.1:8142",
+      "status": 200,
+      "type": "fetch",
+      "fixture": false,
+      "fromServiceWorker": false,
+      "t": "2026-10-26T22:50:46.659Z"
+    },
+    {
+      "url": "http://127.0.0.1:8142/wt/atlas/releases/202608300453-atlas-v9/data/power_plants.geojson",
+      "host": "127.0.0.1:8142",
+      "status": 200,
+      "type": "fetch",
+      "fixture": false,
+      "fromServiceWorker": false,
+      "t": "2026-10-26T22:50:46.659Z"
+    },
+    {
+      "url": "http://127.0.0.1:8142/wt/atlas/releases/202608300453-atlas-v9/data/industrial_offtakers.geojson",
+      "host": "127.0.0.1:8142",
+      "status": 200,
+      "type": "fetch",
+      "fixture": false,
+      "fromServiceWorker": false,
+      "t": "2026-10-26T22:50:48.736Z"
+    },
+    {
+      "url": "https://cdn.jsdelivr.net/npm/@duckdb/duckdb-wasm@1.29.0/+esm",
+      "host": "cdn.jsdelivr.net",
+      "status": 200,
+      "type": "script",
+      "fixture": true,
+      "fromServiceWorker": false,
+      "t": "2026-10-26T22:50:48.736Z"
+    },
+    {
+      "url": "http://127.0.0.1:8142/wt/atlas/releases/202608300453-atlas-v9/data/datacentres.geojson",
+      "host": "127.0.0.1:8142",
+      "status": 200,
+      "type": "fetch",
+      "fixture": false,
+      "fromServiceWorker": false,
+      "t": "2026-10-26T22:50:50.408Z"
+    },
+    {
+      "url": "http://127.0.0.1:8142/wt/atlas/releases/202608300453-atlas-v9/data/airports.geojson",
+      "host": "127.0.0.1:8142",
+      "status": 200,
+      "type": "fetch",
+      "fixture": false,
+      "fromServiceWorker": false,
+      "t": "2026-10-26T22:50:51.156Z"
+    },
+    {
+      "url": "http://127.0.0.1:8142/wt/atlas/releases/202608300453-atlas-v9/data/railways.geojson",
+      "host": "127.0.0.1:8142",
+      "status": 200,
+      "type": "fetch",
+      "fixture": false,
+      "fromServiceWorker": false,
+      "t": "2026-10-26T22:50:51.269Z"
+    },
+    {
+      "url": "https://ventusltd.github.io/data-gridatlas/202608291237-data-gridatlas/data/manifest.json",
+      "host": "ventusltd.github.io",
+      "status": 200,
+      "type": "fetch",
+      "fixture": true,
+      "fromServiceWorker": false,
+      "t": "2026-10-26T22:50:51.270Z"
+    },
+    {
+      "url": "https://cdn.jsdelivr.net/npm/@duckdb/duckdb-wasm@1.29.0/dist/duckdb-browser-eh.worker.js",
+      "host": "cdn.jsdelivr.net",
+      "status": 200,
+      "type": "other",
+      "fixture": true,
+      "fromServiceWorker": false,
+      "t": "2026-10-26T22:50:52.631Z"
+    },
+    {
+      "url": "https://cdn.jsdelivr.net/npm/@duckdb/duckdb-wasm@1.29.0/dist/duckdb-eh.wasm",
+      "host": "cdn.jsdelivr.net",
+      "status": 200,
+      "type": "fetch",
+      "fixture": true,
+      "fromServiceWorker": false,
+      "t": "2026-10-26T22:51:04.899Z"
+    }
+  ]
+}

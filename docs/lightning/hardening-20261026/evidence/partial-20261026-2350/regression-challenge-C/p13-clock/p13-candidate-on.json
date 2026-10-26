@@ -1,0 +1,3686 @@
+{
+  "route": "candidate",
+  "url": "http://127.0.0.1:8144/wt/atlas/v/202610261949/",
+  "minutes": 11,
+  "harness": "lead-shim, Playwright page.clock fake timers (install before goto; fastForward 30 s steps), viewport 1440x900 desktop",
+  "phase": "on",
+  "stepMs": 30000,
+  "lightningDataDir": "/tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/lightning/fixtures/lightning-archive/data",
+  "startedAt": "2026-10-26T22:58:35.142Z",
+  "off": null,
+  "on": {
+    "virtual_minutes": 11,
+    "steps": 22,
+    "real_seconds": 11.1,
+    "virtual_seconds": 670.9,
+    "requests_total_during": 2,
+    "lightning_requests_during": [
+      {
+        "url": "data/history/index.json",
+        "virtual_t_s": 607.7,
+        "declared": true
+      },
+      {
+        "url": "data/history/days/2026/10/25.json",
+        "virtual_t_s": 607.7,
+        "declared": true
+      }
+    ],
+    "lightning_undeclared": [],
+    "off_origin_requests_during": [
+      "raw.githubusercontent.com/Ventusltd/lightning/main/data/history/index.json",
+      "raw.githubusercontent.com/Ventusltd/lightning/main/data/history/days/2026/10/25.json"
+    ],
+    "samples": [
+      {
+        "label": "ON start",
+        "virtual_t_ms": 8118,
+        "moduleTimers": [
+          {
+            "kind": "interval",
+            "ms": 250,
+            "t": 218,
+            "cleared": true,
+            "line": 8851
+          },
+          {
+            "kind": "timeout",
+            "ms": 15000,
+            "t": 6550,
+            "cleared": false,
+            "line": 8693
+          },
+          {
+            "kind": "interval",
+            "ms": 600000,
+            "t": 6551,
+            "cleared": false,
+            "line": 8841
+          },
+          {
+            "kind": "timeout",
+            "ms": 15000,
+            "t": 6573,
+            "cleared": false,
+            "line": 8693
+          }
+        ],
+        "moduleFetches": [
+          {
+            "url": "https://raw.githubusercontent.com/Ventusltd/lightning/main/data/history/index.json",
+            "t": 6550
+          },
+          {
+            "url": "https://raw.githubusercontent.com/Ventusltd/lightning/main/data/history/days/2026/10/25.json",
+            "t": 6573
+          }
+        ],
+        "moduleXhrs": [],
+        "allIntervalsCreated": 10,
+        "allIntervalsActive": 3,
+        "state": {
+          "on": true,
+          "installed": true,
+          "requests": 2,
+          "timer": true,
+          "serial": 1,
+          "last": "PARTIAL",
+          "errors": 0
+        },
+        "map": {
+          "source": true,
+          "layer": true,
+          "sources": 57,
+          "layers": 101
+        }
+      },
+      {
+        "label": "ON +30s (virtual)",
+        "virtual_t_ms": 38521,
+        "moduleTimers": [
+          {
+            "kind": "interval",
+            "ms": 250,
+            "t": 218,
+            "cleared": true,
+            "line": 8851
+          },
+          {
+            "kind": "timeout",
+            "ms": 15000,
+            "t": 6550,
+            "cleared": false,
+            "line": 8693
+          },
+          {
+            "kind": "interval",
+            "ms": 600000,
+            "t": 6551,
+            "cleared": false,
+            "line": 8841
+          },
+          {
+            "kind": "timeout",
+            "ms": 15000,
+            "t": 6573,
+            "cleared": false,
+            "line": 8693
+          }
+        ],
+        "moduleFetches": [
+          {
+            "url": "https://raw.githubusercontent.com/Ventusltd/lightning/main/data/history/index.json",
+            "t": 6550
+          },
+          {
+            "url": "https://raw.githubusercontent.com/Ventusltd/lightning/main/data/history/days/2026/10/25.json",
+            "t": 6573
+          }
+        ],
+        "moduleXhrs": [],
+        "allIntervalsCreated": 10,
+        "allIntervalsActive": 3,
+        "state": {
+          "on": true,
+          "installed": true,
+          "requests": 2,
+          "timer": true,
+          "serial": 1,
+          "last": "PARTIAL",
+          "errors": 0
+        },
+        "map": {
+          "source": true,
+          "layer": true,
+          "sources": 57,
+          "layers": 101
+        }
+      },
+      {
+        "label": "ON +60s (virtual)",
+        "virtual_t_ms": 68925,
+        "moduleTimers": [
+          {
+            "kind": "interval",
+            "ms": 250,
+            "t": 218,
+            "cleared": true,
+            "line": 8851
+          },
+          {
+            "kind": "timeout",
+            "ms": 15000,
+            "t": 6550,
+            "cleared": false,
+            "line": 8693
+          },
+          {
+            "kind": "interval",
+            "ms": 600000,
+            "t": 6551,
+            "cleared": false,
+            "line": 8841
+          },
+          {
+            "kind": "timeout",
+            "ms": 15000,
+            "t": 6573,
+            "cleared": false,
+            "line": 8693
+          }
+        ],
+        "moduleFetches": [
+          {
+            "url": "https://raw.githubusercontent.com/Ventusltd/lightning/main/data/history/index.json",
+            "t": 6550
+          },
+          {
+            "url": "https://raw.githubusercontent.com/Ventusltd/lightning/main/data/history/days/2026/10/25.json",
+            "t": 6573
+          }
+        ],
+        "moduleXhrs": [],
+        "allIntervalsCreated": 10,
+        "allIntervalsActive": 3,
+        "state": {
+          "on": true,
+          "installed": true,
+          "requests": 2,
+          "timer": true,
+          "serial": 1,
+          "last": "PARTIAL",
+          "errors": 0
+        },
+        "map": {
+          "source": true,
+          "layer": true,
+          "sources": 57,
+          "layers": 101
+        }
+      },
+      {
+        "label": "ON +90s (virtual)",
+        "virtual_t_ms": 99327,
+        "moduleTimers": [
+          {
+            "kind": "interval",
+            "ms": 250,
+            "t": 218,
+            "cleared": true,
+            "line": 8851
+          },
+          {
+            "kind": "timeout",
+            "ms": 15000,
+            "t": 6550,
+            "cleared": false,
+            "line": 8693
+          },
+          {
+            "kind": "interval",
+            "ms": 600000,
+            "t": 6551,
+            "cleared": false,
+            "line": 8841
+          },
+          {
+            "kind": "timeout",
+            "ms": 15000,
+            "t": 6573,
+            "cleared": false,
+            "line": 8693
+          }
+        ],
+        "moduleFetches": [
+          {
+            "url": "https://raw.githubusercontent.com/Ventusltd/lightning/main/data/history/index.json",
+            "t": 6550
+          },
+          {
+            "url": "https://raw.githubusercontent.com/Ventusltd/lightning/main/data/history/days/2026/10/25.json",
+            "t": 6573
+          }
+        ],
+        "moduleXhrs": [],
+        "allIntervalsCreated": 10,
+        "allIntervalsActive": 3,
+        "state": {
+          "on": true,
+          "installed": true,
+          "requests": 2,
+          "timer": true,
+          "serial": 1,
+          "last": "PARTIAL",
+          "errors": 0
+        },
+        "map": {
+          "source": true,
+          "layer": true,
+          "sources": 57,
+          "layers": 101
+        }
+      },
+      {
+        "label": "ON +120s (virtual)",
+        "virtual_t_ms": 129771,
+        "moduleTimers": [
+          {
+            "kind": "interval",
+            "ms": 250,
+            "t": 218,
+            "cleared": true,
+            "line": 8851
+          },
+          {
+            "kind": "timeout",
+            "ms": 15000,
+            "t": 6550,
+            "cleared": false,
+            "line": 8693
+          },
+          {
+            "kind": "interval",
+            "ms": 600000,
+            "t": 6551,
+            "cleared": false,
+            "line": 8841
+          },
+          {
+            "kind": "timeout",
+            "ms": 15000,
+            "t": 6573,
+            "cleared": false,
+            "line": 8693
+          }
+        ],
+        "moduleFetches": [
+          {
+            "url": "https://raw.githubusercontent.com/Ventusltd/lightning/main/data/history/index.json",
+            "t": 6550
+          },
+          {
+            "url": "https://raw.githubusercontent.com/Ventusltd/lightning/main/data/history/days/2026/10/25.json",
+            "t": 6573
+          }
+        ],
+        "moduleXhrs": [],
+        "allIntervalsCreated": 10,
+        "allIntervalsActive": 3,
+        "state": {
+          "on": true,
+          "installed": true,
+          "requests": 2,
+          "timer": true,
+          "serial": 1,
+          "last": "PARTIAL",
+          "errors": 0
+        },
+        "map": {
+          "source": true,
+          "layer": true,
+          "sources": 57,
+          "layers": 101
+        }
+      },
+      {
+        "label": "ON +150s (virtual)",
+        "virtual_t_ms": 160174,
+        "moduleTimers": [
+          {
+            "kind": "interval",
+            "ms": 250,
+            "t": 218,
+            "cleared": true,
+            "line": 8851
+          },
+          {
+            "kind": "timeout",
+            "ms": 15000,
+            "t": 6550,
+            "cleared": false,
+            "line": 8693
+          },
+          {
+            "kind": "interval",
+            "ms": 600000,
+            "t": 6551,
+            "cleared": false,
+            "line": 8841
+          },
+          {
+            "kind": "timeout",
+            "ms": 15000,
+            "t": 6573,
+            "cleared": false,
+            "line": 8693
+          }
+        ],
+        "moduleFetches": [
+          {
+            "url": "https://raw.githubusercontent.com/Ventusltd/lightning/main/data/history/index.json",
+            "t": 6550
+          },
+          {
+            "url": "https://raw.githubusercontent.com/Ventusltd/lightning/main/data/history/days/2026/10/25.json",
+            "t": 6573
+          }
+        ],
+        "moduleXhrs": [],
+        "allIntervalsCreated": 10,
+        "allIntervalsActive": 3,
+        "state": {
+          "on": true,
+          "installed": true,
+          "requests": 2,
+          "timer": true,
+          "serial": 1,
+          "last": "PARTIAL",
+          "errors": 0
+        },
+        "map": {
+          "source": true,
+          "layer": true,
+          "sources": 57,
+          "layers": 101
+        }
+      },
+      {
+        "label": "ON +180s (virtual)",
+        "virtual_t_ms": 190577,
+        "moduleTimers": [
+          {
+            "kind": "interval",
+            "ms": 250,
+            "t": 218,
+            "cleared": true,
+            "line": 8851
+          },
+          {
+            "kind": "timeout",
+            "ms": 15000,
+            "t": 6550,
+            "cleared": false,
+            "line": 8693
+          },
+          {
+            "kind": "interval",
+            "ms": 600000,
+            "t": 6551,
+            "cleared": false,
+            "line": 8841
+          },
+          {
+            "kind": "timeout",
+            "ms": 15000,
+            "t": 6573,
+            "cleared": false,
+            "line": 8693
+          }
+        ],
+        "moduleFetches": [
+          {
+            "url": "https://raw.githubusercontent.com/Ventusltd/lightning/main/data/history/index.json",
+            "t": 6550
+          },
+          {
+            "url": "https://raw.githubusercontent.com/Ventusltd/lightning/main/data/history/days/2026/10/25.json",
+            "t": 6573
+          }
+        ],
+        "moduleXhrs": [],
+        "allIntervalsCreated": 10,
+        "allIntervalsActive": 3,
+        "state": {
+          "on": true,
+          "installed": true,
+          "requests": 2,
+          "timer": true,
+          "serial": 1,
+          "last": "PARTIAL",
+          "errors": 0
+        },
+        "map": {
+          "source": true,
+          "layer": true,
+          "sources": 57,
+          "layers": 101
+        }
+      },
+      {
+        "label": "ON +210s (virtual)",
+        "virtual_t_ms": 220983,
+        "moduleTimers": [
+          {
+            "kind": "interval",
+            "ms": 250,
+            "t": 218,
+            "cleared": true,
+            "line": 8851
+          },
+          {
+            "kind": "timeout",
+            "ms": 15000,
+            "t": 6550,
+            "cleared": false,
+            "line": 8693
+          },
+          {
+            "kind": "interval",
+            "ms": 600000,
+            "t": 6551,
+            "cleared": false,
+            "line": 8841
+          },
+          {
+            "kind": "timeout",
+            "ms": 15000,
+            "t": 6573,
+            "cleared": false,
+            "line": 8693
+          }
+        ],
+        "moduleFetches": [
+          {
+            "url": "https://raw.githubusercontent.com/Ventusltd/lightning/main/data/history/index.json",
+            "t": 6550
+          },
+          {
+            "url": "https://raw.githubusercontent.com/Ventusltd/lightning/main/data/history/days/2026/10/25.json",
+            "t": 6573
+          }
+        ],
+        "moduleXhrs": [],
+        "allIntervalsCreated": 10,
+        "allIntervalsActive": 3,
+        "state": {
+          "on": true,
+          "installed": true,
+          "requests": 2,
+          "timer": true,
+          "serial": 1,
+          "last": "PARTIAL",
+          "errors": 0
+        },
+        "map": {
+          "source": true,
+          "layer": true,
+          "sources": 57,
+          "layers": 101
+        }
+      },
+      {
+        "label": "ON +240s (virtual)",
+        "virtual_t_ms": 251387,
+        "moduleTimers": [
+          {
+            "kind": "interval",
+            "ms": 250,
+            "t": 218,
+            "cleared": true,
+            "line": 8851
+          },
+          {
+            "kind": "timeout",
+            "ms": 15000,
+            "t": 6550,
+            "cleared": false,
+            "line": 8693
+          },
+          {
+            "kind": "interval",
+            "ms": 600000,
+            "t": 6551,
+            "cleared": false,
+            "line": 8841
+          },
+          {
+            "kind": "timeout",
+            "ms": 15000,
+            "t": 6573,
+            "cleared": false,
+            "line": 8693
+          }
+        ],
+        "moduleFetches": [
+          {
+            "url": "https://raw.githubusercontent.com/Ventusltd/lightning/main/data/history/index.json",
+            "t": 6550
+          },
+          {
+            "url": "https://raw.githubusercontent.com/Ventusltd/lightning/main/data/history/days/2026/10/25.json",
+            "t": 6573
+          }
+        ],
+        "moduleXhrs": [],
+        "allIntervalsCreated": 10,
+        "allIntervalsActive": 3,
+        "state": {
+          "on": true,
+          "installed": true,
+          "requests": 2,
+          "timer": true,
+          "serial": 1,
+          "last": "PARTIAL",
+          "errors": 0
+        },
+        "map": {
+          "source": true,
+          "layer": true,
+          "sources": 57,
+          "layers": 101
+        }
+      },
+      {
+        "label": "ON +270s (virtual)",
+        "virtual_t_ms": 281793,
+        "moduleTimers": [
+          {
+            "kind": "interval",
+            "ms": 250,
+            "t": 218,
+            "cleared": true,
+            "line": 8851
+          },
+          {
+            "kind": "timeout",
+            "ms": 15000,
+            "t": 6550,
+            "cleared": false,
+            "line": 8693
+          },
+          {
+            "kind": "interval",
+            "ms": 600000,
+            "t": 6551,
+            "cleared": false,
+            "line": 8841
+          },
+          {
+            "kind": "timeout",
+            "ms": 15000,
+            "t": 6573,
+            "cleared": false,
+            "line": 8693
+          }
+        ],
+        "moduleFetches": [
+          {
+            "url": "https://raw.githubusercontent.com/Ventusltd/lightning/main/data/history/index.json",
+            "t": 6550
+          },
+          {
+            "url": "https://raw.githubusercontent.com/Ventusltd/lightning/main/data/history/days/2026/10/25.json",
+            "t": 6573
+          }
+        ],
+        "moduleXhrs": [],
+        "allIntervalsCreated": 10,
+        "allIntervalsActive": 3,
+        "state": {
+          "on": true,
+          "installed": true,
+          "requests": 2,
+          "timer": true,
+          "serial": 1,
+          "last": "PARTIAL",
+          "errors": 0
+        },
+        "map": {
+          "source": true,
+          "layer": true,
+          "sources": 57,
+          "layers": 101
+        }
+      },
+      {
+        "label": "ON +300s (virtual)",
+        "virtual_t_ms": 312195,
+        "moduleTimers": [
+          {
+            "kind": "interval",
+            "ms": 250,
+            "t": 218,
+            "cleared": true,
+            "line": 8851
+          },
+          {
+            "kind": "timeout",
+            "ms": 15000,
+            "t": 6550,
+            "cleared": false,
+            "line": 8693
+          },
+          {
+            "kind": "interval",
+            "ms": 600000,
+            "t": 6551,
+            "cleared": false,
+            "line": 8841
+          },
+          {
+            "kind": "timeout",
+            "ms": 15000,
+            "t": 6573,
+            "cleared": false,
+            "line": 8693
+          }
+        ],
+        "moduleFetches": [
+          {
+            "url": "https://raw.githubusercontent.com/Ventusltd/lightning/main/data/history/index.json",
+            "t": 6550
+          },
+          {
+            "url": "https://raw.githubusercontent.com/Ventusltd/lightning/main/data/history/days/2026/10/25.json",
+            "t": 6573
+          }
+        ],
+        "moduleXhrs": [],
+        "allIntervalsCreated": 10,
+        "allIntervalsActive": 3,
+        "state": {
+          "on": true,
+          "installed": true,
+          "requests": 2,
+          "timer": true,
+          "serial": 1,
+          "last": "PARTIAL",
+          "errors": 0
+        },
+        "map": {
+          "source": true,
+          "layer": true,
+          "sources": 57,
+          "layers": 101
+        }
+      },
+      {
+        "label": "ON +330s (virtual)",
+        "virtual_t_ms": 342599,
+        "moduleTimers": [
+          {
+            "kind": "interval",
+            "ms": 250,
+            "t": 218,
+            "cleared": true,
+            "line": 8851
+          },
+          {
+            "kind": "timeout",
+            "ms": 15000,
+            "t": 6550,
+            "cleared": false,
+            "line": 8693
+          },
+          {
+            "kind": "interval",
+            "ms": 600000,
+            "t": 6551,
+            "cleared": false,
+            "line": 8841
+          },
+          {
+            "kind": "timeout",
+            "ms": 15000,
+            "t": 6573,
+            "cleared": false,
+            "line": 8693
+          }
+        ],
+        "moduleFetches": [
+          {
+            "url": "https://raw.githubusercontent.com/Ventusltd/lightning/main/data/history/index.json",
+            "t": 6550
+          },
+          {
+            "url": "https://raw.githubusercontent.com/Ventusltd/lightning/main/data/history/days/2026/10/25.json",
+            "t": 6573
+          }
+        ],
+        "moduleXhrs": [],
+        "allIntervalsCreated": 10,
+        "allIntervalsActive": 3,
+        "state": {
+          "on": true,
+          "installed": true,
+          "requests": 2,
+          "timer": true,
+          "serial": 1,
+          "last": "PARTIAL",
+          "errors": 0
+        },
+        "map": {
+          "source": true,
+          "layer": true,
+          "sources": 57,
+          "layers": 101
+        }
+      },
+      {
+        "label": "ON +360s (virtual)",
+        "virtual_t_ms": 373004,
+        "moduleTimers": [
+          {
+            "kind": "interval",
+            "ms": 250,
+            "t": 218,
+            "cleared": true,
+            "line": 8851
+          },
+          {
+            "kind": "timeout",
+            "ms": 15000,
+            "t": 6550,
+            "cleared": false,
+            "line": 8693
+          },
+          {
+            "kind": "interval",
+            "ms": 600000,
+            "t": 6551,
+            "cleared": false,
+            "line": 8841
+          },
+          {
+            "kind": "timeout",
+            "ms": 15000,
+            "t": 6573,
+            "cleared": false,
+            "line": 8693
+          }
+        ],
+        "moduleFetches": [
+          {
+            "url": "https://raw.githubusercontent.com/Ventusltd/lightning/main/data/history/index.json",
+            "t": 6550
+          },
+          {
+            "url": "https://raw.githubusercontent.com/Ventusltd/lightning/main/data/history/days/2026/10/25.json",
+            "t": 6573
+          }
+        ],
+        "moduleXhrs": [],
+        "allIntervalsCreated": 10,
+        "allIntervalsActive": 3,
+        "state": {
+          "on": true,
+          "installed": true,
+          "requests": 2,
+          "timer": true,
+          "serial": 1,
+          "last": "PARTIAL",
+          "errors": 0
+        },
+        "map": {
+          "source": true,
+          "layer": true,
+          "sources": 57,
+          "layers": 101
+        }
+      },
+      {
+        "label": "ON +390s (virtual)",
+        "virtual_t_ms": 403417,
+        "moduleTimers": [
+          {
+            "kind": "interval",
+            "ms": 250,
+            "t": 218,
+            "cleared": true,
+            "line": 8851
+          },
+          {
+            "kind": "timeout",
+            "ms": 15000,
+            "t": 6550,
+            "cleared": false,
+            "line": 8693
+          },
+          {
+            "kind": "interval",
+            "ms": 600000,
+            "t": 6551,
+            "cleared": false,
+            "line": 8841
+          },
+          {
+            "kind": "timeout",
+            "ms": 15000,
+            "t": 6573,
+            "cleared": false,
+            "line": 8693
+          }
+        ],
+        "moduleFetches": [
+          {
+            "url": "https://raw.githubusercontent.com/Ventusltd/lightning/main/data/history/index.json",
+            "t": 6550
+          },
+          {
+            "url": "https://raw.githubusercontent.com/Ventusltd/lightning/main/data/history/days/2026/10/25.json",
+            "t": 6573
+          }
+        ],
+        "moduleXhrs": [],
+        "allIntervalsCreated": 10,
+        "allIntervalsActive": 3,
+        "state": {
+          "on": true,
+          "installed": true,
+          "requests": 2,
+          "timer": true,
+          "serial": 1,
+          "last": "PARTIAL",
+          "errors": 0
+        },
+        "map": {
+          "source": true,
+          "layer": true,
+          "sources": 57,
+          "layers": 101
+        }
+      },
+      {
+        "label": "ON +420s (virtual)",
+        "virtual_t_ms": 433820,
+        "moduleTimers": [
+          {
+            "kind": "interval",
+            "ms": 250,
+            "t": 218,
+            "cleared": true,
+            "line": 8851
+          },
+          {
+            "kind": "timeout",
+            "ms": 15000,
+            "t": 6550,
+            "cleared": false,
+            "line": 8693
+          },
+          {
+            "kind": "interval",
+            "ms": 600000,
+            "t": 6551,
+            "cleared": false,
+            "line": 8841
+          },
+          {
+            "kind": "timeout",
+            "ms": 15000,
+            "t": 6573,
+            "cleared": false,
+            "line": 8693
+          }
+        ],
+        "moduleFetches": [
+          {
+            "url": "https://raw.githubusercontent.com/Ventusltd/lightning/main/data/history/index.json",
+            "t": 6550
+          },
+          {
+            "url": "https://raw.githubusercontent.com/Ventusltd/lightning/main/data/history/days/2026/10/25.json",
+            "t": 6573
+          }
+        ],
+        "moduleXhrs": [],
+        "allIntervalsCreated": 10,
+        "allIntervalsActive": 3,
+        "state": {
+          "on": true,
+          "installed": true,
+          "requests": 2,
+          "timer": true,
+          "serial": 1,
+          "last": "PARTIAL",
+          "errors": 0
+        },
+        "map": {
+          "source": true,
+          "layer": true,
+          "sources": 57,
+          "layers": 101
+        }
+      },
+      {
+        "label": "ON +450s (virtual)",
+        "virtual_t_ms": 464222,
+        "moduleTimers": [
+          {
+            "kind": "interval",
+            "ms": 250,
+            "t": 218,
+            "cleared": true,
+            "line": 8851
+          },
+          {
+            "kind": "timeout",
+            "ms": 15000,
+            "t": 6550,
+            "cleared": false,
+            "line": 8693
+          },
+          {
+            "kind": "interval",
+            "ms": 600000,
+            "t": 6551,
+            "cleared": false,
+            "line": 8841
+          },
+          {
+            "kind": "timeout",
+            "ms": 15000,
+            "t": 6573,
+            "cleared": false,
+            "line": 8693
+          }
+        ],
+        "moduleFetches": [
+          {
+            "url": "https://raw.githubusercontent.com/Ventusltd/lightning/main/data/history/index.json",
+            "t": 6550
+          },
+          {
+            "url": "https://raw.githubusercontent.com/Ventusltd/lightning/main/data/history/days/2026/10/25.json",
+            "t": 6573
+          }
+        ],
+        "moduleXhrs": [],
+        "allIntervalsCreated": 10,
+        "allIntervalsActive": 3,
+        "state": {
+          "on": true,
+          "installed": true,
+          "requests": 2,
+          "timer": true,
+          "serial": 1,
+          "last": "PARTIAL",
+          "errors": 0
+        },
+        "map": {
+          "source": true,
+          "layer": true,
+          "sources": 57,
+          "layers": 101
+        }
+      },
+      {
+        "label": "ON +480s (virtual)",
+        "virtual_t_ms": 494629,
+        "moduleTimers": [
+          {
+            "kind": "interval",
+            "ms": 250,
+            "t": 218,
+            "cleared": true,
+            "line": 8851
+          },
+          {
+            "kind": "timeout",
+            "ms": 15000,
+            "t": 6550,
+            "cleared": false,
+            "line": 8693
+          },
+          {
+            "kind": "interval",
+            "ms": 600000,
+            "t": 6551,
+            "cleared": false,
+            "line": 8841
+          },
+          {
+            "kind": "timeout",
+            "ms": 15000,
+            "t": 6573,
+            "cleared": false,
+            "line": 8693
+          }
+        ],
+        "moduleFetches": [
+          {
+            "url": "https://raw.githubusercontent.com/Ventusltd/lightning/main/data/history/index.json",
+            "t": 6550
+          },
+          {
+            "url": "https://raw.githubusercontent.com/Ventusltd/lightning/main/data/history/days/2026/10/25.json",
+            "t": 6573
+          }
+        ],
+        "moduleXhrs": [],
+        "allIntervalsCreated": 10,
+        "allIntervalsActive": 3,
+        "state": {
+          "on": true,
+          "installed": true,
+          "requests": 2,
+          "timer": true,
+          "serial": 1,
+          "last": "PARTIAL",
+          "errors": 0
+        },
+        "map": {
+          "source": true,
+          "layer": true,
+          "sources": 57,
+          "layers": 101
+        }
+      },
+      {
+        "label": "ON +510s (virtual)",
+        "virtual_t_ms": 525034,
+        "moduleTimers": [
+          {
+            "kind": "interval",
+            "ms": 250,
+            "t": 218,
+            "cleared": true,
+            "line": 8851
+          },
+          {
+            "kind": "timeout",
+            "ms": 15000,
+            "t": 6550,
+            "cleared": false,
+            "line": 8693
+          },
+          {
+            "kind": "interval",
+            "ms": 600000,
+            "t": 6551,
+            "cleared": false,
+            "line": 8841
+          },
+          {
+            "kind": "timeout",
+            "ms": 15000,
+            "t": 6573,
+            "cleared": false,
+            "line": 8693
+          }
+        ],
+        "moduleFetches": [
+          {
+            "url": "https://raw.githubusercontent.com/Ventusltd/lightning/main/data/history/index.json",
+            "t": 6550
+          },
+          {
+            "url": "https://raw.githubusercontent.com/Ventusltd/lightning/main/data/history/days/2026/10/25.json",
+            "t": 6573
+          }
+        ],
+        "moduleXhrs": [],
+        "allIntervalsCreated": 10,
+        "allIntervalsActive": 3,
+        "state": {
+          "on": true,
+          "installed": true,
+          "requests": 2,
+          "timer": true,
+          "serial": 1,
+          "last": "PARTIAL",
+          "errors": 0
+        },
+        "map": {
+          "source": true,
+          "layer": true,
+          "sources": 57,
+          "layers": 101
+        }
+      },
+      {
+        "label": "ON +540s (virtual)",
+        "virtual_t_ms": 555437,
+        "moduleTimers": [
+          {
+            "kind": "interval",
+            "ms": 250,
+            "t": 218,
+            "cleared": true,
+            "line": 8851
+          },
+          {
+            "kind": "timeout",
+            "ms": 15000,
+            "t": 6550,
+            "cleared": false,
+            "line": 8693
+          },
+          {
+            "kind": "interval",
+            "ms": 600000,
+            "t": 6551,
+            "cleared": false,
+            "line": 8841
+          },
+          {
+            "kind": "timeout",
+            "ms": 15000,
+            "t": 6573,
+            "cleared": false,
+            "line": 8693
+          }
+        ],
+        "moduleFetches": [
+          {
+            "url": "https://raw.githubusercontent.com/Ventusltd/lightning/main/data/history/index.json",
+            "t": 6550
+          },
+          {
+            "url": "https://raw.githubusercontent.com/Ventusltd/lightning/main/data/history/days/2026/10/25.json",
+            "t": 6573
+          }
+        ],
+        "moduleXhrs": [],
+        "allIntervalsCreated": 10,
+        "allIntervalsActive": 3,
+        "state": {
+          "on": true,
+          "installed": true,
+          "requests": 2,
+          "timer": true,
+          "serial": 1,
+          "last": "PARTIAL",
+          "errors": 0
+        },
+        "map": {
+          "source": true,
+          "layer": true,
+          "sources": 57,
+          "layers": 101
+        }
+      },
+      {
+        "label": "ON +570s (virtual)",
+        "virtual_t_ms": 585843,
+        "moduleTimers": [
+          {
+            "kind": "interval",
+            "ms": 250,
+            "t": 218,
+            "cleared": true,
+            "line": 8851
+          },
+          {
+            "kind": "timeout",
+            "ms": 15000,
+            "t": 6550,
+            "cleared": false,
+            "line": 8693
+          },
+          {
+            "kind": "interval",
+            "ms": 600000,
+            "t": 6551,
+            "cleared": false,
+            "line": 8841
+          },
+          {
+            "kind": "timeout",
+            "ms": 15000,
+            "t": 6573,
+            "cleared": false,
+            "line": 8693
+          }
+        ],
+        "moduleFetches": [
+          {
+            "url": "https://raw.githubusercontent.com/Ventusltd/lightning/main/data/history/index.json",
+            "t": 6550
+          },
+          {
+            "url": "https://raw.githubusercontent.com/Ventusltd/lightning/main/data/history/days/2026/10/25.json",
+            "t": 6573
+          }
+        ],
+        "moduleXhrs": [],
+        "allIntervalsCreated": 10,
+        "allIntervalsActive": 3,
+        "state": {
+          "on": true,
+          "installed": true,
+          "requests": 2,
+          "timer": true,
+          "serial": 1,
+          "last": "PARTIAL",
+          "errors": 0
+        },
+        "map": {
+          "source": true,
+          "layer": true,
+          "sources": 57,
+          "layers": 101
+        }
+      },
+      {
+        "label": "ON +600s (virtual)",
+        "virtual_t_ms": 616248,
+        "moduleTimers": [
+          {
+            "kind": "interval",
+            "ms": 250,
+            "t": 218,
+            "cleared": true,
+            "line": 8851
+          },
+          {
+            "kind": "timeout",
+            "ms": 15000,
+            "t": 6550,
+            "cleared": false,
+            "line": 8693
+          },
+          {
+            "kind": "interval",
+            "ms": 600000,
+            "t": 6551,
+            "cleared": false,
+            "line": 8841
+          },
+          {
+            "kind": "timeout",
+            "ms": 15000,
+            "t": 6573,
+            "cleared": false,
+            "line": 8693
+          },
+          {
+            "kind": "timeout",
+            "ms": 15000,
+            "t": 615845,
+            "cleared": false,
+            "line": 8693
+          },
+          {
+            "kind": "timeout",
+            "ms": 15000,
+            "t": 615863,
+            "cleared": false,
+            "line": 8693
+          }
+        ],
+        "moduleFetches": [
+          {
+            "url": "https://raw.githubusercontent.com/Ventusltd/lightning/main/data/history/index.json",
+            "t": 6550
+          },
+          {
+            "url": "https://raw.githubusercontent.com/Ventusltd/lightning/main/data/history/days/2026/10/25.json",
+            "t": 6573
+          },
+          {
+            "url": "https://raw.githubusercontent.com/Ventusltd/lightning/main/data/history/index.json",
+            "t": 615845
+          },
+          {
+            "url": "https://raw.githubusercontent.com/Ventusltd/lightning/main/data/history/days/2026/10/25.json",
+            "t": 615863
+          }
+        ],
+        "moduleXhrs": [],
+        "allIntervalsCreated": 10,
+        "allIntervalsActive": 3,
+        "state": {
+          "on": true,
+          "installed": true,
+          "requests": 4,
+          "timer": true,
+          "serial": 2,
+          "last": "PARTIAL",
+          "errors": 0
+        },
+        "map": {
+          "source": true,
+          "layer": true,
+          "sources": 57,
+          "layers": 101
+        }
+      },
+      {
+        "label": "ON +630s (virtual)",
+        "virtual_t_ms": 646650,
+        "moduleTimers": [
+          {
+            "kind": "interval",
+            "ms": 250,
+            "t": 218,
+            "cleared": true,
+            "line": 8851
+          },
+          {
+            "kind": "timeout",
+            "ms": 15000,
+            "t": 6550,
+            "cleared": false,
+            "line": 8693
+          },
+          {
+            "kind": "interval",
+            "ms": 600000,
+            "t": 6551,
+            "cleared": false,
+            "line": 8841
+          },
+          {
+            "kind": "timeout",
+            "ms": 15000,
+            "t": 6573,
+            "cleared": false,
+            "line": 8693
+          },
+          {
+            "kind": "timeout",
+            "ms": 15000,
+            "t": 615845,
+            "cleared": false,
+            "line": 8693
+          },
+          {
+            "kind": "timeout",
+            "ms": 15000,
+            "t": 615863,
+            "cleared": false,
+            "line": 8693
+          }
+        ],
+        "moduleFetches": [
+          {
+            "url": "https://raw.githubusercontent.com/Ventusltd/lightning/main/data/history/index.json",
+            "t": 6550
+          },
+          {
+            "url": "https://raw.githubusercontent.com/Ventusltd/lightning/main/data/history/days/2026/10/25.json",
+            "t": 6573
+          },
+          {
+            "url": "https://raw.githubusercontent.com/Ventusltd/lightning/main/data/history/index.json",
+            "t": 615845
+          },
+          {
+            "url": "https://raw.githubusercontent.com/Ventusltd/lightning/main/data/history/days/2026/10/25.json",
+            "t": 615863
+          }
+        ],
+        "moduleXhrs": [],
+        "allIntervalsCreated": 10,
+        "allIntervalsActive": 3,
+        "state": {
+          "on": true,
+          "installed": true,
+          "requests": 4,
+          "timer": true,
+          "serial": 2,
+          "last": "PARTIAL",
+          "errors": 0
+        },
+        "map": {
+          "source": true,
+          "layer": true,
+          "sources": 57,
+          "layers": 101
+        }
+      },
+      {
+        "label": "ON +660s (virtual)",
+        "virtual_t_ms": 677053,
+        "moduleTimers": [
+          {
+            "kind": "interval",
+            "ms": 250,
+            "t": 218,
+            "cleared": true,
+            "line": 8851
+          },
+          {
+            "kind": "timeout",
+            "ms": 15000,
+            "t": 6550,
+            "cleared": false,
+            "line": 8693
+          },
+          {
+            "kind": "interval",
+            "ms": 600000,
+            "t": 6551,
+            "cleared": false,
+            "line": 8841
+          },
+          {
+            "kind": "timeout",
+            "ms": 15000,
+            "t": 6573,
+            "cleared": false,
+            "line": 8693
+          },
+          {
+            "kind": "timeout",
+            "ms": 15000,
+            "t": 615845,
+            "cleared": false,
+            "line": 8693
+          },
+          {
+            "kind": "timeout",
+            "ms": 15000,
+            "t": 615863,
+            "cleared": false,
+            "line": 8693
+          }
+        ],
+        "moduleFetches": [
+          {
+            "url": "https://raw.githubusercontent.com/Ventusltd/lightning/main/data/history/index.json",
+            "t": 6550
+          },
+          {
+            "url": "https://raw.githubusercontent.com/Ventusltd/lightning/main/data/history/days/2026/10/25.json",
+            "t": 6573
+          },
+          {
+            "url": "https://raw.githubusercontent.com/Ventusltd/lightning/main/data/history/index.json",
+            "t": 615845
+          },
+          {
+            "url": "https://raw.githubusercontent.com/Ventusltd/lightning/main/data/history/days/2026/10/25.json",
+            "t": 615863
+          }
+        ],
+        "moduleXhrs": [],
+        "allIntervalsCreated": 10,
+        "allIntervalsActive": 3,
+        "state": {
+          "on": true,
+          "installed": true,
+          "requests": 4,
+          "timer": true,
+          "serial": 2,
+          "last": "PARTIAL",
+          "errors": 0
+        },
+        "map": {
+          "source": true,
+          "layer": true,
+          "sources": 57,
+          "layers": 101
+        }
+      }
+    ],
+    "pageErrors": []
+  },
+  "boot": {
+    "bootMs": 6464,
+    "lightningRequestsAtBoot": 0,
+    "sample": {
+      "label": "after boot",
+      "virtual_t_ms": 6444,
+      "moduleTimers": [
+        {
+          "kind": "interval",
+          "ms": 250,
+          "t": 218,
+          "cleared": true,
+          "line": 8851
+        }
+      ],
+      "moduleFetches": [],
+      "moduleXhrs": [],
+      "allIntervalsCreated": 9,
+      "allIntervalsActive": 2,
+      "state": {
+        "on": false,
+        "installed": true,
+        "requests": 0,
+        "timer": false,
+        "serial": 0,
+        "last": null,
+        "errors": 0
+      },
+      "map": {
+        "source": false,
+        "layer": false,
+        "sources": 56,
+        "layers": 100
+      }
+    }
+  },
+  "onLoad": {
+    "requests": [
+      {
+        "url": "data/history/index.json",
+        "declared": true
+      },
+      {
+        "url": "data/history/days/2026/10/25.json",
+        "declared": true
+      }
+    ],
+    "state": {
+      "label": "after ON load",
+      "virtual_t_ms": 8109,
+      "moduleTimers": [
+        {
+          "kind": "interval",
+          "ms": 250,
+          "t": 218,
+          "cleared": true,
+          "line": 8851
+        },
+        {
+          "kind": "timeout",
+          "ms": 15000,
+          "t": 6550,
+          "cleared": false,
+          "line": 8693
+        },
+        {
+          "kind": "interval",
+          "ms": 600000,
+          "t": 6551,
+          "cleared": false,
+          "line": 8841
+        },
+        {
+          "kind": "timeout",
+          "ms": 15000,
+          "t": 6573,
+          "cleared": false,
+          "line": 8693
+        }
+      ],
+      "moduleFetches": [
+        {
+          "url": "https://raw.githubusercontent.com/Ventusltd/lightning/main/data/history/index.json",
+          "t": 6550
+        },
+        {
+          "url": "https://raw.githubusercontent.com/Ventusltd/lightning/main/data/history/days/2026/10/25.json",
+          "t": 6573
+        }
+      ],
+      "moduleXhrs": [],
+      "allIntervalsCreated": 10,
+      "allIntervalsActive": 3,
+      "state": {
+        "on": true,
+        "installed": true,
+        "requests": 2,
+        "timer": true,
+        "serial": 1,
+        "last": "PARTIAL",
+        "errors": 0
+      },
+      "map": {
+        "source": true,
+        "layer": true,
+        "sources": 57,
+        "layers": 101
+      }
+    },
+    "caption": [
+      ""
+    ]
+  },
+  "afterOff": {
+    "label": "after OFF",
+    "virtual_t_ms": 680093,
+    "moduleTimers": [
+      {
+        "kind": "interval",
+        "ms": 250,
+        "t": 218,
+        "cleared": true,
+        "line": 8851
+      },
+      {
+        "kind": "timeout",
+        "ms": 15000,
+        "t": 6550,
+        "cleared": false,
+        "line": 8693
+      },
+      {
+        "kind": "interval",
+        "ms": 600000,
+        "t": 6551,
+        "cleared": true,
+        "line": 8841
+      },
+      {
+        "kind": "timeout",
+        "ms": 15000,
+        "t": 6573,
+        "cleared": false,
+        "line": 8693
+      },
+      {
+        "kind": "timeout",
+        "ms": 15000,
+        "t": 615845,
+        "cleared": false,
+        "line": 8693
+      },
+      {
+        "kind": "timeout",
+        "ms": 15000,
+        "t": 615863,
+        "cleared": false,
+        "line": 8693
+      }
+    ],
+    "moduleFetches": [
+      {
+        "url": "https://raw.githubusercontent.com/Ventusltd/lightning/main/data/history/index.json",
+        "t": 6550
+      },
+      {
+        "url": "https://raw.githubusercontent.com/Ventusltd/lightning/main/data/history/days/2026/10/25.json",
+        "t": 6573
+      },
+      {
+        "url": "https://raw.githubusercontent.com/Ventusltd/lightning/main/data/history/index.json",
+        "t": 615845
+      },
+      {
+        "url": "https://raw.githubusercontent.com/Ventusltd/lightning/main/data/history/days/2026/10/25.json",
+        "t": 615863
+      }
+    ],
+    "moduleXhrs": [],
+    "allIntervalsCreated": 10,
+    "allIntervalsActive": 2,
+    "state": {
+      "on": false,
+      "installed": true,
+      "requests": 4,
+      "timer": false,
+      "serial": 3,
+      "last": "PARTIAL",
+      "errors": 0
+    },
+    "map": {
+      "source": false,
+      "layer": false,
+      "sources": 56,
+      "layers": 100
+    }
+  },
+  "offAgain": {
+    "virtual_minutes": 11,
+    "steps": 22,
+    "real_seconds": 11.1,
+    "virtual_seconds": 671,
+    "requests_total_during": 0,
+    "lightning_requests_during": [],
+    "lightning_undeclared": [],
+    "off_origin_requests_during": [],
+    "samples": [
+      {
+        "label": "OFF-again start",
+        "virtual_t_ms": 680098,
+        "moduleTimers": [
+          {
+            "kind": "interval",
+            "ms": 250,
+            "t": 218,
+            "cleared": true,
+            "line": 8851
+          },
+          {
+            "kind": "timeout",
+            "ms": 15000,
+            "t": 6550,
+            "cleared": false,
+            "line": 8693
+          },
+          {
+            "kind": "interval",
+            "ms": 600000,
+            "t": 6551,
+            "cleared": true,
+            "line": 8841
+          },
+          {
+            "kind": "timeout",
+            "ms": 15000,
+            "t": 6573,
+            "cleared": false,
+            "line": 8693
+          },
+          {
+            "kind": "timeout",
+            "ms": 15000,
+            "t": 615845,
+            "cleared": false,
+            "line": 8693
+          },
+          {
+            "kind": "timeout",
+            "ms": 15000,
+            "t": 615863,
+            "cleared": false,
+            "line": 8693
+          }
+        ],
+        "moduleFetches": [
+          {
+            "url": "https://raw.githubusercontent.com/Ventusltd/lightning/main/data/history/index.json",
+            "t": 6550
+          },
+          {
+            "url": "https://raw.githubusercontent.com/Ventusltd/lightning/main/data/history/days/2026/10/25.json",
+            "t": 6573
+          },
+          {
+            "url": "https://raw.githubusercontent.com/Ventusltd/lightning/main/data/history/index.json",
+            "t": 615845
+          },
+          {
+            "url": "https://raw.githubusercontent.com/Ventusltd/lightning/main/data/history/days/2026/10/25.json",
+            "t": 615863
+          }
+        ],
+        "moduleXhrs": [],
+        "allIntervalsCreated": 10,
+        "allIntervalsActive": 2,
+        "state": {
+          "on": false,
+          "installed": true,
+          "requests": 4,
+          "timer": false,
+          "serial": 3,
+          "last": "PARTIAL",
+          "errors": 0
+        },
+        "map": {
+          "source": false,
+          "layer": false,
+          "sources": 56,
+          "layers": 100
+        }
+      },
+      {
+        "label": "OFF-again +30s (virtual)",
+        "virtual_t_ms": 710502,
+        "moduleTimers": [
+          {
+            "kind": "interval",
+            "ms": 250,
+            "t": 218,
+            "cleared": true,
+            "line": 8851
+          },
+          {
+            "kind": "timeout",
+            "ms": 15000,
+            "t": 6550,
+            "cleared": false,
+            "line": 8693
+          },
+          {
+            "kind": "interval",
+            "ms": 600000,
+            "t": 6551,
+            "cleared": true,
+            "line": 8841
+          },
+          {
+            "kind": "timeout",
+            "ms": 15000,
+            "t": 6573,
+            "cleared": false,
+            "line": 8693
+          },
+          {
+            "kind": "timeout",
+            "ms": 15000,
+            "t": 615845,
+            "cleared": false,
+            "line": 8693
+          },
+          {
+            "kind": "timeout",
+            "ms": 15000,
+            "t": 615863,
+            "cleared": false,
+            "line": 8693
+          }
+        ],
+        "moduleFetches": [
+          {
+            "url": "https://raw.githubusercontent.com/Ventusltd/lightning/main/data/history/index.json",
+            "t": 6550
+          },
+          {
+            "url": "https://raw.githubusercontent.com/Ventusltd/lightning/main/data/history/days/2026/10/25.json",
+            "t": 6573
+          },
+          {
+            "url": "https://raw.githubusercontent.com/Ventusltd/lightning/main/data/history/index.json",
+            "t": 615845
+          },
+          {
+            "url": "https://raw.githubusercontent.com/Ventusltd/lightning/main/data/history/days/2026/10/25.json",
+            "t": 615863
+          }
+        ],
+        "moduleXhrs": [],
+        "allIntervalsCreated": 10,
+        "allIntervalsActive": 2,
+        "state": {
+          "on": false,
+          "installed": true,
+          "requests": 4,
+          "timer": false,
+          "serial": 3,
+          "last": "PARTIAL",
+          "errors": 0
+        },
+        "map": {
+          "source": false,
+          "layer": false,
+          "sources": 56,
+          "layers": 100
+        }
+      },
+      {
+        "label": "OFF-again +60s (virtual)",
+        "virtual_t_ms": 740905,
+        "moduleTimers": [
+          {
+            "kind": "interval",
+            "ms": 250,
+            "t": 218,
+            "cleared": true,
+            "line": 8851
+          },
+          {
+            "kind": "timeout",
+            "ms": 15000,
+            "t": 6550,
+            "cleared": false,
+            "line": 8693
+          },
+          {
+            "kind": "interval",
+            "ms": 600000,
+            "t": 6551,
+            "cleared": true,
+            "line": 8841
+          },
+          {
+            "kind": "timeout",
+            "ms": 15000,
+            "t": 6573,
+            "cleared": false,
+            "line": 8693
+          },
+          {
+            "kind": "timeout",
+            "ms": 15000,
+            "t": 615845,
+            "cleared": false,
+            "line": 8693
+          },
+          {
+            "kind": "timeout",
+            "ms": 15000,
+            "t": 615863,
+            "cleared": false,
+            "line": 8693
+          }
+        ],
+        "moduleFetches": [
+          {
+            "url": "https://raw.githubusercontent.com/Ventusltd/lightning/main/data/history/index.json",
+            "t": 6550
+          },
+          {
+            "url": "https://raw.githubusercontent.com/Ventusltd/lightning/main/data/history/days/2026/10/25.json",
+            "t": 6573
+          },
+          {
+            "url": "https://raw.githubusercontent.com/Ventusltd/lightning/main/data/history/index.json",
+            "t": 615845
+          },
+          {
+            "url": "https://raw.githubusercontent.com/Ventusltd/lightning/main/data/history/days/2026/10/25.json",
+            "t": 615863
+          }
+        ],
+        "moduleXhrs": [],
+        "allIntervalsCreated": 10,
+        "allIntervalsActive": 2,
+        "state": {
+          "on": false,
+          "installed": true,
+          "requests": 4,
+          "timer": false,
+          "serial": 3,
+          "last": "PARTIAL",
+          "errors": 0
+        },
+        "map": {
+          "source": false,
+          "layer": false,
+          "sources": 56,
+          "layers": 100
+        }
+      },
+      {
+        "label": "OFF-again +90s (virtual)",
+        "virtual_t_ms": 771310,
+        "moduleTimers": [
+          {
+            "kind": "interval",
+            "ms": 250,
+            "t": 218,
+            "cleared": true,
+            "line": 8851
+          },
+          {
+            "kind": "timeout",
+            "ms": 15000,
+            "t": 6550,
+            "cleared": false,
+            "line": 8693
+          },
+          {
+            "kind": "interval",
+            "ms": 600000,
+            "t": 6551,
+            "cleared": true,
+            "line": 8841
+          },
+          {
+            "kind": "timeout",
+            "ms": 15000,
+            "t": 6573,
+            "cleared": false,
+            "line": 8693
+          },
+          {
+            "kind": "timeout",
+            "ms": 15000,
+            "t": 615845,
+            "cleared": false,
+            "line": 8693
+          },
+          {
+            "kind": "timeout",
+            "ms": 15000,
+            "t": 615863,
+            "cleared": false,
+            "line": 8693
+          }
+        ],
+        "moduleFetches": [
+          {
+            "url": "https://raw.githubusercontent.com/Ventusltd/lightning/main/data/history/index.json",
+            "t": 6550
+          },
+          {
+            "url": "https://raw.githubusercontent.com/Ventusltd/lightning/main/data/history/days/2026/10/25.json",
+            "t": 6573
+          },
+          {
+            "url": "https://raw.githubusercontent.com/Ventusltd/lightning/main/data/history/index.json",
+            "t": 615845
+          },
+          {
+            "url": "https://raw.githubusercontent.com/Ventusltd/lightning/main/data/history/days/2026/10/25.json",
+            "t": 615863
+          }
+        ],
+        "moduleXhrs": [],
+        "allIntervalsCreated": 10,
+        "allIntervalsActive": 2,
+        "state": {
+          "on": false,
+          "installed": true,
+          "requests": 4,
+          "timer": false,
+          "serial": 3,
+          "last": "PARTIAL",
+          "errors": 0
+        },
+        "map": {
+          "source": false,
+          "layer": false,
+          "sources": 56,
+          "layers": 100
+        }
+      },
+      {
+        "label": "OFF-again +120s (virtual)",
+        "virtual_t_ms": 801714,
+        "moduleTimers": [
+          {
+            "kind": "interval",
+            "ms": 250,
+            "t": 218,
+            "cleared": true,
+            "line": 8851
+          },
+          {
+            "kind": "timeout",
+            "ms": 15000,
+            "t": 6550,
+            "cleared": false,
+            "line": 8693
+          },
+          {
+            "kind": "interval",
+            "ms": 600000,
+            "t": 6551,
+            "cleared": true,
+            "line": 8841
+          },
+          {
+            "kind": "timeout",
+            "ms": 15000,
+            "t": 6573,
+            "cleared": false,
+            "line": 8693
+          },
+          {
+            "kind": "timeout",
+            "ms": 15000,
+            "t": 615845,
+            "cleared": false,
+            "line": 8693
+          },
+          {
+            "kind": "timeout",
+            "ms": 15000,
+            "t": 615863,
+            "cleared": false,
+            "line": 8693
+          }
+        ],
+        "moduleFetches": [
+          {
+            "url": "https://raw.githubusercontent.com/Ventusltd/lightning/main/data/history/index.json",
+            "t": 6550
+          },
+          {
+            "url": "https://raw.githubusercontent.com/Ventusltd/lightning/main/data/history/days/2026/10/25.json",
+            "t": 6573
+          },
+          {
+            "url": "https://raw.githubusercontent.com/Ventusltd/lightning/main/data/history/index.json",
+            "t": 615845
+          },
+          {
+            "url": "https://raw.githubusercontent.com/Ventusltd/lightning/main/data/history/days/2026/10/25.json",
+            "t": 615863
+          }
+        ],
+        "moduleXhrs": [],
+        "allIntervalsCreated": 10,
+        "allIntervalsActive": 2,
+        "state": {
+          "on": false,
+          "installed": true,
+          "requests": 4,
+          "timer": false,
+          "serial": 3,
+          "last": "PARTIAL",
+          "errors": 0
+        },
+        "map": {
+          "source": false,
+          "layer": false,
+          "sources": 56,
+          "layers": 100
+        }
+      },
+      {
+        "label": "OFF-again +150s (virtual)",
+        "virtual_t_ms": 832121,
+        "moduleTimers": [
+          {
+            "kind": "interval",
+            "ms": 250,
+            "t": 218,
+            "cleared": true,
+            "line": 8851
+          },
+          {
+            "kind": "timeout",
+            "ms": 15000,
+            "t": 6550,
+            "cleared": false,
+            "line": 8693
+          },
+          {
+            "kind": "interval",
+            "ms": 600000,
+            "t": 6551,
+            "cleared": true,
+            "line": 8841
+          },
+          {
+            "kind": "timeout",
+            "ms": 15000,
+            "t": 6573,
+            "cleared": false,
+            "line": 8693
+          },
+          {
+            "kind": "timeout",
+            "ms": 15000,
+            "t": 615845,
+            "cleared": false,
+            "line": 8693
+          },
+          {
+            "kind": "timeout",
+            "ms": 15000,
+            "t": 615863,
+            "cleared": false,
+            "line": 8693
+          }
+        ],
+        "moduleFetches": [
+          {
+            "url": "https://raw.githubusercontent.com/Ventusltd/lightning/main/data/history/index.json",
+            "t": 6550
+          },
+          {
+            "url": "https://raw.githubusercontent.com/Ventusltd/lightning/main/data/history/days/2026/10/25.json",
+            "t": 6573
+          },
+          {
+            "url": "https://raw.githubusercontent.com/Ventusltd/lightning/main/data/history/index.json",
+            "t": 615845
+          },
+          {
+            "url": "https://raw.githubusercontent.com/Ventusltd/lightning/main/data/history/days/2026/10/25.json",
+            "t": 615863
+          }
+        ],
+        "moduleXhrs": [],
+        "allIntervalsCreated": 10,
+        "allIntervalsActive": 2,
+        "state": {
+          "on": false,
+          "installed": true,
+          "requests": 4,
+          "timer": false,
+          "serial": 3,
+          "last": "PARTIAL",
+          "errors": 0
+        },
+        "map": {
+          "source": false,
+          "layer": false,
+          "sources": 56,
+          "layers": 100
+        }
+      },
+      {
+        "label": "OFF-again +180s (virtual)",
+        "virtual_t_ms": 862523,
+        "moduleTimers": [
+          {
+            "kind": "interval",
+            "ms": 250,
+            "t": 218,
+            "cleared": true,
+            "line": 8851
+          },
+          {
+            "kind": "timeout",
+            "ms": 15000,
+            "t": 6550,
+            "cleared": false,
+            "line": 8693
+          },
+          {
+            "kind": "interval",
+            "ms": 600000,
+            "t": 6551,
+            "cleared": true,
+            "line": 8841
+          },
+          {
+            "kind": "timeout",
+            "ms": 15000,
+            "t": 6573,
+            "cleared": false,
+            "line": 8693
+          },
+          {
+            "kind": "timeout",
+            "ms": 15000,
+            "t": 615845,
+            "cleared": false,
+            "line": 8693
+          },
+          {
+            "kind": "timeout",
+            "ms": 15000,
+            "t": 615863,
+            "cleared": false,
+            "line": 8693
+          }
+        ],
+        "moduleFetches": [
+          {
+            "url": "https://raw.githubusercontent.com/Ventusltd/lightning/main/data/history/index.json",
+            "t": 6550
+          },
+          {
+            "url": "https://raw.githubusercontent.com/Ventusltd/lightning/main/data/history/days/2026/10/25.json",
+            "t": 6573
+          },
+          {
+            "url": "https://raw.githubusercontent.com/Ventusltd/lightning/main/data/history/index.json",
+            "t": 615845
+          },
+          {
+            "url": "https://raw.githubusercontent.com/Ventusltd/lightning/main/data/history/days/2026/10/25.json",
+            "t": 615863
+          }
+        ],
+        "moduleXhrs": [],
+        "allIntervalsCreated": 10,
+        "allIntervalsActive": 2,
+        "state": {
+          "on": false,
+          "installed": true,
+          "requests": 4,
+          "timer": false,
+          "serial": 3,
+          "last": "PARTIAL",
+          "errors": 0
+        },
+        "map": {
+          "source": false,
+          "layer": false,
+          "sources": 56,
+          "layers": 100
+        }
+      },
+      {
+        "label": "OFF-again +210s (virtual)",
+        "virtual_t_ms": 892925,
+        "moduleTimers": [
+          {
+            "kind": "interval",
+            "ms": 250,
+            "t": 218,
+            "cleared": true,
+            "line": 8851
+          },
+          {
+            "kind": "timeout",
+            "ms": 15000,
+            "t": 6550,
+            "cleared": false,
+            "line": 8693
+          },
+          {
+            "kind": "interval",
+            "ms": 600000,
+            "t": 6551,
+            "cleared": true,
+            "line": 8841
+          },
+          {
+            "kind": "timeout",
+            "ms": 15000,
+            "t": 6573,
+            "cleared": false,
+            "line": 8693
+          },
+          {
+            "kind": "timeout",
+            "ms": 15000,
+            "t": 615845,
+            "cleared": false,
+            "line": 8693
+          },
+          {
+            "kind": "timeout",
+            "ms": 15000,
+            "t": 615863,
+            "cleared": false,
+            "line": 8693
+          }
+        ],
+        "moduleFetches": [
+          {
+            "url": "https://raw.githubusercontent.com/Ventusltd/lightning/main/data/history/index.json",
+            "t": 6550
+          },
+          {
+            "url": "https://raw.githubusercontent.com/Ventusltd/lightning/main/data/history/days/2026/10/25.json",
+            "t": 6573
+          },
+          {
+            "url": "https://raw.githubusercontent.com/Ventusltd/lightning/main/data/history/index.json",
+            "t": 615845
+          },
+          {
+            "url": "https://raw.githubusercontent.com/Ventusltd/lightning/main/data/history/days/2026/10/25.json",
+            "t": 615863
+          }
+        ],
+        "moduleXhrs": [],
+        "allIntervalsCreated": 10,
+        "allIntervalsActive": 2,
+        "state": {
+          "on": false,
+          "installed": true,
+          "requests": 4,
+          "timer": false,
+          "serial": 3,
+          "last": "PARTIAL",
+          "errors": 0
+        },
+        "map": {
+          "source": false,
+          "layer": false,
+          "sources": 56,
+          "layers": 100
+        }
+      },
+      {
+        "label": "OFF-again +240s (virtual)",
+        "virtual_t_ms": 923327,
+        "moduleTimers": [
+          {
+            "kind": "interval",
+            "ms": 250,
+            "t": 218,
+            "cleared": true,
+            "line": 8851
+          },
+          {
+            "kind": "timeout",
+            "ms": 15000,
+            "t": 6550,
+            "cleared": false,
+            "line": 8693
+          },
+          {
+            "kind": "interval",
+            "ms": 600000,
+            "t": 6551,
+            "cleared": true,
+            "line": 8841
+          },
+          {
+            "kind": "timeout",
+            "ms": 15000,
+            "t": 6573,
+            "cleared": false,
+            "line": 8693
+          },
+          {
+            "kind": "timeout",
+            "ms": 15000,
+            "t": 615845,
+            "cleared": false,
+            "line": 8693
+          },
+          {
+            "kind": "timeout",
+            "ms": 15000,
+            "t": 615863,
+            "cleared": false,
+            "line": 8693
+          }
+        ],
+        "moduleFetches": [
+          {
+            "url": "https://raw.githubusercontent.com/Ventusltd/lightning/main/data/history/index.json",
+            "t": 6550
+          },
+          {
+            "url": "https://raw.githubusercontent.com/Ventusltd/lightning/main/data/history/days/2026/10/25.json",
+            "t": 6573
+          },
+          {
+            "url": "https://raw.githubusercontent.com/Ventusltd/lightning/main/data/history/index.json",
+            "t": 615845
+          },
+          {
+            "url": "https://raw.githubusercontent.com/Ventusltd/lightning/main/data/history/days/2026/10/25.json",
+            "t": 615863
+          }
+        ],
+        "moduleXhrs": [],
+        "allIntervalsCreated": 10,
+        "allIntervalsActive": 2,
+        "state": {
+          "on": false,
+          "installed": true,
+          "requests": 4,
+          "timer": false,
+          "serial": 3,
+          "last": "PARTIAL",
+          "errors": 0
+        },
+        "map": {
+          "source": false,
+          "layer": false,
+          "sources": 56,
+          "layers": 100
+        }
+      },
+      {
+        "label": "OFF-again +270s (virtual)",
+        "virtual_t_ms": 953729,
+        "moduleTimers": [
+          {
+            "kind": "interval",
+            "ms": 250,
+            "t": 218,
+            "cleared": true,
+            "line": 8851
+          },
+          {
+            "kind": "timeout",
+            "ms": 15000,
+            "t": 6550,
+            "cleared": false,
+            "line": 8693
+          },
+          {
+            "kind": "interval",
+            "ms": 600000,
+            "t": 6551,
+            "cleared": true,
+            "line": 8841
+          },
+          {
+            "kind": "timeout",
+            "ms": 15000,
+            "t": 6573,
+            "cleared": false,
+            "line": 8693
+          },
+          {
+            "kind": "timeout",
+            "ms": 15000,
+            "t": 615845,
+            "cleared": false,
+            "line": 8693
+          },
+          {
+            "kind": "timeout",
+            "ms": 15000,
+            "t": 615863,
+            "cleared": false,
+            "line": 8693
+          }
+        ],
+        "moduleFetches": [
+          {
+            "url": "https://raw.githubusercontent.com/Ventusltd/lightning/main/data/history/index.json",
+            "t": 6550
+          },
+          {
+            "url": "https://raw.githubusercontent.com/Ventusltd/lightning/main/data/history/days/2026/10/25.json",
+            "t": 6573
+          },
+          {
+            "url": "https://raw.githubusercontent.com/Ventusltd/lightning/main/data/history/index.json",
+            "t": 615845
+          },
+          {
+            "url": "https://raw.githubusercontent.com/Ventusltd/lightning/main/data/history/days/2026/10/25.json",
+            "t": 615863
+          }
+        ],
+        "moduleXhrs": [],
+        "allIntervalsCreated": 10,
+        "allIntervalsActive": 2,
+        "state": {
+          "on": false,
+          "installed": true,
+          "requests": 4,
+          "timer": false,
+          "serial": 3,
+          "last": "PARTIAL",
+          "errors": 0
+        },
+        "map": {
+          "source": false,
+          "layer": false,
+          "sources": 56,
+          "layers": 100
+        }
+      },
+      {
+        "label": "OFF-again +300s (virtual)",
+        "virtual_t_ms": 984135,
+        "moduleTimers": [
+          {
+            "kind": "interval",
+            "ms": 250,
+            "t": 218,
+            "cleared": true,
+            "line": 8851
+          },
+          {
+            "kind": "timeout",
+            "ms": 15000,
+            "t": 6550,
+            "cleared": false,
+            "line": 8693
+          },
+          {
+            "kind": "interval",
+            "ms": 600000,
+            "t": 6551,
+            "cleared": true,
+            "line": 8841
+          },
+          {
+            "kind": "timeout",
+            "ms": 15000,
+            "t": 6573,
+            "cleared": false,
+            "line": 8693
+          },
+          {
+            "kind": "timeout",
+            "ms": 15000,
+            "t": 615845,
+            "cleared": false,
+            "line": 8693
+          },
+          {
+            "kind": "timeout",
+            "ms": 15000,
+            "t": 615863,
+            "cleared": false,
+            "line": 8693
+          }
+        ],
+        "moduleFetches": [
+          {
+            "url": "https://raw.githubusercontent.com/Ventusltd/lightning/main/data/history/index.json",
+            "t": 6550
+          },
+          {
+            "url": "https://raw.githubusercontent.com/Ventusltd/lightning/main/data/history/days/2026/10/25.json",
+            "t": 6573
+          },
+          {
+            "url": "https://raw.githubusercontent.com/Ventusltd/lightning/main/data/history/index.json",
+            "t": 615845
+          },
+          {
+            "url": "https://raw.githubusercontent.com/Ventusltd/lightning/main/data/history/days/2026/10/25.json",
+            "t": 615863
+          }
+        ],
+        "moduleXhrs": [],
+        "allIntervalsCreated": 10,
+        "allIntervalsActive": 2,
+        "state": {
+          "on": false,
+          "installed": true,
+          "requests": 4,
+          "timer": false,
+          "serial": 3,
+          "last": "PARTIAL",
+          "errors": 0
+        },
+        "map": {
+          "source": false,
+          "layer": false,
+          "sources": 56,
+          "layers": 100
+        }
+      },
+      {
+        "label": "OFF-again +330s (virtual)",
+        "virtual_t_ms": 1014538,
+        "moduleTimers": [
+          {
+            "kind": "interval",
+            "ms": 250,
+            "t": 218,
+            "cleared": true,
+            "line": 8851
+          },
+          {
+            "kind": "timeout",
+            "ms": 15000,
+            "t": 6550,
+            "cleared": false,
+            "line": 8693
+          },
+          {
+            "kind": "interval",
+            "ms": 600000,
+            "t": 6551,
+            "cleared": true,
+            "line": 8841
+          },
+          {
+            "kind": "timeout",
+            "ms": 15000,
+            "t": 6573,
+            "cleared": false,
+            "line": 8693
+          },
+          {
+            "kind": "timeout",
+            "ms": 15000,
+            "t": 615845,
+            "cleared": false,
+            "line": 8693
+          },
+          {
+            "kind": "timeout",
+            "ms": 15000,
+            "t": 615863,
+            "cleared": false,
+            "line": 8693
+          }
+        ],
+        "moduleFetches": [
+          {
+            "url": "https://raw.githubusercontent.com/Ventusltd/lightning/main/data/history/index.json",
+            "t": 6550
+          },
+          {
+            "url": "https://raw.githubusercontent.com/Ventusltd/lightning/main/data/history/days/2026/10/25.json",
+            "t": 6573
+          },
+          {
+            "url": "https://raw.githubusercontent.com/Ventusltd/lightning/main/data/history/index.json",
+            "t": 615845
+          },
+          {
+            "url": "https://raw.githubusercontent.com/Ventusltd/lightning/main/data/history/days/2026/10/25.json",
+            "t": 615863
+          }
+        ],
+        "moduleXhrs": [],
+        "allIntervalsCreated": 10,
+        "allIntervalsActive": 2,
+        "state": {
+          "on": false,
+          "installed": true,
+          "requests": 4,
+          "timer": false,
+          "serial": 3,
+          "last": "PARTIAL",
+          "errors": 0
+        },
+        "map": {
+          "source": false,
+          "layer": false,
+          "sources": 56,
+          "layers": 100
+        }
+      },
+      {
+        "label": "OFF-again +360s (virtual)",
+        "virtual_t_ms": 1044944,
+        "moduleTimers": [
+          {
+            "kind": "interval",
+            "ms": 250,
+            "t": 218,
+            "cleared": true,
+            "line": 8851
+          },
+          {
+            "kind": "timeout",
+            "ms": 15000,
+            "t": 6550,
+            "cleared": false,
+            "line": 8693
+          },
+          {
+            "kind": "interval",
+            "ms": 600000,
+            "t": 6551,
+            "cleared": true,
+            "line": 8841
+          },
+          {
+            "kind": "timeout",
+            "ms": 15000,
+            "t": 6573,
+            "cleared": false,
+            "line": 8693
+          },
+          {
+            "kind": "timeout",
+            "ms": 15000,
+            "t": 615845,
+            "cleared": false,
+            "line": 8693
+          },
+          {
+            "kind": "timeout",
+            "ms": 15000,
+            "t": 615863,
+            "cleared": false,
+            "line": 8693
+          }
+        ],
+        "moduleFetches": [
+          {
+            "url": "https://raw.githubusercontent.com/Ventusltd/lightning/main/data/history/index.json",
+            "t": 6550
+          },
+          {
+            "url": "https://raw.githubusercontent.com/Ventusltd/lightning/main/data/history/days/2026/10/25.json",
+            "t": 6573
+          },
+          {
+            "url": "https://raw.githubusercontent.com/Ventusltd/lightning/main/data/history/index.json",
+            "t": 615845
+          },
+          {
+            "url": "https://raw.githubusercontent.com/Ventusltd/lightning/main/data/history/days/2026/10/25.json",
+            "t": 615863
+          }
+        ],
+        "moduleXhrs": [],
+        "allIntervalsCreated": 10,
+        "allIntervalsActive": 2,
+        "state": {
+          "on": false,
+          "installed": true,
+          "requests": 4,
+          "timer": false,
+          "serial": 3,
+          "last": "PARTIAL",
+          "errors": 0
+        },
+        "map": {
+          "source": false,
+          "layer": false,
+          "sources": 56,
+          "layers": 100
+        }
+      },
+      {
+        "label": "OFF-again +390s (virtual)",
+        "virtual_t_ms": 1075347,
+        "moduleTimers": [
+          {
+            "kind": "interval",
+            "ms": 250,
+            "t": 218,
+            "cleared": true,
+            "line": 8851
+          },
+          {
+            "kind": "timeout",
+            "ms": 15000,
+            "t": 6550,
+            "cleared": false,
+            "line": 8693
+          },
+          {
+            "kind": "interval",
+            "ms": 600000,
+            "t": 6551,
+            "cleared": true,
+            "line": 8841
+          },
+          {
+            "kind": "timeout",
+            "ms": 15000,
+            "t": 6573,
+            "cleared": false,
+            "line": 8693
+          },
+          {
+            "kind": "timeout",
+            "ms": 15000,
+            "t": 615845,
+            "cleared": false,
+            "line": 8693
+          },
+          {
+            "kind": "timeout",
+            "ms": 15000,
+            "t": 615863,
+            "cleared": false,
+            "line": 8693
+          }
+        ],
+        "moduleFetches": [
+          {
+            "url": "https://raw.githubusercontent.com/Ventusltd/lightning/main/data/history/index.json",
+            "t": 6550
+          },
+          {
+            "url": "https://raw.githubusercontent.com/Ventusltd/lightning/main/data/history/days/2026/10/25.json",
+            "t": 6573
+          },
+          {
+            "url": "https://raw.githubusercontent.com/Ventusltd/lightning/main/data/history/index.json",
+            "t": 615845
+          },
+          {
+            "url": "https://raw.githubusercontent.com/Ventusltd/lightning/main/data/history/days/2026/10/25.json",
+            "t": 615863
+          }
+        ],
+        "moduleXhrs": [],
+        "allIntervalsCreated": 10,
+        "allIntervalsActive": 2,
+        "state": {
+          "on": false,
+          "installed": true,
+          "requests": 4,
+          "timer": false,
+          "serial": 3,
+          "last": "PARTIAL",
+          "errors": 0
+        },
+        "map": {
+          "source": false,
+          "layer": false,
+          "sources": 56,
+          "layers": 100
+        }
+      },
+      {
+        "label": "OFF-again +420s (virtual)",
+        "virtual_t_ms": 1105753,
+        "moduleTimers": [
+          {
+            "kind": "interval",
+            "ms": 250,
+            "t": 218,
+            "cleared": true,
+            "line": 8851
+          },
+          {
+            "kind": "timeout",
+            "ms": 15000,
+            "t": 6550,
+            "cleared": false,
+            "line": 8693
+          },
+          {
+            "kind": "interval",
+            "ms": 600000,
+            "t": 6551,
+            "cleared": true,
+            "line": 8841
+          },
+          {
+            "kind": "timeout",
+            "ms": 15000,
+            "t": 6573,
+            "cleared": false,
+            "line": 8693
+          },
+          {
+            "kind": "timeout",
+            "ms": 15000,
+            "t": 615845,
+            "cleared": false,
+            "line": 8693
+          },
+          {
+            "kind": "timeout",
+            "ms": 15000,
+            "t": 615863,
+            "cleared": false,
+            "line": 8693
+          }
+        ],
+        "moduleFetches": [
+          {
+            "url": "https://raw.githubusercontent.com/Ventusltd/lightning/main/data/history/index.json",
+            "t": 6550
+          },
+          {
+            "url": "https://raw.githubusercontent.com/Ventusltd/lightning/main/data/history/days/2026/10/25.json",
+            "t": 6573
+          },
+          {
+            "url": "https://raw.githubusercontent.com/Ventusltd/lightning/main/data/history/index.json",
+            "t": 615845
+          },
+          {
+            "url": "https://raw.githubusercontent.com/Ventusltd/lightning/main/data/history/days/2026/10/25.json",
+            "t": 615863
+          }
+        ],
+        "moduleXhrs": [],
+        "allIntervalsCreated": 10,
+        "allIntervalsActive": 2,
+        "state": {
+          "on": false,
+          "installed": true,
+          "requests": 4,
+          "timer": false,
+          "serial": 3,
+          "last": "PARTIAL",
+          "errors": 0
+        },
+        "map": {
+          "source": false,
+          "layer": false,
+          "sources": 56,
+          "layers": 100
+        }
+      },
+      {
+        "label": "OFF-again +450s (virtual)",
+        "virtual_t_ms": 1136173,
+        "moduleTimers": [
+          {
+            "kind": "interval",
+            "ms": 250,
+            "t": 218,
+            "cleared": true,
+            "line": 8851
+          },
+          {
+            "kind": "timeout",
+            "ms": 15000,
+            "t": 6550,
+            "cleared": false,
+            "line": 8693
+          },
+          {
+            "kind": "interval",
+            "ms": 600000,
+            "t": 6551,
+            "cleared": true,
+            "line": 8841
+          },
+          {
+            "kind": "timeout",
+            "ms": 15000,
+            "t": 6573,
+            "cleared": false,
+            "line": 8693
+          },
+          {
+            "kind": "timeout",
+            "ms": 15000,
+            "t": 615845,
+            "cleared": false,
+            "line": 8693
+          },
+          {
+            "kind": "timeout",
+            "ms": 15000,
+            "t": 615863,
+            "cleared": false,
+            "line": 8693
+          }
+        ],
+        "moduleFetches": [
+          {
+            "url": "https://raw.githubusercontent.com/Ventusltd/lightning/main/data/history/index.json",
+            "t": 6550
+          },
+          {
+            "url": "https://raw.githubusercontent.com/Ventusltd/lightning/main/data/history/days/2026/10/25.json",
+            "t": 6573
+          },
+          {
+            "url": "https://raw.githubusercontent.com/Ventusltd/lightning/main/data/history/index.json",
+            "t": 615845
+          },
+          {
+            "url": "https://raw.githubusercontent.com/Ventusltd/lightning/main/data/history/days/2026/10/25.json",
+            "t": 615863
+          }
+        ],
+        "moduleXhrs": [],
+        "allIntervalsCreated": 10,
+        "allIntervalsActive": 2,
+        "state": {
+          "on": false,
+          "installed": true,
+          "requests": 4,
+          "timer": false,
+          "serial": 3,
+          "last": "PARTIAL",
+          "errors": 0
+        },
+        "map": {
+          "source": false,
+          "layer": false,
+          "sources": 56,
+          "layers": 100
+        }
+      },
+      {
+        "label": "OFF-again +480s (virtual)",
+        "virtual_t_ms": 1166582,
+        "moduleTimers": [
+          {
+            "kind": "interval",
+            "ms": 250,
+            "t": 218,
+            "cleared": true,
+            "line": 8851
+          },
+          {
+            "kind": "timeout",
+            "ms": 15000,
+            "t": 6550,
+            "cleared": false,
+            "line": 8693
+          },
+          {
+            "kind": "interval",
+            "ms": 600000,
+            "t": 6551,
+            "cleared": true,
+            "line": 8841
+          },
+          {
+            "kind": "timeout",
+            "ms": 15000,
+            "t": 6573,
+            "cleared": false,
+            "line": 8693
+          },
+          {
+            "kind": "timeout",
+            "ms": 15000,
+            "t": 615845,
+            "cleared": false,
+            "line": 8693
+          },
+          {
+            "kind": "timeout",
+            "ms": 15000,
+            "t": 615863,
+            "cleared": false,
+            "line": 8693
+          }
+        ],
+        "moduleFetches": [
+          {
+            "url": "https://raw.githubusercontent.com/Ventusltd/lightning/main/data/history/index.json",
+            "t": 6550
+          },
+          {
+            "url": "https://raw.githubusercontent.com/Ventusltd/lightning/main/data/history/days/2026/10/25.json",
+            "t": 6573
+          },
+          {
+            "url": "https://raw.githubusercontent.com/Ventusltd/lightning/main/data/history/index.json",
+            "t": 615845
+          },
+          {
+            "url": "https://raw.githubusercontent.com/Ventusltd/lightning/main/data/history/days/2026/10/25.json",
+            "t": 615863
+          }
+        ],
+        "moduleXhrs": [],
+        "allIntervalsCreated": 10,
+        "allIntervalsActive": 2,
+        "state": {
+          "on": false,
+          "installed": true,
+          "requests": 4,
+          "timer": false,
+          "serial": 3,
+          "last": "PARTIAL",
+          "errors": 0
+        },
+        "map": {
+          "source": false,
+          "layer": false,
+          "sources": 56,
+          "layers": 100
+        }
+      },
+      {
+        "label": "OFF-again +510s (virtual)",
+        "virtual_t_ms": 1196991,
+        "moduleTimers": [
+          {
+            "kind": "interval",
+            "ms": 250,
+            "t": 218,
+            "cleared": true,
+            "line": 8851
+          },
+          {
+            "kind": "timeout",
+            "ms": 15000,
+            "t": 6550,
+            "cleared": false,
+            "line": 8693
+          },
+          {
+            "kind": "interval",
+            "ms": 600000,
+            "t": 6551,
+            "cleared": true,
+            "line": 8841
+          },
+          {
+            "kind": "timeout",
+            "ms": 15000,
+            "t": 6573,
+            "cleared": false,
+            "line": 8693
+          },
+          {
+            "kind": "timeout",
+            "ms": 15000,
+            "t": 615845,
+            "cleared": false,
+            "line": 8693
+          },
+          {
+            "kind": "timeout",
+            "ms": 15000,
+            "t": 615863,
+            "cleared": false,
+            "line": 8693
+          }
+        ],
+        "moduleFetches": [
+          {
+            "url": "https://raw.githubusercontent.com/Ventusltd/lightning/main/data/history/index.json",
+            "t": 6550
+          },
+          {
+            "url": "https://raw.githubusercontent.com/Ventusltd/lightning/main/data/history/days/2026/10/25.json",
+            "t": 6573
+          },
+          {
+            "url": "https://raw.githubusercontent.com/Ventusltd/lightning/main/data/history/index.json",
+            "t": 615845
+          },
+          {
+            "url": "https://raw.githubusercontent.com/Ventusltd/lightning/main/data/history/days/2026/10/25.json",
+            "t": 615863
+          }
+        ],
+        "moduleXhrs": [],
+        "allIntervalsCreated": 10,
+        "allIntervalsActive": 2,
+        "state": {
+          "on": false,
+          "installed": true,
+          "requests": 4,
+          "timer": false,
+          "serial": 3,
+          "last": "PARTIAL",
+          "errors": 0
+        },
+        "map": {
+          "source": false,
+          "layer": false,
+          "sources": 56,
+          "layers": 100
+        }
+      },
+      {
+        "label": "OFF-again +540s (virtual)",
+        "virtual_t_ms": 1227393,
+        "moduleTimers": [
+          {
+            "kind": "interval",
+            "ms": 250,
+            "t": 218,
+            "cleared": true,
+            "line": 8851
+          },
+          {
+            "kind": "timeout",
+            "ms": 15000,
+            "t": 6550,
+            "cleared": false,
+            "line": 8693
+          },
+          {
+            "kind": "interval",
+            "ms": 600000,
+            "t": 6551,
+            "cleared": true,
+            "line": 8841
+          },
+          {
+            "kind": "timeout",
+            "ms": 15000,
+            "t": 6573,
+            "cleared": false,
+            "line": 8693
+          },
+          {
+            "kind": "timeout",
+            "ms": 15000,
+            "t": 615845,
+            "cleared": false,
+            "line": 8693
+          },
+          {
+            "kind": "timeout",
+            "ms": 15000,
+            "t": 615863,
+            "cleared": false,
+            "line": 8693
+          }
+        ],
+        "moduleFetches": [
+          {
+            "url": "https://raw.githubusercontent.com/Ventusltd/lightning/main/data/history/index.json",
+            "t": 6550
+          },
+          {
+            "url": "https://raw.githubusercontent.com/Ventusltd/lightning/main/data/history/days/2026/10/25.json",
+            "t": 6573
+          },
+          {
+            "url": "https://raw.githubusercontent.com/Ventusltd/lightning/main/data/history/index.json",
+            "t": 615845
+          },
+          {
+            "url": "https://raw.githubusercontent.com/Ventusltd/lightning/main/data/history/days/2026/10/25.json",
+            "t": 615863
+          }
+        ],
+        "moduleXhrs": [],
+        "allIntervalsCreated": 10,
+        "allIntervalsActive": 2,
+        "state": {
+          "on": false,
+          "installed": true,
+          "requests": 4,
+          "timer": false,
+          "serial": 3,
+          "last": "PARTIAL",
+          "errors": 0
+        },
+        "map": {
+          "source": false,
+          "layer": false,
+          "sources": 56,
+          "layers": 100
+        }
+      },
+      {
+        "label": "OFF-again +570s (virtual)",
+        "virtual_t_ms": 1257798,
+        "moduleTimers": [
+          {
+            "kind": "interval",
+            "ms": 250,
+            "t": 218,
+            "cleared": true,
+            "line": 8851
+          },
+          {
+            "kind": "timeout",
+            "ms": 15000,
+            "t": 6550,
+            "cleared": false,
+            "line": 8693
+          },
+          {
+            "kind": "interval",
+            "ms": 600000,
+            "t": 6551,
+            "cleared": true,
+            "line": 8841
+          },
+          {
+            "kind": "timeout",
+            "ms": 15000,
+            "t": 6573,
+            "cleared": false,
+            "line": 8693
+          },
+          {
+            "kind": "timeout",
+            "ms": 15000,
+            "t": 615845,
+            "cleared": false,
+            "line": 8693
+          },
+          {
+            "kind": "timeout",
+            "ms": 15000,
+            "t": 615863,
+            "cleared": false,
+            "line": 8693
+          }
+        ],
+        "moduleFetches": [
+          {
+            "url": "https://raw.githubusercontent.com/Ventusltd/lightning/main/data/history/index.json",
+            "t": 6550
+          },
+          {
+            "url": "https://raw.githubusercontent.com/Ventusltd/lightning/main/data/history/days/2026/10/25.json",
+            "t": 6573
+          },
+          {
+            "url": "https://raw.githubusercontent.com/Ventusltd/lightning/main/data/history/index.json",
+            "t": 615845
+          },
+          {
+            "url": "https://raw.githubusercontent.com/Ventusltd/lightning/main/data/history/days/2026/10/25.json",
+            "t": 615863
+          }
+        ],
+        "moduleXhrs": [],
+        "allIntervalsCreated": 10,
+        "allIntervalsActive": 2,
+        "state": {
+          "on": false,
+          "installed": true,
+          "requests": 4,
+          "timer": false,
+          "serial": 3,
+          "last": "PARTIAL",
+          "errors": 0
+        },
+        "map": {
+          "source": false,
+          "layer": false,
+          "sources": 56,
+          "layers": 100
+        }
+      },
+      {
+        "label": "OFF-again +600s (virtual)",
+        "virtual_t_ms": 1288237,
+        "moduleTimers": [
+          {
+            "kind": "interval",
+            "ms": 250,
+            "t": 218,
+            "cleared": true,
+            "line": 8851
+          },
+          {
+            "kind": "timeout",
+            "ms": 15000,
+            "t": 6550,
+            "cleared": false,
+            "line": 8693
+          },
+          {
+            "kind": "interval",
+            "ms": 600000,
+            "t": 6551,
+            "cleared": true,
+            "line": 8841
+          },
+          {
+            "kind": "timeout",
+            "ms": 15000,
+            "t": 6573,
+            "cleared": false,
+            "line": 8693
+          },
+          {
+            "kind": "timeout",
+            "ms": 15000,
+            "t": 615845,
+            "cleared": false,
+            "line": 8693
+          },
+          {
+            "kind": "timeout",
+            "ms": 15000,
+            "t": 615863,
+            "cleared": false,
+            "line": 8693
+          }
+        ],
+        "moduleFetches": [
+          {
+            "url": "https://raw.githubusercontent.com/Ventusltd/lightning/main/data/history/index.json",
+            "t": 6550
+          },
+          {
+            "url": "https://raw.githubusercontent.com/Ventusltd/lightning/main/data/history/days/2026/10/25.json",
+            "t": 6573
+          },
+          {
+            "url": "https://raw.githubusercontent.com/Ventusltd/lightning/main/data/history/index.json",
+            "t": 615845
+          },
+          {
+            "url": "https://raw.githubusercontent.com/Ventusltd/lightning/main/data/history/days/2026/10/25.json",
+            "t": 615863
+          }
+        ],
+        "moduleXhrs": [],
+        "allIntervalsCreated": 10,
+        "allIntervalsActive": 2,
+        "state": {
+          "on": false,
+          "installed": true,
+          "requests": 4,
+          "timer": false,
+          "serial": 3,
+          "last": "PARTIAL",
+          "errors": 0
+        },
+        "map": {
+          "source": false,
+          "layer": false,
+          "sources": 56,
+          "layers": 100
+        }
+      },
+      {
+        "label": "OFF-again +630s (virtual)",
+        "virtual_t_ms": 1318640,
+        "moduleTimers": [
+          {
+            "kind": "interval",
+            "ms": 250,
+            "t": 218,
+            "cleared": true,
+            "line": 8851
+          },
+          {
+            "kind": "timeout",
+            "ms": 15000,
+            "t": 6550,
+            "cleared": false,
+            "line": 8693
+          },
+          {
+            "kind": "interval",
+            "ms": 600000,
+            "t": 6551,
+            "cleared": true,
+            "line": 8841
+          },
+          {
+            "kind": "timeout",
+            "ms": 15000,
+            "t": 6573,
+            "cleared": false,
+            "line": 8693
+          },
+          {
+            "kind": "timeout",
+            "ms": 15000,
+            "t": 615845,
+            "cleared": false,
+            "line": 8693
+          },
+          {
+            "kind": "timeout",
+            "ms": 15000,
+            "t": 615863,
+            "cleared": false,
+            "line": 8693
+          }
+        ],
+        "moduleFetches": [
+          {
+            "url": "https://raw.githubusercontent.com/Ventusltd/lightning/main/data/history/index.json",
+            "t": 6550
+          },
+          {
+            "url": "https://raw.githubusercontent.com/Ventusltd/lightning/main/data/history/days/2026/10/25.json",
+            "t": 6573
+          },
+          {
+            "url": "https://raw.githubusercontent.com/Ventusltd/lightning/main/data/history/index.json",
+            "t": 615845
+          },
+          {
+            "url": "https://raw.githubusercontent.com/Ventusltd/lightning/main/data/history/days/2026/10/25.json",
+            "t": 615863
+          }
+        ],
+        "moduleXhrs": [],
+        "allIntervalsCreated": 10,
+        "allIntervalsActive": 2,
+        "state": {
+          "on": false,
+          "installed": true,
+          "requests": 4,
+          "timer": false,
+          "serial": 3,
+          "last": "PARTIAL",
+          "errors": 0
+        },
+        "map": {
+          "source": false,
+          "layer": false,
+          "sources": 56,
+          "layers": 100
+        }
+      },
+      {
+        "label": "OFF-again +660s (virtual)",
+        "virtual_t_ms": 1349067,
+        "moduleTimers": [
+          {
+            "kind": "interval",
+            "ms": 250,
+            "t": 218,
+            "cleared": true,
+            "line": 8851
+          },
+          {
+            "kind": "timeout",
+            "ms": 15000,
+            "t": 6550,
+            "cleared": false,
+            "line": 8693
+          },
+          {
+            "kind": "interval",
+            "ms": 600000,
+            "t": 6551,
+            "cleared": true,
+            "line": 8841
+          },
+          {
+            "kind": "timeout",
+            "ms": 15000,
+            "t": 6573,
+            "cleared": false,
+            "line": 8693
+          },
+          {
+            "kind": "timeout",
+            "ms": 15000,
+            "t": 615845,
+            "cleared": false,
+            "line": 8693
+          },
+          {
+            "kind": "timeout",
+            "ms": 15000,
+            "t": 615863,
+            "cleared": false,
+            "line": 8693
+          }
+        ],
+        "moduleFetches": [
+          {
+            "url": "https://raw.githubusercontent.com/Ventusltd/lightning/main/data/history/index.json",
+            "t": 6550
+          },
+          {
+            "url": "https://raw.githubusercontent.com/Ventusltd/lightning/main/data/history/days/2026/10/25.json",
+            "t": 6573
+          },
+          {
+            "url": "https://raw.githubusercontent.com/Ventusltd/lightning/main/data/history/index.json",
+            "t": 615845
+          },
+          {
+            "url": "https://raw.githubusercontent.com/Ventusltd/lightning/main/data/history/days/2026/10/25.json",
+            "t": 615863
+          }
+        ],
+        "moduleXhrs": [],
+        "allIntervalsCreated": 10,
+        "allIntervalsActive": 2,
+        "state": {
+          "on": false,
+          "installed": true,
+          "requests": 4,
+          "timer": false,
+          "serial": 3,
+          "last": "PARTIAL",
+          "errors": 0
+        },
+        "map": {
+          "source": false,
+          "layer": false,
+          "sources": 56,
+          "layers": 100
+        }
+      }
+    ],
+    "pageErrors": []
+  },
+  "shim": {
+    "served": {
+      "maplibre": 2,
+      "style": 1,
+      "duckdb": 3,
+      "lightning-data": 4
+    },
+    "aborted": [
+      "https://raw.githubusercontent.com/Ventusltd/data-grid-gb/1c9909d1138704b29235c27fd769436dda8a0b18/derived/connection-points.v3.json",
+      "https://ventusltd.github.io/ventus-grid-engine/genome/engine-graph.json"
+    ],
+    "missing": []
+  },
+  "endedAt": "2026-10-26T22:59:06.743Z"
+}

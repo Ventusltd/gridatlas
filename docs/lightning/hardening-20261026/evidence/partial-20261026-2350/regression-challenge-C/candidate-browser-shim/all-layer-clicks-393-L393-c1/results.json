@@ -1,0 +1,789 @@
+{
+  "url": "http://127.0.0.1:8144/wt/atlas/v/202610261949/",
+  "width": 393,
+  "results": [
+    {
+      "id": "400",
+      "errors": [],
+      "generation": "202610261949",
+      "initialLabel": "400kV [OK]",
+      "label": "400kV [OK]",
+      "checked": true,
+      "disabled": false,
+      "layer": {
+        "id": "l-400",
+        "type": "line",
+        "source": "src-400",
+        "layout": {
+          "visibility": "visible"
+        },
+        "paint": {
+          "line-color": "#0054ff",
+          "line-width": 2.5
+        }
+      },
+      "featureCount": 4106,
+      "eligible": 4106,
+      "target": [
+        -1.0453368,
+        52.2441634
+      ],
+      "sample": {
+        "id": "grid_400kv:0",
+        "properties": {
+          "name": "National Grid East Claydon-Enderby",
+          "operator": "National Grid",
+          "source": "Bing;survey",
+          "voltage": "400000"
+        }
+      },
+      "rendered": 6,
+      "popup": 1,
+      "popupText": [
+        "National Grid East Claydon-Enderby | 400000National Grid×"
+      ],
+      "off": true,
+      "pass": true
+    },
+    {
+      "id": "275",
+      "errors": [],
+      "generation": "202610261949",
+      "initialLabel": "275kV [OK]",
+      "label": "275kV [OK]",
+      "checked": true,
+      "disabled": false,
+      "layer": {
+        "id": "l-275",
+        "type": "line",
+        "source": "src-275",
+        "layout": {
+          "visibility": "visible"
+        },
+        "paint": {
+          "line-color": "#ff0000",
+          "line-width": 2
+        }
+      },
+      "featureCount": 2935,
+      "eligible": 2935,
+      "target": [
+        -0.4220372,
+        51.3373927
+      ],
+      "sample": {
+        "id": "grid_275kv:0",
+        "properties": {
+          "name": "National Grid Chessington-West Weybridge",
+          "voltage": "275000"
+        }
+      },
+      "rendered": 28,
+      "popup": 1,
+      "popupText": [
+        "National Grid Chessington-West Weybridge | 275000×"
+      ],
+      "off": true,
+      "pass": true
+    },
+    {
+      "id": "220",
+      "errors": [],
+      "generation": "202610261949",
+      "initialLabel": "220kV [OK]",
+      "label": "220kV [OK]",
+      "checked": true,
+      "disabled": false,
+      "layer": {
+        "id": "l-220",
+        "type": "line",
+        "source": "src-220",
+        "layout": {
+          "visibility": "visible"
+        },
+        "paint": {
+          "line-color": "#ff9900",
+          "line-width": 1.8
+        }
+      },
+      "featureCount": 126,
+      "eligible": 126,
+      "target": [
+        -3.4531866,
+        53.2838131
+      ],
+      "sample": {
+        "id": "grid_220kv:0",
+        "properties": {
+          "name": "Burbo Bank Windfarm Underground Cable > Burbo Bank Offshore Wind Farm Substation",
+          "source": "Route visible on digging scars, ESRI imagery, 2019-03",
+          "voltage": "220000"
+        }
+      },
+      "rendered": 3,
+      "popup": 1,
+      "popupText": [
+        "Burbo Bank Windfarm Underground Cable > Burbo Bank Offshore Wind Farm Substation | 220000×"
+      ],
+      "off": true,
+      "pass": true
+    },
+    {
+      "id": "132",
+      "errors": [],
+      "generation": "202610261949",
+      "initialLabel": "132kV [OK]",
+      "label": "132kV [OK]",
+      "checked": true,
+      "disabled": false,
+      "layer": {
+        "id": "l-132",
+        "type": "line",
+        "source": "src-132",
+        "layout": {
+          "visibility": "visible"
+        },
+        "paint": {
+          "line-color": "#00cc00",
+          "line-width": 1.5
+        }
+      },
+      "featureCount": 6227,
+      "eligible": 6227,
+      "target": [
+        -0.5034134,
+        51.3433492
+      ],
+      "sample": {
+        "id": "grid_132kv:0",
+        "properties": {
+          "name": "West Weybridge - Byfleet",
+          "operator": "UK Power Networks",
+          "voltage": "132000"
+        }
+      },
+      "rendered": 8,
+      "popup": 1,
+      "popupText": [
+        "West Weybridge - Byfleet | 132000UK Power Networks×"
+      ],
+      "off": true,
+      "pass": true
+    },
+    {
+      "id": "66",
+      "errors": [],
+      "generation": "202610261949",
+      "initialLabel": "66kV [OK]",
+      "label": "66kV [OK]",
+      "checked": true,
+      "disabled": false,
+      "layer": {
+        "id": "l-66",
+        "type": "line",
+        "source": "src-66",
+        "layout": {
+          "visibility": "visible"
+        },
+        "paint": {
+          "line-color": "#b200ff",
+          "line-width": 1.2
+        }
+      },
+      "featureCount": 1171,
+      "eligible": 1171,
+      "target": [
+        -3.4455308,
+        52.2845234
+      ],
+      "sample": {
+        "id": "grid_66kv:0",
+        "properties": {
+          "brand": "National Grid",
+          "operator": "National Grid Electricity Distribution Plc",
+          "source": "OS Opendata Vectormap District",
+          "voltage": "66000"
+        }
+      },
+      "rendered": 6,
+      "popup": 1,
+      "popupText": [
+        "Unnamed Asset | 66000National Grid Electricity Distribution Plc×"
+      ],
+      "off": true,
+      "pass": true
+    },
+    {
+      "id": "11kv",
+      "errors": [],
+      "generation": "202610261949",
+      "initialLabel": "11kV (UKPN) [WAIT]",
+      "label": "11kV (UKPN) [FAIL]",
+      "checked": true,
+      "disabled": false,
+      "layer": {
+        "id": "l-11kv",
+        "type": "circle",
+        "source": "src-11kv",
+        "minzoom": 13.5,
+        "layout": {
+          "visibility": "visible"
+        },
+        "paint": {
+          "circle-color": "#ff00ff",
+          "circle-radius": [
+            "interpolate",
+            [
+              "linear"
+            ],
+            [
+              "zoom"
+            ],
+            13.5,
+            4,
+            15,
+            8,
+            18,
+            18
+          ],
+          "circle-stroke-width": 1,
+          "circle-stroke-color": "#000"
+        }
+      },
+      "featureCount": 0,
+      "eligible": 0,
+      "target": null,
+      "sample": null,
+      "pass": false
+    },
+    {
+      "id": "subs",
+      "errors": [],
+      "generation": "202610261949",
+      "initialLabel": "Subs [OK]",
+      "label": "Subs [OK]",
+      "checked": true,
+      "disabled": false,
+      "layer": {
+        "id": "l-subs",
+        "type": "circle",
+        "source": "src-subs",
+        "layout": {
+          "visibility": "visible"
+        },
+        "paint": {
+          "circle-color": "#ffffff",
+          "circle-radius": [
+            "interpolate",
+            [
+              "linear"
+            ],
+            [
+              "zoom"
+            ],
+            5,
+            3,
+            10,
+            5,
+            14,
+            10,
+            18,
+            22
+          ],
+          "circle-stroke-width": 1,
+          "circle-stroke-color": "#000"
+        }
+      },
+      "featureCount": 5800,
+      "eligible": 5800,
+      "target": [
+        1.6221121,
+        51.4374246
+      ],
+      "sample": {
+        "id": "grid_substations:0",
+        "properties": {
+          "voltage": "132000;33000"
+        }
+      },
+      "rendered": 1,
+      "popup": 1,
+      "popupText": [
+        "⋮⋮Unnamed Asset+×Unnamed Asset | 132000;33000×Nearest projectsBetaThe project layers are switched off, so there is nothing to measure against. Turn on Solar PV, Wind or Battery Storage and click again. This is not a statement that no project is here.Beta analytics, not an actual grid connection. Straight-line distance to mapped geometry — not a cable route, not a connection length, and no route has been walked. A real connection depends on factors that must be studied: network impedance and fault level, thermal headroom, existing committed connections and queue position, right of way, wayleaves and easements, crossings, terrain, land control and consent. None of those can be inferred from a distance. A mapped substation does not confirm capacity, voltage suitability or acceptance by any network party, and absence from a mapped layer is not absence on the ground."
+      ],
+      "off": true,
+      "pass": true
+    },
+    {
+      "id": "nuc",
+      "errors": [],
+      "generation": "202610261949",
+      "initialLabel": "Nuclear [OK]",
+      "label": "Nuclear [OK]",
+      "checked": true,
+      "disabled": false,
+      "layer": {
+        "id": "l-nuc",
+        "type": "circle",
+        "source": "src-nuc",
+        "filter": [
+          "==",
+          [
+            "get",
+            "source"
+          ],
+          "nuclear"
+        ],
+        "layout": {
+          "visibility": "visible"
+        },
+        "paint": {
+          "circle-color": "#39ff14",
+          "circle-radius": 4.5,
+          "circle-stroke-width": 1,
+          "circle-stroke-color": "#000"
+        }
+      },
+      "featureCount": 178,
+      "eligible": 4,
+      "target": [
+        -1.1812918,
+        54.6351559
+      ],
+      "sample": {
+        "id": "power_plants:0",
+        "properties": {
+          "name": "Hartlepool Nuclear Power Station",
+          "operator": "EDF Energy",
+          "source": "nuclear"
+        }
+      },
+      "rendered": 1,
+      "popup": 1,
+      "popupText": [
+        "Hartlepool Nuclear Power StationEDF Energy×"
+      ],
+      "off": true,
+      "pass": true
+    },
+    {
+      "id": "gas",
+      "errors": [],
+      "generation": "202610261949",
+      "initialLabel": "Gas [OK]",
+      "label": "Gas [OK]",
+      "checked": true,
+      "disabled": false,
+      "layer": {
+        "id": "l-gas",
+        "type": "circle",
+        "source": "src-gas",
+        "filter": [
+          "!=",
+          [
+            "get",
+            "source"
+          ],
+          "nuclear"
+        ],
+        "layout": {
+          "visibility": "visible"
+        },
+        "paint": {
+          "circle-color": "#ff4500",
+          "circle-radius": 4.5,
+          "circle-stroke-width": 1,
+          "circle-stroke-color": "#000"
+        }
+      },
+      "featureCount": 178,
+      "eligible": 174,
+      "target": [
+        -2.670294,
+        51.5391657
+      ],
+      "sample": {
+        "id": "power_plants:1",
+        "properties": {
+          "name": "Seabank Power Station",
+          "operator": "SSE Thermal",
+          "source": "gas"
+        }
+      },
+      "rendered": 2,
+      "popup": 1,
+      "popupText": [
+        "Seabank Power StationSSE Thermal×"
+      ],
+      "off": true,
+      "pass": true
+    },
+    {
+      "id": "ind",
+      "errors": [],
+      "generation": "202610261949",
+      "initialLabel": "Industry [OK]",
+      "label": "Industry [OK]",
+      "checked": true,
+      "disabled": false,
+      "layer": {
+        "id": "l-ind",
+        "type": "circle",
+        "source": "src-ind",
+        "layout": {
+          "visibility": "visible"
+        },
+        "paint": {
+          "circle-color": "#ff6600",
+          "circle-radius": 4.5,
+          "circle-stroke-width": 1,
+          "circle-stroke-color": "#000"
+        }
+      },
+      "featureCount": 5878,
+      "eligible": 5878,
+      "target": [
+        -0.0514823,
+        51.604335
+      ],
+      "sample": {
+        "id": "industrial_offtakers:0",
+        "properties": {
+          "name": "Alcohols Ltd",
+          "operator": "Unknown Operator",
+          "type": "Chemical"
+        }
+      },
+      "rendered": 34,
+      "popup": 1,
+      "popupText": [
+        "Alcohols LtdChemicalUnknown Operator×"
+      ],
+      "off": true,
+      "pass": true
+    },
+    {
+      "id": "dc",
+      "errors": [],
+      "generation": "202610261949",
+      "initialLabel": "Data Ctrs [OK]",
+      "label": "Data Ctrs [OK]",
+      "checked": true,
+      "disabled": false,
+      "layer": {
+        "id": "l-dc",
+        "type": "circle",
+        "source": "src-dc",
+        "layout": {
+          "visibility": "visible"
+        },
+        "paint": {
+          "circle-color": "#00ffff",
+          "circle-radius": 4.5,
+          "circle-stroke-width": 1,
+          "circle-stroke-color": "#000"
+        }
+      },
+      "featureCount": 240,
+      "eligible": 240,
+      "target": [
+        -3.0382722,
+        51.5550188
+      ],
+      "sample": {
+        "id": "datacentres:0",
+        "properties": {
+          "name": "Next Generation Data",
+          "operator": "Next Generation Data"
+        }
+      },
+      "rendered": 7,
+      "popup": 1,
+      "popupText": [
+        "Vantage Data Centers - CWL13Vantage Data Centers×"
+      ],
+      "off": true,
+      "pass": true
+    },
+    {
+      "id": "air",
+      "errors": [],
+      "generation": "202610261949",
+      "initialLabel": "Airports [OK]",
+      "label": "Airports [OK]",
+      "checked": true,
+      "disabled": false,
+      "layer": {
+        "id": "l-air",
+        "type": "circle",
+        "source": "src-air",
+        "layout": {
+          "visibility": "visible"
+        },
+        "paint": {
+          "circle-color": "#ff00ff",
+          "circle-radius": 4.5,
+          "circle-stroke-width": 1,
+          "circle-stroke-color": "#000"
+        }
+      },
+      "featureCount": 810,
+      "eligible": 810,
+      "target": [
+        -0.0074609,
+        51.848411
+      ],
+      "sample": {
+        "id": "airports:0",
+        "properties": {
+          "name": "High Cross Airstrip"
+        }
+      },
+      "rendered": 12,
+      "popup": 1,
+      "popupText": [
+        "High Cross Airstrip×"
+      ],
+      "off": true,
+      "pass": true
+    },
+    {
+      "id": "rail",
+      "errors": [],
+      "generation": "202610261949",
+      "initialLabel": "Railways [OK]",
+      "label": "Railways [OK]",
+      "checked": true,
+      "disabled": false,
+      "layer": {
+        "id": "l-rail",
+        "type": "circle",
+        "source": "src-rail",
+        "layout": {
+          "visibility": "visible"
+        },
+        "paint": {
+          "circle-color": "#ffd700",
+          "circle-radius": 4.5,
+          "circle-stroke-width": 1,
+          "circle-stroke-color": "#000"
+        }
+      },
+      "featureCount": 3596,
+      "eligible": 3596,
+      "target": [
+        -1.7852844,
+        51.5657001
+      ],
+      "sample": {
+        "id": "railways:0",
+        "properties": {
+          "name": "Swindon"
+        }
+      },
+      "rendered": 8,
+      "popup": 1,
+      "popupText": [
+        "Swindon×"
+      ],
+      "off": true,
+      "pass": true
+    },
+    {
+      "id": "tesco",
+      "errors": [],
+      "generation": "202610261949",
+      "initialLabel": "Tesco [WAIT]",
+      "label": "Tesco [FAIL]",
+      "checked": true,
+      "disabled": false,
+      "layer": {
+        "id": "l-tesco",
+        "type": "circle",
+        "source": "src-tesco",
+        "layout": {
+          "visibility": "visible"
+        },
+        "paint": {
+          "circle-color": "#ee1c2e",
+          "circle-radius": 4.5,
+          "circle-stroke-width": 1,
+          "circle-stroke-color": "#000"
+        }
+      },
+      "featureCount": 0,
+      "eligible": 0,
+      "target": null,
+      "sample": null,
+      "pass": false
+    },
+    {
+      "id": "sainsburys",
+      "errors": [],
+      "generation": "202610261949",
+      "initialLabel": "Sainsbury's [WAIT]",
+      "label": "Sainsbury's [FAIL]",
+      "checked": true,
+      "disabled": false,
+      "layer": {
+        "id": "l-sainsburys",
+        "type": "circle",
+        "source": "src-sainsburys",
+        "layout": {
+          "visibility": "visible"
+        },
+        "paint": {
+          "circle-color": "#ff8200",
+          "circle-radius": 4.5,
+          "circle-stroke-width": 1,
+          "circle-stroke-color": "#000"
+        }
+      },
+      "featureCount": 0,
+      "eligible": 0,
+      "target": null,
+      "sample": null,
+      "pass": false
+    },
+    {
+      "id": "asda",
+      "errors": [],
+      "generation": "202610261949",
+      "initialLabel": "Asda [WAIT]",
+      "label": "Asda [FAIL]",
+      "checked": true,
+      "disabled": false,
+      "layer": {
+        "id": "l-asda",
+        "type": "circle",
+        "source": "src-asda",
+        "layout": {
+          "visibility": "visible"
+        },
+        "paint": {
+          "circle-color": "#78be20",
+          "circle-radius": 4.5,
+          "circle-stroke-width": 1,
+          "circle-stroke-color": "#000"
+        }
+      },
+      "featureCount": 0,
+      "eligible": 0,
+      "target": null,
+      "sample": null,
+      "pass": false
+    },
+    {
+      "id": "morrisons",
+      "errors": [],
+      "generation": "202610261949",
+      "initialLabel": "Morrisons [WAIT]",
+      "label": "Morrisons [FAIL]",
+      "checked": true,
+      "disabled": false,
+      "layer": {
+        "id": "l-morrisons",
+        "type": "circle",
+        "source": "src-morrisons",
+        "layout": {
+          "visibility": "visible"
+        },
+        "paint": {
+          "circle-color": "#ffd700",
+          "circle-radius": 4.5,
+          "circle-stroke-width": 1,
+          "circle-stroke-color": "#000"
+        }
+      },
+      "featureCount": 0,
+      "eligible": 0,
+      "target": null,
+      "sample": null,
+      "pass": false
+    },
+    {
+      "id": "aldi",
+      "errors": [],
+      "generation": "202610261949",
+      "initialLabel": "Aldi [WAIT]",
+      "label": "Aldi [FAIL]",
+      "checked": true,
+      "disabled": false,
+      "layer": {
+        "id": "l-aldi",
+        "type": "circle",
+        "source": "src-aldi",
+        "layout": {
+          "visibility": "visible"
+        },
+        "paint": {
+          "circle-color": "#003087",
+          "circle-radius": 4.5,
+          "circle-stroke-width": 1,
+          "circle-stroke-color": "#000"
+        }
+      },
+      "featureCount": 0,
+      "eligible": 0,
+      "target": null,
+      "sample": null,
+      "pass": false
+    },
+    {
+      "id": "lidl",
+      "errors": [],
+      "generation": "202610261949",
+      "initialLabel": "Lidl [WAIT]",
+      "label": "Lidl [FAIL]",
+      "checked": true,
+      "disabled": false,
+      "layer": {
+        "id": "l-lidl",
+        "type": "circle",
+        "source": "src-lidl",
+        "layout": {
+          "visibility": "visible"
+        },
+        "paint": {
+          "circle-color": "#0050aa",
+          "circle-radius": 4.5,
+          "circle-stroke-width": 1,
+          "circle-stroke-color": "#000"
+        }
+      },
+      "featureCount": 0,
+      "eligible": 0,
+      "target": null,
+      "sample": null,
+      "pass": false
+    },
+    {
+      "id": "waitrose",
+      "errors": [],
+      "generation": "202610261949",
+      "initialLabel": "Waitrose [WAIT]",
+      "label": "Waitrose [FAIL]",
+      "checked": true,
+      "disabled": false,
+      "layer": {
+        "id": "l-waitrose",
+        "type": "circle",
+        "source": "src-waitrose",
+        "layout": {
+          "visibility": "visible"
+        },
+        "paint": {
+          "circle-color": "#7ab800",
+          "circle-radius": 4.5,
+          "circle-stroke-width": 1,
+          "circle-stroke-color": "#000"
+        }
+      },
+      "featureCount": 0,
+      "eligible": 0,
+      "target": null,
+      "sample": null,
+      "pass": false
+    }
+  ]
+}

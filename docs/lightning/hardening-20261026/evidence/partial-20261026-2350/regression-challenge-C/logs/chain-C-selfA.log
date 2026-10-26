@@ -1,0 +1,12 @@
+[runner] candidate-browser-shim: generation 202610261949, 4 of 81 catalogue entries, base http://127.0.0.1:8144/wt/atlas/v/202610261949/
+[runner] route probe: mapArrived=true failedHosts=["ventusltd.github.io"] pageErrors=[]
+[runner] start deep-link-visibility (budget 420s)
+[runner] FAIL               deep-link-visibility                         15.7s  FAILURES
+[runner] start deep-link-technology-buckets (budget 420s)
+[runner] FAIL               deep-link-technology-buckets                 2.4s  FAILURES
+[runner] start export-print-and-image-outcomes (budget 420s)
+[runner] FAIL               export-print-and-image-outcomes              26.6s  16 export outcome check(s) failed
+[runner] start repd-deep-link-sweep (budget 420s)
+[runner] PASS               repd-deep-link-sweep                         1.1s  arrived 2 · no identity 0 · page error 0  (of 2)
+
+[runner] done: {"FAIL":3,"PASS":1}  ->  /tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/regression-challenge-C/candidate-browser-shim/results-selfA.md

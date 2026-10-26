@@ -1,0 +1,130 @@
+{
+  "url": "http://127.0.0.1:8143/gridatlas/atlas/",
+  "width": 1440,
+  "results": [
+    {
+      "id": "geothermal",
+      "errors": [],
+      "generation": "202609241334",
+      "initialLabel": "Geothermal [WAIT]",
+      "label": "Geothermal [FAIL]",
+      "checked": true,
+      "disabled": false,
+      "layer": {
+        "id": "l-geothermal",
+        "type": "circle",
+        "source": "src-repd",
+        "filter": [
+          "==",
+          [
+            "get",
+            "tech"
+          ],
+          "geothermal"
+        ],
+        "layout": {
+          "visibility": "visible"
+        },
+        "paint": {
+          "circle-color": "#ff3300",
+          "circle-radius": [
+            "interpolate",
+            [
+              "linear"
+            ],
+            [
+              "coalesce",
+              [
+                "get",
+                "capacity"
+              ],
+              0
+            ],
+            0,
+            8,
+            10,
+            10,
+            50,
+            13,
+            200,
+            17,
+            500,
+            22,
+            1000,
+            28
+          ],
+          "circle-stroke-width": 1.5,
+          "circle-stroke-color": "#000",
+          "circle-opacity": 0.85
+        }
+      },
+      "featureCount": 0,
+      "eligible": 0,
+      "target": null,
+      "sample": null,
+      "pass": false
+    },
+    {
+      "id": "caes",
+      "errors": [],
+      "generation": "202609241334",
+      "initialLabel": "Compressed Air Storage [WAIT]",
+      "label": "Compressed Air Storage [FAIL]",
+      "checked": true,
+      "disabled": false,
+      "layer": {
+        "id": "l-caes",
+        "type": "circle",
+        "source": "src-repd",
+        "filter": [
+          "==",
+          [
+            "get",
+            "tech"
+          ],
+          "caes"
+        ],
+        "layout": {
+          "visibility": "visible"
+        },
+        "paint": {
+          "circle-color": "#88aaff",
+          "circle-radius": [
+            "interpolate",
+            [
+              "linear"
+            ],
+            [
+              "coalesce",
+              [
+                "get",
+                "capacity"
+              ],
+              0
+            ],
+            0,
+            8,
+            10,
+            10,
+            50,
+            13,
+            200,
+            17,
+            500,
+            22,
+            1000,
+            28
+          ],
+          "circle-stroke-width": 1.5,
+          "circle-stroke-color": "#000",
+          "circle-opacity": 0.85
+        }
+      },
+      "featureCount": 0,
+      "eligible": 0,
+      "target": null,
+      "sample": null,
+      "pass": false
+    }
+  ]
+}

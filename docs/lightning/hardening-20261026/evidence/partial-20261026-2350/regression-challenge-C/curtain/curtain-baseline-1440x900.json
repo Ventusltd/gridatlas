@@ -1,0 +1,102 @@
+{
+  "route": "baseline",
+  "url": "http://127.0.0.1:8143/gridatlas/atlas/",
+  "viewport": "1440x900",
+  "steps": [
+    {
+      "name": "View > fullscreen",
+      "fullscreenElement": "map-container",
+      "ok": true
+    },
+    {
+      "name": "Grid menu open (tab lives inside it)",
+      "open": [
+        "Grid"
+      ],
+      "ok": true
+    },
+    {
+      "name": "curtain tab click",
+      "tabBox": {
+        "x": 1006.671875,
+        "y": 607,
+        "width": 374.453125,
+        "height": 44
+      },
+      "curtain": {
+        "cls": "curtain-open",
+        "y": 0,
+        "h": 630,
+        "zIndex": "505"
+      },
+      "menuStillOpen": [
+        "Grid"
+      ],
+      "ok": true
+    },
+    {
+      "name": "geometry of #fs-curtain-keys input 400",
+      "input": {
+        "x": 30.049999237060547,
+        "y": 66.05000305175781,
+        "w": 16.900001525878906,
+        "h": 16.899993896484375
+      },
+      "elementAtCentre": "CANVAS#.maplibregl-canvas",
+      "keysBox": {
+        "x": 16,
+        "y": 48,
+        "w": 1408,
+        "h": 1356,
+        "scrollH": 1356
+      },
+      "openPanelBox": {
+        "x": 1005.671875,
+        "y": 35,
+        "w": 376.453125,
+        "h": 620
+      },
+      "visibility": "visible",
+      "opacity": "1",
+      "pointerEvents": "auto",
+      "ok": true
+    },
+    {
+      "name": "real click on #fs-curtain-keys input 400 (menu still open)",
+      "ok": false,
+      "error": "locator.click: Timeout 8000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('#fs-curtain-keys input[data-layer-id=\"400\"]')\u001b[22m\n\u001b[2m    - locator resolved to <input type=\"checkbox\" data-layer-id=\"400\"/>\u001b[22m\n\u001b[2m  - attempting click action\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is visible, enabled and stable\u001b[22m\n\u001b[2m      - scrolling into view if needed\u001b[22m\n\u001b[2m      - done scrolling\u001b[22m\n\u001b[2m      - <canvas tabindex=\"0\" width=\"1440\" height=\"900\" role=\"region\" aria-label=\"Map\" class=\"maplibregl-canvas\"></canvas> from <div class=\"dashboard\">…</div> subtree intercepts pointer events\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m    - waiting 20ms\u001b[22m\n\u001b[2m    - waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m    - element is visible, enabled and stable\u001b[22m\n\u001b[2m    - scrolling into view if needed\u001b[22m\n\u001b[2m    - done scrolling\u001b[22m\n\u001b[2m    - <canvas tabindex=\"0\" width=\"1440\" height=\"900\" role=\"region\" aria-label=\"Map\" class=\"maplibregl-canvas\"></canvas> from <div class=\"dashboard\">…</div> subtree intercepts pointer events\u001b[22m\n\u001b[2m  2 × retrying click action\u001b[22m\n\u001b[2m      - waiting 100ms\u001b[22m\n\u001b[2m      - waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is visible, enabled and stable\u001b[22m\n\u001b[2m      - scrolling into view if needed\u001b[22m\n\u001b[2m      - done scrolling\u001b[22m\n\u001b[2m      - <button type=\"button\" class=\"gm-title\" aria-haspopup=\"menu\" aria-expanded=\"false\" id=\"gridatlas-menu-bar-title-0\" aria-controls=\"gridatlas-menu-bar-panel-0\">File</button> from <div class=\"dashboard\">…</div> subtree intercepts pointer events\u001b[22m\n\u001b[2m  3 × retrying click action\u001b[22m\n\u001b[2m      - waiting 500ms\u001b[22m\n\u001b[2m      - waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is visible, enabled and stable\u001b[22m\n\u001b[2m      - scrolling into view if needed\u001b[22m\n\u001b[2m      - done scrolling\u001b[22m\n\u001b[2m      - <canvas tabindex=\"0\" width=\"1440\" height=\"900\" role=\"region\" aria-label=\"Map\" class=\"maplibregl-canvas\"></canvas> from <div class=\"dashboard\">…</div> subtree intercepts pointer events\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m      - waiting 500ms\u001b[22m\n\u001b[2m      - waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is visible, enabled and stable\u001b[22m\n\u001b[2m      - scrolling into view if needed\u001b[22m\n\u001b[2m      - done scrolling\u001b[22m\n\u001b[2m      - <canvas tabindex=\"0\" width=\"1440\" height=\"900\" role=\"region\" aria-label=\"Map\" class=\"maplibregl-canvas\"></canvas> from <div class=\"dashboard\">…</div> subtree intercepts pointer events\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m      - waiting 500ms\u001b[22m\n\u001b[2m      - waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is visible, enabled and stable\u001b[22m\n\u001b[2m      - scrolling into view if needed\u001b[22m\n\u001b[2m      - done scrolling\u001b[22m\n\u001b[2m      - <button type=\"button\" class=\"gm-title\" aria-haspopup=\"menu\" aria-expanded=\"false\" id=\"gridatlas-menu-bar-title-0\" aria-controls=\"gridatlas-menu-bar-panel-0\">File</button> from <div class=\"dashboard\">…</div> subtree intercepts pointer events\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m      - waiting 500ms\u001b[22m\n\u001b[2m      - waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is visible, enabled and stable\u001b[22m\n\u001b[2m      - scrolling into view if needed\u001b[22m\n\u001b[2m      - done scrolling\u001b[22m\n\u001b[2m      - <button type=\"button\" class=\"gm-title\" aria-haspopup=\"menu\" aria-expanded=\"false\" id=\"gridatlas-menu-bar-title-0\" aria-controls=\"gridatlas-menu-bar-panel-0\">File</button> from <div class=\"dashboard\">…</div> subtree intercepts pointer events\u001b[22m\n\u001b[2m  2 × retrying click action\u001b[22m\n\u001b[2m      - waiting 500ms\u001b[22m\n\u001b[2m      - waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is visible, enabled and stable\u001b[22m\n\u001b[2m      - scrolling into view if needed\u001b[22m\n\u001b[2m      - done scrolling\u001b[22m\n\u001b[2m      - <canvas tabindex=\"0\" width=\"1440\" height=\"900\" role=\"region\" aria-label=\"Map\" class=\"maplibregl-canvas\"></canvas> from <div class=\"dashboard\">…</div> subtree intercepts pointer events\u001b[22m\n\u001b[2m  - retrying click action\u001b[22m\n\u001b[2m    - waiting 500ms\u001b[22m\n"
+    },
+    {
+      "name": "close Grid menu with Escape, then real click on input 400 again",
+      "ok": false,
+      "error": "locator.click: Timeout 8000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('#fs-curtain-keys input[data-layer-id=\"400\"]')\u001b[22m\n\u001b[2m    - locator resolved to <input type=\"checkbox\" data-layer-id=\"400\"/>\u001b[22m\n\u001b[2m  - attempting click action\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is visible, enabled and stable\u001b[22m\n\u001b[2m      - scrolling into view if needed\u001b[22m\n\u001b[2m      - done scrolling\u001b[22m\n\u001b[2m      - <canvas tabindex=\"0\" width=\"1440\" height=\"900\" role=\"region\" aria-label=\"Map\" class=\"maplibregl-canvas\"></canvas> from <div class=\"dashboard\">…</div> subtree intercepts pointer events\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m    - waiting 20ms\u001b[22m\n\u001b[2m    - waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m    - element is visible, enabled and stable\u001b[22m\n\u001b[2m    - scrolling into view if needed\u001b[22m\n\u001b[2m    - done scrolling\u001b[22m\n\u001b[2m    - <canvas tabindex=\"0\" width=\"1440\" height=\"900\" role=\"region\" aria-label=\"Map\" class=\"maplibregl-canvas\"></canvas> from <div class=\"dashboard\">…</div> subtree intercepts pointer events\u001b[22m\n\u001b[2m  2 × retrying click action\u001b[22m\n\u001b[2m      - waiting 100ms\u001b[22m\n\u001b[2m      - waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is visible, enabled and stable\u001b[22m\n\u001b[2m      - scrolling into view if needed\u001b[22m\n\u001b[2m      - done scrolling\u001b[22m\n\u001b[2m      - <button type=\"button\" class=\"gm-title\" aria-haspopup=\"menu\" aria-expanded=\"false\" id=\"gridatlas-menu-bar-title-0\" aria-controls=\"gridatlas-menu-bar-panel-0\">File</button> from <div class=\"dashboard\">…</div> subtree intercepts pointer events\u001b[22m\n\u001b[2m  3 × retrying click action\u001b[22m\n\u001b[2m      - waiting 500ms\u001b[22m\n\u001b[2m      - waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is visible, enabled and stable\u001b[22m\n\u001b[2m      - scrolling into view if needed\u001b[22m\n\u001b[2m      - done scrolling\u001b[22m\n\u001b[2m      - <canvas tabindex=\"0\" width=\"1440\" height=\"900\" role=\"region\" aria-label=\"Map\" class=\"maplibregl-canvas\"></canvas> from <div class=\"dashboard\">…</div> subtree intercepts pointer events\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m      - waiting 500ms\u001b[22m\n\u001b[2m      - waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is visible, enabled and stable\u001b[22m\n\u001b[2m      - scrolling into view if needed\u001b[22m\n\u001b[2m      - done scrolling\u001b[22m\n\u001b[2m      - <canvas tabindex=\"0\" width=\"1440\" height=\"900\" role=\"region\" aria-label=\"Map\" class=\"maplibregl-canvas\"></canvas> from <div class=\"dashboard\">…</div> subtree intercepts pointer events\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m      - waiting 500ms\u001b[22m\n\u001b[2m      - waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is visible, enabled and stable\u001b[22m\n\u001b[2m      - scrolling into view if needed\u001b[22m\n\u001b[2m      - done scrolling\u001b[22m\n\u001b[2m      - <button type=\"button\" class=\"gm-title\" aria-haspopup=\"menu\" aria-expanded=\"false\" id=\"gridatlas-menu-bar-title-0\" aria-controls=\"gridatlas-menu-bar-panel-0\">File</button> from <div class=\"dashboard\">…</div> subtree intercepts pointer events\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m      - waiting 500ms\u001b[22m\n\u001b[2m      - waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is visible, enabled and stable\u001b[22m\n\u001b[2m      - scrolling into view if needed\u001b[22m\n\u001b[2m      - done scrolling\u001b[22m\n\u001b[2m      - <button type=\"button\" class=\"gm-title\" aria-haspopup=\"menu\" aria-expanded=\"false\" id=\"gridatlas-menu-bar-title-0\" aria-controls=\"gridatlas-menu-bar-panel-0\">File</button> from <div class=\"dashboard\">…</div> subtree intercepts pointer events\u001b[22m\n\u001b[2m  - retrying click action\u001b[22m\n\u001b[2m    - waiting 500ms\u001b[22m\n"
+    },
+    {
+      "name": "click input 400 again (off)",
+      "ok": false,
+      "error": "locator.click: Timeout 8000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('#fs-curtain-keys input[data-layer-id=\"400\"]')\u001b[22m\n\u001b[2m    - locator resolved to <input type=\"checkbox\" data-layer-id=\"400\"/>\u001b[22m\n\u001b[2m  - attempting click action\u001b[22m\n\u001b[2m    - waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m    - element is visible, enabled and stable\u001b[22m\n\u001b[2m    - scrolling into view if needed\u001b[22m\n\u001b[2m    - done scrolling\u001b[22m\n\u001b[2m    - <button type=\"button\" class=\"gm-title\" aria-haspopup=\"menu\" aria-expanded=\"false\" id=\"gridatlas-menu-bar-title-0\" aria-controls=\"gridatlas-menu-bar-panel-0\">File</button> from <div class=\"dashboard\">…</div> subtree intercepts pointer events\u001b[22m\n\u001b[2m  - retrying click action\u001b[22m\n\u001b[2m    - waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m    - element is visible, enabled and stable\u001b[22m\n\u001b[2m    - scrolling into view if needed\u001b[22m\n\u001b[2m    - done scrolling\u001b[22m\n\u001b[2m    - <canvas tabindex=\"0\" width=\"1440\" height=\"900\" role=\"region\" aria-label=\"Map\" class=\"maplibregl-canvas\"></canvas> from <div class=\"dashboard\">…</div> subtree intercepts pointer events\u001b[22m\n\u001b[2m  - retrying click action\u001b[22m\n\u001b[2m    - waiting 20ms\u001b[22m\n\u001b[2m    - waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m    - element is visible, enabled and stable\u001b[22m\n\u001b[2m    - scrolling into view if needed\u001b[22m\n\u001b[2m    - done scrolling\u001b[22m\n\u001b[2m    - <canvas tabindex=\"0\" width=\"1440\" height=\"900\" role=\"region\" aria-label=\"Map\" class=\"maplibregl-canvas\"></canvas> from <div class=\"dashboard\">…</div> subtree intercepts pointer events\u001b[22m\n\u001b[2m  2 × retrying click action\u001b[22m\n\u001b[2m      - waiting 100ms\u001b[22m\n\u001b[2m      - waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is visible, enabled and stable\u001b[22m\n\u001b[2m      - scrolling into view if needed\u001b[22m\n\u001b[2m      - done scrolling\u001b[22m\n\u001b[2m      - <button type=\"button\" class=\"gm-title\" aria-haspopup=\"menu\" aria-expanded=\"false\" id=\"gridatlas-menu-bar-title-0\" aria-controls=\"gridatlas-menu-bar-panel-0\">File</button> from <div class=\"dashboard\">…</div> subtree intercepts pointer events\u001b[22m\n\u001b[2m  3 × retrying click action\u001b[22m\n\u001b[2m      - waiting 500ms\u001b[22m\n\u001b[2m      - waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is visible, enabled and stable\u001b[22m\n\u001b[2m      - scrolling into view if needed\u001b[22m\n\u001b[2m      - done scrolling\u001b[22m\n\u001b[2m      - <canvas tabindex=\"0\" width=\"1440\" height=\"900\" role=\"region\" aria-label=\"Map\" class=\"maplibregl-canvas\"></canvas> from <div class=\"dashboard\">…</div> subtree intercepts pointer events\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m      - waiting 500ms\u001b[22m\n\u001b[2m      - waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is visible, enabled and stable\u001b[22m\n\u001b[2m      - scrolling into view if needed\u001b[22m\n\u001b[2m      - done scrolling\u001b[22m\n\u001b[2m      - <canvas tabindex=\"0\" width=\"1440\" height=\"900\" role=\"region\" aria-label=\"Map\" class=\"maplibregl-canvas\"></canvas> from <div class=\"dashboard\">…</div> subtree intercepts pointer events\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m      - waiting 500ms\u001b[22m\n\u001b[2m      - waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is visible, enabled and stable\u001b[22m\n\u001b[2m      - scrolling into view if needed\u001b[22m\n\u001b[2m      - done scrolling\u001b[22m\n\u001b[2m      - <button type=\"button\" class=\"gm-title\" aria-haspopup=\"menu\" aria-expanded=\"false\" id=\"gridatlas-menu-bar-title-0\" aria-controls=\"gridatlas-menu-bar-panel-0\">File</button> from <div class=\"dashboard\">…</div> subtree intercepts pointer events\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m      - waiting 500ms\u001b[22m\n\u001b[2m      - waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is visible, enabled and stable\u001b[22m\n\u001b[2m      - scrolling into view if needed\u001b[22m\n\u001b[2m      - done scrolling\u001b[22m\n\u001b[2m      - <button type=\"button\" class=\"gm-title\" aria-haspopup=\"menu\" aria-expanded=\"false\" id=\"gridatlas-menu-bar-title-0\" aria-controls=\"gridatlas-menu-bar-panel-0\">File</button> from <div class=\"dashboard\">…</div> subtree intercepts pointer events\u001b[22m\n\u001b[2m  - retrying click action\u001b[22m\n\u001b[2m    - waiting 500ms\u001b[22m\n"
+    },
+    {
+      "name": "last curtain group geometry (is the appended group reachable by scrolling the curtain?)",
+      "groups": 13,
+      "lastTitle": "PIPELINE NEWS (REPD)",
+      "lastRect": {
+        "y": 1236,
+        "h": 98
+      },
+      "innerHeight": 900,
+      "keysOverflowY": "visible",
+      "curtainOverflowY": "auto",
+      "keysScrollHeight": 1356,
+      "keysClientHeight": 1356,
+      "curtainScrollHeight": 1420,
+      "curtainClientHeight": 629,
+      "ok": true
+    },
+    {
+      "name": "close curtain via tab",
+      "cls": "",
+      "ok": true
+    }
+  ]
+}

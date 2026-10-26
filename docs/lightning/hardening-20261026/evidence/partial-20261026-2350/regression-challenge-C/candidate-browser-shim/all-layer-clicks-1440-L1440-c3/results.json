@@ -1,0 +1,1360 @@
+{
+  "url": "http://127.0.0.1:8144/wt/atlas/v/202610261949/",
+  "width": 1440,
+  "results": [
+    {
+      "id": "primary_roads",
+      "errors": [],
+      "generation": "202610261949",
+      "initialLabel": "A-Roads (Primary) [WAIT]",
+      "label": "A-Roads (Primary) [FAIL]",
+      "checked": true,
+      "disabled": false,
+      "layer": {
+        "id": "l-primary_roads",
+        "type": "line",
+        "source": "src-primary_roads",
+        "layout": {
+          "visibility": "visible"
+        },
+        "paint": {
+          "line-color": "#ff4400",
+          "line-width": 1.2
+        }
+      },
+      "featureCount": 0,
+      "eligible": 0,
+      "target": null,
+      "sample": null,
+      "pass": false
+    },
+    {
+      "id": "motorway_services",
+      "errors": [],
+      "generation": "202610261949",
+      "initialLabel": "Motorway Services [WAIT]",
+      "label": "Motorway Services [FAIL]",
+      "checked": true,
+      "disabled": false,
+      "layer": {
+        "id": "l-motorway_services",
+        "type": "circle",
+        "source": "src-motorway_services",
+        "layout": {
+          "visibility": "visible"
+        },
+        "paint": {
+          "circle-color": "#ff00ff",
+          "circle-radius": 5.5,
+          "circle-stroke-width": 1,
+          "circle-stroke-color": "#000"
+        }
+      },
+      "featureCount": 0,
+      "eligible": 0,
+      "target": null,
+      "sample": null,
+      "pass": false
+    },
+    {
+      "id": "ev",
+      "errors": [],
+      "generation": "202610261949",
+      "initialLabel": "EV Rapid (100kW+) [WAIT]",
+      "error": "Error: page.waitForFunction: Target crashed ",
+      "pass": false
+    },
+    {
+      "id": "naei_co2",
+      "errors": [],
+      "generation": "202610261949",
+      "initialLabel": "Major Industrial Sites [WAIT]",
+      "label": "Major Industrial Sites [FAIL]",
+      "checked": true,
+      "disabled": false,
+      "layer": {
+        "id": "l-naei_co2",
+        "type": "circle",
+        "source": "src-naei_co2",
+        "layout": {
+          "visibility": "visible"
+        },
+        "paint": {
+          "circle-color": [
+            "interpolate",
+            [
+              "linear"
+            ],
+            [
+              "coalesce",
+              [
+                "get",
+                "emission_tco2e"
+              ],
+              0
+            ],
+            0,
+            "#ffcc00",
+            50000,
+            "#ffaa00",
+            200000,
+            "#ff6600",
+            1000000,
+            "#ff0000"
+          ],
+          "circle-radius": [
+            "interpolate",
+            [
+              "linear"
+            ],
+            [
+              "coalesce",
+              [
+                "get",
+                "emission_tco2e"
+              ],
+              0
+            ],
+            0,
+            6,
+            50000,
+            10,
+            200000,
+            14,
+            1000000,
+            20,
+            5000000,
+            28
+          ],
+          "circle-stroke-width": 1.5,
+          "circle-stroke-color": "#000",
+          "circle-opacity": 0.85
+        }
+      },
+      "featureCount": 0,
+      "eligible": 0,
+      "target": null,
+      "sample": null,
+      "pass": false
+    },
+    {
+      "id": "solar",
+      "errors": [],
+      "generation": "202610261949",
+      "initialLabel": "Solar PV [WAIT]",
+      "label": "Solar PV [FAIL]",
+      "checked": true,
+      "disabled": false,
+      "layer": {
+        "id": "l-solar",
+        "type": "circle",
+        "source": "src-repd",
+        "filter": [
+          "==",
+          [
+            "get",
+            "tech"
+          ],
+          "solar"
+        ],
+        "layout": {
+          "visibility": "visible"
+        },
+        "paint": {
+          "circle-color": [
+            "interpolate",
+            [
+              "linear"
+            ],
+            [
+              "coalesce",
+              [
+                "get",
+                "capacity"
+              ],
+              0
+            ],
+            0,
+            "#ffff00",
+            20,
+            "#ffcc00",
+            50,
+            "#ffaa00",
+            200,
+            "#ff6600",
+            500,
+            "#ff2200"
+          ],
+          "circle-radius": [
+            "interpolate",
+            [
+              "linear"
+            ],
+            [
+              "coalesce",
+              [
+                "get",
+                "capacity"
+              ],
+              0
+            ],
+            0,
+            8,
+            10,
+            10,
+            50,
+            13,
+            200,
+            17,
+            500,
+            22,
+            1000,
+            28
+          ],
+          "circle-stroke-width": 1.5,
+          "circle-stroke-color": "#000",
+          "circle-opacity": 0.85
+        }
+      },
+      "featureCount": 0,
+      "eligible": 0,
+      "target": null,
+      "sample": null,
+      "pass": false
+    },
+    {
+      "id": "solar_operational",
+      "errors": [],
+      "generation": "202610261949",
+      "initialLabel": "Solar PV (Operational Only) [WAIT]",
+      "label": "Solar PV (Operational Only) [FAIL]",
+      "checked": true,
+      "disabled": false,
+      "layer": {
+        "id": "l-solar_operational",
+        "type": "circle",
+        "source": "src-repd",
+        "filter": [
+          "all",
+          [
+            "==",
+            [
+              "get",
+              "tech"
+            ],
+            "solar"
+          ],
+          [
+            "==",
+            [
+              "get",
+              "status"
+            ],
+            "operational"
+          ]
+        ],
+        "layout": {
+          "visibility": "visible"
+        },
+        "paint": {
+          "circle-color": [
+            "interpolate",
+            [
+              "linear"
+            ],
+            [
+              "coalesce",
+              [
+                "get",
+                "capacity"
+              ],
+              0
+            ],
+            0,
+            "#66ff99",
+            10,
+            "#33ff77",
+            50,
+            "#00dd55",
+            100,
+            "#00bb44",
+            200,
+            "#008833",
+            350,
+            "#006622",
+            500,
+            "#004411"
+          ],
+          "circle-radius": [
+            "interpolate",
+            [
+              "linear"
+            ],
+            [
+              "coalesce",
+              [
+                "get",
+                "capacity"
+              ],
+              0
+            ],
+            0,
+            10,
+            10,
+            14,
+            50,
+            18,
+            100,
+            22,
+            200,
+            28,
+            350,
+            35,
+            500,
+            42
+          ],
+          "circle-stroke-width": 2,
+          "circle-stroke-color": "#000",
+          "circle-opacity": 0.9
+        }
+      },
+      "featureCount": 0,
+      "eligible": 0,
+      "target": null,
+      "sample": null,
+      "pass": false
+    },
+    {
+      "id": "solar_roof",
+      "errors": [],
+      "generation": "202610261949",
+      "initialLabel": "Solar Roof [WAIT]",
+      "label": "Solar Roof [FAIL]",
+      "checked": true,
+      "disabled": false,
+      "layer": {
+        "id": "l-solar_roof",
+        "type": "circle",
+        "source": "src-repd",
+        "filter": [
+          "==",
+          [
+            "get",
+            "tech"
+          ],
+          "solar_roof"
+        ],
+        "layout": {
+          "visibility": "visible"
+        },
+        "paint": {
+          "circle-color": [
+            "interpolate",
+            [
+              "linear"
+            ],
+            [
+              "coalesce",
+              [
+                "get",
+                "capacity"
+              ],
+              0
+            ],
+            0,
+            "#ffcc00",
+            0.99,
+            "#ffcc00",
+            1,
+            "#ff8c00",
+            5,
+            "#ff6600",
+            10,
+            "#ff4400"
+          ],
+          "circle-radius": [
+            "interpolate",
+            [
+              "linear"
+            ],
+            [
+              "coalesce",
+              [
+                "get",
+                "capacity"
+              ],
+              0
+            ],
+            0,
+            7,
+            0.5,
+            7,
+            0.99,
+            8,
+            1,
+            16,
+            2,
+            18,
+            5,
+            22,
+            10,
+            28
+          ],
+          "circle-stroke-width": [
+            "interpolate",
+            [
+              "linear"
+            ],
+            [
+              "coalesce",
+              [
+                "get",
+                "capacity"
+              ],
+              0
+            ],
+            0,
+            1,
+            0.99,
+            1,
+            1,
+            2
+          ],
+          "circle-stroke-color": "#000",
+          "circle-opacity": 0.9
+        }
+      },
+      "featureCount": 0,
+      "eligible": 0,
+      "target": null,
+      "sample": null,
+      "pass": false
+    },
+    {
+      "id": "wind",
+      "errors": [],
+      "generation": "202610261949",
+      "initialLabel": "Wind [WAIT]",
+      "label": "Wind [FAIL]",
+      "checked": true,
+      "disabled": false,
+      "layer": {
+        "id": "l-wind",
+        "type": "circle",
+        "source": "src-repd",
+        "filter": [
+          "==",
+          [
+            "get",
+            "tech"
+          ],
+          "wind"
+        ],
+        "layout": {
+          "visibility": "visible"
+        },
+        "paint": {
+          "circle-color": "#00ffff",
+          "circle-radius": [
+            "interpolate",
+            [
+              "linear"
+            ],
+            [
+              "coalesce",
+              [
+                "get",
+                "capacity"
+              ],
+              0
+            ],
+            0,
+            8,
+            10,
+            10,
+            50,
+            13,
+            200,
+            17,
+            500,
+            22,
+            1000,
+            28
+          ],
+          "circle-stroke-width": 1.5,
+          "circle-stroke-color": "#000",
+          "circle-opacity": 0.85
+        }
+      },
+      "featureCount": 0,
+      "eligible": 0,
+      "target": null,
+      "sample": null,
+      "pass": false
+    },
+    {
+      "id": "wind_onshore_operational",
+      "errors": [],
+      "generation": "202610261949",
+      "initialLabel": "Onshore Wind (Operational Only) [WAIT]",
+      "label": "Onshore Wind (Operational Only) [FAIL]",
+      "checked": true,
+      "disabled": false,
+      "layer": {
+        "id": "l-wind_onshore_operational",
+        "type": "circle",
+        "source": "src-repd",
+        "filter": [
+          "all",
+          [
+            "==",
+            [
+              "get",
+              "raw_tech"
+            ],
+            "Wind Onshore"
+          ],
+          [
+            "==",
+            [
+              "get",
+              "status"
+            ],
+            "operational"
+          ]
+        ],
+        "layout": {
+          "visibility": "visible"
+        },
+        "paint": {
+          "circle-color": [
+            "interpolate",
+            [
+              "linear"
+            ],
+            [
+              "coalesce",
+              [
+                "get",
+                "capacity"
+              ],
+              0
+            ],
+            0,
+            "#ccfff5",
+            10,
+            "#99ffee",
+            50,
+            "#00ffcc",
+            100,
+            "#00ddaa",
+            200,
+            "#00aa88",
+            350,
+            "#007766",
+            500,
+            "#004433"
+          ],
+          "circle-radius": [
+            "interpolate",
+            [
+              "linear"
+            ],
+            [
+              "coalesce",
+              [
+                "get",
+                "capacity"
+              ],
+              0
+            ],
+            0,
+            8,
+            10,
+            12,
+            50,
+            16,
+            100,
+            20,
+            200,
+            26,
+            350,
+            32,
+            500,
+            38
+          ],
+          "circle-stroke-width": 2,
+          "circle-stroke-color": "#000",
+          "circle-opacity": 0.9
+        }
+      },
+      "featureCount": 0,
+      "eligible": 0,
+      "target": null,
+      "sample": null,
+      "pass": false
+    },
+    {
+      "id": "wind_offshore_operational",
+      "errors": [],
+      "generation": "202610261949",
+      "initialLabel": "Offshore Wind (Operational Only) [WAIT]",
+      "label": "Offshore Wind (Operational Only) [FAIL]",
+      "checked": true,
+      "disabled": false,
+      "layer": {
+        "id": "l-wind_offshore_operational",
+        "type": "circle",
+        "source": "src-repd",
+        "filter": [
+          "all",
+          [
+            "==",
+            [
+              "get",
+              "raw_tech"
+            ],
+            "Wind Offshore"
+          ],
+          [
+            "==",
+            [
+              "get",
+              "status"
+            ],
+            "operational"
+          ]
+        ],
+        "layout": {
+          "visibility": "visible"
+        },
+        "paint": {
+          "circle-color": [
+            "interpolate",
+            [
+              "linear"
+            ],
+            [
+              "coalesce",
+              [
+                "get",
+                "capacity"
+              ],
+              0
+            ],
+            0,
+            "#cce5ff",
+            10,
+            "#99ccff",
+            50,
+            "#3399ff",
+            100,
+            "#0066ee",
+            200,
+            "#0044bb",
+            350,
+            "#003399",
+            500,
+            "#001166"
+          ],
+          "circle-radius": [
+            "interpolate",
+            [
+              "linear"
+            ],
+            [
+              "coalesce",
+              [
+                "get",
+                "capacity"
+              ],
+              0
+            ],
+            0,
+            8,
+            10,
+            12,
+            50,
+            16,
+            100,
+            20,
+            200,
+            26,
+            350,
+            32,
+            500,
+            38
+          ],
+          "circle-stroke-width": 2,
+          "circle-stroke-color": "#000",
+          "circle-opacity": 0.9
+        }
+      },
+      "featureCount": 0,
+      "eligible": 0,
+      "target": null,
+      "sample": null,
+      "pass": false
+    },
+    {
+      "id": "bess",
+      "errors": [],
+      "generation": "202610261949",
+      "initialLabel": "Battery Storage [WAIT]",
+      "label": "Battery Storage [FAIL]",
+      "checked": true,
+      "disabled": false,
+      "layer": {
+        "id": "l-bess",
+        "type": "circle",
+        "source": "src-repd",
+        "filter": [
+          "==",
+          [
+            "get",
+            "tech"
+          ],
+          "bess"
+        ],
+        "layout": {
+          "visibility": "visible"
+        },
+        "paint": {
+          "circle-color": "#ffae00",
+          "circle-radius": [
+            "interpolate",
+            [
+              "linear"
+            ],
+            [
+              "coalesce",
+              [
+                "get",
+                "capacity"
+              ],
+              0
+            ],
+            0,
+            8,
+            10,
+            10,
+            50,
+            13,
+            200,
+            17,
+            500,
+            22,
+            1000,
+            28
+          ],
+          "circle-stroke-width": 1.5,
+          "circle-stroke-color": "#000",
+          "circle-opacity": 0.85
+        }
+      },
+      "featureCount": 0,
+      "eligible": 0,
+      "target": null,
+      "sample": null,
+      "pass": false
+    },
+    {
+      "id": "bess_operational",
+      "errors": [],
+      "generation": "202610261949",
+      "initialLabel": "Battery Storage (Operational Only) [WAIT]",
+      "label": "Battery Storage (Operational Only) [FAIL]",
+      "checked": true,
+      "disabled": false,
+      "layer": {
+        "id": "l-bess_operational",
+        "type": "circle",
+        "source": "src-repd",
+        "filter": [
+          "all",
+          [
+            "==",
+            [
+              "get",
+              "tech"
+            ],
+            "bess"
+          ],
+          [
+            "==",
+            [
+              "get",
+              "status"
+            ],
+            "operational"
+          ]
+        ],
+        "layout": {
+          "visibility": "visible"
+        },
+        "paint": {
+          "circle-color": [
+            "interpolate",
+            [
+              "linear"
+            ],
+            [
+              "coalesce",
+              [
+                "get",
+                "capacity"
+              ],
+              0
+            ],
+            0,
+            "#ffccee",
+            10,
+            "#ffb3d9",
+            50,
+            "#ff69b4",
+            100,
+            "#ff1493",
+            200,
+            "#dd0077",
+            350,
+            "#990066",
+            500,
+            "#660044"
+          ],
+          "circle-radius": [
+            "interpolate",
+            [
+              "linear"
+            ],
+            [
+              "coalesce",
+              [
+                "get",
+                "capacity"
+              ],
+              0
+            ],
+            0,
+            8,
+            10,
+            12,
+            50,
+            16,
+            100,
+            20,
+            200,
+            26,
+            350,
+            32,
+            500,
+            38
+          ],
+          "circle-stroke-width": 2,
+          "circle-stroke-color": "#000",
+          "circle-opacity": 0.9
+        }
+      },
+      "featureCount": 0,
+      "eligible": 0,
+      "target": null,
+      "sample": null,
+      "pass": false
+    },
+    {
+      "id": "biomass",
+      "errors": [],
+      "generation": "202610261949",
+      "initialLabel": "Biomass & EfW [WAIT]",
+      "label": "Biomass & EfW [FAIL]",
+      "checked": true,
+      "disabled": false,
+      "layer": {
+        "id": "l-biomass",
+        "type": "circle",
+        "source": "src-repd",
+        "filter": [
+          "==",
+          [
+            "get",
+            "tech"
+          ],
+          "biomass"
+        ],
+        "layout": {
+          "visibility": "visible"
+        },
+        "paint": {
+          "circle-color": "#39ff14",
+          "circle-radius": [
+            "interpolate",
+            [
+              "linear"
+            ],
+            [
+              "coalesce",
+              [
+                "get",
+                "capacity"
+              ],
+              0
+            ],
+            0,
+            8,
+            10,
+            10,
+            50,
+            13,
+            200,
+            17,
+            500,
+            22,
+            1000,
+            28
+          ],
+          "circle-stroke-width": 1.5,
+          "circle-stroke-color": "#000",
+          "circle-opacity": 0.85
+        }
+      },
+      "featureCount": 0,
+      "eligible": 0,
+      "target": null,
+      "sample": null,
+      "pass": false
+    },
+    {
+      "id": "tidal",
+      "errors": [],
+      "generation": "202610261949",
+      "initialLabel": "Tidal & Wave [WAIT]",
+      "label": "Tidal & Wave [FAIL]",
+      "checked": true,
+      "disabled": false,
+      "layer": {
+        "id": "l-tidal",
+        "type": "circle",
+        "source": "src-repd",
+        "filter": [
+          "==",
+          [
+            "get",
+            "tech"
+          ],
+          "tidal"
+        ],
+        "layout": {
+          "visibility": "visible"
+        },
+        "paint": {
+          "circle-color": "#00bfff",
+          "circle-radius": [
+            "interpolate",
+            [
+              "linear"
+            ],
+            [
+              "coalesce",
+              [
+                "get",
+                "capacity"
+              ],
+              0
+            ],
+            0,
+            8,
+            10,
+            10,
+            50,
+            13,
+            200,
+            17,
+            500,
+            22,
+            1000,
+            28
+          ],
+          "circle-stroke-width": 1.5,
+          "circle-stroke-color": "#000",
+          "circle-opacity": 0.85
+        }
+      },
+      "featureCount": 0,
+      "eligible": 0,
+      "target": null,
+      "sample": null,
+      "pass": false
+    },
+    {
+      "id": "hydrogen",
+      "errors": [],
+      "generation": "202610261949",
+      "initialLabel": "Hydrogen [WAIT]",
+      "label": "Hydrogen [FAIL]",
+      "checked": true,
+      "disabled": false,
+      "layer": {
+        "id": "l-hydrogen",
+        "type": "circle",
+        "source": "src-repd",
+        "filter": [
+          "==",
+          [
+            "get",
+            "tech"
+          ],
+          "hydrogen"
+        ],
+        "layout": {
+          "visibility": "visible"
+        },
+        "paint": {
+          "circle-color": "#ffffff",
+          "circle-radius": [
+            "interpolate",
+            [
+              "linear"
+            ],
+            [
+              "coalesce",
+              [
+                "get",
+                "capacity"
+              ],
+              0
+            ],
+            0,
+            8,
+            10,
+            10,
+            50,
+            13,
+            200,
+            17,
+            500,
+            22,
+            1000,
+            28
+          ],
+          "circle-stroke-width": 1.5,
+          "circle-stroke-color": "#000",
+          "circle-opacity": 0.85
+        }
+      },
+      "featureCount": 0,
+      "eligible": 0,
+      "target": null,
+      "sample": null,
+      "pass": false
+    },
+    {
+      "id": "hydro",
+      "errors": [],
+      "generation": "202610261949",
+      "initialLabel": "Hydro & Pumped Storage [WAIT]",
+      "label": "Hydro & Pumped Storage [FAIL]",
+      "checked": true,
+      "disabled": false,
+      "layer": {
+        "id": "l-hydro",
+        "type": "circle",
+        "source": "src-repd",
+        "filter": [
+          "==",
+          [
+            "get",
+            "tech"
+          ],
+          "hydro"
+        ],
+        "layout": {
+          "visibility": "visible"
+        },
+        "paint": {
+          "circle-color": "#00aaff",
+          "circle-radius": [
+            "interpolate",
+            [
+              "linear"
+            ],
+            [
+              "coalesce",
+              [
+                "get",
+                "capacity"
+              ],
+              0
+            ],
+            0,
+            8,
+            10,
+            10,
+            50,
+            13,
+            200,
+            17,
+            500,
+            22,
+            1000,
+            28
+          ],
+          "circle-stroke-width": 1.5,
+          "circle-stroke-color": "#000",
+          "circle-opacity": 0.85
+        }
+      },
+      "featureCount": 0,
+      "eligible": 0,
+      "target": null,
+      "sample": null,
+      "pass": false
+    },
+    {
+      "id": "flywheel",
+      "errors": [],
+      "generation": "202610261949",
+      "initialLabel": "Flywheel [WAIT]",
+      "label": "Flywheel [FAIL]",
+      "checked": true,
+      "disabled": false,
+      "layer": {
+        "id": "l-flywheel",
+        "type": "circle",
+        "source": "src-repd",
+        "filter": [
+          "==",
+          [
+            "get",
+            "tech"
+          ],
+          "flywheel"
+        ],
+        "layout": {
+          "visibility": "visible"
+        },
+        "paint": {
+          "circle-color": "#ff69b4",
+          "circle-radius": [
+            "interpolate",
+            [
+              "linear"
+            ],
+            [
+              "coalesce",
+              [
+                "get",
+                "capacity"
+              ],
+              0
+            ],
+            0,
+            8,
+            10,
+            10,
+            50,
+            13,
+            200,
+            17,
+            500,
+            22,
+            1000,
+            28
+          ],
+          "circle-stroke-width": 1.5,
+          "circle-stroke-color": "#000",
+          "circle-opacity": 0.85
+        }
+      },
+      "featureCount": 0,
+      "eligible": 0,
+      "target": null,
+      "sample": null,
+      "pass": false
+    },
+    {
+      "id": "act",
+      "errors": [],
+      "generation": "202610261949",
+      "initialLabel": "Advanced Conversion [WAIT]",
+      "label": "Advanced Conversion [FAIL]",
+      "checked": true,
+      "disabled": false,
+      "layer": {
+        "id": "l-act",
+        "type": "circle",
+        "source": "src-repd",
+        "filter": [
+          "==",
+          [
+            "get",
+            "tech"
+          ],
+          "act"
+        ],
+        "layout": {
+          "visibility": "visible"
+        },
+        "paint": {
+          "circle-color": "#ff6600",
+          "circle-radius": [
+            "interpolate",
+            [
+              "linear"
+            ],
+            [
+              "coalesce",
+              [
+                "get",
+                "capacity"
+              ],
+              0
+            ],
+            0,
+            8,
+            10,
+            10,
+            50,
+            13,
+            200,
+            17,
+            500,
+            22,
+            1000,
+            28
+          ],
+          "circle-stroke-width": 1.5,
+          "circle-stroke-color": "#000",
+          "circle-opacity": 0.85
+        }
+      },
+      "featureCount": 0,
+      "eligible": 0,
+      "target": null,
+      "sample": null,
+      "pass": false
+    },
+    {
+      "id": "geothermal",
+      "errors": [],
+      "generation": "202610261949",
+      "initialLabel": "Geothermal [WAIT]",
+      "label": "Geothermal [FAIL]",
+      "checked": true,
+      "disabled": false,
+      "layer": {
+        "id": "l-geothermal",
+        "type": "circle",
+        "source": "src-repd",
+        "filter": [
+          "==",
+          [
+            "get",
+            "tech"
+          ],
+          "geothermal"
+        ],
+        "layout": {
+          "visibility": "visible"
+        },
+        "paint": {
+          "circle-color": "#ff3300",
+          "circle-radius": [
+            "interpolate",
+            [
+              "linear"
+            ],
+            [
+              "coalesce",
+              [
+                "get",
+                "capacity"
+              ],
+              0
+            ],
+            0,
+            8,
+            10,
+            10,
+            50,
+            13,
+            200,
+            17,
+            500,
+            22,
+            1000,
+            28
+          ],
+          "circle-stroke-width": 1.5,
+          "circle-stroke-color": "#000",
+          "circle-opacity": 0.85
+        }
+      },
+      "featureCount": 0,
+      "eligible": 0,
+      "target": null,
+      "sample": null,
+      "pass": false
+    },
+    {
+      "id": "caes",
+      "errors": [],
+      "generation": "202610261949",
+      "initialLabel": "Compressed Air Storage [WAIT]",
+      "label": "Compressed Air Storage [FAIL]",
+      "checked": true,
+      "disabled": false,
+      "layer": {
+        "id": "l-caes",
+        "type": "circle",
+        "source": "src-repd",
+        "filter": [
+          "==",
+          [
+            "get",
+            "tech"
+          ],
+          "caes"
+        ],
+        "layout": {
+          "visibility": "visible"
+        },
+        "paint": {
+          "circle-color": "#88aaff",
+          "circle-radius": [
+            "interpolate",
+            [
+              "linear"
+            ],
+            [
+              "coalesce",
+              [
+                "get",
+                "capacity"
+              ],
+              0
+            ],
+            0,
+            8,
+            10,
+            10,
+            50,
+            13,
+            200,
+            17,
+            500,
+            22,
+            1000,
+            28
+          ],
+          "circle-stroke-width": 1.5,
+          "circle-stroke-color": "#000",
+          "circle-opacity": 0.85
+        }
+      },
+      "featureCount": 0,
+      "eligible": 0,
+      "target": null,
+      "sample": null,
+      "pass": false
+    }
+  ]
+}

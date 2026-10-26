@@ -1,0 +1,15 @@
+[p13c] candidate on booted in 44609 ms; lightning requests at boot 0
+[p13c] ON loaded: [{"url":"data/history/index.json","declared":true},{"url":"data/history/days/2026/10/25.json","declared":true}]
+node:internal/modules/run_main:123
+    triggerUncaughtException(
+    ^
+
+page.evaluate: Target crashed 
+    at sample (/tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/regression-challenge-C/p13-clock.mjs:52:32)
+    at idle (/tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/regression-challenge-C/p13-clock.mjs:67:24)
+    at async file:///tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/regression-challenge-C/p13-clock.mjs:90:10 {
+  log: [],
+  name: 'Error'
+}
+
+Node.js v22.23.4

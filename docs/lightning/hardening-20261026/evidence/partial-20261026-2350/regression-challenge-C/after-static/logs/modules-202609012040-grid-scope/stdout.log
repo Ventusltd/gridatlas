@@ -1,0 +1,57 @@
+
+it loads, and refuses to load alone
+
+  [PASS] the module registers
+  [PASS] it refuses without geodesy
+
+it counts what is there, in bands
+
+  [PASS] the far substation beyond the outer band is excluded
+  [PASS] a malformed entry is skipped rather than throwing
+  [PASS] bands are cumulative and ordered
+  [PASS] the 2 km band holds only the one substation that is inside it
+  [PASS] the 5 km band adds the 132 and the unnamed 275
+  [PASS] the 25 km band reaches the far 400
+  [PASS] nearest is sorted by measured distance
+  [PASS] the nearest is the one placed nearest, at about a kilometre
+
+named and unnamed are both reported, and kept apart
+
+  [PASS] an unnamed node can be the nearest of all
+  [PASS] but the named list contains only named sites
+  [PASS] the nearest transmission-class site is identified separately
+
+the voltage floor is honoured
+
+  [PASS] a 400 kV floor excludes everything below it
+  [PASS] classOf maps a voltage to its class, and refuses below the floor
+
+a voltage is never labelled as a class it is not
+
+  [PASS] 750 kV is not labelled 400 kV
+  [PASS] 110 kV is not labelled 66 kV
+  [PASS] 50 kV is not labelled 33 kV
+  [PASS] 32 kV, just below a class, is not rounded up
+  [PASS] a fraction within tolerance still classifies
+  [PASS] the tolerance is a tolerance, not a bucket
+  [PASS] an infinity classifies as nothing
+  [PASS] a voltage that did not parse cannot pass a voltage floor
+  [PASS] nonsense classifies as nothing
+  [PASS] an off-class site is counted as unclassified, not folded into a class
+
+what it refuses to say travels inside the result
+
+  [PASS] the result states what it is
+  [PASS] the result states what it is not, in the same object
+  [PASS] it names queue position and consent as the things it cannot see
+  [PASS] the method and the radius are carried with the numbers
+  [PASS] no grading language anywhere in the module
+
+edge cases
+
+  [PASS] an empty network scopes to nothing rather than throwing
+  [PASS] an empty scope still carries its refusal
+  [PASS] a null network is survivable
+
+33/33 checks passed
+the scope counts what is mapped, names what it cannot know, and carries both together.

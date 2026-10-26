@@ -1,0 +1,569 @@
+{
+ "harness": "self-fixture, node v22.23.4, kuiper-law.js unmodified (kuiper-belt@7a65dd315b0c60b1baf9a7090206c900b2cfd0a1 index.html:92,143-148,250-251,333-335,357)",
+ "feed": "/home/claude/lightning/data/uk_lightning.geojson",
+ "facts": {
+  "flashes": 408,
+  "products": 116,
+  "slots_with_flashes": 116,
+  "max_record_index": 27904,
+  "max_flashes_in_one_slot": 27,
+  "distinct_flash_times": 408,
+  "distinct_lonlat": 406,
+  "within_slot_consecutive_pairs": 292,
+  "record_order_nondecreasing_in_time": 292,
+  "record_order_nondecreasing_in_lat": 155,
+  "record_order_nondecreasing_in_lon": 178,
+  "flash_time_slot_differs_from_product_slot": 1,
+  "flash_time_before_product_start": [
+   {
+    "id": "195009_20261023200009_N__O_0120_0000:322",
+    "ms_early": 361
+   }
+  ]
+ },
+ "tests": {
+  "dense_rank_time_order": {
+   "unique_keys": 408,
+   "of": 408,
+   "bijective_on_flashes": true,
+   "all_nonnegative_finite": true,
+   "geo_blind": true,
+   "late_completion": {
+    "present_early": 310,
+    "arrived_late": 98,
+    "moved_keys": 306
+   },
+   "whole_slot_arrives_late": {
+    "moved_keys": 402,
+    "of": 407
+   }
+  },
+  "slot_only": {
+   "unique_keys": 116,
+   "of": 408,
+   "bijective_on_flashes": false,
+   "all_nonnegative_finite": true,
+   "geo_blind": true,
+   "late_completion": {
+    "present_early": 310,
+    "arrived_late": 98,
+    "moved_keys": 0
+   },
+   "whole_slot_arrives_late": {
+    "moved_keys": 0,
+    "of": 407
+   }
+  },
+  "slot_shift16_or_rank_js_bitops": {
+   "unique_keys": 408,
+   "of": 408,
+   "bijective_on_flashes": true,
+   "all_nonnegative_finite": true,
+   "first_negative_slot": 32768,
+   "example": {
+    "slot": 32768,
+    "key": -2147483648,
+    "keyPlace_r": null,
+    "date_utc": "2027-06-04T13:20:09.000Z"
+   },
+   "geo_blind": true,
+   "late_completion": {
+    "present_early": 310,
+    "arrived_late": 98,
+    "moved_keys": 72
+   },
+   "whole_slot_arrives_late": {
+    "moved_keys": 0,
+    "of": 407
+   }
+  },
+  "slot_times_M_plus_rank": {
+   "unique_keys": 408,
+   "of": 408,
+   "bijective_on_flashes": true,
+   "all_nonnegative_finite": true,
+   "decode_round_trip": "408/408",
+   "geo_blind": true,
+   "late_completion": {
+    "present_early": 310,
+    "arrived_late": 98,
+    "moved_keys": 72
+   },
+   "whole_slot_arrives_late": {
+    "moved_keys": 0,
+    "of": 407
+   }
+  },
+  "slot_times_2p20_plus_record_index": {
+   "unique_keys": 408,
+   "of": 408,
+   "bijective_on_flashes": true,
+   "all_nonnegative_finite": true,
+   "geo_blind": true,
+   "late_completion": {
+    "present_early": 310,
+    "arrived_late": 98,
+    "moved_keys": 0
+   },
+   "whole_slot_arrives_late": {
+    "moved_keys": 0,
+    "of": 407
+   }
+  },
+  "FORBIDDEN_morton_geo_key": {
+   "geo_blind": false
+  },
+  "float32_shader": {
+   "slot_times_M_plus_rank": {
+    "max_key": 51576832,
+    "max_float32_vs_float64_world_units": 0.0027,
+    "min_separation_world_units": 55.337,
+    "neighbour_spacing_world_units": 1.772
+   },
+   "slot_times_2p20_plus_record_index": {
+    "max_key": 825233505,
+    "max_float32_vs_float64_world_units": 0.00963,
+    "min_separation_world_units": 24.052,
+    "neighbour_spacing_world_units": 1.772
+   },
+   "year_end_probe": {
+    "key": 3454059344,
+    "r": 58771.2,
+    "float32_error_world_units": 0.007
+   }
+  }
+ },
+ "angles": {
+  "slot_only_nearest_neighbour_key_differences": [
+   {
+    "keys": "100..400",
+    "radius": "10..20",
+    "nn_key_difference_counts": {
+     "21": 25,
+     "34": 204,
+     "55": 71
+    }
+   },
+   {
+    "keys": "1000..1400",
+    "radius": "32..37",
+    "nn_key_difference_counts": {
+     "89": 400
+    }
+   },
+   {
+    "keys": "5000..5600",
+    "radius": "71..75",
+    "nn_key_difference_counts": {
+     "144": 600
+    }
+   },
+   {
+    "keys": "20000..21000",
+    "radius": "141..145",
+    "nn_key_difference_counts": {
+     "377": 1000
+    }
+   },
+   {
+    "keys": "50000..52000",
+    "radius": "224..228",
+    "nn_key_difference_counts": {
+     "610": 2000
+    }
+   }
+  ],
+  "one_day_144_slots_rotation_turns": -0.00311,
+  "one_day_144_slots_rotation_degrees": -1.12,
+  "per_slot_rotation": {
+   "65536": {
+    "per_slot_turns": 0.47548,
+    "per_day_turns": 0.46899,
+    "period_in_slots_if_power_of_two": 65536
+   },
+   "65537": {
+    "per_slot_turns": 0.09351,
+    "per_day_turns": 0.46589,
+    "period_in_slots_if_power_of_two": null
+   },
+   "65549": {
+    "per_slot_turns": 0.50992,
+    "per_day_turns": 0.42862,
+    "period_in_slots_if_power_of_two": null
+   },
+   "1048576": {
+    "per_slot_turns": 0.60767,
+    "per_day_turns": -0.49609,
+    "period_in_slots_if_power_of_two": 4096
+   },
+   "1048577": {
+    "per_slot_turns": 0.2257,
+    "per_day_turns": -0.4992,
+    "period_in_slots_if_power_of_two": null
+   }
+  },
+  "best_M_near_2p16": [
+   {
+    "M": 68869,
+    "per_slot_turns": 0.382763,
+    "golden_gap": 0.000797,
+    "per_day_abs_turns": 0.1179
+   },
+   {
+    "M": 68871,
+    "per_slot_turns": 0.618831,
+    "golden_gap": 0.000797,
+    "per_day_abs_turns": 0.1117
+   },
+   {
+    "M": 66052,
+    "per_slot_turns": 0.381017,
+    "golden_gap": 0.000949,
+    "per_day_abs_turns": 0.1335
+   }
+  ],
+  "rank0_star_evenness_meanNN_over_ideal": {
+   "65536": 0.923,
+   "68869": 0.89
+  },
+  "rank0_star_evenness_note": "mean nearest-neighbour distance / sqrt(area per point) for the first star of 2,000 consecutive slots; Poisson ~0.5, hexagonal ~1.07; low = stars bunch on arms"
+ },
+ "stride": {
+  "every_Kth_in_key_order_K4": {
+   "drawn": 102,
+   "expected": 102,
+   "slots_with_flashes": 116,
+   "slots_keeping_at_least_one": 65,
+   "max_abs_day_error": "0.8",
+   "per_day": [
+    {
+     "day": "2026-10-21",
+     "flashes": 31,
+     "drawn": 8,
+     "expected": 7.8
+    },
+    {
+     "day": "2026-10-22",
+     "flashes": 67,
+     "drawn": 17,
+     "expected": 16.8
+    },
+    {
+     "day": "2026-10-23",
+     "flashes": 189,
+     "drawn": 47,
+     "expected": 47.3
+    },
+    {
+     "day": "2026-10-24",
+     "flashes": 118,
+     "drawn": 30,
+     "expected": 29.5
+    },
+    {
+     "day": "2026-10-25",
+     "flashes": 3,
+     "drawn": 0,
+     "expected": 0.8
+    }
+   ],
+   "drawn_set_changes_when_an_earlier_slot_arrives": 200
+  },
+  "key_mod_K_power_of_two_K4": {
+   "drawn": 159,
+   "expected": 102,
+   "slots_with_flashes": 116,
+   "slots_keeping_at_least_one": 116,
+   "max_abs_day_error": "15.2",
+   "per_day": [
+    {
+     "day": "2026-10-21",
+     "flashes": 31,
+     "drawn": 21,
+     "expected": 7.8
+    },
+    {
+     "day": "2026-10-22",
+     "flashes": 67,
+     "drawn": 32,
+     "expected": 16.8
+    },
+    {
+     "day": "2026-10-23",
+     "flashes": 189,
+     "drawn": 60,
+     "expected": 47.3
+    },
+    {
+     "day": "2026-10-24",
+     "flashes": 118,
+     "drawn": 43,
+     "expected": 29.5
+    },
+    {
+     "day": "2026-10-25",
+     "flashes": 3,
+     "drawn": 3,
+     "expected": 0.8
+    }
+   ],
+   "drawn_set_changes_when_an_earlier_slot_arrives": 0
+  },
+  "record_key_mod_odd_K_K5": {
+   "drawn": 82,
+   "expected": 81.6,
+   "slots_with_flashes": 116,
+   "slots_keeping_at_least_one": 47,
+   "max_abs_day_error": "1.8",
+   "per_day": [
+    {
+     "day": "2026-10-21",
+     "flashes": 31,
+     "drawn": 7,
+     "expected": 6.2
+    },
+    {
+     "day": "2026-10-22",
+     "flashes": 67,
+     "drawn": 15,
+     "expected": 13.4
+    },
+    {
+     "day": "2026-10-23",
+     "flashes": 189,
+     "drawn": 36,
+     "expected": 37.8
+    },
+    {
+     "day": "2026-10-24",
+     "flashes": 118,
+     "drawn": 23,
+     "expected": 23.6
+    },
+    {
+     "day": "2026-10-25",
+     "flashes": 3,
+     "drawn": 1,
+     "expected": 0.6
+    }
+   ],
+   "drawn_set_changes_when_an_earlier_slot_arrives": 0
+  },
+  "hash_of_id_mod_K_K4": {
+   "drawn": 103,
+   "expected": 102,
+   "slots_with_flashes": 116,
+   "slots_keeping_at_least_one": 60,
+   "max_abs_day_error": "4.5",
+   "per_day": [
+    {
+     "day": "2026-10-21",
+     "flashes": 31,
+     "drawn": 6,
+     "expected": 7.8
+    },
+    {
+     "day": "2026-10-22",
+     "flashes": 67,
+     "drawn": 15,
+     "expected": 16.8
+    },
+    {
+     "day": "2026-10-23",
+     "flashes": 189,
+     "drawn": 46,
+     "expected": 47.3
+    },
+    {
+     "day": "2026-10-24",
+     "flashes": 118,
+     "drawn": 34,
+     "expected": 29.5
+    },
+    {
+     "day": "2026-10-25",
+     "flashes": 3,
+     "drawn": 2,
+     "expected": 0.8
+    }
+   ],
+   "drawn_set_changes_when_an_earlier_slot_arrives": 0
+  },
+  "every_Kth_in_key_order_K8": {
+   "drawn": 51,
+   "expected": 51,
+   "slots_with_flashes": 116,
+   "slots_keeping_at_least_one": 41,
+   "max_abs_day_error": "0.6",
+   "per_day": [
+    {
+     "day": "2026-10-21",
+     "flashes": 31,
+     "drawn": 4,
+     "expected": 3.9
+    },
+    {
+     "day": "2026-10-22",
+     "flashes": 67,
+     "drawn": 9,
+     "expected": 8.4
+    },
+    {
+     "day": "2026-10-23",
+     "flashes": 189,
+     "drawn": 23,
+     "expected": 23.6
+    },
+    {
+     "day": "2026-10-24",
+     "flashes": 118,
+     "drawn": 15,
+     "expected": 14.8
+    },
+    {
+     "day": "2026-10-25",
+     "flashes": 3,
+     "drawn": 0,
+     "expected": 0.4
+    }
+   ],
+   "drawn_set_changes_when_an_earlier_slot_arrives": 100
+  },
+  "key_mod_K_power_of_two_K8": {
+   "drawn": 130,
+   "expected": 51,
+   "slots_with_flashes": 116,
+   "slots_keeping_at_least_one": 116,
+   "max_abs_day_error": "21.6",
+   "per_day": [
+    {
+     "day": "2026-10-21",
+     "flashes": 31,
+     "drawn": 21,
+     "expected": 3.9
+    },
+    {
+     "day": "2026-10-22",
+     "flashes": 67,
+     "drawn": 30,
+     "expected": 8.4
+    },
+    {
+     "day": "2026-10-23",
+     "flashes": 189,
+     "drawn": 40,
+     "expected": 23.6
+    },
+    {
+     "day": "2026-10-24",
+     "flashes": 118,
+     "drawn": 36,
+     "expected": 14.8
+    },
+    {
+     "day": "2026-10-25",
+     "flashes": 3,
+     "drawn": 3,
+     "expected": 0.4
+    }
+   ],
+   "drawn_set_changes_when_an_earlier_slot_arrives": 0
+  },
+  "record_key_mod_odd_K_K9": {
+   "drawn": 53,
+   "expected": 45.3,
+   "slots_with_flashes": 116,
+   "slots_keeping_at_least_one": 39,
+   "max_abs_day_error": "5.6",
+   "per_day": [
+    {
+     "day": "2026-10-21",
+     "flashes": 31,
+     "drawn": 9,
+     "expected": 3.4
+    },
+    {
+     "day": "2026-10-22",
+     "flashes": 67,
+     "drawn": 9,
+     "expected": 7.4
+    },
+    {
+     "day": "2026-10-23",
+     "flashes": 189,
+     "drawn": 18,
+     "expected": 21
+    },
+    {
+     "day": "2026-10-24",
+     "flashes": 118,
+     "drawn": 17,
+     "expected": 13.1
+    },
+    {
+     "day": "2026-10-25",
+     "flashes": 3,
+     "drawn": 0,
+     "expected": 0.3
+    }
+   ],
+   "drawn_set_changes_when_an_earlier_slot_arrives": 0
+  },
+  "hash_of_id_mod_K_K8": {
+   "drawn": 48,
+   "expected": 51,
+   "slots_with_flashes": 116,
+   "slots_keeping_at_least_one": 31,
+   "max_abs_day_error": "2.6",
+   "per_day": [
+    {
+     "day": "2026-10-21",
+     "flashes": 31,
+     "drawn": 2,
+     "expected": 3.9
+    },
+    {
+     "day": "2026-10-22",
+     "flashes": 67,
+     "drawn": 8,
+     "expected": 8.4
+    },
+    {
+     "day": "2026-10-23",
+     "flashes": 189,
+     "drawn": 21,
+     "expected": 23.6
+    },
+    {
+     "day": "2026-10-24",
+     "flashes": 118,
+     "drawn": 15,
+     "expected": 14.8
+    },
+    {
+     "day": "2026-10-25",
+     "flashes": 3,
+     "drawn": 2,
+     "expected": 0.4
+    }
+   ],
+   "drawn_set_changes_when_an_earlier_slot_arrives": 0
+  }
+ },
+ "see_through_stride_phone": {
+  "stars": 12900,
+  "on_issued_line": 8490,
+  "on_silence": 4410
+ },
+ "see_through_stride": {
+  "wafer_rows_now": 12357,
+  "SPACE_in_kuiper_law": 59637070538,
+  "a_commit_ends_exactly_at_SPACE": true,
+  "issued_keys_below_SPACE": 43486619138,
+  "issued_share_of_address_space": 0.729188,
+  "stride_keys": 20000,
+  "stride_keys_on_an_issued_line": 14599,
+  "stride_keys_on_silence": 5401,
+  "note": "descent.js:964 key = floor((ki+0.5)*SPACE/NRULE): a midpoint stride over ADDRESSES (lines + silence at 600 keys/s), not over lines"
+ }
+}

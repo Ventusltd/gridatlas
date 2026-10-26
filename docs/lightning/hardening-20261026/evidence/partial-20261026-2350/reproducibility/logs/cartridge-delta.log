@@ -1,0 +1,13 @@
+live(hardening wt) 7812953671d8bb22a566de5e98fd3137da2d23411c5aecd526df5afa111ca4ca  -
+live(prod clone HEAD) 7812953671d8bb22a566de5e98fd3137da2d23411c5aecd526df5afa111ca4ca  -
+live(prod clone worktree file) 7812953671d8bb22a566de5e98fd3137da2d23411c5aecd526df5afa111ca4ca  -
+live(4df2d99) 7812953671d8bb22a566de5e98fd3137da2d23411c5aecd526df5afa111ca4ca  -
+prod HEAD c08f3a6
+"generation": "202609241334"
+cat(live,\n,module) vs cartridge cmp=0
+cat(prod-live,\n,module) vs cartridge cmp=0
+sizes: live=435218 module=23226 cartridge=458445 sum+1=458445
+head-cmp=0
+0000000  \n
+tail-cmp=0
+0

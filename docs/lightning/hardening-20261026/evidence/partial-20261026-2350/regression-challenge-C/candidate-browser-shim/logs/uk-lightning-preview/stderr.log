@@ -1,0 +1,22 @@
+node:internal/modules/run_main:123
+    triggerUncaughtException(
+    ^
+
+AssertionError [ERR_ASSERTION]: baseline generation mismatch
++ actual - expected
+
++ '202610261949'
+- '202609241334'
+       ^
+
+    at openProfile (file:///tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/regression-challenge-C/shadow-candidate/tools/proofs/uk-lightning-preview.browser.mjs:64:9)
+    at async file:///tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/regression-challenge-C/shadow-candidate/tools/proofs/uk-lightning-preview.browser.mjs:85:18 {
+  generatedMessage: false,
+  code: 'ERR_ASSERTION',
+  actual: '202610261949',
+  expected: '202609241334',
+  operator: 'strictEqual',
+  diff: 'simple'
+}
+
+Node.js v22.23.4

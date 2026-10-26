@@ -1,0 +1,15 @@
+== P16 static byte budgets ==
+module bytes: 23973 (budget 24000; headroom 27 bytes)
+cartridge bytes: 459192 (ceiling 460000; headroom 808 bytes)
+live cartridge bytes: 435218
+gzip sizes: module 10365, candidate cartridge 140573, live cartridge 130838
+
+== P16 no new CDN/browser library in the module ==
+createElement('script')/import()/importScripts/<link/cdn hosts: 0
+external hosts named in the module: https://raw.githubusercontent.com 
+window.fetch patched? 0
+style/stylesheet injection: 0
+storage: 0
+timers in module (setInterval/setTimeout occurrences):       3 setInterval       1 setTimeout 
+MutationObserver occurrences: 1
+innerHTML sinks (own nodes): 2

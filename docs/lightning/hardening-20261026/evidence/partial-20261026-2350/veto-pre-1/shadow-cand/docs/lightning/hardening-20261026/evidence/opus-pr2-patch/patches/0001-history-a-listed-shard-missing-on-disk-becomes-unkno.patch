@@ -1,0 +1,148 @@
+From e4ae4187a22429e47cc2286f487869f1e01d1349 Mon Sep 17 00:00:00 2001
+From: "opus-pr2-patch (Claude)" <noreply@anthropic.com>
+Date: Mon, 26 Oct 2026 23:03:18 +0000
+Subject: [PATCH 1/5] history: a listed shard missing on disk becomes unknown,
+ not zero (D-1)
+
+archive_observations visited only days present on disk or in the incoming
+run record (history.py:382), so a day whose indexed shard had vanished was
+never checked and the row builder (history.py:470-476) wrote count 0 with
+coverage full for a day that had archived flashes. A missing hourly part
+produced a silent undercount (count 4 of 8, coverage full).
+
+Days listed in the previous index are now visited too. If any listed file
+is missing, the day is marked shard_lost: coverage none, scanned_seconds 0,
+count null. The flag is sticky, so flashes for that day arriving later are
+dropped (counted in dropped_lost_day) rather than rebuilding a partial
+count. Remaining files are left untouched and unlisted for manual recovery.
+
+Tests: test_listed_shard_missing_on_disk_becomes_unknown_not_zero,
+test_missing_hourly_part_marks_the_whole_day_unknown (both fail at f7db76c).
+
+Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
+Claude-Session: https://claude.ai/code/session_01JcZ2nJ9f9fgHY3X3JTk4DF
+---
+ docs/HISTORY_ONE_YEAR.md |  4 ++++
+ history.py               | 22 +++++++++++++++++++++-
+ tests/test_history.py    | 34 ++++++++++++++++++++++++++++++++++
+ 3 files changed, 59 insertions(+), 1 deletion(-)
+
+diff --git a/docs/HISTORY_ONE_YEAR.md b/docs/HISTORY_ONE_YEAR.md
+index ba092b2..de3d254 100644
+--- a/docs/HISTORY_ONE_YEAR.md
++++ b/docs/HISTORY_ONE_YEAR.md
+@@ -116,6 +116,10 @@ Rules:
+ - `sealed` = every slot of the date was examined (`full`) **or** `generated_utc ≥ date + 1 d +
+   48 h`, i.e. no scheduled run can touch the shard any more: safe for ordinary HTTP caching
+   (`cache: 'default'`). Unsealed shards and the index use `cache: 'no-cache'` (revalidate).
++- `shard_lost: true` (optional key) marks a date whose listed shard or part vanished from disk:
++  the row becomes `coverage none`, `scanned_seconds 0`, `count null` (unknown, never zero),
++  stays so on later runs (incoming flashes for it are dropped and counted as `dropped_lost_day`),
++  and any remaining files are left unlisted for manual recovery from git history.
+ 
+ ### Day shard (`uk-lightning-history-day.v1`)
+ 
+diff --git a/history.py b/history.py
+index 1c2744c..2ee3acc 100644
+--- a/history.py
++++ b/history.py
+@@ -379,9 +379,24 @@ def archive_observations(
+     changed_files = 0
+     summaries: dict[str, dict] = {}
+     split_days: list[str] = []
+-    for day in sorted(set(disk) | set(incoming_by_day)):
++    # A shard the old index lists but the disk lacks is LOST: its count can no
++    # longer be proven, so the day becomes unknown (count null), never zero or
++    # a partial count rebuilt from whatever flashes arrive later. Sticky via
++    # the row's ``shard_lost`` flag until the date leaves retention.
++    window = (cutoff.isoformat(), today.isoformat())
++    lost_days = {d for d, r in old_rows.items() if r.get("shard_lost") and window[0] <= d <= window[1]}
++    indexed = {d for d, r in old_rows.items() if (r.get("path") or r.get("parts")) and window[0] <= d <= window[1]}
++    dropped_lost_day = 0
++    for day in sorted(set(disk) | set(incoming_by_day) | indexed):
+         on_disk = disk.get(day, {"file": None, "parts": {}})
+         old_row = old_rows.get(day)
++        if day not in lost_days and old_row and (old_row.get("path") or old_row.get("parts")):
++            listed = [old_row["path"]] if old_row.get("path") else [p["path"] for p in old_row.get("parts") or []]
++            if any(not (archive_dir / rel).exists() for rel in listed):
++                lost_days.add(day)
++        if day in lost_days:
++            dropped_lost_day += len(incoming_by_day.get(day, {}))
++            continue  # leave any remaining files untouched (unlisted) for manual recovery from git history
+         verifiable = (
+             old_row is not None and day not in incoming_by_day
+             and bool(old_row.get("path") or old_row.get("parts"))
+@@ -472,6 +487,8 @@ def archive_observations(
+                 # recorded for the date (e.g. a seed older than the recorded windows).
+                 proven = slots_proved_by_flashes(summary["records"]) if summary.get("records") else SLOT_SECONDS
+                 scanned = max(SLOT_SECONDS, proven, int(summary.get("scanned_floor") or 0))
++        if key in lost_days:
++            scanned, summary = 0, None
+         coverage = coverage_for(scanned)
+         count = None if coverage == "none" else (summary["count"] if summary else 0)
+         row = {
+@@ -488,6 +505,8 @@ def archive_observations(
+         }
+         if summary and summary.get("parts"):
+             row["parts"] = summary["parts"]
++        if key in lost_days:
++            row["shard_lost"] = True
+         rows.append(row)
+         day += timedelta(days=1)
+ 
+@@ -531,6 +550,7 @@ def archive_observations(
+         "index": index, "files_changed": changed_files, "days_expired": len(expired_files),
+         "dropped_before_cutoff": dropped_before_cutoff, "dropped_invalid": dropped_invalid,
+         "split_days": sorted(set(split_days)),
++        "lost_days": sorted(lost_days), "dropped_lost_day": dropped_lost_day,
+     }
+ 
+ 
+diff --git a/tests/test_history.py b/tests/test_history.py
+index 201ce47..e5d0ebe 100644
+--- a/tests/test_history.py
++++ b/tests/test_history.py
+@@ -357,6 +357,40 @@ class LightningHistoryTests(unittest.TestCase):
+         with self.assertRaises(ValueError):
+             archive_observations(self.root, [], now=self.now)
+ 
++    # --- D-1: a shard listed in the index but missing on disk -------------------
++    def test_listed_shard_missing_on_disk_becomes_unknown_not_zero(self):
++        day = datetime(2026, 10, 24, tzinfo=timezone.utc)
++        first = archive_observations(self.root, [self.flash(day + timedelta(hours=10), "a"),
++                                                 self.flash(day + timedelta(hours=11), "b")],
++                                     now=self.now, scanned_window=self.scan(day, day + timedelta(days=1)))
++        self.assertEqual({r["date"]: r for r in first["index"]["days"]}["2026-10-24"]["count"], 2)
++        (self.root / day_path(day.date())).unlink()  # lost between runs (bad merge, manual edit, ...)
++        second = archive_observations(self.root, [], now=self.now)
++        row = {r["date"]: r for r in second["index"]["days"]}["2026-10-24"]
++        self.assertEqual((row["coverage"], row["scanned_seconds"], row["count"], row["path"], row["bytes"], row["sha256"]),
++                         ("none", 0, None, None, None, None))  # unknown, never a searched zero
++        self.assertTrue(row["shard_lost"])
++        self.assertEqual(second["lost_days"], ["2026-10-24"])
++        self.assertEqual(second["index"]["archived_observations"], 0)
++        # Sticky: a later run carrying one flash of that day must not turn it into a partial "count 1".
++        third = archive_observations(self.root, [self.flash(day + timedelta(hours=12), "c")], now=self.now)
++        row = {r["date"]: r for r in third["index"]["days"]}["2026-10-24"]
++        self.assertEqual((row["coverage"], row["count"], row["path"]), ("none", None, None))
++        self.assertEqual(third["dropped_lost_day"], 1)
++        self.assertFalse((self.root / day_path(day.date())).exists())
++        self.assertEqual(verify_archive(self.root)["shards_checked"], 0)
++
++    def test_missing_hourly_part_marks_the_whole_day_unknown(self):
++        day = datetime(2026, 10, 24, tzinfo=timezone.utc)
++        flashes = [self.flash(day + timedelta(hours=h, minutes=m), f"p{h}-{m}", m) for h in (3, 4) for m in range(4)]
++        archive_observations(self.root, flashes, now=self.now, scanned_window=self.scan(day, day + timedelta(days=1)),
++                             target_shard_bytes=2000)
++        (self.root / part_path(day.date(), 4)).unlink()
++        result = archive_observations(self.root, [], now=self.now, target_shard_bytes=2000)
++        row = {r["date"]: r for r in result["index"]["days"]}["2026-10-24"]
++        self.assertEqual((row["coverage"], row["count"], row.get("parts")), ("none", None, None))
++        self.assertEqual(result["lost_days"], ["2026-10-24"])
++
+     # --- CLI --------------------------------------------------------------------
+     def test_cli_ingest_and_verify(self):
+         record_path = Path(self.temp.name) / "run.json"
+-- 
+2.43.0
+

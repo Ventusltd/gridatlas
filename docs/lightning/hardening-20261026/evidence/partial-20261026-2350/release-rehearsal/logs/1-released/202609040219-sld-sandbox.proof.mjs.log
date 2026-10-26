@@ -1,0 +1,826 @@
+
+pre-snapped config adapter, carried forward
+
+  [PASS] the original init is still called and its return passed through
+  [PASS] the rewritten config is byte-identical to the original adapter's
+  [PASS] all five topology layers are un-snapped, and only those  132,220,275,400,66
+  [PASS] layers outside the closure keep their snap flag
+  [PASS] preload flags survive the rewrite
+  [PASS] the public state object keeps its original schema and generation  202608292126
+  [PASS] applied is true after a successful init
+  [PASS] a shell that no longer matches the expected snap contract fails closed
+  [PASS] the failure is recorded rather than swallowed  1
+
+the measurement
+
+  [PASS] the cartridge publishes its state  no __GRIDATLAS_NEON_LINKS__
+  [PASS] scope is 33 kV  33
+  [PASS] maplibregl.Map is wrapped for capture
+  [PASS] constructing a map still constructs the real one  1
+  [PASS] the wrap captures the instance
+  [FAIL] grid-distance-maths is available for a parity check  clone Ventusltd/grid-distance-maths beside gridatlas
+
+the substation layer
+
+  [PASS] a plain 33000 tag is 33 kV
+  [PASS] a 33000;11000 list keeps both
+  [PASS] a 33000:11000 transformer ratio still carries 33 kV  33,11
+  [PASS] an 11000 site is below scope
+  [PASS] a bare 33 under `voltage` is 33 VOLTS, as the source says  0.033
+  [PASS] and therefore falls out of a 33 kV-and-above scope
+  [PASS] an explicit kv property is already kilovolts
+  [PASS] voltage wins when both are present, since it is the OSM tag
+  [PASS] Selhurst Traincare Depot: 33000;750 is 33 kV, not 750 kV  was 750 kV
+  [PASS] Thames Way Northfleet: the same tag, the same answer
+  [PASS] Ford Halewood: 33000;11000;415 tops out at 33 kV, not 415
+  [PASS] a genuine 400 kV tag is still 400 kV
+  [PASS] and a real 600 kV tag is not mistaken for the defect
+  [PASS] nothing on this network can now display above 400 kV from a low token
+  [PASS] an unparseable tag yields nothing
+  [PASS] a point substation keeps its coordinates
+  [PASS] a polygon reduces to its ring mean, not its first corner  [0.8,0.8]
+  [PASS] a multipolygon reduces too
+
+nearest selection
+
+  [PASS] results are ordered nearest first  Alpha,Bravo,Echo,Foxtrot,Charlie
+  [PASS] the cap is honoured  5
+  [PASS] a substation beyond the cut-off is dropped
+  [PASS] every returned distance is inside the cut-off
+  [PASS] the nearest is the nearest, checked by brute force  Alpha
+
+the project techs
+
+  [PASS] solar draws links
+  [PASS] bess draws links
+  [PASS] wind draws links
+  [PASS] wind_onshore_operational draws links
+  [PASS] bess_operational draws links
+  [PASS] offshore IS accepted, so the button does something
+
+the measurement does not know what technology it is
+
+  [PASS] the technology-coverage module reached the composed cartridge  policy present
+  [PASS] and it is the module, not the local fallback this part carries for a proof that loads the part alone
+  [PASS] the baseline measurement is not empty, or the table below proves nothing  5 links
+  [PASS] every technology, and no technology, measures identically from the same coordinates  23/23
+  [PASS] all twenty wider-fleet REPD technologies are on the roster by name  20 rostered
+  [PASS] and every one of them measures  20
+  [PASS] the buckets the roster maps to are the ones the MAP link can send  act,biomass,caes,flywheel,geothermal,hydro,hydrogen,other,tidal
+  [PASS] the technology gate is gone from selectAt
+  [PASS] no technology branch returns early from the compute path
+  [PASS] nearestSubstations takes coordinates and candidates, and nothing else
+  [PASS] and its body reads no technology at all
+  [PASS] the policy produces sentences, never a candidate set or a distance
+
+offshore measures to the nearest mapped substation
+
+  [PASS] offshore no longer withholds the measurement
+  [PASS] the old withholding sentence is gone from the served bytes
+  [PASS] but every word of the route reasoning it carried is kept
+  [PASS] the offshore note is a caveat beside the number, not instead of it
+  [PASS] offshore carries two notes and the others carry none
+  [PASS] every policy names the sample the superlative was drawn from
+  [PASS] the substation product genuinely carries no onshore/offshore field
+  [PASS] the card states that no onshore filter is applied, and why
+  [PASS] an offshore-NAMED result is marked, never removed
+  [PASS] and a substation named ONSHORE is not marked, so Hornsea and Thanet stay in the search
+
+what extending coverage must not cost
+
+  [PASS] a straight line is still not a route, and the corridor estimate still sits beside the distance
+  [PASS] nearest is still nearest-among-those-with-coordinates, with the denominator computed rather than written down
+  [PASS] the card still refuses to grade the result
+  [PASS] proximity is still not a connection offer, for any technology
+  [PASS] onshore wind is accepted, which is what the register writes  the register has 2,399 of them
+  [PASS] the engine is asked about anything not in the list
+  [PASS] an unknown technology is recorded rather than ignored
+  [PASS] and recording it no longer means abandoning the arrival
+  [PASS] non-project layers do not
+
+what a voltage class means
+
+  [PASS] every class the register connects at is described
+  [PASS] 66 kV is described as legacy industrial being reinforced
+  [PASS] 132 kV carries the England-Wales versus Scotland distinction
+  [PASS] 220 kV is tied to offshore wind landfalls
+  [PASS] 33 kV is named as the usual utility-scale connection
+  [PASS] the note is rendered, not merely declared
+  [PASS] only the classes actually found are described
+  [PASS] it disclaims being advice about the scheme
+  [PASS] the per-row hint reads as a hint
+  [PASS] the rest of the generation and storage dashboard is accepted
+  [PASS] why asking the engine alone would not have been enough is recorded
+
+GB prices, available historic record
+
+  [PASS] the panel exists
+  [PASS] it reads the repository that owns the data, not a copy
+  [PASS] the second-source-of-truth rule is written down where it applies
+  [PASS] retiring the earlier duplicate is recorded, not silent
+  [PASS] it reads the rollup, not the settlement-period history
+  [PASS] it links to the full tracker for everything else
+  [PASS] the tracker stays where the analysis lives
+  [PASS] the upstream and the owning repository are both named
+  [PASS] an absent solar series is stated, not left as a silent gap
+  [PASS] and the reason given is the second-source rule
+  [PASS] it disclaims being a forecast or a price expectation
+  [PASS] and any statement about a project on the map
+  [PASS] the v2 owner schema is required before any values are shown
+  [PASS] annual coverage and negative-date shares are recomputed as integrity gates
+  [PASS] the lowest settlement observation carries exact period and UTC identity
+  [PASS] no solar, curtailment or project conclusion is inferred from its date or sign
+  [PASS] partial-year labels use the owner coverage state, not a 360-day guess
+  [PASS] the record-wide share is shown with numerator and denominator
+  [PASS] a failed fetch blames the network, not the grid
+  [PASS] the rollup is revalidated, never pinned to its first sight
+  [PASS] why force-cache was wrong for a versioned product is recorded
+  [PASS] nothing is fetched at boot, only on first open
+  [PASS] and only once
+  [PASS] its clicks do not reach the map underneath
+  [PASS] it is sized against the viewport, not a desktop column
+  [PASS] it opens collapsed
+  [PASS] it reports its state to assistive technology
+  [PASS] it sits in the map control stack, which is queried not assumed
+  [PASS] a missing stack is recorded rather than swallowed
+  [PASS] the published state carries what was read
+  [PASS] the v2 record-wide share carries its measured denominator
+  [PASS] the partial year is explicit owner state
+  [PASS] a full year is explicit owner state
+  [PASS] each sample annual share has its own denominator
+  [PASS] the low carries exact period and UTC without a solar inference
+  [PASS] solar remains explicitly absent
+  [PASS] a summary with no rows cannot crash the panel
+
+the card is per selection
+
+  [PASS] a new selection resets the card geometry before anything else
+  [PASS] a freed card does not stay freed for the next project
+  [PASS] nor minimised
+  [PASS] the parked position is dropped with it
+  [PASS] the previous card's height is dropped
+  [PASS] the bar control is put back, so it still minimises
+  [PASS] an existing bar now measures instead of returning silently
+  [PASS] the bar and its listeners are kept rather than rebuilt
+  [PASS] the reset targets the popup, not the whole document
+
+labels without glyphs
+
+  [PASS] the font is asked of the style, not assumed
+  [PASS] no glyphs endpoint means no labels, not a throwing layer
+  [PASS] the font is borrowed from a layer the style already labels with
+  [PASS] a glyph endpoint with no symbol layer still gets a served default
+  [PASS] both label layers use the resolved font, neither a literal
+  [PASS] no symbol layer names a font directly any more
+  [PASS] the link labels are guarded
+  [PASS] the layout labels are guarded too
+  [PASS] omitting labels is recorded, not silent
+  [PASS] whether labels were drawn is published
+  [PASS] why this matters on a phone is written down
+  [PASS] a declared glyph endpoint is not trusted, it is asked
+  [PASS] the pre-flight requests the same range the renderer would
+  [PASS] a non-ok range means no labels, and says the status code
+  [PASS] an unreachable range means no labels too
+  [PASS] both label layers go through the pre-flight, neither is added directly
+  [PASS] the layer is added only once the range came back
+  [PASS] adding it twice is guarded against
+  [PASS] nothing awaits the labels
+  [PASS] why a present endpoint is not enough is written down
+  [PASS] a style with no glyphs yields no font
+  [PASS] a style with glyphs and a labelled layer yields that layer's font
+
+the version ledger
+
+  [PASS] the ledger exists and is embedded, not fetched
+  [PASS] the sandbox reads it rather than carrying a second copy
+  [FAIL] it spans the whole reviewed session  
+  [PASS] every entry carries a generation, a version and a scope
+  [PASS] versions are strictly increasing
+  [PASS] generations are strictly increasing, except after the one stamp recorded as typed ahead
+  [PASS] the rollback doctrine is stated where the versions are
+  [PASS] the ledger distinguishes immutable evidence from a live deployment
+  [PASS] the pre-scope era is counted, not hidden
+  [PASS] newest first for the reader
+  [PASS] it opens collapsed and is sized for a phone
+  [PASS] its clicks do not reach the map underneath
+  [PASS] it reports its state to assistive technology
+  [PASS] the published state carries the ledger size
+  [PASS] the three never-live candidates are labelled, not advertised as ordinary versions
+  [PASS] the visible ledger renders each rejection status and its reason
+  [FAIL] the current candidate is not mislabelled as one of the rejected predecessors  
+  [PASS] rollback explicitly refuses the rejected v9.101 generation  rollback: 202609040046 is REJECTED_PRE_PROMOTION and was never live; rollback targets must be deployed generations
+
+saying what is happening
+
+  [PASS] there is a status element at all
+  [PASS] it says what is being waited for, not merely that something is
+  [PASS] failure says the measurement already happened, not that nothing did
+  [PASS] and promises the layers will arrive on their own
+  [PASS] failure offers a way forward
+  [PASS] the retry re-runs the arrival instead of reloading the engine
+  [PASS] the reason a reload is the wrong answer is written down
+  [PASS] it is announced to assistive technology
+  [PASS] it is sized against the viewport, not a desktop column
+  [PASS] the pulse honours a reduced-motion preference
+  [PASS] its own button does not fall through to the map underneath
+  [PASS] the message is published for verification
+  [PASS] the published state carries it
+
+booting without a basemap
+
+  [PASS] the style is enough to boot on
+  [PASS] maplibre's load is still honoured, whichever arrives first
+  [PASS] and a timer, so a basemap that never paints is not fatal
+  [PASS] the timeout refuses to boot with no style to hang layers on
+  [PASS] booting on the style alone is recorded, not silent
+  [PASS] which trigger fired is published
+  [PASS] three triggers still boot exactly once
+  [PASS] the deep link waits for the controls before ticking them
+  [PASS] the wait is bounded, not a hang
+  [PASS] it waits for a tagged control, the same hook it will tick
+  [PASS] how long the engine took is published
+  [PASS] giving up says what could not be switched on, and why
+  [PASS] the published state carries both new facts
+
+central sizing
+
+  [PASS] the product defaults are the executable original central defaults
+  [PASS] the explicit stress has 24 inverters on 12 skids
+  [PASS] inverter nameplate is 105.6 MW  105.60000000000001
+  [PASS] skid nameplate is 52.8 MVA  52.800000000000004
+  [PASS] the old figure was larger than both nameplates
+  [PASS] a skid count exists in its own right, above the inverter count
+  [PASS] the two nameplates are computed separately
+  [PASS] export is the smaller of the two, never a product of them
+  [PASS] inverters per skid no longer enters the answer twice
+  [PASS] a count of inverters is never multiplied by a transformer rating
+  [PASS] the production substation is one skid, not a skid times its inverters
+  [PASS] the ring main is the skids on that ring
+  [PASS] both nameplates are published, so the reader sees the constraint
+  [PASS] the overload test compares the whole MV block against its skid
+  [PASS] one inverter is no longer compared with one skid, which never fired
+  [PASS] on the explicit stress that comparison does fire
+  [PASS] the warning says which element limits export, not merely that it is odd
+  [PASS] the divergence from the ported sandbox is recorded, not silent
+  [PASS] the source of the report is credited
+
+no source is dereferenced unchecked
+
+  [PASS] there are no unguarded setData call sites left
+  [PASS] every draw goes through the guard
+  [PASS] a missing source costs the drawing, not the session
+  [PASS] a throw is caught and named
+  [PASS] why a missing source is possible at all is recorded
+
+no dormant rewrite of the reference design
+
+  [PASS] the reconciler is deleted, not merely uncalled
+  [PASS] nothing is exported that could call it
+  [PASS] nothing assigns z_strings outside the defaults
+  [PASS] the original default is what ships
+  [PASS] the obsolete rationale is gone with it
+  [PASS] why it was deleted rather than commented out is recorded
+
+the dash atlas is bounded
+
+  [PASS] there is a fixed number of dash patterns
+  [PASS] they are built once, not per frame
+  [PASS] and frozen, so a caller cannot poison a reused frame
+  [PASS] flowDash quantises rather than computing a fresh array
+  [PASS] a dash is written only when the pattern changes
+  [PASS] the memo is per layer, since the two flows run half a period apart
+  [PASS] and cleared when the layers go, or a rebuilt layer misses its first write
+  [PASS] the measured saving is stated, not the one first guessed
+  [PASS] a negative or overrunning phase still lands in the set
+  [PASS] why an unbounded atlas is fatal is written down
+  [PASS] a hundred thousand frames produce at most 24 distinct patterns  24 distinct
+  [PASS] the same phase always returns the SAME array object, so it is reused
+
+the project pin
+
+  [PASS] the deep link enables the project's own technology layer
+  [PASS] the control is found by the layer id the engine tags it with
+  [PASS] the data attribute is tried before any label text
+  [PASS] a label fallback remains for a control the engine has not tagged
+  [PASS] battery and wind are in the fallback too
+  [PASS] a control already ticked is left alone
+  [PASS] a missing control is recorded rather than swallowed
+  [PASS] the published state reports whether the pin is shown  {"shown":false,"name":null}
+  [PASS] the published state reports which layer was enabled
+  [PASS] the pin can be toggled from outside the cartridge
+  [PASS] toggling twice returns to where it started
+  [PASS] a source that failed to add is never dereferenced
+  [PASS] an addSource that throws is caught and recorded
+  [PASS] clearing the pin tolerates a map with no source
+  [PASS] the card carries a pin toggle
+  [PASS] the toggle says what it will do, not what it currently is
+  [PASS] the marker is hollow, so the engine pixel stays readable inside it
+  [PASS] there is no filled disc in the technology colour any more
+  [PASS] the ring is larger than the pixel it surrounds
+  [PASS] the ring reads against the links rather than joining them
+  [PASS] the outer glow keeps the technology colour, quietly
+  [PASS] why a dot failed is recorded where the next reader will look
+  [PASS] the toggle reports its state to assistive technology
+  [PASS] the toggle does not fall through to the card underneath
+  [PASS] the pin is coloured by technology, not one colour for everything
+  [PASS] clearing the links clears the pin with them
+  [PASS] selecting a substation does not drop a project pin on it
+
+the card
+
+  [PASS] the measure surface is exposed for verification
+  [PASS] the card is marked BETA
+  [PASS] the card says it is beta analytics, not an actual connection
+  [PASS] the card names network impedance
+  [PASS] the card names fault level
+  [PASS] the card names thermal headroom
+  [PASS] the card names right of way
+  [PASS] the card names wayleaves
+  [PASS] the card names easements
+  [PASS] the card names consent
+  [PASS] the card says a substation does not confirm capacity
+  [PASS] the card says absence from a layer is not absence on the ground
+  [PASS] the caveat is in the card, not only a tooltip
+
+the palette
+
+  [PASS] the flow pulse is not pure white
+  [PASS] the link core is a muted SCADA teal
+  [PASS] glow opacity is restrained
+  [PASS] reduced motion is honoured
+
+the SLD layout sandbox
+
+  [PASS] the cartridge publishes its layout state
+  [PASS] it starts closed
+  [PASS] it starts with no route vertices
+  [PASS] string mode is the default
+  [PASS] every central case was reached  3
+  [PASS] the sandbox produces exactly the squared figure on every central case  [70.4,1425.6,1425.6]
+  [PASS] ours produces exactly the smaller of the two nameplates  [70.4,158.39999999999998,158.39999999999998]
+  [PASS] ours equals the one-inverter original and is lower only where the square exists
+  [PASS] the divergence is confined to central mode
+  [PASS] string mode still reproduces the sandbox exactly  0 of 6 differ
+
+one Earth radius
+
+  [PASS] no turf dependency came across in the code
+  [PASS] the Turf default radius appears nowhere in the code
+  [PASS] and the header still explains why it was removed
+  [FAIL] the estate declares an Earth radius exactly ONCE across the composition  2 declarations outside the carried engine
+  [PASS] and the immutable engine still has its own, untouched
+  [PASS] the body takes the radius and the distance from the geodesy module
+  [PASS] a missing geodesy module is a hard failure, never a fallback
+  [PASS] projection and bearing come from the module too
+  [PASS] point-to-segment replaces turf.nearestPointOnLine
+
+interaction
+
+  [PASS] the array is dragged, not mode-switched
+  [PASS] rotation has a handle
+  [PASS] route vertices are draggable
+  [PASS] a vertex can be inserted on the cable
+  [PASS] a vertex can be removed by double click
+  [PASS] panning is restored on release
+
+the electron flow
+
+  [PASS] the cable carries the travelling pulse
+  [PASS] the collectors carry it too
+  [PASS] the rotation stem is excluded from the flow
+  [PASS] reduced motion stops the pulse and keeps the geometry
+
+the panel
+
+  [PASS] the panel is marked Beta
+  [PASS] it says a layout is not a design
+  [PASS] it says beta analytics, not an actual grid connection
+  [PASS] it names wayleave and easement
+  [PASS] it names right of way
+  [PASS] it names network impedance and fault level
+  [PASS] it names thermal headroom and queue position
+  [PASS] it names consent and land control
+  [PASS] it says a substation does not confirm capacity
+  [PASS] the detour factor is shown beside the straight line
+
+deep links and the way into the layout
+
+  [PASS] the measurement is split out of the click handler
+  [PASS] a deep link runs the same path as a click
+  [PASS] it only fires for a technology that draws links
+  [PASS] it waits for the engine card rather than racing it
+  [PASS] it gives up rather than hanging
+  [PASS] a deep-link failure is recorded, not swallowed
+  [PASS] the card offers a way into the layout
+  [PASS] the button is only offered on a project card, not a substation one
+  [PASS] the button opens the layout from the project
+  [PASS] the selection is remembered for it
+  [PASS] a project-origin layout puts the array on the project
+  [PASS] and runs the cable to the nearest substation found
+  [PASS] the array is oriented along the line to the grid node
+  [PASS] nothing in range fails soft with a reason
+  [PASS] the panel names the project and where it runs to
+  [PASS] closing clears the project name
+  [PASS] openFromProject is exposed
+  [PASS] the substation layer is turned on for a deep link
+  [PASS] it ticks the engine control rather than reaching past it
+  [PASS] and it is on for a project-origin layout too
+  [PASS] a missing control is reported, not ignored
+  [PASS] the flow is a repeating train, not a single pulse
+  [PASS] two flow layers run half a period apart on the links
+  [PASS] the export cable gets the second layer too
+  [PASS] reduced motion silences every flow layer
+
+fitting to the stated capacity
+
+  [PASS] the register figure is carried through the selection
+  [PASS] nothing is fitted until the basis is declared
+  [PASS] the fit moves the outer and the inner count
+  [PASS] the residual is reported rather than hidden
+  [PASS] a hand edit is not silently re-fitted
+  [PASS] every target is reached within one block step  0 of 6 outside 12%
+
+the AC/DC disclaimer
+
+  [PASS] the unstated case is called out in red
+  [PASS] it says REPD does not reliably distinguish AC from DC
+  [PASS] it explains the consequence for the connection
+  [PASS] it names export limitation and curtailment
+  [PASS] the basis is a user choice, not an assumption
+  [PASS] the panel names array, inverter and export quantities separately
+  [PASS] the panel names all three ratios instead of collapsing them into DC/AC
+  [PASS] a stated-to-derived mismatch is descriptive and does not rewrite inputs
+  [PASS] the panel no longer grades a ratio against a usual range
+  [PASS] the below-one note is arithmetic rather than a design verdict
+  [PASS] a click on our own card never reaches the map
+  [PASS] every map handler consults that guard
+  [PASS] the layout button stops its own event
+  [PASS] an unloaded project layer is reported as unloaded, not as absence
+  [PASS] and the loaded case still says none in range
+  [PASS] the card gets a grab bar
+  [PASS] with a minimise and a close big enough to hit
+  [PASS] dragging frees the card from its anchor
+  [PASS] a freed card does not snap back on pan
+  [PASS] minimising collapses to the bar
+  [PASS] closing clears the links too
+  [PASS] the layout panel is draggable by its heading too
+  [PASS] bar buttons do not leak to the map
+  [PASS] the bar carries the card title so a minimised card is identifiable
+  [PASS] a minimised card is styled to read as restorable
+  [PASS] the card is bounded to the map and scrolls
+  [PASS] the cap comes from the real map height, not the viewport
+  [PASS] the bar stays put while the card scrolls
+  [PASS] the cap is refreshed on resize
+  [PASS] the layer dashboard survives fullscreen
+  [PASS] the dashboard is moved, not cloned, so its listeners live
+  [PASS] fullscreen relocation rejects an ancestor-to-descendant DOM cycle
+  [PASS] a missing dashboard is reported
+  [PASS] the block goes on the content, never inside the bar
+  [PASS] the bar cannot stretch
+  [PASS] the cap measures the space below the anchor, not the container
+  [PASS] a card with no room is freed and parked instead of squeezed
+
+the card docks to the bottom of a phone rather than hanging off a marker
+
+  [PASS] a phone gets a sheet docked to the bottom edge, not an anchored card
+  [PASS] it is full width, so nothing is clipped off the left edge
+  [PASS] the decision is pointer and width, never technology
+  [PASS] the floating controls are lifted clear of the sheet, not buried under it
+  [PASS] the lift reads the same variable the sheet is sized from
+  [PASS] a docked sheet refuses the drag that buried the close button
+  [PASS] closing the card puts the map back the way it was
+  [PASS] a sheet with no card behind it cannot be left standing
+  [PASS] the fit is recomputed once the block has landed
+  [PASS] a freed card parks clear of the Atlas tool stack
+  [PASS] the tool stack is queried, not assumed
+  [PASS] a freed card is capped by the room below where it sits
+  [PASS] a card dropped too low is lifted, not shrunk to a slot
+  [PASS] restoring re-checks the fit
+  [PASS] so does finishing a drag
+
+fitting to the headline capacity
+
+  [PASS] a 30 MW project is no longer drawn as a 44.8 MW one  26.88 MW
+  [PASS] targets between 5 and 50 MW no longer collapse onto one layout
+  [PASS] central tracks the target across the whole range
+  [PASS] the capacity rises with the target, never falls
+  [PASS] a target under one block reports a residual  198.6666666666667
+  [PASS] and states what one more block would have added  8.96
+  [PASS] both variables are searched, not one
+  [PASS] the inner bound is physical, not generous
+  [PASS] a near-tie goes to the layout already on screen
+  [PASS] the module bookkeeping still holds after a fit
+  [PASS] and the DC/AC ratio is still the derived one
+
+the original financial model
+
+  [PASS] the financial oracle is the executed-original fixture
+  [PASS] all four original finance cases are present
+  [PASS] the fixture names the central double-count instead of hiding it
+  [PASS] the cartridge exposes one finance function for parity testing
+  [PASS] the original linked development-stage handler is exposed for testing
+  [PASS] the original mounting-to-bifacial handler is exposed for testing
+  [PASS] string and central financial assumptions are independent
+  [PASS] string and central physical assumptions are independent
+  [PASS] the central panel binds its own physical keys
+  [PASS] electrical input normalization is exposed for behavioral testing
+  [PASS] fractional or zero topology counts are rejected before they reach maths
+  [PASS] the original central rating bounds are enforced
+  [PASS] the rendered electrical controls carry explicit original bounds and steps
+  [PASS] an invalid edit restores the visible prior value and stops
+  [PASS] all unaffected finance outputs equal the original executable oracle
+  [PASS] the central stress case uses the oracle correction, not the squared AC
+  [PASS] the model carries every original finance input family
+  [PASS] every numeric finance input rejects negative values
+  [PASS] efficiency and probability are capped at one hundred percent
+  [PASS] the central OPEX basis is the corrected inverter nameplate only in central mode
+  [PASS] the executable original development-stage labels are retained
+  [PASS] every stage updates cost and success exactly like the original change handler
+  [PASS] an unknown stage fails closed without changing assumptions
+  [PASS] the UI stage control uses the linked handler before redraw
+  [PASS] every original mounting preset updates bifacial gain on its topology only
+  [PASS] a free-form GCR does not invent a bifacial assumption
+  [PASS] the GCR input invokes the original linked bifacial behavior before redraw
+  [PASS] the financial block starts collapsed and remembers an explicit open
+  [PASS] finance changes redraw the same electrical and financial state
+  [PASS] one topology-local BESS value drives both finance and the drawn compound
+  [PASS] changing financial BESS energy adds and removes the drawn BESS compound
+  [PASS] the on-panel financial disclaimer is explicit
+  [PASS] exact-head CI installs dependencies from the locked npm graph
+  [PASS] exact-head CI installs only the Playwright-pinned Chromium build
+  [PASS] exact-head CI executes the 393x852 production hit-target proof
+  [PASS] browser installation and execution have bounded step timeouts
+  [PASS] the project card starts one pointer interaction for mouse, pen and touch
+  [PASS] the project card captures and releases the active pointer
+  [PASS] the project card handles pointer cancellation
+  [PASS] the project card clamp measures the map and full card width
+  [PASS] the layout panel uses pointer capture without document listener accumulation
+  [PASS] the layout panel handles pointer completion and cancellation
+  [PASS] the array, rotation handle and route pins accept native touch drag
+  [PASS] an interrupted map touch releases the drag state
+  [PASS] map gestures are restored only when they were enabled before the edit
+  [PASS] the layout panel is bounded by top and bottom rather than an overflowing height
+  [PASS] both panel control pairs are 44px phone targets
+  [PASS] both drag handles suppress browser touch scrolling during capture
+  [PASS] the 844 by 390 control stack scrolls inside the short viewport
+  [PASS] the 844 by 390 search result list is viewport bounded
+  [PASS] coarse pointers enlarge shell and sandbox controls
+
+the mobile tray
+
+  [PASS] the tray exists and installs only on touch or narrow windows
+  [PASS] the six shell tool buttons collapse behind one chip
+  [PASS] grid means the five voltage line layers, not a private list
+  [PASS] the chips drive the engine's own switches with real clicks
+  [PASS] chips start disabled and wake when the switches exist
+  [PASS] chips follow switches toggled anywhere else
+  [PASS] mixed state turns everything on before anything off
+  [PASS] tray clicks do not reach the map underneath
+  [PASS] the tray reports its state to assistive technology
+  [PASS] the tray publishes its state
+  [PASS] touch targets stay 44px inside the tray
+  [PASS] the desktop is left alone
+
+arrival by identity
+
+  [PASS] the search lane publishes the technology and capacity it resolved
+  [PASS] absent coordinates are absent, not Null Island
+  [PASS] every valid ref-plus-coordinate link starts identity verification without awaiting it
+  [PASS] only a ref-only link waits for identity before it can measure
+  [PASS] a resolved discrepancy replaces one frozen arrival and recomputes it
+  [PASS] the discrepancy is measured before the frozen selection is replaced
+  [PASS] and it is measured on the one geodesy, not a second haversine
+  [PASS] every terminal verification path publishes which origin remains active
+  [PASS] the lane waits for the search cartridge and honours terminal states
+  [PASS] a resolved identity supplies coordinates, technology, name and capacity
+  [PASS] an unresolved identity is recorded, never silent
+  [PASS] the consumption is published for the next debugger
+
+a late identity cannot resurrect an abandoned arrival
+
+  [PASS] clear and ordinary selection both invalidate the production arrival gate
+  [PASS] both internal selections carry their arrival token through the async measurement
+  [PASS] the late identity continuation is the exported production coordinator
+  [PASS] a user selection wins when the old identity resolves late  {"applied":false,"effects":{"flyTo":0,"reselect":0},"state":{"epoch":2,"invalidations":[{"epoch":2,"reason":"new-selection"}]}}
+  [PASS] a clear stays clear when the old identity resolves late  {"applied":false,"effects":{"flyTo":0,"reselect":0},"state":{"epoch":2,"invalidations":[{"epoch":2,"reason":"clear"}]}}
+
+the arrival surface
+
+  [PASS] an arrival on touch enters the shell fullscreen
+  [PASS] the map is resized after entering fullscreen
+  [PASS] the identity wait runs to terminal and can stay silent behind a visible answer
+  [PASS] the wait says what it is waiting for
+  [PASS] a ten-minute stop guards a lane that died silently
+  [PASS] an unresolvable identity is surfaced with a retry of the arrival
+  [PASS] the substation stage is surfaced and zero substations never draws silently
+  [PASS] the deep link is a named function so retry re-runs it, not the page
+
+a link with coordinates and no identity moves the camera
+
+  [PASS] the shell stands down before any flyTo when there is no repd_ref
+  [PASS] and the search lane stands down at the same test, reporting ABSENT
+  [PASS] this cartridge flies every usable answer, including while a ref is verified
+  [PASS] the centre is the link's, and the zoom the link's where it is usable
+  [PASS] a reader who asked for reduced motion still arrives
+  [PASS] the move it made is published, with the reason it had to
+  [PASS] the camera is set BEFORE the zoom is honoured and before the tech gate
+  [PASS] a failed camera is recorded rather than taking the arrival with it
+  [PASS] the arrival zoom is framed by the viewport, not restated
+  [PASS] and the framed zoom is what is compared and what is applied
+  [PASS] the requested value is still published unchanged, so the two are readable apart
+
+an unrecognised technology costs one layer, not the arrival
+
+  [PASS] the register vocabulary carries the id the register uses for a category it has no bucket for
+  [PASS] an unrecognised technology no longer returns out of the arrival
+  [PASS] and it costs exactly the one layer that needs to know
+  [PASS] the substation layer, the card and the measurement are not technology-gated
+  [PASS] it is recorded on its own surface, not in the ledger that means the arrival lost something
+  [PASS] the record names what was asked for and whether it was honoured
+
+the two products this cartridge fetches are pinned too
+
+  [PASS] no runtime data URL in this cartridge names a branch
+  [PASS] both products are addressed through the shared pin table
+  [PASS] the node/branch bytes are verified before they are parsed
+  [PASS] and the price rollup is not rendered from bytes that failed the digest
+  [PASS] an absent pin table fails the loader rather than guessing a URL
+  [PASS] the pin table is NOT carried a second time in this cartridge
+  [PASS] and it IS in the composition, in the cartridge the shell loads first
+
+the nearest sentence states the sample it was drawn from
+
+  [PASS] the nearest-400 line and its scope are ONE element, not two adjacent ones
+  [PASS] and the word straight is inside that same element
+  [PASS] the answer is emitted before the published envelope, not after it
+  [PASS] and the envelope itself is unchanged, not trimmed to make room
+  [PASS] the measurement counts what it compared, rather than a caller recounting it
+  [PASS] the scope asks the cartridge that holds the product, at 400 kV
+  [PASS] no coverage figure is written down anywhere in the cartridge
+  [PASS] the four numbers the sentence prints are all interpolated
+  [PASS] it says a nearer one may exist rather than implying none does
+  [PASS] it states the sample and grades nothing
+  [PASS] with neither number available it says nothing at all
+
+the corridor estimate sits beside the straight line, never over it
+
+  [PASS] the straight-line distance is still printed, and is still first
+  [PASS] the estimate is additive: nothing replaces the measurement
+  [PASS] it is labelled an estimate wherever it appears
+  [PASS] the factor and the calibration travel with the number
+  [PASS] THE SAMPLE ON THE CARD IS THE SITE PAIRS, not the circuit count
+  [PASS] no corridor number is written into the sentence
+  [PASS] the standing caveat is rendered with it, not left in the module
+  [PASS] and so is the reason it is not an overhead-line answer
+  [PASS] a withheld estimate says why rather than printing nothing
+  [PASS] an absent module costs the estimate and not the card
+  [PASS] the sandbox never carries its own copy of the factor
+
+a 44 px action, and a long press that defers to everything
+
+  [PASS] the action is on the card, and only when there is something to show
+  [PASS] it is a real button with an accessible name and a dialog relationship
+  [PASS] the target is 44 px, and so is every control inside the sheet
+  [PASS] the sheet is a labelled dialog, closable by button and by Escape
+  [PASS] it honours a reader who asked for reduced motion
+  [PASS] visibility is toggled with hidden, not by rewriting display
+  [PASS] the desktop slot it takes is one nothing else binds
+  [PASS] the long press cancels on movement, with a stated threshold
+  [PASS] a second finger is not a long press
+  [PASS] AND IT NEVER FIRES DURING AN SLD DRAG, checked twice
+  [PASS] touchend and touchcancel disarm it
+  [PASS] the listeners are passive, so they cannot block a scroll or a pan
+  [PASS] the sheet states the basis and the caveat, not just the number
+  [PASS] an absent corridor module leaves the measured distances standing
+  [PASS] its state is published for review
+
+the card keeper
+
+  [PASS] the measurement block is kept, not written once
+  [PASS] the keeper re-attaches only while the card lacks the block
+  [PASS] a cleared selection disarms the keeper before the block is removed
+  [PASS] the payload is per selection, so a stale project never decorates a new popup
+
+the arrival card
+
+  [PASS] a card is opened from the link fields only when none exists
+  [PASS] the fallback card states its provenance
+  [PASS] the fallback yields when the register card lands
+  [PASS] a cleared selection removes the fallback
+  [PASS] the fallback is published for the next debugger
+
+the card precedes the lines
+
+  [PASS] the fallback card is opened before the measurement runs
+  [PASS] a terminally failed identity lane does not spend the popup budget
+
+the 400 kV public record
+
+  [PASS] the served bytes carry the declared table exactly once  1 tables
+  [PASS] the table binds register identities to named substations
+  [PASS] every declared entry names its public source
+  [PASS] the body binds to the module by name or does not load
+  [PASS] the body carries no resolver of its own, only delegations
+  [PASS] the module is composed in front of the body, after geodesy
+  [PASS] a payload-absent substation is stated, not silently dropped
+  [PASS] the declared link draws in its own colour
+  [PASS] nearest 400 kV is measured for every project selection
+  [PASS] substation works notes come from the fixed public table only
+  [PASS] the card block says public record and cites the source
+  [PASS] selection state resets so one scheme never wears another's record
+  [PASS] no verdict language decorates the record
+
+the transmission network, on demand
+
+  [PASS] the network-topology module is composed into the served bytes
+  [PASS] and in a cartridge the shell evaluates BEFORE the sandbox that calls it
+  [PASS] the loader state lives on the window for the source registry
+  [PASS] the product is named once, through the pin table, and is the v1 schema
+  [PASS] it is fetched on first use, inside ensureTopology, and nowhere at load
+  [PASS] the loader fails closed on a schema it does not accept
+  [PASS] every failure is recorded by the named helper, never swallowed
+  [PASS] the project card asks about its declared substation
+  [PASS] the scope card asks about its three nearest named substations
+  [PASS] blocks are placeholders filled in place, so no card holds another card
+  [PASS] the join is by name through the connection-points cartridge, and says so
+  [PASS] the voltage asked about is the voltage answered about
+  [PASS] the block carries the module's not-an-assessment sentence and the attribution
+  [PASS] absence is stated as absence, never inferred from
+  [PASS] the loader is called only from named on-demand paths, never at load
+
+the recovered ledger
+
+  [PASS] a recovered ledger exists beside failures
+  [PASS] recovery moves entries rather than deleting them
+  [PASS] the subs control recovers its own earlier miss on success
+  [PASS] the technology control recovers exactly its own entry, escaped
+  [PASS] the late-controls observer recovers the budget note it outlived
+
+the consented works
+
+  [PASS] declared schemes carry customer-substation works quotes
+  [PASS] PoC interface classes are quoted, from bay reuse to NG-delivered extension
+  [PASS] the card labels them as consented quotations, never advice
+  [PASS] the nearest-400 row measures a named companion when an unnamed node wins
+
+the measurement does not wait for the layers
+
+  [PASS] the arrival measures before it awaits the layer controls
+  [PASS] the substation payload is warmed at install
+  [PASS] the waiting message no longer claims the distances need the layers
+  [PASS] a late-layers notice never covers a drawn answer
+  [PASS] retry still re-runs the measurement and the layers
+
+the sales surface answers immediately
+
+  [PASS] a declared connection is knowable from the link alone
+  [PASS] it is shown before the measurement is attempted
+  [PASS] the ring is drawn on arrival, not after the payload
+  [PASS] a pending distance says it is being measured, never that none exists
+  [PASS] the provisional block never overwrites a measured one
+  [PASS] the measurement does not blank a standing provisional block
+  [PASS] the early answer is published for the next debugger
+
+the far end has its own state
+
+  [PASS] an unbuilt point of connection has its own colour
+  [PASS] both line and node take that colour together
+  [PASS] the unbuilt states are the two the record supports
+  [PASS] One Earth and Thorpe Marsh carry their state with a reason
+  [PASS] the card labels the state beside the public-record badge
+  [PASS] a declared circuit connection draws no line and measures no distance
+  [PASS] Little Crow names its circuit and its source
+  [PASS] a circuit connection never claims 400 kV
+
+the published network parameters
+
+  [PASS] the card asks the substation cartridge and renders only what it returns
+  [PASS] a circuit connection is not attributed to a substation
+  [PASS] the metric caveat, the attribution and the refusal travel with the numbers
+
+the manifest knows who it is, and the Subs control is found by its attribute
+
+  [FAIL] the manifest states this generation everywhere it states one  
+  [PASS] no identity from an older composition survives anywhere in it
+  [PASS] the acceptance receipt names this generation's proofs
+  [PASS] the golden browser field is this generation's, not an inherited pending
+  [PASS] the manifest records the clock it was cut at, and the stamp agrees with it  2026-09-04T02:19:01.613Z
+  [FAIL] the manifest chains by pointer, not by sort order  
+  [PASS] the Subs control is looked up by its attribute first
+  [PASS] the label search survives only as a fallback
+  [PASS] an active failure is recorded once, by a named helper
+
+run against a DOM, not a regular expression
+
+evalmachine.<anonymous>:5106
+  if (NS.sldStyles) throw new Error('sld-styles module registered twice');
+                    ^
+
+Error: sld-styles module registered twice
+    at evalmachine.<anonymous>:5106:27
+    at evalmachine.<anonymous>:5393:3
+    at Script.runInContext (node:vm:149:12)
+    at Object.runInContext (node:vm:301:6)
+    at file:///tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/release-rehearsal/wt/tools/proofs/202609040219-sld-sandbox.proof.mjs:3304:27
+
+Node.js v22.23.4

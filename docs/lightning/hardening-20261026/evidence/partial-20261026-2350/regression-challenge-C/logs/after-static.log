@@ -1,0 +1,83 @@
+[runner] after-static: generation 202610262323, 40 of 81 catalogue entries, base http://127.0.0.1:8162/wt/atlas/v/202610262323/
+[runner] start scope-lint (budget 120s)
+[runner] PASS               scope-lint                                   0.6s  …
+[runner] start scope-state-stdout (budget 120s)
+[runner] PASS               scope-state-stdout                           0.4s  scope-ledger=PASS active=none master=done
+[runner] start scope-verify-compose (budget 120s)
+[runner] PASS               scope-verify-compose                         0.5s  …
+[runner] start run-current (budget 300s)
+[runner] PASS               run-current                                  0.8s  "FAILED"
+[runner] start bridge-202609241251 (budget 120s)
+[runner] PASS               bridge-202609241251                          1.7s  …
+[runner] start gazetteer-202609071213 (budget 120s)
+[runner] PASS               gazetteer-202609071213                       0.6s  "FAILED"
+[runner] start engine-202609062358 (budget 120s)
+[runner] PASS               engine-202609062358                          0.3s  …
+[runner] start sld-202609241334 (budget 120s)
+[runner] FAIL               sld-202609241334                             0.3s  AssertionError [ERR_ASSERTION]: only the reviewed card-boundary corrections may differ
+[runner] start v8-layers-panel-restored (budget 120s)
+[runner] PASS               v8-layers-panel-restored                     0.5s  …
+[runner] start menu-bar-dom (budget 120s)
+[runner] PASS               menu-bar-dom                                 0.1s  …
+[runner] start about-estate-and-attribution (budget 120s)
+[runner] FAIL               about-estate-and-attribution                 0.3s  2 FAILED
+[runner] start arrival-visibility-and-one-runtime (budget 120s)
+[runner] PASS               arrival-visibility-and-one-runtime           0.2s  …
+[runner] start parts-integrity-202609012105 (budget 120s)
+[runner] PASS               parts-integrity-202609012105                 2.8s  …
+[runner] start all-versions-202609012150 (budget 300s)
+[runner] FAIL               all-versions-202609012150                    3.6s  TypeError: Cannot read properties of null (reading '1')
+[runner] start data-contract-parity-202609012214 (budget 120s)
+[runner] FAIL               data-contract-parity-202609012214            0.3s  FAIL sld-sandbox: data/history/ fetched by the bytes is declared on the entry - declared: derived/gb-transmission-network.v1.json, derived/price-decade-rollup.json
+[runner] start estate-deep-scan-202609012240 (budget 120s)
+[runner] BLOCKED_HARNESS    estate-deep-scan-202609012240                2.2s  node:internal/errors:983
+[runner] start quantumspawn-recovery-202609012305 (budget 120s)
+[runner] FAIL               quantumspawn-recovery-202609012305           0.3s  [FAIL] the capsule names the generation that current.json points at - 202610262323
+[runner] start sld-styles-202609040400 (budget 120s)
+[runner] FAIL               sld-styles-202609040400                      0.3s  TypeError: Cannot read properties of undefined (reading 'replace')
+[runner] start arrival-identity-corpus-202609040229 (budget 120s)
+[runner] BLOCKED_HARNESS    arrival-identity-corpus-202609040229         0.2s  AssertionError [ERR_ASSERTION]: exact Pipeline 0144 corpus not found beside /tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/regression-challenge-C/shadow-after
+[runner] start transit-layer-availability-202609040212 (budget 120s)
+[runner] BLOCKED_DEPENDENCY transit-layer-availability-202609040212      0.6s  Error.captureStackTrace(err);
+[runner] start mobile-static-audit-202609010030 (budget 120s)
+[runner] PASS               mobile-static-audit-202609010030             0.2s  "status": "MOBILE_STATIC_FAILURE"
+[runner] start sld-finance-fixture-202609010002 (budget 120s)
+[runner] BLOCKED_HARNESS    sld-finance-fixture-202609010002             0.4s  AssertionError [ERR_ASSERTION]: fixture drift: regenerate /tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/regression-challenge-C/shadow-after/tools/proofs/fixtures/2026090100
+[runner] start prepare-layer-census (budget 120s)
+[runner] PASS               prepare-layer-census                         0.1s  …
+[runner] start modules-202609011950-module-parity (budget 120s)
+[runner] FAIL               modules-202609011950-module-parity           0.6s  TypeError: Cannot read properties of undefined (reading 'byName')
+[runner] start modules-202609012010-assembler (budget 120s)
+[runner] PASS               modules-202609012010-assembler               2.8s  [PASS] a missing generation is refused
+[runner] start modules-202609012010-grid-scope (budget 120s)
+[runner] PASS               modules-202609012010-grid-scope              0.5s  [PASS] it names queue position and consent as the things it cannot see
+[runner] start modules-202609012040-grid-scope (budget 120s)
+[runner] PASS               modules-202609012040-grid-scope              0.1s  [PASS] a voltage that did not parse cannot pass a voltage floor
+[runner] start modules-202609012130-declared-connections (budget 120s)
+[runner] FAIL               modules-202609012130-declared-connections    0.2s  FAILURES
+[runner] start modules-202609012135-source-registry (budget 120s)
+[runner] PASS               modules-202609012135-source-registry         0.1s  a failure is distinguished from an absence
+[runner] start modules-202609012145-network-topology (budget 120s)
+[runner] BLOCKED_HARNESS    modules-202609012145-network-topology        0.2s  FAILURES
+[runner] start modules-202609012205-sizing-arithmetic (budget 120s)
+[runner] PASS               modules-202609012205-sizing-arithmetic       3.7s  (node:8111) [UNDICI-EHPA] Warning: EnvHttpProxyAgent is experimental, expect them to change at any time.
+[runner] start modules-202609012217-source-registry (budget 120s)
+[runner] PASS               modules-202609012217-source-registry         0.2s  a failure is distinguished from an absence
+[runner] start modules-202609012230-map-click-network (budget 120s)
+[runner] PASS               modules-202609012230-map-click-network       0.2s  [PASS] unknown, missing and future schemas fail closed
+[runner] start modules-202609012245-electrical-distance (budget 120s)
+[runner] BLOCKED_HARNESS    modules-202609012245-electrical-distance     0.3s  FAILED: the published product is not at /tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/regression-challenge-C/data-grid-gb/derived/gb-transmission-network.v1.json.
+[runner] start modules-202609012245-source-registry (budget 120s)
+[runner] PASS               modules-202609012245-source-registry         0.1s  a failure is distinguished from an absence
+[runner] start modules-202609012250-rating-envelope (budget 120s)
+[runner] BLOCKED_HARNESS    modules-202609012250-rating-envelope         0.1s  FAILED: the published product is not at /tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/regression-challenge-C/data-grid-gb/derived/gb-transmission-network.v1.json.
+[runner] start modules-202609012320-injection-response (budget 120s)
+[runner] BLOCKED_HARNESS    modules-202609012320-injection-response      0.1s  FAILED: the published product is not at /tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/regression-challenge-C/data-grid-gb/derived/gb-transmission-network.v1.json.
+[runner] start modules-202609012345-planned-change (budget 120s)
+[runner] BLOCKED_HARNESS    modules-202609012345-planned-change          0.1s  FAILED: the published product is not at /tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/regression-challenge-C/data-grid-gb/derived/gb-transmission-network.v1.json.
+[runner] start modules-202609012350-owner-boundary (budget 120s)
+[runner] BLOCKED_HARNESS    modules-202609012350-owner-boundary          0.1s  FAILED: the published product is not at /tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/regression-challenge-C/data-grid-gb/derived/gb-transmission-network.v1.json.
+[runner] start modules-202609020015-injection-response (budget 120s)
+[runner] BLOCKED_HARNESS    modules-202609020015-injection-response      0.1s  FAILED: the published product is not at /tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/regression-challenge-C/data-grid-gb/derived/gb-transmission-network.v1.json.
+
+[runner] done: {"PASS":21,"FAIL":8,"BLOCKED_HARNESS":10,"BLOCKED_DEPENDENCY":1}  ->  /tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/regression-challenge-C/after-static/results.md

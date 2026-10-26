@@ -1,0 +1,8 @@
+[runner] candidate-browser-shim: generation 202610261949, 2 of 81 catalogue entries, base http://127.0.0.1:8144/wt/atlas/v/202610261949/
+[runner] route probe: mapArrived=true failedHosts=["ventusltd.github.io"] pageErrors=[]
+[runner] start transit-layer-availability-202609040219 (budget 420s)
+[runner] FAIL               transit-layer-availability-202609040219      5.5s  name: 'Error'
+[runner] start uk-lightning-preview (budget 600s)
+[runner] FAIL               uk-lightning-preview                         2.1s  AssertionError [ERR_ASSERTION]: baseline generation mismatch
+
+[runner] done: {"FAIL":2}  ->  /tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/regression-challenge-C/candidate-browser-shim/results-selfD.md

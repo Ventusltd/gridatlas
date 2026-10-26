@@ -1,0 +1,39 @@
+PASS current.json -> /atlas/v/202610262323/current.json
+PASS schema/architecture invariants (index.html:42-44)
+PASS generation 202610262323
+PASS shell.index -> /atlas/releases/202608300453-atlas-v9/index.html
+PASS shell.base -> /atlas/releases/202608300453-atlas-v9/
+PASS shell is HTML
+PASS cartridge streaming-parquet-bridge registered
+PASS streaming-parquet-bridge: ../../cartridges/202609241251-streaming-parquet-bridge-v9-5.js -> /atlas/cartridges/202609241251-streaming-parquet-bridge-v9-5.js
+PASS streaming-parquet-bridge: served-bytes sha256 60be8215ba873ac2 == declared
+PASS streaming-parquet-bridge: shell slot 202608292311-maplibre-worker-bridge.js present
+PASS cartridge uk-gazetteer-flyto registered
+PASS uk-gazetteer-flyto: ../../cartridges/202609071213-place-global-search-v9-5.js -> /atlas/cartridges/202609071213-place-global-search-v9-5.js
+PASS uk-gazetteer-flyto: served-bytes sha256 15f324e5c2790508 == declared
+PASS uk-gazetteer-flyto: shell slot 202608291818-place-postcode-search.js present
+PASS cartridge substation-intelligence registered
+PASS substation-intelligence: ../../cartridges/202609062358-substation-intelligence-v9-63.js -> /atlas/cartridges/202609062358-substation-intelligence-v9-63.js
+PASS substation-intelligence: served-bytes sha256 d94b0de50deddac7 == declared
+PASS substation-intelligence: shell slot ventus-corev8engine.js present
+PASS cartridge sld-sandbox registered
+PASS sld-sandbox: ../../cartridges/202610262323-sld-sandbox-v9-8.js -> /atlas/cartridges/202610262323-sld-sandbox-v9-8.js
+PASS sld-sandbox: served-bytes sha256 b143bf05b28ac9b9 == declared
+PASS sld-sandbox: shell slot 202608292126-pre-snapped-config-adapter.js present
+INFO external shell script https://cdn.jsdelivr.net/npm/maplibre-gl@3.6.2/dist/maplibre-gl.js
+PASS ref ../../releases/202608300453-atlas-v9/index.html -> /atlas/releases/202608300453-atlas-v9/index.html
+PASS ref ../../releases/202608300453-atlas-v9/ -> /atlas/releases/202608300453-atlas-v9/
+PASS ref ../../cartridges/202609241251-streaming-parquet-bridge-v9-5.js -> /atlas/cartridges/202609241251-streaming-parquet-bridge-v9-5.js
+FAIL ref ../../ui/cartridges/202609241251-streaming-parquet-bridge-v9-5.mjs -> /atlas/ui/cartridges/202609241251-streaming-parquet-bridge-v9-5.mjs
+PASS ref ../../cartridges/202609071213-place-global-search-v9-5.js -> /atlas/cartridges/202609071213-place-global-search-v9-5.js
+FAIL ref ../../ui/cartridges/202609040337-global-gazetteer-flyto-v9-106.mjs -> /atlas/ui/cartridges/202609040337-global-gazetteer-flyto-v9-106.mjs
+PASS ref ../../manifests/202609041945-place-global-search-v9-5-parts.json -> /atlas/manifests/202609041945-place-global-search-v9-5-parts.json
+PASS ref ../../cartridges/202610262323-sld-sandbox-v9-8.js -> /atlas/cartridges/202610262323-sld-sandbox-v9-8.js
+PASS ref ../../cartridges/202609241334-sld-sandbox-v9-8.js -> /atlas/cartridges/202609241334-sld-sandbox-v9-8.js
+PASS ref ../../modules/202610262323-uk-lightning-overlay.js -> /atlas/modules/202610262323-uk-lightning-overlay.js
+PASS ref ../../cartridges/202609062358-substation-intelligence-v9-63.js -> /atlas/cartridges/202609062358-substation-intelligence-v9-63.js
+PASS ref ../../manifests/202609051329-substation-intelligence-v9-63-parts.json -> /atlas/manifests/202609051329-substation-intelligence-v9-63-parts.json
+PASS ref ../../manifests/202610262323-composition.json -> /atlas/manifests/202610262323-composition.json
+PASS repo-root ref tools/proofs/fixtures/202609010002-original-sld-finance.json
+PASS repo-root ref tools/proofs/202609012214-data-contract-parity.proof.mjs
+RESULT FAIL (2)

@@ -1,0 +1,72 @@
+{
+  "live_production_cartridge": {
+    "path": "/home/claude/gridatlas/atlas/cartridges/202609241334-sld-sandbox-v9-8.js",
+    "bytes": 435218,
+    "sha256": "7812953671d8bb22a566de5e98fd3137da2d23411c5aecd526df5afa111ca4ca",
+    "cr_bytes": 0,
+    "lf_bytes": 8666,
+    "bom": false,
+    "ends_with_lf": true
+  },
+  "live_cartridge_in_candidate_worktree_identical": true,
+  "module": {
+    "path": "/tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/wt/atlas/modules/202610262323-uk-lightning-overlay.js",
+    "bytes": 23226,
+    "sha256": "61cf9b34ae38d87f9091ddef783d6e9988148c5df2087f0e5d1c68e36e24e3e9",
+    "cr_bytes": 0,
+    "lf_bytes": 188,
+    "bom": false,
+    "ends_with_lf": true,
+    "budget_24000_ok": true
+  },
+  "candidate_cartridge": {
+    "path": "/tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/wt/atlas/cartridges/202610262323-sld-sandbox-v9-8.js",
+    "bytes": 458445,
+    "sha256": "b143bf05b28ac9b972ec90dced03cc0ad1f003fa844bdcb3f6601a33bd69891d",
+    "cr_bytes": 0,
+    "lf_bytes": 8855,
+    "ceiling_460000_ok": true
+  },
+  "expected": {
+    "bytes": 458445,
+    "sha256": "b143bf05b28ac9b972ec90dced03cc0ad1f003fa844bdcb3f6601a33bd69891d"
+  },
+  "byte_for_byte_equal": true,
+  "first_difference_offset": null,
+  "prefix_is_live_bytes": true,
+  "separator_byte_at_live_length": "0x0A LF",
+  "suffix_is_module_bytes": true,
+  "arithmetic": "435218 + 1 + 23226 = 458445 (candidate 458445)",
+  "declared": {
+    "current_json_sha256": "b143bf05b28ac9b972ec90dced03cc0ad1f003fa844bdcb3f6601a33bd69891d",
+    "current_json_path": "../../cartridges/202610262323-sld-sandbox-v9-8.js",
+    "current_matches_bytes": true,
+    "manifest_sha256": "b143bf05b28ac9b972ec90dced03cc0ad1f003fa844bdcb3f6601a33bd69891d",
+    "manifest_path": "./cartridges/202610262323-sld-sandbox-v9-8.js",
+    "manifest_matches_bytes": true,
+    "current_module_bytes_declared": 23226,
+    "module_bytes_match": true,
+    "manifest_module_bytes_declared": 23226,
+    "derived_from_declared": "../../cartridges/202609241334-sld-sandbox-v9-8.js",
+    "live_cartridge_sha256_in_proof": "7812953671d8bb22a566de5e98fd3137da2d23411c5aecd526df5afa111ca4ca",
+    "live_sha_matches_proof_constant": true
+  },
+  "production_pointer": {
+    "generation": "202609241334",
+    "sld_generation": "202609241334",
+    "sld_sha256": "7812953671d8bb22a566de5e98fd3137da2d23411c5aecd526df5afa111ca4ca",
+    "matches_live_bytes": true
+  },
+  "git": {
+    "main_blob": "fe8b2b2f98eec09d8c9e4a9cd5e40b12ee4b0200",
+    "candidate_blob_of_live": "fe8b2b2f98eec09d8c9e4a9cd5e40b12ee4b0200",
+    "candidate_cartridge_blob": "d94ebcad36e5c14044c1bf0ad8b975e36454c184",
+    "module_blob": "08409c76682868f3f559f5193d62d11f09aedbc5",
+    "worktree_head": "68be91ee3ae86564756b5b7316d017b5a74e638b",
+    "worktree_dirty": "(clean)",
+    "live_blob_unchanged_between_main_and_candidate": true,
+    "candidate_blob_bytes_equal_worktree": true,
+    "candidate_blob_sha256": "b143bf05b28ac9b972ec90dced03cc0ad1f003fa844bdcb3f6601a33bd69891d"
+  },
+  "verdict": "PASS"
+}

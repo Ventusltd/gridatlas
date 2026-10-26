@@ -1,0 +1,213 @@
+{
+ "harness": "lead-shim chromium headless",
+ "viewport": "1440x900",
+ "reducedMotion": "reduce",
+ "fixture": "lightning-archive",
+ "state7d": {
+  "state": "PARTIAL",
+  "stale": true,
+  "mode": "detail",
+  "period": "7d",
+  "drawn": 408,
+  "cluster": false,
+  "cap": 40000,
+  "cap_source": "index",
+  "index_count": 408,
+  "failures": 0,
+  "reasons": [
+   "tail not yet ingested",
+   "head before archive start",
+   "1 dates without a scan window"
+  ]
+ },
+ "label": {
+  "text": "Lightning flashes (optical) [408 | 7d STALE]",
+  "color": "rgb(255, 223, 68)",
+  "opacity": "1"
+ },
+ "toggleAx": [
+  {
+   "sel": "#scada-ui-container [data-lightning-control=\"toggle\"]",
+   "ignored": false,
+   "role": "checkbox",
+   "name": "Lightning flashes (optical) [408 | 7d STALE]",
+   "props": {
+    "invalid": "false",
+    "focusable": true,
+    "checked": "true"
+   }
+  }
+ ],
+ "render": {
+  "renders10s": 0,
+  "layerVis": "visible",
+  "features": 1153
+ },
+ "customAx": [
+  {
+   "sel": "#scada-ui-container [data-lightning-date]",
+   "ignored": false,
+   "role": "Date",
+   "name": "",
+   "props": {
+    "invalid": "false",
+    "focusable": true,
+    "settable": true
+   }
+  },
+  {
+   "sel": "#scada-ui-container [data-lightning-date]",
+   "ignored": false,
+   "role": "Date",
+   "name": "",
+   "props": {
+    "invalid": "false",
+    "focusable": true,
+    "settable": true
+   }
+  },
+  {
+   "sel": "#scada-ui-container [data-lightning-nav=\"apply\"]",
+   "ignored": false,
+   "role": "button",
+   "name": "APPLY",
+   "props": {
+    "invalid": "false",
+    "focusable": true
+   }
+  }
+ ],
+ "invalidApply": {
+  "values": [
+   "2026-02-01",
+   "2026-10-10"
+  ],
+  "warning": "Unknown: 2026-02-01 to 2026-10-10 precede archive start 2026-10-20 22:41 UTC (not zero) · Unknown: 252 of 252 UTC dates have no collection run",
+  "captionMutations": 1,
+  "dateAx": [
+   {
+    "sel": "#scada-ui-container [data-lightning-date]",
+    "ignored": false,
+    "role": "Date",
+    "name": "",
+    "props": {
+     "invalid": "false",
+     "focusable": true,
+     "settable": true
+    }
+   },
+   {
+    "sel": "#scada-ui-container [data-lightning-date]",
+    "ignored": false,
+    "role": "Date",
+    "name": "",
+    "props": {
+     "invalid": "false",
+     "focusable": true,
+     "settable": true
+    }
+   }
+  ]
+ },
+ "menuRowAx": [
+  {
+   "sel": "#gridatlas-menu-bar [data-lightning-control=\"toggle\"]",
+   "ignored": false,
+   "role": "checkbox",
+   "name": "Lightning flashes (optical)",
+   "props": {
+    "invalid": "false",
+    "focusable": true,
+    "checked": "true"
+   }
+  }
+ ],
+ "menuOriginalAx": [
+  {
+   "sel": "#gridatlas-menu-bar input[data-gridatlas-layer-proxy=\"engine:400\"]",
+   "ignored": false,
+   "role": "checkbox",
+   "name": "400kV [OK]",
+   "props": {
+    "invalid": "false",
+    "focusable": true,
+    "focused": true,
+    "checked": "false"
+   }
+  }
+ ],
+ "menuAria": "- text: Weather · EUMETSAT Lightning Imager\n- checkbox \"Lightning flashes (optical)\" [checked]\n- text: Lightning flashes (optical) [UNKNOWN | custom STALE]",
+ "targets": [
+  [
+   "toggle",
+   17,
+   17
+  ],
+  [
+   "12h",
+   37,
+   22
+  ],
+  [
+   "24h",
+   37,
+   22
+  ],
+  [
+   "48h",
+   37,
+   22
+  ],
+  [
+   "7d",
+   31,
+   22
+  ],
+  [
+   "30d",
+   37,
+   22
+  ],
+  [
+   "3m",
+   31,
+   22
+  ],
+  [
+   "6m",
+   31,
+   22
+  ],
+  [
+   "12m",
+   37,
+   22
+  ],
+  [
+   "custom",
+   56,
+   22
+  ],
+  [
+   "apply",
+   50,
+   22
+  ],
+  [
+   "prev",
+   56,
+   23
+  ],
+  [
+   "latest",
+   56,
+   23
+  ],
+  [
+   "next",
+   56,
+   23
+  ]
+ ],
+ "errors": []
+}

@@ -1,0 +1,49 @@
+harness: self-fixture (node v22.23.4); base fda6b10 atlas/modules/202610261949-uk-lightning-overlay.js (23973 bytes)
+
+variant B -> fixed-module.js
+  -115  SAVE-S1 T/Ts from toISOString, pad() removed
+   -55  SAVE-S2 NAV() markup helper
+   -37  SAVE-S3 isFC() shared shape predicate
+   -28  SAVE-S4/S5 one cu=custom local in wf() and pt()
+    -2  SAVE-S6 one-statement forEach arrow
+   -41  SAVE-R1 dead refresh suffix (L.refresh is only set when idx is null)
+    -4  SAVE-D dead field: index record raw (never read)
+   -21  SAVE-R2 Grid twin: label text is the accessible name (drop static aria-label)
+    22  F1 unvalidated timestamps: T()/Ts() print "unknown" instead of throwing RangeError
+   -18  F2 CUSTOM loads at once (serial-guarded): no null paint during first load, no stale caption before APPLY
+     9  H01/F3 every refresh and every OFF->ON revalidates index AND live feed
+    34  H02/F4 feed STALE: query_end_utc older than 4 h
+   113  H03 finite lon/lat inside the UK box
+   332  H04 shard count, bytes and sha256 checked against the index entry
+    31  H05 budget caption: whole-day index sum is not "in window"
+  -209  FEED feed mode: long chips respond (feed points + "earlier coverage unknown"); coverage unknown, not N%
+    45  R02 "archive unavailable" for v1/invalid/unreachable index; "not yet published" only for HTTP 404
+   -40  F5 PREV disabled in feed mode (the feed is not navigable)
+    -1  F9 bytes:null is estimated at 530 B/flash, not counted as 0
+   144  LP LOAD POINTS: stop before a day that breaks 40,000 or 32 MB
+    38  PAD bottom padding on the lightning main group only (clears the fixed HIDE LAYERS button)
+23973 -> 24170 bytes (delta 197); proof cap 24000: EXCEEDED by 170; derived ceiling 24781: MET
+
+variant A -> fixed-module-A.js
+  -115  SAVE-S1 T/Ts from toISOString, pad() removed
+   -55  SAVE-S2 NAV() markup helper
+   -37  SAVE-S3 isFC() shared shape predicate
+   -28  SAVE-S4/S5 one cu=custom local in wf() and pt()
+    -2  SAVE-S6 one-statement forEach arrow
+   -41  SAVE-R1 dead refresh suffix (L.refresh is only set when idx is null)
+    -4  SAVE-D dead field: index record raw (never read)
+   -21  SAVE-R2 Grid twin: label text is the accessible name (drop static aria-label)
+    22  F1 unvalidated timestamps: T()/Ts() print "unknown" instead of throwing RangeError
+   -18  F2 CUSTOM loads at once (serial-guarded): no null paint during first load, no stale caption before APPLY
+     9  H01/F3 every refresh and every OFF->ON revalidates index AND live feed
+    34  H02/F4 feed STALE: query_end_utc older than 4 h
+    99  H03 finite lon/lat inside the UK box
+   304  H04 shard count, bytes and sha256 checked against the index entry
+    31  H05 budget caption: whole-day index sum is not "in window"
+  -209  FEED feed mode: long chips respond (feed points + "earlier coverage unknown"); coverage unknown, not N%
+    45  R02 "archive unavailable" for v1/invalid/unreachable index; "not yet published" only for HTTP 404
+   -40  F5 PREV disabled in feed mode (the feed is not navigable)
+    -1  F9 bytes:null is estimated at 530 B/flash, not counted as 0
+  omit  LP LOAD POINTS: stop before a day that breaks 40,000 or 32 MB
+    38  PAD bottom padding on the lightning main group only (clears the fixed HIDE LAYERS button)
+23973 -> 23984 bytes (delta 11); proof cap 24000: MET; derived ceiling 24781: MET

@@ -1,0 +1,95 @@
+{
+  "classification": "LIVE_RELEASE",
+  "committed_at": "2026-08-29T13:48:21+01:00",
+  "created_at": "2026-08-29T12:39:00Z",
+  "current": true,
+  "data_release": {
+    "base_url": "https://ventusltd.github.io/data-gridatlas/202608291237-data-gridatlas/",
+    "browser_registry_path": "browser-layer-registry.json",
+    "browser_registry_sha256": "9b2169bcfd47bf51f0aaf8350487de19578e32358e191b961385a149a4637e1b",
+    "candidate_manifest_path": "data/manifest.json",
+    "data_root": "data/",
+    "features": 541282,
+    "layers": 60,
+    "membership_path": "layer_membership.parquet",
+    "release_id": "202608291237-data-gridatlas",
+    "release_path": "release.json",
+    "release_sha256": "19684ac3e86fac4346fab121a948bab0aa857108564fec5be242484d2baefd06",
+    "repository": "Ventusltd/data-gridatlas",
+    "source_commit": "32459230b958ff6ddbdb24365f56da83ab1cdc93",
+    "source_generation": "202608291015",
+    "sources": 56
+  },
+  "generation": "202608291239",
+  "immutable": true,
+  "incepted_at": "2026-08-29T12:39:00Z",
+  "live_url": "https://ventusltd.github.io/gridatlas/202608291239-atlas-v9/",
+  "loading_contract": {
+    "activation": "EXPLICIT_USER_LAYER_TOGGLE",
+    "automatic_v8_layer_loads": 0,
+    "browser_compute": true,
+    "parquet_on_boot": 0,
+    "query_scope": "ACTIVE_MAP_BOUNDS",
+    "unload_releases_geojson": true
+  },
+  "parent_release": {
+    "commit": "514fce2f3605ae53267c5ee955b301604a91b2fd",
+    "generation": "202608290716",
+    "live_url": "https://ventusltd.github.io/gridatlas/",
+    "role": "LAST_KNOWN_GREEN_ROOT_FALLBACK",
+    "root_index_sha256": "4d059a6963ee73378b21bf378a3590292bbced0bba6f3cacf4acd9c6bc695533"
+  },
+  "release_id": "202608291239-atlas-v9",
+  "repd": {
+    "generation": "202608290716",
+    "manifest_sha256": "8850567ff9f1d2b6996b4e0d9707320030f3466a0b821cdcfc5325322b8be8c8",
+    "manifest_url": "../data/repd_v9_manifest_202608290716.json",
+    "registry_bytes": 9328402,
+    "registry_sha256": "c8a5c59be878c52014a272eb0e4d09af06a0d301d10a8d6b5d0b116b5d1bb6bc",
+    "registry_url": "../data/repd_browser_registry_202608290716.json",
+    "rows": 11069
+  },
+  "route_contract": {
+    "consumer_rule": "READ_EXACT_IMMUTABLE_ROUTE_FROM_RELEASE_POINTER",
+    "golden_deep_link": "https://ventusltd.github.io/gridatlas/202608291239-atlas-v9/?repd_ref=16135",
+    "query_parameter": "repd_ref",
+    "route": "/gridatlas/202608291239-atlas-v9/"
+  },
+  "runtime_dependencies": [
+    {
+      "id": "maplibre-gl",
+      "javascript": "https://cdn.jsdelivr.net/npm/maplibre-gl@3.6.2/dist/maplibre-gl.js",
+      "stylesheet": "https://cdn.jsdelivr.net/npm/maplibre-gl@3.6.2/dist/maplibre-gl.css",
+      "version": "3.6.2"
+    },
+    {
+      "id": "duckdb-wasm",
+      "module": "https://cdn.jsdelivr.net/npm/@duckdb/duckdb-wasm@1.29.0/+esm",
+      "role": "USER_INITIATED_BROWSER_PARQUET_QUERY",
+      "version": "1.29.0"
+    },
+    {
+      "attribution": "© OpenStreetMap contributors",
+      "id": "openstreetmap-standard-tiles",
+      "url_pattern": "https://tile.openstreetmap.org/{z}/{x}/{y}.png"
+    }
+  ],
+  "schema": "gridatlas.timestamped-live-release.v1",
+  "source_commit": "ac00b9f326187a1e3bfabb5b45397210850c6052",
+  "supersedes_candidate": {
+    "classification": "PUBLIC_PROOF_REJECTED_NO_POINTER",
+    "immutable_url": "https://ventusltd.github.io/gridatlas/202608291237-atlas-v9/",
+    "pointer_created": false,
+    "public_workflow_run_id": 33252931005,
+    "publication_commit": "ce88cd8fdba9c60411cd91c419d43f3bfff38b4c",
+    "reason": "MAPLIBRE_GLYPHLESS_STYLE_REJECTED_CLUSTER_COUNT_TEXT_LAYER",
+    "release_id": "202608291237-atlas-v9"
+  },
+  "truth_contract": {
+    "operator_or_applicant_is_current_owner_claim": false,
+    "proximity_establishes_identity": false,
+    "repd_address_search_preserved": true,
+    "unverified_provenance_is_disclosed": true,
+    "v8_untouched": true
+  }
+}

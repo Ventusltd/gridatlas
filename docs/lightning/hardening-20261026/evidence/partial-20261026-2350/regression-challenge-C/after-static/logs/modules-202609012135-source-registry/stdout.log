@@ -1,0 +1,57 @@
+
+it declares what it knows about
+
+  [PASS] the module loaded and froze its surface
+  [PASS] it declares six sources by name
+  [PASS] the declared list is in the module, not scanned off window
+
+an empty page: everything is missing, and it says which
+
+  [PASS] nothing is reported ready
+  [PASS] every declared source is reported missing
+  [PASS] the sentence names what did not answer
+  [PASS] and refuses to let an absence read as an absence in the world
+
+loaded is not the same as useful
+
+  [PASS] a link cartridge with no substations yet is not ready
+  [PASS] a network cartridge still fetching is reported as loading
+  [PASS] neither counts towards ready
+
+a failure is distinguished from an absence
+
+  [PASS] a failed fetch says failed, not absent
+  [PASS] a link cartridge that cannot measure says so, not "ready"
+  [PASS] a probe that throws is caught and reported, not fatal
+
+a fully loaded page
+
+  [PASS] all six answer
+  [PASS] the sentence says so plainly
+  [PASS] a ready source carries its detail
+  [PASS] a source that is not ready carries no detail
+
+a module on the shelf is not a source (the v9.67 false ready)
+
+  [PASS] a topology module with no loader is not ready, and says why
+  [PASS] idle is reported as idle, not absent and not ready
+  [PASS] loading is reported as loading
+  [PASS] a failed product fetch is reported as failed, not absent
+  [PASS] ready carries the site count and the schema it indexed
+  [PASS] the declared-connections source is the module, and carries its record count
+
+the single-source question
+
+  [PASS] ready() agrees with the survey on every declared source
+  [PASS] ready() is false where the survey reports loading, not just absent
+  [PASS] ready() is false for a source that is absent
+  [PASS] ready() is false for a name it does not know
+
+it reads and nothing else
+
+  [PASS] it never fetches
+  [PASS] it never renders
+  [PASS] it never grades what it finds
+
+30/30 checks passed
+the registry says what answered, what did not, and why - and never lets a gap in the page read as a gap in the world.

@@ -1,0 +1,149 @@
+From 579b6b149f071b1ff349ccd99df9113c4b3334b4 Mon Sep 17 00:00:00 2001
+From: "release-rehearsal (Claude, rehearsal only)" <noreply@anthropic.com>
+Date: Mon, 26 Oct 2026 23:59:00 +0000
+Subject: [PATCH] 202610262323-gridatlas-v9.161: release the UK lightning
+ overlay (OFF by default) to the live route
+
+Promote the committed generation 202610262323 (composition v9.161) to the
+live pointer. atlas/current.json is written from
+atlas/manifests/202610262323-composition.json minus the manifest-only keys
+(parent_generation, version, cut_at_utc, note, acceptance);
+previous_generation and superseded_generation name 202609241334 (v9.156).
+STATE.md regenerated with `node tools/scope/loop.mjs state` in this same
+commit (AGENTS.md). No cartridge, manifest, shell or route is added or
+removed; rollback target 202609241334 stays on disk.
+
+Rollback: node tools/rollback.mjs --to 202609241334 --reason "<why>"
+(or, byte-exact, git revert of this commit).
+
+Authorised by: <OWNER: link the authorising comment on issue #32>
+
+Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
+Claude-Session: https://claude.ai/code/session_01JcZ2nJ9f9fgHY3X3JTk4DF
+---
+ STATE.md           |  2 +-
+ atlas/current.json | 54 +++++++++++++++++++++++++++++++++-------------
+ 2 files changed, 40 insertions(+), 16 deletions(-)
+
+diff --git a/STATE.md b/STATE.md
+index 5383099..e5fd218 100644
+--- a/STATE.md
++++ b/STATE.md
+@@ -2,7 +2,7 @@
+ 
+ - Master: `done`
+ - Active scope: `none`
+-- Composition: `202609241334 · 202608300453-atlas-v9 · streaming-parquet-bridge → uk-gazetteer-flyto → substation-intelligence → sld-sandbox`
++- Composition: `202610262323 · 202608300453-atlas-v9 · streaming-parquet-bridge → uk-gazetteer-flyto → substation-intelligence → sld-sandbox`
+ - Top-level full release copies: `0`
+ - Immutable releases under atlas/releases: `8`
+ - Active workflows: `9`
+diff --git a/atlas/current.json b/atlas/current.json
+index a73cbbf..7a215b2 100644
+--- a/atlas/current.json
++++ b/atlas/current.json
+@@ -1,7 +1,7 @@
+ {
+  "schema": "gridatlas.current.v2",
+- "generation": "202609241334",
+- "previous_generation": "202609200022",
++ "generation": "202610262323",
++ "previous_generation": "202609241334",
+  "architecture": "IMMUTABLE_SHELL_PLUS_HASHED_CARTRIDGES",
+  "live_route": "/gridatlas/atlas/",
+  "release_id": "202608300453-atlas-v9",
+@@ -77,13 +77,13 @@
+   },
+   {
+    "id": "sld-sandbox",
+-   "generation": "202609241334",
+-   "version": "v9.156",
++   "generation": "202610262323",
++   "version": "v9.161",
+    "type": "script",
+    "slot": "replace-script",
+    "replace_script": "202608292126-pre-snapped-config-adapter.js",
+-   "path": "./cartridges/202609241334-sld-sandbox-v9-8.js",
+-   "sha256": "7812953671d8bb22a566de5e98fd3137da2d23411c5aecd526df5afa111ca4ca",
++   "path": "./cartridges/202610262323-sld-sandbox-v9-8.js",
++   "sha256": "b143bf05b28ac9b972ec90dced03cc0ad1f003fa844bdcb3f6601a33bd69891d",
+    "capabilities": [
+     "pre-snapped-config-adapter-carried-forward",
+     "project-or-substation-selection",
+@@ -219,7 +219,8 @@
+     "status-box-places-itself-clear-of-the-top-furniture",
+     "card-top-and-side-bounds-with-effective-scroll-height",
+     "ordinary-feature-card-close-clear-of-mobile-search",
+-    "ordinary-card-styles-returned-when-project-controls-arrive"
++    "ordinary-card-styles-returned-when-project-controls-arrive",
++    "uk-lightning-optical-flash-overlay-off-by-default"
+    ],
+    "immutable_shell_modified": false,
+    "supersedes_shell_script": {
+@@ -557,8 +558,31 @@
+      "upstream": "Elexon settlement prices as the owner repository publishes them"
+     }
+    ],
+-   "bytes": 435218,
+-   "derived_from": "./cartridges/202609200022-sld-sandbox-v9-8.js"
++   "bytes": 458445,
++   "derived_from": "./cartridges/202609241334-sld-sandbox-v9-8.js",
++   "uk_lightning": {
++    "module": "./modules/202610262323-uk-lightning-overlay.js",
++    "module_bytes": 23226,
++    "delta": "live 202609241334 bytes + \"\\n\" + module; nothing replaced",
++    "default": "OFF, never persisted; no request, source or layer until the first switch-on",
++    "surfaces": [
++     "#scada-ui-container (appended last)",
++     "#fs-curtain-keys (appended last)",
++     "Grid dropdown footer after .gm-panel-body (toggle only)"
++    ],
++    "contract": "no data-layer-id, data-pn-layer, data-gridatlas-layer-proxy, data-gridatlas-layer-key, lbl-* id or name=bm; menuBar.inspect() stays {60,3,63,63,true}",
++    "transport": "fetch of .json index and day files (passes the untouched bridge); XMLHttpRequest for the live uk_lightning feed while the archive is unpublished",
++    "caps": {
++     "phone_points": 10000,
++     "desktop_points": 40000,
++     "above_cap": "cluster:true (radius 40, maxZoom 10), circles sized by point_count, no symbol layer",
++     "download_budget": {
++      "count": 40000,
++      "bytes": 32000000
++     }
++    },
++    "observation": "EUMETSAT MTG LI L2-LFL optical flashes, not confirmed ground strikes; missing days are unknown, never zero"
++   }
+   },
+   {
+    "id": "substation-intelligence",
+@@ -671,15 +695,15 @@
+    "result_class": "LOCATION_ONLY"
+   }
+  },
+- "composition_manifest": "./manifests/202609241334-composition.json",
++ "composition_manifest": "./manifests/202610262323-composition.json",
+  "scope_closure": {
+   "generation": "202609010726",
+   "status": "DONE",
+   "scope": "GridAtlas v9.42 the price panel revalidates",
+   "schedule_retired": true
+  },
+- "composition_version": "v9.156",
+- "composition_id": "202609241334-gridatlas-v9.156",
++ "composition_version": "v9.161",
++ "composition_id": "202610262323-gridatlas-v9.161",
+  "transport": {
+   "response_contract": "HEADERS_BEFORE_PARQUET_BODY",
+   "engine_timeout_seconds": 15,
+@@ -694,7 +718,7 @@
+   "fidelity_workflow": ".github/workflows/202608301931-layer-fidelity.yml",
+   "payload_cache": "RELEASE_AFTER_SERIALISATION"
+  },
+- "composition_note": "Restore DLR, UK Metro and Trams station controls by explicitly selecting the existing point station partition, validated against geometry, filters, GPU/CPU census and real browser clicks. Historical shell and datasets preserved. Keep project cards within the map and apply their calculated scrolling height despite the shared !important style.",
+- "superseded_generation": "202609200022",
+- "candidate_predecessor": "202609241251"
++ "composition_note": "v9.161: the EUMETSAT MTG Lightning Imager optical-flash overlay joins the original Atlas as one module appended to the sld-sandbox cartridge, OFF by default, last in the Layers panel, the fullscreen curtain and the Grid footer, with UTC windows, honest coverage captions and device caps. Everything the original composition serves is byte-identical.",
++ "superseded_generation": "202609241334",
++ "candidate_predecessor": "202610262318"
+ }
+-- 
+2.43.0
+

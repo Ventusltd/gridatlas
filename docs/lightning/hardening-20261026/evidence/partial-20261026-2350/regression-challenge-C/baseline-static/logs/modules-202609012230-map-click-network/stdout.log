@@ -1,0 +1,16 @@
+  [PASS] the module loads frozen and names its exact owner schema
+  [PASS] unknown, missing and future schemas fail closed
+  [PASS] a recognised product indexes
+  [PASS] unknown and empty identities return null
+  [PASS] no declared voltage means no mixed electrical rows are returned
+  [PASS] the declared 400 kV voltage selects only its published fault scope
+  [PASS] the undeclared-voltage circuit is refused rather than decoded from COTT31
+  [PASS] planned changes are filtered by explicit local voltage too
+  [PASS] reactive equipment uses its explicit connection voltage
+  [PASS] reconciliation gaps travel with the useful answer
+  [PASS] the refusal travels beside every answer
+  [PASS] the module contains no voltage decoder or impedance arithmetic
+  [PASS] the module does not fetch, render or measure
+
+13/13 checks passed
+the click consumer selects explicit voltage-scoped published facts and refuses inference.

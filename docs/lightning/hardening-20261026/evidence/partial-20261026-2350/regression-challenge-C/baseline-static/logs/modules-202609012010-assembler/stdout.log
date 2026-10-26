@@ -1,0 +1,51 @@
+
+it refuses rather than guessing
+
+  [PASS] a missing generation is refused
+  [PASS] a malformed generation is refused
+  [PASS] a missing name is refused
+  [PASS] assembling nothing is refused
+  [PASS] a missing part is refused, loudly
+  [PASS] and nothing is written when it refuses
+
+it assembles exactly what it was given
+
+  [PASS] a valid assembly succeeds
+  [PASS] every part is present
+  [PASS] parts appear in the order given
+  [PASS] the header names the parts and their roles
+  [PASS] the header tells a reader not to edit the output
+  [PASS] the manifest hashes the whole cartridge correctly
+  [PASS] the manifest hashes each part
+  [PASS] a carried shell script is recorded as carried, not as a module
+
+CRLF on disk does not change a digest
+
+  [PASS] the part really is CRLF on disk
+  [PASS] its recorded digest is over LF bytes
+  [PASS] the assembled cartridge carries no CR
+
+immutability, and repeatability
+
+  [PASS] it refuses to overwrite an existing generation
+  [PASS] the existing cartridge is untouched by the refusal
+
+both members, or neither
+
+  [PASS] a successful assembly leaves BOTH the cartridge and its manifest
+  [PASS] the manifest names the cartridge it was written beside
+  [PASS] the manifest digest matches the bytes on disk
+  [PASS] a manifest-only collision is refused before publishing a cartridge
+  [PASS] the pre-existing manifest is byte-identical after refusal
+  [PASS] a manifest collision leaves no orphan cartridge
+  [PASS] an injected second-stage publication failure is reported
+  [PASS] a failed second-stage publication removes the cartridge
+  [PASS] a failed second-stage publication leaves no manifest
+  [PASS] failed publication removes both staged files
+  [PASS] the same inputs under a new generation assemble again
+  [PASS] and differ only by the generation stamp
+
+scratch and test artefacts removed
+
+31/31 checks passed
+the assembler refuses what it cannot verify, records what it used, and will not rewrite a generation that already exists.

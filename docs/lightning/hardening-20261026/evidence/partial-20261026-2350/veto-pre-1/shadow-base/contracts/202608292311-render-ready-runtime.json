@@ -1,0 +1,53 @@
+{
+  "schema": "gridatlas.render-ready-runtime-contract.v1",
+  "generation": "202608292311",
+  "release_id": "202608292311-atlas-v9",
+  "parent_release_id": "202608292126-atlas-v9",
+  "product_oracle": {
+    "repository": "Ventusltd/globalgrid2050",
+    "commit": "f2f343a92ee972cc74ed23b4b99d8a22896791ad",
+    "root": "repd_grid_atlasv8",
+    "index_blob_sha1": "278c3f55d3b61af9d13417c99bfb558374131143",
+    "css_blob_sha1": "29a2edb490407f489c29433d84e329b1038e0657",
+    "engine_blob_sha1": "0a647c32c346770851704727bbf86fb7167e2596"
+  },
+  "runtime": {
+    "critical_layer_id": "400",
+    "critical_rows": 4106,
+    "delivery": "MAPLIBRE_WORKER_DIRECT_URL",
+    "window_prefetch": false,
+    "main_thread_json_parse": false,
+    "duplicate_fetch": false,
+    "cache_identity": "CONTENT_ADDRESSED_STABLE_URL",
+    "shared_cartridge_path": "cartridges/5f5fbec83f9ce307b47ddc6e7277743f0bba1a2445b0f3ca50a9a1806146e993/grid_400kv.geojson",
+    "shared_cartridge_sha256": "5f5fbec83f9ce307b47ddc6e7277743f0bba1a2445b0f3ca50a9a1806146e993"
+  },
+  "performance_gates": {
+    "local": {
+      "desktop_cold_samples": 5,
+      "mobile_cold_samples": 5,
+      "candidate_desktop_render_p95_max_ms": 1400,
+      "candidate_mobile_render_p95_max_ms": 1800,
+      "candidate_render_p95_vs_oracle_ratio_max": 1.0,
+      "candidate_render_p95_vs_parent_ratio_max": 0.85,
+      "candidate_render_slack_ms": 150
+    },
+    "public": {
+      "desktop_cold_samples": 4,
+      "mobile_cold_samples": 4,
+      "candidate_desktop_render_p95_max_ms": 1800,
+      "candidate_mobile_render_p95_max_ms": 1800,
+      "candidate_render_p95_vs_oracle_ratio_max": 1.0,
+      "candidate_render_p95_vs_parent_ratio_max": 0.85,
+      "candidate_render_slack_ms": 200
+    }
+  },
+  "machine_learning_record": {
+    "schema": "gridatlas.ml.render-ready-performance-record.v1",
+    "path": "machine-learning/records/202608292311-render-ready-performance.jsonl",
+    "task": "binary_release_promotion",
+    "positive_label": "PROMOTE",
+    "negative_label": "REJECT",
+    "privacy": "NO_PERSONAL_DATA"
+  }
+}

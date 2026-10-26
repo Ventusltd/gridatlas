@@ -1,0 +1,54 @@
+  [PASS] 393px: VENTUS wordmark present and visible in the raw v8 page, before install
+  [PASS] 393px: VENTUS wordmark still present and visible immediately after install (fused into the bar, not moved into a closed panel)
+  [PASS] 393px: the wordmark text itself is unchanged across the transition
+  [PASS] 1280px: VENTUS wordmark present and visible in the raw v8 page, before install
+  [PASS] 1280px: VENTUS wordmark still present and visible immediately after install (fused into the bar, not moved into a closed panel)
+  [PASS] 1280px: the wordmark text itself is unchanged across the transition
+  [PASS] the Grid panel is closed on arrival
+  [PASS] one activation of Grid opens the panel
+  [PASS] the restored panel carries the real .scada-brand node (moved, not cloned)
+  [PASS] the restored panel carries the real .status-legend node
+  [PASS] every one of the 63 Grid layer controls measures >=44px on its smaller axis (the <input> itself, not only its label)
+  [PASS] File: every panel control (5 visible) measures >=44px on its smaller axis
+  [PASS] Edit: every panel control (1 visible) measures >=44px on its smaller axis
+  [PASS] View: every panel control (2 visible) measures >=44px on its smaller axis
+  [PASS] Scope: every panel control (4 visible) measures >=44px on its smaller axis
+  [PASS] About: every panel control (4 visible) measures >=44px on its smaller axis
+  [PASS] 393px, File panel: fully within the viewport (no negative x, no overflow past the right edge)
+  [PASS] 393px, Edit panel: fully within the viewport (no negative x, no overflow past the right edge)
+  [PASS] 393px, View panel: fully within the viewport (no negative x, no overflow past the right edge)
+  [PASS] 393px, Scope panel: fully within the viewport (no negative x, no overflow past the right edge)
+  [PASS] 393px, Grid panel: fully within the viewport (no negative x, no overflow past the right edge)
+  [PASS] 393px, About panel: fully within the viewport (no negative x, no overflow past the right edge)
+  [PASS] 456px, File panel: fully within the viewport (no negative x, no overflow past the right edge)
+  [PASS] 456px, Edit panel: fully within the viewport (no negative x, no overflow past the right edge)
+  [PASS] 456px, View panel: fully within the viewport (no negative x, no overflow past the right edge)
+  [PASS] 456px, Scope panel: fully within the viewport (no negative x, no overflow past the right edge)
+  [PASS] 456px, Grid panel: fully within the viewport (no negative x, no overflow past the right edge)
+  [PASS] 456px, About panel: fully within the viewport (no negative x, no overflow past the right edge)
+  [PASS] 1280px, File panel: fully within the viewport (no negative x, no overflow past the right edge)
+  [PASS] 1280px, Edit panel: fully within the viewport (no negative x, no overflow past the right edge)
+  [PASS] 1280px, View panel: fully within the viewport (no negative x, no overflow past the right edge)
+  [PASS] 1280px, Scope panel: fully within the viewport (no negative x, no overflow past the right edge)
+  [PASS] 1280px, Grid panel: fully within the viewport (no negative x, no overflow past the right edge)
+  [PASS] 1280px, About panel: fully within the viewport (no negative x, no overflow past the right edge)
+  [PASS] 1568px, File panel: fully within the viewport (no negative x, no overflow past the right edge)
+  [PASS] 1568px, Edit panel: fully within the viewport (no negative x, no overflow past the right edge)
+  [PASS] 1568px, View panel: fully within the viewport (no negative x, no overflow past the right edge)
+  [PASS] 1568px, Scope panel: fully within the viewport (no negative x, no overflow past the right edge)
+  [PASS] 1568px, Grid panel: fully within the viewport (no negative x, no overflow past the right edge)
+  [PASS] 1568px, About panel: fully within the viewport (no negative x, no overflow past the right edge)
+  [FAIL] 393px, File panel open: attribution unoccluded across its full width (10/30/50/70/90%), not only its centre -- 10%->BUTTON#gridatlas-menu-bar-title-0.gm-title, 30%->BUTTON#gridatlas-menu-bar-title-0.gm-title, 50%->BUTTON#gridatlas-menu-bar-title-0.gm-title, 70%->BUTTON#gridatlas-menu-bar-title-0.gm-title, 90%->BUTTON#gridatlas-menu-bar-title-0.gm-title
+  [FAIL] 393px, Edit panel open: attribution unoccluded across its full width (10/30/50/70/90%), not only its centre -- 10%->BUTTON#gridatlas-menu-bar-title-0.gm-title, 30%->BUTTON#gridatlas-menu-bar-title-0.gm-title, 50%->BUTTON#gridatlas-menu-bar-title-0.gm-title, 70%->BUTTON#gridatlas-menu-bar-title-0.gm-title, 90%->BUTTON#gridatlas-menu-bar-title-0.gm-title
+  [FAIL] 393px, View panel open: attribution unoccluded across its full width (10/30/50/70/90%), not only its centre -- 10%->BUTTON#gridatlas-menu-bar-title-0.gm-title, 30%->BUTTON#gridatlas-menu-bar-title-0.gm-title, 50%->BUTTON#gridatlas-menu-bar-title-0.gm-title, 70%->BUTTON#gridatlas-menu-bar-title-0.gm-title, 90%->BUTTON#gridatlas-menu-bar-title-0.gm-title
+  [FAIL] 393px, Scope panel open: attribution unoccluded across its full width (10/30/50/70/90%), not only its centre -- 10%->BUTTON#gridatlas-menu-bar-title-0.gm-title, 30%->BUTTON#gridatlas-menu-bar-title-0.gm-title, 50%->BUTTON#gridatlas-menu-bar-title-0.gm-title, 70%->BUTTON#gridatlas-menu-bar-title-0.gm-title, 90%->BUTTON#gridatlas-menu-bar-title-0.gm-title
+  [FAIL] 393px, Grid panel open: attribution unoccluded across its full width (10/30/50/70/90%), not only its centre -- 10%->BUTTON#gridatlas-menu-bar-title-0.gm-title, 30%->BUTTON#gridatlas-menu-bar-title-0.gm-title, 50%->BUTTON#gridatlas-menu-bar-title-0.gm-title, 70%->BUTTON#gridatlas-menu-bar-title-0.gm-title, 90%->BUTTON#gridatlas-menu-bar-title-0.gm-title
+  [PASS] 393px, About panel open: attribution unoccluded across its full width (10/30/50/70/90%), not only its centre
+  [FAIL] 1280px, File panel open: attribution unoccluded across its full width (10/30/50/70/90%), not only its centre -- 10%->BUTTON#gridatlas-menu-bar-title-0.gm-title, 30%->BUTTON#gridatlas-menu-bar-title-0.gm-title, 50%->BUTTON#gridatlas-menu-bar-title-0.gm-title, 70%->BUTTON#gridatlas-menu-bar-title-0.gm-title, 90%->BUTTON#gridatlas-menu-bar-title-0.gm-title
+  [FAIL] 1280px, Edit panel open: attribution unoccluded across its full width (10/30/50/70/90%), not only its centre -- 10%->BUTTON#gridatlas-menu-bar-title-0.gm-title, 30%->BUTTON#gridatlas-menu-bar-title-0.gm-title, 50%->BUTTON#gridatlas-menu-bar-title-0.gm-title, 70%->BUTTON#gridatlas-menu-bar-title-0.gm-title, 90%->BUTTON#gridatlas-menu-bar-title-0.gm-title
+  [FAIL] 1280px, View panel open: attribution unoccluded across its full width (10/30/50/70/90%), not only its centre -- 10%->BUTTON#gridatlas-menu-bar-title-0.gm-title, 30%->BUTTON#gridatlas-menu-bar-title-0.gm-title, 50%->BUTTON#gridatlas-menu-bar-title-0.gm-title, 70%->BUTTON#gridatlas-menu-bar-title-0.gm-title, 90%->BUTTON#gridatlas-menu-bar-title-0.gm-title
+  [FAIL] 1280px, Scope panel open: attribution unoccluded across its full width (10/30/50/70/90%), not only its centre -- 10%->BUTTON#gridatlas-menu-bar-title-0.gm-title, 30%->BUTTON#gridatlas-menu-bar-title-0.gm-title, 50%->BUTTON#gridatlas-menu-bar-title-0.gm-title, 70%->BUTTON#gridatlas-menu-bar-title-0.gm-title, 90%->BUTTON#gridatlas-menu-bar-title-0.gm-title
+  [FAIL] 1280px, Grid panel open: attribution unoccluded across its full width (10/30/50/70/90%), not only its centre -- 10%->BUTTON#gridatlas-menu-bar-title-0.gm-title, 30%->BUTTON#gridatlas-menu-bar-title-0.gm-title, 50%->BUTTON#gridatlas-menu-bar-title-0.gm-title, 70%->BUTTON#gridatlas-menu-bar-title-0.gm-title, 90%->BUTTON#gridatlas-menu-bar-title-0.gm-title
+  [PASS] 1280px, About panel open: attribution unoccluded across its full width (10/30/50/70/90%), not only its centre
+
+SOME checks passed (10 failure(s))

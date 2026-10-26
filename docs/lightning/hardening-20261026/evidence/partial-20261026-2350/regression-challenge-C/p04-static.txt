@@ -1,0 +1,50 @@
+== git diff --stat c08f3a6..fda6b10 (production main -> candidate) ==
+ .github/workflows/uk-lightning-preview.yml         |   33 -
+ atlas/cartridges/202610261949-sld-sandbox-v9-8.js  | 8854 ++++++++++++++++++++
+ atlas/manifests/202610261949-composition.json      |  749 ++
+ atlas/modules/202610261949-uk-lightning-overlay.js |  187 +
+ atlas/v/202610261949/current.json                  |  724 ++
+ atlas/v/202610261949/index.html                    |  103 +
+ docs/lightning/CANDIDATE-202610261949.md           |   95 +
+ tools/proofs/202610261949-sld-sandbox.proof.mjs    |   41 +
+ 8 files changed, 10753 insertions(+), 33 deletions(-)
+
+== name-status ==
+D	.github/workflows/uk-lightning-preview.yml
+A	atlas/cartridges/202610261949-sld-sandbox-v9-8.js
+A	atlas/manifests/202610261949-composition.json
+A	atlas/modules/202610261949-uk-lightning-overlay.js
+A	atlas/v/202610261949/current.json
+A	atlas/v/202610261949/index.html
+A	docs/lightning/CANDIDATE-202610261949.md
+A	tools/proofs/202610261949-sld-sandbox.proof.mjs
+
+== protected paths touched? (atlas/current.json STATE.md atlas/index.html atlas/releases atlas/manifests/202609241334-composition.json four live cartridges) ==
+(end of protected list; empty = none touched)
+
+== loader identity: cmp atlas/index.html atlas/v/202610261949/index.html (in candidate worktree) ==
+IDENTICAL
+e1e403f6defe984e6a12c30bb882dfeb65166b5414e3088c3b04f957064232b3  /tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/wt/atlas/index.html
+e1e403f6defe984e6a12c30bb882dfeb65166b5414e3088c3b04f957064232b3  /tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/wt/atlas/v/202610261949/index.html
+e1e403f6defe984e6a12c30bb882dfeb65166b5414e3088c3b04f957064232b3  /home/claude/gridatlas/atlas/index.html
+
+== shell release dir identical between prod clone and candidate worktree ==
+releases/202608300453-atlas-v9 IDENTICAL
+87a3aaf463843ce33ed5c151096395715cbc80f2575bcb7208f271e94d2ec467  /home/claude/gridatlas/atlas/releases/202608300453-atlas-v9/index.html
+1d4be1b676666192183e772562f8cb7ee91e0c6e2ee8919f5f9d6d257f59a8b4  /home/claude/gridatlas/atlas/releases/202608300453-atlas-v9/ventusv8.css
+87a3aaf463843ce33ed5c151096395715cbc80f2575bcb7208f271e94d2ec467  /tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/wt/atlas/releases/202608300453-atlas-v9/index.html
+1d4be1b676666192183e772562f8cb7ee91e0c6e2ee8919f5f9d6d257f59a8b4  /tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/wt/atlas/releases/202608300453-atlas-v9/ventusv8.css
+
+== MapLibre version pinned in the shell ==
+maplibre-gl@3.6.2/dist/maplibre-gl.css
+maplibre-gl@3.6.2/dist/maplibre-gl.js
+maplibre-gl@3.6.2/dist/maplibre-gl.css
+maplibre-gl@3.6.2/dist/maplibre-gl.js
+-- any maplibre reference in the module or loader/current.json of candidate?
+/tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/wt/atlas/modules/202610261949-uk-lightning-overlay.js:0
+/tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/wt/atlas/v/202610261949/current.json:1
+/tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/wt/atlas/v/202610261949/index.html:0
+
+== stylesheets referenced by the shell (candidate vs prod) ==
+      1 <link href="https://cdn.jsdelivr.net/npm/maplibre-gl@3.6.2/dist/maplibre-gl.css" rel="stylesheet" />
+      1 <link href="ventusv8.css" rel="stylesheet" />

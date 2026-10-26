@@ -1,0 +1,40 @@
+
+the refusal to sum, asserted structurally
+
+  [PASS] the module registered
+  [PASS] no reduce anywhere in the module
+  [PASS] the denials were actually found and removed, not silently absent
+  [PASS] nothing in the module outside the denials names a total or a sum
+  [PASS] the denial does say "sum", which is why it had to be excluded
+  [PASS] the pattern fires on a real total
+  [PASS] the pattern fires on a snake-case total
+  [PASS] the pattern does NOT fire on the season it must not break
+  [PASS] the pattern does NOT fire on the denial that must stay legible
+  [PASS] no accumulator assigns into anything named like a total
+  [PASS] no arithmetic operator is applied to a rating value
+  [PASS] no mean or average is computed
+  [PASS] the only reductions over values are Math.min and Math.max, which are published values
+  [PASS] the refusal is stated in words the page can print
+  [PASS] a rating is distinguished from what is free on it
+  [PASS] it never fetches and never renders
+
+behaviour, on circuits built for the edge cases
+
+  [PASS] both circuits are reported individually
+  [PASS] each circuit keeps its own four seasonal ratings
+  [PASS] the season range is a lowest and a highest, both real published values
+  [PASS] the answer contains no total of 4800 anywhere
+  [PASS] summer is reported separately from winter, not folded into it
+  [PASS] circuit type and length are carried as published
+  [PASS] a season the product does not publish is named absent, not filled in
+  [PASS] an unpublished season reports published:false rather than a number
+  [PASS] the count of circuits missing a season is surfaced
+  [PASS] a 9999 MVA rating is flagged, not silently used
+  [PASS] the flagged value is excluded from the highest, which would otherwise be 9999
+  [PASS] the flagged value is still reported on its own circuit, not deleted
+  [PASS] scoped to 400 kV, only the 400 kV circuit is reported
+  [PASS] a 130 MVA 132 kV circuit never widens a 400 kV range
+  [PASS] unscoped, the answer says plainly that it spans voltages
+
+the published network
+

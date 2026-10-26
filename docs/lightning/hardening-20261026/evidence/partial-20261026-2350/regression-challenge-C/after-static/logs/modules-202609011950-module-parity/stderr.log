@@ -1,0 +1,10 @@
+(node:7831) [UNDICI-EHPA] Warning: EnvHttpProxyAgent is experimental, expect them to change at any time.
+(Use `node --trace-warnings ...` to show where the warning was created)
+file:///tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/regression-challenge-C/shadow-after/tools/proofs/modules/202609011950-module-parity.proof.mjs:263
+  const a = network.byName(name);
+                    ^
+
+TypeError: Cannot read properties of undefined (reading 'byName')
+    at file:///tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/regression-challenge-C/shadow-after/tools/proofs/modules/202609011950-module-parity.proof.mjs:263:21
+
+Node.js v22.23.4

@@ -1,0 +1,742 @@
+{
+  "route": "/atlas/",
+  "generation": "202610261949",
+  "receipts": {
+    "route": "/atlas/",
+    "generation": "202610261949",
+    "export_cartridge": "./cartridges/202609062358-substation-intelligence-v9-63.js",
+    "export_cartridge_sha256": "d94b0de50deddac77643325b10fbe490ce44b8c406dbc6c67e6e7cadbdaa8ec6",
+    "viewports": {
+      "393x852 phone": {
+        "handles": {
+          "v9": {
+            "present": true,
+            "tag": null,
+            "getCanvas": "function",
+            "once": "function",
+            "triggerRepaint": "function"
+          },
+          "windowMap": {
+            "present": true,
+            "tag": "DIV",
+            "getCanvas": "undefined",
+            "once": "undefined",
+            "triggerRepaint": "undefined"
+          },
+          "legacyMap": {
+            "present": false
+          },
+          "legacyCurrent": "undefined",
+          "atlasGeneration": "202610261949",
+          "datasetGeneration": "202610261949"
+        },
+        "selectors": {
+          "print": "#gridatlas-export-print",
+          "image": "#gridatlas-export-image"
+        },
+        "menu_before_save": {
+          "open": true,
+          "menuTitle": "File",
+          "expanded": "true",
+          "panelHidden": false
+        },
+        "imageButtonText": "✓ Image saved",
+        "downloadName": "gridatlas-202610262331.png",
+        "pngBytes": 9533,
+        "pixels": {
+          "naturalWidth": 383,
+          "naturalHeight": 838,
+          "sampled": 5005,
+          "opaque": 5005,
+          "distinctColours": 1,
+          "dominantShare": 1
+        },
+        "capturedHref": "data:image/png;base64,iVBORw0KGg",
+        "menu_before_print": {
+          "open": true,
+          "menuTitle": "File",
+          "expanded": "true",
+          "panelHidden": false
+        },
+        "printCalls": 1,
+        "printCssInstalled": true,
+        "stamp": "generation 202610261949 · 2026-10-26 23:31 UTC",
+        "attrib": "Data © OpenStreetMap contributors | © CARTO | EV data © Open Charge Map",
+        "screenCanvas": {
+          "width": 383,
+          "height": 838
+        },
+        "canvasBuffer": {
+          "width": 383,
+          "height": 838
+        },
+        "printCanvas": {
+          "width": 385,
+          "height": 838
+        },
+        "pdf": {
+          "reader paper (@page size:auto)": {
+            "bytes": 60866,
+            "pagePt": {
+              "width": 612,
+              "height": 792
+            },
+            "pages": 1,
+            "imageCount": 1,
+            "images": [
+              {
+                "id": 11,
+                "width": 383,
+                "height": 838,
+                "streamBytes": 959,
+                "content": {
+                  "components": 3,
+                  "sampled": 3309,
+                  "distinct": 1,
+                  "dominantShare": 1,
+                  "nonZeroShare": 1
+                },
+                "placed": {
+                  "widthPt": 288.74998796875,
+                  "heightPt": 628.4999738125
+                },
+                "coverage": {
+                  "width": 0.472,
+                  "height": 0.794
+                }
+              }
+            ],
+            "verdict": {
+              "images": 1,
+              "big_and_filling_the_sheet": 0,
+              "carrying_visible_map_pixels": 0
+            }
+          },
+          "A4 portrait": {
+            "bytes": 60834,
+            "pagePt": {
+              "width": 595.91998,
+              "height": 841.91998
+            },
+            "pages": 1,
+            "imageCount": 1,
+            "images": [
+              {
+                "id": 11,
+                "width": 383,
+                "height": 838,
+                "streamBytes": 959,
+                "content": {
+                  "components": 3,
+                  "sampled": 3309,
+                  "distinct": 1,
+                  "dominantShare": 1,
+                  "nonZeroShare": 1
+                },
+                "placed": {
+                  "widthPt": 288.74998796875,
+                  "heightPt": 628.4999738125
+                },
+                "coverage": {
+                  "width": 0.485,
+                  "height": 0.747
+                }
+              }
+            ],
+            "verdict": {
+              "images": 1,
+              "big_and_filling_the_sheet": 0,
+              "carrying_visible_map_pixels": 0
+            }
+          },
+          "A4 landscape": {
+            "bytes": 63511,
+            "pagePt": {
+              "width": 841.91998,
+              "height": 595.91998
+            },
+            "pages": 2,
+            "imageCount": 1,
+            "images": [
+              {
+                "id": 4,
+                "width": 383,
+                "height": 838,
+                "streamBytes": 959,
+                "content": {
+                  "components": 3,
+                  "sampled": 3309,
+                  "distinct": 1,
+                  "dominantShare": 1,
+                  "nonZeroShare": 1
+                },
+                "placed": {
+                  "widthPt": 288.74998796875,
+                  "heightPt": 628.4999738125
+                },
+                "coverage": {
+                  "width": 0.343,
+                  "height": 1.055
+                }
+              }
+            ],
+            "verdict": {
+              "images": 1,
+              "big_and_filling_the_sheet": 0,
+              "carrying_visible_map_pixels": 0
+            }
+          }
+        },
+        "menu_before_print for reader paper (@page size:auto)": {
+          "open": true,
+          "menuTitle": "File",
+          "expanded": "true",
+          "panelHidden": false
+        },
+        "menu_before_print for A4 portrait": {
+          "open": true,
+          "menuTitle": "File",
+          "expanded": "true",
+          "panelHidden": false
+        },
+        "menu_before_print for A4 landscape": {
+          "open": true,
+          "menuTitle": "File",
+          "expanded": "true",
+          "panelHidden": false
+        }
+      },
+      "1400x900 desktop": {
+        "handles": {
+          "v9": {
+            "present": true,
+            "tag": null,
+            "getCanvas": "function",
+            "once": "function",
+            "triggerRepaint": "function"
+          },
+          "windowMap": {
+            "present": true,
+            "tag": "DIV",
+            "getCanvas": "undefined",
+            "once": "undefined",
+            "triggerRepaint": "undefined"
+          },
+          "legacyMap": {
+            "present": false
+          },
+          "legacyCurrent": "undefined",
+          "atlasGeneration": "202610261949",
+          "datasetGeneration": "202610261949"
+        },
+        "selectors": {
+          "print": "#gridatlas-export-print",
+          "image": "#gridatlas-export-image"
+        },
+        "menu_before_save": {
+          "open": true,
+          "menuTitle": "File",
+          "expanded": "true",
+          "panelHidden": false
+        },
+        "imageButtonText": "✓ Image saved",
+        "downloadName": "gridatlas-202610262332.png",
+        "pngBytes": 16101,
+        "pixels": {
+          "naturalWidth": 1390,
+          "naturalHeight": 518,
+          "sampled": 4355,
+          "opaque": 4355,
+          "distinctColours": 1,
+          "dominantShare": 1
+        },
+        "capturedHref": "data:image/png;base64,iVBORw0KGg",
+        "menu_before_print": {
+          "open": true,
+          "menuTitle": "File",
+          "expanded": "true",
+          "panelHidden": false
+        },
+        "printCalls": 1,
+        "printCssInstalled": true,
+        "stamp": "generation 202610261949 · 2026-10-26 23:32 UTC",
+        "attrib": "Data © OpenStreetMap contributors | © CARTO | EV data © Open Charge Map",
+        "screenCanvas": {
+          "width": 1390,
+          "height": 518
+        },
+        "canvasBuffer": {
+          "width": 1390,
+          "height": 518
+        },
+        "printCanvas": {
+          "width": 1392,
+          "height": 518
+        },
+        "pdf": {
+          "reader paper (@page size:auto)": {
+            "bytes": 128013,
+            "pagePt": {
+              "width": 612,
+              "height": 792
+            },
+            "pages": 1,
+            "imageCount": 1,
+            "images": [
+              {
+                "id": 48,
+                "width": 1390,
+                "height": 518,
+                "streamBytes": 2121,
+                "content": {
+                  "components": 3,
+                  "sampled": 7423,
+                  "distinct": 1,
+                  "dominantShare": 1,
+                  "nonZeroShare": 1
+                },
+                "placed": {
+                  "widthPt": 696.000018999998,
+                  "heightPt": 129.0000090249994
+                },
+                "coverage": {
+                  "width": 1.137,
+                  "height": 0.163
+                }
+              }
+            ],
+            "verdict": {
+              "images": 1,
+              "big_and_filling_the_sheet": 0,
+              "carrying_visible_map_pixels": 0
+            }
+          },
+          "A4 portrait": {
+            "bytes": 134610,
+            "pagePt": {
+              "width": 595.91998,
+              "height": 841.91998
+            },
+            "pages": 1,
+            "imageCount": 1,
+            "images": [
+              {
+                "id": 52,
+                "width": 1390,
+                "height": 518,
+                "streamBytes": 2121,
+                "content": {
+                  "components": 3,
+                  "sampled": 7423,
+                  "distinct": 1,
+                  "dominantShare": 1,
+                  "nonZeroShare": 1
+                },
+                "placed": {
+                  "widthPt": 696.000018999998,
+                  "heightPt": 109.9999970166666
+                },
+                "coverage": {
+                  "width": 1.168,
+                  "height": 0.131
+                }
+              }
+            ],
+            "verdict": {
+              "images": 1,
+              "big_and_filling_the_sheet": 0,
+              "carrying_visible_map_pixels": 0
+            }
+          },
+          "A4 landscape": {
+            "bytes": 112770,
+            "pagePt": {
+              "width": 841.91998,
+              "height": 595.91998
+            },
+            "pages": 2,
+            "imageCount": 1,
+            "images": [
+              {
+                "id": 32,
+                "width": 1390,
+                "height": 518,
+                "streamBytes": 2121,
+                "content": {
+                  "components": 3,
+                  "sampled": 7423,
+                  "distinct": 1,
+                  "dominantShare": 1,
+                  "nonZeroShare": 1
+                },
+                "placed": {
+                  "widthPt": 837.437125106785,
+                  "heightPt": 291.1778494675891
+                },
+                "coverage": {
+                  "width": 0.995,
+                  "height": 0.489
+                }
+              }
+            ],
+            "verdict": {
+              "images": 1,
+              "big_and_filling_the_sheet": 1,
+              "carrying_visible_map_pixels": 0
+            }
+          }
+        },
+        "menu_before_print for reader paper (@page size:auto)": {
+          "open": true,
+          "menuTitle": "File",
+          "expanded": "true",
+          "panelHidden": false
+        },
+        "menu_before_print for A4 portrait": {
+          "open": true,
+          "menuTitle": "File",
+          "expanded": "true",
+          "panelHidden": false
+        },
+        "menu_before_print for A4 landscape": {
+          "open": true,
+          "menuTitle": "File",
+          "expanded": "true",
+          "panelHidden": false
+        }
+      }
+    }
+  },
+  "checks": [
+    {
+      "name": "393x852 phone: CONTROL - the published map handle is a live map object",
+      "ok": true,
+      "detail": "__GRIDATLAS_V9_MAP__ getCanvas=function once=function triggerRepaint=function"
+    },
+    {
+      "name": "393x852 phone: CONTROL - window.map is the DIV, so it can never be the handle",
+      "ok": true,
+      "detail": "window.map is <DIV> getCanvas=undefined"
+    },
+    {
+      "name": "393x852 phone: the composition publishes its generation to the page",
+      "ok": true,
+      "detail": "__GRIDATLAS_ATLAS__.generation=202610261949 current.json=202610261949"
+    },
+    {
+      "name": "393x852 phone: both export controls are addressable without reading their text",
+      "ok": true,
+      "detail": "print via #gridatlas-export-print; image via #gridatlas-export-image"
+    },
+    {
+      "name": "393x852 phone: the export menu is open before save is clicked",
+      "ok": true,
+      "detail": "open=true aria-expanded=true panel.hidden=false (menu titled \"File\")"
+    },
+    {
+      "name": "393x852 phone: saving an image reports success rather than refusing",
+      "ok": true,
+      "detail": "button reads \"✓ Image saved\""
+    },
+    {
+      "name": "393x852 phone: the browser actually received a download",
+      "ok": true,
+      "detail": "download=gridatlas-202610262331.png href starts \"data:image/png;base64,iVBORw0KGg\""
+    },
+    {
+      "name": "393x852 phone: the saved PNG is a plausible size for a map view",
+      "ok": false,
+      "detail": "9533 bytes"
+    },
+    {
+      "name": "393x852 phone: the saved PNG carries map content, not a solid rectangle",
+      "ok": false,
+      "detail": "383x838, 1 distinct colours over 5005 sampled pixels, dominant colour 1 of them, 5005 non-transparent"
+    },
+    {
+      "name": "393x852 phone: the export menu is open before print is clicked",
+      "ok": true,
+      "detail": "open=true aria-expanded=true panel.hidden=false (menu titled \"File\")"
+    },
+    {
+      "name": "393x852 phone: the print stylesheet is installed by the Print control",
+      "ok": true,
+      "detail": "window.print called 1 time(s)"
+    },
+    {
+      "name": "393x852 phone: the export stamp names the generation it came from",
+      "ok": true,
+      "detail": "stamp=\"generation 202610261949 · 2026-10-26 23:31 UTC\""
+    },
+    {
+      "name": "393x852 phone: the export stamp still carries the attribution",
+      "ok": true,
+      "detail": "Data © OpenStreetMap contributors | © CARTO | EV data © Open Charge Map"
+    },
+    {
+      "name": "393x852 phone: the map canvas has a height greater than zero under print media",
+      "ok": true,
+      "detail": "screen 383x838 -> print 385x838"
+    },
+    {
+      "name": "393x852 phone: the printed map keeps at least half its on-screen height",
+      "ok": true,
+      "detail": "838 vs 838 on screen"
+    },
+    {
+      "name": "393x852 phone: the export menu is open before print for reader paper (@page size:auto) is clicked",
+      "ok": true,
+      "detail": "open=true aria-expanded=true panel.hidden=false (menu titled \"File\")"
+    },
+    {
+      "name": "393x852 phone / reader paper (@page size:auto): the print overlays are on the page, exactly once each",
+      "ok": true,
+      "detail": "1 furniture node(s), 1 captured-map node(s)"
+    },
+    {
+      "name": "393x852 phone / reader paper (@page size:auto): the PDF contains a rasterised map",
+      "ok": true,
+      "detail": "1 image XObjects (masks excluded) in 60866 bytes"
+    },
+    {
+      "name": "393x852 phone / reader paper (@page size:auto): an image the size of the sheet is on the page, not just an icon",
+      "ok": false,
+      "detail": "#11 383x838px placed 0.472x0.794 of the sheet, 1 distinct/3309 sampled, dominant 1, no mask"
+    },
+    {
+      "name": "393x852 phone / reader paper (@page size:auto): that image carries visible map pixels, not one flat colour behind an empty mask",
+      "ok": false,
+      "detail": "no sheet-sized image to inspect"
+    },
+    {
+      "name": "393x852 phone / reader paper (@page size:auto): the slide is one page",
+      "ok": true,
+      "detail": "1 pages"
+    },
+    {
+      "name": "393x852 phone: the export menu is open before print for A4 portrait is clicked",
+      "ok": true,
+      "detail": "open=true aria-expanded=true panel.hidden=false (menu titled \"File\")"
+    },
+    {
+      "name": "393x852 phone / A4 portrait: the print overlays are on the page, exactly once each",
+      "ok": true,
+      "detail": "1 furniture node(s), 1 captured-map node(s)"
+    },
+    {
+      "name": "393x852 phone / A4 portrait: the PDF contains a rasterised map",
+      "ok": true,
+      "detail": "1 image XObjects (masks excluded) in 60834 bytes"
+    },
+    {
+      "name": "393x852 phone / A4 portrait: an image the size of the sheet is on the page, not just an icon",
+      "ok": false,
+      "detail": "#11 383x838px placed 0.485x0.747 of the sheet, 1 distinct/3309 sampled, dominant 1, no mask"
+    },
+    {
+      "name": "393x852 phone / A4 portrait: that image carries visible map pixels, not one flat colour behind an empty mask",
+      "ok": false,
+      "detail": "no sheet-sized image to inspect"
+    },
+    {
+      "name": "393x852 phone / A4 portrait: the slide is one page",
+      "ok": true,
+      "detail": "1 pages"
+    },
+    {
+      "name": "393x852 phone: the export menu is open before print for A4 landscape is clicked",
+      "ok": true,
+      "detail": "open=true aria-expanded=true panel.hidden=false (menu titled \"File\")"
+    },
+    {
+      "name": "393x852 phone / A4 landscape: the print overlays are on the page, exactly once each",
+      "ok": true,
+      "detail": "1 furniture node(s), 1 captured-map node(s)"
+    },
+    {
+      "name": "393x852 phone / A4 landscape: the PDF contains a rasterised map",
+      "ok": true,
+      "detail": "1 image XObjects (masks excluded) in 63511 bytes"
+    },
+    {
+      "name": "393x852 phone / A4 landscape: an image the size of the sheet is on the page, not just an icon",
+      "ok": false,
+      "detail": "#4 383x838px placed 0.343x1.055 of the sheet, 1 distinct/3309 sampled, dominant 1, no mask"
+    },
+    {
+      "name": "393x852 phone / A4 landscape: that image carries visible map pixels, not one flat colour behind an empty mask",
+      "ok": false,
+      "detail": "no sheet-sized image to inspect"
+    },
+    {
+      "name": "393x852 phone / A4 landscape: the slide is one page",
+      "ok": false,
+      "detail": "2 pages"
+    },
+    {
+      "name": "1400x900 desktop: CONTROL - the published map handle is a live map object",
+      "ok": true,
+      "detail": "__GRIDATLAS_V9_MAP__ getCanvas=function once=function triggerRepaint=function"
+    },
+    {
+      "name": "1400x900 desktop: CONTROL - window.map is the DIV, so it can never be the handle",
+      "ok": true,
+      "detail": "window.map is <DIV> getCanvas=undefined"
+    },
+    {
+      "name": "1400x900 desktop: the composition publishes its generation to the page",
+      "ok": true,
+      "detail": "__GRIDATLAS_ATLAS__.generation=202610261949 current.json=202610261949"
+    },
+    {
+      "name": "1400x900 desktop: both export controls are addressable without reading their text",
+      "ok": true,
+      "detail": "print via #gridatlas-export-print; image via #gridatlas-export-image"
+    },
+    {
+      "name": "1400x900 desktop: the export menu is open before save is clicked",
+      "ok": true,
+      "detail": "open=true aria-expanded=true panel.hidden=false (menu titled \"File\")"
+    },
+    {
+      "name": "1400x900 desktop: saving an image reports success rather than refusing",
+      "ok": true,
+      "detail": "button reads \"✓ Image saved\""
+    },
+    {
+      "name": "1400x900 desktop: the browser actually received a download",
+      "ok": true,
+      "detail": "download=gridatlas-202610262332.png href starts \"data:image/png;base64,iVBORw0KGg\""
+    },
+    {
+      "name": "1400x900 desktop: the saved PNG is a plausible size for a map view",
+      "ok": true,
+      "detail": "16101 bytes"
+    },
+    {
+      "name": "1400x900 desktop: the saved PNG carries map content, not a solid rectangle",
+      "ok": false,
+      "detail": "1390x518, 1 distinct colours over 4355 sampled pixels, dominant colour 1 of them, 4355 non-transparent"
+    },
+    {
+      "name": "1400x900 desktop: the export menu is open before print is clicked",
+      "ok": true,
+      "detail": "open=true aria-expanded=true panel.hidden=false (menu titled \"File\")"
+    },
+    {
+      "name": "1400x900 desktop: the print stylesheet is installed by the Print control",
+      "ok": true,
+      "detail": "window.print called 1 time(s)"
+    },
+    {
+      "name": "1400x900 desktop: the export stamp names the generation it came from",
+      "ok": true,
+      "detail": "stamp=\"generation 202610261949 · 2026-10-26 23:32 UTC\""
+    },
+    {
+      "name": "1400x900 desktop: the export stamp still carries the attribution",
+      "ok": true,
+      "detail": "Data © OpenStreetMap contributors | © CARTO | EV data © Open Charge Map"
+    },
+    {
+      "name": "1400x900 desktop: the map canvas has a height greater than zero under print media",
+      "ok": true,
+      "detail": "screen 1390x518 -> print 1392x518"
+    },
+    {
+      "name": "1400x900 desktop: the printed map keeps at least half its on-screen height",
+      "ok": true,
+      "detail": "518 vs 518 on screen"
+    },
+    {
+      "name": "1400x900 desktop: the export menu is open before print for reader paper (@page size:auto) is clicked",
+      "ok": true,
+      "detail": "open=true aria-expanded=true panel.hidden=false (menu titled \"File\")"
+    },
+    {
+      "name": "1400x900 desktop / reader paper (@page size:auto): the print overlays are on the page, exactly once each",
+      "ok": true,
+      "detail": "1 furniture node(s), 1 captured-map node(s)"
+    },
+    {
+      "name": "1400x900 desktop / reader paper (@page size:auto): the PDF contains a rasterised map",
+      "ok": true,
+      "detail": "1 image XObjects (masks excluded) in 128013 bytes"
+    },
+    {
+      "name": "1400x900 desktop / reader paper (@page size:auto): an image the size of the sheet is on the page, not just an icon",
+      "ok": false,
+      "detail": "#48 1390x518px placed 1.137x0.163 of the sheet, 1 distinct/7423 sampled, dominant 1, no mask"
+    },
+    {
+      "name": "1400x900 desktop / reader paper (@page size:auto): that image carries visible map pixels, not one flat colour behind an empty mask",
+      "ok": false,
+      "detail": "no sheet-sized image to inspect"
+    },
+    {
+      "name": "1400x900 desktop / reader paper (@page size:auto): the slide is one page",
+      "ok": true,
+      "detail": "1 pages"
+    },
+    {
+      "name": "1400x900 desktop: the export menu is open before print for A4 portrait is clicked",
+      "ok": true,
+      "detail": "open=true aria-expanded=true panel.hidden=false (menu titled \"File\")"
+    },
+    {
+      "name": "1400x900 desktop / A4 portrait: the print overlays are on the page, exactly once each",
+      "ok": true,
+      "detail": "1 furniture node(s), 1 captured-map node(s)"
+    },
+    {
+      "name": "1400x900 desktop / A4 portrait: the PDF contains a rasterised map",
+      "ok": true,
+      "detail": "1 image XObjects (masks excluded) in 134610 bytes"
+    },
+    {
+      "name": "1400x900 desktop / A4 portrait: an image the size of the sheet is on the page, not just an icon",
+      "ok": false,
+      "detail": "#52 1390x518px placed 1.168x0.131 of the sheet, 1 distinct/7423 sampled, dominant 1, no mask"
+    },
+    {
+      "name": "1400x900 desktop / A4 portrait: that image carries visible map pixels, not one flat colour behind an empty mask",
+      "ok": false,
+      "detail": "no sheet-sized image to inspect"
+    },
+    {
+      "name": "1400x900 desktop / A4 portrait: the slide is one page",
+      "ok": true,
+      "detail": "1 pages"
+    },
+    {
+      "name": "1400x900 desktop: the export menu is open before print for A4 landscape is clicked",
+      "ok": true,
+      "detail": "open=true aria-expanded=true panel.hidden=false (menu titled \"File\")"
+    },
+    {
+      "name": "1400x900 desktop / A4 landscape: the print overlays are on the page, exactly once each",
+      "ok": true,
+      "detail": "1 furniture node(s), 1 captured-map node(s)"
+    },
+    {
+      "name": "1400x900 desktop / A4 landscape: the PDF contains a rasterised map",
+      "ok": true,
+      "detail": "1 image XObjects (masks excluded) in 112770 bytes"
+    },
+    {
+      "name": "1400x900 desktop / A4 landscape: an image the size of the sheet is on the page, not just an icon",
+      "ok": true,
+      "detail": "#32 1390x518px placed 0.995x0.489 of the sheet, 1 distinct/7423 sampled, dominant 1, no mask"
+    },
+    {
+      "name": "1400x900 desktop / A4 landscape: that image carries visible map pixels, not one flat colour behind an empty mask",
+      "ok": false,
+      "detail": "#32 1390x518px placed 0.995x0.489 of the sheet, 1 distinct/7423 sampled, dominant 1, no mask [floors: 8 distinct, dominant < 0.95, alpha >= 0.5]"
+    },
+    {
+      "name": "1400x900 desktop / A4 landscape: the slide is one page",
+      "ok": false,
+      "detail": "2 pages"
+    }
+  ]
+}

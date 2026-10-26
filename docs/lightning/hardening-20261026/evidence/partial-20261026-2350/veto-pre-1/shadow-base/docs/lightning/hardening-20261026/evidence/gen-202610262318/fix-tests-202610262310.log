@@ -1,0 +1,290 @@
+TAP version 13
+# Subtest: H01: OFF->ON revalidates the live feed (no cached promise)
+ok 1 - H01: OFF->ON revalidates the live feed (no cached promise)
+  ---
+  duration_ms: 202.402265
+  type: 'test'
+  ...
+# Subtest: H01/F3: the 10-minute refresh re-requests the live feed, not only index.json
+ok 2 - H01/F3: the 10-minute refresh re-requests the live feed, not only index.json
+  ---
+  duration_ms: 112.064906
+  type: 'test'
+  ...
+# Subtest: H02/F4: a feed whose query_end_utc is 6 h old is STALE in state, label and status
+ok 3 - H02/F4: a feed whose query_end_utc is 6 h old is STALE in state, label and status
+  ---
+  duration_ms: 41.517233
+  type: 'test'
+  ...
+# Subtest: H03: ok() rejects malformed and out-of-box coordinates; such a record is never drawn
+ok 4 - H03: ok() rejects malformed and out-of-box coordinates; such a record is never drawn
+  ---
+  duration_ms: 42.62456
+  type: 'test'
+  ...
+# Subtest: H04: a shard is rejected when its count, bytes or sha256 differ from the index entry; a matching shard loads
+ok 5 - H04: a shard is rejected when its count, bytes or sha256 differ from the index entry; a matching shard loads
+  ---
+  duration_ms: 45.781223
+  type: 'test'
+  ...
+# Subtest: H05: a sub-day budget caption never calls whole-day index sums "in window"
+ok 6 - H05: a sub-day budget caption never calls whole-day index sums "in window"
+  ---
+  duration_ms: 3.045082
+  type: 'test'
+  ...
+# Subtest: F2: CUSTOM clicked during the first LOADING neither throws nor paints the stale 24h result
+ok 7 - F2: CUSTOM clicked during the first LOADING neither throws nor paints the stale 24h result
+  ---
+  duration_ms: 98.912667
+  type: 'test'
+  ...
+# Subtest: F1: an unparsable feed timestamp does not wedge the UI (label leaves [LOAD], chips still load)
+ok 8 - F1: an unparsable feed timestamp does not wedge the UI (label leaves [LOAD], chips still load)
+  ---
+  duration_ms: 81.642981
+  type: 'test'
+  ...
+# Subtest: F5: PREV is disabled in feed-only mode
+ok 9 - F5: PREV is disabled in feed-only mode
+  ---
+  duration_ms: 38.465521
+  type: 'test'
+  ...
+# Subtest: F6 / owner device 2: feed-mode coverage reads "unknown (live feed records only its last collection window)", never a percentage
+ok 10 - F6 / owner device 2: feed-mode coverage reads "unknown (live feed records only its last collection window)", never a percentage
+  ---
+  duration_ms: 42.978314
+  type: 'test'
+  ...
+# Subtest: F9: bytes:null is estimated, not counted as 0, in the 32 MB budget
+ok 11 - F9: bytes:null is estimated, not counted as 0, in the 32 MB budget
+  ---
+  duration_ms: 91.390329
+  type: 'test'
+  ...
+# Subtest: R02: a v1 index reads "archive unavailable", not "archive not yet published"
+ok 12 - R02: a v1 index reads "archive unavailable", not "archive not yet published"
+  ---
+  duration_ms: 36.133306
+  type: 'test'
+  ...
+# Subtest: R04: CUSTOM shows a custom-window caption at once, not the previous period until APPLY
+ok 13 - R04: CUSTOM shows a custom-window caption at once, not the previous period until APPLY
+  ---
+  duration_ms: 72.438571
+  type: 'test'
+  ...
+# Subtest: LP: LOAD POINTS stops before a day that would break 40,000 flashes or 32 MB
+not ok 14 - LP: LOAD POINTS stops before a day that would break 40,000 flashes or 32 MB
+  ---
+  duration_ms: 73.91173
+  type: 'test'
+  location: '/tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/gen-202610262318/test-fixes.mjs:194:1'
+  failureType: 'testCodeFailure'
+  error: 'loaded 60000 > 40,000'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: true
+  actual: false
+  operator: '=='
+  stack: |-
+    TestContext.<anonymous> (file:///tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/gen-202610262318/test-fixes.mjs:200:10)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: Owner device 1: in feed fallback the 30D-12M chips respond with "archive not yet published: earlier coverage unknown, not zero"
+ok 15 - Owner device 1: in feed fallback the 30D-12M chips respond with "archive not yet published: earlier coverage unknown, not zero"
+  ---
+  duration_ms: 84.826492
+  type: 'test'
+  ...
+# Subtest: Owner device 3: bottom padding is inline on the lightning main group only; no original node or selector touched
+ok 16 - Owner device 3: bottom padding is inline on the lightning main group only; no original node or selector touched
+  ---
+  duration_ms: 4.071504
+  type: 'test'
+  ...
+# Subtest: P14: the lightning main group carries an inline bottom spacer of at least 56 px (44 px HIDE LAYERS + 12 px inset)
+ok 17 - P14: the lightning main group carries an inline bottom spacer of at least 56 px (44 px HIDE LAYERS + 12 px inset)
+  ---
+  duration_ms: 2.497693
+  type: 'test'
+  ...
+# Subtest: A11Y P15-1: period chips expose aria-pressed and it follows the selected period
+not ok 18 - A11Y P15-1: period chips expose aria-pressed and it follows the selected period
+  ---
+  duration_ms: 41.90005
+  type: 'test'
+  location: '/tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/gen-202610262318/test-fixes.mjs:236:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    
+    null !== 'true'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 'true'
+  actual: ~
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/gen-202610262318/test-fixes.mjs:239:10)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: A11Y P15-2: the custom From/To date inputs have accessible names
+not ok 19 - A11Y P15-2: the custom From/To date inputs have accessible names
+  ---
+  duration_ms: 5.606788
+  type: 'test'
+  location: '/tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/gen-202610262318/test-fixes.mjs:246:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    The input did not match the regular expression /^from date \(UTC\)$/. Input:
+    
+    ''
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+  actual: ''
+  operator: 'match'
+  stack: |-
+    TestContext.<anonymous> (file:///tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/gen-202610262318/test-fixes.mjs:248:42)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: A11Y P15-3: no \#555 text on lightning nodes; caption footer and status line are \#888
+not ok 20 - A11Y P15-3: no \#555 text on lightning nodes; caption footer and status line are \#888
+  ---
+  duration_ms: 4.613005
+  type: 'test'
+  location: '/tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/gen-202610262318/test-fixes.mjs:251:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    #555 still used
+    + actual - expected
+    
+    + [
+    +   'DIV'
+    + ]
+    - []
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+  actual:
+    0: 'DIV'
+  operator: 'deepStrictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/gen-202610262318/test-fixes.mjs:253:10)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: A11Y P15-4: FAIL-state label opacity is 0.6
+not ok 21 - A11Y P15-4: FAIL-state label opacity is 0.6
+  ---
+  duration_ms: 71.121653
+  type: 'test'
+  location: '/tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/gen-202610262318/test-fixes.mjs:258:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    
+    '0.5' !== '0.6'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: '0.6'
+  actual: '0.5'
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/gen-202610262318/test-fixes.mjs:263:10)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: R01/P02/P10: no Grid dropdown mirror is inserted; the original Grid panel keeps its children
+not ok 22 - R01/P02/P10: no Grid dropdown mirror is inserted; the original Grid panel keeps its children
+  ---
+  duration_ms: 3.601109
+  type: 'test'
+  location: '/tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/gen-202610262318/test-fixes.mjs:266:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Grid panel children changed
+    + actual - expected
+    
+      [
+        'gm-panel-body',
+    +   ''
+      ]
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    0: 'gm-panel-body'
+  actual:
+    0: 'gm-panel-body'
+    1: ''
+  operator: 'deepStrictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/gen-202610262318/test-fixes.mjs:268:10)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: R01: boot no longer waits for .gm-panel-body
+not ok 23 - R01: boot no longer waits for .gm-panel-body
+  ---
+  duration_ms: 1.082785
+  type: 'test'
+  location: '/tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/gen-202610262318/test-fixes.mjs:273:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    waiting_for ["gm-panel-body"]
+    
+    false !== true
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: true
+  actual: false
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/gen-202610262318/test-fixes.mjs:275:10)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: R01: without the mirror, panel and curtain twins stay in sync both ways
+ok 24 - R01: without the mirror, panel and curtain twins stay in sync both ways
+  ---
+  duration_ms: 75.475213
+  type: 'test'
+  ...
+1..24
+# tests 24
+# suites 0
+# pass 17
+# fail 7
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 1380.890915

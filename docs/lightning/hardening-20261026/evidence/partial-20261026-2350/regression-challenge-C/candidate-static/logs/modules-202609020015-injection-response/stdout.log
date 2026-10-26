@@ -1,0 +1,59 @@
+
+the model declares itself
+
+  [PASS] the module registered
+  [PASS] it names its method as a DC injection response, not a load flow
+  [PASS] it publishes its equations
+  [PASS] it declares the base it works on
+  [PASS] it states that resistance is not used
+  [PASS] it states that shunt susceptance is not used
+  [PASS] it states the flat-voltage assumption
+  [PASS] it states the small-angle assumption
+  [PASS] it states that losses are zero by construction
+  [PASS] it states that taps are not published and not modelled
+  [PASS] it states that no contingency is modelled
+  [PASS] it refuses to be read as a loading
+  [PASS] it refuses to be read as a connection offer
+  [PASS] the module never reads the resistance field
+  [PASS] the module never reads the susceptance field
+  [PASS] the module does read the reactance field, which is what it declares
+
+validation against networks whose answers are exact by hand
+
+  [PASS] one branch between injection and slack carries 100% of it
+  [PASS] and carries it in MW, on the declared base
+  [PASS] the reactance does not change a single-path answer
+  [PASS] Kirchhoff at the injection is satisfied exactly
+  [PASS] the solve reports that it converged
+  [PASS] two parallel paths divide inversely as their reactances (2/3, 1/3)
+  [PASS] the two shares sum to exactly one
+  [PASS] in MW that is 200 and 100 of a 300 MW injection
+  [PASS] a symmetric ring sends 2/3 the direct way
+  [PASS] and 1/3 the long way round
+  [PASS] the long way round carries the same share on its second leg
+  [PASS] a ring puts flow on a branch that touches neither end of the transfer
+  [PASS] every branch in series carries the entire transfer
+  [PASS] reversing the transfer reverses every branch flow exactly
+  [PASS] the zero-reactance branch was shorted, not modelled
+  [PASS] the two shorted nodes became one bus
+  [PASS] injecting at either end of a short gives the same answer
+  [PASS] because they are the same bus
+  [PASS] a transfer within one bus is refused and explained
+  [PASS] a branch with no published reactance is not invented
+  [PASS] two parallel circuits of EQUAL reactance are two edges, not one
+  [PASS] and they share the transfer equally, half each
+  [PASS] each carries 100 MW of a 200 MW transfer, not 200
+  [PASS] the model counts its connected components
+  [PASS] a cross-component transfer is refused, not solved
+  [PASS] and the refusal says why, naming components
+  [PASS] this is the exact shape that returned passes:true before
+  [PASS] a good solve reports available
+  [PASS] acceptance names all three conditions it checks
+  [PASS] the worst bus error is reported, not just the injection bus
+  [PASS] the answer names the component it was solved in
+  [PASS] the declared sink is the most connected bus in the same component
+  [PASS] an isolated bus has no sink, and that is an answer
+  [PASS] the rule is published so a reader can see it
+
+the real published 400 kV network
+

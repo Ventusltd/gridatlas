@@ -1,0 +1,94 @@
+[2026-10-26T23:39:46.271Z] chromium 153.0.8010.12 | out=/tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/veto-pre-1/parity/run-OFF | shim=/tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/lightning/harness/offline-shim.mjs | fixtures=none | threshold=0.1% channel>16 | geometry tol=1px
+[2026-10-26T23:39:46.271Z] masks=["#clock","#date","#days"] (NO live-count suffix mask) + map canvas (.maplibregl-canvas); additive=["[data-lightning-group]"]
+[2026-10-26T23:39:46.271Z] [baseline] viewport desktop-1440x900: desktop Chromium, mouse pointer
+[2026-10-26T23:39:46.342Z] fixtures: NONE (all external requests go to the network as-is)
+[2026-10-26T23:39:46.588Z]   offline shim installed on page (/tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/lightning/harness/offline-shim.mjs)
+[2026-10-26T23:39:46.881Z]   wait goto:domcontentloaded @289ms
+[2026-10-26T23:39:48.194Z]   wait composer:document.write-complete @1602ms {"generation":"202609241334","router":null,"title":"GlobalGrid2050 | UK Region v8 (Experimental)"}
+[2026-10-26T23:39:55.763Z]   wait shim:waitForComposition(menuBar.installed) @9171ms {"engine":120,"pn":6,"scada":true,"curtain":true,"menuInstalled":true,"map":true,"waitedMs":7550}
+[2026-10-26T23:39:56.777Z]   wait menu-bar:6-titles+>=60-proxies @10185ms
+[2026-10-26T23:39:59.079Z]   wait weather-module:installed-or-absent @12487ms
+[2026-10-26T23:39:59.975Z]   wait uk-lightning:installed-or-absent @13380ms "absent"
+[2026-10-26T23:40:00.006Z]   wait networkidle @13414ms
+[2026-10-26T23:40:06.127Z]   wait fixed-settle:3000ms @19535ms
+[2026-10-26T23:40:14.062Z]   [baseline/desktop-1440x900/initial] 
+[2026-10-26T23:40:15.583Z]   [baseline/desktop-1440x900/layers] already open on arrival (desktop default); screenshot equals initial state apart from clocks
+[2026-10-26T23:40:19.621Z]   [baseline/desktop-1440x900/grid] opened "Grid" by real click (aria-expanded=true)
+[2026-10-26T23:40:25.147Z]   [baseline/desktop-1440x900/about] opened "About" by real click (aria-expanded=true)
+[2026-10-26T23:40:27.729Z]   [baseline/desktop-1440x900/fullscreen] ERROR locator.count: Target crashed 
+[2026-10-26T23:40:27.754Z]   [baseline/desktop-1440x900/deeplink] ERROR page.goto: Page crashed
+[2026-10-26T23:40:27.947Z] [baseline] viewport android-393x852: Android Chrome emulation (Pixel 8 geometry, touch, mobile UA)
+[2026-10-26T23:40:27.982Z] fixtures: NONE (all external requests go to the network as-is)
+[2026-10-26T23:40:28.136Z]   offline shim installed on page (/tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/lightning/harness/offline-shim.mjs)
+[2026-10-26T23:40:28.186Z]   wait goto:domcontentloaded @50ms
+[2026-10-26T23:40:29.460Z]   wait composer:document.write-complete @1324ms {"generation":"202609241334","router":null,"title":"GlobalGrid2050 | UK Region v8 (Experimental)"}
+[2026-10-26T23:40:38.064Z]   wait shim:waitForComposition(menuBar.installed) @9928ms {"engine":120,"pn":6,"scada":true,"curtain":true,"menuInstalled":true,"map":true,"waitedMs":8604}
+[2026-10-26T23:40:39.367Z]   wait menu-bar:6-titles+>=60-proxies @11231ms
+[2026-10-26T23:40:40.222Z]   wait weather-module:installed-or-absent @12086ms
+[2026-10-26T23:40:40.951Z]   wait uk-lightning:installed-or-absent @12815ms "absent"
+[2026-10-26T23:40:40.952Z]   wait networkidle @12816ms
+[2026-10-26T23:40:46.674Z]   wait fixed-settle:3000ms @18538ms
+[2026-10-26T23:41:00.537Z]   [baseline/android-393x852/initial] 
+[2026-10-26T23:41:04.498Z]   [baseline/android-393x852/layers] opened by real tap on #gridatlas-dash-toggle
+[2026-10-26T23:41:13.177Z]   [baseline/android-393x852/grid] opened "Grid" by real tap (aria-expanded=true)
+[2026-10-26T23:41:19.574Z]   [baseline/android-393x852/about] opened "About" by real tap (aria-expanded=true)
+[2026-10-26T23:41:21.785Z]   [baseline/android-393x852/fullscreen] ERROR locator.count: Target crashed 
+[2026-10-26T23:41:21.789Z]   [baseline/android-393x852/deeplink] ERROR page.goto: Page crashed
+[2026-10-26T23:41:21.798Z] [baseline] viewport android-360x740: Android Chrome emulation (small phone geometry, touch, mobile UA)
+[2026-10-26T23:41:21.805Z] fixtures: NONE (all external requests go to the network as-is)
+[2026-10-26T23:41:22.032Z]   offline shim installed on page (/tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/lightning/harness/offline-shim.mjs)
+[2026-10-26T23:41:22.123Z]   wait goto:domcontentloaded @91ms
+[2026-10-26T23:41:22.565Z]   wait composer:document.write-complete @533ms {"generation":"202609241334","router":null,"title":"GlobalGrid2050 | UK Region v8 (Experimental)"}
+[2026-10-26T23:41:33.994Z]   wait shim:waitForComposition(menuBar.installed) @11962ms {"engine":120,"pn":6,"scada":true,"curtain":true,"menuInstalled":true,"map":true,"waitedMs":11429}
+[2026-10-26T23:41:34.632Z]   wait menu-bar:6-titles+>=60-proxies @12600ms
+[2026-10-26T23:41:35.269Z]   wait weather-module:installed-or-absent @13237ms
+[2026-10-26T23:41:35.509Z]   wait uk-lightning:installed-or-absent @13477ms "absent"
+[2026-10-26T23:41:55.520Z]   wait networkidle:NOT-REACHED-within-20000ms @33488ms
+[2026-10-26T23:42:01.377Z]   wait fixed-settle:3000ms @39345ms
+[2026-10-26T23:42:07.907Z]   [baseline/android-360x740/initial] 
+[2026-10-26T23:42:10.276Z]   [baseline/android-360x740/layers] opened by real tap on #gridatlas-dash-toggle
+[2026-10-26T23:42:18.219Z]   [baseline/android-360x740/grid] ERROR page.screenshot: Target crashed 
+[2026-10-26T23:42:18.239Z]   [baseline/android-360x740/about] ERROR locator.count: Target crashed 
+[2026-10-26T23:42:18.260Z]   [baseline/android-360x740/fullscreen] ERROR locator.count: Target crashed 
+[2026-10-26T23:42:18.289Z]   [baseline/android-360x740/deeplink] ERROR page.goto: Page crashed
+[2026-10-26T23:42:18.312Z] [baseline] viewport iphone-390x844-geometry-only: GEOMETRY-ONLY: Chromium with an iPhone user agent. WebKit is not installed, so Safari rendering, 100dvh/safe-area are NOT represented. Element.requestFullscreen/webkitRequestFullscreen are removed by an init script to mirror iOS Safari (no element fullscreen on a div), so the shell takes its CSS-only fullscreen path (enterFullscreen, substation-intelligence cartridge lines 449-451) and the #fs-curtain surface is painted.
+[2026-10-26T23:42:18.332Z] fixtures: NONE (all external requests go to the network as-is)
+[2026-10-26T23:42:18.345Z]   init-script: element Fullscreen API removed (iOS Safari emulation; CSS-only fullscreen path)
+[2026-10-26T23:42:18.406Z]   offline shim installed on page (/tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/lightning/harness/offline-shim.mjs)
+[2026-10-26T23:42:18.489Z]   wait goto:domcontentloaded @83ms
+[2026-10-26T23:42:19.810Z]   wait composer:document.write-complete @1404ms {"generation":"202609241334","router":null,"title":"GlobalGrid2050 | UK Region v8 (Experimental)"}
+[2026-10-26T23:42:30.870Z]   wait shim:waitForComposition(menuBar.installed) @12464ms {"engine":120,"pn":6,"scada":true,"curtain":true,"menuInstalled":true,"map":true,"waitedMs":11058}
+[2026-10-26T23:42:35.656Z]   wait menu-bar:6-titles+>=60-proxies @17250ms
+[2026-10-26T23:42:37.802Z]   wait weather-module:installed-or-absent @19396ms
+[2026-10-26T23:42:38.735Z]   wait uk-lightning:installed-or-absent @20329ms "absent"
+[2026-10-26T23:42:38.741Z]   wait networkidle @20335ms
+[2026-10-26T23:42:42.426Z]   wait fixed-settle:3000ms @24018ms
+[2026-10-26T23:42:51.085Z]   [baseline/iphone-390x844-geometry-only/initial] 
+[2026-10-26T23:43:10.630Z]   [baseline/iphone-390x844-geometry-only/layers] opened by real tap on #gridatlas-dash-toggle
+[2026-10-26T23:43:16.806Z]   [baseline/iphone-390x844-geometry-only/grid] ERROR locator.count: Target crashed 
+[2026-10-26T23:43:16.831Z]   [baseline/iphone-390x844-geometry-only/about] ERROR locator.count: Target crashed 
+[2026-10-26T23:43:16.874Z]   [baseline/iphone-390x844-geometry-only/fullscreen] ERROR locator.count: Target crashed 
+[2026-10-26T23:43:16.876Z]   [baseline/iphone-390x844-geometry-only/deeplink] ERROR page.goto: Page crashed
+[2026-10-26T23:43:20.681Z] [candidate] viewport desktop-1440x900: desktop Chromium, mouse pointer
+[2026-10-26T23:43:20.796Z] fixtures: NONE (all external requests go to the network as-is)
+[2026-10-26T23:43:26.125Z]   offline shim installed on page (/tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/lightning/harness/offline-shim.mjs)
+[2026-10-26T23:43:26.320Z]   wait goto:domcontentloaded @185ms
+[2026-10-26T23:43:32.136Z]   wait composer:document.write-complete @6001ms {"generation":"202610262323","router":null,"title":"GlobalGrid2050 | UK Region v8 (Experimental)"}
+[2026-10-26T23:44:08.937Z]   wait shim:waitForComposition(menuBar.installed) @42802ms {"engine":120,"pn":6,"scada":true,"curtain":true,"menuInstalled":true,"map":true,"waitedMs":36788}
+[2026-10-26T23:44:13.149Z]   wait menu-bar:6-titles+>=60-proxies @47014ms
+[2026-10-26T23:44:14.639Z]   wait weather-module:installed-or-absent @48504ms
+[2026-10-26T23:44:26.052Z]   wait uk-lightning:TIMEOUT @59917ms
+[2026-10-26T23:44:26.061Z]   wait networkidle @59926ms
+node:internal/modules/run_main:123
+    triggerUncaughtException(
+    ^
+
+page.waitForTimeout: Page crashed
+    at settle (/tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/veto-pre-1/parity/parity-harness.mjs:323:14)
+    at async captureRoute (/tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/veto-pre-1/parity/parity-harness.mjs:685:21)
+    at async file:///tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/veto-pre-1/parity/parity-harness.mjs:855:23 {
+  log: []
+}
+
+Node.js v22.23.4
+exit=1

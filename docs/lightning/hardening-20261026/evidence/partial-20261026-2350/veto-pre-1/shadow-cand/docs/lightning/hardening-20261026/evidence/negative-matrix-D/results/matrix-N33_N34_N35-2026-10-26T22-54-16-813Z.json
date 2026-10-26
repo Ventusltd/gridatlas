@@ -1,0 +1,1099 @@
+[
+ {
+  "id": "N33",
+  "title": "OWNER-REPRO 1: feed-fallback (no index) at 393x852 — real taps on 30D, 3M, 6M, 12M: disabled / ignored / responsive, and what the caption says",
+  "acceptance_ids": [
+   "D05",
+   "D06",
+   "R05"
+  ],
+  "elapsedMs": 31821,
+  "pageErrors": [],
+  "steps": [
+   {
+    "step": "phone 393x852, feed fallback, 7D (owner saw this state)",
+    "synthetic": false,
+    "label": {
+     "main": "Lightning flashes (optical) [408 | 7d]",
+     "fs": "Lightning flashes (optical) [408 | 7d]",
+     "menu": "Lightning flashes (optical) [408 | 7d]"
+    },
+    "toggles": {
+     "main": true,
+     "fs": true,
+     "menu": true
+    },
+    "stateLine": "PARTIAL · 408 FLASHES DRAWN · SEARCHED 2%",
+    "caption": [
+     "Window  2026-10-19 18:40 UTC → 2026-10-26 18:40 UTC (7 days, latest)",
+     "Actual  first 2026-10-21 12:32:19 UTC · last 2026-10-25 11:15:58 UTC",
+     "Flashes 408 in window (live feed, 7-day retention) · 408 drawn as points (live feed count 408 within the 10,000-point cap for this phone)",
+     "Refresh live feed 2026-10-26 13:05 UTC (last collection window 2026-10-26 10:05 UTC → 2026-10-26 13:05 UTC; latest detection 2026-10-25 11:15:58 UTC; 7-day retention; archive not yet published: HTTP 404; earlier hours unknown, not zero)",
+     "Searched EUMETSAT 2% of window · 1 successful runs · 2026-10-26 10:05 UTC → 2026-10-26 13:05 UTC",
+     "Not yet ingested: last 5h 34min of window (unknown, not zero)",
+     "Times UTC · Optical flashes seen by MTG Lightning Imager (EUMETSAT L2-LFL), not confirmed ground strikes · Missing days are unknown, not zero · UK box −11.0,49.5 → 3.0,61.5"
+    ],
+    "features": 408,
+    "cluster": false,
+    "visibility": "visible",
+    "badCoords": 0,
+    "injected": null,
+    "markupNodes": 0,
+    "last": {
+     "state": "PARTIAL",
+     "stale": false,
+     "mode": "feed",
+     "period": "7d",
+     "drawn": 408,
+     "cluster": false,
+     "cap": 10000,
+     "cap_source": "live feed",
+     "index_count": 408,
+     "failures": 0,
+     "reasons": [
+      "tail not yet ingested"
+     ]
+    },
+    "origDiff": [],
+    "extra": {}
+   },
+   {
+    "step": "real tap on 30D chip",
+    "synthetic": false,
+    "label": {
+     "main": "Lightning flashes (optical) [408 | 7d]",
+     "fs": "Lightning flashes (optical) [408 | 7d]",
+     "menu": "Lightning flashes (optical) [408 | 7d]"
+    },
+    "toggles": {
+     "main": true,
+     "fs": true,
+     "menu": true
+    },
+    "stateLine": "PARTIAL · 408 FLASHES DRAWN · SEARCHED 2%",
+    "caption": [
+     "Window  2026-10-19 18:40 UTC → 2026-10-26 18:40 UTC (7 days, latest)",
+     "Actual  first 2026-10-21 12:32:19 UTC · last 2026-10-25 11:15:58 UTC",
+     "Flashes 408 in window (live feed, 7-day retention) · 408 drawn as points (live feed count 408 within the 10,000-point cap for this phone)",
+     "Refresh live feed 2026-10-26 13:05 UTC (last collection window 2026-10-26 10:05 UTC → 2026-10-26 13:05 UTC; latest detection 2026-10-25 11:15:58 UTC; 7-day retention; archive not yet published: HTTP 404; earlier hours unknown, not zero)",
+     "Searched EUMETSAT 2% of window · 1 successful runs · 2026-10-26 10:05 UTC → 2026-10-26 13:05 UTC",
+     "Not yet ingested: last 5h 34min of window (unknown, not zero)",
+     "Times UTC · Optical flashes seen by MTG Lightning Imager (EUMETSAT L2-LFL), not confirmed ground strikes · Missing days are unknown, not zero · UK box −11.0,49.5 → 3.0,61.5"
+    ],
+    "features": 408,
+    "cluster": false,
+    "visibility": "visible",
+    "badCoords": 0,
+    "injected": null,
+    "markupNodes": 0,
+    "last": {
+     "state": "PARTIAL",
+     "stale": false,
+     "mode": "feed",
+     "period": "7d",
+     "drawn": 408,
+     "cluster": false,
+     "cap": 10000,
+     "cap_source": "live feed",
+     "index_count": 408,
+     "failures": 0,
+     "reasons": [
+      "tail not yet ingested"
+     ]
+    },
+    "origDiff": [],
+    "extra": {
+     "chip": {
+      "disabled": true,
+      "opacity": "1",
+      "pointerEvents": "auto",
+      "cursor": "pointer",
+      "title": "",
+      "ariaDisabled": null,
+      "disabledAttr": true,
+      "cls": "map-ctrl-btn",
+      "box": {
+       "w": 44,
+       "h": 44
+      }
+     },
+     "reacted": false,
+     "serial": [
+      2,
+      2
+     ]
+    }
+   },
+   {
+    "step": "real tap on 3M chip",
+    "synthetic": false,
+    "label": {
+     "main": "Lightning flashes (optical) [408 | 7d]",
+     "fs": "Lightning flashes (optical) [408 | 7d]",
+     "menu": "Lightning flashes (optical) [408 | 7d]"
+    },
+    "toggles": {
+     "main": true,
+     "fs": true,
+     "menu": true
+    },
+    "stateLine": "PARTIAL · 408 FLASHES DRAWN · SEARCHED 2%",
+    "caption": [
+     "Window  2026-10-19 18:40 UTC → 2026-10-26 18:40 UTC (7 days, latest)",
+     "Actual  first 2026-10-21 12:32:19 UTC · last 2026-10-25 11:15:58 UTC",
+     "Flashes 408 in window (live feed, 7-day retention) · 408 drawn as points (live feed count 408 within the 10,000-point cap for this phone)",
+     "Refresh live feed 2026-10-26 13:05 UTC (last collection window 2026-10-26 10:05 UTC → 2026-10-26 13:05 UTC; latest detection 2026-10-25 11:15:58 UTC; 7-day retention; archive not yet published: HTTP 404; earlier hours unknown, not zero)",
+     "Searched EUMETSAT 2% of window · 1 successful runs · 2026-10-26 10:05 UTC → 2026-10-26 13:05 UTC",
+     "Not yet ingested: last 5h 34min of window (unknown, not zero)",
+     "Times UTC · Optical flashes seen by MTG Lightning Imager (EUMETSAT L2-LFL), not confirmed ground strikes · Missing days are unknown, not zero · UK box −11.0,49.5 → 3.0,61.5"
+    ],
+    "features": 408,
+    "cluster": false,
+    "visibility": "visible",
+    "badCoords": 0,
+    "injected": null,
+    "markupNodes": 0,
+    "last": {
+     "state": "PARTIAL",
+     "stale": false,
+     "mode": "feed",
+     "period": "7d",
+     "drawn": 408,
+     "cluster": false,
+     "cap": 10000,
+     "cap_source": "live feed",
+     "index_count": 408,
+     "failures": 0,
+     "reasons": [
+      "tail not yet ingested"
+     ]
+    },
+    "origDiff": [],
+    "extra": {
+     "chip": {
+      "disabled": true,
+      "opacity": "1",
+      "pointerEvents": "auto",
+      "cursor": "pointer",
+      "title": "",
+      "ariaDisabled": null,
+      "disabledAttr": true,
+      "cls": "map-ctrl-btn",
+      "box": {
+       "w": 44,
+       "h": 44
+      }
+     },
+     "reacted": false,
+     "serial": [
+      2,
+      2
+     ]
+    }
+   },
+   {
+    "step": "real tap on 6M chip",
+    "synthetic": false,
+    "label": {
+     "main": "Lightning flashes (optical) [408 | 7d]",
+     "fs": "Lightning flashes (optical) [408 | 7d]",
+     "menu": "Lightning flashes (optical) [408 | 7d]"
+    },
+    "toggles": {
+     "main": true,
+     "fs": true,
+     "menu": true
+    },
+    "stateLine": "PARTIAL · 408 FLASHES DRAWN · SEARCHED 2%",
+    "caption": [
+     "Window  2026-10-19 18:40 UTC → 2026-10-26 18:40 UTC (7 days, latest)",
+     "Actual  first 2026-10-21 12:32:19 UTC · last 2026-10-25 11:15:58 UTC",
+     "Flashes 408 in window (live feed, 7-day retention) · 408 drawn as points (live feed count 408 within the 10,000-point cap for this phone)",
+     "Refresh live feed 2026-10-26 13:05 UTC (last collection window 2026-10-26 10:05 UTC → 2026-10-26 13:05 UTC; latest detection 2026-10-25 11:15:58 UTC; 7-day retention; archive not yet published: HTTP 404; earlier hours unknown, not zero)",
+     "Searched EUMETSAT 2% of window · 1 successful runs · 2026-10-26 10:05 UTC → 2026-10-26 13:05 UTC",
+     "Not yet ingested: last 5h 34min of window (unknown, not zero)",
+     "Times UTC · Optical flashes seen by MTG Lightning Imager (EUMETSAT L2-LFL), not confirmed ground strikes · Missing days are unknown, not zero · UK box −11.0,49.5 → 3.0,61.5"
+    ],
+    "features": 408,
+    "cluster": false,
+    "visibility": "visible",
+    "badCoords": 0,
+    "injected": null,
+    "markupNodes": 0,
+    "last": {
+     "state": "PARTIAL",
+     "stale": false,
+     "mode": "feed",
+     "period": "7d",
+     "drawn": 408,
+     "cluster": false,
+     "cap": 10000,
+     "cap_source": "live feed",
+     "index_count": 408,
+     "failures": 0,
+     "reasons": [
+      "tail not yet ingested"
+     ]
+    },
+    "origDiff": [],
+    "extra": {
+     "chip": {
+      "disabled": true,
+      "opacity": "1",
+      "pointerEvents": "auto",
+      "cursor": "pointer",
+      "title": "",
+      "ariaDisabled": null,
+      "disabledAttr": true,
+      "cls": "map-ctrl-btn",
+      "box": {
+       "w": 44,
+       "h": 44
+      }
+     },
+     "reacted": false,
+     "serial": [
+      2,
+      2
+     ]
+    }
+   },
+   {
+    "step": "real tap on 12M chip",
+    "synthetic": false,
+    "label": {
+     "main": "Lightning flashes (optical) [408 | 7d]",
+     "fs": "Lightning flashes (optical) [408 | 7d]",
+     "menu": "Lightning flashes (optical) [408 | 7d]"
+    },
+    "toggles": {
+     "main": true,
+     "fs": true,
+     "menu": true
+    },
+    "stateLine": "PARTIAL · 408 FLASHES DRAWN · SEARCHED 2%",
+    "caption": [
+     "Window  2026-10-19 18:40 UTC → 2026-10-26 18:40 UTC (7 days, latest)",
+     "Actual  first 2026-10-21 12:32:19 UTC · last 2026-10-25 11:15:58 UTC",
+     "Flashes 408 in window (live feed, 7-day retention) · 408 drawn as points (live feed count 408 within the 10,000-point cap for this phone)",
+     "Refresh live feed 2026-10-26 13:05 UTC (last collection window 2026-10-26 10:05 UTC → 2026-10-26 13:05 UTC; latest detection 2026-10-25 11:15:58 UTC; 7-day retention; archive not yet published: HTTP 404; earlier hours unknown, not zero)",
+     "Searched EUMETSAT 2% of window · 1 successful runs · 2026-10-26 10:05 UTC → 2026-10-26 13:05 UTC",
+     "Not yet ingested: last 5h 34min of window (unknown, not zero)",
+     "Times UTC · Optical flashes seen by MTG Lightning Imager (EUMETSAT L2-LFL), not confirmed ground strikes · Missing days are unknown, not zero · UK box −11.0,49.5 → 3.0,61.5"
+    ],
+    "features": 408,
+    "cluster": false,
+    "visibility": "visible",
+    "badCoords": 0,
+    "injected": null,
+    "markupNodes": 0,
+    "last": {
+     "state": "PARTIAL",
+     "stale": false,
+     "mode": "feed",
+     "period": "7d",
+     "drawn": 408,
+     "cluster": false,
+     "cap": 10000,
+     "cap_source": "live feed",
+     "index_count": 408,
+     "failures": 0,
+     "reasons": [
+      "tail not yet ingested"
+     ]
+    },
+    "origDiff": [],
+    "extra": {
+     "chip": {
+      "disabled": true,
+      "opacity": "1",
+      "pointerEvents": "auto",
+      "cursor": "pointer",
+      "title": "",
+      "ariaDisabled": null,
+      "disabledAttr": true,
+      "cls": "map-ctrl-btn",
+      "box": {
+       "w": 44,
+       "h": 44
+      }
+     },
+     "reacted": false,
+     "serial": [
+      2,
+      2
+     ]
+    }
+   }
+  ]
+ },
+ {
+  "id": "N34",
+  "title": "OWNER-REPRO 2: feed mode \"searched 2%\" at 7D — how coverage is derived from feed metadata; is it a truthful number?",
+  "acceptance_ids": [
+   "D13",
+   "D04",
+   "R06"
+  ],
+  "elapsedMs": 20379,
+  "pageErrors": [],
+  "steps": [
+   {
+    "step": "phone feed fallback 7D",
+    "synthetic": false,
+    "label": {
+     "main": "Lightning flashes (optical) [408 | 7d]",
+     "fs": "Lightning flashes (optical) [408 | 7d]",
+     "menu": "Lightning flashes (optical) [408 | 7d]"
+    },
+    "toggles": {
+     "main": true,
+     "fs": true,
+     "menu": true
+    },
+    "stateLine": "PARTIAL · 408 FLASHES DRAWN · SEARCHED 2%",
+    "caption": [
+     "Window  2026-10-19 18:40 UTC → 2026-10-26 18:40 UTC (7 days, latest)",
+     "Actual  first 2026-10-21 12:32:19 UTC · last 2026-10-25 11:15:58 UTC",
+     "Flashes 408 in window (live feed, 7-day retention) · 408 drawn as points (live feed count 408 within the 10,000-point cap for this phone)",
+     "Refresh live feed 2026-10-26 13:05 UTC (last collection window 2026-10-26 10:05 UTC → 2026-10-26 13:05 UTC; latest detection 2026-10-25 11:15:58 UTC; 7-day retention; archive not yet published: HTTP 404; earlier hours unknown, not zero)",
+     "Searched EUMETSAT 2% of window · 1 successful runs · 2026-10-26 10:05 UTC → 2026-10-26 13:05 UTC",
+     "Not yet ingested: last 5h 34min of window (unknown, not zero)",
+     "Times UTC · Optical flashes seen by MTG Lightning Imager (EUMETSAT L2-LFL), not confirmed ground strikes · Missing days are unknown, not zero · UK box −11.0,49.5 → 3.0,61.5"
+    ],
+    "features": 408,
+    "cluster": false,
+    "visibility": "visible",
+    "badCoords": 0,
+    "injected": null,
+    "markupNodes": 0,
+    "last": {
+     "state": "PARTIAL",
+     "stale": false,
+     "mode": "feed",
+     "period": "7d",
+     "drawn": 408,
+     "cluster": false,
+     "cap": 10000,
+     "cap_source": "live feed",
+     "index_count": 408,
+     "failures": 0,
+     "reasons": [
+      "tail not yet ingested"
+     ]
+    },
+    "origDiff": [],
+    "extra": {}
+   }
+  ]
+ },
+ {
+  "id": "N35",
+  "title": "OWNER-REPRO 3: 393x852 and 360x740, Layers open, lightning ON, scrolled to the end — does the fixed \"▾ HIDE LAYERS\" button occlude the caption lines? Compare with the baseline-last group while OFF",
+  "acceptance_ids": [
+   "P14",
+   "D13",
+   "R01"
+  ],
+  "elapsedMs": 48830,
+  "pageErrors": [],
+  "steps": [
+   {
+    "step": "393x852 OFF, Layers open, scrolled to the end (baseline-equivalent: last original group + lightning header)",
+    "synthetic": false,
+    "label": {
+     "main": "Lightning flashes (optical) [WAIT]",
+     "fs": "Lightning flashes (optical) [WAIT]",
+     "menu": "Lightning flashes (optical) [WAIT]"
+    },
+    "toggles": {
+     "main": false,
+     "fs": false,
+     "menu": false
+    },
+    "stateLine": "LOADING",
+    "caption": [
+     "",
+     "",
+     "",
+     "",
+     "",
+     "",
+     ""
+    ],
+    "features": null,
+    "cluster": null,
+    "visibility": null,
+    "badCoords": null,
+    "injected": null,
+    "markupNodes": 0,
+    "last": null,
+    "origDiff": [],
+    "extra": {
+     "probe": {
+      "hostScroll": {
+       "top": 1888,
+       "height": 2212,
+       "client": 324,
+       "bottom": 835
+      },
+      "hideBtn": {
+       "text": "HIDE LAYERS collapsed the elem",
+       "id": "",
+       "pos": "static",
+       "top": 0,
+       "bottom": 0,
+       "left": 0,
+       "right": 0
+      },
+      "lines": [],
+      "groupBottom": 826,
+      "lastOriginalGroup": {
+       "title": "PIPELINE NEWS (REPD)",
+       "bottom": 770,
+       "coveredByHide": false
+      }
+     }
+    }
+   },
+   {
+    "step": "393x852 ON 7d, scrolled to the end: elementFromPoint over each caption line",
+    "synthetic": false,
+    "label": {
+     "main": "Lightning flashes (optical) [408 | 7d]",
+     "fs": "Lightning flashes (optical) [408 | 7d]",
+     "menu": "Lightning flashes (optical) [408 | 7d]"
+    },
+    "toggles": {
+     "main": true,
+     "fs": true,
+     "menu": true
+    },
+    "stateLine": "PARTIAL · 408 FLASHES DRAWN · SEARCHED 56%",
+    "caption": [
+     "Window  2026-10-19 18:40 UTC → 2026-10-26 18:40 UTC (7 days, latest)",
+     "Actual  first 2026-10-21 12:32:19 UTC · last 2026-10-25 11:15:58 UTC",
+     "Flashes 408 archived in window · 408 drawn as points (index count 408 within the 10,000-point cap for this phone)",
+     "Refresh archive 2026-10-26 18:37 UTC (0h 3min ago; expected every 1 h)",
+     "Searched EUMETSAT 56% of window · 17 successful runs · 2026-10-20 22:41 UTC → 2026-10-26 13:00 UTC",
+     "Not yet ingested: last 5h 40min of window (unknown, not zero) · Unknown: 2026-10-19 to 2026-10-20 precede archive start 2026-10-20 22:41 UTC (not zero) · Unknown: 1 of 8 UTC dates have no collection run",
+     "Times UTC · Optical flashes seen by MTG Lightning Imager (EUMETSAT L2-LFL), not confirmed ground strikes · Missing days are unknown, not zero · UK box −11.0,49.5 → 3.0,61.5"
+    ],
+    "features": 408,
+    "cluster": false,
+    "visibility": "visible",
+    "badCoords": 0,
+    "injected": null,
+    "markupNodes": 0,
+    "last": {
+     "state": "PARTIAL",
+     "stale": false,
+     "mode": "detail",
+     "period": "7d",
+     "drawn": 408,
+     "cluster": false,
+     "cap": 10000,
+     "cap_source": "index",
+     "index_count": 408,
+     "failures": 0,
+     "reasons": [
+      "tail not yet ingested",
+      "head before archive start",
+      "1 dates without a scan window"
+     ]
+    },
+    "origDiff": [],
+    "extra": {
+     "probe": {
+      "hostScroll": {
+       "top": 2311,
+       "height": 2635,
+       "client": 324,
+       "bottom": 835
+      },
+      "hideBtn": {
+       "text": "HIDE LAYERS collapsed the elem",
+       "id": "",
+       "pos": "static",
+       "top": 0,
+       "bottom": 0,
+       "left": 0,
+       "right": 0
+      },
+      "lines": [
+       {
+        "cap": "window",
+        "top": 560,
+        "bottom": 590,
+        "hits": [
+         "caption",
+         "caption",
+         "caption"
+        ]
+       },
+       {
+        "cap": "actual",
+        "top": 590,
+        "bottom": 620,
+        "hits": [
+         "caption",
+         "caption",
+         "caption"
+        ]
+       },
+       {
+        "cap": "flashes",
+        "top": 620,
+        "bottom": 665,
+        "hits": [
+         "caption",
+         "caption",
+         "caption"
+        ]
+       },
+       {
+        "cap": "refresh",
+        "top": 665,
+        "bottom": 695,
+        "hits": [
+         "caption",
+         "caption",
+         "caption"
+        ]
+       },
+       {
+        "cap": "searched",
+        "top": 695,
+        "bottom": 725,
+        "hits": [
+         "caption",
+         "caption",
+         "caption"
+        ]
+       },
+       {
+        "cap": "warning",
+        "top": 725,
+        "bottom": 785,
+        "hits": [
+         "caption",
+         "caption",
+         "caption"
+        ]
+       },
+       {
+        "cap": "footer",
+        "top": 785,
+        "bottom": 826,
+        "hits": [
+         "caption",
+         "caption",
+         "BUTTON#gridatlas-dash-toggle."
+        ]
+       }
+      ],
+      "groupBottom": 826,
+      "lastOriginalGroup": {
+       "title": "PIPELINE NEWS (REPD)",
+       "bottom": 347,
+       "coveredByHide": false
+      }
+     }
+    }
+   },
+   {
+    "step": "393x852 ON 7d after 40 wheel steps (real scroll gesture)",
+    "synthetic": false,
+    "label": {
+     "main": "Lightning flashes (optical) [408 | 7d]",
+     "fs": "Lightning flashes (optical) [408 | 7d]",
+     "menu": "Lightning flashes (optical) [408 | 7d]"
+    },
+    "toggles": {
+     "main": true,
+     "fs": true,
+     "menu": true
+    },
+    "stateLine": "PARTIAL · 408 FLASHES DRAWN · SEARCHED 56%",
+    "caption": [
+     "Window  2026-10-19 18:40 UTC → 2026-10-26 18:40 UTC (7 days, latest)",
+     "Actual  first 2026-10-21 12:32:19 UTC · last 2026-10-25 11:15:58 UTC",
+     "Flashes 408 archived in window · 408 drawn as points (index count 408 within the 10,000-point cap for this phone)",
+     "Refresh archive 2026-10-26 18:37 UTC (0h 3min ago; expected every 1 h)",
+     "Searched EUMETSAT 56% of window · 17 successful runs · 2026-10-20 22:41 UTC → 2026-10-26 13:00 UTC",
+     "Not yet ingested: last 5h 40min of window (unknown, not zero) · Unknown: 2026-10-19 to 2026-10-20 precede archive start 2026-10-20 22:41 UTC (not zero) · Unknown: 1 of 8 UTC dates have no collection run",
+     "Times UTC · Optical flashes seen by MTG Lightning Imager (EUMETSAT L2-LFL), not confirmed ground strikes · Missing days are unknown, not zero · UK box −11.0,49.5 → 3.0,61.5"
+    ],
+    "features": 408,
+    "cluster": false,
+    "visibility": "visible",
+    "badCoords": 0,
+    "injected": null,
+    "markupNodes": 0,
+    "last": {
+     "state": "PARTIAL",
+     "stale": false,
+     "mode": "detail",
+     "period": "7d",
+     "drawn": 408,
+     "cluster": false,
+     "cap": 10000,
+     "cap_source": "index",
+     "index_count": 408,
+     "failures": 0,
+     "reasons": [
+      "tail not yet ingested",
+      "head before archive start",
+      "1 dates without a scan window"
+     ]
+    },
+    "origDiff": [],
+    "extra": {
+     "probe": {
+      "hostScroll": {
+       "top": 2311,
+       "height": 2635,
+       "client": 324,
+       "bottom": 835
+      },
+      "hideBtn": {
+       "text": "HIDE LAYERS collapsed the elem",
+       "id": "",
+       "pos": "static",
+       "top": 0,
+       "bottom": 0,
+       "left": 0,
+       "right": 0
+      },
+      "lines": [
+       {
+        "cap": "window",
+        "top": 560,
+        "bottom": 590,
+        "hits": [
+         "caption",
+         "caption",
+         "caption"
+        ]
+       },
+       {
+        "cap": "actual",
+        "top": 590,
+        "bottom": 620,
+        "hits": [
+         "caption",
+         "caption",
+         "caption"
+        ]
+       },
+       {
+        "cap": "flashes",
+        "top": 620,
+        "bottom": 665,
+        "hits": [
+         "caption",
+         "caption",
+         "caption"
+        ]
+       },
+       {
+        "cap": "refresh",
+        "top": 665,
+        "bottom": 695,
+        "hits": [
+         "caption",
+         "caption",
+         "caption"
+        ]
+       },
+       {
+        "cap": "searched",
+        "top": 695,
+        "bottom": 725,
+        "hits": [
+         "caption",
+         "caption",
+         "caption"
+        ]
+       },
+       {
+        "cap": "warning",
+        "top": 725,
+        "bottom": 785,
+        "hits": [
+         "caption",
+         "caption",
+         "caption"
+        ]
+       },
+       {
+        "cap": "footer",
+        "top": 785,
+        "bottom": 826,
+        "hits": [
+         "caption",
+         "caption",
+         "BUTTON#gridatlas-dash-toggle."
+        ]
+       }
+      ],
+      "groupBottom": 826,
+      "lastOriginalGroup": {
+       "title": "PIPELINE NEWS (REPD)",
+       "bottom": 347,
+       "coveredByHide": false
+      }
+     }
+    }
+   },
+   {
+    "step": "360x740 OFF, Layers open, scrolled to the end (baseline-equivalent: last original group + lightning header)",
+    "synthetic": false,
+    "label": {
+     "main": "Lightning flashes (optical) [WAIT]",
+     "fs": "Lightning flashes (optical) [WAIT]",
+     "menu": "Lightning flashes (optical) [WAIT]"
+    },
+    "toggles": {
+     "main": false,
+     "fs": false,
+     "menu": false
+    },
+    "stateLine": "LOADING",
+    "caption": [
+     "",
+     "",
+     "",
+     "",
+     "",
+     "",
+     ""
+    ],
+    "features": null,
+    "cluster": null,
+    "visibility": null,
+    "badCoords": null,
+    "injected": null,
+    "markupNodes": 0,
+    "last": null,
+    "origDiff": [],
+    "extra": {
+     "probe": {
+      "hostScroll": {
+       "top": 1964,
+       "height": 2245,
+       "client": 281,
+       "bottom": 723
+      },
+      "hideBtn": {
+       "text": "HIDE LAYERS collapsed the elem",
+       "id": "",
+       "pos": "static",
+       "top": 0,
+       "bottom": 0,
+       "left": 0,
+       "right": 0
+      },
+      "lines": [],
+      "groupBottom": 714,
+      "lastOriginalGroup": {
+       "title": "PIPELINE NEWS (REPD)",
+       "bottom": 658,
+       "coveredByHide": false
+      }
+     }
+    }
+   },
+   {
+    "step": "360x740 ON 7d, scrolled to the end: elementFromPoint over each caption line",
+    "synthetic": false,
+    "label": {
+     "main": "Lightning flashes (optical) [408 | 7d]",
+     "fs": "Lightning flashes (optical) [408 | 7d]",
+     "menu": "Lightning flashes (optical) [408 | 7d]"
+    },
+    "toggles": {
+     "main": true,
+     "fs": true,
+     "menu": true
+    },
+    "stateLine": "PARTIAL · 408 FLASHES DRAWN · SEARCHED 56%",
+    "caption": [
+     "Window  2026-10-19 18:40 UTC → 2026-10-26 18:40 UTC (7 days, latest)",
+     "Actual  first 2026-10-21 12:32:19 UTC · last 2026-10-25 11:15:58 UTC",
+     "Flashes 408 archived in window · 408 drawn as points (index count 408 within the 10,000-point cap for this phone)",
+     "Refresh archive 2026-10-26 18:37 UTC (0h 3min ago; expected every 1 h)",
+     "Searched EUMETSAT 56% of window · 17 successful runs · 2026-10-20 22:41 UTC → 2026-10-26 13:00 UTC",
+     "Not yet ingested: last 5h 40min of window (unknown, not zero) · Unknown: 2026-10-19 to 2026-10-20 precede archive start 2026-10-20 22:41 UTC (not zero) · Unknown: 1 of 8 UTC dates have no collection run",
+     "Times UTC · Optical flashes seen by MTG Lightning Imager (EUMETSAT L2-LFL), not confirmed ground strikes · Missing days are unknown, not zero · UK box −11.0,49.5 → 3.0,61.5"
+    ],
+    "features": 408,
+    "cluster": false,
+    "visibility": "visible",
+    "badCoords": 0,
+    "injected": null,
+    "markupNodes": 0,
+    "last": {
+     "state": "PARTIAL",
+     "stale": false,
+     "mode": "detail",
+     "period": "7d",
+     "drawn": 408,
+     "cluster": false,
+     "cap": 10000,
+     "cap_source": "index",
+     "index_count": 408,
+     "failures": 0,
+     "reasons": [
+      "tail not yet ingested",
+      "head before archive start",
+      "1 dates without a scan window"
+     ]
+    },
+    "origDiff": [],
+    "extra": {
+     "probe": {
+      "hostScroll": {
+       "top": 2413,
+       "height": 2694,
+       "client": 281,
+       "bottom": 723
+      },
+      "hideBtn": {
+       "text": "HIDE LAYERS collapsed the elem",
+       "id": "",
+       "pos": "static",
+       "top": 0,
+       "bottom": 0,
+       "left": 0,
+       "right": 0
+      },
+      "lines": [
+       {
+        "cap": "window",
+        "top": 433,
+        "bottom": 463,
+        "hits": [
+         "caption",
+         "caption",
+         "caption"
+        ]
+       },
+       {
+        "cap": "actual",
+        "top": 463,
+        "bottom": 493,
+        "hits": [
+         "caption",
+         "caption",
+         "caption"
+        ]
+       },
+       {
+        "cap": "flashes",
+        "top": 493,
+        "bottom": 538,
+        "hits": [
+         "caption",
+         "caption",
+         "caption"
+        ]
+       },
+       {
+        "cap": "refresh",
+        "top": 538,
+        "bottom": 568,
+        "hits": [
+         "caption",
+         "caption",
+         "caption"
+        ]
+       },
+       {
+        "cap": "searched",
+        "top": 568,
+        "bottom": 598,
+        "hits": [
+         "caption",
+         "caption",
+         "caption"
+        ]
+       },
+       {
+        "cap": "warning",
+        "top": 598,
+        "bottom": 673,
+        "hits": [
+         "caption",
+         "caption",
+         "caption"
+        ]
+       },
+       {
+        "cap": "footer",
+        "top": 673,
+        "bottom": 713,
+        "hits": [
+         "caption",
+         "caption",
+         "BUTTON#gridatlas-dash-toggle."
+        ]
+       }
+      ],
+      "groupBottom": 713,
+      "lastOriginalGroup": {
+       "title": "PIPELINE NEWS (REPD)",
+       "bottom": 209,
+       "coveredByHide": false
+      }
+     }
+    }
+   },
+   {
+    "step": "360x740 ON 7d after 40 wheel steps (real scroll gesture)",
+    "synthetic": false,
+    "label": {
+     "main": "Lightning flashes (optical) [408 | 7d]",
+     "fs": "Lightning flashes (optical) [408 | 7d]",
+     "menu": "Lightning flashes (optical) [408 | 7d]"
+    },
+    "toggles": {
+     "main": true,
+     "fs": true,
+     "menu": true
+    },
+    "stateLine": "PARTIAL · 408 FLASHES DRAWN · SEARCHED 56%",
+    "caption": [
+     "Window  2026-10-19 18:40 UTC → 2026-10-26 18:40 UTC (7 days, latest)",
+     "Actual  first 2026-10-21 12:32:19 UTC · last 2026-10-25 11:15:58 UTC",
+     "Flashes 408 archived in window · 408 drawn as points (index count 408 within the 10,000-point cap for this phone)",
+     "Refresh archive 2026-10-26 18:37 UTC (0h 3min ago; expected every 1 h)",
+     "Searched EUMETSAT 56% of window · 17 successful runs · 2026-10-20 22:41 UTC → 2026-10-26 13:00 UTC",
+     "Not yet ingested: last 5h 40min of window (unknown, not zero) · Unknown: 2026-10-19 to 2026-10-20 precede archive start 2026-10-20 22:41 UTC (not zero) · Unknown: 1 of 8 UTC dates have no collection run",
+     "Times UTC · Optical flashes seen by MTG Lightning Imager (EUMETSAT L2-LFL), not confirmed ground strikes · Missing days are unknown, not zero · UK box −11.0,49.5 → 3.0,61.5"
+    ],
+    "features": 408,
+    "cluster": false,
+    "visibility": "visible",
+    "badCoords": 0,
+    "injected": null,
+    "markupNodes": 0,
+    "last": {
+     "state": "PARTIAL",
+     "stale": false,
+     "mode": "detail",
+     "period": "7d",
+     "drawn": 408,
+     "cluster": false,
+     "cap": 10000,
+     "cap_source": "index",
+     "index_count": 408,
+     "failures": 0,
+     "reasons": [
+      "tail not yet ingested",
+      "head before archive start",
+      "1 dates without a scan window"
+     ]
+    },
+    "origDiff": [],
+    "extra": {
+     "probe": {
+      "hostScroll": {
+       "top": 2412,
+       "height": 2694,
+       "client": 281,
+       "bottom": 723
+      },
+      "hideBtn": {
+       "text": "HIDE LAYERS collapsed the elem",
+       "id": "",
+       "pos": "static",
+       "top": 0,
+       "bottom": 0,
+       "left": 0,
+       "right": 0
+      },
+      "lines": [
+       {
+        "cap": "window",
+        "top": 434,
+        "bottom": 464,
+        "hits": [
+         "caption",
+         "caption",
+         "caption"
+        ]
+       },
+       {
+        "cap": "actual",
+        "top": 464,
+        "bottom": 494,
+        "hits": [
+         "caption",
+         "caption",
+         "caption"
+        ]
+       },
+       {
+        "cap": "flashes",
+        "top": 494,
+        "bottom": 539,
+        "hits": [
+         "caption",
+         "caption",
+         "caption"
+        ]
+       },
+       {
+        "cap": "refresh",
+        "top": 539,
+        "bottom": 569,
+        "hits": [
+         "caption",
+         "caption",
+         "caption"
+        ]
+       },
+       {
+        "cap": "searched",
+        "top": 569,
+        "bottom": 599,
+        "hits": [
+         "caption",
+         "caption",
+         "caption"
+        ]
+       },
+       {
+        "cap": "warning",
+        "top": 599,
+        "bottom": 674,
+        "hits": [
+         "caption",
+         "caption",
+         "caption"
+        ]
+       },
+       {
+        "cap": "footer",
+        "top": 674,
+        "bottom": 714,
+        "hits": [
+         "caption",
+         "caption",
+         "BUTTON#gridatlas-dash-toggle."
+        ]
+       }
+      ],
+      "groupBottom": 714,
+      "lastOriginalGroup": {
+       "title": "PIPELINE NEWS (REPD)",
+       "bottom": 210,
+       "coveredByHide": false
+      }
+     }
+    }
+   }
+  ]
+ }
+]

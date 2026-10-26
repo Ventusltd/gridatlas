@@ -1,0 +1,29 @@
+android-emulation menu-File true 
+android-emulation menu-Edit true 
+android-emulation menu-View true 
+android-emulation menu-Scope true 
+android-emulation menu-Grid true 
+android-emulation menu-About true 
+android-emulation btn-status true 
+android-emulation btn-radius true 
+android-emulation btn-radius-area true 
+android-emulation btn-zonedraw true 
+android-emulation btn-measure true 
+android-emulation fullscreen true 
+android-emulation basemaps true 
+android-emulation csv-export true 
+android-emulation expand-View true 
+android-emulation expand-About true 
+android-emulation layer-panel-toggle true 
+android-emulation gridatlas-export-image true 
+android-emulation gridatlas-export-pdf true 
+android-emulation gridatlas-export-print true 
+android-emulation csv-export-loaded false TimeoutError: page.waitForFunction: Timeout 60000ms exceeded.
+android-emulation search false TimeoutError: locator.waitFor: Timeout 20000ms exceeded.
+Call log:
+[2m  - waiting for locator('.search-result-item').first() to be visible[22m
+
+android-emulation pipeline-same false TimeoutError: page.waitForFunction: Timeout 60000ms exceeded.
+android-emulation pipeline-wider false TimeoutError: page.waitForFunction: Timeout 60000ms exceeded.
+android-emulation pipeline-all false TimeoutError: page.waitForFunction: Timeout 60000ms exceeded.
+android-emulation card-minimise-restore-close true 

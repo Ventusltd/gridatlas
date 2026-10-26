@@ -1,0 +1,58 @@
+{"id":"400","label":"400kV [OK]","eligible":4106,"rendered":53,"popup":1,"off":true,"pass":true}
+{"id":"275","label":"275kV [OK]","eligible":2935,"rendered":53,"popup":1,"off":true,"pass":true}
+{"id":"220","label":"220kV [OK]","eligible":126,"rendered":3,"popup":1,"off":true,"pass":true}
+{"id":"132","label":"132kV [OK]","eligible":6227,"rendered":19,"popup":1,"off":true,"pass":true}
+{"id":"66","label":"66kV [OK]","eligible":1171,"rendered":8,"popup":1,"off":true,"pass":true}
+{"id":"11kv","label":"11kV (UKPN) [FAIL]","eligible":0,"pass":false}
+{"id":"subs","label":"Subs [OK]","eligible":5800,"rendered":25,"popup":1,"off":true,"pass":true}
+{"id":"nuc","label":"Nuclear [OK]","eligible":4,"rendered":1,"popup":1,"off":true,"pass":true}
+{"id":"gas","label":"Gas [OK]","eligible":174,"rendered":7,"popup":1,"off":true,"pass":true}
+{"id":"ind","label":"Industry [OK]","eligible":5878,"rendered":108,"popup":1,"off":true,"pass":true}
+{"id":"dc","label":"Data Ctrs [OK]","eligible":240,"rendered":7,"popup":1,"off":true,"pass":true}
+{"id":"air","label":"Airports [OK]","eligible":810,"rendered":29,"popup":1,"off":true,"pass":true}
+{"id":"rail","label":"Railways [OK]","eligible":3596,"rendered":33,"popup":1,"off":true,"pass":true}
+{"id":"tesco","label":"Tesco [FAIL]","eligible":0,"pass":false}
+{"id":"sainsburys","label":"Sainsbury's [FAIL]","eligible":0,"pass":false}
+{"id":"asda","label":"Asda [FAIL]","eligible":0,"pass":false}
+{"id":"morrisons","label":"Morrisons [FAIL]","eligible":0,"pass":false}
+{"id":"aldi","label":"Aldi [FAIL]","eligible":0,"pass":false}
+{"id":"lidl","label":"Lidl [FAIL]","eligible":0,"pass":false}
+{"id":"waitrose","label":"Waitrose [FAIL]","eligible":0,"pass":false}
+{"id":"ms","label":"M&S Food [FAIL]","eligible":0,"pass":false}
+{"id":"coop","label":"Co-op [FAIL]","eligible":0,"pass":false}
+{"id":"costco","label":"Costco [FAIL]","eligible":0,"pass":false}
+{"id":"booths","label":"Booths [FAIL]","eligible":0,"pass":false}
+{"id":"elizabeth","label":"Elizabeth Line [FAIL]","eligible":0,"pass":false}
+{"id":"lu","label":"London Underground [FAIL]","eligible":0,"pass":false}
+{"id":"dlr","pass":false,"error":"Error: page.waitForFunction: Target crashed "}
+{"id":"metro","pass":false,"error":"TimeoutError: locator.click: Timeout 15000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('button', { name: 'Grid', exact: true })\u001b[22m\n\u001b[2m    - locator resolved to <button type=\"button\" class=\"gm-title\" aria-haspopup=\"menu\" aria-expanded=\"false\" id=\"gridatlas-menu-bar-title-4\" aria-controls=\"gridatlas-menu-bar-panel-4\">Grid</button>\u001b[22m\n\u001b[2m  - attempting click action\u001b[22m\n\u001b[2m    - waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m    - element is visible, enabled and stable\u001b[22m\n\u001b[2m    - scrolling into view if needed\u001b[22m\n"}
+{"id":"tram","pass":false,"error":"Error: page.waitForFunction: Target crashed "}
+{"id":"mainline_rail","label":"UK Mainline Railways [FAIL]","eligible":0,"pass":false}
+{"id":"hs2","label":"HS2 [FAIL]","eligible":0,"pass":false}
+{"id":"eurostar_route","label":"Eurostar (HS1) UK & Europe [FAIL]","eligible":0,"pass":false}
+{"id":"eurostar_station","label":"Eurostar Stations UK & Europe [FAIL]","eligible":0,"pass":false}
+{"id":"stadiums","label":"Major Stadiums [FAIL]","eligible":0,"pass":false}
+{"id":"subsea_data_cables","label":"Subsea Data Cables (Fibre) (not all connections available yet) [FAIL]","eligible":0,"pass":false}
+{"id":"global_ports_major","pass":false,"error":"Error: page.waitForFunction: Target crashed "}
+{"id":"global_ports_minor","pass":false,"error":"Error: page.waitForFunction: Target crashed "}
+{"id":"global_hydrocarbons","label":"Global Hydrocarbons (Oil, Gas, LNG) [FAIL]","eligible":0,"pass":false}
+{"id":"motorways","pass":false,"error":"Error: page.waitForFunction: Target crashed "}
+{"id":"trunk_roads","label":"Major A-Roads (Trunk) [FAIL]","eligible":0,"pass":false}
+{"id":"primary_roads","label":"A-Roads (Primary) [FAIL]","eligible":0,"pass":false}
+{"id":"motorway_services","label":"Motorway Services [FAIL]","eligible":0,"pass":false}
+{"id":"ev","pass":false,"error":"Error: page.waitForFunction: Target crashed "}
+{"id":"naei_co2","label":"Major Industrial Sites [FAIL]","eligible":0,"pass":false}
+{"id":"solar","label":"Solar PV [FAIL]","eligible":0,"pass":false}
+{"id":"solar_operational","pass":false,"error":"TimeoutError: locator.click: Timeout 15000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('button', { name: 'Grid', exact: true })\u001b[22m\n\u001b[2m    - locator resolved to <button type=\"button\" class=\"gm-title\" aria-haspopup=\"menu\" aria-expanded=\"false\" id=\"gridatlas-menu-bar-title-4\" aria-controls=\"gridatlas-menu-bar-panel-4\">Grid</button>\u001b[22m\n\u001b[2m  - attempting click action\u001b[22m\n\u001b[2m    - waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m    - element is visible, enabled and stable\u001b[22m\n\u001b[2m    - scrolling into view if needed\u001b[22m\n"}
+{"id":"solar_roof","label":"Solar Roof [FAIL]","eligible":0,"pass":false}
+{"id":"wind","label":"Wind [FAIL]","eligible":0,"pass":false}
+{"id":"wind_onshore_operational","label":"Onshore Wind (Operational Only) [FAIL]","eligible":0,"pass":false}
+{"id":"wind_offshore_operational","label":"Offshore Wind (Operational Only) [FAIL]","eligible":0,"pass":false}
+{"id":"bess","label":"Battery Storage [FAIL]","eligible":0,"pass":false}
+{"id":"bess_operational","label":"Battery Storage (Operational Only) [FAIL]","eligible":0,"pass":false}
+{"id":"biomass","label":"Biomass & EfW [FAIL]","eligible":0,"pass":false}
+{"id":"tidal","label":"Tidal & Wave [FAIL]","eligible":0,"pass":false}
+{"id":"hydrogen","label":"Hydrogen [FAIL]","eligible":0,"pass":false}
+{"id":"hydro","label":"Hydro & Pumped Storage [FAIL]","eligible":0,"pass":false}
+{"id":"flywheel","label":"Flywheel [FAIL]","eligible":0,"pass":false}
+{"id":"act","label":"Advanced Conversion [FAIL]","eligible":0,"pass":false}

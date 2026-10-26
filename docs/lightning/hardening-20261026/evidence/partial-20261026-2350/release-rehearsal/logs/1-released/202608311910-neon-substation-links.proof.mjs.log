@@ -1,0 +1,79 @@
+
+pre-snapped config adapter, carried forward
+
+  [PASS] the original init is still called and its return passed through
+  [PASS] the rewritten config is byte-identical to the original adapter's
+  [PASS] all five topology layers are un-snapped, and only those  132,220,275,400,66
+  [PASS] layers outside the closure keep their snap flag
+  [PASS] preload flags survive the rewrite
+  [PASS] the public state object keeps its original schema and generation  202608292126
+  [PASS] applied is true after a successful init
+  [PASS] a shell that no longer matches the expected snap contract fails closed
+  [PASS] the failure is recorded rather than swallowed  1
+
+the measurement
+
+  [PASS] the cartridge publishes its state  no __GRIDATLAS_NEON_LINKS__
+  [PASS] scope is 33 kV  33
+  [PASS] maplibregl.Map is wrapped for capture
+  [PASS] constructing a map still constructs the real one  1
+  [PASS] the wrap captures the instance
+  [FAIL] grid-distance-maths is available for a parity check  clone Ventusltd/grid-distance-maths beside gridatlas
+
+the substation layer
+
+  [PASS] a plain 33000 tag is 33 kV
+  [PASS] a 33000;11000 list keeps both
+  [PASS] a 33000:11000 transformer ratio still carries 33 kV  33,11
+  [PASS] an 11000 site is below scope
+  [PASS] a kV-unit tag is not multiplied
+  [PASS] an unparseable tag yields nothing
+  [PASS] a point substation keeps its coordinates
+  [PASS] a polygon reduces to its ring mean, not its first corner  [0.8,0.8]
+  [PASS] a multipolygon reduces too
+
+nearest selection
+
+  [PASS] results are ordered nearest first  Alpha,Bravo,Echo,Foxtrot,Charlie
+  [PASS] the cap is honoured  5
+  [PASS] a substation beyond the cut-off is dropped
+  [PASS] every returned distance is inside the cut-off
+  [PASS] the nearest is the nearest, checked by brute force  Alpha
+
+the project techs
+
+  [PASS] solar draws links
+  [PASS] bess draws links
+  [PASS] wind draws links
+  [PASS] wind_onshore_operational draws links
+  [PASS] bess_operational draws links
+  [PASS] offshore wind does NOT draw links
+  [PASS] non-project layers do not
+
+the card
+
+  [PASS] the measure surface is exposed for verification
+  [PASS] the card is marked BETA
+  [PASS] the card says it is beta analytics, not an actual connection
+  [PASS] the card names network impedance
+  [PASS] the card names fault level
+  [PASS] the card names thermal headroom
+  [PASS] the card names right of way
+  [PASS] the card names wayleaves
+  [PASS] the card names easements
+  [PASS] the card names consent
+  [PASS] the card says a substation does not confirm capacity
+  [PASS] the card says absence from a layer is not absence on the ground
+  [PASS] the caveat is in the card, not only a tooltip
+
+the palette
+
+  [PASS] the flow pulse is not pure white
+  [PASS] the link core is a muted SCADA teal
+  [PASS] glow opacity is restrained
+  [PASS] reduced motion is honoured
+
+52/53 checks passed
+
+FAILURES
+  grid-distance-maths is available for a parity check -- clone Ventusltd/grid-distance-maths beside gridatlas

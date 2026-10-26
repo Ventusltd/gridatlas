@@ -1,0 +1,28 @@
+2026-10-26T23:44:48Z
+desktop-1440x900 done locator.textContent: Target crashed 
+Call log:
+[2m  - waiting for locator('[data-lightning-group="main"] [data-lightning-label]')[22m
+
+    at settle (/tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/veto-pre-1/veto-interact.mjs:103:253)
+    at async file:///tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/veto-pre-1/veto-interact.mjs:122:78
+android-393x852 done page.waitForTimeout: Target page, context or browser has been closed
+    at waitForComposition (/tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/lightning/harness/offline-shim.mjs:114:16)
+    at async boot (/tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/veto-pre-1/veto-interact.mjs:54:16)
+    at async file:///tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/veto-pre-1/veto-interact.mjs:111:15
+android-360x740 done browser.newContext: Target page, context or browser has been closed
+Browser logs:
+
+<launching> /opt/pw-browsers/chromium_headless_shell-1243/chrome-headless-shell-linux64/chrome-headless-shell --disable-field-trial-config --disable-background-networking --disable-background-timer-throttling --disable-backgrounding-occluded-windows --disable-back-forward-cache --disable-breakpad --disable-client-side-phishing-detection --disable-component-extensions-with-background-pages --disable-component-update --no-default-browser-check --disable-default-apps --disable-dev-shm-usage --disable-edgeupdater --
+iphone-390x844-chromium-emulation done browser.newContext: Target page, context or browser has been closed
+    at async boot (/tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/veto-pre-1/veto-interact.mjs:45:15)
+    at async file:///tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/veto-pre-1/veto-interact.mjs:111:15
+v10 empty
+v10 http404
+v10 http500
+v10 stale
+v10 fresh
+v9 noArchive
+v9 leadArchiveV2
+v15 baseline
+v15 candidateOn
+v15 candidateOff

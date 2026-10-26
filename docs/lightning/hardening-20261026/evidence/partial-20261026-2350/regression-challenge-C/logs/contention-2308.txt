@@ -1,0 +1,27 @@
+# shared-container contention snapshot 2026-10-26T23:08:11Z
+memcg limit 6270046208 failcnt 344916
+oom_kill_disable 0
+oom_kill 2
+[  768.957145] DedicatedWorker invoked oom-killer: gfp_mask=0x100cca(GFP_HIGHUSER_MOVABLE), order=0, oom_score_adj=300
+[  769.262045] Memory cgroup out of memory: Killed process 7826 (chrome-headless) total-vm:1522226684kB, anon-rss:391160kB, file-rss:2180kB, shmem-rss:47076kB, UID:0 pgtables:2632kB oom_score_adj:300
+[  780.655807] chrome-headless invoked oom-killer: gfp_mask=0x100cca(GFP_HIGHUSER_MOVABLE), order=0, oom_score_adj=300
+[  781.664184] Memory cgroup out of memory: Killed process 10721 (chrome-headless) total-vm:1522210876kB, anon-rss:318248kB, file-rss:1948kB, shmem-rss:29628kB, UID:0 pgtables:1840kB oom_score_adj:300
+
+ 2105 325052      10:26 node matrix.mjs --only N23,N24,N25,N26,N27,N28,N29,N30,N31,N32
+11218 310520      00:37 /opt/node22/bin/node tools/proofs/all-controls.browser.mjs --url http://127.0.0.1:8144/wt/atlas/v/202610261949/ --mobile --out /tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scrat
+ 9433 263112      02:36 node lightning-hardening.browser.mjs --gen 202610261949 --base http://127.0.0.1:8151/wt
+11270 169696      00:35 /opt/pw-browsers/chromium_headless_shell-1243/chrome-headless-shell-linux64/chrome-headless-shell.real --font-render-hinting=none --disable-lcd-text --force-color-profile=srgb --disable-field-tria
+11713 168656      00:01 node a11y.mjs candidate 1440x900 reduce lightning-archive-missing-shard 3000
+ 9444 139884      02:35 /opt/pw-browsers/chromium_headless_shell-1243/chrome-headless-shell-linux64/chrome-headless-shell.real --font-render-hinting=none --disable-lcd-text --force-color-profile=srgb --disable-field-tria
+11747 96300       00:00 /opt/pw-browsers/chromium_headless_shell-1243/chrome-headless-shell-linux64/chrome-headless-shell.real --font-render-hinting=none --disable-lcd-text --force-color-profile=srgb --disable-field-tria
+ 2116 91896       10:25 /opt/pw-browsers/chromium_headless_shell-1243/chrome-headless-shell-linux64/chrome-headless-shell.real --font-render-hinting=none --disable-lcd-text --force-color-profile=srgb --disable-field-tria
+11024 24924       00:55 node /tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/regression-challenge-C/runners/run-chunked.mjs --repo /tmp/claude-0/-home-claude/9d39ad54-8b77-5d
+ 9428  3468       02:36 /bin/bash -c source /root/.claude/shell-snapshots/snapshot-bash-1793055279678-x1dnud.sh 2>/dev/null || true && \builtin export BUN_OPTIONS="--smol${BUN_OPTIONS:+ $BUN_OPTIONS}" && shopt -u extglob
+ 2103  3456       10:26 /bin/bash -c source /root/.claude/shell-snapshots/snapshot-bash-1793055279678-x1dnud.sh 2>/dev/null || true && \builtin export BUN_OPTIONS="--smol${BUN_OPTIONS:+ $BUN_OPTIONS}" && shopt -u extglob
+11653  3428       00:04 /bin/bash -c source /root/.claude/shell-snapshots/snapshot-bash-1793055279678-x1dnud.sh 2>/dev/null || true && \builtin export BUN_OPTIONS="--smol${BUN_OPTIONS:+ $BUN_OPTIONS}" && shopt -u extglob
+   80  2128       13:42 /bin/sh -c if ! { [ ! -L /var/lib/ccr-ca-store ] && { [ ! -e /var/lib/ccr-ca-store ] || { [ -d /var/lib/ccr-ca-store ] && [ -O /var/lib/ccr-ca-store ] ; } ; } ; } ; then true ; elif true 2>/dev/nu
+11826  1948       00:00 grep -E node |chrome
+11711  1812       00:01 timeout 600 node a11y.mjs candidate 1440x900 reduce lightning-archive-missing-shard 3000
+ 2104  1776       10:26 timeout 1150 node matrix.mjs --only N23,N24,N25,N26,N27,N28,N29,N30,N31,N32
+ 9430  1776       02:36 timeout 1200 node lightning-hardening.browser.mjs --gen 202610261949 --base http://127.0.0.1:8151/wt
+11023  1776       00:55 timeout 1190 node /tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/regression-challenge-C/runners/run-chunked.mjs --repo /tmp/claude-0/-home-claude/9d3

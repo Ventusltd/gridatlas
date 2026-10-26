@@ -1,0 +1,471 @@
+node:internal/modules/run_main:123
+    triggerUncaughtException(
+    ^
+
+AssertionError [ERR_ASSERTION]: only the reviewed card-boundary corrections may differ
++ actual - expected
+... Skipped lines
+
+  '/**\n' +
+    ' * CARRIED FORWARD AND EDITED, NOT ASSEMBLED. The notice below was true at generation 202609050354. Every generation\n' +
+    ' * since has been cut by copying the previous cartridge and editing the copy; the parts it names were not touched again\n' +
+    ' * and no longer reproduce this file (they build 363 KB; this is over 420 KB). Do NOT rebuild this cartridge from those\n' +
+    ' * parts: that would silently discard everything added since 5 September. Said here at 202609200022 because a header\n' +
+...
+    ' *\n' +
++   ' * Successor to 202609012135 at generation 20260901221'... 445715 more characters
+-   ' * Successor to 202609012135 at generation 20260901221'... 421790 more characters
+
+    at file:///tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/regression-challenge-C/shadow-candidate/tools/proofs/202609241334-sld-sandbox.proof.mjs:21:8
+    at ModuleJob.run (node:internal/modules/esm/module_job:343:25)
+    at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:681:26)
+    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:117:5) {
+  generatedMessage: false,
+  code: 'ERR_ASSERTION',
+  actual: '/**\n' +
+    ' * CARRIED FORWARD AND EDITED, NOT ASSEMBLED. The notice below was true at generation 202609050354. Every generation\n' +
+    ' * since has been cut by copying the previous cartridge and editing the copy; the parts it names were not touched again\n' +
+    ' * and no longer reproduce this file (they build 363 KB; this is over 420 KB). Do NOT rebuild this cartridge from those\n' +
+    ' * parts: that would silently discard everything added since 5 September. Said here at 202609200022 because a header\n' +
+    ' * that misdescribes how a file is made is the kind of false record this estate keeps finding.\n' +
+    ' *\n' +
+    ' * sld-sandbox-v9-8, generation 202609050354 (UTC).\n' +
+    ' *\n' +
+    ' * ASSEMBLED by tools/build-cartridge.mjs from the parts below. Do not edit\n' +
+    ' * this file: edit a part and rebuild under a new generation. Each part is\n' +
+    ' * hashed in manifests/202609050354-sld-sandbox-v9-8-parts.json.\n' +
+    ' *\n' +
+    ' *   module                 atlas/modules/202609012040-grid-scope.js\n' +
+    ' *   module                 atlas/modules/202609012217-source-registry.js\n' +
+    ' *   module                 atlas/modules/202609012128-declared-connections.js\n' +
+    ' *   module                 atlas/modules/202609012205-sizing-arithmetic.js\n' +
+    ' *   module                 atlas/modules/202609031310-technology-coverage.js\n' +
+    ' *   part                   atlas/parts/202609041234-sld-sandbox-technology-buckets.js\n' +
+    ' */\n' +
+    '\n' +
+    '/**\n' +
+    ' * Module: grid-scope\n' +
+    ' *\n' +
+    ' * "When you click on a blank space, the user should be able to see grid in\n' +
+    ' * the vicinity. Call it the GRID FINDING SCOPE — analysis of what is\n' +
+    ' * there, NOT indicative of capacity." — Vikram, 2026-09-01.\n' +
+    ' *\n' +
+    ' * So this answers exactly one question: WHAT IS MAPPED HERE. It counts\n' +
+    ' * what the served payload contains around a point, by voltage class and\n' +
+    ' * by distance band, and names the nearest few. It is a census of the map,\n' +
+    ' * not a study of the network.\n' +
+    ' *\n' +
+    ' * WHAT IT WILL NOT DO, EVER\n' +
+    ' * It does not say whether a connection is available, likely, cheap or\n' +
+    ' * possible. Nothing in a payload of substation positions can support any\n' +
+    ' * of that: capacity depends on queue position, committed connections,\n' +
+    ' * thermal and fault headroom, consent and commercial terms, and none of\n' +
+    ' * those is a distance. A scope that counted substations and implied\n' +
+    ' * opportunity would be the most dangerous thing this estate could ship,\n' +
+    ' * because it would look like analysis.\n' +
+    ' *\n' +
+    ' * Pure. No DOM, no network, no state. Depends on: geodesy.\n' +
+    ' */\n' +
+    '(() => {\n' +
+    "  'use strict';\n" +
+    '\n' +
+    '  const NS = (window.__GRIDATLAS_MODULES__ = window.__GRIDATLAS_MODULES__ || {});\n' +
+    '  if (NS.gridScope) return;\n' +
+    '\n' +
+    '  const geodesy = NS.geodesy;\n' +
+    "  if (!geodesy) throw new Error('grid-scope requires the geodesy module');\n" +
+    '\n' +
+    '  /* Bands, not a single radius. A reader asking "what is around here"\n' +
+    '     wants the shape of the answer - is the nearest thing on top of me or\n' +
+    '     twenty kilometres away - and one number hides that. */\n' +
+    '  const DEFAULT_BANDS_KM = [2, 5, 10, 25];\n' +
+    '  const CLASSES_KV = [400, 275, 220, 132, 66, 33];\n' +
+    '\n' +
+    '  /* A voltage is classified ONLY as a class it actually is.\n' +
+    '     ------------------------------------------------------------------\n' +
+    '     The first version walked the classes and returned the first one the\n' +
+    '     value exceeded, so it labelled 750 kV as 400, 110 kV as 66 and 50 kV\n' +
+    '     as 33 - a false label on anything the list does not contain, which is\n' +
+    '     exactly the sort of quiet relabelling this estate exists to avoid.\n' +
+    '     Codex caught it on the committed module before it reached a card\n' +
+    '     (stop-ship 202609012025).\n' +
+    '\n' +
+    '     Now: membership, within a tolerance for the fractions OSM carries.\n' +
+    '     Anything else is UNCLASSIFIED and counted as such, because a voltage\n' +
+    '     the standard classes do not contain is a fact about the data, not a\n' +
+    '     value to be rounded into the nearest familiar number. */\n' +
+    '  const CLASS_TOLERANCE_KV = 0.5;\n' +
+    '\n' +
+    '  function classOf(kv) {\n' +
+    '    if (!Number.isFinite(kv)) return null;\n' +
+    '    for (const known of CLASSES_KV) {\n' +
+    '      if (Math.abs(kv - known) <= CLASS_TOLERANCE_KV) return known;\n' +
+    '    }\n' +
+    '    return null;\n' +
+    '  }\n' +
+    '\n' +
+    '  /**\n' +
+    '   * @param origin [lon, lat]\n' +
+    '   * @param substations  [{ at:[lon,lat], kv:[numbers], name, operator }]\n' +
+    '   * @param options { bandsKm, minimumKv, nearestCount }\n' +
+    '   */\n' +
+    '  function scope(origin, substations, options) {\n' +
+    '    const bandsKm = (options && options.bandsKm) || DEFAULT_BANDS_KM;\n' +
+    '    const minimumKv = (options && options.minimumKv) || 0;\n' +
+    '    const nearestCount = (options && options.nearestCount) || 5;\n' +
+    '    const maximumKm = bandsKm[bandsKm.length - 1];\n' +
+    '\n' +
+    '    const within = [];\n' +
+    '    for (const substation of substations || []) {\n' +
+    '      if (!substation || !Array.isArray(substation.at)) continue;\n' +
+    '      const voltages = (Array.isArray(substation.kv) ? substation.kv : [])\n' +
+    '        .filter(Number.isFinite);\n' +
+    '      /* Non-finite voltages are dropped BEFORE the maximum.\n' +
+    '         ----------------------------------------------------------------\n' +
+    '         Codex, 202609012055: Math.max over a NaN gives NaN, and NaN < floor\n' +
+    '         is false, so a substation whose voltage did not parse survived a\n' +
+    '         132 kV floor and was censused as though it qualified. A voltage\n' +
+    '         that is not a number is not a voltage above the floor. */\n' +
+    '      const top = voltages.length ? Math.max(...voltages) : 0;\n' +
+    '      if (top < minimumKv) continue;\n' +
+    '      const km = geodesy.distanceKm(origin[0], origin[1],\n' +
+    '        substation.at[0], substation.at[1]);\n' +
+    '      if (km > maximumKm) continue;\n' +
+    '      within.push({\n' +
+    "        name: substation.name || '',\n" +
+    "        operator: substation.operator || '',\n" +
+    '        kv: top,\n' +
+    '        class_kv: classOf(top),\n' +
+    '        km,\n' +
+    '        at: substation.at\n' +
+    '      });\n' +
+    '    }\n' +
+    '    within.sort((a, b) => a.km - b.km);\n' +
+    '\n' +
+    '    const bands = bandsKm.map((band) => {\n' +
+    '      const inBand = within.filter(entry => entry.km <= band);\n' +
+    '      const counts = {};\n' +
+    '      let unclassified = 0;\n' +
+    '      const unclassifiedKv = [];\n' +
+    '      for (const entry of inBand) {\n' +
+    '        if (entry.class_kv == null) {\n' +
+    '          // Counted, never folded into a class it is not.\n' +
+    '          unclassified += 1;\n' +
+    '          if (Number.isFinite(entry.kv) && !unclassifiedKv.includes(entry.kv)) {\n' +
+    '            unclassifiedKv.push(entry.kv);\n' +
+    '          }\n' +
+    '          continue;\n' +
+    '        }\n' +
+    '        counts[entry.class_kv] = (counts[entry.class_kv] || 0) + 1;\n' +
+    '      }\n' +
+    '      const highest = inBand.reduce(\n' +
+    '        (best, entry) => (entry.class_kv != null && (best == null || entry.class_kv > best)\n' +
+    '          ? entry.class_kv : best), null);\n' +
+    '      return {\n' +
+    '        within_km: band,\n' +
+    '        substations: inBand.length,\n' +
+    '        by_class_kv: counts,\n' +
+    '        highest_class_kv: highest,\n' +
+    '        unclassified_voltage: unclassified,\n' +
+    '        unclassified_kv: unclassifiedKv.sort((a, b) => b - a)\n' +
+    '      };\n' +
+    '    });\n' +
+    '\n' +
+    '    /* Named first, because an unnamed OSM node is a fact about the map\n' +
+    '       rather than a place anyone can look up. Both are reported: the\n' +
+    '       nearest thing, and the nearest thing with an identity. */\n' +
+    '    const named = within.filter(entry => entry.name);\n' +
+    '    return {\n' +
+    "      schema: 'gridatlas.grid-scope.v1',\n" +
+    '      origin: [origin[0], origin[1]],\n' +
+    '      radius_km: maximumKm,\n' +
+    '      minimum_kv: minimumKv,\n' +
+    '      counted: within.length,\n' +
+    '      bands,\n' +
+    '      nearest: within.slice(0, nearestCount),\n' +
+    '      nearest_named: named.slice(0, nearestCount),\n' +
+    '      nearest_transmission: within.find(entry => entry.kv >= 275 - 0.5) || null,\n' +
+    '      /* Carried in the result itself so it cannot be separated from the\n' +
+    '         numbers by a renderer, a screenshot or a quote. */\n' +
+    "      what_this_is: 'A census of the substations in the served map payload '\n" +
+    "        + 'around this point, by voltage class and distance band.',\n" +
+    "      what_this_is_not: 'Not a statement about capacity, headroom, '\n" +
+    "        + 'availability or the cost of connecting here. Distance is not '\n" +
+    "        + 'capacity: queue position, committed connections, thermal and '\n" +
+    "        + 'fault headroom, consent and commercial terms decide that, and '\n" +
+    "        + 'none of them is in this payload.',\n" +
+    "      method: 'haversine on a single Earth radius of '\n" +
+    "        + geodesy.EARTH_RADIUS_KM + ' km, straight line to mapped geometry'\n" +
+    '    };\n' +
+    '  }\n' +
+    '\n' +
+    '  NS.gridScope = Object.freeze({\n' +
+    "    schema: 'gridatlas.module.grid-scope.v2',\n" +
+    '    CLASS_TOLERANCE_KV,\n' +
+    '    DEFAULT_BANDS_KM,\n' +
+    '    CLASSES_KV,\n' +
+    '    classOf,\n' +
+    '    scope\n' +
+    '  });\n' +
+    '})();\n' +
+    '\n' +
+    '/**\n' +
+    ' * Module: source-registry\n' +
+    ' *\n' +
+    ' * "Click anywhere on a map and the neons that already work via Pipeline News\n' +
+    ' * look for cartridges and code." — Vikram, 2026-09-01.\n' +
+    ' *\n' +
+    ' * The looking is this module. The Atlas is a composition of cartridges that\n' +
+    ' * find each other through `window.__GRIDATLAS_*` globals, and the deep scan\n' +
+    ' * of 1 Sep 2026 found fifteen such surfaces ever registered, thirteen live,\n' +
+    ' * and nothing anywhere that documents them. Every consumer therefore does\n' +
+    ' * its own `window.__GRIDATLAS_NETWORK__?.something` and quietly does less\n' +
+    ' * when the answer is undefined. That is how a click on blank space came to\n' +
+    ' * report only what OpenStreetMap has mapped, while the cartridge holding\n' +
+    " * NESO's 886 published connection points sat loaded in the same page.\n" +
+    ' *\n' +
+    ' * So: one registry, declared once, that answers three questions.\n' +
+    ' *\n' +
+    ' *   WHAT COULD ANSWER      the sources this estate knows about, each with\n' +
+    ' *                          what it contributes and whether it is required.\n' +
+    ' *   WHAT IS ANSWERING NOW  probed live, by looking for the surface AND the\n' +
+    ' *                          specific capability, because a cartridge that\n' +
+    ' *                          has loaded but not yet fetched is present and\n' +
+    ' *                          not yet useful, and those are different states.\n' +
+    ' *   WHAT DID NOT           named, with the reason, in the result itself.\n' +
+    ' *\n' +
+    ' * The third is the point. A reader who is told "3 of 4 sources answered;\n' +
+    ` * NESO's published network did not, because its payload had not loaded" can\n` +
+    ' * judge the answer. A reader shown a shorter answer cannot, and will\n' +
+    ' * reasonably assume the map has told them everything it knows.\n' +
+    ' *\n' +
+    ' * It reads. It never fetches, never renders, and never decides what a\n' +
+    ' * finding means.\n' +
+    ' *\n' +
+    ' * Successor to 202609012135 at generation 20260901221'... 445715 more characters,
+  expected: '/**\n' +
+    ' * CARRIED FORWARD AND EDITED, NOT ASSEMBLED. The notice below was true at generation 202609050354. Every generation\n' +
+    ' * since has been cut by copying the previous cartridge and editing the copy; the parts it names were not touched again\n' +
+    ' * and no longer reproduce this file (they build 363 KB; this is over 420 KB). Do NOT rebuild this cartridge from those\n' +
+    ' * parts: that would silently discard everything added since 5 September. Said here at 202609200022 because a header\n' +
+    ' * that misdescribes how a file is made is the kind of false record this estate keeps finding.\n' +
+    ' *\n' +
+    ' * sld-sandbox-v9-8, generation 202609050354 (UTC).\n' +
+    ' *\n' +
+    ' * ASSEMBLED by tools/build-cartridge.mjs from the parts below. Do not edit\n' +
+    ' * this file: edit a part and rebuild under a new generation. Each part is\n' +
+    ' * hashed in manifests/202609050354-sld-sandbox-v9-8-parts.json.\n' +
+    ' *\n' +
+    ' *   module                 atlas/modules/202609012040-grid-scope.js\n' +
+    ' *   module                 atlas/modules/202609012217-source-registry.js\n' +
+    ' *   module                 atlas/modules/202609012128-declared-connections.js\n' +
+    ' *   module                 atlas/modules/202609012205-sizing-arithmetic.js\n' +
+    ' *   module                 atlas/modules/202609031310-technology-coverage.js\n' +
+    ' *   part                   atlas/parts/202609041234-sld-sandbox-technology-buckets.js\n' +
+    ' */\n' +
+    '\n' +
+    '/**\n' +
+    ' * Module: grid-scope\n' +
+    ' *\n' +
+    ' * "When you click on a blank space, the user should be able to see grid in\n' +
+    ' * the vicinity. Call it the GRID FINDING SCOPE — analysis of what is\n' +
+    ' * there, NOT indicative of capacity." — Vikram, 2026-09-01.\n' +
+    ' *\n' +
+    ' * So this answers exactly one question: WHAT IS MAPPED HERE. It counts\n' +
+    ' * what the served payload contains around a point, by voltage class and\n' +
+    ' * by distance band, and names the nearest few. It is a census of the map,\n' +
+    ' * not a study of the network.\n' +
+    ' *\n' +
+    ' * WHAT IT WILL NOT DO, EVER\n' +
+    ' * It does not say whether a connection is available, likely, cheap or\n' +
+    ' * possible. Nothing in a payload of substation positions can support any\n' +
+    ' * of that: capacity depends on queue position, committed connections,\n' +
+    ' * thermal and fault headroom, consent and commercial terms, and none of\n' +
+    ' * those is a distance. A scope that counted substations and implied\n' +
+    ' * opportunity would be the most dangerous thing this estate could ship,\n' +
+    ' * because it would look like analysis.\n' +
+    ' *\n' +
+    ' * Pure. No DOM, no network, no state. Depends on: geodesy.\n' +
+    ' */\n' +
+    '(() => {\n' +
+    "  'use strict';\n" +
+    '\n' +
+    '  const NS = (window.__GRIDATLAS_MODULES__ = window.__GRIDATLAS_MODULES__ || {});\n' +
+    '  if (NS.gridScope) return;\n' +
+    '\n' +
+    '  const geodesy = NS.geodesy;\n' +
+    "  if (!geodesy) throw new Error('grid-scope requires the geodesy module');\n" +
+    '\n' +
+    '  /* Bands, not a single radius. A reader asking "what is around here"\n' +
+    '     wants the shape of the answer - is the nearest thing on top of me or\n' +
+    '     twenty kilometres away - and one number hides that. */\n' +
+    '  const DEFAULT_BANDS_KM = [2, 5, 10, 25];\n' +
+    '  const CLASSES_KV = [400, 275, 220, 132, 66, 33];\n' +
+    '\n' +
+    '  /* A voltage is classified ONLY as a class it actually is.\n' +
+    '     ------------------------------------------------------------------\n' +
+    '     The first version walked the classes and returned the first one the\n' +
+    '     value exceeded, so it labelled 750 kV as 400, 110 kV as 66 and 50 kV\n' +
+    '     as 33 - a false label on anything the list does not contain, which is\n' +
+    '     exactly the sort of quiet relabelling this estate exists to avoid.\n' +
+    '     Codex caught it on the committed module before it reached a card\n' +
+    '     (stop-ship 202609012025).\n' +
+    '\n' +
+    '     Now: membership, within a tolerance for the fractions OSM carries.\n' +
+    '     Anything else is UNCLASSIFIED and counted as such, because a voltage\n' +
+    '     the standard classes do not contain is a fact about the data, not a\n' +
+    '     value to be rounded into the nearest familiar number. */\n' +
+    '  const CLASS_TOLERANCE_KV = 0.5;\n' +
+    '\n' +
+    '  function classOf(kv) {\n' +
+    '    if (!Number.isFinite(kv)) return null;\n' +
+    '    for (const known of CLASSES_KV) {\n' +
+    '      if (Math.abs(kv - known) <= CLASS_TOLERANCE_KV) return known;\n' +
+    '    }\n' +
+    '    return null;\n' +
+    '  }\n' +
+    '\n' +
+    '  /**\n' +
+    '   * @param origin [lon, lat]\n' +
+    '   * @param substations  [{ at:[lon,lat], kv:[numbers], name, operator }]\n' +
+    '   * @param options { bandsKm, minimumKv, nearestCount }\n' +
+    '   */\n' +
+    '  function scope(origin, substations, options) {\n' +
+    '    const bandsKm = (options && options.bandsKm) || DEFAULT_BANDS_KM;\n' +
+    '    const minimumKv = (options && options.minimumKv) || 0;\n' +
+    '    const nearestCount = (options && options.nearestCount) || 5;\n' +
+    '    const maximumKm = bandsKm[bandsKm.length - 1];\n' +
+    '\n' +
+    '    const within = [];\n' +
+    '    for (const substation of substations || []) {\n' +
+    '      if (!substation || !Array.isArray(substation.at)) continue;\n' +
+    '      const voltages = (Array.isArray(substation.kv) ? substation.kv : [])\n' +
+    '        .filter(Number.isFinite);\n' +
+    '      /* Non-finite voltages are dropped BEFORE the maximum.\n' +
+    '         ----------------------------------------------------------------\n' +
+    '         Codex, 202609012055: Math.max over a NaN gives NaN, and NaN < floor\n' +
+    '         is false, so a substation whose voltage did not parse survived a\n' +
+    '         132 kV floor and was censused as though it qualified. A voltage\n' +
+    '         that is not a number is not a voltage above the floor. */\n' +
+    '      const top = voltages.length ? Math.max(...voltages) : 0;\n' +
+    '      if (top < minimumKv) continue;\n' +
+    '      const km = geodesy.distanceKm(origin[0], origin[1],\n' +
+    '        substation.at[0], substation.at[1]);\n' +
+    '      if (km > maximumKm) continue;\n' +
+    '      within.push({\n' +
+    "        name: substation.name || '',\n" +
+    "        operator: substation.operator || '',\n" +
+    '        kv: top,\n' +
+    '        class_kv: classOf(top),\n' +
+    '        km,\n' +
+    '        at: substation.at\n' +
+    '      });\n' +
+    '    }\n' +
+    '    within.sort((a, b) => a.km - b.km);\n' +
+    '\n' +
+    '    const bands = bandsKm.map((band) => {\n' +
+    '      const inBand = within.filter(entry => entry.km <= band);\n' +
+    '      const counts = {};\n' +
+    '      let unclassified = 0;\n' +
+    '      const unclassifiedKv = [];\n' +
+    '      for (const entry of inBand) {\n' +
+    '        if (entry.class_kv == null) {\n' +
+    '          // Counted, never folded into a class it is not.\n' +
+    '          unclassified += 1;\n' +
+    '          if (Number.isFinite(entry.kv) && !unclassifiedKv.includes(entry.kv)) {\n' +
+    '            unclassifiedKv.push(entry.kv);\n' +
+    '          }\n' +
+    '          continue;\n' +
+    '        }\n' +
+    '        counts[entry.class_kv] = (counts[entry.class_kv] || 0) + 1;\n' +
+    '      }\n' +
+    '      const highest = inBand.reduce(\n' +
+    '        (best, entry) => (entry.class_kv != null && (best == null || entry.class_kv > best)\n' +
+    '          ? entry.class_kv : best), null);\n' +
+    '      return {\n' +
+    '        within_km: band,\n' +
+    '        substations: inBand.length,\n' +
+    '        by_class_kv: counts,\n' +
+    '        highest_class_kv: highest,\n' +
+    '        unclassified_voltage: unclassified,\n' +
+    '        unclassified_kv: unclassifiedKv.sort((a, b) => b - a)\n' +
+    '      };\n' +
+    '    });\n' +
+    '\n' +
+    '    /* Named first, because an unnamed OSM node is a fact about the map\n' +
+    '       rather than a place anyone can look up. Both are reported: the\n' +
+    '       nearest thing, and the nearest thing with an identity. */\n' +
+    '    const named = within.filter(entry => entry.name);\n' +
+    '    return {\n' +
+    "      schema: 'gridatlas.grid-scope.v1',\n" +
+    '      origin: [origin[0], origin[1]],\n' +
+    '      radius_km: maximumKm,\n' +
+    '      minimum_kv: minimumKv,\n' +
+    '      counted: within.length,\n' +
+    '      bands,\n' +
+    '      nearest: within.slice(0, nearestCount),\n' +
+    '      nearest_named: named.slice(0, nearestCount),\n' +
+    '      nearest_transmission: within.find(entry => entry.kv >= 275 - 0.5) || null,\n' +
+    '      /* Carried in the result itself so it cannot be separated from the\n' +
+    '         numbers by a renderer, a screenshot or a quote. */\n' +
+    "      what_this_is: 'A census of the substations in the served map payload '\n" +
+    "        + 'around this point, by voltage class and distance band.',\n" +
+    "      what_this_is_not: 'Not a statement about capacity, headroom, '\n" +
+    "        + 'availability or the cost of connecting here. Distance is not '\n" +
+    "        + 'capacity: queue position, committed connections, thermal and '\n" +
+    "        + 'fault headroom, consent and commercial terms decide that, and '\n" +
+    "        + 'none of them is in this payload.',\n" +
+    "      method: 'haversine on a single Earth radius of '\n" +
+    "        + geodesy.EARTH_RADIUS_KM + ' km, straight line to mapped geometry'\n" +
+    '    };\n' +
+    '  }\n' +
+    '\n' +
+    '  NS.gridScope = Object.freeze({\n' +
+    "    schema: 'gridatlas.module.grid-scope.v2',\n" +
+    '    CLASS_TOLERANCE_KV,\n' +
+    '    DEFAULT_BANDS_KM,\n' +
+    '    CLASSES_KV,\n' +
+    '    classOf,\n' +
+    '    scope\n' +
+    '  });\n' +
+    '})();\n' +
+    '\n' +
+    '/**\n' +
+    ' * Module: source-registry\n' +
+    ' *\n' +
+    ' * "Click anywhere on a map and the neons that already work via Pipeline News\n' +
+    ' * look for cartridges and code." — Vikram, 2026-09-01.\n' +
+    ' *\n' +
+    ' * The looking is this module. The Atlas is a composition of cartridges that\n' +
+    ' * find each other through `window.__GRIDATLAS_*` globals, and the deep scan\n' +
+    ' * of 1 Sep 2026 found fifteen such surfaces ever registered, thirteen live,\n' +
+    ' * and nothing anywhere that documents them. Every consumer therefore does\n' +
+    ' * its own `window.__GRIDATLAS_NETWORK__?.something` and quietly does less\n' +
+    ' * when the answer is undefined. That is how a click on blank space came to\n' +
+    ' * report only what OpenStreetMap has mapped, while the cartridge holding\n' +
+    " * NESO's 886 published connection points sat loaded in the same page.\n" +
+    ' *\n' +
+    ' * So: one registry, declared once, that answers three questions.\n' +
+    ' *\n' +
+    ' *   WHAT COULD ANSWER      the sources this estate knows about, each with\n' +
+    ' *                          what it contributes and whether it is required.\n' +
+    ' *   WHAT IS ANSWERING NOW  probed live, by looking for the surface AND the\n' +
+    ' *                          specific capability, because a cartridge that\n' +
+    ' *                          has loaded but not yet fetched is present and\n' +
+    ' *                          not yet useful, and those are different states.\n' +
+    ' *   WHAT DID NOT           named, with the reason, in the result itself.\n' +
+    ' *\n' +
+    ' * The third is the point. A reader who is told "3 of 4 sources answered;\n' +
+    ` * NESO's published network did not, because its payload had not loaded" can\n` +
+    ' * judge the answer. A reader shown a shorter answer cannot, and will\n' +
+    ' * reasonably assume the map has told them everything it knows.\n' +
+    ' *\n' +
+    ' * It reads. It never fetches, never renders, and never decides what a\n' +
+    ' * finding means.\n' +
+    ' *\n' +
+    ' * Successor to 202609012135 at generation 20260901221'... 421790 more characters,
+  operator: 'strictEqual',
+  diff: 'simple'
+}
+
+Node.js v22.23.4

@@ -1,0 +1,45 @@
+#### atlas/manifests/202610262323-composition.json
+PASS cart[0] streaming-parquet-bridge atlas/cartridges/202609241251-streaming-parquet-bridge-v9-5.js sha256 decl=60be8215ba87 raw=60be8215ba87 lf=60be8215ba87
+INFO cart[0] streaming-parquet-bridge no bytes field (actual 13589)
+INFO cart[0] transit_data_selection partitions/uk_metros_trams_local_unwired.parquet sha256 256e98fc83b0: file not in repo (remote partition); value-compared with live below
+PASS cart[1] uk-gazetteer-flyto atlas/cartridges/202609071213-place-global-search-v9-5.js sha256 decl=15f324e5c279 raw=15f324e5c279 lf=15f324e5c279
+PASS cart[1] uk-gazetteer-flyto bytes decl=41120 actual=41120 lf=41120
+PASS cart[2] sld-sandbox atlas/cartridges/202610262323-sld-sandbox-v9-8.js sha256 decl=b143bf05b28a raw=b143bf05b28a lf=b143bf05b28a
+PASS cart[2] sld-sandbox bytes decl=458445 actual=458445 lf=458445
+PASS cart[2] uk_lightning.module atlas/modules/202610262323-uk-lightning-overlay.js module_bytes decl=23226 actual=23226 sha256=61cf9b34ae38d87f9091ddef783d6e9988148c5df2087f0e5d1c68e36e24e3e9
+PASS cart[2] supersedes_shell_script 202608292126-pre-snapped-config-adapter.js sha256 e5de4131cefe matches LF bytes of 3/3 release copies: atlas/releases/202608292126-atlas-v9/202608292126-pre-snapped-config-adapter.js, atlas/releases/202608292311-atlas-v9/202608292126-pre-snapped-config-adapter.js, atlas/releases/202608300453-atlas-v9/202608292126-pre-snapped-config-adapter.js
+PASS cart[2] supersedes_cartridge atlas/cartridges/202608311910-neon-substation-links-v9-6.js sha256 fd9471ed7585
+PASS cart[3] substation-intelligence atlas/cartridges/202609062358-substation-intelligence-v9-63.js sha256 decl=d94b0de50ded raw=d94b0de50ded lf=d94b0de50ded
+PASS cart[3] substation-intelligence bytes decl=451935 actual=451935 lf=451935
+PASS cart[3] supersedes_shell_script ventus-corev8engine.js sha256 9a75901ebdff matches LF bytes of 2/5 release copies: atlas/releases/202608292311-atlas-v9/ventus-corev8engine.js, atlas/releases/202608300453-atlas-v9/ventus-corev8engine.js
+#### atlas/v/202610262323/current.json
+PASS cart[0] streaming-parquet-bridge atlas/cartridges/202609241251-streaming-parquet-bridge-v9-5.js sha256 decl=60be8215ba87 raw=60be8215ba87 lf=60be8215ba87
+INFO cart[0] streaming-parquet-bridge no bytes field (actual 13589)
+INFO cart[0] transit_data_selection partitions/uk_metros_trams_local_unwired.parquet sha256 256e98fc83b0: file not in repo (remote partition); value-compared with live below
+PASS cart[1] uk-gazetteer-flyto atlas/cartridges/202609071213-place-global-search-v9-5.js sha256 decl=15f324e5c279 raw=15f324e5c279 lf=15f324e5c279
+PASS cart[1] uk-gazetteer-flyto bytes decl=41120 actual=41120 lf=41120
+PASS cart[2] sld-sandbox atlas/cartridges/202610262323-sld-sandbox-v9-8.js sha256 decl=b143bf05b28a raw=b143bf05b28a lf=b143bf05b28a
+PASS cart[2] sld-sandbox bytes decl=458445 actual=458445 lf=458445
+PASS cart[2] uk_lightning.module atlas/modules/202610262323-uk-lightning-overlay.js module_bytes decl=23226 actual=23226 sha256=61cf9b34ae38d87f9091ddef783d6e9988148c5df2087f0e5d1c68e36e24e3e9
+PASS cart[2] supersedes_shell_script 202608292126-pre-snapped-config-adapter.js sha256 e5de4131cefe matches LF bytes of 3/3 release copies: atlas/releases/202608292126-atlas-v9/202608292126-pre-snapped-config-adapter.js, atlas/releases/202608292311-atlas-v9/202608292126-pre-snapped-config-adapter.js, atlas/releases/202608300453-atlas-v9/202608292126-pre-snapped-config-adapter.js
+PASS cart[2] supersedes_cartridge atlas/cartridges/202608311910-neon-substation-links-v9-6.js sha256 fd9471ed7585
+PASS cart[3] substation-intelligence atlas/cartridges/202609062358-substation-intelligence-v9-63.js sha256 decl=d94b0de50ded raw=d94b0de50ded lf=d94b0de50ded
+PASS cart[3] substation-intelligence bytes decl=451935 actual=451935 lf=451935
+PASS cart[3] supersedes_shell_script ventus-corev8engine.js sha256 9a75901ebdff matches LF bytes of 2/5 release copies: atlas/releases/202608292311-atlas-v9/ventus-corev8engine.js, atlas/releases/202608300453-atlas-v9/ventus-corev8engine.js
+#### atlas/current.json
+PASS cart[0] streaming-parquet-bridge atlas/cartridges/202609241251-streaming-parquet-bridge-v9-5.js sha256 decl=60be8215ba87 raw=60be8215ba87 lf=60be8215ba87
+INFO cart[0] streaming-parquet-bridge no bytes field (actual 13589)
+INFO cart[0] transit_data_selection partitions/uk_metros_trams_local_unwired.parquet sha256 256e98fc83b0: file not in repo (remote partition); value-compared with live below
+PASS cart[1] uk-gazetteer-flyto atlas/cartridges/202609071213-place-global-search-v9-5.js sha256 decl=15f324e5c279 raw=15f324e5c279 lf=15f324e5c279
+PASS cart[1] uk-gazetteer-flyto bytes decl=41120 actual=41120 lf=41120
+PASS cart[2] sld-sandbox atlas/cartridges/202609241334-sld-sandbox-v9-8.js sha256 decl=7812953671d8 raw=7812953671d8 lf=7812953671d8
+PASS cart[2] sld-sandbox bytes decl=435218 actual=435218 lf=435218
+PASS cart[2] supersedes_shell_script 202608292126-pre-snapped-config-adapter.js sha256 e5de4131cefe matches LF bytes of 3/3 release copies: atlas/releases/202608292126-atlas-v9/202608292126-pre-snapped-config-adapter.js, atlas/releases/202608292311-atlas-v9/202608292126-pre-snapped-config-adapter.js, atlas/releases/202608300453-atlas-v9/202608292126-pre-snapped-config-adapter.js
+PASS cart[2] supersedes_cartridge atlas/cartridges/202608311910-neon-substation-links-v9-6.js sha256 fd9471ed7585
+PASS cart[3] substation-intelligence atlas/cartridges/202609062358-substation-intelligence-v9-63.js sha256 decl=d94b0de50ded raw=d94b0de50ded lf=d94b0de50ded
+PASS cart[3] substation-intelligence bytes decl=451935 actual=451935 lf=451935
+PASS cart[3] supersedes_shell_script ventus-corev8engine.js sha256 9a75901ebdff matches LF bytes of 2/5 release copies: atlas/releases/202608292311-atlas-v9/ventus-corev8engine.js, atlas/releases/202608300453-atlas-v9/ventus-corev8engine.js
+PASS atlas/manifests/202610262323-composition.json: 64-hex values not present in live atlas/current.json: b143bf05b28ac9b972ec90dced03cc0ad1f003fa844bdcb3f6601a33bd69891d
+PASS atlas/v/202610262323/current.json: 64-hex values not present in live atlas/current.json: b143bf05b28ac9b972ec90dced03cc0ad1f003fa844bdcb3f6601a33bd69891d
+PASS manifest sld sha == route sld sha == b143bf05b28ac9b972ec90dced03cc0ad1f003fa844bdcb3f6601a33bd69891d
+RESULT PASS

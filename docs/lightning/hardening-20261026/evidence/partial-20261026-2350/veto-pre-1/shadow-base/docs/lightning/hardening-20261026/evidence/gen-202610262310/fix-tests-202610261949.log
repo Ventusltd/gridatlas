@@ -1,0 +1,374 @@
+TAP version 13
+# Subtest: H01: OFF->ON revalidates the live feed (no cached promise)
+not ok 1 - H01: OFF->ON revalidates the live feed (no cached promise)
+  ---
+  duration_ms: 141.543901
+  type: 'test'
+  location: '/tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/gen-202610262310/test-fixes.mjs:76:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    second ON must request the feed again
+    
+    1 !== 2
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 2
+  actual: 1
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/gen-202610262310/test-fixes.mjs:83:10)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async startSubtestAfterBootstrap (node:internal/test_runner/harness:296:3)
+  ...
+# Subtest: H01/F3: the 10-minute refresh re-requests the live feed, not only index.json
+not ok 2 - H01/F3: the 10-minute refresh re-requests the live feed, not only index.json
+  ---
+  duration_ms: 126.096867
+  type: 'test'
+  location: '/tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/gen-202610262310/test-fixes.mjs:87:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    feed requests after two refresh ticks
+    
+    1 !== 3
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 3
+  actual: 1
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/gen-202610262310/test-fixes.mjs:92:10)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: H02/F4: a feed whose query_end_utc is 6 h old is STALE in state, label and status
+not ok 3 - H02/F4: a feed whose query_end_utc is 6 h old is STALE in state, label and status
+  ---
+  duration_ms: 46.508615
+  type: 'test'
+  location: '/tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/gen-202610262310/test-fixes.mjs:96:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    
+    false !== true
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: true
+  actual: false
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/gen-202610262310/test-fixes.mjs:99:10)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: H03: ok() rejects malformed and out-of-box coordinates; such a record is never drawn
+not ok 4 - H03: ok() rejects malformed and out-of-box coordinates; such a record is never drawn
+  ---
+  duration_ms: 11.462466
+  type: 'test'
+  location: '/tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/gen-202610262310/test-fixes.mjs:103:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    accepted [150,10]
+    
+    true !== false
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: false
+  actual: true
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/gen-202610262310/test-fixes.mjs:107:12)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: H04: a shard is rejected when its count, bytes or sha256 differ from the index entry; a matching shard loads
+not ok 5 - H04: a shard is rejected when its count, bytes or sha256 differ from the index entry; a matching shard loads
+  ---
+  duration_ms: 8.470992
+  type: 'test'
+  location: '/tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/gen-202610262310/test-fixes.mjs:112:1'
+  failureType: 'testCodeFailure'
+  error: 'Missing expected rejection: count mismatch accepted'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+  operator: 'rejects'
+  stack: |-
+    async TestContext.<anonymous> (file:///tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/gen-202610262310/test-fixes.mjs:118:5)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: H05: a sub-day budget caption never calls whole-day index sums "in window"
+not ok 6 - H05: a sub-day budget caption never calls whole-day index sums "in window"
+  ---
+  duration_ms: 3.60845
+  type: 'test'
+  location: '/tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/gen-202610262310/test-fixes.mjs:121:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    The input was expected to not match the regular expression /archived in window/. Input:
+    
+    'Flashes 50,000 archived in window (index) · 1 downloaded from the newest 1 of 2 days (budget 40,000; 1 older days not loaded) · 1 drawn as clusters (index count 40,000 exceeds the 40,000-point cap for this desktop)'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+  actual: 'Flashes 50,000 archived in window (index) · 1 downloaded from the newest 1 of 2 days (budget 40,000; 1 older days not loaded) · 1 drawn as clusters (index count 40,000 exceeds the 40,000-point cap for this desktop)'
+  operator: 'doesNotMatch'
+  stack: |-
+    TestContext.<anonymous> (file:///tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/gen-202610262310/test-fixes.mjs:125:10)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: F2: CUSTOM clicked during the first LOADING neither throws nor paints the stale 24h result
+not ok 7 - F2: CUSTOM clicked during the first LOADING neither throws nor paints the stale 24h result
+  ---
+  duration_ms: 5.851333
+  type: 'test'
+  location: '/tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/gen-202610262310/test-fixes.mjs:130:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    click handler threw
+    + actual - expected
+    
+    + [
+    +   "TypeError: Cannot read properties of null (reading 'colour')"
+    + ]
+    - []
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+  actual:
+    0: "TypeError: Cannot read properties of null (reading 'colour')"
+  operator: 'deepStrictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/gen-202610262310/test-fixes.mjs:133:10)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: F1: an unparsable feed timestamp does not wedge the UI (label leaves [LOAD], chips still load)
+not ok 8 - F1: an unparsable feed timestamp does not wedge the UI (label leaves [LOAD], chips still load)
+  ---
+  duration_ms: 15.133332
+  type: 'test'
+  location: '/tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/gen-202610262310/test-fixes.mjs:139:1'
+  failureType: 'unhandledRejection'
+  error: 'Invalid time value'
+  code: 'ERR_TEST_FAILURE'
+  name: 'RangeError'
+  stack: |-
+    Date.toISOString (<anonymous>)
+    ymd (atlas/modules/202610261949-uk-lightning-overlay.js:16:53)
+    T (atlas/modules/202610261949-uk-lightning-overlay.js:17:36)
+    P (atlas/modules/202610261949-uk-lightning-overlay.js:101:46)
+    cp (atlas/modules/202610261949-uk-lightning-overlay.js:102:32)
+    pt (atlas/modules/202610261949-uk-lightning-overlay.js:153:66)
+    atlas/modules/202610261949-uk-lightning-overlay.js:171:112
+  ...
+# Subtest: F5: PREV is disabled in feed-only mode
+not ok 9 - F5: PREV is disabled in feed-only mode
+  ---
+  duration_ms: 45.349575
+  type: 'test'
+  location: '/tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/gen-202610262310/test-fixes.mjs:152:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    
+    false !== true
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: true
+  actual: false
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/gen-202610262310/test-fixes.mjs:156:10)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: F6 / owner device 2: feed-mode coverage reads "unknown (live feed records only its last collection window)", never a percentage
+not ok 10 - F6 / owner device 2: feed-mode coverage reads "unknown (live feed records only its last collection window)", never a percentage
+  ---
+  duration_ms: 48.325251
+  type: 'test'
+  location: '/tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/gen-202610262310/test-fixes.mjs:159:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    + actual - expected
+    
+    + 'Searched EUMETSAT 2% of window · 1 successful runs · 2026-10-26 19:12 UTC → 2026-10-26 22:12 UTC'
+    - 'Searched EUMETSAT unknown (live feed records only its last collection window)'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 'Searched EUMETSAT unknown (live feed records only its last collection window)'
+  actual: 'Searched EUMETSAT 2% of window · 1 successful runs · 2026-10-26 19:12 UTC → 2026-10-26 22:12 UTC'
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/gen-202610262310/test-fixes.mjs:162:10)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: F9: bytes:null is estimated, not counted as 0, in the 32 MB budget
+not ok 11 - F9: bytes:null is estimated, not counted as 0, in the 32 MB budget
+  ---
+  duration_ms: 90.775067
+  type: 'test'
+  location: '/tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/gen-202610262310/test-fixes.mjs:167:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    30 MB + 5,000 flashes x 530 B must exceed 32 MB and ask before loading
+    
+    false !== true
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: true
+  actual: false
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/gen-202610262310/test-fixes.mjs:172:10)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: R02: a v1 index reads "archive unavailable", not "archive not yet published"
+not ok 12 - R02: a v1 index reads "archive unavailable", not "archive not yet published"
+  ---
+  duration_ms: 42.403684
+  type: 'test'
+  location: '/tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/gen-202610262310/test-fixes.mjs:177:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    The input did not match the regular expression /archive unavailable: unsupported index schema uk-lightning-history-index\.v1/. Input:
+    
+    'Refresh live feed 2026-10-26 22:12 UTC (last collection window 2026-10-26 19:12 UTC → 2026-10-26 22:12 UTC; latest detection 2026-10-26 21:12:26 UTC; 7-day retention; archive not yet published: unsupported index schema uk-lightning-history-index.v1; earlier hours unknown, not zero)'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+  actual: 'Refresh live feed 2026-10-26 22:12 UTC (last collection window 2026-10-26 19:12 UTC → 2026-10-26 22:12 UTC; latest detection 2026-10-26 21:12:26 UTC; 7-day retention; archive not yet published: unsupported index schema uk-lightning-history-index.v1; earlier hours unknown, not zero)'
+  operator: 'match'
+  stack: |-
+    TestContext.<anonymous> (file:///tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/gen-202610262310/test-fixes.mjs:180:10)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: R04: CUSTOM shows a custom-window caption at once, not the previous period until APPLY
+not ok 13 - R04: CUSTOM shows a custom-window caption at once, not the previous period until APPLY
+  ---
+  duration_ms: 89.655869
+  type: 'test'
+  location: '/tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/gen-202610262310/test-fixes.mjs:184:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    The input was expected to not match the regular expression /3 months/. Input:
+    
+    'Window  2026-07-26 23:12 UTC → 2026-10-26 23:12 UTC (3 months, latest)'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+  actual: 'Window  2026-07-26 23:12 UTC → 2026-10-26 23:12 UTC (3 months, latest)'
+  operator: 'doesNotMatch'
+  stack: |-
+    TestContext.<anonymous> (file:///tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/gen-202610262310/test-fixes.mjs:189:10)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: LP: LOAD POINTS stops before a day that would break 40,000 flashes or 32 MB
+not ok 14 - LP: LOAD POINTS stops before a day that would break 40,000 flashes or 32 MB
+  ---
+  duration_ms: 82.895673
+  type: 'test'
+  location: '/tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/gen-202610262310/test-fixes.mjs:193:1'
+  failureType: 'testCodeFailure'
+  error: 'loaded 60000 > 40,000'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: true
+  actual: false
+  operator: '=='
+  stack: |-
+    TestContext.<anonymous> (file:///tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/gen-202610262310/test-fixes.mjs:199:10)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: Owner device 1: in feed fallback the 30D-12M chips respond with "archive not yet published: earlier coverage unknown, not zero"
+not ok 15 - Owner device 1: in feed fallback the 30D-12M chips respond with "archive not yet published: earlier coverage unknown, not zero"
+  ---
+  duration_ms: 52.116054
+  type: 'test'
+  location: '/tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/gen-202610262310/test-fixes.mjs:208:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    30d chip disabled
+    
+    true !== false
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: false
+  actual: true
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/gen-202610262310/test-fixes.mjs:211:54)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: Owner device 3: bottom padding is inline on the lightning main group only; no original node or selector touched
+not ok 16 - Owner device 3: bottom padding is inline on the lightning main group only; no original node or selector touched
+  ---
+  duration_ms: 6.618158
+  type: 'test'
+  location: '/tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/gen-202610262310/test-fixes.mjs:218:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    + actual - expected
+    
+    + undefined
+    - '64px'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: '64px'
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/gen-202610262310/test-fixes.mjs:220:10)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+1..16
+# tests 16
+# suites 0
+# pass 0
+# fail 16
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 916.677557

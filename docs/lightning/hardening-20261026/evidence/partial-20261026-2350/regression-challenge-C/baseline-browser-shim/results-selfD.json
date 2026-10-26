@@ -1,0 +1,133 @@
+{
+  "label": "baseline-browser-shim",
+  "shim": {
+    "preload": "/tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/regression-challenge-C/runners/shim-preload.cjs",
+    "lightningDataDir": "(lead default)"
+  },
+  "generation": "202609241334",
+  "base": "http://127.0.0.1:8143/gridatlas/atlas/",
+  "live": "https://ventusltd.github.io/gridatlas/atlas/",
+  "repo": "/tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/regression-challenge-C/shadow-baseline",
+  "startedAt": "2026-10-26T23:36:12.216Z",
+  "routeBoots": true,
+  "liveReachable": null,
+  "routeProbe": {
+    "url": "http://127.0.0.1:8143/gridatlas/atlas/",
+    "viewport": {
+      "width": 1440,
+      "height": 1000
+    },
+    "elapsedMs": 6791,
+    "mapArrived": true,
+    "waitUsed": "waitForFunction(map && >=60 proxies, 60000 ms) then networkidle<=20 s then fixed 3 s",
+    "state": {
+      "title": "GlobalGrid2050 | UK Region v8 (Experimental)",
+      "generation": "202609241334",
+      "htmlGeneration": "202609241334",
+      "maplibregl": "function",
+      "map": true,
+      "menuBarInstalled": true,
+      "menuTitles": [
+        "File",
+        "Edit",
+        "View",
+        "Scope",
+        "Grid",
+        "About"
+      ],
+      "engineControls": 120,
+      "pipelineControls": 6,
+      "layerProxies": 63,
+      "scadaContainer": true,
+      "bodyText": "FILE EDIT VIEW SYSTEM TIME 23:35:33 26/10/2026 VENTUS CABLES & CONNECTIVITY® 2050 TARGET 8467 DAYS SCOPE GRID ABOUT GO TOPOLOGY (GEOJSON) 400kV [OK] 275kV [OK] 220kV [OK] 132kV [OK] 66kV [OK] 11kV (UKPN) [WAIT] Subs [OK] ASSETS (GEOJSON) Nuclear [OK] Gas [OK] Industry [OK] Data Ctrs [OK] Airports [OK] Railways [OK] SUPERMARKETS (GEOJSON) Tesco [WAIT] Sainsbury's [WAIT] Asda [WAIT] Morrisons [WAIT] Aldi [WAIT] Lidl [WAIT] Waitrose [WAIT] M&S Food [WAIT] Co-op [WAIT] Costco [WAIT] Booths [WAIT] TRANSIT (GEOJSON) Elizabeth Line [WAIT] London Underground [WAIT] DLR [WAIT] UK Metro [WAIT] Trams & L",
+      "scripts": [
+        "https://cdn.jsdelivr.net/npm/maplibre-gl@3.6.2/dist/maplibre-gl.js",
+        "blob:http://127.0.0.1:8143/19c026e5-0a80-4dda-837c-5a3635d2dace",
+        "blob:http://127.0.0.1:8143/972e0d4f-7231-452a-b2e5-8ab16168e32f",
+        "blob:http://127.0.0.1:8143/081469fb-6fb7-4c0c-827d-bd5749704bd4",
+        "blob:http://127.0.0.1:8143/8f0c040e-9e58-47a4-8c74-638e20abefdd"
+      ]
+    },
+    "failedHosts": {
+      "ventusltd.github.io": {
+        "count": 1,
+        "errors": [
+          "net::ERR_BLOCKED_BY_CLIENT.Inspector"
+        ],
+        "sample": "https://ventusltd.github.io/ventus-grid-engine/genome/engine-graph.json"
+      },
+      "cdn.jsdelivr.net": {
+        "count": 1,
+        "errors": [
+          "net::ERR_ABORTED"
+        ],
+        "sample": "https://cdn.jsdelivr.net/npm/@duckdb/duckdb-wasm@1.29.0/dist/duckdb-eh.wasm"
+      }
+    },
+    "requestHosts": [
+      "127.0.0.1:8143",
+      "cdn.jsdelivr.net",
+      "raw.githubusercontent.com",
+      "basemaps.cartocdn.com",
+      "ventusltd.github.io"
+    ],
+    "consoleErrors": [
+      "Failed to load resource: net::ERR_BLOCKED_BY_CLIENT.Inspector"
+    ],
+    "pageErrors": [],
+    "screenshot": "/tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/regression-challenge-C/baseline-browser-shim/probe-route/probe-1440x1000.png"
+  },
+  "liveProbe": null,
+  "tally": {
+    "FAIL": 1,
+    "PASS": 1
+  },
+  "playwright": "1.63.0",
+  "node": "v22.23.4",
+  "results": [
+    {
+      "id": "transit-layer-availability-202609040219",
+      "group": "browser",
+      "kind": "browser-self-served",
+      "tests": "metro/tram partition availability on a Markinch arrival (pinned to generation 202609040219)",
+      "target": "self-served http://127.0.0.1:<random>/atlas/ (same bytes as http://127.0.0.1:8143/gridatlas/atlas/, route prefix differs)",
+      "deps": [
+        "chromium",
+        "cdn.jsdelivr.net (maplibre-gl 3.6.2)",
+        "ventusltd.github.io/data-gridatlas partitions"
+      ],
+      "invocation": "/opt/node22/bin/node tools/proofs/202609040219-transit-layer-availability.browser.mjs",
+      "env": {},
+      "exit": 1,
+      "signal": null,
+      "timedOut": false,
+      "durationMs": 4554,
+      "result": "FAIL",
+      "note": "pre-existing on main — exit 1",
+      "firstError": "name: 'Error'",
+      "log": "logs/transit-layer-availability-202609040219"
+    },
+    {
+      "id": "uk-lightning-preview",
+      "group": "browser",
+      "kind": "browser-self-served",
+      "tests": "REJECTED preview V5 vs restored baseline: layer-id sets, menu heading/id inventories, 60+3 contract, lightning toggle sync across Grid menu / #scada-ui-container / #fs-curtain-keys, fixture-fed hydration (desktop + mobile)",
+      "target": "self-served http://127.0.0.1:<random>/atlas/ (same bytes as http://127.0.0.1:8143/gridatlas/atlas/, route prefix differs)",
+      "deps": [
+        "chromium",
+        "cdn.jsdelivr.net (maplibre-gl 3.6.2)",
+        "ventusltd.github.io/data-gridatlas partitions"
+      ],
+      "invocation": "/opt/node22/bin/node tools/proofs/uk-lightning-preview.browser.mjs",
+      "env": {},
+      "exit": 0,
+      "signal": null,
+      "timedOut": false,
+      "durationMs": 33658,
+      "result": "PASS",
+      "note": "",
+      "firstError": "…",
+      "log": "logs/uk-lightning-preview"
+    }
+  ]
+}

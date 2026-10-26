@@ -1,0 +1,64 @@
+{
+ "schema": "gridatlas.cartridge-parts.v1",
+ "generation": "202609020018",
+ "cartridge": "./cartridges/202609020018-substation-intelligence-v9-63.js",
+ "sha256": "82a39da0623f8d30fd53a50168e0a7b1d878a048e19d0e8af27393ca68c7fc90",
+ "bytes": 199582,
+ "assembled_from": [
+  {
+   "role": "carried_shell_script",
+   "path": "atlas/releases/202608300453-atlas-v9/ventus-corev8engine.js",
+   "bytes": 91167,
+   "sha256": "9a75901ebdff05e094650e39973fc0f59204724753d393a734bb8cda7bc875ba"
+  },
+  {
+   "role": "module",
+   "path": "atlas/modules/202609011950-geodesy.js",
+   "bytes": 6296,
+   "sha256": "2c98d0be8a1c8f4da045a2050e4ae9d56c2c5d07cd2c261a0fbfbc3ac2238e4f"
+  },
+  {
+   "role": "module",
+   "path": "atlas/modules/202609012245-network-topology.js",
+   "bytes": 13284,
+   "sha256": "225a0b2eee21f7a306fd5da009e53cca8ebc5852e4255f35816eae84716418b8"
+  },
+  {
+   "role": "module",
+   "path": "atlas/modules/202609012245-electrical-distance.js",
+   "bytes": 13873,
+   "sha256": "28ae3f3e2de8c9d2f495a829e350ea2e76bbb1469d3ff39792e3c8f95b4386bb"
+  },
+  {
+   "role": "module",
+   "path": "atlas/modules/202609012250-rating-envelope.js",
+   "bytes": 8560,
+   "sha256": "a0160fac5aa251859847f2418e362d22bcc9def1aeb928da69eac309c345c178"
+  },
+  {
+   "role": "module",
+   "path": "atlas/modules/202609020015-injection-response.js",
+   "bytes": 25847,
+   "sha256": "c4c5614ddf962f2c686553a824c5c1337ee1413aaf479ddbaf92a120621afa39"
+  },
+  {
+   "role": "module",
+   "path": "atlas/modules/202609012345-planned-change.js",
+   "bytes": 13845,
+   "sha256": "cee36a7b6cfc0b4755f43f6370627fe698f88253447ce37c629833d20cb3a049"
+  },
+  {
+   "role": "module",
+   "path": "atlas/modules/202609012350-owner-boundary.js",
+   "bytes": 14657,
+   "sha256": "29a9f42930f7720fcfd82982e83919e864af79b701d5323cfd49ed5bcd67a478"
+  },
+  {
+   "role": "part",
+   "path": "atlas/parts/202609012350-substation-intelligence-body.js",
+   "bytes": 11047,
+   "sha256": "15eb32fa326ae7276084373f78d71f3c70bae42daddb45f2ef7deaa65e89b04c"
+  }
+ ],
+ "rule": "edit a part and rebuild under a new generation; this file is not edited by hand"
+}

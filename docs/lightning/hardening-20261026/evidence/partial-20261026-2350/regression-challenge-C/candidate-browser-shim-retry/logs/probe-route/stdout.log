@@ -1,0 +1,59 @@
+{
+  "url": "http://127.0.0.1:8144/wt/atlas/v/202610261949/",
+  "viewport": {
+    "width": 1440,
+    "height": 1000
+  },
+  "elapsedMs": 5534,
+  "mapArrived": true,
+  "waitUsed": "waitForFunction(map && >=60 proxies, 60000 ms) then networkidle<=20 s then fixed 3 s",
+  "state": {
+    "title": "GlobalGrid2050 | UK Region v8 (Experimental)",
+    "generation": "202610261949",
+    "htmlGeneration": "202610261949",
+    "maplibregl": "function",
+    "map": true,
+    "menuBarInstalled": true,
+    "menuTitles": [
+      "File",
+      "Edit",
+      "View",
+      "Scope",
+      "Grid",
+      "About"
+    ],
+    "engineControls": 120,
+    "pipelineControls": 6,
+    "layerProxies": 63,
+    "scadaContainer": true,
+    "bodyText": "FILE EDIT VIEW SYSTEM TIME 23:36:50 26/10/2026 VENTUS CABLES & CONNECTIVITY® 2050 TARGET 8467 DAYS SCOPE GRID ABOUT GO TOPOLOGY (GEOJSON) 400kV [OK] 275kV [OK] 220kV [OK] 132kV [OK] 66kV [OK] 11kV (UKPN) [WAIT] Subs [OK] ASSETS (GEOJSON) Nuclear [OK] Gas [OK] Industry [OK] Data Ctrs [OK] Airports [OK] Railways [OK] SUPERMARKETS (GEOJSON) Tesco [WAIT] Sainsbury's [WAIT] Asda [WAIT] Morrisons [WAIT] Aldi [WAIT] Lidl [WAIT] Waitrose [WAIT] M&S Food [WAIT] Co-op [WAIT] Costco [WAIT] Booths [WAIT] TRANSIT (GEOJSON) Elizabeth Line [WAIT] London Underground [WAIT] DLR [WAIT] UK Metro [WAIT] Trams & L",
+    "scripts": [
+      "https://cdn.jsdelivr.net/npm/maplibre-gl@3.6.2/dist/maplibre-gl.js",
+      "blob:http://127.0.0.1:8144/1305719f-9959-478b-8d39-147569c8b49b",
+      "blob:http://127.0.0.1:8144/f2b1c1b6-6e46-4546-a951-1661c731d9d2",
+      "blob:http://127.0.0.1:8144/76b19259-72c9-47ae-bdd5-8b6ac52ec37b",
+      "blob:http://127.0.0.1:8144/ae102ef6-933c-4f0a-a945-cf28757e1451"
+    ]
+  },
+  "failedHosts": {
+    "ventusltd.github.io": {
+      "count": 1,
+      "errors": [
+        "net::ERR_BLOCKED_BY_CLIENT.Inspector"
+      ],
+      "sample": "https://ventusltd.github.io/ventus-grid-engine/genome/engine-graph.json"
+    }
+  },
+  "requestHosts": [
+    "127.0.0.1:8144",
+    "cdn.jsdelivr.net",
+    "raw.githubusercontent.com",
+    "basemaps.cartocdn.com",
+    "ventusltd.github.io"
+  ],
+  "consoleErrors": [
+    "Failed to load resource: net::ERR_BLOCKED_BY_CLIENT.Inspector"
+  ],
+  "pageErrors": [],
+  "screenshot": "/tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/regression-challenge-C/candidate-browser-shim-retry/probe-route/probe-1440x1000.png"
+}

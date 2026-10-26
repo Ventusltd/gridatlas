@@ -1,0 +1,950 @@
+[
+  {
+    "ref": "origin/main",
+    "ref_sha": "71365bb857e2f16c892dc8bbc9dfe6da1bc46eb5",
+    "ref_committed_at": "2026-08-31T01:37:11Z",
+    "path": ".github/workflows/202608310050-gridatlas-next-version-builders.yml",
+    "kind": "workflow",
+    "size_bytes": 12398,
+    "words": 1151,
+    "blob_sha": "2db698410ee2809387c769b8d97cf96039e097c2",
+    "content_sha256": "544379b732b8bfc45f90897c6fecd7f7708c08a9f4cd23e640da65f913d0e68d",
+    "timestamp": "202608310050",
+    "json_schema": null,
+    "headings": [],
+    "directives": [
+      "if: always() && steps.plan.outputs.output_dir != ''",
+      "if: always() && steps.plan.outputs.output_dir != ''",
+      "if: always() && steps.plan.outputs.output_dir != '' && steps.finalise.outcome == 'success' && steps.boundary.outcome == 'success'",
+      "if: always() && steps.plan.outputs.output_dir != ''"
+    ],
+    "github_url": "https://github.com/Ventusltd/gridatlas/blob/main/.github/workflows/202608310050-gridatlas-next-version-builders.yml"
+  },
+  {
+    "ref": "origin/main",
+    "ref_sha": "71365bb857e2f16c892dc8bbc9dfe6da1bc46eb5",
+    "ref_committed_at": "2026-08-31T01:37:11Z",
+    "path": "202608310050-gridatlas-next-version-builders/202608310050-source-gate.md",
+    "kind": "compiler",
+    "size_bytes": 879,
+    "words": 121,
+    "blob_sha": "b54dd75a59cc5f4587d61cc8bc4a88c6021bc4db",
+    "content_sha256": "1400c94db612a9e5ad491468c3d3a1e235f95a298cbff61567f1881deac5c6b5",
+    "timestamp": "202608310050",
+    "json_schema": null,
+    "headings": [
+      "# 202608310050 source gate"
+    ],
+    "directives": [
+      "Required files beyond the attached sample set:"
+    ],
+    "github_url": "https://github.com/Ventusltd/gridatlas/blob/main/202608310050-gridatlas-next-version-builders/202608310050-source-gate.md"
+  },
+  {
+    "ref": "origin/main",
+    "ref_sha": "71365bb857e2f16c892dc8bbc9dfe6da1bc46eb5",
+    "ref_committed_at": "2026-08-31T01:37:11Z",
+    "path": "202608310050-gridatlas-next-version-builders/README.md",
+    "kind": "compiler",
+    "size_bytes": 2083,
+    "words": 285,
+    "blob_sha": "97b50c8d5f543ff4c0edf80dd178d63080cf4d56",
+    "content_sha256": "5b84727de0d225ae121ed2d237338261895b86346fad7de0a1f610bbb223a29b",
+    "timestamp": "202608310050",
+    "json_schema": null,
+    "headings": [
+      "# 202608310050 GridAtlas next-version builders",
+      "## Source gate",
+      "## Isolation law"
+    ],
+    "directives": [
+      "A second, isolated overnight campaign. It complements — and never edits — `orchestration/202608310015-gridatlas-overnight-next-versions/`.",
+      "The workflow refuses changes to `_build-plan/`, the immutable shell, `atlas/current.json`, `state/live-set.json`, `releases/current-v5.json`, PipelineNews or Companies. It never promotes a pointer and never creates a full application copy. A failed proof is committed as evidence and the same stage retries later."
+    ],
+    "github_url": "https://github.com/Ventusltd/gridatlas/blob/main/202608310050-gridatlas-next-version-builders/README.md"
+  },
+  {
+    "ref": "origin/main",
+    "ref_sha": "71365bb857e2f16c892dc8bbc9dfe6da1bc46eb5",
+    "ref_committed_at": "2026-08-31T01:37:11Z",
+    "path": "202608310050-gridatlas-next-version-builders/campaign.json",
+    "kind": "compiler",
+    "size_bytes": 857,
+    "words": 53,
+    "blob_sha": "176f8d5edc449202f640f11e3b17c8b5d006bf95",
+    "content_sha256": "57ce61a0bd8db8ccd3637cd94803d966c3069e9b666f0dafe36f01cf8f707a55",
+    "timestamp": "202608310050",
+    "json_schema": "gridatlas.next-version-builder-campaign.v1",
+    "headings": [],
+    "directives": [],
+    "github_url": "https://github.com/Ventusltd/gridatlas/blob/main/202608310050-gridatlas-next-version-builders/campaign.json"
+  },
+  {
+    "ref": "origin/main",
+    "ref_sha": "71365bb857e2f16c892dc8bbc9dfe6da1bc46eb5",
+    "ref_committed_at": "2026-08-31T01:37:11Z",
+    "path": "202608310050-gridatlas-next-version-builders/inputs/202608310015-attached-sample-findings.md",
+    "kind": "compiler",
+    "size_bytes": 7233,
+    "words": 996,
+    "blob_sha": "3852f173403907f01b4be53e00ed78e92a717608",
+    "content_sha256": "4ec7b748818f4b770ef07f4393dbfc084ccd2b09725dac5f6799715dd94990b6",
+    "timestamp": "202608310015",
+    "json_schema": null,
+    "headings": [
+      "# 202608310015 attached sample study findings",
+      "## Governing product frame",
+      "## Confirmed current defect: N1",
+      "## N2: exact reference index",
+      "## Data delivery law",
+      "## Cartridge law",
+      "## Cartridge catalogue",
+      "## N3 governance",
+      "## N4 design-freeze calibration",
+      "## N5 source cards",
+      "## Companies and project vehicles",
+      "## Window intelligence build order",
+      "## Required missing artefacts"
+    ],
+    "directives": [
+      "Required N1 proof:",
+      "The index must be hash-pinned to `data/repd_projects_202608290716.parquet`, whose expected SHA-256 is `174040c37f3d63742d6fdd7af722a8cfdf3fb53de3ff85ff1142d22fdac4866b`. It is data, not a full app. Cartridge installation remains blocked until the reviewed anchored patch and spec arrive under `DRAFT-CARTRIDGES/`.",
+      "- Static exact-ref lookup must work on constrained devices without starting DuckDB.",
+      "The immutable shell has four script slots: the bridge is taken, search is taken, the engine is forbidden, and the pre-snapped config adapter is the one remaining slot. A future window-intelligence cartridge must be composite and reproduce `snap: false` for 400/275/220/132/66 kV before adding any layer. It must insert the Funding Window group first so it is visible on iPad portrait without scrolling. Failure of its data or manifest must add zero window layers while leaving the core map unchanged.",
+      "- C5 Companies candidate search Parquet; never draw it.",
+      "- C12 GB electricity HUD, must carry as-of/stale state.",
+      "CVAA has 24 vaccines and a reusable pinned workflow, but no consumer repository directly calls it. GridAtlas re-implements some antibodies inline. Adoption must be pinned to reviewed commit `d2ebc01f6eab41f2a84b0c53c4cfae0d2625ec5e`, measure actual findings first, then create a short-dated ratchet baseline. Do not install predicted maxima as if measured. Adding an inoculate workflow requires updating GridAtlas `ACTIVE_WORKFLOWS` in the same commit.",
+      "This is dependency-free arithmetic over the frozen 7,680-project PipelineNews spine. For projects with both planning permission and construction dates, compute `under_construction - planning_permission_granted`, then median by technology and capacity band. A cell with fewer than 30 samples is NULL, not guessed. The estimate remains derived and must publish sample size.",
+      "The shipped product calls postcodes.io and Nominatim without source cards. REPD's card is still unstudied. Needed cards also include PlanIt, planning.data.gov.uk, The Gazette, LCCC, Companies House bulk and Companies House REST. A draft card is not approval: licence, attribution, rate limits, allowed use and last-checked date must be reviewed before a source becomes declared truth.",
+      "## Required missing artefacts",
+      "Later stages must block rather than infer these files."
+    ],
+    "github_url": "https://github.com/Ventusltd/gridatlas/blob/main/202608310050-gridatlas-next-version-builders/inputs/202608310015-attached-sample-findings.md"
+  },
+  {
+    "ref": "origin/main",
+    "ref_sha": "71365bb857e2f16c892dc8bbc9dfe6da1bc46eb5",
+    "ref_committed_at": "2026-08-31T01:37:11Z",
+    "path": "202608310050-gridatlas-next-version-builders/inputs/202608310015-attached-samples-lock.json",
+    "kind": "compiler",
+    "size_bytes": 2166,
+    "words": 134,
+    "blob_sha": "806f821a2a1474768126eba781c65e4ffeae6f33",
+    "content_sha256": "d9bbb30289baa145946884c87ca8c992ecbae8893c809af6b37f497f0bf5455a",
+    "timestamp": "202608310015",
+    "json_schema": "gridatlas.attached-build-plan-samples-lock.v1",
+    "headings": [],
+    "directives": [],
+    "github_url": "https://github.com/Ventusltd/gridatlas/blob/main/202608310050-gridatlas-next-version-builders/inputs/202608310015-attached-samples-lock.json"
+  },
+  {
+    "ref": "origin/main",
+    "ref_sha": "71365bb857e2f16c892dc8bbc9dfe6da1bc46eb5",
+    "ref_committed_at": "2026-08-31T01:37:11Z",
+    "path": "202608310050-gridatlas-next-version-builders/tools/202608310050-build-n1-deep-link-candidates.py",
+    "kind": "compiler",
+    "size_bytes": 7818,
+    "words": 649,
+    "blob_sha": "64ca55f8ac7c422bbd9b7f9edfa73a60c4c27882",
+    "content_sha256": "f5eaa940f4d797bb928b7f2b4f518144cd88fc7ea81fb89ba65a88417a8ebda7",
+    "timestamp": "202608310050",
+    "json_schema": null,
+    "headings": [],
+    "directives": [
+      "\"\"\"Build isolated N1 candidate files. Never writes into producer repositories.\"\"\"",
+      "parser.add_argument(\"--output\", required=True, type=Path)",
+      "parser.add_argument(\"--generation\", required=True)",
+      "parser.add_argument(\"--pipelinenews\", required=True, type=Path)",
+      "parser.add_argument(\"--companies\", required=True, type=Path)",
+      "parser.add_argument(\"--gridatlas-current\", required=True, type=Path)"
+    ],
+    "github_url": "https://github.com/Ventusltd/gridatlas/blob/main/202608310050-gridatlas-next-version-builders/tools/202608310050-build-n1-deep-link-candidates.py"
+  },
+  {
+    "ref": "origin/main",
+    "ref_sha": "71365bb857e2f16c892dc8bbc9dfe6da1bc46eb5",
+    "ref_committed_at": "2026-08-31T01:37:11Z",
+    "path": "202608310050-gridatlas-next-version-builders/tools/202608310050-build-readiness.mjs",
+    "kind": "compiler",
+    "size_bytes": 7109,
+    "words": 792,
+    "blob_sha": "a74321a03b64680e76c34fbf19c36300be8f88ec",
+    "content_sha256": "1423e5832af1e144c1126cd6ca337d662a28e230d6072e6f25e7e58377a07600",
+    "timestamp": "202608310050",
+    "json_schema": null,
+    "headings": [],
+    "directives": [
+      "if (!fs.existsSync(source)) throw new Error(`required build-plan file missing: ${relative}`);",
+      "['postcodes_io', 'postcodes.io', 'live geocoder; rate, attribution and browser-use constraints must be verified'],",
+      "['nominatim', 'Nominatim / OpenStreetMap', 'live explicit geocoder; rate and attribution policy must be verified'],",
+      "['repd', 'DESNZ REPD', 'frozen project spine; licence and attribution must be completed'],",
+      "rule: 'No card may leave draft until licence, attribution, access, rate and last-checked fields are externally verified.'",
+      "const required = [",
+      "const files = required.map(relative => copy(relative, 'frozen-inputs'));"
+    ],
+    "github_url": "https://github.com/Ventusltd/gridatlas/blob/main/202608310050-gridatlas-next-version-builders/tools/202608310050-build-readiness.mjs"
+  },
+  {
+    "ref": "origin/main",
+    "ref_sha": "71365bb857e2f16c892dc8bbc9dfe6da1bc46eb5",
+    "ref_committed_at": "2026-08-31T01:37:11Z",
+    "path": "202608310050-gridatlas-next-version-builders/tools/202608310050-build-repd-ref-index.py",
+    "kind": "compiler",
+    "size_bytes": 7212,
+    "words": 687,
+    "blob_sha": "6dedb985c0e97462b3e8b602ae7befa0e1d9aebe",
+    "content_sha256": "88f409435d6d707ced6a55bd9407bc07765f0e8c941f68d4b5743cb68fad4d1e",
+    "timestamp": "202608310050",
+    "json_schema": null,
+    "headings": [],
+    "directives": [
+      "parser.add_argument(\"--parquet\", required=True, type=Path)",
+      "parser.add_argument(\"--output\", required=True, type=Path)",
+      "parser.add_argument(\"--generation\", required=True)",
+      "\"rule\": \"Do not infer or rewrite the anchored search-cartridge patch when the reviewed draft is absent.\","
+    ],
+    "github_url": "https://github.com/Ventusltd/gridatlas/blob/main/202608310050-gridatlas-next-version-builders/tools/202608310050-build-repd-ref-index.py"
+  },
+  {
+    "ref": "origin/main",
+    "ref_sha": "71365bb857e2f16c892dc8bbc9dfe6da1bc46eb5",
+    "ref_committed_at": "2026-08-31T01:37:11Z",
+    "path": "202608310050-gridatlas-next-version-builders/tools/202608310050-calibrate-design-freeze.py",
+    "kind": "compiler",
+    "size_bytes": 8694,
+    "words": 779,
+    "blob_sha": "3ecb90ec835273bb67cda86d9a0a5dde8d94255a",
+    "content_sha256": "e3e4180772096b2edb9ac8cf5307359e0b25e0f88e9b26b977253325541265d7",
+    "timestamp": "202608310050",
+    "json_schema": null,
+    "headings": [],
+    "directives": [
+      "parser.add_argument(\"--pipelinenews\", required=True, type=Path)",
+      "parser.add_argument(\"--output\", required=True, type=Path)",
+      "parser.add_argument(\"--generation\", required=True)",
+      "\"recovery_rule\": \"Never overwrite this calibration; create a later Europe/London timestamped successor.\","
+    ],
+    "github_url": "https://github.com/Ventusltd/gridatlas/blob/main/202608310050-gridatlas-next-version-builders/tools/202608310050-calibrate-design-freeze.py"
+  },
+  {
+    "ref": "origin/main",
+    "ref_sha": "71365bb857e2f16c892dc8bbc9dfe6da1bc46eb5",
+    "ref_committed_at": "2026-08-31T01:37:11Z",
+    "path": "202608310050-gridatlas-next-version-builders/tools/202608310050-finalise-stage.mjs",
+    "kind": "compiler",
+    "size_bytes": 4400,
+    "words": 465,
+    "blob_sha": "056adc91ea3a71523c089c498c422223b2e8f3b3",
+    "content_sha256": "acbb25f491193bd010b9dbe04f303759c5461b62d19f603343d82a2cfbdea36e",
+    "timestamp": "202608310050",
+    "json_schema": null,
+    "headings": [],
+    "directives": [
+      "if (!outputDir || !fs.existsSync(outputDir)) throw new Error('OUTPUT_DIR is required');",
+      "if (!stage) throw new Error('STAGE is required');"
+    ],
+    "github_url": "https://github.com/Ventusltd/gridatlas/blob/main/202608310050-gridatlas-next-version-builders/tools/202608310050-finalise-stage.mjs"
+  },
+  {
+    "ref": "origin/main",
+    "ref_sha": "71365bb857e2f16c892dc8bbc9dfe6da1bc46eb5",
+    "ref_committed_at": "2026-08-31T01:37:11Z",
+    "path": "202608310050-gridatlas-next-version-builders/tools/202608310050-prove-federated-deep-links.mjs",
+    "kind": "compiler",
+    "size_bytes": 5140,
+    "words": 520,
+    "blob_sha": "73911156e77a560b2737f0344d963f6e8b422382",
+    "content_sha256": "c841fa0ba4c5bd195874fd611c54c70d69c5dc35007349d04c890bef74ce146a",
+    "timestamp": "202608310050",
+    "json_schema": null,
+    "headings": [],
+    "directives": [
+      "if (!outputDir || !fs.existsSync(outputDir)) throw new Error('output directory is required');"
+    ],
+    "github_url": "https://github.com/Ventusltd/gridatlas/blob/main/202608310050-gridatlas-next-version-builders/tools/202608310050-prove-federated-deep-links.mjs"
+  },
+  {
+    "ref": "origin/main",
+    "ref_sha": "71365bb857e2f16c892dc8bbc9dfe6da1bc46eb5",
+    "ref_committed_at": "2026-08-31T01:37:11Z",
+    "path": "202608310050-gridatlas-next-version-builders/tools/202608310050-select-build-plan.mjs",
+    "kind": "compiler",
+    "size_bytes": 7719,
+    "words": 857,
+    "blob_sha": "121d187affe19f97418df125f43410be3a983950",
+    "content_sha256": "1b4c6da52fe368bae8b0960909c2045b12957fe23f82c1a4f90c8e62dcb52391",
+    "timestamp": "202608310050",
+    "json_schema": null,
+    "headings": [],
+    "directives": [
+      "const REQUIRED = [",
+      "const missing = REQUIRED.filter(relative => !fs.existsSync(path.join(plan, relative)));",
+      "required_files: REQUIRED, missing: selected.missing,"
+    ],
+    "github_url": "https://github.com/Ventusltd/gridatlas/blob/main/202608310050-gridatlas-next-version-builders/tools/202608310050-select-build-plan.mjs"
+  },
+  {
+    "ref": "origin/main",
+    "ref_sha": "71365bb857e2f16c892dc8bbc9dfe6da1bc46eb5",
+    "ref_committed_at": "2026-08-31T01:37:11Z",
+    "path": "STATE.md",
+    "kind": "document",
+    "size_bytes": 1009,
+    "words": 81,
+    "blob_sha": "35e31784f701d04ea8fdedf1ca819fac18ae9b37",
+    "content_sha256": "33803b06a183d297b28e497555dc059e5bbcbed7e77c6b3d296b804d49c33c29",
+    "timestamp": null,
+    "json_schema": null,
+    "headings": [
+      "# GridAtlas durable state"
+    ],
+    "directives": [],
+    "github_url": "https://github.com/Ventusltd/gridatlas/blob/main/STATE.md"
+  },
+  {
+    "ref": "origin/main",
+    "ref_sha": "71365bb857e2f16c892dc8bbc9dfe6da1bc46eb5",
+    "ref_committed_at": "2026-08-31T01:37:11Z",
+    "path": "atlas/cartridges/202608301136-place-postcode-search.js",
+    "kind": "cartridge",
+    "size_bytes": 21791,
+    "words": 2107,
+    "blob_sha": "9ec0ba631740b3b35e5e40a0f4ea40e7c130ff4c",
+    "content_sha256": "7f8e91c5ed54152f5ae4cd999ec501caed8d6625fdf0df20cc418805dec3e1fa",
+    "timestamp": "202608301136",
+    "json_schema": null,
+    "headings": [],
+    "directives": [
+      "// ---- 202608301136 UK gazetteer lane (LOCATION_ONLY, never claims REPD identity) ----"
+    ],
+    "github_url": "https://github.com/Ventusltd/gridatlas/blob/main/atlas/cartridges/202608301136-place-postcode-search.js"
+  },
+  {
+    "ref": "origin/main",
+    "ref_sha": "71365bb857e2f16c892dc8bbc9dfe6da1bc46eb5",
+    "ref_committed_at": "2026-08-31T01:37:11Z",
+    "path": "atlas/cartridges/202608301624-place-global-search-v9-5.js",
+    "kind": "cartridge",
+    "size_bytes": 25066,
+    "words": 2412,
+    "blob_sha": "68d0e282b91c795e8575344a7c41d56fd31fb713",
+    "content_sha256": "b6497b437de52f68151a1bb22ccd95133d15c243c58eb9df1912fb36f38bcfca",
+    "timestamp": "202608301624",
+    "json_schema": null,
+    "headings": [],
+    "directives": [
+      "// ---- 202608301136 UK gazetteer lane (LOCATION_ONLY, never claims REPD identity) ----"
+    ],
+    "github_url": "https://github.com/Ventusltd/gridatlas/blob/main/atlas/cartridges/202608301624-place-global-search-v9-5.js"
+  },
+  {
+    "ref": "origin/main",
+    "ref_sha": "71365bb857e2f16c892dc8bbc9dfe6da1bc46eb5",
+    "ref_committed_at": "2026-08-31T01:37:11Z",
+    "path": "atlas/cartridges/202608301825-streaming-parquet-bridge-v9-5.js",
+    "kind": "cartridge",
+    "size_bytes": 10981,
+    "words": 951,
+    "blob_sha": "6c3fac78ca9e691c08c100540699e77d5c577b2f",
+    "content_sha256": "79045ccadaebf226af06fb2f800a32ca1f1e6c58d24442ee37037f1f28874af9",
+    "timestamp": "202608301825",
+    "json_schema": null,
+    "headings": [],
+    "directives": [],
+    "github_url": "https://github.com/Ventusltd/gridatlas/blob/main/atlas/cartridges/202608301825-streaming-parquet-bridge-v9-5.js"
+  },
+  {
+    "ref": "origin/main",
+    "ref_sha": "71365bb857e2f16c892dc8bbc9dfe6da1bc46eb5",
+    "ref_committed_at": "2026-08-31T01:37:11Z",
+    "path": "atlas/current.json",
+    "kind": "artifact",
+    "size_bytes": 4350,
+    "words": 239,
+    "blob_sha": "7e4c5130486c9ac2c3d2f7543d526a3bf884c0e3",
+    "content_sha256": "bbfcb5177051f35c7fc5b28427987c10353a08b93192ac079eb4e335e8c3938c",
+    "timestamp": null,
+    "json_schema": "gridatlas.current.v2",
+    "headings": [],
+    "directives": [],
+    "github_url": "https://github.com/Ventusltd/gridatlas/blob/main/atlas/current.json"
+  },
+  {
+    "ref": "origin/main",
+    "ref_sha": "71365bb857e2f16c892dc8bbc9dfe6da1bc46eb5",
+    "ref_committed_at": "2026-08-31T01:37:11Z",
+    "path": "atlas/index.html",
+    "kind": "app",
+    "size_bytes": 5223,
+    "words": 533,
+    "blob_sha": "3677697d929ad2bec94da9f3c4bd6ef618f3c8e8",
+    "content_sha256": "e1e403f6defe984e6a12c30bb882dfeb65166b5414e3088c3b04f957064232b3",
+    "timestamp": null,
+    "json_schema": null,
+    "headings": [],
+    "directives": [],
+    "github_url": "https://github.com/Ventusltd/gridatlas/blob/main/atlas/index.html"
+  },
+  {
+    "ref": "origin/main",
+    "ref_sha": "71365bb857e2f16c892dc8bbc9dfe6da1bc46eb5",
+    "ref_committed_at": "2026-08-31T01:37:11Z",
+    "path": "atlas/manifests/202608301522-composition.json",
+    "kind": "manifest",
+    "size_bytes": 2016,
+    "words": 88,
+    "blob_sha": "2b5bb3a2e9ec57b8eb068dfbe5c9386b4a8b591a",
+    "content_sha256": "8fe63eb5bbdbb51ead910fe68a7871544ec81b0d462a6be7f1e341f85a426063",
+    "timestamp": "202608301522",
+    "json_schema": "gridatlas.composition-manifest.v1",
+    "headings": [],
+    "directives": [
+      "\"acceptance\": {"
+    ],
+    "github_url": "https://github.com/Ventusltd/gridatlas/blob/main/atlas/manifests/202608301522-composition.json"
+  },
+  {
+    "ref": "origin/main",
+    "ref_sha": "71365bb857e2f16c892dc8bbc9dfe6da1bc46eb5",
+    "ref_committed_at": "2026-08-31T01:37:11Z",
+    "path": "atlas/manifests/202608301624-composition.json",
+    "kind": "manifest",
+    "size_bytes": 2499,
+    "words": 120,
+    "blob_sha": "d0cfea9eafea2a1c5421a1b31da231c676be4f3e",
+    "content_sha256": "b40bbc8821cdfac96f6111a404f11a0d9ebacb89aceb4bf2c66129e0b6ccb381",
+    "timestamp": "202608301624",
+    "json_schema": "gridatlas.composition-manifest.v1",
+    "headings": [],
+    "directives": [
+      "\"acceptance\": {",
+      "\"golden_browser_verification\": \"REQUIRED\""
+    ],
+    "github_url": "https://github.com/Ventusltd/gridatlas/blob/main/atlas/manifests/202608301624-composition.json"
+  },
+  {
+    "ref": "origin/main",
+    "ref_sha": "71365bb857e2f16c892dc8bbc9dfe6da1bc46eb5",
+    "ref_committed_at": "2026-08-31T01:37:11Z",
+    "path": "atlas/manifests/202608301825-composition.json",
+    "kind": "manifest",
+    "size_bytes": 3790,
+    "words": 179,
+    "blob_sha": "b0ffa0141131df52180ab0cb7842c9b043b48e6f",
+    "content_sha256": "524db263b78d8fa4b2ca67993ab933236f00660507acc7b09bc5a8f289f8ed5a",
+    "timestamp": "202608301825",
+    "json_schema": "gridatlas.composition-manifest.v1",
+    "headings": [],
+    "directives": [
+      "\"acceptance\": {",
+      "\"golden_browser_verification\": \"REQUIRED\","
+    ],
+    "github_url": "https://github.com/Ventusltd/gridatlas/blob/main/atlas/manifests/202608301825-composition.json"
+  },
+  {
+    "ref": "origin/main",
+    "ref_sha": "71365bb857e2f16c892dc8bbc9dfe6da1bc46eb5",
+    "ref_committed_at": "2026-08-31T01:37:11Z",
+    "path": "atman/202608301624-verify-v9-5-search.mjs",
+    "kind": "test",
+    "size_bytes": 10721,
+    "words": 1078,
+    "blob_sha": "ef8307dd67b785648ccac87422ef962ac601fc0b",
+    "content_sha256": "9496fb8388af3a8b713c513ee9cd553e6f7ea88037ad1efa760f3a7290f0626e",
+    "timestamp": "202608301624",
+    "json_schema": null,
+    "headings": [],
+    "directives": [],
+    "github_url": "https://github.com/Ventusltd/gridatlas/blob/main/atman/202608301624-verify-v9-5-search.mjs"
+  },
+  {
+    "ref": "origin/main",
+    "ref_sha": "71365bb857e2f16c892dc8bbc9dfe6da1bc46eb5",
+    "ref_committed_at": "2026-08-31T01:37:11Z",
+    "path": "atman/verify_streaming_roads.mjs",
+    "kind": "test",
+    "size_bytes": 6032,
+    "words": 615,
+    "blob_sha": "9c4cfdece8409aa423755c53680e14ad60e22682",
+    "content_sha256": "128ba54400dd1d6da364792a3f751a7254f71b68d21a0bca6159b25ec21b8e96",
+    "timestamp": null,
+    "json_schema": null,
+    "headings": [],
+    "directives": [
+      "if (!url || !expectedGeneration) throw new Error('GRIDATLAS_URL and EXPECTED_GENERATION are required');"
+    ],
+    "github_url": "https://github.com/Ventusltd/gridatlas/blob/main/atman/verify_streaming_roads.mjs"
+  },
+  {
+    "ref": "origin/main",
+    "ref_sha": "71365bb857e2f16c892dc8bbc9dfe6da1bc46eb5",
+    "ref_committed_at": "2026-08-31T01:37:11Z",
+    "path": "docs/milestones/202608300305-atlas-v9-federated-deep-links.md",
+    "kind": "document",
+    "size_bytes": 4922,
+    "words": 639,
+    "blob_sha": "c59f6314f30e68799a903d4e445ab2e59058d6b0",
+    "content_sha256": "1db4f89371e7beadeadc688dcdffbf6eb933240dc15769bce16fcf6576316241",
+    "timestamp": "202608300305",
+    "json_schema": null,
+    "headings": [
+      "# Atlas V9 federated deep-link milestones",
+      "## Governing invariant",
+      "## M0 — Repair the comparison harness",
+      "## M1 — Publish the render-ready Atlas V9 successor",
+      "## M2 — Catalogue Atlas V9 on GlobalGrid2050",
+      "## M3 — Move PipelineNews deep links to the verified Atlas pointer",
+      "## M4 — Expose Companies relationships through the same Atlas contract",
+      "## M5 — Federated audit and automatic rollback discipline"
+    ],
+    "directives": [
+      "Execution rule: GitHub Actions performs builds, comparisons, publication and pointer movement. Human/AI work is restricted to contracts, gates and bounded repairs.",
+      "- no full PipelineNews rebuild is required for pointer movement.",
+      "- do not add URLs, names or descriptive data to relationship rows;",
+      "- never roll a data or application pointer forward from a red gate."
+    ],
+    "github_url": "https://github.com/Ventusltd/gridatlas/blob/main/docs/milestones/202608300305-atlas-v9-federated-deep-links.md"
+  },
+  {
+    "ref": "origin/main",
+    "ref_sha": "71365bb857e2f16c892dc8bbc9dfe6da1bc46eb5",
+    "ref_committed_at": "2026-08-31T01:37:11Z",
+    "path": "governance/202608300232-cross-repo-atlas-v9-milestones.md",
+    "kind": "document",
+    "size_bytes": 3828,
+    "words": 481,
+    "blob_sha": "426482811127931081944f02fea11f44124aa20b",
+    "content_sha256": "fe623144261772fa52cc2545646f5557180424504903c6b63e87585f5c02f6ac",
+    "timestamp": "202608300232",
+    "json_schema": null,
+    "headings": [
+      "# Atlas V9 cross-repository promotion milestones",
+      "## Mission",
+      "## M0 — Frozen evidence baseline",
+      "## M1 — V8 ↔ V9 render comparator and machine-learning record",
+      "## M2 — GlobalGrid2050 publication in catalogue order",
+      "## M3 — Canonical Atlas deep-link contract",
+      "## M4 — PipelineNews integration",
+      "## M5 — Companies integration",
+      "## M6 — End-to-end promotion and rollback"
+    ],
+    "directives": [
+      "- `name`, `longitude`, `latitude`: optional display/fallback evidence only; never identity.",
+      "A consumer must use the promoted `state/live-set.json` pointer and must not hard-code a mutable candidate.",
+      "- Use Parquet ZSTD and DuckDB validation; never store Companies House bulk dumps.",
+      "Any red gate leaves the previous current pointers unchanged. Recovery is always the last-known-green timestamped release."
+    ],
+    "github_url": "https://github.com/Ventusltd/gridatlas/blob/main/governance/202608300232-cross-repo-atlas-v9-milestones.md"
+  },
+  {
+    "ref": "origin/main",
+    "ref_sha": "71365bb857e2f16c892dc8bbc9dfe6da1bc46eb5",
+    "ref_committed_at": "2026-08-31T01:37:11Z",
+    "path": "governance/202608301524-cvaa-gridatlas-application.md",
+    "kind": "document",
+    "size_bytes": 713,
+    "words": 94,
+    "blob_sha": "a3bcc354ee36d246f2b78dec4fc16889c1181821",
+    "content_sha256": "c38def8ce65520c076a2395f87d8d7ce885f84aa5df75e1a1538de71064249a4",
+    "timestamp": "202608301524",
+    "json_schema": null,
+    "headings": [
+      "# CVAA applied to GridAtlas",
+      "## Active antibodies"
+    ],
+    "directives": [],
+    "github_url": "https://github.com/Ventusltd/gridatlas/blob/main/governance/202608301524-cvaa-gridatlas-application.md"
+  },
+  {
+    "ref": "origin/main",
+    "ref_sha": "71365bb857e2f16c892dc8bbc9dfe6da1bc46eb5",
+    "ref_committed_at": "2026-08-31T01:37:11Z",
+    "path": "scope-of-works/202608301321-01-move-atlas-into-atlas-folder.md",
+    "kind": "scope",
+    "size_bytes": 1347,
+    "words": 167,
+    "blob_sha": "b8c6f89ef72f9320fe09b69f450500f14a853c3f",
+    "content_sha256": "79408dbeaef38e3d28e5d1b37b4892abe4fa0393f8f21aecbab1376894994a60",
+    "timestamp": "202608301321",
+    "json_schema": null,
+    "headings": [
+      "# Scope 1 — move the Atlas into `atlas/`",
+      "## Changes",
+      "## Prohibited",
+      "## Acceptance"
+    ],
+    "directives": [
+      "## Acceptance"
+    ],
+    "github_url": "https://github.com/Ventusltd/gridatlas/blob/main/scope-of-works/202608301321-01-move-atlas-into-atlas-folder.md"
+  },
+  {
+    "ref": "origin/main",
+    "ref_sha": "71365bb857e2f16c892dc8bbc9dfe6da1bc46eb5",
+    "ref_committed_at": "2026-08-31T01:37:11Z",
+    "path": "scope-of-works/202608301321-scope-of-works.md",
+    "kind": "scope",
+    "size_bytes": 3086,
+    "words": 407,
+    "blob_sha": "1eb83f8583bcb4bc160fb463c91ea569384c1a53",
+    "content_sha256": "fece329f9741ac9c0c72fc622c78f44ff94a8d5cdfba1e398c90e0cb2b601fa5",
+    "timestamp": "202608301321",
+    "json_schema": null,
+    "headings": [
+      "# GridAtlas scope of works — 202608301321",
+      "## Governing rules",
+      "## Ordered scopes",
+      "## Fixed inputs",
+      "## Out of scope"
+    ],
+    "directives": [
+      "6. Failed gates do not advance the scope. The last known green shell remains available.",
+      "2. Replace the temporary redirect with one stable modular Atlas loader: immutable shell plus ordered SHA-256 cartridges. Do not duplicate the application.",
+      "## Out of scope"
+    ],
+    "github_url": "https://github.com/Ventusltd/gridatlas/blob/main/scope-of-works/202608301321-scope-of-works.md"
+  },
+  {
+    "ref": "origin/main",
+    "ref_sha": "71365bb857e2f16c892dc8bbc9dfe6da1bc46eb5",
+    "ref_committed_at": "2026-08-31T01:37:11Z",
+    "path": "scope-of-works/202608301518-02-modularise-immutable-shell-and-cartridges.md",
+    "kind": "scope",
+    "size_bytes": 1129,
+    "words": 130,
+    "blob_sha": "4487e92f7a1084b5191d4897d5d33b6bc8a7914c",
+    "content_sha256": "2ddb7c5a8d8da8defa526071be962b7ef75c2c0ca8e0098ef57e782178c49694",
+    "timestamp": "202608301518",
+    "json_schema": null,
+    "headings": [
+      "# Scope 2 — modularise the Atlas shell and cartridges",
+      "## Changes",
+      "## Prohibited",
+      "## Acceptance"
+    ],
+    "directives": [
+      "- Define ordered cartridges in `atlas/current.json`; an empty order must reproduce the shell.",
+      "## Acceptance"
+    ],
+    "github_url": "https://github.com/Ventusltd/gridatlas/blob/main/scope-of-works/202608301518-02-modularise-immutable-shell-and-cartridges.md"
+  },
+  {
+    "ref": "origin/main",
+    "ref_sha": "71365bb857e2f16c892dc8bbc9dfe6da1bc46eb5",
+    "ref_committed_at": "2026-08-31T01:37:11Z",
+    "path": "scope-of-works/202608301520-03-apply-pipelinenews-lessons.md",
+    "kind": "scope",
+    "size_bytes": 812,
+    "words": 87,
+    "blob_sha": "98f80a3ef4ab3402978e7e2c60ba731c4f3bcf26",
+    "content_sha256": "26b01c0e0264aa0836423ce2ef8ab79fa56573881744db08dd769cbb7c75f655",
+    "timestamp": "202608301520",
+    "json_schema": null,
+    "headings": [
+      "# Scope 3 — apply PipelineNews repository lessons",
+      "## Changes",
+      "## Acceptance"
+    ],
+    "directives": [
+      "- Preserve the archived one-off workflows as evidence; do not reactivate them.",
+      "## Acceptance"
+    ],
+    "github_url": "https://github.com/Ventusltd/gridatlas/blob/main/scope-of-works/202608301520-03-apply-pipelinenews-lessons.md"
+  },
+  {
+    "ref": "origin/main",
+    "ref_sha": "71365bb857e2f16c892dc8bbc9dfe6da1bc46eb5",
+    "ref_committed_at": "2026-08-31T01:37:11Z",
+    "path": "scope-of-works/202608301521-04-add-uk-location-search-cartridge.md",
+    "kind": "scope",
+    "size_bytes": 1092,
+    "words": 134,
+    "blob_sha": "78d6429743206c1567164fb2ab85eb4710f96239",
+    "content_sha256": "b60b04fa78104a993fa27e27e7938c355a1945c9e9c861897e7d06c2233dad4d",
+    "timestamp": "202608301521",
+    "json_schema": null,
+    "headings": [
+      "# Scope 4 — add UK postcode and town location search",
+      "## Changes",
+      "## Acceptance"
+    ],
+    "directives": [
+      "## Acceptance",
+      "- Location results are `LOCATION_ONLY`, never set `repd_ref`, and remove a stale `repd_ref` on selection."
+    ],
+    "github_url": "https://github.com/Ventusltd/gridatlas/blob/main/scope-of-works/202608301521-04-add-uk-location-search-cartridge.md"
+  },
+  {
+    "ref": "origin/main",
+    "ref_sha": "71365bb857e2f16c892dc8bbc9dfe6da1bc46eb5",
+    "ref_committed_at": "2026-08-31T01:37:11Z",
+    "path": "scope-of-works/202608301522-05-compile-and-attest-cartridge-composition.md",
+    "kind": "scope",
+    "size_bytes": 932,
+    "words": 113,
+    "blob_sha": "4deecc55cf69cf0e680d92e5f1c069269d91c1b6",
+    "content_sha256": "8add2790c0e4d151e87d1c2ee4b581b08d2cc4c2dd2fe27b49bcbf88964ddedd",
+    "timestamp": "202608301522",
+    "json_schema": null,
+    "headings": [
+      "# Scope 5 — compile and attest the cartridge composition",
+      "## Changes",
+      "## Prohibited",
+      "## Acceptance"
+    ],
+    "directives": [
+      "## Acceptance"
+    ],
+    "github_url": "https://github.com/Ventusltd/gridatlas/blob/main/scope-of-works/202608301522-05-compile-and-attest-cartridge-composition.md"
+  },
+  {
+    "ref": "origin/main",
+    "ref_sha": "71365bb857e2f16c892dc8bbc9dfe6da1bc46eb5",
+    "ref_committed_at": "2026-08-31T01:37:11Z",
+    "path": "scope-of-works/202608301524-06-close-and-harden-cicd-loop.md",
+    "kind": "scope",
+    "size_bytes": 884,
+    "words": 117,
+    "blob_sha": "f4712d5aea58a2399b417a619a1cd5e84f20af1f",
+    "content_sha256": "3e5f48a0dcab51a5ea4d8bd5c9ff6d30572f43dad130054efcb50bd2a07ef609",
+    "timestamp": "202608301524",
+    "json_schema": null,
+    "headings": [
+      "# Scope 6 — close and harden the CI/CD loop",
+      "## Changes",
+      "## Acceptance"
+    ],
+    "directives": [
+      "## Acceptance"
+    ],
+    "github_url": "https://github.com/Ventusltd/gridatlas/blob/main/scope-of-works/202608301524-06-close-and-harden-cicd-loop.md"
+  },
+  {
+    "ref": "origin/main",
+    "ref_sha": "71365bb857e2f16c892dc8bbc9dfe6da1bc46eb5",
+    "ref_committed_at": "2026-08-31T01:37:11Z",
+    "path": "scope-of-works/202608301525-closure.md",
+    "kind": "scope",
+    "size_bytes": 413,
+    "words": 47,
+    "blob_sha": "9fc4cb43e949d1ee3ca9564e44c07aab54443b6f",
+    "content_sha256": "607b71c80e4436f5f8dcdf6396dc9bcfbb4f6a2c51af91a5f2e89de9cdd07067",
+    "timestamp": "202608301525",
+    "json_schema": null,
+    "headings": [
+      "# GridAtlas scope loop closed"
+    ],
+    "directives": [
+      "All six bounded scopes are complete. The loop schedule is retired. The immutable shell remains `202608300453-atlas-v9`; future application changes must be SHA-256 cartridges ordered by `atlas/current.json`, not copied application folders."
+    ],
+    "github_url": "https://github.com/Ventusltd/gridatlas/blob/main/scope-of-works/202608301525-closure.md"
+  },
+  {
+    "ref": "origin/main",
+    "ref_sha": "71365bb857e2f16c892dc8bbc9dfe6da1bc46eb5",
+    "ref_committed_at": "2026-08-31T01:37:11Z",
+    "path": "state/202608301821-highway-forensics.json",
+    "kind": "state",
+    "size_bytes": 1314,
+    "words": 104,
+    "blob_sha": "08dcdbb6bb9e94c4c37c505de05e640c96d6713f",
+    "content_sha256": "ab97532c5a2a8a3cfaac596c62a7f3e1e50c10d156d213bf0a3984595400fe70",
+    "timestamp": "202608301821",
+    "json_schema": "gridatlas.highway-forensics-request.v1",
+    "headings": [],
+    "directives": [],
+    "github_url": "https://github.com/Ventusltd/gridatlas/blob/main/state/202608301821-highway-forensics.json"
+  },
+  {
+    "ref": "origin/main",
+    "ref_sha": "71365bb857e2f16c892dc8bbc9dfe6da1bc46eb5",
+    "ref_committed_at": "2026-08-31T01:37:11Z",
+    "path": "state/streaming-road-fix.json",
+    "kind": "state",
+    "size_bytes": 1203,
+    "words": 68,
+    "blob_sha": "a2f0b31669c221c0339c8f80b363390c511b6125",
+    "content_sha256": "88dd6eab4f2226a642a94960638bca39ade376715013cff933a38c543627a8fa",
+    "timestamp": null,
+    "json_schema": "gridatlas.streaming-road-fix-request.v1",
+    "headings": [],
+    "directives": [],
+    "github_url": "https://github.com/Ventusltd/gridatlas/blob/main/state/streaming-road-fix.json"
+  },
+  {
+    "ref": "origin/main",
+    "ref_sha": "71365bb857e2f16c892dc8bbc9dfe6da1bc46eb5",
+    "ref_committed_at": "2026-08-31T01:37:11Z",
+    "path": "state/v9-5-request.json",
+    "kind": "state",
+    "size_bytes": 832,
+    "words": 87,
+    "blob_sha": "4516b0561f68025375d5a32a53a8e59199453cd2",
+    "content_sha256": "c40acb95ae0bd66d854a78c92fccc3a8a2ca24067bb4fd0f8c2ba4524487e5f8",
+    "timestamp": null,
+    "json_schema": "gridatlas.v9-5-request.v1",
+    "headings": [],
+    "directives": [
+      "\"goal\": \"REPD-first search plus fly-to for any address, town, postcode or global place\",",
+      "\"acceptance\": ["
+    ],
+    "github_url": "https://github.com/Ventusltd/gridatlas/blob/main/state/v9-5-request.json"
+  },
+  {
+    "ref": "origin/main",
+    "ref_sha": "71365bb857e2f16c892dc8bbc9dfe6da1bc46eb5",
+    "ref_committed_at": "2026-08-31T01:37:11Z",
+    "path": "tools/scope/lib.mjs",
+    "kind": "artifact",
+    "size_bytes": 7595,
+    "words": 839,
+    "blob_sha": "ccfb86cd1dbff151e7cb441c6fe42143c3e32d75",
+    "content_sha256": "ead487335171a1baba6ac869605b738f7935f99c1cf701b291347f4501b90c49",
+    "timestamp": null,
+    "json_schema": null,
+    "headings": [],
+    "directives": [],
+    "github_url": "https://github.com/Ventusltd/gridatlas/blob/main/tools/scope/lib.mjs"
+  },
+  {
+    "ref": "origin/main",
+    "ref_sha": "71365bb857e2f16c892dc8bbc9dfe6da1bc46eb5",
+    "ref_committed_at": "2026-08-31T01:37:11Z",
+    "path": "tools/v9_5/build_streaming_bridge.py",
+    "kind": "compiler",
+    "size_bytes": 13067,
+    "words": 1116,
+    "blob_sha": "29d2d60df1d26613665409ccc54dcc4d67cf4c2d",
+    "content_sha256": "0e66d02aec9f83e206a43cd903ea77401d36eac96b48e94a9bbce4813a1b5ca3",
+    "timestamp": null,
+    "json_schema": null,
+    "headings": [],
+    "directives": [
+      "parser.add_argument(\"--generation\", required=True)",
+      "acceptance = copy.deepcopy(new_manifest.get(\"acceptance\", {}))",
+      "acceptance.update({",
+      "\"golden_browser_verification\": \"REQUIRED\",",
+      "new_manifest[\"acceptance\"] = acceptance"
+    ],
+    "github_url": "https://github.com/Ventusltd/gridatlas/blob/main/tools/v9_5/build_streaming_bridge.py"
+  },
+  {
+    "ref": "origin/main",
+    "ref_sha": "71365bb857e2f16c892dc8bbc9dfe6da1bc46eb5",
+    "ref_committed_at": "2026-08-31T01:37:11Z",
+    "path": "tools/v9_5/build_v9_5.py",
+    "kind": "compiler",
+    "size_bytes": 9004,
+    "words": 737,
+    "blob_sha": "aa81df8ac696a163b654a0a0393072775785be39",
+    "content_sha256": "724fe4ab661af8af95928ee2990000bef45dc0ac75f7741450ec08a5eeba70b4",
+    "timestamp": null,
+    "json_schema": null,
+    "headings": [],
+    "directives": [
+      "raise RuntimeError(\"request version must be v9.5\")",
+      "\"acceptance\": {",
+      "\"golden_browser_verification\": \"REQUIRED\","
+    ],
+    "github_url": "https://github.com/Ventusltd/gridatlas/blob/main/tools/v9_5/build_v9_5.py"
+  },
+  {
+    "ref": "origin/main",
+    "ref_sha": "71365bb857e2f16c892dc8bbc9dfe6da1bc46eb5",
+    "ref_committed_at": "2026-08-31T01:37:11Z",
+    "path": "tools/v9_5/compiler.py",
+    "kind": "compiler",
+    "size_bytes": 11923,
+    "words": 1156,
+    "blob_sha": "f7a49f4aa792f6460e6009453e9c0e99e983916f",
+    "content_sha256": "8b1ba2734239b78d18b43371b8724ad16a3be4af6fb6cde2c6fde190b1dd7174",
+    "timestamp": null,
+    "json_schema": null,
+    "headings": [],
+    "directives": [],
+    "github_url": "https://github.com/Ventusltd/gridatlas/blob/main/tools/v9_5/compiler.py"
+  },
+  {
+    "ref": "origin/main",
+    "ref_sha": "71365bb857e2f16c892dc8bbc9dfe6da1bc46eb5",
+    "ref_committed_at": "2026-08-31T01:37:11Z",
+    "path": "tools/v9_5/release_stream_payload_cache.py",
+    "kind": "artifact",
+    "size_bytes": 4495,
+    "words": 423,
+    "blob_sha": "87cc4e43a88cb0176100f1f3f74668d7fd8410f1",
+    "content_sha256": "1b8bf68c75ba9033d43249664e688a71393e7a85659a904828b94fe5bdfe7dca",
+    "timestamp": null,
+    "json_schema": null,
+    "headings": [],
+    "directives": [
+      "parser.add_argument(\"--generation\", required=True)",
+      "manifest.setdefault(\"acceptance\", {})[\"bridge_payload_cache_released_after_serialisation\"] = True"
+    ],
+    "github_url": "https://github.com/Ventusltd/gridatlas/blob/main/tools/v9_5/release_stream_payload_cache.py"
+  },
+  {
+    "ref": "origin/main",
+    "ref_sha": "71365bb857e2f16c892dc8bbc9dfe6da1bc46eb5",
+    "ref_committed_at": "2026-08-31T01:37:11Z",
+    "path": "ui/cartridges/202608290716-repd-address-flyto.mjs",
+    "kind": "cartridge",
+    "size_bytes": 6672,
+    "words": 700,
+    "blob_sha": "1442f775d473c60dfdbb5376cfa85a653cb6b346",
+    "content_sha256": "b4dcfcb9cf815012dab6cc634c099179a155ea2f0120f6c61797087fbef1f64a",
+    "timestamp": "202608290716",
+    "json_schema": null,
+    "headings": [],
+    "directives": [],
+    "github_url": "https://github.com/Ventusltd/gridatlas/blob/main/ui/cartridges/202608290716-repd-address-flyto.mjs"
+  },
+  {
+    "ref": "origin/main",
+    "ref_sha": "71365bb857e2f16c892dc8bbc9dfe6da1bc46eb5",
+    "ref_committed_at": "2026-08-31T01:37:11Z",
+    "path": "ui/cartridges/202608301136-uk-gazetteer-flyto.mjs",
+    "kind": "cartridge",
+    "size_bytes": 332,
+    "words": 24,
+    "blob_sha": "610439bd0a26b3d8e9c6b2b52734aa11770e95ea",
+    "content_sha256": "626b0159e003a6709394b17eea5827cd6e134f93b2b451797c3f27a5836e4b55",
+    "timestamp": "202608301136",
+    "json_schema": null,
+    "headings": [],
+    "directives": [],
+    "github_url": "https://github.com/Ventusltd/gridatlas/blob/main/ui/cartridges/202608301136-uk-gazetteer-flyto.mjs"
+  },
+  {
+    "ref": "origin/main",
+    "ref_sha": "71365bb857e2f16c892dc8bbc9dfe6da1bc46eb5",
+    "ref_committed_at": "2026-08-31T01:37:11Z",
+    "path": "ui/cartridges/202608301624-global-gazetteer-flyto-v9-5.mjs",
+    "kind": "cartridge",
+    "size_bytes": 407,
+    "words": 31,
+    "blob_sha": "dbf5f68208a500bf5533b8d5913144b3c90dd098",
+    "content_sha256": "ad2f45268c32089f21d2b1dc89a5f997d20d3a6ad2b077ccddb742276f2cdd8e",
+    "timestamp": "202608301624",
+    "json_schema": null,
+    "headings": [],
+    "directives": [],
+    "github_url": "https://github.com/Ventusltd/gridatlas/blob/main/ui/cartridges/202608301624-global-gazetteer-flyto-v9-5.mjs"
+  },
+  {
+    "ref": "origin/main",
+    "ref_sha": "71365bb857e2f16c892dc8bbc9dfe6da1bc46eb5",
+    "ref_committed_at": "2026-08-31T01:37:11Z",
+    "path": "ui/cartridges/202608301825-streaming-parquet-bridge-v9-5.mjs",
+    "kind": "cartridge",
+    "size_bytes": 472,
+    "words": 29,
+    "blob_sha": "5e0c368caa00799f2a39d0c5bcdd49ee6eea2328",
+    "content_sha256": "f4e28f090ce4aa756b7d9050b32b3cf2a3ece8cad924f3397ce80cc7e0da7aad",
+    "timestamp": "202608301825",
+    "json_schema": null,
+    "headings": [],
+    "directives": [],
+    "github_url": "https://github.com/Ventusltd/gridatlas/blob/main/ui/cartridges/202608301825-streaming-parquet-bridge-v9-5.mjs"
+  }
+]

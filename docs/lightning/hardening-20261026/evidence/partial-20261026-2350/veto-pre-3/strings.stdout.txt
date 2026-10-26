@@ -1,0 +1,42 @@
+
+## S01-off
+LABEL  Lightning flashes (optical) [WAIT]
+STATUS LOADING
+window: 
+actual: 
+flashes: 
+refresh: 
+searched: 
+warning: 
+footer: 
+## S02-good-24h ERROR Error: locator.click: Target crashed 
+Call log:
+[2m  - waiting for locator('#scada-ui-container input[data-lightning-control="toggle"]')[22m
+[2m    - locator resolved to <input type="checkbox" data-lightning-control="toggle"/>[22m
+[2m  - attempting click action[22m
+[2m    - waiting for element to be visible, enabled and stable[22m
+[2m    - element is visible, enabled and stable[22m
+[2m    - scrolling into view if needed[22m
+[2m    - done scrolling[22m
+[2m    - performing click action[22m
+
+## S03-good-7d ERROR Error: page.waitForTimeout: Page crashed
+
+## S04-good-30d
+LABEL  Lightning flashes (optical) [408 | 30d]
+STATUS PARTIAL · 408 FLASHES DRAWN · SEARCHED 13%
+window: Window  2026-09-26 18:40 UTC → 2026-10-26 18:40 UTC (30 days, latest)
+actual: Actual  first 2026-10-21 12:32:19 UTC · last 2026-10-25 11:15:58 UTC
+flashes: Flashes 408 archived in window · 408 drawn as points (index count 408 within the 40,000-point cap for this desktop)
+refresh: Refresh archive 2026-10-26 18:37 UTC (0h 4min ago; expected every 1 h)
+searched: Searched EUMETSAT 13% of window · 17 successful runs · 2026-10-20 22:41 UTC → 2026-10-26 13:00 UTC
+warning: Not yet ingested: last 5h 40min of window (unknown, not zero) · Unknown: 2026-09-26 to 2026-10-20 precede archive start 2026-10-20 22:41 UTC (not zero) · Unknown: 24 of 31 UTC dates have no collection run
+footer: Times UTC · Optical flashes seen by MTG Lightning Imager (EUMETSAT L2-LFL), not confirmed ground strikes · Missing days are unknown, not zero · UK box −11.0,49.5 → 3.0,61.5
+## S05-good-12m ERROR Error: locator.click: Target crashed 
+Call log:
+[2m  - waiting for locator('#scada-ui-container input[data-lightning-control="toggle"]')[22m
+[2m    - locator resolved to <input type="checkbox" data-lightning-control="toggle"/>[22m
+[2m  - attempting click action[22m
+[2m    - waiting for element to be visible, enabled and stable[22m
+
+## S06-good-custom-23Oct ERROR Error: page.waitForTimeout: Target page, context or browser has been closed

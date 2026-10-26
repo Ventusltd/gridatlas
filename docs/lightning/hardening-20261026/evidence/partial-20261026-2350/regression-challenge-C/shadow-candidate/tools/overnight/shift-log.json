@@ -1,0 +1,2289 @@
+{
+  "schema": "gridatlas.shift-log.v1",
+  "runs": [
+    {
+      "step": "202609012205-sizing-arithmetic.mjs",
+      "id": "sizing-arithmetic",
+      "version": "v9.69",
+      "started_at": "2026-09-01T22:09:02.898Z",
+      "dry": false,
+      "stages": [
+        {
+          "name": "tooling committed",
+          "at": "2026-09-01T22:09:03.633Z",
+          "commit": "8f22719"
+        },
+        {
+          "name": "applied",
+          "at": "2026-09-01T22:09:03.749Z",
+          "changed": [
+            "atlas/parts/202609012045-sld-sandbox-body.js",
+            "atlas/modules/202609012205-sizing-arithmetic.js",
+            "tools/proofs/modules/202609012205-sizing-arithmetic.proof.mjs"
+          ]
+        },
+        {
+          "name": "syntax checked",
+          "at": "2026-09-01T22:09:03.868Z"
+        },
+        {
+          "name": "step proof 202609012205-sizing-arithmetic.proof.mjs",
+          "at": "2026-09-01T22:09:04.766Z",
+          "status": 0,
+          "tally": "35/35"
+        }
+      ],
+      "outcome": "failed",
+      "reason": "recompose refused the cut",
+      "finished_at": "2026-09-01T22:09:04.966Z",
+      "output": "  +module    atlas/modules/202609012205-sizing-arithmetic.js\n  ledger     atlas/parts/202609012045-sld-sandbox-body.js  += v9.69\n  assembled  202609012209-sld-sandbox-v9-8.js  from 7 part(s)\n  proof      202609012209-sld-sandbox.proof.mjs\nno such proof: tools/proofs/202609012141-sld-sandbox.proof.mjs\n"
+    },
+    {
+      "step": "202609012205-sizing-arithmetic.mjs",
+      "id": "sizing-arithmetic",
+      "version": "v9.69",
+      "started_at": "2026-09-01T22:10:00.167Z",
+      "dry": false,
+      "stages": [
+        {
+          "name": "tooling committed",
+          "at": "2026-09-01T22:10:00.916Z",
+          "commit": "ff48c49"
+        },
+        {
+          "name": "applied",
+          "at": "2026-09-01T22:10:01.025Z",
+          "changed": [
+            "atlas/parts/202609012045-sld-sandbox-body.js",
+            "atlas/modules/202609012205-sizing-arithmetic.js",
+            "tools/proofs/modules/202609012205-sizing-arithmetic.proof.mjs"
+          ]
+        },
+        {
+          "name": "syntax checked",
+          "at": "2026-09-01T22:10:01.138Z"
+        },
+        {
+          "name": "step proof 202609012205-sizing-arithmetic.proof.mjs",
+          "at": "2026-09-01T22:10:02.039Z",
+          "status": 0,
+          "tally": "35/35"
+        },
+        {
+          "name": "composed",
+          "at": "2026-09-01T22:10:02.267Z",
+          "generation": "202609012210",
+          "version": "v9.69",
+          "previous": "202609012141"
+        },
+        {
+          "name": "gate sandbox proof",
+          "at": "2026-09-01T22:10:02.925Z",
+          "status": 1
+        }
+      ],
+      "outcome": "failed",
+      "reason": "gate red: sandbox proof",
+      "finished_at": "2026-09-01T22:10:02.925Z",
+      "output": "anding provisional block\n  [PASS] the early answer is published for the next debugger\n\nthe far end has its own state\n\n  [PASS] an unbuilt point of connection has its own colour\n  [PASS] both line and node take that colour together\n  [PASS] the unbuilt states are the two the record supports\n  [PASS] One Earth and Thorpe Marsh carry their state with a reason\n  [PASS] the card labels the state beside the public-record badge\n  [PASS] a declared circuit connection draws no line and measures no distance\n  [PASS] Little Crow names its circuit and its source\n  [PASS] a circuit connection never claims 400 kV\n\nthe published network parameters\n\n  [PASS] the card asks the substation cartridge and renders only what it returns\n  [PASS] a circuit connection is not attributed to a substation\n  [PASS] the metric caveat, the attribution and the refusal travel with the numbers\n\nthe manifest knows who it is, and the Subs control is found by its attribute\n\n  [PASS] the manifest states this generation everywhere it states one\n  [PASS] no identity from an older composition survives anywhere in it\n  [PASS] the acceptance receipt names this generation's proofs\n  [PASS] the golden browser field is this generation's, not an inherited pending\n  [PASS] the manifest records the clock it was cut at, and the stamp agrees with it  2026-09-01T22:10:02.181Z\n  [PASS] the manifest chains by pointer, not by sort order\n  [PASS] the Subs control is looked up by its attribute first\n  [PASS] the label search survives only as a fallback\n  [PASS] an active failure is recorded once, by a named helper\n\nrun against a DOM, not a regular expression\n\n  [PASS] two misses leave one entry, not two  1\n  [PASS] the control is found by attribute despite unhelpful label text\n  [PASS] the recovered entry left the active ledger\n  [PASS] it was preserved as recovered rather than deleted\n  [PASS] an unrelated failure is untouched\n\nthe network sentence names its own scope\n\n  [PASS] the scope label is rendered before the numbers\n  [PASS] a multi-voltage site is badged Site-wide\n  [PASS] the card never prints a distance taken from the owner product\n\nthe Grid Finding Scope\n\n  [PASS] the scope computation is a module, not more cartridge body\n  [PASS] the neon anchor is untouched: a scope runs only where nothing was hit\n  [PASS] arming is explicit, not automatic\n  [PASS] the tray carries both a scope and a clear\n  [PASS] selecting a project clears any standing scope\n  [PASS] the card prints what the scope is not, in bold, from the result itself\n  [PASS] an absence is described as an absence from the map\n  [PASS] the scope publishes its state\n\nthe connection voltage reaches the network query\n\n  [PASS] the card tells the cartridge what voltage the connection is made at\n  [PASS] a circuit connection has no busbar voltage to pass\n  [PASS] a bus-scoped answer is badged with its voltage, not as site-wide\n\n548/549 checks passed\n\nFAILURES\n  the central OPEX basis is the corrected inverter nameplate only in central mode\n"
+    },
+    {
+      "step": "202609012205-sizing-arithmetic.mjs",
+      "id": "sizing-arithmetic",
+      "version": "v9.69",
+      "started_at": "2026-09-01T22:11:10.283Z",
+      "dry": false,
+      "stages": [
+        {
+          "name": "tooling committed",
+          "at": "2026-09-01T22:11:11.053Z",
+          "commit": "9a70f04"
+        },
+        {
+          "name": "applied",
+          "at": "2026-09-01T22:11:11.152Z",
+          "changed": [
+            "atlas/parts/202609012045-sld-sandbox-body.js",
+            "tools/proofs/202609012141-sld-sandbox.proof.mjs",
+            "atlas/modules/202609012205-sizing-arithmetic.js",
+            "tools/proofs/modules/202609012205-sizing-arithmetic.proof.mjs"
+          ]
+        },
+        {
+          "name": "syntax checked",
+          "at": "2026-09-01T22:11:11.314Z"
+        },
+        {
+          "name": "step proof 202609012205-sizing-arithmetic.proof.mjs",
+          "at": "2026-09-01T22:11:12.214Z",
+          "status": 0,
+          "tally": "35/35"
+        },
+        {
+          "name": "composed",
+          "at": "2026-09-01T22:11:12.444Z",
+          "generation": "202609012211",
+          "version": "v9.69",
+          "previous": "202609012141"
+        },
+        {
+          "name": "gate sandbox proof",
+          "at": "2026-09-01T22:11:13.100Z",
+          "status": 0
+        },
+        {
+          "name": "gate run-current",
+          "at": "2026-09-01T22:11:14.053Z",
+          "status": 0
+        },
+        {
+          "name": "gate parts integrity",
+          "at": "2026-09-01T22:11:14.119Z",
+          "status": 0
+        },
+        {
+          "name": "gate all versions",
+          "at": "2026-09-01T22:11:14.256Z",
+          "status": 0
+        },
+        {
+          "name": "gate local CI (proofs, deep scan, stamps, cvaa)",
+          "at": "2026-09-01T22:11:39.686Z",
+          "status": 0
+        },
+        {
+          "name": "committed",
+          "at": "2026-09-01T22:11:39.836Z",
+          "commit": "a219ad7",
+          "subject_stamp": "202609012211",
+          "clock_at_commit": "202609012211"
+        },
+        {
+          "name": "pushed",
+          "at": "2026-09-01T22:11:42.095Z"
+        }
+      ],
+      "actions": [
+        {
+          "name": "202608310050 GridAtlas next-version builders",
+          "status": "completed",
+          "conclusion": "success",
+          "url": "https://github.com/Ventusltd/gridatlas/actions/runs/33565053304"
+        },
+        {
+          "name": "202608312212 GridAtlas cartridge proof",
+          "status": "completed",
+          "conclusion": "success",
+          "url": "https://github.com/Ventusltd/gridatlas/actions/runs/33565053169"
+        }
+      ],
+      "live": {
+        "generation": "202609012211",
+        "version": "v9.69",
+        "cartridge_sha_matches": true,
+        "at": "2026-09-01T22:20:06.764Z"
+      },
+      "generation": "202609012211",
+      "commit": "a219ad7a9db27a8971d0c1c3e7ee9e0a0e4e87c6",
+      "finished_at": "2026-09-01T22:20:07.163Z",
+      "outcome": "live"
+    },
+    {
+      "step": "202609012217-data-contract-parity.mjs",
+      "id": "data-contract-parity",
+      "version": "v9.70",
+      "started_at": "2026-09-01T22:20:42.729Z",
+      "dry": true,
+      "stages": [],
+      "outcome": "failed",
+      "reason": "origin/main has diverged from this worktree; a human merges, not the night shift",
+      "finished_at": "2026-09-01T22:20:43.388Z",
+      "head": "d04446d25052d6b46e17594a8b658d4a998f34c6",
+      "origin_main": "e25137134b6da601e2db670d1d7bac30f87ed232"
+    },
+    {
+      "step": "202609012217-data-contract-parity.mjs",
+      "id": "data-contract-parity",
+      "version": "v9.70",
+      "started_at": "2026-09-01T22:22:12.962Z",
+      "dry": true,
+      "stages": [
+        {
+          "name": "applied",
+          "at": "2026-09-01T22:22:13.690Z",
+          "changed": [
+            "atlas/current.json",
+            "atlas/parts/202609012045-sld-sandbox-body.js",
+            "tools/ci/202609012200-local-ci.mjs",
+            "atlas/modules/202609012217-source-registry.js",
+            "tools/proofs/202609012214-data-contract-parity.proof.mjs",
+            "tools/proofs/modules/202609012217-source-registry.proof.mjs"
+          ]
+        },
+        {
+          "name": "syntax checked",
+          "at": "2026-09-01T22:22:13.892Z"
+        },
+        {
+          "name": "step proof 202609012217-source-registry.proof.mjs",
+          "at": "2026-09-01T22:22:13.940Z",
+          "status": 0
+        }
+      ],
+      "outcome": "dry",
+      "finished_at": "2026-09-01T22:22:13.940Z"
+    },
+    {
+      "step": "202609012217-data-contract-parity.mjs",
+      "id": "data-contract-parity",
+      "version": "v9.70",
+      "started_at": "2026-09-01T22:32:14.287Z",
+      "dry": false,
+      "stages": [],
+      "outcome": "failed",
+      "reason": "working tree not clean before the step",
+      "finished_at": "2026-09-01T22:32:14.315Z",
+      "dirty": [
+        "?? AGENTS.md",
+        "?? CLAUDE.md",
+        "?? _build-plan/"
+      ]
+    },
+    {
+      "step": "202609012217-data-contract-parity.mjs",
+      "id": "data-contract-parity",
+      "version": "v9.70",
+      "started_at": "2026-09-01T22:32:41.552Z",
+      "dry": false,
+      "stages": [],
+      "outcome": "failed",
+      "reason": "apply: tools/ci/202609012200-local-ci.mjs: anchor found 0 times (CI gate list)",
+      "finished_at": "2026-09-01T22:32:42.279Z"
+    },
+    {
+      "step": "202609012217-data-contract-parity.mjs",
+      "id": "data-contract-parity",
+      "version": "v9.70",
+      "started_at": "2026-09-01T22:32:53.431Z",
+      "dry": false,
+      "stages": [
+        {
+          "name": "tooling committed",
+          "at": "2026-09-01T22:32:54.167Z",
+          "commit": "f8cf6f6"
+        },
+        {
+          "name": "applied",
+          "at": "2026-09-01T22:32:54.269Z",
+          "changed": [
+            "atlas/current.json",
+            "atlas/parts/202609012045-sld-sandbox-body.js",
+            "tools/ci/202609012200-local-ci.mjs"
+          ]
+        },
+        {
+          "name": "syntax checked",
+          "at": "2026-09-01T22:32:54.347Z"
+        },
+        {
+          "name": "step proof 202609012217-source-registry.proof.mjs",
+          "at": "2026-09-01T22:32:54.395Z",
+          "status": 0
+        }
+      ],
+      "outcome": "failed",
+      "reason": "recompose refused the cut",
+      "finished_at": "2026-09-01T22:32:54.570Z",
+      "output": "  ~module    atlas/modules/202609012135-source-registry.js -> atlas/modules/202609012217-source-registry.js\n  ledger     atlas/parts/202609012045-sld-sandbox-body.js  += v9.70\n  assembled  202609012232-sld-sandbox-v9-8.js  from 7 part(s)\n  proof      202609012232-sld-sandbox.proof.mjs\n--scope describes v9.69; write the sentence for 202609012232\n"
+    },
+    {
+      "step": "202609012217-data-contract-parity.mjs",
+      "id": "data-contract-parity",
+      "version": "v9.70",
+      "started_at": "2026-09-01T22:33:16.311Z",
+      "dry": false,
+      "stages": [
+        {
+          "name": "tooling committed",
+          "at": "2026-09-01T22:33:17.054Z",
+          "commit": "15aaad0"
+        },
+        {
+          "name": "applied",
+          "at": "2026-09-01T22:33:17.200Z",
+          "changed": [
+            "atlas/current.json",
+            "atlas/parts/202609012045-sld-sandbox-body.js",
+            "tools/ci/202609012200-local-ci.mjs"
+          ]
+        },
+        {
+          "name": "syntax checked",
+          "at": "2026-09-01T22:33:17.277Z"
+        },
+        {
+          "name": "step proof 202609012217-source-registry.proof.mjs",
+          "at": "2026-09-01T22:33:17.322Z",
+          "status": 0
+        },
+        {
+          "name": "composed",
+          "at": "2026-09-01T22:33:17.596Z",
+          "generation": "202609012233",
+          "version": "v9.70",
+          "previous": "202609012211"
+        },
+        {
+          "name": "gate sandbox proof",
+          "at": "2026-09-01T22:33:18.231Z",
+          "status": 1
+        }
+      ],
+      "outcome": "failed",
+      "reason": "gate red: sandbox proof",
+      "finished_at": "2026-09-01T22:33:18.231Z",
+      "output": "blank a standing provisional block\n  [PASS] the early answer is published for the next debugger\n\nthe far end has its own state\n\n  [PASS] an unbuilt point of connection has its own colour\n  [PASS] both line and node take that colour together\n  [PASS] the unbuilt states are the two the record supports\n  [PASS] One Earth and Thorpe Marsh carry their state with a reason\n  [PASS] the card labels the state beside the public-record badge\n  [PASS] a declared circuit connection draws no line and measures no distance\n  [PASS] Little Crow names its circuit and its source\n  [PASS] a circuit connection never claims 400 kV\n\nthe published network parameters\n\n  [PASS] the card asks the substation cartridge and renders only what it returns\n  [PASS] a circuit connection is not attributed to a substation\n  [PASS] the metric caveat, the attribution and the refusal travel with the numbers\n\nthe manifest knows who it is, and the Subs control is found by its attribute\n\n  [PASS] the manifest states this generation everywhere it states one\n  [PASS] no identity from an older composition survives anywhere in it\n  [PASS] the acceptance receipt names this generation's proofs\n  [PASS] the golden browser field is this generation's, not an inherited pending\n  [PASS] the manifest records the clock it was cut at, and the stamp agrees with it  2026-09-01T22:33:17.507Z\n  [PASS] the manifest chains by pointer, not by sort order\n  [PASS] the Subs control is looked up by its attribute first\n  [PASS] the label search survives only as a fallback\n  [PASS] an active failure is recorded once, by a named helper\n\nrun against a DOM, not a regular expression\n\n  [PASS] two misses leave one entry, not two  1\n  [PASS] the control is found by attribute despite unhelpful label text\n  [PASS] the recovered entry left the active ledger\n  [PASS] it was preserved as recovered rather than deleted\n  [PASS] an unrelated failure is untouched\n\nthe network sentence names its own scope\n\n  [PASS] the scope label is rendered before the numbers\n  [PASS] a multi-voltage site is badged Site-wide\n  [PASS] the card never prints a distance taken from the owner product\n\nthe Grid Finding Scope\n\n  [PASS] the scope computation is a module, not more cartridge body\n  [PASS] the neon anchor is untouched: a scope runs only where nothing was hit\n  [PASS] arming is explicit, not automatic\n  [PASS] the tray carries both a scope and a clear\n  [PASS] selecting a project clears any standing scope\n  [PASS] the card prints what the scope is not, in bold, from the result itself\n  [PASS] an absence is described as an absence from the map\n  [PASS] the scope publishes its state\n\nthe connection voltage reaches the network query\n\n  [PASS] the card tells the cartridge what voltage the connection is made at\n  [PASS] a circuit connection has no busbar voltage to pass\n  [PASS] a bus-scoped answer is badged with its voltage, not as site-wide\n\n548/549 checks passed\n\nFAILURES\n  the product is named once, at data-grid-gb main, and is the v1 schema\n"
+    },
+    {
+      "step": "202609012217-data-contract-parity.mjs",
+      "id": "data-contract-parity",
+      "version": "v9.70",
+      "started_at": "2026-09-01T22:34:03.291Z",
+      "dry": false,
+      "stages": [
+        {
+          "name": "tooling committed",
+          "at": "2026-09-01T22:34:04.053Z",
+          "commit": "dc268d2"
+        },
+        {
+          "name": "applied",
+          "at": "2026-09-01T22:34:04.195Z",
+          "changed": [
+            "atlas/current.json",
+            "atlas/parts/202609012045-sld-sandbox-body.js",
+            "tools/ci/202609012200-local-ci.mjs",
+            "tools/proofs/202609012211-sld-sandbox.proof.mjs"
+          ]
+        },
+        {
+          "name": "syntax checked",
+          "at": "2026-09-01T22:34:04.318Z"
+        },
+        {
+          "name": "step proof 202609012217-source-registry.proof.mjs",
+          "at": "2026-09-01T22:34:04.366Z",
+          "status": 0
+        },
+        {
+          "name": "composed",
+          "at": "2026-09-01T22:34:04.633Z",
+          "generation": "202609012234",
+          "version": "v9.70",
+          "previous": "202609012211"
+        },
+        {
+          "name": "gate sandbox proof",
+          "at": "2026-09-01T22:34:05.294Z",
+          "status": 0
+        },
+        {
+          "name": "gate run-current",
+          "at": "2026-09-01T22:34:06.257Z",
+          "status": 0
+        },
+        {
+          "name": "gate parts integrity",
+          "at": "2026-09-01T22:34:06.333Z",
+          "status": 0
+        },
+        {
+          "name": "gate all versions",
+          "at": "2026-09-01T22:34:06.469Z",
+          "status": 0
+        },
+        {
+          "name": "gate data-contract parity",
+          "at": "2026-09-01T22:34:06.520Z",
+          "status": 0
+        },
+        {
+          "name": "gate local CI (proofs, deep scan, stamps, cvaa)",
+          "at": "2026-09-01T22:34:34.761Z",
+          "status": 0
+        },
+        {
+          "name": "gate step proof after compose 202609012217-source-registry.proof.mjs",
+          "at": "2026-09-01T22:34:34.816Z",
+          "status": 0
+        },
+        {
+          "name": "gate step proof after compose 202609012214-data-contract-parity.proof.mjs",
+          "at": "2026-09-01T22:34:34.865Z",
+          "status": 0
+        },
+        {
+          "name": "committed",
+          "at": "2026-09-01T22:34:35.104Z",
+          "commit": "3e2d49d",
+          "subject_stamp": "202609012234",
+          "clock_at_commit": "202609012234"
+        }
+      ],
+      "outcome": "committed-not-pushed",
+      "reason": "error: dst ref refs/heads/main receives from more than one src\nerror: failed to push some refs to 'https://github.com/Ventusltd/gridatlas.git'\n",
+      "finished_at": "2026-09-01T22:34:36.108Z"
+    },
+    {
+      "step": "202609012217-data-contract-parity.mjs",
+      "id": "data-contract-parity",
+      "version": "v9.70",
+      "started_at": "2026-09-01T22:34:03.291Z",
+      "dry": false,
+      "stages": [
+        {
+          "name": "pushed by hand after the runner refspec fault",
+          "at": "2026-09-01T22:36:39.298Z",
+          "commit": "f39a76a"
+        }
+      ],
+      "generation": "202609012234",
+      "live": {
+        "generation": "202609012234",
+        "seen_at": "2026-09-01T22:36:05Z",
+        "by": "polling the deployed atlas/current.json"
+      },
+      "outcome": "live",
+      "reason": "the runner committed the cut and its push was refused (two refspecs, one destination); the push was completed by hand and the refspec fixed in the runner. Recorded as live, and recorded as NOT a clean unattended run.",
+      "attended": true
+    },
+    {
+      "step": "202609012245-electrical-distance.mjs",
+      "id": "electrical-distance",
+      "version": "v9.71",
+      "started_at": "2026-09-01T22:42:44.305Z",
+      "dry": false,
+      "stages": [],
+      "outcome": "failed",
+      "reason": "apply: atlas/modules/202609012217-source-registry.js: anchor found 0 times (registry names the successor topology module)",
+      "finished_at": "2026-09-01T22:42:44.998Z"
+    },
+    {
+      "step": "202609012245-electrical-distance.mjs",
+      "id": "electrical-distance",
+      "version": "v9.71",
+      "started_at": "2026-09-01T22:43:07.045Z",
+      "dry": false,
+      "stages": [
+        {
+          "name": "tooling committed",
+          "at": "2026-09-01T22:43:07.777Z",
+          "commit": "806213b"
+        },
+        {
+          "name": "applied",
+          "at": "2026-09-01T22:43:07.889Z",
+          "changed": [
+            "atlas/parts/202609012045-sld-sandbox-body.js",
+            "tools/ci/202609012200-local-ci.mjs",
+            "tools/proofs/202609012234-sld-sandbox.proof.mjs",
+            "atlas/modules/202609012245-electrical-distance.js",
+            "atlas/modules/202609012245-network-topology.js",
+            "tools/proofs/modules/202609012245-electrical-distance.proof.mjs"
+          ]
+        },
+        {
+          "name": "syntax checked",
+          "at": "2026-09-01T22:43:08.143Z"
+        },
+        {
+          "name": "step proof 202609012245-electrical-distance.proof.mjs",
+          "at": "2026-09-01T22:43:08.332Z",
+          "status": 0
+        },
+        {
+          "name": "composed",
+          "at": "2026-09-01T22:43:08.583Z",
+          "generation": "202609012243",
+          "version": "v9.71",
+          "previous": "202609012234"
+        },
+        {
+          "name": "gate sandbox proof",
+          "at": "2026-09-01T22:43:09.243Z",
+          "status": 0
+        },
+        {
+          "name": "gate run-current",
+          "at": "2026-09-01T22:43:10.211Z",
+          "status": 0
+        },
+        {
+          "name": "gate parts integrity",
+          "at": "2026-09-01T22:43:10.294Z",
+          "status": 0
+        },
+        {
+          "name": "gate all versions",
+          "at": "2026-09-01T22:43:10.452Z",
+          "status": 0
+        },
+        {
+          "name": "gate data-contract parity",
+          "at": "2026-09-01T22:43:10.504Z",
+          "status": 0
+        },
+        {
+          "name": "gate local CI (proofs, deep scan, stamps, cvaa)",
+          "at": "2026-09-01T22:43:38.392Z",
+          "status": 0
+        },
+        {
+          "name": "gate step proof after compose 202609012245-electrical-distance.proof.mjs",
+          "at": "2026-09-01T22:43:38.576Z",
+          "status": 0
+        },
+        {
+          "name": "committed",
+          "at": "2026-09-01T22:43:38.735Z",
+          "commit": "dfc6722",
+          "subject_stamp": "202609012243",
+          "clock_at_commit": "202609012243"
+        },
+        {
+          "name": "pushed",
+          "at": "2026-09-01T22:43:41.064Z"
+        }
+      ],
+      "actions": [
+        {
+          "name": "202608312212 GridAtlas cartridge proof",
+          "status": "completed",
+          "conclusion": "success",
+          "url": "https://github.com/Ventusltd/gridatlas/actions/runs/33567692718"
+        },
+        {
+          "name": "202608310050 GridAtlas next-version builders",
+          "status": "completed",
+          "conclusion": "success",
+          "url": "https://github.com/Ventusltd/gridatlas/actions/runs/33567692757"
+        },
+        {
+          "name": "pages build and deployment",
+          "status": "completed",
+          "conclusion": "success",
+          "url": "https://github.com/Ventusltd/gridatlas/actions/runs/33567691428"
+        }
+      ],
+      "live": {
+        "generation": "202609012243",
+        "version": "v9.71",
+        "cartridge_sha_matches": true,
+        "at": "2026-09-01T22:44:21.892Z"
+      },
+      "generation": "202609012243",
+      "commit": "dfc6722657893e6a1eff09664d3fc6286c55e7e4",
+      "finished_at": "2026-09-01T22:45:22.580Z",
+      "outcome": "live"
+    },
+    {
+      "step": "202609012250-rating-envelope.mjs",
+      "id": "rating-envelope",
+      "version": "v9.72",
+      "started_at": "2026-09-01T22:49:13.183Z",
+      "dry": false,
+      "stages": [
+        {
+          "name": "applied",
+          "at": "2026-09-01T22:49:13.942Z",
+          "changed": [
+            "atlas/parts/202609012045-sld-sandbox-body.js",
+            "tools/ci/202609012200-local-ci.mjs",
+            "tools/proofs/202609012243-sld-sandbox.proof.mjs",
+            "atlas/modules/202609012250-rating-envelope.js",
+            "tools/proofs/modules/202609012250-rating-envelope.proof.mjs"
+          ]
+        },
+        {
+          "name": "syntax checked",
+          "at": "2026-09-01T22:49:14.149Z"
+        },
+        {
+          "name": "step proof 202609012250-rating-envelope.proof.mjs",
+          "at": "2026-09-01T22:49:14.250Z",
+          "status": 0
+        },
+        {
+          "name": "composed",
+          "at": "2026-09-01T22:49:14.473Z",
+          "generation": "202609012249",
+          "version": "v9.72",
+          "previous": "202609012243"
+        },
+        {
+          "name": "gate sandbox proof",
+          "at": "2026-09-01T22:49:15.170Z",
+          "status": 1
+        }
+      ],
+      "outcome": "failed",
+      "reason": "gate red: sandbox proof",
+      "finished_at": "2026-09-01T22:49:15.171Z",
+      "output": "tion's, not an inherited pending\n  [PASS] the manifest records the clock it was cut at, and the stamp agrees with it  2026-09-01T22:49:14.397Z\n  [PASS] the manifest chains by pointer, not by sort order\n  [PASS] the Subs control is looked up by its attribute first\n  [PASS] the label search survives only as a fallback\n  [PASS] an active failure is recorded once, by a named helper\n\nrun against a DOM, not a regular expression\n\n  [PASS] two misses leave one entry, not two  1\n  [PASS] the control is found by attribute despite unhelpful label text\n  [PASS] the recovered entry left the active ledger\n  [PASS] it was preserved as recovered rather than deleted\n  [PASS] an unrelated failure is untouched\n\nthe network sentence names its own scope\n\n  [PASS] the scope label is rendered before the numbers\n  [PASS] a multi-voltage site is badged Site-wide\n  [PASS] the card never prints a distance taken from the owner product\n\nthe Grid Finding Scope\n\n  [PASS] the scope computation is a module, not more cartridge body\n  [PASS] the neon anchor is untouched: a scope runs only where nothing was hit\n  [PASS] arming is explicit, not automatic\n  [PASS] the tray carries both a scope and a clear\n  [PASS] selecting a project clears any standing scope\n  [PASS] the card prints what the scope is not, in bold, from the result itself\n  [PASS] an absence is described as an absence from the map\n  [PASS] the scope publishes its state\n\nthe connection voltage reaches the network query\n\n  [PASS] the card tells the cartridge what voltage the connection is made at\n  [PASS] a circuit connection has no busbar voltage to pass\n  [PASS] a bus-scoped answer is badged with its voltage, not as site-wide\n\nthe map measures in circuits as well as in kilometres\n\n  [PASS] the electrical-distance module is in the served cartridge\n  [PASS] it is evaluated before the body that calls it\n  [PASS] the successor topology module ships, not the incumbent\n  [PASS] the card asks for two hops, scoped to the connection voltage\n  [PASS] a missing module is an absence, never a guess\n  [PASS] the page says plainly that a hop is not a distance\n  [PASS] refusals are surfaced to the reader, not swallowed\n  [PASS] the traversal state is published for review\n  [PASS] no kilometre figure is taken from the topology answer\n\nevery season the operator publishes, and no total\n\n  [PASS] the rating-envelope module is in the served cartridge\n  [PASS] it is evaluated before the body that calls it\n  [PASS] the card asks for summer, not winter alone\n  [PASS] the card is scoped to the connection voltage when there is one\n  [PASS] the page states plainly that the ratings are not added together\n  [PASS] the page distinguishes a rating from what is free on the circuit\n  [FAIL] a placeholder value is named to the reader, not hidden  \n  [PASS] the served bytes contain no site total of circuit ratings\n  [PASS] the rating state is published for review\n\n566/567 checks passed\n\nFAILURES\n  a placeholder value is named to the reader, not hidden\n"
+    },
+    {
+      "step": "202609012250-rating-envelope.mjs",
+      "id": "rating-envelope",
+      "version": "v9.72",
+      "started_at": "2026-09-01T22:49:31.327Z",
+      "dry": false,
+      "stages": [
+        {
+          "name": "tooling committed",
+          "at": "2026-09-01T22:49:32.077Z",
+          "commit": "baf9ee7"
+        },
+        {
+          "name": "applied",
+          "at": "2026-09-01T22:49:32.205Z",
+          "changed": [
+            "atlas/parts/202609012045-sld-sandbox-body.js",
+            "tools/ci/202609012200-local-ci.mjs",
+            "tools/proofs/202609012243-sld-sandbox.proof.mjs",
+            "atlas/modules/202609012250-rating-envelope.js",
+            "tools/proofs/modules/202609012250-rating-envelope.proof.mjs"
+          ]
+        },
+        {
+          "name": "syntax checked",
+          "at": "2026-09-01T22:49:32.405Z"
+        },
+        {
+          "name": "step proof 202609012250-rating-envelope.proof.mjs",
+          "at": "2026-09-01T22:49:32.496Z",
+          "status": 0
+        },
+        {
+          "name": "composed",
+          "at": "2026-09-01T22:49:32.734Z",
+          "generation": "202609012249",
+          "version": "v9.72",
+          "previous": "202609012243"
+        },
+        {
+          "name": "gate sandbox proof",
+          "at": "2026-09-01T22:49:33.400Z",
+          "status": 0
+        },
+        {
+          "name": "gate run-current",
+          "at": "2026-09-01T22:49:34.391Z",
+          "status": 0
+        },
+        {
+          "name": "gate parts integrity",
+          "at": "2026-09-01T22:49:34.460Z",
+          "status": 0
+        },
+        {
+          "name": "gate all versions",
+          "at": "2026-09-01T22:49:34.614Z",
+          "status": 0
+        },
+        {
+          "name": "gate data-contract parity",
+          "at": "2026-09-01T22:49:34.662Z",
+          "status": 0
+        },
+        {
+          "name": "gate local CI (proofs, deep scan, stamps, cvaa)",
+          "at": "2026-09-01T22:50:03.863Z",
+          "status": 0
+        },
+        {
+          "name": "gate step proof after compose 202609012250-rating-envelope.proof.mjs",
+          "at": "2026-09-01T22:50:03.957Z",
+          "status": 0
+        },
+        {
+          "name": "committed",
+          "at": "2026-09-01T22:50:04.126Z",
+          "commit": "d22bc51",
+          "subject_stamp": "202609012249",
+          "clock_at_commit": "202609012250"
+        },
+        {
+          "name": "pushed",
+          "at": "2026-09-01T22:50:06.134Z"
+        }
+      ],
+      "actions": [
+        {
+          "name": "202608310050 GridAtlas next-version builders",
+          "status": "completed",
+          "conclusion": "success",
+          "url": "https://github.com/Ventusltd/gridatlas/actions/runs/33568195060"
+        },
+        {
+          "name": "202608312212 GridAtlas cartridge proof",
+          "status": "completed",
+          "conclusion": "success",
+          "url": "https://github.com/Ventusltd/gridatlas/actions/runs/33568195050"
+        },
+        {
+          "name": "pages build and deployment",
+          "status": "completed",
+          "conclusion": "success",
+          "url": "https://github.com/Ventusltd/gridatlas/actions/runs/33568193813"
+        }
+      ],
+      "live": {
+        "generation": "202609012249",
+        "version": "v9.72",
+        "cartridge_sha_matches": true,
+        "at": "2026-09-01T22:50:46.902Z"
+      },
+      "generation": "202609012249",
+      "commit": "d22bc51dd168c6f35b63f72c61a642550fdf64ca",
+      "finished_at": "2026-09-01T22:51:47.578Z",
+      "outcome": "live"
+    },
+    {
+      "step": "202609012320-injection-response.mjs",
+      "id": "injection-response",
+      "version": "v9.73",
+      "started_at": "2026-09-01T23:06:03.363Z",
+      "dry": false,
+      "stages": [
+        {
+          "name": "applied",
+          "at": "2026-09-01T23:06:04.183Z",
+          "changed": [
+            "atlas/parts/202609012045-sld-sandbox-body.js",
+            "tools/ci/202609012200-local-ci.mjs",
+            "tools/proofs/202609012249-sld-sandbox.proof.mjs"
+          ]
+        }
+      ],
+      "outcome": "failed",
+      "reason": "node --check tools/proofs/202609012249-sld-sandbox.proof.mjs",
+      "finished_at": "2026-09-01T23:06:04.318Z",
+      "output": "C:\\Users\\vikra\\OneDrive\\Documents\\GitHub\\gridatlas\\tools\\proofs\\202609012249-sld-sandbox.proof.mjs:2672\r\n  /topology.nodes400 = (product.nodes/.test(cartridgeSource));\r\n  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\r\n\r\nSyntaxError: Invalid regular expression: /topology.nodes400 = (product.nodes/: Unterminated group\r\n    at checkSyntax (node:internal/main/check_syntax:72:5)\r\n\r\nNode.js v24.19.0\r\n"
+    },
+    {
+      "step": "202609012320-injection-response.mjs",
+      "id": "injection-response",
+      "version": "v9.73",
+      "started_at": "2026-09-01T23:07:26.025Z",
+      "dry": false,
+      "stages": [
+        {
+          "name": "tooling committed",
+          "at": "2026-09-01T23:07:26.795Z",
+          "commit": "a65dfa0"
+        },
+        {
+          "name": "applied",
+          "at": "2026-09-01T23:07:26.923Z",
+          "changed": [
+            "atlas/parts/202609012045-sld-sandbox-body.js",
+            "tools/ci/202609012200-local-ci.mjs",
+            "tools/proofs/202609012249-sld-sandbox.proof.mjs"
+          ]
+        },
+        {
+          "name": "syntax checked",
+          "at": "2026-09-01T23:07:27.057Z"
+        },
+        {
+          "name": "step proof 202609012320-injection-response.proof.mjs",
+          "at": "2026-09-01T23:07:27.208Z",
+          "status": 0
+        },
+        {
+          "name": "composed",
+          "at": "2026-09-01T23:07:27.444Z",
+          "generation": "202609012307",
+          "version": "v9.73",
+          "previous": "202609012249"
+        },
+        {
+          "name": "gate sandbox proof",
+          "at": "2026-09-01T23:07:28.154Z",
+          "status": 1
+        }
+      ],
+      "outcome": "failed",
+      "reason": "gate red: sandbox proof",
+      "finished_at": "2026-09-01T23:07:28.154Z",
+      "output": "e computation is a module, not more cartridge body\n  [PASS] the neon anchor is untouched: a scope runs only where nothing was hit\n  [PASS] arming is explicit, not automatic\n  [PASS] the tray carries both a scope and a clear\n  [PASS] selecting a project clears any standing scope\n  [PASS] the card prints what the scope is not, in bold, from the result itself\n  [PASS] an absence is described as an absence from the map\n  [PASS] the scope publishes its state\n\nthe connection voltage reaches the network query\n\n  [PASS] the card tells the cartridge what voltage the connection is made at\n  [PASS] a circuit connection has no busbar voltage to pass\n  [PASS] a bus-scoped answer is badged with its voltage, not as site-wide\n\nthe map measures in circuits as well as in kilometres\n\n  [PASS] the electrical-distance module is in the served cartridge\n  [PASS] it is evaluated before the body that calls it\n  [PASS] the successor topology module ships, not the incumbent\n  [PASS] the card asks for two hops, scoped to the connection voltage\n  [PASS] a missing module is an absence, never a guess\n  [PASS] the page says plainly that a hop is not a distance\n  [PASS] refusals are surfaced to the reader, not swallowed\n  [PASS] the traversal state is published for review\n  [PASS] no kilometre figure is taken from the topology answer\n\nevery season the operator publishes, and no total\n\n  [PASS] the rating-envelope module is in the served cartridge\n  [PASS] it is evaluated before the body that calls it\n  [PASS] the card asks for summer, not winter alone\n  [PASS] the card is scoped to the connection voltage when there is one\n  [PASS] the page states plainly that the ratings are not added together\n  [PASS] the page distinguishes a rating from what is free on the circuit\n  [PASS] a placeholder value is named to the reader, not hidden\n  [PASS] the served bytes contain no site total of circuit ratings\n  [PASS] the rating state is published for review\n\na declared powerflow, and what it refuses to say\n\n  [PASS] the injection-response module is in the served cartridge\n  [PASS] it is evaluated before the body that calls it\n  [PASS] the served bytes never read resistance or susceptance into the flow model\n  [PASS] the card names the slack, because a transfer has two ends\n  [PASS] the card states the model assumptions where the reader sees them\n  [PASS] the card says plainly it is not a loading\n  [PASS] an answer that fails its own Kirchhoff check is discarded, not printed\n  [FAIL] the powerflow uses the capacity the deep link carries  \n  [FAIL] the 400 kV node list is recorded once, where the product is already parsed  \n  [PASS] the powerflow is scoped to 400 kV, never walked through an unmodelled tap\n  [PASS] the conservation error is published for review\n  [PASS] the served bytes claim no headroom anywhere in the flow module\n\n577/579 checks passed\n\nFAILURES\n  the powerflow uses the capacity the deep link carries\n  the 400 kV node list is recorded once, where the product is already parsed\n"
+    },
+    {
+      "step": "202609012320-injection-response.mjs",
+      "id": "injection-response",
+      "version": "v9.73",
+      "started_at": "2026-09-01T23:08:18.910Z",
+      "dry": false,
+      "stages": [
+        {
+          "name": "applied",
+          "at": "2026-09-01T23:08:19.707Z",
+          "changed": [
+            "atlas/parts/202609012045-sld-sandbox-body.js",
+            "tools/ci/202609012200-local-ci.mjs",
+            "tools/proofs/202609012249-sld-sandbox.proof.mjs"
+          ]
+        },
+        {
+          "name": "syntax checked",
+          "at": "2026-09-01T23:08:19.830Z"
+        },
+        {
+          "name": "step proof 202609012320-injection-response.proof.mjs",
+          "at": "2026-09-01T23:08:19.940Z",
+          "status": 0
+        },
+        {
+          "name": "composed",
+          "at": "2026-09-01T23:08:20.175Z",
+          "generation": "202609012308",
+          "version": "v9.73",
+          "previous": "202609012249"
+        },
+        {
+          "name": "gate sandbox proof",
+          "at": "2026-09-01T23:08:20.842Z",
+          "status": 0
+        },
+        {
+          "name": "gate run-current",
+          "at": "2026-09-01T23:08:21.824Z",
+          "status": 0
+        },
+        {
+          "name": "gate parts integrity",
+          "at": "2026-09-01T23:08:21.897Z",
+          "status": 0
+        },
+        {
+          "name": "gate all versions",
+          "at": "2026-09-01T23:08:22.054Z",
+          "status": 0
+        },
+        {
+          "name": "gate data-contract parity",
+          "at": "2026-09-01T23:08:22.109Z",
+          "status": 0
+        },
+        {
+          "name": "gate local CI (proofs, deep scan, stamps, cvaa)",
+          "at": "2026-09-01T23:08:49.937Z",
+          "status": 0
+        },
+        {
+          "name": "gate step proof after compose 202609012320-injection-response.proof.mjs",
+          "at": "2026-09-01T23:08:50.043Z",
+          "status": 0
+        },
+        {
+          "name": "committed",
+          "at": "2026-09-01T23:08:50.185Z",
+          "commit": "93c13cf",
+          "subject_stamp": "202609012308",
+          "clock_at_commit": "202609012308"
+        },
+        {
+          "name": "pushed",
+          "at": "2026-09-01T23:08:52.246Z"
+        }
+      ],
+      "actions": [
+        {
+          "name": "202608310050 GridAtlas next-version builders",
+          "status": "completed",
+          "conclusion": "success",
+          "url": "https://github.com/Ventusltd/gridatlas/actions/runs/33569666212"
+        },
+        {
+          "name": "202608312212 GridAtlas cartridge proof",
+          "status": "completed",
+          "conclusion": "success",
+          "url": "https://github.com/Ventusltd/gridatlas/actions/runs/33569666211"
+        },
+        {
+          "name": "pages build and deployment",
+          "status": "completed",
+          "conclusion": "success",
+          "url": "https://github.com/Ventusltd/gridatlas/actions/runs/33569664837"
+        }
+      ],
+      "live": {
+        "generation": "202609012308",
+        "version": "v9.73",
+        "cartridge_sha_matches": true,
+        "at": "2026-09-01T23:09:32.938Z"
+      },
+      "generation": "202609012308",
+      "commit": "93c13cf3d7d59d8c489adc9a11d28214556a27d0",
+      "finished_at": "2026-09-01T23:10:33.578Z",
+      "outcome": "live"
+    },
+    {
+      "step": "202609012330-grid-at-point.mjs",
+      "id": "grid-at-point",
+      "version": "v9.74",
+      "started_at": "2026-09-01T23:15:41.928Z",
+      "dry": false,
+      "stages": [
+        {
+          "name": "applied",
+          "at": "2026-09-01T23:15:42.694Z",
+          "changed": [
+            "atlas/parts/202609012045-sld-sandbox-body.js",
+            "tools/proofs/202609012308-sld-sandbox.proof.mjs"
+          ]
+        },
+        {
+          "name": "syntax checked",
+          "at": "2026-09-01T23:15:42.779Z"
+        },
+        {
+          "name": "composed",
+          "at": "2026-09-01T23:15:43.076Z",
+          "generation": "202609012315",
+          "version": "v9.74",
+          "previous": "202609012308"
+        },
+        {
+          "name": "gate sandbox proof",
+          "at": "2026-09-01T23:15:43.802Z",
+          "status": 1
+        }
+      ],
+      "outcome": "failed",
+      "reason": "gate red: sandbox proof",
+      "finished_at": "2026-09-01T23:15:43.802Z",
+      "output": " guess\n  [PASS] the page says plainly that a hop is not a distance\n  [PASS] refusals are surfaced to the reader, not swallowed\n  [PASS] the traversal state is published for review\n  [PASS] no kilometre figure is taken from the topology answer\n\nevery season the operator publishes, and no total\n\n  [PASS] the rating-envelope module is in the served cartridge\n  [PASS] it is evaluated before the body that calls it\n  [PASS] the card asks for summer, not winter alone\n  [PASS] the card is scoped to the connection voltage when there is one\n  [PASS] the page states plainly that the ratings are not added together\n  [PASS] the page distinguishes a rating from what is free on the circuit\n  [PASS] a placeholder value is named to the reader, not hidden\n  [PASS] the served bytes contain no site total of circuit ratings\n  [PASS] the rating state is published for review\n\na declared powerflow, and what it refuses to say\n\n  [PASS] the injection-response module is in the served cartridge\n  [PASS] it is evaluated before the body that calls it\n  [PASS] the served bytes never read resistance or susceptance into the flow model\n  [PASS] the card names the slack, because a transfer has two ends\n  [PASS] the card states the model assumptions where the reader sees them\n  [PASS] the card says plainly it is not a loading\n  [PASS] an answer that fails its own Kirchhoff check is discarded, not printed\n  [PASS] the powerflow uses the capacity the deep link carries\n  [PASS] the 400 kV node list is recorded once, where the product is already parsed\n  [PASS] the powerflow is scoped to 400 kV, never walked through an unmodelled tap\n  [PASS] the conservation error is published for review\n  [PASS] the served bytes claim no headroom anywhere in the flow module\n\nthe grid computation without a project, and a dash that gets out of the way\n\n  [PASS] a tool is added to the shell tray, which the cartridge does not own\n  [PASS] the tool does not duplicate itself if the cartridge runs twice\n  [PASS] arming is explicit, as it is for the scope\n  [PASS] an unarmed click still does nothing new\n  [PASS] the point query never measures a distance itself\n  [FAIL] the block it writes is found by the filler, which selects by class  \n  [PASS] the reader is told that nearest MAPPED is not nearest\n  [PASS] the reader is told it is a straight line and not a cable route\n  [PASS] the point answer never claims anything can connect\n  [PASS] an absent connection-points cartridge is an absence, not a guess\n  [PASS] the layers dash can be collapsed without entering fullscreen\n  [PASS] the collapsed choice is remembered, and every storage access is guarded\n  [PASS] the map is told to resize when the dash moves under it\n  [PASS] the toggle is reachable and labelled for assistive technology\n  [PASS] both new surfaces are published for review\n\n592/594 checks passed\n\nFAILURES\n  the module is never asked at load: the boot path does not touch the loader\n  the block it writes is found by the filler, which selects by class\n"
+    },
+    {
+      "step": "202609012330-grid-at-point.mjs",
+      "id": "grid-at-point",
+      "version": "v9.74",
+      "started_at": "2026-09-01T23:16:41.784Z",
+      "dry": false,
+      "stages": [
+        {
+          "name": "applied",
+          "at": "2026-09-01T23:16:42.573Z",
+          "changed": [
+            "atlas/parts/202609012045-sld-sandbox-body.js",
+            "tools/proofs/202609012308-sld-sandbox.proof.mjs"
+          ]
+        },
+        {
+          "name": "syntax checked",
+          "at": "2026-09-01T23:16:42.661Z"
+        },
+        {
+          "name": "composed",
+          "at": "2026-09-01T23:16:42.943Z",
+          "generation": "202609012316",
+          "version": "v9.74",
+          "previous": "202609012308"
+        },
+        {
+          "name": "gate sandbox proof",
+          "at": "2026-09-01T23:16:43.657Z",
+          "status": 1
+        }
+      ],
+      "outcome": "failed",
+      "reason": "gate red: sandbox proof",
+      "finished_at": "2026-09-01T23:16:43.657Z",
+      "output": "ped to the connection voltage\n  [PASS] a missing module is an absence, never a guess\n  [PASS] the page says plainly that a hop is not a distance\n  [PASS] refusals are surfaced to the reader, not swallowed\n  [PASS] the traversal state is published for review\n  [PASS] no kilometre figure is taken from the topology answer\n\nevery season the operator publishes, and no total\n\n  [PASS] the rating-envelope module is in the served cartridge\n  [PASS] it is evaluated before the body that calls it\n  [PASS] the card asks for summer, not winter alone\n  [PASS] the card is scoped to the connection voltage when there is one\n  [PASS] the page states plainly that the ratings are not added together\n  [PASS] the page distinguishes a rating from what is free on the circuit\n  [PASS] a placeholder value is named to the reader, not hidden\n  [PASS] the served bytes contain no site total of circuit ratings\n  [PASS] the rating state is published for review\n\na declared powerflow, and what it refuses to say\n\n  [PASS] the injection-response module is in the served cartridge\n  [PASS] it is evaluated before the body that calls it\n  [PASS] the served bytes never read resistance or susceptance into the flow model\n  [PASS] the card names the slack, because a transfer has two ends\n  [PASS] the card states the model assumptions where the reader sees them\n  [PASS] the card says plainly it is not a loading\n  [PASS] an answer that fails its own Kirchhoff check is discarded, not printed\n  [PASS] the powerflow uses the capacity the deep link carries\n  [PASS] the 400 kV node list is recorded once, where the product is already parsed\n  [PASS] the powerflow is scoped to 400 kV, never walked through an unmodelled tap\n  [PASS] the conservation error is published for review\n  [PASS] the served bytes claim no headroom anywhere in the flow module\n\nthe grid computation without a project, and a dash that gets out of the way\n\n  [PASS] a tool is added to the shell tray, which the cartridge does not own\n  [PASS] the tool does not duplicate itself if the cartridge runs twice\n  [PASS] arming is explicit, as it is for the scope\n  [PASS] an unarmed click still does nothing new\n  [PASS] the point query never measures a distance itself\n  [PASS] the block it writes is found by the filler, which selects by class\n  [PASS] the reader is told that nearest MAPPED is not nearest\n  [PASS] the reader is told it is a straight line and not a cable route\n  [PASS] the point answer never claims anything can connect\n  [PASS] an absent connection-points cartridge is an absence, not a guess\n  [PASS] the layers dash can be collapsed without entering fullscreen\n  [PASS] the collapsed choice is remembered, and every storage access is guarded\n  [PASS] the map is told to resize when the dash moves under it\n  [PASS] the toggle is reachable and labelled for assistive technology\n  [PASS] both new surfaces are published for review\n\n593/594 checks passed\n\nFAILURES\n  the loader is called only from named on-demand paths, never at load\n"
+    },
+    {
+      "step": "202609012330-grid-at-point.mjs",
+      "id": "grid-at-point",
+      "version": "v9.74",
+      "started_at": "2026-09-01T23:17:19.340Z",
+      "dry": false,
+      "stages": [
+        {
+          "name": "applied",
+          "at": "2026-09-01T23:17:20.135Z",
+          "changed": [
+            "atlas/parts/202609012045-sld-sandbox-body.js",
+            "tools/proofs/202609012308-sld-sandbox.proof.mjs"
+          ]
+        },
+        {
+          "name": "syntax checked",
+          "at": "2026-09-01T23:17:20.225Z"
+        },
+        {
+          "name": "composed",
+          "at": "2026-09-01T23:17:20.482Z",
+          "generation": "202609012317",
+          "version": "v9.74",
+          "previous": "202609012308"
+        },
+        {
+          "name": "gate sandbox proof",
+          "at": "2026-09-01T23:17:21.188Z",
+          "status": 0
+        },
+        {
+          "name": "gate run-current",
+          "at": "2026-09-01T23:17:22.203Z",
+          "status": 0
+        },
+        {
+          "name": "gate parts integrity",
+          "at": "2026-09-01T23:17:22.290Z",
+          "status": 0
+        },
+        {
+          "name": "gate all versions",
+          "at": "2026-09-01T23:17:22.475Z",
+          "status": 0
+        },
+        {
+          "name": "gate data-contract parity",
+          "at": "2026-09-01T23:17:22.531Z",
+          "status": 0
+        },
+        {
+          "name": "gate local CI (proofs, deep scan, stamps, cvaa)",
+          "at": "2026-09-01T23:17:52.368Z",
+          "status": 0
+        },
+        {
+          "name": "committed",
+          "at": "2026-09-01T23:17:52.522Z",
+          "commit": "1b29994",
+          "subject_stamp": "202609012317",
+          "clock_at_commit": "202609012317"
+        },
+        {
+          "name": "pushed",
+          "at": "2026-09-01T23:17:54.540Z"
+        }
+      ],
+      "actions": [
+        {
+          "name": "202608310050 GridAtlas next-version builders",
+          "status": "completed",
+          "conclusion": "success",
+          "url": "https://github.com/Ventusltd/gridatlas/actions/runs/33570375907"
+        },
+        {
+          "name": "202608312212 GridAtlas cartridge proof",
+          "status": "completed",
+          "conclusion": "success",
+          "url": "https://github.com/Ventusltd/gridatlas/actions/runs/33570375889"
+        },
+        {
+          "name": "pages build and deployment",
+          "status": "completed",
+          "conclusion": "success",
+          "url": "https://github.com/Ventusltd/gridatlas/actions/runs/33570375058"
+        }
+      ],
+      "live": {
+        "generation": "202609012317",
+        "version": "v9.74",
+        "cartridge_sha_matches": true,
+        "at": "2026-09-01T23:18:55.502Z"
+      },
+      "generation": "202609012317",
+      "commit": "1b29994a832ac6666a813d64c5c4b948591391e8",
+      "finished_at": "2026-09-01T23:18:55.888Z",
+      "outcome": "live"
+    },
+    {
+      "step": "202609012345-planned-change.mjs",
+      "id": "planned-change",
+      "version": "v9.75",
+      "started_at": "2026-09-01T23:44:45.081Z",
+      "dry": false,
+      "stages": [],
+      "outcome": "failed",
+      "reason": "working tree not clean before the step",
+      "finished_at": "2026-09-01T23:44:45.118Z",
+      "dirty": [
+        "?? atlas/modules/202609012350-owner-boundary.js",
+        "?? tools/proofs/modules/202609012350-owner-boundary.proof.mjs"
+      ]
+    },
+    {
+      "step": "202609012345-planned-change.mjs",
+      "id": "planned-change",
+      "version": "v9.75",
+      "started_at": "2026-09-01T23:45:07.318Z",
+      "dry": false,
+      "stages": [
+        {
+          "name": "applied",
+          "at": "2026-09-01T23:45:08.110Z",
+          "changed": [
+            "atlas/parts/202609012045-sld-sandbox-body.js",
+            "tools/ci/202609012200-local-ci.mjs",
+            "tools/proofs/202609012317-sld-sandbox.proof.mjs"
+          ]
+        },
+        {
+          "name": "syntax checked",
+          "at": "2026-09-01T23:45:08.262Z"
+        },
+        {
+          "name": "step proof 202609012345-planned-change.proof.mjs",
+          "at": "2026-09-01T23:45:08.448Z",
+          "status": 0
+        },
+        {
+          "name": "composed",
+          "at": "2026-09-01T23:45:08.718Z",
+          "generation": "202609012345",
+          "version": "v9.75",
+          "previous": "202609012317"
+        },
+        {
+          "name": "gate sandbox proof",
+          "at": "2026-09-01T23:45:09.581Z",
+          "status": 1
+        }
+      ],
+      "outcome": "failed",
+      "reason": "gate red: sandbox proof",
+      "finished_at": "2026-09-01T23:45:09.581Z",
+      "output": "] the page states plainly that the ratings are not added together\n  [PASS] the page distinguishes a rating from what is free on the circuit\n  [PASS] a placeholder value is named to the reader, not hidden\n  [PASS] the served bytes contain no site total of circuit ratings\n  [PASS] the rating state is published for review\n\na declared powerflow, and what it refuses to say\n\n  [PASS] the injection-response module is in the served cartridge\n  [PASS] it is evaluated before the body that calls it\n  [PASS] the served bytes never read resistance or susceptance into the flow model\n  [PASS] the card names the slack, because a transfer has two ends\n  [PASS] the card states the model assumptions where the reader sees them\n  [PASS] the card says plainly it is not a loading\n  [PASS] an answer that fails its own Kirchhoff check is discarded, not printed\n  [PASS] the powerflow uses the capacity the deep link carries\n  [PASS] the 400 kV node list is recorded once, where the product is already parsed\n  [PASS] the powerflow is scoped to 400 kV, never walked through an unmodelled tap\n  [PASS] the conservation error is published for review\n  [PASS] the served bytes claim no headroom anywhere in the flow module\n\nthe grid computation without a project, and a dash that gets out of the way\n\n  [PASS] a tool is added to the shell tray, which the cartridge does not own\n  [PASS] the tool does not duplicate itself if the cartridge runs twice\n  [PASS] arming is explicit, as it is for the scope\n  [PASS] an unarmed click still does nothing new\n  [PASS] the point query never measures a distance itself\n  [PASS] the block it writes is found by the filler, which selects by class\n  [PASS] the reader is told that nearest MAPPED is not nearest\n  [PASS] the reader is told it is a straight line and not a cable route\n  [PASS] the point answer never claims anything can connect\n  [PASS] an absent connection-points cartridge is an absence, not a guess\n  [PASS] the layers dash can be collapsed without entering fullscreen\n  [PASS] the collapsed choice is remembered, and every storage access is guarded\n  [PASS] the map is told to resize when the dash moves under it\n  [PASS] the toggle is reachable and labelled for assistive technology\n  [PASS] both new surfaces are published for review\n\nwhat is published as planned, kept apart from what exists\n\n  [PASS] the planned-change module is in the served cartridge\n  [PASS] the parsed product is kept so the module can read it\n  [PASS] a missing product is an absence, not a guess\n  [PASS] planned rows are reported in their OWN sentence, not in the circuit counts\n  [FAIL] the page says a planned row is not a circuit today  \n  [PASS] the page refuses commitment, consent and connection-date readings\n  [PASS] planned rows are stated as excluded from the counts above\n  [PASS] the planned state is published for review\n  [PASS] nothing in the planned sentence grades what it found\n\n602/603 checks passed\n\nFAILURES\n  the page says a planned row is not a circuit today\n"
+    },
+    {
+      "step": "202609012345-planned-change.mjs",
+      "id": "planned-change",
+      "version": "v9.75",
+      "started_at": "2026-09-01T23:45:25.538Z",
+      "dry": false,
+      "stages": [
+        {
+          "name": "applied",
+          "at": "2026-09-01T23:45:26.377Z",
+          "changed": [
+            "atlas/parts/202609012045-sld-sandbox-body.js",
+            "tools/ci/202609012200-local-ci.mjs",
+            "tools/proofs/202609012317-sld-sandbox.proof.mjs"
+          ]
+        },
+        {
+          "name": "syntax checked",
+          "at": "2026-09-01T23:45:26.538Z"
+        },
+        {
+          "name": "step proof 202609012345-planned-change.proof.mjs",
+          "at": "2026-09-01T23:45:26.743Z",
+          "status": 0
+        },
+        {
+          "name": "composed",
+          "at": "2026-09-01T23:45:27.027Z",
+          "generation": "202609012345",
+          "version": "v9.75",
+          "previous": "202609012317"
+        },
+        {
+          "name": "gate sandbox proof",
+          "at": "2026-09-01T23:45:27.840Z",
+          "status": 0
+        },
+        {
+          "name": "gate run-current",
+          "at": "2026-09-01T23:45:28.981Z",
+          "status": 0
+        },
+        {
+          "name": "gate parts integrity",
+          "at": "2026-09-01T23:45:29.075Z",
+          "status": 0
+        },
+        {
+          "name": "gate all versions",
+          "at": "2026-09-01T23:45:29.309Z",
+          "status": 0
+        },
+        {
+          "name": "gate data-contract parity",
+          "at": "2026-09-01T23:45:29.368Z",
+          "status": 0
+        },
+        {
+          "name": "gate local CI (proofs, deep scan, stamps, cvaa)",
+          "at": "2026-09-01T23:46:03.441Z",
+          "status": 0
+        },
+        {
+          "name": "gate step proof after compose 202609012345-planned-change.proof.mjs",
+          "at": "2026-09-01T23:46:03.611Z",
+          "status": 0
+        },
+        {
+          "name": "committed",
+          "at": "2026-09-01T23:46:03.801Z",
+          "commit": "06e0a14",
+          "subject_stamp": "202609012345",
+          "clock_at_commit": "202609012346"
+        },
+        {
+          "name": "pushed",
+          "at": "2026-09-01T23:46:06.133Z"
+        }
+      ],
+      "actions": [
+        {
+          "name": "202608310050 GridAtlas next-version builders",
+          "status": "completed",
+          "conclusion": "success",
+          "url": "https://github.com/Ventusltd/gridatlas/actions/runs/33572471057"
+        },
+        {
+          "name": "202608312212 GridAtlas cartridge proof",
+          "status": "completed",
+          "conclusion": "success",
+          "url": "https://github.com/Ventusltd/gridatlas/actions/runs/33572471077"
+        },
+        {
+          "name": "pages build and deployment",
+          "status": "completed",
+          "conclusion": "success",
+          "url": "https://github.com/Ventusltd/gridatlas/actions/runs/33572470525"
+        }
+      ],
+      "live": {
+        "generation": "202609012345",
+        "version": "v9.75",
+        "cartridge_sha_matches": true,
+        "at": "2026-09-01T23:47:07.405Z"
+      },
+      "generation": "202609012345",
+      "commit": "06e0a1444cafb0c9d9d007b98991c1a9f22daac9",
+      "finished_at": "2026-09-01T23:47:07.880Z",
+      "outcome": "live"
+    },
+    {
+      "step": "202609012350-owner-boundary.mjs",
+      "id": "owner-boundary",
+      "version": "v9.76",
+      "started_at": "2026-09-01T23:48:25.674Z",
+      "dry": false,
+      "stages": [
+        {
+          "name": "applied",
+          "at": "2026-09-01T23:48:26.493Z",
+          "changed": [
+            "atlas/parts/202609012045-sld-sandbox-body.js",
+            "tools/ci/202609012200-local-ci.mjs",
+            "tools/proofs/202609012345-sld-sandbox.proof.mjs"
+          ]
+        },
+        {
+          "name": "syntax checked",
+          "at": "2026-09-01T23:48:26.645Z"
+        },
+        {
+          "name": "step proof 202609012350-owner-boundary.proof.mjs",
+          "at": "2026-09-01T23:48:26.806Z",
+          "status": 0
+        },
+        {
+          "name": "composed",
+          "at": "2026-09-01T23:48:27.085Z",
+          "generation": "202609012348",
+          "version": "v9.76",
+          "previous": "202609012345"
+        },
+        {
+          "name": "gate sandbox proof",
+          "at": "2026-09-01T23:48:27.940Z",
+          "status": 0
+        },
+        {
+          "name": "gate run-current",
+          "at": "2026-09-01T23:48:29.106Z",
+          "status": 0
+        },
+        {
+          "name": "gate parts integrity",
+          "at": "2026-09-01T23:48:29.205Z",
+          "status": 0
+        },
+        {
+          "name": "gate all versions",
+          "at": "2026-09-01T23:48:29.435Z",
+          "status": 0
+        },
+        {
+          "name": "gate data-contract parity",
+          "at": "2026-09-01T23:48:29.489Z",
+          "status": 0
+        },
+        {
+          "name": "gate local CI (proofs, deep scan, stamps, cvaa)",
+          "at": "2026-09-01T23:49:03.518Z",
+          "status": 1
+        }
+      ],
+      "outcome": "failed",
+      "reason": "gate red: local CI (proofs, deep scan, stamps, cvaa)",
+      "finished_at": "2026-09-01T23:49:03.519Z",
+      "output": " 37/37\n  \u001b[32mPASS\u001b[0m  grid scope             33/33\n  \u001b[32mPASS\u001b[0m  network topology       47/47\n  \u001b[32mPASS\u001b[0m  assembler              31/31\n  \u001b[32mPASS\u001b[0m  source registry        42/42\n  \u001b[32mPASS\u001b[0m  map-click network      13/13\n  \u001b[32mPASS\u001b[0m  declared connections   23/23\n  \u001b[32mPASS\u001b[0m  sizing arithmetic      ok\n  \u001b[32mPASS\u001b[0m  data-contract parity   15/15\n  \u001b[32mPASS\u001b[0m  electrical distance    52/52\n  \u001b[32mPASS\u001b[0m  rating envelope        40/40\n  \u001b[32mPASS\u001b[0m  injection response (powerflow) 53/53\n  \u001b[32mPASS\u001b[0m  planned change         79/79\n  \u001b[32mPASS\u001b[0m  owner boundary         72/72\n\n\u001b[1mPASS 4 - checks that decline to check, and report success\u001b[0m\n  141 proof/verifier files read across 3 repositories\n  \u001b[32mno check skips its assertions on a missing dependency without a named opt-in\u001b[0m\n\n\u001b[1mPASS 5 - a stamp is a clock\u001b[0m\n\n  \u001b[1mgridatlas\u001b[0m  324 commits, 185 stamped more than 15 min from the commit clock; worst 17d96ed 202608300453 vs 202608300926 (-273 min)\n    \u001b[32mno file in the working tree is stamped ahead of 202609012348 UTC\u001b[0m\n    cvaa: not-immune, 117 finding(s) across 9 failing vaccine(s)\n    monotonic-utc-generations: 81 commit(s) off the clock, 14 out of order (history; reported, not amended)\n\n  \u001b[1mpipelinenews\u001b[0m  391 commits, 144 stamped more than 15 min from the commit clock; worst acc1309 202609010232 vs 202609010718 (-286 min)\n    \u001b[32mno file in the working tree is stamped ahead of 202609012348 UTC\u001b[0m\n    cvaa: not-immune, 171 finding(s) across 6 failing vaccine(s)\n    monotonic-utc-generations: 98 commit(s) off the clock, 22 out of order (history; reported, not amended)\n\n  \u001b[1mdata-grid-gb\u001b[0m  10 commits, 6 stamped more than 15 min from the commit clock; worst 04e0d62 202609012130 vs 202609011835 (+175 min)\n    \u001b[32mno file in the working tree is stamped ahead of 202609012348 UTC\u001b[0m\n    cvaa: not-immune, 8 finding(s) across 3 failing vaccine(s)\n    monotonic-utc-generations: 5 commit(s) off the clock, 1 out of order (history; reported, not amended)\n\n\u001b[31m1 flaw(s) found across 3 repositories.\u001b[0m\n[scope-loop:lint] Error: sld-sandbox: cartridge exceeds 400 kB boundary\n    at invariant (file:///C:/Users/vikra/OneDrive/Documents/GitHub/gridatlas/tools/scope/lib.mjs:39:25)\n    at validateAtlasLayout (file:///C:/Users/vikra/OneDrive/Documents/GitHub/gridatlas/tools/scope/loop.mjs:180:7)\n    at lint (file:///C:/Users/vikra/OneDrive/Documents/GitHub/gridatlas/tools/scope/loop.mjs:198:3)\n    at file:///C:/Users/vikra/OneDrive/Documents/GitHub/gridatlas/tools/scope/loop.mjs:232:27\n    at ModuleJob.run (node:internal/modules/esm/module_job:439:25)\n    at async node:internal/modules/esm/loader:643:26\n    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5)\nwarning: unshare -rn unavailable; antibodies run without a network namespace\nwarning: unshare -rn unavailable; antibodies run without a network namespace\nwarning: unshare -rn unavailable; antibodies run without a network namespace\n"
+    },
+    {
+      "step": "202609012350-owner-boundary.mjs",
+      "id": "owner-boundary",
+      "version": "v9.76",
+      "started_at": "2026-09-01T23:54:54.654Z",
+      "dry": false,
+      "stages": [
+        {
+          "name": "applied",
+          "at": "2026-09-01T23:54:55.547Z",
+          "changed": [
+            "atlas/current.json",
+            "atlas/parts/202609012045-sld-sandbox-body.js",
+            "tools/ci/202609012200-local-ci.mjs",
+            "tools/proofs/202609012345-sld-sandbox.proof.mjs",
+            "atlas/manifests/202609012045-substation-intelligence-v9-63-parts.json",
+            "atlas/parts/202609012350-substation-intelligence-body.js"
+          ]
+        },
+        {
+          "name": "syntax checked",
+          "at": "2026-09-01T23:54:55.729Z"
+        },
+        {
+          "name": "step proof 202609012350-owner-boundary.proof.mjs",
+          "at": "2026-09-01T23:54:55.858Z",
+          "status": 0
+        },
+        {
+          "name": "composed",
+          "at": "2026-09-01T23:54:56.205Z",
+          "generation": "202609012354",
+          "version": "v9.76",
+          "previous": "202609012345"
+        },
+        {
+          "name": "gate sandbox proof",
+          "at": "2026-09-01T23:54:56.931Z",
+          "status": 1
+        }
+      ],
+      "outcome": "failed",
+      "reason": "gate red: sandbox proof",
+      "finished_at": "2026-09-01T23:54:56.931Z",
+      "output": "s explicit, as it is for the scope\n  [PASS] an unarmed click still does nothing new\n  [PASS] the point query never measures a distance itself\n  [PASS] the block it writes is found by the filler, which selects by class\n  [PASS] the reader is told that nearest MAPPED is not nearest\n  [PASS] the reader is told it is a straight line and not a cable route\n  [PASS] the point answer never claims anything can connect\n  [PASS] an absent connection-points cartridge is an absence, not a guess\n  [PASS] the layers dash can be collapsed without entering fullscreen\n  [PASS] the collapsed choice is remembered, and every storage access is guarded\n  [PASS] the map is told to resize when the dash moves under it\n  [PASS] the toggle is reachable and labelled for assistive technology\n  [PASS] both new surfaces are published for review\n\nwhat is published as planned, kept apart from what exists\n\n  [FAIL] the planned-change module is in the served cartridge  \n  [PASS] the parsed product is kept so the module can read it\n  [PASS] a missing product is an absence, not a guess\n  [PASS] planned rows are reported in their OWN sentence, not in the circuit counts\n  [PASS] the page says a planned row is not a circuit today\n  [PASS] the page refuses commitment, consent and connection-date readings\n  [PASS] planned rows are stated as excluded from the counts above\n  [PASS] the planned state is published for review\n  [PASS] nothing in the planned sentence grades what it found\n\nthe computation left the sandbox, and ownership arrived\n\n  [PASS] the five network modules are no longer in the sandbox cartridge\n  [PASS] the sandbox cartridge is back under the 400 kB boundary with room to spare  316287 bytes\n  [PASS] the sandbox still CALLS them, from the cartridge that now carries them\n  [PASS] the card names the owners present\n  [PASS] a seam is named as a seam, with both ends said to differ\n  [PASS] a null owner is reported as unknown and never taken from the site\n  [PASS] an asset whose owner matches neither end is kept out of the boundary count\n  [PASS] the page refuses the counterparty reading\n  [PASS] the ownership state is published for review\n  [PASS] substation-intelligence is assembled from parts, not a monolith\n  [PASS] the five network modules are in the cartridge that owns the network\n  [PASS] the new owner-boundary module is there too\n  [PASS] it still carries the V8 engine verbatim, which is its slot contract\n  [PASS] it is under the boundary as well  180104 bytes\n\n609/617 checks passed\n\nFAILURES\n  the network-topology module is composed into the served bytes\n  the electrical-distance module is in the served cartridge\n  the successor topology module ships, not the incumbent\n  the rating-envelope module is in the served cartridge\n  the served bytes contain no site total of circuit ratings\n  the injection-response module is in the served cartridge\n  the served bytes never read resistance or susceptance into the flow model\n  the planned-change module is in the served cartridge\n"
+    },
+    {
+      "step": "202609012350-owner-boundary.mjs",
+      "id": "owner-boundary",
+      "version": "v9.76",
+      "started_at": "2026-09-01T23:55:41.769Z",
+      "dry": false,
+      "stages": [
+        {
+          "name": "applied",
+          "at": "2026-09-01T23:55:42.626Z",
+          "changed": [
+            "atlas/current.json",
+            "atlas/parts/202609012045-sld-sandbox-body.js",
+            "tools/ci/202609012200-local-ci.mjs",
+            "tools/proofs/202609012345-sld-sandbox.proof.mjs",
+            "atlas/manifests/202609012045-substation-intelligence-v9-63-parts.json",
+            "atlas/parts/202609012350-substation-intelligence-body.js"
+          ]
+        },
+        {
+          "name": "syntax checked",
+          "at": "2026-09-01T23:55:42.784Z"
+        },
+        {
+          "name": "step proof 202609012350-owner-boundary.proof.mjs",
+          "at": "2026-09-01T23:55:42.895Z",
+          "status": 0
+        },
+        {
+          "name": "composed",
+          "at": "2026-09-01T23:55:43.211Z",
+          "generation": "202609012355",
+          "version": "v9.76",
+          "previous": "202609012345"
+        },
+        {
+          "name": "gate sandbox proof",
+          "at": "2026-09-01T23:55:43.919Z",
+          "status": 1
+        }
+      ],
+      "outcome": "failed",
+      "reason": "gate red: sandbox proof",
+      "finished_at": "2026-09-01T23:55:43.919Z",
+      "output": "laim no headroom anywhere in the flow module\n\nthe grid computation without a project, and a dash that gets out of the way\n\n  [PASS] a tool is added to the shell tray, which the cartridge does not own\n  [PASS] the tool does not duplicate itself if the cartridge runs twice\n  [PASS] arming is explicit, as it is for the scope\n  [PASS] an unarmed click still does nothing new\n  [PASS] the point query never measures a distance itself\n  [PASS] the block it writes is found by the filler, which selects by class\n  [PASS] the reader is told that nearest MAPPED is not nearest\n  [PASS] the reader is told it is a straight line and not a cable route\n  [PASS] the point answer never claims anything can connect\n  [PASS] an absent connection-points cartridge is an absence, not a guess\n  [PASS] the layers dash can be collapsed without entering fullscreen\n  [PASS] the collapsed choice is remembered, and every storage access is guarded\n  [PASS] the map is told to resize when the dash moves under it\n  [PASS] the toggle is reachable and labelled for assistive technology\n  [PASS] both new surfaces are published for review\n\nwhat is published as planned, kept apart from what exists\n\n  [PASS] the planned-change module is in the served cartridge\n  [PASS] the parsed product is kept so the module can read it\n  [PASS] a missing product is an absence, not a guess\n  [PASS] planned rows are reported in their OWN sentence, not in the circuit counts\n  [PASS] the page says a planned row is not a circuit today\n  [PASS] the page refuses commitment, consent and connection-date readings\n  [PASS] planned rows are stated as excluded from the counts above\n  [PASS] the planned state is published for review\n  [PASS] nothing in the planned sentence grades what it found\n\nthe computation left the sandbox, and ownership arrived\n\n  [PASS] the five network modules are no longer in the sandbox cartridge\n  [PASS] the sandbox cartridge is back under the 400 kB boundary with room to spare  316287 bytes\n  [PASS] the sandbox still CALLS them, from the cartridge that now carries them\n  [PASS] the card names the owners present\n  [PASS] a seam is named as a seam, with both ends said to differ\n  [PASS] a null owner is reported as unknown and never taken from the site\n  [PASS] an asset whose owner matches neither end is kept out of the boundary count\n  [PASS] the page refuses the counterparty reading\n  [PASS] the ownership state is published for review\n  [PASS] substation-intelligence is assembled from parts, not a monolith\n  [PASS] the five network modules are in the cartridge that owns the network\n  [PASS] the new owner-boundary module is there too\n  [PASS] it still carries the V8 engine verbatim, which is its slot contract\n  [PASS] it is under the boundary as well  180104 bytes\n\n614/617 checks passed\n\nFAILURES\n  the network-topology module is composed into the served bytes\n  the served bytes contain no site total of circuit ratings\n  the served bytes never read resistance or susceptance into the flow model\n"
+    },
+    {
+      "step": "202609012350-owner-boundary.mjs",
+      "id": "owner-boundary",
+      "version": "v9.76",
+      "started_at": "2026-09-01T23:56:35.378Z",
+      "dry": false,
+      "stages": [
+        {
+          "name": "applied",
+          "at": "2026-09-01T23:56:36.158Z",
+          "changed": [
+            "atlas/current.json",
+            "atlas/parts/202609012045-sld-sandbox-body.js",
+            "tools/ci/202609012200-local-ci.mjs",
+            "tools/proofs/202609012345-sld-sandbox.proof.mjs",
+            "atlas/manifests/202609012045-substation-intelligence-v9-63-parts.json",
+            "atlas/parts/202609012350-substation-intelligence-body.js"
+          ]
+        }
+      ],
+      "outcome": "failed",
+      "reason": "node --check tools/proofs/202609012345-sld-sandbox.proof.mjs",
+      "finished_at": "2026-09-01T23:56:36.287Z",
+      "output": "C:\\Users\\vikra\\OneDrive\\Documents\\GitHub\\gridatlas\\tools\\proofs\\202609012345-sld-sandbox.proof.mjs:2277\r\n  const shell = await readFile(join(REPO, 'atlas', 'releases',\r\n                ^^^^^\r\n\r\nSyntaxError: Unexpected reserved word\r\n    at checkSyntax (node:internal/main/check_syntax:72:5)\r\n\r\nNode.js v24.19.0\r\n"
+    },
+    {
+      "step": "202609012350-owner-boundary.mjs",
+      "id": "owner-boundary",
+      "version": "v9.76",
+      "started_at": "2026-09-01T23:57:20.940Z",
+      "dry": false,
+      "stages": [
+        {
+          "name": "applied",
+          "at": "2026-09-01T23:57:21.871Z",
+          "changed": [
+            "atlas/current.json",
+            "atlas/parts/202609012045-sld-sandbox-body.js",
+            "tools/ci/202609012200-local-ci.mjs",
+            "tools/proofs/202609012345-sld-sandbox.proof.mjs",
+            "atlas/manifests/202609012045-substation-intelligence-v9-63-parts.json",
+            "atlas/parts/202609012350-substation-intelligence-body.js"
+          ]
+        },
+        {
+          "name": "syntax checked",
+          "at": "2026-09-01T23:57:22.044Z"
+        },
+        {
+          "name": "step proof 202609012350-owner-boundary.proof.mjs",
+          "at": "2026-09-01T23:57:22.175Z",
+          "status": 0
+        },
+        {
+          "name": "composed",
+          "at": "2026-09-01T23:57:22.542Z",
+          "generation": "202609012357",
+          "version": "v9.76",
+          "previous": "202609012345"
+        },
+        {
+          "name": "gate sandbox proof",
+          "at": "2026-09-01T23:57:23.280Z",
+          "status": 0
+        },
+        {
+          "name": "gate run-current",
+          "at": "2026-09-01T23:57:24.313Z",
+          "status": 0
+        },
+        {
+          "name": "gate parts integrity",
+          "at": "2026-09-01T23:57:24.365Z",
+          "status": 1
+        }
+      ],
+      "outcome": "failed",
+      "reason": "gate red: parts integrity",
+      "finished_at": "2026-09-01T23:57:24.365Z",
+      "output": "\n16 parts manifest(s); serving generation 202609012357\n\n  [PASS] there is at least one parts manifest to check\n  [PASS] 202609012045-sld-sandbox-v9-8.js: the cartridge its manifest names exists\n  [PASS] 202609012045-sld-sandbox-v9-8.js: still hashes to its recorded digest\n  [skip] 202609012045-sld-sandbox-v9-8.js: superseded, its parts may move on\nnode:path:902\r\n    validateString(path, 'path');\r\n    ^\r\n\r\nTypeError [ERR_INVALID_ARG_TYPE]: The \"path\" argument must be of type string. Received undefined\r\n    at basename (node:path:902:5)\r\n    at file:///C:/Users/vikra/OneDrive/Documents/GitHub/gridatlas/tools/proofs/202609012105-parts-integrity.proof.mjs:76:25 {\r\n  code: 'ERR_INVALID_ARG_TYPE'\r\n}\r\n\r\nNode.js v24.19.0\r\n"
+    },
+    {
+      "step": "202609012350-owner-boundary.mjs",
+      "id": "owner-boundary",
+      "version": "v9.76",
+      "started_at": "2026-09-01T23:58:26.604Z",
+      "dry": false,
+      "stages": [
+        {
+          "name": "applied",
+          "at": "2026-09-01T23:58:27.371Z",
+          "changed": [
+            "atlas/parts/202609012045-sld-sandbox-body.js",
+            "tools/ci/202609012200-local-ci.mjs",
+            "tools/proofs/202609012345-sld-sandbox.proof.mjs",
+            "atlas/parts/202609012350-substation-intelligence-body.js",
+            "atlas/parts/202609012350-substation-intelligence-seed-parts.json"
+          ]
+        },
+        {
+          "name": "syntax checked",
+          "at": "2026-09-01T23:58:27.528Z"
+        },
+        {
+          "name": "step proof 202609012350-owner-boundary.proof.mjs",
+          "at": "2026-09-01T23:58:27.665Z",
+          "status": 0
+        },
+        {
+          "name": "composed",
+          "at": "2026-09-01T23:58:28.007Z",
+          "generation": "202609012358",
+          "version": "v9.76",
+          "previous": "202609012345"
+        },
+        {
+          "name": "gate sandbox proof",
+          "at": "2026-09-01T23:58:28.715Z",
+          "status": 0
+        },
+        {
+          "name": "gate run-current",
+          "at": "2026-09-01T23:58:29.716Z",
+          "status": 0
+        },
+        {
+          "name": "gate parts integrity",
+          "at": "2026-09-01T23:58:29.801Z",
+          "status": 0
+        },
+        {
+          "name": "gate all versions",
+          "at": "2026-09-01T23:58:29.999Z",
+          "status": 1
+        }
+      ],
+      "outcome": "failed",
+      "reason": "gate red: all versions",
+      "finished_at": "2026-09-01T23:58:29.999Z",
+      "output": "5\" is read correctly\n  [PASS] 202609012250-sld-sandbox-v9-8.js (202609012250): exposes its measuring surface\n  [PASS] 202609012250-sld-sandbox-v9-8.js (202609012250): agrees on all 8 cases, exactly\n  [PASS] 202609012250-sld-sandbox-v9-8.js (202609012250): reads ordinary voltages identically\n  [PASS] 202609012250-sld-sandbox-v9-8.js (202609012250): \"33000;750\" is read correctly\n  [PASS] 202609012250-sld-sandbox-v9-8.js (202609012250): \"33000;11000;415\" is read correctly\n  [PASS] 202609012308-sld-sandbox-v9-8.js (202609012308): exposes its measuring surface\n  [PASS] 202609012308-sld-sandbox-v9-8.js (202609012308): agrees on all 8 cases, exactly\n  [PASS] 202609012308-sld-sandbox-v9-8.js (202609012308): reads ordinary voltages identically\n  [PASS] 202609012308-sld-sandbox-v9-8.js (202609012308): \"33000;750\" is read correctly\n  [PASS] 202609012308-sld-sandbox-v9-8.js (202609012308): \"33000;11000;415\" is read correctly\n  [PASS] 202609012317-sld-sandbox-v9-8.js (202609012317): exposes its measuring surface\n  [PASS] 202609012317-sld-sandbox-v9-8.js (202609012317): agrees on all 8 cases, exactly\n  [PASS] 202609012317-sld-sandbox-v9-8.js (202609012317): reads ordinary voltages identically\n  [PASS] 202609012317-sld-sandbox-v9-8.js (202609012317): \"33000;750\" is read correctly\n  [PASS] 202609012317-sld-sandbox-v9-8.js (202609012317): \"33000;11000;415\" is read correctly\n  [PASS] 202609012345-sld-sandbox-v9-8.js (202609012345): exposes its measuring surface\n  [PASS] 202609012345-sld-sandbox-v9-8.js (202609012345): agrees on all 8 cases, exactly\n  [PASS] 202609012345-sld-sandbox-v9-8.js (202609012345): reads ordinary voltages identically\n  [PASS] 202609012345-sld-sandbox-v9-8.js (202609012345): \"33000;750\" is read correctly\n  [PASS] 202609012345-sld-sandbox-v9-8.js (202609012345): \"33000;11000;415\" is read correctly\n  [PASS] 202609012358-sld-sandbox-v9-8.js (202609012358): exposes its measuring surface\n  [PASS] 202609012358-sld-sandbox-v9-8.js (202609012358): agrees on all 8 cases, exactly\n  [PASS] 202609012358-sld-sandbox-v9-8.js (202609012358): reads ordinary voltages identically\n  [PASS] 202609012358-sld-sandbox-v9-8.js (202609012358): \"33000;750\" is read correctly\n  [PASS] 202609012358-sld-sandbox-v9-8.js (202609012358): \"33000;11000;415\" is read correctly\n  [PASS] every version that measures was actually compared\n\nthe versions the page lists are the versions that shipped\n\n  [PASS] the ledger is not empty and is strictly increasing, except after the one stamp typed ahead\n  [PASS] the versions in the ledger are strictly increasing without exception\n  [PASS] its newest entry is the composition actually being served\n  [PASS] every composition manifest from the ledger era onward appears in it\n         60 versions listed, 18 composition manifests retained, 46 versions older than the retained set\n\n85/86 checks passed\n\nFAILURES\n  every measuring artefact uses the estate haversine form, not only its radius — atlas/parts/202609012350-substation-intelligence-body.js\n"
+    },
+    {
+      "step": "202609012350-owner-boundary.mjs",
+      "id": "owner-boundary",
+      "version": "v9.76",
+      "started_at": "2026-09-02T00:01:33.913Z",
+      "dry": false,
+      "stages": [
+        {
+          "name": "applied",
+          "at": "2026-09-02T00:01:34.650Z",
+          "changed": [
+            "atlas/parts/202609012045-sld-sandbox-body.js",
+            "tools/ci/202609012200-local-ci.mjs",
+            "tools/proofs/202609012345-sld-sandbox.proof.mjs",
+            "atlas/parts/202609012350-substation-intelligence-body.js",
+            "atlas/parts/202609012350-substation-intelligence-seed-parts.json"
+          ]
+        },
+        {
+          "name": "syntax checked",
+          "at": "2026-09-02T00:01:34.812Z"
+        },
+        {
+          "name": "step proof 202609012350-owner-boundary.proof.mjs",
+          "at": "2026-09-02T00:01:34.921Z",
+          "status": 0
+        },
+        {
+          "name": "composed",
+          "at": "2026-09-02T00:01:35.230Z",
+          "generation": "202609020001",
+          "version": "v9.76",
+          "previous": "202609012345"
+        },
+        {
+          "name": "gate sandbox proof",
+          "at": "2026-09-02T00:01:35.287Z",
+          "status": 1
+        }
+      ],
+      "outcome": "failed",
+      "reason": "gate red: sandbox proof",
+      "finished_at": "2026-09-02T00:01:35.287Z",
+      "output": "\npre-snapped config adapter, carried forward\n\n  [PASS] the original init is still called and its return passed through\n  [PASS] the rewritten config is byte-identical to the original adapter's\n  [PASS] all five topology layers are un-snapped, and only those  132,220,275,400,66\n  [PASS] layers outside the closure keep their snap flag\n  [PASS] preload flags survive the rewrite\n  [PASS] the public state object keeps its original schema and generation  202608292126\n  [PASS] applied is true after a successful init\n  [PASS] a shell that no longer matches the expected snap contract fails closed\n  [PASS] the failure is recorded rather than swallowed  1\n\nthe measurement\n\nevalmachine.<anonymous>:45\r\n  if (!geodesy) throw new Error('grid-scope requires the geodesy module');\r\n                ^\r\n\r\nError: grid-scope requires the geodesy module\r\n    at evalmachine.<anonymous>:45:23\r\n    at evalmachine.<anonymous>:179:3\r\n    at Script.runInContext (node:vm:149:12)\r\n    at Object.runInContext (node:vm:301:6)\r\n    at file:///C:/Users/vikra/OneDrive/Documents/GitHub/gridatlas/tools/proofs/202609020001-sld-sandbox.proof.mjs:273:4\r\n\r\nNode.js v24.19.0\r\n"
+    },
+    {
+      "step": "202609012350-owner-boundary.mjs",
+      "id": "owner-boundary",
+      "version": "v9.76",
+      "started_at": "2026-09-02T00:02:02.171Z",
+      "dry": false,
+      "stages": [
+        {
+          "name": "applied",
+          "at": "2026-09-02T00:02:02.953Z",
+          "changed": [
+            "atlas/parts/202609012045-sld-sandbox-body.js",
+            "tools/ci/202609012200-local-ci.mjs",
+            "tools/proofs/202609012345-sld-sandbox.proof.mjs",
+            "atlas/parts/202609012350-substation-intelligence-body.js",
+            "atlas/parts/202609012350-substation-intelligence-seed-parts.json"
+          ]
+        },
+        {
+          "name": "syntax checked",
+          "at": "2026-09-02T00:02:03.127Z"
+        },
+        {
+          "name": "step proof 202609012350-owner-boundary.proof.mjs",
+          "at": "2026-09-02T00:02:03.235Z",
+          "status": 0
+        },
+        {
+          "name": "composed",
+          "at": "2026-09-02T00:02:03.546Z",
+          "generation": "202609020002",
+          "version": "v9.76",
+          "previous": "202609012345"
+        },
+        {
+          "name": "gate sandbox proof",
+          "at": "2026-09-02T00:02:04.238Z",
+          "status": 1
+        }
+      ],
+      "outcome": "failed",
+      "reason": "gate red: sandbox proof",
+      "finished_at": "2026-09-02T00:02:04.239Z",
+      "output": "ever walked through an unmodelled tap\n  [PASS] the conservation error is published for review\n  [PASS] the served bytes claim no headroom anywhere in the flow module\n\nthe grid computation without a project, and a dash that gets out of the way\n\n  [PASS] a tool is added to the shell tray, which the cartridge does not own\n  [PASS] the tool does not duplicate itself if the cartridge runs twice\n  [PASS] arming is explicit, as it is for the scope\n  [PASS] an unarmed click still does nothing new\n  [PASS] the point query never measures a distance itself\n  [PASS] the block it writes is found by the filler, which selects by class\n  [PASS] the reader is told that nearest MAPPED is not nearest\n  [PASS] the reader is told it is a straight line and not a cable route\n  [PASS] the point answer never claims anything can connect\n  [PASS] an absent connection-points cartridge is an absence, not a guess\n  [PASS] the layers dash can be collapsed without entering fullscreen\n  [PASS] the collapsed choice is remembered, and every storage access is guarded\n  [PASS] the map is told to resize when the dash moves under it\n  [PASS] the toggle is reachable and labelled for assistive technology\n  [PASS] both new surfaces are published for review\n\nwhat is published as planned, kept apart from what exists\n\n  [PASS] the planned-change module is in the served cartridge\n  [PASS] the parsed product is kept so the module can read it\n  [PASS] a missing product is an absence, not a guess\n  [PASS] planned rows are reported in their OWN sentence, not in the circuit counts\n  [PASS] the page says a planned row is not a circuit today\n  [PASS] the page refuses commitment, consent and connection-date readings\n  [PASS] planned rows are stated as excluded from the counts above\n  [PASS] the planned state is published for review\n  [PASS] nothing in the planned sentence grades what it found\n\nthe computation left the sandbox, and ownership arrived\n\n  [PASS] the five network modules are no longer in the sandbox cartridge\n  [PASS] the sandbox cartridge is back under the 400 kB boundary with room to spare  309924 bytes\n  [PASS] the sandbox still CALLS them, from the cartridge that now carries them\n  [PASS] the card names the owners present\n  [PASS] a seam is named as a seam, with both ends said to differ\n  [PASS] a null owner is reported as unknown and never taken from the site\n  [PASS] an asset whose owner matches neither end is kept out of the boundary count\n  [PASS] the page refuses the counterparty reading\n  [PASS] the ownership state is published for review\n  [PASS] substation-intelligence is assembled from parts, not a monolith\n  [PASS] the five network modules are in the cartridge that owns the network\n  [PASS] the new owner-boundary module is there too\n  [PASS] it still carries the V8 engine verbatim, which is its slot contract\n  [PASS] it is under the boundary as well  186975 bytes\n\n617/618 checks passed\n\nFAILURES\n  the served cartridge declares an Earth radius exactly ONCE -- 0 declarations\n"
+    },
+    {
+      "step": "202609012350-owner-boundary.mjs",
+      "id": "owner-boundary",
+      "version": "v9.76",
+      "started_at": "2026-09-02T00:02:44.629Z",
+      "dry": false,
+      "stages": [
+        {
+          "name": "applied",
+          "at": "2026-09-02T00:02:45.367Z",
+          "changed": [
+            "atlas/parts/202609012045-sld-sandbox-body.js",
+            "tools/ci/202609012200-local-ci.mjs",
+            "tools/proofs/202609012345-sld-sandbox.proof.mjs",
+            "atlas/parts/202609012350-substation-intelligence-body.js",
+            "atlas/parts/202609012350-substation-intelligence-seed-parts.json"
+          ]
+        },
+        {
+          "name": "syntax checked",
+          "at": "2026-09-02T00:02:45.525Z"
+        },
+        {
+          "name": "step proof 202609012350-owner-boundary.proof.mjs",
+          "at": "2026-09-02T00:02:45.636Z",
+          "status": 0
+        },
+        {
+          "name": "composed",
+          "at": "2026-09-02T00:02:45.946Z",
+          "generation": "202609020002",
+          "version": "v9.76",
+          "previous": "202609012345"
+        },
+        {
+          "name": "gate sandbox proof",
+          "at": "2026-09-02T00:02:46.612Z",
+          "status": 1
+        }
+      ],
+      "outcome": "failed",
+      "reason": "gate red: sandbox proof",
+      "finished_at": "2026-09-02T00:02:46.612Z",
+      "output": "ervation error is published for review\n  [PASS] the served bytes claim no headroom anywhere in the flow module\n\nthe grid computation without a project, and a dash that gets out of the way\n\n  [PASS] a tool is added to the shell tray, which the cartridge does not own\n  [PASS] the tool does not duplicate itself if the cartridge runs twice\n  [PASS] arming is explicit, as it is for the scope\n  [PASS] an unarmed click still does nothing new\n  [PASS] the point query never measures a distance itself\n  [PASS] the block it writes is found by the filler, which selects by class\n  [PASS] the reader is told that nearest MAPPED is not nearest\n  [PASS] the reader is told it is a straight line and not a cable route\n  [PASS] the point answer never claims anything can connect\n  [PASS] an absent connection-points cartridge is an absence, not a guess\n  [PASS] the layers dash can be collapsed without entering fullscreen\n  [PASS] the collapsed choice is remembered, and every storage access is guarded\n  [PASS] the map is told to resize when the dash moves under it\n  [PASS] the toggle is reachable and labelled for assistive technology\n  [PASS] both new surfaces are published for review\n\nwhat is published as planned, kept apart from what exists\n\n  [PASS] the planned-change module is in the served cartridge\n  [PASS] the parsed product is kept so the module can read it\n  [PASS] a missing product is an absence, not a guess\n  [PASS] planned rows are reported in their OWN sentence, not in the circuit counts\n  [PASS] the page says a planned row is not a circuit today\n  [PASS] the page refuses commitment, consent and connection-date readings\n  [PASS] planned rows are stated as excluded from the counts above\n  [PASS] the planned state is published for review\n  [PASS] nothing in the planned sentence grades what it found\n\nthe computation left the sandbox, and ownership arrived\n\n  [PASS] the five network modules are no longer in the sandbox cartridge\n  [PASS] the sandbox cartridge is back under the 400 kB boundary with room to spare  309924 bytes\n  [PASS] the sandbox still CALLS them, from the cartridge that now carries them\n  [PASS] the card names the owners present\n  [PASS] a seam is named as a seam, with both ends said to differ\n  [PASS] a null owner is reported as unknown and never taken from the site\n  [PASS] an asset whose owner matches neither end is kept out of the boundary count\n  [PASS] the page refuses the counterparty reading\n  [PASS] the ownership state is published for review\n  [PASS] substation-intelligence is assembled from parts, not a monolith\n  [PASS] the five network modules are in the cartridge that owns the network\n  [PASS] the new owner-boundary module is there too\n  [PASS] it still carries the V8 engine verbatim, which is its slot contract\n  [PASS] it is under the boundary as well  186975 bytes\n\n617/618 checks passed\n\nFAILURES\n  the COMPOSITION declares an Earth radius exactly ONCE -- 3 declarations across ' + (CURRENT.cartridges || []).length + ' cartridges\n"
+    },
+    {
+      "step": "202609012350-owner-boundary.mjs",
+      "id": "owner-boundary",
+      "version": "v9.76",
+      "started_at": "2026-09-02T00:03:49.099Z",
+      "dry": false,
+      "stages": [
+        {
+          "name": "applied",
+          "at": "2026-09-02T00:03:49.842Z",
+          "changed": [
+            "atlas/parts/202609012045-sld-sandbox-body.js",
+            "tools/ci/202609012200-local-ci.mjs",
+            "tools/proofs/202609012345-sld-sandbox.proof.mjs",
+            "atlas/parts/202609012350-substation-intelligence-body.js",
+            "atlas/parts/202609012350-substation-intelligence-seed-parts.json"
+          ]
+        },
+        {
+          "name": "syntax checked",
+          "at": "2026-09-02T00:03:50.002Z"
+        },
+        {
+          "name": "step proof 202609012350-owner-boundary.proof.mjs",
+          "at": "2026-09-02T00:03:50.113Z",
+          "status": 0
+        },
+        {
+          "name": "composed",
+          "at": "2026-09-02T00:03:50.431Z",
+          "generation": "202609020003",
+          "version": "v9.76",
+          "previous": "202609012345"
+        },
+        {
+          "name": "gate sandbox proof",
+          "at": "2026-09-02T00:03:51.140Z",
+          "status": 0
+        },
+        {
+          "name": "gate run-current",
+          "at": "2026-09-02T00:03:52.139Z",
+          "status": 0
+        },
+        {
+          "name": "gate parts integrity",
+          "at": "2026-09-02T00:03:52.213Z",
+          "status": 0
+        },
+        {
+          "name": "gate all versions",
+          "at": "2026-09-02T00:03:52.398Z",
+          "status": 1
+        }
+      ],
+      "outcome": "failed",
+      "reason": "gate red: all versions",
+      "finished_at": "2026-09-02T00:03:52.398Z",
+      "output": "9-8.js (202609012249): reads ordinary voltages identically\n  [PASS] 202609012249-sld-sandbox-v9-8.js (202609012249): \"33000;750\" is read correctly\n  [PASS] 202609012249-sld-sandbox-v9-8.js (202609012249): \"33000;11000;415\" is read correctly\n  [PASS] 202609012250-sld-sandbox-v9-8.js (202609012250): exposes its measuring surface\n  [PASS] 202609012250-sld-sandbox-v9-8.js (202609012250): agrees on all 8 cases, exactly\n  [PASS] 202609012250-sld-sandbox-v9-8.js (202609012250): reads ordinary voltages identically\n  [PASS] 202609012250-sld-sandbox-v9-8.js (202609012250): \"33000;750\" is read correctly\n  [PASS] 202609012250-sld-sandbox-v9-8.js (202609012250): \"33000;11000;415\" is read correctly\n  [PASS] 202609012308-sld-sandbox-v9-8.js (202609012308): exposes its measuring surface\n  [PASS] 202609012308-sld-sandbox-v9-8.js (202609012308): agrees on all 8 cases, exactly\n  [PASS] 202609012308-sld-sandbox-v9-8.js (202609012308): reads ordinary voltages identically\n  [PASS] 202609012308-sld-sandbox-v9-8.js (202609012308): \"33000;750\" is read correctly\n  [PASS] 202609012308-sld-sandbox-v9-8.js (202609012308): \"33000;11000;415\" is read correctly\n  [PASS] 202609012317-sld-sandbox-v9-8.js (202609012317): exposes its measuring surface\n  [PASS] 202609012317-sld-sandbox-v9-8.js (202609012317): agrees on all 8 cases, exactly\n  [PASS] 202609012317-sld-sandbox-v9-8.js (202609012317): reads ordinary voltages identically\n  [PASS] 202609012317-sld-sandbox-v9-8.js (202609012317): \"33000;750\" is read correctly\n  [PASS] 202609012317-sld-sandbox-v9-8.js (202609012317): \"33000;11000;415\" is read correctly\n  [PASS] 202609012345-sld-sandbox-v9-8.js (202609012345): exposes its measuring surface\n  [PASS] 202609012345-sld-sandbox-v9-8.js (202609012345): agrees on all 8 cases, exactly\n  [PASS] 202609012345-sld-sandbox-v9-8.js (202609012345): reads ordinary voltages identically\n  [PASS] 202609012345-sld-sandbox-v9-8.js (202609012345): \"33000;750\" is read correctly\n  [PASS] 202609012345-sld-sandbox-v9-8.js (202609012345): \"33000;11000;415\" is read correctly\n  [FAIL] 202609020003-sld-sandbox-v9-8.js (202609020003): exposes its measuring surface — a version whose surface cannot be found is not being compared\n  [FAIL] every version that measures was actually compared — 14 of 15\n\nthe versions the page lists are the versions that shipped\n\n  [PASS] the ledger is not empty and is strictly increasing, except after the one stamp typed ahead\n  [PASS] the versions in the ledger are strictly increasing without exception\n  [PASS] its newest entry is the composition actually being served\n  [PASS] every composition manifest from the ledger era onward appears in it\n         60 versions listed, 18 composition manifests retained, 46 versions older than the retained set\n\n80/82 checks passed\n\nFAILURES\n  202609020003-sld-sandbox-v9-8.js (202609020003): exposes its measuring surface — a version whose surface cannot be found is not being compared\n  every version that measures was actually compared — 14 of 15\n"
+    },
+    {
+      "step": "202609012350-owner-boundary.mjs",
+      "id": "owner-boundary",
+      "version": "v9.76",
+      "started_at": "2026-09-02T00:04:35.039Z",
+      "dry": false,
+      "stages": [
+        {
+          "name": "applied",
+          "at": "2026-09-02T00:04:35.815Z",
+          "changed": [
+            "atlas/parts/202609012045-sld-sandbox-body.js",
+            "tools/ci/202609012200-local-ci.mjs",
+            "tools/proofs/202609012150-all-versions.proof.mjs",
+            "tools/proofs/202609012345-sld-sandbox.proof.mjs",
+            "atlas/parts/202609012350-substation-intelligence-body.js",
+            "atlas/parts/202609012350-substation-intelligence-seed-parts.json"
+          ]
+        },
+        {
+          "name": "syntax checked",
+          "at": "2026-09-02T00:04:36.014Z"
+        },
+        {
+          "name": "step proof 202609012350-owner-boundary.proof.mjs",
+          "at": "2026-09-02T00:04:36.119Z",
+          "status": 0
+        },
+        {
+          "name": "composed",
+          "at": "2026-09-02T00:04:36.424Z",
+          "generation": "202609020004",
+          "version": "v9.76",
+          "previous": "202609012345"
+        },
+        {
+          "name": "gate sandbox proof",
+          "at": "2026-09-02T00:04:37.103Z",
+          "status": 0
+        },
+        {
+          "name": "gate run-current",
+          "at": "2026-09-02T00:04:38.079Z",
+          "status": 0
+        },
+        {
+          "name": "gate parts integrity",
+          "at": "2026-09-02T00:04:38.157Z",
+          "status": 0
+        },
+        {
+          "name": "gate all versions",
+          "at": "2026-09-02T00:04:38.346Z",
+          "status": 0
+        },
+        {
+          "name": "gate data-contract parity",
+          "at": "2026-09-02T00:04:38.392Z",
+          "status": 1
+        }
+      ],
+      "outcome": "failed",
+      "reason": "gate red: data-contract parity",
+      "finished_at": "2026-09-02T00:04:38.392Z",
+      "output": "\ndata-contract parity for 202609020004-gridatlas-v9.76 (4 cartridges)\n\nstreaming-parquet-bridge 202608301825: bytes name 0 product(s), entry declares 0\nuk-gazetteer-flyto 202609011141: bytes name 0 product(s), entry declares 0\nsld-sandbox 202609020004: bytes name 2 product(s), entry declares 2\n  PASS sld-sandbox: derived/gb-transmission-network.v1.json fetched by the bytes is declared on the entry\n  FAIL sld-sandbox: derived/gb-transmission-network.v1.json schema in the bytes is the schema the entry requires - bytes null, entry data-grid-gb.transmission-network.v1\n  PASS sld-sandbox: derived/price-decade-rollup.json fetched by the bytes is declared on the entry\n  PASS sld-sandbox: derived/price-decade-rollup.json schema in the bytes is the schema the entry requires\n  PASS sld-sandbox: declared source derived/gb-transmission-network.v1.json is named by the bytes\n  PASS sld-sandbox: declared source derived/price-decade-rollup.json is named by the bytes\nsubstation-intelligence 202609020004: bytes name 1 product(s), entry declares 1\n  PASS substation-intelligence: derived/connection-points.v3.json fetched by the bytes is declared on the entry\n  PASS substation-intelligence: derived/connection-points.v3.json schema in the bytes is the schema the entry requires\n  PASS substation-intelligence: declared source derived/connection-points.v3.json is named by the bytes\n  PASS substation-intelligence: capability connection-points-v3-consumed agrees with a declared schema\n  PASS the composition manifest is the current generation\n  PASS streaming-parquet-bridge: the composition manifest declares the same sources as current.json\n  PASS uk-gazetteer-flyto: the composition manifest declares the same sources as current.json\n  PASS sld-sandbox: the composition manifest declares the same sources as current.json\n  PASS substation-intelligence: the composition manifest declares the same sources as current.json\n\n14/15 checks passed\nFAILURES\n  sld-sandbox: derived/gb-transmission-network.v1.json schema in the bytes is the schema the entry requires - bytes null, entry data-grid-gb.transmission-network.v1\n"
+    },
+    {
+      "step": "202609012350-owner-boundary.mjs",
+      "id": "owner-boundary",
+      "version": "v9.76",
+      "started_at": "2026-09-02T00:05:28.252Z",
+      "dry": false,
+      "stages": [
+        {
+          "name": "applied",
+          "at": "2026-09-02T00:05:29.012Z",
+          "changed": [
+            "atlas/parts/202609012045-sld-sandbox-body.js",
+            "tools/ci/202609012200-local-ci.mjs",
+            "tools/proofs/202609012150-all-versions.proof.mjs",
+            "tools/proofs/202609012214-data-contract-parity.proof.mjs",
+            "tools/proofs/202609012345-sld-sandbox.proof.mjs",
+            "atlas/parts/202609012350-substation-intelligence-body.js",
+            "atlas/parts/202609012350-substation-intelligence-seed-parts.json"
+          ]
+        },
+        {
+          "name": "syntax checked",
+          "at": "2026-09-02T00:05:29.247Z"
+        },
+        {
+          "name": "step proof 202609012350-owner-boundary.proof.mjs",
+          "at": "2026-09-02T00:05:29.358Z",
+          "status": 0
+        },
+        {
+          "name": "composed",
+          "at": "2026-09-02T00:05:29.647Z",
+          "generation": "202609020005",
+          "version": "v9.76",
+          "previous": "202609012345"
+        },
+        {
+          "name": "gate sandbox proof",
+          "at": "2026-09-02T00:05:30.370Z",
+          "status": 0
+        },
+        {
+          "name": "gate run-current",
+          "at": "2026-09-02T00:05:31.405Z",
+          "status": 0
+        },
+        {
+          "name": "gate parts integrity",
+          "at": "2026-09-02T00:05:31.479Z",
+          "status": 0
+        },
+        {
+          "name": "gate all versions",
+          "at": "2026-09-02T00:05:31.670Z",
+          "status": 0
+        },
+        {
+          "name": "gate data-contract parity",
+          "at": "2026-09-02T00:05:31.727Z",
+          "status": 0
+        },
+        {
+          "name": "gate local CI (proofs, deep scan, stamps, cvaa)",
+          "at": "2026-09-02T00:06:00.047Z",
+          "status": 1
+        }
+      ],
+      "outcome": "failed",
+      "reason": "gate red: local CI (proofs, deep scan, stamps, cvaa)",
+      "finished_at": "2026-09-02T00:06:00.047Z",
+      "output": "S\n  \u001b[32mPASS\u001b[0m  scope ledger           PASS\n  \u001b[32mPASS\u001b[0m  composed cartridges    656/656\n  \u001b[32mPASS\u001b[0m  parts integrity        59/59\n  \u001b[32mPASS\u001b[0m  all versions           86/86\n  \u001b[31mFAIL\u001b[0m  module parity          failed\n  \u001b[32mPASS\u001b[0m  grid scope             33/33\n  \u001b[32mPASS\u001b[0m  network topology       47/47\n  \u001b[32mPASS\u001b[0m  assembler              31/31\n  \u001b[32mPASS\u001b[0m  source registry        42/42\n  \u001b[32mPASS\u001b[0m  map-click network      13/13\n  \u001b[32mPASS\u001b[0m  declared connections   23/23\n  \u001b[32mPASS\u001b[0m  sizing arithmetic      ok\n  \u001b[32mPASS\u001b[0m  data-contract parity   15/15\n  \u001b[32mPASS\u001b[0m  electrical distance    52/52\n  \u001b[32mPASS\u001b[0m  rating envelope        40/40\n  \u001b[32mPASS\u001b[0m  injection response (powerflow) 53/53\n  \u001b[32mPASS\u001b[0m  planned change         79/79\n  \u001b[32mPASS\u001b[0m  owner boundary         72/72\n\n\u001b[1mPASS 4 - checks that decline to check, and report success\u001b[0m\n  140 proof/verifier files read across 3 repositories\n  \u001b[32mno check skips its assertions on a missing dependency without a named opt-in\u001b[0m\n\n\u001b[1mPASS 5 - a stamp is a clock\u001b[0m\n\n  \u001b[1mgridatlas\u001b[0m  337 commits, 185 stamped more than 15 min from the commit clock; worst 17d96ed 202608300453 vs 202608300926 (-273 min)\n    \u001b[32mno file in the working tree is stamped ahead of 202609020005 UTC\u001b[0m\n    cvaa: not-immune, 101 finding(s) across 10 failing vaccine(s)\n    monotonic-utc-generations: 69 commit(s) off the clock, 10 out of order (history; reported, not amended)\n\n  \u001b[1mpipelinenews\u001b[0m  391 commits, 144 stamped more than 15 min from the commit clock; worst acc1309 202609010232 vs 202609010718 (-286 min)\n    \u001b[32mno file in the working tree is stamped ahead of 202609020005 UTC\u001b[0m\n    cvaa: not-immune, 171 finding(s) across 6 failing vaccine(s)\n    monotonic-utc-generations: 98 commit(s) off the clock, 22 out of order (history; reported, not amended)\n\n  \u001b[1mdata-grid-gb\u001b[0m  10 commits, 6 stamped more than 15 min from the commit clock; worst 04e0d62 202609012130 vs 202609011835 (+175 min)\n    \u001b[32mno file in the working tree is stamped ahead of 202609020005 UTC\u001b[0m\n    cvaa: not-immune, 8 finding(s) across 3 failing vaccine(s)\n    monotonic-utc-generations: 5 commit(s) off the clock, 1 out of order (history; reported, not amended)\n\n\u001b[31m1 flaw(s) found across 3 repositories.\u001b[0m\nsld-sandbox.js:45\r\n  if (!geodesy) throw new Error('grid-scope requires the geodesy module');\r\n                ^\r\n\r\nError: grid-scope requires the geodesy module\r\n    at sld-sandbox.js:45:23\r\n    at sld-sandbox.js:179:3\r\n    at Script.runInContext (node:vm:149:12)\r\n    at Object.runInContext (node:vm:301:6)\r\n    at file:///C:/Users/vikra/OneDrive/Documents/GitHub/gridatlas/tools/proofs/modules/202609011950-module-parity.proof.mjs:134:4\r\n\r\nNode.js v24.19.0\r\nwarning: unshare -rn unavailable; antibodies run without a network namespace\nwarning: unshare -rn unavailable; antibodies run without a network namespace\nwarning: unshare -rn unavailable; antibodies run without a network namespace\n"
+    },
+    {
+      "step": "202609012350-owner-boundary.mjs",
+      "id": "owner-boundary",
+      "version": "v9.76",
+      "started_at": "2026-09-02T00:06:31.147Z",
+      "dry": false,
+      "stages": [
+        {
+          "name": "applied",
+          "at": "2026-09-02T00:06:31.910Z",
+          "changed": [
+            "atlas/parts/202609012045-sld-sandbox-body.js",
+            "tools/ci/202609012200-local-ci.mjs",
+            "tools/proofs/202609012150-all-versions.proof.mjs",
+            "tools/proofs/202609012214-data-contract-parity.proof.mjs",
+            "tools/proofs/202609012345-sld-sandbox.proof.mjs",
+            "tools/proofs/modules/202609011950-module-parity.proof.mjs",
+            "atlas/parts/202609012350-substation-intelligence-body.js",
+            "atlas/parts/202609012350-substation-intelligence-seed-parts.json"
+          ]
+        },
+        {
+          "name": "syntax checked",
+          "at": "2026-09-02T00:06:32.185Z"
+        },
+        {
+          "name": "step proof 202609012350-owner-boundary.proof.mjs",
+          "at": "2026-09-02T00:06:32.292Z",
+          "status": 0
+        },
+        {
+          "name": "composed",
+          "at": "2026-09-02T00:06:32.592Z",
+          "generation": "202609020006",
+          "version": "v9.76",
+          "previous": "202609012345"
+        },
+        {
+          "name": "gate sandbox proof",
+          "at": "2026-09-02T00:06:33.272Z",
+          "status": 0
+        },
+        {
+          "name": "gate run-current",
+          "at": "2026-09-02T00:06:34.261Z",
+          "status": 0
+        },
+        {
+          "name": "gate parts integrity",
+          "at": "2026-09-02T00:06:34.334Z",
+          "status": 0
+        },
+        {
+          "name": "gate all versions",
+          "at": "2026-09-02T00:06:34.522Z",
+          "status": 0
+        },
+        {
+          "name": "gate data-contract parity",
+          "at": "2026-09-02T00:06:34.578Z",
+          "status": 0
+        },
+        {
+          "name": "gate local CI (proofs, deep scan, stamps, cvaa)",
+          "at": "2026-09-02T00:07:01.882Z",
+          "status": 0
+        },
+        {
+          "name": "gate step proof after compose 202609012350-owner-boundary.proof.mjs",
+          "at": "2026-09-02T00:07:01.992Z",
+          "status": 0
+        },
+        {
+          "name": "committed",
+          "at": "2026-09-02T00:07:02.150Z",
+          "commit": "9028585",
+          "subject_stamp": "202609020006",
+          "clock_at_commit": "202609020007"
+        },
+        {
+          "name": "pushed",
+          "at": "2026-09-02T00:07:04.408Z"
+        }
+      ],
+      "actions": [
+        {
+          "name": "202608312212 GridAtlas cartridge proof",
+          "status": "completed",
+          "conclusion": "success",
+          "url": "https://github.com/Ventusltd/gridatlas/actions/runs/33573972564"
+        },
+        {
+          "name": "202608310050 GridAtlas next-version builders",
+          "status": "completed",
+          "conclusion": "success",
+          "url": "https://github.com/Ventusltd/gridatlas/actions/runs/33573972611"
+        },
+        {
+          "name": "pages build and deployment",
+          "status": "completed",
+          "conclusion": "success",
+          "url": "https://github.com/Ventusltd/gridatlas/actions/runs/33573970493"
+        }
+      ],
+      "live": {
+        "generation": "202609020006",
+        "version": "v9.76",
+        "cartridge_sha_matches": true,
+        "at": "2026-09-02T00:08:05.475Z"
+      },
+      "generation": "202609020006",
+      "commit": "9028585cccee1507ff52d62661d019ac5a165214",
+      "finished_at": "2026-09-02T00:08:06.028Z",
+      "outcome": "live"
+    },
+    {
+      "step": "202609020015-powerflow-stopship.mjs",
+      "id": "powerflow-stopship",
+      "version": "v9.77",
+      "started_at": "2026-09-02T00:16:13.071Z",
+      "dry": false,
+      "stages": [
+        {
+          "name": "applied",
+          "at": "2026-09-02T00:16:13.797Z",
+          "changed": [
+            "atlas/parts/202609012045-sld-sandbox-body.js",
+            "tools/ci/202609012200-local-ci.mjs",
+            "tools/proofs/202609020006-sld-sandbox.proof.mjs",
+            "atlas/modules/202609020015-injection-response.js",
+            "tools/proofs/modules/202609020015-injection-response.proof.mjs"
+          ]
+        },
+        {
+          "name": "syntax checked",
+          "at": "2026-09-02T00:16:13.996Z"
+        },
+        {
+          "name": "step proof 202609020015-injection-response.proof.mjs",
+          "at": "2026-09-02T00:16:14.115Z",
+          "status": 0
+        },
+        {
+          "name": "composed",
+          "at": "2026-09-02T00:16:14.449Z",
+          "generation": "202609020016",
+          "version": "v9.77",
+          "previous": "202609020006"
+        },
+        {
+          "name": "gate sandbox proof",
+          "at": "2026-09-02T00:16:15.099Z",
+          "status": 1
+        }
+      ],
+      "outcome": "failed",
+      "reason": "gate red: sandbox proof",
+      "finished_at": "2026-09-02T00:16:15.100Z",
+      "output": "bered, and every storage access is guarded\n  [PASS] the map is told to resize when the dash moves under it\n  [PASS] the toggle is reachable and labelled for assistive technology\n  [PASS] both new surfaces are published for review\n\nwhat is published as planned, kept apart from what exists\n\n  [PASS] the planned-change module is in the served cartridge\n  [PASS] the parsed product is kept so the module can read it\n  [PASS] a missing product is an absence, not a guess\n  [PASS] planned rows are reported in their OWN sentence, not in the circuit counts\n  [PASS] the page says a planned row is not a circuit today\n  [PASS] the page refuses commitment, consent and connection-date readings\n  [PASS] planned rows are stated as excluded from the counts above\n  [PASS] the planned state is published for review\n  [PASS] nothing in the planned sentence grades what it found\n\nthe computation left the sandbox, and ownership arrived\n\n  [PASS] the five network modules are no longer in the sandbox cartridge\n  [PASS] the sandbox cartridge is back under the 400 kB boundary with room to spare  312084 bytes\n  [PASS] the sandbox still CALLS them, from the cartridge that now carries them\n  [PASS] the card names the owners present\n  [PASS] a seam is named as a seam, with both ends said to differ\n  [PASS] a null owner is reported as unknown and never taken from the site\n  [PASS] an asset whose owner matches neither end is kept out of the boundary count\n  [PASS] the page refuses the counterparty reading\n  [PASS] the ownership state is published for review\n  [PASS] substation-intelligence is assembled from parts, not a monolith\n  [FAIL] the five network modules are in the cartridge that owns the network  \n  [PASS] the new owner-boundary module is there too\n  [PASS] it still carries the V8 engine verbatim, which is its slot contract\n  [PASS] it is under the boundary as well  194913 bytes\n\nthe powerflow stop-ship, closed\n\n  [PASS] the successor powerflow module is what ships\n  [PASS] the card asks for a DECLARED sink, never the first bus to hand\n  [PASS] the card gates on publishable, not on one bus balancing\n  [PASS] an unavailable answer is stated to the reader, not swallowed\n  [PASS] the card names the component the transfer was solved in\n  [PASS] refusals are counted for review\n  [FAIL] the served module refuses a cross-component transfer  \n  [PASS] the served module accepts on all three conditions, not one\n  [PASS] the served module keys edges on the published row, not its values\n  [FAIL] the sink rule is published so a reader can see what was assumed  \n\n623/629 checks passed\n\nFAILURES\n  the injection-response module is in the served cartridge\n  the served bytes never read resistance or susceptance into the flow model\n  an answer that fails its own Kirchhoff check is discarded, not printed\n  the five network modules are in the cartridge that owns the network\n  the served module refuses a cross-component transfer\n  the sink rule is published so a reader can see what was assumed\n"
+    },
+    {
+      "step": "202609020015-powerflow-stopship.mjs",
+      "id": "powerflow-stopship",
+      "version": "v9.77",
+      "started_at": "2026-09-02T00:16:49.884Z",
+      "dry": false,
+      "stages": [
+        {
+          "name": "applied",
+          "at": "2026-09-02T00:16:50.657Z",
+          "changed": [
+            "atlas/parts/202609012045-sld-sandbox-body.js",
+            "tools/ci/202609012200-local-ci.mjs",
+            "tools/proofs/202609020006-sld-sandbox.proof.mjs",
+            "atlas/modules/202609020015-injection-response.js",
+            "tools/proofs/modules/202609020015-injection-response.proof.mjs"
+          ]
+        },
+        {
+          "name": "syntax checked",
+          "at": "2026-09-02T00:16:50.863Z"
+        },
+        {
+          "name": "step proof 202609020015-injection-response.proof.mjs",
+          "at": "2026-09-02T00:16:50.988Z",
+          "status": 0
+        },
+        {
+          "name": "composed",
+          "at": "2026-09-02T00:16:51.354Z",
+          "generation": "202609020016",
+          "version": "v9.77",
+          "previous": "202609020006"
+        },
+        {
+          "name": "gate sandbox proof",
+          "at": "2026-09-02T00:16:52.004Z",
+          "status": 1
+        }
+      ],
+      "outcome": "failed",
+      "reason": "gate red: sandbox proof",
+      "finished_at": "2026-09-02T00:16:52.004Z",
+      "output": "a straight line and not a cable route\n  [PASS] the point answer never claims anything can connect\n  [PASS] an absent connection-points cartridge is an absence, not a guess\n  [PASS] the layers dash can be collapsed without entering fullscreen\n  [PASS] the collapsed choice is remembered, and every storage access is guarded\n  [PASS] the map is told to resize when the dash moves under it\n  [PASS] the toggle is reachable and labelled for assistive technology\n  [PASS] both new surfaces are published for review\n\nwhat is published as planned, kept apart from what exists\n\n  [PASS] the planned-change module is in the served cartridge\n  [PASS] the parsed product is kept so the module can read it\n  [PASS] a missing product is an absence, not a guess\n  [PASS] planned rows are reported in their OWN sentence, not in the circuit counts\n  [PASS] the page says a planned row is not a circuit today\n  [PASS] the page refuses commitment, consent and connection-date readings\n  [PASS] planned rows are stated as excluded from the counts above\n  [PASS] the planned state is published for review\n  [PASS] nothing in the planned sentence grades what it found\n\nthe computation left the sandbox, and ownership arrived\n\n  [PASS] the five network modules are no longer in the sandbox cartridge\n  [PASS] the sandbox cartridge is back under the 400 kB boundary with room to spare  312084 bytes\n  [PASS] the sandbox still CALLS them, from the cartridge that now carries them\n  [PASS] the card names the owners present\n  [PASS] a seam is named as a seam, with both ends said to differ\n  [PASS] a null owner is reported as unknown and never taken from the site\n  [PASS] an asset whose owner matches neither end is kept out of the boundary count\n  [PASS] the page refuses the counterparty reading\n  [PASS] the ownership state is published for review\n  [PASS] substation-intelligence is assembled from parts, not a monolith\n  [PASS] the five network modules are in the cartridge that owns the network\n  [PASS] the new owner-boundary module is there too\n  [PASS] it still carries the V8 engine verbatim, which is its slot contract\n  [PASS] it is under the boundary as well  194913 bytes\n\nthe powerflow stop-ship, closed\n\n  [PASS] the successor powerflow module is what ships\n  [PASS] the card asks for a DECLARED sink, never the first bus to hand\n  [PASS] the card gates on publishable, not on one bus balancing\n  [PASS] an unavailable answer is stated to the reader, not swallowed\n  [PASS] the card names the component the transfer was solved in\n  [PASS] refusals are counted for review\n  [FAIL] the served module refuses a cross-component transfer  \n  [PASS] the served module accepts on all three conditions, not one\n  [PASS] the served module keys edges on the published row, not its values\n  [FAIL] the sink rule is published so a reader can see what was assumed  \n\n627/629 checks passed\n\nFAILURES\n  the served module refuses a cross-component transfer\n  the sink rule is published so a reader can see what was assumed\n"
+    },
+    {
+      "step": "202609020015-powerflow-stopship.mjs",
+      "id": "powerflow-stopship",
+      "version": "v9.77",
+      "started_at": "2026-09-02T00:17:11.683Z",
+      "dry": false,
+      "stages": [
+        {
+          "name": "applied",
+          "at": "2026-09-02T00:17:12.460Z",
+          "changed": [
+            "atlas/parts/202609012045-sld-sandbox-body.js",
+            "tools/ci/202609012200-local-ci.mjs",
+            "tools/proofs/202609020006-sld-sandbox.proof.mjs",
+            "atlas/modules/202609020015-injection-response.js",
+            "tools/proofs/modules/202609020015-injection-response.proof.mjs"
+          ]
+        },
+        {
+          "name": "syntax checked",
+          "at": "2026-09-02T00:17:12.650Z"
+        },
+        {
+          "name": "step proof 202609020015-injection-response.proof.mjs",
+          "at": "2026-09-02T00:17:12.764Z",
+          "status": 0
+        },
+        {
+          "name": "composed",
+          "at": "2026-09-02T00:17:13.084Z",
+          "generation": "202609020017",
+          "version": "v9.77",
+          "previous": "202609020006"
+        },
+        {
+          "name": "gate sandbox proof",
+          "at": "2026-09-02T00:17:13.759Z",
+          "status": 0
+        },
+        {
+          "name": "gate run-current",
+          "at": "2026-09-02T00:17:14.729Z",
+          "status": 0
+        },
+        {
+          "name": "gate parts integrity",
+          "at": "2026-09-02T00:17:14.806Z",
+          "status": 0
+        },
+        {
+          "name": "gate all versions",
+          "at": "2026-09-02T00:17:14.999Z",
+          "status": 1
+        }
+      ],
+      "outcome": "failed",
+      "reason": "gate red: all versions",
+      "finished_at": "2026-09-02T00:17:14.999Z",
+      "output": "9-8.js (202609012250): reads ordinary voltages identically\n  [PASS] 202609012250-sld-sandbox-v9-8.js (202609012250): \"33000;750\" is read correctly\n  [PASS] 202609012250-sld-sandbox-v9-8.js (202609012250): \"33000;11000;415\" is read correctly\n  [PASS] 202609012308-sld-sandbox-v9-8.js (202609012308): exposes its measuring surface\n  [PASS] 202609012308-sld-sandbox-v9-8.js (202609012308): agrees on all 8 cases, exactly\n  [PASS] 202609012308-sld-sandbox-v9-8.js (202609012308): reads ordinary voltages identically\n  [PASS] 202609012308-sld-sandbox-v9-8.js (202609012308): \"33000;750\" is read correctly\n  [PASS] 202609012308-sld-sandbox-v9-8.js (202609012308): \"33000;11000;415\" is read correctly\n  [PASS] 202609012317-sld-sandbox-v9-8.js (202609012317): exposes its measuring surface\n  [PASS] 202609012317-sld-sandbox-v9-8.js (202609012317): agrees on all 8 cases, exactly\n  [PASS] 202609012317-sld-sandbox-v9-8.js (202609012317): reads ordinary voltages identically\n  [PASS] 202609012317-sld-sandbox-v9-8.js (202609012317): \"33000;750\" is read correctly\n  [PASS] 202609012317-sld-sandbox-v9-8.js (202609012317): \"33000;11000;415\" is read correctly\n  [PASS] 202609012345-sld-sandbox-v9-8.js (202609012345): exposes its measuring surface\n  [PASS] 202609012345-sld-sandbox-v9-8.js (202609012345): agrees on all 8 cases, exactly\n  [PASS] 202609012345-sld-sandbox-v9-8.js (202609012345): reads ordinary voltages identically\n  [PASS] 202609012345-sld-sandbox-v9-8.js (202609012345): \"33000;750\" is read correctly\n  [PASS] 202609012345-sld-sandbox-v9-8.js (202609012345): \"33000;11000;415\" is read correctly\n  [FAIL] 202609020006-sld-sandbox-v9-8.js (202609020006): exposes its measuring surface — a version whose surface cannot be found is not being compared\n  [PASS] 202609020017-sld-sandbox-v9-8.js (202609020017): exposes its measuring surface\n  [PASS] 202609020017-sld-sandbox-v9-8.js (202609020017): agrees on all 8 cases, exactly\n  [PASS] 202609020017-sld-sandbox-v9-8.js (202609020017): reads ordinary voltages identically\n  [PASS] 202609020017-sld-sandbox-v9-8.js (202609020017): \"33000;750\" is read correctly\n  [PASS] 202609020017-sld-sandbox-v9-8.js (202609020017): \"33000;11000;415\" is read correctly\n  [FAIL] every version that measures was actually compared — 15 of 16\n\nthe versions the page lists are the versions that shipped\n\n  [PASS] the ledger is not empty and is strictly increasing, except after the one stamp typed ahead\n  [PASS] the versions in the ledger are strictly increasing without exception\n  [PASS] its newest entry is the composition actually being served\n  [PASS] every composition manifest from the ledger era onward appears in it\n         61 versions listed, 19 composition manifests retained, 46 versions older than the retained set\n\n85/87 checks passed\n\nFAILURES\n  202609020006-sld-sandbox-v9-8.js (202609020006): exposes its measuring surface — a version whose surface cannot be found is not being compared\n  every version that measures was actually compared — 15 of 16\n"
+    },
+    {
+      "step": "202609020015-powerflow-stopship.mjs",
+      "id": "powerflow-stopship",
+      "version": "v9.77",
+      "started_at": "2026-09-02T00:18:23.615Z",
+      "dry": false,
+      "stages": [
+        {
+          "name": "tooling committed",
+          "at": "2026-09-02T00:18:24.370Z",
+          "commit": "df5a47d"
+        },
+        {
+          "name": "applied",
+          "at": "2026-09-02T00:18:24.454Z",
+          "changed": [
+            "atlas/parts/202609012045-sld-sandbox-body.js",
+            "tools/ci/202609012200-local-ci.mjs",
+            "tools/proofs/202609020006-sld-sandbox.proof.mjs",
+            "atlas/modules/202609020015-injection-response.js",
+            "tools/proofs/modules/202609020015-injection-response.proof.mjs"
+          ]
+        },
+        {
+          "name": "syntax checked",
+          "at": "2026-09-02T00:18:24.658Z"
+        },
+        {
+          "name": "step proof 202609020015-injection-response.proof.mjs",
+          "at": "2026-09-02T00:18:24.771Z",
+          "status": 0
+        },
+        {
+          "name": "composed",
+          "at": "2026-09-02T00:18:25.110Z",
+          "generation": "202609020018",
+          "version": "v9.77",
+          "previous": "202609020006"
+        },
+        {
+          "name": "gate sandbox proof",
+          "at": "2026-09-02T00:18:25.772Z",
+          "status": 0
+        },
+        {
+          "name": "gate run-current",
+          "at": "2026-09-02T00:18:26.737Z",
+          "status": 0
+        },
+        {
+          "name": "gate parts integrity",
+          "at": "2026-09-02T00:18:26.817Z",
+          "status": 0
+        },
+        {
+          "name": "gate all versions",
+          "at": "2026-09-02T00:18:27.008Z",
+          "status": 0
+        },
+        {
+          "name": "gate data-contract parity",
+          "at": "2026-09-02T00:18:27.063Z",
+          "status": 0
+        },
+        {
+          "name": "gate local CI (proofs, deep scan, stamps, cvaa)",
+          "at": "2026-09-02T00:18:54.298Z",
+          "status": 0
+        },
+        {
+          "name": "gate step proof after compose 202609020015-injection-response.proof.mjs",
+          "at": "2026-09-02T00:18:54.419Z",
+          "status": 0
+        },
+        {
+          "name": "committed",
+          "at": "2026-09-02T00:18:54.577Z",
+          "commit": "60d1938",
+          "subject_stamp": "202609020018",
+          "clock_at_commit": "202609020018"
+        },
+        {
+          "name": "pushed",
+          "at": "2026-09-02T00:18:56.666Z"
+        }
+      ],
+      "actions": [
+        {
+          "name": "202608310050 GridAtlas next-version builders",
+          "status": "completed",
+          "conclusion": "success",
+          "url": "https://github.com/Ventusltd/gridatlas/actions/runs/33574821630"
+        },
+        {
+          "name": "202608312212 GridAtlas cartridge proof",
+          "status": "completed",
+          "conclusion": "success",
+          "url": "https://github.com/Ventusltd/gridatlas/actions/runs/33574821628"
+        },
+        {
+          "name": "pages build and deployment",
+          "status": "completed",
+          "conclusion": "success",
+          "url": "https://github.com/Ventusltd/gridatlas/actions/runs/33574820496"
+        }
+      ],
+      "live": {
+        "generation": "202609020018",
+        "version": "v9.77",
+        "cartridge_sha_matches": true,
+        "at": "2026-09-02T00:19:57.650Z"
+      },
+      "generation": "202609020018",
+      "commit": "60d193827d336a40c91ec64cce4bc56e50074bcb",
+      "finished_at": "2026-09-02T00:19:58.041Z",
+      "outcome": "live"
+    }
+  ]
+}

@@ -1,0 +1,118 @@
+TAP version 13
+# Subtest: H01: OFF->ON revalidates the live feed (no cached promise)
+ok 1 - H01: OFF->ON revalidates the live feed (no cached promise)
+  ---
+  duration_ms: 138.836709
+  type: 'test'
+  ...
+# Subtest: H01/F3: the 10-minute refresh re-requests the live feed, not only index.json
+ok 2 - H01/F3: the 10-minute refresh re-requests the live feed, not only index.json
+  ---
+  duration_ms: 125.105496
+  type: 'test'
+  ...
+# Subtest: H02/F4: a feed whose query_end_utc is 6 h old is STALE in state, label and status
+ok 3 - H02/F4: a feed whose query_end_utc is 6 h old is STALE in state, label and status
+  ---
+  duration_ms: 46.618913
+  type: 'test'
+  ...
+# Subtest: H03: ok() rejects malformed and out-of-box coordinates; such a record is never drawn
+ok 4 - H03: ok() rejects malformed and out-of-box coordinates; such a record is never drawn
+  ---
+  duration_ms: 49.58143
+  type: 'test'
+  ...
+# Subtest: H04: a shard is rejected when its count, bytes or sha256 differ from the index entry; a matching shard loads
+ok 5 - H04: a shard is rejected when its count, bytes or sha256 differ from the index entry; a matching shard loads
+  ---
+  duration_ms: 46.222512
+  type: 'test'
+  ...
+# Subtest: H05: a sub-day budget caption never calls whole-day index sums "in window"
+ok 6 - H05: a sub-day budget caption never calls whole-day index sums "in window"
+  ---
+  duration_ms: 25.996173
+  type: 'test'
+  ...
+# Subtest: F2: CUSTOM clicked during the first LOADING neither throws nor paints the stale 24h result
+ok 7 - F2: CUSTOM clicked during the first LOADING neither throws nor paints the stale 24h result
+  ---
+  duration_ms: 51.19277
+  type: 'test'
+  ...
+# Subtest: F1: an unparsable feed timestamp does not wedge the UI (label leaves [LOAD], chips still load)
+ok 8 - F1: an unparsable feed timestamp does not wedge the UI (label leaves [LOAD], chips still load)
+  ---
+  duration_ms: 81.958839
+  type: 'test'
+  ...
+# Subtest: F5: PREV is disabled in feed-only mode
+ok 9 - F5: PREV is disabled in feed-only mode
+  ---
+  duration_ms: 47.686772
+  type: 'test'
+  ...
+# Subtest: F6 / owner device 2: feed-mode coverage reads "unknown (live feed records only its last collection window)", never a percentage
+ok 10 - F6 / owner device 2: feed-mode coverage reads "unknown (live feed records only its last collection window)", never a percentage
+  ---
+  duration_ms: 105.894298
+  type: 'test'
+  ...
+# Subtest: F9: bytes:null is estimated, not counted as 0, in the 32 MB budget
+ok 11 - F9: bytes:null is estimated, not counted as 0, in the 32 MB budget
+  ---
+  duration_ms: 97.474938
+  type: 'test'
+  ...
+# Subtest: R02: a v1 index reads "archive unavailable", not "archive not yet published"
+ok 12 - R02: a v1 index reads "archive unavailable", not "archive not yet published"
+  ---
+  duration_ms: 44.745744
+  type: 'test'
+  ...
+# Subtest: R04: CUSTOM shows a custom-window caption at once, not the previous period until APPLY
+ok 13 - R04: CUSTOM shows a custom-window caption at once, not the previous period until APPLY
+  ---
+  duration_ms: 113.675146
+  type: 'test'
+  ...
+# Subtest: LP: LOAD POINTS stops before a day that would break 40,000 flashes or 32 MB
+not ok 14 - LP: LOAD POINTS stops before a day that would break 40,000 flashes or 32 MB
+  ---
+  duration_ms: 99.57974
+  type: 'test'
+  location: '/tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/gen-202610262310/test-fixes.mjs:193:1'
+  failureType: 'testCodeFailure'
+  error: 'loaded 60000 > 40,000'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: true
+  actual: false
+  operator: '=='
+  stack: |-
+    TestContext.<anonymous> (file:///tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/gen-202610262310/test-fixes.mjs:199:10)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: Owner device 1: in feed fallback the 30D-12M chips respond with "archive not yet published: earlier coverage unknown, not zero"
+ok 15 - Owner device 1: in feed fallback the 30D-12M chips respond with "archive not yet published: earlier coverage unknown, not zero"
+  ---
+  duration_ms: 83.526903
+  type: 'test'
+  ...
+# Subtest: Owner device 3: bottom padding is inline on the lightning main group only; no original node or selector touched
+ok 16 - Owner device 3: bottom padding is inline on the lightning main group only; no original node or selector touched
+  ---
+  duration_ms: 3.093627
+  type: 'test'
+  ...
+1..16
+# tests 16
+# suites 0
+# pass 15
+# fail 1
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 1262.055413

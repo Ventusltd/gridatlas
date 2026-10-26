@@ -1,0 +1,51 @@
+{
+  "schema": "gridatlas.mobile-static-audit.v1",
+  "target": {
+    "cartridge": "/tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/regression-challenge-C/shadow-after/atlas/cartridges/202609241334-sld-sandbox-v9-8.js",
+    "shell_css": "/tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/regression-challenge-C/shadow-after/atlas/releases/202608300453-atlas-v9/ventusv8.css",
+    "shell_html": "/tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/regression-challenge-C/shadow-after/atlas/releases/202608300453-atlas-v9/index.html"
+  },
+  "viewports": [
+    {
+      "name": "phone_portrait_390",
+      "width": 390,
+      "height": 844,
+      "active_rules": [
+        "shell:max-width-480",
+        "cartridge:max-width-700"
+      ]
+    },
+    {
+      "name": "phone_portrait_414",
+      "width": 414,
+      "height": 896,
+      "active_rules": [
+        "shell:max-width-480",
+        "cartridge:max-width-700"
+      ]
+    },
+    {
+      "name": "phone_landscape_844",
+      "width": 844,
+      "height": 390,
+      "active_rules": [
+        "shell:max-height-600"
+      ]
+    }
+  ],
+  "findings": [
+    {
+      "code": "LANDSCAPE_CONTROL_STACK_UNBOUNDED",
+      "detail": "6 shell buttons plus the injected GB control remain a bottom stack with no short-height bound, scroll or collapse rule",
+      "shell_button_count": 6
+    },
+    {
+      "code": "LANDSCAPE_SEARCH_RESULTS_UNBOUNDED",
+      "detail": "the fixed search dropdown can extend 328px from the map top and has no short-height override; the map container clips overflow",
+      "extent_from_map_top_px": 328
+    }
+  ],
+  "disease_fixture": "FIRES",
+  "healthy_fixture": "SILENT",
+  "status": "MOBILE_STATIC_FAILURE"
+}

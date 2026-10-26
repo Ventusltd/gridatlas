@@ -1,0 +1,46 @@
+{
+  "route": "candidate",
+  "url": "http://127.0.0.1:8144/wt/atlas/v/202610261949/",
+  "minutes": 11,
+  "harness": "lead-shim, real wall clock (no page.clock), viewport 1440x900 desktop",
+  "lightningDataDir": "/tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/lightning/fixtures/lightning-archive/data",
+  "startedAt": "2026-10-26T22:44:19.440Z",
+  "off": null,
+  "on": null,
+  "boot": {
+    "bootMs": 6486,
+    "lightningRequestsAtBoot": 0,
+    "sample": {
+      "label": "after boot",
+      "t_ms": 8544,
+      "moduleTimers": [
+        {
+          "kind": "interval",
+          "ms": 250,
+          "t": 433,
+          "cleared": true,
+          "line": 8851
+        }
+      ],
+      "moduleFetches": [],
+      "moduleXhrs": [],
+      "allIntervalsCreated": 9,
+      "allIntervalsActive": 2,
+      "state": {
+        "on": false,
+        "installed": true,
+        "requests": 0,
+        "timer": false,
+        "serial": 0,
+        "last": null,
+        "errors": 0
+      },
+      "map": {
+        "source": false,
+        "layer": false,
+        "sources": 56,
+        "layers": 100
+      }
+    }
+  }
+}

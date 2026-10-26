@@ -1,0 +1,37 @@
+== lint
+scope-ledger=PASS active=none master=done
+exit=0
+== state
+scope-ledger=PASS active=none master=done
+cmp=0
+== proof 202610262323
+exit=0
+== proof 202610262318
+exit=0
+== proof 202610262310
+exit=0
+== proof 202610261949
+exit=0
+== run-current
+exit=0
+== verify-compose
+{"composition":"PASS","generation":"202609241334","release_id":"202608300453-atlas-v9","immutable_releases":8,"cartridges":["streaming-parquet-bridge","uk-gazetteer-flyto","substation-intelligence","sld-sandbox"]}
+exit=0
+== verify-candidate
+ "result": "PASS",
+ "failures": []
+== loader cmp
+cmp=0
+ 23226 atlas/modules/202610262323-uk-lightning-overlay.js
+458445 atlas/cartridges/202610262323-sld-sandbox-v9-8.js
+481671 total
+== protected diff vs fda6b10
+(empty = unchanged)
+== earlier candidates untouched
+none
+== chatgpt
+# pass 6
+# fail 0
+== fixtests
+# pass 24
+# fail 0
