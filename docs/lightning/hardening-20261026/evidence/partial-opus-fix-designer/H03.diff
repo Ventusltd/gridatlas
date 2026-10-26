@@ -1,0 +1,40 @@
+--- a/atlas/modules/202610261949-uk-lightning-overlay.js
++++ b/atlas/modules/202610261949-uk-lightning-overlay.js
+@@ -61,14 +61,16 @@
+ fr=async(rows,ws,we)=>{const jobs=[];for(const row of rows)for(const t of tg(row,ws,we))jobs.push({row,t});const parts=new Array(jobs.length),fl=[];let pos=0;
+ await Promise.all(Array.from({length:Math.min(4,jobs.length)},async()=>{while(pos<jobs.length){const i=pos++,{row,t}=jobs[i];try{parts[i]=await sh(t,row.date)}catch(e){parts[i]=[];fl.push({date:row.date,error:msg(e)})}}}));
+ return{parts,fl,rq:jobs.length}},
+-ok=f=>f&&f.type==='Feature'&&f.geometry&&f.geometry.type==='Point'&&f.properties&&f.properties.observation_kind==='optical_lightning_flash'&&isFinite(tm(f)),
+-co=(parts,ws,we)=>{const m=new Map();for(const part of parts)for(const f of part){if(!ok(f))continue;const t=tm(f);if(t>=ws&&t<we)m.set(String(f.id),f)}return[...m.values()].sort((a,b)=>tm(a)-tm(b))},
++// D02: finite lon/lat in the box W,S,E,N, edges included as in collect.py
++inb=c=>Array.isArray(c)&&Number.isFinite(c[0])&&Number.isFinite(c[1])&&c[0]>=-11&&c[0]<=3&&c[1]>=49.5&&c[1]<=61.5,
++ok=f=>f&&f.type==='Feature'&&f.geometry&&f.geometry.type==='Point'&&inb(f.geometry.coordinates)&&f.properties&&f.properties.observation_kind==='optical_lightning_flash'&&isFinite(tm(f)),
++co=(parts,ws,we)=>{const m=new Map();let q=0;for(const part of parts)for(const f of part){const t=f&&f.properties?tm(f):NaN;if(t<ws||t>=we)continue;if(ok(f))m.set(String(f.id),f);else q++}return{ev:[...m.values()].sort((a,b)=>tm(a)-tm(b)),q}},
+ // tiers
+ ff=async(w,now,reason)=>{
+ if(w.s<now-7*DAY)E(`${w.label} needs the archive (${NA}); the live feed keeps 7 days`);
+ const f=await(S.fp||(S.fp=gx(FEED).catch(e=>{S.fp=null;throw e})));if(!f||f.type!=='FeatureCollection'||!Array.isArray(f.features))E('invalid live feed');
+-const m=f.metadata||{},ev=co([f.features],w.s,w.e),qs=Date.parse(m.query_start_utc||''),qe=Date.parse(m.scan_end_utc||m.query_end_utc||''),one=isFinite(qs)&&isFinite(qe)&&qe>qs;
+-return{mode:'feed',w,idx:null,ie:reason,meta:m,ev,fl:[],rq:1,cs:'live feed',ic:ev.length,cl:ev.length>cap(),ld:[],sk:[],cov:cv({sw:one?[{s:qs,e:qe,n:1}]:[],by:{get:()=>({coverage:'partial'})},lastScan:one?qe:null,covStart:-Infinity},w.s,w.e)}},
++const m=f.metadata||{},{ev,q}=co([f.features],w.s,w.e),qs=Date.parse(m.query_start_utc||''),qe=Date.parse(m.scan_end_utc||m.query_end_utc||''),one=isFinite(qs)&&isFinite(qe)&&qe>qs;
++return{mode:'feed',w,idx:null,ie:reason,meta:m,ev,q,fl:[],rq:1,cs:'live feed',ic:ev.length,cl:ev.length>cap(),ld:[],sk:[],cov:cv({sw:one?[{s:qs,e:qe,n:1}]:[],by:{get:()=>({coverage:'partial'})},lastScan:one?qe:null,covStart:-Infinity},w.s,w.e)}},
+ lw=async now=>{const w=wf(now);let x=null,ie=null;try{x=await li()}catch(e){ie=msg(e)}
+ if(!x)return ff(w,now,ie);
+ if(w.e<=x.cutoff)return{mode:'overview',w,idx:x,before:true,rows:[],cov:null,fl:[],ev:[],arch:0};
+@@ -81,7 +83,7 @@
+ if(count>BUDGET||bytes>32e6){if(!S.consent){r.clp=true;r.budget=`${N(count)} flashes, ${N(bytes)} bytes`;return r}
+ let run=0;tf.sort((a,b)=>b.date.localeCompare(a.date));const keep=[];for(const y of tf){if(run>=BUDGET){r.sk.push(y.date);continue}keep.push(y);run+=y.count}tf=keep;count=run}
+ r.ld=tf.map(y=>y.date);r.ic=count;r.cs='index';r.cl=count>cap();
+-const got=await fr(tf,w.s,w.e);r.mode='detail';r.fl=got.fl;r.rq=got.rq;r.ev=co(got.parts,w.s,w.e);return r},
++const got=await fr(tf,w.s,w.e);r.mode='detail';r.fl=got.fl;r.rq=got.rq;Object.assign(r,co(got.parts,w.s,w.e));return r},
+ // state machine
+ cf=(r,now)=>{let st;const rs=[];
+ if(r.fail){st='FAIL';rs.push(r.fail)}else if(r.before){st='BEFORE-ARCHIVE';rs.push('window entirely before the archive')}
+@@ -113,6 +115,7 @@
+ if(c.bf>0&&x)warn.push(`Unknown: ${ymd(w.s)} to ${ymd(Math.min(w.e,x.covStart)-1)} precede archive start ${T(x.covStart)} (not zero)`);
+ if(c.u.length)warn.push(`Unknown: ${c.u.length} of ${c.d} UTC dates have no collection run`);
+ if(r.fl.length)warn.push(`${r.fl.length} of ${r.rq} day files failed (${r.fl.map(f=>f.date+' '+f.error).join(', ')}); points incomplete, counts from index`);
++if(r.q)warn.push(`${N(r.q)} records quarantined (malformed or outside the UK box)`);
+ L.warning=warn.join(' · ')}
+ return L},
+ // map: one source, one circle layer, hidden until data

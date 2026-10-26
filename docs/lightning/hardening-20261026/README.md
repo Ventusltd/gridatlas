@@ -14,3 +14,4 @@ Status log (UTC):
 - 22:15 pickup; Step A complete; comment posted on #32.
 - 22:25 ChatGPT suite executed; comment posted on #32.
 - 22:20 five fail-first challengers launched against fda6b10; results pending.
+- ~23:00 container restart interrupted the in-flight lanes: visual-challenge-B, regression-challenge-C, negative-matrix-D, opus-fix-designer, opus-byte-budget, opus-step-e-procedure and memo batches 1–3. Their partial work survived on disk. Small partials are committed under evidence/partial-*. The lanes are being relaunched to resume from their partial evidence.
