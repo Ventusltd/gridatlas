@@ -1,0 +1,1761 @@
+{
+ "harness": "lead-shim chromium headless",
+ "route": "candidate",
+ "viewport": "1440x900",
+ "mode": "on",
+ "errors": [],
+ "count": 87,
+ "seq": [
+  {
+   "i": 0,
+   "tag": "button",
+   "attrs": "type=button data-lightning-period=12h",
+   "name": "12H",
+   "surf": "scada",
+   "lightning": true,
+   "key": "button||12h|12H|scada",
+   "rect": [
+    738,
+    820,
+    37,
+    22
+   ],
+   "inViewport": true,
+   "outline": "solid 1px rgb(0, 255, 255)",
+   "boxShadow": "none",
+   "border": "rgb(51, 51, 51)",
+   "focusVisible": true
+  },
+  {
+   "i": 1,
+   "tag": "button",
+   "attrs": "type=button data-lightning-period=24h",
+   "name": "24H",
+   "surf": "scada",
+   "lightning": true,
+   "key": "button||24h|24H|scada",
+   "rect": [
+    779,
+    820,
+    37,
+    22
+   ],
+   "inViewport": true,
+   "outline": "solid 1px rgb(0, 255, 255)",
+   "boxShadow": "none",
+   "border": "rgb(0, 255, 255)",
+   "focusVisible": true
+  },
+  {
+   "i": 2,
+   "tag": "button",
+   "attrs": "type=button data-lightning-period=48h",
+   "name": "48H",
+   "surf": "scada",
+   "lightning": true,
+   "key": "button||48h|48H|scada",
+   "rect": [
+    820,
+    820,
+    37,
+    22
+   ],
+   "inViewport": true,
+   "outline": "solid 1px rgb(0, 255, 255)",
+   "boxShadow": "none",
+   "border": "rgb(51, 51, 51)",
+   "focusVisible": true
+  },
+  {
+   "i": 3,
+   "tag": "button",
+   "attrs": "type=button data-lightning-period=7d",
+   "name": "7D",
+   "surf": "scada",
+   "lightning": true,
+   "key": "button||7d|7D|scada",
+   "rect": [
+    862,
+    820,
+    31,
+    22
+   ],
+   "inViewport": true,
+   "outline": "solid 1px rgb(0, 255, 255)",
+   "boxShadow": "none",
+   "border": "rgb(51, 51, 51)",
+   "focusVisible": true
+  },
+  {
+   "i": 4,
+   "tag": "button",
+   "attrs": "type=button data-lightning-period=30d",
+   "name": "30D",
+   "surf": "scada",
+   "lightning": true,
+   "key": "button||30d|30D|scada",
+   "rect": [
+    896,
+    820,
+    37,
+    22
+   ],
+   "inViewport": true,
+   "outline": "solid 1px rgb(0, 255, 255)",
+   "boxShadow": "none",
+   "border": "rgb(51, 51, 51)",
+   "focusVisible": true
+  },
+  {
+   "i": 5,
+   "tag": "button",
+   "attrs": "type=button data-lightning-period=3m",
+   "name": "3M",
+   "surf": "scada",
+   "lightning": true,
+   "key": "button||3m|3M|scada",
+   "rect": [
+    938,
+    820,
+    31,
+    22
+   ],
+   "inViewport": true,
+   "outline": "solid 1px rgb(0, 255, 255)",
+   "boxShadow": "none",
+   "border": "rgb(51, 51, 51)",
+   "focusVisible": true
+  },
+  {
+   "i": 6,
+   "tag": "button",
+   "attrs": "type=button data-lightning-period=6m",
+   "name": "6M",
+   "surf": "scada",
+   "lightning": true,
+   "key": "button||6m|6M|scada",
+   "rect": [
+    972,
+    820,
+    31,
+    22
+   ],
+   "inViewport": true,
+   "outline": "solid 1px rgb(0, 255, 255)",
+   "boxShadow": "none",
+   "border": "rgb(51, 51, 51)",
+   "focusVisible": true
+  },
+  {
+   "i": 7,
+   "tag": "button",
+   "attrs": "type=button data-lightning-period=12m",
+   "name": "12M",
+   "surf": "scada",
+   "lightning": true,
+   "key": "button||12m|12M|scada",
+   "rect": [
+    1007,
+    820,
+    37,
+    22
+   ],
+   "inViewport": true,
+   "outline": "solid 1px rgb(0, 255, 255)",
+   "boxShadow": "none",
+   "border": "rgb(51, 51, 51)",
+   "focusVisible": true
+  },
+  {
+   "i": 8,
+   "tag": "button",
+   "attrs": "type=button data-lightning-period=custom",
+   "name": "CUSTOM",
+   "surf": "scada",
+   "lightning": true,
+   "key": "button||custom|CUSTOM|scada",
+   "rect": [
+    1048,
+    820,
+    56,
+    22
+   ],
+   "inViewport": true,
+   "outline": "solid 1px rgb(0, 255, 255)",
+   "boxShadow": "none",
+   "border": "rgb(51, 51, 51)",
+   "focusVisible": true
+  },
+  {
+   "i": 9,
+   "tag": "button",
+   "attrs": "type=button data-lightning-nav=prev",
+   "name": "◀ PREV",
+   "surf": "scada",
+   "lightning": true,
+   "key": "button||prev|◀ PREV|scada",
+   "rect": [
+    738,
+    846,
+    56,
+    23
+   ],
+   "inViewport": true,
+   "outline": "solid 1px rgb(0, 255, 255)",
+   "boxShadow": "none",
+   "border": "rgb(51, 51, 51)",
+   "focusVisible": true
+  },
+  {
+   "i": 10,
+   "tag": "button",
+   "attrs": "id=gridatlas-dash-toggle type=button aria-pressed=false aria-label=Hide the layers panel",
+   "name": "Hide the layers panel",
+   "surf": "other",
+   "lightning": false,
+   "key": "button|gridatlas-dash-toggle||Hide the layers panel|other",
+   "rect": [
+    1296,
+    844,
+    132,
+    44
+   ],
+   "inViewport": true,
+   "outline": "solid 2px rgb(127, 227, 208)",
+   "boxShadow": "none",
+   "border": "rgb(43, 58, 68)",
+   "focusVisible": true
+  },
+  {
+   "i": 11,
+   "tag": "body",
+   "body": true
+  },
+  {
+   "i": 12,
+   "tag": "button",
+   "attrs": "type=button id=gridatlas-menu-bar-title-0 aria-haspopup=menu aria-expanded=false aria-controls=gridatlas-menu-bar-panel-0",
+   "name": "File",
+   "surf": "menubar",
+   "lightning": false,
+   "key": "button|gridatlas-menu-bar-title-0||File|menubar",
+   "rect": [
+    5,
+    5,
+    51,
+    36
+   ],
+   "inViewport": true,
+   "outline": "solid 2px rgb(107, 235, 255)",
+   "boxShadow": "none",
+   "border": "rgb(255, 255, 255)",
+   "focusVisible": true
+  },
+  {
+   "i": 13,
+   "tag": "button",
+   "attrs": "type=button id=gridatlas-menu-bar-title-1 aria-haspopup=menu aria-expanded=false aria-controls=gridatlas-menu-bar-panel-1",
+   "name": "Edit",
+   "surf": "menubar",
+   "lightning": false,
+   "key": "button|gridatlas-menu-bar-title-1||Edit|menubar",
+   "rect": [
+    56,
+    5,
+    51,
+    36
+   ],
+   "inViewport": true,
+   "outline": "solid 2px rgb(107, 235, 255)",
+   "boxShadow": "none",
+   "border": "rgb(255, 255, 255)",
+   "focusVisible": true
+  },
+  {
+   "i": 14,
+   "tag": "button",
+   "attrs": "type=button id=gridatlas-menu-bar-title-2 aria-haspopup=menu aria-expanded=false aria-controls=gridatlas-menu-bar-panel-2",
+   "name": "View",
+   "surf": "menubar",
+   "lightning": false,
+   "key": "button|gridatlas-menu-bar-title-2||View|menubar",
+   "rect": [
+    106,
+    5,
+    51,
+    36
+   ],
+   "inViewport": true,
+   "outline": "solid 2px rgb(107, 235, 255)",
+   "boxShadow": "none",
+   "border": "rgb(255, 255, 255)",
+   "focusVisible": true
+  },
+  {
+   "i": 15,
+   "tag": "button",
+   "attrs": "type=button id=gridatlas-menu-bar-title-3 aria-haspopup=menu aria-expanded=false aria-controls=gridatlas-menu-bar-panel-3",
+   "name": "Scope",
+   "surf": "menubar",
+   "lightning": false,
+   "key": "button|gridatlas-menu-bar-title-3||Scope|menubar",
+   "rect": [
+    1269,
+    5,
+    58,
+    36
+   ],
+   "inViewport": true,
+   "outline": "solid 2px rgb(107, 235, 255)",
+   "boxShadow": "none",
+   "border": "rgb(255, 255, 255)",
+   "focusVisible": true
+  },
+  {
+   "i": 16,
+   "tag": "button",
+   "attrs": "type=button id=gridatlas-menu-bar-title-4 aria-haspopup=menu aria-expanded=false aria-controls=gridatlas-menu-bar-panel-4",
+   "name": "Grid",
+   "surf": "menubar",
+   "lightning": false,
+   "key": "button|gridatlas-menu-bar-title-4||Grid|menubar",
+   "rect": [
+    1326,
+    5,
+    51,
+    36
+   ],
+   "inViewport": true,
+   "outline": "solid 2px rgb(107, 235, 255)",
+   "boxShadow": "none",
+   "border": "rgb(255, 255, 255)",
+   "focusVisible": true
+  },
+  {
+   "i": 17,
+   "tag": "button",
+   "attrs": "type=button id=gridatlas-menu-bar-title-5 aria-haspopup=menu aria-expanded=false aria-controls=gridatlas-menu-bar-panel-5",
+   "name": "About",
+   "surf": "menubar",
+   "lightning": false,
+   "key": "button|gridatlas-menu-bar-title-5||About|menubar",
+   "rect": [
+    1377,
+    5,
+    58,
+    36
+   ],
+   "inViewport": true,
+   "outline": "solid 2px rgb(107, 235, 255)",
+   "boxShadow": "none",
+   "border": "rgb(255, 255, 255)",
+   "focusVisible": true
+  },
+  {
+   "i": 18,
+   "tag": "canvas",
+   "attrs": "aria-label=Map role=region",
+   "name": "Map",
+   "surf": "other",
+   "lightning": false,
+   "key": "canvas|||Map|other",
+   "rect": [
+    5,
+    5,
+    1430,
+    518
+   ],
+   "inViewport": true,
+   "outline": "auto 1px rgb(16, 16, 16)",
+   "boxShadow": "none",
+   "border": "rgb(255, 255, 255)",
+   "focusVisible": true
+  },
+  {
+   "i": 19,
+   "tag": "input",
+   "attrs": "id=search-input type=text aria-label=Search project, address, postcode or place",
+   "name": "Search project, address, postcode or place",
+   "surf": "other",
+   "lightning": false,
+   "key": "input|search-input||Search project, address, postc|other",
+   "rect": [
+    1142,
+    77,
+    242,
+    24
+   ],
+   "inViewport": true,
+   "outline": "none 3px rgb(0, 255, 255)",
+   "boxShadow": "none",
+   "border": "rgb(0, 255, 255)",
+   "focusVisible": true
+  },
+  {
+   "i": 20,
+   "tag": "button",
+   "attrs": "id=search-btn",
+   "name": "GO",
+   "surf": "other",
+   "lightning": false,
+   "key": "button|search-btn||GO|other",
+   "rect": [
+    1390,
+    77,
+    35,
+    24
+   ],
+   "inViewport": true,
+   "outline": "solid 1px rgb(0, 255, 255)",
+   "boxShadow": "none",
+   "border": "rgb(0, 255, 255)",
+   "focusVisible": true
+  },
+  {
+   "i": 21,
+   "tag": "input",
+   "attrs": "type=checkbox data-layer-id=400",
+   "name": "400kV [OK]",
+   "surf": "scada",
+   "lightning": false,
+   "key": "input||400|400kV [OK]|scada",
+   "rect": [
+    31,
+    559,
+    17,
+    17
+   ],
+   "inViewport": true,
+   "outline": "auto 1px rgb(16, 16, 16)",
+   "boxShadow": "none",
+   "border": "rgb(0, 0, 0)",
+   "focusVisible": true
+  },
+  {
+   "i": 22,
+   "tag": "input",
+   "attrs": "type=checkbox data-layer-id=275",
+   "name": "275kV [OK]",
+   "surf": "scada",
+   "lightning": false,
+   "key": "input||275|275kV [OK]|scada",
+   "rect": [
+    31,
+    586,
+    17,
+    17
+   ],
+   "inViewport": true,
+   "outline": "auto 1px rgb(16, 16, 16)",
+   "boxShadow": "none",
+   "border": "rgb(0, 0, 0)",
+   "focusVisible": true
+  },
+  {
+   "i": 23,
+   "tag": "input",
+   "attrs": "type=checkbox data-layer-id=220",
+   "name": "220kV [OK]",
+   "surf": "scada",
+   "lightning": false,
+   "key": "input||220|220kV [OK]|scada",
+   "rect": [
+    31,
+    613,
+    17,
+    17
+   ],
+   "inViewport": true,
+   "outline": "auto 1px rgb(16, 16, 16)",
+   "boxShadow": "none",
+   "border": "rgb(0, 0, 0)",
+   "focusVisible": true
+  },
+  {
+   "i": 24,
+   "tag": "input",
+   "attrs": "type=checkbox data-layer-id=132",
+   "name": "132kV [OK]",
+   "surf": "scada",
+   "lightning": false,
+   "key": "input||132|132kV [OK]|scada",
+   "rect": [
+    31,
+    640,
+    17,
+    17
+   ],
+   "inViewport": true,
+   "outline": "auto 1px rgb(16, 16, 16)",
+   "boxShadow": "none",
+   "border": "rgb(0, 0, 0)",
+   "focusVisible": true
+  },
+  {
+   "i": 25,
+   "tag": "input",
+   "attrs": "type=checkbox data-layer-id=66",
+   "name": "66kV [OK]",
+   "surf": "scada",
+   "lightning": false,
+   "key": "input||66|66kV [OK]|scada",
+   "rect": [
+    31,
+    667,
+    17,
+    17
+   ],
+   "inViewport": true,
+   "outline": "auto 1px rgb(16, 16, 16)",
+   "boxShadow": "none",
+   "border": "rgb(0, 0, 0)",
+   "focusVisible": true
+  },
+  {
+   "i": 26,
+   "tag": "input",
+   "attrs": "type=checkbox data-layer-id=11kv",
+   "name": "11kV (UKPN) [WAIT]",
+   "surf": "scada",
+   "lightning": false,
+   "key": "input||11kv|11kV (UKPN) [WAIT]|scada",
+   "rect": [
+    31,
+    694,
+    17,
+    17
+   ],
+   "inViewport": true,
+   "outline": "auto 1px rgb(16, 16, 16)",
+   "boxShadow": "none",
+   "border": "rgb(0, 0, 0)",
+   "focusVisible": true
+  },
+  {
+   "i": 27,
+   "tag": "input",
+   "attrs": "type=checkbox data-layer-id=subs",
+   "name": "Subs [OK]",
+   "surf": "scada",
+   "lightning": false,
+   "key": "input||subs|Subs [OK]|scada",
+   "rect": [
+    31,
+    721,
+    17,
+    17
+   ],
+   "inViewport": true,
+   "outline": "auto 1px rgb(16, 16, 16)",
+   "boxShadow": "none",
+   "border": "rgb(0, 0, 0)",
+   "focusVisible": true
+  },
+  {
+   "i": 28,
+   "tag": "input",
+   "attrs": "type=checkbox data-layer-id=nuc",
+   "name": "Nuclear [OK]",
+   "surf": "scada",
+   "lightning": false,
+   "key": "input||nuc|Nuclear [OK]|scada",
+   "rect": [
+    740,
+    559,
+    17,
+    17
+   ],
+   "inViewport": true,
+   "outline": "auto 1px rgb(16, 16, 16)",
+   "boxShadow": "none",
+   "border": "rgb(0, 0, 0)",
+   "focusVisible": true
+  },
+  {
+   "i": 29,
+   "tag": "input",
+   "attrs": "type=checkbox data-layer-id=gas",
+   "name": "Gas [OK]",
+   "surf": "scada",
+   "lightning": false,
+   "key": "input||gas|Gas [OK]|scada",
+   "rect": [
+    740,
+    586,
+    17,
+    17
+   ],
+   "inViewport": true,
+   "outline": "auto 1px rgb(16, 16, 16)",
+   "boxShadow": "none",
+   "border": "rgb(0, 0, 0)",
+   "focusVisible": true
+  },
+  {
+   "i": 30,
+   "tag": "input",
+   "attrs": "type=checkbox data-layer-id=ind",
+   "name": "Industry [OK]",
+   "surf": "scada",
+   "lightning": false,
+   "key": "input||ind|Industry [OK]|scada",
+   "rect": [
+    740,
+    613,
+    17,
+    17
+   ],
+   "inViewport": true,
+   "outline": "auto 1px rgb(16, 16, 16)",
+   "boxShadow": "none",
+   "border": "rgb(0, 0, 0)",
+   "focusVisible": true
+  },
+  {
+   "i": 31,
+   "tag": "input",
+   "attrs": "type=checkbox data-layer-id=dc",
+   "name": "Data Ctrs [OK]",
+   "surf": "scada",
+   "lightning": false,
+   "key": "input||dc|Data Ctrs [OK]|scada",
+   "rect": [
+    740,
+    640,
+    17,
+    17
+   ],
+   "inViewport": true,
+   "outline": "auto 1px rgb(16, 16, 16)",
+   "boxShadow": "none",
+   "border": "rgb(0, 0, 0)",
+   "focusVisible": true
+  },
+  {
+   "i": 32,
+   "tag": "input",
+   "attrs": "type=checkbox data-layer-id=air",
+   "name": "Airports [OK]",
+   "surf": "scada",
+   "lightning": false,
+   "key": "input||air|Airports [OK]|scada",
+   "rect": [
+    740,
+    667,
+    17,
+    17
+   ],
+   "inViewport": true,
+   "outline": "auto 1px rgb(16, 16, 16)",
+   "boxShadow": "none",
+   "border": "rgb(0, 0, 0)",
+   "focusVisible": true
+  },
+  {
+   "i": 33,
+   "tag": "input",
+   "attrs": "type=checkbox data-layer-id=rail",
+   "name": "Railways [OK]",
+   "surf": "scada",
+   "lightning": false,
+   "key": "input||rail|Railways [OK]|scada",
+   "rect": [
+    740,
+    694,
+    17,
+    17
+   ],
+   "inViewport": true,
+   "outline": "auto 1px rgb(16, 16, 16)",
+   "boxShadow": "none",
+   "border": "rgb(0, 0, 0)",
+   "focusVisible": true
+  },
+  {
+   "i": 34,
+   "tag": "input",
+   "attrs": "type=checkbox data-layer-id=tesco",
+   "name": "Tesco [WAIT]",
+   "surf": "scada",
+   "lightning": false,
+   "key": "input||tesco|Tesco [WAIT]|scada",
+   "rect": [
+    31,
+    777,
+    17,
+    17
+   ],
+   "inViewport": true,
+   "outline": "auto 1px rgb(16, 16, 16)",
+   "boxShadow": "none",
+   "border": "rgb(0, 0, 0)",
+   "focusVisible": true
+  },
+  {
+   "i": 35,
+   "tag": "input",
+   "attrs": "type=checkbox data-layer-id=sainsburys",
+   "name": "Sainsbury's [WAIT]",
+   "surf": "scada",
+   "lightning": false,
+   "key": "input||sainsburys|Sainsbury's [WAIT]|scada",
+   "rect": [
+    31,
+    804,
+    17,
+    17
+   ],
+   "inViewport": true,
+   "outline": "auto 1px rgb(16, 16, 16)",
+   "boxShadow": "none",
+   "border": "rgb(0, 0, 0)",
+   "focusVisible": true
+  },
+  {
+   "i": 36,
+   "tag": "input",
+   "attrs": "type=checkbox data-layer-id=asda",
+   "name": "Asda [WAIT]",
+   "surf": "scada",
+   "lightning": false,
+   "key": "input||asda|Asda [WAIT]|scada",
+   "rect": [
+    31,
+    831,
+    17,
+    17
+   ],
+   "inViewport": true,
+   "outline": "auto 1px rgb(16, 16, 16)",
+   "boxShadow": "none",
+   "border": "rgb(0, 0, 0)",
+   "focusVisible": true
+  },
+  {
+   "i": 37,
+   "tag": "input",
+   "attrs": "type=checkbox data-layer-id=morrisons",
+   "name": "Morrisons [WAIT]",
+   "surf": "scada",
+   "lightning": false,
+   "key": "input||morrisons|Morrisons [WAIT]|scada",
+   "rect": [
+    31,
+    858,
+    17,
+    17
+   ],
+   "inViewport": true,
+   "outline": "auto 1px rgb(16, 16, 16)",
+   "boxShadow": "none",
+   "border": "rgb(0, 0, 0)",
+   "focusVisible": true
+  },
+  {
+   "i": 38,
+   "tag": "input",
+   "attrs": "type=checkbox data-layer-id=aldi",
+   "name": "Aldi [WAIT]",
+   "surf": "scada",
+   "lightning": false,
+   "key": "input||aldi|Aldi [WAIT]|scada",
+   "rect": [
+    31,
+    703,
+    17,
+    17
+   ],
+   "inViewport": true,
+   "outline": "auto 1px rgb(16, 16, 16)",
+   "boxShadow": "none",
+   "border": "rgb(0, 0, 0)",
+   "focusVisible": true
+  },
+  {
+   "i": 39,
+   "tag": "input",
+   "attrs": "type=checkbox data-layer-id=lidl",
+   "name": "Lidl [WAIT]",
+   "surf": "scada",
+   "lightning": false,
+   "key": "input||lidl|Lidl [WAIT]|scada",
+   "rect": [
+    31,
+    730,
+    17,
+    17
+   ],
+   "inViewport": true,
+   "outline": "auto 1px rgb(16, 16, 16)",
+   "boxShadow": "none",
+   "border": "rgb(0, 0, 0)",
+   "focusVisible": true
+  },
+  {
+   "i": 40,
+   "tag": "input",
+   "attrs": "type=checkbox data-layer-id=waitrose",
+   "name": "Waitrose [WAIT]",
+   "surf": "scada",
+   "lightning": false,
+   "key": "input||waitrose|Waitrose [WAIT]|scada",
+   "rect": [
+    31,
+    757,
+    17,
+    17
+   ],
+   "inViewport": true,
+   "outline": "auto 1px rgb(16, 16, 16)",
+   "boxShadow": "none",
+   "border": "rgb(0, 0, 0)",
+   "focusVisible": true
+  },
+  {
+   "i": 41,
+   "tag": "input",
+   "attrs": "type=checkbox data-layer-id=ms",
+   "name": "M&S Food [WAIT]",
+   "surf": "scada",
+   "lightning": false,
+   "key": "input||ms|M&S Food [WAIT]|scada",
+   "rect": [
+    31,
+    784,
+    17,
+    17
+   ],
+   "inViewport": true,
+   "outline": "auto 1px rgb(16, 16, 16)",
+   "boxShadow": "none",
+   "border": "rgb(0, 0, 0)",
+   "focusVisible": true
+  },
+  {
+   "i": 42,
+   "tag": "input",
+   "attrs": "type=checkbox data-layer-id=coop",
+   "name": "Co-op [WAIT]",
+   "surf": "scada",
+   "lightning": false,
+   "key": "input||coop|Co-op [WAIT]|scada",
+   "rect": [
+    31,
+    811,
+    17,
+    17
+   ],
+   "inViewport": true,
+   "outline": "auto 1px rgb(16, 16, 16)",
+   "boxShadow": "none",
+   "border": "rgb(0, 0, 0)",
+   "focusVisible": true
+  },
+  {
+   "i": 43,
+   "tag": "input",
+   "attrs": "type=checkbox data-layer-id=costco",
+   "name": "Costco [WAIT]",
+   "surf": "scada",
+   "lightning": false,
+   "key": "input||costco|Costco [WAIT]|scada",
+   "rect": [
+    31,
+    838,
+    17,
+    17
+   ],
+   "inViewport": true,
+   "outline": "auto 1px rgb(16, 16, 16)",
+   "boxShadow": "none",
+   "border": "rgb(0, 0, 0)",
+   "focusVisible": true
+  },
+  {
+   "i": 44,
+   "tag": "input",
+   "attrs": "type=checkbox data-layer-id=booths",
+   "name": "Booths [WAIT]",
+   "surf": "scada",
+   "lightning": false,
+   "key": "input||booths|Booths [WAIT]|scada",
+   "rect": [
+    31,
+    865,
+    17,
+    17
+   ],
+   "inViewport": true,
+   "outline": "auto 1px rgb(16, 16, 16)",
+   "boxShadow": "none",
+   "border": "rgb(0, 0, 0)",
+   "focusVisible": true
+  },
+  {
+   "i": 45,
+   "tag": "input",
+   "attrs": "type=checkbox data-layer-id=elizabeth",
+   "name": "Elizabeth Line [WAIT]",
+   "surf": "scada",
+   "lightning": false,
+   "key": "input||elizabeth|Elizabeth Line [WAIT]|scada",
+   "rect": [
+    740,
+    595,
+    17,
+    17
+   ],
+   "inViewport": true,
+   "outline": "auto 1px rgb(16, 16, 16)",
+   "boxShadow": "none",
+   "border": "rgb(0, 0, 0)",
+   "focusVisible": true
+  },
+  {
+   "i": 46,
+   "tag": "input",
+   "attrs": "type=checkbox data-layer-id=lu",
+   "name": "London Underground [WAIT]",
+   "surf": "scada",
+   "lightning": false,
+   "key": "input||lu|London Underground [WAIT]|scada",
+   "rect": [
+    740,
+    622,
+    17,
+    17
+   ],
+   "inViewport": true,
+   "outline": "auto 1px rgb(16, 16, 16)",
+   "boxShadow": "none",
+   "border": "rgb(0, 0, 0)",
+   "focusVisible": true
+  },
+  {
+   "i": 47,
+   "tag": "input",
+   "attrs": "type=checkbox data-layer-id=dlr",
+   "name": "DLR [WAIT]",
+   "surf": "scada",
+   "lightning": false,
+   "key": "input||dlr|DLR [WAIT]|scada",
+   "rect": [
+    740,
+    649,
+    17,
+    17
+   ],
+   "inViewport": true,
+   "outline": "auto 1px rgb(16, 16, 16)",
+   "boxShadow": "none",
+   "border": "rgb(0, 0, 0)",
+   "focusVisible": true
+  },
+  {
+   "i": 48,
+   "tag": "input",
+   "attrs": "type=checkbox data-layer-id=metro",
+   "name": "UK Metro [WAIT]",
+   "surf": "scada",
+   "lightning": false,
+   "key": "input||metro|UK Metro [WAIT]|scada",
+   "rect": [
+    740,
+    676,
+    17,
+    17
+   ],
+   "inViewport": true,
+   "outline": "auto 1px rgb(16, 16, 16)",
+   "boxShadow": "none",
+   "border": "rgb(0, 0, 0)",
+   "focusVisible": true
+  },
+  {
+   "i": 49,
+   "tag": "input",
+   "attrs": "type=checkbox data-layer-id=tram",
+   "name": "Trams & Light Rail [WAIT]",
+   "surf": "scada",
+   "lightning": false,
+   "key": "input||tram|Trams & Light Rail [WAIT]|scada",
+   "rect": [
+    740,
+    703,
+    17,
+    17
+   ],
+   "inViewport": true,
+   "outline": "auto 1px rgb(16, 16, 16)",
+   "boxShadow": "none",
+   "border": "rgb(0, 0, 0)",
+   "focusVisible": true
+  },
+  {
+   "i": 50,
+   "tag": "input",
+   "attrs": "type=checkbox data-layer-id=mainline_rail",
+   "name": "UK Mainline Railways [WAIT]",
+   "surf": "scada",
+   "lightning": false,
+   "key": "input||mainline_rail|UK Mainline Railways [WAIT]|scada",
+   "rect": [
+    740,
+    730,
+    17,
+    17
+   ],
+   "inViewport": true,
+   "outline": "auto 1px rgb(16, 16, 16)",
+   "boxShadow": "none",
+   "border": "rgb(0, 0, 0)",
+   "focusVisible": true
+  },
+  {
+   "i": 51,
+   "tag": "input",
+   "attrs": "type=checkbox data-layer-id=hs2",
+   "name": "HS2 [WAIT]",
+   "surf": "scada",
+   "lightning": false,
+   "key": "input||hs2|HS2 [WAIT]|scada",
+   "rect": [
+    740,
+    757,
+    17,
+    17
+   ],
+   "inViewport": true,
+   "outline": "auto 1px rgb(16, 16, 16)",
+   "boxShadow": "none",
+   "border": "rgb(0, 0, 0)",
+   "focusVisible": true
+  },
+  {
+   "i": 52,
+   "tag": "input",
+   "attrs": "type=checkbox data-layer-id=eurostar_route",
+   "name": "Eurostar (HS1) UK & Europe [WAIT]",
+   "surf": "scada",
+   "lightning": false,
+   "key": "input||eurostar_route|Eurostar (HS1) UK & Europe [WA|scada",
+   "rect": [
+    740,
+    784,
+    17,
+    17
+   ],
+   "inViewport": true,
+   "outline": "auto 1px rgb(16, 16, 16)",
+   "boxShadow": "none",
+   "border": "rgb(0, 0, 0)",
+   "focusVisible": true
+  },
+  {
+   "i": 53,
+   "tag": "input",
+   "attrs": "type=checkbox data-layer-id=eurostar_station",
+   "name": "Eurostar Stations UK & Europe [WAIT]",
+   "surf": "scada",
+   "lightning": false,
+   "key": "input||eurostar_station|Eurostar Stations UK & Europe |scada",
+   "rect": [
+    740,
+    811,
+    17,
+    17
+   ],
+   "inViewport": true,
+   "outline": "auto 1px rgb(16, 16, 16)",
+   "boxShadow": "none",
+   "border": "rgb(0, 0, 0)",
+   "focusVisible": true
+  },
+  {
+   "i": 54,
+   "tag": "input",
+   "attrs": "type=checkbox data-layer-id=stadiums",
+   "name": "Major Stadiums [WAIT]",
+   "surf": "scada",
+   "lightning": false,
+   "key": "input||stadiums|Major Stadiums [WAIT]|scada",
+   "rect": [
+    31,
+    703,
+    17,
+    17
+   ],
+   "inViewport": true,
+   "outline": "auto 1px rgb(16, 16, 16)",
+   "boxShadow": "none",
+   "border": "rgb(0, 0, 0)",
+   "focusVisible": true
+  },
+  {
+   "i": 55,
+   "tag": "input",
+   "attrs": "type=checkbox data-layer-id=subsea_data_cables",
+   "name": "Subsea Data Cables (Fibre) (not all connections available ye",
+   "surf": "scada",
+   "lightning": false,
+   "key": "input||subsea_data_cables|Subsea Data Cables (Fibre) (no|scada",
+   "rect": [
+    740,
+    703,
+    17,
+    17
+   ],
+   "inViewport": true,
+   "outline": "auto 1px rgb(16, 16, 16)",
+   "boxShadow": "none",
+   "border": "rgb(0, 0, 0)",
+   "focusVisible": true
+  },
+  {
+   "i": 56,
+   "tag": "input",
+   "attrs": "type=checkbox data-layer-id=global_ports_major",
+   "name": "Major Ports (Deep Water/Ferry) [WAIT]",
+   "surf": "scada",
+   "lightning": false,
+   "key": "input||global_ports_major|Major Ports (Deep Water/Ferry)|scada",
+   "rect": [
+    31,
+    759,
+    17,
+    17
+   ],
+   "inViewport": true,
+   "outline": "auto 1px rgb(16, 16, 16)",
+   "boxShadow": "none",
+   "border": "rgb(0, 0, 0)",
+   "focusVisible": true
+  },
+  {
+   "i": 57,
+   "tag": "input",
+   "attrs": "type=checkbox data-layer-id=global_ports_minor",
+   "name": "Inland / Minor Harbours [WAIT]",
+   "surf": "scada",
+   "lightning": false,
+   "key": "input||global_ports_minor|Inland / Minor Harbours [WAIT]|scada",
+   "rect": [
+    31,
+    786,
+    17,
+    17
+   ],
+   "inViewport": true,
+   "outline": "auto 1px rgb(16, 16, 16)",
+   "boxShadow": "none",
+   "border": "rgb(0, 0, 0)",
+   "focusVisible": true
+  },
+  {
+   "i": 58,
+   "tag": "input",
+   "attrs": "type=checkbox data-layer-id=global_hydrocarbons",
+   "name": "Global Hydrocarbons (Oil, Gas, LNG) [WAIT]",
+   "surf": "scada",
+   "lightning": false,
+   "key": "input||global_hydrocarbons|Global Hydrocarbons (Oil, Gas,|scada",
+   "rect": [
+    31,
+    813,
+    17,
+    17
+   ],
+   "inViewport": true,
+   "outline": "auto 1px rgb(16, 16, 16)",
+   "boxShadow": "none",
+   "border": "rgb(0, 0, 0)",
+   "focusVisible": true
+  },
+  {
+   "i": 59,
+   "tag": "input",
+   "attrs": "type=checkbox data-layer-id=motorways",
+   "name": "Motorways [WAIT]",
+   "surf": "scada",
+   "lightning": false,
+   "key": "input||motorways|Motorways [WAIT]|scada",
+   "rect": [
+    740,
+    759,
+    17,
+    17
+   ],
+   "inViewport": true,
+   "outline": "auto 1px rgb(16, 16, 16)",
+   "boxShadow": "none",
+   "border": "rgb(0, 0, 0)",
+   "focusVisible": true
+  },
+  {
+   "i": 60,
+   "tag": "input",
+   "attrs": "type=checkbox data-layer-id=trunk_roads",
+   "name": "Major A-Roads (Trunk) [WAIT]",
+   "surf": "scada",
+   "lightning": false,
+   "key": "input||trunk_roads|Major A-Roads (Trunk) [WAIT]|scada",
+   "rect": [
+    740,
+    786,
+    17,
+    17
+   ],
+   "inViewport": true,
+   "outline": "auto 1px rgb(16, 16, 16)",
+   "boxShadow": "none",
+   "border": "rgb(0, 0, 0)",
+   "focusVisible": true
+  },
+  {
+   "i": 61,
+   "tag": "input",
+   "attrs": "type=checkbox data-layer-id=primary_roads",
+   "name": "A-Roads (Primary) [WAIT]",
+   "surf": "scada",
+   "lightning": false,
+   "key": "input||primary_roads|A-Roads (Primary) [WAIT]|scada",
+   "rect": [
+    740,
+    813,
+    17,
+    17
+   ],
+   "inViewport": true,
+   "outline": "auto 1px rgb(16, 16, 16)",
+   "boxShadow": "none",
+   "border": "rgb(0, 0, 0)",
+   "focusVisible": true
+  },
+  {
+   "i": 62,
+   "tag": "input",
+   "attrs": "type=checkbox data-layer-id=motorway_services",
+   "name": "Motorway Services [WAIT]",
+   "surf": "scada",
+   "lightning": false,
+   "key": "input||motorway_services|Motorway Services [WAIT]|scada",
+   "rect": [
+    740,
+    840,
+    17,
+    17
+   ],
+   "inViewport": true,
+   "outline": "auto 1px rgb(16, 16, 16)",
+   "boxShadow": "none",
+   "border": "rgb(0, 0, 0)",
+   "focusVisible": true
+  },
+  {
+   "i": 63,
+   "tag": "input",
+   "attrs": "type=checkbox data-layer-id=ev",
+   "name": "EV Rapid (100kW+) [WAIT]",
+   "surf": "scada",
+   "lightning": false,
+   "key": "input||ev|EV Rapid (100kW+) [WAIT]|scada",
+   "rect": [
+    31,
+    703,
+    17,
+    17
+   ],
+   "inViewport": true,
+   "outline": "auto 1px rgb(16, 16, 16)",
+   "boxShadow": "none",
+   "border": "rgb(0, 0, 0)",
+   "focusVisible": true
+  },
+  {
+   "i": 64,
+   "tag": "input",
+   "attrs": "type=checkbox data-layer-id=naei_co2",
+   "name": "Major Industrial Sites [WAIT]",
+   "surf": "scada",
+   "lightning": false,
+   "key": "input||naei_co2|Major Industrial Sites [WAIT]|scada",
+   "rect": [
+    740,
+    703,
+    17,
+    17
+   ],
+   "inViewport": true,
+   "outline": "auto 1px rgb(16, 16, 16)",
+   "boxShadow": "none",
+   "border": "rgb(0, 0, 0)",
+   "focusVisible": true
+  },
+  {
+   "i": 65,
+   "tag": "input",
+   "attrs": "type=checkbox data-layer-id=solar",
+   "name": "Solar PV [WAIT]",
+   "surf": "scada",
+   "lightning": false,
+   "key": "input||solar|Solar PV [WAIT]|scada",
+   "rect": [
+    31,
+    759,
+    17,
+    17
+   ],
+   "inViewport": true,
+   "outline": "auto 1px rgb(16, 16, 16)",
+   "boxShadow": "none",
+   "border": "rgb(0, 0, 0)",
+   "focusVisible": true
+  },
+  {
+   "i": 66,
+   "tag": "input",
+   "attrs": "type=checkbox data-layer-id=solar_operational",
+   "name": "Solar PV (Operational Only) [WAIT]",
+   "surf": "scada",
+   "lightning": false,
+   "key": "input||solar_operational|Solar PV (Operational Only) [W|scada",
+   "rect": [
+    31,
+    786,
+    17,
+    17
+   ],
+   "inViewport": true,
+   "outline": "auto 1px rgb(16, 16, 16)",
+   "boxShadow": "none",
+   "border": "rgb(0, 0, 0)",
+   "focusVisible": true
+  },
+  {
+   "i": 67,
+   "tag": "input",
+   "attrs": "type=checkbox data-layer-id=solar_roof",
+   "name": "Solar Roof [WAIT]",
+   "surf": "scada",
+   "lightning": false,
+   "key": "input||solar_roof|Solar Roof [WAIT]|scada",
+   "rect": [
+    31,
+    813,
+    17,
+    17
+   ],
+   "inViewport": true,
+   "outline": "auto 1px rgb(16, 16, 16)",
+   "boxShadow": "none",
+   "border": "rgb(0, 0, 0)",
+   "focusVisible": true
+  },
+  {
+   "i": 68,
+   "tag": "input",
+   "attrs": "type=checkbox data-layer-id=wind",
+   "name": "Wind [WAIT]",
+   "surf": "scada",
+   "lightning": false,
+   "key": "input||wind|Wind [WAIT]|scada",
+   "rect": [
+    31,
+    840,
+    17,
+    17
+   ],
+   "inViewport": true,
+   "outline": "auto 1px rgb(16, 16, 16)",
+   "boxShadow": "none",
+   "border": "rgb(0, 0, 0)",
+   "focusVisible": true
+  },
+  {
+   "i": 69,
+   "tag": "input",
+   "attrs": "type=checkbox data-layer-id=wind_onshore_operational",
+   "name": "Onshore Wind (Operational Only) [WAIT]",
+   "surf": "scada",
+   "lightning": false,
+   "key": "input||wind_onshore_operational|Onshore Wind (Operational Only|scada",
+   "rect": [
+    31,
+    866,
+    17,
+    17
+   ],
+   "inViewport": true,
+   "outline": "auto 1px rgb(16, 16, 16)",
+   "boxShadow": "none",
+   "border": "rgb(0, 0, 0)",
+   "focusVisible": true
+  },
+  {
+   "i": 70,
+   "tag": "input",
+   "attrs": "type=checkbox data-layer-id=wind_offshore_operational",
+   "name": "Offshore Wind (Operational Only) [WAIT]",
+   "surf": "scada",
+   "lightning": false,
+   "key": "input||wind_offshore_operational|Offshore Wind (Operational Onl|scada",
+   "rect": [
+    31,
+    703,
+    17,
+    17
+   ],
+   "inViewport": true,
+   "outline": "auto 1px rgb(16, 16, 16)",
+   "boxShadow": "none",
+   "border": "rgb(0, 0, 0)",
+   "focusVisible": true
+  },
+  {
+   "i": 71,
+   "tag": "input",
+   "attrs": "type=checkbox data-layer-id=bess",
+   "name": "Battery Storage [WAIT]",
+   "surf": "scada",
+   "lightning": false,
+   "key": "input||bess|Battery Storage [WAIT]|scada",
+   "rect": [
+    31,
+    730,
+    17,
+    17
+   ],
+   "inViewport": true,
+   "outline": "auto 1px rgb(16, 16, 16)",
+   "boxShadow": "none",
+   "border": "rgb(0, 0, 0)",
+   "focusVisible": true
+  },
+  {
+   "i": 72,
+   "tag": "input",
+   "attrs": "type=checkbox data-layer-id=bess_operational",
+   "name": "Battery Storage (Operational Only) [WAIT]",
+   "surf": "scada",
+   "lightning": false,
+   "key": "input||bess_operational|Battery Storage (Operational O|scada",
+   "rect": [
+    31,
+    757,
+    17,
+    17
+   ],
+   "inViewport": true,
+   "outline": "auto 1px rgb(16, 16, 16)",
+   "boxShadow": "none",
+   "border": "rgb(0, 0, 0)",
+   "focusVisible": true
+  },
+  {
+   "i": 73,
+   "tag": "input",
+   "attrs": "type=checkbox data-layer-id=biomass",
+   "name": "Biomass & EfW [WAIT]",
+   "surf": "scada",
+   "lightning": false,
+   "key": "input||biomass|Biomass & EfW [WAIT]|scada",
+   "rect": [
+    31,
+    784,
+    17,
+    17
+   ],
+   "inViewport": true,
+   "outline": "auto 1px rgb(16, 16, 16)",
+   "boxShadow": "none",
+   "border": "rgb(0, 0, 0)",
+   "focusVisible": true
+  },
+  {
+   "i": 74,
+   "tag": "input",
+   "attrs": "type=checkbox data-layer-id=tidal",
+   "name": "Tidal & Wave [WAIT]",
+   "surf": "scada",
+   "lightning": false,
+   "key": "input||tidal|Tidal & Wave [WAIT]|scada",
+   "rect": [
+    31,
+    811,
+    17,
+    17
+   ],
+   "inViewport": true,
+   "outline": "auto 1px rgb(16, 16, 16)",
+   "boxShadow": "none",
+   "border": "rgb(0, 0, 0)",
+   "focusVisible": true
+  },
+  {
+   "i": 75,
+   "tag": "input",
+   "attrs": "type=checkbox data-layer-id=hydrogen",
+   "name": "Hydrogen [WAIT]",
+   "surf": "scada",
+   "lightning": false,
+   "key": "input||hydrogen|Hydrogen [WAIT]|scada",
+   "rect": [
+    31,
+    838,
+    17,
+    17
+   ],
+   "inViewport": true,
+   "outline": "auto 1px rgb(16, 16, 16)",
+   "boxShadow": "none",
+   "border": "rgb(0, 0, 0)",
+   "focusVisible": true
+  },
+  {
+   "i": 76,
+   "tag": "input",
+   "attrs": "type=checkbox data-layer-id=hydro",
+   "name": "Hydro & Pumped Storage [WAIT]",
+   "surf": "scada",
+   "lightning": false,
+   "key": "input||hydro|Hydro & Pumped Storage [WAIT]|scada",
+   "rect": [
+    31,
+    865,
+    17,
+    17
+   ],
+   "inViewport": true,
+   "outline": "auto 1px rgb(16, 16, 16)",
+   "boxShadow": "none",
+   "border": "rgb(0, 0, 0)",
+   "focusVisible": true
+  },
+  {
+   "i": 77,
+   "tag": "input",
+   "attrs": "type=checkbox data-layer-id=flywheel",
+   "name": "Flywheel [WAIT]",
+   "surf": "scada",
+   "lightning": false,
+   "key": "input||flywheel|Flywheel [WAIT]|scada",
+   "rect": [
+    31,
+    703,
+    17,
+    17
+   ],
+   "inViewport": true,
+   "outline": "auto 1px rgb(16, 16, 16)",
+   "boxShadow": "none",
+   "border": "rgb(0, 0, 0)",
+   "focusVisible": true
+  },
+  {
+   "i": 78,
+   "tag": "input",
+   "attrs": "type=checkbox data-layer-id=act",
+   "name": "Advanced Conversion [WAIT]",
+   "surf": "scada",
+   "lightning": false,
+   "key": "input||act|Advanced Conversion [WAIT]|scada",
+   "rect": [
+    31,
+    730,
+    17,
+    17
+   ],
+   "inViewport": true,
+   "outline": "auto 1px rgb(16, 16, 16)",
+   "boxShadow": "none",
+   "border": "rgb(0, 0, 0)",
+   "focusVisible": true
+  },
+  {
+   "i": 79,
+   "tag": "input",
+   "attrs": "type=checkbox data-layer-id=geothermal",
+   "name": "Geothermal [WAIT]",
+   "surf": "scada",
+   "lightning": false,
+   "key": "input||geothermal|Geothermal [WAIT]|scada",
+   "rect": [
+    31,
+    757,
+    17,
+    17
+   ],
+   "inViewport": true,
+   "outline": "auto 1px rgb(16, 16, 16)",
+   "boxShadow": "none",
+   "border": "rgb(0, 0, 0)",
+   "focusVisible": true
+  },
+  {
+   "i": 80,
+   "tag": "input",
+   "attrs": "type=checkbox data-layer-id=caes",
+   "name": "Compressed Air Storage [WAIT]",
+   "surf": "scada",
+   "lightning": false,
+   "key": "input||caes|Compressed Air Storage [WAIT]|scada",
+   "rect": [
+    31,
+    784,
+    17,
+    17
+   ],
+   "inViewport": true,
+   "outline": "auto 1px rgb(16, 16, 16)",
+   "boxShadow": "none",
+   "border": "rgb(0, 0, 0)",
+   "focusVisible": true
+  },
+  {
+   "i": 81,
+   "tag": "input",
+   "attrs": "type=radio name=bm",
+   "name": "Dark",
+   "surf": "scada",
+   "lightning": false,
+   "key": "input|||Dark|scada",
+   "rect": [
+    741,
+    703,
+    17,
+    17
+   ],
+   "inViewport": true,
+   "outline": "auto 1px rgb(16, 16, 16)",
+   "boxShadow": "none",
+   "border": "rgb(0, 0, 0)",
+   "focusVisible": true
+  },
+  {
+   "i": 82,
+   "tag": "input",
+   "attrs": "type=checkbox data-pn-layer=same",
+   "name": "Same technology [SELECT A PROJECT]",
+   "surf": "scada",
+   "lightning": false,
+   "key": "input||same|Same technology [SELECT A PROJ|scada",
+   "rect": [
+    31,
+    703,
+    17,
+    17
+   ],
+   "inViewport": true,
+   "outline": "auto 1px rgb(16, 16, 16)",
+   "boxShadow": "none",
+   "border": "rgb(0, 0, 0)",
+   "focusVisible": true
+  },
+  {
+   "i": 83,
+   "tag": "input",
+   "attrs": "type=checkbox data-pn-layer=wider",
+   "name": "Wider fleet [SELECT A PROJECT]",
+   "surf": "scada",
+   "lightning": false,
+   "key": "input||wider|Wider fleet [SELECT A PROJECT]|scada",
+   "rect": [
+    31,
+    730,
+    17,
+    17
+   ],
+   "inViewport": true,
+   "outline": "auto 1px rgb(16, 16, 16)",
+   "boxShadow": "none",
+   "border": "rgb(0, 0, 0)",
+   "focusVisible": true
+  },
+  {
+   "i": 84,
+   "tag": "input",
+   "attrs": "type=checkbox data-pn-layer=all",
+   "name": "All pipeline [SELECT A PROJECT]",
+   "surf": "scada",
+   "lightning": false,
+   "key": "input||all|All pipeline [SELECT A PROJECT|scada",
+   "rect": [
+    31,
+    757,
+    17,
+    17
+   ],
+   "inViewport": true,
+   "outline": "auto 1px rgb(16, 16, 16)",
+   "boxShadow": "none",
+   "border": "rgb(0, 0, 0)",
+   "focusVisible": true
+  },
+  {
+   "i": 85,
+   "tag": "input",
+   "attrs": "type=checkbox data-lightning-control=toggle",
+   "name": "Lightning flashes (optical) [UNKNOWN | 24h STALE]",
+   "surf": "scada",
+   "lightning": true,
+   "key": "input||toggle|Lightning flashes (optical) [U|scada",
+   "rect": [
+    740,
+    703,
+    17,
+    17
+   ],
+   "inViewport": true,
+   "outline": "auto 1px rgb(16, 16, 16)",
+   "boxShadow": "none",
+   "border": "rgb(0, 0, 0)",
+   "focusVisible": true
+  },
+  {
+   "i": 86,
+   "wrapped": true
+  }
+ ],
+ "reverse40": [
+  "input||toggle|Lightning flashes (optical) [U|scada",
+  "input||all|All pipeline [SELECT A PROJECT|scada",
+  "input||wider|Wider fleet [SELECT A PROJECT]|scada",
+  "input||same|Same technology [SELECT A PROJ|scada",
+  "input|||Dark|scada",
+  "input||caes|Compressed Air Storage [WAIT]|scada",
+  "input||geothermal|Geothermal [WAIT]|scada",
+  "input||act|Advanced Conversion [WAIT]|scada",
+  "input||flywheel|Flywheel [WAIT]|scada",
+  "input||hydro|Hydro & Pumped Storage [WAIT]|scada",
+  "input||hydrogen|Hydrogen [WAIT]|scada",
+  "input||tidal|Tidal & Wave [WAIT]|scada",
+  "input||biomass|Biomass & EfW [WAIT]|scada",
+  "input||bess_operational|Battery Storage (Operational O|scada",
+  "input||bess|Battery Storage [WAIT]|scada",
+  "input||wind_offshore_operational|Offshore Wind (Operational Onl|scada",
+  "input||wind_onshore_operational|Onshore Wind (Operational Only|scada",
+  "input||wind|Wind [WAIT]|scada",
+  "input||solar_roof|Solar Roof [WAIT]|scada",
+  "input||solar_operational|Solar PV (Operational Only) [W|scada",
+  "input||solar|Solar PV [WAIT]|scada",
+  "input||naei_co2|Major Industrial Sites [WAIT]|scada",
+  "input||ev|EV Rapid (100kW+) [WAIT]|scada",
+  "input||motorway_services|Motorway Services [WAIT]|scada",
+  "input||primary_roads|A-Roads (Primary) [WAIT]|scada",
+  "input||trunk_roads|Major A-Roads (Trunk) [WAIT]|scada",
+  "input||motorways|Motorways [WAIT]|scada",
+  "input||global_hydrocarbons|Global Hydrocarbons (Oil, Gas,|scada",
+  "input||global_ports_minor|Inland / Minor Harbours [WAIT]|scada",
+  "input||global_ports_major|Major Ports (Deep Water/Ferry)|scada",
+  "input||subsea_data_cables|Subsea Data Cables (Fibre) (no|scada",
+  "input||stadiums|Major Stadiums [WAIT]|scada",
+  "input||eurostar_station|Eurostar Stations UK & Europe |scada",
+  "input||eurostar_route|Eurostar (HS1) UK & Europe [WA|scada",
+  "input||hs2|HS2 [WAIT]|scada",
+  "input||mainline_rail|UK Mainline Railways [WAIT]|scada",
+  "input||tram|Trams & Light Rail [WAIT]|scada",
+  "input||metro|UK Metro [WAIT]|scada",
+  "input||dlr|DLR [WAIT]|scada",
+  "input||lu|London Underground [WAIT]|scada"
+ ]
+}
