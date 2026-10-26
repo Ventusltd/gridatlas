@@ -48,43 +48,70 @@ for(const [name,device] of [
    menuBar:!!document.querySelector('#gridatlas-menu-bar'),
    content:document.body?.innerText?.slice(0,700)
   }));
-  const grid=page.getByRole('button',{name:'Grid',exact:true});
-  r.gridMenuButton=await grid.count();
-  if(r.gridMenuButton){
-   await grid.click({timeout:14000});
-   await page.waitForTimeout(400);
-   r.menu=await page.evaluate(()=>{
-    const body=document.querySelector('#gridatlas-menu-bar-panel-4 .gm-panel-body');
-    const inp=document.querySelector('[data-weather-layer="uk_lightning"]');
-    const group=document.querySelector('[data-weather-group="uk_lightning"]');
-    const gRect=body?.getBoundingClientRect(),r=inp?.getBoundingClientRect();
-    return {expanded:document.querySelector('#gridatlas-menu-bar-title-4')?.getAttribute('aria-expanded'),
-      panelVisible:!!document.querySelector('.gm-open .gm-panel'),
-      groupText:group?.textContent,firstGroup:body?.firstElementChild?.getAttribute('data-weather-group'),
-      togglePresent:!!inp,toggleChecked:inp?.checked,groupVisible:!!(group?.getClientRects().length),
-      toggleBox:r?{x:r.x,y:r.y,w:r.width,h:r.height}:null,
-      panelBox:gRect?{x:gRect.x,y:gRect.y,w:gRect.width,h:gRect.height}:null,
-      firstViewportVisible:!!(r&&gRect&&r.top>=gRect.top-1&&r.bottom<=gRect.bottom+1),
-      menuText:document.querySelector('#gridatlas-menu-bar-panel-4')?.innerText?.slice(0,700)};
-   });
-   await page.screenshot({path:path.join(out,name+'-grid-open.png'),fullPage:false,timeout:12000});
-   if(r.menu?.togglePresent){
-    const checkbox=page.locator('[data-weather-layer="uk_lightning"]');
-    await checkbox.click({timeout:14000});
-    await page.waitForTimeout(10000);
-    r.afterToggle=await page.evaluate(()=>{
-     const m=window.__GRIDATLAS_V9_MAP__;
-     const w=window.__GRIDATLAS_WEATHER_LIGHTNING__;
-     const s=m?.getSource('src-uk_lightning');
-     return {weather:w,checked:document.querySelector('[data-weather-layer="uk_lightning"]')?.checked,
-       label:document.querySelector('#lbl-uk_lightning')?.textContent,
-       layerVisibility:m?.getLayer('l-uk_lightning')?m.getLayoutProperty('l-uk_lightning','visibility'):null,
-       sourceFeatures:s?._data?.features?.length??null};
-    });
-    await page.screenshot({path:path.join(out,name+'-lightning-toggled.png'),fullPage:false,timeout:12000});
-   }
-  }
-  if(r.initial?.generation!=='202610231505'||!r.menu?.togglePresent||!r.menu?.firstViewportVisible)failed=true;
+  const menu=page.getByRole('button',{name:'Grid',exact:true});
+  r.gridMenuButton=await menu.count();
+  await menu.click({timeout:20000});
+  await page.waitForTimeout(400);
+  r.menu=await page.evaluate(()=>{
+   const body=document.querySelector('#gridatlas-menu-bar-panel-4 .gm-panel-body');
+   return {expanded:document.querySelector('#gridatlas-menu-bar-title-4')?.getAttribute('aria-expanded'),
+    firstGroup:body?.firstElementChild?.getAttribute('data-weather-group'),
+    toggleExists:!!document.querySelector('[data-gridatlas-layer-proxy="weather:uk_lightning"]'),
+    inspect:window.__GRIDATLAS_MODULES__?.menuBar?.inspect?.()
+   };
+  });
+  await page.screenshot({path:path.join(out,name+'-grid-dropdown.png'),timeout:12000});
+
+  // Test the REAL ordinary LAYERS panel, not just the Grid dropdown.
+  await menu.click({timeout:20000});
+  const native=page.locator('#scada-ui-container input[data-weather-layer="uk_lightning"]');
+  const fullscreen=page.locator('#fs-curtain-keys input[data-weather-layer="uk_lightning"]');
+  const dropdown=page.locator('[data-gridatlas-layer-proxy="weather:uk_lightning"]');
+  r.native=await page.evaluate(()=>{
+   const root=document.querySelector('#scada-ui-container');
+   const curtain=document.querySelector('#fs-curtain-keys');
+   const wrapper=document.querySelector('.scada-wrapper');
+   return {nativeFirstGroup:root?.firstElementChild?.getAttribute('data-weather-native-group'),
+    nativeCheckbox:!!root?.querySelector('input[data-weather-layer="uk_lightning"]'),
+    fullscreenFirstGroup:curtain?.firstElementChild?.getAttribute('data-weather-native-group'),
+    fullscreenCheckbox:!!curtain?.querySelector('input[data-weather-layer="uk_lightning"]'),
+    collapsed:wrapper?.getAttribute('data-gridatlas-collapsed')==='1'};
+  });
+  const dash=page.locator('#gridatlas-dash-toggle');
+  if(r.native.collapsed)await dash.click({timeout:18000});
+  r.native.expanded=await page.locator('.scada-wrapper').getAttribute('data-gridatlas-collapsed')!=='1';
+  await native.scrollIntoViewIfNeeded({timeout:16000});
+  await page.screenshot({path:path.join(out,name+'-native-layers-open.png'),timeout:12000});
+  // A genuine Chrome hit-tested mobile click: force:true is forbidden.
+  await native.click({timeout:20000});
+  await page.waitForTimeout(7000);
+  r.afterNativeOn=await page.evaluate(()=>{
+   const m=window.__GRIDATLAS_V9_MAP__;
+   return {nativeChecked:document.querySelector('#scada-ui-container input[data-weather-layer="uk_lightning"]')?.checked,
+    menuChecked:document.querySelector('[data-gridatlas-layer-proxy="weather:uk_lightning"]')?.checked,
+    fullscreenChecked:document.querySelector('#fs-curtain-keys input[data-weather-layer="uk_lightning"]')?.checked,
+    layerVisibility:m?.getLayer('l-uk_lightning')?m.getLayoutProperty('l-uk_lightning','visibility'):null,
+    weather:window.__GRIDATLAS_WEATHER_LIGHTNING__,
+    features:m?.getSource('src-uk_lightning')?._data?.features?.length??null,
+    nativeLabel:document.querySelector('[data-weather-label="layers"]')?.textContent};
+  });
+  await page.screenshot({path:path.join(out,name+'-native-lightning-on.png'),timeout:12000});
+  await native.click({timeout:20000});
+  r.afterNativeOff=await page.evaluate(()=>({
+   nativeChecked:document.querySelector('#scada-ui-container input[data-weather-layer="uk_lightning"]')?.checked,
+   menuChecked:document.querySelector('[data-gridatlas-layer-proxy="weather:uk_lightning"]')?.checked,
+   layerVisibility:window.__GRIDATLAS_V9_MAP__?.getLayoutProperty('l-uk_lightning','visibility')
+  }));
+  if(r.initial?.generation!=='202610261500'
+   ||r.native?.nativeFirstGroup!=='layers'
+   ||r.native?.fullscreenFirstGroup!=='fullscreen'
+   ||!r.native?.expanded
+   ||!r.menu?.toggleExists
+   ||r.menu?.inspect?.complete!==true
+   ||r.afterNativeOn?.layerVisibility!=='visible'
+   ||r.afterNativeOn?.features<1
+   ||r.afterNativeOn?.menuChecked!==true
+   ||r.afterNativeOff?.layerVisibility!=='none')failed=true;
  }catch(e){r.exception=String(e);failed=true;await page.screenshot({path:path.join(out,name+'-failure.png'),timeout:12000}).catch(()=>{});}
  r.final={errors:r.errors.slice(-12),consoleErrors:r.consoleErrors.slice(-12),networkFailures:r.networkFailures.slice(-12),http:r.http.slice(-30)};
  console.log('PUBLISHED_ANDROID_RESULT '+JSON.stringify(r));
