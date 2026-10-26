@@ -12,7 +12,7 @@ const path='atlas/modules/'+gen+'-uk-lightning-overlay.js';
 const src=readFileSync(path,'utf8');
 const seam='NS.ukLightning=Object.freeze(';
 assert.equal(src.split(seam).length,2,'Test probe cannot locate the original module seam');
-const observed=src.replace(seam,'window.__PROBE__={ok,cf,sh,cp,state:S};'+seam);
+const observed=src.replace(seam,'window.__PROBE__={ok,cf,sh,cp,ff,state:S};'+seam);
 const hoursAgo=h=>Date.now()-h*3600000;
 const stamp=h=>new Date(hoursAgo(h)).toISOString();
 const flash=(h,id,coords=[-1.5,52])=>({type:'Feature',id,
@@ -109,4 +109,35 @@ test('H05: do not call overlapping whole-day index counts exact in-window totals
     cov:{f:1,r:6,a:w.s,b:w.e,ny:0,bf:0,u:[],d:2}};
   const captions=x.probe.cp(r,now);
   assert.doesNotMatch(captions.flashes,/50,000 archived in window/i);
+});
+
+
+test('H07: 12-month selection remains usable with no archive, retaining only genuine feed events',async()=>{
+  const x=boot({getFeed:()=>feed([flash(2,'genuine')])});
+  const now=Date.now();
+  const oneYear={s:now-365*864e5,e:now,label:'1 year',period:'12m',
+    atLatest:true,custom:false,clamped:false,span:365*864e5};
+  const r=await x.probe.ff(oneYear,now,'archive index HTTP 404');
+  assert.equal(r.mode,'feed');
+  assert.equal(r.ev.length,1,'No fake historical observations: only one genuine feed fixture point');
+  assert.equal(r.ev[0].id,'genuine');
+  const captions=x.probe.cp(r,now);
+  assert.match(captions.window,/1 year|12m|2025/i);
+  assert.match(captions.flashes+' '+captions.warning+' '+captions.refresh,
+    /unknown|unavailable|not published/i,
+    'Historical periods remain selectable but missing older coverage must be called UNKNOWN');
+});
+
+test('H08: live-feed last query window is NOT an evidence-backed 2% searched coverage claim',()=>{
+  const x=boot(),now=Date.now(),w={s:now-7*864e5,e:now,
+    period:'7d',label:'7 days',atLatest:true,custom:false,clamped:false};
+  const f=feed([flash(2,'real')],1);
+  const r={mode:'feed',idx:null,ie:'archive HTTP 404',meta:f.metadata,w,
+    ev:f.features,fl:[],rq:1,cs:'live feed',ic:1,cl:false,ld:[],sk:[],
+    cov:{f:0.02,ny:now-w.s,bf:0,u:[],d:7,r:1,a:now-3*36e5,b:now}};
+  const lines=x.probe.cp(r,now);
+  assert.doesNotMatch(lines.searched,/Searched EUMETSAT\s+\d+(?:\.\d+)?%\s+of window/i,
+    'The most recent collection query does not prove seven-day cumulative search coverage');
+  assert.match(lines.searched+' '+lines.warning,/unknown|unverified|not available/i,
+    'Feed mode must explicitly state that full-window searched coverage is unknown');
 });
