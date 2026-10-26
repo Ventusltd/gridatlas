@@ -152,7 +152,15 @@ try {
   assert.equal(await native.isChecked(),false,'Menu OFF not synchronised to actual LAYERS');
   if(await grid.getAttribute('aria-expanded')==='true')await grid.click();
   const dash=page.locator('#gridatlas-dash-toggle');
-  if(!(await native.isVisible())&&await dash.count())await dash.click();
+  const wrapper=page.locator('.scada-wrapper');
+  // On mobile the native panel starts COLLAPSED, but Playwright isVisible()
+  // still sees layout inside its clipped, zero-height ancestor. Explicitly
+  // OPEN the user's real ▲ LAYERS control before asking for a real tap.
+  if(await wrapper.getAttribute('data-gridatlas-collapsed')==='1'){
+    assert.equal(await dash.isVisible(),true,'Mobile LAYERS expand control is hidden');
+    await dash.click();
+  }
+  assert.notEqual(await wrapper.getAttribute('data-gridatlas-collapsed'),'1','Native LAYERS failed to expand');
   assert.equal(await native.isVisible(),true,'Actual LAYERS Weather checkbox is not visible');
   await native.scrollIntoViewIfNeeded();
   await page.screenshot({path:path.join(out,'preview-'+width+'-native-layers-weather-visible.png')});
