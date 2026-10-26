@@ -18,7 +18,36 @@
    "status": "PASS",
    "evidence": "evidence/step-a/P01-baseline-hashes.txt",
    "command": "sha256sum -c evidence/step-a/baseline-sha256-manifest.txt (31/31 OK); git diff origin/main..HEAD over protected paths empty",
-   "notes": ""
+   "notes": "",
+   "technical_status": "PASS",
+   "owner_decision": false,
+   "source_lanes": [
+    "matrix-input"
+   ],
+   "sources": [
+    {
+     "lane": "matrix-input",
+     "file": "TEST-MATRIX.json",
+     "line": null,
+     "form": "matrix",
+     "tokens": [
+      "PASS"
+     ],
+     "technical_status": "PASS",
+     "owner_decision": false,
+     "partial": false,
+     "status_text": "PASS",
+     "evidence_text": "evidence/step-a/P01-baseline-hashes.txt",
+     "paths": [
+      "evidence/step-a/P01-baseline-hashes.txt"
+     ],
+     "commands": [
+      "sha256sum -c evidence/step-a/baseline-sha256-manifest.txt (31/31 OK); git diff origin/main..HEAD over protected paths empty"
+     ],
+     "evidence_dir": null
+    }
+   ],
+   "merge_notes": []
   },
   {
    "id": "P02",
@@ -27,7 +56,12 @@
    "status": "NOT_TESTED",
    "evidence": "",
    "command": "",
-   "notes": ""
+   "notes": "",
+   "technical_status": "NOT_TESTED",
+   "owner_decision": false,
+   "source_lanes": [],
+   "sources": [],
+   "merge_notes": []
   },
   {
    "id": "P03",
@@ -36,7 +70,12 @@
    "status": "NOT_TESTED",
    "evidence": "",
    "command": "",
-   "notes": ""
+   "notes": "",
+   "technical_status": "NOT_TESTED",
+   "owner_decision": false,
+   "source_lanes": [],
+   "sources": [],
+   "merge_notes": []
   },
   {
    "id": "P04",
@@ -45,7 +84,12 @@
    "status": "NOT_TESTED",
    "evidence": "",
    "command": "",
-   "notes": ""
+   "notes": "",
+   "technical_status": "NOT_TESTED",
+   "owner_decision": false,
+   "source_lanes": [],
+   "sources": [],
+   "merge_notes": []
   },
   {
    "id": "P05",
@@ -54,7 +98,12 @@
    "status": "NOT_TESTED",
    "evidence": "",
    "command": "",
-   "notes": ""
+   "notes": "",
+   "technical_status": "NOT_TESTED",
+   "owner_decision": false,
+   "source_lanes": [],
+   "sources": [],
+   "merge_notes": []
   },
   {
    "id": "P06",
@@ -63,7 +112,12 @@
    "status": "NOT_TESTED",
    "evidence": "",
    "command": "",
-   "notes": ""
+   "notes": "",
+   "technical_status": "NOT_TESTED",
+   "owner_decision": false,
+   "source_lanes": [],
+   "sources": [],
+   "merge_notes": []
   },
   {
    "id": "P07",
@@ -72,7 +126,12 @@
    "status": "NOT_TESTED",
    "evidence": "",
    "command": "",
-   "notes": ""
+   "notes": "",
+   "technical_status": "NOT_TESTED",
+   "owner_decision": false,
+   "source_lanes": [],
+   "sources": [],
+   "merge_notes": []
   },
   {
    "id": "P08",
@@ -81,7 +140,12 @@
    "status": "NOT_TESTED",
    "evidence": "",
    "command": "",
-   "notes": ""
+   "notes": "",
+   "technical_status": "NOT_TESTED",
+   "owner_decision": false,
+   "source_lanes": [],
+   "sources": [],
+   "merge_notes": []
   },
   {
    "id": "P09",
@@ -90,7 +154,12 @@
    "status": "NOT_TESTED",
    "evidence": "",
    "command": "",
-   "notes": ""
+   "notes": "",
+   "technical_status": "NOT_TESTED",
+   "owner_decision": false,
+   "source_lanes": [],
+   "sources": [],
+   "merge_notes": []
   },
   {
    "id": "P10",
@@ -99,7 +168,12 @@
    "status": "NOT_TESTED",
    "evidence": "",
    "command": "",
-   "notes": ""
+   "notes": "",
+   "technical_status": "NOT_TESTED",
+   "owner_decision": false,
+   "source_lanes": [],
+   "sources": [],
+   "merge_notes": []
   },
   {
    "id": "P11",
@@ -108,7 +182,12 @@
    "status": "NOT_TESTED",
    "evidence": "",
    "command": "",
-   "notes": ""
+   "notes": "",
+   "technical_status": "NOT_TESTED",
+   "owner_decision": false,
+   "source_lanes": [],
+   "sources": [],
+   "merge_notes": []
   },
   {
    "id": "P12",
@@ -117,7 +196,12 @@
    "status": "NOT_TESTED",
    "evidence": "",
    "command": "",
-   "notes": ""
+   "notes": "",
+   "technical_status": "NOT_TESTED",
+   "owner_decision": false,
+   "source_lanes": [],
+   "sources": [],
+   "merge_notes": []
   },
   {
    "id": "P13",
@@ -126,7 +210,12 @@
    "status": "NOT_TESTED",
    "evidence": "",
    "command": "",
-   "notes": ""
+   "notes": "",
+   "technical_status": "NOT_TESTED",
+   "owner_decision": false,
+   "source_lanes": [],
+   "sources": [],
+   "merge_notes": []
   },
   {
    "id": "P14",
@@ -135,7 +224,12 @@
    "status": "NOT_TESTED",
    "evidence": "",
    "command": "",
-   "notes": ""
+   "notes": "",
+   "technical_status": "NOT_TESTED",
+   "owner_decision": false,
+   "source_lanes": [],
+   "sources": [],
+   "merge_notes": []
   },
   {
    "id": "P15",
@@ -144,7 +238,12 @@
    "status": "NOT_TESTED",
    "evidence": "",
    "command": "",
-   "notes": ""
+   "notes": "",
+   "technical_status": "NOT_TESTED",
+   "owner_decision": false,
+   "source_lanes": [],
+   "sources": [],
+   "merge_notes": []
   },
   {
    "id": "P16",
@@ -153,34 +252,119 @@
    "status": "NOT_TESTED",
    "evidence": "",
    "command": "",
-   "notes": ""
+   "notes": "",
+   "technical_status": "NOT_TESTED",
+   "owner_decision": false,
+   "source_lanes": [],
+   "sources": [],
+   "merge_notes": []
   },
   {
    "id": "D01",
    "title": "What is observed",
    "requirement": "EUMETSAT MTG LI L2-LFL optical flash centroids/time, not ground strike channels; always display exact wording and attribution, including popup where present.",
-   "status": "NOT_TESTED",
-   "evidence": "",
+   "status": "PASS",
+   "evidence": "reports/pr2-data-verifier.md:17",
    "command": "",
-   "notes": ""
+   "notes": "",
+   "technical_status": "PASS",
+   "owner_decision": false,
+   "source_lanes": [
+    "pr2-data-verifier"
+   ],
+   "sources": [
+    {
+     "lane": "pr2-data-verifier",
+     "file": "pr2-data-verifier.md",
+     "line": 17,
+     "form": "table",
+     "tokens": [
+      "PASS"
+     ],
+     "technical_status": "PASS",
+     "owner_decision": false,
+     "partial": false,
+     "status_text": "PASS (data plane)",
+     "evidence_text": "exp1-real-feed/archive/index.json, exp1-real-feed/archive/days/2026/10/23.json",
+     "paths": [],
+     "commands": [],
+     "evidence_dir": "evidence/pr2-data-verifier/"
+    }
+   ],
+   "merge_notes": []
   },
   {
    "id": "D02",
    "title": "Geodesy",
    "requirement": "lon/lat valid and within declared UK+neighbour-waters bounds (-11,49.5) to (3,61.5); validate and quarantine malformed/out-of-box records; no invented bolt paths or attribution to individual pylons.",
-   "status": "NOT_TESTED",
-   "evidence": "",
-   "command": "",
-   "notes": ""
+   "status": "PASS",
+   "evidence": "reports/pr2-data-verifier.md:18",
+   "command": "python3 exp4_defect_hypotheses.py EV/wt EV/exp4-defects  (pr2-data-verifier)",
+   "notes": "",
+   "technical_status": "PASS",
+   "owner_decision": false,
+   "source_lanes": [
+    "pr2-data-verifier"
+   ],
+   "sources": [
+    {
+     "lane": "pr2-data-verifier",
+     "file": "pr2-data-verifier.md",
+     "line": 18,
+     "form": "table",
+     "tokens": [
+      "PASS"
+     ],
+     "technical_status": "PASS",
+     "owner_decision": false,
+     "partial": false,
+     "status_text": "PASS (remarks)",
+     "evidence_text": "exp4-defects.log §H4",
+     "paths": [],
+     "commands": [
+      "python3 exp4_defect_hypotheses.py EV/wt EV/exp4-defects"
+     ],
+     "evidence_dir": "evidence/pr2-data-verifier/"
+    }
+   ],
+   "merge_notes": []
   },
   {
    "id": "D03",
    "title": "Time semantics",
    "requirement": "timestamps UTC, selection [start,end) consistently, true selected start/end, actual first/last observations INSIDE selection, ingestion/generated timestamp kept separate from last detection timestamp.",
-   "status": "NOT_TESTED",
-   "evidence": "",
+   "status": "PASS",
+   "evidence": "reports/overlay-code-review.md:15 [overlay-code-review: E/probe-arith.out.txt]",
    "command": "",
-   "notes": ""
+   "notes": "",
+   "technical_status": "PASS",
+   "owner_decision": false,
+   "source_lanes": [
+    "overlay-code-review"
+   ],
+   "sources": [
+    {
+     "lane": "overlay-code-review",
+     "file": "overlay-code-review.md",
+     "line": 15,
+     "form": "table",
+     "tokens": [
+      "PASS"
+     ],
+     "technical_status": "PASS",
+     "owner_decision": false,
+     "partial": false,
+     "status_text": "PASS",
+     "evidence_text": "`[start,end)` everywhere: L65 `t>=ws&&t<we`, L76 row filter, L57 part filter; UTC only (toISOString/getUTC, `ds()` appends `T00:00:00Z`); window caption shows true start/end, custom shows inclusive dates + exact instants (browser A \"APPLY\": `UTC dates 2026-10-26 to 2026-10-26 inclusive = 2026-10-26 00:00 UTC → 2026-10-26 18:40 UTC`); actual first/last come from events filtered to the window (L99); refresh (generated) and actual (detection) lines separate (L102/109 vs L99). `E/probe-arith.out.txt`.",
+     "paths": [
+      "E/probe-arith.out.txt",
+      "E/probe-arith.out.txt"
+     ],
+     "commands": [],
+     "evidence_dir": "evidence/overlay-code-review/"
+    }
+   ],
+   "merge_notes": []
   },
   {
    "id": "D04",
@@ -189,7 +373,12 @@
    "status": "NOT_TESTED",
    "evidence": "",
    "command": "",
-   "notes": ""
+   "notes": "",
+   "technical_status": "NOT_TESTED",
+   "owner_decision": false,
+   "source_lanes": [],
+   "sources": [],
+   "merge_notes": []
   },
   {
    "id": "D05",
@@ -198,214 +387,1004 @@
    "status": "NOT_TESTED",
    "evidence": "",
    "command": "",
-   "notes": ""
+   "notes": "",
+   "technical_status": "NOT_TESTED",
+   "owner_decision": false,
+   "source_lanes": [],
+   "sources": [],
+   "merge_notes": []
   },
   {
    "id": "D06",
    "title": "Archive absent",
-   "requirement": "index 404/schema mismatch/CORS/network issue \u2192 explicit fallback to rolling seven-day feed, with 'archive not published/unavailable', and long ranges disabled, never zero.",
-   "status": "NOT_TESTED",
-   "evidence": "",
-   "command": "",
-   "notes": ""
+   "requirement": "index 404/schema mismatch/CORS/network issue → explicit fallback to rolling seven-day feed, with 'archive not published/unavailable', and long ranges disabled, never zero.",
+   "status": "PASS",
+   "evidence": "reports/pr2-data-verifier.md:19",
+   "command": "node exp5_client_d06_d07.mjs EV/wt EV/exp1-real-feed/archive  (pr2-data-verifier)",
+   "notes": "",
+   "technical_status": "PASS",
+   "owner_decision": false,
+   "source_lanes": [
+    "pr2-data-verifier"
+   ],
+   "sources": [
+    {
+     "lane": "pr2-data-verifier",
+     "file": "pr2-data-verifier.md",
+     "line": 19,
+     "form": "table",
+     "tokens": [
+      "PASS"
+     ],
+     "technical_status": "PASS",
+     "owner_decision": false,
+     "partial": false,
+     "status_text": "PASS (client; cosmetic wording)",
+     "evidence_text": "exp5-client.log",
+     "paths": [],
+     "commands": [
+      "node exp5_client_d06_d07.mjs EV/wt EV/exp1-real-feed/archive"
+     ],
+     "evidence_dir": "evidence/pr2-data-verifier/"
+    }
+   ],
+   "merge_notes": []
   },
   {
    "id": "D07",
    "title": "Missing=unknown",
    "requirement": "missing days, scan gaps, failed runs, partial coverage, not-yet-ingested tail all explicitly unknown; zero only if searched coverage and count legitimately zero.",
-   "status": "NOT_TESTED",
-   "evidence": "",
+   "status": "FAIL",
+   "evidence": "reports/pr2-data-verifier.md:20",
    "command": "",
-   "notes": ""
+   "notes": "",
+   "technical_status": "FAIL",
+   "owner_decision": false,
+   "source_lanes": [
+    "pr2-data-verifier"
+   ],
+   "sources": [
+    {
+     "lane": "pr2-data-verifier",
+     "file": "pr2-data-verifier.md",
+     "line": 20,
+     "form": "table",
+     "tokens": [
+      "FAIL"
+     ],
+     "technical_status": "FAIL",
+     "owner_decision": false,
+     "partial": false,
+     "status_text": "FAIL (defect, not release-blocker)",
+     "evidence_text": "exp4-defects.log §H1, §H3; exp5-client.log",
+     "paths": [],
+     "commands": [],
+     "evidence_dir": "evidence/pr2-data-verifier/"
+    }
+   ],
+   "merge_notes": []
   },
   {
    "id": "D08",
    "title": "Schema",
-   "requirement": "index v2, dated shards v1, day parts[] for high-volume split dates, sha256/bytes/count metadata consistency, sealed/unsealed cache correctness. Candidate rejecting v1 is a KNOWN DEVIATION \u2014 adjudicate its impact with PR #2, do not silently normalise the scope.",
-   "status": "NOT_TESTED",
-   "evidence": "",
-   "command": "",
-   "notes": ""
+   "requirement": "index v2, dated shards v1, day parts[] for high-volume split dates, sha256/bytes/count metadata consistency, sealed/unsealed cache correctness. Candidate rejecting v1 is a KNOWN DEVIATION — adjudicate its impact with PR #2, do not silently normalise the scope.",
+   "status": "PASS",
+   "evidence": "reports/pr2-data-verifier.md:21",
+   "command": "python3 exp1_real_feed_ingest.py EV/wt EV/exp1-real-feed  (pr2-data-verifier); python3 EV/wt/history.py verify --archive-dir EV/exp1-real-feed/archive  (pr2-data-verifier)",
+   "notes": "",
+   "technical_status": "PASS",
+   "owner_decision": false,
+   "source_lanes": [
+    "pr2-data-verifier"
+   ],
+   "sources": [
+    {
+     "lane": "pr2-data-verifier",
+     "file": "pr2-data-verifier.md",
+     "line": 21,
+     "form": "table",
+     "tokens": [
+      "PASS"
+     ],
+     "technical_status": "PASS",
+     "owner_decision": false,
+     "partial": false,
+     "status_text": "PASS",
+     "evidence_text": "exp1-real-feed.log, exp2-consumers.log, exp3-storm.log",
+     "paths": [],
+     "commands": [
+      "python3 exp1_real_feed_ingest.py EV/wt EV/exp1-real-feed",
+      "python3 EV/wt/history.py verify --archive-dir EV/exp1-real-feed/archive"
+     ],
+     "evidence_dir": "evidence/pr2-data-verifier/"
+    }
+   ],
+   "merge_notes": []
   },
   {
    "id": "D09",
    "title": "Time-window correctness",
    "requirement": "DST boundary, UTC midnight, leap day, month-length variation, leap-year 12-month lookback, date picker From > To, date before archive, future date, mid-window ingestion and selected window outside feed retention.",
-   "status": "NOT_TESTED",
-   "evidence": "",
+   "status": "FAIL",
+   "evidence": "reports/overlay-code-review.md:16 [overlay-code-review: E/probe-arith.out.txt]",
    "command": "",
-   "notes": ""
+   "notes": "",
+   "technical_status": "FAIL",
+   "owner_decision": false,
+   "source_lanes": [
+    "overlay-code-review"
+   ],
+   "sources": [
+    {
+     "lane": "overlay-code-review",
+     "file": "overlay-code-review.md",
+     "line": 16,
+     "form": "table",
+     "tokens": [
+      "FAIL"
+     ],
+     "technical_status": "FAIL",
+     "owner_decision": false,
+     "partial": false,
+     "status_text": "FAIL (minor)",
+     "evidence_text": "`mm()` correct over month-end, leap day, 12-month leap lookback, negative months (`E/probe-arith.out.txt` lines 1–6); From>To rejected (L164); before-archive → BEFORE-ARCHIVE (L74); outside feed retention → FAIL text (browser B PREV#3). FAIL: a future From is accepted (L164) → inverted window `span −1162 d` painted as UNKNOWN (probe \"custom future window\"); month NEXT drifts 2 d after PREV when not at latest (probe \"NEXT after PREV\"). Defects #7, #15.",
+     "paths": [
+      "E/probe-arith.out.txt",
+      "E/probe-arith.out.txt"
+     ],
+     "commands": [],
+     "evidence_dir": "evidence/overlay-code-review/"
+    }
+   ],
+   "merge_notes": []
   },
   {
    "id": "D10",
    "title": "Concurrency",
    "requirement": "four shard reads max, settled per shard with named failures; LRU 8; cancellation and stale responses may NOT repaint a newer window or leave old points under a mismatching caption.",
-   "status": "NOT_TESTED",
-   "evidence": "",
+   "status": "PASS",
+   "evidence": "reports/overlay-code-review.md:17",
    "command": "",
-   "notes": ""
+   "notes": "",
+   "technical_status": "PASS",
+   "owner_decision": false,
+   "source_lanes": [
+    "overlay-code-review"
+   ],
+   "sources": [
+    {
+     "lane": "overlay-code-review",
+     "file": "overlay-code-review.md",
+     "line": 17,
+     "form": "table",
+     "tokens": [
+      "PASS"
+     ],
+     "technical_status": "PASS",
+     "owner_decision": false,
+     "partial": false,
+     "status_text": "PASS (notes)",
+     "evidence_text": "4 workers L62; per-shard named failures L62; LRU 8 L31; serial guard L169 drops stale/OFF results; FAIL clears points (L171 `dw(FC([]))`). Notes: in-flight requests are not aborted on OFF/window change (bandwidth only); during LOADING the previous caption+points stay under the newly active chip (#16); `li()` side-effect may be overwritten by an older index response (#17); `sp('custom')` bypassed the serial (#1, fixed by F2). Browser A.",
+     "paths": [],
+     "commands": [],
+     "evidence_dir": "evidence/overlay-code-review/"
+    }
+   ],
+   "merge_notes": []
   },
   {
    "id": "D11",
    "title": "Budget tier",
    "requirement": "detail up to 31 days only if <=40k index count and <=32MB; larger index summary before fetch. >31d daily index only by default; LOAD POINTS explicit and honest; 10k phone/40k desktop map cap and cluster state honestly indicated.",
-   "status": "NOT_TESTED",
-   "evidence": "",
+   "status": "OWNER_DECISION",
+   "evidence": "reports/opus-owner-decisions.md:20",
    "command": "",
-   "notes": ""
+   "notes": "",
+   "technical_status": "NOT_TESTED",
+   "owner_decision": true,
+   "source_lanes": [
+    "opus-owner-decisions"
+   ],
+   "sources": [
+    {
+     "lane": "opus-owner-decisions",
+     "file": "opus-owner-decisions.md",
+     "line": 20,
+     "form": "decision-table",
+     "tokens": [
+      "OWNER_DECISION"
+     ],
+     "technical_status": null,
+     "owner_decision": true,
+     "partial": false,
+     "status_text": "Keep 10,000 phone / 40,000 desktop point caps, with clusters above?",
+     "evidence_text": "Keep 10,000 phone / 40,000 desktop point caps, with clusters above? | Keep, after a defect fix | No, once fixed",
+     "paths": [],
+     "commands": [],
+     "evidence_dir": "evidence/opus-owner-decisions/"
+    }
+   ],
+   "merge_notes": [
+    "owner decision raised by opus-owner-decisions"
+   ]
   },
   {
    "id": "D12",
    "title": "Large storm",
    "requirement": "max shard 25MB, target 8MiB and parts[] hourly split; 100k-flash day stress. Zero synthetic observation points in published archive; synthetic counts are allowed in TEST FIXTURES only, clearly labelled.",
-   "status": "NOT_TESTED",
-   "evidence": "",
-   "command": "",
-   "notes": ""
+   "status": "PASS",
+   "evidence": "reports/pr2-data-verifier.md:22",
+   "command": "python3 exp3_storm_split.py EV/wt EV/exp3-storm  (pr2-data-verifier)",
+   "notes": "",
+   "technical_status": "PASS",
+   "owner_decision": true,
+   "source_lanes": [
+    "pr2-data-verifier"
+   ],
+   "sources": [
+    {
+     "lane": "pr2-data-verifier",
+     "file": "pr2-data-verifier.md",
+     "line": 22,
+     "form": "table",
+     "tokens": [
+      "PASS",
+      "OWNER_DECISION"
+     ],
+     "technical_status": "PASS",
+     "owner_decision": true,
+     "partial": false,
+     "status_text": "PASS (+ defect D-2, OWNER_DECISION on mitigation)",
+     "evidence_text": "exp3-storm.log, exp3-storm/caseA-100k-uniform (SYNTHETIC, labelled)",
+     "paths": [],
+     "commands": [
+      "python3 exp3_storm_split.py EV/wt EV/exp3-storm"
+     ],
+     "evidence_dir": "evidence/pr2-data-verifier/"
+    }
+   ],
+   "merge_notes": [
+    "owner decision raised by pr2-data-verifier"
+   ]
   },
   {
    "id": "D13",
    "title": "Status captions",
    "requirement": "show selection window, first/last genuine detection, archived vs drawn counts, refreshed/published timestamp with stale semantics, coverage fraction/runs, warnings + UTC/source/uncertainty note; if footer/legend hidden, fail visibility.",
-   "status": "NOT_TESTED",
-   "evidence": "",
+   "status": "FAIL",
+   "evidence": "reports/overlay-code-review.md:18 [overlay-code-review: browser-out/browser-repro.json]",
    "command": "",
-   "notes": ""
+   "notes": "",
+   "technical_status": "FAIL",
+   "owner_decision": false,
+   "source_lanes": [
+    "overlay-code-review"
+   ],
+   "sources": [
+    {
+     "lane": "overlay-code-review",
+     "file": "overlay-code-review.md",
+     "line": 18,
+     "form": "table",
+     "tokens": [
+      "FAIL"
+     ],
+     "technical_status": "FAIL",
+     "owner_decision": false,
+     "partial": false,
+     "status_text": "FAIL (minor)",
+     "evidence_text": "All seven lines present and worded per spec on main + fs surfaces (browser A/B/C captions in `browser-out/browser-repro.json`); footer carries UTC/optical/not-ground-strike/unknown-not-zero/UK box. FAIL: feed mode shows a frozen `Refresh live feed 13:05 UTC` with no STALE at 19:00 fake time (#3, #4); past feed windows print `Searched EUMETSAT 0% … no collection run covers these dates` while 261 flashes are drawn (#5). Grid dropdown mirror carries the label only (by spec; phone visibility is R01 territory).",
+     "paths": [
+      "browser-out/browser-repro.json",
+      "browser-out/browser-repro.json"
+     ],
+     "commands": [],
+     "evidence_dir": "evidence/overlay-code-review/"
+    }
+   ],
+   "merge_notes": []
   },
   {
    "id": "D14",
    "title": "State matrix",
-   "requirement": "OFF, LOADING, READY\u00b7DETAIL, READY\u00b7SUMMARY, EMPTY-COVERED, PARTIAL, UNKNOWN, BEFORE-ARCHIVE, FAIL and STALE modifier. Distinguish network error from successfully searched and empty.",
-   "status": "NOT_TESTED",
-   "evidence": "",
+   "requirement": "OFF, LOADING, READY·DETAIL, READY·SUMMARY, EMPTY-COVERED, PARTIAL, UNKNOWN, BEFORE-ARCHIVE, FAIL and STALE modifier. Distinguish network error from successfully searched and empty.",
+   "status": "FAIL",
+   "evidence": "reports/overlay-code-review.md:19",
    "command": "",
-   "notes": ""
+   "notes": "",
+   "technical_status": "FAIL",
+   "owner_decision": false,
+   "source_lanes": [
+    "overlay-code-review"
+   ],
+   "sources": [
+    {
+     "lane": "overlay-code-review",
+     "file": "overlay-code-review.md",
+     "line": 19,
+     "form": "table",
+     "tokens": [
+      "FAIL"
+     ],
+     "technical_status": "FAIL",
+     "owner_decision": false,
+     "partial": false,
+     "status_text": "FAIL (minor)",
+     "evidence_text": "OFF/LOADING/PARTIAL/UNKNOWN/FAIL observed in browser; READY·DETAIL/READY·SUMMARY/EMPTY-COVERED/BEFORE-ARCHIVE by reading L86–92 (`NO FLASHES DETECTED · SEARCHED 100%` only at 100 %); network error (FAIL) vs searched-and-empty (EMPTY-COVERED) distinct. FAIL: STALE modifier never computed in feed mode (L92 `r.idx&&`), i.e. never in today's no-archive production (#4).",
+     "paths": [],
+     "commands": [],
+     "evidence_dir": "evidence/overlay-code-review/"
+    }
+   ],
+   "merge_notes": []
   },
   {
    "id": "D15",
    "title": "Failure handling",
-   "requirement": "bad JSON, HTTP 404/500, partial shard failure, stale index, sha mismatch, CORS/network rejection, zero feed, cancelled request, stop/start rapidly. Newest partial features remain accurately labelled if FAIL. Candidate keeping toggle ON on FAIL is a KNOWN DEVIATION vs original V10 \u2014 reviewer must rul",
-   "status": "NOT_TESTED",
-   "evidence": "",
+   "requirement": "bad JSON, HTTP 404/500, partial shard failure, stale index, sha mismatch, CORS/network rejection, zero feed, cancelled request, stop/start rapidly. Newest partial features remain accurately labelled if FAIL. Candidate keeping toggle ON on FAIL is a KNOWN DEVIATION vs original V10 — reviewer must rul",
+   "status": "FAIL",
+   "evidence": "reports/overlay-code-review.md:20 [overlay-code-review: E/probe-vk2.out.txt]",
    "command": "",
-   "notes": ""
+   "notes": "",
+   "technical_status": "FAIL",
+   "owner_decision": false,
+   "source_lanes": [
+    "overlay-code-review"
+   ],
+   "sources": [
+    {
+     "lane": "overlay-code-review",
+     "file": "overlay-code-review.md",
+     "line": 20,
+     "form": "table",
+     "tokens": [
+      "FAIL"
+     ],
+     "technical_status": "FAIL",
+     "owner_decision": false,
+     "partial": false,
+     "status_text": "FAIL",
+     "evidence_text": "404/500/network/timeout → FAIL with message (L27–30, browser B); bad JSON → feed fallback naming the parse error (L27, lead fixture README); partial shard failure → FAIL + `at least N` + dates (L88/105/115); stale index → STALE (L45/109); cancelled/rapid OFF-ON → serial (L169/175). FAIL: hostile timestamp strings wedge the overlay until OFF/ON (#2, browser C/D, `pageErrors: ['Invalid time value']`); non-integer/boolean/array/Infinity counts, null count with partial coverage, string bytes and unvalidated `parts[]` accepted (#8, #9, `E/probe-vk2.out.txt`). sha256 never verified (known deviation, same as reference).",
+     "paths": [
+      "E/probe-vk2.out.txt",
+      "E/probe-vk2.out.txt"
+     ],
+     "commands": [],
+     "evidence_dir": "evidence/overlay-code-review/"
+    }
+   ],
+   "merge_notes": []
   },
   {
    "id": "D16",
    "title": "Transport",
    "requirement": ".json absolute fetch bypasses original broad .geojson interceptor; rolling feed .geojson uses tested XHR; verify intercepted_on_demand unchanged, request headers/CORS/cache must be tested *live* separately. No original bridge edits.",
-   "status": "NOT_TESTED",
-   "evidence": "",
+   "status": "PASS",
+   "evidence": "reports/overlay-code-review.md:21",
    "command": "",
-   "notes": ""
+   "notes": "",
+   "technical_status": "PASS",
+   "owner_decision": false,
+   "source_lanes": [
+    "overlay-code-review"
+   ],
+   "sources": [
+    {
+     "lane": "overlay-code-review",
+     "file": "overlay-code-review.md",
+     "line": 21,
+     "form": "table",
+     "tokens": [
+      "PASS"
+     ],
+     "technical_status": "PASS",
+     "owner_decision": false,
+     "partial": false,
+     "status_text": "PASS (shim)",
+     "evidence_text": "index/shards via `fetch(absolute .json)` L26–27; feed via XHR L28–30; bridge counters `intercepted_on_demand 0 / failures 0` after every ON/period/PREV in A/B/C/D; no bridge edits. Live CORS/cache = BLOCKED_DEPENDENCY (R07).",
+     "paths": [],
+     "commands": [],
+     "evidence_dir": "evidence/overlay-code-review/"
+    }
+   ],
+   "merge_notes": []
   },
   {
    "id": "D17",
    "title": "Collector",
    "requirement": "hourly at minute 17; max(6h, gap+30m) lookback capped 48h, successful examined 10-minute slots only, missed source product coverage recorded unknown; status always writes heartbeat, feed-first/archive-second; backfill not fabricated.",
-   "status": "NOT_TESTED",
-   "evidence": "",
+   "status": "FAIL",
+   "evidence": "reports/pr2-data-verifier.md:23 [pr2-data-verifier: data/history]",
    "command": "",
-   "notes": ""
+   "notes": "",
+   "technical_status": "FAIL",
+   "owner_decision": false,
+   "source_lanes": [
+    "pr2-data-verifier"
+   ],
+   "sources": [
+    {
+     "lane": "pr2-data-verifier",
+     "file": "pr2-data-verifier.md",
+     "line": 23,
+     "form": "table",
+     "tokens": [
+      "FAIL"
+     ],
+     "technical_status": "FAIL",
+     "owner_decision": false,
+     "partial": false,
+     "status_text": "FAIL (defect)",
+     "evidence_text": "update-lightning.yml:8,100-110; exp4-defects.log §H3; git probe (section 4, D-4)",
+     "paths": [
+      "data/history"
+     ],
+     "commands": [],
+     "evidence_dir": "evidence/pr2-data-verifier/"
+    }
+   ],
+   "merge_notes": []
   },
   {
    "id": "D18",
    "title": "Retention/provenance",
    "requirement": "true prospective rolling UTC year; initial genuine 408 events seed with partially searched days. EUMETSAT availability and licensing/attribution checked. Actual archive is NOT presently live merely because draft PR #2 exists.",
-   "status": "NOT_TESTED",
-   "evidence": "",
+   "status": "BLOCKED_DEPENDENCY",
+   "evidence": "reports/pr2-data-verifier.md:24 [pr2-data-verifier: raw…/main/data/history/index.json, data/status.json]",
    "command": "",
-   "notes": ""
+   "notes": "",
+   "technical_status": "BLOCKED_DEPENDENCY",
+   "owner_decision": true,
+   "source_lanes": [
+    "pr2-data-verifier"
+   ],
+   "sources": [
+    {
+     "lane": "pr2-data-verifier",
+     "file": "pr2-data-verifier.md",
+     "line": 24,
+     "form": "table",
+     "tokens": [
+      "PASS",
+      "BLOCKED_DEPENDENCY",
+      "OWNER_DECISION"
+     ],
+     "technical_status": "BLOCKED_DEPENDENCY",
+     "owner_decision": true,
+     "partial": false,
+     "status_text": "PASS (EUMETSAT live availability/licence: BLOCKED_DEPENDENCY; seed reconstruction: OWNER_DECISION)",
+     "evidence_text": "exp1-real-feed.log, live-checks.txt, docs/HISTORY_ONE_YEAR.md:8-27",
+     "paths": [
+      "raw…/main/data/history/index.json",
+      "data/status.json"
+     ],
+     "commands": [],
+     "evidence_dir": "evidence/pr2-data-verifier/"
+    }
+   ],
+   "merge_notes": [
+    "owner decision raised by pr2-data-verifier"
+   ]
   },
   {
    "id": "R01",
    "title": "Candidate's Grid dropdown Weather mirror resides in FOOTER clipped by #map-conta",
    "requirement": "Candidate's Grid dropdown Weather mirror resides in FOOTER clipped by #map-container overflow:hidden at 1440x900 and 1280x720; the original Layers tab itself is also clipped there. Quantify if mirror is required for release or optional secondary affordance. This is AN OWNER DESIGN DECISION. Compare ",
-   "status": "NOT_TESTED",
-   "evidence": "",
+   "status": "OWNER_DECISION",
+   "evidence": "reports/opus-owner-decisions.md:16; reports/opus-owner-decisions.md:49",
    "command": "",
-   "notes": ""
+   "notes": "",
+   "technical_status": "NOT_TESTED",
+   "owner_decision": true,
+   "source_lanes": [
+    "opus-owner-decisions"
+   ],
+   "sources": [
+    {
+     "lane": "opus-owner-decisions",
+     "file": "opus-owner-decisions.md",
+     "line": 16,
+     "form": "decision-table",
+     "tokens": [
+      "OWNER_DECISION"
+     ],
+     "technical_status": null,
+     "owner_decision": true,
+     "partial": false,
+     "status_text": "Desktop Grid-menu lightning switch: A footer (as built), B top of panel, C none on desktop",
+     "evidence_text": "Desktop Grid-menu lightning switch: A footer (as built), B top of panel, C none on desktop | A | Yes, until you choose (§13.2)",
+     "paths": [],
+     "commands": [],
+     "evidence_dir": "evidence/opus-owner-decisions/"
+    },
+    {
+     "lane": "opus-owner-decisions",
+     "file": "opus-owner-decisions.md",
+     "line": 49,
+     "form": "section",
+     "tokens": [
+      "OWNER_DECISION"
+     ],
+     "technical_status": null,
+     "owner_decision": true,
+     "partial": false,
+     "status_text": "Default. A. The row stays OWNER_DECISION, and release waits.",
+     "evidence_text": "",
+     "paths": [],
+     "commands": [],
+     "evidence_dir": "evidence/opus-owner-decisions/"
+    }
+   ],
+   "merge_notes": [
+    "owner decision raised by opus-owner-decisions"
+   ]
   },
   {
    "id": "R02",
    "title": "Candidate supports index v2, not v1 despite design plan v1+v2. Identify whether ",
    "requirement": "Candidate supports index v2, not v1 despite design plan v1+v2. Identify whether production PR #2 guarantees v2; decide whether v1 fallback necessary or explicit error acceptable.",
-   "status": "NOT_TESTED",
-   "evidence": "",
-   "command": "",
-   "notes": ""
+   "status": "OWNER_DECISION",
+   "evidence": "reports/opus-owner-decisions.md:17; reports/overlay-code-review.md:22 [overlay-code-review: E/probe-vk2.out.txt, data-plane/hourly-lookback-index-v2, feature/one-year-utc-lightning-history]; reports/pr2-data-verifier.md:25",
+   "command": "gh api repos/Ventusltd/lightning/pulls/2  (overlay-code-review)",
+   "notes": "",
+   "technical_status": "NOT_TESTED",
+   "owner_decision": true,
+   "source_lanes": [
+    "opus-owner-decisions",
+    "overlay-code-review",
+    "pr2-data-verifier"
+   ],
+   "sources": [
+    {
+     "lane": "opus-owner-decisions",
+     "file": "opus-owner-decisions.md",
+     "line": 17,
+     "form": "decision-table",
+     "tokens": [
+      "OWNER_DECISION"
+     ],
+     "technical_status": null,
+     "owner_decision": true,
+     "partial": false,
+     "status_text": "Merge only lightning PR #2 (index v2), close PR #1 (v1)?",
+     "evidence_text": "Merge only lightning PR #2 (index v2), close PR #1 (v1)? | v2 only; v1 shows an explicit error | Only if PR #1 is merged",
+     "paths": [],
+     "commands": [],
+     "evidence_dir": "evidence/opus-owner-decisions/"
+    },
+    {
+     "lane": "overlay-code-review",
+     "file": "overlay-code-review.md",
+     "line": 22,
+     "form": "table",
+     "tokens": [
+      "OWNER_DECISION"
+     ],
+     "technical_status": null,
+     "owner_decision": true,
+     "partial": false,
+     "status_text": "OWNER_DECISION",
+     "evidence_text": "L37 rejects anything but `…index.v2`; error text `unsupported index schema uk-lightning-history-index.v1` → caption `Archive unavailable: unsupported index schema … at <T(now)> — nothing shown (unknown, not zero)` for >7 d windows, feed fallback with `archive not yet published: unsupported index schema …` for ≤7 d (`E/probe-vk2.out.txt`). PR #2 head (`data-plane/hourly-lookback-index-v2` f7db76c, `gh api repos/Ventusltd/lightning/pulls/2`) writes v2 and upgrades v1 on read; only the separate draft PR #1 (`feature/one-year-utc-lightning-history`, not an ancestor) writes v1. A v1 normaliser costs ≈1 KB (reference L174–193) — not affordable. Recommend: accept the explicit error, make \"PR #2 (not PR #1) is the data plane\" an owner-recorded condition.",
+     "paths": [
+      "E/probe-vk2.out.txt",
+      "data-plane/hourly-lookback-index-v2",
+      "feature/one-year-utc-lightning-history",
+      "E/probe-vk2.out.txt",
+      "data-plane/hourly-lookback-index-v2",
+      "feature/one-year-utc-lightning-history"
+     ],
+     "commands": [
+      "gh api repos/Ventusltd/lightning/pulls/2",
+      "gh api repos/Ventusltd/lightning/pulls/2"
+     ],
+     "evidence_dir": "evidence/overlay-code-review/"
+    },
+    {
+     "lane": "pr2-data-verifier",
+     "file": "pr2-data-verifier.md",
+     "line": 25,
+     "form": "table",
+     "tokens": [
+      "OWNER_DECISION"
+     ],
+     "technical_status": null,
+     "owner_decision": true,
+     "partial": false,
+     "status_text": "OWNER_DECISION (recommendation: explicit error acceptable, no v1 fallback needed)",
+     "evidence_text": "exp2-consumers.log",
+     "paths": [],
+     "commands": [],
+     "evidence_dir": "evidence/pr2-data-verifier/"
+    }
+   ],
+   "merge_notes": [
+    "owner decision raised by opus-owner-decisions, overlay-code-review, pr2-data-verifier"
+   ]
   },
   {
    "id": "R03",
    "title": "FAIL leaves Weather switch ON, contrary to V10 wording. Assess accessibility, er",
    "requirement": "FAIL leaves Weather switch ON, contrary to V10 wording. Assess accessibility, error transparency and preservation; propose V10 amendment only if evidence supports it; no forced OFF that hides diagnosis.",
-   "status": "NOT_TESTED",
-   "evidence": "",
+   "status": "OWNER_DECISION",
+   "evidence": "reports/opus-owner-decisions.md:18; reports/overlay-code-review.md:23 [overlay-code-review: B3-feed-48h-prev3.png]",
    "command": "",
-   "notes": ""
+   "notes": "",
+   "technical_status": "NOT_TESTED",
+   "owner_decision": true,
+   "source_lanes": [
+    "opus-owner-decisions",
+    "overlay-code-review"
+   ],
+   "sources": [
+    {
+     "lane": "opus-owner-decisions",
+     "file": "opus-owner-decisions.md",
+     "line": 18,
+     "form": "decision-table",
+     "tokens": [
+      "OWNER_DECISION"
+     ],
+     "technical_status": null,
+     "owner_decision": true,
+     "partial": false,
+     "status_text": "On failure: switch stays ticked with [FAIL] and the reason, or unticks (V10 as written)?",
+     "evidence_text": "On failure: switch stays ticked with [FAIL] and the reason, or unticks (V10 as written)? | Stays ticked; amend V10 | Only if V10 is held literally",
+     "paths": [],
+     "commands": [],
+     "evidence_dir": "evidence/opus-owner-decisions/"
+    },
+    {
+     "lane": "overlay-code-review",
+     "file": "overlay-code-review.md",
+     "line": 23,
+     "form": "table",
+     "tokens": [
+      "OWNER_DECISION"
+     ],
+     "technical_status": null,
+     "owner_decision": true,
+     "partial": false,
+     "status_text": "OWNER_DECISION (recommend amend V10)",
+     "evidence_text": "L169–171 keep `S.on`; all three twins show `[FAIL]` at opacity .5 (L148/154), red dot, status `FAIL · <reason>`, warning line, points cleared, NEXT/LATEST usable, 10-min retry at latest (browser B PREV#3, `B3-feed-48h-prev3.png`). The ORIGINAL engine does exactly this for its 60 layers: `updateUIState` only sets `[FAIL]` + opacity .5, never unticks (engine L639, 1137, 1157, 1196). V10's \"toggle returns to OFF on error\" contradicts the shell precedent and would hide the diagnosis. Accessibility gap: the Grid twin's static `aria-label` omits the live suffix (#13).",
+     "paths": [
+      "B3-feed-48h-prev3.png",
+      "B3-feed-48h-prev3.png"
+     ],
+     "commands": [],
+     "evidence_dir": "evidence/overlay-code-review/"
+    }
+   ],
+   "merge_notes": [
+    "owner decision raised by opus-owner-decisions, overlay-code-review"
+   ]
   },
   {
    "id": "R04",
    "title": "Long-range overview cannot always drill down; CUSTOM one-day workaround. Decide ",
    "requirement": "Long-range overview cannot always drill down; CUSTOM one-day workaround. Decide whether a genuine user can inspect selected historical flashes without ambiguous controls.",
-   "status": "NOT_TESTED",
-   "evidence": "",
+   "status": "OWNER_DECISION",
+   "evidence": "reports/opus-owner-decisions.md:19; reports/overlay-code-review.md:24",
    "command": "",
-   "notes": ""
+   "notes": "",
+   "technical_status": "NOT_TESTED",
+   "owner_decision": true,
+   "source_lanes": [
+    "opus-owner-decisions",
+    "overlay-code-review"
+   ],
+   "sources": [
+    {
+     "lane": "opus-owner-decisions",
+     "file": "opus-owner-decisions.md",
+     "line": 19,
+     "form": "decision-table",
+     "tokens": [
+      "OWNER_DECISION"
+     ],
+     "technical_status": null,
+     "owner_decision": true,
+     "partial": false,
+     "status_text": "Is CUSTOM + dates + APPLY acceptable for opening one day from a long summary?",
+     "evidence_text": "Is CUSTOM + dates + APPLY acceptable for opening one day from a long summary? | Accept | No",
+     "paths": [],
+     "commands": [],
+     "evidence_dir": "evidence/opus-owner-decisions/"
+    },
+    {
+     "lane": "overlay-code-review",
+     "file": "overlay-code-review.md",
+     "line": 24,
+     "form": "table",
+     "tokens": [
+      "OWNER_DECISION"
+     ],
+     "technical_status": null,
+     "owner_decision": true,
+     "partial": false,
+     "status_text": "OWNER_DECISION",
+     "evidence_text": "Overview (3m/6m/12m/custom >31 d) draws nothing and the caption gives only day-level first/last (L106–108); the spec's \"three busiest dates\" chips were dropped; the only route to points is 30D+PREV or CUSTOM dates the user already knows. A busiest-date hint in `L.actual` would cost ≈120 B.",
+     "paths": [],
+     "commands": [],
+     "evidence_dir": "evidence/overlay-code-review/"
+    }
+   ],
+   "merge_notes": [
+    "owner decision raised by opus-owner-decisions, overlay-code-review"
+   ]
   },
   {
    "id": "R05",
    "title": "Custom period date-navigation buttons disabled, unlike named periods. Test usabi",
    "requirement": "Custom period date-navigation buttons disabled, unlike named periods. Test usability and caption correctness.",
-   "status": "NOT_TESTED",
-   "evidence": "",
+   "status": "PASS",
+   "evidence": "reports/opus-owner-decisions.md:19; reports/overlay-code-review.md:25",
    "command": "",
-   "notes": ""
+   "notes": "",
+   "technical_status": "PASS",
+   "owner_decision": true,
+   "source_lanes": [
+    "opus-owner-decisions",
+    "overlay-code-review"
+   ],
+   "sources": [
+    {
+     "lane": "opus-owner-decisions",
+     "file": "opus-owner-decisions.md",
+     "line": 19,
+     "form": "decision-table",
+     "tokens": [
+      "OWNER_DECISION"
+     ],
+     "technical_status": null,
+     "owner_decision": true,
+     "partial": false,
+     "status_text": "Is CUSTOM + dates + APPLY acceptable for opening one day from a long summary?",
+     "evidence_text": "Is CUSTOM + dates + APPLY acceptable for opening one day from a long summary? | Accept | No",
+     "paths": [],
+     "commands": [],
+     "evidence_dir": "evidence/opus-owner-decisions/"
+    },
+    {
+     "lane": "overlay-code-review",
+     "file": "overlay-code-review.md",
+     "line": 25,
+     "form": "table",
+     "tokens": [
+      "PASS"
+     ],
+     "technical_status": "PASS",
+     "owner_decision": false,
+     "partial": false,
+     "status_text": "PASS (caption) / defects noted",
+     "evidence_text": "L158 disables PREV/NEXT/LATEST in custom; caption correct incl. clamped end (browser A APPLY); auto-refresh works when `to` = today (L54 `atLatest`). Defects: future From accepted (#7); empty date gives the \"From after To\" message, red border/warning only on the clicked twin (#19).",
+     "paths": [],
+     "commands": [],
+     "evidence_dir": "evidence/overlay-code-review/"
+    }
+   ],
+   "merge_notes": [
+    "owner decision raised by opus-owner-decisions"
+   ]
   },
   {
    "id": "R06",
    "title": "Dataset may be incomplete (scheduled runs previously missed ~46% of hours). Sear",
    "requirement": "Dataset may be incomplete (scheduled runs previously missed ~46% of hours). Search coverage is critical; do not describe 408 as all flashes in UK or all lightning strikes.",
-   "status": "NOT_TESTED",
-   "evidence": "",
+   "status": "PASS",
+   "evidence": "reports/pr2-data-verifier.md:26",
    "command": "",
-   "notes": ""
+   "notes": "",
+   "technical_status": "PASS",
+   "owner_decision": true,
+   "source_lanes": [
+    "pr2-data-verifier"
+   ],
+   "sources": [
+    {
+     "lane": "pr2-data-verifier",
+     "file": "pr2-data-verifier.md",
+     "line": 26,
+     "form": "table",
+     "tokens": [
+      "PASS",
+      "OWNER_DECISION"
+     ],
+     "technical_status": "PASS",
+     "owner_decision": true,
+     "partial": false,
+     "status_text": "PASS (OWNER_DECISION on seed-window reconstruction rule)",
+     "evidence_text": "exp5-client.log, data/seed_scan_windows.json, live-checks.txt",
+     "paths": [],
+     "commands": [],
+     "evidence_dir": "evidence/pr2-data-verifier/"
+    }
+   ],
+   "merge_notes": [
+    "owner decision raised by pr2-data-verifier"
+   ]
   },
   {
    "id": "R07",
    "title": "Actual GitHub raw data CORS/cache is untested in shim; a live proof is required ",
    "requirement": "Actual GitHub raw data CORS/cache is untested in shim; a live proof is required before release.",
-   "status": "NOT_TESTED",
-   "evidence": "",
+   "status": "BLOCKED_DEPENDENCY",
+   "evidence": "reports/opus-owner-decisions.md:21; reports/opus-owner-decisions.md:147 [opus-owner-decisions: index.json]",
    "command": "",
-   "notes": ""
+   "notes": "",
+   "technical_status": "BLOCKED_DEPENDENCY",
+   "owner_decision": true,
+   "source_lanes": [
+    "opus-owner-decisions"
+   ],
+   "sources": [
+    {
+     "lane": "opus-owner-decisions",
+     "file": "opus-owner-decisions.md",
+     "line": 21,
+     "form": "decision-table",
+     "tokens": [
+      "OWNER_DECISION"
+     ],
+     "technical_status": null,
+     "owner_decision": true,
+     "partial": false,
+     "status_text": "Will you run the network and device checks; will you authorise an HTTPS preview?",
+     "evidence_text": "Will you run the network and device checks; will you authorise an HTTPS preview? | BLOCKED | Yes",
+     "paths": [],
+     "commands": [],
+     "evidence_dir": "evidence/opus-owner-decisions/"
+    },
+    {
+     "lane": "opus-owner-decisions",
+     "file": "opus-owner-decisions.md",
+     "line": 147,
+     "form": "line",
+     "tokens": [
+      "BLOCKED_DEPENDENCY"
+     ],
+     "technical_status": "BLOCKED_DEPENDENCY",
+     "owner_decision": false,
+     "partial": false,
+     "status_text": "R07: raw.githubusercontent.com CORS and caching. BLOCKED_DEPENDENCY, because the shim always answers `access-control-allow-origin: `. Context: a non-browser fetch (22:26 UTC) got the feed with `cache-control: max-age=300` and a 404 for the index. You: open the local route below in desktop Chrome, sw",
+     "evidence_text": "",
+     "paths": [
+      "index.json"
+     ],
+     "commands": [],
+     "evidence_dir": "evidence/opus-owner-decisions/"
+    }
+   ],
+   "merge_notes": [
+    "owner decision raised by opus-owner-decisions"
+   ]
   },
   {
    "id": "R08",
    "title": "DuckDB Parquet extension, REPD layers/search, basemap tile/glyph and iOS WebKit ",
    "requirement": "DuckDB Parquet extension, REPD layers/search, basemap tile/glyph and iOS WebKit were BLOCKED in Claude sandbox. Do not turn BLOCKED into PASS based on shell tests.",
-   "status": "NOT_TESTED",
-   "evidence": "",
+   "status": "BLOCKED_DEPENDENCY",
+   "evidence": "reports/opus-owner-decisions.md:21; reports/opus-owner-decisions.md:148",
    "command": "",
-   "notes": ""
+   "notes": "",
+   "technical_status": "BLOCKED_DEPENDENCY",
+   "owner_decision": true,
+   "source_lanes": [
+    "opus-owner-decisions"
+   ],
+   "sources": [
+    {
+     "lane": "opus-owner-decisions",
+     "file": "opus-owner-decisions.md",
+     "line": 21,
+     "form": "decision-table",
+     "tokens": [
+      "OWNER_DECISION"
+     ],
+     "technical_status": null,
+     "owner_decision": true,
+     "partial": false,
+     "status_text": "Will you run the network and device checks; will you authorise an HTTPS preview?",
+     "evidence_text": "Will you run the network and device checks; will you authorise an HTTPS preview? | BLOCKED | Yes",
+     "paths": [],
+     "commands": [],
+     "evidence_dir": "evidence/opus-owner-decisions/"
+    },
+    {
+     "lane": "opus-owner-decisions",
+     "file": "opus-owner-decisions.md",
+     "line": 148,
+     "form": "line",
+     "tokens": [
+      "BLOCKED_DEPENDENCY",
+      "BLOCKED_HARNESS"
+     ],
+     "technical_status": "BLOCKED_DEPENDENCY",
+     "owner_decision": false,
+     "partial": false,
+     "status_text": "R08. DuckDB Parquet (REPD technology layers, search) and basemap tiles/glyphs are BLOCKED_DEPENDENCY; WebKit is BLOCKED_HARNESS. You: in the same session, tick a REPD technology layer, search for a REPD project and check the map labels against the public original. Desktop Safari on a Mac at `127.0.0",
+     "evidence_text": "",
+     "paths": [],
+     "commands": [],
+     "evidence_dir": "evidence/opus-owner-decisions/"
+    }
+   ],
+   "merge_notes": [
+    "owner decision raised by opus-owner-decisions"
+   ]
   },
   {
    "id": "R09",
    "title": "Module byte budget extremely tight (~24 KB), risk of dense/unclear code and omis",
    "requirement": "Module byte budget extremely tight (~24 KB), risk of dense/unclear code and omissions; use tests rather than compress away error validation.",
-   "status": "NOT_TESTED",
-   "evidence": "",
+   "status": "PASS",
+   "evidence": "reports/overlay-code-review.md:26",
    "command": "",
-   "notes": ""
+   "notes": "",
+   "technical_status": "PASS",
+   "owner_decision": false,
+   "source_lanes": [
+    "overlay-code-review"
+   ],
+   "sources": [
+    {
+     "lane": "overlay-code-review",
+     "file": "overlay-code-review.md",
+     "line": 26,
+     "form": "table",
+     "tokens": [
+      "PASS"
+     ],
+     "technical_status": "PASS",
+     "owner_decision": false,
+     "partial": false,
+     "status_text": "PASS with register",
+     "evidence_text": "23,973 ≤ 24,781. Density did cause real omissions (#2, #8, #9, #10). Core fix set is +21 B net (§4); tier 2 +180 B; everything proposed fits with ≥600 B spare.",
+     "paths": [],
+     "commands": [],
+     "evidence_dir": "evidence/overlay-code-review/"
+    }
+   ],
+   "merge_notes": []
   },
   {
    "id": "R10",
    "title": "10-minute refresh, aborted pending read, style reload, LRU eviction and parts[] ",
    "requirement": "10-minute refresh, aborted pending read, style reload, LRU eviction and parts[] fan-out have not had genuine end-to-end fixture coverage.",
-   "status": "NOT_TESTED",
-   "evidence": "",
+   "status": "FAIL",
+   "evidence": "reports/overlay-code-review.md:27 [overlay-code-review: index.json, history.py]",
    "command": "",
-   "notes": ""
+   "notes": "",
+   "technical_status": "FAIL",
+   "owner_decision": false,
+   "source_lanes": [
+    "overlay-code-review"
+   ],
+   "sources": [
+    {
+     "lane": "overlay-code-review",
+     "file": "overlay-code-review.md",
+     "line": 27,
+     "form": "table",
+     "tokens": [
+      "FAIL",
+      "NOT_TESTED"
+     ],
+     "technical_status": "FAIL",
+     "owner_decision": false,
+     "partial": true,
+     "status_text": "FAIL (feed refresh); parts NOT_TESTED",
+     "evidence_text": "Timer fires every 10 fake minutes at latest (browser B requests grow by one `index.json` per tick) but the feed is never re-fetched (#3); stale-result guard works except via `sp('custom')` (#1); style reload: no `setStyle` anywhere in the live composition (`grep` of the four cartridges + shell), overlay self-heals by re-adding the source on next paint (L122) → NOT_TESTED/no trigger; LRU hit proven (re-ON issued zero requests), eviction at >8 shards NOT_TESTED (fixture has 5); `parts[]` fan-out NOT_TESTED (no parts fixture) but the contract matches `history.py` L219/264 (`metadata.date_utc` = day on parts, `hour` as \"07\").",
+     "paths": [
+      "index.json",
+      "history.py",
+      "index.json",
+      "history.py"
+     ],
+     "commands": [],
+     "evidence_dir": "evidence/overlay-code-review/"
+    }
+   ],
+   "merge_notes": []
   },
   {
    "id": "R11",
@@ -414,7 +1393,12 @@
    "status": "NOT_TESTED",
    "evidence": "",
    "command": "",
-   "notes": ""
+   "notes": "",
+   "technical_status": "NOT_TESTED",
+   "owner_decision": false,
+   "source_lanes": [],
+   "sources": [],
+   "merge_notes": []
   },
   {
    "id": "R12",
@@ -423,142 +1407,695 @@
    "status": "NOT_TESTED",
    "evidence": "",
    "command": "",
-   "notes": ""
+   "notes": "",
+   "technical_status": "NOT_TESTED",
+   "owner_decision": false,
+   "source_lanes": [],
+   "sources": [],
+   "merge_notes": []
   },
   {
    "id": "V1",
    "title": "hash baseline",
    "requirement": "hash baseline",
    "status": "PASS",
-   "evidence": "evidence/step-a/P01-baseline-hashes.txt",
-   "command": "sha256sum -c evidence/step-a/baseline-sha256-manifest.txt (31/31 OK); git diff origin/main..HEAD over protected paths empty",
-   "notes": ""
+   "evidence": "evidence/step-a/P01-baseline-hashes.txt; reports/opus-decision-table.md:30",
+   "command": "sha256sum -c evidence/step-a/baseline-sha256-manifest.txt (31/31 OK); git diff origin/main..HEAD over protected paths empty; sha256sum -c  (opus-decision-table)",
+   "notes": "",
+   "technical_status": "PASS",
+   "owner_decision": false,
+   "source_lanes": [
+    "matrix-input",
+    "opus-decision-table"
+   ],
+   "sources": [
+    {
+     "lane": "matrix-input",
+     "file": "TEST-MATRIX.json",
+     "line": null,
+     "form": "matrix",
+     "tokens": [
+      "PASS"
+     ],
+     "technical_status": "PASS",
+     "owner_decision": false,
+     "partial": false,
+     "status_text": "PASS",
+     "evidence_text": "evidence/step-a/P01-baseline-hashes.txt",
+     "paths": [
+      "evidence/step-a/P01-baseline-hashes.txt"
+     ],
+     "commands": [
+      "sha256sum -c evidence/step-a/baseline-sha256-manifest.txt (31/31 OK); git diff origin/main..HEAD over protected paths empty"
+     ],
+     "evidence_dir": null
+    },
+    {
+     "lane": "opus-decision-table",
+     "file": "opus-decision-table.md",
+     "line": 30,
+     "form": "table",
+     "tokens": [
+      "PASS"
+     ],
+     "technical_status": "PASS",
+     "owner_decision": false,
+     "partial": false,
+     "status_text": "PASS, Claude side only. `evidence/P01-baseline-hashes.txt` shows 31 OK but does not name a SHA or command. Spot re-run at 18842df: 31/31. Hash set equals the veto manifest's",
+     "evidence_text": "`sha256sum -c` of the 31-file manifest in a candidate worktree gives 31/31 OK. Any change to releases/, the four cartridges, atlas/index.html, current.json, STATE.md or the 202609241334 manifest is a FAIL (L53)",
+     "paths": [],
+     "commands": [
+      "sha256sum -c"
+     ],
+     "evidence_dir": "evidence/opus-decision-table/"
+    }
+   ],
+   "merge_notes": []
   },
   {
    "id": "V2",
    "title": "untouched bridge/data interceptor",
    "requirement": "untouched bridge/data interceptor",
-   "status": "NOT_TESTED",
-   "evidence": "",
+   "status": "BLOCKED_DEPENDENCY",
+   "evidence": "reports/opus-decision-table.md:31",
    "command": "",
-   "notes": ""
+   "notes": "",
+   "technical_status": "BLOCKED_DEPENDENCY",
+   "owner_decision": false,
+   "source_lanes": [
+    "opus-decision-table"
+   ],
+   "sources": [
+    {
+     "lane": "opus-decision-table",
+     "file": "opus-decision-table.md",
+     "line": 31,
+     "form": "table",
+     "tokens": [
+      "NOT_TESTED",
+      "BLOCKED_DEPENDENCY"
+     ],
+     "technical_status": "BLOCKED_DEPENDENCY",
+     "owner_decision": false,
+     "partial": true,
+     "status_text": "Hash: covered by V1, and candidate current.json still composes it. Runtime: NOT_TESTED (builder claim only). Live: BLOCKED_DEPENDENCY",
+     "evidence_text": "Bridge sha 60be8215… is still composed. `window.fetch.name==='gridAtlasMaplibreWorkerFetch'`. After ON: `intercepted_on_demand` Δ0 and no lightning entry in `failures[]`. Request seen at raw.githubusercontent.com: shim locally, live once by the owner (L54)",
+     "paths": [],
+     "commands": [],
+     "evidence_dir": "evidence/opus-decision-table/"
+    }
+   ],
+   "merge_notes": []
   },
   {
    "id": "V3",
    "title": "no fifth app/copy",
    "requirement": "no fifth app/copy",
    "status": "NOT_TESTED",
-   "evidence": "",
+   "evidence": "reports/opus-decision-table.md:32",
    "command": "",
-   "notes": ""
+   "notes": "",
+   "technical_status": "NOT_TESTED",
+   "owner_decision": false,
+   "source_lanes": [
+    "opus-decision-table"
+   ],
+   "sources": [
+    {
+     "lane": "opus-decision-table",
+     "file": "opus-decision-table.md",
+     "line": 32,
+     "form": "table",
+     "tokens": [
+      "NOT_TESTED"
+     ],
+     "technical_status": "NOT_TESTED",
+     "owner_decision": false,
+     "partial": false,
+     "status_text": "NOT_TESTED. Wording conflict, see D1",
+     "evidence_text": "No new directory holding an index.html under atlas/ except releases/. The diff has no atlas/index.html and no atlas/preview/. The composer still accepts replace-script only (L55)",
+     "paths": [],
+     "commands": [],
+     "evidence_dir": "evidence/opus-decision-table/"
+    }
+   ],
+   "merge_notes": []
   },
   {
    "id": "V4",
    "title": "60+3/proxy/marker exact",
    "requirement": "60+3/proxy/marker exact",
    "status": "NOT_TESTED",
-   "evidence": "",
+   "evidence": "reports/opus-decision-table.md:33",
    "command": "",
-   "notes": ""
+   "notes": "",
+   "technical_status": "NOT_TESTED",
+   "owner_decision": false,
+   "source_lanes": [
+    "opus-decision-table"
+   ],
+   "sources": [
+    {
+     "lane": "opus-decision-table",
+     "file": "opus-decision-table.md",
+     "line": 33,
+     "form": "table",
+     "tokens": [
+      "NOT_TESTED"
+     ],
+     "technical_status": "NOT_TESTED",
+     "owner_decision": false,
+     "partial": false,
+     "status_text": "NOT_TESTED. Builder: OFF and post-reload counts only, no `inspect()` while ON (PR #31 `candidate-verify/10-…summary.txt`)",
+     "evidence_text": "OFF and ON, at four viewports: `menuBar.inspect()` = {60,3,63,63,true}. 63 `[data-gridatlas-layer-proxy]`. The lightning control carries none of the four menu attributes. ukConfig unchanged (11 groups, 60 layers). `initVentusMap` not wrapped (L56)",
+     "paths": [],
+     "commands": [],
+     "evidence_dir": "evidence/opus-decision-table/"
+    }
+   ],
+   "merge_notes": []
   },
   {
    "id": "V5",
    "title": "original surface/DOM parity",
    "requirement": "original surface/DOM parity",
    "status": "NOT_TESTED",
-   "evidence": "",
+   "evidence": "reports/opus-decision-table.md:34",
    "command": "",
-   "notes": ""
+   "notes": "",
+   "technical_status": "NOT_TESTED",
+   "owner_decision": false,
+   "source_lanes": [
+    "opus-decision-table"
+   ],
+   "sources": [
+    {
+     "lane": "opus-decision-table",
+     "file": "opus-decision-table.md",
+     "line": 34,
+     "form": "table",
+     "tokens": [
+      "NOT_TESTED"
+     ],
+     "technical_status": "NOT_TESTED",
+     "owner_decision": false,
+     "partial": false,
+     "status_text": "NOT_TESTED",
+     "evidence_text": "13 groups keep their index, Topology first, first label 400kV. `.map-controls` state unchanged per viewport. `<style>` list is 8/9 plus at most one lightning id, with no rules on original selectors and no `!important`. ventusv8.css untouched (L57)",
+     "paths": [],
+     "commands": [],
+     "evidence_dir": "evidence/opus-decision-table/"
+    }
+   ],
+   "merge_notes": []
   },
   {
    "id": "V6",
    "title": "four viewport, four-state masked screenshot + geometry parity",
    "requirement": "four viewport, four-state masked screenshot + geometry parity",
    "status": "NOT_TESTED",
-   "evidence": "",
+   "evidence": "reports/opus-decision-table.md:35 [opus-decision-table: masked-pixel-diff.py]",
    "command": "",
-   "notes": ""
+   "notes": "",
+   "technical_status": "NOT_TESTED",
+   "owner_decision": false,
+   "source_lanes": [
+    "opus-decision-table"
+   ],
+   "sources": [
+    {
+     "lane": "opus-decision-table",
+     "file": "opus-decision-table.md",
+     "line": 35,
+     "form": "table",
+     "tokens": [
+      "NOT_TESTED"
+     ],
+     "technical_status": "NOT_TESTED",
+     "owner_decision": false,
+     "partial": false,
+     "status_text": "NOT_TESTED (B is mid-run)",
+     "evidence_text": "Same-harness pairs at 1440×900, 393×852, 360×740 and 390×844, in four states (rest, Grid, Layers, curtain). `masked-pixel-diff.py` = 0 px, masking only the clock/DAYS and the canvas. Geometry equal except the one approved lightning row (L58)",
+     "paths": [
+      "masked-pixel-diff.py"
+     ],
+     "commands": [],
+     "evidence_dir": "evidence/opus-decision-table/"
+    }
+   ],
+   "merge_notes": []
   },
   {
    "id": "V7",
    "title": "hit-tested ON/OFF/reload state",
    "requirement": "hit-tested ON/OFF/reload state",
    "status": "NOT_TESTED",
-   "evidence": "",
+   "evidence": "reports/opus-decision-table.md:36",
    "command": "",
-   "notes": ""
+   "notes": "",
+   "technical_status": "NOT_TESTED",
+   "owner_decision": false,
+   "source_lanes": [
+    "opus-decision-table"
+   ],
+   "sources": [
+    {
+     "lane": "opus-decision-table",
+     "file": "opus-decision-table.md",
+     "line": 36,
+     "form": "table",
+     "tokens": [
+      "NOT_TESTED"
+     ],
+     "technical_status": "NOT_TESTED",
+     "owner_decision": false,
+     "partial": false,
+     "status_text": "NOT_TESTED. Builder's desktop Grid-mirror click needed programmatic scroll (PR #30 report §7): inadmissible here",
+     "evidence_text": "Real `click()`/`tap()` with no `force:true`, from the owner-named surface. Mirrors agree. Layer visible and source count >0 from a served response. OFF restores the OFF snapshot. Reload gives OFF with nothing in storage (L59)",
+     "paths": [],
+     "commands": [],
+     "evidence_dir": "evidence/opus-decision-table/"
+    }
+   ],
+   "merge_notes": []
   },
   {
    "id": "V8",
    "title": "explicit selected/actual detection period and source",
    "requirement": "explicit selected/actual detection period and source",
    "status": "NOT_TESTED",
-   "evidence": "",
+   "evidence": "reports/opus-decision-table.md:37",
    "command": "",
-   "notes": ""
+   "notes": "",
+   "technical_status": "NOT_TESTED",
+   "owner_decision": false,
+   "source_lanes": [
+    "opus-decision-table"
+   ],
+   "sources": [
+    {
+     "lane": "opus-decision-table",
+     "file": "opus-decision-table.md",
+     "line": 37,
+     "form": "table",
+     "tokens": [
+      "NOT_TESTED"
+     ],
+     "technical_status": "NOT_TESTED",
+     "owner_decision": false,
+     "partial": false,
+     "status_text": "NOT_TESTED. At risk: H05 fails in a Node VM (`chatgpt-suite-run/run-20261026.log` L101–126)",
+     "evidence_text": "The visible label shows: selected UTC start/end; actual first/last detection inside the window; shown-of-archived with the cap; refresh time; \"optical flashes · not confirmed ground strikes\"; EUMETSAT MTG LI L2-LFL (also in About, with `.custom-map-attrib` untouched). Every number is traced to the loaded file (L60)",
+     "paths": [],
+     "commands": [],
+     "evidence_dir": "evidence/opus-decision-table/"
+    }
+   ],
+   "merge_notes": []
   },
   {
    "id": "V9",
    "title": "no imaginary 12-month history / unknown gaps",
    "requirement": "no imaginary 12-month history / unknown gaps",
    "status": "NOT_TESTED",
-   "evidence": "",
+   "evidence": "reports/opus-decision-table.md:38 [opus-decision-table: data/history/index.json]",
    "command": "",
-   "notes": ""
+   "notes": "",
+   "technical_status": "NOT_TESTED",
+   "owner_decision": false,
+   "source_lanes": [
+    "opus-decision-table"
+   ],
+   "sources": [
+    {
+     "lane": "opus-decision-table",
+     "file": "opus-decision-table.md",
+     "line": 38,
+     "form": "table",
+     "tokens": [
+      "NOT_TESTED"
+     ],
+     "technical_status": "NOT_TESTED",
+     "owner_decision": false,
+     "partial": false,
+     "status_text": "NOT_TESTED. Index 404 on lightning main at 22:26Z (P `live-checks.txt`, curl): the fallback is today's live path",
+     "evidence_text": "With `data/history/index.json` returning 404: says \"archive unavailable\", never \"0 flashes\". Absent days unknown. Long windows use index counts only. No synthetic points. Shards validated against `…index.v1` (L61)",
+     "paths": [
+      "data/history/index.json"
+     ],
+     "commands": [],
+     "evidence_dir": "evidence/opus-decision-table/"
+    }
+   ],
+   "merge_notes": []
   },
   {
    "id": "V10",
    "title": "zero/error/stale and state on error",
    "requirement": "zero/error/stale and state on error",
    "status": "NOT_TESTED",
-   "evidence": "",
+   "evidence": "reports/opus-decision-table.md:39",
    "command": "",
-   "notes": ""
+   "notes": "",
+   "technical_status": "NOT_TESTED",
+   "owner_decision": false,
+   "source_lanes": [
+    "opus-decision-table"
+   ],
+   "sources": [
+    {
+     "lane": "opus-decision-table",
+     "file": "opus-decision-table.md",
+     "line": 39,
+     "form": "table",
+     "tokens": [
+      "NOT_TESTED"
+     ],
+     "technical_status": "NOT_TESTED",
+     "owner_decision": false,
+     "partial": false,
+     "status_text": "NOT_TESTED. At risk: H01 and H02 fail in a Node VM. OFF-on-error is not implemented, by design (PR #30 report §4.4)",
+     "evidence_text": "Three runs: an empty FeatureCollection, HTTP 404/500, and a feed with `latest_detection_utc` >24 h. Each gives a distinct visible state, and the toggle returns to OFF on error (L62)",
+     "paths": [],
+     "commands": [],
+     "evidence_dir": "evidence/opus-decision-table/"
+    }
+   ],
+   "merge_notes": []
   },
   {
    "id": "V11",
    "title": "original menu/search/SLD/all-layer regressions",
    "requirement": "original menu/search/SLD/all-layer regressions",
    "status": "NOT_TESTED",
-   "evidence": "",
+   "evidence": "reports/opus-decision-table.md:40",
    "command": "",
-   "notes": ""
+   "notes": "",
+   "technical_status": "NOT_TESTED",
+   "owner_decision": false,
+   "source_lanes": [
+    "opus-decision-table"
+   ],
+   "sources": [
+    {
+     "lane": "opus-decision-table",
+     "file": "opus-decision-table.md",
+     "line": 40,
+     "form": "table",
+     "tokens": [
+      "NOT_TESTED"
+     ],
+     "technical_status": "NOT_TESTED",
+     "owner_decision": false,
+     "partial": false,
+     "status_text": "NOT_TESTED. Unreported raw: 40-proof static tables (baseline FAIL 7/PASS 20, candidate FAIL 6/PASS 21); browser runs under way",
+     "evidence_text": "Under the shim: `run-current` 4/4, `v8-layers-panel-restored`, `menu-bar-dom`, `all-controls` (desktop and mobile), `all-layer-clicks`, `menu-bar-mobile-hit`, deep-link arrival. Logs carry command, Chromium version, timestamps and exit codes. REPD search is BLOCKED_DEPENDENCY (L63)",
+     "paths": [],
+     "commands": [],
+     "evidence_dir": "evidence/opus-decision-table/"
+    }
+   ],
+   "merge_notes": []
   },
   {
    "id": "V12",
    "title": "lint and STATE parity",
    "requirement": "lint and STATE parity",
    "status": "PASS",
-   "evidence": "evidence/step-a/gridatlas-state.txt",
+   "evidence": "evidence/step-a/gridatlas-state.txt; reports/opus-decision-table.md:41",
    "command": "node tools/scope/loop.mjs lint; node tools/scope/loop.mjs state --stdout | cmp - STATE.md",
-   "notes": ""
+   "notes": "",
+   "technical_status": "PASS",
+   "owner_decision": false,
+   "source_lanes": [
+    "matrix-input",
+    "opus-decision-table"
+   ],
+   "sources": [
+    {
+     "lane": "matrix-input",
+     "file": "TEST-MATRIX.json",
+     "line": null,
+     "form": "matrix",
+     "tokens": [
+      "PASS"
+     ],
+     "technical_status": "PASS",
+     "owner_decision": false,
+     "partial": false,
+     "status_text": "PASS",
+     "evidence_text": "evidence/step-a/gridatlas-state.txt",
+     "paths": [
+      "evidence/step-a/gridatlas-state.txt"
+     ],
+     "commands": [
+      "node tools/scope/loop.mjs lint; node tools/scope/loop.mjs state --stdout | cmp - STATE.md"
+     ],
+     "evidence_dir": null
+    },
+    {
+     "lane": "opus-decision-table",
+     "file": "opus-decision-table.md",
+     "line": 41,
+     "form": "table",
+     "tokens": [
+      "PASS"
+     ],
+     "technical_status": "PASS",
+     "owner_decision": false,
+     "partial": false,
+     "status_text": "PASS, Claude side. Spot re-run: lint exit 0, and `state --stdout` equals STATE.md. step-a stores no lint log. 9 workflows. R11 still open (see D8)",
+     "evidence_text": "`lint` and `state --stdout` pass, or fail with the identical pre-existing string. No new workflow. STATE.md unchanged (L64)",
+     "paths": [],
+     "commands": [],
+     "evidence_dir": "evidence/opus-decision-table/"
+    }
+   ],
+   "merge_notes": []
   },
   {
    "id": "V13",
    "title": "governance/branch/pointer/deployment",
    "requirement": "governance/branch/pointer/deployment",
    "status": "NOT_TESTED",
-   "evidence": "",
-   "command": "",
-   "notes": ""
+   "evidence": "reports/opus-decision-table.md:42",
+   "command": "gh api  (opus-decision-table)",
+   "notes": "",
+   "technical_status": "NOT_TESTED",
+   "owner_decision": false,
+   "source_lanes": [
+    "opus-decision-table"
+   ],
+   "sources": [
+    {
+     "lane": "opus-decision-table",
+     "file": "opus-decision-table.md",
+     "line": 42,
+     "form": "table",
+     "tokens": [
+      "NOT_TESTED"
+     ],
+     "technical_status": "NOT_TESTED",
+     "owner_decision": false,
+     "partial": false,
+     "status_text": "NOT_TESTED. Spot REST 22:29Z: #30, #31, #33 open drafts, unmerged; main c08f3a6; Pages runs unchecked",
+     "evidence_text": "`gh api` shows: candidate PR draft, unmerged, base main; main at c08f3a6 with generation 202609241334; no pages-build-deployment run from the candidate; #28 and #29 unedited (L65)",
+     "paths": [],
+     "commands": [
+      "gh api"
+     ],
+     "evidence_dir": "evidence/opus-decision-table/"
+    }
+   ],
+   "merge_notes": []
   },
   {
    "id": "V14",
    "title": "no V6 UI transplant",
    "requirement": "no V6 UI transplant",
    "status": "NOT_TESTED",
-   "evidence": "",
+   "evidence": "reports/opus-decision-table.md:43 [opus-decision-table: price-history-period-back/forward]",
    "command": "",
-   "notes": ""
+   "notes": "",
+   "technical_status": "NOT_TESTED",
+   "owner_decision": false,
+   "source_lanes": [
+    "opus-decision-table"
+   ],
+   "sources": [
+    {
+     "lane": "opus-decision-table",
+     "file": "opus-decision-table.md",
+     "line": 43,
+     "form": "table",
+     "tokens": [
+      "NOT_TESTED"
+     ],
+     "technical_status": "NOT_TESTED",
+     "owner_decision": false,
+     "partial": false,
+     "status_text": "NOT_TESTED. Spot grep: 0 hits",
+     "evidence_text": "A grep for `price-history-time-tabs`, `price-history-chart-nav`, `price-history-period-back/forward`, `v5-chart-open` and `electricity-price-history-panel` finds nothing. Only date logic is reused (L66)",
+     "paths": [
+      "price-history-period-back/forward"
+     ],
+     "commands": [],
+     "evidence_dir": "evidence/opus-decision-table/"
+    }
+   ],
+   "merge_notes": []
   },
   {
    "id": "V15",
    "title": "bounded mutation observer and idle side-effects. Refer to the exact original checklist and report disagreements, not sil",
    "requirement": "bounded mutation observer and idle side-effects. Refer to the exact original checklist and report disagreements, not silent rewrites.",
    "status": "NOT_TESTED",
-   "evidence": "",
+   "evidence": "reports/opus-decision-table.md:44",
    "command": "",
-   "notes": ""
+   "notes": "",
+   "technical_status": "NOT_TESTED",
+   "owner_decision": false,
+   "source_lanes": [
+    "opus-decision-table"
+   ],
+   "sources": [
+    {
+     "lane": "opus-decision-table",
+     "file": "opus-decision-table.md",
+     "line": 44,
+     "form": "table",
+     "tokens": [
+      "NOT_TESTED"
+     ],
+     "technical_status": "NOT_TESTED",
+     "owner_decision": false,
+     "partial": false,
+     "status_text": "NOT_TESTED. The builder recorded 0 lightning-owned mutations in 8 s",
+     "evidence_text": "Lightning ON, idle 30 s: body mutations <20, and no `appendChild` inside status updates (L67)",
+     "paths": [],
+     "commands": [],
+     "evidence_dir": "evidence/opus-decision-table/"
+    }
+   ],
+   "merge_notes": []
   }
- ]
+ ],
+ "aggregation": {
+  "tool": "evidence/opus-matrix-aggregator/aggregate.mjs",
+  "tool_sha256": "5f46a474312767f97b42627f63c4afb4ff272304fd407cd21a4d8ac7625bec51",
+  "harness": "self (Node v22.23.4, static markdown parse; no browser, no network)",
+  "generated_utc": "2026-10-26T23:07:41.525Z",
+  "input_matrix": "/tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/wt/docs/lightning/hardening-20261026/TEST-MATRIX.json",
+  "input_matrix_sha256": "6f9cd454d18e67802f92d809d15f14cee5ae8c1683f6d6cb25f93d93724b3933",
+  "reports": [
+   {
+    "file": "opus-decision-table.md",
+    "sha256": "5275b24515152a8077c1c521bf91351d83f2da9235b59bf440415da7485debea",
+    "entries": 15,
+    "ids": [
+     "V1",
+     "V2",
+     "V3",
+     "V4",
+     "V5",
+     "V6",
+     "V7",
+     "V8",
+     "V9",
+     "V10",
+     "V11",
+     "V12",
+     "V13",
+     "V14",
+     "V15"
+    ]
+   },
+   {
+    "file": "opus-owner-decisions.md",
+    "sha256": "7f929adc608202c9410e43004148256d987a7dde3dbb433e3dd70b6a06c833b0",
+    "entries": 11,
+    "ids": [
+     "R01",
+     "R02",
+     "R03",
+     "R04",
+     "R05",
+     "D11",
+     "R07",
+     "R08"
+    ]
+   },
+   {
+    "file": "opus-release-rollback.md",
+    "sha256": "445a3531236196e96c16478439ffcfd08f7bd7ffa4cbc4d316e1ed21d1d46cb4",
+    "entries": 0,
+    "ids": []
+   },
+   {
+    "file": "overlay-code-review.md",
+    "sha256": "01828a58f0899170f2350934da5b2b85b220d23139a9b1bdc7aac3084e82af40",
+    "entries": 13,
+    "ids": [
+     "D03",
+     "D09",
+     "D10",
+     "D13",
+     "D14",
+     "D15",
+     "D16",
+     "R02",
+     "R03",
+     "R04",
+     "R05",
+     "R09",
+     "R10"
+    ]
+   },
+   {
+    "file": "pr2-data-verifier.md",
+    "sha256": "a5641fad029f6f4883afefa7bfa446c725279f08a9cb64d4c0c6d50091c7ee89",
+    "entries": 10,
+    "ids": [
+     "D01",
+     "D02",
+     "D06",
+     "D07",
+     "D08",
+     "D12",
+     "D17",
+     "D18",
+     "R02",
+     "R06"
+    ]
+   }
+  ],
+  "policy": [
+   "FAIL beats PASS (FAIL > BLOCKED_DEPENDENCY > BLOCKED_HARNESS > PASS > NOT_TESTED)",
+   "BLOCKED never upgrades to PASS",
+   "OWNER_DECISION kept alongside technical_status; status=OWNER_DECISION only when technical_status is NOT_TESTED",
+   "every source lane recorded in rows[].sources",
+   "NOT_TESTED from a lane never downgrades a tested status; it is noted in merge_notes"
+  ],
+  "unknown_ids": [],
+  "out_of_vocabulary_ids": [
+   "D1",
+   "D2",
+   "D3",
+   "D4",
+   "D5",
+   "D6",
+   "D7",
+   "D8",
+   "D9",
+   "R1",
+   "R2",
+   "R3",
+   "R4",
+   "R5",
+   "R6",
+   "R7"
+  ],
+  "duplicate_matrix_ids": [],
+  "diagnostics": []
+ }
 }
