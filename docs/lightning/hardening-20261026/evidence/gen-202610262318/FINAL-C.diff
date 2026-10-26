@@ -1,0 +1,123 @@
+--- a/atlas/modules/202610262310-uk-lightning-overlay.js
++++ b/atlas/modules/202610262310-uk-lightning-overlay.js
+@@ -1,5 +1,5 @@
+ /* uk-lightning-overlay, generation 202610262310 (UTC). EUMETSAT MTG Lightning Imager (L2-LFL) optical flashes as an
+- * OFF-by-default overlay appended LAST to the original Layers panel, fullscreen curtain and Grid dropdown footer. No
++ * OFF-by-default overlay appended LAST to the original Layers panel and fullscreen curtain (no Grid dropdown row). No
+  * request, source or layer until the first switch-on; never persisted; no engine, Pipeline News or menu-proxy attribute.
+  * Rules trimmed from lightning history-window.mjs (data-plane/hourly-lookback-index-v2 @ f7db76c). Optical flashes are
+  * NOT confirmed ground strikes; a day never searched is unknown, never zero. Glossary: docs/lightning/CANDIDATE-202610261949.md */
+@@ -16,11 +16,12 @@
+ ymd=t=>new Date(t).toISOString().slice(0,10),ds=d=>Date.parse(d+'T00:00:00Z'),Q=id=>document.getElementById(id),E=m=>{throw new TypeError(m)},
+ T=(t,n=16)=>isFinite(t)?new Date(t).toISOString().slice(0,n).replace('T',' ')+' UTC':'unknown',Ts=t=>T(t,19),
+ N=n=>Number(n).toLocaleString('en-GB'),AGO=t=>{const m=Math.max(0,Math.round(t/6e4));return`${Math.floor(m/60)}h ${m%60}min`},
+-ov=(a,b,c,d)=>Math.max(0,Math.min(b,d)-Math.max(a,c)),FC=f=>({type:'FeatureCollection',features:f||[]}),bx=(x,y)=>x===+x&&y===+y&&x>=-11&&x<=3&&y>=49.5&&y<=61.5,isFC=o=>o&&o.type==='FeatureCollection'&&Array.isArray(o.features),tm=f=>Date.parse(f.properties.time_utc),msg=e=>e&&e.message||String(e),
++ov=(a,b,c,d)=>Math.max(0,Math.min(b,d)-Math.max(a,c)),FC=f=>({type:'FeatureCollection',features:f||[]}),// D02 UK box
++bx=(x,y)=>x===+x&&y===+y&&x>=-11&&x<=3&&y>=49.5&&y<=61.5,isFC=o=>o&&o.type==='FeatureCollection'&&Array.isArray(o.features),tm=f=>Date.parse(f.properties.time_utc),msg=e=>e&&e.message||String(e),
+ ph=()=>{try{return matchMedia('(pointer: coarse)').matches||window.innerWidth<=700}catch(_){return false}},cap=()=>ph()?10000:40000,
+ mm=(t,k)=>{const d=new Date(t),day=d.getUTCDate();d.setUTCDate(1);d.setUTCMonth(d.getUTCMonth()-k);d.setUTCDate(Math.min(day,new Date(Date.UTC(d.getUTCFullYear(),d.getUTCMonth()+1,0)).getUTCDate()));return d.getTime()},
+ S={schema:'gridatlas.module.uk-lightning-overlay.v1',generation:GEN,installed:false,waiting_for:[],on:false,requests:0,errors:[],last:null,
+-period:'24h',end:null,from:'',to:'',consent:false,serial:0,idx:null,ie:null,ip:null,fp:null,res:null,mode:null,timer:null,sfs:[],menu:null},lru=new Map(),
++period:'24h',end:null,from:'',to:'',consent:false,serial:0,idx:null,ie:null,ip:null,fp:null,res:null,mode:null,timer:null,sfs:[]},lru=new Map(),
+ note=m=>S.errors.push(String(m)),
+ // transport: fetch for .json, XMLHttpRequest for the live feed
+ gj=(u,cache,raw)=>{const c=new AbortController(),t=setTimeout(()=>c.abort(),TMO);S.requests++;
+@@ -58,6 +59,7 @@
+ sh=(t,date)=>{const u=AR+t.path,c=lg(u);if(c)return c.p;
+ const p=gj(u,t.sealed?'default':'no-cache',1).then(async b=>{const o=b.byteLength>=0?await new Response(b).json():b,s=(window.crypto||0).subtle;
+ if(!isFC(o)||o.schema!=='uk-lightning-history-day.v1'||!o.metadata||o.metadata.date_utc!==date)E('invalid day file');
++// D08 (sha256 needs https)
+ const bad=[o.features.length!==t.count&&'count',b.byteLength!==t.bytes&&'bytes',s&&[...new Uint8Array(await s.digest('SHA-256',b))].map(x=>(x|256).toString(16).slice(1)).join('')!==t.sha256&&'sha256'].filter(Boolean);
+ if(bad.length)E('index mismatch: '+bad.join(', '));return o.features}).catch(e=>{lru.delete(u);throw e});
+ ls(u,{p,sealed:!!t.sealed});return p},
+@@ -81,7 +83,8 @@
+ let tf=rows.filter(y=>y.count>0),bytes=0,count=0;
+ for(const row of tf)for(const t of tg(row,w.s,w.e)){count+=t.count||0;bytes+=t.bytes>0?t.bytes:(t.count||0)*530}
+ if(count>BUDGET||bytes>32e6){if(!S.consent){r.clp=true;r.budget=`${N(count)} flashes, ${N(bytes)} bytes`;return r}
+-let run=0;tf.sort((a,b)=>b.date.localeCompare(a.date));const keep=[];for(const y of tf){if(run>=BUDGET){r.sk.push(y.date);continue}keep.push(y);run+=y.count}tf=keep;count=run}
++// newest days within both budgets
++let run=0,rb=0;tf.sort((a,b)=>b.date.localeCompare(a.date));const keep=[];for(const y of tf){const b=y.bytes>0?y.bytes:y.count*530;if(r.sk.length||run&&(run+y.count>BUDGET||rb+b>32e6)){r.sk.push(y.date);continue}keep.push(y);run+=y.count;rb+=b}tf=keep;count=run}
+ r.ld=tf.map(y=>y.date);r.ic=count;r.cs='index';r.cl=count>cap();
+ const got=await fr(tf,w.s,w.e);r.mode='detail';r.fl=got.fl;r.rq=got.rq;r.ev=co(got.parts,w.s,w.e);return r},
+ // state machine
+@@ -105,10 +108,10 @@
+ L.searched='Searched EUMETSAT unknown (live feed records only its last collection window)';if(r.old)L.warning=NA(r.ie)+': earlier coverage unknown, not zero';
+ L.actual=first||'Actual  no flashes in the live feed in this window';L.flashes=`Flashes ${N(n)} in window (live feed, 7-day retention)${drawn}`}
+ else if(r.mode==='detail'){L.actual=first||'Actual  no archived flashes within this window';
+-L.flashes=r.sk.length?`Flashes ${N(r.arch)} archived on the overlapping UTC dates (index, whole days) · ${N(n)} downloaded from the newest ${r.ld.length} of ${r.ld.length+r.sk.length} days (budget ${N(BUDGET)}; ${r.sk.length} older days not loaded)${drawn}`:`Flashes ${r.fl.length?'at least ':''}${N(n)} archived in window${drawn}`}
++L.flashes=r.sk.length?`Flashes ${N(r.arch)} archived on the overlapping UTC dates (index, whole days) · ${N(n)} downloaded from the newest ${r.ld.length} of ${r.ld.length+r.sk.length} days (budget ${N(BUDGET)} flashes / 32 MB; ${r.sk.length} older days not loaded)${drawn}`:`Flashes ${r.fl.length?'at least ':''}${N(n)} archived in window${drawn}`}
+ else{const o=r.rows.filter(y=>y.first_observation_utc),k=r.rows.length;
+ L.actual=o.length?`Actual  on the ${k} overlapping UTC dates: first ${Ts(Date.parse(o[0].first_observation_utc))} · last ${Ts(Date.parse(o[o.length-1].last_observation_utc))} (day-level; may lie outside a mid-day window edge)`:`Actual  no archived flashes on the ${k} overlapping UTC dates`;
+-L.flashes=`Flashes ${N(r.arch)} archived on ${k} overlapping UTC dates · none drawn (summary mode; ${r.clp?`index sum ${r.budget} exceeds the budget; LOAD POINTS draws the newest ${N(BUDGET)}`:'choose ≤31 days for points'})`}
++L.flashes=`Flashes ${N(r.arch)} archived on ${k} overlapping UTC dates · none drawn (summary mode; ${r.clp?`index sum ${r.budget} exceeds the budget; LOAD POINTS draws up to the newest ${N(BUDGET)}`:'choose ≤31 days for points'})`}
+ if(x)L.refresh=`Refresh archive ${T(x.gen)} (${AGO(now-x.gen)} ago; expected every ${x.iv} h)${stale(x,now)?' · STALE':''}`;
+ const c=r.cov;if(c){const warn=[];
+ L.searched=c.f>0?`Searched EUMETSAT ${Math.round(c.f*100)}% of window · ${c.r} successful runs${c.a!==null?` · ${T(c.a)} → ${T(c.b)}`:''}`:'Searched EUMETSAT 0% of window — no collection run covers these dates';
+@@ -128,25 +131,20 @@
+ m.getSource(SRC).setData(fc);m.setLayoutProperty(LAYER,'visibility',fc.features.length?'visible':'none')},
+ // DOM: shell classes, inline styles on own nodes only
+ BTN=(a,t,x)=>`<button type="button" class="map-ctrl-btn" ${a}${x||''}>${t}</button>`,NAV=(k,t,x)=>BTN(`data-lightning-nav="${k}"`,t,x),ROW='style="display:flex;flex-wrap:wrap;gap:4px;margin:4px 0"',
+-DATE=k=>`<input type="date" class="search-input" data-lightning-date="${k}" style="width:9.5em;color-scheme:dark">`,
++DATE=k=>`<input type="date" class="search-input" data-lightning-date="${k}" aria-label="${k} date (UTC)" style="width:9.5em;color-scheme:dark">`,
+ bg=key=>{const g=document.createElement('div');g.className='key-group';g.dataset.lightningGroup=key;
+ g.innerHTML=`<div class="key-title">${TITLE}</div><label class="key-item"><input type="checkbox" data-lightning-control="toggle"> <span data-lightning-label="${key}" style="color:#ffdf44">${BASE} [WAIT]</span></label>`
+ +`<div data-lightning-controls="${key}" hidden><div role="group" ${ROW}>${PERIODS.map(p=>BTN(`data-lightning-period="${p[0]}"`,p[0].toUpperCase())).join('')}</div>`
+ +`<div class="radius-input-row" data-lightning-custom style="display:none;flex-wrap:wrap;margin:4px 0"><span class="radius-unit">From (UTC)</span>${DATE('from')}<span class="radius-unit">To (incl.)</span>${DATE('to')}${NAV('apply','APPLY')}</div>`
+ +`<div ${ROW}>${NAV('prev','◀ PREV')}${NAV('latest','LATEST',' disabled')}${NAV('next','NEXT ▶',' disabled')}${NAV('points','LOAD POINTS',' hidden')}</div>`
+-+`<div class="status-legend" style="border:0;margin:0;padding:2px 0"><div class="status-dot"><span data-lightning-dot style="background:#888"></span>LOADING</div></div>`
+++`<div class="status-legend" style="border:0;margin:0;padding:2px 0"><div class="status-dot" style="color:#888"><span data-lightning-dot style="background:#888"></span>LOADING</div></div>`
+ +`<div id="gridatlas-lightning-caption-${key}" data-lightning-caption role="status" aria-live="polite" style="font:10px/1.5 'Courier New',monospace;color:#888;overflow-wrap:anywhere">`
+-+['window','actual','flashes','refresh','searched','warning','footer'].map(k=>`<div data-cap="${k}"${k==='warning'?' style="color:#ffcc00"':k==='footer'?' style="font-size:9px;color:#555"':''}></div>`).join('')+'</div></div>';
+++['window','actual','flashes','refresh','searched','warning','footer'].map(k=>`<div data-cap="${k}"${k==='warning'?' style="color:#ffcc00"':k==='footer'?' style="font-size:9px;color:#888"':''}></div>`).join('')+'</div></div>';
+ if(ph())g.querySelectorAll('.map-ctrl-btn').forEach(b=>b.style.cssText+='min-height:44px;min-width:44px');
+ const q=s=>g.querySelector(s),sf={key,group:g,toggle:q('[data-lightning-control]'),label:q('[data-lightning-label]'),ctl:q('[data-lightning-controls]'),custom:q('[data-lightning-custom]'),from:q('[data-lightning-date="from"]'),to:q('[data-lightning-date="to"]'),dot:q('[data-lightning-dot]'),stx:q('.status-dot').lastChild,caps:{},nav:{},chips:{}};
+ g.querySelectorAll('[data-cap],[data-lightning-nav],[data-lightning-period]').forEach(n=>{const d=n.dataset;if(d.cap)sf.caps[d.cap]=n;else if(d.lightningNav)sf.nav[d.lightningNav]=n;else sf.chips[d.lightningPeriod]=n});
+ g.addEventListener('click',ev=>{const b=ev.target.closest('button');if(!b||!g.contains(b))return;if(b.dataset.lightningPeriod)sp(b.dataset.lightningPeriod);else if(b.dataset.lightningNav)nv(b.dataset.lightningNav,sf)});
+ return sf},
+-bmn=(panel,body)=>{const f=document.createElement('div');f.dataset.lightningGroup='menu';f.style.cssText='flex:0 0 auto;padding:0 6px 6px;border-top:1px solid #19343b';
+-f.innerHTML=`<div class="gm-layer-group">${TITLE}</div><label class="gm-layer"><input type="checkbox" data-lightning-control="toggle"><span class="gm-layer-box" aria-hidden="true"></span><span class="gm-layer-name" data-lightning-label="menu">${BASE} [WAIT]</span></label>`;
+-// the menu's bubble-phase click closer never sees this row
+-f.addEventListener('click',ev=>ev.stopPropagation());panel.insertBefore(f,body.nextSibling);
+-return{key:'menu',group:f,toggle:f.querySelector('[data-lightning-control]'),label:f.querySelector('[data-lightning-label]')}},
+ txt=(n,s)=>{if(n&&n.textContent!==s)n.textContent=s},flag=(n,a,on)=>{if(n)on?n.setAttribute(a,''):n.removeAttribute(a)},
+ lt=(r,c,loading)=>{if(!S.on)return BASE+' [WAIT]';if(loading)return BASE+' [LOAD]';if(!r||c.st==='FAIL')return BASE+' [FAIL]';
+ const n=r.mode==='overview'?r.arch:r.ev.length;return`${BASE} [${/UNKNOWN|BEFORE/.test(c.st)?'UNKNOWN':n>0?N(n):c.st==='PARTIAL'?'UNKNOWN':'EMPTY'} | ${r.w.period}${c.stale?' STALE':''}]`},
+@@ -154,9 +152,9 @@
+ return(st.startsWith('READY')?'READY · '+n:st==='EMPTY-COVERED'?'NO FLASHES DETECTED · SEARCHED 100%':st==='PARTIAL'?`PARTIAL · ${n} · SEARCHED ${r.cov?Math.round(r.cov.f*100)+'%':'UNKNOWN'}`:st==='FAIL'?'FAIL · '+c.rs.join('; '):st)+(c.stale?' · STALE':'')},
+ // one batched repaint
+ pt=loading=>{const now=Date.now(),r=S.res,c=r?cf(r,now):null,L=r?cp(r,now):null,text=lt(r,c,loading),fail=!!(c&&c.st==='FAIL'),w=r?r.w:null;
+-for(const sf of S.sfs.concat(S.menu?[S.menu]:[])){if(sf.toggle.checked!==S.on)sf.toggle.checked=S.on;txt(sf.label,text);sf.label.style.opacity=fail?'0.5':'1'}
++for(const sf of S.sfs){if(sf.toggle.checked!==S.on)sf.toggle.checked=S.on;txt(sf.label,text);sf.label.style.opacity=fail?'0.6':'1'}
+ for(const sf of S.sfs){flag(sf.ctl,'hidden',!S.on);if(!S.on)continue;
+-for(const k in sf.chips)sf.chips[k].classList.toggle('active',k===S.period);
++for(const k in sf.chips){const b=sf.chips[k];b.setAttribute('aria-pressed',b.classList.toggle('active',k===S.period))}
+ const cu=S.period==='custom';sf.custom.style.display=cu?'flex':'none';if(S.idx)sf.from.min=sf.to.min=S.idx.cutoffDate;sf.from.max=sf.to.max=ymd(now);if(sf.from.value!==S.from)sf.from.value=S.from;if(sf.to.value!==S.to)sf.to.value=S.to;
+ sf.nav.prev.disabled=loading||cu||!S.idx||!w||w.s<=S.idx.cutoff;sf.nav.next.disabled=sf.nav.latest.disabled=loading||cu||!w||w.atLatest;flag(sf.nav.points,'hidden',!(r&&r.clp));
+ sf.dot.style.background=loading?COLOUR('L'):c.colour;txt(sf.stx,loading?'LOADING':sl(r,c));if(!loading)for(const k in L)txt(sf.caps[k],L[k])}
+@@ -172,18 +170,18 @@
+ lw(now).then(r=>({r}),e=>({e})).then(({r,e})=>{if(serial!==S.serial||!S.on)return;
+ if(e){note(e);r={mode:'fail',fail:msg(e),w:wf(now),idx:S.idx,ie:S.ie,fl:[],ev:[],rows:[],arch:0}}
+ S.res=r;try{dw(FC(r.ev),!!r.cl)}catch(err){note('draw: '+err.message);r.fail=r.fail||'map layer: '+err.message}pt(false)})},
+-so=(on,from)=>{if(S.on===on)return;S.on=on;
+-if(on){S.end=null;S.consent=false;S.res=null;if(from==='menu'&&ph()){const h=Q('scada-ui-container'),g=S.sfs[0]&&S.sfs[0].group;if(h&&g)h.scrollTop+=g.getBoundingClientRect().top-h.getBoundingClientRect().top}
++so=on=>{if(S.on===on)return;S.on=on;
++if(on){S.end=null;S.consent=false;S.res=null;
+ ld(true);if(!S.timer)S.timer=setInterval(()=>{if(S.on&&S.res&&S.res.w.atLatest)ld(true)},6e5)}
+ else{S.serial++;S.res=null;cx();if(S.timer){clearInterval(S.timer);S.timer=null}pt(false)}},
+-bt=(c,from)=>c.addEventListener('change',ev=>{const t=ev.target;if(t&&t.dataset&&t.dataset.lightningControl==='toggle')so(!!t.checked,from)}),
++bt=c=>c.addEventListener('change',ev=>{const t=ev.target;if(t&&t.dataset&&t.dataset.lightningControl==='toggle')so(!!t.checked)}),
+ // install after menu, Pipeline News and map exist
+ ins=()=>{if(S.installed)return true;
+-const M=NS.menuBar,P=window.__GRIDATLAS_PIPELINE_LAYERS__,host=Q('scada-ui-container'),bar=Q('gridatlas-menu-bar'),body=bar&&bar.querySelector('.gm-panel-body'),miss=[];
+-if(!(M&&M.installed===true))miss.push('menuBar');if(!(P&&P.installed))miss.push('pipelineLayers');if(!mh())miss.push('map');if(!host||!host.querySelector('.key-group'))miss.push('groups');if(!body)miss.push('gm-panel-body');S.waiting_for=miss;if(miss.length)return false;
+-const main=bg('main');main.group.style.paddingBottom='64px';host.appendChild(main.group);bt(host,'main');S.sfs.push(main);
+-const cur=Q('fs-curtain-keys');if(cur){const fs=bg('fs');cur.appendChild(fs.group);bt(cur,'fs');S.sfs.push(fs)}
+-S.menu=bmn(body.parentNode,body);bt(S.menu.group,'menu');pt(false);S.installed=true;return true};
++const M=NS.menuBar,P=window.__GRIDATLAS_PIPELINE_LAYERS__,host=Q('scada-ui-container'),miss=[];
++if(!(M&&M.installed===true))miss.push('menuBar');if(!(P&&P.installed))miss.push('pipelineLayers');if(!mh())miss.push('map');if(!host||!host.querySelector('.key-group'))miss.push('groups');S.waiting_for=miss;if(miss.length)return false;
++const main=bg('main');main.group.style.paddingBottom='64px';host.appendChild(main.group);bt(host);S.sfs.push(main);
++const cur=Q('fs-curtain-keys');if(cur){const fs=bg('fs');cur.appendChild(fs.group);bt(cur);S.sfs.push(fs)}
++pt(false);S.installed=true;return true};
+ if(typeof setInterval==='function'&&typeof MutationObserver==='function'){const ob=new MutationObserver(()=>tick()),poll=setInterval(()=>tick(),250),
+ tick=()=>{try{if(ins()){clearInterval(poll);ob.disconnect()}}catch(e){note('install: '+msg(e))}};ob.observe(document.documentElement,{childList:true,subtree:true})}
+ NS.ukLightning=Object.freeze({schema:S.schema,generation:GEN,state:S,install:ins,setOn:so,load:()=>ld(true),windowFor:wf});
