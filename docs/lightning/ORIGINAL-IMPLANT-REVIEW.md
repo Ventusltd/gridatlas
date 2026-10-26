@@ -80,3 +80,7 @@ https://globalgrid2050.com/uk_energy_tracking_v6/ and
 **Review responsibilities:** source/retention/coverage to data-archive agent; date picker, label, pagination and exact observation ranges to time-window UX agent; mobile performance and archival growth to budget agent; screenshot/pixel parity and original behaviour to UI guardian; separate independent final veto remains mandatory.
 
 **Release sequence:** validate data contract in its own repo (draft PR, not merged), then read-only architecture/UX reviews, then owner-approved isolated GridAtlas implant. No auto-merge. GridAtlas live production pointer stays unchanged.
+
+## See Through / Kuiper second-wave design review (20 Opus reviewers)
+
+The owner's 26 October 2026 evening instruction adds a separate immersive See Through Lightning concept. Source-backed, twenty-lane read-only review charter: [SEE_THROUGH_20_OPUS_REVIEW.md](SEE_THROUGH_20_OPUS_REVIEW.md). **This is not a new implementation permission.** The original GridAtlas composition and its isolated in-progress Claude builder remain protected. The potential hybrid is a lightweight native GridAtlas overlay plus a link to a standalone See Through lightning experience, with the same genuine EUMETSAT optical observations and honest coverage metadata. Do not infer real cloud-to-ground channels or strikes from satellite optical flashes. Do not blame CVAA for missing homepage navigation without a verified cause.
