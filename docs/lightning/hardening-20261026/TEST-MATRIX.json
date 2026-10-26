@@ -15,9 +15,9 @@
    "id": "P01",
    "title": "Baseline files",
    "requirement": "verify the 31-file SHA-256 baseline manifest from PR #31; list each hash, mismatches = blocker. Also compare baseline against candidate original assets directly, not just precomputed logs.",
-   "status": "NOT_TESTED",
-   "evidence": "",
-   "command": "",
+   "status": "PASS",
+   "evidence": "evidence/step-a/P01-baseline-hashes.txt",
+   "command": "sha256sum -c evidence/step-a/baseline-sha256-manifest.txt (31/31 OK); git diff origin/main..HEAD over protected paths empty",
    "notes": ""
   },
   {
@@ -426,12 +426,12 @@
    "notes": ""
   },
   {
-   "id": "V15",
-   "title": "veto gates\n\nV1 hash baseline",
-   "requirement": "veto gates\n\nV1 hash baseline",
-   "status": "NOT_TESTED",
-   "evidence": "",
-   "command": "",
+   "id": "V1",
+   "title": "hash baseline",
+   "requirement": "hash baseline",
+   "status": "PASS",
+   "evidence": "evidence/step-a/P01-baseline-hashes.txt",
+   "command": "sha256sum -c evidence/step-a/baseline-sha256-manifest.txt (31/31 OK); git diff origin/main..HEAD over protected paths empty",
    "notes": ""
   },
   {
@@ -528,9 +528,9 @@
    "id": "V12",
    "title": "lint and STATE parity",
    "requirement": "lint and STATE parity",
-   "status": "NOT_TESTED",
-   "evidence": "",
-   "command": "",
+   "status": "PASS",
+   "evidence": "evidence/step-a/gridatlas-state.txt",
+   "command": "node tools/scope/loop.mjs lint; node tools/scope/loop.mjs state --stdout | cmp - STATE.md",
    "notes": ""
   },
   {
@@ -553,8 +553,8 @@
   },
   {
    "id": "V15",
-   "title": "bounded mutation observer and idle side-effects. Refer to the exact original che",
-   "requirement": "bounded mutation observer and idle side-effects. Refer to the exact original checklist and report disagreements, not silent rewrites.\n\n**Additional judgement**: Are P14 clipped Grid mirror, D08 v1 com",
+   "title": "bounded mutation observer and idle side-effects. Refer to the exact original checklist and report disagreements, not sil",
+   "requirement": "bounded mutation observer and idle side-effects. Refer to the exact original checklist and report disagreements, not silent rewrites.",
    "status": "NOT_TESTED",
    "evidence": "",
    "command": "",
