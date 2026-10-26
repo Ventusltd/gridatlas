@@ -131,6 +131,22 @@ def compile_bridge(source: str, generation: str) -> str:
     return source
 
 
+def assert_legacy_input(current: dict[str, Any]) -> None:
+    """This one-off v9.5 compiler is not an updater for later compositions."""
+    rows = current.get("cartridges")
+    order = current.get("cartridge_order")
+    if not isinstance(rows, list) or not rows or not all(isinstance(row, dict) for row in rows):
+        raise RuntimeError("legacy transport input has a malformed cartridge registry")
+    ids = [row.get("id") for row in rows]
+    if any(not isinstance(value, str) for value in ids) or len(set(ids)) != len(ids):
+        raise RuntimeError("legacy transport input has invalid or duplicate cartridge IDs")
+    if not isinstance(order, list) or len(order) != len(ids) or set(order) != set(ids):
+        raise RuntimeError("legacy transport input order and registry disagree")
+    allowed = ([SEARCH_ID], [TRANSPORT_ID, SEARCH_ID])
+    if order not in allowed:
+        raise RuntimeError("legacy v9.5 transport compiler refuses a later composition; use the current promotion lane")
+
+
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--generation", required=True)
@@ -150,6 +166,7 @@ def main() -> int:
     current = load_json(CURRENT)
     if current.get("schema") != "gridatlas.current.v2":
         raise RuntimeError("current composition schema mismatch")
+    assert_legacy_input(current)
     by_id = {item["id"]: item for item in current.get("cartridges", [])}
     if SEARCH_ID not in by_id:
         raise RuntimeError("v9.5 search cartridge is missing")
