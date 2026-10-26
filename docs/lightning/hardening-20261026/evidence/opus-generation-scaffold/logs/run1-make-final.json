@@ -1,0 +1,32 @@
+{
+ "result": "WRITTEN",
+ "generation": "202612312358",
+ "version": "v9.159",
+ "candidate_predecessor": "202610261949",
+ "parent_generation": "202609241334",
+ "module": {
+  "path": "atlas/modules/202612312358-uk-lightning-overlay.js",
+  "bytes": 23973,
+  "sha256": "b24291a014dbaae3064bbeea408cb01b5d01de0b89a7ade0961e1e1d31688b40",
+  "restamped": [
+   "generation 202610261949 -> generation 202612312358",
+   "GEN='202610261949' -> GEN='202612312358'"
+  ],
+  "proof_budget": 24000,
+  "headroom_to_proof_budget": 27,
+  "headroom_to_24781": 808
+ },
+ "cartridge": {
+  "path": "atlas/cartridges/202612312358-sld-sandbox-v9-8.js",
+  "bytes": 459192,
+  "sha256_lf": "1c9519899c33f0c0244d901a0a9d52b19b07d318fdf3cbb170ae87f160fae91b",
+  "base": "atlas/cartridges/202609241334-sld-sandbox-v9-8.js"
+ },
+ "proof": "tools/proofs/202612312358-sld-sandbox.proof.mjs",
+ "manifest": "atlas/manifests/202612312358-composition.json",
+ "route": [
+  "atlas/v/202612312358/index.html",
+  "atlas/v/202612312358/current.json"
+ ],
+ "protected_unchanged": 16
+}

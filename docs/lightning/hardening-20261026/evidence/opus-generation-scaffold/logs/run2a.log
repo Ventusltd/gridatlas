@@ -1,0 +1,50 @@
+## run 2a: module + '// delta' (23,982 B)
+{
+ "result": "WRITTEN",
+ "generation": "202612312359",
+ "version": "v9.159",
+ "candidate_predecessor": "202610261949",
+ "parent_generation": "202609241334",
+ "module": {
+  "path": "atlas/modules/202612312359-uk-lightning-overlay.js",
+  "bytes": 23982,
+  "sha256": "c72576794ad4299aaa2ae744abcbff5565c9763b76f4b989d7c5176ad6e8c560",
+  "restamped": [
+   "generation 202610261949 -> generation 202612312359",
+   "GEN='202610261949' -> GEN='202612312359'"
+  ],
+  "proof_budget": 24000,
+  "headroom_to_proof_budget": 18,
+  "headroom_to_24781": 799
+ },
+exit=0
+$ node tools/proofs/202612312359-sld-sandbox.proof.mjs
+SLD exact delta (202609241334 bytes + \n + 202612312359 uk-lightning-overlay module), SHA-256, byte budget, static negatives, static positives and syntax PASS; browser verification runs separately.
+exit=0
+$ diff atlas/modules/202610261949-uk-lightning-overlay.js atlas/modules/202612312359-uk-lightning-overlay.js
+1c1
+< /* uk-lightning-overlay, generation 202610261949 (UTC). EUMETSAT MTG Lightning Imager (L
+---
+> /* uk-lightning-overlay, generation 202612312359 (UTC). EUMETSAT MTG Lightning Imager (L
+5a6
+> // delta
+9c10
+< const GEN='202610261949',AR='https://raw.githubusercontent.com/Ventusltd/lightning/main/
+---
+> const GEN='202612312359',AR='https://raw.githubusercontent.com/Ventusltd/lightning/main/
+$ cmp <(tail -c +435220 cartridge) module   # bytes after live 435,218 + LF
+cmp=0
+prefix cmp=0
+$ tamper A: cartridge proof against the UNMODIFIED module (swap module file in place)
+AssertionError [ERR_ASSERTION]: the cartridge must be the live bytes, one newline and the module: nothing replaced, nothing reordered
+exit=1
+$ tamper B: one byte flipped in the cartridge
+AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+exit=1
+ "failures": [
+  "sld-sandbox: sha256 mismatch"
+ ]
+}
+$ restored
+proof exit=0
+ "result": "PASS",
