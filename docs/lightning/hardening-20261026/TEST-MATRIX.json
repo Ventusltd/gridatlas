@@ -1,0 +1,564 @@
+{
+ "candidate_sha": "fda6b10f7d2672bf1bf74c4fbf6184cd36b1ec1d",
+ "generation": "202610261949",
+ "production_sha": "c08f3a6178752d9ccc77ce76451107f28375a8b2",
+ "vocabulary": [
+  "PASS",
+  "FAIL",
+  "BLOCKED_DEPENDENCY",
+  "BLOCKED_HARNESS",
+  "NOT_TESTED",
+  "OWNER_DECISION"
+ ],
+ "rows": [
+  {
+   "id": "P01",
+   "title": "Baseline files",
+   "requirement": "verify the 31-file SHA-256 baseline manifest from PR #31; list each hash, mismatches = blocker. Also compare baseline against candidate original assets directly, not just precomputed logs.",
+   "status": "NOT_TESTED",
+   "evidence": "",
+   "command": "",
+   "notes": ""
+  },
+  {
+   "id": "P02",
+   "title": "Zero original movement",
+   "requirement": "compare original DOM order and computed box geometry of every original UI element. Original 13 Layers groups, 63 proxies, menu headings and map controls retain order/position at each viewport in each opened state.",
+   "status": "NOT_TESTED",
+   "evidence": "",
+   "command": "",
+   "notes": ""
+  },
+  {
+   "id": "P03",
+   "title": "Exact delta",
+   "requirement": "candidate sld-sandbox file equals original *bytes* plus newline plus module bytes; no CRLF mutation; proof and composition hashes agree.",
+   "status": "NOT_TESTED",
+   "evidence": "",
+   "command": "",
+   "notes": ""
+  },
+  {
+   "id": "P04",
+   "title": "Four-slot discipline",
+   "requirement": "no extra composer slot or replaced bridge; correct immutable shell, original MapLibre version and original CSS.",
+   "status": "NOT_TESTED",
+   "evidence": "",
+   "command": "",
+   "notes": ""
+  },
+  {
+   "id": "P05",
+   "title": "Control inventory",
+   "requirement": "menuBar.inspect() exact baseline object {engineInputs:60, pnInputs:3, total:63, proxies:63, installed:true} or corresponding original array representation, plus precisely 63 private markers. Do not count unrelated basemap radios as core layers. Check while OFF and ON.",
+   "status": "NOT_TESTED",
+   "evidence": "",
+   "command": "",
+   "notes": ""
+  },
+  {
+   "id": "P06",
+   "title": "Event semantics",
+   "requirement": "original six-menu dropdown opens/closes, body click works, Grid ArrowDown starts at engine:400, native Layers/SCADA opens, curtain works, search focus intact, no event capture swallowing original controls.",
+   "status": "NOT_TESTED",
+   "evidence": "",
+   "command": "",
+   "notes": ""
+  },
+  {
+   "id": "P07",
+   "title": "Keyboard",
+   "requirement": "Tab, Shift+Tab, Enter, Space, Arrow keys, Escape, focus restoration. Lightning keyboard interactions meaningful with correct role/checked/aria semantics.",
+   "status": "NOT_TESTED",
+   "evidence": "",
+   "command": "",
+   "notes": ""
+  },
+  {
+   "id": "P08",
+   "title": "Touch",
+   "requirement": "actual hit-tested clicks/taps, no force:true, no JS direct invocation replacing user gestures; 44x44px targets where justified on mobile.",
+   "status": "NOT_TESTED",
+   "evidence": "",
+   "command": "",
+   "notes": ""
+  },
+  {
+   "id": "P09",
+   "title": "Preserve layering",
+   "requirement": "no new map-layer/source while OFF; map after OFF exactly returns to original state, and all existing grid layers remain clickable.",
+   "status": "NOT_TESTED",
+   "evidence": "",
+   "command": "",
+   "notes": ""
+  },
+  {
+   "id": "P10",
+   "title": "Layout",
+   "requirement": "compare original vs candidate at rest, Grid dropdown, native Layers open, fullscreen curtain open, About open and deep-link arrival. Include 1440x900, 393x852, 360x740, 390x844 iPhone-like geometry; 1280x720 + 1920x1080 supplemental for clipping diagnosis. Chromium emulation is NOT real iPhone Safar",
+   "status": "NOT_TESTED",
+   "evidence": "",
+   "command": "",
+   "notes": ""
+  },
+  {
+   "id": "P11",
+   "title": "Pixel evidence",
+   "requirement": "paired same-harness screenshots and masked diff; mask only non-deterministic live clock/DAYS, canvas tiles/particles and lightening-owned additive group. No blanket masking of the menu/panel.",
+   "status": "NOT_TESTED",
+   "evidence": "",
+   "command": "",
+   "notes": ""
+  },
+  {
+   "id": "P12",
+   "title": "No mutation storm",
+   "requirement": "idle 30 s ON, monitor lightning-owned DOM updates/body observer, cap <20 lightning-caused mutations; no blinking/ticking write loop.",
+   "status": "NOT_TESTED",
+   "evidence": "",
+   "command": "",
+   "notes": ""
+  },
+  {
+   "id": "P13",
+   "title": "No unintended data traffic",
+   "requirement": "idle OFF triggers 0 lightning requests, 0 sources and no 10-minute updater; while ON only declared data endpoints.",
+   "status": "NOT_TESTED",
+   "evidence": "",
+   "command": "",
+   "notes": ""
+  },
+  {
+   "id": "P14",
+   "title": "Controls accessible",
+   "requirement": "all original controls and *approved* new Lightning control physically reachable in normal viewport without programmatic scrolling to clipped content. Any known original clipping must be honestly separated from new regression.",
+   "status": "NOT_TESTED",
+   "evidence": "",
+   "command": "",
+   "notes": ""
+  },
+  {
+   "id": "P15",
+   "title": "Accessibility",
+   "requirement": "named/announced toggle, state and labels, focus/touch, readable contrast, reduced-motion tolerance; no seizure-like animation, flashing UI or forced sound.",
+   "status": "NOT_TESTED",
+   "evidence": "",
+   "command": "",
+   "notes": ""
+  },
+  {
+   "id": "P16",
+   "title": "Resource budget",
+   "requirement": "overlay 23,973 bytes originally; sld-sandbox <460,000 bytes and proof budgets pass; measured CPU/memory/network and first interaction budget; do not blindly introduce new CDN/browser library.",
+   "status": "NOT_TESTED",
+   "evidence": "",
+   "command": "",
+   "notes": ""
+  },
+  {
+   "id": "D01",
+   "title": "What is observed",
+   "requirement": "EUMETSAT MTG LI L2-LFL optical flash centroids/time, not ground strike channels; always display exact wording and attribution, including popup where present.",
+   "status": "NOT_TESTED",
+   "evidence": "",
+   "command": "",
+   "notes": ""
+  },
+  {
+   "id": "D02",
+   "title": "Geodesy",
+   "requirement": "lon/lat valid and within declared UK+neighbour-waters bounds (-11,49.5) to (3,61.5); validate and quarantine malformed/out-of-box records; no invented bolt paths or attribution to individual pylons.",
+   "status": "NOT_TESTED",
+   "evidence": "",
+   "command": "",
+   "notes": ""
+  },
+  {
+   "id": "D03",
+   "title": "Time semantics",
+   "requirement": "timestamps UTC, selection [start,end) consistently, true selected start/end, actual first/last observations INSIDE selection, ingestion/generated timestamp kept separate from last detection timestamp.",
+   "status": "NOT_TESTED",
+   "evidence": "",
+   "command": "",
+   "notes": ""
+  },
+  {
+   "id": "D04",
+   "title": "Current windows",
+   "requirement": "12h,24h,48h,7d from available underlying observations; no saying 408 'in last hour' if actual feed spans five days.",
+   "status": "NOT_TESTED",
+   "evidence": "",
+   "command": "",
+   "notes": ""
+  },
+  {
+   "id": "D05",
+   "title": "History windows",
+   "requirement": "30d,3m,6m,12m and custom, clamped to retention boundary; PREV/NEXT/LATEST exact and justified; no invented historical coverage prior to collector start.",
+   "status": "NOT_TESTED",
+   "evidence": "",
+   "command": "",
+   "notes": ""
+  },
+  {
+   "id": "D06",
+   "title": "Archive absent",
+   "requirement": "index 404/schema mismatch/CORS/network issue \u2192 explicit fallback to rolling seven-day feed, with 'archive not published/unavailable', and long ranges disabled, never zero.",
+   "status": "NOT_TESTED",
+   "evidence": "",
+   "command": "",
+   "notes": ""
+  },
+  {
+   "id": "D07",
+   "title": "Missing=unknown",
+   "requirement": "missing days, scan gaps, failed runs, partial coverage, not-yet-ingested tail all explicitly unknown; zero only if searched coverage and count legitimately zero.",
+   "status": "NOT_TESTED",
+   "evidence": "",
+   "command": "",
+   "notes": ""
+  },
+  {
+   "id": "D08",
+   "title": "Schema",
+   "requirement": "index v2, dated shards v1, day parts[] for high-volume split dates, sha256/bytes/count metadata consistency, sealed/unsealed cache correctness. Candidate rejecting v1 is a KNOWN DEVIATION \u2014 adjudicate its impact with PR #2, do not silently normalise the scope.",
+   "status": "NOT_TESTED",
+   "evidence": "",
+   "command": "",
+   "notes": ""
+  },
+  {
+   "id": "D09",
+   "title": "Time-window correctness",
+   "requirement": "DST boundary, UTC midnight, leap day, month-length variation, leap-year 12-month lookback, date picker From > To, date before archive, future date, mid-window ingestion and selected window outside feed retention.",
+   "status": "NOT_TESTED",
+   "evidence": "",
+   "command": "",
+   "notes": ""
+  },
+  {
+   "id": "D10",
+   "title": "Concurrency",
+   "requirement": "four shard reads max, settled per shard with named failures; LRU 8; cancellation and stale responses may NOT repaint a newer window or leave old points under a mismatching caption.",
+   "status": "NOT_TESTED",
+   "evidence": "",
+   "command": "",
+   "notes": ""
+  },
+  {
+   "id": "D11",
+   "title": "Budget tier",
+   "requirement": "detail up to 31 days only if <=40k index count and <=32MB; larger index summary before fetch. >31d daily index only by default; LOAD POINTS explicit and honest; 10k phone/40k desktop map cap and cluster state honestly indicated.",
+   "status": "NOT_TESTED",
+   "evidence": "",
+   "command": "",
+   "notes": ""
+  },
+  {
+   "id": "D12",
+   "title": "Large storm",
+   "requirement": "max shard 25MB, target 8MiB and parts[] hourly split; 100k-flash day stress. Zero synthetic observation points in published archive; synthetic counts are allowed in TEST FIXTURES only, clearly labelled.",
+   "status": "NOT_TESTED",
+   "evidence": "",
+   "command": "",
+   "notes": ""
+  },
+  {
+   "id": "D13",
+   "title": "Status captions",
+   "requirement": "show selection window, first/last genuine detection, archived vs drawn counts, refreshed/published timestamp with stale semantics, coverage fraction/runs, warnings + UTC/source/uncertainty note; if footer/legend hidden, fail visibility.",
+   "status": "NOT_TESTED",
+   "evidence": "",
+   "command": "",
+   "notes": ""
+  },
+  {
+   "id": "D14",
+   "title": "State matrix",
+   "requirement": "OFF, LOADING, READY\u00b7DETAIL, READY\u00b7SUMMARY, EMPTY-COVERED, PARTIAL, UNKNOWN, BEFORE-ARCHIVE, FAIL and STALE modifier. Distinguish network error from successfully searched and empty.",
+   "status": "NOT_TESTED",
+   "evidence": "",
+   "command": "",
+   "notes": ""
+  },
+  {
+   "id": "D15",
+   "title": "Failure handling",
+   "requirement": "bad JSON, HTTP 404/500, partial shard failure, stale index, sha mismatch, CORS/network rejection, zero feed, cancelled request, stop/start rapidly. Newest partial features remain accurately labelled if FAIL. Candidate keeping toggle ON on FAIL is a KNOWN DEVIATION vs original V10 \u2014 reviewer must rul",
+   "status": "NOT_TESTED",
+   "evidence": "",
+   "command": "",
+   "notes": ""
+  },
+  {
+   "id": "D16",
+   "title": "Transport",
+   "requirement": ".json absolute fetch bypasses original broad .geojson interceptor; rolling feed .geojson uses tested XHR; verify intercepted_on_demand unchanged, request headers/CORS/cache must be tested *live* separately. No original bridge edits.",
+   "status": "NOT_TESTED",
+   "evidence": "",
+   "command": "",
+   "notes": ""
+  },
+  {
+   "id": "D17",
+   "title": "Collector",
+   "requirement": "hourly at minute 17; max(6h, gap+30m) lookback capped 48h, successful examined 10-minute slots only, missed source product coverage recorded unknown; status always writes heartbeat, feed-first/archive-second; backfill not fabricated.",
+   "status": "NOT_TESTED",
+   "evidence": "",
+   "command": "",
+   "notes": ""
+  },
+  {
+   "id": "D18",
+   "title": "Retention/provenance",
+   "requirement": "true prospective rolling UTC year; initial genuine 408 events seed with partially searched days. EUMETSAT availability and licensing/attribution checked. Actual archive is NOT presently live merely because draft PR #2 exists.",
+   "status": "NOT_TESTED",
+   "evidence": "",
+   "command": "",
+   "notes": ""
+  },
+  {
+   "id": "R01",
+   "title": "Candidate's Grid dropdown Weather mirror resides in FOOTER clipped by #map-conta",
+   "requirement": "Candidate's Grid dropdown Weather mirror resides in FOOTER clipped by #map-container overflow:hidden at 1440x900 and 1280x720; the original Layers tab itself is also clipped there. Quantify if mirror is required for release or optional secondary affordance. This is AN OWNER DESIGN DECISION. Compare ",
+   "status": "NOT_TESTED",
+   "evidence": "",
+   "command": "",
+   "notes": ""
+  },
+  {
+   "id": "R02",
+   "title": "Candidate supports index v2, not v1 despite design plan v1+v2. Identify whether ",
+   "requirement": "Candidate supports index v2, not v1 despite design plan v1+v2. Identify whether production PR #2 guarantees v2; decide whether v1 fallback necessary or explicit error acceptable.",
+   "status": "NOT_TESTED",
+   "evidence": "",
+   "command": "",
+   "notes": ""
+  },
+  {
+   "id": "R03",
+   "title": "FAIL leaves Weather switch ON, contrary to V10 wording. Assess accessibility, er",
+   "requirement": "FAIL leaves Weather switch ON, contrary to V10 wording. Assess accessibility, error transparency and preservation; propose V10 amendment only if evidence supports it; no forced OFF that hides diagnosis.",
+   "status": "NOT_TESTED",
+   "evidence": "",
+   "command": "",
+   "notes": ""
+  },
+  {
+   "id": "R04",
+   "title": "Long-range overview cannot always drill down; CUSTOM one-day workaround. Decide ",
+   "requirement": "Long-range overview cannot always drill down; CUSTOM one-day workaround. Decide whether a genuine user can inspect selected historical flashes without ambiguous controls.",
+   "status": "NOT_TESTED",
+   "evidence": "",
+   "command": "",
+   "notes": ""
+  },
+  {
+   "id": "R05",
+   "title": "Custom period date-navigation buttons disabled, unlike named periods. Test usabi",
+   "requirement": "Custom period date-navigation buttons disabled, unlike named periods. Test usability and caption correctness.",
+   "status": "NOT_TESTED",
+   "evidence": "",
+   "command": "",
+   "notes": ""
+  },
+  {
+   "id": "R06",
+   "title": "Dataset may be incomplete (scheduled runs previously missed ~46% of hours). Sear",
+   "requirement": "Dataset may be incomplete (scheduled runs previously missed ~46% of hours). Search coverage is critical; do not describe 408 as all flashes in UK or all lightning strikes.",
+   "status": "NOT_TESTED",
+   "evidence": "",
+   "command": "",
+   "notes": ""
+  },
+  {
+   "id": "R07",
+   "title": "Actual GitHub raw data CORS/cache is untested in shim; a live proof is required ",
+   "requirement": "Actual GitHub raw data CORS/cache is untested in shim; a live proof is required before release.",
+   "status": "NOT_TESTED",
+   "evidence": "",
+   "command": "",
+   "notes": ""
+  },
+  {
+   "id": "R08",
+   "title": "DuckDB Parquet extension, REPD layers/search, basemap tile/glyph and iOS WebKit ",
+   "requirement": "DuckDB Parquet extension, REPD layers/search, basemap tile/glyph and iOS WebKit were BLOCKED in Claude sandbox. Do not turn BLOCKED into PASS based on shell tests.",
+   "status": "NOT_TESTED",
+   "evidence": "",
+   "command": "",
+   "notes": ""
+  },
+  {
+   "id": "R09",
+   "title": "Module byte budget extremely tight (~24 KB), risk of dense/unclear code and omis",
+   "requirement": "Module byte budget extremely tight (~24 KB), risk of dense/unclear code and omissions; use tests rather than compress away error validation.",
+   "status": "NOT_TESTED",
+   "evidence": "",
+   "command": "",
+   "notes": ""
+  },
+  {
+   "id": "R10",
+   "title": "10-minute refresh, aborted pending read, style reload, LRU eviction and parts[] ",
+   "requirement": "10-minute refresh, aborted pending read, style reload, LRU eviction and parts[] fan-out have not had genuine end-to-end fixture coverage.",
+   "status": "NOT_TESTED",
+   "evidence": "",
+   "command": "",
+   "notes": ""
+  },
+  {
+   "id": "R11",
+   "title": "The candidate removed .github/workflows/uk-lightning-preview.yml to restore work",
+   "requirement": "The candidate removed .github/workflows/uk-lightning-preview.yml to restore workflow budget. Independently check its removal doesn't delete a required safeguard; report alternative budget fix separately if needed.",
+   "status": "NOT_TESTED",
+   "evidence": "",
+   "command": "",
+   "notes": ""
+  },
+  {
+   "id": "R12",
+   "title": "Candidate pack and PR #31 include extensive screenshots, some shim-backed. Match",
+   "requirement": "Candidate pack and PR #31 include extensive screenshots, some shim-backed. Match every claim to provenance, SHA and a reproducible command, not just an image filename.",
+   "status": "NOT_TESTED",
+   "evidence": "",
+   "command": "",
+   "notes": ""
+  },
+  {
+   "id": "V15",
+   "title": "veto gates\n\nV1 hash baseline",
+   "requirement": "veto gates\n\nV1 hash baseline",
+   "status": "NOT_TESTED",
+   "evidence": "",
+   "command": "",
+   "notes": ""
+  },
+  {
+   "id": "V2",
+   "title": "untouched bridge/data interceptor",
+   "requirement": "untouched bridge/data interceptor",
+   "status": "NOT_TESTED",
+   "evidence": "",
+   "command": "",
+   "notes": ""
+  },
+  {
+   "id": "V3",
+   "title": "no fifth app/copy",
+   "requirement": "no fifth app/copy",
+   "status": "NOT_TESTED",
+   "evidence": "",
+   "command": "",
+   "notes": ""
+  },
+  {
+   "id": "V4",
+   "title": "60+3/proxy/marker exact",
+   "requirement": "60+3/proxy/marker exact",
+   "status": "NOT_TESTED",
+   "evidence": "",
+   "command": "",
+   "notes": ""
+  },
+  {
+   "id": "V5",
+   "title": "original surface/DOM parity",
+   "requirement": "original surface/DOM parity",
+   "status": "NOT_TESTED",
+   "evidence": "",
+   "command": "",
+   "notes": ""
+  },
+  {
+   "id": "V6",
+   "title": "four viewport, four-state masked screenshot + geometry parity",
+   "requirement": "four viewport, four-state masked screenshot + geometry parity",
+   "status": "NOT_TESTED",
+   "evidence": "",
+   "command": "",
+   "notes": ""
+  },
+  {
+   "id": "V7",
+   "title": "hit-tested ON/OFF/reload state",
+   "requirement": "hit-tested ON/OFF/reload state",
+   "status": "NOT_TESTED",
+   "evidence": "",
+   "command": "",
+   "notes": ""
+  },
+  {
+   "id": "V8",
+   "title": "explicit selected/actual detection period and source",
+   "requirement": "explicit selected/actual detection period and source",
+   "status": "NOT_TESTED",
+   "evidence": "",
+   "command": "",
+   "notes": ""
+  },
+  {
+   "id": "V9",
+   "title": "no imaginary 12-month history / unknown gaps",
+   "requirement": "no imaginary 12-month history / unknown gaps",
+   "status": "NOT_TESTED",
+   "evidence": "",
+   "command": "",
+   "notes": ""
+  },
+  {
+   "id": "V10",
+   "title": "zero/error/stale and state on error",
+   "requirement": "zero/error/stale and state on error",
+   "status": "NOT_TESTED",
+   "evidence": "",
+   "command": "",
+   "notes": ""
+  },
+  {
+   "id": "V11",
+   "title": "original menu/search/SLD/all-layer regressions",
+   "requirement": "original menu/search/SLD/all-layer regressions",
+   "status": "NOT_TESTED",
+   "evidence": "",
+   "command": "",
+   "notes": ""
+  },
+  {
+   "id": "V12",
+   "title": "lint and STATE parity",
+   "requirement": "lint and STATE parity",
+   "status": "NOT_TESTED",
+   "evidence": "",
+   "command": "",
+   "notes": ""
+  },
+  {
+   "id": "V13",
+   "title": "governance/branch/pointer/deployment",
+   "requirement": "governance/branch/pointer/deployment",
+   "status": "NOT_TESTED",
+   "evidence": "",
+   "command": "",
+   "notes": ""
+  },
+  {
+   "id": "V14",
+   "title": "no V6 UI transplant",
+   "requirement": "no V6 UI transplant",
+   "status": "NOT_TESTED",
+   "evidence": "",
+   "command": "",
+   "notes": ""
+  },
+  {
+   "id": "V15",
+   "title": "bounded mutation observer and idle side-effects. Refer to the exact original che",
+   "requirement": "bounded mutation observer and idle side-effects. Refer to the exact original checklist and report disagreements, not silent rewrites.\n\n**Additional judgement**: Are P14 clipped Grid mirror, D08 v1 com",
+   "status": "NOT_TESTED",
+   "evidence": "",
+   "command": "",
+   "notes": ""
+  }
+ ]
+}
