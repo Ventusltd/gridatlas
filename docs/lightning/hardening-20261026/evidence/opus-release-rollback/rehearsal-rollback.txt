@@ -1,0 +1,30 @@
+## sandbox rollback (private worktree, uncommitted; mirrors rollback-composition.yml steps) | 2026-10-26T22:34:19Z
+$ node tools/rollback.mjs --to 202609241334 --reason "<reason>"
+
+rolled back to 202609241334 as 202610262234-gridatlas-v9.156
+run `node tools/scope/loop.mjs state` and `node tools/proofs/run-current.mjs` before committing
+$ node tools/scope/loop.mjs state
+STATE.md=UPDATED
+$ node tools/scope/verify-compose.mjs
+{"composition":"PASS","generation":"202610262234","release_id":"202608300453-atlas-v9","immutable_releases":8,"cartridge
+$ node tools/proofs/run-current.mjs
+=== streaming-parquet-bridge 202609241251 ===
+=== uk-gazetteer-flyto 202609071213 ===
+    "FAILED"
+=== substation-intelligence 202609062358 ===
+=== sld-sandbox 202609241334 ===
+proofs run: 4
+every composed cartridge passed its generation-matched proof
+$ node tools/scope/loop.mjs lint
+scope-ledger=PASS active=none master=done
+$ node tools/proofs/202610261949-sld-sandbox.proof.mjs   (candidate proof falls back to atlas/v/<GEN>/current.json)
+SLD exact delta (202609241334 bytes + \n + 202610261949 uk-lightning-overlay module), SHA-
+--- files differing from fda6b10 (release edits + rollback) ---
+ M STATE.md
+ M atlas/current.json
+ M atlas/state/live-set.json
+ M releases/current-v5.json
+ M state/live-set.json
+?? atlas/manifests/202610262234-composition.json
+--- STATE.md composition line now ---
+- Composition: `202610262234 · 202608300453-atlas-v9 · streaming-parquet-bridge → uk-gazetteer-flyto → substation-intelligence → sld-sandbox`
