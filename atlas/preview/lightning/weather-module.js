@@ -4,8 +4,8 @@
  *
  * This module NEVER edits ukConfig, the engine's 60 layer controls, the three
  * Pipeline News controls, or their delegated click/keyboard handlers.
- * It waits until GridAtlas installs its own menu, then adds a separate toggle
- * inside Grid and one standard MapLibre GeoJSON point source.
+ * It waits until GridAtlas installs its own menu, then adds synchronised toggles
+ * to both the native Layers panel and Grid menu, with one MapLibre source.
  */
 (() => {
   'use strict';
@@ -70,10 +70,50 @@
     // These independent nodes do not alter any original input or handler.
     body.prepend(group,label);
 
+    // Show the SAME isolated overlay in the actual SCADA LAYERS dashboard
+    // and fullscreen curtain, not just in the six-menu Grid dropdown.
+    // Original 60 engine + 3 Pipeline News inputs retain their attributes,
+    // indices, delegated handlers and fail-closed menu contract.
+    const switches=[input];
+    const statusLabels=[title];
+    function appendToLayers(hostId,kind) {
+      const host=document.getElementById(hostId);
+      if(!host) return;
+      const weatherGroup=document.createElement('div');
+      weatherGroup.className='key-group';
+      weatherGroup.setAttribute('data-weather-native-group',kind);
+      const heading=document.createElement('div');
+      heading.className='key-title';
+      heading.textContent='Weather (GeoJSON)';
+      const row=document.createElement('label');
+      row.className='key-item';
+      row.setAttribute('data-weather-native-row',kind);
+      const cb=document.createElement('input');
+      cb.type='checkbox';
+      cb.id='gridatlas-weather-lightning-'+kind;
+      cb.setAttribute('data-weather-layer','uk_lightning');
+      cb.setAttribute('aria-label','Lightning (satellite flashes)');
+      // Do NOT set data-layer-id or data-pn-layer. GridAtlas's existing
+      // change handlers and menu's 63-control cardinality stay untouched.
+      const name=document.createElement('span');
+      name.setAttribute('data-weather-label',kind);
+      name.style.color='#ffdf44';
+      name.textContent='Lightning (satellite flashes) [WAIT]';
+      row.append(cb,document.createTextNode(' '),name);
+      weatherGroup.append(heading,row);
+      host.prepend(weatherGroup);
+      switches.push(cb);
+      statusLabels.push(name);
+    }
+    appendToLayers('scada-ui-container','layers');
+    appendToLayers('fs-curtain-keys','fullscreen');
+    state.controls=switches.length;
+
     function status(word,details) {
       state.status=word;
-      title.textContent='Lightning (satellite flashes) ['+word+']'+(details?' '+details:'');
-      input.setAttribute('aria-label',title.textContent);
+      const updated='Lightning (satellite flashes) ['+word+']'+(details?' '+details:'');
+      statusLabels.forEach(node=>{node.textContent=updated;});
+      switches.forEach(cb=>cb.setAttribute('aria-label',updated));
     }
     let loaded=false;
     let loading=null;
@@ -102,17 +142,18 @@
       return loading;
     }
 
-    input.addEventListener('change',()=>{
-      const visible=input.checked;
+    function setActive(visible) {
+      switches.forEach(cb=>{cb.checked=visible;});
       map.setLayoutProperty(LAYER,'visibility',visible?'visible':'none');
       if(visible)hydrate().catch(error=>{
         state.errors.push(String(error?.message||error));
         status('FAIL');
-        input.checked=false;
+        switches.forEach(cb=>{cb.checked=false;});
         map.setLayoutProperty(LAYER,'visibility','none');
         console.error('[GRIDATLAS WEATHER]',error);
       });
-    });
+    }
+    switches.forEach(cb=>cb.addEventListener('change',()=>setActive(cb.checked)));
 
     map.on('click',LAYER,e=>{
       if(!input.checked||!e.features?.length)return;
