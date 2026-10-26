@@ -1,7 +1,7 @@
 {
   "schema": "gridatlas.current.v2",
-  "generation": "202610231505",
-  "previous_generation": "202610230230",
+  "generation": "202610261500",
+  "previous_generation": "202610231505",
   "architecture": "IMMUTABLE_SHELL_PLUS_HASHED_CARTRIDGES",
   "live_route": "/gridatlas/atlas/",
   "release_id": "202608300453-atlas-v9",
@@ -700,10 +700,10 @@
   "preview_only": true,
   "preview_route": "/gridatlas/atlas/preview/lightning/",
   "baseline_route": "/gridatlas/atlas/",
-  "preview_purpose": "Independent lightning MapLibre overlay after baseline menu installs; exactly 60+3 original layer controls.",
+  "preview_purpose": "Independent Weather control in native Layers dashboard, fullscreen curtain and Grid dropdown without changing original 60+3 layer contract.",
   "weather_module": {
     "path": "./weather-module.js",
-    "sha256": "135bc6040f084717fb24fe0dca2ba96d1dae59b70d8d942063aa3920b75c8b63",
+    "sha256": "c7e783a71796bb5ce19478c9d0aaee1c947854fdc46ebcfd0c6adbb9179186cd",
     "id": "uk-weather-lightning"
   }
 }
