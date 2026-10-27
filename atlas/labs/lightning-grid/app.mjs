@@ -207,9 +207,10 @@ async function inspect(){
   }catch(e){
     if(serial===state.serial)fail('Unable to compute or load context: '+e.message+'. No results have been inferred.');
   }finally{
-    // Changing flash or filters while a request is in flight invalidates
-    // that request, but must NEVER strand the Inspect button disabled.
-    el('inspect').disabled=false;
+    // Only the latest request owns the button. A stale async completion
+    // must not enable Inspect for an unknown/cleared optical flash ID.
+    // Selection/filter change handlers own the button after invalidation.
+    if(serial===state.serial)el('inspect').disabled=!currentFlash();
   }
 }
 el('flash').addEventListener('change',()=>{
@@ -232,6 +233,7 @@ for(const k of ['ac','dc','inverter','project','overhead','weather']){
 }
 for(const k of ['radius','kv'])el(k).addEventListener('change',()=>{
   state.serial++;state.ctx=null;mapView?.clearContext();el('scenario').disabled=true;
+  el('inspect').disabled=!currentFlash();
   clear('substations').textContent='Parameters changed. Run proximity search again.';
   clear('solar').textContent='Parameters changed. Run proximity search again.';
   el('provenance').textContent='Prior proximity results cleared; no new search yet.';
