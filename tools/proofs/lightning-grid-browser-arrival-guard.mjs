@@ -200,6 +200,32 @@ try{
     'Only an explicit recalculation at new radius can enable Scenario');
   console.log('PASS — pending nearest lookup invalidated by radius change; no stale Scenario or Ready state.');
 
+  // OUTAGE FAIL-FIRST: if ALL nine independent asset sources return HTTP 503,
+  // an optical observation is still real but no nearest-infrastructure context
+  // is available. Do not say Ready with zero located assets or enable the
+  // scenario action; these are unknown, not a measured empty neighbourhood.
+  // This is an upstream HTTP failure fixture, NOT a real service outage.
+  const unavailable=route=>route.fulfill({status:503,contentType:'application/json',
+    body:JSON.stringify({error:'synthetic upstream outage'}),
+    headers:{'access-control-allow-origin':'*'}});
+  await page.route('**/data/grid_substations.geojson',unavailable);
+  await page.route('**/202608261927-atlas-solar-partition-v9-1-*.geojson',unavailable);
+  await page.goto(base+'?flash_id=browser-source-centre',
+    {waitUntil:'domcontentloaded',timeout:45000});
+  await page.waitForFunction(()=>document.querySelector('#flash')?.value==='browser-source-centre',
+    null,{timeout:45000});
+  await page.locator('#inspect').click();
+  await page.waitForFunction(()=>{
+    const s=document.querySelector('#status')?.textContent||'';
+    return s.includes('Ready ·')||s.includes('Unable to compute');
+  },null,{timeout:35000});
+  const allSourcesDownStatus=await page.locator('#status').textContent();
+  assert.equal(await page.locator('#scenario').isDisabled(),true,
+    'OUTAGE FAIL-FIRST: 9/9 upstream source failures must disable Scenario, not present empty data as ready');
+  assert.doesNotMatch(allSourcesDownStatus,/Ready ·/,
+    'OUTAGE FAIL-FIRST: zero successful source loads must not be labelled Ready');
+  console.log('PASS — all nine upstream sources unavailable: scenario disabled and no false Ready/zero result.');
+
   console.log('Fixture counts: optical='+FEED.features.length+' substation='+SUBS.features.length+' solar='+SOLAR.features.length);
   if(errors.length)console.log('Nonfatal browser console notes: '+JSON.stringify(errors.slice(0,10)));
 }catch(error){
