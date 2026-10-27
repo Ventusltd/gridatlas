@@ -154,6 +154,37 @@ try{
     'Scenario can run only after manual valid selection and new proximity search');
   await page.screenshot({path:output+'/missing-arrival-recovered.png',fullPage:true});
   console.log('PASS — absent flash_id does not substitute another event; explicit manual recovery works.');
+  // Independent second race: changing a geographic search parameter during
+  // a delayed lookup must invalidate its result, keep Scenario disabled, and
+  // leave Inspect available for an explicit new calculation. This exercises
+  // the filter handler, not the already-tested missing-ID selection handler.
+  await page.goto(base+'?flash_id=browser-source-centre',
+    {waitUntil:'domcontentloaded',timeout:45000});
+  await page.waitForFunction(
+    ()=>document.querySelector('#flash')?.value==='browser-source-centre' &&
+        document.querySelector('#inspect')?.disabled===false,
+    null,{timeout:45000});
+  const pendingParameter=page.waitForRequest(req=>req.url().includes('/data/grid_substations.geojson'));
+  await page.locator('#inspect').click();
+  await pendingParameter;
+  await page.locator('#radius').selectOption('5');
+  assert.equal(await page.locator('#inspect').isEnabled(),true,
+    'Changing radius while lookup pending must permit a fresh explicit Inspect');
+  assert.equal(await page.locator('#scenario').isDisabled(),true,
+    'Changing radius must invalidate the old hypothetical scenario');
+  await page.waitForTimeout(1800);
+  assert.equal(await page.locator('#scenario').isDisabled(),true,
+    'Stale asset response after radius change must NOT enable Scenario');
+  assert.match(await page.locator('#status').textContent(),/Search parameters changed/i,
+    'Stale response must not overwrite parameter-change status with Ready');
+  await page.locator('#inspect').click();
+  await page.waitForFunction(
+    ()=>document.querySelector('#status')?.textContent?.includes('Ready ·'),
+    null,{timeout:35000});
+  assert.equal(await page.locator('#scenario').isEnabled(),true,
+    'Only an explicit recalculation at new radius can enable Scenario');
+  console.log('PASS — pending nearest lookup invalidated by radius change; no stale Scenario or Ready state.');
+
   console.log('Fixture counts: optical='+FEED.features.length+' substation='+SUBS.features.length+' solar='+SOLAR.features.length);
   if(errors.length)console.log('Nonfatal browser console notes: '+JSON.stringify(errors.slice(0,10)));
 }catch(error){
