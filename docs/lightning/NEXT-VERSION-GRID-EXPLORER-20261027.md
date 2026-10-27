@@ -33,3 +33,19 @@ Every flash-to-site view explicitly states (1) EUMETSAT optical detection is not
 The pure Grid Engine `postEventDiligence` helper supplies IMD/RCMU/SPD logs, insulation-resistance and earthing/bonding checks, cable/connector inspections, thermography and weather review, without claiming an electrical solution. DEHN White Paper WPX051/EN/0422 is linked as **manufacturer technical background**, not proof of a strike, a particular inverter installation, or a substitute for standards and site engineering.
 
 A static CI workflow was added to the draft branch to run the separate `node tools/proofs/lightning-grid-explorer.proof.mjs`; inspect its exact GitHub run for PASS/FAIL rather than assuming green. Full browser/CDN and owner-iPhone checks remain blocked until performed.
+
+## Executed real-source contract smoke, 27 Oct 01:35 UTC
+
+[GitHub Actions run 40433400517](https://github.com/Ventusltd/gridatlas/actions/runs/40433400517) **PASS** on pinned Grid Engine commit `69b4e88c8464f0310bd67e47ec83ee8afa9e1921`. The read-only Node network test `tools/proofs/lightning-grid-real-sources.proof.mjs` verified exact Git blob hashes, jsDelivr's pinned source and declared CORS, and fetched the genuine EUMETSAT feed, 8 genuine Pipeline News solar partitions and original GridAtlas substation GeoJSON:
+
+| Source | Read and accepted |
+| --- | ---: |
+| EUMETSAT optical observations | 408 |
+| Original Atlas OSM substation features | 5,800 of 5,800 geolocated |
+| REPD solar project features | 3,558 of 3,558 eligible |
+| MAP receiver | Genuine REPD ref `2033` validated |
+| Engine | `solver_status=NOT_RUN` |
+
+The 500 km radius in this test is **solely to prove that at least one real project deep link is generated from a real optical observation**. It is not the UI's 20 km default, a proximity alert, a risk rating, or evidence of a ground strike. The first observed flash's nearest eligible mapped substation was ~80.68 km away, not an asset-damage claim. Data may change on subsequent runs.
+
+**Still untested:** actual iPhone/Safari UI, interactive MapLibre tap bridge, on-device CORS/module import, site-specific electrical transients, archive integrity/backfill and owner sign-off. This is an experimental sidecar on a draft PR; **do not publish or merge** on the basis of Node tests.
