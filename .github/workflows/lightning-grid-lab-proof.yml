@@ -49,6 +49,16 @@ jobs:
           node-version: '22'
       - name: Verify live read-only source formats and exact pinned CDN code
         run: node tools/proofs/lightning-grid-real-sources.proof.mjs
+      - name: Verify both public GitHub Pages preview routes (HTTP 200, not a UI veto)
+        shell: bash
+        run: |
+          set -euo pipefail
+          for path in atlas/labs/lightning-grid/ atlas/labs/lightning-grid/app.mjs atlas/labs/lightning-grid/map-view.mjs atlas/v/202610270246/; do
+            url="https://ventusltd.github.io/gridatlas/$path"
+            echo "Checking $url"
+            curl -fsSL --retry 4 --retry-delay 4 --max-time 35 --output /dev/null "$url"
+          done
+          echo "PASS — published preview routes returned successful HTTP responses (not Safari acceptance)"
       - name: Explicit limits of real-source contract
         if: always()
         run: |
