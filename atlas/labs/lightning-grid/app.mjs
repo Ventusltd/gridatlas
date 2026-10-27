@@ -193,6 +193,14 @@ async function inspect(){
   try{
     const assets=await getAssets();
     if(serial!==state.serial)return;
+    // No infrastructure dataset survived: do not present zero nearby assets
+    // as a completed search or enable a hypothetical site-specific scenario.
+    // The optical observation itself remains valid; asset context is UNKNOWN.
+    if(assets.issues.length===solarURLs.length+1){
+      fail('All infrastructure sources unavailable. Nearby solar and substations UNKNOWN; '+
+        'no proximity result or electrical scenario is available. Retry Inspect.');
+      return;
+    }
     const ctx=state.engine.selectFlash(f,{
       radiusKm:Number(el('radius').value),minimumKv:Number(el('kv').value),
       solarLimit:30,substationLimit:6
@@ -207,13 +215,18 @@ async function inspect(){
   }catch(e){
     if(serial===state.serial)fail('Unable to compute or load context: '+e.message+'. No results have been inferred.');
   }finally{
-    // Changing flash or filters while a request is in flight invalidates
-    // that request, but must NEVER strand the Inspect button disabled.
-    el('inspect').disabled=false;
+    // Only the latest request owns the button. A stale async completion
+    // must not enable Inspect for an unknown/cleared optical flash ID.
+    // Selection/filter change handlers own the button after invalidation.
+    if(serial===state.serial)el('inspect').disabled=!currentFlash();
   }
 }
 el('flash').addEventListener('change',()=>{
-  state.serial++;setObservation(currentFlash());el('scenario').disabled=true;
+  state.serial++;
+  const chosen=currentFlash();
+  el('inspect').disabled=!chosen;
+  setObservation(chosen);
+  el('scenario').disabled=true;
   clear('substations').textContent='Awaiting proximity search.';
   clear('solar').textContent='Awaiting proximity search.';
   el('provenance').textContent='New observation selected; previous results cleared.';
@@ -228,6 +241,7 @@ for(const k of ['ac','dc','inverter','project','overhead','weather']){
 }
 for(const k of ['radius','kv'])el(k).addEventListener('change',()=>{
   state.serial++;state.ctx=null;mapView?.clearContext();el('scenario').disabled=true;
+  el('inspect').disabled=!currentFlash();
   clear('substations').textContent='Parameters changed. Run proximity search again.';
   clear('solar').textContent='Parameters changed. Run proximity search again.';
   el('provenance').textContent='Prior proximity results cleared; no new search yet.';
@@ -250,9 +264,29 @@ async function start(){
       const name=date(f.properties.time_utc)+' · '+f.geometry.coordinates.map(x=>Number(x).toFixed(3)).join(', ')+' · #'+(i+1);
       const item=node('option',name);item.value=String(f.id);selector.appendChild(item);
     });
-    const requested=new URL(location.href).searchParams.get('flash_id');
-    if(requested && state.observations.some(f=>String(f.id)===requested))selector.value=requested;
-    selector.disabled=el('inspect').disabled=false;
+    const params=new URL(location.href).searchParams;
+    const hasRequested=params.has('flash_id');
+    const requested=params.get('flash_id');
+    const match=hasRequested&&state.observations.some(f=>String(f.id)===requested);
+    if(hasRequested&&!match){
+      // The H-successor can hand off an ID that has rolled out of this
+      // seven-day feed. Never silently substitute the first unrelated flash.
+      const placeholder=node('option','Requested optical flash unavailable — choose another');
+      placeholder.value='';
+      selector.prepend(placeholder);
+      selector.value='';
+      selector.disabled=false;
+      el('inspect').disabled=true;
+      setObservation(null);
+      fail('Requested optical flash ID is not present in the current seven-day feed. '+
+        'Its location and status are UNKNOWN here; no substitute event, '+
+        'nearby asset or electrical scenario has been selected. '+
+        'Choose a currently observed flash explicitly to continue.');
+      return;
+    }
+    if(match)selector.value=requested;
+    selector.disabled=false;
+    el('inspect').disabled=false;
     setObservation(currentFlash());
     status(describeOpticalFeedEvidence(parsed.evidence)+' '+caveat+
       ' Select an observation, then run the genuine nearest search.');
