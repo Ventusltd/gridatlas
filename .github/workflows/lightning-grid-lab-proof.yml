@@ -1,0 +1,101 @@
+name: Lightning Grid Lab independent proof
+on:
+  pull_request:
+    paths:
+      - 'atlas/labs/lightning-grid/**'
+      - 'tools/proofs/lightning-grid-explorer.proof.mjs'
+      - 'tools/proofs/lightning-grid-map.proof.mjs'
+      - 'tools/proofs/lightning-grid-browser-smoke.mjs'
+      - 'tools/proofs/lightning-grid-real-sources.proof.mjs'
+      - 'tools/proofs/lightning-grid-feed-contract.test.mjs'
+      - '.github/workflows/lightning-grid-lab-proof.yml'
+  workflow_dispatch:
+concurrency:
+  group: lightning-grid-lab-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+permissions:
+  contents: read
+jobs:
+  lab-proof:
+    runs-on: ubuntu-latest
+    timeout-minutes: 6
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Static source and boundary proof (not browser or numerical solver)
+        run: node tools/proofs/lightning-grid-explorer.proof.mjs
+      - name: Offline MapLibre fake-map interaction proof (44px radius / markers / click flow)
+        run: node tools/proofs/lightning-grid-map.proof.mjs
+      - name: Synthetic feed provenance and fail-closed tests
+        run: node --test tools/proofs/lightning-grid-feed-contract.test.mjs
+      - name: Explicit limits of this proof
+        run: |
+          echo 'No browser, iPhone, CDN/CORS, live EUMETSAT, historical archive or electrical solver was executed.'
+          echo 'Build E and the original production pointer are outside this proof.'
+
+  real-source-contract:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Verify live read-only source formats and exact pinned CDN code
+        run: node tools/proofs/lightning-grid-real-sources.proof.mjs
+      - name: Verify both public GitHub Pages preview routes (HTTP 200, not a UI veto)
+        shell: bash
+        run: |
+          set -euo pipefail
+          for path in atlas/labs/lightning-grid/ atlas/labs/lightning-grid/app.mjs atlas/labs/lightning-grid/map-view.mjs atlas/v/202610270246/; do
+            url="https://ventusltd.github.io/gridatlas/$path"
+            echo "Checking $url"
+            curl -fsSL --retry 4 --retry-delay 4 --max-time 35 --output /dev/null "$url"
+          done
+          echo "PASS — published preview routes returned successful HTTP responses (not Safari acceptance)"
+      - name: Explicit limits of real-source contract
+        if: always()
+        run: |
+          echo 'No site electrical solver, historical archive backfill, iPhone browser or deployment is performed.'
+
+
+  browser-phone-size-contract:
+    runs-on: ubuntu-latest
+    timeout-minutes: 16
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install ONE Chromium worker for real rendering (no swarm)
+        run: |
+          npm install --no-save playwright@1.54.2
+          npx playwright install --with-deps chromium
+      - name: Local static server for untouched draft lab
+        run: |
+          python3 -m http.server 8765 --bind 127.0.0.1 > /tmp/lightning-grid-http.log 2>&1 &
+          sleep 3
+          curl -fsS http://127.0.0.1:8765/atlas/labs/lightning-grid/ > /dev/null
+      - name: Real phone-sized Chromium click-to-Grid integration smoke
+        run: node tools/proofs/lightning-grid-browser-smoke.mjs
+      - name: Upload phone viewport smoke screenshots and evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: lightning-grid-click-chromium
+          path: artifacts/lightning-grid-browser/
+          if-no-files-found: warn
+      - name: Real-device limitation notice
+        if: always()
+        run: |
+          echo 'This was headless Chromium (ONE browser), NOT iPhone Safari.'
+          echo 'Third-party data were synthetically fulfilled; real code/CDN and WebGL rendered in browser.'
+          echo 'Do not infer a real ground strike, electrical fault result or one-year archive coverage.'
