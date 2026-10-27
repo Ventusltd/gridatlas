@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#10151c">
+  <title>Lightning → Grid Scenario Lab · GlobalGrid2050</title>
+  <style>
+    :root{color-scheme:dark;font-family:system-ui,-apple-system,Segoe UI,Arial,sans-serif;background:#10151c;color:#e6edf4}
+    *{box-sizing:border-box}
+    body{margin:0;line-height:1.55}
+    header{background:#141f2a;border-bottom:1px solid #45566a;padding:14px max(16px,4vw)}
+    header h1{margin:0;font-size:clamp(1.3rem,4vw,2rem);letter-spacing:-.03em}
+    a{color:#83d9ff}
+    main{max-width:1150px;margin:auto;padding:18px}
+    .intro{max-width:900px;color:#c5d5e1}
+    .status{border-left:4px solid #f7c66d;background:#192534;padding:12px 14px;white-space:pre-wrap;margin:12px 0}
+    .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,335px),1fr));gap:14px}
+    #flash-map{height:min(58vh,560px);min-height:335px;width:100%;border-radius:8px;overflow:hidden;border:1px solid #4e697f}
+    .map-tools{display:flex;gap:9px;flex-wrap:wrap;margin:10px 0}
+    .map-tools button{width:auto;min-width:156px;flex:1}
+    .map-legend{display:flex;gap:15px;flex-wrap:wrap;margin-top:6px;color:#d9e5f1;font-size:.9rem}
+    .map-legend span{display:inline-flex;align-items:center;gap:7px}
+    .map-dot{display:inline-block;border-radius:50%;width:13px;height:13px;border:1px solid #202c38;background:#ffe890}
+    .map-dot.solar{background:#43e3ab}
+    .map-dot.sub{background:#81a6ff}
+    .maplibregl-popup-content{background:#152735;color:#ecf6ff;border-radius:7px;max-width:290px}
+    .maplibregl-popup-content a{color:#83d9ff}
+    .maplibregl-popup-close-button{color:white;font-size:20px}
+    @media(max-width:520px){#flash-map{height:43vh;min-height:300px}.maplibregl-ctrl-top-right{top:2px}}
+    section{min-width:0;background:#16212b;border:1px solid #3b5065;border-radius:10px;padding:16px}
+    section h2{font-size:1.06rem;margin:0 0 12px}
+    label{display:block;font-weight:600;margin:10px 0 4px}
+    select,button,input{font:inherit;color:#f5f7f8;min-height:44px;border:1px solid #648199;border-radius:6px;background:#182b38;padding:8px;width:100%}
+    button{background:#115d7a;border-color:#8dd5ef;cursor:pointer;font-weight:700}
+    button:hover,button:focus-visible,a:focus-visible{outline:2px solid #f7c66d;outline-offset:2px}
+    button:disabled{cursor:not-allowed;opacity:.5}
+    .small{font-size:.86rem;color:#b9c7d4}
+    .muted{color:#b9c7d4}
+    .strong{color:#ffe3a1;font-weight:700}
+    ul{padding-left:22px}
+    li{margin:9px 0}
+    .record{padding:12px 0;border-bottom:1px solid #35495d;overflow-wrap:anywhere}
+    .record:last-child{border:0}
+    .tag{display:inline-block;background:#243849;border-radius:4px;padding:2px 6px;margin-right:5px;color:#c8edf9}
+    .scenario{max-width:100%;white-space:pre-wrap;overflow-wrap:anywhere;font-size:.9rem}
+    footer{padding:20px;font-size:.87rem;color:#b7c9d8;border-top:1px solid #35495d}
+    [hidden]{display:none!important}
+  </style>
+</head>
+<body>
+<header>
+ <h1>GlobalGrid2050 · Lightning → Grid Scenario Lab</h1>
+ <div class="small">Experimental, read-only | Existing Ventus Grid Engine + Pipeline News MAP contract | No production changes</div>
+</header>
+<main>
+ <p class="intro">Select a <strong>genuine EUMETSAT optical lightning flash</strong>, inspect nearby mapped substations and REPD solar farms, then prepare a clearly hypothetical inverter/earthing scenario. An optical flash is <strong>not</strong> necessarily a ground strike and is <strong>not evidence that any asset was hit</strong>.</p>
+ <p class="status" id="safety-boundary"><strong>Evidence boundary:</strong> fault currents, surges and insulation damage can also arise from grid switching transients, equipment failure, insulation degradation, moisture ingress or a second IT-network fault. This map attributes <strong>no fault</strong> to lightning. <strong>Post-event inspection is a diligence recommendation, not a diagnosis.</strong></p>
+ <div class="status" id="status" role="status" aria-live="polite">Loading the genuine seven-day lightning feed…</div>
+ <section aria-label="Map of genuine optical flashes and nearby infrastructure">
+   <h2>Optical flashes on the map — tap a larger yellow point</h2>
+   <p class="small">The bright dots mark real satellite optical-flash positions, not confirmed ground strikes. Each dot has an invisible 44 CSS px touch target. Tapping one selects it and measures nearby mapped solar farms and substations. Larger amber circles group multiple optical flashes; tap to expand.</p>
+   <div id="flash-map" role="region" aria-label="Interactive map of optical lightning flashes and, after selection, nearby solar farms and substations"></div>
+   <div class="map-tools">
+     <button type="button" id="fit-flashes" disabled>Fit available flashes</button>
+     <button type="button" id="fit-selection" disabled>Fit selected observation</button>
+   </div>
+   <div id="map-status" role="status" aria-live="polite" class="small">Preparing the map. You can always select a flash by UTC time using the dropdown below.</div>
+   <div class="map-legend"><span><i class="map-dot"></i> Optical observation</span><span><i class="map-dot solar"></i> Mapped REPD solar project (radius shows declared MW)</span><span><i class="map-dot sub"></i> Mapped substation</span></div>
+ </section>
+ <div class="grid">
+  <section>
+   <h2>1. Select optical observation</h2>
+   <label for="flash">Observed optical flash (UTC)</label>
+   <select id="flash" disabled><option>Loading…</option></select>
+   <label for="radius">Nearby solar search radius</label>
+   <select id="radius"><option value="5">5 km</option><option value="10">10 km</option><option value="20" selected>20 km</option><option value="50">50 km</option></select>
+   <label for="kv">Minimum declared substation voltage</label>
+   <select id="kv"><option value="0">All declared voltage classes</option><option value="132" selected>≥132 kV</option><option value="275">≥275 kV</option><option value="400">≥400 kV</option></select>
+   <button id="inspect" disabled>Find nearest mapped infrastructure</button>
+   <div id="observation" class="small" role="region" aria-label="Selected optical observation"></div>
+  </section>
+  <section>
+   <h2>2. Nearby mapped infrastructure</h2>
+   <p class="small">Actual distances in kilometres, using existing Ventus Grid Engine geodesy. Nearest does <strong>not</strong> imply connected, hit, exposed, or damaged.</p>
+   <div id="provenance" class="small">No search run.</div>
+   <h3>Substations</h3><div id="substations">Not evaluated.</div>
+   <h3>Solar projects</h3><div id="solar">Not evaluated.</div>
+  </section>
+  <section>
+   <h2>3. Hypothetical electrical scenario</h2>
+   <p class="small">No numerical result is produced. Declare installation earthing and inverter characteristics; do not infer them from the optical flash.</p>
+   <label for="ac">AC earthing</label>
+   <select id="ac"><option value="unspecified">Not known</option><option value="IT">IT / unearthed</option><option value="TN">TN</option><option value="TT">TT</option></select>
+   <label for="dc">PV DC reference</label>
+   <select id="dc"><option value="unspecified">Not known</option><option value="floating">Floating</option><option value="functional_earthed">Functional earthing declared</option></select>
+   <label for="inverter">Inverter isolation</label>
+   <select id="inverter"><option value="unspecified">Not known</option><option value="transformerless">Transformerless</option><option value="isolated">Galvanically isolated</option></select>
+   <label for="project">Scenario site</label>
+   <select id="project"><option value="">No project selected</option></select>
+   <label for="overhead">Overhead lines / pylons nearby (user-provided)</label>
+   <select id="overhead"><option value="unknown">Unknown / not assessed</option><option value="nearby">Yes, verified nearby</option><option value="not_reported_nearby">Not reported nearby</option></select>
+   <label for="weather">Weather / moisture (user-provided)</label>
+   <select id="weather"><option value="unknown">Unknown / not assessed</option><option value="wet">Wet, verified</option><option value="dry">Dry, verified</option></select>
+   <button id="scenario" disabled>Prepare scenario &amp; inspection checklist</button>
+   <div id="scenario-output" class="scenario" aria-live="polite">Select an observation and find actual nearby infrastructure first.</div>
+  </section>
+ </div>
+ <p class="status">Coverage: this experimental page currently reads the <strong>seven-day live feed only</strong>. It does not load historical archive shards, even if they are published separately. Earlier dates and unsearched hours are <strong>UNKNOWN, not zero</strong> in this view. Source: EUMETSAT MTG Lightning Imager L2-LFL. No optical observation is interpreted as a ground attachment.</p>
+</main>
+<footer>Ventus Ltd · GlobalGrid2050 · Experimental next-generation preview branch, not a safety study, forensic diagnosis or connection assessment. Code: Apache 2.0 where declared; EUMETSAT, NESO and OSM datasets retain their own source terms. Technical background: <a href="https://www.dehn-international.com/sites/default/files/media/files/string-inverters-wpx051-en.pdf">DEHN WPX051: AC-side surge protection on string-inverter plants</a> (manufacturer guidance, not proof of an incident). <a href="https://ventusltd.github.io/gridatlas/atlas/">Original GridAtlas</a> · <a href="https://github.com/Ventusltd/gridatlas/issues/36">Engineering scope</a></footer>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/maplibre-gl@3.6.2/dist/maplibre-gl.css">
+<script src="https://cdn.jsdelivr.net/npm/maplibre-gl@3.6.2/dist/maplibre-gl.js"></script>
+<script type="module" src="./app.mjs"></script>
+</body>
+</html>
