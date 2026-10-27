@@ -1,0 +1,12 @@
+harness: self-fixture (node v22.23.4); base = fixed-module-I.js (33623 B) via kv-words module-I-words.js (35279 B)
+  1656  KW base: kv-words W1-W11 on fixed-module-I.js (J-base-words.js)
+  3035  J1 engine: original public nearestSubstations (>=33 kV, <=40 km, 5) fired on tap; kv-neon arrival layers in #d8c96a; flyTo z12 1200 ms, fitBounds 90/40/40/220 when a link end is off screen; "No substation within 40 km (nearest …)"
+  1193  J2 card docked at the bottom like the original bar (kv-card): 46/140 px, − and ×, short ID, full ID in an expandable row, resize not move
+   101  J2 kv-security K1-K6: bidi/zero-width stripped + 200 cap, object ids rejected, NaN-safe, stale-tap serial tags, own-property substations, errors -> "unavailable"
+   150  J3 kv-periods K1/K2: STALE from the search frontier (lastScan) and a future-dated index, latest page only; "COLLECTOR LAST RAN …[, SEARCHED TO …]"
+    65  J3 kv-paging/kv-periods logic: reset S.end/S.h on a period change and LATEST; PREV stops at the archive start and never opens a clamped stub; CUSTOM To <= today
+   289  J3 wording: "not yet searched" instead of 0/UNKNOWN before searched history; Searched line in hours (no bare %, no run counts); one warning per unknown span; gaps named
+    16  J4 kv-regress R1 cache = RQ, R2 card + lines close on chip/PREV/NEXT/APPLY (not on the 10-min refresh), R3 hit layer id without "l-" (R4 is covered by kv-words fn)
+   156  J5 kv-perf: sub-day overview sums only the overlapping parts; consent walk charges overlapping parts; status "N OF M FLASHES" after consent
+    76  J6 kv-vogel (a): one ResizeObserver — the old one is disconnected when the button changes and on OFF; (b) no __GRIDATLAS_SUBSTATIONS__ fallback, drawing errors say "unavailable" and clear the layers (in J1/nf)
+I 33623 -> J 40360 bytes (delta +6737); cap 44781: MET (4421 spare)
