@@ -10,6 +10,7 @@ import {mkdtemp,mkdir,writeFile,rm} from 'node:fs/promises';
 import {tmpdir} from 'node:os';
 import {join,dirname} from 'node:path';
 import {pathToFileURL} from 'node:url';
+import {parseOpticalFeed,describeOpticalFeedEvidence} from '../../atlas/labs/lightning-grid/feed-contract.mjs';
 
 const PIN='69b4e88c8464f0310bd67e47ec83ee8afa9e1921';
 const BASE='https://raw.githubusercontent.com/';
@@ -68,8 +69,14 @@ try{
     solar.push(...part.features);
   }
   assert.equal(feed.metadata?.source,'EUMETSAT MTG Lightning Imager L2-LFL','real optical provenance');
-  const flashes=feed.features.filter(f=>f?.id&&f.properties?.observation_kind==='optical_lightning_flash'
-    &&f.geometry?.type==='Point'&&Number.isFinite(Date.parse(f.properties.time_utc)));
+  const parsedFeed=parseOpticalFeed(feed);
+  const flashes=parsedFeed.observations;
+  assert.equal(parsedFeed.evidence.cumulative_coverage,'UNKNOWN',
+    'A recent 3-hour query cannot prove cumulative 7-day search coverage');
+  assert.ok(parsedFeed.evidence.query_end_utc,
+    'Real feed must declare latest collector query end UTC');
+  assert.ok(!parsedFeed.evidence.rejected,
+    'Real source contains malformed/ambiguous optical records: inspect provenance');
   assert.ok(flashes.length>0,'NO current authentic flashes; proximity contract blocked, not zero strikes');
   assert.ok(stations.features.length>0,'No real Atlas substation records');
   assert.ok(solar.length>0,'No real REPD solar records');
@@ -93,8 +100,11 @@ try{
   assert.equal(diligence.site.repd_ref,first.repd_ref,'Diligence site must be genuine REPD');
 
   console.log('PASS — genuine source contract and CDN integrity; source pin '+PIN);
+  console.log(describeOpticalFeedEvidence(parsedFeed.evidence));
   console.log(JSON.stringify({
-    observed_optical_flashes:flashes.length,substation_source_records:stations.features.length,
+    observed_optical_flashes:flashes.length,query_end_utc:parsedFeed.evidence.query_end_utc,
+    query_freshness:parsedFeed.evidence.query_freshness,verified_cumulative_coverage:parsedFeed.evidence.cumulative_coverage,
+    substation_source_records:stations.features.length,
     geolocated_substations:engine.dataset_summary.located_substations,
     solar_source_records:solar.length,eligible_repd_solar:engine.dataset_summary.locatable_repd_solar_projects,
     first_observation_utc:ctx.event.time_utc,nearest_km:ctx.substations[0].km,
