@@ -41,19 +41,7 @@
 | desktop-1280x720 | PASS | PASS | FAIL body −78 | PASS | FAIL | PASS (repeats 1, 2; the first-run cell crashed) |
 | desktop-1920x1080 | PASS | PASS | FAIL body −78 | PASS | FAIL | PASS (resume run; the first-run baseline renderer crashed, "Target crashed") |
 
-\* **1440x900 deep-link is non-deterministic in this harness, and not because of the candidate:**
-- Runs: full-matrix PASS; repeat-1 FAIL (the free deep-link popup was placed at x 205 vs 17, 55 elements moved); repeat-2 FAIL (styleΔ 2); repeat-3 FAIL (styleΔ 1).
-- Signature: `#lbl-solar`/`#fs-lbl-solar` opacity 1 vs 0.5, the solar layer still loading while DuckDB is blocked.
-- **Baseline-vs-baseline self-check** (`selfcheck-baseline-deeplink-1`) reproduces the same opacity diff, with styleΔ 2 and no candidate involved. Self-checks 2 and 3 PASS.
-- I classify the deep-link flake as harness timing (BLOCKED_DEPENDENCY: DuckDB/REPD), not a regression.
-- The popup-placement variant (repeat-1) was not reproduced in 3 self-checks. It is a map-anchored popup, so map-load timing is the likely cause. It is unproven, so I report it as such.
-
-Additive-host differences on every cell are expected and do not fail a cell:
-- 14 vs 13 groups in `#scada-ui-container` and `#fs-curtain-keys`, with Weather last.
-- `menu-panel-Grid` has 4 children instead of 3.
-- 68 vs 65 inputs.
-- On phones, the scroll height grows by +56 px.
-- `<style>` lists are identical in every cell.
+\* 1440 deep-link is a harness flake (solar-layer opacity and card-parking timing), reproduced baseline-vs-baseline (`selfcheck-baseline-deeplink-1`). Additive-host growth (14 vs 13 groups, Weather last) is expected; `<style>` lists are identical in every cell.
 
 **Proposed minimal fix for the P02/P10 FAIL** (depends on the owner's R01 choice; I do not apply it): in the overlay's menu-mirror builder, either
 - (C) do not append the `[data-lightning-group="menu"]` footer to `#gridatlas-menu-bar-panel-4` at all, which brings back zero original movement; or
@@ -123,15 +111,8 @@ Script: `E/r01/r01-grid-footer.mjs`. Output: `r01-geometry.json`. Log: `logs/r01
 
 ## R12 disclosures
 
-1. **Script bug found and fixed (original script already in my folder):**
-   - In `p14-p15.mjs`, `page.evaluate(STRING, arg)` returns `undefined`, because Playwright does not call a function-valued string. That is why the first run produced no output.
-   - I replaced these calls with an `ev()` helper and logged the change in `logs/resume-00-worktree-check.txt`.
-   - The curtain wheel point was moved from the container's geometric centre (covered by the map canvas) to a scanned hit-testable point.
-2. **p14 artefact in `p14-p15-*.json` (superseded):**
-   - `originalRowsMovedByON=65` is an artefact. The element screenshot used for the flashing sample scrolls the container between the two viewport-coordinate measurements.
-   - The dedicated probe (`probe-on-reflow-and-curtain.v2.json`) measures in container coordinates with no screenshot in between. It finds **0/65 rows moved** at 1440 and 1920, scrollTop unchanged, rows restored after OFF.
-   - `probe-on-reflow-and-curtain.v1-wrong-wheel-point.json` is kept and labelled.
-- `full-matrix-OFF-run1-superseded-classification/` is the first run, before the additive-host classification. It is kept and not used for verdicts.
+1. `page.evaluate(STRING, arg)` returned `undefined` in Playwright, so the first `p14-p15.mjs` run produced nothing. Fixed with an `ev()` helper and logged.
+2. `originalRowsMovedByON=65` in `p14-p15-*.json` is an artefact (the element screenshot scrolls the container). The container-coordinate probe (`probe-on-reflow-and-curtain.v2.json`) shows 0/65 moved.
 
 ## Commands (BEFORE)
 
@@ -173,3 +154,24 @@ All runs are from `E/parity`.
   - The first 1920 deep-link run (`parity-desktop-1920x1080-run1-popup-flake/`) placed the original deep-link card docked (x 17) instead of anchored (x 790), giving 20 % pixels. The rerun passed 6/6. The same placement flake appeared once on BEFORE (repeat-1) and is map-timing.
 - **Not covered by parity.** F's dot radius change is on the map canvas, which is masked, so parity says nothing about the dots. ON states grow `#scada-ui-container` scrollHeight by up to +128 px (additive-host, after all original groups).
 - **OWNER_DECISION:** footer caption at 11 px versus the M04 12 px target.
+
+### G = 202610270113 (final run, complete 01:35 UTC)
+
+- **Provenance:** overlay sha256 d17d3035…, 24,777 B; worktree f6c95db; loader identical; production c08f3a6. Port 8196, one browser at a time. Evidence in `after-202610270113/`.
+- **Commands:** the same as F, run from the G folder.
+
+| ID | F 270047 | G 270113 | evidence |
+|---|---|---|---|
+| M01 main panel, mid-scroll and end (393x659, 390x664, 375x548, 430x739, 393x852) | PASS | **PASS**: 0 covered positions, atEnd 0; padding 72 px bottom / 143.406 px right | `m01/m01-sweep-202610270113.json` |
+| M01 curtain, mid-scroll and end (same 5 viewports, iPhone-UA CSS fullscreen) | PASS (3 viewports) | **PASS**: 0 covered, atEnd 0 (weak discriminator, see F note) | `m01/…-curtain.json` |
+| P02 / P10 (36 cells) | PASS | **PASS**: 0 moved original elements in every non-deep-link cell (30/30), Grid-open included. The deep-link cells are PASS after reruns (below). | `parity/<viewport>/SUMMARY.md`, `deeplink-rerun/`, `deeplink-1920-repeat/` |
+| P11 | PASS | **PASS**: 0.000 % in all settled cells | same |
+
+**Deep-link flakes**
+
+- **Card-parking race in the original `popup-viewport` module.** The module parks the deep-link card (`gridatlas-free`) if its rect falls outside the map at measurement time.
+  - 1440 (first G run): the **baseline** card parked and the candidate's did not (57 "moved", 19 % pixels). The rerun passed on moved and pixels; the only difference was the `#lbl-solar` opacity flake below.
+  - 1920: the candidate card parked in 2 of 5 runs (20 % pixels), and in 1 of 2 runs on F.
+  - The **3 alternating 1920 repeats all PASS**, and the baseline-vs-baseline self-checks at 1440 and 1920 PASS.
+  - Parking happens in both directions, so I classify it as a pre-existing timing race, not a regression. It is the only residual intermittent visual difference, and the owner should be aware of it.
+- **`#lbl-solar` opacity (styleΔ 2).** Seen at 360 and 1280. This is the known solar-layer loading flake, reproduced baseline-vs-baseline.
