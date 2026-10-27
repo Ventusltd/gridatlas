@@ -54,8 +54,12 @@ try{
     route=>route.fulfill({status:200,contentType:'application/json',body:JSON.stringify(FEED),
       headers:{'access-control-allow-origin':'*'}}));
   await page.route('**/data/grid_substations.geojson',
-    route=>route.fulfill({status:200,contentType:'application/json',body:JSON.stringify(SUBS),
-      headers:{'access-control-allow-origin':'*'}}));
+    async route=>{
+      // Deliberately hold an upstream asset response to expose selection races.
+      await new Promise(resolve=>setTimeout(resolve,1300));
+      await route.fulfill({status:200,contentType:'application/json',body:JSON.stringify(SUBS),
+        headers:{'access-control-allow-origin':'*'}});
+    });
   await page.route('**/202608261927-atlas-solar-partition-v9-1-*.geojson',
     route=>route.fulfill({status:200,contentType:'application/json',
       body:JSON.stringify(route.request().url().endsWith('001.geojson')?SOLAR:EMPTY),
@@ -122,6 +126,23 @@ try{
   assert.match(await page.locator('#status').textContent(),
     /not present.*seven-day feed|unavailable.*current.*feed/i,
     'Stale/unknown arrival must have an explicit UNKNOWN-coverage warning');
+  // RACE-FIRST negative control: an absent-ID placeholder can be selected
+  // again while an asset request for a manually chosen valid ID is in flight.
+  // A stale finally{} must not re-enable Inspect for a NULL observation.
+  const pending=page.waitForRequest(req=>req.url().includes('/data/grid_substations.geojson'));
+  await page.locator('#flash').selectOption('browser-source-centre');
+  await page.locator('#inspect').click();
+  await pending;
+  await page.locator('#flash').selectOption('');
+  assert.equal(await page.locator('#inspect').isDisabled(),true,
+    'Placeholder must immediately disable Inspect during pending lookup');
+  await page.waitForTimeout(1800); // delayed asset fixture completes (1300 ms)
+  assert.equal(await page.locator('#flash').inputValue(),'',
+    'Stale optical ID remains unselected after asynchronous completion');
+  assert.equal(await page.locator('#inspect').isDisabled(),true,
+    'RACE FAIL-FIRST: stale inspect finally must NOT re-enable an unknown flash');
+  assert.equal(await page.locator('#scenario').isDisabled(),true,
+    'No electrical scenario may be enabled after invalidating selection');
   await page.locator('#flash').selectOption('browser-source-centre');
   assert.equal(await page.locator('#inspect').isEnabled(),true,
     'Manual selection of an actual current-feed flash must recover');
