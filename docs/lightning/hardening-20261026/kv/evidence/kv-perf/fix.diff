@@ -1,0 +1,37 @@
+--- module-I.js	2026-10-27 16:19:47.214717173 +0000
++++ module-fix.js	2026-10-27 16:26:06.860405308 +0000
+@@ -29,7 +29,7 @@
+ gx=u=>{S.requests++;return new Promise((res,rej)=>{const x=new XMLHttpRequest();x.open('GET',u);x.timeout=TMO;
+ x.onload=()=>{if(x.status>=200&&x.status<300){try{if(x.responseURL&&!x.responseURL.startsWith(u))E('redirected');res(JSON.parse(x.responseText))}catch(e){rej(e)}}else rej(new Error('HTTP '+x.status))};
+ x.onerror=()=>rej(new Error('network error'));x.ontimeout=()=>rej(new Error(TOE));x.send()})},
+-lg=k=>{if(!lru.has(k))return;const v=lru.get(k);lru.delete(k);lru.set(k,v);return v},ls=(k,v)=>{lru.delete(k);lru.set(k,v);while(lru.size>8)lru.delete(lru.keys().next().value)},
++lg=k=>{if(!lru.has(k))return;const v=lru.get(k);lru.delete(k);lru.set(k,v);return v},ls=(k,v)=>{lru.delete(k);lru.set(k,v);while(lru.size>32)lru.delete(lru.keys().next().value)},
+ // index v2: every row validated; parts are hourly days/YYYY/MM/DD/HH.json with integer counts
+ vk=r=>{const n=r&&r.count,b=w=>E(`invalid index row ${r&&r.date}: ${w}`);if(!r||ymd(ds(r.date)||0)!=r.date)b('date');if(!['none','partial','full'].includes(r.coverage))b('coverage');
+ if(r.coverage==='none'?n!==null:n>>>0!==n)b('count');if(n===0&&!(r.scanned_seconds>0))b('count 0 unscanned');if(n>0&&!r.path&&!(r.parts&&r.parts.length))b('no path/parts');
+@@ -78,12 +78,12 @@
+ if(w.e<=x.cutoff)return{mode:'overview',w,idx:x,before:true,fl:[],ev:[],arch:0};
+ if(w.s<x.cutoff){w.s=x.cutoff;w.span=w.e-w.s;w.clamped=true}
+ const rows=[...x.by.values()].filter(y=>{const f=ds(y.date);return f<w.e&&f+DAY>w.s}),known=rows.filter(y=>y.count!==null),
+-r={mode:'overview',w,idx:x,before:false,rows,arch:known.reduce((n,y)=>n+y.count,0),cov:cv(x,w.s,w.e),fl:[],ev:[],ld:[],sk:[]};
++r={mode:'overview',w,idx:x,before:false,rows,arch:known.reduce((n,y)=>n+(y.parts?tg(y,w.s,w.e).reduce((a,p)=>a+p.count,0):y.count),0),cov:cv(x,w.s,w.e),fl:[],ev:[],ld:[],sk:[]};
+ let tf=rows.filter(y=>y.count>0),bytes=0,count=0,nq=0;
+ for(const row of tf)for(const t of tg(row,w.s,w.e)){nq++;count+=t.count||0;bytes+=t.bytes>0?t.bytes:(t.count||0)*530}
+ // within the device point cap, 32 MB and RQ files the points load for any window length; above, LOAD POINTS asks first
+ if(count>Math.min(BUDGET,cap())||bytes>32e6||nq>RQ){r.budget=`${N(count)} flashes, ${N(bytes)} bytes, ${N(nq)} files`;if(!S.consent){r.clp=true;return r}
+-let run=0,rb=0,rn=0;tf.sort((a,b)=>b.date.localeCompare(a.date));const keep=[];for(const y of tf){const b=y.bytes>0?y.bytes:y.count*530,q=tg(y,w.s,w.e).length;if(r.sk.length||run+y.count>BUDGET||rb+b>32e6||rn+q>RQ){r.sk.push(y.date);continue}keep.push(y);run+=y.count;rb+=b;rn+=q}if(!keep.length){r.clp=r.big=1;return r}tf=keep;count=run}
++let run=0,rb=0,rn=0;tf.sort((a,b)=>b.date.localeCompare(a.date));const keep=[];for(const y of tf){const ps=tg(y,w.s,w.e),c=ps.reduce((a,p)=>a+(p.count||0),0),b=ps.reduce((a,p)=>a+(p.bytes>0?p.bytes:(p.count||0)*530),0),q=ps.length;if(r.sk.length||run+c>BUDGET||rb+b>32e6||rn+q>RQ){r.sk.push(y.date);continue}keep.push(y);run+=c;rb+=b;rn+=q}if(!keep.length){r.clp=r.big=1;return r}tf=keep;count=run}
+ r.ld=tf.map(y=>y.date);r.ic=count;r.cs='index';r.cl=count>cap();
+ const got=await fr(tf,w.s,w.e,sn);for(const f of got.fl)if(/WebCrypto/.test(f.error))f.u=1;else if(!f.t.sealed&&/mismatch/.test(f.error)){if(!q){S.ip=null;return lw(now,sn,now)}f.error+='; archive updating, reload later';f.u=1}r.mode='detail';r.fl=got.fl;r.rq=got.rq;r.ev=co(got.parts,w.s,w.e);return r},
+ // state machine
+@@ -179,8 +179,8 @@
+ return sf},
+ txt=(n,s)=>{if(n&&n.textContent!==s)n.textContent=s},flag=(n,a,on)=>{if(n)on?n.setAttribute(a,''):n.removeAttribute(a)},
+ lt=(r,c,loading)=>{if(!S.on)return BASE+' [WAIT]';if(loading)return BASE+' [LOAD]';if(!r||c.st==='FAIL')return BASE+' [FAIL]';
+-const n=r.mode==='overview'?r.arch:r.ev.length;if(r.mode==='feed'&&r.old)return`${BASE} [${n>0?N(n):'UNKNOWN'} · last 7 days only${c.stale?' STALE':''}]`;return`${BASE} [${/UNKNOWN|BEFORE/.test(c.st)?'UNKNOWN':n>0?(c.st==='PARTIAL'?'≥':'')+N(n):c.st==='PARTIAL'?'UNKNOWN':'EMPTY'} | ${r.w.period}${c.stale?' STALE':''}]`},
+-sl=(r,c)=>{const st=c.st,n=r.mode==='overview'?`${N(r.arch)} ARCHIVED`:`${N(r.ev.length)} FLASHES${r.cl?' CLUSTERED':' DRAWN'}`;
++const n=r.mode==='overview'||r.sk&&r.sk.length?r.arch:r.ev.length;if(r.mode==='feed'&&r.old)return`${BASE} [${n>0?N(n):'UNKNOWN'} · last 7 days only${c.stale?' STALE':''}]`;return`${BASE} [${/UNKNOWN|BEFORE/.test(c.st)?'UNKNOWN':n>0?(c.st==='PARTIAL'?'≥':'')+N(n):c.st==='PARTIAL'?'UNKNOWN':'EMPTY'} | ${r.w.period}${c.stale?' STALE':''}]`},
++sl=(r,c)=>{const st=c.st,n=r.mode==='overview'?`${N(r.arch)} ARCHIVED`:`${N(r.ev.length)}${r.sk&&r.sk.length?' OF '+N(r.arch):''} FLASHES${r.cl?' CLUSTERED':' DRAWN'}`;
+ return(r.mode==='feed'&&r.old&&st!=='FAIL'?`7-DAY FEED ONLY · ${N(r.ev.length)} FLASHES · OLDER HISTORY NOT YET COLLECTED`:r.mode==='feed'&&st!=='FAIL'?`${st} · ${F7(r)} · searched unknown`:st.startsWith('READY')?'READY · '+n:st==='EMPTY-COVERED'?'NO FLASHES DETECTED · SEARCHED 100%':st==='PARTIAL'?`PARTIAL · ${n} · SEARCHED ${r.cov&&!r.fl.length?Math.floor(r.cov.f*100)+'%':'UNKNOWN'}`:st==='FAIL'?'FAIL · '+c.rs.join('; '):st)+(c.stale?' · STALE':'')},
+ // one batched repaint
+ pt=loading=>{S.busy=loading;const now=Date.now(),r=S.res,c=r?cf(r,now):null,L=r?cp(r,now,c):null,text=lt(r,c,loading),fail=!!(c&&c.st==='FAIL'),w=r?r.w:null;

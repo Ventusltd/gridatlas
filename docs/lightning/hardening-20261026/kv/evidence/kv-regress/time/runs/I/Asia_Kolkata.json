@@ -1,0 +1,3310 @@
+{
+ "module": "/tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/kv-regress/module-I.js",
+ "tz": "Asia/Kolkata",
+ "offsetCheck": {
+  "2026-10-24T12:00Z": -330,
+  "2026-10-26T12:00Z": -330
+ },
+ "harness": "node:vm + minidom + controlled Date; SYNTHETIC fixtures",
+ "results": [
+  {
+   "tz": "Asia/Kolkata",
+   "id": "T01",
+   "title": "24H window spanning the 25 Oct 01:00 UTC clock change",
+   "result": "PASS",
+   "asserts": [
+    {
+     "what": "window [2026-10-24T01:30:00.000Z, 2026-10-25T01:30:00.000Z)",
+     "ok": true,
+     "observed": {
+      "s": "2026-10-24T01:30:00.000Z",
+      "e": "2026-10-25T01:30:00.000Z"
+     }
+    },
+    {
+     "what": "caption shows 2026-10-24 01:30 UTC → 2026-10-25 01:30 UTC",
+     "ok": true,
+     "observed": "Window  2026-10-24 01:30 UTC → 2026-10-25 01:30 UTC (24 hours, latest)"
+    },
+    {
+     "what": "all displayed times carry UTC, no local zone",
+     "ok": true,
+     "observed": []
+    },
+    {
+     "what": "flashes = 48 (no hour lost/double counted)",
+     "ok": true,
+     "observed": {
+      "got": 48,
+      "uniq": true,
+      "missing": [],
+      "extra": []
+     }
+    },
+    {
+     "what": "map source features = drawn",
+     "ok": true,
+     "observed": {
+      "map": 48,
+      "drawn": 48
+     }
+    },
+    {
+     "what": "window [2026-10-25T12:30:00.000Z, 2026-10-26T00:30:00.000Z)",
+     "ok": true,
+     "observed": {
+      "s": "2026-10-25T12:30:00.000Z",
+      "e": "2026-10-26T00:30:00.000Z"
+     }
+    },
+    {
+     "what": "caption shows 2026-10-25 12:30 UTC → 2026-10-26 00:30 UTC",
+     "ok": true,
+     "observed": "Window  2026-10-25 12:30 UTC → 2026-10-26 00:30 UTC (12 hours, latest)"
+    },
+    {
+     "what": "all displayed times carry UTC, no local zone",
+     "ok": true,
+     "observed": []
+    },
+    {
+     "what": "flashes = 24 (no hour lost/double counted)",
+     "ok": true,
+     "observed": {
+      "got": 24,
+      "uniq": true,
+      "missing": [],
+      "extra": []
+     }
+    },
+    {
+     "what": "map source features = drawn",
+     "ok": true,
+     "observed": {
+      "map": 24,
+      "drawn": 24
+     }
+    },
+    {
+     "what": "window [2026-10-25T00:30:00.000Z, 2026-10-26T00:30:00.000Z)",
+     "ok": true,
+     "observed": {
+      "s": "2026-10-25T00:30:00.000Z",
+      "e": "2026-10-26T00:30:00.000Z"
+     }
+    },
+    {
+     "what": "caption shows 2026-10-25 00:30 UTC → 2026-10-26 00:30 UTC",
+     "ok": true,
+     "observed": "Window  2026-10-25 00:30 UTC → 2026-10-26 00:30 UTC (24 hours, latest)"
+    },
+    {
+     "what": "all displayed times carry UTC, no local zone",
+     "ok": true,
+     "observed": []
+    },
+    {
+     "what": "flashes = 48 (no hour lost/double counted)",
+     "ok": true,
+     "observed": {
+      "got": 48,
+      "uniq": true,
+      "missing": [],
+      "extra": []
+     }
+    },
+    {
+     "what": "map source features = drawn",
+     "ok": true,
+     "observed": {
+      "map": 48,
+      "drawn": 48
+     }
+    }
+   ]
+  },
+  {
+   "tz": "Asia/Kolkata",
+   "id": "T02",
+   "title": "7D and 30D windows spanning the clock change",
+   "result": "PASS",
+   "asserts": [
+    {
+     "what": "window [2026-10-21T12:00:00.000Z, 2026-10-28T12:00:00.000Z)",
+     "ok": true,
+     "observed": {
+      "s": "2026-10-21T12:00:00.000Z",
+      "e": "2026-10-28T12:00:00.000Z"
+     }
+    },
+    {
+     "what": "caption shows 2026-10-21 12:00 UTC → 2026-10-28 12:00 UTC",
+     "ok": true,
+     "observed": "Window  2026-10-21 12:00 UTC → 2026-10-28 12:00 UTC (7 days, latest)"
+    },
+    {
+     "what": "all displayed times carry UTC, no local zone",
+     "ok": true,
+     "observed": []
+    },
+    {
+     "what": "flashes = 336 (no hour lost/double counted)",
+     "ok": true,
+     "observed": {
+      "got": 336,
+      "uniq": true,
+      "missing": [],
+      "extra": []
+     }
+    },
+    {
+     "what": "map source features = drawn",
+     "ok": true,
+     "observed": {
+      "map": 336,
+      "drawn": 336
+     }
+    },
+    {
+     "what": "7D = 336 flashes (168 h x 2)",
+     "ok": true,
+     "observed": 336
+    },
+    {
+     "what": "window [2026-09-28T12:00:00.000Z, 2026-10-28T12:00:00.000Z)",
+     "ok": true,
+     "observed": {
+      "s": "2026-09-28T12:00:00.000Z",
+      "e": "2026-10-28T12:00:00.000Z"
+     }
+    },
+    {
+     "what": "caption shows 2026-09-28 12:00 UTC → 2026-10-28 12:00 UTC",
+     "ok": true,
+     "observed": "Window  2026-09-28 12:00 UTC → 2026-10-28 12:00 UTC (30 days, latest)"
+    },
+    {
+     "what": "all displayed times carry UTC, no local zone",
+     "ok": true,
+     "observed": []
+    },
+    {
+     "what": "flashes = 1440 (no hour lost/double counted)",
+     "ok": true,
+     "observed": {
+      "got": 1440,
+      "uniq": true,
+      "missing": [],
+      "extra": []
+     }
+    },
+    {
+     "what": "map source features = drawn",
+     "ok": true,
+     "observed": {
+      "map": 1440,
+      "drawn": 1440
+     }
+    },
+    {
+     "what": "30D = 1440",
+     "ok": true,
+     "observed": 1440
+    }
+   ]
+  },
+  {
+   "tz": "Asia/Kolkata",
+   "id": "T03",
+   "title": "CUSTOM From/To across the clock change; midnight UTC not local midnight",
+   "result": "PASS",
+   "asserts": [
+    {
+     "what": "window [2026-10-24T00:00:00.000Z, 2026-10-27T00:00:00.000Z)",
+     "ok": true,
+     "observed": {
+      "s": "2026-10-24T00:00:00.000Z",
+      "e": "2026-10-27T00:00:00.000Z"
+     }
+    },
+    {
+     "what": "caption shows 2026-10-24 00:00 UTC → 2026-10-27 00:00 UTC",
+     "ok": true,
+     "observed": "Window  UTC dates 2026-10-24 to 2026-10-26 inclusive = 2026-10-24 00:00 UTC → 2026-10-27 00:00 UTC"
+    },
+    {
+     "what": "all displayed times carry UTC, no local zone",
+     "ok": true,
+     "observed": []
+    },
+    {
+     "what": "flashes = 144 (no hour lost/double counted)",
+     "ok": true,
+     "observed": {
+      "got": 144,
+      "uniq": true,
+      "missing": [],
+      "extra": []
+     }
+    },
+    {
+     "what": "map source features = drawn",
+     "ok": true,
+     "observed": {
+      "map": 144,
+      "drawn": 144
+     }
+    },
+    {
+     "what": "caption names UTC dates inclusive",
+     "ok": true,
+     "observed": "Window  UTC dates 2026-10-24 to 2026-10-26 inclusive = 2026-10-24 00:00 UTC → 2026-10-27 00:00 UTC"
+    },
+    {
+     "what": "72 h = 144 flashes",
+     "ok": true,
+     "observed": 144
+    },
+    {
+     "what": "window [2026-10-25T00:00:00.000Z, 2026-10-26T00:00:00.000Z)",
+     "ok": true,
+     "observed": {
+      "s": "2026-10-25T00:00:00.000Z",
+      "e": "2026-10-26T00:00:00.000Z"
+     }
+    },
+    {
+     "what": "caption shows 2026-10-25 00:00 UTC → 2026-10-26 00:00 UTC",
+     "ok": true,
+     "observed": "Window  UTC dates 2026-10-25 to 2026-10-25 inclusive = 2026-10-25 00:00 UTC → 2026-10-26 00:00 UTC"
+    },
+    {
+     "what": "all displayed times carry UTC, no local zone",
+     "ok": true,
+     "observed": []
+    },
+    {
+     "what": "flashes = 48 (no hour lost/double counted)",
+     "ok": true,
+     "observed": {
+      "got": 48,
+      "uniq": true,
+      "missing": [],
+      "extra": []
+     }
+    },
+    {
+     "what": "map source features = drawn",
+     "ok": true,
+     "observed": {
+      "map": 48,
+      "drawn": 48
+     }
+    },
+    {
+     "what": "25 Oct (UTC day, 24 h; London local day is 25 h) = 48",
+     "ok": true,
+     "observed": 48
+    }
+   ]
+  },
+  {
+   "tz": "Asia/Kolkata",
+   "id": "T04",
+   "title": "CUSTOM defaults and date-input max use the UTC date when local date differs",
+   "result": "PASS",
+   "asserts": [
+    {
+     "what": "default From/To = UTC date 2026-10-26",
+     "ok": true,
+     "observed": {
+      "from": "2026-10-26",
+      "to": "2026-10-26",
+      "fromMin": "2025-10-01",
+      "fromMax": "2026-10-26",
+      "toMax": "2026-10-26"
+     }
+    },
+    {
+     "what": "input max = UTC date 2026-10-26",
+     "ok": true,
+     "observed": {
+      "from": "2026-10-26",
+      "to": "2026-10-26",
+      "fromMin": "2025-10-01",
+      "fromMax": "2026-10-26",
+      "toMax": "2026-10-26"
+     }
+    },
+    {
+     "what": "window [2026-10-26T00:00:00.000Z, 2026-10-26T23:40:00.000Z)",
+     "ok": true,
+     "observed": {
+      "s": "2026-10-26T00:00:00.000Z",
+      "e": "2026-10-26T23:40:00.000Z"
+     }
+    },
+    {
+     "what": "caption shows 2026-10-26 00:00 UTC → 2026-10-26 23:40 UTC",
+     "ok": true,
+     "observed": "Window  UTC dates 2026-10-26 to 2026-10-26 inclusive = 2026-10-26 00:00 UTC → 2026-10-26 23:40 UTC"
+    },
+    {
+     "what": "all displayed times carry UTC, no local zone",
+     "ok": true,
+     "observed": []
+    },
+    {
+     "what": "flashes = 48 (no hour lost/double counted)",
+     "ok": true,
+     "observed": {
+      "got": 48,
+      "uniq": true,
+      "missing": [],
+      "extra": []
+     }
+    },
+    {
+     "what": "map source features = drawn",
+     "ok": true,
+     "observed": {
+      "map": 48,
+      "drawn": 48
+     }
+    },
+    {
+     "what": "today-so-far = 48 (00:00..23:30)",
+     "ok": true,
+     "observed": 48
+    },
+    {
+     "what": "after 00:00 UTC the max moves to 2026-10-27 even where local date is still 26th",
+     "ok": true,
+     "observed": {
+      "from": "2026-10-27",
+      "to": "2026-10-27",
+      "fromMin": "2025-10-01",
+      "fromMax": "2026-10-27",
+      "toMax": "2026-10-27"
+     }
+    },
+    {
+     "what": "window [2026-10-27T00:00:00.000Z, 2026-10-27T02:00:00.000Z)",
+     "ok": true,
+     "observed": {
+      "s": "2026-10-27T00:00:00.000Z",
+      "e": "2026-10-27T02:00:00.000Z"
+     }
+    },
+    {
+     "what": "caption shows 2026-10-27 00:00 UTC → 2026-10-27 02:00 UTC",
+     "ok": true,
+     "observed": "Window  UTC dates 2026-10-27 to 2026-10-27 inclusive = 2026-10-27 00:00 UTC → 2026-10-27 02:00 UTC"
+    },
+    {
+     "what": "all displayed times carry UTC, no local zone",
+     "ok": true,
+     "observed": []
+    },
+    {
+     "what": "flashes = 4 (no hour lost/double counted)",
+     "ok": true,
+     "observed": {
+      "got": 4,
+      "uniq": true,
+      "missing": [],
+      "extra": []
+     }
+    },
+    {
+     "what": "map source features = drawn",
+     "ok": true,
+     "observed": {
+      "map": 4,
+      "drawn": 4
+     }
+    },
+    {
+     "what": "00:00–02:00 UTC = 4 flashes",
+     "ok": true,
+     "observed": 4
+    }
+   ]
+  },
+  {
+   "tz": "Asia/Kolkata",
+   "id": "T05",
+   "title": "Day-shard selection at 23:59:59.999 and 00:00:00.000 UTC (split day 25 Oct)",
+   "result": "PASS",
+   "asserts": [
+    {
+     "what": "window [2026-10-24T23:59:59.999Z, 2026-10-25T23:59:59.999Z)",
+     "ok": true,
+     "observed": {
+      "s": "2026-10-24T23:59:59.999Z",
+      "e": "2026-10-25T23:59:59.999Z"
+     }
+    },
+    {
+     "what": "caption shows 2026-10-24 23:59 UTC → 2026-10-25 23:59 UTC",
+     "ok": true,
+     "observed": "Window  2026-10-24 23:59 UTC → 2026-10-25 23:59 UTC (24 hours, latest)"
+    },
+    {
+     "what": "all displayed times carry UTC, no local zone",
+     "ok": true,
+     "observed": []
+    },
+    {
+     "what": "flashes = 48 (no hour lost/double counted)",
+     "ok": true,
+     "observed": {
+      "got": 48,
+      "uniq": true,
+      "missing": [],
+      "extra": []
+     }
+    },
+    {
+     "what": "map source features = drawn",
+     "ok": true,
+     "observed": {
+      "map": 48,
+      "drawn": 48
+     }
+    },
+    {
+     "what": "2026-10-25T23:59:59.999Z: shards fetched = exactly overlapping ones",
+     "ok": true,
+     "observed": {
+      "got": [
+       "days/2026/10/24.json",
+       "days/2026/10/25/00.json",
+       "days/2026/10/25/01.json",
+       "days/2026/10/25/02.json",
+       "days/2026/10/25/03.json",
+       "days/2026/10/25/04.json",
+       "days/2026/10/25/05.json",
+       "days/2026/10/25/06.json",
+       "days/2026/10/25/07.json",
+       "days/2026/10/25/08.json",
+       "days/2026/10/25/09.json",
+       "days/2026/10/25/10.json",
+       "days/2026/10/25/11.json",
+       "days/2026/10/25/12.json",
+       "days/2026/10/25/13.json",
+       "days/2026/10/25/14.json",
+       "days/2026/10/25/15.json",
+       "days/2026/10/25/16.json",
+       "days/2026/10/25/17.json",
+       "days/2026/10/25/18.json",
+       "days/2026/10/25/19.json",
+       "days/2026/10/25/20.json",
+       "days/2026/10/25/21.json",
+       "days/2026/10/25/22.json",
+       "days/2026/10/25/23.json"
+      ],
+      "want": [
+       "days/2026/10/24.json",
+       "days/2026/10/25/00.json",
+       "days/2026/10/25/01.json",
+       "days/2026/10/25/02.json",
+       "days/2026/10/25/03.json",
+       "days/2026/10/25/04.json",
+       "days/2026/10/25/05.json",
+       "days/2026/10/25/06.json",
+       "days/2026/10/25/07.json",
+       "days/2026/10/25/08.json",
+       "days/2026/10/25/09.json",
+       "days/2026/10/25/10.json",
+       "days/2026/10/25/11.json",
+       "days/2026/10/25/12.json",
+       "days/2026/10/25/13.json",
+       "days/2026/10/25/14.json",
+       "days/2026/10/25/15.json",
+       "days/2026/10/25/16.json",
+       "days/2026/10/25/17.json",
+       "days/2026/10/25/18.json",
+       "days/2026/10/25/19.json",
+       "days/2026/10/25/20.json",
+       "days/2026/10/25/21.json",
+       "days/2026/10/25/22.json",
+       "days/2026/10/25/23.json"
+      ]
+     }
+    },
+    {
+     "what": "window [2026-10-25T00:00:00.000Z, 2026-10-26T00:00:00.000Z)",
+     "ok": true,
+     "observed": {
+      "s": "2026-10-25T00:00:00.000Z",
+      "e": "2026-10-26T00:00:00.000Z"
+     }
+    },
+    {
+     "what": "caption shows 2026-10-25 00:00 UTC → 2026-10-26 00:00 UTC",
+     "ok": true,
+     "observed": "Window  2026-10-25 00:00 UTC → 2026-10-26 00:00 UTC (24 hours, latest)"
+    },
+    {
+     "what": "all displayed times carry UTC, no local zone",
+     "ok": true,
+     "observed": []
+    },
+    {
+     "what": "flashes = 48 (no hour lost/double counted)",
+     "ok": true,
+     "observed": {
+      "got": 48,
+      "uniq": true,
+      "missing": [],
+      "extra": []
+     }
+    },
+    {
+     "what": "map source features = drawn",
+     "ok": true,
+     "observed": {
+      "map": 48,
+      "drawn": 48
+     }
+    },
+    {
+     "what": "2026-10-26T00:00:00.000Z: shards fetched = exactly overlapping ones",
+     "ok": true,
+     "observed": {
+      "got": [
+       "days/2026/10/25/00.json",
+       "days/2026/10/25/01.json",
+       "days/2026/10/25/02.json",
+       "days/2026/10/25/03.json",
+       "days/2026/10/25/04.json",
+       "days/2026/10/25/05.json",
+       "days/2026/10/25/06.json",
+       "days/2026/10/25/07.json",
+       "days/2026/10/25/08.json",
+       "days/2026/10/25/09.json",
+       "days/2026/10/25/10.json",
+       "days/2026/10/25/11.json",
+       "days/2026/10/25/12.json",
+       "days/2026/10/25/13.json",
+       "days/2026/10/25/14.json",
+       "days/2026/10/25/15.json",
+       "days/2026/10/25/16.json",
+       "days/2026/10/25/17.json",
+       "days/2026/10/25/18.json",
+       "days/2026/10/25/19.json",
+       "days/2026/10/25/20.json",
+       "days/2026/10/25/21.json",
+       "days/2026/10/25/22.json",
+       "days/2026/10/25/23.json"
+      ],
+      "want": [
+       "days/2026/10/25/00.json",
+       "days/2026/10/25/01.json",
+       "days/2026/10/25/02.json",
+       "days/2026/10/25/03.json",
+       "days/2026/10/25/04.json",
+       "days/2026/10/25/05.json",
+       "days/2026/10/25/06.json",
+       "days/2026/10/25/07.json",
+       "days/2026/10/25/08.json",
+       "days/2026/10/25/09.json",
+       "days/2026/10/25/10.json",
+       "days/2026/10/25/11.json",
+       "days/2026/10/25/12.json",
+       "days/2026/10/25/13.json",
+       "days/2026/10/25/14.json",
+       "days/2026/10/25/15.json",
+       "days/2026/10/25/16.json",
+       "days/2026/10/25/17.json",
+       "days/2026/10/25/18.json",
+       "days/2026/10/25/19.json",
+       "days/2026/10/25/20.json",
+       "days/2026/10/25/21.json",
+       "days/2026/10/25/22.json",
+       "days/2026/10/25/23.json"
+      ]
+     }
+    },
+    {
+     "what": "window [2026-10-24T00:00:00.000Z, 2026-10-25T00:00:00.000Z)",
+     "ok": true,
+     "observed": {
+      "s": "2026-10-24T00:00:00.000Z",
+      "e": "2026-10-25T00:00:00.000Z"
+     }
+    },
+    {
+     "what": "caption shows 2026-10-24 00:00 UTC → 2026-10-25 00:00 UTC",
+     "ok": true,
+     "observed": "Window  2026-10-24 00:00 UTC → 2026-10-25 00:00 UTC (24 hours, latest)"
+    },
+    {
+     "what": "all displayed times carry UTC, no local zone",
+     "ok": true,
+     "observed": []
+    },
+    {
+     "what": "flashes = 48 (no hour lost/double counted)",
+     "ok": true,
+     "observed": {
+      "got": 48,
+      "uniq": true,
+      "missing": [],
+      "extra": []
+     }
+    },
+    {
+     "what": "map source features = drawn",
+     "ok": true,
+     "observed": {
+      "map": 48,
+      "drawn": 48
+     }
+    },
+    {
+     "what": "2026-10-25T00:00:00.000Z: shards fetched = exactly overlapping ones",
+     "ok": true,
+     "observed": {
+      "got": [
+       "days/2026/10/24.json"
+      ],
+      "want": [
+       "days/2026/10/24.json"
+      ]
+     }
+    },
+    {
+     "what": "window [2026-10-23T23:59:59.999Z, 2026-10-24T23:59:59.999Z)",
+     "ok": true,
+     "observed": {
+      "s": "2026-10-23T23:59:59.999Z",
+      "e": "2026-10-24T23:59:59.999Z"
+     }
+    },
+    {
+     "what": "caption shows 2026-10-23 23:59 UTC → 2026-10-24 23:59 UTC",
+     "ok": true,
+     "observed": "Window  2026-10-23 23:59 UTC → 2026-10-24 23:59 UTC (24 hours, latest)"
+    },
+    {
+     "what": "all displayed times carry UTC, no local zone",
+     "ok": true,
+     "observed": []
+    },
+    {
+     "what": "flashes = 48 (no hour lost/double counted)",
+     "ok": true,
+     "observed": {
+      "got": 48,
+      "uniq": true,
+      "missing": [],
+      "extra": []
+     }
+    },
+    {
+     "what": "map source features = drawn",
+     "ok": true,
+     "observed": {
+      "map": 48,
+      "drawn": 48
+     }
+    },
+    {
+     "what": "2026-10-24T23:59:59.999Z: shards fetched = exactly overlapping ones",
+     "ok": true,
+     "observed": {
+      "got": [
+       "days/2026/10/23.json",
+       "days/2026/10/24.json"
+      ],
+      "want": [
+       "days/2026/10/23.json",
+       "days/2026/10/24.json"
+      ]
+     }
+    },
+    {
+     "what": "window [2026-10-24T12:00:00.000Z, 2026-10-25T12:00:00.000Z)",
+     "ok": true,
+     "observed": {
+      "s": "2026-10-24T12:00:00.000Z",
+      "e": "2026-10-25T12:00:00.000Z"
+     }
+    },
+    {
+     "what": "caption shows 2026-10-24 12:00 UTC → 2026-10-25 12:00 UTC",
+     "ok": true,
+     "observed": "Window  2026-10-24 12:00 UTC → 2026-10-25 12:00 UTC (24 hours, latest)"
+    },
+    {
+     "what": "all displayed times carry UTC, no local zone",
+     "ok": true,
+     "observed": []
+    },
+    {
+     "what": "flashes = 48 (no hour lost/double counted)",
+     "ok": true,
+     "observed": {
+      "got": 48,
+      "uniq": true,
+      "missing": [],
+      "extra": []
+     }
+    },
+    {
+     "what": "map source features = drawn",
+     "ok": true,
+     "observed": {
+      "map": 48,
+      "drawn": 48
+     }
+    },
+    {
+     "what": "2026-10-25T12:00:00.000Z: shards fetched = exactly overlapping ones",
+     "ok": true,
+     "observed": {
+      "got": [
+       "days/2026/10/24.json",
+       "days/2026/10/25/00.json",
+       "days/2026/10/25/01.json",
+       "days/2026/10/25/02.json",
+       "days/2026/10/25/03.json",
+       "days/2026/10/25/04.json",
+       "days/2026/10/25/05.json",
+       "days/2026/10/25/06.json",
+       "days/2026/10/25/07.json",
+       "days/2026/10/25/08.json",
+       "days/2026/10/25/09.json",
+       "days/2026/10/25/10.json",
+       "days/2026/10/25/11.json"
+      ],
+      "want": [
+       "days/2026/10/24.json",
+       "days/2026/10/25/00.json",
+       "days/2026/10/25/01.json",
+       "days/2026/10/25/02.json",
+       "days/2026/10/25/03.json",
+       "days/2026/10/25/04.json",
+       "days/2026/10/25/05.json",
+       "days/2026/10/25/06.json",
+       "days/2026/10/25/07.json",
+       "days/2026/10/25/08.json",
+       "days/2026/10/25/09.json",
+       "days/2026/10/25/10.json",
+       "days/2026/10/25/11.json"
+      ]
+     }
+    }
+   ]
+  },
+  {
+   "tz": "Asia/Kolkata",
+   "id": "T06",
+   "title": "24H PREV/NEXT across 31 Dec -> 1 Jan",
+   "result": "PASS",
+   "asserts": [
+    {
+     "what": "window [2026-12-31T00:30:00.000Z, 2027-01-01T00:30:00.000Z)",
+     "ok": true,
+     "observed": {
+      "s": "2026-12-31T00:30:00.000Z",
+      "e": "2027-01-01T00:30:00.000Z"
+     }
+    },
+    {
+     "what": "caption shows 2026-12-31 00:30 UTC → 2027-01-01 00:30 UTC",
+     "ok": true,
+     "observed": "Window  2026-12-31 00:30 UTC → 2027-01-01 00:30 UTC (24 hours, latest)"
+    },
+    {
+     "what": "all displayed times carry UTC, no local zone",
+     "ok": true,
+     "observed": []
+    },
+    {
+     "what": "flashes = 48 (no hour lost/double counted)",
+     "ok": true,
+     "observed": {
+      "got": 48,
+      "uniq": true,
+      "missing": [],
+      "extra": []
+     }
+    },
+    {
+     "what": "map source features = drawn",
+     "ok": true,
+     "observed": {
+      "map": 48,
+      "drawn": 48
+     }
+    },
+    {
+     "what": "window [2026-12-30T00:30:00.000Z, 2026-12-31T00:30:00.000Z)",
+     "ok": true,
+     "observed": {
+      "s": "2026-12-30T00:30:00.000Z",
+      "e": "2026-12-31T00:30:00.000Z"
+     }
+    },
+    {
+     "what": "caption shows 2026-12-30 00:30 UTC → 2026-12-31 00:30 UTC",
+     "ok": true,
+     "observed": "Window  2026-12-30 00:30 UTC → 2026-12-31 00:30 UTC (24 hours, end exclusive)"
+    },
+    {
+     "what": "all displayed times carry UTC, no local zone",
+     "ok": true,
+     "observed": []
+    },
+    {
+     "what": "flashes = 48 (no hour lost/double counted)",
+     "ok": true,
+     "observed": {
+      "got": 48,
+      "uniq": true,
+      "missing": [],
+      "extra": []
+     }
+    },
+    {
+     "what": "map source features = drawn",
+     "ok": true,
+     "observed": {
+      "map": 48,
+      "drawn": 48
+     }
+    },
+    {
+     "what": "window [2026-12-29T00:30:00.000Z, 2026-12-30T00:30:00.000Z)",
+     "ok": true,
+     "observed": {
+      "s": "2026-12-29T00:30:00.000Z",
+      "e": "2026-12-30T00:30:00.000Z"
+     }
+    },
+    {
+     "what": "caption shows 2026-12-29 00:30 UTC → 2026-12-30 00:30 UTC",
+     "ok": true,
+     "observed": "Window  2026-12-29 00:30 UTC → 2026-12-30 00:30 UTC (24 hours, end exclusive)"
+    },
+    {
+     "what": "all displayed times carry UTC, no local zone",
+     "ok": true,
+     "observed": []
+    },
+    {
+     "what": "flashes = 48 (no hour lost/double counted)",
+     "ok": true,
+     "observed": {
+      "got": 48,
+      "uniq": true,
+      "missing": [],
+      "extra": []
+     }
+    },
+    {
+     "what": "map source features = drawn",
+     "ok": true,
+     "observed": {
+      "map": 48,
+      "drawn": 48
+     }
+    },
+    {
+     "what": "3 pages: no flash on two pages, none missing (144)",
+     "ok": true,
+     "observed": {
+      "total": 144,
+      "unique": 144
+     }
+    },
+    {
+     "what": "NEXT returns to page 1 exactly",
+     "ok": true,
+     "observed": {
+      "s": 1798590600000,
+      "e": 1798677000000,
+      "atLatest": false,
+      "clamped": false
+     }
+    },
+    {
+     "what": "NEXT again returns to latest",
+     "ok": true,
+     "observed": {
+      "s": 1798677000000,
+      "e": 1798763400000,
+      "atLatest": true,
+      "clamped": false
+     }
+    },
+    {
+     "what": "page label says end exclusive",
+     "ok": true,
+     "observed": "Window  2026-12-30 00:30 UTC → 2026-12-31 00:30 UTC (24 hours, end exclusive)"
+    }
+   ]
+  },
+  {
+   "tz": "Asia/Kolkata",
+   "id": "T07",
+   "title": "7D PREV across year end; 30D PREV across Oct->Nov month end",
+   "result": "PASS",
+   "asserts": [
+    {
+     "what": "window [2026-12-27T12:00:00.000Z, 2027-01-03T12:00:00.000Z)",
+     "ok": true,
+     "observed": {
+      "s": "2026-12-27T12:00:00.000Z",
+      "e": "2027-01-03T12:00:00.000Z"
+     }
+    },
+    {
+     "what": "caption shows 2026-12-27 12:00 UTC → 2027-01-03 12:00 UTC",
+     "ok": true,
+     "observed": "Window  2026-12-27 12:00 UTC → 2027-01-03 12:00 UTC (7 days, latest)"
+    },
+    {
+     "what": "all displayed times carry UTC, no local zone",
+     "ok": true,
+     "observed": []
+    },
+    {
+     "what": "flashes = 336 (no hour lost/double counted)",
+     "ok": true,
+     "observed": {
+      "got": 336,
+      "uniq": true,
+      "missing": [],
+      "extra": []
+     }
+    },
+    {
+     "what": "map source features = drawn",
+     "ok": true,
+     "observed": {
+      "map": 336,
+      "drawn": 336
+     }
+    },
+    {
+     "what": "window [2026-12-20T12:00:00.000Z, 2026-12-27T12:00:00.000Z)",
+     "ok": true,
+     "observed": {
+      "s": "2026-12-20T12:00:00.000Z",
+      "e": "2026-12-27T12:00:00.000Z"
+     }
+    },
+    {
+     "what": "caption shows 2026-12-20 12:00 UTC → 2026-12-27 12:00 UTC",
+     "ok": true,
+     "observed": "Window  2026-12-20 12:00 UTC → 2026-12-27 12:00 UTC (7 days, end exclusive)"
+    },
+    {
+     "what": "all displayed times carry UTC, no local zone",
+     "ok": true,
+     "observed": []
+    },
+    {
+     "what": "flashes = 336 (no hour lost/double counted)",
+     "ok": true,
+     "observed": {
+      "got": 336,
+      "uniq": true,
+      "missing": [],
+      "extra": []
+     }
+    },
+    {
+     "what": "map source features = drawn",
+     "ok": true,
+     "observed": {
+      "map": 336,
+      "drawn": 336
+     }
+    },
+    {
+     "what": "7D pages disjoint",
+     "ok": true,
+     "observed": null
+    },
+    {
+     "what": "window [2026-11-01T06:00:00.000Z, 2026-12-01T06:00:00.000Z)",
+     "ok": true,
+     "observed": {
+      "s": "2026-11-01T06:00:00.000Z",
+      "e": "2026-12-01T06:00:00.000Z"
+     }
+    },
+    {
+     "what": "caption shows 2026-11-01 06:00 UTC → 2026-12-01 06:00 UTC",
+     "ok": true,
+     "observed": "Window  2026-11-01 06:00 UTC → 2026-12-01 06:00 UTC (30 days, latest)"
+    },
+    {
+     "what": "all displayed times carry UTC, no local zone",
+     "ok": true,
+     "observed": []
+    },
+    {
+     "what": "flashes = 1440 (no hour lost/double counted)",
+     "ok": true,
+     "observed": {
+      "got": 1440,
+      "uniq": true,
+      "missing": [],
+      "extra": []
+     }
+    },
+    {
+     "what": "map source features = drawn",
+     "ok": true,
+     "observed": {
+      "map": 1440,
+      "drawn": 1440
+     }
+    },
+    {
+     "what": "window [2026-10-02T06:00:00.000Z, 2026-11-01T06:00:00.000Z)",
+     "ok": true,
+     "observed": {
+      "s": "2026-10-02T06:00:00.000Z",
+      "e": "2026-11-01T06:00:00.000Z"
+     }
+    },
+    {
+     "what": "caption shows 2026-10-02 06:00 UTC → 2026-11-01 06:00 UTC",
+     "ok": true,
+     "observed": "Window  2026-10-02 06:00 UTC → 2026-11-01 06:00 UTC (30 days, end exclusive)"
+    },
+    {
+     "what": "all displayed times carry UTC, no local zone",
+     "ok": true,
+     "observed": []
+    },
+    {
+     "what": "flashes = 1440 (no hour lost/double counted)",
+     "ok": true,
+     "observed": {
+      "got": 1440,
+      "uniq": true,
+      "missing": [],
+      "extra": []
+     }
+    },
+    {
+     "what": "map source features = drawn",
+     "ok": true,
+     "observed": {
+      "map": 1440,
+      "drawn": 1440
+     }
+    },
+    {
+     "what": "30D pages disjoint",
+     "ok": true,
+     "observed": null
+    }
+   ]
+  },
+  {
+   "tz": "Asia/Kolkata",
+   "id": "T08",
+   "title": "3M/12M (calendar-month) PREV then NEXT returns to the same window",
+   "result": "PASS",
+   "asserts": [
+    {
+     "what": "window [2026-10-01T00:30:00.000Z, 2027-01-01T00:30:00.000Z)",
+     "ok": true,
+     "observed": {
+      "s": "2026-10-01T00:30:00.000Z",
+      "e": "2027-01-01T00:30:00.000Z"
+     }
+    },
+    {
+     "what": "caption shows 2026-10-01 00:30 UTC → 2027-01-01 00:30 UTC",
+     "ok": true,
+     "observed": "Window  2026-10-01 00:30 UTC → 2027-01-01 00:30 UTC (3 months, latest)"
+    },
+    {
+     "what": "all displayed times carry UTC, no local zone",
+     "ok": true,
+     "observed": []
+    },
+    {
+     "what": "window [2026-07-01T00:30:00.000Z, 2026-10-01T00:30:00.000Z)",
+     "ok": true,
+     "observed": {
+      "s": "2026-07-01T00:30:00.000Z",
+      "e": "2026-10-01T00:30:00.000Z"
+     }
+    },
+    {
+     "what": "caption shows 2026-07-01 00:30 UTC → 2026-10-01 00:30 UTC",
+     "ok": true,
+     "observed": "Window  2026-07-01 00:30 UTC → 2026-10-01 00:30 UTC (3 months, end exclusive)"
+    },
+    {
+     "what": "all displayed times carry UTC, no local zone",
+     "ok": true,
+     "observed": []
+    },
+    {
+     "what": "3M NEXT from 1 Jul page returns to latest",
+     "ok": true,
+     "observed": {
+      "s": "2026-10-01T00:30:00.000Z",
+      "e": "2027-01-01T00:30:00.000Z"
+     }
+    },
+    {
+     "what": "window [2027-03-01T12:00:00.000Z, 2028-03-01T12:00:00.000Z)",
+     "ok": true,
+     "observed": {
+      "s": "2027-03-01T12:00:00.000Z",
+      "e": "2028-03-01T12:00:00.000Z"
+     }
+    },
+    {
+     "what": "caption shows 2027-03-01 12:00 UTC → 2028-03-01 12:00 UTC",
+     "ok": true,
+     "observed": "Window  2027-03-01 12:00 UTC → 2028-03-01 12:00 UTC (12 months, latest)"
+    },
+    {
+     "what": "all displayed times carry UTC, no local zone",
+     "ok": true,
+     "observed": []
+    },
+    {
+     "what": "window [2026-03-01T12:00:00.000Z, 2027-03-01T12:00:00.000Z)",
+     "ok": true,
+     "observed": {
+      "s": "2026-03-01T12:00:00.000Z",
+      "e": "2027-03-01T12:00:00.000Z"
+     }
+    },
+    {
+     "what": "caption shows 2026-03-01 12:00 UTC → 2027-03-01 12:00 UTC",
+     "ok": true,
+     "observed": "Window  2026-03-01 12:00 UTC → 2027-03-01 12:00 UTC (12 months, end exclusive)"
+    },
+    {
+     "what": "all displayed times carry UTC, no local zone",
+     "ok": true,
+     "observed": []
+    },
+    {
+     "what": "12M NEXT returns to the latest window [2027-03-01 12:00, 2028-03-01 12:00) with no overlap",
+     "ok": true,
+     "observed": {
+      "s": "2027-03-01T12:00:00.000Z",
+      "e": "2028-03-01T12:00:00.000Z",
+      "caption": "Window  2027-03-01 12:00 UTC → 2028-03-01 12:00 UTC (12 months, latest)"
+     }
+    },
+    {
+     "what": "3M PREV page = [2026-01-15 12:00, 2026-04-15 12:00)",
+     "ok": true,
+     "observed": {
+      "s": "2026-01-15T12:00:00.000Z",
+      "e": "2026-04-15T12:00:00.000Z"
+     }
+    },
+    {
+     "what": "3M NEXT returns to [2026-04-15 12:00, 2026-07-15 12:00) (latest), no overlap with PREV page",
+     "ok": true,
+     "observed": {
+      "s": "2026-04-15T12:00:00.000Z",
+      "e": "2026-07-15T12:00:00.000Z",
+      "caption": "Window  2026-04-15 12:00 UTC → 2026-07-15 12:00 UTC (3 months, latest)"
+     }
+    }
+   ]
+  },
+  {
+   "tz": "Asia/Kolkata",
+   "id": "T09",
+   "title": "Leap day 2028-02-29 in CUSTOM and 24H",
+   "result": "PASS",
+   "asserts": [
+    {
+     "what": "window [2028-02-28T00:00:00.000Z, 2028-03-01T00:00:00.000Z)",
+     "ok": true,
+     "observed": {
+      "s": "2028-02-28T00:00:00.000Z",
+      "e": "2028-03-01T00:00:00.000Z"
+     }
+    },
+    {
+     "what": "caption shows 2028-02-28 00:00 UTC → 2028-03-01 00:00 UTC",
+     "ok": true,
+     "observed": "Window  UTC dates 2028-02-28 to 2028-02-29 inclusive = 2028-02-28 00:00 UTC → 2028-03-01 00:00 UTC"
+    },
+    {
+     "what": "all displayed times carry UTC, no local zone",
+     "ok": true,
+     "observed": []
+    },
+    {
+     "what": "flashes = 96 (no hour lost/double counted)",
+     "ok": true,
+     "observed": {
+      "got": 96,
+      "uniq": true,
+      "missing": [],
+      "extra": []
+     }
+    },
+    {
+     "what": "map source features = drawn",
+     "ok": true,
+     "observed": {
+      "map": 96,
+      "drawn": 96
+     }
+    },
+    {
+     "what": "28+29 Feb = 96",
+     "ok": true,
+     "observed": 96
+    },
+    {
+     "what": "window [2028-02-29T00:00:00.000Z, 2028-03-01T00:00:00.000Z)",
+     "ok": true,
+     "observed": {
+      "s": "2028-02-29T00:00:00.000Z",
+      "e": "2028-03-01T00:00:00.000Z"
+     }
+    },
+    {
+     "what": "caption shows 2028-02-29 00:00 UTC → 2028-03-01 00:00 UTC",
+     "ok": true,
+     "observed": "Window  UTC dates 2028-02-29 to 2028-02-29 inclusive = 2028-02-29 00:00 UTC → 2028-03-01 00:00 UTC"
+    },
+    {
+     "what": "all displayed times carry UTC, no local zone",
+     "ok": true,
+     "observed": []
+    },
+    {
+     "what": "flashes = 48 (no hour lost/double counted)",
+     "ok": true,
+     "observed": {
+      "got": 48,
+      "uniq": true,
+      "missing": [],
+      "extra": []
+     }
+    },
+    {
+     "what": "map source features = drawn",
+     "ok": true,
+     "observed": {
+      "map": 48,
+      "drawn": 48
+     }
+    },
+    {
+     "what": "29 Feb = 48 (24 hourly parts)",
+     "ok": true,
+     "observed": 48
+    },
+    {
+     "what": "caption \"2028-02-29 to 2028-02-29 inclusive\"",
+     "ok": true,
+     "observed": "Window  UTC dates 2028-02-29 to 2028-02-29 inclusive = 2028-02-29 00:00 UTC → 2028-03-01 00:00 UTC"
+    },
+    {
+     "what": "window [2028-02-29T00:00:00.000Z, 2028-03-02T00:00:00.000Z)",
+     "ok": true,
+     "observed": {
+      "s": "2028-02-29T00:00:00.000Z",
+      "e": "2028-03-02T00:00:00.000Z"
+     }
+    },
+    {
+     "what": "caption shows 2028-02-29 00:00 UTC → 2028-03-02 00:00 UTC",
+     "ok": true,
+     "observed": "Window  UTC dates 2028-02-29 to 2028-03-01 inclusive = 2028-02-29 00:00 UTC → 2028-03-02 00:00 UTC"
+    },
+    {
+     "what": "all displayed times carry UTC, no local zone",
+     "ok": true,
+     "observed": []
+    },
+    {
+     "what": "flashes = 96 (no hour lost/double counted)",
+     "ok": true,
+     "observed": {
+      "got": 96,
+      "uniq": true,
+      "missing": [],
+      "extra": []
+     }
+    },
+    {
+     "what": "map source features = drawn",
+     "ok": true,
+     "observed": {
+      "map": 96,
+      "drawn": 96
+     }
+    },
+    {
+     "what": "29 Feb + 1 Mar = 96",
+     "ok": true,
+     "observed": 96
+    },
+    {
+     "what": "window [2028-02-29T00:00:00.000Z, 2028-03-01T00:00:00.000Z)",
+     "ok": true,
+     "observed": {
+      "s": "2028-02-29T00:00:00.000Z",
+      "e": "2028-03-01T00:00:00.000Z"
+     }
+    },
+    {
+     "what": "caption shows 2028-02-29 00:00 UTC → 2028-03-01 00:00 UTC",
+     "ok": true,
+     "observed": "Window  2028-02-29 00:00 UTC → 2028-03-01 00:00 UTC (24 hours, latest)"
+    },
+    {
+     "what": "all displayed times carry UTC, no local zone",
+     "ok": true,
+     "observed": []
+    },
+    {
+     "what": "flashes = 48 (no hour lost/double counted)",
+     "ok": true,
+     "observed": {
+      "got": 48,
+      "uniq": true,
+      "missing": [],
+      "extra": []
+     }
+    },
+    {
+     "what": "map source features = drawn",
+     "ok": true,
+     "observed": {
+      "map": 48,
+      "drawn": 48
+     }
+    },
+    {
+     "what": "24H at 2028-03-01 00:00 = 29 Feb only (48)",
+     "ok": true,
+     "observed": 48
+    }
+   ]
+  },
+  {
+   "tz": "Asia/Kolkata",
+   "id": "T10",
+   "title": "4 h staleness threshold (index)",
+   "result": "PASS",
+   "asserts": [
+    {
+     "what": "3h59min: STALE=false in refresh line and label",
+     "ok": true,
+     "observed": {
+      "refresh": "Refresh archive 2026-10-26 18:00 UTC (3h 59min ago; expected every 3 h)",
+      "label": "Lightning Flashes (Optical) [≥48 | 24h]"
+     }
+    },
+    {
+     "what": "3h59min: refresh line shows 2026-10-26 18:00 UTC and correct age",
+     "ok": true,
+     "observed": "Refresh archive 2026-10-26 18:00 UTC (3h 59min ago; expected every 3 h)"
+    },
+    {
+     "what": "3h59min: UTC only",
+     "ok": true,
+     "observed": []
+    },
+    {
+     "what": "exactly 4h: STALE=false in refresh line and label",
+     "ok": true,
+     "observed": {
+      "refresh": "Refresh archive 2026-10-26 18:00 UTC (4h 0min ago; expected every 3 h)",
+      "label": "Lightning Flashes (Optical) [≥48 | 24h]"
+     }
+    },
+    {
+     "what": "exactly 4h: refresh line shows 2026-10-26 18:00 UTC and correct age",
+     "ok": true,
+     "observed": "Refresh archive 2026-10-26 18:00 UTC (4h 0min ago; expected every 3 h)"
+    },
+    {
+     "what": "exactly 4h: UTC only",
+     "ok": true,
+     "observed": []
+    },
+    {
+     "what": "4h+1s: STALE=true in refresh line and label",
+     "ok": true,
+     "observed": {
+      "refresh": "Refresh archive 2026-10-26 18:00 UTC (4h 0min ago; expected every 3 h) · STALE",
+      "label": "Lightning Flashes (Optical) [≥48 | 24h STALE]"
+     }
+    },
+    {
+     "what": "4h+1s: refresh line shows 2026-10-26 18:00 UTC and correct age",
+     "ok": true,
+     "observed": "Refresh archive 2026-10-26 18:00 UTC (4h 0min ago; expected every 3 h) · STALE"
+    },
+    {
+     "what": "4h+1s: UTC only",
+     "ok": true,
+     "observed": []
+    },
+    {
+     "what": "5h: STALE=true in refresh line and label",
+     "ok": true,
+     "observed": {
+      "refresh": "Refresh archive 2026-10-26 18:00 UTC (5h 0min ago; expected every 3 h) · STALE",
+      "label": "Lightning Flashes (Optical) [≥48 | 24h STALE]"
+     }
+    },
+    {
+     "what": "5h: refresh line shows 2026-10-26 18:00 UTC and correct age",
+     "ok": true,
+     "observed": "Refresh archive 2026-10-26 18:00 UTC (5h 0min ago; expected every 3 h) · STALE"
+    },
+    {
+     "what": "5h: UTC only",
+     "ok": true,
+     "observed": []
+    },
+    {
+     "what": "next_update_due gen+3h passed by 1s: STALE=true in refresh line and label",
+     "ok": true,
+     "observed": {
+      "refresh": "Refresh archive 2026-10-26 18:00 UTC (3h 0min ago; expected every 3 h) · STALE",
+      "label": "Lightning Flashes (Optical) [≥48 | 24h STALE]"
+     }
+    },
+    {
+     "what": "next_update_due gen+3h passed by 1s: refresh line shows 2026-10-26 18:00 UTC and correct age",
+     "ok": true,
+     "observed": "Refresh archive 2026-10-26 18:00 UTC (3h 0min ago; expected every 3 h) · STALE"
+    },
+    {
+     "what": "next_update_due gen+3h passed by 1s: UTC only",
+     "ok": true,
+     "observed": []
+    },
+    {
+     "what": "exactly next_update_due: STALE=false in refresh line and label",
+     "ok": true,
+     "observed": {
+      "refresh": "Refresh archive 2026-10-26 18:00 UTC (3h 0min ago; expected every 3 h)",
+      "label": "Lightning Flashes (Optical) [≥48 | 24h]"
+     }
+    },
+    {
+     "what": "exactly next_update_due: refresh line shows 2026-10-26 18:00 UTC and correct age",
+     "ok": true,
+     "observed": "Refresh archive 2026-10-26 18:00 UTC (3h 0min ago; expected every 3 h)"
+    },
+    {
+     "what": "exactly next_update_due: UTC only",
+     "ok": true,
+     "observed": []
+    }
+   ]
+  },
+  {
+   "tz": "Asia/Kolkata",
+   "id": "T11",
+   "title": "Staleness in live-feed fallback (index 404)",
+   "result": "PASS",
+   "asserts": [
+    {
+     "what": "feed 3h59min old: STALE=false",
+     "ok": true,
+     "observed": {
+      "label": "Lightning Flashes (Optical) [UNKNOWN | 24h]",
+      "refresh": "Refresh live feed 2026-10-26 19:41 UTC (last collection window 2026-10-26 16:41 UTC → 2026-10-26 19:41 UTC; latest detection 2026-10-26 18:41:00 UTC; 7-day retention; archive not yet published: HTTP 404; earlier hours unknown, not zero)"
+     }
+    },
+    {
+     "what": "feed 3h59min old: UTC only",
+     "ok": true,
+     "observed": []
+    },
+    {
+     "what": "feed 4h01min old: STALE=true",
+     "ok": true,
+     "observed": {
+      "label": "Lightning Flashes (Optical) [UNKNOWN | 24h STALE]",
+      "refresh": "Refresh live feed 2026-10-26 19:39 UTC (last collection window 2026-10-26 16:39 UTC → 2026-10-26 19:39 UTC; latest detection 2026-10-26 18:39:00 UTC; 7-day retention; archive not yet published: HTTP 404; earlier hours unknown, not zero)"
+     }
+    },
+    {
+     "what": "feed 4h01min old: UTC only",
+     "ok": true,
+     "observed": []
+    },
+    {
+     "what": "feed metadata without query_end_utc (age unknown): STALE=true",
+     "ok": true,
+     "observed": {
+      "label": "Lightning Flashes (Optical) [UNKNOWN | 24h STALE]",
+      "refresh": "Refresh live feed unknown (last collection window unknown → unknown; latest detection unknown; 7-day retention; archive not yet published: HTTP 404; earlier hours unknown, not zero)"
+     }
+    },
+    {
+     "what": "feed metadata without query_end_utc (age unknown): UTC only",
+     "ok": true,
+     "observed": []
+    }
+   ]
+  },
+  {
+   "tz": "Asia/Kolkata",
+   "id": "T12",
+   "title": "\"Not yet ingested: last Xh Ymin\" arithmetic",
+   "result": "FAIL",
+   "asserts": [
+    {
+     "what": "scan ends 21:23:00: \"Not yet ingested: last 2h 17min of window\"",
+     "ok": true,
+     "observed": "Not yet ingested: last 2h 17min of window (unknown, not zero)"
+    },
+    {
+     "what": "scan ends 21:23:00: searched % + not-ingested = 100% of window (no hour lost/double counted)",
+     "ok": true,
+     "observed": {
+      "cov": 0.9048611111111111,
+      "ny": 8220000,
+      "expectNy": 8220000
+     }
+    },
+    {
+     "what": "scan ends 21:23:00: searched line 90%",
+     "ok": true,
+     "observed": "Searched EUMETSAT 90% of window · 1 successful runs · 2026-10-25 23:40 UTC → 2026-10-26 21:23 UTC"
+    },
+    {
+     "what": "scan ends 21:23:00: UTC only",
+     "ok": true,
+     "observed": []
+    },
+    {
+     "what": "scan ends 59 min 30 s before now: \"Not yet ingested: last 0h 59min of window\"",
+     "ok": true,
+     "observed": "Not yet ingested: last 1h 0min of window (unknown, not zero)"
+    },
+    {
+     "what": "scan ends 59 min 30 s before now: searched % + not-ingested = 100% of window (no hour lost/double counted)",
+     "ok": true,
+     "observed": {
+      "cov": 0.9586805555555555,
+      "ny": 3570000,
+      "expectNy": 3570000
+     }
+    },
+    {
+     "what": "scan ends 59 min 30 s before now: searched line 96%",
+     "ok": false,
+     "observed": "Searched EUMETSAT 95% of window · 1 successful runs · 2026-10-25 23:40 UTC → 2026-10-26 22:40 UTC"
+    },
+    {
+     "what": "scan ends 59 min 30 s before now: UTC only",
+     "ok": true,
+     "observed": []
+    },
+    {
+     "what": "scan ended before the window (whole 24 h): \"Not yet ingested: last 24h 0min of window\"",
+     "ok": true,
+     "observed": "Not yet ingested: last 24h 0min of window (unknown, not zero)"
+    },
+    {
+     "what": "scan ended before the window (whole 24 h): searched % + not-ingested = 100% of window (no hour lost/double counted)",
+     "ok": true,
+     "observed": {
+      "cov": 0,
+      "ny": 86400000,
+      "expectNy": 86400000
+     }
+    },
+    {
+     "what": "scan ended before the window (whole 24 h): searched line 0%",
+     "ok": true,
+     "observed": "Searched EUMETSAT 0% of window — no collection run covers these dates"
+    },
+    {
+     "what": "scan ended before the window (whole 24 h): UTC only",
+     "ok": true,
+     "observed": []
+    },
+    {
+     "what": "1 min: \"Not yet ingested: last 0h 1min of window\"",
+     "ok": true,
+     "observed": "Not yet ingested: last 0h 1min of window (unknown, not zero)"
+    },
+    {
+     "what": "1 min: searched % + not-ingested = 100% of window (no hour lost/double counted)",
+     "ok": true,
+     "observed": {
+      "cov": 0.9993055555555556,
+      "ny": 60000,
+      "expectNy": 60000
+     }
+    },
+    {
+     "what": "1 min: searched line 100%",
+     "ok": false,
+     "observed": "Searched EUMETSAT 99% of window · 1 successful runs · 2026-10-25 23:40 UTC → 2026-10-26 23:39 UTC"
+    },
+    {
+     "what": "1 min: UTC only",
+     "ok": true,
+     "observed": []
+    },
+    {
+     "what": "scan ends 20 s before now (sub-minute gap must not read \"0h 0min\"): \"Not yet ingested: last NOT-0h0 of window\"",
+     "ok": true,
+     "observed": "Not yet ingested: last <1 min of window (unknown, not zero)"
+    },
+    {
+     "what": "scan ends 20 s before now (sub-minute gap must not read \"0h 0min\"): searched % + not-ingested = 100% of window (no hour lost/double counted)",
+     "ok": true,
+     "observed": {
+      "cov": 0.9997685185185186,
+      "ny": 20000,
+      "expectNy": 20000
+     }
+    },
+    {
+     "what": "scan ends 20 s before now (sub-minute gap must not read \"0h 0min\"): searched line 100%",
+     "ok": false,
+     "observed": "Searched EUMETSAT 99% of window · 1 successful runs · 2026-10-25 23:40 UTC → 2026-10-26 23:39 UTC"
+    },
+    {
+     "what": "scan ends 20 s before now (sub-minute gap must not read \"0h 0min\"): UTC only",
+     "ok": true,
+     "observed": []
+    },
+    {
+     "what": "scan ends at now (no warning): no not-yet-ingested warning",
+     "ok": true,
+     "observed": ""
+    },
+    {
+     "what": "scan ends at now (no warning): searched % + not-ingested = 100% of window (no hour lost/double counted)",
+     "ok": true,
+     "observed": {
+      "cov": 1,
+      "ny": 0,
+      "expectNy": 0
+     }
+    },
+    {
+     "what": "scan ends at now (no warning): searched line 100%",
+     "ok": true,
+     "observed": "Searched EUMETSAT 100% of window · 1 successful runs · 2026-10-25 23:40 UTC → 2026-10-26 23:40 UTC"
+    },
+    {
+     "what": "scan ends at now (no warning): UTC only",
+     "ok": true,
+     "observed": []
+    }
+   ]
+  },
+  {
+   "tz": "Asia/Kolkata",
+   "id": "T13",
+   "title": "Zone-less time_utc (malformed, no Z) must not shift with the browser timezone",
+   "result": "PASS",
+   "asserts": [
+    {
+     "what": "2026-09-20 day file: all 48 records either kept as UTC or rejected identically in every timezone",
+     "ok": true,
+     "observed": {
+      "drawn": 48,
+      "actual": "Actual  first 2026-09-20 00:00:00 UTC · last 2026-09-20 23:30:00 UTC",
+      "flashes": "Flashes 48 archived in window · 48 drawn as points (cap 40,000)"
+     }
+    }
+   ]
+  },
+  {
+   "tz": "Asia/Kolkata",
+   "id": "T14",
+   "title": "30D window with a 40 min not-yet-ingested tail: searched % / status must not claim 100%",
+   "result": "PASS",
+   "asserts": [
+    {
+     "what": "warning \"Not yet ingested: last 0h 40min of window\"",
+     "ok": true,
+     "observed": "Not yet ingested: last 0h 40min of window (unknown, not zero)"
+    },
+    {
+     "what": "searched line does not claim 100% while 40 min are unknown",
+     "ok": true,
+     "observed": "Searched EUMETSAT 99% of window · 1 successful runs · 2026-09-28 12:00 UTC → 2026-10-28 11:20 UTC"
+    },
+    {
+     "what": "status is PARTIAL (not READY) while the tail is unknown",
+     "ok": true,
+     "observed": {
+      "status": "PARTIAL · 1,440 FLASHES DRAWN · SEARCHED 99%",
+      "state": "PARTIAL"
+     }
+    },
+    {
+     "what": "ny = 40 min exactly",
+     "ok": true,
+     "observed": 2400000
+    }
+   ]
+  },
+  {
+   "tz": "Asia/Kolkata",
+   "id": "T15",
+   "title": "CUSTOM at exactly 00:00:00.000 UTC with To = today (empty day-so-far)",
+   "result": "PASS",
+   "asserts": [
+    {
+     "what": "default From/To = 2026-10-27",
+     "ok": true,
+     "observed": {
+      "from": "2026-10-27",
+      "to": "2026-10-27",
+      "fromMin": "2025-10-01",
+      "fromMax": "2026-10-27",
+      "toMax": "2026-10-27"
+     }
+    },
+    {
+     "what": "caption date range is not inverted (To >= From)",
+     "ok": true,
+     "observed": "Window  UTC dates 2026-10-27 to 2026-10-27 inclusive = 2026-10-27 00:00 UTC → 2026-10-27 00:00 UTC"
+    },
+    {
+     "what": "UTC only",
+     "ok": true,
+     "observed": []
+    }
+   ]
+  },
+  {
+   "tz": "Asia/Kolkata",
+   "id": "E01",
+   "title": "UK clock change 25 Oct 2026 01:00 UTC: 12H/24H/48H at ms edges, CUSTOM day-so-far, refresh age, 7D PREV/NEXT",
+   "result": "PASS",
+   "asserts": [
+    {
+     "what": "2026-10-25T00:59:59.999Z 12H: window [2026-10-24T12:59:59.999Z, 2026-10-25T00:59:59.999Z)",
+     "ok": true,
+     "observed": {
+      "s": "2026-10-24T12:59:59.999Z",
+      "e": "2026-10-25T00:59:59.999Z"
+     }
+    },
+    {
+     "what": "2026-10-25T00:59:59.999Z 12H: caption shows 2026-10-24 12:59 UTC → 2026-10-25 00:59 UTC",
+     "ok": true,
+     "observed": "Window  2026-10-24 12:59 UTC → 2026-10-25 00:59 UTC (12 hours, latest)"
+    },
+    {
+     "what": "2026-10-25T00:59:59.999Z 12H: all displayed times carry UTC, no local zone",
+     "ok": true,
+     "observed": []
+    },
+    {
+     "what": "2026-10-25T00:59:59.999Z 12H: flashes = 24 (no hour lost/double counted)",
+     "ok": true,
+     "observed": {
+      "got": 24,
+      "uniq": true,
+      "missing": [],
+      "extra": []
+     }
+    },
+    {
+     "what": "2026-10-25T00:59:59.999Z 12H: map source features = drawn",
+     "ok": true,
+     "observed": {
+      "map": 24,
+      "drawn": 24
+     }
+    },
+    {
+     "what": "2026-10-25T00:59:59.999Z 24H: window [2026-10-24T00:59:59.999Z, 2026-10-25T00:59:59.999Z)",
+     "ok": true,
+     "observed": {
+      "s": "2026-10-24T00:59:59.999Z",
+      "e": "2026-10-25T00:59:59.999Z"
+     }
+    },
+    {
+     "what": "2026-10-25T00:59:59.999Z 24H: caption shows 2026-10-24 00:59 UTC → 2026-10-25 00:59 UTC",
+     "ok": true,
+     "observed": "Window  2026-10-24 00:59 UTC → 2026-10-25 00:59 UTC (24 hours, latest)"
+    },
+    {
+     "what": "2026-10-25T00:59:59.999Z 24H: all displayed times carry UTC, no local zone",
+     "ok": true,
+     "observed": []
+    },
+    {
+     "what": "2026-10-25T00:59:59.999Z 24H: flashes = 48 (no hour lost/double counted)",
+     "ok": true,
+     "observed": {
+      "got": 48,
+      "uniq": true,
+      "missing": [],
+      "extra": []
+     }
+    },
+    {
+     "what": "2026-10-25T00:59:59.999Z 24H: map source features = drawn",
+     "ok": true,
+     "observed": {
+      "map": 48,
+      "drawn": 48
+     }
+    },
+    {
+     "what": "2026-10-25T01:00:00.000Z 12H: window [2026-10-24T13:00:00.000Z, 2026-10-25T01:00:00.000Z)",
+     "ok": true,
+     "observed": {
+      "s": "2026-10-24T13:00:00.000Z",
+      "e": "2026-10-25T01:00:00.000Z"
+     }
+    },
+    {
+     "what": "2026-10-25T01:00:00.000Z 12H: caption shows 2026-10-24 13:00 UTC → 2026-10-25 01:00 UTC",
+     "ok": true,
+     "observed": "Window  2026-10-24 13:00 UTC → 2026-10-25 01:00 UTC (12 hours, latest)"
+    },
+    {
+     "what": "2026-10-25T01:00:00.000Z 12H: all displayed times carry UTC, no local zone",
+     "ok": true,
+     "observed": []
+    },
+    {
+     "what": "2026-10-25T01:00:00.000Z 12H: flashes = 24 (no hour lost/double counted)",
+     "ok": true,
+     "observed": {
+      "got": 24,
+      "uniq": true,
+      "missing": [],
+      "extra": []
+     }
+    },
+    {
+     "what": "2026-10-25T01:00:00.000Z 12H: map source features = drawn",
+     "ok": true,
+     "observed": {
+      "map": 24,
+      "drawn": 24
+     }
+    },
+    {
+     "what": "2026-10-25T01:00:00.000Z 24H: window [2026-10-24T01:00:00.000Z, 2026-10-25T01:00:00.000Z)",
+     "ok": true,
+     "observed": {
+      "s": "2026-10-24T01:00:00.000Z",
+      "e": "2026-10-25T01:00:00.000Z"
+     }
+    },
+    {
+     "what": "2026-10-25T01:00:00.000Z 24H: caption shows 2026-10-24 01:00 UTC → 2026-10-25 01:00 UTC",
+     "ok": true,
+     "observed": "Window  2026-10-24 01:00 UTC → 2026-10-25 01:00 UTC (24 hours, latest)"
+    },
+    {
+     "what": "2026-10-25T01:00:00.000Z 24H: all displayed times carry UTC, no local zone",
+     "ok": true,
+     "observed": []
+    },
+    {
+     "what": "2026-10-25T01:00:00.000Z 24H: flashes = 48 (no hour lost/double counted)",
+     "ok": true,
+     "observed": {
+      "got": 48,
+      "uniq": true,
+      "missing": [],
+      "extra": []
+     }
+    },
+    {
+     "what": "2026-10-25T01:00:00.000Z 24H: map source features = drawn",
+     "ok": true,
+     "observed": {
+      "map": 48,
+      "drawn": 48
+     }
+    },
+    {
+     "what": "2026-10-25T01:00:00.001Z 12H: window [2026-10-24T13:00:00.001Z, 2026-10-25T01:00:00.001Z)",
+     "ok": true,
+     "observed": {
+      "s": "2026-10-24T13:00:00.001Z",
+      "e": "2026-10-25T01:00:00.001Z"
+     }
+    },
+    {
+     "what": "2026-10-25T01:00:00.001Z 12H: caption shows 2026-10-24 13:00 UTC → 2026-10-25 01:00 UTC",
+     "ok": true,
+     "observed": "Window  2026-10-24 13:00 UTC → 2026-10-25 01:00 UTC (12 hours, latest)"
+    },
+    {
+     "what": "2026-10-25T01:00:00.001Z 12H: all displayed times carry UTC, no local zone",
+     "ok": true,
+     "observed": []
+    },
+    {
+     "what": "2026-10-25T01:00:00.001Z 12H: flashes = 24 (no hour lost/double counted)",
+     "ok": true,
+     "observed": {
+      "got": 24,
+      "uniq": true,
+      "missing": [],
+      "extra": []
+     }
+    },
+    {
+     "what": "2026-10-25T01:00:00.001Z 12H: map source features = drawn",
+     "ok": true,
+     "observed": {
+      "map": 24,
+      "drawn": 24
+     }
+    },
+    {
+     "what": "2026-10-25T01:00:00.001Z 24H: window [2026-10-24T01:00:00.001Z, 2026-10-25T01:00:00.001Z)",
+     "ok": true,
+     "observed": {
+      "s": "2026-10-24T01:00:00.001Z",
+      "e": "2026-10-25T01:00:00.001Z"
+     }
+    },
+    {
+     "what": "2026-10-25T01:00:00.001Z 24H: caption shows 2026-10-24 01:00 UTC → 2026-10-25 01:00 UTC",
+     "ok": true,
+     "observed": "Window  2026-10-24 01:00 UTC → 2026-10-25 01:00 UTC (24 hours, latest)"
+    },
+    {
+     "what": "2026-10-25T01:00:00.001Z 24H: all displayed times carry UTC, no local zone",
+     "ok": true,
+     "observed": []
+    },
+    {
+     "what": "2026-10-25T01:00:00.001Z 24H: flashes = 48 (no hour lost/double counted)",
+     "ok": true,
+     "observed": {
+      "got": 48,
+      "uniq": true,
+      "missing": [],
+      "extra": []
+     }
+    },
+    {
+     "what": "2026-10-25T01:00:00.001Z 24H: map source features = drawn",
+     "ok": true,
+     "observed": {
+      "map": 48,
+      "drawn": 48
+     }
+    },
+    {
+     "what": "2026-10-25T02:00:00.000Z 12H: window [2026-10-24T14:00:00.000Z, 2026-10-25T02:00:00.000Z)",
+     "ok": true,
+     "observed": {
+      "s": "2026-10-24T14:00:00.000Z",
+      "e": "2026-10-25T02:00:00.000Z"
+     }
+    },
+    {
+     "what": "2026-10-25T02:00:00.000Z 12H: caption shows 2026-10-24 14:00 UTC → 2026-10-25 02:00 UTC",
+     "ok": true,
+     "observed": "Window  2026-10-24 14:00 UTC → 2026-10-25 02:00 UTC (12 hours, latest)"
+    },
+    {
+     "what": "2026-10-25T02:00:00.000Z 12H: all displayed times carry UTC, no local zone",
+     "ok": true,
+     "observed": []
+    },
+    {
+     "what": "2026-10-25T02:00:00.000Z 12H: flashes = 24 (no hour lost/double counted)",
+     "ok": true,
+     "observed": {
+      "got": 24,
+      "uniq": true,
+      "missing": [],
+      "extra": []
+     }
+    },
+    {
+     "what": "2026-10-25T02:00:00.000Z 12H: map source features = drawn",
+     "ok": true,
+     "observed": {
+      "map": 24,
+      "drawn": 24
+     }
+    },
+    {
+     "what": "2026-10-25T02:00:00.000Z 24H: window [2026-10-24T02:00:00.000Z, 2026-10-25T02:00:00.000Z)",
+     "ok": true,
+     "observed": {
+      "s": "2026-10-24T02:00:00.000Z",
+      "e": "2026-10-25T02:00:00.000Z"
+     }
+    },
+    {
+     "what": "2026-10-25T02:00:00.000Z 24H: caption shows 2026-10-24 02:00 UTC → 2026-10-25 02:00 UTC",
+     "ok": true,
+     "observed": "Window  2026-10-24 02:00 UTC → 2026-10-25 02:00 UTC (24 hours, latest)"
+    },
+    {
+     "what": "2026-10-25T02:00:00.000Z 24H: all displayed times carry UTC, no local zone",
+     "ok": true,
+     "observed": []
+    },
+    {
+     "what": "2026-10-25T02:00:00.000Z 24H: flashes = 48 (no hour lost/double counted)",
+     "ok": true,
+     "observed": {
+      "got": 48,
+      "uniq": true,
+      "missing": [],
+      "extra": []
+     }
+    },
+    {
+     "what": "2026-10-25T02:00:00.000Z 24H: map source features = drawn",
+     "ok": true,
+     "observed": {
+      "map": 48,
+      "drawn": 48
+     }
+    },
+    {
+     "what": "window [2026-10-24T00:30:00.000Z, 2026-10-26T00:30:00.000Z)",
+     "ok": true,
+     "observed": {
+      "s": "2026-10-24T00:30:00.000Z",
+      "e": "2026-10-26T00:30:00.000Z"
+     }
+    },
+    {
+     "what": "caption shows 2026-10-24 00:30 UTC → 2026-10-26 00:30 UTC",
+     "ok": true,
+     "observed": "Window  2026-10-24 00:30 UTC → 2026-10-26 00:30 UTC (48 hours, latest)"
+    },
+    {
+     "what": "all displayed times carry UTC, no local zone",
+     "ok": true,
+     "observed": []
+    },
+    {
+     "what": "flashes = 96 (no hour lost/double counted)",
+     "ok": true,
+     "observed": {
+      "got": 96,
+      "uniq": true,
+      "missing": [],
+      "extra": []
+     }
+    },
+    {
+     "what": "map source features = drawn",
+     "ok": true,
+     "observed": {
+      "map": 96,
+      "drawn": 96
+     }
+    },
+    {
+     "what": "48H over the change = 96 flashes (not 94/98)",
+     "ok": true,
+     "observed": 96
+    },
+    {
+     "what": "CUSTOM default at 23:30 UTC 25 Oct = 2026-10-25 (London local 23:30 GMT, Kolkata 26th)",
+     "ok": true,
+     "observed": {
+      "from": "2026-10-25",
+      "to": "2026-10-25",
+      "fromMin": "2025-10-01",
+      "fromMax": "2026-10-25",
+      "toMax": "2026-10-25"
+     }
+    },
+    {
+     "what": "window [2026-10-25T00:00:00.000Z, 2026-10-25T23:30:00.000Z)",
+     "ok": true,
+     "observed": {
+      "s": "2026-10-25T00:00:00.000Z",
+      "e": "2026-10-25T23:30:00.000Z"
+     }
+    },
+    {
+     "what": "caption shows 2026-10-25 00:00 UTC → 2026-10-25 23:30 UTC",
+     "ok": true,
+     "observed": "Window  UTC dates 2026-10-25 to 2026-10-25 inclusive = 2026-10-25 00:00 UTC → 2026-10-25 23:30 UTC"
+    },
+    {
+     "what": "all displayed times carry UTC, no local zone",
+     "ok": true,
+     "observed": []
+    },
+    {
+     "what": "flashes = 47 (no hour lost/double counted)",
+     "ok": true,
+     "observed": {
+      "got": 47,
+      "uniq": true,
+      "missing": [],
+      "extra": []
+     }
+    },
+    {
+     "what": "map source features = drawn",
+     "ok": true,
+     "observed": {
+      "map": 47,
+      "drawn": 47
+     }
+    },
+    {
+     "what": "day-so-far 00:00-23:30 UTC = 47",
+     "ok": true,
+     "observed": 47
+    },
+    {
+     "what": "gen 2026-10-25T00:30:00Z, now 2026-10-25T02:30:00Z: \"Refresh archive 2026-10-25 00:30 UTC (2h 0min ago\" STALE=false",
+     "ok": true,
+     "observed": {
+      "refresh": "Refresh archive 2026-10-25 00:30 UTC (2h 0min ago; expected every 3 h)",
+      "label": "Lightning Flashes (Optical) [≥5 | custom]"
+     }
+    },
+    {
+     "what": "gen 2026-10-24T23:00:00Z, now 2026-10-25T03:00:00.000Z: \"Refresh archive 2026-10-24 23:00 UTC (4h 0min ago\" STALE=false",
+     "ok": true,
+     "observed": {
+      "refresh": "Refresh archive 2026-10-24 23:00 UTC (4h 0min ago; expected every 3 h)",
+      "label": "Lightning Flashes (Optical) [UNKNOWN | custom]"
+     }
+    },
+    {
+     "what": "gen 2026-10-24T23:00:00Z, now 2026-10-25T03:00:00.001Z: \"Refresh archive 2026-10-24 23:00 UTC (4h 0min ago\" STALE=true",
+     "ok": true,
+     "observed": {
+      "refresh": "Refresh archive 2026-10-24 23:00 UTC (4h 0min ago; expected every 3 h) · STALE",
+      "label": "Lightning Flashes (Optical) [UNKNOWN | custom STALE]"
+     }
+    },
+    {
+     "what": "window [2026-10-14T12:00:00.000Z, 2026-10-21T12:00:00.000Z)",
+     "ok": true,
+     "observed": {
+      "s": "2026-10-14T12:00:00.000Z",
+      "e": "2026-10-21T12:00:00.000Z"
+     }
+    },
+    {
+     "what": "caption shows 2026-10-14 12:00 UTC → 2026-10-21 12:00 UTC",
+     "ok": true,
+     "observed": "Window  2026-10-14 12:00 UTC → 2026-10-21 12:00 UTC (7 days, end exclusive)"
+    },
+    {
+     "what": "all displayed times carry UTC, no local zone",
+     "ok": true,
+     "observed": []
+    },
+    {
+     "what": "flashes = 336 (no hour lost/double counted)",
+     "ok": true,
+     "observed": {
+      "got": 336,
+      "uniq": true,
+      "missing": [],
+      "extra": []
+     }
+    },
+    {
+     "what": "map source features = drawn",
+     "ok": true,
+     "observed": {
+      "map": 336,
+      "drawn": 336
+     }
+    },
+    {
+     "what": "7D NEXT over the change returns to latest",
+     "ok": true,
+     "observed": {
+      "s": "2026-10-21T12:00:00.000Z",
+      "e": "2026-10-28T12:00:00.000Z",
+      "atLatest": true
+     }
+    }
+   ]
+  },
+  {
+   "tz": "Asia/Kolkata",
+   "id": "E02",
+   "title": "31 Dec -> 1 Jan at ms edges; month-end calendar windows (3M/6M) and PREV/NEXT round trips",
+   "result": "PASS",
+   "asserts": [
+    {
+     "what": "2026-12-31T23:59:59.999Z 24H: window [2026-12-30T23:59:59.999Z, 2026-12-31T23:59:59.999Z)",
+     "ok": true,
+     "observed": {
+      "s": "2026-12-30T23:59:59.999Z",
+      "e": "2026-12-31T23:59:59.999Z"
+     }
+    },
+    {
+     "what": "2026-12-31T23:59:59.999Z 24H: caption shows 2026-12-30 23:59 UTC → 2026-12-31 23:59 UTC",
+     "ok": true,
+     "observed": "Window  2026-12-30 23:59 UTC → 2026-12-31 23:59 UTC (24 hours, latest)"
+    },
+    {
+     "what": "2026-12-31T23:59:59.999Z 24H: all displayed times carry UTC, no local zone",
+     "ok": true,
+     "observed": []
+    },
+    {
+     "what": "2026-12-31T23:59:59.999Z 24H: flashes = 48 (no hour lost/double counted)",
+     "ok": true,
+     "observed": {
+      "got": 48,
+      "uniq": true,
+      "missing": [],
+      "extra": []
+     }
+    },
+    {
+     "what": "2026-12-31T23:59:59.999Z 24H: map source features = drawn",
+     "ok": true,
+     "observed": {
+      "map": 48,
+      "drawn": 48
+     }
+    },
+    {
+     "what": "2026-12-31T23:59:59.999Z: CUSTOM default From/To and max = 2026-12-31",
+     "ok": true,
+     "observed": {
+      "from": "2026-12-31",
+      "to": "2026-12-31",
+      "fromMin": "2025-10-01",
+      "fromMax": "2026-12-31",
+      "toMax": "2026-12-31"
+     }
+    },
+    {
+     "what": "2026-12-31T23:59:59.999Z: CUSTOM caption not inverted and names 2026-12-31",
+     "ok": true,
+     "observed": "Window  UTC dates 2026-12-31 to 2026-12-31 inclusive = 2026-12-31 00:00 UTC → 2026-12-31 23:59 UTC"
+    },
+    {
+     "what": "2027-01-01T00:00:00.000Z 24H: window [2026-12-31T00:00:00.000Z, 2027-01-01T00:00:00.000Z)",
+     "ok": true,
+     "observed": {
+      "s": "2026-12-31T00:00:00.000Z",
+      "e": "2027-01-01T00:00:00.000Z"
+     }
+    },
+    {
+     "what": "2027-01-01T00:00:00.000Z 24H: caption shows 2026-12-31 00:00 UTC → 2027-01-01 00:00 UTC",
+     "ok": true,
+     "observed": "Window  2026-12-31 00:00 UTC → 2027-01-01 00:00 UTC (24 hours, latest)"
+    },
+    {
+     "what": "2027-01-01T00:00:00.000Z 24H: all displayed times carry UTC, no local zone",
+     "ok": true,
+     "observed": []
+    },
+    {
+     "what": "2027-01-01T00:00:00.000Z 24H: flashes = 48 (no hour lost/double counted)",
+     "ok": true,
+     "observed": {
+      "got": 48,
+      "uniq": true,
+      "missing": [],
+      "extra": []
+     }
+    },
+    {
+     "what": "2027-01-01T00:00:00.000Z 24H: map source features = drawn",
+     "ok": true,
+     "observed": {
+      "map": 48,
+      "drawn": 48
+     }
+    },
+    {
+     "what": "2027-01-01T00:00:00.000Z: CUSTOM default From/To and max = 2027-01-01",
+     "ok": true,
+     "observed": {
+      "from": "2027-01-01",
+      "to": "2027-01-01",
+      "fromMin": "2025-10-01",
+      "fromMax": "2027-01-01",
+      "toMax": "2027-01-01"
+     }
+    },
+    {
+     "what": "2027-01-01T00:00:00.000Z: CUSTOM caption not inverted and names 2027-01-01",
+     "ok": true,
+     "observed": "Window  UTC dates 2027-01-01 to 2027-01-01 inclusive = 2027-01-01 00:00 UTC → 2027-01-01 00:00 UTC"
+    },
+    {
+     "what": "window [2026-12-31T00:00:00.000Z, 2027-01-02T00:00:00.000Z)",
+     "ok": true,
+     "observed": {
+      "s": "2026-12-31T00:00:00.000Z",
+      "e": "2027-01-02T00:00:00.000Z"
+     }
+    },
+    {
+     "what": "caption shows 2026-12-31 00:00 UTC → 2027-01-02 00:00 UTC",
+     "ok": true,
+     "observed": "Window  UTC dates 2026-12-31 to 2027-01-01 inclusive = 2026-12-31 00:00 UTC → 2027-01-02 00:00 UTC"
+    },
+    {
+     "what": "all displayed times carry UTC, no local zone",
+     "ok": true,
+     "observed": []
+    },
+    {
+     "what": "flashes = 96 (no hour lost/double counted)",
+     "ok": true,
+     "observed": {
+      "got": 96,
+      "uniq": true,
+      "missing": [],
+      "extra": []
+     }
+    },
+    {
+     "what": "map source features = drawn",
+     "ok": true,
+     "observed": {
+      "map": 96,
+      "drawn": 96
+     }
+    },
+    {
+     "what": "31 Dec + 1 Jan = 96",
+     "ok": true,
+     "observed": 96
+    },
+    {
+     "what": "window [2026-11-01T00:00:00.000Z, 2026-12-01T00:00:00.000Z)",
+     "ok": true,
+     "observed": {
+      "s": "2026-11-01T00:00:00.000Z",
+      "e": "2026-12-01T00:00:00.000Z"
+     }
+    },
+    {
+     "what": "caption shows 2026-11-01 00:00 UTC → 2026-12-01 00:00 UTC",
+     "ok": true,
+     "observed": "Window  2026-11-01 00:00 UTC → 2026-12-01 00:00 UTC (30 days, latest)"
+    },
+    {
+     "what": "all displayed times carry UTC, no local zone",
+     "ok": true,
+     "observed": []
+    },
+    {
+     "what": "flashes = 1440 (no hour lost/double counted)",
+     "ok": true,
+     "observed": {
+      "got": 1440,
+      "uniq": true,
+      "missing": [],
+      "extra": []
+     }
+    },
+    {
+     "what": "map source features = drawn",
+     "ok": true,
+     "observed": {
+      "map": 1440,
+      "drawn": 1440
+     }
+    },
+    {
+     "what": "window [2026-10-02T00:00:00.000Z, 2026-11-01T00:00:00.000Z)",
+     "ok": true,
+     "observed": {
+      "s": "2026-10-02T00:00:00.000Z",
+      "e": "2026-11-01T00:00:00.000Z"
+     }
+    },
+    {
+     "what": "caption shows 2026-10-02 00:00 UTC → 2026-11-01 00:00 UTC",
+     "ok": true,
+     "observed": "Window  2026-10-02 00:00 UTC → 2026-11-01 00:00 UTC (30 days, end exclusive)"
+    },
+    {
+     "what": "all displayed times carry UTC, no local zone",
+     "ok": true,
+     "observed": []
+    },
+    {
+     "what": "flashes = 1440 (no hour lost/double counted)",
+     "ok": true,
+     "observed": {
+      "got": 1440,
+      "uniq": true,
+      "missing": [],
+      "extra": []
+     }
+    },
+    {
+     "what": "map source features = drawn",
+     "ok": true,
+     "observed": {
+      "map": 1440,
+      "drawn": 1440
+     }
+    },
+    {
+     "what": "3m at 2026-05-31T12:00:00Z: window [2026-02-28T12:00:00Z, now)",
+     "ok": true,
+     "observed": {
+      "s": "2026-02-28T12:00:00.000Z",
+      "e": "2026-05-31T12:00:00.000Z",
+      "atLatest": true
+     }
+    },
+    {
+     "what": "3m at 2026-05-31T12:00:00Z: PREV ends at 2026-02-28T12:00:00Z",
+     "ok": true,
+     "observed": {
+      "s": "2025-11-28T12:00:00.000Z",
+      "e": "2026-02-28T12:00:00.000Z",
+      "atLatest": false
+     }
+    },
+    {
+     "what": "3m at 2026-05-31T12:00:00Z: PREV then NEXT returns to the latest window (no day lost)",
+     "ok": true,
+     "observed": {
+      "s": "2026-02-28T12:00:00.000Z",
+      "e": "2026-05-31T12:00:00.000Z",
+      "atLatest": true,
+      "caption": "Window  2026-02-28 12:00 UTC → 2026-05-31 12:00 UTC (3 months, latest)"
+     }
+    },
+    {
+     "what": "3m at 2026-03-31T12:00:00Z: window [2025-12-31T12:00:00Z, now)",
+     "ok": true,
+     "observed": {
+      "s": "2025-12-31T12:00:00.000Z",
+      "e": "2026-03-31T12:00:00.000Z",
+      "atLatest": true
+     }
+    },
+    {
+     "what": "3m at 2026-03-31T12:00:00Z: PREV ends at 2025-12-31T12:00:00Z",
+     "ok": true,
+     "observed": {
+      "s": "2025-09-30T12:00:00.000Z",
+      "e": "2025-12-31T12:00:00.000Z",
+      "atLatest": false
+     }
+    },
+    {
+     "what": "3m at 2026-03-31T12:00:00Z: PREV then NEXT returns to the latest window (no day lost)",
+     "ok": true,
+     "observed": {
+      "s": "2025-12-31T12:00:00.000Z",
+      "e": "2026-03-31T12:00:00.000Z",
+      "atLatest": true,
+      "caption": "Window  2025-12-31 12:00 UTC → 2026-03-31 12:00 UTC (3 months, latest)"
+     }
+    },
+    {
+     "what": "6m at 2026-08-31T12:00:00Z: window [2026-02-28T12:00:00Z, now)",
+     "ok": true,
+     "observed": {
+      "s": "2026-02-28T12:00:00.000Z",
+      "e": "2026-08-31T12:00:00.000Z",
+      "atLatest": true
+     }
+    },
+    {
+     "what": "6m at 2026-08-31T12:00:00Z: PREV ends at 2026-02-28T12:00:00Z",
+     "ok": true,
+     "observed": {
+      "s": "2025-08-28T12:00:00.000Z",
+      "e": "2026-02-28T12:00:00.000Z",
+      "atLatest": false
+     }
+    },
+    {
+     "what": "6m at 2026-08-31T12:00:00Z: PREV then NEXT returns to the latest window (no day lost)",
+     "ok": true,
+     "observed": {
+      "s": "2026-02-28T12:00:00.000Z",
+      "e": "2026-08-31T12:00:00.000Z",
+      "atLatest": true,
+      "caption": "Window  2026-02-28 12:00 UTC → 2026-08-31 12:00 UTC (6 months, latest)"
+     }
+    },
+    {
+     "what": "12m at 2026-12-31T12:00:00Z: window [2025-12-31T12:00:00Z, now)",
+     "ok": true,
+     "observed": {
+      "s": "2025-12-31T12:00:00.000Z",
+      "e": "2026-12-31T12:00:00.000Z",
+      "atLatest": true
+     }
+    },
+    {
+     "what": "12m at 2026-12-31T12:00:00Z: PREV ends at 2025-12-31T12:00:00Z",
+     "ok": true,
+     "observed": {
+      "s": "2024-12-31T12:00:00.000Z",
+      "e": "2025-12-31T12:00:00.000Z",
+      "atLatest": false
+     }
+    },
+    {
+     "what": "12m at 2026-12-31T12:00:00Z: PREV then NEXT returns to the latest window (no day lost)",
+     "ok": true,
+     "observed": {
+      "s": "2025-12-31T12:00:00.000Z",
+      "e": "2026-12-31T12:00:00.000Z",
+      "atLatest": true,
+      "caption": "Window  2025-12-31 12:00 UTC → 2026-12-31 12:00 UTC (12 months, latest)"
+     }
+    },
+    {
+     "what": "3M 31 Mar: PREV,PREV,NEXT returns to page 1 [2025-09-30, 2025-12-31)",
+     "ok": true,
+     "observed": {
+      "page1": {
+       "s": "2025-09-30T12:00:00.000Z",
+       "e": "2025-12-31T12:00:00.000Z",
+       "atLatest": false
+      },
+      "page2": {
+       "s": "2025-06-30T12:00:00.000Z",
+       "e": "2025-09-30T12:00:00.000Z",
+       "atLatest": false
+      },
+      "next": {
+       "s": "2025-09-30T12:00:00.000Z",
+       "e": "2025-12-31T12:00:00.000Z",
+       "atLatest": false
+      }
+     }
+    }
+   ]
+  },
+  {
+   "tz": "Asia/Kolkata",
+   "id": "E03",
+   "title": "Leap day 2028-02-29: ms edges, 7D across it, 3M/12M anchored on it and PREV/NEXT round trip",
+   "result": "PASS",
+   "asserts": [
+    {
+     "what": "2028-02-29T23:59:59.999Z 24H: window [2028-02-28T23:59:59.999Z, 2028-02-29T23:59:59.999Z)",
+     "ok": true,
+     "observed": {
+      "s": "2028-02-28T23:59:59.999Z",
+      "e": "2028-02-29T23:59:59.999Z"
+     }
+    },
+    {
+     "what": "2028-02-29T23:59:59.999Z 24H: caption shows 2028-02-28 23:59 UTC → 2028-02-29 23:59 UTC",
+     "ok": true,
+     "observed": "Window  2028-02-28 23:59 UTC → 2028-02-29 23:59 UTC (24 hours, latest)"
+    },
+    {
+     "what": "2028-02-29T23:59:59.999Z 24H: all displayed times carry UTC, no local zone",
+     "ok": true,
+     "observed": []
+    },
+    {
+     "what": "2028-02-29T23:59:59.999Z 24H: flashes = 48 (no hour lost/double counted)",
+     "ok": true,
+     "observed": {
+      "got": 48,
+      "uniq": true,
+      "missing": [],
+      "extra": []
+     }
+    },
+    {
+     "what": "2028-02-29T23:59:59.999Z 24H: map source features = drawn",
+     "ok": true,
+     "observed": {
+      "map": 48,
+      "drawn": 48
+     }
+    },
+    {
+     "what": "2028-02-29T23:59:59.999Z: CUSTOM default/max = 2028-02-29",
+     "ok": true,
+     "observed": {
+      "from": "2028-02-29",
+      "to": "2028-02-29",
+      "fromMin": "2025-01-01",
+      "fromMax": "2028-02-29",
+      "toMax": "2028-02-29"
+     }
+    },
+    {
+     "what": "2028-03-01T00:00:00.000Z 24H: window [2028-02-29T00:00:00.000Z, 2028-03-01T00:00:00.000Z)",
+     "ok": true,
+     "observed": {
+      "s": "2028-02-29T00:00:00.000Z",
+      "e": "2028-03-01T00:00:00.000Z"
+     }
+    },
+    {
+     "what": "2028-03-01T00:00:00.000Z 24H: caption shows 2028-02-29 00:00 UTC → 2028-03-01 00:00 UTC",
+     "ok": true,
+     "observed": "Window  2028-02-29 00:00 UTC → 2028-03-01 00:00 UTC (24 hours, latest)"
+    },
+    {
+     "what": "2028-03-01T00:00:00.000Z 24H: all displayed times carry UTC, no local zone",
+     "ok": true,
+     "observed": []
+    },
+    {
+     "what": "2028-03-01T00:00:00.000Z 24H: flashes = 48 (no hour lost/double counted)",
+     "ok": true,
+     "observed": {
+      "got": 48,
+      "uniq": true,
+      "missing": [],
+      "extra": []
+     }
+    },
+    {
+     "what": "2028-03-01T00:00:00.000Z 24H: map source features = drawn",
+     "ok": true,
+     "observed": {
+      "map": 48,
+      "drawn": 48
+     }
+    },
+    {
+     "what": "2028-03-01T00:00:00.000Z: CUSTOM default/max = 2028-03-01",
+     "ok": true,
+     "observed": {
+      "from": "2028-03-01",
+      "to": "2028-03-01",
+      "fromMin": "2025-01-01",
+      "fromMax": "2028-03-01",
+      "toMax": "2028-03-01"
+     }
+    },
+    {
+     "what": "2028-02-29T00:00:00.000Z 24H: window [2028-02-28T00:00:00.000Z, 2028-02-29T00:00:00.000Z)",
+     "ok": true,
+     "observed": {
+      "s": "2028-02-28T00:00:00.000Z",
+      "e": "2028-02-29T00:00:00.000Z"
+     }
+    },
+    {
+     "what": "2028-02-29T00:00:00.000Z 24H: caption shows 2028-02-28 00:00 UTC → 2028-02-29 00:00 UTC",
+     "ok": true,
+     "observed": "Window  2028-02-28 00:00 UTC → 2028-02-29 00:00 UTC (24 hours, latest)"
+    },
+    {
+     "what": "2028-02-29T00:00:00.000Z 24H: all displayed times carry UTC, no local zone",
+     "ok": true,
+     "observed": []
+    },
+    {
+     "what": "2028-02-29T00:00:00.000Z 24H: flashes = 48 (no hour lost/double counted)",
+     "ok": true,
+     "observed": {
+      "got": 48,
+      "uniq": true,
+      "missing": [],
+      "extra": []
+     }
+    },
+    {
+     "what": "2028-02-29T00:00:00.000Z 24H: map source features = drawn",
+     "ok": true,
+     "observed": {
+      "map": 48,
+      "drawn": 48
+     }
+    },
+    {
+     "what": "2028-02-29T00:00:00.000Z: CUSTOM default/max = 2028-02-29",
+     "ok": true,
+     "observed": {
+      "from": "2028-02-29",
+      "to": "2028-02-29",
+      "fromMin": "2025-01-01",
+      "fromMax": "2028-02-29",
+      "toMax": "2028-02-29"
+     }
+    },
+    {
+     "what": "window [2028-02-25T12:00:00.000Z, 2028-03-03T12:00:00.000Z)",
+     "ok": true,
+     "observed": {
+      "s": "2028-02-25T12:00:00.000Z",
+      "e": "2028-03-03T12:00:00.000Z"
+     }
+    },
+    {
+     "what": "caption shows 2028-02-25 12:00 UTC → 2028-03-03 12:00 UTC",
+     "ok": true,
+     "observed": "Window  2028-02-25 12:00 UTC → 2028-03-03 12:00 UTC (7 days, latest)"
+    },
+    {
+     "what": "all displayed times carry UTC, no local zone",
+     "ok": true,
+     "observed": []
+    },
+    {
+     "what": "flashes = 336 (no hour lost/double counted)",
+     "ok": true,
+     "observed": {
+      "got": 336,
+      "uniq": true,
+      "missing": [],
+      "extra": []
+     }
+    },
+    {
+     "what": "map source features = drawn",
+     "ok": true,
+     "observed": {
+      "map": 336,
+      "drawn": 336
+     }
+    },
+    {
+     "what": "7D across 29 Feb = 336",
+     "ok": true,
+     "observed": 336
+    },
+    {
+     "what": "3M at 2028-05-31 starts 2028-02-29 12:00",
+     "ok": true,
+     "observed": {
+      "s": "2028-02-29T12:00:00.000Z",
+      "e": "2028-05-31T12:00:00.000Z",
+      "atLatest": true
+     }
+    },
+    {
+     "what": "12M at 2029-02-28 starts 2028-02-28 12:00 (366 days incl. leap day)",
+     "ok": true,
+     "observed": {
+      "s": "2028-02-28T12:00:00.000Z",
+      "e": "2029-02-28T12:00:00.000Z",
+      "atLatest": true
+     }
+    },
+    {
+     "what": "12M at 2028-02-29: window [2027-02-28 12:00, now)",
+     "ok": true,
+     "observed": {
+      "s": "2027-02-28T12:00:00.000Z",
+      "e": "2028-02-29T12:00:00.000Z",
+      "atLatest": true
+     }
+    },
+    {
+     "what": "12M PREV page = [2026-02-28 12:00, 2027-02-28 12:00)",
+     "ok": true,
+     "observed": {
+      "s": "2026-02-28T12:00:00.000Z",
+      "e": "2027-02-28T12:00:00.000Z",
+      "atLatest": false
+     }
+    },
+    {
+     "what": "12M PREV then NEXT returns to the latest window (29 Feb not dropped)",
+     "ok": true,
+     "observed": {
+      "s": "2027-02-28T12:00:00.000Z",
+      "e": "2028-02-29T12:00:00.000Z",
+      "atLatest": true,
+      "caption": "Window  2027-02-28 12:00 UTC → 2028-02-29 12:00 UTC (12 months, latest)"
+     }
+    }
+   ]
+  },
+  {
+   "tz": "Asia/Kolkata",
+   "id": "E04",
+   "title": "23:59:59.999 / 00:00:00.000: [start,end) point inclusion, zone-less ms times, CUSTOM labels",
+   "result": "PASS",
+   "asserts": [
+    {
+     "what": "24H [2026-10-26 00:00:00.000, 2026-10-27 00:00:00.000): includes start and 23:59:59.999, excludes 25th 23:59:59.999 and end instant",
+     "ok": true,
+     "observed": [
+      "edge-1",
+      "edge-2",
+      "edge-3",
+      "edge-5"
+     ]
+    },
+    {
+     "what": "zone-less 23:59:59.999 read as UTC in every TZ (edge-5 kept)",
+     "ok": true,
+     "observed": [
+      "edge-1",
+      "edge-2",
+      "edge-3",
+      "edge-5"
+     ]
+    },
+    {
+     "what": "Actual line: first 2026-10-26 00:00:00 UTC, last 2026-10-26 23:59:59 UTC",
+     "ok": true,
+     "observed": "Actual  first 2026-10-26 00:00:00 UTC · last 2026-10-26 23:59:59 UTC"
+    },
+    {
+     "what": "UTC only",
+     "ok": true,
+     "observed": []
+    },
+    {
+     "what": "CUSTOM To=today at 23:59:59.999: caption \"2026-10-26 to 2026-10-26 inclusive\"",
+     "ok": true,
+     "observed": "Window  UTC dates 2026-10-26 to 2026-10-26 inclusive = 2026-10-26 00:00 UTC → 2026-10-26 23:59 UTC"
+    },
+    {
+     "what": "CUSTOM window = [2026-10-26 00:00, now), 48 flashes, atLatest",
+     "ok": true,
+     "observed": {
+      "s": "2026-10-26T00:00:00.000Z",
+      "e": "2026-10-26T23:59:59.999Z",
+      "atLatest": true,
+      "n": 48
+     }
+    },
+    {
+     "what": "past CUSTOM day ends exactly at 2026-10-26 00:00:00.000 (end exclusive), 48",
+     "ok": true,
+     "observed": {
+      "s": "2026-10-25T00:00:00.000Z",
+      "e": "2026-10-26T00:00:00.000Z",
+      "atLatest": false,
+      "n": 48
+     }
+    }
+   ]
+  },
+  {
+   "tz": "Asia/Kolkata",
+   "id": "E05",
+   "title": "4 h stale threshold at exactly 4 h (index and feed, ms), next_update_due boundary",
+   "result": "PASS",
+   "asserts": [
+    {
+     "what": "index 4h-1ms: STALE=false in refresh, label, status and state",
+     "ok": true,
+     "observed": {
+      "refresh": "Refresh archive 2026-10-26 18:00 UTC (4h 0min ago; expected every 3 h)",
+      "label": "Lightning Flashes (Optical) [≥48 | 24h]",
+      "status": "PARTIAL · 48 FLASHES DRAWN · SEARCHED 83%"
+     }
+    },
+    {
+     "what": "index exactly 4h: STALE=false in refresh, label, status and state",
+     "ok": true,
+     "observed": {
+      "refresh": "Refresh archive 2026-10-26 18:00 UTC (4h 0min ago; expected every 3 h)",
+      "label": "Lightning Flashes (Optical) [≥48 | 24h]",
+      "status": "PARTIAL · 48 FLASHES DRAWN · SEARCHED 83%"
+     }
+    },
+    {
+     "what": "index 4h+1ms: STALE=true in refresh, label, status and state",
+     "ok": true,
+     "observed": {
+      "refresh": "Refresh archive 2026-10-26 18:00 UTC (4h 0min ago; expected every 3 h) · STALE",
+      "label": "Lightning Flashes (Optical) [≥48 | 24h STALE]",
+      "status": "PARTIAL · 48 FLASHES DRAWN · SEARCHED 83% · STALE"
+     }
+    },
+    {
+     "what": "index exactly next_update_due (2h): STALE=false in refresh, label, status and state",
+     "ok": true,
+     "observed": {
+      "refresh": "Refresh archive 2026-10-26 18:00 UTC (2h 0min ago; expected every 3 h)",
+      "label": "Lightning Flashes (Optical) [≥48 | 24h]",
+      "status": "PARTIAL · 48 FLASHES DRAWN · SEARCHED 91%"
+     }
+    },
+    {
+     "what": "index next_update_due+1ms: STALE=true in refresh, label, status and state",
+     "ok": true,
+     "observed": {
+      "refresh": "Refresh archive 2026-10-26 18:00 UTC (2h 0min ago; expected every 3 h) · STALE",
+      "label": "Lightning Flashes (Optical) [≥48 | 24h STALE]",
+      "status": "PARTIAL · 48 FLASHES DRAWN · SEARCHED 91% · STALE"
+     }
+    },
+    {
+     "what": "index exactly 4h, next_update_due later: STALE=false in refresh, label, status and state",
+     "ok": true,
+     "observed": {
+      "refresh": "Refresh archive 2026-10-26 18:00 UTC (4h 0min ago; expected every 3 h)",
+      "label": "Lightning Flashes (Optical) [≥48 | 24h]",
+      "status": "PARTIAL · 48 FLASHES DRAWN · SEARCHED 83%"
+     }
+    },
+    {
+     "what": "index 4h+1ms, next_update_due later (4h cap wins): STALE=true in refresh, label, status and state",
+     "ok": true,
+     "observed": {
+      "refresh": "Refresh archive 2026-10-26 18:00 UTC (4h 0min ago; expected every 3 h) · STALE",
+      "label": "Lightning Flashes (Optical) [≥48 | 24h STALE]",
+      "status": "PARTIAL · 48 FLASHES DRAWN · SEARCHED 83% · STALE"
+     }
+    },
+    {
+     "what": "feed exactly 4h: STALE=false (label/status/state)",
+     "ok": true,
+     "observed": {
+      "label": "Lightning Flashes (Optical) [UNKNOWN | 24h]",
+      "status": "UNKNOWN · 0 seen in the available 7-day feed · 24 hours requested · searched unknown"
+     }
+    },
+    {
+     "what": "feed 4h+1ms: STALE=true (label/status/state)",
+     "ok": true,
+     "observed": {
+      "label": "Lightning Flashes (Optical) [UNKNOWN | 24h STALE]",
+      "status": "UNKNOWN · 0 seen in the available 7-day feed · 24 hours requested · searched unknown · STALE"
+     }
+    },
+    {
+     "what": "feed 4h-1ms: STALE=false (label/status/state)",
+     "ok": true,
+     "observed": {
+      "label": "Lightning Flashes (Optical) [UNKNOWN | 24h]",
+      "status": "UNKNOWN · 0 seen in the available 7-day feed · 24 hours requested · searched unknown"
+     }
+    },
+    {
+     "what": "INFO iv=2, no next_update_due, age 3h+1ms: stale flag (derived due = gen+(iv+1)h)",
+     "ok": true,
+     "observed": {
+      "stale": true,
+      "refresh": "Refresh archive 2026-10-26 18:00 UTC (3h 0min ago; expected every 2 h) · STALE"
+     }
+    }
+   ]
+  },
+  {
+   "tz": "Asia/Kolkata",
+   "id": "E06",
+   "title": "\"<1 min\" wording in refresh age and not-yet-ingested tail",
+   "result": "PASS",
+   "asserts": [
+    {
+     "what": "refresh age 0 s: \"(<1 min ago;\"",
+     "ok": true,
+     "observed": "Refresh archive 2026-10-26 23:40 UTC (<1 min ago; expected every 3 h)"
+    },
+    {
+     "what": "refresh age 1 ms: \"(<1 min ago;\"",
+     "ok": true,
+     "observed": "Refresh archive 2026-10-26 23:39 UTC (<1 min ago; expected every 3 h)"
+    },
+    {
+     "what": "refresh age 29.999 s: \"(<1 min ago;\"",
+     "ok": true,
+     "observed": "Refresh archive 2026-10-26 23:39 UTC (<1 min ago; expected every 3 h)"
+    },
+    {
+     "what": "refresh age 30 s: \"(0h 1min ago;\"",
+     "ok": true,
+     "observed": "Refresh archive 2026-10-26 23:39 UTC (0h 1min ago; expected every 3 h)"
+    },
+    {
+     "what": "refresh age 59.999 s: \"(0h 1min ago;\"",
+     "ok": true,
+     "observed": "Refresh archive 2026-10-26 23:39 UTC (0h 1min ago; expected every 3 h)"
+    },
+    {
+     "what": "refresh age 60 s: \"(0h 1min ago;\"",
+     "ok": true,
+     "observed": "Refresh archive 2026-10-26 23:39 UTC (0h 1min ago; expected every 3 h)"
+    },
+    {
+     "what": "refresh age 89.999 s: \"(0h 1min ago;\"",
+     "ok": true,
+     "observed": "Refresh archive 2026-10-26 23:38 UTC (0h 1min ago; expected every 3 h)"
+    },
+    {
+     "what": "tail 1 ms: \"Not yet ingested: last <1 min of window (unknown, not zero)\"",
+     "ok": true,
+     "observed": "Not yet ingested: last <1 min of window (unknown, not zero)"
+    },
+    {
+     "what": "tail 1 ms: searched line not 100%, state PARTIAL",
+     "ok": true,
+     "observed": {
+      "searched": "Searched EUMETSAT 99% of window · 1 successful runs · 2026-10-25 23:40 UTC → 2026-10-26 23:39 UTC",
+      "status": "PARTIAL · 48 FLASHES DRAWN · SEARCHED 99%"
+     }
+    },
+    {
+     "what": "tail 1 ms: ny exact",
+     "ok": true,
+     "observed": 1
+    },
+    {
+     "what": "tail 1 ms: UTC only",
+     "ok": true,
+     "observed": []
+    },
+    {
+     "what": "tail 20 s: \"Not yet ingested: last <1 min of window (unknown, not zero)\"",
+     "ok": true,
+     "observed": "Not yet ingested: last <1 min of window (unknown, not zero)"
+    },
+    {
+     "what": "tail 20 s: searched line not 100%, state PARTIAL",
+     "ok": true,
+     "observed": {
+      "searched": "Searched EUMETSAT 99% of window · 1 successful runs · 2026-10-25 23:40 UTC → 2026-10-26 23:39 UTC",
+      "status": "PARTIAL · 48 FLASHES DRAWN · SEARCHED 99%"
+     }
+    },
+    {
+     "what": "tail 20 s: ny exact",
+     "ok": true,
+     "observed": 20000
+    },
+    {
+     "what": "tail 20 s: UTC only",
+     "ok": true,
+     "observed": []
+    },
+    {
+     "what": "tail 29.999 s: \"Not yet ingested: last <1 min of window (unknown, not zero)\"",
+     "ok": true,
+     "observed": "Not yet ingested: last <1 min of window (unknown, not zero)"
+    },
+    {
+     "what": "tail 29.999 s: searched line not 100%, state PARTIAL",
+     "ok": true,
+     "observed": {
+      "searched": "Searched EUMETSAT 99% of window · 1 successful runs · 2026-10-25 23:40 UTC → 2026-10-26 23:39 UTC",
+      "status": "PARTIAL · 48 FLASHES DRAWN · SEARCHED 99%"
+     }
+    },
+    {
+     "what": "tail 29.999 s: ny exact",
+     "ok": true,
+     "observed": 29999
+    },
+    {
+     "what": "tail 29.999 s: UTC only",
+     "ok": true,
+     "observed": []
+    },
+    {
+     "what": "tail 30 s: \"Not yet ingested: last 0h 1min of window (unknown, not zero)\"",
+     "ok": true,
+     "observed": "Not yet ingested: last 0h 1min of window (unknown, not zero)"
+    },
+    {
+     "what": "tail 30 s: searched line not 100%, state PARTIAL",
+     "ok": true,
+     "observed": {
+      "searched": "Searched EUMETSAT 99% of window · 1 successful runs · 2026-10-25 23:40 UTC → 2026-10-26 23:39 UTC",
+      "status": "PARTIAL · 48 FLASHES DRAWN · SEARCHED 99%"
+     }
+    },
+    {
+     "what": "tail 30 s: ny exact",
+     "ok": true,
+     "observed": 30000
+    },
+    {
+     "what": "tail 30 s: UTC only",
+     "ok": true,
+     "observed": []
+    },
+    {
+     "what": "index generated_utc 2 h in the future: refresh does not claim \"<1 min ago\"",
+     "ok": true,
+     "observed": {
+      "refresh": "Refresh archive 2026-10-27 01:40 UTC (? ago; expected every 3 h) · STALE",
+      "label": "Lightning Flashes (Optical) [48 | 24h STALE]"
+     }
+    }
+   ]
+  },
+  {
+   "tz": "Asia/Kolkata",
+   "id": "T12a",
+   "title": "T12 amended: searched % floored (never rounds a partial window up to 100%, per T14)",
+   "result": "PASS",
+   "asserts": [
+    {
+     "what": "scan ends 21:23:00: \"Not yet ingested: last 2h 17min of window\"",
+     "ok": true,
+     "observed": "Not yet ingested: last 2h 17min of window (unknown, not zero)"
+    },
+    {
+     "what": "scan ends 21:23:00: searched % + not-ingested = 100% of window (no hour lost/double counted)",
+     "ok": true,
+     "observed": {
+      "cov": 0.9048611111111111,
+      "ny": 8220000,
+      "expectNy": 8220000
+     }
+    },
+    {
+     "what": "scan ends 21:23:00: searched line 90%",
+     "ok": true,
+     "observed": "Searched EUMETSAT 90% of window · 1 successful runs · 2026-10-25 23:40 UTC → 2026-10-26 21:23 UTC"
+    },
+    {
+     "what": "scan ends 21:23:00: UTC only",
+     "ok": true,
+     "observed": []
+    },
+    {
+     "what": "scan ends 59 min 30 s before now: \"Not yet ingested: last 0h 59min of window\"",
+     "ok": true,
+     "observed": "Not yet ingested: last 1h 0min of window (unknown, not zero)"
+    },
+    {
+     "what": "scan ends 59 min 30 s before now: searched % + not-ingested = 100% of window (no hour lost/double counted)",
+     "ok": true,
+     "observed": {
+      "cov": 0.9586805555555555,
+      "ny": 3570000,
+      "expectNy": 3570000
+     }
+    },
+    {
+     "what": "scan ends 59 min 30 s before now: searched line 95%",
+     "ok": true,
+     "observed": "Searched EUMETSAT 95% of window · 1 successful runs · 2026-10-25 23:40 UTC → 2026-10-26 22:40 UTC"
+    },
+    {
+     "what": "scan ends 59 min 30 s before now: UTC only",
+     "ok": true,
+     "observed": []
+    },
+    {
+     "what": "scan ended before the window (whole 24 h): \"Not yet ingested: last 24h 0min of window\"",
+     "ok": true,
+     "observed": "Not yet ingested: last 24h 0min of window (unknown, not zero)"
+    },
+    {
+     "what": "scan ended before the window (whole 24 h): searched % + not-ingested = 100% of window (no hour lost/double counted)",
+     "ok": true,
+     "observed": {
+      "cov": 0,
+      "ny": 86400000,
+      "expectNy": 86400000
+     }
+    },
+    {
+     "what": "scan ended before the window (whole 24 h): searched line 0%",
+     "ok": true,
+     "observed": "Searched EUMETSAT 0% of window — no collection run covers these dates"
+    },
+    {
+     "what": "scan ended before the window (whole 24 h): UTC only",
+     "ok": true,
+     "observed": []
+    },
+    {
+     "what": "1 min: \"Not yet ingested: last 0h 1min of window\"",
+     "ok": true,
+     "observed": "Not yet ingested: last 0h 1min of window (unknown, not zero)"
+    },
+    {
+     "what": "1 min: searched % + not-ingested = 100% of window (no hour lost/double counted)",
+     "ok": true,
+     "observed": {
+      "cov": 0.9993055555555556,
+      "ny": 60000,
+      "expectNy": 60000
+     }
+    },
+    {
+     "what": "1 min: searched line 99%",
+     "ok": true,
+     "observed": "Searched EUMETSAT 99% of window · 1 successful runs · 2026-10-25 23:40 UTC → 2026-10-26 23:39 UTC"
+    },
+    {
+     "what": "1 min: UTC only",
+     "ok": true,
+     "observed": []
+    },
+    {
+     "what": "scan ends 20 s before now (sub-minute gap must not read \"0h 0min\"): \"Not yet ingested: last NOT-0h0 of window\"",
+     "ok": true,
+     "observed": "Not yet ingested: last <1 min of window (unknown, not zero)"
+    },
+    {
+     "what": "scan ends 20 s before now (sub-minute gap must not read \"0h 0min\"): searched % + not-ingested = 100% of window (no hour lost/double counted)",
+     "ok": true,
+     "observed": {
+      "cov": 0.9997685185185186,
+      "ny": 20000,
+      "expectNy": 20000
+     }
+    },
+    {
+     "what": "scan ends 20 s before now (sub-minute gap must not read \"0h 0min\"): searched line 99%",
+     "ok": true,
+     "observed": "Searched EUMETSAT 99% of window · 1 successful runs · 2026-10-25 23:40 UTC → 2026-10-26 23:39 UTC"
+    },
+    {
+     "what": "scan ends 20 s before now (sub-minute gap must not read \"0h 0min\"): UTC only",
+     "ok": true,
+     "observed": []
+    },
+    {
+     "what": "scan ends at now (no warning): no not-yet-ingested warning",
+     "ok": true,
+     "observed": ""
+    },
+    {
+     "what": "scan ends at now (no warning): searched % + not-ingested = 100% of window (no hour lost/double counted)",
+     "ok": true,
+     "observed": {
+      "cov": 1,
+      "ny": 0,
+      "expectNy": 0
+     }
+    },
+    {
+     "what": "scan ends at now (no warning): searched line 100%",
+     "ok": true,
+     "observed": "Searched EUMETSAT 100% of window · 1 successful runs · 2026-10-25 23:40 UTC → 2026-10-26 23:40 UTC"
+    },
+    {
+     "what": "scan ends at now (no warning): UTC only",
+     "ok": true,
+     "observed": []
+    }
+   ]
+  }
+ ]
+}

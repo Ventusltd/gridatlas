@@ -1,0 +1,16 @@
+not-proven/FIXED  C1-RLO  ID line length 19, contains format chars: false
+not-proven/FIXED  C1-ZWSP  ID line length 11, contains format chars: false
+not-proven/FIXED  C1-200k chars  ID line length 209, contains format chars: false
+not-proven/FIXED  C1-markup  markup id rendered as text, <img> elements created: 0 (textContent holds)
+not-proven/FIXED  C2-object-id  accepted ev=0; tap threw: no; card opened: false; later click listener ran: 1
+not-proven/FIXED  C3-NaN  tap under NaN projection opens a card: false (dm stays Infinity: safe); open card then a NaN 'move': left 485px -> 485px, top 334px -> 334px (a browser drops 'NaNpx' and keeps the stale position)
+not-proven/FIXED  C4-stale-index  tapped the rendered OLD flash at -0.25,51.95 before re-render; card shows "(no card: stale hit refused)"
+not-proven/FIXED  C5-throwing-getter  listener threw: ; user message shown: true; previous lines still drawn: false
+not-proven/FIXED  C6-string  listener threw: no
+not-proven/FIXED  C6-array-like  listener threw: no
+not-proven/FIXED  C7-string-km  listener threw: no; card text after: "ve other causes.6.85 km · 132 kV · A 13233.36 km · 400 kV · B 40068.46 km · 275 kV · C 275"
+not-proven/FIXED  C8-proto-pollution  polluted substation listed: false; line drawn to it: false
+not-proven/FIXED  C8b-dead-fallback  window.__GRIDATLAS_SUBSTATIONS__ (never assigned) read through the prototype: false
+not-proven/FIXED  C9-leak  map listeners 3 -> 3 (click,move,moveend); map-container children 1 -> 0; nearest sources 0; errors 0
+not-proven/FIXED  C10-time  hostile times accepted: 0 of 4; rejected as malformed: 4; parse+filter took 70 ms (no ReDoS in /T[\d:.]+$/)
+{"module":"/tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/kv-security/patched-module-I.js","bytes":33823,"proven":[]}

@@ -1,0 +1,31 @@
+{
+  "name": "ventus-grid-engine",
+  "version": "0.1.0",
+  "description": "The grid engine's mathematics and the GridAtlas deep-link contract, isolated from the applications that had grown their own copies of both.",
+  "type": "module",
+  "license": "UNLICENSED",
+  "private": true,
+  "exports": {
+    "./compute-observer": "./engine/compute-observer.js",
+    "./geo-core": "./engine/geo-core.js",
+    "./geo-area": "./engine/geo-area.js",
+    "./geo-shapes": "./engine/geo-shapes.js",
+    "./geo-geojson": "./engine/geo-geojson.js",
+    "./v9-geodesy": "./engine/v9-geodesy.js",
+    "./v9-nearest-search": "./engine/v9-nearest-search.js",
+    "./network-topology": "./engine/network-topology.js",
+    "./electrical-distance": "./engine/electrical-distance.js",
+    "./rating-envelope": "./engine/rating-envelope.js",
+    "./corridor-estimate": "./engine/corridor-estimate.js",
+    "./published-fault-level": "./engine/published-fault-level.js",
+    "./site-tile": "./engine/site-tile.js",
+    "./deeplink": "./deeplink/contract.js"
+  },
+  "scripts": {
+    "verify": "node verify.mjs",
+    "test": "node verify.mjs"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

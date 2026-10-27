@@ -1,0 +1,64 @@
+--- /dev/fd/63	2026-10-27 16:22:13.936391462 +0000
++++ /dev/fd/62	2026-10-27 16:22:13.936391462 +0000
+@@ -327,7 +327,7 @@
+  clamped inside the map
+  scrolls when taller than the map
+ cpos=()=>{const c=S.pp,m=mh()
+-if(!c||!m)return
++if(!c||!m||c.dk)return
+ const p=m.project(c.ll),k=m.getContainer().getBoundingClientRect(),b=Q('gridatlas-menu-bar'),t=Math.max(0,(b?b.getBoundingClientRect().bottom:0)-k.top)+8,w=c.offsetWidth||0,h=c.offsetHeight||0
+ 
+ c.style.maxHeight=Math.max(120,k.height-t-8)+'px'
+@@ -425,28 +425,29 @@
+ // nearest substations: no public draw entry exists (link.selectAt treats its origin as a project and needs the engine's popup),
+ // so the neon-links lane's PUBLIC list and distance function are reused
+  the lines are Lightning-owned, styled like the originals.
+-NEAR='gridatlas-lightning-nearest',NL=[NEAR+'-glow',NEAR+'-core',NEAR+'-node',NEAR+'-label'],
++NEAR='gridatlas-lightning-nearest',NL=[NEAR+'-glow',NEAR+'-core',NEAR+'-node',NEAR+'-label',NEAR+'-origin'],
+ nc=()=>{const m=mh()
+ if(m)try{for(const l of NL)if(m.getLayer(l))m.removeLayer(l)
+ if(m.getSource(NEAR))m.removeSource(NEAR)}catch(e){note(e)}},
+-nr=(m,c,x,y)=>{const L=window.__GRIDATLAS_NEON_LINKS__||{},subs=L.substations||window.__GRIDATLAS_SUBSTATIONS__||[],dk=L.measure&&L.measure.distanceKm,say=s=>c.out.appendChild(el('div','',s))
++nr=(m,c,x,y)=>{const L=window.__GRIDATLAS_NEON_LINKS__||{},subs=L.substations||window.__GRIDATLAS_SUBSTATIONS__||[],ns=L.measure&&L.measure.nearestSubstations,say=s=>c.out.appendChild(el('div','',s))
+ c.out.textContent=''
+ nc()
+ 
+-if(!subs.length||typeof dk!=='function')return say('Substation data not loaded yet
++if(!subs.length||typeof ns!=='function')return say('Substation data not loaded yet
+  try again in a moment.')
+ 
+-const k=subs.filter(s=>s&&Array.isArray(s.at)&&Array.isArray(s.kv)&&s.kv[0]>=132).map(s=>({s,km:dk(x,y,s.at[0],s.at[1])})).filter(a=>isFinite(a.km)).sort((a,b)=>a.km-b.km).slice(0,3)
++const r=ns(x,y,subs.filter(s=>s&&Array.isArray(s.at)&&Array.isArray(s.kv))),k=r.map(s=>({s,km:s.km})),far=r.beyondRadiusNearest
+ 
+ say('Nearest substations to this optical flash (straight-line km). Not evidence any asset was struck
+  faults can have other causes.')
+ for(const a of k)say(`${a.km.toFixed(2)} km · ${a.s.kv[0]} kV · ${a.s.name||'unnamed substation'}`)
+-if(!k.length)return say('No transmission substation (132 kV or above) in the published list.')
++if(!k.length)return say(far?`None within ${r.radiusKm} km, so no line is drawn
++ nearest mapped: ${far.km.toFixed(2)} km · ${far.kv[0]} kV · ${far.name||'unnamed substation'}`:'No substation (33 kV or above) in the published list.')
+ 
+-const F=[]
++const F=[{type:'Feature',properties:{r:1},geometry:{type:'Point',coordinates:[x,y]}}]
+ k.forEach((a,i)=>F.push({type:'Feature',properties:{o:Math.max(.2,.62-i*.1)},geometry:{type:'LineString',coordinates:[[x,y],a.s.at]}},{type:'Feature',properties:{t:`${a.km.toFixed(2)} km · ${a.s.kv[0]} kV`},geometry:{type:'Point',coordinates:a.s.at}}))
+ 
+-const C='#5fbdc2',LS=['==',['geometry-type'],'LineString'],PT=['==',['geometry-type'],'Point']
++const C='#5fbdc2',LS=['==',['geometry-type'],'LineString'],PT=['all',['==',['geometry-type'],'Point'],['!',['has','r']]]
+ m.addSource(NEAR,{type:'geojson',data:FC(F)})
+ 
+ m.addLayer({id:NL[0],type:'line',source:NEAR,filter:LS,paint:{'line-color':C,'line-width':['interpolate',['linear'],['zoom'],6,5,12,12],'line-opacity':0.1,'line-blur':['interpolate',['linear'],['zoom'],6,3,12,8]}})
+@@ -455,7 +456,14 @@
+ 
+ m.addLayer({id:NL[2],type:'circle',source:NEAR,filter:PT,paint:{'circle-radius':['interpolate',['linear'],['zoom'],6,2.2,12,4],'circle-color':C,'circle-opacity':0.8}})
+ 
+-try{m.addLayer({id:NL[3],type:'symbol',source:NEAR,filter:PT,layout:{'text-field':['get','t'],'text-size':10,'text-offset':[0,-1.5],'text-anchor':'bottom','text-font':sf(m)},paint:{'text-color':'#a9c4c9','text-halo-color':'#000c10','text-halo-width':1.5}})}catch(e){note('nearest labels: '+msg(e))}},near=(m,c,x,y)=>{nr(m,c,x,y)
++try{m.addLayer({id:NL[3],type:'symbol',source:NEAR,filter:PT,layout:{'text-field':['get','t'],'text-size':10,'text-offset':[0,-1.5],'text-anchor':'bottom','text-font':sf(m)},paint:{'text-color':'#a9c4c9','text-halo-color':'#000c10','text-halo-width':1.5}})}catch(e){note('nearest labels: '+msg(e))}m.addLayer({id:NL[4],type:'circle',source:NEAR,filter:['has','r'],paint:{'circle-radius':['interpolate',['linear'],['zoom'],6,11,14,26],'circle-color':'rgba(0,0,0,0)','circle-stroke-color':'#cfe9ed','circle-stroke-width':1.6,'circle-stroke-opacity':0.85}})
++c.dk=1
++Object.assign(c.style,{left:'50%',top:'auto',bottom:'8px',maxHeight:'38%'})
++let a=x,b=y,e=x,d=y
++for(const q of k){a=Math.min(a,q.s.at[0])
++b=Math.min(b,q.s.at[1])
++e=Math.max(e,q.s.at[0])
++d=Math.max(d,q.s.at[1])}try{m.fitBounds([[a,b],[e,d]],{padding:{top:90,left:40,right:40,bottom:(c.offsetHeight||0)+24},maxZoom:12,duration:600,essential:true})}catch(err){note(err)}},near=(m,c,x,y)=>{nr(m,c,x,y)
+ cpos()},
+ // DOM: shell classes, inline styles on own nodes only
+ BTN=(a,t,x)=>`<button type="button" class="map-ctrl-btn" ${a}${x||''}>${t}</button>`,NAV=(k,t,x)=>BTN(`data-lightning-nav="${k}"`,t,x),ROW='style="display:flex

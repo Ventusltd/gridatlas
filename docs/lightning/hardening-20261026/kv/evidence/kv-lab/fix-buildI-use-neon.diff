@@ -1,0 +1,17 @@
+--- module-I.orig.js	2026-10-27 16:18:56.408402537 +0000
++++ module-I.kvlab.js	2026-10-27 16:18:56.423531303 +0000
+@@ -151,10 +151,10 @@
+ // so the neon-links lane's PUBLIC list and distance function are reused; the lines are Lightning-owned, styled like the originals.
+ NEAR='gridatlas-lightning-nearest',NL=[NEAR+'-glow',NEAR+'-core',NEAR+'-node',NEAR+'-label'],
+ nc=()=>{const m=mh();if(m)try{for(const l of NL)if(m.getLayer(l))m.removeLayer(l);if(m.getSource(NEAR))m.removeSource(NEAR)}catch(e){note(e)}},
+-nr=(m,c,x,y)=>{const L=window.__GRIDATLAS_NEON_LINKS__||{},subs=L.substations||window.__GRIDATLAS_SUBSTATIONS__||[],dk=L.measure&&L.measure.distanceKm,say=s=>c.out.appendChild(el('div','',s));c.out.textContent='';nc();
+-if(!subs.length||typeof dk!=='function')return say('Substation data not loaded yet; try again in a moment.');
+-const k=subs.filter(s=>s&&Array.isArray(s.at)&&Array.isArray(s.kv)&&s.kv[0]>=132).map(s=>({s,km:dk(x,y,s.at[0],s.at[1])})).filter(a=>isFinite(a.km)).sort((a,b)=>a.km-b.km).slice(0,3);
+-say('Nearest substations to this optical flash (straight-line km). Not evidence any asset was struck; faults can have other causes.');for(const a of k)say(`${a.km.toFixed(2)} km · ${a.s.kv[0]} kV · ${a.s.name||'unnamed substation'}`);if(!k.length)return say('No transmission substation (132 kV or above) in the published list.');
++nr=(m,c,x,y)=>{const L=window.__GRIDATLAS_NEON_LINKS__||{},subs=L.substations||window.__GRIDATLAS_SUBSTATIONS__||[],ns=L.measure&&L.measure.nearestSubstations,say=s=>c.out.appendChild(el('div','',s));c.out.textContent='';nc();
++if(!subs.length||typeof ns!=='function')return say('Substation data not loaded yet; try again in a moment.');
++const r=ns(x,y,subs),k=r.map(s=>({s,km:s.km})),b=r.beyondRadiusNearest;
++say('Nearest substations to this optical flash (straight-line km). Not evidence any asset was struck; faults can have other causes.');for(const a of k)say(`${a.km.toFixed(2)} km · ${a.s.kv[0]} kV · ${a.s.name||'unnamed substation'}`);if(!k.length)return say(b?`Nearest mapped substation is ${b.km.toFixed(2)} km away, beyond ${r.radiusKm} km, so no line is drawn.`:'No mapped substation in the published list.');
+ const F=[];k.forEach((a,i)=>F.push({type:'Feature',properties:{o:Math.max(.2,.62-i*.1)},geometry:{type:'LineString',coordinates:[[x,y],a.s.at]}},{type:'Feature',properties:{t:`${a.km.toFixed(2)} km · ${a.s.kv[0]} kV`},geometry:{type:'Point',coordinates:a.s.at}}));
+ const C='#5fbdc2',LS=['==',['geometry-type'],'LineString'],PT=['==',['geometry-type'],'Point'];m.addSource(NEAR,{type:'geojson',data:FC(F)});
+ m.addLayer({id:NL[0],type:'line',source:NEAR,filter:LS,paint:{'line-color':C,'line-width':['interpolate',['linear'],['zoom'],6,5,12,12],'line-opacity':0.1,'line-blur':['interpolate',['linear'],['zoom'],6,3,12,8]}});

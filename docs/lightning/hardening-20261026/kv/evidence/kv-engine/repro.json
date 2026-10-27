@@ -1,0 +1,957 @@
+{
+  "phase": "repro",
+  "startedAt": "2026-10-27T16:19:29.886Z",
+  "steps": [
+    {
+      "what": "7D on",
+      "label": "Lightning Flashes (Optical) [≥408 | 7d STALE]",
+      "status": "PARTIAL · 408 seen in the available 7-day feed · 7 days requested · searched unknown · STALE"
+    },
+    {
+      "what": "layers collapsed",
+      "dashPressed": "true"
+    },
+    {
+      "what": "flash screen point",
+      "X": 243.66569740530667,
+      "Y": 534.6133548401392,
+      "top": "CANVAS.maplibregl-canvas",
+      "zoom": 4.2
+    }
+  ],
+  "composition": {
+    "engine": 120,
+    "pn": 6,
+    "scada": true,
+    "curtain": true,
+    "menuInstalled": true,
+    "map": true,
+    "waitedMs": 4658
+  },
+  "linkBeforeTap": {
+    "installed": true,
+    "substations_loaded": 5800,
+    "substations_qualifying": 5800,
+    "substations_len": 5800,
+    "links_drawn": 0,
+    "arrival_engine": {
+      "engine": "onshore",
+      "answered": false,
+      "reason": "NO_PROJECT_IN_ADDRESS",
+      "fallback_from": null,
+      "terminal": true,
+      "epoch": 1,
+      "at": "2026-10-26T18:40:00.955Z"
+    },
+    "project_pin": {
+      "shown": false,
+      "name": null
+    },
+    "deep_linked": false,
+    "failures": [
+      "the basemap serves no glyphs, so link labels are omitted",
+      "the basemap serves no glyphs, so layout labels are omitted"
+    ],
+    "last_selection": null,
+    "selectAt": "function",
+    "measureKeys": [
+      "distanceKm",
+      "voltagesKv",
+      "representativePoint",
+      "deepLinkPlan",
+      "createArrivalGate",
+      "continueVerifiedArrival",
+      "arrivalGate",
+      "arrivalKey",
+      "claimPendingArrival",
+      "invalidatePendingArrival",
+      "nearestSubstations",
+      "MIN_KV",
+      "MAX_LINK_KM",
+      "LINK_COUNT",
+      "PROJECT_TECHS",
+      "flowDash",
+      "flowIndex",
+      "OFFSHORE_TECHS",
+      "isProjectTech",
+      "LAYER_ID_FOR_BUCKET",
+      "layerIdForBucket",
+      "coverage",
+      "recordArrivalEngine",
+      "answerArrival",
+      "classifyEngine"
+    ],
+    "linkKeys": [
+      "enableSubstationLayer",
+      "armGridScope",
+      "clearGridScope",
+      "noteFailure",
+      "togglePin",
+      "selectAt"
+    ]
+  },
+  "afterFlashTap": {
+    "cards": {
+      "mapRect": {
+        "x": 5,
+        "y": 5,
+        "w": 383,
+        "h": 838
+      },
+      "popup": null,
+      "lightningCard": {
+        "rect": {
+          "x": 166,
+          "y": 256,
+          "w": 148,
+          "h": 528
+        },
+        "text": "×\n2026-10-23 02:22:34 UTC\nFlash ID W_XX-EUMETSAT-Darmstadt,IMG+SAT,MTI1+LI-2-LFL--FD--x-x--ARC-x_C_EUMT_20261023023022_L2PF_OPE_20261023022009_20261023023009_N__O_0015_0000:1631\nlat 51.438, lon -1.696\nEUMETSAT MTG Lightning Imager · optical flash, not necessarily a ground strike\nNEAREST SUBSTATIONS"
+      },
+      "markers": [],
+      "htmlClass": "gridatlas-menu-hosted",
+      "sheetH": ""
+    }
+  },
+  "layersBeforeNearest": [
+    "background",
+    "l-neon-glow",
+    "l-neon-core",
+    "l-neon-flow",
+    "l-neon-flow-b",
+    "l-neon-node-ring",
+    "l-neon-node",
+    "l-sld-boundary",
+    "l-sld-boundary-line",
+    "l-sld-block",
+    "l-sld-bess",
+    "l-sld-radial",
+    "l-sld-radial-flow",
+    "l-sld-cable-glow",
+    "l-sld-cable",
+    "l-sld-cable-flow",
+    "l-sld-cable-flow-b",
+    "l-sld-node",
+    "l-sld-pin",
+    "l-sld-handle",
+    "l-sat",
+    "l-radius-circle-fill",
+    "l-radius-circle-stroke",
+    "l-radius-area-fill",
+    "l-radius-area-stroke",
+    "l-measure-fill",
+    "l-measure-line",
+    "l-measure-points",
+    "l-zonedraw-fill",
+    "l-zonedraw-line",
+    "l-zonedraw-points",
+    "l-400",
+    "l-275",
+    "l-220",
+    "l-132",
+    "l-66",
+    "l-11kv",
+    "l-subs",
+    "l-nuc",
+    "l-gas",
+    "l-ind",
+    "l-dc",
+    "l-air",
+    "l-rail",
+    "l-tesco",
+    "l-sainsburys",
+    "l-asda",
+    "l-morrisons",
+    "l-aldi",
+    "l-lidl",
+    "l-waitrose",
+    "l-ms",
+    "l-coop",
+    "l-costco",
+    "l-booths",
+    "l-mainline_rail",
+    "l-eurostar_route",
+    "l-eurostar_station",
+    "l-stadiums",
+    "l-subsea_data_cables",
+    "l-global_ports_major",
+    "l-global_ports_minor",
+    "l-global_hydrocarbons",
+    "l-motorways",
+    "l-trunk_roads",
+    "l-primary_roads",
+    "l-motorway_services",
+    "l-naei_co2-glow",
+    "l-naei_co2",
+    "l-elizabeth",
+    "l-lu",
+    "l-dlr",
+    "l-metro",
+    "l-tram",
+    "l-hs2",
+    "l-ev",
+    "l-solar-glow",
+    "l-solar",
+    "l-solar_operational-glow",
+    "l-solar_operational",
+    "l-solar_roof-glow",
+    "l-solar_roof",
+    "l-wind",
+    "l-wind_onshore_operational-glow",
+    "l-wind_onshore_operational",
+    "l-wind_offshore_operational-glow",
+    "l-wind_offshore_operational",
+    "l-bess",
+    "l-bess_operational-glow",
+    "l-bess_operational",
+    "l-biomass",
+    "l-tidal",
+    "l-hydrogen",
+    "l-hydro",
+    "l-flywheel",
+    "l-act",
+    "l-geothermal",
+    "l-caes",
+    "l-interconnectors",
+    "l-interconnector-nodes",
+    "l-gridatlas-lightning",
+    "l-gridatlas-lightning-hit"
+  ],
+  "afterNearest": {
+    "map": {
+      "total": 105,
+      "order": [
+        "background",
+        "l-neon-glow",
+        "l-neon-core",
+        "l-neon-flow",
+        "l-neon-flow-b",
+        "l-neon-node-ring",
+        "l-neon-node",
+        "l-sld-boundary",
+        "l-sld-boundary-line",
+        "l-sld-block",
+        "l-sld-bess",
+        "l-sld-radial",
+        "l-sld-radial-flow",
+        "l-sld-cable-glow",
+        "l-sld-cable",
+        "l-sld-cable-flow",
+        "l-sld-cable-flow-b",
+        "l-sld-node",
+        "l-sld-pin",
+        "l-sld-handle",
+        "l-sat",
+        "l-radius-circle-fill",
+        "l-radius-circle-stroke",
+        "l-radius-area-fill",
+        "l-radius-area-stroke",
+        "l-measure-fill",
+        "l-measure-line",
+        "l-measure-points",
+        "l-zonedraw-fill",
+        "l-zonedraw-line",
+        "l-zonedraw-points",
+        "l-400",
+        "l-275",
+        "l-220",
+        "l-132",
+        "l-66",
+        "l-11kv",
+        "l-subs",
+        "l-nuc",
+        "l-gas",
+        "l-ind",
+        "l-dc",
+        "l-air",
+        "l-rail",
+        "l-tesco",
+        "l-sainsburys",
+        "l-asda",
+        "l-morrisons",
+        "l-aldi",
+        "l-lidl",
+        "l-waitrose",
+        "l-ms",
+        "l-coop",
+        "l-costco",
+        "l-booths",
+        "l-mainline_rail",
+        "l-eurostar_route",
+        "l-eurostar_station",
+        "l-stadiums",
+        "l-subsea_data_cables",
+        "l-global_ports_major",
+        "l-global_ports_minor",
+        "l-global_hydrocarbons",
+        "l-motorways",
+        "l-trunk_roads",
+        "l-primary_roads",
+        "l-motorway_services",
+        "l-naei_co2-glow",
+        "l-naei_co2",
+        "l-elizabeth",
+        "l-lu",
+        "l-dlr",
+        "l-metro",
+        "l-tram",
+        "l-hs2",
+        "l-ev",
+        "l-solar-glow",
+        "l-solar",
+        "l-solar_operational-glow",
+        "l-solar_operational",
+        "l-solar_roof-glow",
+        "l-solar_roof",
+        "l-wind",
+        "l-wind_onshore_operational-glow",
+        "l-wind_onshore_operational",
+        "l-wind_offshore_operational-glow",
+        "l-wind_offshore_operational",
+        "l-bess",
+        "l-bess_operational-glow",
+        "l-bess_operational",
+        "l-biomass",
+        "l-tidal",
+        "l-hydrogen",
+        "l-hydro",
+        "l-flywheel",
+        "l-act",
+        "l-geothermal",
+        "l-caes",
+        "l-interconnectors",
+        "l-interconnector-nodes",
+        "l-gridatlas-lightning",
+        "l-gridatlas-lightning-hit",
+        "gridatlas-lightning-nearest-glow",
+        "gridatlas-lightning-nearest-core",
+        "gridatlas-lightning-nearest-node"
+      ],
+      "picked": [
+        {
+          "i": 1,
+          "id": "l-neon-glow",
+          "type": "line",
+          "source": "gridatlas-neon-links",
+          "vis": "visible",
+          "paint": {
+            "line-color": [
+              "get",
+              "colour"
+            ],
+            "line-width": [
+              "interpolate",
+              [
+                "linear"
+              ],
+              [
+                "zoom"
+              ],
+              6,
+              5,
+              12,
+              12
+            ],
+            "line-opacity": 0.1,
+            "line-blur": [
+              "interpolate",
+              [
+                "linear"
+              ],
+              [
+                "zoom"
+              ],
+              6,
+              3,
+              12,
+              8
+            ]
+          },
+          "layout": {
+            "line-cap": "round",
+            "line-join": "round"
+          }
+        },
+        {
+          "i": 2,
+          "id": "l-neon-core",
+          "type": "line",
+          "source": "gridatlas-neon-links",
+          "vis": "visible",
+          "paint": {
+            "line-color": [
+              "get",
+              "colour"
+            ],
+            "line-width": [
+              "interpolate",
+              [
+                "linear"
+              ],
+              [
+                "zoom"
+              ],
+              6,
+              0.9,
+              12,
+              1.8
+            ],
+            "line-opacity": [
+              "get",
+              "strength"
+            ]
+          },
+          "layout": {
+            "line-cap": "round",
+            "line-join": "round"
+          }
+        },
+        {
+          "i": 3,
+          "id": "l-neon-flow",
+          "type": "line",
+          "source": "gridatlas-neon-links",
+          "vis": "visible",
+          "paint": {
+            "line-color": "#bfe9ee",
+            "line-width": [
+              "interpolate",
+              [
+                "linear"
+              ],
+              [
+                "zoom"
+              ],
+              6,
+              1.2,
+              12,
+              2.4
+            ],
+            "line-opacity": 0.8,
+            "line-dasharray": [
+              0.2,
+              3.2
+            ]
+          },
+          "layout": {
+            "line-cap": "round"
+          }
+        },
+        {
+          "i": 4,
+          "id": "l-neon-flow-b",
+          "type": "line",
+          "source": "gridatlas-neon-links",
+          "vis": "visible",
+          "paint": {
+            "line-color": "#bfe9ee",
+            "line-width": [
+              "interpolate",
+              [
+                "linear"
+              ],
+              [
+                "zoom"
+              ],
+              6,
+              0.9,
+              12,
+              1.8
+            ],
+            "line-opacity": 0.45,
+            "line-dasharray": [
+              0.2,
+              3.2
+            ]
+          },
+          "layout": {
+            "line-cap": "round"
+          }
+        },
+        {
+          "i": 5,
+          "id": "l-neon-node-ring",
+          "type": "circle",
+          "source": "gridatlas-neon-nodes",
+          "vis": "visible",
+          "paint": {
+            "circle-radius": [
+              "interpolate",
+              [
+                "linear"
+              ],
+              [
+                "zoom"
+              ],
+              6,
+              6,
+              12,
+              13
+            ],
+            "circle-color": "rgba(0,0,0,0)",
+            "circle-stroke-color": "#5fbdc2",
+            "circle-stroke-width": 1,
+            "circle-stroke-opacity": 0.4
+          }
+        },
+        {
+          "i": 6,
+          "id": "l-neon-node",
+          "type": "circle",
+          "source": "gridatlas-neon-nodes",
+          "vis": "visible",
+          "paint": {
+            "circle-radius": [
+              "interpolate",
+              [
+                "linear"
+              ],
+              [
+                "zoom"
+              ],
+              6,
+              2.2,
+              12,
+              4
+            ],
+            "circle-color": "#5fbdc2",
+            "circle-opacity": 0.8
+          }
+        },
+        {
+          "i": 102,
+          "id": "gridatlas-lightning-nearest-glow",
+          "type": "line",
+          "source": "gridatlas-lightning-nearest",
+          "vis": "visible",
+          "paint": {
+            "line-color": "#5fbdc2",
+            "line-width": [
+              "interpolate",
+              [
+                "linear"
+              ],
+              [
+                "zoom"
+              ],
+              6,
+              5,
+              12,
+              12
+            ],
+            "line-opacity": 0.1,
+            "line-blur": [
+              "interpolate",
+              [
+                "linear"
+              ],
+              [
+                "zoom"
+              ],
+              6,
+              3,
+              12,
+              8
+            ]
+          },
+          "filter": [
+            "==",
+            [
+              "geometry-type"
+            ],
+            "LineString"
+          ]
+        },
+        {
+          "i": 103,
+          "id": "gridatlas-lightning-nearest-core",
+          "type": "line",
+          "source": "gridatlas-lightning-nearest",
+          "vis": "visible",
+          "paint": {
+            "line-color": "#5fbdc2",
+            "line-width": [
+              "interpolate",
+              [
+                "linear"
+              ],
+              [
+                "zoom"
+              ],
+              6,
+              0.9,
+              12,
+              1.8
+            ],
+            "line-opacity": [
+              "get",
+              "o"
+            ]
+          },
+          "filter": [
+            "==",
+            [
+              "geometry-type"
+            ],
+            "LineString"
+          ]
+        },
+        {
+          "i": 104,
+          "id": "gridatlas-lightning-nearest-node",
+          "type": "circle",
+          "source": "gridatlas-lightning-nearest",
+          "vis": "visible",
+          "paint": {
+            "circle-radius": [
+              "interpolate",
+              [
+                "linear"
+              ],
+              [
+                "zoom"
+              ],
+              6,
+              2.2,
+              12,
+              4
+            ],
+            "circle-color": "#5fbdc2",
+            "circle-opacity": 0.8
+          },
+          "filter": [
+            "==",
+            [
+              "geometry-type"
+            ],
+            "Point"
+          ]
+        }
+      ],
+      "sources": {
+        "gridatlas-neon-links": {
+          "type": "FeatureCollection",
+          "features": []
+        },
+        "gridatlas-neon-nodes": {
+          "type": "FeatureCollection",
+          "features": []
+        },
+        "gridatlas-lightning-nearest": {
+          "type": "FeatureCollection",
+          "features": [
+            {
+              "type": "Feature",
+              "properties": {
+                "o": 0.62
+              },
+              "geometry": {
+                "type": "LineString",
+                "coordinates": [
+                  [
+                    -1.6956,
+                    51.437702
+                  ],
+                  [
+                    -1.6526496,
+                    51.3314781
+                  ]
+                ]
+              }
+            },
+            {
+              "type": "Feature",
+              "properties": {
+                "t": "12.20 km · 132 kV"
+              },
+              "geometry": {
+                "type": "Point",
+                "coordinates": [
+                  -1.6526496,
+                  51.3314781
+                ]
+              }
+            },
+            {
+              "type": "Feature",
+              "properties": {
+                "o": 0.52
+              },
+              "geometry": {
+                "type": "LineString",
+                "coordinates": [
+                  [
+                    -1.6956,
+                    51.437702
+                  ],
+                  [
+                    -1.8111444,
+                    51.5542517
+                  ]
+                ]
+              }
+            },
+            {
+              "type": "Feature",
+              "properties": {
+                "t": "15.25 km · 132 kV"
+              },
+              "geometry": {
+                "type": "Point",
+                "coordinates": [
+                  -1.8111444,
+                  51.5542517
+                ]
+              }
+            },
+            {
+              "type": "Feature",
+              "properties": {
+                "o": 0.42
+              },
+              "geometry": {
+                "type": "LineString",
+                "coordinates": [
+                  [
+                    -1.6956,
+                    51.437702
+                  ],
+                  [
+                    -1.7554303,
+                    51.5974047
+                  ]
+                ]
+              }
+            },
+            {
+              "type": "Feature",
+              "properties": {
+                "t": "18.25 km · 132 kV"
+              },
+              "geometry": {
+                "type": "Point",
+                "coordinates": [
+                  -1.7554303,
+                  51.5974047
+                ]
+              }
+            }
+          ]
+        }
+      },
+      "zoom": 4.2,
+      "center": [
+        -3.5,
+        54
+      ],
+      "bounds": [
+        [
+          -10.826142069536616,
+          43.48285199584342
+        ],
+        [
+          3.8261420695340576,
+          62.399734357105075
+        ]
+      ]
+    },
+    "cards": {
+      "mapRect": {
+        "x": 5,
+        "y": 5,
+        "w": 383,
+        "h": 838
+      },
+      "popup": null,
+      "lightningCard": {
+        "rect": {
+          "x": 171,
+          "y": 47,
+          "w": 144,
+          "h": 788
+        },
+        "text": "×\n2026-10-23 02:22:34 UTC\nFlash ID W_XX-EUMETSAT-Darmstadt,IMG+SAT,MTI1+LI-2-LFL--FD--x-x--ARC-x_C_EUMT_20261023023022_L2PF_OPE_20261023022009_20261023023009_N__O_0015_0000:1631\nlat 51.438, lon -1.696\nEUMETSAT MTG Lightning Imager · optical flash, not necessarily a ground strike\nNEAREST SUBSTATIONS\nNearest substations to this optical flash (straight-line km). Not evidence any asset was struck; faults can have other causes.\n12.20 km · 132 kV · West Grafton Substation\n15.25 km · 132 kV · unnamed substation\n18.25 km · 132 kV · unnamed substation"
+      },
+      "markers": [],
+      "htmlClass": "gridatlas-menu-hosted",
+      "sheetH": ""
+    },
+    "pixels": [
+      {
+        "from": [
+          239,
+          530
+        ],
+        "to": [
+          240,
+          534
+        ],
+        "px": 4.6,
+        "visibleFraction": 0
+      },
+      {
+        "from": [
+          239,
+          530
+        ],
+        "to": [
+          236,
+          525
+        ],
+        "px": 5.8,
+        "visibleFraction": 0
+      },
+      {
+        "from": [
+          239,
+          530
+        ],
+        "to": [
+          237,
+          523
+        ],
+        "px": 6.9,
+        "visibleFraction": 0
+      }
+    ],
+    "link": {
+      "installed": true,
+      "substations_loaded": 5800,
+      "substations_qualifying": 5800,
+      "substations_len": 5800,
+      "links_drawn": 0,
+      "arrival_engine": null,
+      "project_pin": {
+        "shown": false,
+        "name": null
+      },
+      "deep_linked": false,
+      "failures": [
+        "the basemap serves no glyphs, so link labels are omitted",
+        "the basemap serves no glyphs, so layout labels are omitted"
+      ],
+      "last_selection": null,
+      "selectAt": "function",
+      "measureKeys": [
+        "distanceKm",
+        "voltagesKv",
+        "representativePoint",
+        "deepLinkPlan",
+        "createArrivalGate",
+        "continueVerifiedArrival",
+        "arrivalGate",
+        "arrivalKey",
+        "claimPendingArrival",
+        "invalidatePendingArrival",
+        "nearestSubstations",
+        "MIN_KV",
+        "MAX_LINK_KM",
+        "LINK_COUNT",
+        "PROJECT_TECHS",
+        "flowDash",
+        "flowIndex",
+        "OFFSHORE_TECHS",
+        "isProjectTech",
+        "LAYER_ID_FOR_BUCKET",
+        "layerIdForBucket",
+        "coverage",
+        "recordArrivalEngine",
+        "answerArrival",
+        "classifyEngine"
+      ],
+      "linkKeys": [
+        "enableSubstationLayer",
+        "armGridScope",
+        "clearGridScope",
+        "noteFailure",
+        "togglePin",
+        "selectAt"
+      ]
+    }
+  },
+  "atZoom11": {
+    "pixels": [
+      {
+        "from": [
+          192,
+          419
+        ],
+        "to": [
+          317,
+          915
+        ],
+        "px": 511.3,
+        "visibleFraction": 0.17
+      },
+      {
+        "from": [
+          192,
+          419
+        ],
+        "to": [
+          -145,
+          -126
+        ],
+        "px": 640.8,
+        "visibleFraction": 0.27
+      },
+      {
+        "from": [
+          192,
+          419
+        ],
+        "to": [
+          17,
+          -329
+        ],
+        "px": 767.6,
+        "visibleFraction": 0.05
+      }
+    ],
+    "cards": {
+      "mapRect": {
+        "x": 5,
+        "y": 5,
+        "w": 383,
+        "h": 838
+      },
+      "popup": null,
+      "lightningCard": {
+        "rect": {
+          "x": 101,
+          "y": 47,
+          "w": 192,
+          "h": 700
+        },
+        "text": "×\n2026-10-23 02:22:34 UTC\nFlash ID W_XX-EUMETSAT-Darmstadt,IMG+SAT,MTI1+LI-2-LFL--FD--x-x--ARC-x_C_EUMT_20261023023022_L2PF_OPE_20261023022009_20261023023009_N__O_0015_0000:1631\nlat 51.438, lon -1.696\nEUMETSAT MTG Lightning Imager · optical flash, not necessarily a ground strike\nNEAREST SUBSTATIONS\nNearest substations to this optical flash (straight-line km). Not evidence any asset was struck; faults can have other causes.\n12.20 km · 132 kV · West Grafton Substation\n15.25 km · 132 kV · unnamed substation\n18.25 km · 132 kV · unnamed substation"
+      },
+      "markers": [],
+      "htmlClass": "gridatlas-menu-hosted",
+      "sheetH": ""
+    },
+    "rendered": 8
+  },
+  "pageErrors": [],
+  "consoleErrors": [
+    "Failed to load resource: net::ERR_BLOCKED_BY_CLIENT.Inspector",
+    "Failed to load resource: net::ERR_BLOCKED_BY_CLIENT.Inspector",
+    "Failed to load resource: the server responded with a status of 404 (Not Found)",
+    "Failed to load resource: the server responded with a status of 404 (Not Found)",
+    "Error: layers.gridatlas-lightning-nearest-label.layout.text-field: use of \"text-field\" requires a style \"glyphs\" property\n    at Object.En [as x] (https://cdn.jsdelivr.net/npm/maplibre-gl@3.6.2/dist/maplibre-gl.js:31:122659)\n    at Jt (https://cdn.jsdelivr.net/npm/maplibre-gl@3.6.2/dist/maplibre-gl."
+  ],
+  "shim": {
+    "served": {
+      "maplibre": 2,
+      "style": 1,
+      "duckdb": 3,
+      "lightning-data": 3
+    },
+    "aborted": [
+      "https://raw.githubusercontent.com/Ventusltd/data-grid-gb/1c9909d1138704b29235c27fd769436dda8a0b18/derived/connection-points.v3.json",
+      "https://ventusltd.github.io/ventus-grid-engine/genome/engine-graph.json"
+    ],
+    "missing": [
+      "https://raw.githubusercontent.com/Ventusltd/lightning/main/data/history/index.json"
+    ]
+  }
+}

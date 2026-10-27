@@ -1,0 +1,169 @@
+  [repro-E] CHK-DOM/MAP: original nodes unchanged; map touched only on own ids; camera never moved
+     G: "PASS"
+     H: "FAIL"
+repro-E: 9 keys, 1 differ
+tf-crE: 49 keys, 0 differ
+cg: 8 keys, 0 differ
+  [tf-secE] CR6: a budget-truncated LOAD POINTS result is PARTIAL, not READY
+     G: "PASS"
+     H: "FAIL"
+tf-secE: 49 keys, 1 differ
+  [repro-F] CRF-2 a lost day under duplicated scan windows: Searched % must equal the single-window value
+     G: "FAIL"
+     H: "PASS"
+  [repro-F] CRF-7 caption live region: aria-live attribute present
+     G: "FAIL"
+     H: "PASS"
+  [repro-F] CRF-2b over-subtraction can turn a searched, flash-bearing window into UNKNOWN (3 duplicated windows, 1 lost day of 2)
+     G: "FAIL"
+     H: "PASS"
+repro-F: 16 keys, 3 differ
+  [tf-crF] DOTS: points are at least 4 px at low zoom with a dark 1 px stroke
+     G: "PASS"
+     H: "FAIL"
+tf-crF: 69 keys, 1 differ
+  [tf-designerG] M02: feed fallback on a long period states "<n> seen in the available 7-day feed · <period> requested · older history unknown" near the chips, with oldest/latest UTC
+     G: "PASS"
+     H: "FAIL"
+  [tf-designerG] DOTS: points are at least 4 px at low zoom with a dark 1 px stroke
+     G: "PASS"
+     H: "FAIL"
+  [tf-designerG] REST: before the toggle turns ON there are no requests, no map source and the group is unchanged from F
+     G: "PASS"
+     H: "FAIL"
+tf-designerG: 75 keys, 3 differ
+  [tf-designerI] H1: feed-only 12M reads "[n · last 7 days only]", never "≥n | 12m"; bold first caption line; 7-DAY FEED ONLY status
+     G: "FAIL"
+     H: "PASS"
+  [tf-designerI] H1: in feed fallback the 30D-12M chips carry a dim marker and stay tappable; with an archive they carry none
+     G: "FAIL"
+     H: "PASS"
+  [tf-designerI] H2: dots 6/8/10 px at z5/z8/z11 with a 1.5 px dark stroke and light core, plus an invisible >=22 px hit layer
+     G: "FAIL"
+     H: "PASS"
+  [tf-designerI] H2: above the phone cap clusters get count labels and a tap on a cluster zooms in
+     G: "FAIL"
+     H: "PASS"
+  [tf-designerI] H4: FIT FLASHES fits the map to drawn flashes only when tapped; the outside-view count is recounted on moveend
+     G: "FAIL"
+     H: "PASS"
+  [tf-designerI] H4: restored "12 months" period label and aria-live on the caption
+     G: "FAIL"
+     H: "PASS"
+  [tf-designerI] H4 CRF-2/2b: a lost day is subtracted once even when scan windows overlap
+     G: "FAIL"
+     H: "PASS"
+  [tf-designerI] H2b: the cluster label font comes from the basemap style (first symbol layer with text-font), else Open Sans Regular
+     G: "FAIL"
+     H: "PASS"
+tf-designerI: 91 keys, 8 differ
+time: 88 keys, 0 differ
+security S0-S11: 15 keys, 0 differ
+security probes: 104 keys, 0 differ
+flaky: 68 keys, 0 differ
+  [data-contract] node/asis-main#026
+     G: "  [30d] PARTIAL · 408 seen in the available 7-day feed · 30 days requested · older history unknown · searched unknown | Lightning Flashes (Optical) [≥408 | 30d] | drawn=408 layer=visible dot=#ffcc00"
+     H: "  [30d] 7-DAY FEED ONLY · 408 FLASHES · OLDER HISTORY NOT YET COLLECTED | Lightning Flashes (Optical) [408 · last 7 days only] | drawn=408 layer=visible dot=#ffcc00"
+  [data-contract] node/asis-main#033
+     G: "  [3m] PARTIAL · 408 seen in the available 7-day feed · 3 months requested · older history unknown · searched unknown | Lightning Flashes (Optical) [≥408 | 3m] | drawn=408 layer=visible dot=#ffcc00"
+     H: "  [3m] 7-DAY FEED ONLY · 408 FLASHES · OLDER HISTORY NOT YET COLLECTED | Lightning Flashes (Optical) [408 · last 7 days only] | drawn=408 layer=visible dot=#ffcc00"
+  [data-contract] node/asis-main#040
+     G: "  [6m] PARTIAL · 408 seen in the available 7-day feed · 6 months requested · older history unknown · searched unknown | Lightning Flashes (Optical) [≥408 | 6m] | drawn=408 layer=visible dot=#ffcc00"
+     H: "  [6m] 7-DAY FEED ONLY · 408 FLASHES · OLDER HISTORY NOT YET COLLECTED | Lightning Flashes (Optical) [408 · last 7 days only] | drawn=408 layer=visible dot=#ffcc00"
+  [data-contract] node/asis-main#047
+     G: "  [12m] PARTIAL · 408 seen in the available 7-day feed · 1 year requested · older history unknown · searched unknown | Lightning Flashes (Optical) [≥408 | 12m] | drawn=408 layer=visible dot=#ffcc00"
+     H: "  [12m] 7-DAY FEED ONLY · 408 FLASHES · OLDER HISTORY NOT YET COLLECTED | Lightning Flashes (Optical) [408 · last 7 days only] | drawn=408 layer=visible dot=#ffcc00"
+  [data-contract] node/asis-main#048
+     G: "       Window  2025-10-27 00:45 UTC → 2026-10-27 00:45 UTC (1 year, latest)"
+     H: "       Window  2025-10-27 00:45 UTC → 2026-10-27 00:45 UTC (12 months, latest)"
+  [data-contract] node/asis-main#050
+     G: "       Flashes 408 seen in the available 7-day feed · 1 year requested · older history unknown · 408 drawn as points (cap 40,000)"
+     H: "       Flashes 408 seen in the available 7-day feed · 12 months requested · older history unknown · 408 drawn as points (cap 40,000)"
+  [data-contract] node/asis-pr2#026
+     G: "  [30d] PARTIAL · 408 seen in the available 7-day feed · 30 days requested · older history unknown · searched unknown · STALE | Lightning Flashes (Optical) [≥408 | 30d STALE] | drawn=408 layer=visible dot=#ffcc00"
+     H: "  [30d] 7-DAY FEED ONLY · 408 FLASHES · OLDER HISTORY NOT YET COLLECTED · STALE | Lightning Flashes (Optical) [408 · last 7 days only STALE] | drawn=408 layer=visible dot=#ffcc00"
+  [data-contract] node/asis-pr2#033
+     G: "  [3m] PARTIAL · 408 seen in the available 7-day feed · 3 months requested · older history unknown · searched unknown · STALE | Lightning Flashes (Optical) [≥408 | 3m STALE] | drawn=408 layer=visible dot=#ffcc00"
+     H: "  [3m] 7-DAY FEED ONLY · 408 FLASHES · OLDER HISTORY NOT YET COLLECTED · STALE | Lightning Flashes (Optical) [408 · last 7 days only STALE] | drawn=408 layer=visible dot=#ffcc00"
+  [data-contract] node/asis-pr2#040
+     G: "  [6m] PARTIAL · 408 seen in the available 7-day feed · 6 months requested · older history unknown · searched unknown · STALE | Lightning Flashes (Optical) [≥408 | 6m STALE] | drawn=408 layer=visible dot=#ffcc00"
+     H: "  [6m] 7-DAY FEED ONLY · 408 FLASHES · OLDER HISTORY NOT YET COLLECTED · STALE | Lightning Flashes (Optical) [408 · last 7 days only STALE] | drawn=408 layer=visible dot=#ffcc00"
+  [data-contract] node/asis-pr2#047
+     G: "  [12m] PARTIAL · 408 seen in the available 7-day feed · 1 year requested · older history unknown · searched unknown · STALE | Lightning Flashes (Optical) [≥408 | 12m STALE] | drawn=408 layer=visible dot=#ffcc00"
+     H: "  [12m] 7-DAY FEED ONLY · 408 FLASHES · OLDER HISTORY NOT YET COLLECTED · STALE | Lightning Flashes (Optical) [408 · last 7 days only STALE] | drawn=408 layer=visible dot=#ffcc00"
+  [data-contract] node/asis-pr2#048
+     G: "       Window  2025-10-27 00:45 UTC → 2026-10-27 00:45 UTC (1 year, latest)"
+     H: "       Window  2025-10-27 00:45 UTC → 2026-10-27 00:45 UTC (12 months, latest)"
+  [data-contract] node/asis-pr2#050
+     G: "       Flashes 408 seen in the available 7-day feed · 1 year requested · older history unknown · 408 drawn as points (cap 40,000)"
+     H: "       Flashes 408 seen in the available 7-day feed · 12 months requested · older history unknown · 408 drawn as points (cap 40,000)"
+  [data-contract] node/asis-pr3#026
+     G: "  [30d] PARTIAL · 408 seen in the available 7-day feed · 30 days requested · older history unknown · searched unknown · STALE | Lightning Flashes (Optical) [≥408 | 30d STALE] | drawn=408 layer=visible dot=#ffcc00"
+     H: "  [30d] 7-DAY FEED ONLY · 408 FLASHES · OLDER HISTORY NOT YET COLLECTED · STALE | Lightning Flashes (Optical) [408 · last 7 days only STALE] | drawn=408 layer=visible dot=#ffcc00"
+  [data-contract] node/asis-pr3#033
+     G: "  [3m] PARTIAL · 408 seen in the available 7-day feed · 3 months requested · older history unknown · searched unknown · STALE | Lightning Flashes (Optical) [≥408 | 3m STALE] | drawn=408 layer=visible dot=#ffcc00"
+     H: "  [3m] 7-DAY FEED ONLY · 408 FLASHES · OLDER HISTORY NOT YET COLLECTED · STALE | Lightning Flashes (Optical) [408 · last 7 days only STALE] | drawn=408 layer=visible dot=#ffcc00"
+  [data-contract] node/asis-pr3#040
+     G: "  [6m] PARTIAL · 408 seen in the available 7-day feed · 6 months requested · older history unknown · searched unknown · STALE | Lightning Flashes (Optical) [≥408 | 6m STALE] | drawn=408 layer=visible dot=#ffcc00"
+     H: "  [6m] 7-DAY FEED ONLY · 408 FLASHES · OLDER HISTORY NOT YET COLLECTED · STALE | Lightning Flashes (Optical) [408 · last 7 days only STALE] | drawn=408 layer=visible dot=#ffcc00"
+  [data-contract] node/asis-pr3#047
+     G: "  [12m] PARTIAL · 408 seen in the available 7-day feed · 1 year requested · older history unknown · searched unknown · STALE | Lightning Flashes (Optical) [≥408 | 12m STALE] | drawn=408 layer=visible dot=#ffcc00"
+     H: "  [12m] 7-DAY FEED ONLY · 408 FLASHES · OLDER HISTORY NOT YET COLLECTED · STALE | Lightning Flashes (Optical) [408 · last 7 days only STALE] | drawn=408 layer=visible dot=#ffcc00"
+  [data-contract] node/asis-pr3#048
+     G: "       Window  2025-10-27 00:45 UTC → 2026-10-27 00:45 UTC (1 year, latest)"
+     H: "       Window  2025-10-27 00:45 UTC → 2026-10-27 00:45 UTC (12 months, latest)"
+  [data-contract] node/asis-pr3#050
+     G: "       Flashes 408 seen in the available 7-day feed · 1 year requested · older history unknown · 408 drawn as points (cap 40,000)"
+     H: "       Flashes 408 seen in the available 7-day feed · 12 months requested · older history unknown · 408 drawn as points (cap 40,000)"
+  [data-contract] node/asis-pr4#026
+     G: "  [30d] PARTIAL · 408 seen in the available 7-day feed · 30 days requested · older history unknown · searched unknown · STALE | Lightning Flashes (Optical) [≥408 | 30d STALE] | drawn=408 layer=visible dot=#ffcc00"
+     H: "  [30d] 7-DAY FEED ONLY · 408 FLASHES · OLDER HISTORY NOT YET COLLECTED · STALE | Lightning Flashes (Optical) [408 · last 7 days only STALE] | drawn=408 layer=visible dot=#ffcc00"
+  [data-contract] node/asis-pr4#033
+     G: "  [3m] PARTIAL · 408 seen in the available 7-day feed · 3 months requested · older history unknown · searched unknown · STALE | Lightning Flashes (Optical) [≥408 | 3m STALE] | drawn=408 layer=visible dot=#ffcc00"
+     H: "  [3m] 7-DAY FEED ONLY · 408 FLASHES · OLDER HISTORY NOT YET COLLECTED · STALE | Lightning Flashes (Optical) [408 · last 7 days only STALE] | drawn=408 layer=visible dot=#ffcc00"
+  [data-contract] node/asis-pr4#040
+     G: "  [6m] PARTIAL · 408 seen in the available 7-day feed · 6 months requested · older history unknown · searched unknown · STALE | Lightning Flashes (Optical) [≥408 | 6m STALE] | drawn=408 layer=visible dot=#ffcc00"
+     H: "  [6m] 7-DAY FEED ONLY · 408 FLASHES · OLDER HISTORY NOT YET COLLECTED · STALE | Lightning Flashes (Optical) [408 · last 7 days only STALE] | drawn=408 layer=visible dot=#ffcc00"
+  [data-contract] node/asis-pr4#047
+     G: "  [12m] PARTIAL · 408 seen in the available 7-day feed · 1 year requested · older history unknown · searched unknown · STALE | Lightning Flashes (Optical) [≥408 | 12m STALE] | drawn=408 layer=visible dot=#ffcc00"
+     H: "  [12m] 7-DAY FEED ONLY · 408 FLASHES · OLDER HISTORY NOT YET COLLECTED · STALE | Lightning Flashes (Optical) [408 · last 7 days only STALE] | drawn=408 layer=visible dot=#ffcc00"
+  [data-contract] node/asis-pr4#048
+     G: "       Window  2025-10-27 00:45 UTC → 2026-10-27 00:45 UTC (1 year, latest)"
+     H: "       Window  2025-10-27 00:45 UTC → 2026-10-27 00:45 UTC (12 months, latest)"
+  [data-contract] node/asis-pr4#050
+     G: "       Flashes 408 seen in the available 7-day feed · 1 year requested · older history unknown · 408 drawn as points (cap 40,000)"
+     H: "       Flashes 408 seen in the available 7-day feed · 12 months requested · older history unknown · 408 drawn as points (cap 40,000)"
+  [data-contract] node/merged-pr2-first-run#055
+     G: "       Window  2025-10-27 00:45 UTC → 2026-10-27 00:45 UTC (1 year, latest)"
+     H: "       Window  2025-10-27 00:45 UTC → 2026-10-27 00:45 UTC (12 months, latest)"
+  [data-contract] node/merged-pr4-TAMPER-sha#055
+     G: "       Window  2025-10-27 00:45 UTC → 2026-10-27 00:45 UTC (1 year, latest)"
+     H: "       Window  2025-10-27 00:45 UTC → 2026-10-27 00:45 UTC (12 months, latest)"
+  [data-contract] node/merged-pr4-first-run-at0445-STALE#055
+     G: "       Window  2025-10-27 04:45 UTC → 2026-10-27 04:45 UTC (1 year, latest)"
+     H: "       Window  2025-10-27 04:45 UTC → 2026-10-27 04:45 UTC (12 months, latest)"
+  [data-contract] node/merged-pr4-first-run#055
+     G: "       Window  2025-10-27 00:45 UTC → 2026-10-27 00:45 UTC (1 year, latest)"
+     H: "       Window  2025-10-27 00:45 UTC → 2026-10-27 00:45 UTC (12 months, latest)"
+  [data-contract] node/merged-pr4-shard-lost#055
+     G: "       Window  2025-10-27 01:25 UTC → 2026-10-27 01:25 UTC (1 year, latest)"
+     H: "       Window  2025-10-27 01:25 UTC → 2026-10-27 01:25 UTC (12 months, latest)"
+  [data-contract] node/merged-pr4-split-SYNTHETIC-threshold#055
+     G: "       Window  2025-10-27 00:45 UTC → 2026-10-27 00:45 UTC (1 year, latest)"
+     H: "       Window  2025-10-27 00:45 UTC → 2026-10-27 00:45 UTC (12 months, latest)"
+  [data-contract] node-skew/skew-consistent-run2#055
+     G: "       Window  2025-10-23 16:17 UTC → 2026-10-23 16:17 UTC (1 year, latest)"
+     H: "       Window  2025-10-23 16:17 UTC → 2026-10-23 16:17 UTC (12 months, latest)"
+  [data-contract] node-skew/skew-new-index-old-shard#055
+     G: "       Window  2025-10-23 16:17 UTC → 2026-10-23 16:17 UTC (1 year, latest)"
+     H: "       Window  2025-10-23 16:17 UTC → 2026-10-23 16:17 UTC (12 months, latest)"
+  [data-contract] node-skew/skew-new-index-old-shard#082
+     G: " fetch: [\"history/days/2026/10/21.json 200\",\"history/days/2026/10/22.json 200\",\"history/days/2026/10/23.json 200\",\"history/index.json 200\",\"history/days/2026/10/22.json 200\",\"history/days/2026/10/23.json 200\",\"history/index.json?1792772220125 200\",\"history/days/2026/10/22.json 200\",\"history/days/2026/10/23.json 200\",\"history/days/2026/10/23.json 200\",\"history/index.json?17927
+     H: " fetch: [\"history/days/2026/10/21.json 200\",\"history/days/2026/10/22.json 200\",\"history/days/2026/10/23.json 200\",\"history/index.json 200\",\"history/days/2026/10/22.json 200\",\"history/days/2026/10/23.json 200\",\"history/index.json?1792772220067 200\",\"history/days/2026/10/22.json 200\",\"history/days/2026/10/23.json 200\",\"history/days/2026/10/23.json 200\",\"history/index.json?17927
+  [data-contract] node-skew/skew-old-index-new-shard#055
+     G: "       Window  2025-10-23 16:17 UTC → 2026-10-23 16:17 UTC (1 year, latest)"
+     H: "       Window  2025-10-23 16:17 UTC → 2026-10-23 16:17 UTC (12 months, latest)"
+  [data-contract] node-skew/skew-old-index-new-shard#082
+     G: " fetch: [\"history/days/2026/10/21.json 200\",\"history/days/2026/10/22.json 200\",\"history/days/2026/10/23.json 200\",\"history/index.json 200\",\"history/days/2026/10/22.json 200\",\"history/days/2026/10/23.json 200\",\"history/index.json?1792772220233 200\",\"history/days/2026/10/22.json 200\",\"history/days/2026/10/23.json 200\",\"history/days/2026/10/23.json 200\",\"history/index.json?17927
+     H: " fetch: [\"history/days/2026/10/21.json 200\",\"history/days/2026/10/22.json 200\",\"history/days/2026/10/23.json 200\",\"history/index.json 200\",\"history/days/2026/10/22.json 200\",\"history/days/2026/10/23.json 200\",\"history/index.json?1792772220046 200\",\"history/days/2026/10/22.json 200\",\"history/days/2026/10/23.json 200\",\"history/days/2026/10/23.json 200\",\"history/index.json?17927
+data-contract: 1012 keys, 35 differ

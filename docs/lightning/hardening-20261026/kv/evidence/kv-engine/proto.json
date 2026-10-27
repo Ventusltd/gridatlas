@@ -1,0 +1,1488 @@
+{
+  "phase": "proto",
+  "startedAt": "2026-10-27T16:26:53.404Z",
+  "steps": [
+    {
+      "what": "7D on",
+      "label": "Lightning Flashes (Optical) [≥408 | 7d STALE]",
+      "status": "PARTIAL · 408 seen in the available 7-day feed · 7 days requested · searched unknown · STALE"
+    },
+    {
+      "what": "layers collapsed",
+      "dashPressed": "true"
+    },
+    {
+      "what": "flash screen point",
+      "X": 243.66569740530667,
+      "Y": 534.6133548401392,
+      "top": "CANVAS.maplibregl-canvas",
+      "zoom": 4.2
+    }
+  ],
+  "composition": {
+    "engine": 120,
+    "pn": 6,
+    "scada": true,
+    "curtain": true,
+    "menuInstalled": true,
+    "map": true,
+    "waitedMs": 3736
+  },
+  "linkBeforeTap": {
+    "installed": true,
+    "substations_loaded": 5800,
+    "substations_qualifying": 5800,
+    "substations_len": 5800,
+    "links_drawn": 0,
+    "arrival_engine": {
+      "engine": "onshore",
+      "answered": false,
+      "reason": "NO_PROJECT_IN_ADDRESS",
+      "fallback_from": null,
+      "terminal": true,
+      "epoch": 1,
+      "at": "2026-10-26T18:40:00.609Z"
+    },
+    "project_pin": {
+      "shown": false,
+      "name": null
+    },
+    "deep_linked": false,
+    "failures": [
+      "the basemap serves no glyphs, so link labels are omitted",
+      "the basemap serves no glyphs, so layout labels are omitted"
+    ],
+    "last_selection": null,
+    "selectAt": "function",
+    "measureKeys": [
+      "distanceKm",
+      "voltagesKv",
+      "representativePoint",
+      "deepLinkPlan",
+      "createArrivalGate",
+      "continueVerifiedArrival",
+      "arrivalGate",
+      "arrivalKey",
+      "claimPendingArrival",
+      "invalidatePendingArrival",
+      "nearestSubstations",
+      "MIN_KV",
+      "MAX_LINK_KM",
+      "LINK_COUNT",
+      "PROJECT_TECHS",
+      "flowDash",
+      "flowIndex",
+      "OFFSHORE_TECHS",
+      "isProjectTech",
+      "LAYER_ID_FOR_BUCKET",
+      "layerIdForBucket",
+      "coverage",
+      "recordArrivalEngine",
+      "answerArrival",
+      "classifyEngine"
+    ],
+    "linkKeys": [
+      "enableSubstationLayer",
+      "armGridScope",
+      "clearGridScope",
+      "noteFailure",
+      "togglePin",
+      "selectAt"
+    ]
+  },
+  "afterFlashTap": {
+    "cards": {
+      "mapRect": {
+        "x": 5,
+        "y": 5,
+        "w": 383,
+        "h": 838
+      },
+      "popup": null,
+      "lightningCard": {
+        "rect": {
+          "x": 166,
+          "y": 256,
+          "w": 148,
+          "h": 528
+        },
+        "text": "×\n2026-10-23 02:22:34 UTC\nFlash ID W_XX-EUMETSAT-Darmstadt,IMG+SAT,MTI1+LI-2-LFL--FD--x-x--ARC-x_C_EUMT_20261023023022_L2PF_OPE_20261023022009_20261023023009_N__O_0015_0000:1631\nlat 51.438, lon -1.696\nEUMETSAT MTG Lightning Imager · optical flash, not necessarily a ground strike\nNEAREST SUBSTATIONS"
+      },
+      "markers": [],
+      "htmlClass": "gridatlas-menu-hosted",
+      "sheetH": ""
+    }
+  },
+  "protoLand": {
+    "returned": true,
+    "ms": 1859,
+    "map": {
+      "total": 104,
+      "order": [
+        "background",
+        "l-neon-glow",
+        "l-neon-core",
+        "l-neon-flow",
+        "l-neon-flow-b",
+        "l-neon-node-ring",
+        "l-neon-node",
+        "l-sld-boundary",
+        "l-sld-boundary-line",
+        "l-sld-block",
+        "l-sld-bess",
+        "l-sld-radial",
+        "l-sld-radial-flow",
+        "l-sld-cable-glow",
+        "l-sld-cable",
+        "l-sld-cable-flow",
+        "l-sld-cable-flow-b",
+        "l-sld-node",
+        "l-sld-pin",
+        "l-sld-handle",
+        "l-sat",
+        "l-radius-circle-fill",
+        "l-radius-circle-stroke",
+        "l-radius-area-fill",
+        "l-radius-area-stroke",
+        "l-measure-fill",
+        "l-measure-line",
+        "l-measure-points",
+        "l-zonedraw-fill",
+        "l-zonedraw-line",
+        "l-zonedraw-points",
+        "l-400",
+        "l-275",
+        "l-220",
+        "l-132",
+        "l-66",
+        "l-11kv",
+        "l-subs",
+        "l-nuc",
+        "l-gas",
+        "l-ind",
+        "l-dc",
+        "l-air",
+        "l-rail",
+        "l-tesco",
+        "l-sainsburys",
+        "l-asda",
+        "l-morrisons",
+        "l-aldi",
+        "l-lidl",
+        "l-waitrose",
+        "l-ms",
+        "l-coop",
+        "l-costco",
+        "l-booths",
+        "l-mainline_rail",
+        "l-eurostar_route",
+        "l-eurostar_station",
+        "l-stadiums",
+        "l-subsea_data_cables",
+        "l-global_ports_major",
+        "l-global_ports_minor",
+        "l-global_hydrocarbons",
+        "l-motorways",
+        "l-trunk_roads",
+        "l-primary_roads",
+        "l-motorway_services",
+        "l-naei_co2-glow",
+        "l-naei_co2",
+        "l-elizabeth",
+        "l-lu",
+        "l-dlr",
+        "l-metro",
+        "l-tram",
+        "l-hs2",
+        "l-ev",
+        "l-solar-glow",
+        "l-solar",
+        "l-solar_operational-glow",
+        "l-solar_operational",
+        "l-solar_roof-glow",
+        "l-solar_roof",
+        "l-wind",
+        "l-wind_onshore_operational-glow",
+        "l-wind_onshore_operational",
+        "l-wind_offshore_operational-glow",
+        "l-wind_offshore_operational",
+        "l-bess",
+        "l-bess_operational-glow",
+        "l-bess_operational",
+        "l-biomass",
+        "l-tidal",
+        "l-hydrogen",
+        "l-hydro",
+        "l-flywheel",
+        "l-act",
+        "l-geothermal",
+        "l-caes",
+        "l-interconnectors",
+        "l-interconnector-nodes",
+        "l-gridatlas-lightning",
+        "l-gridatlas-lightning-hit",
+        "l-project-pin-halo",
+        "l-project-pin"
+      ],
+      "picked": [
+        {
+          "i": 1,
+          "id": "l-neon-glow",
+          "type": "line",
+          "source": "gridatlas-neon-links",
+          "vis": "visible",
+          "paint": {
+            "line-color": [
+              "get",
+              "colour"
+            ],
+            "line-width": [
+              "interpolate",
+              [
+                "linear"
+              ],
+              [
+                "zoom"
+              ],
+              6,
+              5,
+              12,
+              12
+            ],
+            "line-opacity": 0.1,
+            "line-blur": [
+              "interpolate",
+              [
+                "linear"
+              ],
+              [
+                "zoom"
+              ],
+              6,
+              3,
+              12,
+              8
+            ]
+          },
+          "layout": {
+            "line-cap": "round",
+            "line-join": "round"
+          }
+        },
+        {
+          "i": 2,
+          "id": "l-neon-core",
+          "type": "line",
+          "source": "gridatlas-neon-links",
+          "vis": "visible",
+          "paint": {
+            "line-color": [
+              "get",
+              "colour"
+            ],
+            "line-width": [
+              "interpolate",
+              [
+                "linear"
+              ],
+              [
+                "zoom"
+              ],
+              6,
+              0.9,
+              12,
+              1.8
+            ],
+            "line-opacity": [
+              "get",
+              "strength"
+            ]
+          },
+          "layout": {
+            "line-cap": "round",
+            "line-join": "round"
+          }
+        },
+        {
+          "i": 3,
+          "id": "l-neon-flow",
+          "type": "line",
+          "source": "gridatlas-neon-links",
+          "vis": "visible",
+          "paint": {
+            "line-color": "#bfe9ee",
+            "line-width": [
+              "interpolate",
+              [
+                "linear"
+              ],
+              [
+                "zoom"
+              ],
+              6,
+              1.2,
+              12,
+              2.4
+            ],
+            "line-opacity": 0.8,
+            "line-dasharray": [
+              0.2,
+              3.2
+            ]
+          },
+          "layout": {
+            "line-cap": "round"
+          }
+        },
+        {
+          "i": 4,
+          "id": "l-neon-flow-b",
+          "type": "line",
+          "source": "gridatlas-neon-links",
+          "vis": "visible",
+          "paint": {
+            "line-color": "#bfe9ee",
+            "line-width": [
+              "interpolate",
+              [
+                "linear"
+              ],
+              [
+                "zoom"
+              ],
+              6,
+              0.9,
+              12,
+              1.8
+            ],
+            "line-opacity": 0.45,
+            "line-dasharray": [
+              0.2,
+              3.2
+            ]
+          },
+          "layout": {
+            "line-cap": "round"
+          }
+        },
+        {
+          "i": 5,
+          "id": "l-neon-node-ring",
+          "type": "circle",
+          "source": "gridatlas-neon-nodes",
+          "vis": "visible",
+          "paint": {
+            "circle-radius": [
+              "interpolate",
+              [
+                "linear"
+              ],
+              [
+                "zoom"
+              ],
+              6,
+              6,
+              12,
+              13
+            ],
+            "circle-color": "rgba(0,0,0,0)",
+            "circle-stroke-color": "#5fbdc2",
+            "circle-stroke-width": 1,
+            "circle-stroke-opacity": 0.4
+          }
+        },
+        {
+          "i": 6,
+          "id": "l-neon-node",
+          "type": "circle",
+          "source": "gridatlas-neon-nodes",
+          "vis": "visible",
+          "paint": {
+            "circle-radius": [
+              "interpolate",
+              [
+                "linear"
+              ],
+              [
+                "zoom"
+              ],
+              6,
+              2.2,
+              12,
+              4
+            ],
+            "circle-color": "#5fbdc2",
+            "circle-opacity": 0.8
+          }
+        },
+        {
+          "i": 102,
+          "id": "l-project-pin-halo",
+          "type": "circle",
+          "source": "gridatlas-project-pin",
+          "vis": "visible",
+          "paint": {
+            "circle-radius": [
+              "interpolate",
+              [
+                "linear"
+              ],
+              [
+                "zoom"
+              ],
+              6,
+              11,
+              14,
+              26
+            ],
+            "circle-color": "rgba(0,0,0,0)",
+            "circle-stroke-color": [
+              "get",
+              "colour"
+            ],
+            "circle-stroke-width": 6,
+            "circle-stroke-opacity": 0.13,
+            "circle-blur": 0.4
+          }
+        },
+        {
+          "i": 103,
+          "id": "l-project-pin",
+          "type": "circle",
+          "source": "gridatlas-project-pin",
+          "vis": "visible",
+          "paint": {
+            "circle-radius": [
+              "interpolate",
+              [
+                "linear"
+              ],
+              [
+                "zoom"
+              ],
+              6,
+              11,
+              14,
+              26
+            ],
+            "circle-color": "rgba(0,0,0,0)",
+            "circle-stroke-color": "#cfe9ed",
+            "circle-stroke-width": 1.6,
+            "circle-stroke-opacity": 0.85
+          }
+        }
+      ],
+      "sources": {
+        "gridatlas-neon-links": {
+          "type": "FeatureCollection",
+          "features": [
+            {
+              "type": "Feature",
+              "properties": {
+                "colour": "#5fbdc2",
+                "strength": 0.62,
+                "km": 3.3585683156268042
+              },
+              "geometry": {
+                "type": "LineString",
+                "coordinates": [
+                  [
+                    -1.6956,
+                    51.437702
+                  ],
+                  [
+                    -1.7240152,
+                    51.4132819
+                  ]
+                ]
+              }
+            },
+            {
+              "type": "Feature",
+              "properties": {
+                "colour": "#5fbdc2",
+                "strength": 0.52,
+                "km": 6.2395272972003255
+              },
+              "geometry": {
+                "type": "LineString",
+                "coordinates": [
+                  [
+                    -1.6956,
+                    51.437702
+                  ],
+                  [
+                    -1.6069232,
+                    51.4470098
+                  ]
+                ]
+              }
+            },
+            {
+              "type": "Feature",
+              "properties": {
+                "colour": "#5fbdc2",
+                "strength": 0.42,
+                "km": 9.225428871564892
+              },
+              "geometry": {
+                "type": "LineString",
+                "coordinates": [
+                  [
+                    -1.6956,
+                    51.437702
+                  ],
+                  [
+                    -1.7289727,
+                    51.5179266
+                  ]
+                ]
+              }
+            },
+            {
+              "type": "Feature",
+              "properties": {
+                "colour": "#5fbdc2",
+                "strength": 0.31999999999999995,
+                "km": 11.27594786531489
+              },
+              "geometry": {
+                "type": "LineString",
+                "coordinates": [
+                  [
+                    -1.6956,
+                    51.437702
+                  ],
+                  [
+                    -1.6479358,
+                    51.3408738
+                  ]
+                ]
+              }
+            },
+            {
+              "type": "Feature",
+              "properties": {
+                "colour": "#5fbdc2",
+                "strength": 0.21999999999999997,
+                "km": 12.195464889533358
+              },
+              "geometry": {
+                "type": "LineString",
+                "coordinates": [
+                  [
+                    -1.6956,
+                    51.437702
+                  ],
+                  [
+                    -1.6526496,
+                    51.3314781
+                  ]
+                ]
+              }
+            }
+          ]
+        },
+        "gridatlas-neon-nodes": {
+          "type": "FeatureCollection",
+          "features": [
+            {
+              "type": "Feature",
+              "properties": {
+                "colour": "#5fbdc2",
+                "label": "3.36 km · 33 kV"
+              },
+              "geometry": {
+                "type": "Point",
+                "coordinates": [
+                  -1.7240152,
+                  51.4132819
+                ]
+              }
+            },
+            {
+              "type": "Feature",
+              "properties": {
+                "colour": "#5fbdc2",
+                "label": "6.24 km · 33 kV"
+              },
+              "geometry": {
+                "type": "Point",
+                "coordinates": [
+                  -1.6069232,
+                  51.4470098
+                ]
+              }
+            },
+            {
+              "type": "Feature",
+              "properties": {
+                "colour": "#5fbdc2",
+                "label": "9.23 km · 33 kV"
+              },
+              "geometry": {
+                "type": "Point",
+                "coordinates": [
+                  -1.7289727,
+                  51.5179266
+                ]
+              }
+            },
+            {
+              "type": "Feature",
+              "properties": {
+                "colour": "#5fbdc2",
+                "label": "11.28 km · 33 kV"
+              },
+              "geometry": {
+                "type": "Point",
+                "coordinates": [
+                  -1.6479358,
+                  51.3408738
+                ]
+              }
+            },
+            {
+              "type": "Feature",
+              "properties": {
+                "colour": "#5fbdc2",
+                "label": "12.20 km · 132 kV"
+              },
+              "geometry": {
+                "type": "Point",
+                "coordinates": [
+                  -1.6526496,
+                  51.3314781
+                ]
+              }
+            }
+          ]
+        },
+        "gridatlas-project-pin": {
+          "type": "FeatureCollection",
+          "features": [
+            {
+              "type": "Feature",
+              "properties": {
+                "colour": "#5fbdc2",
+                "name": "Optical flash 2026-10-23 02:22:34 UTC"
+              },
+              "geometry": {
+                "type": "Point",
+                "coordinates": [
+                  -1.6956,
+                  51.437702
+                ]
+              }
+            }
+          ]
+        }
+      },
+      "zoom": 12,
+      "center": [
+        -1.695600000000013,
+        51.437702
+      ],
+      "bounds": [
+        [
+          -1.7284731536871334,
+          51.392843753418305
+        ],
+        [
+          -1.6627268463138876,
+          51.48251623556254
+        ]
+      ]
+    },
+    "cards": {
+      "mapRect": {
+        "x": 5,
+        "y": 5,
+        "w": 383,
+        "h": 838
+      },
+      "popup": {
+        "cls": "maplibregl-popup gridatlas-lightning-engine gridatlas-min gridatlas-sheet maplibregl-popup-anchor-left",
+        "rect": {
+          "x": 0,
+          "y": 782,
+          "w": 393,
+          "h": 70
+        },
+        "bar": "<div class=\"gridatlas-card-bar\"><span class=\"grip\">⋮⋮</span><span class=\"label\">Optical flash 2026-10-23 02:22:34 UTC</span><span class=\"spacer\"></span><button type=\"button\" class=\"min\" title=\"Minimise\">−</button><button type=\"button\" class=\"close\" title=\"Close\">×</button></div>",
+        "text": "⋮⋮\nOptical flash 2026-10-23 02:22:34 UTC\n−\n×"
+      },
+      "lightningCard": null,
+      "markers": [],
+      "htmlClass": "gridatlas-menu-hosted gridatlas-sheet-open",
+      "sheetH": "66px"
+    },
+    "pixels": [
+      {
+        "from": [
+          192,
+          419
+        ],
+        "to": [
+          26,
+          647
+        ],
+        "px": 281.9,
+        "visibleFraction": 1
+      },
+      {
+        "from": [
+          192,
+          419
+        ],
+        "to": [
+          708,
+          332
+        ],
+        "px": 523.9,
+        "visibleFraction": 0.37
+      },
+      {
+        "from": [
+          192,
+          419
+        ],
+        "to": [
+          -3,
+          -331
+        ],
+        "px": 775.1,
+        "visibleFraction": 0.56
+      },
+      {
+        "from": [
+          192,
+          419
+        ],
+        "to": [
+          469,
+          1323
+        ],
+        "px": 945.6,
+        "visibleFraction": 0.39
+      },
+      {
+        "from": [
+          192,
+          419
+        ],
+        "to": [
+          442,
+          1411
+        ],
+        "px": 1022.6,
+        "visibleFraction": 0.37
+      }
+    ],
+    "neon": {
+      "links": 5,
+      "nodes": 5,
+      "pin": 1,
+      "links_drawn": 5,
+      "arrival_engine": {
+        "engine": "onshore",
+        "answered": true,
+        "reason": null,
+        "fallback_from": null,
+        "terminal": true,
+        "epoch": 3,
+        "at": "2026-10-26T18:40:08.648Z"
+      },
+      "last_selection": {
+        "name": "Optical flash 2026-10-23 02:22:34 UTC",
+        "tech": "",
+        "direction": "to-substation",
+        "count": 5,
+        "nearest_km": 3.359,
+        "nearest_beyond_radius": false,
+        "nearest_name": "Maybush",
+        "draw_radius_km": 40
+      },
+      "project_pin": {
+        "shown": true,
+        "name": "Optical flash 2026-10-23 02:22:34 UTC"
+      },
+      "popups": 1,
+      "block": true,
+      "htmlClass": "gridatlas-menu-hosted gridatlas-sheet-open",
+      "sheetH": "66px",
+      "containerAttrs": [
+        "data-gridatlas-arrival",
+        "data-gridatlas-arrival-engine"
+      ],
+      "clicks": []
+    },
+    "notes": []
+  },
+  "protoMin": {
+    "links": 5,
+    "nodes": 5,
+    "pin": 1,
+    "links_drawn": 5,
+    "arrival_engine": {
+      "engine": "onshore",
+      "answered": true,
+      "reason": null,
+      "fallback_from": null,
+      "terminal": true,
+      "epoch": 3,
+      "at": "2026-10-26T18:40:08.648Z"
+    },
+    "last_selection": {
+      "name": "Optical flash 2026-10-23 02:22:34 UTC",
+      "tech": "",
+      "direction": "to-substation",
+      "count": 5,
+      "nearest_km": 3.359,
+      "nearest_beyond_radius": false,
+      "nearest_name": "Maybush",
+      "draw_radius_km": 40
+    },
+    "project_pin": {
+      "shown": true,
+      "name": "Optical flash 2026-10-23 02:22:34 UTC"
+    },
+    "popups": 1,
+    "block": true,
+    "htmlClass": "gridatlas-menu-hosted gridatlas-sheet-open",
+    "sheetH": "494px",
+    "containerAttrs": [
+      "data-gridatlas-arrival",
+      "data-gridatlas-arrival-engine"
+    ],
+    "clicks": []
+  },
+  "protoRestore": {
+    "links": 5,
+    "nodes": 5,
+    "pin": 1,
+    "links_drawn": 5,
+    "arrival_engine": {
+      "engine": "onshore",
+      "answered": true,
+      "reason": null,
+      "fallback_from": null,
+      "terminal": true,
+      "epoch": 3,
+      "at": "2026-10-26T18:40:08.648Z"
+    },
+    "last_selection": {
+      "name": "Optical flash 2026-10-23 02:22:34 UTC",
+      "tech": "",
+      "direction": "to-substation",
+      "count": 5,
+      "nearest_km": 3.359,
+      "nearest_beyond_radius": false,
+      "nearest_name": "Maybush",
+      "draw_radius_km": 40
+    },
+    "project_pin": {
+      "shown": true,
+      "name": "Optical flash 2026-10-23 02:22:34 UTC"
+    },
+    "popups": 1,
+    "block": true,
+    "htmlClass": "gridatlas-menu-hosted gridatlas-sheet-open",
+    "sheetH": "66px",
+    "containerAttrs": [
+      "data-gridatlas-arrival",
+      "data-gridatlas-arrival-engine"
+    ],
+    "clicks": []
+  },
+  "protoAfterPc": {
+    "links": 0,
+    "nodes": 0,
+    "pin": 0,
+    "links_drawn": 0,
+    "arrival_engine": null,
+    "last_selection": null,
+    "project_pin": {
+      "shown": false,
+      "name": null
+    },
+    "popups": 0,
+    "block": false,
+    "htmlClass": "gridatlas-menu-hosted",
+    "sheetH": "",
+    "containerAttrs": [],
+    "clicks": []
+  },
+  "protoSea": {
+    "returned": true,
+    "ms": 1832,
+    "map": {
+      "total": 104,
+      "order": [
+        "background",
+        "l-neon-glow",
+        "l-neon-core",
+        "l-neon-flow",
+        "l-neon-flow-b",
+        "l-neon-node-ring",
+        "l-neon-node",
+        "l-sld-boundary",
+        "l-sld-boundary-line",
+        "l-sld-block",
+        "l-sld-bess",
+        "l-sld-radial",
+        "l-sld-radial-flow",
+        "l-sld-cable-glow",
+        "l-sld-cable",
+        "l-sld-cable-flow",
+        "l-sld-cable-flow-b",
+        "l-sld-node",
+        "l-sld-pin",
+        "l-sld-handle",
+        "l-sat",
+        "l-radius-circle-fill",
+        "l-radius-circle-stroke",
+        "l-radius-area-fill",
+        "l-radius-area-stroke",
+        "l-measure-fill",
+        "l-measure-line",
+        "l-measure-points",
+        "l-zonedraw-fill",
+        "l-zonedraw-line",
+        "l-zonedraw-points",
+        "l-400",
+        "l-275",
+        "l-220",
+        "l-132",
+        "l-66",
+        "l-11kv",
+        "l-subs",
+        "l-nuc",
+        "l-gas",
+        "l-ind",
+        "l-dc",
+        "l-air",
+        "l-rail",
+        "l-tesco",
+        "l-sainsburys",
+        "l-asda",
+        "l-morrisons",
+        "l-aldi",
+        "l-lidl",
+        "l-waitrose",
+        "l-ms",
+        "l-coop",
+        "l-costco",
+        "l-booths",
+        "l-mainline_rail",
+        "l-eurostar_route",
+        "l-eurostar_station",
+        "l-stadiums",
+        "l-subsea_data_cables",
+        "l-global_ports_major",
+        "l-global_ports_minor",
+        "l-global_hydrocarbons",
+        "l-motorways",
+        "l-trunk_roads",
+        "l-primary_roads",
+        "l-motorway_services",
+        "l-naei_co2-glow",
+        "l-naei_co2",
+        "l-elizabeth",
+        "l-lu",
+        "l-dlr",
+        "l-metro",
+        "l-tram",
+        "l-hs2",
+        "l-ev",
+        "l-solar-glow",
+        "l-solar",
+        "l-solar_operational-glow",
+        "l-solar_operational",
+        "l-solar_roof-glow",
+        "l-solar_roof",
+        "l-wind",
+        "l-wind_onshore_operational-glow",
+        "l-wind_onshore_operational",
+        "l-wind_offshore_operational-glow",
+        "l-wind_offshore_operational",
+        "l-bess",
+        "l-bess_operational-glow",
+        "l-bess_operational",
+        "l-biomass",
+        "l-tidal",
+        "l-hydrogen",
+        "l-hydro",
+        "l-flywheel",
+        "l-act",
+        "l-geothermal",
+        "l-caes",
+        "l-interconnectors",
+        "l-interconnector-nodes",
+        "l-gridatlas-lightning",
+        "l-gridatlas-lightning-hit",
+        "l-project-pin-halo",
+        "l-project-pin"
+      ],
+      "picked": [
+        {
+          "i": 1,
+          "id": "l-neon-glow",
+          "type": "line",
+          "source": "gridatlas-neon-links",
+          "vis": "visible",
+          "paint": {
+            "line-color": [
+              "get",
+              "colour"
+            ],
+            "line-width": [
+              "interpolate",
+              [
+                "linear"
+              ],
+              [
+                "zoom"
+              ],
+              6,
+              5,
+              12,
+              12
+            ],
+            "line-opacity": 0.1,
+            "line-blur": [
+              "interpolate",
+              [
+                "linear"
+              ],
+              [
+                "zoom"
+              ],
+              6,
+              3,
+              12,
+              8
+            ]
+          },
+          "layout": {
+            "line-cap": "round",
+            "line-join": "round"
+          }
+        },
+        {
+          "i": 2,
+          "id": "l-neon-core",
+          "type": "line",
+          "source": "gridatlas-neon-links",
+          "vis": "visible",
+          "paint": {
+            "line-color": [
+              "get",
+              "colour"
+            ],
+            "line-width": [
+              "interpolate",
+              [
+                "linear"
+              ],
+              [
+                "zoom"
+              ],
+              6,
+              0.9,
+              12,
+              1.8
+            ],
+            "line-opacity": [
+              "get",
+              "strength"
+            ]
+          },
+          "layout": {
+            "line-cap": "round",
+            "line-join": "round"
+          }
+        },
+        {
+          "i": 3,
+          "id": "l-neon-flow",
+          "type": "line",
+          "source": "gridatlas-neon-links",
+          "vis": "visible",
+          "paint": {
+            "line-color": "#bfe9ee",
+            "line-width": [
+              "interpolate",
+              [
+                "linear"
+              ],
+              [
+                "zoom"
+              ],
+              6,
+              1.2,
+              12,
+              2.4
+            ],
+            "line-opacity": 0.8,
+            "line-dasharray": [
+              0.2,
+              3.2
+            ]
+          },
+          "layout": {
+            "line-cap": "round"
+          }
+        },
+        {
+          "i": 4,
+          "id": "l-neon-flow-b",
+          "type": "line",
+          "source": "gridatlas-neon-links",
+          "vis": "visible",
+          "paint": {
+            "line-color": "#bfe9ee",
+            "line-width": [
+              "interpolate",
+              [
+                "linear"
+              ],
+              [
+                "zoom"
+              ],
+              6,
+              0.9,
+              12,
+              1.8
+            ],
+            "line-opacity": 0.45,
+            "line-dasharray": [
+              0.2,
+              3.2
+            ]
+          },
+          "layout": {
+            "line-cap": "round"
+          }
+        },
+        {
+          "i": 5,
+          "id": "l-neon-node-ring",
+          "type": "circle",
+          "source": "gridatlas-neon-nodes",
+          "vis": "visible",
+          "paint": {
+            "circle-radius": [
+              "interpolate",
+              [
+                "linear"
+              ],
+              [
+                "zoom"
+              ],
+              6,
+              6,
+              12,
+              13
+            ],
+            "circle-color": "rgba(0,0,0,0)",
+            "circle-stroke-color": "#5fbdc2",
+            "circle-stroke-width": 1,
+            "circle-stroke-opacity": 0.4
+          }
+        },
+        {
+          "i": 6,
+          "id": "l-neon-node",
+          "type": "circle",
+          "source": "gridatlas-neon-nodes",
+          "vis": "visible",
+          "paint": {
+            "circle-radius": [
+              "interpolate",
+              [
+                "linear"
+              ],
+              [
+                "zoom"
+              ],
+              6,
+              2.2,
+              12,
+              4
+            ],
+            "circle-color": "#5fbdc2",
+            "circle-opacity": 0.8
+          }
+        },
+        {
+          "i": 102,
+          "id": "l-project-pin-halo",
+          "type": "circle",
+          "source": "gridatlas-project-pin",
+          "vis": "visible",
+          "paint": {
+            "circle-radius": [
+              "interpolate",
+              [
+                "linear"
+              ],
+              [
+                "zoom"
+              ],
+              6,
+              11,
+              14,
+              26
+            ],
+            "circle-color": "rgba(0,0,0,0)",
+            "circle-stroke-color": [
+              "get",
+              "colour"
+            ],
+            "circle-stroke-width": 6,
+            "circle-stroke-opacity": 0.13,
+            "circle-blur": 0.4
+          }
+        },
+        {
+          "i": 103,
+          "id": "l-project-pin",
+          "type": "circle",
+          "source": "gridatlas-project-pin",
+          "vis": "visible",
+          "paint": {
+            "circle-radius": [
+              "interpolate",
+              [
+                "linear"
+              ],
+              [
+                "zoom"
+              ],
+              6,
+              11,
+              14,
+              26
+            ],
+            "circle-color": "rgba(0,0,0,0)",
+            "circle-stroke-color": "#cfe9ed",
+            "circle-stroke-width": 1.6,
+            "circle-stroke-opacity": 0.85
+          }
+        }
+      ],
+      "sources": {
+        "gridatlas-neon-links": {
+          "type": "FeatureCollection",
+          "features": []
+        },
+        "gridatlas-neon-nodes": {
+          "type": "FeatureCollection",
+          "features": []
+        },
+        "gridatlas-project-pin": {
+          "type": "FeatureCollection",
+          "features": [
+            {
+              "type": "Feature",
+              "properties": {
+                "colour": "#5fbdc2",
+                "name": "Optical flash 2026-10-21 12:32:19 UTC"
+              },
+              "geometry": {
+                "type": "Point",
+                "coordinates": [
+                  -3.9177,
+                  49.515301
+                ]
+              }
+            }
+          ]
+        }
+      },
+      "zoom": 12,
+      "center": [
+        -3.917699999999968,
+        49.51530100000002
+      ],
+      "bounds": [
+        [
+          -3.950573153685866,
+          49.46858103613758
+        ],
+        [
+          -3.8848268463126487,
+          49.561976377336066
+        ]
+      ]
+    },
+    "cards": {
+      "mapRect": {
+        "x": 5,
+        "y": 5,
+        "w": 383,
+        "h": 838
+      },
+      "popup": {
+        "cls": "maplibregl-popup gridatlas-lightning-engine gridatlas-min gridatlas-sheet maplibregl-popup-anchor-left",
+        "rect": {
+          "x": 0,
+          "y": 782,
+          "w": 393,
+          "h": 70
+        },
+        "bar": "<div class=\"gridatlas-card-bar\"><span class=\"grip\">⋮⋮</span><span class=\"label\">Optical flash 2026-10-21 12:32:19 UTC</span><span class=\"spacer\"></span><button type=\"button\" class=\"min\" title=\"Minimise\">−</button><button type=\"button\" class=\"close\" title=\"Close\">×</button></div>",
+        "text": "⋮⋮\nOptical flash 2026-10-21 12:32:19 UTC\n−\n×"
+      },
+      "lightningCard": null,
+      "markers": [],
+      "htmlClass": "gridatlas-menu-hosted gridatlas-sheet-open",
+      "sheetH": "66px"
+    },
+    "pixels": [],
+    "neon": {
+      "links": 0,
+      "nodes": 0,
+      "pin": 1,
+      "links_drawn": 0,
+      "arrival_engine": {
+        "engine": "onshore",
+        "answered": true,
+        "reason": "NEAREST_BEYOND_40_KM",
+        "fallback_from": null,
+        "terminal": true,
+        "epoch": 5,
+        "at": "2026-10-26T18:40:13.913Z"
+      },
+      "last_selection": {
+        "name": "Optical flash 2026-10-21 12:32:19 UTC",
+        "tech": "",
+        "direction": "to-substation",
+        "count": 0,
+        "nearest_km": 80.682,
+        "nearest_beyond_radius": true,
+        "nearest_name": "Salcombe Substation",
+        "draw_radius_km": 40
+      },
+      "project_pin": {
+        "shown": true,
+        "name": "Optical flash 2026-10-21 12:32:19 UTC"
+      },
+      "popups": 1,
+      "block": true,
+      "htmlClass": "gridatlas-menu-hosted gridatlas-sheet-open",
+      "sheetH": "66px",
+      "containerAttrs": [
+        "data-gridatlas-arrival",
+        "data-gridatlas-arrival-engine"
+      ],
+      "clicks": []
+    },
+    "notes": []
+  },
+  "protoSeaAfterPc": {
+    "links": 0,
+    "nodes": 0,
+    "pin": 0,
+    "links_drawn": 0,
+    "arrival_engine": null,
+    "last_selection": null,
+    "project_pin": {
+      "shown": false,
+      "name": null
+    },
+    "popups": 0,
+    "block": false,
+    "htmlClass": "gridatlas-menu-hosted",
+    "sheetH": "",
+    "containerAttrs": [],
+    "clicks": []
+  },
+  "protoLand2": {
+    "returned": true
+  },
+  "protoOffWithoutPatch": {
+    "links": 5,
+    "nodes": 5,
+    "pin": 1,
+    "links_drawn": 5,
+    "arrival_engine": {
+      "engine": "onshore",
+      "answered": true,
+      "reason": null,
+      "fallback_from": null,
+      "terminal": true,
+      "epoch": 7,
+      "at": "2026-10-26T18:40:16.786Z"
+    },
+    "last_selection": {
+      "name": "Optical flash 2026-10-23 02:22:34 UTC",
+      "tech": "",
+      "direction": "to-substation",
+      "count": 5,
+      "nearest_km": 3.359,
+      "nearest_beyond_radius": false,
+      "nearest_name": "Maybush",
+      "draw_radius_km": 40
+    },
+    "project_pin": {
+      "shown": true,
+      "name": "Optical flash 2026-10-23 02:22:34 UTC"
+    },
+    "popups": 1,
+    "block": true,
+    "htmlClass": "gridatlas-menu-hosted gridatlas-sheet-open",
+    "sheetH": "66px",
+    "containerAttrs": [
+      "data-gridatlas-arrival",
+      "data-gridatlas-arrival-engine"
+    ],
+    "clicks": []
+  },
+  "protoOffPatched": {
+    "links": 0,
+    "nodes": 0,
+    "pin": 0,
+    "links_drawn": 0,
+    "arrival_engine": null,
+    "last_selection": null,
+    "project_pin": {
+      "shown": false,
+      "name": null
+    },
+    "popups": 0,
+    "block": false,
+    "htmlClass": "gridatlas-menu-hosted",
+    "sheetH": "",
+    "containerAttrs": [],
+    "clicks": [],
+    "zoom": 4.2,
+    "lightningLayers": [],
+    "styleEl": false
+  },
+  "pageErrors": [],
+  "consoleErrors": [
+    "Failed to load resource: net::ERR_BLOCKED_BY_CLIENT.Inspector",
+    "Failed to load resource: net::ERR_BLOCKED_BY_CLIENT.Inspector",
+    "Failed to load resource: the server responded with a status of 404 (Not Found)",
+    "Failed to load resource: the server responded with a status of 404 (Not Found)",
+    "Failed to load resource: net::ERR_BLOCKED_BY_CLIENT.Inspector"
+  ],
+  "shim": {
+    "served": {
+      "maplibre": 2,
+      "style": 1,
+      "duckdb": 3,
+      "lightning-data": 3
+    },
+    "aborted": [
+      "https://raw.githubusercontent.com/Ventusltd/data-grid-gb/1c9909d1138704b29235c27fd769436dda8a0b18/derived/connection-points.v3.json",
+      "https://ventusltd.github.io/ventus-grid-engine/genome/engine-graph.json",
+      "https://raw.githubusercontent.com/Ventusltd/data-grid-gb/1c9909d1138704b29235c27fd769436dda8a0b18/derived/gb-transmission-network.v1.json"
+    ],
+    "missing": [
+      "https://raw.githubusercontent.com/Ventusltd/lightning/main/data/history/index.json"
+    ]
+  }
+}

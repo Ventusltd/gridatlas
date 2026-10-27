@@ -1,0 +1,16 @@
+PROVEN   C1-RLO  ID line length 20, contains format chars: true
+PROVEN   C1-ZWSP  ID line length 12, contains format chars: true
+PROVEN   C1-200k chars  ID line length 200009, contains format chars: false
+not-proven/FIXED  C1-markup  markup id rendered as text, <img> elements created: 0 (textContent holds)
+PROVEN   C2-object-id  accepted ev=1; tap threw: Cannot convert object to primitive value; card opened: false; later click listener ran: 0
+PROVEN   C3-NaN  tap under NaN projection opens a card: false (dm stays Infinity: safe); open card then a NaN 'move': left 485px -> NaNpx, top 334px -> NaNpx (a browser drops 'NaNpx' and keeps the stale position)
+PROVEN   C4-stale-index  tapped the rendered OLD flash at -0.25,51.95 before re-render; card shows "Flash ID NEW-in-Cornwall" / lat 50.200, lon -5.000
+PROVEN   C5-throwing-getter  listener threw: getter boom; user message shown: false; previous lines still drawn: true
+PROVEN   C6-string  listener threw: subs.filter is not a function
+PROVEN   C6-array-like  listener threw: subs.filter is not a function
+PROVEN   C7-string-km  listener threw: a.km.toFixed is not a function; card text after: "flash (straight-line km). Not evidence any asset was struck; faults can have other causes."
+PROVEN   C8-proto-pollution  polluted substation listed: true; line drawn to it: true
+PROVEN   C8b-dead-fallback  window.__GRIDATLAS_SUBSTATIONS__ (never assigned) read through the prototype: true
+not-proven/FIXED  C9-leak  map listeners 3 -> 3 (click,move,moveend); map-container children 1 -> 0; nearest sources 0; errors 0
+not-proven/FIXED  C10-time  hostile times accepted: 0 of 4; rejected as malformed: 4; parse+filter took 50 ms (no ReDoS in /T[\d:.]+$/)
+{"module":"/tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/kv-security/../../wt/atlas/modules/202610270929-uk-lightning-overlay.js","bytes":33558,"proven":["C1-RLO","C1-ZWSP","C1-200k chars","C2-object-id","C3-NaN","C4-stale-index","C5-throwing-getter","C6-string","C6-array-like","C7-string-km","C8-proto-pollution","C8b-dead-fallback"]}

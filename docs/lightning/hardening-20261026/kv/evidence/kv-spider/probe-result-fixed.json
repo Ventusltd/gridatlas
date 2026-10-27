@@ -1,0 +1,181 @@
+{
+ "commit": "2a49652",
+ "feed_commit": "69468dd",
+ "now": "2026-10-27T13:45:00.000Z",
+ "index_generated_utc": "2026-10-27T10:43:35.566Z",
+ "next_update_due_utc": "2026-10-27T13:43:35.566Z",
+ "periods": {
+  "48h": {
+   "label": "Lightning Flashes (Optical) [≥29 | 48h STALE]",
+   "status": "PARTIAL · 29 FLASHES DRAWN · SEARCHED 92% · STALE",
+   "flashes": "Flashes 29 archived in window · 29 drawn as points (cap 40,000)",
+   "refresh": "Refresh archive 2026-10-27 10:43 UTC (3h 1min ago; expected every 1 h) · STALE",
+   "warning": "Not yet ingested: last 3h 25min of window (unknown, not zero)",
+   "drawn": 29,
+   "mode": "detail",
+   "layer_features": 29
+  },
+  "7d": {
+   "label": "Lightning Flashes (Optical) [≥444 | 7d STALE]",
+   "status": "PARTIAL · 444 FLASHES DRAWN · SEARCHED 77% · STALE",
+   "flashes": "Flashes 444 archived in window · 444 drawn as points (cap 40,000)",
+   "refresh": "Refresh archive 2026-10-27 10:43 UTC (3h 1min ago; expected every 1 h) · STALE",
+   "warning": "Not yet ingested: last 3h 25min of window (unknown, not zero)",
+   "drawn": 444,
+   "mode": "detail",
+   "layer_features": 444
+  },
+  "30d": {
+   "label": "Lightning Flashes (Optical) [≥1,480 · 29/31 days searched | 30d STALE]",
+   "status": "PARTIAL · 1,480 FLASHES DRAWN · SEARCHED 88% · STALE",
+   "flashes": "Flashes 1,480 archived in window · 1,480 drawn as points (cap 40,000)",
+   "refresh": "Refresh archive 2026-10-27 10:43 UTC (3h 1min ago; expected every 1 h) · STALE",
+   "warning": "Not yet ingested: last 3h 25min of window (unknown, not zero) · Unknown: 2026-09-27 to 2026-09-28 precede archive start 2026-09-29 00:00 UTC (not zero) · Unknown: 2 of 31 UTC dates have no collection run",
+   "drawn": 1480,
+   "mode": "detail",
+   "layer_features": 1480
+  },
+  "3m": {
+   "label": "Lightning Flashes (Optical) [≥1,480 · 29/93 days searched | 3m STALE]",
+   "status": "PARTIAL · 1,480 FLASHES DRAWN · SEARCHED 28% · STALE",
+   "flashes": "Flashes 1,480 archived in window · 1,480 drawn as points (cap 40,000)",
+   "refresh": "Refresh archive 2026-10-27 10:43 UTC (3h 1min ago; expected every 1 h) · STALE",
+   "warning": "Not yet ingested: last 3h 25min of window (unknown, not zero) · Unknown: 2026-07-27 to 2026-09-28 precede archive start 2026-09-29 00:00 UTC (not zero) · Unknown: 64 of 93 UTC dates have no collection run",
+   "drawn": 1480,
+   "mode": "detail",
+   "layer_features": 1480
+  },
+  "6m": {
+   "label": "Lightning Flashes (Optical) [≥1,480 · 29/184 days searched | 6m STALE]",
+   "status": "PARTIAL · 1,480 FLASHES DRAWN · SEARCHED 14% · STALE",
+   "flashes": "Flashes 1,480 archived in window · 1,480 drawn as points (cap 40,000)",
+   "refresh": "Refresh archive 2026-10-27 10:43 UTC (3h 1min ago; expected every 1 h) · STALE",
+   "warning": "Not yet ingested: last 3h 25min of window (unknown, not zero) · Unknown: 2026-04-27 to 2026-09-28 precede archive start 2026-09-29 00:00 UTC (not zero) · Unknown: 155 of 184 UTC dates have no collection run",
+   "drawn": 1480,
+   "mode": "detail",
+   "layer_features": 1480
+  },
+  "12m": {
+   "label": "Lightning Flashes (Optical) [≥1,480 · 29/366 days searched | 12m STALE]",
+   "status": "PARTIAL · 1,480 FLASHES DRAWN · SEARCHED 7% · STALE",
+   "flashes": "Flashes 1,480 archived in window · 1,480 drawn as points (cap 40,000)",
+   "refresh": "Refresh archive 2026-10-27 10:43 UTC (3h 1min ago; expected every 1 h) · STALE",
+   "warning": "Not yet ingested: last 3h 25min of window (unknown, not zero) · Unknown: 2025-10-27 to 2026-09-28 precede archive start 2026-09-29 00:00 UTC (not zero) · Unknown: 337 of 366 UTC dates have no collection run",
+   "drawn": 1480,
+   "mode": "detail",
+   "layer_features": 1480
+  }
+ },
+ "substations": {
+  "features": 5800,
+  "qualifying_ge_33kv": 5800,
+  "ge_132kv": 1668
+ },
+ "nearest": {
+  "flash": {
+   "id_len": 143,
+   "time": "2026-10-18T13:46:17.183Z",
+   "lon": -0.3132,
+   "lat": 51.899403
+  },
+  "card_text": [
+   "",
+   "Nearest substations to this optical flash (straight-line km). Not evidence any asset was struck; faults can have other causes.",
+   "5.42 km · 400 kV · Wymondley Substation",
+   "5.67 km · 33 kV · unnamed substation",
+   "6.21 km · 132 kV · Stevenage Substation",
+   "6.64 km · 132 kV · Luton South Substation",
+   "7.10 km · 33 kV · unnamed substation"
+  ],
+  "lightning_lines": [
+   {
+    "to": [
+     -0.2490474,
+     51.9277147
+    ]
+   },
+   {
+    "to": [
+     -0.3956855,
+     51.9013608
+    ]
+   },
+   {
+    "to": [
+     -0.2232339,
+     51.9052619
+    ]
+   },
+   {
+    "to": [
+     -0.4010848,
+     51.8744868
+    ]
+   },
+   {
+    "to": [
+     -0.2623561,
+     51.9549902
+    ]
+   }
+  ],
+  "lightning_line_count": 5,
+  "layers_added": [
+   "gridatlas-lightning-nearest-glow",
+   "gridatlas-lightning-nearest-core",
+   "gridatlas-lightning-nearest-node",
+   "gridatlas-lightning-nearest-label"
+  ],
+  "camera_calls_after_nearest": 1,
+  "engine_would_draw": [
+   "5.42 km · 400 kV · Wymondley Substation",
+   "5.67 km · 33 kV · unnamed",
+   "6.21 km · 132 kV · Stevenage Substation",
+   "6.64 km · 132 kV · Luton South Substation",
+   "7.10 km · 33 kV · unnamed"
+  ],
+  "line_px_by_zoom": {
+   "6": {
+    "flash_radius_px": 6.7,
+    "lightning_lines_px": [
+     7.2,
+     7.5,
+     8.2,
+     8.8,
+     9.4
+    ]
+   },
+   "8": {
+    "flash_radius_px": 8,
+    "lightning_lines_px": [
+     28.7,
+     30.1,
+     32.9,
+     35.2,
+     37.7
+    ]
+   },
+   "10": {
+    "flash_radius_px": 9.3,
+    "lightning_lines_px": [
+     114.8,
+     120.2,
+     131.7,
+     140.9,
+     150.6
+    ]
+   },
+   "12": {
+    "flash_radius_px": 10,
+    "lightning_lines_px": [
+     459.4,
+     480.9,
+     527,
+     563.5,
+     602.5
+    ]
+   }
+  },
+  "errors": []
+ }
+}

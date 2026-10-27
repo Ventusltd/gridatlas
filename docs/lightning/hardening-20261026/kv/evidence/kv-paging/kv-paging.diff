@@ -1,0 +1,52 @@
+51c51
+< for(const w of x.sw){const o=ov(Math.max(ws,b),we,w.s,w.e);if(o<=0)continue;sd+=o;r+=w.n;const s=Math.max(ws,w.s),e=Math.min(we,w.e);a=a===null?s:Math.min(a,s);b=b===null?e:Math.max(b,e)}
+---
+> for(const w of x.sw){const o=ov(Math.max(ws,b),we,w.s,w.e);if(o<=0)continue;sd+=o;r+=w.n*o/(w.e-w.s);const s=Math.max(ws,w.s),e=Math.min(we,w.e);a=a===null?s:Math.min(a,s);b=b===null?e:Math.max(b,e)}
+53c53
+< return{f:win>0?Math.min(1,sd/win):0,r,a,b,d,u,l,ny:x.lastScan===null?win:Math.max(0,we-Math.max(ws,x.lastScan)),bf:Math.max(0,Math.min(we,x.covStart)-ws)}},
+---
+> return{f:win>0?Math.min(1,sd/win):0,r:Math.ceil(r),a,b,d,u,l,ny:x.lastScan===null?win:Math.max(0,we-Math.max(ws,x.lastScan)),bf:Math.max(0,Math.min(we,x.covStart)-ws)}},
+78c78
+< if(w.e<=x.cutoff)return{mode:'overview',w,idx:x,before:true,fl:[],ev:[],arch:0};
+---
+> if(w.e<=x.covStart)return{mode:'overview',w,idx:x,before:true,fl:[],ev:[],arch:0};
+102c102
+< if(r.before){L.warning=`Window predates the archive (began ${T(x.covStart)}; retention from ${x.cutoffDate}) — unknown, not zero`;return L}
+---
+> if(r.before){L.flashes='Flashes not yet searched (unknown, not zero)';L.warning=`Archive begins ${T(x.covStart)}: this window was never searched`;return L}
+117c117
+< L.searched=c.f>0?`Searched EUMETSAT ${Math.floor(c.f*100)}% of window · ${c.r} successful runs${c.a!==null?` · ${T(c.a)} → ${T(c.b)}`:''}`:c.l?'Searched EUMETSAT: shard lost (integrity alert), unknown, not zero':'Searched EUMETSAT 0% of window — no collection run covers these dates';
+---
+> L.searched=c.f>0?`Searched EUMETSAT ${Math.floor(c.f*100)}% of window · ${c.r} successful runs${c.a!==null?` · ${T(c.a)} → ${T(c.b)}`:''}`:c.l?'Searched EUMETSAT: shard lost (integrity alert), unknown, not zero':'Searched EUMETSAT 0% of window — no collection run covers this window';
+120c120
+< if(c.l)warn.push(`${c.l} days lost from the archive (integrity alert), unknown, not zero`);if(c.u.length)warn.push(`Unknown: ${c.u.length} of ${c.d} UTC dates have no collection run`);
+---
+> if(c.l)warn.push(`${c.l} days lost from the archive (integrity alert), unknown, not zero`);if(c.u.length)warn.push(`Unknown: ${c.u.length} of ${c.d} UTC dates have no collection run`);if(c.f<1&&!warn.length)warn.push(`Unknown: ${100-Math.floor(c.f*100)}% of window lies between collection runs (not zero)`);
+123c123
+< if(k&&/UNK|PAR/.test(k.st)&&/^Flashes 0 a/.test(L.flashes))L.flashes+=' (unknown, not zero)'
+---
+> if(c&&c.f<=0){L.flashes='Flashes not yet searched (unknown, not zero)';L.actual=''}else if(c&&c.f<1&&/^Flashes 0 a/.test(L.flashes))L.flashes=`Flashes 0 in the ${Math.floor(c.f*100)}% searched; rest unknown`
+182c182
+< const n=r.mode==='overview'?r.arch:r.ev.length;if(r.mode==='feed'&&r.old)return`${BASE} [${n>0?N(n):'UNKNOWN'} · last 7 days only${c.stale?' STALE':''}]`;return`${BASE} [${/UNKNOWN|BEFORE/.test(c.st)?'UNKNOWN':n>0?(c.st==='PARTIAL'?'≥':'')+N(n):c.st==='PARTIAL'?'UNKNOWN':'EMPTY'} | ${r.w.period}${c.stale?' STALE':''}]`},
+---
+> const n=r.mode==='overview'?r.arch:r.ev.length;if(r.mode==='feed'&&r.old)return`${BASE} [${n>0?N(n):'UNKNOWN'} · last 7 days only${c.stale?' STALE':''}]`;return`${BASE} [${/UNKNOWN|BEFORE/.test(c.st)?(r.mode==='feed'?'UNKNOWN':'NOT YET SEARCHED'):N(n)+(c.st==='PARTIAL'&&r.cov?` in ${Math.floor(r.cov.f*100)}% searched`:n?'':' · searched 100%')} | ${r.w.period}${c.stale?' STALE':''}]`},
+184c184
+< return(r.mode==='feed'&&r.old&&st!=='FAIL'?`7-DAY FEED ONLY · ${N(r.ev.length)} FLASHES · OLDER HISTORY NOT YET COLLECTED`:r.mode==='feed'&&st!=='FAIL'?`${st} · ${F7(r)} · searched unknown`:st.startsWith('READY')?'READY · '+n:st==='EMPTY-COVERED'?'NO FLASHES DETECTED · SEARCHED 100%':st==='PARTIAL'?`PARTIAL · ${n} · SEARCHED ${r.cov&&!r.fl.length?Math.floor(r.cov.f*100)+'%':'UNKNOWN'}`:st==='FAIL'?'FAIL · '+c.rs.join('; '):st)+(c.stale?' · STALE':'')},
+---
+> return(r.mode==='feed'&&r.old&&st!=='FAIL'?`7-DAY FEED ONLY · ${N(r.ev.length)} FLASHES · OLDER HISTORY NOT YET COLLECTED`:r.mode==='feed'&&st!=='FAIL'?`${st} · ${F7(r)} · searched unknown`:st.startsWith('READY')?'READY · '+n:st==='EMPTY-COVERED'?'NO FLASHES DETECTED · SEARCHED 100%':st==='PARTIAL'?`PARTIAL · ${n} · SEARCHED ${r.cov&&!r.fl.length?Math.floor(r.cov.f*100)+'%':'UNKNOWN'}`:st==='FAIL'?'FAIL · '+c.rs.join('; '):r.mode==='feed'?st:'NOT YET SEARCHED')+(c.stale?' · STALE':'')},
+192c192
+< sf.nav.prev.disabled=loading||cu||!S.idx||!w||w.s<=S.idx.cutoff;sf.nav.next.disabled=sf.nav.latest.disabled=loading||cu||!w||w.atLatest;flag(sf.nav.points,'hidden',!(r&&r.clp&&!r.big));flag(sf.nav.fit,'hidden',loading||!(r&&r.ev.length));
+---
+> sf.nav.prev.disabled=loading||cu||!S.idx||!w||w.s<S.idx.cutoff+DAY;sf.nav.next.disabled=sf.nav.latest.disabled=loading||cu||!w||w.atLatest;flag(sf.nav.points,'hidden',!(r&&r.clp&&!r.big));flag(sf.nav.fit,'hidden',loading||!(r&&r.ev.length));
+196c196
+< sp=p=>{S.period=p;S.consent=false;if(p==='custom'&&!S.from)S.from=S.to=ymd(Date.now());ld()},
+---
+> sp=p=>{S.period=p;S.end=null;S.h=[];S.consent=false;if(p==='custom'&&!S.from)S.from=S.to=ymd(Date.now());ld()},
+199c199
+< if(which==='apply'){const f=sf.from.value,t=sf.to.value,good=DRE.test(f)&&DRE.test(t)&&f<=t;sf.from.style.borderColor=sf.to.style.borderColor=good?'':'#ff4444';
+---
+> if(which==='apply'){const f=sf.from.value,t=sf.to.value,good=DRE.test(f)&&DRE.test(t)&&f<=t&&t<=ymd(now);sf.from.style.borderColor=sf.to.style.borderColor=good?'':'#ff4444';
+201c201
+< else if(which==='latest'){S.end=null;return ld(true)}else if(which==='prev')S.h.push(S.end),S.end=w.s;else if(which==='next')S.end=S.h.pop()||null;
+---
+> else if(which==='latest'){S.end=null;S.h=[];return ld(true)}else if(which==='prev')S.h.push(S.end),S.end=w.s;else if(which==='next')S.end=S.h.pop()||null;

@@ -1,0 +1,19 @@
+asof 2026-10-27T17:20:00+00:00
+module /tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/wt/atlas/modules/202610270929-uk-lightning-overlay.js sha256 c797fffc1df826208155721b1dcbbe0d1e7e9cb25d497d5b94b4c7dc2e0c723b
+cartridge /tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/wt/atlas/cartridges/202609241334-sld-sandbox-v9-8.js sha256 7812953671d8bb22a566de5e98fd3137da2d23411c5aecd526df5afa111ca4ca
+placement: Vogel 1979. item n (1-based, order of first appearance: module bodies by source offset, then cartridge bodies by source offset)
+  r = sqrt(n) ; theta = 2*pi*frac(n*2654435769/2^32)  (= one golden-angle turn of 137.508 deg per item; same law as globalgrid2050 wafer_keys.py:80)
+stable id: kv:hex8( fnv1a32(qualified name) * 2654435769 mod 2^32 ); collisions refuse the run
+key: sha256 of the body source bytes (kuiper-belt README, first law). mass m = body bytes; drawn radius ∝ log(1+m) (LAWS L5)
+resources (state/global/map/dom/net/event): outer ring, theta = 2*pi*fib32(fnv1a32(id))/2^32
+edges: calls (direct, callback, event dispatch), registers, exports, reads, writes, dom_write, fetches (scope-resolved with eslint-scope 9.1.2 over acorn 8.18.0 ASTs)
+declared edges (should_call, should_write, duplicates) are candidates from the owner expectation and cartridge comments: nr -> cartridge:nearestSubstations -> should_call; nr -> cartridge:nearestSubstations -> duplicates; nr -> cartridge:drawLinks -> duplicates; near -> map:camera -> should_write; nr -> cartridge:nearestTransmission -> duplicates; tap -> cartridge:addCardBar -> duplicates; cartridge:nearestTransmission#2 -> cartridge:nearestTransmission -> duplicates
+DOM surface table (declared): {"tap":"dom:lightning-card","pc":"dom:lightning-card","cpos":"dom:lightning-card","nr":"dom:lightning-card","near":"dom:lightning-card","el":"dom:created-element","bg":"dom:layers-panel","pt":"dom:layers-panel","txt":"dom:layers-panel","flag":"dom:layers-panel","nv":"dom:layers-panel","fit":"dom:layers-panel","ins":"dom:layers-panel","so":"dom:layers-panel","bt":"dom:layers-panel"}
+paths: P(trigger,sinks) = Fwd(trigger) ∩ Bwd(sinks). Fwd follows calls, registrations, event dispatch and writes (not readers of shared state). Bwd from a sink follows writers, inputs, callers of effectful bodies,
+       and callees whose return value is used (value mode: no further climb to callers). A caller is followed into its other callees only when the call passes arguments. Reads of map:camera do not propagate.
+  A: triggers bg›λ.addEventListener('click') sinks dom:layers-panel,source:gridatlas-lightning
+  B: triggers event:map.click sinks layer:gridatlas-lightning-nearest-glow,layer:gridatlas-lightning-nearest-core,layer:gridatlas-lightning-nearest-node,layer:gridatlas-lightning-nearest-label,source:gridatlas-lightning-nearest,dom:lightning-card
+  E: triggers cartridge:runDeepLink sinks source:gridatlas-neon-links,source:gridatlas-neon-nodes,map:camera
+RAG: red = declared finding with file:line producing a complaint symptom; amber = on computed path A or B, or declared amber finding; green = otherwise. resources: amber on A/B, grey otherwise.
+counts: bodies 157 (module 138, cartridge 19), resources 67, edges 547 (declared 7)
+rag: red 3, amber 145, green 44, grey 32

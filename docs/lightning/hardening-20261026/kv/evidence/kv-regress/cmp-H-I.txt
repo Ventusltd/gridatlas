@@ -1,0 +1,319 @@
+repro-E: 9 keys, 0 differ
+tf-crE: 49 keys, 0 differ
+cg: 8 keys, 0 differ
+  [tf-secE] CR6: a budget-truncated LOAD POINTS result is PARTIAL, not READY
+     H: "FAIL"
+     I: "PASS"
+tf-secE: 49 keys, 1 differ
+repro-F: 16 keys, 0 differ
+tf-crF: 69 keys, 0 differ
+tf-designerG: 75 keys, 0 differ
+  [tf-designerI] H3/I1: tapping a flash opens a Lightning-owned card (not maplibregl.Popup) with UTC time, flash ID, lat/lon 3 dp and the disclaimer, via textContent
+     H: "FAIL"
+     I: "PASS"
+  [tf-designerI] I1: the card has explicit dark/light/cyan inline colours, a 44 px close button that closes it, and follows the map on move
+     H: "FAIL"
+     I: "PASS"
+  [tf-designerI] I2: 3M and 12M with 763 archived flashes load and draw points automatically
+     H: "FAIL"
+     I: "PASS"
+  [tf-designerI] I2: 12M with 50,000 archived flashes still asks first (LOAD POINTS); a phone asks above its 10,000 cap
+     H: "FAIL"
+     I: "PASS"
+  [tf-designerI] I3: NEAREST SUBSTATIONS draws Lightning-owned neon lines to the 3 nearest >=132 kV substations with km labels and the flash disclaimer; removed on close and OFF
+     H: "FAIL"
+     I: "PASS"
+  [tf-designerI] I1b: with overlapping hit circles, the tap opens the flash nearest the tap point
+     H: "FAIL"
+     I: "PASS"
+tf-designerI: 91 keys, 6 differ
+time: 88 keys, 0 differ
+security S0-S11: 15 keys, 0 differ
+  [security probes] 64
+     H: {"case":"E-control-budget-no-negative","indexAccepted":true,"ie":null,"requests":1,"dayRequests":0,"uniqueDayUrls":0,"sampleUrls":[],"offRepo":0,"consentShown":true,"afterConsentRequests":null,"last":{"st":"PARTIAL","mode":"overview","drawn":0,"ic":null,"rs":["tail unknown"]},"label":"Lightning Flashes (Optical) [≥10,000,000 | 24h]","status":"PARTIAL · 10,000,000 ARCHIVED · SEARCHED 42%","flashes"
+     I: {"case":"E-control-budget-no-negative","indexAccepted":true,"ie":null,"requests":1,"dayRequests":0,"uniqueDayUrls":0,"sampleUrls":[],"offRepo":0,"consentShown":true,"afterConsentRequests":null,"last":{"st":"PARTIAL","mode":"overview","drawn":0,"ic":null,"rs":["tail unknown"]},"label":"Lightning Flashes (Optical) [≥10,000,000 | 24h]","status":"PARTIAL · 10,000,000 ARCHIVED · SEARCHED 42%","flashes"
+security probes: 104 keys, 1 differ
+flaky: 68 keys, 0 differ
+  [data-contract] node/merged-pr2-first-run#040
+     H: "  [3m] PARTIAL · 408 ARCHIVED · SEARCHED 4% | Lightning Flashes (Optical) [≥408 | 3m] | drawn=0 layer=none dot=#ffcc00"
+     I: "  [3m] PARTIAL · 408 FLASHES DRAWN · SEARCHED 4% | Lightning Flashes (Optical) [≥408 | 3m] | drawn=408 layer=visible dot=#ffcc00"
+  [data-contract] node/merged-pr2-first-run#042
+     H: "       Actual  on the 93 overlapping UTC dates: first 2026-10-21 12:32:19 UTC · last 2026-10-25 11:15:58 UTC (day-level; may lie outside a midday window edge)"
+     I: "       Actual  first 2026-10-21 12:32:19 UTC · last 2026-10-25 11:15:58 UTC"
+  [data-contract] node/merged-pr2-first-run#043
+     H: "       Flashes 408 archived on 93 overlapping UTC dates · none drawn (summary mode; choose ≤31 days for points)"
+     I: "       Flashes 408 archived in window · 408 drawn as points (cap 40,000)"
+  [data-contract] node/merged-pr2-first-run#047
+     H: "  [6m] PARTIAL · 408 ARCHIVED · SEARCHED 2% | Lightning Flashes (Optical) [≥408 | 6m] | drawn=0 layer=none dot=#ffcc00"
+     I: "  [6m] PARTIAL · 408 FLASHES DRAWN · SEARCHED 2% | Lightning Flashes (Optical) [≥408 | 6m] | drawn=408 layer=visible dot=#ffcc00"
+  [data-contract] node/merged-pr2-first-run#049
+     H: "       Actual  on the 184 overlapping UTC dates: first 2026-10-21 12:32:19 UTC · last 2026-10-25 11:15:58 UTC (day-level; may lie outside a midday window edge)"
+     I: "       Actual  first 2026-10-21 12:32:19 UTC · last 2026-10-25 11:15:58 UTC"
+  [data-contract] node/merged-pr2-first-run#050
+     H: "       Flashes 408 archived on 184 overlapping UTC dates · none drawn (summary mode; choose ≤31 days for points)"
+     I: "       Flashes 408 archived in window · 408 drawn as points (cap 40,000)"
+  [data-contract] node/merged-pr2-first-run#054
+     H: "  [12m] PARTIAL · 408 ARCHIVED · SEARCHED 1% | Lightning Flashes (Optical) [≥408 | 12m] | drawn=0 layer=none dot=#ffcc00"
+     I: "  [12m] PARTIAL · 408 FLASHES DRAWN · SEARCHED 1% | Lightning Flashes (Optical) [≥408 | 12m] | drawn=408 layer=visible dot=#ffcc00"
+  [data-contract] node/merged-pr2-first-run#056
+     H: "       Actual  on the 366 overlapping UTC dates: first 2026-10-21 12:32:19 UTC · last 2026-10-25 11:15:58 UTC (day-level; may lie outside a midday window edge)"
+     I: "       Actual  first 2026-10-21 12:32:19 UTC · last 2026-10-25 11:15:58 UTC"
+  [data-contract] node/merged-pr2-first-run#057
+     H: "       Flashes 408 archived on 366 overlapping UTC dates · none drawn (summary mode; choose ≤31 days for points)"
+     I: "       Flashes 408 archived in window · 408 drawn as points (cap 40,000)"
+  [data-contract] node/merged-pr4-TAMPER-sha#040
+     H: "  [3m] PARTIAL · 408 ARCHIVED · SEARCHED 4% | Lightning Flashes (Optical) [≥408 | 3m] | drawn=0 layer=none dot=#ffcc00"
+     I: "  [3m] FAIL · 1 of 5 day files failed | Lightning Flashes (Optical) [FAIL] | drawn=290 layer=visible dot=#ff4444"
+  [data-contract] node/merged-pr4-TAMPER-sha#042
+     H: "       Actual  on the 93 overlapping UTC dates: first 2026-10-21 12:32:19 UTC · last 2026-10-25 11:15:58 UTC (day-level; may lie outside a midday window edge)"
+     I: "       Actual  unknown (day files failed)"
+  [data-contract] node/merged-pr4-TAMPER-sha#043
+     H: "       Flashes 408 archived on 93 overlapping UTC dates · none drawn (summary mode; choose ≤31 days for points)"
+     I: "       Flashes 408 in index · 290 loaded · 290 drawn as points (cap 40,000)"
+  [data-contract] node/merged-pr4-TAMPER-sha#046
+     H: "       Not yet ingested: last 0h 25min of window (unknown, not zero) · Unknown: 2026-07-27 to 2026-10-20 precede archive start 2026-10-20 22:41 UTC (not zero) · Unknown: 85 of 93 UTC dates have no collection run"
+     I: "       Not yet ingested: last 0h 25min of window (unknown, not zero) · Unknown: 2026-07-27 to 2026-10-20 precede archive start 2026-10-20 22:41 UTC (not zero) · Unknown: 85 of 93 UTC dates have no collection run · 1 of 5 day files failed (2026-10-24 index mismatch: sha256); points incomplete, counts from index"
+  [data-contract] node/merged-pr4-TAMPER-sha#047
+     H: "  [6m] PARTIAL · 408 ARCHIVED · SEARCHED 2% | Lightning Flashes (Optical) [≥408 | 6m] | drawn=0 layer=none dot=#ffcc00"
+     I: "  [6m] FAIL · 1 of 5 day files failed | Lightning Flashes (Optical) [FAIL] | drawn=290 layer=visible dot=#ff4444"
+  [data-contract] node/merged-pr4-TAMPER-sha#049
+     H: "       Actual  on the 184 overlapping UTC dates: first 2026-10-21 12:32:19 UTC · last 2026-10-25 11:15:58 UTC (day-level; may lie outside a midday window edge)"
+     I: "       Actual  unknown (day files failed)"
+  [data-contract] node/merged-pr4-TAMPER-sha#050
+     H: "       Flashes 408 archived on 184 overlapping UTC dates · none drawn (summary mode; choose ≤31 days for points)"
+     I: "       Flashes 408 in index · 290 loaded · 290 drawn as points (cap 40,000)"
+  [data-contract] node/merged-pr4-TAMPER-sha#053
+     H: "       Not yet ingested: last 0h 25min of window (unknown, not zero) · Unknown: 2026-04-27 to 2026-10-20 precede archive start 2026-10-20 22:41 UTC (not zero) · Unknown: 176 of 184 UTC dates have no collection run"
+     I: "       Not yet ingested: last 0h 25min of window (unknown, not zero) · Unknown: 2026-04-27 to 2026-10-20 precede archive start 2026-10-20 22:41 UTC (not zero) · Unknown: 176 of 184 UTC dates have no collection run · 1 of 5 day files failed (2026-10-24 index mismatch: sha256); points incomplete, counts from index"
+  [data-contract] node/merged-pr4-TAMPER-sha#054
+     H: "  [12m] PARTIAL · 408 ARCHIVED · SEARCHED 1% | Lightning Flashes (Optical) [≥408 | 12m] | drawn=0 layer=none dot=#ffcc00"
+     I: "  [12m] FAIL · 1 of 5 day files failed | Lightning Flashes (Optical) [FAIL] | drawn=290 layer=visible dot=#ff4444"
+  [data-contract] node/merged-pr4-TAMPER-sha#056
+     H: "       Actual  on the 366 overlapping UTC dates: first 2026-10-21 12:32:19 UTC · last 2026-10-25 11:15:58 UTC (day-level; may lie outside a midday window edge)"
+     I: "       Actual  unknown (day files failed)"
+  [data-contract] node/merged-pr4-TAMPER-sha#057
+     H: "       Flashes 408 archived on 366 overlapping UTC dates · none drawn (summary mode; choose ≤31 days for points)"
+     I: "       Flashes 408 in index · 290 loaded · 290 drawn as points (cap 40,000)"
+  [data-contract] node/merged-pr4-TAMPER-sha#060
+     H: "       Not yet ingested: last 0h 25min of window (unknown, not zero) · Unknown: 2025-10-27 to 2026-10-20 precede archive start 2026-10-20 22:41 UTC (not zero) · Unknown: 358 of 366 UTC dates have no collection run"
+     I: "       Not yet ingested: last 0h 25min of window (unknown, not zero) · Unknown: 2025-10-27 to 2026-10-20 precede archive start 2026-10-20 22:41 UTC (not zero) · Unknown: 358 of 366 UTC dates have no collection run · 1 of 5 day files failed (2026-10-24 index mismatch: sha256); points incomplete, counts from index"
+  [data-contract] node/merged-pr4-TAMPER-sha#081
+     H: " fetch: [\"history/days/2026/10/21.json 200\",\"history/days/2026/10/22.json 200\",\"history/days/2026/10/23.json 200\",\"history/days/2026/10/24.json 200\",\"history/days/2026/10/25.json 200\",\"history/index.json 200\",\"history/days/2026/10/25.json 200\",\"history/days/2026/10/24.json 200\",\"history/days/2026/10/24.json 200\",\"history/days/2026/10/24.json 200\",\"history/days/2026/10/24.json
+     I: " fetch: [\"history/days/2026/10/21.json 200\",\"history/days/2026/10/22.json 200\",\"history/days/2026/10/23.json 200\",\"history/days/2026/10/24.json 200\",\"history/days/2026/10/25.json 200\",\"history/index.json 200\",\"history/days/2026/10/25.json 200\",\"history/days/2026/10/24.json 200\",\"history/days/2026/10/24.json 200\",\"history/days/2026/10/24.json 200\",\"history/days/2026/10/24.json
+  [data-contract] node/merged-pr4-first-run-at0445-STALE#040
+     H: "  [3m] PARTIAL · 408 ARCHIVED · SEARCHED 4% · STALE | Lightning Flashes (Optical) [≥408 | 3m STALE] | drawn=0 layer=none dot=#ffcc00"
+     I: "  [3m] PARTIAL · 408 FLASHES DRAWN · SEARCHED 4% · STALE | Lightning Flashes (Optical) [≥408 | 3m STALE] | drawn=408 layer=visible dot=#ffcc00"
+  [data-contract] node/merged-pr4-first-run-at0445-STALE#042
+     H: "       Actual  on the 93 overlapping UTC dates: first 2026-10-21 12:32:19 UTC · last 2026-10-25 11:15:58 UTC (day-level; may lie outside a midday window edge)"
+     I: "       Actual  first 2026-10-21 12:32:19 UTC · last 2026-10-25 11:15:58 UTC"
+  [data-contract] node/merged-pr4-first-run-at0445-STALE#043
+     H: "       Flashes 408 archived on 93 overlapping UTC dates · none drawn (summary mode; choose ≤31 days for points)"
+     I: "       Flashes 408 archived in window · 408 drawn as points (cap 40,000)"
+  [data-contract] node/merged-pr4-first-run-at0445-STALE#047
+     H: "  [6m] PARTIAL · 408 ARCHIVED · SEARCHED 2% · STALE | Lightning Flashes (Optical) [≥408 | 6m STALE] | drawn=0 layer=none dot=#ffcc00"
+     I: "  [6m] PARTIAL · 408 FLASHES DRAWN · SEARCHED 2% · STALE | Lightning Flashes (Optical) [≥408 | 6m STALE] | drawn=408 layer=visible dot=#ffcc00"
+  [data-contract] node/merged-pr4-first-run-at0445-STALE#049
+     H: "       Actual  on the 184 overlapping UTC dates: first 2026-10-21 12:32:19 UTC · last 2026-10-25 11:15:58 UTC (day-level; may lie outside a midday window edge)"
+     I: "       Actual  first 2026-10-21 12:32:19 UTC · last 2026-10-25 11:15:58 UTC"
+  [data-contract] node/merged-pr4-first-run-at0445-STALE#050
+     H: "       Flashes 408 archived on 184 overlapping UTC dates · none drawn (summary mode; choose ≤31 days for points)"
+     I: "       Flashes 408 archived in window · 408 drawn as points (cap 40,000)"
+  [data-contract] node/merged-pr4-first-run-at0445-STALE#054
+     H: "  [12m] PARTIAL · 408 ARCHIVED · SEARCHED 1% · STALE | Lightning Flashes (Optical) [≥408 | 12m STALE] | drawn=0 layer=none dot=#ffcc00"
+     I: "  [12m] PARTIAL · 408 FLASHES DRAWN · SEARCHED 1% · STALE | Lightning Flashes (Optical) [≥408 | 12m STALE] | drawn=408 layer=visible dot=#ffcc00"
+  [data-contract] node/merged-pr4-first-run-at0445-STALE#056
+     H: "       Actual  on the 366 overlapping UTC dates: first 2026-10-21 12:32:19 UTC · last 2026-10-25 11:15:58 UTC (day-level; may lie outside a midday window edge)"
+     I: "       Actual  first 2026-10-21 12:32:19 UTC · last 2026-10-25 11:15:58 UTC"
+  [data-contract] node/merged-pr4-first-run-at0445-STALE#057
+     H: "       Flashes 408 archived on 366 overlapping UTC dates · none drawn (summary mode; choose ≤31 days for points)"
+     I: "       Flashes 408 archived in window · 408 drawn as points (cap 40,000)"
+  [data-contract] node/merged-pr4-first-run#040
+     H: "  [3m] PARTIAL · 408 ARCHIVED · SEARCHED 4% | Lightning Flashes (Optical) [≥408 | 3m] | drawn=0 layer=none dot=#ffcc00"
+     I: "  [3m] PARTIAL · 408 FLASHES DRAWN · SEARCHED 4% | Lightning Flashes (Optical) [≥408 | 3m] | drawn=408 layer=visible dot=#ffcc00"
+  [data-contract] node/merged-pr4-first-run#042
+     H: "       Actual  on the 93 overlapping UTC dates: first 2026-10-21 12:32:19 UTC · last 2026-10-25 11:15:58 UTC (day-level; may lie outside a midday window edge)"
+     I: "       Actual  first 2026-10-21 12:32:19 UTC · last 2026-10-25 11:15:58 UTC"
+  [data-contract] node/merged-pr4-first-run#043
+     H: "       Flashes 408 archived on 93 overlapping UTC dates · none drawn (summary mode; choose ≤31 days for points)"
+     I: "       Flashes 408 archived in window · 408 drawn as points (cap 40,000)"
+  [data-contract] node/merged-pr4-first-run#047
+     H: "  [6m] PARTIAL · 408 ARCHIVED · SEARCHED 2% | Lightning Flashes (Optical) [≥408 | 6m] | drawn=0 layer=none dot=#ffcc00"
+     I: "  [6m] PARTIAL · 408 FLASHES DRAWN · SEARCHED 2% | Lightning Flashes (Optical) [≥408 | 6m] | drawn=408 layer=visible dot=#ffcc00"
+  [data-contract] node/merged-pr4-first-run#049
+     H: "       Actual  on the 184 overlapping UTC dates: first 2026-10-21 12:32:19 UTC · last 2026-10-25 11:15:58 UTC (day-level; may lie outside a midday window edge)"
+     I: "       Actual  first 2026-10-21 12:32:19 UTC · last 2026-10-25 11:15:58 UTC"
+  [data-contract] node/merged-pr4-first-run#050
+     H: "       Flashes 408 archived on 184 overlapping UTC dates · none drawn (summary mode; choose ≤31 days for points)"
+     I: "       Flashes 408 archived in window · 408 drawn as points (cap 40,000)"
+  [data-contract] node/merged-pr4-first-run#054
+     H: "  [12m] PARTIAL · 408 ARCHIVED · SEARCHED 1% | Lightning Flashes (Optical) [≥408 | 12m] | drawn=0 layer=none dot=#ffcc00"
+     I: "  [12m] PARTIAL · 408 FLASHES DRAWN · SEARCHED 1% | Lightning Flashes (Optical) [≥408 | 12m] | drawn=408 layer=visible dot=#ffcc00"
+  [data-contract] node/merged-pr4-first-run#056
+     H: "       Actual  on the 366 overlapping UTC dates: first 2026-10-21 12:32:19 UTC · last 2026-10-25 11:15:58 UTC (day-level; may lie outside a midday window edge)"
+     I: "       Actual  first 2026-10-21 12:32:19 UTC · last 2026-10-25 11:15:58 UTC"
+  [data-contract] node/merged-pr4-first-run#057
+     H: "       Flashes 408 archived on 366 overlapping UTC dates · none drawn (summary mode; choose ≤31 days for points)"
+     I: "       Flashes 408 archived in window · 408 drawn as points (cap 40,000)"
+  [data-contract] node/merged-pr4-shard-lost#040
+     H: "  [3m] PARTIAL · 219 ARCHIVED · SEARCHED 3% | Lightning Flashes (Optical) [≥219 | 3m] | drawn=0 layer=none dot=#ffcc00"
+     I: "  [3m] PARTIAL · 219 FLASHES DRAWN · SEARCHED 3% | Lightning Flashes (Optical) [≥219 | 3m] | drawn=219 layer=visible dot=#ffcc00"
+  [data-contract] node/merged-pr4-shard-lost#042
+     H: "       Actual  on the 93 overlapping UTC dates: first 2026-10-21 12:32:19 UTC · last 2026-10-25 11:15:58 UTC (day-level; may lie outside a midday window edge)"
+     I: "       Actual  first 2026-10-21 12:32:19 UTC · last 2026-10-25 11:15:58 UTC"
+  [data-contract] node/merged-pr4-shard-lost#043
+     H: "       Flashes 219 archived on 93 overlapping UTC dates · none drawn (summary mode; choose ≤31 days for points)"
+     I: "       Flashes 219 archived in window · 219 drawn as points (cap 40,000)"
+  [data-contract] node/merged-pr4-shard-lost#047
+     H: "  [6m] PARTIAL · 219 ARCHIVED · SEARCHED 1% | Lightning Flashes (Optical) [≥219 | 6m] | drawn=0 layer=none dot=#ffcc00"
+     I: "  [6m] PARTIAL · 219 FLASHES DRAWN · SEARCHED 1% | Lightning Flashes (Optical) [≥219 | 6m] | drawn=219 layer=visible dot=#ffcc00"
+  [data-contract] node/merged-pr4-shard-lost#049
+     H: "       Actual  on the 184 overlapping UTC dates: first 2026-10-21 12:32:19 UTC · last 2026-10-25 11:15:58 UTC (day-level; may lie outside a midday window edge)"
+     I: "       Actual  first 2026-10-21 12:32:19 UTC · last 2026-10-25 11:15:58 UTC"
+  [data-contract] node/merged-pr4-shard-lost#050
+     H: "       Flashes 219 archived on 184 overlapping UTC dates · none drawn (summary mode; choose ≤31 days for points)"
+     I: "       Flashes 219 archived in window · 219 drawn as points (cap 40,000)"
+  [data-contract] node/merged-pr4-shard-lost#054
+     H: "  [12m] PARTIAL · 219 ARCHIVED · SEARCHED 0% | Lightning Flashes (Optical) [≥219 | 12m] | drawn=0 layer=none dot=#ffcc00"
+     I: "  [12m] PARTIAL · 219 FLASHES DRAWN · SEARCHED 0% | Lightning Flashes (Optical) [≥219 | 12m] | drawn=219 layer=visible dot=#ffcc00"
+  [data-contract] node/merged-pr4-shard-lost#056
+     H: "       Actual  on the 366 overlapping UTC dates: first 2026-10-21 12:32:19 UTC · last 2026-10-25 11:15:58 UTC (day-level; may lie outside a midday window edge)"
+     I: "       Actual  first 2026-10-21 12:32:19 UTC · last 2026-10-25 11:15:58 UTC"
+  [data-contract] node/merged-pr4-shard-lost#057
+     H: "       Flashes 219 archived on 366 overlapping UTC dates · none drawn (summary mode; choose ≤31 days for points)"
+     I: "       Flashes 219 archived in window · 219 drawn as points (cap 40,000)"
+  [data-contract] node/merged-pr4-split-SYNTHETIC-threshold#040
+     H: "  [3m] PARTIAL · 408 ARCHIVED · SEARCHED 4% | Lightning Flashes (Optical) [≥408 | 3m] | drawn=0 layer=none dot=#ffcc00"
+     I: "  [3m] PARTIAL · 408 FLASHES DRAWN · SEARCHED 4% | Lightning Flashes (Optical) [≥408 | 3m] | drawn=408 layer=visible dot=#ffcc00"
+  [data-contract] node/merged-pr4-split-SYNTHETIC-threshold#042
+     H: "       Actual  on the 93 overlapping UTC dates: first 2026-10-21 12:32:19 UTC · last 2026-10-25 11:15:58 UTC (day-level; may lie outside a midday window edge)"
+     I: "       Actual  first 2026-10-21 12:32:19 UTC · last 2026-10-25 11:15:58 UTC"
+  [data-contract] node/merged-pr4-split-SYNTHETIC-threshold#043
+     H: "       Flashes 408 archived on 93 overlapping UTC dates · none drawn (summary mode; choose ≤31 days for points)"
+     I: "       Flashes 408 archived in window · 408 drawn as points (cap 40,000)"
+  [data-contract] node/merged-pr4-split-SYNTHETIC-threshold#047
+     H: "  [6m] PARTIAL · 408 ARCHIVED · SEARCHED 2% | Lightning Flashes (Optical) [≥408 | 6m] | drawn=0 layer=none dot=#ffcc00"
+     I: "  [6m] PARTIAL · 408 FLASHES DRAWN · SEARCHED 2% | Lightning Flashes (Optical) [≥408 | 6m] | drawn=408 layer=visible dot=#ffcc00"
+  [data-contract] node/merged-pr4-split-SYNTHETIC-threshold#049
+     H: "       Actual  on the 184 overlapping UTC dates: first 2026-10-21 12:32:19 UTC · last 2026-10-25 11:15:58 UTC (day-level; may lie outside a midday window edge)"
+     I: "       Actual  first 2026-10-21 12:32:19 UTC · last 2026-10-25 11:15:58 UTC"
+  [data-contract] node/merged-pr4-split-SYNTHETIC-threshold#050
+     H: "       Flashes 408 archived on 184 overlapping UTC dates · none drawn (summary mode; choose ≤31 days for points)"
+     I: "       Flashes 408 archived in window · 408 drawn as points (cap 40,000)"
+  [data-contract] node/merged-pr4-split-SYNTHETIC-threshold#054
+     H: "  [12m] PARTIAL · 408 ARCHIVED · SEARCHED 1% | Lightning Flashes (Optical) [≥408 | 12m] | drawn=0 layer=none dot=#ffcc00"
+     I: "  [12m] PARTIAL · 408 FLASHES DRAWN · SEARCHED 1% | Lightning Flashes (Optical) [≥408 | 12m] | drawn=408 layer=visible dot=#ffcc00"
+  [data-contract] node/merged-pr4-split-SYNTHETIC-threshold#056
+     H: "       Actual  on the 366 overlapping UTC dates: first 2026-10-21 12:32:19 UTC · last 2026-10-25 11:15:58 UTC (day-level; may lie outside a midday window edge)"
+     I: "       Actual  first 2026-10-21 12:32:19 UTC · last 2026-10-25 11:15:58 UTC"
+  [data-contract] node/merged-pr4-split-SYNTHETIC-threshold#057
+     H: "       Flashes 408 archived on 366 overlapping UTC dates · none drawn (summary mode; choose ≤31 days for points)"
+     I: "       Flashes 408 archived in window · 408 drawn as points (cap 40,000)"
+  [data-contract] node/merged-pr4-split-SYNTHETIC-threshold#080
+     H: " fetch: [\"history/days/2026/10/21.json 200\",\"history/days/2026/10/22/00.json 200\",\"history/days/2026/10/22/01.json 200\",\"history/days/2026/10/22/02.json 200\",\"history/days/2026/10/22/03.json 200\",\"history/days/2026/10/22/05.json 200\",\"history/days/2026/10/22/06.json 200\",\"history/days/2026/10/22/07.json 200\",\"history/days/2026/10/22/18.json 200\",\"history/days/2026/10/22/19.json
+     I: " fetch: [\"history/days/2026/10/21.json 200\",\"history/days/2026/10/22/00.json 200\",\"history/days/2026/10/22/01.json 200\",\"history/days/2026/10/22/02.json 200\",\"history/days/2026/10/22/03.json 200\",\"history/days/2026/10/22/05.json 200\",\"history/days/2026/10/22/06.json 200\",\"history/days/2026/10/22/07.json 200\",\"history/days/2026/10/22/18.json 200\",\"history/days/2026/10/22/19.json
+  [data-contract] node-skew/skew-consistent-run2#040
+     H: "  [3m] PARTIAL · 262 ARCHIVED · SEARCHED 2% | Lightning Flashes (Optical) [≥262 | 3m] | drawn=0 layer=none dot=#ffcc00"
+     I: "  [3m] PARTIAL · 262 FLASHES DRAWN · SEARCHED 2% | Lightning Flashes (Optical) [≥262 | 3m] | drawn=262 layer=visible dot=#ffcc00"
+  [data-contract] node-skew/skew-consistent-run2#042
+     H: "       Actual  on the 93 overlapping UTC dates: first 2026-10-21 12:32:19 UTC · last 2026-10-23 15:58:45 UTC (day-level; may lie outside a midday window edge)"
+     I: "       Actual  first 2026-10-21 12:32:19 UTC · last 2026-10-23 15:58:45 UTC"
+  [data-contract] node-skew/skew-consistent-run2#043
+     H: "       Flashes 262 archived on 93 overlapping UTC dates · none drawn (summary mode; choose ≤31 days for points)"
+     I: "       Flashes 262 archived in window · 262 drawn as points (cap 40,000)"
+  [data-contract] node-skew/skew-consistent-run2#047
+     H: "  [6m] PARTIAL · 262 ARCHIVED · SEARCHED 1% | Lightning Flashes (Optical) [≥262 | 6m] | drawn=0 layer=none dot=#ffcc00"
+     I: "  [6m] PARTIAL · 262 FLASHES DRAWN · SEARCHED 1% | Lightning Flashes (Optical) [≥262 | 6m] | drawn=262 layer=visible dot=#ffcc00"
+  [data-contract] node-skew/skew-consistent-run2#049
+     H: "       Actual  on the 184 overlapping UTC dates: first 2026-10-21 12:32:19 UTC · last 2026-10-23 15:58:45 UTC (day-level; may lie outside a midday window edge)"
+     I: "       Actual  first 2026-10-21 12:32:19 UTC · last 2026-10-23 15:58:45 UTC"
+  [data-contract] node-skew/skew-consistent-run2#050
+     H: "       Flashes 262 archived on 184 overlapping UTC dates · none drawn (summary mode; choose ≤31 days for points)"
+     I: "       Flashes 262 archived in window · 262 drawn as points (cap 40,000)"
+  [data-contract] node-skew/skew-consistent-run2#054
+     H: "  [12m] PARTIAL · 262 ARCHIVED · SEARCHED 0% | Lightning Flashes (Optical) [≥262 | 12m] | drawn=0 layer=none dot=#ffcc00"
+     I: "  [12m] PARTIAL · 262 FLASHES DRAWN · SEARCHED 0% | Lightning Flashes (Optical) [≥262 | 12m] | drawn=262 layer=visible dot=#ffcc00"
+  [data-contract] node-skew/skew-consistent-run2#056
+     H: "       Actual  on the 366 overlapping UTC dates: first 2026-10-21 12:32:19 UTC · last 2026-10-23 15:58:45 UTC (day-level; may lie outside a midday window edge)"
+     I: "       Actual  first 2026-10-21 12:32:19 UTC · last 2026-10-23 15:58:45 UTC"
+  [data-contract] node-skew/skew-consistent-run2#057
+     H: "       Flashes 262 archived on 366 overlapping UTC dates · none drawn (summary mode; choose ≤31 days for points)"
+     I: "       Flashes 262 archived in window · 262 drawn as points (cap 40,000)"
+  [data-contract] node-skew/skew-new-index-old-shard#040
+     H: "  [3m] PARTIAL · 262 ARCHIVED · SEARCHED 2% | Lightning Flashes (Optical) [≥262 | 3m] | drawn=0 layer=none dot=#ffcc00"
+     I: "  [3m] PARTIAL · 98 FLASHES DRAWN · SEARCHED UNKNOWN | Lightning Flashes (Optical) [≥98 | 3m] | drawn=98 layer=visible dot=#ffcc00"
+  [data-contract] node-skew/skew-new-index-old-shard#042
+     H: "       Actual  on the 93 overlapping UTC dates: first 2026-10-21 12:32:19 UTC · last 2026-10-23 15:58:45 UTC (day-level; may lie outside a midday window edge)"
+     I: "       Actual  unknown (day files failed)"
+  [data-contract] node-skew/skew-new-index-old-shard#043
+     H: "       Flashes 262 archived on 93 overlapping UTC dates · none drawn (summary mode; choose ≤31 days for points)"
+     I: "       Flashes 262 in index · 98 loaded · 98 drawn as points (cap 40,000)"
+  [data-contract] node-skew/skew-new-index-old-shard#046
+     H: "       Not yet ingested: last 0h 7min of window (unknown, not zero) · Unknown: 2026-07-23 to 2026-10-20 precede archive start 2026-10-20 22:41 UTC (not zero) · Unknown: 89 of 93 UTC dates have no collection run"
+     I: "       Not yet ingested: last 0h 7min of window (unknown, not zero) · Unknown: 2026-07-23 to 2026-10-20 precede archive start 2026-10-20 22:41 UTC (not zero) · Unknown: 89 of 93 UTC dates have no collection run · 1 of 3 day files failed (2026-10-23 index mismatch: count, bytes, sha256; archive updating, reload later); points incomplete, counts from index"
+  [data-contract] node-skew/skew-new-index-old-shard#047
+     H: "  [6m] PARTIAL · 262 ARCHIVED · SEARCHED 1% | Lightning Flashes (Optical) [≥262 | 6m] | drawn=0 layer=none dot=#ffcc00"
+     I: "  [6m] PARTIAL · 98 FLASHES DRAWN · SEARCHED UNKNOWN | Lightning Flashes (Optical) [≥98 | 6m] | drawn=98 layer=visible dot=#ffcc00"
+  [data-contract] node-skew/skew-new-index-old-shard#049
+     H: "       Actual  on the 184 overlapping UTC dates: first 2026-10-21 12:32:19 UTC · last 2026-10-23 15:58:45 UTC (day-level; may lie outside a midday window edge)"
+     I: "       Actual  unknown (day files failed)"
+  [data-contract] node-skew/skew-new-index-old-shard#050
+     H: "       Flashes 262 archived on 184 overlapping UTC dates · none drawn (summary mode; choose ≤31 days for points)"
+     I: "       Flashes 262 in index · 98 loaded · 98 drawn as points (cap 40,000)"
+  [data-contract] node-skew/skew-new-index-old-shard#053
+     H: "       Not yet ingested: last 0h 7min of window (unknown, not zero) · Unknown: 2026-04-23 to 2026-10-20 precede archive start 2026-10-20 22:41 UTC (not zero) · Unknown: 180 of 184 UTC dates have no collection run"
+     I: "       Not yet ingested: last 0h 7min of window (unknown, not zero) · Unknown: 2026-04-23 to 2026-10-20 precede archive start 2026-10-20 22:41 UTC (not zero) · Unknown: 180 of 184 UTC dates have no collection run · 1 of 3 day files failed (2026-10-23 index mismatch: count, bytes, sha256; archive updating, reload later); points incomplete, counts from index"
+  [data-contract] node-skew/skew-new-index-old-shard#054
+     H: "  [12m] PARTIAL · 262 ARCHIVED · SEARCHED 0% | Lightning Flashes (Optical) [≥262 | 12m] | drawn=0 layer=none dot=#ffcc00"
+     I: "  [12m] PARTIAL · 98 FLASHES DRAWN · SEARCHED UNKNOWN | Lightning Flashes (Optical) [≥98 | 12m] | drawn=98 layer=visible dot=#ffcc00"
+  [data-contract] node-skew/skew-new-index-old-shard#056
+     H: "       Actual  on the 366 overlapping UTC dates: first 2026-10-21 12:32:19 UTC · last 2026-10-23 15:58:45 UTC (day-level; may lie outside a midday window edge)"
+     I: "       Actual  unknown (day files failed)"
+  [data-contract] node-skew/skew-new-index-old-shard#057
+     H: "       Flashes 262 archived on 366 overlapping UTC dates · none drawn (summary mode; choose ≤31 days for points)"
+     I: "       Flashes 262 in index · 98 loaded · 98 drawn as points (cap 40,000)"
+  [data-contract] node-skew/skew-new-index-old-shard#060
+     H: "       Not yet ingested: last 0h 7min of window (unknown, not zero) · Unknown: 2025-10-23 to 2026-10-20 precede archive start 2026-10-20 22:41 UTC (not zero) · Unknown: 362 of 366 UTC dates have no collection run"
+     I: "       Not yet ingested: last 0h 7min of window (unknown, not zero) · Unknown: 2025-10-23 to 2026-10-20 precede archive start 2026-10-20 22:41 UTC (not zero) · Unknown: 362 of 366 UTC dates have no collection run · 1 of 3 day files failed (2026-10-23 index mismatch: count, bytes, sha256; archive updating, reload later); points incomplete, counts from index"
+  [data-contract] node-skew/skew-new-index-old-shard#082
+     H: " fetch: [\"history/days/2026/10/21.json 200\",\"history/days/2026/10/22.json 200\",\"history/days/2026/10/23.json 200\",\"history/index.json 200\",\"history/days/2026/10/22.json 200\",\"history/days/2026/10/23.json 200\",\"history/index.json?1792772220067 200\",\"history/days/2026/10/22.json 200\",\"history/days/2026/10/23.json 200\",\"history/days/2026/10/23.json 200\",\"history/index.json?17927
+     I: " fetch: [\"history/days/2026/10/21.json 200\",\"history/days/2026/10/22.json 200\",\"history/days/2026/10/23.json 200\",\"history/index.json 200\",\"history/days/2026/10/22.json 200\",\"history/days/2026/10/23.json 200\",\"history/index.json?1792772220100 200\",\"history/days/2026/10/22.json 200\",\"history/days/2026/10/23.json 200\",\"history/days/2026/10/23.json 200\",\"history/index.json?17927
+  [data-contract] node-skew/skew-old-index-new-shard#040
+     H: "  [3m] PARTIAL · 191 ARCHIVED · SEARCHED 2% | Lightning Flashes (Optical) [≥191 | 3m] | drawn=0 layer=none dot=#ffcc00"
+     I: "  [3m] PARTIAL · 98 FLASHES DRAWN · SEARCHED UNKNOWN | Lightning Flashes (Optical) [≥98 | 3m] | drawn=98 layer=visible dot=#ffcc00"
+  [data-contract] node-skew/skew-old-index-new-shard#042
+     H: "       Actual  on the 93 overlapping UTC dates: first 2026-10-21 12:32:19 UTC · last 2026-10-23 14:59:46 UTC (day-level; may lie outside a midday window edge)"
+     I: "       Actual  unknown (day files failed)"
+  [data-contract] node-skew/skew-old-index-new-shard#043
+     H: "       Flashes 191 archived on 93 overlapping UTC dates · none drawn (summary mode; choose ≤31 days for points)"
+     I: "       Flashes 191 in index · 98 loaded · 98 drawn as points (cap 40,000)"
+  [data-contract] node-skew/skew-old-index-new-shard#046
+     H: "       Not yet ingested: last 1h 2min of window (unknown, not zero) · Unknown: 2026-07-23 to 2026-10-20 precede archive start 2026-10-20 22:41 UTC (not zero) · Unknown: 89 of 93 UTC dates have no collection run"
+     I: "       Not yet ingested: last 1h 2min of window (unknown, not zero) · Unknown: 2026-07-23 to 2026-10-20 precede archive start 2026-10-20 22:41 UTC (not zero) · Unknown: 89 of 93 UTC dates have no collection run · 1 of 3 day files failed (2026-10-23 index mismatch: count, bytes, sha256; archive updating, reload later); points incomplete, counts from index"
+  [data-contract] node-skew/skew-old-index-new-shard#047
+     H: "  [6m] PARTIAL · 191 ARCHIVED · SEARCHED 1% | Lightning Flashes (Optical) [≥191 | 6m] | drawn=0 layer=none dot=#ffcc00"
+     I: "  [6m] PARTIAL · 98 FLASHES DRAWN · SEARCHED UNKNOWN | Lightning Flashes (Optical) [≥98 | 6m] | drawn=98 layer=visible dot=#ffcc00"
+  [data-contract] node-skew/skew-old-index-new-shard#049
+     H: "       Actual  on the 184 overlapping UTC dates: first 2026-10-21 12:32:19 UTC · last 2026-10-23 14:59:46 UTC (day-level; may lie outside a midday window edge)"
+     I: "       Actual  unknown (day files failed)"
+  [data-contract] node-skew/skew-old-index-new-shard#050
+     H: "       Flashes 191 archived on 184 overlapping UTC dates · none drawn (summary mode; choose ≤31 days for points)"
+     I: "       Flashes 191 in index · 98 loaded · 98 drawn as points (cap 40,000)"
+  [data-contract] node-skew/skew-old-index-new-shard#053
+     H: "       Not yet ingested: last 1h 2min of window (unknown, not zero) · Unknown: 2026-04-23 to 2026-10-20 precede archive start 2026-10-20 22:41 UTC (not zero) · Unknown: 180 of 184 UTC dates have no collection run"
+     I: "       Not yet ingested: last 1h 2min of window (unknown, not zero) · Unknown: 2026-04-23 to 2026-10-20 precede archive start 2026-10-20 22:41 UTC (not zero) · Unknown: 180 of 184 UTC dates have no collection run · 1 of 3 day files failed (2026-10-23 index mismatch: count, bytes, sha256; archive updating, reload later); points incomplete, counts from index"
+  [data-contract] node-skew/skew-old-index-new-shard#054
+     H: "  [12m] PARTIAL · 191 ARCHIVED · SEARCHED 0% | Lightning Flashes (Optical) [≥191 | 12m] | drawn=0 layer=none dot=#ffcc00"
+     I: "  [12m] PARTIAL · 98 FLASHES DRAWN · SEARCHED UNKNOWN | Lightning Flashes (Optical) [≥98 | 12m] | drawn=98 layer=visible dot=#ffcc00"
+  [data-contract] node-skew/skew-old-index-new-shard#056
+     H: "       Actual  on the 366 overlapping UTC dates: first 2026-10-21 12:32:19 UTC · last 2026-10-23 14:59:46 UTC (day-level; may lie outside a midday window edge)"
+     I: "       Actual  unknown (day files failed)"
+  [data-contract] node-skew/skew-old-index-new-shard#057
+     H: "       Flashes 191 archived on 366 overlapping UTC dates · none drawn (summary mode; choose ≤31 days for points)"
+     I: "       Flashes 191 in index · 98 loaded · 98 drawn as points (cap 40,000)"
+  [data-contract] node-skew/skew-old-index-new-shard#060
+     H: "       Not yet ingested: last 1h 2min of window (unknown, not zero) · Unknown: 2025-10-23 to 2026-10-20 precede archive start 2026-10-20 22:41 UTC (not zero) · Unknown: 362 of 366 UTC dates have no collection run"
+     I: "       Not yet ingested: last 1h 2min of window (unknown, not zero) · Unknown: 2025-10-23 to 2026-10-20 precede archive start 2026-10-20 22:41 UTC (not zero) · Unknown: 362 of 366 UTC dates have no collection run · 1 of 3 day files failed (2026-10-23 index mismatch: count, bytes, sha256; archive updating, reload later); points incomplete, counts from index"
+  [data-contract] node-skew/skew-old-index-new-shard#082
+     H: " fetch: [\"history/days/2026/10/21.json 200\",\"history/days/2026/10/22.json 200\",\"history/days/2026/10/23.json 200\",\"history/index.json 200\",\"history/days/2026/10/22.json 200\",\"history/days/2026/10/23.json 200\",\"history/index.json?1792772220046 200\",\"history/days/2026/10/22.json 200\",\"history/days/2026/10/23.json 200\",\"history/days/2026/10/23.json 200\",\"history/index.json?17927
+     I: " fetch: [\"history/days/2026/10/21.json 200\",\"history/days/2026/10/22.json 200\",\"history/days/2026/10/23.json 200\",\"history/index.json 200\",\"history/days/2026/10/22.json 200\",\"history/days/2026/10/23.json 200\",\"history/index.json?1792772220078 200\",\"history/days/2026/10/22.json 200\",\"history/days/2026/10/23.json 200\",\"history/days/2026/10/23.json 200\",\"history/index.json?17927
+data-contract: 1012 keys, 94 differ

@@ -1,0 +1,681 @@
+{
+ "total": 972,
+ "errors": [],
+ "drawn_ne_truth": [],
+ "feed_drawn_ne_feedtruth": [],
+ "identical_count_classes": {
+  "real|p0|fresh|phone": {
+   "29 ≥29": [
+    "12h",
+    "24h",
+    "48h"
+   ],
+   "1480 ≥1,480": [
+    "30d",
+    "3m",
+    "6m",
+    "12m"
+   ]
+  },
+  "real|p0|fresh|desktop": {
+   "29 ≥29": [
+    "12h",
+    "24h",
+    "48h"
+   ],
+   "1480 ≥1,480": [
+    "30d",
+    "3m",
+    "6m",
+    "12m"
+   ]
+  },
+  "real|p0|stale|phone": {
+   "29 ≥29": [
+    "12h",
+    "24h",
+    "48h"
+   ],
+   "1480 ≥1,480": [
+    "30d",
+    "3m",
+    "6m",
+    "12m"
+   ]
+  },
+  "real|p0|stale|desktop": {
+   "29 ≥29": [
+    "12h",
+    "24h",
+    "48h"
+   ],
+   "1480 ≥1,480": [
+    "30d",
+    "3m",
+    "6m",
+    "12m"
+   ]
+  },
+  "feedonly|p0|fresh|phone": {
+   "29 ≥29": [
+    "12h",
+    "24h",
+    "48h"
+   ],
+   "444 444": [
+    "30d",
+    "3m",
+    "6m",
+    "12m"
+   ]
+  },
+  "feedonly|p0|fresh|desktop": {
+   "29 ≥29": [
+    "12h",
+    "24h",
+    "48h"
+   ],
+   "444 444": [
+    "30d",
+    "3m",
+    "6m",
+    "12m"
+   ]
+  },
+  "feedonly|p0|stale|phone": {
+   "29 ≥29": [
+    "12h",
+    "24h",
+    "48h"
+   ],
+   "444 444": [
+    "30d",
+    "3m",
+    "6m",
+    "12m"
+   ]
+  },
+  "feedonly|p0|stale|desktop": {
+   "29 ≥29": [
+    "12h",
+    "24h",
+    "48h"
+   ],
+   "444 444": [
+    "30d",
+    "3m",
+    "6m",
+    "12m"
+   ]
+  },
+  "index404|p0|fresh|phone": {
+   "29 ≥29": [
+    "12h",
+    "24h",
+    "48h"
+   ],
+   "444 444": [
+    "30d",
+    "3m",
+    "6m",
+    "12m"
+   ]
+  },
+  "index404|p0|fresh|desktop": {
+   "29 ≥29": [
+    "12h",
+    "24h",
+    "48h"
+   ],
+   "444 444": [
+    "30d",
+    "3m",
+    "6m",
+    "12m"
+   ]
+  },
+  "index404|p0|stale|phone": {
+   "29 ≥29": [
+    "12h",
+    "24h",
+    "48h"
+   ],
+   "444 444": [
+    "30d",
+    "3m",
+    "6m",
+    "12m"
+   ]
+  },
+  "index404|p0|stale|desktop": {
+   "29 ≥29": [
+    "12h",
+    "24h",
+    "48h"
+   ],
+   "444 444": [
+    "30d",
+    "3m",
+    "6m",
+    "12m"
+   ]
+  },
+  "real|p1|fresh|phone": {
+   "0 EMPTY": [
+    "12h",
+    "24h"
+   ],
+   "0 UNKNOWN": [
+    "30d",
+    "3m",
+    "6m",
+    "12m"
+   ]
+  },
+  "real|p1|fresh|desktop": {
+   "0 EMPTY": [
+    "12h",
+    "24h"
+   ],
+   "0 UNKNOWN": [
+    "30d",
+    "3m",
+    "6m",
+    "12m"
+   ]
+  },
+  "real|p1|stale|phone": {
+   "0 EMPTY": [
+    "12h",
+    "24h"
+   ],
+   "0 UNKNOWN": [
+    "30d",
+    "3m",
+    "6m",
+    "12m"
+   ]
+  },
+  "real|p1|stale|desktop": {
+   "0 EMPTY": [
+    "12h",
+    "24h"
+   ],
+   "0 UNKNOWN": [
+    "30d",
+    "3m",
+    "6m",
+    "12m"
+   ]
+  },
+  "feedonly|p1|fresh|phone": {
+   "29 ≥29": [
+    "12h",
+    "24h",
+    "48h"
+   ],
+   "444 444": [
+    "30d",
+    "3m",
+    "6m",
+    "12m"
+   ]
+  },
+  "feedonly|p1|fresh|desktop": {
+   "29 ≥29": [
+    "12h",
+    "24h",
+    "48h"
+   ],
+   "444 444": [
+    "30d",
+    "3m",
+    "6m",
+    "12m"
+   ]
+  },
+  "feedonly|p1|stale|phone": {
+   "29 ≥29": [
+    "12h",
+    "24h",
+    "48h"
+   ],
+   "444 444": [
+    "30d",
+    "3m",
+    "6m",
+    "12m"
+   ]
+  },
+  "feedonly|p1|stale|desktop": {
+   "29 ≥29": [
+    "12h",
+    "24h",
+    "48h"
+   ],
+   "444 444": [
+    "30d",
+    "3m",
+    "6m",
+    "12m"
+   ]
+  },
+  "index404|p1|fresh|phone": {
+   "29 ≥29": [
+    "12h",
+    "24h",
+    "48h"
+   ],
+   "444 444": [
+    "30d",
+    "3m",
+    "6m",
+    "12m"
+   ]
+  },
+  "index404|p1|fresh|desktop": {
+   "29 ≥29": [
+    "12h",
+    "24h",
+    "48h"
+   ],
+   "444 444": [
+    "30d",
+    "3m",
+    "6m",
+    "12m"
+   ]
+  },
+  "index404|p1|stale|phone": {
+   "29 ≥29": [
+    "12h",
+    "24h",
+    "48h"
+   ],
+   "444 444": [
+    "30d",
+    "3m",
+    "6m",
+    "12m"
+   ]
+  },
+  "index404|p1|stale|desktop": {
+   "29 ≥29": [
+    "12h",
+    "24h",
+    "48h"
+   ],
+   "444 444": [
+    "30d",
+    "3m",
+    "6m",
+    "12m"
+   ]
+  },
+  "real|p2|fresh|phone": {
+   "0 UNKNOWN": [
+    "30d",
+    "3m",
+    "6m",
+    "12m"
+   ]
+  },
+  "real|p2|fresh|desktop": {
+   "0 UNKNOWN": [
+    "30d",
+    "3m",
+    "6m",
+    "12m"
+   ]
+  },
+  "real|p2|stale|phone": {
+   "0 UNKNOWN": [
+    "30d",
+    "3m",
+    "6m",
+    "12m"
+   ]
+  },
+  "real|p2|stale|desktop": {
+   "0 UNKNOWN": [
+    "30d",
+    "3m",
+    "6m",
+    "12m"
+   ]
+  },
+  "feedonly|p2|fresh|phone": {
+   "29 ≥29": [
+    "12h",
+    "24h",
+    "48h"
+   ],
+   "444 444": [
+    "30d",
+    "3m",
+    "6m",
+    "12m"
+   ]
+  },
+  "feedonly|p2|fresh|desktop": {
+   "29 ≥29": [
+    "12h",
+    "24h",
+    "48h"
+   ],
+   "444 444": [
+    "30d",
+    "3m",
+    "6m",
+    "12m"
+   ]
+  },
+  "feedonly|p2|stale|phone": {
+   "29 ≥29": [
+    "12h",
+    "24h",
+    "48h"
+   ],
+   "444 444": [
+    "30d",
+    "3m",
+    "6m",
+    "12m"
+   ]
+  },
+  "feedonly|p2|stale|desktop": {
+   "29 ≥29": [
+    "12h",
+    "24h",
+    "48h"
+   ],
+   "444 444": [
+    "30d",
+    "3m",
+    "6m",
+    "12m"
+   ]
+  },
+  "index404|p2|fresh|phone": {
+   "29 ≥29": [
+    "12h",
+    "24h",
+    "48h"
+   ],
+   "444 444": [
+    "30d",
+    "3m",
+    "6m",
+    "12m"
+   ]
+  },
+  "index404|p2|fresh|desktop": {
+   "29 ≥29": [
+    "12h",
+    "24h",
+    "48h"
+   ],
+   "444 444": [
+    "30d",
+    "3m",
+    "6m",
+    "12m"
+   ]
+  },
+  "index404|p2|stale|phone": {
+   "29 ≥29": [
+    "12h",
+    "24h",
+    "48h"
+   ],
+   "444 444": [
+    "30d",
+    "3m",
+    "6m",
+    "12m"
+   ]
+  },
+  "index404|p2|stale|desktop": {
+   "29 ≥29": [
+    "12h",
+    "24h",
+    "48h"
+   ],
+   "444 444": [
+    "30d",
+    "3m",
+    "6m",
+    "12m"
+   ]
+  }
+ },
+ "device_changes_drawn": 0,
+ "device_changes_label_beyond_STALE": [],
+ "fresh_changes_drawn": 0,
+ "fresh_changes_label_beyond_STALE": [],
+ "stale_shown": {
+  "real|fresh": {
+   "yes": 0,
+   "no": 18
+  },
+  "real|stale": {
+   "yes": 18,
+   "no": 0
+  },
+  "feedonly|fresh": {
+   "yes": 0,
+   "no": 18
+  },
+  "feedonly|stale": {
+   "yes": 18,
+   "no": 0
+  },
+  "index404|fresh": {
+   "yes": 0,
+   "no": 18
+  },
+  "index404|stale": {
+   "yes": 18,
+   "no": 0
+  }
+ },
+ "roundtrip_fail": [],
+ "paging_blocked": [
+  "12h|p1|feedonly|fresh|phone|none took 0",
+  "12h|p1|feedonly|fresh|desktop|none took 0",
+  "12h|p1|feedonly|stale|phone|none took 0",
+  "12h|p1|feedonly|stale|desktop|none took 0",
+  "12h|p1|index404|fresh|phone|none took 0",
+  "12h|p1|index404|fresh|desktop|none took 0",
+  "12h|p1|index404|stale|phone|none took 0",
+  "12h|p1|index404|stale|desktop|none took 0",
+  "12h|p2|feedonly|fresh|phone|none took 0",
+  "12h|p2|feedonly|fresh|desktop|none took 0",
+  "12h|p2|feedonly|stale|phone|none took 0",
+  "12h|p2|feedonly|stale|desktop|none took 0",
+  "12h|p2|index404|fresh|phone|none took 0",
+  "12h|p2|index404|fresh|desktop|none took 0",
+  "12h|p2|index404|stale|phone|none took 0",
+  "12h|p2|index404|stale|desktop|none took 0",
+  "24h|p1|feedonly|fresh|phone|none took 0",
+  "24h|p1|feedonly|fresh|desktop|none took 0",
+  "24h|p1|feedonly|stale|phone|none took 0",
+  "24h|p1|feedonly|stale|desktop|none took 0",
+  "24h|p1|index404|fresh|phone|none took 0",
+  "24h|p1|index404|fresh|desktop|none took 0",
+  "24h|p1|index404|stale|phone|none took 0",
+  "24h|p1|index404|stale|desktop|none took 0",
+  "24h|p2|feedonly|fresh|phone|none took 0",
+  "24h|p2|feedonly|fresh|desktop|none took 0",
+  "24h|p2|feedonly|stale|phone|none took 0",
+  "24h|p2|feedonly|stale|desktop|none took 0",
+  "24h|p2|index404|fresh|phone|none took 0",
+  "24h|p2|index404|fresh|desktop|none took 0",
+  "24h|p2|index404|stale|phone|none took 0",
+  "24h|p2|index404|stale|desktop|none took 0",
+  "48h|p1|feedonly|fresh|phone|none took 0",
+  "48h|p1|feedonly|fresh|desktop|none took 0",
+  "48h|p1|feedonly|stale|phone|none took 0",
+  "48h|p1|feedonly|stale|desktop|none took 0",
+  "48h|p1|index404|fresh|phone|none took 0",
+  "48h|p1|index404|fresh|desktop|none took 0",
+  "48h|p1|index404|stale|phone|none took 0",
+  "48h|p1|index404|stale|desktop|none took 0",
+  "48h|p2|feedonly|fresh|phone|none took 0",
+  "48h|p2|feedonly|fresh|desktop|none took 0",
+  "48h|p2|feedonly|stale|phone|none took 0",
+  "48h|p2|feedonly|stale|desktop|none took 0",
+  "48h|p2|index404|fresh|phone|none took 0",
+  "48h|p2|index404|fresh|desktop|none took 0",
+  "48h|p2|index404|stale|phone|none took 0",
+  "48h|p2|index404|stale|desktop|none took 0",
+  "7d|p1|feedonly|fresh|phone|none took 0",
+  "7d|p1|feedonly|fresh|desktop|none took 0",
+  "7d|p1|feedonly|stale|phone|none took 0",
+  "7d|p1|feedonly|stale|desktop|none took 0",
+  "7d|p1|index404|fresh|phone|none took 0",
+  "7d|p1|index404|fresh|desktop|none took 0",
+  "7d|p1|index404|stale|phone|none took 0",
+  "7d|p1|index404|stale|desktop|none took 0",
+  "7d|p2|feedonly|fresh|phone|none took 0",
+  "7d|p2|feedonly|fresh|desktop|none took 0",
+  "7d|p2|feedonly|stale|phone|none took 0",
+  "7d|p2|feedonly|stale|desktop|none took 0",
+  "7d|p2|index404|fresh|phone|none took 0",
+  "7d|p2|index404|fresh|desktop|none took 0",
+  "7d|p2|index404|stale|phone|none took 0",
+  "7d|p2|index404|stale|desktop|none took 0",
+  "30d|p1|feedonly|fresh|phone|none took 0",
+  "30d|p1|feedonly|fresh|desktop|none took 0",
+  "30d|p1|feedonly|stale|phone|none took 0",
+  "30d|p1|feedonly|stale|desktop|none took 0",
+  "30d|p1|index404|fresh|phone|none took 0",
+  "30d|p1|index404|fresh|desktop|none took 0",
+  "30d|p1|index404|stale|phone|none took 0",
+  "30d|p1|index404|stale|desktop|none took 0",
+  "30d|p2|feedonly|fresh|phone|none took 0",
+  "30d|p2|feedonly|fresh|desktop|none took 0",
+  "30d|p2|feedonly|stale|phone|none took 0",
+  "30d|p2|feedonly|stale|desktop|none took 0",
+  "30d|p2|index404|fresh|phone|none took 0",
+  "30d|p2|index404|fresh|desktop|none took 0",
+  "30d|p2|index404|stale|phone|none took 0",
+  "30d|p2|index404|stale|desktop|none took 0",
+  "3m|p1|feedonly|fresh|phone|none took 0",
+  "3m|p1|feedonly|fresh|desktop|none took 0",
+  "3m|p1|feedonly|stale|phone|none took 0",
+  "3m|p1|feedonly|stale|desktop|none took 0",
+  "3m|p1|index404|fresh|phone|none took 0",
+  "3m|p1|index404|fresh|desktop|none took 0",
+  "3m|p1|index404|stale|phone|none took 0",
+  "3m|p1|index404|stale|desktop|none took 0",
+  "3m|p2|feedonly|fresh|phone|none took 0",
+  "3m|p2|feedonly|fresh|desktop|none took 0",
+  "3m|p2|feedonly|stale|phone|none took 0",
+  "3m|p2|feedonly|stale|desktop|none took 0",
+  "3m|p2|index404|fresh|phone|none took 0",
+  "3m|p2|index404|fresh|desktop|none took 0",
+  "3m|p2|index404|stale|phone|none took 0",
+  "3m|p2|index404|stale|desktop|none took 0",
+  "6m|p1|feedonly|fresh|phone|none took 0",
+  "6m|p1|feedonly|fresh|desktop|none took 0",
+  "6m|p1|feedonly|stale|phone|none took 0",
+  "6m|p1|feedonly|stale|desktop|none took 0",
+  "6m|p1|index404|fresh|phone|none took 0",
+  "6m|p1|index404|fresh|desktop|none took 0",
+  "6m|p1|index404|stale|phone|none took 0",
+  "6m|p1|index404|stale|desktop|none took 0",
+  "6m|p2|feedonly|fresh|phone|none took 0",
+  "6m|p2|feedonly|fresh|desktop|none took 0",
+  "6m|p2|feedonly|stale|phone|none took 0",
+  "6m|p2|feedonly|stale|desktop|none took 0",
+  "6m|p2|index404|fresh|phone|none took 0",
+  "6m|p2|index404|fresh|desktop|none took 0",
+  "6m|p2|index404|stale|phone|none took 0",
+  "6m|p2|index404|stale|desktop|none took 0",
+  "12m|p1|feedonly|fresh|phone|none took 0",
+  "12m|p1|feedonly|fresh|desktop|none took 0",
+  "12m|p1|feedonly|stale|phone|none took 0",
+  "12m|p1|feedonly|stale|desktop|none took 0",
+  "12m|p1|index404|fresh|phone|none took 0",
+  "12m|p1|index404|fresh|desktop|none took 0",
+  "12m|p1|index404|stale|phone|none took 0",
+  "12m|p1|index404|stale|desktop|none took 0",
+  "12m|p2|real|fresh|phone|none took 1",
+  "12m|p2|real|fresh|desktop|none took 1",
+  "12m|p2|real|stale|phone|none took 1",
+  "12m|p2|real|stale|desktop|none took 1",
+  "12m|p2|feedonly|fresh|phone|none took 0",
+  "12m|p2|feedonly|fresh|desktop|none took 0",
+  "12m|p2|feedonly|stale|phone|none took 0",
+  "12m|p2|feedonly|stale|desktop|none took 0",
+  "12m|p2|index404|fresh|phone|none took 0",
+  "12m|p2|index404|fresh|desktop|none took 0",
+  "12m|p2|index404|stale|phone|none took 0",
+  "12m|p2|index404|stale|desktop|none took 0",
+  "custom|p1|real|fresh|phone|none took 0",
+  "custom|p1|real|fresh|desktop|none took 0",
+  "custom|p1|real|stale|phone|none took 0",
+  "custom|p1|real|stale|desktop|none took 0",
+  "custom|p1|feedonly|fresh|phone|none took 0",
+  "custom|p1|feedonly|fresh|desktop|none took 0",
+  "custom|p1|feedonly|stale|phone|none took 0",
+  "custom|p1|feedonly|stale|desktop|none took 0",
+  "custom|p1|index404|fresh|phone|none took 0",
+  "custom|p1|index404|fresh|desktop|none took 0",
+  "custom|p1|index404|stale|phone|none took 0",
+  "custom|p1|index404|stale|desktop|none took 0",
+  "custom|p2|real|fresh|phone|none took 0",
+  "custom|p2|real|fresh|desktop|none took 0",
+  "custom|p2|real|stale|phone|none took 0",
+  "custom|p2|real|stale|desktop|none took 0",
+  "custom|p2|feedonly|fresh|phone|none took 0",
+  "custom|p2|feedonly|fresh|desktop|none took 0",
+  "custom|p2|feedonly|stale|phone|none took 0",
+  "custom|p2|feedonly|stale|desktop|none took 0",
+  "custom|p2|index404|fresh|phone|none took 0",
+  "custom|p2|index404|fresh|desktop|none took 0",
+  "custom|p2|index404|stale|phone|none took 0",
+  "custom|p2|index404|stale|desktop|none took 0"
+ ],
+ "no_flash_to_tap": [
+  "real|12h|p1",
+  "real|12h|p2",
+  "real|24h|p1",
+  "real|30d|p1",
+  "real|30d|p2",
+  "real|3m|p1",
+  "real|3m|p2",
+  "real|6m|p1",
+  "real|6m|p2",
+  "real|12m|p1",
+  "real|12m|p2",
+  "feedonly|custom|p0",
+  "index404|custom|p0",
+  "feedonly|custom|p1",
+  "index404|custom|p1",
+  "feedonly|custom|p2",
+  "index404|custom|p2"
+ ],
+ "nearest": {
+  "stars": 256,
+  "lines_added": [
+   5
+  ],
+  "camera_moves_after_nearest": [
+   1
+  ],
+  "retap": [
+   "removed"
+  ],
+  "over40km": 0,
+  "lightning_has_33kV": 256,
+  "engine_has_33kV": 256,
+  "engine_draws_nothing_within_40km": 0,
+  "same_first_as_engine": 148
+ },
+ "flash_id_len": [
+  142,
+  143
+ ]
+}

@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Lightning Spider</title>
+<style>
+:root{--bg:#0b0f12;--card:#121a1f;--line:#24323a;--ink:#e6eef1;--dim:#8fa3ab;--accent:#5fbdc2;--green:#3ecf72;--amber:#f0b429;--red:#ff5a5a;--blue:#5aa8ff;--grey:#7b868c;--risk:#ff5a5a}
+@media (prefers-color-scheme: light){:root:not([data-theme="dark"]){--bg:#f4f6f7;--card:#fff;--line:#d4dde1;--ink:#12191d;--dim:#53646b;--accent:#1f7f86}}
+:root[data-theme="light"]{--bg:#f4f6f7;--card:#fff;--line:#d4dde1;--ink:#12191d;--dim:#53646b;--accent:#1f7f86}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.45 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+header{padding:14px 16px;border-bottom:1px solid var(--line)}
+h1{font-size:15px;margin:0 0 4px}
+.sub{color:var(--dim);font-size:12px}
+.risks{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+.risks button,.idx button{font:inherit;font-size:12px;background:var(--card);color:var(--ink);border:1px solid var(--line);border-radius:4px;padding:6px 8px;cursor:pointer;min-height:36px}
+.risks button{border-color:var(--risk)}
+main{display:grid;grid-template-columns:1fr minmax(280px,1.2fr) 1fr;gap:12px;padding:16px}
+@media (max-width:820px){main{grid-template-columns:1fr}}
+.col h2{font-size:12px;color:var(--dim);text-transform:uppercase;letter-spacing:.06em;margin:0 0 8px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:6px;padding:10px;margin-bottom:8px;cursor:pointer}
+.card:hover{border-color:var(--accent)}
+.card.focus{cursor:default;border-color:var(--accent);border-width:2px}
+.row{display:flex;align-items:center;gap:8px}
+.dot{width:10px;height:10px;border-radius:50%;flex:none}
+.badge{font-size:10px;text-transform:uppercase;color:var(--dim);border:1px solid var(--line);border-radius:3px;padding:0 4px}
+.name{font-weight:600;overflow-wrap:anywhere}
+.reason{margin:8px 0 0;color:var(--ink)}
+.links a{color:var(--accent);margin-right:12px;font-size:12px}
+.edge{font-size:12px;color:var(--dim);margin-top:6px;border-top:1px dashed var(--line);padding-top:6px;overflow-wrap:anywhere}
+.edge b{color:var(--ink);font-weight:600}
+.edge.mm{color:var(--ink)}
+.edge.mm .tag{color:var(--risk);font-weight:700}
+.empty{color:var(--dim);font-size:12px}
+.idx{padding:0 16px 24px;display:flex;flex-wrap:wrap;gap:6px}
+footer{padding:0 16px 24px;color:var(--dim);font-size:11px}
+</style>
+</head>
+<body>
+<header>
+  <h1 id="title"></h1>
+  <div class="sub" id="note"></div>
+  <div class="risks" id="risks"></div>
+</header>
+<main>
+  <section class="col"><h2>Depends on (in)</h2><div id="in"></div></section>
+  <section class="col"><h2>Focused</h2><div id="focus"></div></section>
+  <section class="col"><h2>Dependents (out)</h2><div id="out"></div></section>
+</main>
+<div class="idx" id="idx"></div>
+<footer>Column view of the focused node and its neighbours, as in the Spider Sandbox. ?focus=&lt;node id or label&gt; opens a node. Red-tagged edges: contract mismatch possible; RISK n/5 ranks the five riskiest.</footer>
+<script id="graph" type="application/json">__GRAPH__</script>
+<script>
+(()=>{
+const G=JSON.parse(document.getElementById('graph').textContent);
+const N=G.nodes,E=G.edges,IDS=G.node_ids,K=G.kind_labels||{};
+const RAG={green:'var(--green)',amber:'var(--amber)',red:'var(--red)',blue:'var(--blue)',grey:'var(--grey)'};
+const $=id=>document.getElementById(id);
+const el=(t,c,s)=>{const e=document.createElement(t);if(c)e.className=c;if(s!=null)e.textContent=s;return e};
+$('title').textContent=G.label;$('note').textContent=G.note;
+function head(n){const r=el('div','row');const d=el('span','dot');d.style.background=RAG[n.rag]||'var(--grey)';d.title='RAG '+n.rag;r.append(d,el('span','badge',n.type),el('span','name',n.label));return r}
+function edgeLine(e,dir){const m=e.evidence.method,mm=m.startsWith('CONTRACT');const d=el('div','edge'+(mm?' mm':''));
+  const k=el('b',null,(K[e.type]||e.type)+(dir==='in'?' → this':' ← this'));d.append(k);
+  if(mm){const t=el('span','tag',' '+(m.match(/RISK \d\/5/)||['MISMATCH?'])[0]);d.append(t)}
+  d.append(el('div',null,e.evidence.file+':'+e.evidence.lines));d.append(el('div',null,m.replace(/^CONTRACT MISMATCH POSSIBLE( · RISK \d\/5)? — /,'')));return d}
+function card(i,e,dir){const n=N[i],c=el('div','card');c.append(head(n));if(e)c.append(edgeLine(e,dir));c.onclick=()=>go(i);c.tabIndex=0;c.onkeydown=ev=>{if(ev.key==='Enter')go(i)};return c}
+function go(i,push=true){
+  const n=N[i];const f=$('focus');f.textContent='';const c=el('div','card focus');c.append(head(n));
+  const r=el('div','reason');r.innerHTML=n.reason;c.append(r);  // reason is HTML, as on the dashboard (escaped at generation)
+  const l=el('div','links');if(n.gh){const a=el('a',null,'GitHub');a.href=n.gh;a.target='_blank';a.rel='noopener';l.append(a)}
+  if(n.ext){const a=el('a',null,'External');a.href=n.ext;a.target='_blank';a.rel='noopener';l.append(a)}c.append(l);f.append(c);
+  const ins=E.filter(e=>e.to===i),outs=E.filter(e=>e.from===i);
+  $('in').textContent='';$('out').textContent='';
+  ins.forEach(e=>$('in').append(card(e.from,e,'in')));outs.forEach(e=>$('out').append(card(e.to,e,'out')));
+  if(!ins.length)$('in').append(el('div','empty','none'));if(!outs.length)$('out').append(el('div','empty','none'));
+  if(push)try{history.replaceState(null,'','?focus='+encodeURIComponent(IDS[i]))}catch(_){}
+  window.scrollTo({top:0});
+}
+E.map(e=>({e,r:(e.evidence.method.match(/RISK (\d)\/5/)||[])[1]})).filter(x=>x.r).sort((a,b)=>a.r-b.r).forEach(({e,r})=>{
+  const b=el('button',null,`RISK ${r}: ${IDS[e.from]} → ${IDS[e.to]}`);b.onclick=()=>go(e.from);$('risks').append(b)});
+N.forEach((n,i)=>{const b=el('button',null,IDS[i]);b.style.borderLeft='4px solid '+(RAG[n.rag]||'var(--grey)');b.onclick=()=>go(i);$('idx').append(b)});
+let q=null;try{q=new URLSearchParams(location.search).get('focus')}catch(_){}
+let i=q==null?G.focus_default:IDS.indexOf(q);if(i<0)i=N.findIndex(n=>n.label===q);go(i<0?G.focus_default:i,false);
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,252 @@
+===== skew-consistent-run2  now=2026-10-23T16:17:00.039Z  gen=202610270047
+ index: {"ok":true,"rows":366,"cutoff":"2025-10-23","gen":"2026-10-23T16:15:00.000Z","iv":1,"nextDue":"2026-10-23T19:15:00.000Z","covStart":"2026-10-20T22:41:54.847Z","lastScan":"2026-10-23T16:10:09.000Z","windows":4,"lost":[],"stale_now":false} {"schema":"uk-lightning-history-index.v2","schema_ok":true,"observation":"satellite optical lightning flashes, not ground strikes","integrity":{"state":"ok","alert":null,"lost":[]}}
+ vk rejects: 0 [] row kinds {"none/null":362,"partial/0":1,"full/>0/path":1,"partial/>0/path":2}
+ shards: ["days/2026/10/21.json:31/31","days/2026/10/22.json:67/67","days/2026/10/23.json:164/164"]
+ cv since 20 Oct: {"f":0.6561,"runs":6,"unknownDates":[],"lostDates":0,"days":4,"notYet_min":7,"beforeStart_min":1362}
+ feed: {"isFC":true,"features":408,"accepted":408,"rejected":0,"observation_kinds":["optical_lightning_flash"],"meta_keys_module_reads":{"query_start_utc":"2026-10-26T21:27:07.304Z","query_end_utc":"2026-10-27T00:27:07.304Z","latest_detection_utc":"2026-10-25T11:15:58.149Z"},"first":"2026-10-21T12:32:19.282Z","last":"2026-10-25T11:15:58.149Z","feed_age_h":-80.17} status.json present false requested false
+  [ON (default 24h)] PARTIAL · 176 FLASHES DRAWN · SEARCHED 68% | Lightning Flashes (Optical) [≥176 | 24h] | drawn=176 layer=visible dot=#ffcc00
+       Window  2026-10-22 16:17 UTC → 2026-10-23 16:17 UTC (24 hours, latest)
+       Actual  first 2026-10-22 18:13:04 UTC · last 2026-10-23 15:58:45 UTC
+       Flashes 176 archived in window · 176 drawn as points (cap 40,000)
+       Refresh archive 2026-10-23 16:15 UTC (0h 2min ago; expected every 1 h)
+       Searched EUMETSAT 68% of window · 6 successful runs · 2026-10-22 16:17 UTC → 2026-10-23 16:10 UTC
+       Not yet ingested: last 0h 7min of window (unknown, not zero)
+  [12h] PARTIAL · 130 FLASHES DRAWN · SEARCHED 62% | Lightning Flashes (Optical) [≥130 | 12h] | drawn=130 layer=visible dot=#ffcc00
+       Window  2026-10-23 04:17 UTC → 2026-10-23 16:17 UTC (12 hours, latest)
+       Actual  first 2026-10-23 14:31:46 UTC · last 2026-10-23 15:58:45 UTC
+       Flashes 130 archived in window · 130 drawn as points (cap 40,000)
+       Refresh archive 2026-10-23 16:15 UTC (0h 2min ago; expected every 1 h)
+       Searched EUMETSAT 62% of window · 5 successful runs · 2026-10-23 04:17 UTC → 2026-10-23 16:10 UTC
+       Not yet ingested: last 0h 7min of window (unknown, not zero)
+  [48h] PARTIAL · 257 FLASHES DRAWN · SEARCHED 84% | Lightning Flashes (Optical) [≥257 | 48h] | drawn=257 layer=visible dot=#ffcc00
+       Window  2026-10-21 16:17 UTC → 2026-10-23 16:17 UTC (48 hours, latest)
+       Actual  first 2026-10-21 16:17:07 UTC · last 2026-10-23 15:58:45 UTC
+       Flashes 257 archived in window · 257 drawn as points (cap 40,000)
+       Refresh archive 2026-10-23 16:15 UTC (0h 2min ago; expected every 1 h)
+       Searched EUMETSAT 84% of window · 6 successful runs · 2026-10-21 16:17 UTC → 2026-10-23 16:10 UTC
+       Not yet ingested: last 0h 7min of window (unknown, not zero)
+  [7d] PARTIAL · 262 FLASHES DRAWN · SEARCHED 34% | Lightning Flashes (Optical) [≥262 | 7d] | drawn=262 layer=visible dot=#ffcc00
+       Window  2026-10-16 16:17 UTC → 2026-10-23 16:17 UTC (7 days, latest)
+       Actual  first 2026-10-21 12:32:19 UTC · last 2026-10-23 15:58:45 UTC
+       Flashes 262 archived in window · 262 drawn as points (cap 40,000)
+       Refresh archive 2026-10-23 16:15 UTC (0h 2min ago; expected every 1 h)
+       Searched EUMETSAT 34% of window · 6 successful runs · 2026-10-20 22:41 UTC → 2026-10-23 16:10 UTC
+       Not yet ingested: last 0h 7min of window (unknown, not zero) · Unknown: 2026-10-16 to 2026-10-20 precede archive start 2026-10-20 22:41 UTC (not zero) · Unknown: 4 of 8 UTC dates have no collection run
+  [30d] PARTIAL · 262 FLASHES DRAWN · SEARCHED 8% | Lightning Flashes (Optical) [≥262 | 30d] | drawn=262 layer=visible dot=#ffcc00
+       Window  2026-09-23 16:17 UTC → 2026-10-23 16:17 UTC (30 days, latest)
+       Actual  first 2026-10-21 12:32:19 UTC · last 2026-10-23 15:58:45 UTC
+       Flashes 262 archived in window · 262 drawn as points (cap 40,000)
+       Refresh archive 2026-10-23 16:15 UTC (0h 2min ago; expected every 1 h)
+       Searched EUMETSAT 8% of window · 6 successful runs · 2026-10-20 22:41 UTC → 2026-10-23 16:10 UTC
+       Not yet ingested: last 0h 7min of window (unknown, not zero) · Unknown: 2026-09-23 to 2026-10-20 precede archive start 2026-10-20 22:41 UTC (not zero) · Unknown: 27 of 31 UTC dates have no collection run
+  [3m] PARTIAL · 262 ARCHIVED · SEARCHED 2% | Lightning Flashes (Optical) [≥262 | 3m] | drawn=0 layer=none dot=#ffcc00
+       Window  2026-07-23 16:17 UTC → 2026-10-23 16:17 UTC (3 months, latest)
+       Actual  on the 93 overlapping UTC dates: first 2026-10-21 12:32:19 UTC · last 2026-10-23 15:58:45 UTC (day-level; may lie outside a midday window edge)
+       Flashes 262 archived on 93 overlapping UTC dates · none drawn (summary mode; choose ≤31 days for points)
+       Refresh archive 2026-10-23 16:15 UTC (0h 2min ago; expected every 1 h)
+       Searched EUMETSAT 2% of window · 6 successful runs · 2026-10-20 22:41 UTC → 2026-10-23 16:10 UTC
+       Not yet ingested: last 0h 7min of window (unknown, not zero) · Unknown: 2026-07-23 to 2026-10-20 precede archive start 2026-10-20 22:41 UTC (not zero) · Unknown: 89 of 93 UTC dates have no collection run
+  [6m] PARTIAL · 262 ARCHIVED · SEARCHED 1% | Lightning Flashes (Optical) [≥262 | 6m] | drawn=0 layer=none dot=#ffcc00
+       Window  2026-04-23 16:17 UTC → 2026-10-23 16:17 UTC (6 months, latest)
+       Actual  on the 184 overlapping UTC dates: first 2026-10-21 12:32:19 UTC · last 2026-10-23 15:58:45 UTC (day-level; may lie outside a midday window edge)
+       Flashes 262 archived on 184 overlapping UTC dates · none drawn (summary mode; choose ≤31 days for points)
+       Refresh archive 2026-10-23 16:15 UTC (0h 2min ago; expected every 1 h)
+       Searched EUMETSAT 1% of window · 6 successful runs · 2026-10-20 22:41 UTC → 2026-10-23 16:10 UTC
+       Not yet ingested: last 0h 7min of window (unknown, not zero) · Unknown: 2026-04-23 to 2026-10-20 precede archive start 2026-10-20 22:41 UTC (not zero) · Unknown: 180 of 184 UTC dates have no collection run
+  [12m] PARTIAL · 262 ARCHIVED · SEARCHED 0% | Lightning Flashes (Optical) [≥262 | 12m] | drawn=0 layer=none dot=#ffcc00
+       Window  2025-10-23 16:17 UTC → 2026-10-23 16:17 UTC (12 months, latest)
+       Actual  on the 366 overlapping UTC dates: first 2026-10-21 12:32:19 UTC · last 2026-10-23 15:58:45 UTC (day-level; may lie outside a midday window edge)
+       Flashes 262 archived on 366 overlapping UTC dates · none drawn (summary mode; choose ≤31 days for points)
+       Refresh archive 2026-10-23 16:15 UTC (0h 2min ago; expected every 1 h)
+       Searched EUMETSAT 0% of window · 6 successful runs · 2026-10-20 22:41 UTC → 2026-10-23 16:10 UTC
+       Not yet ingested: last 0h 7min of window (unknown, not zero) · Unknown: 2025-10-23 to 2026-10-20 precede archive start 2026-10-20 22:41 UTC (not zero) · Unknown: 362 of 366 UTC dates have no collection run
+  [7d PREV] UNKNOWN | Lightning Flashes (Optical) [UNKNOWN | 7d] | drawn=0 layer=none dot=#ff8800
+       Window  2026-10-09 16:17 UTC → 2026-10-16 16:17 UTC (7 days, end exclusive)
+       Actual  no archived flashes within this window
+       Flashes 0 archived in window (unknown, not zero)
+       Refresh archive 2026-10-23 16:15 UTC (0h 2min ago; expected every 1 h)
+       Searched EUMETSAT 0% of window — no collection run covers these dates
+       Unknown: 2026-10-09 to 2026-10-16 precede archive start 2026-10-20 22:41 UTC (not zero) · Unknown: 8 of 8 UTC dates have no collection run
+  [custom 2026-10-21..25] PARTIAL · 262 FLASHES DRAWN · SEARCHED 88% | Lightning Flashes (Optical) [≥262 | custom] | drawn=262 layer=visible dot=#ffcc00
+       Window  UTC dates 2026-10-21 to 2026-10-23 inclusive = 2026-10-21 00:00 UTC → 2026-10-23 16:17 UTC
+       Actual  first 2026-10-21 12:32:19 UTC · last 2026-10-23 15:58:45 UTC
+       Flashes 262 archived in window · 262 drawn as points (cap 40,000)
+       Refresh archive 2026-10-23 16:15 UTC (0h 2min ago; expected every 1 h)
+       Searched EUMETSAT 88% of window · 6 successful runs · 2026-10-21 00:00 UTC → 2026-10-23 16:10 UTC
+       Not yet ingested: last 0h 7min of window (unknown, not zero)
+  [custom 2026-10-23 only] PARTIAL · 164 FLASHES DRAWN · SEARCHED 61% | Lightning Flashes (Optical) [≥164 | custom] | drawn=164 layer=visible dot=#ffcc00
+       Window  UTC dates 2026-10-23 to 2026-10-23 inclusive = 2026-10-23 00:00 UTC → 2026-10-23 16:17 UTC
+       Actual  first 2026-10-23 01:53:48 UTC · last 2026-10-23 15:58:45 UTC
+       Flashes 164 archived in window · 164 drawn as points (cap 40,000)
+       Refresh archive 2026-10-23 16:15 UTC (0h 2min ago; expected every 1 h)
+       Searched EUMETSAT 61% of window · 5 successful runs · 2026-10-23 01:52 UTC → 2026-10-23 16:10 UTC
+       Not yet ingested: last 0h 7min of window (unknown, not zero)
+ fetch: ["history/days/2026/10/21.json 200","history/days/2026/10/22.json 200","history/days/2026/10/23.json 200","history/index.json 200","history/days/2026/10/22.json 200","history/days/2026/10/23.json 200"] xhr [] errors [] []
+===== skew-new-index-old-shard  now=2026-10-23T16:17:00.059Z  gen=202610270047
+ index: {"ok":true,"rows":366,"cutoff":"2025-10-23","gen":"2026-10-23T16:15:00.000Z","iv":1,"nextDue":"2026-10-23T19:15:00.000Z","covStart":"2026-10-20T22:41:54.847Z","lastScan":"2026-10-23T16:10:09.000Z","windows":4,"lost":[],"stale_now":false} {"schema":"uk-lightning-history-index.v2","schema_ok":true,"observation":"satellite optical lightning flashes, not ground strikes","integrity":{"state":"ok","alert":null,"lost":[]}}
+ vk rejects: 0 [] row kinds {"none/null":362,"partial/0":1,"full/>0/path":1,"partial/>0/path":2}
+ shards: ["days/2026/10/21.json:31/31","days/2026/10/22.json:67/67","days/2026/10/23.json:ERR index mismatch: count, bytes, sha256"]
+ cv since 20 Oct: {"f":0.6561,"runs":6,"unknownDates":[],"lostDates":0,"days":4,"notYet_min":7,"beforeStart_min":1362}
+ feed: {"isFC":true,"features":408,"accepted":408,"rejected":0,"observation_kinds":["optical_lightning_flash"],"meta_keys_module_reads":{"query_start_utc":"2026-10-26T21:27:07.304Z","query_end_utc":"2026-10-27T00:27:07.304Z","latest_detection_utc":"2026-10-25T11:15:58.149Z"},"first":"2026-10-21T12:32:19.282Z","last":"2026-10-25T11:15:58.149Z","feed_age_h":-80.17} status.json present false requested false
+  [ON (default 24h)] PARTIAL · 12 FLASHES DRAWN · SEARCHED 68% | Lightning Flashes (Optical) [≥12 | 24h] | drawn=12 layer=visible dot=#ffcc00
+       Window  2026-10-22 16:17 UTC → 2026-10-23 16:17 UTC (24 hours, latest)
+       Actual  unknown (day files failed)
+       Flashes 231 in index · 12 loaded · 12 drawn as points (cap 40,000)
+       Refresh archive 2026-10-23 16:15 UTC (0h 2min ago; expected every 1 h)
+       Searched EUMETSAT 68% of window · 6 successful runs · 2026-10-22 16:17 UTC → 2026-10-23 16:10 UTC
+       Not yet ingested: last 0h 7min of window (unknown, not zero) · 1 of 2 day files failed (2026-10-23 archive updating, retrying next refresh); points incomplete, counts from index
+  [12h] PARTIAL · 0 FLASHES DRAWN · SEARCHED 62% | Lightning Flashes (Optical) [UNKNOWN | 12h] | drawn=0 layer=none dot=#ffcc00
+       Window  2026-10-23 04:17 UTC → 2026-10-23 16:17 UTC (12 hours, latest)
+       Actual  unknown (day files failed)
+       Flashes 164 in index · 0 loaded
+       Refresh archive 2026-10-23 16:15 UTC (0h 2min ago; expected every 1 h)
+       Searched EUMETSAT 62% of window · 5 successful runs · 2026-10-23 04:17 UTC → 2026-10-23 16:10 UTC
+       Not yet ingested: last 0h 7min of window (unknown, not zero) · 1 of 1 day files failed (2026-10-23 archive updating, retrying next refresh); points incomplete, counts from index
+  [48h] PARTIAL · 93 FLASHES DRAWN · SEARCHED 84% | Lightning Flashes (Optical) [≥93 | 48h] | drawn=93 layer=visible dot=#ffcc00
+       Window  2026-10-21 16:17 UTC → 2026-10-23 16:17 UTC (48 hours, latest)
+       Actual  unknown (day files failed)
+       Flashes 262 in index · 93 loaded · 93 drawn as points (cap 40,000)
+       Refresh archive 2026-10-23 16:15 UTC (0h 2min ago; expected every 1 h)
+       Searched EUMETSAT 84% of window · 6 successful runs · 2026-10-21 16:17 UTC → 2026-10-23 16:10 UTC
+       Not yet ingested: last 0h 7min of window (unknown, not zero) · 1 of 3 day files failed (2026-10-23 archive updating, retrying next refresh); points incomplete, counts from index
+  [7d] PARTIAL · 98 FLASHES DRAWN · SEARCHED 34% | Lightning Flashes (Optical) [≥98 | 7d] | drawn=98 layer=visible dot=#ffcc00
+       Window  2026-10-16 16:17 UTC → 2026-10-23 16:17 UTC (7 days, latest)
+       Actual  unknown (day files failed)
+       Flashes 262 in index · 98 loaded · 98 drawn as points (cap 40,000)
+       Refresh archive 2026-10-23 16:15 UTC (0h 2min ago; expected every 1 h)
+       Searched EUMETSAT 34% of window · 6 successful runs · 2026-10-20 22:41 UTC → 2026-10-23 16:10 UTC
+       Not yet ingested: last 0h 7min of window (unknown, not zero) · Unknown: 2026-10-16 to 2026-10-20 precede archive start 2026-10-20 22:41 UTC (not zero) · Unknown: 4 of 8 UTC dates have no collection run · 1 of 3 day files failed (2026-10-23 archive updating, retrying next refresh); points incomplete, counts from index
+  [30d] PARTIAL · 98 FLASHES DRAWN · SEARCHED 8% | Lightning Flashes (Optical) [≥98 | 30d] | drawn=98 layer=visible dot=#ffcc00
+       Window  2026-09-23 16:17 UTC → 2026-10-23 16:17 UTC (30 days, latest)
+       Actual  unknown (day files failed)
+       Flashes 262 in index · 98 loaded · 98 drawn as points (cap 40,000)
+       Refresh archive 2026-10-23 16:15 UTC (0h 2min ago; expected every 1 h)
+       Searched EUMETSAT 8% of window · 6 successful runs · 2026-10-20 22:41 UTC → 2026-10-23 16:10 UTC
+       Not yet ingested: last 0h 7min of window (unknown, not zero) · Unknown: 2026-09-23 to 2026-10-20 precede archive start 2026-10-20 22:41 UTC (not zero) · Unknown: 27 of 31 UTC dates have no collection run · 1 of 3 day files failed (2026-10-23 archive updating, retrying next refresh); points incomplete, counts from index
+  [3m] PARTIAL · 262 ARCHIVED · SEARCHED 2% | Lightning Flashes (Optical) [≥262 | 3m] | drawn=0 layer=none dot=#ffcc00
+       Window  2026-07-23 16:17 UTC → 2026-10-23 16:17 UTC (3 months, latest)
+       Actual  on the 93 overlapping UTC dates: first 2026-10-21 12:32:19 UTC · last 2026-10-23 15:58:45 UTC (day-level; may lie outside a midday window edge)
+       Flashes 262 archived on 93 overlapping UTC dates · none drawn (summary mode; choose ≤31 days for points)
+       Refresh archive 2026-10-23 16:15 UTC (0h 2min ago; expected every 1 h)
+       Searched EUMETSAT 2% of window · 6 successful runs · 2026-10-20 22:41 UTC → 2026-10-23 16:10 UTC
+       Not yet ingested: last 0h 7min of window (unknown, not zero) · Unknown: 2026-07-23 to 2026-10-20 precede archive start 2026-10-20 22:41 UTC (not zero) · Unknown: 89 of 93 UTC dates have no collection run
+  [6m] PARTIAL · 262 ARCHIVED · SEARCHED 1% | Lightning Flashes (Optical) [≥262 | 6m] | drawn=0 layer=none dot=#ffcc00
+       Window  2026-04-23 16:17 UTC → 2026-10-23 16:17 UTC (6 months, latest)
+       Actual  on the 184 overlapping UTC dates: first 2026-10-21 12:32:19 UTC · last 2026-10-23 15:58:45 UTC (day-level; may lie outside a midday window edge)
+       Flashes 262 archived on 184 overlapping UTC dates · none drawn (summary mode; choose ≤31 days for points)
+       Refresh archive 2026-10-23 16:15 UTC (0h 2min ago; expected every 1 h)
+       Searched EUMETSAT 1% of window · 6 successful runs · 2026-10-20 22:41 UTC → 2026-10-23 16:10 UTC
+       Not yet ingested: last 0h 7min of window (unknown, not zero) · Unknown: 2026-04-23 to 2026-10-20 precede archive start 2026-10-20 22:41 UTC (not zero) · Unknown: 180 of 184 UTC dates have no collection run
+  [12m] PARTIAL · 262 ARCHIVED · SEARCHED 0% | Lightning Flashes (Optical) [≥262 | 12m] | drawn=0 layer=none dot=#ffcc00
+       Window  2025-10-23 16:17 UTC → 2026-10-23 16:17 UTC (12 months, latest)
+       Actual  on the 366 overlapping UTC dates: first 2026-10-21 12:32:19 UTC · last 2026-10-23 15:58:45 UTC (day-level; may lie outside a midday window edge)
+       Flashes 262 archived on 366 overlapping UTC dates · none drawn (summary mode; choose ≤31 days for points)
+       Refresh archive 2026-10-23 16:15 UTC (0h 2min ago; expected every 1 h)
+       Searched EUMETSAT 0% of window · 6 successful runs · 2026-10-20 22:41 UTC → 2026-10-23 16:10 UTC
+       Not yet ingested: last 0h 7min of window (unknown, not zero) · Unknown: 2025-10-23 to 2026-10-20 precede archive start 2026-10-20 22:41 UTC (not zero) · Unknown: 362 of 366 UTC dates have no collection run
+  [7d PREV] UNKNOWN | Lightning Flashes (Optical) [UNKNOWN | 7d] | drawn=0 layer=none dot=#ff8800
+       Window  2026-10-09 16:17 UTC → 2026-10-16 16:17 UTC (7 days, end exclusive)
+       Actual  no archived flashes within this window
+       Flashes 0 archived in window (unknown, not zero)
+       Refresh archive 2026-10-23 16:15 UTC (0h 2min ago; expected every 1 h)
+       Searched EUMETSAT 0% of window — no collection run covers these dates
+       Unknown: 2026-10-09 to 2026-10-16 precede archive start 2026-10-20 22:41 UTC (not zero) · Unknown: 8 of 8 UTC dates have no collection run
+  [custom 2026-10-21..25] PARTIAL · 98 FLASHES DRAWN · SEARCHED 88% | Lightning Flashes (Optical) [≥98 | custom] | drawn=98 layer=visible dot=#ffcc00
+       Window  UTC dates 2026-10-21 to 2026-10-23 inclusive = 2026-10-21 00:00 UTC → 2026-10-23 16:17 UTC
+       Actual  unknown (day files failed)
+       Flashes 262 in index · 98 loaded · 98 drawn as points (cap 40,000)
+       Refresh archive 2026-10-23 16:15 UTC (0h 2min ago; expected every 1 h)
+       Searched EUMETSAT 88% of window · 6 successful runs · 2026-10-21 00:00 UTC → 2026-10-23 16:10 UTC
+       Not yet ingested: last 0h 7min of window (unknown, not zero) · 1 of 3 day files failed (2026-10-23 archive updating, retrying next refresh); points incomplete, counts from index
+  [custom 2026-10-23 only] PARTIAL · 0 FLASHES DRAWN · SEARCHED 61% | Lightning Flashes (Optical) [UNKNOWN | custom] | drawn=0 layer=none dot=#ffcc00
+       Window  UTC dates 2026-10-23 to 2026-10-23 inclusive = 2026-10-23 00:00 UTC → 2026-10-23 16:17 UTC
+       Actual  unknown (day files failed)
+       Flashes 164 in index · 0 loaded
+       Refresh archive 2026-10-23 16:15 UTC (0h 2min ago; expected every 1 h)
+       Searched EUMETSAT 61% of window · 5 successful runs · 2026-10-23 01:52 UTC → 2026-10-23 16:10 UTC
+       Not yet ingested: last 0h 7min of window (unknown, not zero) · 1 of 1 day files failed (2026-10-23 archive updating, retrying next refresh); points incomplete, counts from index
+ fetch: ["history/days/2026/10/21.json 200","history/days/2026/10/22.json 200","history/days/2026/10/23.json 200","history/index.json 200","history/days/2026/10/22.json 200","history/days/2026/10/23.json 200","history/index.json?1792772220088 200","history/days/2026/10/22.json 200","history/days/2026/10/23.json 200","history/days/2026/10/23.json 200","history/index.json?1792772220173 200","history/days/2026/10/23.json 200","history/days/2026/10/22.json 200","history/days/2026/10/23.json 200","history/index.json?1792772220226 200","history/days/2026/10/22.json 200","history/days/2026/10/23.json 200","history/days/2026/10/23.json 200","history/index.json?1792772220286 200","history/days/2026/10/22.json 200","history/days/2026/10/23.json 200","history/days/2026/10/23.json 200","history/index.json?1792772220341 200","history/days/2026/10/22.json 200","history/days/2026/10/23.json 200","history/days/2026/10/23.json 200","history/index.json?1792772220544 200","history/days/2026/10/22.json 200","history/days/2026/10/23.json 200","history/days/2026/10/23.json 200","history/index.json?1792772220646 200","history/days/2026/10/23.json 200","history/days/2026/10/22.json 200","history/days/2026/10/23.json 200","history/index.json?1792772220697 200","history/days/2026/10/22.json 200","history/days/2026/10/23.json 200","history/days/2026/10/23.json 200","history/index.json?1792772220753 200","history/days/2026/10/23.json 200"] xhr [] errors [] []
+===== skew-old-index-new-shard  now=2026-10-23T16:17:00.036Z  gen=202610270047
+ index: {"ok":true,"rows":366,"cutoff":"2025-10-23","gen":"2026-10-23T15:15:00.000Z","iv":1,"nextDue":"2026-10-23T18:15:00.000Z","covStart":"2026-10-20T22:41:54.847Z","lastScan":"2026-10-23T15:15:00.000Z","windows":4,"lost":[],"stale_now":false} {"schema":"uk-lightning-history-index.v2","schema_ok":true,"observation":"satellite optical lightning flashes, not ground strikes","integrity":{"state":"ok","alert":null,"lost":[]}}
+ vk rejects: 0 [] row kinds {"none/null":362,"partial/0":1,"full/>0/path":1,"partial/>0/path":2}
+ shards: ["days/2026/10/21.json:31/31","days/2026/10/22.json:67/67","days/2026/10/23.json:ERR index mismatch: count, bytes, sha256"]
+ cv since 20 Oct: {"f":0.6457,"runs":5,"unknownDates":[],"lostDates":0,"days":4,"notYet_min":62,"beforeStart_min":1362}
+ feed: {"isFC":true,"features":408,"accepted":408,"rejected":0,"observation_kinds":["optical_lightning_flash"],"meta_keys_module_reads":{"query_start_utc":"2026-10-26T21:27:07.304Z","query_end_utc":"2026-10-27T00:27:07.304Z","latest_detection_utc":"2026-10-25T11:15:58.149Z"},"first":"2026-10-21T12:32:19.282Z","last":"2026-10-25T11:15:58.149Z","feed_age_h":-80.17} status.json present false requested false
+  [ON (default 24h)] PARTIAL · 12 FLASHES DRAWN · SEARCHED 64% | Lightning Flashes (Optical) [≥12 | 24h] | drawn=12 layer=visible dot=#ffcc00
+       Window  2026-10-22 16:17 UTC → 2026-10-23 16:17 UTC (24 hours, latest)
+       Actual  unknown (day files failed)
+       Flashes 160 in index · 12 loaded · 12 drawn as points (cap 40,000)
+       Refresh archive 2026-10-23 15:15 UTC (1h 2min ago; expected every 1 h)
+       Searched EUMETSAT 64% of window · 5 successful runs · 2026-10-22 16:17 UTC → 2026-10-23 15:15 UTC
+       Not yet ingested: last 1h 2min of window (unknown, not zero) · 1 of 2 day files failed (2026-10-23 archive updating, retrying next refresh); points incomplete, counts from index
+  [12h] PARTIAL · 0 FLASHES DRAWN · SEARCHED 55% | Lightning Flashes (Optical) [UNKNOWN | 12h] | drawn=0 layer=none dot=#ffcc00
+       Window  2026-10-23 04:17 UTC → 2026-10-23 16:17 UTC (12 hours, latest)
+       Actual  unknown (day files failed)
+       Flashes 93 in index · 0 loaded
+       Refresh archive 2026-10-23 15:15 UTC (1h 2min ago; expected every 1 h)
+       Searched EUMETSAT 55% of window · 4 successful runs · 2026-10-23 04:17 UTC → 2026-10-23 15:15 UTC
+       Not yet ingested: last 1h 2min of window (unknown, not zero) · 1 of 1 day files failed (2026-10-23 archive updating, retrying next refresh); points incomplete, counts from index
+  [48h] PARTIAL · 93 FLASHES DRAWN · SEARCHED 82% | Lightning Flashes (Optical) [≥93 | 48h] | drawn=93 layer=visible dot=#ffcc00
+       Window  2026-10-21 16:17 UTC → 2026-10-23 16:17 UTC (48 hours, latest)
+       Actual  unknown (day files failed)
+       Flashes 191 in index · 93 loaded · 93 drawn as points (cap 40,000)
+       Refresh archive 2026-10-23 15:15 UTC (1h 2min ago; expected every 1 h)
+       Searched EUMETSAT 82% of window · 5 successful runs · 2026-10-21 16:17 UTC → 2026-10-23 15:15 UTC
+       Not yet ingested: last 1h 2min of window (unknown, not zero) · 1 of 3 day files failed (2026-10-23 archive updating, retrying next refresh); points incomplete, counts from index
+  [7d] PARTIAL · 98 FLASHES DRAWN · SEARCHED 33% | Lightning Flashes (Optical) [≥98 | 7d] | drawn=98 layer=visible dot=#ffcc00
+       Window  2026-10-16 16:17 UTC → 2026-10-23 16:17 UTC (7 days, latest)
+       Actual  unknown (day files failed)
+       Flashes 191 in index · 98 loaded · 98 drawn as points (cap 40,000)
+       Refresh archive 2026-10-23 15:15 UTC (1h 2min ago; expected every 1 h)
+       Searched EUMETSAT 33% of window · 5 successful runs · 2026-10-20 22:41 UTC → 2026-10-23 15:15 UTC
+       Not yet ingested: last 1h 2min of window (unknown, not zero) · Unknown: 2026-10-16 to 2026-10-20 precede archive start 2026-10-20 22:41 UTC (not zero) · Unknown: 4 of 8 UTC dates have no collection run · 1 of 3 day files failed (2026-10-23 archive updating, retrying next refresh); points incomplete, counts from index
+  [30d] PARTIAL · 98 FLASHES DRAWN · SEARCHED 7% | Lightning Flashes (Optical) [≥98 | 30d] | drawn=98 layer=visible dot=#ffcc00
+       Window  2026-09-23 16:17 UTC → 2026-10-23 16:17 UTC (30 days, latest)
+       Actual  unknown (day files failed)
+       Flashes 191 in index · 98 loaded · 98 drawn as points (cap 40,000)
+       Refresh archive 2026-10-23 15:15 UTC (1h 2min ago; expected every 1 h)
+       Searched EUMETSAT 7% of window · 5 successful runs · 2026-10-20 22:41 UTC → 2026-10-23 15:15 UTC
+       Not yet ingested: last 1h 2min of window (unknown, not zero) · Unknown: 2026-09-23 to 2026-10-20 precede archive start 2026-10-20 22:41 UTC (not zero) · Unknown: 27 of 31 UTC dates have no collection run · 1 of 3 day files failed (2026-10-23 archive updating, retrying next refresh); points incomplete, counts from index
+  [3m] PARTIAL · 191 ARCHIVED · SEARCHED 2% | Lightning Flashes (Optical) [≥191 | 3m] | drawn=0 layer=none dot=#ffcc00
+       Window  2026-07-23 16:17 UTC → 2026-10-23 16:17 UTC (3 months, latest)
+       Actual  on the 93 overlapping UTC dates: first 2026-10-21 12:32:19 UTC · last 2026-10-23 14:59:46 UTC (day-level; may lie outside a midday window edge)
+       Flashes 191 archived on 93 overlapping UTC dates · none drawn (summary mode; choose ≤31 days for points)
+       Refresh archive 2026-10-23 15:15 UTC (1h 2min ago; expected every 1 h)
+       Searched EUMETSAT 2% of window · 5 successful runs · 2026-10-20 22:41 UTC → 2026-10-23 15:15 UTC
+       Not yet ingested: last 1h 2min of window (unknown, not zero) · Unknown: 2026-07-23 to 2026-10-20 precede archive start 2026-10-20 22:41 UTC (not zero) · Unknown: 89 of 93 UTC dates have no collection run
+  [6m] PARTIAL · 191 ARCHIVED · SEARCHED 1% | Lightning Flashes (Optical) [≥191 | 6m] | drawn=0 layer=none dot=#ffcc00
+       Window  2026-04-23 16:17 UTC → 2026-10-23 16:17 UTC (6 months, latest)
+       Actual  on the 184 overlapping UTC dates: first 2026-10-21 12:32:19 UTC · last 2026-10-23 14:59:46 UTC (day-level; may lie outside a midday window edge)
+       Flashes 191 archived on 184 overlapping UTC dates · none drawn (summary mode; choose ≤31 days for points)
+       Refresh archive 2026-10-23 15:15 UTC (1h 2min ago; expected every 1 h)
+       Searched EUMETSAT 1% of window · 5 successful runs · 2026-10-20 22:41 UTC → 2026-10-23 15:15 UTC
+       Not yet ingested: last 1h 2min of window (unknown, not zero) · Unknown: 2026-04-23 to 2026-10-20 precede archive start 2026-10-20 22:41 UTC (not zero) · Unknown: 180 of 184 UTC dates have no collection run
+  [12m] PARTIAL · 191 ARCHIVED · SEARCHED 0% | Lightning Flashes (Optical) [≥191 | 12m] | drawn=0 layer=none dot=#ffcc00
+       Window  2025-10-23 16:17 UTC → 2026-10-23 16:17 UTC (12 months, latest)
+       Actual  on the 366 overlapping UTC dates: first 2026-10-21 12:32:19 UTC · last 2026-10-23 14:59:46 UTC (day-level; may lie outside a midday window edge)
+       Flashes 191 archived on 366 overlapping UTC dates · none drawn (summary mode; choose ≤31 days for points)
+       Refresh archive 2026-10-23 15:15 UTC (1h 2min ago; expected every 1 h)
+       Searched EUMETSAT 0% of window · 5 successful runs · 2026-10-20 22:41 UTC → 2026-10-23 15:15 UTC
+       Not yet ingested: last 1h 2min of window (unknown, not zero) · Unknown: 2025-10-23 to 2026-10-20 precede archive start 2026-10-20 22:41 UTC (not zero) · Unknown: 362 of 366 UTC dates have no collection run
+  [7d PREV] UNKNOWN | Lightning Flashes (Optical) [UNKNOWN | 7d] | drawn=0 layer=none dot=#ff8800
+       Window  2026-10-09 16:17 UTC → 2026-10-16 16:17 UTC (7 days, end exclusive)
+       Actual  no archived flashes within this window
+       Flashes 0 archived in window (unknown, not zero)
+       Refresh archive 2026-10-23 15:15 UTC (1h 2min ago; expected every 1 h)
+       Searched EUMETSAT 0% of window — no collection run covers these dates
+       Unknown: 2026-10-09 to 2026-10-16 precede archive start 2026-10-20 22:41 UTC (not zero) · Unknown: 8 of 8 UTC dates have no collection run
+  [custom 2026-10-21..25] PARTIAL · 98 FLASHES DRAWN · SEARCHED 86% | Lightning Flashes (Optical) [≥98 | custom] | drawn=98 layer=visible dot=#ffcc00
+       Window  UTC dates 2026-10-21 to 2026-10-23 inclusive = 2026-10-21 00:00 UTC → 2026-10-23 16:17 UTC
+       Actual  unknown (day files failed)
+       Flashes 191 in index · 98 loaded · 98 drawn as points (cap 40,000)
+       Refresh archive 2026-10-23 15:15 UTC (1h 2min ago; expected every 1 h)
+       Searched EUMETSAT 86% of window · 5 successful runs · 2026-10-21 00:00 UTC → 2026-10-23 15:15 UTC
+       Not yet ingested: last 1h 2min of window (unknown, not zero) · 1 of 3 day files failed (2026-10-23 archive updating, retrying next refresh); points incomplete, counts from index
+  [custom 2026-10-23 only] PARTIAL · 0 FLASHES DRAWN · SEARCHED 55% | Lightning Flashes (Optical) [UNKNOWN | custom] | drawn=0 layer=none dot=#ffcc00
+       Window  UTC dates 2026-10-23 to 2026-10-23 inclusive = 2026-10-23 00:00 UTC → 2026-10-23 16:17 UTC
+       Actual  unknown (day files failed)
+       Flashes 93 in index · 0 loaded
+       Refresh archive 2026-10-23 15:15 UTC (1h 2min ago; expected every 1 h)
+       Searched EUMETSAT 55% of window · 4 successful runs · 2026-10-23 01:52 UTC → 2026-10-23 15:15 UTC
+       Not yet ingested: last 1h 2min of window (unknown, not zero) · 1 of 1 day files failed (2026-10-23 archive updating, retrying next refresh); points incomplete, counts from index
+ fetch: ["history/days/2026/10/21.json 200","history/days/2026/10/22.json 200","history/days/2026/10/23.json 200","history/index.json 200","history/days/2026/10/22.json 200","history/days/2026/10/23.json 200","history/index.json?1792772220055 200","history/days/2026/10/22.json 200","history/days/2026/10/23.json 200","history/days/2026/10/23.json 200","history/index.json?1792772220133 200","history/days/2026/10/23.json 200","history/days/2026/10/22.json 200","history/days/2026/10/23.json 200","history/index.json?1792772220186 200","history/days/2026/10/22.json 200","history/days/2026/10/23.json 200","history/days/2026/10/23.json 200","history/index.json?1792772220239 200","history/days/2026/10/22.json 200","history/days/2026/10/23.json 200","history/days/2026/10/23.json 200","history/index.json?1792772220294 200","history/days/2026/10/22.json 200","history/days/2026/10/23.json 200","history/days/2026/10/23.json 200","history/index.json?1792772220492 200","history/days/2026/10/22.json 200","history/days/2026/10/23.json 200","history/days/2026/10/23.json 200","history/index.json?1792772220595 200","history/days/2026/10/23.json 200","history/days/2026/10/22.json 200","history/days/2026/10/23.json 200","history/index.json?1792772220645 200","history/days/2026/10/22.json 200","history/days/2026/10/23.json 200","history/days/2026/10/23.json 200","history/index.json?1792772220697 200","history/days/2026/10/23.json 200"] xhr [] errors [] []

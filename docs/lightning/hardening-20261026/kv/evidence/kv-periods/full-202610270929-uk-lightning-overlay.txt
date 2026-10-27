@@ -1,0 +1,104 @@
+PASS H01: OFF->ON revalidates the live feed (no cached promise)
+PASS H01/F3: the 10-minute refresh re-requests the live feed, not only index.json
+PASS H02/F4: a feed whose query_end_utc is 6 h old is STALE in state, label and status
+PASS H03: ok() rejects malformed and out-of-box coordinates; such a record is never drawn
+PASS H04: a shard is rejected when its count, bytes or sha256 differ from the index entry; a matching shard loads
+PASS H05: a sub-day budget caption never calls whole-day index sums "in window"
+PASS F2: CUSTOM clicked during the first LOADING neither throws nor paints the stale 24h result
+PASS F1: an unparsable feed timestamp does not wedge the UI (label leaves [LOAD], chips still load)
+PASS F5: PREV is disabled in feed-only mode
+PASS F6 / owner device 2: feed-mode coverage reads "unknown (live feed records only its last collection window)", never a percentage
+PASS F9: bytes:null is estimated, not counted as 0, in the 32 MB budget
+PASS R02: a v1 index reads "archive unavailable", not "archive not yet published"
+PASS R04: CUSTOM shows a custom-window caption at once, not the previous period until APPLY
+PASS LP: LOAD POINTS stops before a day that would break 40,000 flashes or 32 MB
+PASS Owner device 1: in feed fallback the 30D-12M chips respond with "archive not yet published: earlier coverage unknown, not zero"
+PASS Owner device 3: bottom padding is inline on the lightning main group only; no original node or selector touched
+PASS P14: the lightning main group carries an inline bottom spacer of at least 56 px (44 px HIDE LAYERS + 12 px inset)
+PASS A11Y P15-1: period chips expose aria-pressed and it follows the selected period
+PASS A11Y P15-2: the custom From/To date inputs have accessible names
+PASS A11Y P15-3: no \#555 text on lightning nodes; caption footer and status line are \#888
+PASS A11Y P15-4: FAIL-state label opacity is 0.6
+PASS R01/P02/P10: no Grid dropdown mirror is inserted; the original Grid panel keeps its children
+PASS R01: boot no longer waits for .gm-panel-body
+PASS R01: without the mirror, panel and curtain twins stay in sync both ways
+PASS CR1: LOAD POINTS when the newest day alone exceeds the budget never reads EMPTY / "NO FLASHES DETECTED"
+PASS CR2: a failed index reload clears S.idx (no stale archive state after fallback)
+PASS CR3: superseded shard workers issue no new requests after OFF
+PASS CR4: a late, older index response does not overwrite a newer S.idx
+PASS CR5/S4: index counts must be non-negative integers ("03" and 1e400 are rejected, archive fails closed)
+PASS CR6: a budget-truncated LOAD POINTS result is PARTIAL, not READY
+PASS M01: group spans the grid; spacer = HIDE LAYERS rect + 16 px, right inset clears the button, both recomputed on resize/orientationchange
+PASS M02: feed fallback on a long period states "<n> seen in the available 7-day feed · <period> requested · older history unknown" near the chips, with oldest/latest UTC
+PASS M03: drawn flashes outside map.getBounds() are reported; the map is never moved
+PASS M04: caption 12 px, \#bbb or brighter, disclaimer at least 11 px, normal wrapping
+PASS M05/H08: a feed result with a cov object keeps "Searched EUMETSAT unknown"
+PASS SL: a shard_lost day is unknown coverage, never searched or zero, with the integrity warning
+PASS S5: parts[] paths outside days/YYYY/MM/DD/HH.json fail the index closed; nothing off-path is requested
+PASS S6: more than 24 parts per day fails closed with a named reason, not thousands of requests
+PASS S8: a huge scan_windows list does not reject the archive
+PASS S10: one record with a giant coordinates array is rejected alone; the feed still draws
+PASS S10b: id-less flashes dedupe on time+lon+lat, not all into one
+PASS T08: 3M PREV then NEXT returns to the latest window (calendar months)
+PASS T11: a feed without query_end_utc is STALE (age unknown)
+PASS T12a: a sub-minute ingest gap reads "<1 min", not "0h 0min", and the searched % is floored (not 100%)
+PASS T13: a zone-less time_utc is read as UTC in America/New_York
+PASS T14: a 30D window with a 40-min ingest tail is not 100% / READY / EMPTY-COVERED
+PASS T15: CUSTOM at exactly 00:00:00.000 UTC never inverts the date range
+PASS PARITY: the bytes declare IX_SCHEMA for the archive URL and FEED_SCHEMA for the feed URL, and nothing else
+PASS IX_SCHEMA: the index loader enforces the declared constant (wrong, missing or v1 schema = archive unavailable)
+PASS E1: a 60 s scan gap is not "NO FLASHES DETECTED · SEARCHED 100%"
+PASS E2/E02: 3M PREV then NEXT on 2026-05-31 returns exactly to the latest window (window-end stack)
+PASS E03: 12M PREV then NEXT on leap day 2028-02-29 keeps the leap day
+PASS E3: a part without "hour" is still fetched (hour from its path), never a silent zero
+PASS E4: a date with no index row inside full scan coverage is not EMPTY-COVERED
+PASS E5: setOn(true) before install does not break the install (fit listeners registered)
+PASS E6: observation_kind must be exactly the string (an array is rejected)
+PASS E7: a budget-truncated PARTIAL carries a reason
+PASS E06: an index generated 2 h in the future (device clock behind) is STALE
+PASS F-A: negative or zero part counts reject the index (no budget bypass)
+PASS F-B: duplicate index rows for one date are loaded and counted once
+PASS F-C: listing every scan window twice does not raise Searched %
+PASS DATES: a rollover date such as 2026-02-30 rejects the index
+PASS F1: "Flashes 0 archived" never appears bare while UNKNOWN/PARTIAL; a lost day has its own Searched line
+PASS F2: index/shard mismatch refetches the index once (cache-busted) and retries; if still inconsistent, PARTIAL "archive updating", never FAIL
+PASS M01: the inset is re-measured after render/ON and on clicks (panel opened after install)
+PASS DOTS: points are at least 4 px at low zoom with a dark 1 px stroke
+PASS NF1: when day files fail with the index up, Actual is "unknown (day files failed)" and Flashes shows index vs loaded, never "at least 0"
+PASS NF2: a redirected index (fetch) or feed (XHR responseURL off the requested URL) is rejected
+PASS RO: the right inset follows the HIDE LAYERS button live size (ResizeObserver), also after the button is replaced
+PASS R1/CRF-1: a fractional part count (0.5) rejects the index
+PASS R2: a tampered SEALED shard is FAIL naming the mismatch, never "archive updating"
+PASS T10/CRF-3b: after a failed retry the caption names date and field; status never SEARCHED n%; reason is not "gaps in window"
+PASS E06 (G): a future-dated index does not read "<1 min ago"
+FAIL REST: before ON there are no requests, map sources or map listeners; outside the hidden controls the group is identical to F
+PASS I01: without WebCrypto, a shard with valid count/bytes but a false sha256 is not drawn as verified (PARTIAL "not verified (no WebCrypto)")
+PASS H1: feed-only 12M reads "[n · last 7 days only]", never "≥n | 12m"; bold first caption line; 7-DAY FEED ONLY status
+PASS H1: in feed fallback the 30D-12M chips carry a dim marker and stay tappable; with an archive they carry none
+PASS H2: dots 6/8/10 px at z5/z8/z11 with a 1.5 px dark stroke and light core, plus an invisible >=22 px hit layer
+PASS H2: above the phone cap clusters get count labels and a tap on a cluster zooms in
+PASS H3/I1: tapping a flash opens a Lightning-owned card (not maplibregl.Popup) with UTC time, flash ID, lat/lon 3 dp and the disclaimer, via textContent
+PASS H3: an original layer click handler still fires when no flash is under the tap (and when one is)
+PASS H4: FIT FLASHES fits the map to drawn flashes only when tapped; the outside-view count is recounted on moveend
+PASS H4: restored "12 months" period label and aria-live on the caption
+PASS H4 CRF-2/2b: a lost day is subtracted once even when scan windows overlap
+PASS H2b: the cluster label font comes from the basemap style (first symbol layer with text-font), else Open Sans Regular
+PASS I1: the card has explicit dark/light/cyan inline colours, a 44 px close button that closes it, and follows the map on move
+PASS I2: 3M and 12M with 763 archived flashes load and draw points automatically
+PASS I2: 12M with 50,000 archived flashes still asks first (LOAD POINTS); a phone asks above its 10,000 cap
+PASS I3: NEAREST SUBSTATIONS draws Lightning-owned neon lines to the 3 nearest >=132 kV substations with km labels and the flash disclaimer; removed on close and OFF
+PASS I3: the module never invents a repd_ref, never touches the URL
+PASS I1b: with overlapping hit circles, the tap opens the flash nearest the tap point
+PASS KV-trace: dump Build I output for every window and PREV page (always passes)
+FAIL KV1: 3M label states count, searched days and STALE without "≥"
+FAIL KV2: 48H (sub-day window) is counted in searched hours, explaining why 29
+FAIL KV3: 30D/3M/6M/12M say the same 1,480 come from the same 29 searched days and how many are not yet searched
+FAIL KV4: STALE is explained: when the collector last searched and when the update was due
+FAIL KV5: a backfill commit (88f115b, generated 10:26, search frontier 02:30) does not hide STALE at 12:00
+FAIL KV6: PREV pages (fully in the past) are not flagged STALE
+FAIL KV7: PREV stops at the first searched day; 12M never opens a 13 h 45 min "12 months" page
+FAIL KV8: status line names searched days, not a bare percentage
+FAIL KV9: searched line gives hours and drops "successful runs"
+FAIL KV10: never-searched dates are warned once, not also as "precede archive start"
+FAIL KV11: over-budget summary (whole-day index sums) says "on N dates" for a 48 h window
+PASS KV-guard: drawn counts equal independent ground truth on every page (passes on both)

@@ -1,0 +1,3018 @@
+{
+ "module": "../../wt/atlas/modules/202610270929-uk-lightning-overlay.js",
+ "commit": "2a49652",
+ "clock": "2026-10-28T00:05:00Z",
+ "view": "-6,50,2,56",
+ "index": {
+  "generated": "2026-10-27T10:43:35.566Z",
+  "total": 1480,
+  "coverage_start": "2026-09-29T00:00:00.000Z",
+  "cutoff": "2025-10-27"
+ },
+ "periods": {
+  "12h": [
+   {
+    "tag": "LATEST",
+    "window": "2026-10-27T12:05 -> 2026-10-28T00:05",
+    "label": "Lightning Flashes (Optical) [UNKNOWN | 12h STALE]",
+    "status": "UNKNOWN · STALE",
+    "state": "UNKNOWN",
+    "mode": "detail",
+    "drawn": 0,
+    "arch": 29,
+    "out": 0,
+    "truth": {
+     "exact": 0,
+     "wholeDays": 29,
+     "searched": 1,
+     "never": 1,
+     "dates": 2,
+     "allBefore": false
+    },
+    "prev": "on",
+    "next": "off",
+    "latest": "off",
+    "fit": "hidden",
+    "caps": {
+     "window": "Window  2026-10-27 12:05 UTC → 2026-10-28 00:05 UTC (12 hours, latest)",
+     "actual": "Actual  no archived flashes within this window",
+     "flashes": "Flashes 0 archived in window (unknown, not zero)",
+     "searched": "Searched EUMETSAT 0% of window — no collection run covers these dates",
+     "warning": "Not yet ingested: last 12h 0min of window (unknown, not zero) · Unknown: 1 of 2 UTC dates have no collection run",
+     "notice": ""
+    },
+    "stack": []
+   },
+   {
+    "tag": "PREV1",
+    "window": "2026-10-27T00:05 -> 2026-10-27T12:05",
+    "label": "Lightning Flashes (Optical) [≥29 | 12h STALE]",
+    "status": "PARTIAL · 29 FLASHES DRAWN · SEARCHED 85% · STALE",
+    "state": "PARTIAL",
+    "mode": "detail",
+    "drawn": 29,
+    "arch": 29,
+    "out": 22,
+    "truth": {
+     "exact": 29,
+     "wholeDays": 29,
+     "searched": 1,
+     "never": 0,
+     "dates": 1,
+     "allBefore": false
+    },
+    "prev": "on",
+    "next": "on",
+    "latest": "on",
+    "fit": [
+     -10.198,
+     49.556,
+     -3.661,
+     60.631
+    ],
+    "caps": {
+     "window": "Window  2026-10-27 00:05 UTC → 2026-10-27 12:05 UTC (12 hours, end exclusive)",
+     "actual": "Actual  first 2026-10-27 01:56:02 UTC · last 2026-10-27 08:44:07 UTC",
+     "flashes": "Flashes 29 archived in window · 29 drawn as points (cap 10,000) · 22 of 29 outside the current view",
+     "searched": "Searched EUMETSAT 85% of window · 9 successful runs · 2026-10-27 00:05 UTC → 2026-10-27 10:20 UTC",
+     "warning": "Not yet ingested: last 1h 45min of window (unknown, not zero)",
+     "notice": ""
+    },
+    "stack": [
+     null
+    ],
+    "outAfterFit": 0,
+    "flashesAfterFit": "Flashes 29 archived in window · 29 drawn as points (cap 10,000)",
+    "maxZoom": 9
+   },
+   {
+    "tag": "PREV2",
+    "window": "2026-10-26T12:05 -> 2026-10-27T00:05",
+    "label": "Lightning Flashes (Optical) [EMPTY | 12h STALE]",
+    "status": "NO FLASHES DETECTED · SEARCHED 100% · STALE",
+    "state": "EMPTY-COVERED",
+    "mode": "detail",
+    "drawn": 0,
+    "arch": 29,
+    "out": 0,
+    "truth": {
+     "exact": 0,
+     "wholeDays": 29,
+     "searched": 2,
+     "never": 0,
+     "dates": 2,
+     "allBefore": false
+    },
+    "prev": "on",
+    "next": "on",
+    "latest": "on",
+    "fit": "hidden",
+    "caps": {
+     "window": "Window  2026-10-26 12:05 UTC → 2026-10-27 00:05 UTC (12 hours, end exclusive)",
+     "actual": "Actual  no archived flashes within this window",
+     "flashes": "Flashes 0 archived in window",
+     "searched": "Searched EUMETSAT 100% of window · 9 successful runs · 2026-10-26 12:05 UTC → 2026-10-27 00:05 UTC",
+     "warning": "",
+     "notice": ""
+    },
+    "stack": [
+     null,
+     "2026-10-27T12:05"
+    ]
+   },
+   {
+    "tag": "PREV3",
+    "window": "2026-10-26T00:05 -> 2026-10-26T12:05",
+    "label": "Lightning Flashes (Optical) [EMPTY | 12h STALE]",
+    "status": "NO FLASHES DETECTED · SEARCHED 100% · STALE",
+    "state": "EMPTY-COVERED",
+    "mode": "detail",
+    "drawn": 0,
+    "arch": 0,
+    "out": 0,
+    "truth": {
+     "exact": 0,
+     "wholeDays": 0,
+     "searched": 1,
+     "never": 0,
+     "dates": 1,
+     "allBefore": false
+    },
+    "prev": "on",
+    "next": "on",
+    "latest": "on",
+    "fit": "hidden",
+    "caps": {
+     "window": "Window  2026-10-26 00:05 UTC → 2026-10-26 12:05 UTC (12 hours, end exclusive)",
+     "actual": "Actual  no archived flashes within this window",
+     "flashes": "Flashes 0 archived in window",
+     "searched": "Searched EUMETSAT 100% of window · 9 successful runs · 2026-10-26 00:05 UTC → 2026-10-26 12:05 UTC",
+     "warning": "",
+     "notice": ""
+    },
+    "stack": [
+     null,
+     "2026-10-27T12:05",
+     "2026-10-27T00:05"
+    ]
+   },
+   {
+    "tag": "NEXT1",
+    "window": "2026-10-26T12:05 -> 2026-10-27T00:05",
+    "label": "Lightning Flashes (Optical) [EMPTY | 12h STALE]",
+    "status": "NO FLASHES DETECTED · SEARCHED 100% · STALE",
+    "state": "EMPTY-COVERED",
+    "mode": "detail",
+    "drawn": 0,
+    "arch": 29,
+    "out": 0,
+    "truth": {
+     "exact": 0,
+     "wholeDays": 29,
+     "searched": 2,
+     "never": 0,
+     "dates": 2,
+     "allBefore": false
+    },
+    "prev": "on",
+    "next": "on",
+    "latest": "on",
+    "fit": "hidden",
+    "caps": {
+     "window": "Window  2026-10-26 12:05 UTC → 2026-10-27 00:05 UTC (12 hours, end exclusive)",
+     "actual": "Actual  no archived flashes within this window",
+     "flashes": "Flashes 0 archived in window",
+     "searched": "Searched EUMETSAT 100% of window · 9 successful runs · 2026-10-26 12:05 UTC → 2026-10-27 00:05 UTC",
+     "warning": "",
+     "notice": ""
+    },
+    "stack": [
+     null,
+     "2026-10-27T12:05"
+    ]
+   },
+   {
+    "tag": "NEXT2",
+    "window": "2026-10-27T00:05 -> 2026-10-27T12:05",
+    "label": "Lightning Flashes (Optical) [≥29 | 12h STALE]",
+    "status": "PARTIAL · 29 FLASHES DRAWN · SEARCHED 85% · STALE",
+    "state": "PARTIAL",
+    "mode": "detail",
+    "drawn": 29,
+    "arch": 29,
+    "out": 22,
+    "truth": {
+     "exact": 29,
+     "wholeDays": 29,
+     "searched": 1,
+     "never": 0,
+     "dates": 1,
+     "allBefore": false
+    },
+    "prev": "on",
+    "next": "on",
+    "latest": "on",
+    "fit": "shown",
+    "caps": {
+     "window": "Window  2026-10-27 00:05 UTC → 2026-10-27 12:05 UTC (12 hours, end exclusive)",
+     "actual": "Actual  first 2026-10-27 01:56:02 UTC · last 2026-10-27 08:44:07 UTC",
+     "flashes": "Flashes 29 archived in window · 29 drawn as points (cap 10,000) · 22 of 29 outside the current view",
+     "searched": "Searched EUMETSAT 85% of window · 9 successful runs · 2026-10-27 00:05 UTC → 2026-10-27 10:20 UTC",
+     "warning": "Not yet ingested: last 1h 45min of window (unknown, not zero)",
+     "notice": ""
+    },
+    "stack": [
+     null
+    ]
+   },
+   {
+    "tag": "NEXT3",
+    "window": "2026-10-27T12:05 -> 2026-10-28T00:05",
+    "label": "Lightning Flashes (Optical) [UNKNOWN | 12h STALE]",
+    "status": "UNKNOWN · STALE",
+    "state": "UNKNOWN",
+    "mode": "detail",
+    "drawn": 0,
+    "arch": 29,
+    "out": 0,
+    "truth": {
+     "exact": 0,
+     "wholeDays": 29,
+     "searched": 1,
+     "never": 1,
+     "dates": 2,
+     "allBefore": false
+    },
+    "prev": "on",
+    "next": "off",
+    "latest": "off",
+    "fit": "hidden",
+    "caps": {
+     "window": "Window  2026-10-27 12:05 UTC → 2026-10-28 00:05 UTC (12 hours, latest)",
+     "actual": "Actual  no archived flashes within this window",
+     "flashes": "Flashes 0 archived in window (unknown, not zero)",
+     "searched": "Searched EUMETSAT 0% of window — no collection run covers these dates",
+     "warning": "Not yet ingested: last 12h 0min of window (unknown, not zero) · Unknown: 1 of 2 UTC dates have no collection run",
+     "notice": ""
+    },
+    "stack": []
+   },
+   {
+    "tag": "PREVx2+LATEST",
+    "window": "2026-10-27T12:05 -> 2026-10-28T00:05",
+    "label": "Lightning Flashes (Optical) [UNKNOWN | 12h STALE]",
+    "status": "UNKNOWN · STALE",
+    "state": "UNKNOWN",
+    "mode": "detail",
+    "drawn": 0,
+    "arch": 29,
+    "out": 0,
+    "truth": {
+     "exact": 0,
+     "wholeDays": 29,
+     "searched": 1,
+     "never": 1,
+     "dates": 2,
+     "allBefore": false
+    },
+    "prev": "on",
+    "next": "off",
+    "latest": "off",
+    "fit": "hidden",
+    "caps": {
+     "window": "Window  2026-10-27 12:05 UTC → 2026-10-28 00:05 UTC (12 hours, latest)",
+     "actual": "Actual  no archived flashes within this window",
+     "flashes": "Flashes 0 archived in window (unknown, not zero)",
+     "searched": "Searched EUMETSAT 0% of window — no collection run covers these dates",
+     "warning": "Not yet ingested: last 12h 0min of window (unknown, not zero) · Unknown: 1 of 2 UTC dates have no collection run",
+     "notice": ""
+    },
+    "stack": [
+     null,
+     "2026-10-27T12:05"
+    ]
+   }
+  ],
+  "24h": [
+   {
+    "tag": "LATEST",
+    "window": "2026-10-27T00:05 -> 2026-10-28T00:05",
+    "label": "Lightning Flashes (Optical) [≥29 | 24h STALE]",
+    "status": "PARTIAL · 29 FLASHES DRAWN · SEARCHED 42% · STALE",
+    "state": "PARTIAL",
+    "mode": "detail",
+    "drawn": 29,
+    "arch": 29,
+    "out": 22,
+    "truth": {
+     "exact": 29,
+     "wholeDays": 29,
+     "searched": 1,
+     "never": 1,
+     "dates": 2,
+     "allBefore": false
+    },
+    "prev": "on",
+    "next": "off",
+    "latest": "off",
+    "fit": [
+     -10.198,
+     49.556,
+     -3.661,
+     60.631
+    ],
+    "caps": {
+     "window": "Window  2026-10-27 00:05 UTC → 2026-10-28 00:05 UTC (24 hours, latest)",
+     "actual": "Actual  first 2026-10-27 01:56:02 UTC · last 2026-10-27 08:44:07 UTC",
+     "flashes": "Flashes 29 archived in window · 29 drawn as points (cap 10,000) · 22 of 29 outside the current view",
+     "searched": "Searched EUMETSAT 42% of window · 9 successful runs · 2026-10-27 00:05 UTC → 2026-10-27 10:20 UTC",
+     "warning": "Not yet ingested: last 13h 45min of window (unknown, not zero) · Unknown: 1 of 2 UTC dates have no collection run",
+     "notice": ""
+    },
+    "stack": [
+     null,
+     "2026-10-27T12:05"
+    ],
+    "outAfterFit": 0,
+    "flashesAfterFit": "Flashes 29 archived in window · 29 drawn as points (cap 10,000)",
+    "maxZoom": 9
+   },
+   {
+    "tag": "PREV1",
+    "window": "2026-10-26T00:05 -> 2026-10-27T00:05",
+    "label": "Lightning Flashes (Optical) [EMPTY | 24h STALE]",
+    "status": "NO FLASHES DETECTED · SEARCHED 100% · STALE",
+    "state": "EMPTY-COVERED",
+    "mode": "detail",
+    "drawn": 0,
+    "arch": 29,
+    "out": 0,
+    "truth": {
+     "exact": 0,
+     "wholeDays": 29,
+     "searched": 2,
+     "never": 0,
+     "dates": 2,
+     "allBefore": false
+    },
+    "prev": "on",
+    "next": "on",
+    "latest": "on",
+    "fit": "hidden",
+    "caps": {
+     "window": "Window  2026-10-26 00:05 UTC → 2026-10-27 00:05 UTC (24 hours, end exclusive)",
+     "actual": "Actual  no archived flashes within this window",
+     "flashes": "Flashes 0 archived in window",
+     "searched": "Searched EUMETSAT 100% of window · 9 successful runs · 2026-10-26 00:05 UTC → 2026-10-27 00:05 UTC",
+     "warning": "",
+     "notice": ""
+    },
+    "stack": [
+     null,
+     "2026-10-27T12:05",
+     null
+    ]
+   },
+   {
+    "tag": "PREV2",
+    "window": "2026-10-25T00:05 -> 2026-10-26T00:05",
+    "label": "Lightning Flashes (Optical) [≥10 | 24h STALE]",
+    "status": "PARTIAL · 10 FLASHES DRAWN · SEARCHED 93% · STALE",
+    "state": "PARTIAL",
+    "mode": "detail",
+    "drawn": 10,
+    "arch": 10,
+    "out": 1,
+    "truth": {
+     "exact": 10,
+     "wholeDays": 10,
+     "searched": 2,
+     "never": 0,
+     "dates": 2,
+     "allBefore": false
+    },
+    "prev": "on",
+    "next": "on",
+    "latest": "on",
+    "fit": [
+     -9.069,
+     54.24,
+     -3.146,
+     55.374
+    ],
+    "caps": {
+     "window": "Window  2026-10-25 00:05 UTC → 2026-10-26 00:05 UTC (24 hours, end exclusive)",
+     "actual": "Actual  first 2026-10-25 03:28:34 UTC · last 2026-10-25 13:19:11 UTC",
+     "flashes": "Flashes 10 archived in window · 10 drawn as points (cap 10,000) · 1 of 10 outside the current view",
+     "searched": "Searched EUMETSAT 93% of window · 9 successful runs · 2026-10-25 01:43 UTC → 2026-10-26 00:05 UTC",
+     "warning": "",
+     "notice": ""
+    },
+    "stack": [
+     null,
+     "2026-10-27T12:05",
+     null,
+     "2026-10-27T00:05"
+    ],
+    "outAfterFit": 0,
+    "flashesAfterFit": "Flashes 10 archived in window · 10 drawn as points (cap 10,000)",
+    "maxZoom": 9
+   },
+   {
+    "tag": "PREV3",
+    "window": "2026-10-24T00:05 -> 2026-10-25T00:05",
+    "label": "Lightning Flashes (Optical) [≥118 | 24h STALE]",
+    "status": "PARTIAL · 118 FLASHES DRAWN · SEARCHED 58% · STALE",
+    "state": "PARTIAL",
+    "mode": "detail",
+    "drawn": 118,
+    "arch": 128,
+    "out": 102,
+    "truth": {
+     "exact": 118,
+     "wholeDays": 128,
+     "searched": 2,
+     "never": 0,
+     "dates": 2,
+     "allBefore": false
+    },
+    "prev": "on",
+    "next": "on",
+    "latest": "on",
+    "fit": [
+     -8.489,
+     53.187,
+     -4.749,
+     59.235
+    ],
+    "caps": {
+     "window": "Window  2026-10-24 00:05 UTC → 2026-10-25 00:05 UTC (24 hours, end exclusive)",
+     "actual": "Actual  first 2026-10-24 12:58:54 UTC · last 2026-10-24 22:52:08 UTC",
+     "flashes": "Flashes 118 archived in window · 118 drawn as points (cap 10,000) · 102 of 118 outside the current view",
+     "searched": "Searched EUMETSAT 58% of window · 5 successful runs · 2026-10-24 01:38 UTC → 2026-10-24 23:10 UTC",
+     "warning": "",
+     "notice": ""
+    },
+    "stack": [
+     null,
+     "2026-10-27T12:05",
+     null,
+     "2026-10-27T00:05",
+     "2026-10-26T00:05"
+    ],
+    "outAfterFit": 0,
+    "flashesAfterFit": "Flashes 118 archived in window · 118 drawn as points (cap 10,000)",
+    "maxZoom": 9
+   },
+   {
+    "tag": "NEXT1",
+    "window": "2026-10-25T00:05 -> 2026-10-26T00:05",
+    "label": "Lightning Flashes (Optical) [≥10 | 24h STALE]",
+    "status": "PARTIAL · 10 FLASHES DRAWN · SEARCHED 93% · STALE",
+    "state": "PARTIAL",
+    "mode": "detail",
+    "drawn": 10,
+    "arch": 10,
+    "out": 1,
+    "truth": {
+     "exact": 10,
+     "wholeDays": 10,
+     "searched": 2,
+     "never": 0,
+     "dates": 2,
+     "allBefore": false
+    },
+    "prev": "on",
+    "next": "on",
+    "latest": "on",
+    "fit": "shown",
+    "caps": {
+     "window": "Window  2026-10-25 00:05 UTC → 2026-10-26 00:05 UTC (24 hours, end exclusive)",
+     "actual": "Actual  first 2026-10-25 03:28:34 UTC · last 2026-10-25 13:19:11 UTC",
+     "flashes": "Flashes 10 archived in window · 10 drawn as points (cap 10,000) · 1 of 10 outside the current view",
+     "searched": "Searched EUMETSAT 93% of window · 9 successful runs · 2026-10-25 01:43 UTC → 2026-10-26 00:05 UTC",
+     "warning": "",
+     "notice": ""
+    },
+    "stack": [
+     null,
+     "2026-10-27T12:05",
+     null,
+     "2026-10-27T00:05"
+    ]
+   },
+   {
+    "tag": "NEXT2",
+    "window": "2026-10-26T00:05 -> 2026-10-27T00:05",
+    "label": "Lightning Flashes (Optical) [EMPTY | 24h STALE]",
+    "status": "NO FLASHES DETECTED · SEARCHED 100% · STALE",
+    "state": "EMPTY-COVERED",
+    "mode": "detail",
+    "drawn": 0,
+    "arch": 29,
+    "out": 0,
+    "truth": {
+     "exact": 0,
+     "wholeDays": 29,
+     "searched": 2,
+     "never": 0,
+     "dates": 2,
+     "allBefore": false
+    },
+    "prev": "on",
+    "next": "on",
+    "latest": "on",
+    "fit": "hidden",
+    "caps": {
+     "window": "Window  2026-10-26 00:05 UTC → 2026-10-27 00:05 UTC (24 hours, end exclusive)",
+     "actual": "Actual  no archived flashes within this window",
+     "flashes": "Flashes 0 archived in window",
+     "searched": "Searched EUMETSAT 100% of window · 9 successful runs · 2026-10-26 00:05 UTC → 2026-10-27 00:05 UTC",
+     "warning": "",
+     "notice": ""
+    },
+    "stack": [
+     null,
+     "2026-10-27T12:05",
+     null
+    ]
+   },
+   {
+    "tag": "NEXT3",
+    "window": "2026-10-27T00:05 -> 2026-10-28T00:05",
+    "label": "Lightning Flashes (Optical) [≥29 | 24h STALE]",
+    "status": "PARTIAL · 29 FLASHES DRAWN · SEARCHED 42% · STALE",
+    "state": "PARTIAL",
+    "mode": "detail",
+    "drawn": 29,
+    "arch": 29,
+    "out": 22,
+    "truth": {
+     "exact": 29,
+     "wholeDays": 29,
+     "searched": 1,
+     "never": 1,
+     "dates": 2,
+     "allBefore": false
+    },
+    "prev": "on",
+    "next": "off",
+    "latest": "off",
+    "fit": "shown",
+    "caps": {
+     "window": "Window  2026-10-27 00:05 UTC → 2026-10-28 00:05 UTC (24 hours, latest)",
+     "actual": "Actual  first 2026-10-27 01:56:02 UTC · last 2026-10-27 08:44:07 UTC",
+     "flashes": "Flashes 29 archived in window · 29 drawn as points (cap 10,000) · 22 of 29 outside the current view",
+     "searched": "Searched EUMETSAT 42% of window · 9 successful runs · 2026-10-27 00:05 UTC → 2026-10-27 10:20 UTC",
+     "warning": "Not yet ingested: last 13h 45min of window (unknown, not zero) · Unknown: 1 of 2 UTC dates have no collection run",
+     "notice": ""
+    },
+    "stack": [
+     null,
+     "2026-10-27T12:05"
+    ]
+   },
+   {
+    "tag": "PREVx2+LATEST",
+    "window": "2026-10-27T00:05 -> 2026-10-28T00:05",
+    "label": "Lightning Flashes (Optical) [≥29 | 24h STALE]",
+    "status": "PARTIAL · 29 FLASHES DRAWN · SEARCHED 42% · STALE",
+    "state": "PARTIAL",
+    "mode": "detail",
+    "drawn": 29,
+    "arch": 29,
+    "out": 22,
+    "truth": {
+     "exact": 29,
+     "wholeDays": 29,
+     "searched": 1,
+     "never": 1,
+     "dates": 2,
+     "allBefore": false
+    },
+    "prev": "on",
+    "next": "off",
+    "latest": "off",
+    "fit": "shown",
+    "caps": {
+     "window": "Window  2026-10-27 00:05 UTC → 2026-10-28 00:05 UTC (24 hours, latest)",
+     "actual": "Actual  first 2026-10-27 01:56:02 UTC · last 2026-10-27 08:44:07 UTC",
+     "flashes": "Flashes 29 archived in window · 29 drawn as points (cap 10,000) · 22 of 29 outside the current view",
+     "searched": "Searched EUMETSAT 42% of window · 9 successful runs · 2026-10-27 00:05 UTC → 2026-10-27 10:20 UTC",
+     "warning": "Not yet ingested: last 13h 45min of window (unknown, not zero) · Unknown: 1 of 2 UTC dates have no collection run",
+     "notice": ""
+    },
+    "stack": [
+     null,
+     "2026-10-27T12:05",
+     null,
+     "2026-10-27T00:05"
+    ]
+   }
+  ],
+  "48h": [
+   {
+    "tag": "LATEST",
+    "window": "2026-10-26T00:05 -> 2026-10-28T00:05",
+    "label": "Lightning Flashes (Optical) [≥29 | 48h STALE]",
+    "status": "PARTIAL · 29 FLASHES DRAWN · SEARCHED 71% · STALE",
+    "state": "PARTIAL",
+    "mode": "detail",
+    "drawn": 29,
+    "arch": 29,
+    "out": 22,
+    "truth": {
+     "exact": 29,
+     "wholeDays": 29,
+     "searched": 2,
+     "never": 1,
+     "dates": 3,
+     "allBefore": false
+    },
+    "prev": "on",
+    "next": "off",
+    "latest": "off",
+    "fit": [
+     -10.198,
+     49.556,
+     -3.661,
+     60.631
+    ],
+    "caps": {
+     "window": "Window  2026-10-26 00:05 UTC → 2026-10-28 00:05 UTC (48 hours, latest)",
+     "actual": "Actual  first 2026-10-27 01:56:02 UTC · last 2026-10-27 08:44:07 UTC",
+     "flashes": "Flashes 29 archived in window · 29 drawn as points (cap 10,000) · 22 of 29 outside the current view",
+     "searched": "Searched EUMETSAT 71% of window · 9 successful runs · 2026-10-26 00:05 UTC → 2026-10-27 10:20 UTC",
+     "warning": "Not yet ingested: last 13h 45min of window (unknown, not zero) · Unknown: 1 of 3 UTC dates have no collection run",
+     "notice": ""
+    },
+    "stack": [
+     null,
+     "2026-10-27T12:05",
+     null,
+     "2026-10-27T00:05"
+    ],
+    "outAfterFit": 0,
+    "flashesAfterFit": "Flashes 29 archived in window · 29 drawn as points (cap 10,000)",
+    "maxZoom": 9
+   },
+   {
+    "tag": "PREV1",
+    "window": "2026-10-24T00:05 -> 2026-10-26T00:05",
+    "label": "Lightning Flashes (Optical) [≥128 | 48h STALE]",
+    "status": "PARTIAL · 128 FLASHES DRAWN · SEARCHED 75% · STALE",
+    "state": "PARTIAL",
+    "mode": "detail",
+    "drawn": 128,
+    "arch": 128,
+    "out": 103,
+    "truth": {
+     "exact": 128,
+     "wholeDays": 128,
+     "searched": 3,
+     "never": 0,
+     "dates": 3,
+     "allBefore": false
+    },
+    "prev": "on",
+    "next": "on",
+    "latest": "on",
+    "fit": [
+     -9.069,
+     53.187,
+     -3.146,
+     59.235
+    ],
+    "caps": {
+     "window": "Window  2026-10-24 00:05 UTC → 2026-10-26 00:05 UTC (48 hours, end exclusive)",
+     "actual": "Actual  first 2026-10-24 12:58:54 UTC · last 2026-10-25 13:19:11 UTC",
+     "flashes": "Flashes 128 archived in window · 128 drawn as points (cap 10,000) · 103 of 128 outside the current view",
+     "searched": "Searched EUMETSAT 75% of window · 14 successful runs · 2026-10-24 01:38 UTC → 2026-10-26 00:05 UTC",
+     "warning": "",
+     "notice": ""
+    },
+    "stack": [
+     null,
+     "2026-10-27T12:05",
+     null,
+     "2026-10-27T00:05",
+     null
+    ],
+    "outAfterFit": 0,
+    "flashesAfterFit": "Flashes 128 archived in window · 128 drawn as points (cap 10,000)",
+    "maxZoom": 9
+   },
+   {
+    "tag": "PREV2",
+    "window": "2026-10-22T00:05 -> 2026-10-24T00:05",
+    "label": "Lightning Flashes (Optical) [≥256 | 48h STALE]",
+    "status": "PARTIAL · 256 FLASHES DRAWN · SEARCHED 71% · STALE",
+    "state": "PARTIAL",
+    "mode": "detail",
+    "drawn": 256,
+    "arch": 374,
+    "out": 43,
+    "truth": {
+     "exact": 256,
+     "wholeDays": 374,
+     "searched": 3,
+     "never": 0,
+     "dates": 3,
+     "allBefore": false
+    },
+    "prev": "on",
+    "next": "on",
+    "latest": "on",
+    "fit": [
+     -8.054,
+     49.521,
+     2.87,
+     61.063
+    ],
+    "caps": {
+     "window": "Window  2026-10-22 00:05 UTC → 2026-10-24 00:05 UTC (48 hours, end exclusive)",
+     "actual": "Actual  first 2026-10-22 00:07:23 UTC · last 2026-10-23 19:50:08 UTC",
+     "flashes": "Flashes 256 archived in window · 256 drawn as points (cap 10,000) · 43 of 256 outside the current view",
+     "searched": "Searched EUMETSAT 71% of window · 5 successful runs · 2026-10-22 00:05 UTC → 2026-10-23 21:26 UTC",
+     "warning": "",
+     "notice": ""
+    },
+    "stack": [
+     null,
+     "2026-10-27T12:05",
+     null,
+     "2026-10-27T00:05",
+     null,
+     "2026-10-26T00:05"
+    ],
+    "outAfterFit": 0,
+    "flashesAfterFit": "Flashes 256 archived in window · 256 drawn as points (cap 10,000)",
+    "maxZoom": 9
+   },
+   {
+    "tag": "PREV3",
+    "window": "2026-10-20T00:05 -> 2026-10-22T00:05",
+    "label": "Lightning Flashes (Optical) [≥31 | 48h STALE]",
+    "status": "PARTIAL · 31 FLASHES DRAWN · SEARCHED 52% · STALE",
+    "state": "PARTIAL",
+    "mode": "detail",
+    "drawn": 31,
+    "arch": 98,
+    "out": 21,
+    "truth": {
+     "exact": 31,
+     "wholeDays": 98,
+     "searched": 3,
+     "never": 0,
+     "dates": 3,
+     "allBefore": false
+    },
+    "prev": "on",
+    "next": "on",
+    "latest": "on",
+    "fit": [
+     -11,
+     49.515,
+     1.841,
+     50.406
+    ],
+    "caps": {
+     "window": "Window  2026-10-20 00:05 UTC → 2026-10-22 00:05 UTC (48 hours, end exclusive)",
+     "actual": "Actual  first 2026-10-21 12:32:19 UTC · last 2026-10-21 23:44:09 UTC",
+     "flashes": "Flashes 31 archived in window · 31 drawn as points (cap 10,000) · 21 of 31 outside the current view",
+     "searched": "Searched EUMETSAT 52% of window · 1 successful runs · 2026-10-20 22:41 UTC → 2026-10-22 00:05 UTC",
+     "warning": "",
+     "notice": ""
+    },
+    "stack": [
+     null,
+     "2026-10-27T12:05",
+     null,
+     "2026-10-27T00:05",
+     null,
+     "2026-10-26T00:05",
+     "2026-10-24T00:05"
+    ],
+    "outAfterFit": 0,
+    "flashesAfterFit": "Flashes 31 archived in window · 31 drawn as points (cap 10,000)",
+    "maxZoom": 9
+   },
+   {
+    "tag": "NEXT1",
+    "window": "2026-10-22T00:05 -> 2026-10-24T00:05",
+    "label": "Lightning Flashes (Optical) [≥256 | 48h STALE]",
+    "status": "PARTIAL · 256 FLASHES DRAWN · SEARCHED 71% · STALE",
+    "state": "PARTIAL",
+    "mode": "detail",
+    "drawn": 256,
+    "arch": 374,
+    "out": 43,
+    "truth": {
+     "exact": 256,
+     "wholeDays": 374,
+     "searched": 3,
+     "never": 0,
+     "dates": 3,
+     "allBefore": false
+    },
+    "prev": "on",
+    "next": "on",
+    "latest": "on",
+    "fit": "shown",
+    "caps": {
+     "window": "Window  2026-10-22 00:05 UTC → 2026-10-24 00:05 UTC (48 hours, end exclusive)",
+     "actual": "Actual  first 2026-10-22 00:07:23 UTC · last 2026-10-23 19:50:08 UTC",
+     "flashes": "Flashes 256 archived in window · 256 drawn as points (cap 10,000) · 43 of 256 outside the current view",
+     "searched": "Searched EUMETSAT 71% of window · 5 successful runs · 2026-10-22 00:05 UTC → 2026-10-23 21:26 UTC",
+     "warning": "",
+     "notice": ""
+    },
+    "stack": [
+     null,
+     "2026-10-27T12:05",
+     null,
+     "2026-10-27T00:05",
+     null,
+     "2026-10-26T00:05"
+    ]
+   },
+   {
+    "tag": "NEXT2",
+    "window": "2026-10-24T00:05 -> 2026-10-26T00:05",
+    "label": "Lightning Flashes (Optical) [≥128 | 48h STALE]",
+    "status": "PARTIAL · 128 FLASHES DRAWN · SEARCHED 75% · STALE",
+    "state": "PARTIAL",
+    "mode": "detail",
+    "drawn": 128,
+    "arch": 128,
+    "out": 103,
+    "truth": {
+     "exact": 128,
+     "wholeDays": 128,
+     "searched": 3,
+     "never": 0,
+     "dates": 3,
+     "allBefore": false
+    },
+    "prev": "on",
+    "next": "on",
+    "latest": "on",
+    "fit": "shown",
+    "caps": {
+     "window": "Window  2026-10-24 00:05 UTC → 2026-10-26 00:05 UTC (48 hours, end exclusive)",
+     "actual": "Actual  first 2026-10-24 12:58:54 UTC · last 2026-10-25 13:19:11 UTC",
+     "flashes": "Flashes 128 archived in window · 128 drawn as points (cap 10,000) · 103 of 128 outside the current view",
+     "searched": "Searched EUMETSAT 75% of window · 14 successful runs · 2026-10-24 01:38 UTC → 2026-10-26 00:05 UTC",
+     "warning": "",
+     "notice": ""
+    },
+    "stack": [
+     null,
+     "2026-10-27T12:05",
+     null,
+     "2026-10-27T00:05",
+     null
+    ]
+   },
+   {
+    "tag": "NEXT3",
+    "window": "2026-10-26T00:05 -> 2026-10-28T00:05",
+    "label": "Lightning Flashes (Optical) [≥29 | 48h STALE]",
+    "status": "PARTIAL · 29 FLASHES DRAWN · SEARCHED 71% · STALE",
+    "state": "PARTIAL",
+    "mode": "detail",
+    "drawn": 29,
+    "arch": 29,
+    "out": 22,
+    "truth": {
+     "exact": 29,
+     "wholeDays": 29,
+     "searched": 2,
+     "never": 1,
+     "dates": 3,
+     "allBefore": false
+    },
+    "prev": "on",
+    "next": "off",
+    "latest": "off",
+    "fit": "shown",
+    "caps": {
+     "window": "Window  2026-10-26 00:05 UTC → 2026-10-28 00:05 UTC (48 hours, latest)",
+     "actual": "Actual  first 2026-10-27 01:56:02 UTC · last 2026-10-27 08:44:07 UTC",
+     "flashes": "Flashes 29 archived in window · 29 drawn as points (cap 10,000) · 22 of 29 outside the current view",
+     "searched": "Searched EUMETSAT 71% of window · 9 successful runs · 2026-10-26 00:05 UTC → 2026-10-27 10:20 UTC",
+     "warning": "Not yet ingested: last 13h 45min of window (unknown, not zero) · Unknown: 1 of 3 UTC dates have no collection run",
+     "notice": ""
+    },
+    "stack": [
+     null,
+     "2026-10-27T12:05",
+     null,
+     "2026-10-27T00:05"
+    ]
+   },
+   {
+    "tag": "PREVx2+LATEST",
+    "window": "2026-10-26T00:05 -> 2026-10-28T00:05",
+    "label": "Lightning Flashes (Optical) [≥29 | 48h STALE]",
+    "status": "PARTIAL · 29 FLASHES DRAWN · SEARCHED 71% · STALE",
+    "state": "PARTIAL",
+    "mode": "detail",
+    "drawn": 29,
+    "arch": 29,
+    "out": 22,
+    "truth": {
+     "exact": 29,
+     "wholeDays": 29,
+     "searched": 2,
+     "never": 1,
+     "dates": 3,
+     "allBefore": false
+    },
+    "prev": "on",
+    "next": "off",
+    "latest": "off",
+    "fit": "shown",
+    "caps": {
+     "window": "Window  2026-10-26 00:05 UTC → 2026-10-28 00:05 UTC (48 hours, latest)",
+     "actual": "Actual  first 2026-10-27 01:56:02 UTC · last 2026-10-27 08:44:07 UTC",
+     "flashes": "Flashes 29 archived in window · 29 drawn as points (cap 10,000) · 22 of 29 outside the current view",
+     "searched": "Searched EUMETSAT 71% of window · 9 successful runs · 2026-10-26 00:05 UTC → 2026-10-27 10:20 UTC",
+     "warning": "Not yet ingested: last 13h 45min of window (unknown, not zero) · Unknown: 1 of 3 UTC dates have no collection run",
+     "notice": ""
+    },
+    "stack": [
+     null,
+     "2026-10-27T12:05",
+     null,
+     "2026-10-27T00:05",
+     null,
+     "2026-10-26T00:05"
+    ]
+   }
+  ],
+  "7d": [
+   {
+    "tag": "LATEST",
+    "window": "2026-10-21T00:05 -> 2026-10-28T00:05",
+    "label": "Lightning Flashes (Optical) [≥444 | 7d STALE]",
+    "status": "PARTIAL · 444 FLASHES DRAWN · SEARCHED 76% · STALE",
+    "state": "PARTIAL",
+    "mode": "detail",
+    "drawn": 444,
+    "arch": 444,
+    "out": 189,
+    "truth": {
+     "exact": 444,
+     "wholeDays": 444,
+     "searched": 7,
+     "never": 1,
+     "dates": 8,
+     "allBefore": false
+    },
+    "prev": "on",
+    "next": "off",
+    "latest": "off",
+    "fit": [
+     -11,
+     49.515,
+     2.87,
+     61.063
+    ],
+    "caps": {
+     "window": "Window  2026-10-21 00:05 UTC → 2026-10-28 00:05 UTC (7 days, latest)",
+     "actual": "Actual  first 2026-10-21 12:32:19 UTC · last 2026-10-27 08:44:07 UTC",
+     "flashes": "Flashes 444 archived in window · 444 drawn as points (cap 10,000) · 189 of 444 outside the current view",
+     "searched": "Searched EUMETSAT 76% of window · 19 successful runs · 2026-10-21 00:05 UTC → 2026-10-27 10:20 UTC",
+     "warning": "Not yet ingested: last 13h 45min of window (unknown, not zero) · Unknown: 1 of 8 UTC dates have no collection run",
+     "notice": ""
+    },
+    "stack": [
+     null,
+     "2026-10-27T12:05",
+     null,
+     "2026-10-27T00:05",
+     null,
+     "2026-10-26T00:05"
+    ],
+    "outAfterFit": 0,
+    "flashesAfterFit": "Flashes 444 archived in window · 444 drawn as points (cap 10,000)",
+    "maxZoom": 9
+   },
+   {
+    "tag": "PREV1",
+    "window": "2026-10-14T00:05 -> 2026-10-21T00:05",
+    "label": "Lightning Flashes (Optical) [≥169 | 7d STALE]",
+    "status": "PARTIAL · 169 FLASHES DRAWN · SEARCHED 86% · STALE",
+    "state": "PARTIAL",
+    "mode": "detail",
+    "drawn": 169,
+    "arch": 200,
+    "out": 54,
+    "truth": {
+     "exact": 169,
+     "wholeDays": 200,
+     "searched": 8,
+     "never": 0,
+     "dates": 8,
+     "allBefore": false
+    },
+    "prev": "on",
+    "next": "on",
+    "latest": "on",
+    "fit": [
+     -9.69,
+     49.85,
+     2.997,
+     61.044
+    ],
+    "caps": {
+     "window": "Window  2026-10-14 00:05 UTC → 2026-10-21 00:05 UTC (7 days, end exclusive)",
+     "actual": "Actual  first 2026-10-15 07:00:40 UTC · last 2026-10-19 12:43:15 UTC",
+     "flashes": "Flashes 169 archived in window · 169 drawn as points (cap 10,000) · 54 of 169 outside the current view",
+     "searched": "Searched EUMETSAT 86% of window · 9 successful runs · 2026-10-14 00:05 UTC → 2026-10-21 00:05 UTC",
+     "warning": "",
+     "notice": ""
+    },
+    "stack": [
+     null,
+     "2026-10-27T12:05",
+     null,
+     "2026-10-27T00:05",
+     null,
+     "2026-10-26T00:05",
+     null
+    ],
+    "outAfterFit": 0,
+    "flashesAfterFit": "Flashes 169 archived in window · 169 drawn as points (cap 10,000)",
+    "maxZoom": 9
+   },
+   {
+    "tag": "PREV2",
+    "window": "2026-10-07T00:05 -> 2026-10-14T00:05",
+    "label": "Lightning Flashes (Optical) [≥196 | 7d STALE]",
+    "status": "PARTIAL · 196 FLASHES DRAWN · SEARCHED 99% · STALE",
+    "state": "PARTIAL",
+    "mode": "detail",
+    "drawn": 196,
+    "arch": 196,
+    "out": 121,
+    "truth": {
+     "exact": 196,
+     "wholeDays": 196,
+     "searched": 8,
+     "never": 0,
+     "dates": 8,
+     "allBefore": false
+    },
+    "prev": "on",
+    "next": "on",
+    "latest": "on",
+    "fit": [
+     -10.978,
+     49.858,
+     2.9,
+     59.743
+    ],
+    "caps": {
+     "window": "Window  2026-10-07 00:05 UTC → 2026-10-14 00:05 UTC (7 days, end exclusive)",
+     "actual": "Actual  first 2026-10-09 15:21:01 UTC · last 2026-10-13 21:34:28 UTC",
+     "flashes": "Flashes 196 archived in window · 196 drawn as points (cap 10,000) · 121 of 196 outside the current view",
+     "searched": "Searched EUMETSAT 99% of window · 18 successful runs · 2026-10-07 00:05 UTC → 2026-10-14 00:05 UTC",
+     "warning": "",
+     "notice": ""
+    },
+    "stack": [
+     null,
+     "2026-10-27T12:05",
+     null,
+     "2026-10-27T00:05",
+     null,
+     "2026-10-26T00:05",
+     null,
+     "2026-10-21T00:05"
+    ],
+    "outAfterFit": 0,
+    "flashesAfterFit": "Flashes 196 archived in window · 196 drawn as points (cap 10,000)",
+    "maxZoom": 9
+   },
+   {
+    "tag": "PREV3",
+    "window": "2026-09-30T00:05 -> 2026-10-07T00:05",
+    "label": "Lightning Flashes (Optical) [666 | 7d STALE]",
+    "status": "READY · 666 FLASHES DRAWN · STALE",
+    "state": "READY·DETAIL",
+    "mode": "detail",
+    "drawn": 666,
+    "arch": 666,
+    "out": 625,
+    "truth": {
+     "exact": 666,
+     "wholeDays": 666,
+     "searched": 8,
+     "never": 0,
+     "dates": 8,
+     "allBefore": false
+    },
+    "prev": "on",
+    "next": "on",
+    "latest": "on",
+    "fit": [
+     -10.997,
+     49.507,
+     2.387,
+     61.16
+    ],
+    "caps": {
+     "window": "Window  2026-09-30 00:05 UTC → 2026-10-07 00:05 UTC (7 days, end exclusive)",
+     "actual": "Actual  first 2026-09-30 00:30:06 UTC · last 2026-10-06 14:22:31 UTC",
+     "flashes": "Flashes 666 archived in window · 666 drawn as points (cap 10,000) · 625 of 666 outside the current view",
+     "searched": "Searched EUMETSAT 100% of window · 14 successful runs · 2026-09-30 00:05 UTC → 2026-10-07 00:05 UTC",
+     "warning": "",
+     "notice": ""
+    },
+    "stack": [
+     null,
+     "2026-10-27T12:05",
+     null,
+     "2026-10-27T00:05",
+     null,
+     "2026-10-26T00:05",
+     null,
+     "2026-10-21T00:05",
+     "2026-10-14T00:05"
+    ],
+    "outAfterFit": 0,
+    "flashesAfterFit": "Flashes 666 archived in window · 666 drawn as points (cap 10,000)",
+    "maxZoom": 9
+   },
+   {
+    "tag": "NEXT1",
+    "window": "2026-10-07T00:05 -> 2026-10-14T00:05",
+    "label": "Lightning Flashes (Optical) [≥196 | 7d STALE]",
+    "status": "PARTIAL · 196 FLASHES DRAWN · SEARCHED 99% · STALE",
+    "state": "PARTIAL",
+    "mode": "detail",
+    "drawn": 196,
+    "arch": 196,
+    "out": 121,
+    "truth": {
+     "exact": 196,
+     "wholeDays": 196,
+     "searched": 8,
+     "never": 0,
+     "dates": 8,
+     "allBefore": false
+    },
+    "prev": "on",
+    "next": "on",
+    "latest": "on",
+    "fit": "shown",
+    "caps": {
+     "window": "Window  2026-10-07 00:05 UTC → 2026-10-14 00:05 UTC (7 days, end exclusive)",
+     "actual": "Actual  first 2026-10-09 15:21:01 UTC · last 2026-10-13 21:34:28 UTC",
+     "flashes": "Flashes 196 archived in window · 196 drawn as points (cap 10,000) · 121 of 196 outside the current view",
+     "searched": "Searched EUMETSAT 99% of window · 18 successful runs · 2026-10-07 00:05 UTC → 2026-10-14 00:05 UTC",
+     "warning": "",
+     "notice": ""
+    },
+    "stack": [
+     null,
+     "2026-10-27T12:05",
+     null,
+     "2026-10-27T00:05",
+     null,
+     "2026-10-26T00:05",
+     null,
+     "2026-10-21T00:05"
+    ]
+   },
+   {
+    "tag": "NEXT2",
+    "window": "2026-10-14T00:05 -> 2026-10-21T00:05",
+    "label": "Lightning Flashes (Optical) [≥169 | 7d STALE]",
+    "status": "PARTIAL · 169 FLASHES DRAWN · SEARCHED 86% · STALE",
+    "state": "PARTIAL",
+    "mode": "detail",
+    "drawn": 169,
+    "arch": 200,
+    "out": 54,
+    "truth": {
+     "exact": 169,
+     "wholeDays": 200,
+     "searched": 8,
+     "never": 0,
+     "dates": 8,
+     "allBefore": false
+    },
+    "prev": "on",
+    "next": "on",
+    "latest": "on",
+    "fit": "shown",
+    "caps": {
+     "window": "Window  2026-10-14 00:05 UTC → 2026-10-21 00:05 UTC (7 days, end exclusive)",
+     "actual": "Actual  first 2026-10-15 07:00:40 UTC · last 2026-10-19 12:43:15 UTC",
+     "flashes": "Flashes 169 archived in window · 169 drawn as points (cap 10,000) · 54 of 169 outside the current view",
+     "searched": "Searched EUMETSAT 86% of window · 9 successful runs · 2026-10-14 00:05 UTC → 2026-10-21 00:05 UTC",
+     "warning": "",
+     "notice": ""
+    },
+    "stack": [
+     null,
+     "2026-10-27T12:05",
+     null,
+     "2026-10-27T00:05",
+     null,
+     "2026-10-26T00:05",
+     null
+    ]
+   },
+   {
+    "tag": "NEXT3",
+    "window": "2026-10-21T00:05 -> 2026-10-28T00:05",
+    "label": "Lightning Flashes (Optical) [≥444 | 7d STALE]",
+    "status": "PARTIAL · 444 FLASHES DRAWN · SEARCHED 76% · STALE",
+    "state": "PARTIAL",
+    "mode": "detail",
+    "drawn": 444,
+    "arch": 444,
+    "out": 189,
+    "truth": {
+     "exact": 444,
+     "wholeDays": 444,
+     "searched": 7,
+     "never": 1,
+     "dates": 8,
+     "allBefore": false
+    },
+    "prev": "on",
+    "next": "off",
+    "latest": "off",
+    "fit": "shown",
+    "caps": {
+     "window": "Window  2026-10-21 00:05 UTC → 2026-10-28 00:05 UTC (7 days, latest)",
+     "actual": "Actual  first 2026-10-21 12:32:19 UTC · last 2026-10-27 08:44:07 UTC",
+     "flashes": "Flashes 444 archived in window · 444 drawn as points (cap 10,000) · 189 of 444 outside the current view",
+     "searched": "Searched EUMETSAT 76% of window · 19 successful runs · 2026-10-21 00:05 UTC → 2026-10-27 10:20 UTC",
+     "warning": "Not yet ingested: last 13h 45min of window (unknown, not zero) · Unknown: 1 of 8 UTC dates have no collection run",
+     "notice": ""
+    },
+    "stack": [
+     null,
+     "2026-10-27T12:05",
+     null,
+     "2026-10-27T00:05",
+     null,
+     "2026-10-26T00:05"
+    ]
+   },
+   {
+    "tag": "PREVx2+LATEST",
+    "window": "2026-10-21T00:05 -> 2026-10-28T00:05",
+    "label": "Lightning Flashes (Optical) [≥444 | 7d STALE]",
+    "status": "PARTIAL · 444 FLASHES DRAWN · SEARCHED 76% · STALE",
+    "state": "PARTIAL",
+    "mode": "detail",
+    "drawn": 444,
+    "arch": 444,
+    "out": 189,
+    "truth": {
+     "exact": 444,
+     "wholeDays": 444,
+     "searched": 7,
+     "never": 1,
+     "dates": 8,
+     "allBefore": false
+    },
+    "prev": "on",
+    "next": "off",
+    "latest": "off",
+    "fit": "shown",
+    "caps": {
+     "window": "Window  2026-10-21 00:05 UTC → 2026-10-28 00:05 UTC (7 days, latest)",
+     "actual": "Actual  first 2026-10-21 12:32:19 UTC · last 2026-10-27 08:44:07 UTC",
+     "flashes": "Flashes 444 archived in window · 444 drawn as points (cap 10,000) · 189 of 444 outside the current view",
+     "searched": "Searched EUMETSAT 76% of window · 19 successful runs · 2026-10-21 00:05 UTC → 2026-10-27 10:20 UTC",
+     "warning": "Not yet ingested: last 13h 45min of window (unknown, not zero) · Unknown: 1 of 8 UTC dates have no collection run",
+     "notice": ""
+    },
+    "stack": [
+     null,
+     "2026-10-27T12:05",
+     null,
+     "2026-10-27T00:05",
+     null,
+     "2026-10-26T00:05",
+     null,
+     "2026-10-21T00:05"
+    ]
+   }
+  ],
+  "30d": [
+   {
+    "tag": "LATEST",
+    "window": "2026-09-28T00:05 -> 2026-10-28T00:05",
+    "label": "Lightning Flashes (Optical) [≥1,480 | 30d STALE]",
+    "status": "PARTIAL · 1,480 FLASHES DRAWN · SEARCHED 88% · STALE",
+    "state": "PARTIAL",
+    "mode": "detail",
+    "drawn": 1480,
+    "arch": 1480,
+    "out": 993,
+    "truth": {
+     "exact": 1480,
+     "wholeDays": 1480,
+     "searched": 29,
+     "never": 2,
+     "dates": 31,
+     "allBefore": false
+    },
+    "prev": "on",
+    "next": "off",
+    "latest": "off",
+    "fit": [
+     -11,
+     49.507,
+     2.997,
+     61.16
+    ],
+    "caps": {
+     "window": "Window  2026-09-28 00:05 UTC → 2026-10-28 00:05 UTC (30 days, latest)",
+     "actual": "Actual  first 2026-09-29 00:12:55 UTC · last 2026-10-27 08:44:07 UTC",
+     "flashes": "Flashes 1,480 archived in window · 1,480 drawn as points (cap 10,000) · 993 of 1,480 outside the current view",
+     "searched": "Searched EUMETSAT 88% of window · 43 successful runs · 2026-09-29 00:00 UTC → 2026-10-27 10:20 UTC",
+     "warning": "Not yet ingested: last 13h 45min of window (unknown, not zero) · Unknown: 2026-09-28 to 2026-09-28 precede archive start 2026-09-29 00:00 UTC (not zero) · Unknown: 2 of 31 UTC dates have no collection run",
+     "notice": ""
+    },
+    "stack": [
+     null,
+     "2026-10-27T12:05",
+     null,
+     "2026-10-27T00:05",
+     null,
+     "2026-10-26T00:05",
+     null,
+     "2026-10-21T00:05"
+    ],
+    "outAfterFit": 0,
+    "flashesAfterFit": "Flashes 1,480 archived in window · 1,480 drawn as points (cap 10,000)",
+    "maxZoom": 9
+   },
+   {
+    "tag": "PREV1",
+    "window": "2026-08-29T00:05 -> 2026-09-28T00:05",
+    "label": "Lightning Flashes (Optical) [UNKNOWN | 30d STALE]",
+    "status": "UNKNOWN · STALE",
+    "state": "UNKNOWN",
+    "mode": "detail",
+    "drawn": 0,
+    "arch": 0,
+    "out": 0,
+    "truth": {
+     "exact": 0,
+     "wholeDays": 0,
+     "searched": 0,
+     "never": 31,
+     "dates": 31,
+     "allBefore": true
+    },
+    "prev": "on",
+    "next": "on",
+    "latest": "on",
+    "fit": "hidden",
+    "caps": {
+     "window": "Window  2026-08-29 00:05 UTC → 2026-09-28 00:05 UTC (30 days, end exclusive)",
+     "actual": "Actual  no archived flashes within this window",
+     "flashes": "Flashes 0 archived in window (unknown, not zero)",
+     "searched": "Searched EUMETSAT 0% of window — no collection run covers these dates",
+     "warning": "Unknown: 2026-08-29 to 2026-09-28 precede archive start 2026-09-29 00:00 UTC (not zero) · Unknown: 31 of 31 UTC dates have no collection run",
+     "notice": ""
+    },
+    "stack": [
+     null,
+     "2026-10-27T12:05",
+     null,
+     "2026-10-27T00:05",
+     null,
+     "2026-10-26T00:05",
+     null,
+     "2026-10-21T00:05",
+     null
+    ]
+   },
+   {
+    "tag": "PREV2",
+    "window": "2026-07-30T00:05 -> 2026-08-29T00:05",
+    "label": "Lightning Flashes (Optical) [UNKNOWN | 30d STALE]",
+    "status": "UNKNOWN · STALE",
+    "state": "UNKNOWN",
+    "mode": "detail",
+    "drawn": 0,
+    "arch": 0,
+    "out": 0,
+    "truth": {
+     "exact": 0,
+     "wholeDays": 0,
+     "searched": 0,
+     "never": 31,
+     "dates": 31,
+     "allBefore": true
+    },
+    "prev": "on",
+    "next": "on",
+    "latest": "on",
+    "fit": "hidden",
+    "caps": {
+     "window": "Window  2026-07-30 00:05 UTC → 2026-08-29 00:05 UTC (30 days, end exclusive)",
+     "actual": "Actual  no archived flashes within this window",
+     "flashes": "Flashes 0 archived in window (unknown, not zero)",
+     "searched": "Searched EUMETSAT 0% of window — no collection run covers these dates",
+     "warning": "Unknown: 2026-07-30 to 2026-08-29 precede archive start 2026-09-29 00:00 UTC (not zero) · Unknown: 31 of 31 UTC dates have no collection run",
+     "notice": ""
+    },
+    "stack": [
+     null,
+     "2026-10-27T12:05",
+     null,
+     "2026-10-27T00:05",
+     null,
+     "2026-10-26T00:05",
+     null,
+     "2026-10-21T00:05",
+     null,
+     "2026-09-28T00:05"
+    ]
+   },
+   {
+    "tag": "PREV3",
+    "window": "2026-06-30T00:05 -> 2026-07-30T00:05",
+    "label": "Lightning Flashes (Optical) [UNKNOWN | 30d STALE]",
+    "status": "UNKNOWN · STALE",
+    "state": "UNKNOWN",
+    "mode": "detail",
+    "drawn": 0,
+    "arch": 0,
+    "out": 0,
+    "truth": {
+     "exact": 0,
+     "wholeDays": 0,
+     "searched": 0,
+     "never": 31,
+     "dates": 31,
+     "allBefore": true
+    },
+    "prev": "on",
+    "next": "on",
+    "latest": "on",
+    "fit": "hidden",
+    "caps": {
+     "window": "Window  2026-06-30 00:05 UTC → 2026-07-30 00:05 UTC (30 days, end exclusive)",
+     "actual": "Actual  no archived flashes within this window",
+     "flashes": "Flashes 0 archived in window (unknown, not zero)",
+     "searched": "Searched EUMETSAT 0% of window — no collection run covers these dates",
+     "warning": "Unknown: 2026-06-30 to 2026-07-30 precede archive start 2026-09-29 00:00 UTC (not zero) · Unknown: 31 of 31 UTC dates have no collection run",
+     "notice": ""
+    },
+    "stack": [
+     null,
+     "2026-10-27T12:05",
+     null,
+     "2026-10-27T00:05",
+     null,
+     "2026-10-26T00:05",
+     null,
+     "2026-10-21T00:05",
+     null,
+     "2026-09-28T00:05",
+     "2026-08-29T00:05"
+    ]
+   },
+   {
+    "tag": "NEXT1",
+    "window": "2026-07-30T00:05 -> 2026-08-29T00:05",
+    "label": "Lightning Flashes (Optical) [UNKNOWN | 30d STALE]",
+    "status": "UNKNOWN · STALE",
+    "state": "UNKNOWN",
+    "mode": "detail",
+    "drawn": 0,
+    "arch": 0,
+    "out": 0,
+    "truth": {
+     "exact": 0,
+     "wholeDays": 0,
+     "searched": 0,
+     "never": 31,
+     "dates": 31,
+     "allBefore": true
+    },
+    "prev": "on",
+    "next": "on",
+    "latest": "on",
+    "fit": "hidden",
+    "caps": {
+     "window": "Window  2026-07-30 00:05 UTC → 2026-08-29 00:05 UTC (30 days, end exclusive)",
+     "actual": "Actual  no archived flashes within this window",
+     "flashes": "Flashes 0 archived in window (unknown, not zero)",
+     "searched": "Searched EUMETSAT 0% of window — no collection run covers these dates",
+     "warning": "Unknown: 2026-07-30 to 2026-08-29 precede archive start 2026-09-29 00:00 UTC (not zero) · Unknown: 31 of 31 UTC dates have no collection run",
+     "notice": ""
+    },
+    "stack": [
+     null,
+     "2026-10-27T12:05",
+     null,
+     "2026-10-27T00:05",
+     null,
+     "2026-10-26T00:05",
+     null,
+     "2026-10-21T00:05",
+     null,
+     "2026-09-28T00:05"
+    ]
+   },
+   {
+    "tag": "NEXT2",
+    "window": "2026-08-29T00:05 -> 2026-09-28T00:05",
+    "label": "Lightning Flashes (Optical) [UNKNOWN | 30d STALE]",
+    "status": "UNKNOWN · STALE",
+    "state": "UNKNOWN",
+    "mode": "detail",
+    "drawn": 0,
+    "arch": 0,
+    "out": 0,
+    "truth": {
+     "exact": 0,
+     "wholeDays": 0,
+     "searched": 0,
+     "never": 31,
+     "dates": 31,
+     "allBefore": true
+    },
+    "prev": "on",
+    "next": "on",
+    "latest": "on",
+    "fit": "hidden",
+    "caps": {
+     "window": "Window  2026-08-29 00:05 UTC → 2026-09-28 00:05 UTC (30 days, end exclusive)",
+     "actual": "Actual  no archived flashes within this window",
+     "flashes": "Flashes 0 archived in window (unknown, not zero)",
+     "searched": "Searched EUMETSAT 0% of window — no collection run covers these dates",
+     "warning": "Unknown: 2026-08-29 to 2026-09-28 precede archive start 2026-09-29 00:00 UTC (not zero) · Unknown: 31 of 31 UTC dates have no collection run",
+     "notice": ""
+    },
+    "stack": [
+     null,
+     "2026-10-27T12:05",
+     null,
+     "2026-10-27T00:05",
+     null,
+     "2026-10-26T00:05",
+     null,
+     "2026-10-21T00:05",
+     null
+    ]
+   },
+   {
+    "tag": "NEXT3",
+    "window": "2026-09-28T00:05 -> 2026-10-28T00:05",
+    "label": "Lightning Flashes (Optical) [≥1,480 | 30d STALE]",
+    "status": "PARTIAL · 1,480 FLASHES DRAWN · SEARCHED 88% · STALE",
+    "state": "PARTIAL",
+    "mode": "detail",
+    "drawn": 1480,
+    "arch": 1480,
+    "out": 993,
+    "truth": {
+     "exact": 1480,
+     "wholeDays": 1480,
+     "searched": 29,
+     "never": 2,
+     "dates": 31,
+     "allBefore": false
+    },
+    "prev": "on",
+    "next": "off",
+    "latest": "off",
+    "fit": "shown",
+    "caps": {
+     "window": "Window  2026-09-28 00:05 UTC → 2026-10-28 00:05 UTC (30 days, latest)",
+     "actual": "Actual  first 2026-09-29 00:12:55 UTC · last 2026-10-27 08:44:07 UTC",
+     "flashes": "Flashes 1,480 archived in window · 1,480 drawn as points (cap 10,000) · 993 of 1,480 outside the current view",
+     "searched": "Searched EUMETSAT 88% of window · 43 successful runs · 2026-09-29 00:00 UTC → 2026-10-27 10:20 UTC",
+     "warning": "Not yet ingested: last 13h 45min of window (unknown, not zero) · Unknown: 2026-09-28 to 2026-09-28 precede archive start 2026-09-29 00:00 UTC (not zero) · Unknown: 2 of 31 UTC dates have no collection run",
+     "notice": ""
+    },
+    "stack": [
+     null,
+     "2026-10-27T12:05",
+     null,
+     "2026-10-27T00:05",
+     null,
+     "2026-10-26T00:05",
+     null,
+     "2026-10-21T00:05"
+    ]
+   },
+   {
+    "tag": "PREVx2+LATEST",
+    "window": "2026-09-28T00:05 -> 2026-10-28T00:05",
+    "label": "Lightning Flashes (Optical) [≥1,480 | 30d STALE]",
+    "status": "PARTIAL · 1,480 FLASHES DRAWN · SEARCHED 88% · STALE",
+    "state": "PARTIAL",
+    "mode": "detail",
+    "drawn": 1480,
+    "arch": 1480,
+    "out": 993,
+    "truth": {
+     "exact": 1480,
+     "wholeDays": 1480,
+     "searched": 29,
+     "never": 2,
+     "dates": 31,
+     "allBefore": false
+    },
+    "prev": "on",
+    "next": "off",
+    "latest": "off",
+    "fit": "shown",
+    "caps": {
+     "window": "Window  2026-09-28 00:05 UTC → 2026-10-28 00:05 UTC (30 days, latest)",
+     "actual": "Actual  first 2026-09-29 00:12:55 UTC · last 2026-10-27 08:44:07 UTC",
+     "flashes": "Flashes 1,480 archived in window · 1,480 drawn as points (cap 10,000) · 993 of 1,480 outside the current view",
+     "searched": "Searched EUMETSAT 88% of window · 43 successful runs · 2026-09-29 00:00 UTC → 2026-10-27 10:20 UTC",
+     "warning": "Not yet ingested: last 13h 45min of window (unknown, not zero) · Unknown: 2026-09-28 to 2026-09-28 precede archive start 2026-09-29 00:00 UTC (not zero) · Unknown: 2 of 31 UTC dates have no collection run",
+     "notice": ""
+    },
+    "stack": [
+     null,
+     "2026-10-27T12:05",
+     null,
+     "2026-10-27T00:05",
+     null,
+     "2026-10-26T00:05",
+     null,
+     "2026-10-21T00:05",
+     null,
+     "2026-09-28T00:05"
+    ]
+   }
+  ],
+  "3m": [
+   {
+    "tag": "LATEST",
+    "window": "2026-07-28T00:05 -> 2026-10-28T00:05",
+    "label": "Lightning Flashes (Optical) [≥1,480 | 3m STALE]",
+    "status": "PARTIAL · 1,480 FLASHES DRAWN · SEARCHED 28% · STALE",
+    "state": "PARTIAL",
+    "mode": "detail",
+    "drawn": 1480,
+    "arch": 1480,
+    "out": 993,
+    "truth": {
+     "exact": 1480,
+     "wholeDays": 1480,
+     "searched": 29,
+     "never": 64,
+     "dates": 93,
+     "allBefore": false
+    },
+    "prev": "on",
+    "next": "off",
+    "latest": "off",
+    "fit": [
+     -11,
+     49.507,
+     2.997,
+     61.16
+    ],
+    "caps": {
+     "window": "Window  2026-07-28 00:05 UTC → 2026-10-28 00:05 UTC (3 months, latest)",
+     "actual": "Actual  first 2026-09-29 00:12:55 UTC · last 2026-10-27 08:44:07 UTC",
+     "flashes": "Flashes 1,480 archived in window · 1,480 drawn as points (cap 10,000) · 993 of 1,480 outside the current view",
+     "searched": "Searched EUMETSAT 28% of window · 43 successful runs · 2026-09-29 00:00 UTC → 2026-10-27 10:20 UTC",
+     "warning": "Not yet ingested: last 13h 45min of window (unknown, not zero) · Unknown: 2026-07-28 to 2026-09-28 precede archive start 2026-09-29 00:00 UTC (not zero) · Unknown: 64 of 93 UTC dates have no collection run",
+     "notice": ""
+    },
+    "stack": [
+     null,
+     "2026-10-27T12:05",
+     null,
+     "2026-10-27T00:05",
+     null,
+     "2026-10-26T00:05",
+     null,
+     "2026-10-21T00:05",
+     null,
+     "2026-09-28T00:05"
+    ],
+    "outAfterFit": 0,
+    "flashesAfterFit": "Flashes 1,480 archived in window · 1,480 drawn as points (cap 10,000)",
+    "maxZoom": 9
+   },
+   {
+    "tag": "PREV1",
+    "window": "2026-04-28T00:05 -> 2026-07-28T00:05",
+    "label": "Lightning Flashes (Optical) [UNKNOWN | 3m STALE]",
+    "status": "UNKNOWN · STALE",
+    "state": "UNKNOWN",
+    "mode": "detail",
+    "drawn": 0,
+    "arch": 0,
+    "out": 0,
+    "truth": {
+     "exact": 0,
+     "wholeDays": 0,
+     "searched": 0,
+     "never": 92,
+     "dates": 92,
+     "allBefore": true
+    },
+    "prev": "on",
+    "next": "on",
+    "latest": "on",
+    "fit": "hidden",
+    "caps": {
+     "window": "Window  2026-04-28 00:05 UTC → 2026-07-28 00:05 UTC (3 months, end exclusive)",
+     "actual": "Actual  no archived flashes within this window",
+     "flashes": "Flashes 0 archived in window (unknown, not zero)",
+     "searched": "Searched EUMETSAT 0% of window — no collection run covers these dates",
+     "warning": "Unknown: 2026-04-28 to 2026-07-28 precede archive start 2026-09-29 00:00 UTC (not zero) · Unknown: 92 of 92 UTC dates have no collection run",
+     "notice": ""
+    },
+    "stack": [
+     null,
+     "2026-10-27T12:05",
+     null,
+     "2026-10-27T00:05",
+     null,
+     "2026-10-26T00:05",
+     null,
+     "2026-10-21T00:05",
+     null,
+     "2026-09-28T00:05",
+     null
+    ]
+   },
+   {
+    "tag": "PREV2",
+    "window": "2026-01-28T00:05 -> 2026-04-28T00:05",
+    "label": "Lightning Flashes (Optical) [UNKNOWN | 3m STALE]",
+    "status": "UNKNOWN · STALE",
+    "state": "UNKNOWN",
+    "mode": "detail",
+    "drawn": 0,
+    "arch": 0,
+    "out": 0,
+    "truth": {
+     "exact": 0,
+     "wholeDays": 0,
+     "searched": 0,
+     "never": 91,
+     "dates": 91,
+     "allBefore": true
+    },
+    "prev": "on",
+    "next": "on",
+    "latest": "on",
+    "fit": "hidden",
+    "caps": {
+     "window": "Window  2026-01-28 00:05 UTC → 2026-04-28 00:05 UTC (3 months, end exclusive)",
+     "actual": "Actual  no archived flashes within this window",
+     "flashes": "Flashes 0 archived in window (unknown, not zero)",
+     "searched": "Searched EUMETSAT 0% of window — no collection run covers these dates",
+     "warning": "Unknown: 2026-01-28 to 2026-04-28 precede archive start 2026-09-29 00:00 UTC (not zero) · Unknown: 91 of 91 UTC dates have no collection run",
+     "notice": ""
+    },
+    "stack": [
+     null,
+     "2026-10-27T12:05",
+     null,
+     "2026-10-27T00:05",
+     null,
+     "2026-10-26T00:05",
+     null,
+     "2026-10-21T00:05",
+     null,
+     "2026-09-28T00:05",
+     null,
+     "2026-07-28T00:05"
+    ]
+   },
+   {
+    "tag": "PREV3",
+    "window": "2025-10-28T00:05 -> 2026-01-28T00:05",
+    "label": "Lightning Flashes (Optical) [UNKNOWN | 3m STALE]",
+    "status": "UNKNOWN · STALE",
+    "state": "UNKNOWN",
+    "mode": "detail",
+    "drawn": 0,
+    "arch": 0,
+    "out": 0,
+    "truth": {
+     "exact": 0,
+     "wholeDays": 0,
+     "searched": 0,
+     "never": 93,
+     "dates": 93,
+     "allBefore": true
+    },
+    "prev": "on",
+    "next": "on",
+    "latest": "on",
+    "fit": "hidden",
+    "caps": {
+     "window": "Window  2025-10-28 00:05 UTC → 2026-01-28 00:05 UTC (3 months, end exclusive)",
+     "actual": "Actual  no archived flashes within this window",
+     "flashes": "Flashes 0 archived in window (unknown, not zero)",
+     "searched": "Searched EUMETSAT 0% of window — no collection run covers these dates",
+     "warning": "Unknown: 2025-10-28 to 2026-01-28 precede archive start 2026-09-29 00:00 UTC (not zero) · Unknown: 93 of 93 UTC dates have no collection run",
+     "notice": ""
+    },
+    "stack": [
+     null,
+     "2026-10-27T12:05",
+     null,
+     "2026-10-27T00:05",
+     null,
+     "2026-10-26T00:05",
+     null,
+     "2026-10-21T00:05",
+     null,
+     "2026-09-28T00:05",
+     null,
+     "2026-07-28T00:05",
+     "2026-04-28T00:05"
+    ]
+   },
+   {
+    "tag": "NEXT1",
+    "window": "2026-01-28T00:05 -> 2026-04-28T00:05",
+    "label": "Lightning Flashes (Optical) [UNKNOWN | 3m STALE]",
+    "status": "UNKNOWN · STALE",
+    "state": "UNKNOWN",
+    "mode": "detail",
+    "drawn": 0,
+    "arch": 0,
+    "out": 0,
+    "truth": {
+     "exact": 0,
+     "wholeDays": 0,
+     "searched": 0,
+     "never": 91,
+     "dates": 91,
+     "allBefore": true
+    },
+    "prev": "on",
+    "next": "on",
+    "latest": "on",
+    "fit": "hidden",
+    "caps": {
+     "window": "Window  2026-01-28 00:05 UTC → 2026-04-28 00:05 UTC (3 months, end exclusive)",
+     "actual": "Actual  no archived flashes within this window",
+     "flashes": "Flashes 0 archived in window (unknown, not zero)",
+     "searched": "Searched EUMETSAT 0% of window — no collection run covers these dates",
+     "warning": "Unknown: 2026-01-28 to 2026-04-28 precede archive start 2026-09-29 00:00 UTC (not zero) · Unknown: 91 of 91 UTC dates have no collection run",
+     "notice": ""
+    },
+    "stack": [
+     null,
+     "2026-10-27T12:05",
+     null,
+     "2026-10-27T00:05",
+     null,
+     "2026-10-26T00:05",
+     null,
+     "2026-10-21T00:05",
+     null,
+     "2026-09-28T00:05",
+     null,
+     "2026-07-28T00:05"
+    ]
+   },
+   {
+    "tag": "NEXT2",
+    "window": "2026-04-28T00:05 -> 2026-07-28T00:05",
+    "label": "Lightning Flashes (Optical) [UNKNOWN | 3m STALE]",
+    "status": "UNKNOWN · STALE",
+    "state": "UNKNOWN",
+    "mode": "detail",
+    "drawn": 0,
+    "arch": 0,
+    "out": 0,
+    "truth": {
+     "exact": 0,
+     "wholeDays": 0,
+     "searched": 0,
+     "never": 92,
+     "dates": 92,
+     "allBefore": true
+    },
+    "prev": "on",
+    "next": "on",
+    "latest": "on",
+    "fit": "hidden",
+    "caps": {
+     "window": "Window  2026-04-28 00:05 UTC → 2026-07-28 00:05 UTC (3 months, end exclusive)",
+     "actual": "Actual  no archived flashes within this window",
+     "flashes": "Flashes 0 archived in window (unknown, not zero)",
+     "searched": "Searched EUMETSAT 0% of window — no collection run covers these dates",
+     "warning": "Unknown: 2026-04-28 to 2026-07-28 precede archive start 2026-09-29 00:00 UTC (not zero) · Unknown: 92 of 92 UTC dates have no collection run",
+     "notice": ""
+    },
+    "stack": [
+     null,
+     "2026-10-27T12:05",
+     null,
+     "2026-10-27T00:05",
+     null,
+     "2026-10-26T00:05",
+     null,
+     "2026-10-21T00:05",
+     null,
+     "2026-09-28T00:05",
+     null
+    ]
+   },
+   {
+    "tag": "NEXT3",
+    "window": "2026-07-28T00:05 -> 2026-10-28T00:05",
+    "label": "Lightning Flashes (Optical) [≥1,480 | 3m STALE]",
+    "status": "PARTIAL · 1,480 FLASHES DRAWN · SEARCHED 28% · STALE",
+    "state": "PARTIAL",
+    "mode": "detail",
+    "drawn": 1480,
+    "arch": 1480,
+    "out": 993,
+    "truth": {
+     "exact": 1480,
+     "wholeDays": 1480,
+     "searched": 29,
+     "never": 64,
+     "dates": 93,
+     "allBefore": false
+    },
+    "prev": "on",
+    "next": "off",
+    "latest": "off",
+    "fit": "shown",
+    "caps": {
+     "window": "Window  2026-07-28 00:05 UTC → 2026-10-28 00:05 UTC (3 months, latest)",
+     "actual": "Actual  first 2026-09-29 00:12:55 UTC · last 2026-10-27 08:44:07 UTC",
+     "flashes": "Flashes 1,480 archived in window · 1,480 drawn as points (cap 10,000) · 993 of 1,480 outside the current view",
+     "searched": "Searched EUMETSAT 28% of window · 43 successful runs · 2026-09-29 00:00 UTC → 2026-10-27 10:20 UTC",
+     "warning": "Not yet ingested: last 13h 45min of window (unknown, not zero) · Unknown: 2026-07-28 to 2026-09-28 precede archive start 2026-09-29 00:00 UTC (not zero) · Unknown: 64 of 93 UTC dates have no collection run",
+     "notice": ""
+    },
+    "stack": [
+     null,
+     "2026-10-27T12:05",
+     null,
+     "2026-10-27T00:05",
+     null,
+     "2026-10-26T00:05",
+     null,
+     "2026-10-21T00:05",
+     null,
+     "2026-09-28T00:05"
+    ]
+   },
+   {
+    "tag": "PREVx2+LATEST",
+    "window": "2026-07-28T00:05 -> 2026-10-28T00:05",
+    "label": "Lightning Flashes (Optical) [≥1,480 | 3m STALE]",
+    "status": "PARTIAL · 1,480 FLASHES DRAWN · SEARCHED 28% · STALE",
+    "state": "PARTIAL",
+    "mode": "detail",
+    "drawn": 1480,
+    "arch": 1480,
+    "out": 993,
+    "truth": {
+     "exact": 1480,
+     "wholeDays": 1480,
+     "searched": 29,
+     "never": 64,
+     "dates": 93,
+     "allBefore": false
+    },
+    "prev": "on",
+    "next": "off",
+    "latest": "off",
+    "fit": "shown",
+    "caps": {
+     "window": "Window  2026-07-28 00:05 UTC → 2026-10-28 00:05 UTC (3 months, latest)",
+     "actual": "Actual  first 2026-09-29 00:12:55 UTC · last 2026-10-27 08:44:07 UTC",
+     "flashes": "Flashes 1,480 archived in window · 1,480 drawn as points (cap 10,000) · 993 of 1,480 outside the current view",
+     "searched": "Searched EUMETSAT 28% of window · 43 successful runs · 2026-09-29 00:00 UTC → 2026-10-27 10:20 UTC",
+     "warning": "Not yet ingested: last 13h 45min of window (unknown, not zero) · Unknown: 2026-07-28 to 2026-09-28 precede archive start 2026-09-29 00:00 UTC (not zero) · Unknown: 64 of 93 UTC dates have no collection run",
+     "notice": ""
+    },
+    "stack": [
+     null,
+     "2026-10-27T12:05",
+     null,
+     "2026-10-27T00:05",
+     null,
+     "2026-10-26T00:05",
+     null,
+     "2026-10-21T00:05",
+     null,
+     "2026-09-28T00:05",
+     null,
+     "2026-07-28T00:05"
+    ]
+   }
+  ],
+  "6m": [
+   {
+    "tag": "LATEST",
+    "window": "2026-04-28T00:05 -> 2026-10-28T00:05",
+    "label": "Lightning Flashes (Optical) [≥1,480 | 6m STALE]",
+    "status": "PARTIAL · 1,480 FLASHES DRAWN · SEARCHED 14% · STALE",
+    "state": "PARTIAL",
+    "mode": "detail",
+    "drawn": 1480,
+    "arch": 1480,
+    "out": 993,
+    "truth": {
+     "exact": 1480,
+     "wholeDays": 1480,
+     "searched": 29,
+     "never": 155,
+     "dates": 184,
+     "allBefore": false
+    },
+    "prev": "on",
+    "next": "off",
+    "latest": "off",
+    "fit": [
+     -11,
+     49.507,
+     2.997,
+     61.16
+    ],
+    "caps": {
+     "window": "Window  2026-04-28 00:05 UTC → 2026-10-28 00:05 UTC (6 months, latest)",
+     "actual": "Actual  first 2026-09-29 00:12:55 UTC · last 2026-10-27 08:44:07 UTC",
+     "flashes": "Flashes 1,480 archived in window · 1,480 drawn as points (cap 10,000) · 993 of 1,480 outside the current view",
+     "searched": "Searched EUMETSAT 14% of window · 43 successful runs · 2026-09-29 00:00 UTC → 2026-10-27 10:20 UTC",
+     "warning": "Not yet ingested: last 13h 45min of window (unknown, not zero) · Unknown: 2026-04-28 to 2026-09-28 precede archive start 2026-09-29 00:00 UTC (not zero) · Unknown: 155 of 184 UTC dates have no collection run",
+     "notice": ""
+    },
+    "stack": [
+     null,
+     "2026-10-27T12:05",
+     null,
+     "2026-10-27T00:05",
+     null,
+     "2026-10-26T00:05",
+     null,
+     "2026-10-21T00:05",
+     null,
+     "2026-09-28T00:05",
+     null,
+     "2026-07-28T00:05"
+    ],
+    "outAfterFit": 0,
+    "flashesAfterFit": "Flashes 1,480 archived in window · 1,480 drawn as points (cap 10,000)",
+    "maxZoom": 9
+   },
+   {
+    "tag": "PREV1",
+    "window": "2025-10-28T00:05 -> 2026-04-28T00:05",
+    "label": "Lightning Flashes (Optical) [UNKNOWN | 6m STALE]",
+    "status": "UNKNOWN · STALE",
+    "state": "UNKNOWN",
+    "mode": "detail",
+    "drawn": 0,
+    "arch": 0,
+    "out": 0,
+    "truth": {
+     "exact": 0,
+     "wholeDays": 0,
+     "searched": 0,
+     "never": 183,
+     "dates": 183,
+     "allBefore": true
+    },
+    "prev": "on",
+    "next": "on",
+    "latest": "on",
+    "fit": "hidden",
+    "caps": {
+     "window": "Window  2025-10-28 00:05 UTC → 2026-04-28 00:05 UTC (6 months, end exclusive)",
+     "actual": "Actual  no archived flashes within this window",
+     "flashes": "Flashes 0 archived in window (unknown, not zero)",
+     "searched": "Searched EUMETSAT 0% of window — no collection run covers these dates",
+     "warning": "Unknown: 2025-10-28 to 2026-04-28 precede archive start 2026-09-29 00:00 UTC (not zero) · Unknown: 183 of 183 UTC dates have no collection run",
+     "notice": ""
+    },
+    "stack": [
+     null,
+     "2026-10-27T12:05",
+     null,
+     "2026-10-27T00:05",
+     null,
+     "2026-10-26T00:05",
+     null,
+     "2026-10-21T00:05",
+     null,
+     "2026-09-28T00:05",
+     null,
+     "2026-07-28T00:05",
+     null
+    ]
+   },
+   {
+    "tag": "PREV2",
+    "window": "2025-10-27T00:00 -> 2025-10-28T00:05",
+    "label": "Lightning Flashes (Optical) [UNKNOWN | 6m STALE]",
+    "status": "UNKNOWN · STALE",
+    "state": "UNKNOWN",
+    "mode": "detail",
+    "drawn": 0,
+    "arch": 0,
+    "out": 0,
+    "truth": {
+     "exact": 0,
+     "wholeDays": 0,
+     "searched": 0,
+     "never": 2,
+     "dates": 2,
+     "allBefore": true
+    },
+    "prev": "off",
+    "next": "on",
+    "latest": "on",
+    "fit": "hidden",
+    "caps": {
+     "window": "Window  2025-10-27 00:00 UTC → 2025-10-28 00:05 UTC (6 months, end exclusive) · start clamped to retention start 2025-10-27",
+     "actual": "Actual  no archived flashes within this window",
+     "flashes": "Flashes 0 archived in window (unknown, not zero)",
+     "searched": "Searched EUMETSAT 0% of window — no collection run covers these dates",
+     "warning": "Unknown: 2025-10-27 to 2025-10-28 precede archive start 2026-09-29 00:00 UTC (not zero) · Unknown: 2 of 2 UTC dates have no collection run",
+     "notice": ""
+    },
+    "stack": [
+     null,
+     "2026-10-27T12:05",
+     null,
+     "2026-10-27T00:05",
+     null,
+     "2026-10-26T00:05",
+     null,
+     "2026-10-21T00:05",
+     null,
+     "2026-09-28T00:05",
+     null,
+     "2026-07-28T00:05",
+     null,
+     "2026-04-28T00:05"
+    ]
+   },
+   {
+    "tag": "PREV3",
+    "blocked": true
+   },
+   {
+    "tag": "NEXT1",
+    "window": "2025-10-28T00:05 -> 2026-04-28T00:05",
+    "label": "Lightning Flashes (Optical) [UNKNOWN | 6m STALE]",
+    "status": "UNKNOWN · STALE",
+    "state": "UNKNOWN",
+    "mode": "detail",
+    "drawn": 0,
+    "arch": 0,
+    "out": 0,
+    "truth": {
+     "exact": 0,
+     "wholeDays": 0,
+     "searched": 0,
+     "never": 183,
+     "dates": 183,
+     "allBefore": true
+    },
+    "prev": "on",
+    "next": "on",
+    "latest": "on",
+    "fit": "hidden",
+    "caps": {
+     "window": "Window  2025-10-28 00:05 UTC → 2026-04-28 00:05 UTC (6 months, end exclusive)",
+     "actual": "Actual  no archived flashes within this window",
+     "flashes": "Flashes 0 archived in window (unknown, not zero)",
+     "searched": "Searched EUMETSAT 0% of window — no collection run covers these dates",
+     "warning": "Unknown: 2025-10-28 to 2026-04-28 precede archive start 2026-09-29 00:00 UTC (not zero) · Unknown: 183 of 183 UTC dates have no collection run",
+     "notice": ""
+    },
+    "stack": [
+     null,
+     "2026-10-27T12:05",
+     null,
+     "2026-10-27T00:05",
+     null,
+     "2026-10-26T00:05",
+     null,
+     "2026-10-21T00:05",
+     null,
+     "2026-09-28T00:05",
+     null,
+     "2026-07-28T00:05",
+     null
+    ]
+   },
+   {
+    "tag": "NEXT2",
+    "window": "2026-04-28T00:05 -> 2026-10-28T00:05",
+    "label": "Lightning Flashes (Optical) [≥1,480 | 6m STALE]",
+    "status": "PARTIAL · 1,480 FLASHES DRAWN · SEARCHED 14% · STALE",
+    "state": "PARTIAL",
+    "mode": "detail",
+    "drawn": 1480,
+    "arch": 1480,
+    "out": 993,
+    "truth": {
+     "exact": 1480,
+     "wholeDays": 1480,
+     "searched": 29,
+     "never": 155,
+     "dates": 184,
+     "allBefore": false
+    },
+    "prev": "on",
+    "next": "off",
+    "latest": "off",
+    "fit": "shown",
+    "caps": {
+     "window": "Window  2026-04-28 00:05 UTC → 2026-10-28 00:05 UTC (6 months, latest)",
+     "actual": "Actual  first 2026-09-29 00:12:55 UTC · last 2026-10-27 08:44:07 UTC",
+     "flashes": "Flashes 1,480 archived in window · 1,480 drawn as points (cap 10,000) · 993 of 1,480 outside the current view",
+     "searched": "Searched EUMETSAT 14% of window · 43 successful runs · 2026-09-29 00:00 UTC → 2026-10-27 10:20 UTC",
+     "warning": "Not yet ingested: last 13h 45min of window (unknown, not zero) · Unknown: 2026-04-28 to 2026-09-28 precede archive start 2026-09-29 00:00 UTC (not zero) · Unknown: 155 of 184 UTC dates have no collection run",
+     "notice": ""
+    },
+    "stack": [
+     null,
+     "2026-10-27T12:05",
+     null,
+     "2026-10-27T00:05",
+     null,
+     "2026-10-26T00:05",
+     null,
+     "2026-10-21T00:05",
+     null,
+     "2026-09-28T00:05",
+     null,
+     "2026-07-28T00:05"
+    ]
+   },
+   {
+    "tag": "NEXT3",
+    "blocked": true
+   },
+   {
+    "tag": "PREVx2+LATEST",
+    "window": "2026-04-28T00:05 -> 2026-10-28T00:05",
+    "label": "Lightning Flashes (Optical) [≥1,480 | 6m STALE]",
+    "status": "PARTIAL · 1,480 FLASHES DRAWN · SEARCHED 14% · STALE",
+    "state": "PARTIAL",
+    "mode": "detail",
+    "drawn": 1480,
+    "arch": 1480,
+    "out": 993,
+    "truth": {
+     "exact": 1480,
+     "wholeDays": 1480,
+     "searched": 29,
+     "never": 155,
+     "dates": 184,
+     "allBefore": false
+    },
+    "prev": "on",
+    "next": "off",
+    "latest": "off",
+    "fit": "shown",
+    "caps": {
+     "window": "Window  2026-04-28 00:05 UTC → 2026-10-28 00:05 UTC (6 months, latest)",
+     "actual": "Actual  first 2026-09-29 00:12:55 UTC · last 2026-10-27 08:44:07 UTC",
+     "flashes": "Flashes 1,480 archived in window · 1,480 drawn as points (cap 10,000) · 993 of 1,480 outside the current view",
+     "searched": "Searched EUMETSAT 14% of window · 43 successful runs · 2026-09-29 00:00 UTC → 2026-10-27 10:20 UTC",
+     "warning": "Not yet ingested: last 13h 45min of window (unknown, not zero) · Unknown: 2026-04-28 to 2026-09-28 precede archive start 2026-09-29 00:00 UTC (not zero) · Unknown: 155 of 184 UTC dates have no collection run",
+     "notice": ""
+    },
+    "stack": [
+     null,
+     "2026-10-27T12:05",
+     null,
+     "2026-10-27T00:05",
+     null,
+     "2026-10-26T00:05",
+     null,
+     "2026-10-21T00:05",
+     null,
+     "2026-09-28T00:05",
+     null,
+     "2026-07-28T00:05",
+     null,
+     "2026-04-28T00:05"
+    ]
+   }
+  ],
+  "12m": [
+   {
+    "tag": "LATEST",
+    "window": "2025-10-28T00:05 -> 2026-10-28T00:05",
+    "label": "Lightning Flashes (Optical) [≥1,480 | 12m STALE]",
+    "status": "PARTIAL · 1,480 FLASHES DRAWN · SEARCHED 7% · STALE",
+    "state": "PARTIAL",
+    "mode": "detail",
+    "drawn": 1480,
+    "arch": 1480,
+    "out": 993,
+    "truth": {
+     "exact": 1480,
+     "wholeDays": 1480,
+     "searched": 29,
+     "never": 337,
+     "dates": 366,
+     "allBefore": false
+    },
+    "prev": "on",
+    "next": "off",
+    "latest": "off",
+    "fit": [
+     -11,
+     49.507,
+     2.997,
+     61.16
+    ],
+    "caps": {
+     "window": "Window  2025-10-28 00:05 UTC → 2026-10-28 00:05 UTC (12 months, latest)",
+     "actual": "Actual  first 2026-09-29 00:12:55 UTC · last 2026-10-27 08:44:07 UTC",
+     "flashes": "Flashes 1,480 archived in window · 1,480 drawn as points (cap 10,000) · 993 of 1,480 outside the current view",
+     "searched": "Searched EUMETSAT 7% of window · 43 successful runs · 2026-09-29 00:00 UTC → 2026-10-27 10:20 UTC",
+     "warning": "Not yet ingested: last 13h 45min of window (unknown, not zero) · Unknown: 2025-10-28 to 2026-09-28 precede archive start 2026-09-29 00:00 UTC (not zero) · Unknown: 337 of 366 UTC dates have no collection run",
+     "notice": ""
+    },
+    "stack": [
+     null,
+     "2026-10-27T12:05",
+     null,
+     "2026-10-27T00:05",
+     null,
+     "2026-10-26T00:05",
+     null,
+     "2026-10-21T00:05",
+     null,
+     "2026-09-28T00:05",
+     null,
+     "2026-07-28T00:05",
+     null,
+     "2026-04-28T00:05"
+    ],
+    "outAfterFit": 0,
+    "flashesAfterFit": "Flashes 1,480 archived in window · 1,480 drawn as points (cap 10,000)",
+    "maxZoom": 9
+   },
+   {
+    "tag": "PREV1",
+    "window": "2025-10-27T00:00 -> 2025-10-28T00:05",
+    "label": "Lightning Flashes (Optical) [UNKNOWN | 12m STALE]",
+    "status": "UNKNOWN · STALE",
+    "state": "UNKNOWN",
+    "mode": "detail",
+    "drawn": 0,
+    "arch": 0,
+    "out": 0,
+    "truth": {
+     "exact": 0,
+     "wholeDays": 0,
+     "searched": 0,
+     "never": 2,
+     "dates": 2,
+     "allBefore": true
+    },
+    "prev": "off",
+    "next": "on",
+    "latest": "on",
+    "fit": "hidden",
+    "caps": {
+     "window": "Window  2025-10-27 00:00 UTC → 2025-10-28 00:05 UTC (12 months, end exclusive) · start clamped to retention start 2025-10-27",
+     "actual": "Actual  no archived flashes within this window",
+     "flashes": "Flashes 0 archived in window (unknown, not zero)",
+     "searched": "Searched EUMETSAT 0% of window — no collection run covers these dates",
+     "warning": "Unknown: 2025-10-27 to 2025-10-28 precede archive start 2026-09-29 00:00 UTC (not zero) · Unknown: 2 of 2 UTC dates have no collection run",
+     "notice": ""
+    },
+    "stack": [
+     null,
+     "2026-10-27T12:05",
+     null,
+     "2026-10-27T00:05",
+     null,
+     "2026-10-26T00:05",
+     null,
+     "2026-10-21T00:05",
+     null,
+     "2026-09-28T00:05",
+     null,
+     "2026-07-28T00:05",
+     null,
+     "2026-04-28T00:05",
+     null
+    ]
+   },
+   {
+    "tag": "PREV2",
+    "blocked": true
+   },
+   {
+    "tag": "PREV3",
+    "blocked": true
+   },
+   {
+    "tag": "NEXT1",
+    "window": "2025-10-28T00:05 -> 2026-10-28T00:05",
+    "label": "Lightning Flashes (Optical) [≥1,480 | 12m STALE]",
+    "status": "PARTIAL · 1,480 FLASHES DRAWN · SEARCHED 7% · STALE",
+    "state": "PARTIAL",
+    "mode": "detail",
+    "drawn": 1480,
+    "arch": 1480,
+    "out": 993,
+    "truth": {
+     "exact": 1480,
+     "wholeDays": 1480,
+     "searched": 29,
+     "never": 337,
+     "dates": 366,
+     "allBefore": false
+    },
+    "prev": "on",
+    "next": "off",
+    "latest": "off",
+    "fit": "shown",
+    "caps": {
+     "window": "Window  2025-10-28 00:05 UTC → 2026-10-28 00:05 UTC (12 months, latest)",
+     "actual": "Actual  first 2026-09-29 00:12:55 UTC · last 2026-10-27 08:44:07 UTC",
+     "flashes": "Flashes 1,480 archived in window · 1,480 drawn as points (cap 10,000) · 993 of 1,480 outside the current view",
+     "searched": "Searched EUMETSAT 7% of window · 43 successful runs · 2026-09-29 00:00 UTC → 2026-10-27 10:20 UTC",
+     "warning": "Not yet ingested: last 13h 45min of window (unknown, not zero) · Unknown: 2025-10-28 to 2026-09-28 precede archive start 2026-09-29 00:00 UTC (not zero) · Unknown: 337 of 366 UTC dates have no collection run",
+     "notice": ""
+    },
+    "stack": [
+     null,
+     "2026-10-27T12:05",
+     null,
+     "2026-10-27T00:05",
+     null,
+     "2026-10-26T00:05",
+     null,
+     "2026-10-21T00:05",
+     null,
+     "2026-09-28T00:05",
+     null,
+     "2026-07-28T00:05",
+     null,
+     "2026-04-28T00:05"
+    ]
+   },
+   {
+    "tag": "NEXT2",
+    "blocked": true
+   },
+   {
+    "tag": "NEXT3",
+    "blocked": true
+   },
+   {
+    "tag": "PREVx2+LATEST",
+    "window": "2025-10-28T00:05 -> 2026-10-28T00:05",
+    "label": "Lightning Flashes (Optical) [≥1,480 | 12m STALE]",
+    "status": "PARTIAL · 1,480 FLASHES DRAWN · SEARCHED 7% · STALE",
+    "state": "PARTIAL",
+    "mode": "detail",
+    "drawn": 1480,
+    "arch": 1480,
+    "out": 993,
+    "truth": {
+     "exact": 1480,
+     "wholeDays": 1480,
+     "searched": 29,
+     "never": 337,
+     "dates": 366,
+     "allBefore": false
+    },
+    "prev": "on",
+    "next": "off",
+    "latest": "off",
+    "fit": "shown",
+    "caps": {
+     "window": "Window  2025-10-28 00:05 UTC → 2026-10-28 00:05 UTC (12 months, latest)",
+     "actual": "Actual  first 2026-09-29 00:12:55 UTC · last 2026-10-27 08:44:07 UTC",
+     "flashes": "Flashes 1,480 archived in window · 1,480 drawn as points (cap 10,000) · 993 of 1,480 outside the current view",
+     "searched": "Searched EUMETSAT 7% of window · 43 successful runs · 2026-09-29 00:00 UTC → 2026-10-27 10:20 UTC",
+     "warning": "Not yet ingested: last 13h 45min of window (unknown, not zero) · Unknown: 2025-10-28 to 2026-09-28 precede archive start 2026-09-29 00:00 UTC (not zero) · Unknown: 337 of 366 UTC dates have no collection run",
+     "notice": ""
+    },
+    "stack": [
+     null,
+     "2026-10-27T12:05",
+     null,
+     "2026-10-27T00:05",
+     null,
+     "2026-10-26T00:05",
+     null,
+     "2026-10-21T00:05",
+     null,
+     "2026-09-28T00:05",
+     null,
+     "2026-07-28T00:05",
+     null,
+     "2026-04-28T00:05",
+     null,
+     "2025-10-28T00:05"
+    ]
+   }
+  ]
+ },
+ "crossPeriod": [
+  {
+   "tag": "30d PREV PREV -> 7D",
+   "window": "2026-08-22T00:05 -> 2026-08-29T00:05",
+   "label": "Lightning Flashes (Optical) [UNKNOWN | 7d STALE]",
+   "status": "UNKNOWN · STALE",
+   "state": "UNKNOWN",
+   "mode": "detail",
+   "drawn": 0,
+   "arch": 0,
+   "out": 0,
+   "truth": {
+    "exact": 0,
+    "wholeDays": 0,
+    "searched": 0,
+    "never": 8,
+    "dates": 8,
+    "allBefore": true
+   },
+   "prev": "on",
+   "next": "on",
+   "latest": "on",
+   "fit": "hidden",
+   "caps": {
+    "window": "Window  2026-08-22 00:05 UTC → 2026-08-29 00:05 UTC (7 days, end exclusive)",
+    "actual": "Actual  no archived flashes within this window",
+    "flashes": "Flashes 0 archived in window (unknown, not zero)",
+    "searched": "Searched EUMETSAT 0% of window — no collection run covers these dates",
+    "warning": "Unknown: 2026-08-22 to 2026-08-29 precede archive start 2026-09-29 00:00 UTC (not zero) · Unknown: 8 of 8 UTC dates have no collection run",
+    "notice": ""
+   },
+   "stack": [
+    null,
+    "2026-10-27T12:05",
+    null,
+    "2026-10-27T00:05",
+    null,
+    "2026-10-26T00:05",
+    null,
+    "2026-10-21T00:05",
+    null,
+    "2026-09-28T00:05",
+    null,
+    "2026-07-28T00:05",
+    null,
+    "2026-04-28T00:05",
+    null,
+    "2025-10-28T00:05",
+    null,
+    "2026-09-28T00:05"
+   ]
+  },
+  {
+   "tag": "then NEXT",
+   "window": "2026-09-21T00:05 -> 2026-09-28T00:05",
+   "label": "Lightning Flashes (Optical) [UNKNOWN | 7d STALE]",
+   "status": "UNKNOWN · STALE",
+   "state": "UNKNOWN",
+   "mode": "detail",
+   "drawn": 0,
+   "arch": 0,
+   "out": 0,
+   "truth": {
+    "exact": 0,
+    "wholeDays": 0,
+    "searched": 0,
+    "never": 8,
+    "dates": 8,
+    "allBefore": true
+   },
+   "prev": "on",
+   "next": "on",
+   "latest": "on",
+   "fit": "hidden",
+   "caps": {
+    "window": "Window  2026-09-21 00:05 UTC → 2026-09-28 00:05 UTC (7 days, end exclusive)",
+    "actual": "Actual  no archived flashes within this window",
+    "flashes": "Flashes 0 archived in window (unknown, not zero)",
+    "searched": "Searched EUMETSAT 0% of window — no collection run covers these dates",
+    "warning": "Unknown: 2026-09-21 to 2026-09-28 precede archive start 2026-09-29 00:00 UTC (not zero) · Unknown: 8 of 8 UTC dates have no collection run",
+    "notice": ""
+   },
+   "stack": [
+    null,
+    "2026-10-27T12:05",
+    null,
+    "2026-10-27T00:05",
+    null,
+    "2026-10-26T00:05",
+    null,
+    "2026-10-21T00:05",
+    null,
+    "2026-09-28T00:05",
+    null,
+    "2026-07-28T00:05",
+    null,
+    "2026-04-28T00:05",
+    null,
+    "2025-10-28T00:05",
+    null
+   ]
+  }
+ ],
+ "custom": [
+  {
+   "tag": "CUSTOM 2026-09-29..2026-10-27",
+   "window": "2026-09-29T00:00 -> 2026-10-28T00:00",
+   "label": "Lightning Flashes (Optical) [≥1,480 | custom STALE]",
+   "status": "PARTIAL · 1,480 FLASHES DRAWN · SEARCHED 91% · STALE",
+   "state": "PARTIAL",
+   "mode": "detail",
+   "drawn": 1480,
+   "arch": 1480,
+   "out": 993,
+   "truth": {
+    "exact": 1480,
+    "wholeDays": 1480,
+    "searched": 29,
+    "never": 0,
+    "dates": 29,
+    "allBefore": false
+   },
+   "prev": "off",
+   "next": "off",
+   "latest": "off",
+   "fit": [
+    -11,
+    49.507,
+    2.997,
+    61.16
+   ],
+   "caps": {
+    "window": "Window  UTC dates 2026-09-29 to 2026-10-27 inclusive = 2026-09-29 00:00 UTC → 2026-10-28 00:00 UTC",
+    "actual": "Actual  first 2026-09-29 00:12:55 UTC · last 2026-10-27 08:44:07 UTC",
+    "flashes": "Flashes 1,480 archived in window · 1,480 drawn as points (cap 10,000) · 993 of 1,480 outside the current view",
+    "searched": "Searched EUMETSAT 91% of window · 43 successful runs · 2026-09-29 00:00 UTC → 2026-10-27 10:20 UTC",
+    "warning": "Not yet ingested: last 13h 40min of window (unknown, not zero)",
+    "notice": ""
+   },
+   "stack": [
+    null,
+    "2026-10-27T12:05",
+    null,
+    "2026-10-27T00:05",
+    null,
+    "2026-10-26T00:05",
+    null,
+    "2026-10-21T00:05",
+    null,
+    "2026-09-28T00:05",
+    null,
+    "2026-07-28T00:05",
+    null,
+    "2026-04-28T00:05",
+    null,
+    "2025-10-28T00:05",
+    null
+   ],
+   "outAfterFit": 0,
+   "flashesAfterFit": "Flashes 1,480 archived in window · 1,480 drawn as points (cap 10,000)",
+   "maxZoom": 9
+  },
+  {
+   "tag": "CUSTOM 2026-09-01..2026-09-28",
+   "window": "2026-09-01T00:00 -> 2026-09-29T00:00",
+   "label": "Lightning Flashes (Optical) [UNKNOWN | custom STALE]",
+   "status": "UNKNOWN · STALE",
+   "state": "UNKNOWN",
+   "mode": "detail",
+   "drawn": 0,
+   "arch": 0,
+   "out": 0,
+   "truth": {
+    "exact": 0,
+    "wholeDays": 0,
+    "searched": 0,
+    "never": 28,
+    "dates": 28,
+    "allBefore": true
+   },
+   "prev": "off",
+   "next": "off",
+   "latest": "off",
+   "fit": "hidden",
+   "caps": {
+    "window": "Window  UTC dates 2026-09-01 to 2026-09-28 inclusive = 2026-09-01 00:00 UTC → 2026-09-29 00:00 UTC",
+    "actual": "Actual  no archived flashes within this window",
+    "flashes": "Flashes 0 archived in window (unknown, not zero)",
+    "searched": "Searched EUMETSAT 0% of window — no collection run covers these dates",
+    "warning": "Unknown: 2026-09-01 to 2026-09-28 precede archive start 2026-09-29 00:00 UTC (not zero) · Unknown: 28 of 28 UTC dates have no collection run",
+    "notice": ""
+   },
+   "stack": [
+    null,
+    "2026-10-27T12:05",
+    null,
+    "2026-10-27T00:05",
+    null,
+    "2026-10-26T00:05",
+    null,
+    "2026-10-21T00:05",
+    null,
+    "2026-09-28T00:05",
+    null,
+    "2026-07-28T00:05",
+    null,
+    "2026-04-28T00:05",
+    null,
+    "2025-10-28T00:05",
+    null
+   ]
+  },
+  {
+   "tag": "CUSTOM 2026-09-20..2026-10-05",
+   "window": "2026-09-20T00:00 -> 2026-10-06T00:00",
+   "label": "Lightning Flashes (Optical) [≥670 | custom STALE]",
+   "status": "PARTIAL · 670 FLASHES DRAWN · SEARCHED 43% · STALE",
+   "state": "PARTIAL",
+   "mode": "detail",
+   "drawn": 670,
+   "arch": 670,
+   "out": 628,
+   "truth": {
+    "exact": 670,
+    "wholeDays": 670,
+    "searched": 7,
+    "never": 9,
+    "dates": 16,
+    "allBefore": false
+   },
+   "prev": "off",
+   "next": "off",
+   "latest": "off",
+   "fit": [
+    -10.997,
+    49.507,
+    2.387,
+    61.16
+   ],
+   "caps": {
+    "window": "Window  UTC dates 2026-09-20 to 2026-10-05 inclusive = 2026-09-20 00:00 UTC → 2026-10-06 00:00 UTC",
+    "actual": "Actual  first 2026-09-29 00:12:55 UTC · last 2026-10-04 13:10:23 UTC",
+    "flashes": "Flashes 670 archived in window · 670 drawn as points (cap 10,000) · 628 of 670 outside the current view",
+    "searched": "Searched EUMETSAT 43% of window · 14 successful runs · 2026-09-29 00:00 UTC → 2026-10-06 00:00 UTC",
+    "warning": "Unknown: 2026-09-20 to 2026-09-28 precede archive start 2026-09-29 00:00 UTC (not zero) · Unknown: 9 of 16 UTC dates have no collection run",
+    "notice": ""
+   },
+   "stack": [
+    null,
+    "2026-10-27T12:05",
+    null,
+    "2026-10-27T00:05",
+    null,
+    "2026-10-26T00:05",
+    null,
+    "2026-10-21T00:05",
+    null,
+    "2026-09-28T00:05",
+    null,
+    "2026-07-28T00:05",
+    null,
+    "2026-04-28T00:05",
+    null,
+    "2025-10-28T00:05",
+    null
+   ],
+   "outAfterFit": 0,
+   "flashesAfterFit": "Flashes 670 archived in window · 670 drawn as points (cap 10,000)",
+   "maxZoom": 9
+  },
+  {
+   "tag": "CUSTOM 2025-10-27..2025-11-10",
+   "window": "2025-10-27T00:00 -> 2025-11-11T00:00",
+   "label": "Lightning Flashes (Optical) [UNKNOWN | custom STALE]",
+   "status": "UNKNOWN · STALE",
+   "state": "UNKNOWN",
+   "mode": "detail",
+   "drawn": 0,
+   "arch": 0,
+   "out": 0,
+   "truth": {
+    "exact": 0,
+    "wholeDays": 0,
+    "searched": 0,
+    "never": 15,
+    "dates": 15,
+    "allBefore": true
+   },
+   "prev": "off",
+   "next": "off",
+   "latest": "off",
+   "fit": "hidden",
+   "caps": {
+    "window": "Window  UTC dates 2025-10-27 to 2025-11-10 inclusive = 2025-10-27 00:00 UTC → 2025-11-11 00:00 UTC",
+    "actual": "Actual  no archived flashes within this window",
+    "flashes": "Flashes 0 archived in window (unknown, not zero)",
+    "searched": "Searched EUMETSAT 0% of window — no collection run covers these dates",
+    "warning": "Unknown: 2025-10-27 to 2025-11-10 precede archive start 2026-09-29 00:00 UTC (not zero) · Unknown: 15 of 15 UTC dates have no collection run",
+    "notice": ""
+   },
+   "stack": [
+    null,
+    "2026-10-27T12:05",
+    null,
+    "2026-10-27T00:05",
+    null,
+    "2026-10-26T00:05",
+    null,
+    "2026-10-21T00:05",
+    null,
+    "2026-09-28T00:05",
+    null,
+    "2026-07-28T00:05",
+    null,
+    "2026-04-28T00:05",
+    null,
+    "2025-10-28T00:05",
+    null
+   ]
+  },
+  {
+   "tag": "CUSTOM 2026-10-27..2026-10-27",
+   "window": "2026-10-27T00:00 -> 2026-10-28T00:00",
+   "label": "Lightning Flashes (Optical) [≥29 | custom STALE]",
+   "status": "PARTIAL · 29 FLASHES DRAWN · SEARCHED 43% · STALE",
+   "state": "PARTIAL",
+   "mode": "detail",
+   "drawn": 29,
+   "arch": 29,
+   "out": 22,
+   "truth": {
+    "exact": 29,
+    "wholeDays": 29,
+    "searched": 1,
+    "never": 0,
+    "dates": 1,
+    "allBefore": false
+   },
+   "prev": "off",
+   "next": "off",
+   "latest": "off",
+   "fit": [
+    -10.198,
+    49.556,
+    -3.661,
+    60.631
+   ],
+   "caps": {
+    "window": "Window  UTC dates 2026-10-27 to 2026-10-27 inclusive = 2026-10-27 00:00 UTC → 2026-10-28 00:00 UTC",
+    "actual": "Actual  first 2026-10-27 01:56:02 UTC · last 2026-10-27 08:44:07 UTC",
+    "flashes": "Flashes 29 archived in window · 29 drawn as points (cap 10,000) · 22 of 29 outside the current view",
+    "searched": "Searched EUMETSAT 43% of window · 9 successful runs · 2026-10-27 00:00 UTC → 2026-10-27 10:20 UTC",
+    "warning": "Not yet ingested: last 13h 40min of window (unknown, not zero)",
+    "notice": ""
+   },
+   "stack": [
+    null,
+    "2026-10-27T12:05",
+    null,
+    "2026-10-27T00:05",
+    null,
+    "2026-10-26T00:05",
+    null,
+    "2026-10-21T00:05",
+    null,
+    "2026-09-28T00:05",
+    null,
+    "2026-07-28T00:05",
+    null,
+    "2026-04-28T00:05",
+    null,
+    "2025-10-28T00:05",
+    null
+   ],
+   "outAfterFit": 0,
+   "flashesAfterFit": "Flashes 29 archived in window · 29 drawn as points (cap 10,000)",
+   "maxZoom": 9
+  },
+  {
+   "tag": "CUSTOM 2026-10-28..2026-10-28",
+   "window": "2026-10-28T00:00 -> 2026-10-28T00:05",
+   "label": "Lightning Flashes (Optical) [UNKNOWN | custom STALE]",
+   "status": "UNKNOWN · STALE",
+   "state": "UNKNOWN",
+   "mode": "detail",
+   "drawn": 0,
+   "arch": 0,
+   "out": 0,
+   "truth": {
+    "exact": 0,
+    "wholeDays": 0,
+    "searched": 0,
+    "never": 1,
+    "dates": 1,
+    "allBefore": false
+   },
+   "prev": "off",
+   "next": "off",
+   "latest": "off",
+   "fit": "hidden",
+   "caps": {
+    "window": "Window  UTC dates 2026-10-28 to 2026-10-28 inclusive = 2026-10-28 00:00 UTC → 2026-10-28 00:05 UTC",
+    "actual": "Actual  no archived flashes within this window",
+    "flashes": "Flashes 0 archived in window (unknown, not zero)",
+    "searched": "Searched EUMETSAT 0% of window — no collection run covers these dates",
+    "warning": "Not yet ingested: last 0h 5min of window (unknown, not zero) · Unknown: 1 of 1 UTC dates have no collection run",
+    "notice": ""
+   },
+   "stack": [
+    null,
+    "2026-10-27T12:05",
+    null,
+    "2026-10-27T00:05",
+    null,
+    "2026-10-26T00:05",
+    null,
+    "2026-10-21T00:05",
+    null,
+    "2026-09-28T00:05",
+    null,
+    "2026-07-28T00:05",
+    null,
+    "2026-04-28T00:05",
+    null,
+    "2025-10-28T00:05",
+    null
+   ]
+  },
+  {
+   "tag": "CUSTOM 2026-10-12..2026-10-12",
+   "window": "2026-10-12T00:00 -> 2026-10-13T00:00",
+   "label": "Lightning Flashes (Optical) [UNKNOWN | custom STALE]",
+   "status": "PARTIAL · 0 FLASHES DRAWN · SEARCHED 99% · STALE",
+   "state": "PARTIAL",
+   "mode": "detail",
+   "drawn": 0,
+   "arch": 0,
+   "out": 0,
+   "truth": {
+    "exact": 0,
+    "wholeDays": 0,
+    "searched": 1,
+    "never": 0,
+    "dates": 1,
+    "allBefore": false
+   },
+   "prev": "off",
+   "next": "off",
+   "latest": "off",
+   "fit": "hidden",
+   "caps": {
+    "window": "Window  UTC dates 2026-10-12 to 2026-10-12 inclusive = 2026-10-12 00:00 UTC → 2026-10-13 00:00 UTC",
+    "actual": "Actual  no archived flashes within this window",
+    "flashes": "Flashes 0 archived in window (unknown, not zero)",
+    "searched": "Searched EUMETSAT 99% of window · 16 successful runs · 2026-10-12 00:00 UTC → 2026-10-13 00:00 UTC",
+    "warning": "",
+    "notice": ""
+   },
+   "stack": [
+    null,
+    "2026-10-27T12:05",
+    null,
+    "2026-10-27T00:05",
+    null,
+    "2026-10-26T00:05",
+    null,
+    "2026-10-21T00:05",
+    null,
+    "2026-09-28T00:05",
+    null,
+    "2026-07-28T00:05",
+    null,
+    "2026-04-28T00:05",
+    null,
+    "2025-10-28T00:05",
+    null
+   ]
+  }
+ ],
+ "errors": [],
+ "requests": 403
+}
