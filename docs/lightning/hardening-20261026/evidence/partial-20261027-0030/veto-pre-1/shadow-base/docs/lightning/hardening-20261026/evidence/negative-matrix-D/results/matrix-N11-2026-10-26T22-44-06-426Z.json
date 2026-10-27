@@ -1,0 +1,293 @@
+[
+ {
+  "id": "N11",
+  "title": "four simultaneous shard fetches: 8 day files each delayed 1.5 s → max in flight must be 4 (clean), then ON→30d overlap (superseded load not cancelled)",
+  "acceptance_ids": [
+   "D10"
+  ],
+  "elapsedMs": 57459,
+  "pageErrors": [],
+  "steps": [
+   {
+    "step": "ON 24h settled first (2 shards)",
+    "synthetic": true,
+    "label": {
+     "main": "Lightning flashes (optical) [4 | 24h]",
+     "fs": "Lightning flashes (optical) [4 | 24h]",
+     "menu": "Lightning flashes (optical) [4 | 24h]"
+    },
+    "toggles": {
+     "main": true,
+     "fs": true,
+     "menu": true
+    },
+    "stateLine": "PARTIAL · 4 FLASHES DRAWN · SEARCHED 96%",
+    "caption": [
+     "Window  2026-10-25 18:40 UTC → 2026-10-26 18:40 UTC (24 hours, latest)",
+     "Actual  first 2026-10-25 19:39:00 UTC · last 2026-10-26 16:46:36 UTC",
+     "Flashes 4 archived in window · 4 drawn as points (index count 6 within the 40,000-point cap for this desktop)",
+     "Refresh archive 2026-10-26 18:37 UTC (0h 3min ago; expected every 1 h)",
+     "Searched EUMETSAT 96% of window · 192 successful runs · 2026-10-25 18:40 UTC → 2026-10-26 17:40 UTC",
+     "Not yet ingested: last 1h 0min of window (unknown, not zero)",
+     "Times UTC · Optical flashes seen by MTG Lightning Imager (EUMETSAT L2-LFL), not confirmed ground strikes · Missing days are unknown, not zero · UK box −11.0,49.5 → 3.0,61.5"
+    ],
+    "features": 4,
+    "cluster": false,
+    "visibility": "visible",
+    "badCoords": 0,
+    "injected": null,
+    "markupNodes": 0,
+    "last": {
+     "state": "PARTIAL",
+     "stale": false,
+     "mode": "detail",
+     "period": "24h",
+     "drawn": 4,
+     "cluster": false,
+     "cap": 40000,
+     "cap_source": "index",
+     "index_count": 6,
+     "failures": 0,
+     "reasons": [
+      "tail not yet ingested"
+     ]
+    },
+    "origDiff": [],
+    "extra": {}
+   },
+   {
+    "step": "then 30d: 6 new shards (19–24; 25/26 already in LRU), 1.5 s each → max in flight expected 4",
+    "synthetic": true,
+    "label": {
+     "main": "Lightning flashes (optical) [24 | 30d]",
+     "fs": "Lightning flashes (optical) [24 | 30d]",
+     "menu": "Lightning flashes (optical) [24 | 30d]"
+    },
+    "toggles": {
+     "main": true,
+     "fs": true,
+     "menu": true
+    },
+    "stateLine": "PARTIAL · 24 FLASHES DRAWN · SEARCHED 26%",
+    "caption": [
+     "Window  2026-09-26 18:40 UTC → 2026-10-26 18:40 UTC (30 days, latest)",
+     "Actual  first 2026-10-19 08:29:32 UTC · last 2026-10-26 16:46:36 UTC",
+     "Flashes 24 archived in window · 24 drawn as points (index count 24 within the 40,000-point cap for this desktop)",
+     "Refresh archive 2026-10-26 18:37 UTC (0h 3min ago; expected every 1 h)",
+     "Searched EUMETSAT 26% of window · 192 successful runs · 2026-10-19 00:00 UTC → 2026-10-26 17:40 UTC",
+     "Not yet ingested: last 1h 0min of window (unknown, not zero) · Unknown: 2026-09-26 to 2026-10-18 precede archive start 2026-10-19 00:00 UTC (not zero) · Unknown: 23 of 31 UTC dates have no collection run",
+     "Times UTC · Optical flashes seen by MTG Lightning Imager (EUMETSAT L2-LFL), not confirmed ground strikes · Missing days are unknown, not zero · UK box −11.0,49.5 → 3.0,61.5"
+    ],
+    "features": 24,
+    "cluster": false,
+    "visibility": "visible",
+    "badCoords": 0,
+    "injected": null,
+    "markupNodes": 0,
+    "last": {
+     "state": "PARTIAL",
+     "stale": false,
+     "mode": "detail",
+     "period": "30d",
+     "drawn": 24,
+     "cluster": false,
+     "cap": 40000,
+     "cap_source": "index",
+     "index_count": 24,
+     "failures": 0,
+     "reasons": [
+      "tail not yet ingested",
+      "head before archive start",
+      "23 dates without a scan window"
+     ]
+    },
+    "origDiff": [],
+    "extra": {
+     "ms": 4987,
+     "concurrency": {
+      "count": 6,
+      "maxInFlight": 5
+     },
+     "timeline": [
+      {
+       "u": "19.json",
+       "s": 1168,
+       "e": 2739
+      },
+      {
+       "u": "20.json",
+       "s": 1178,
+       "e": 2753
+      },
+      {
+       "u": "21.json",
+       "s": 1178,
+       "e": 2753
+      },
+      {
+       "u": "22.json",
+       "s": 1178,
+       "e": 2753
+      },
+      {
+       "u": "23.json",
+       "s": 2739,
+       "e": 4250
+      },
+      {
+       "u": "24.json",
+       "s": 2752,
+       "e": 4265
+      }
+     ]
+    }
+   },
+   {
+    "step": "ON→7d→30d within 0.2 s: the superseded loads keep their requests in flight → global overlap measured",
+    "synthetic": true,
+    "label": {
+     "main": "Lightning flashes (optical) [36 | 30d]",
+     "fs": "Lightning flashes (optical) [36 | 30d]",
+     "menu": "Lightning flashes (optical) [36 | 30d]"
+    },
+    "toggles": {
+     "main": true,
+     "fs": true,
+     "menu": true
+    },
+    "stateLine": "PARTIAL · 36 FLASHES DRAWN · SEARCHED 39%",
+    "caption": [
+     "Window  2026-09-26 18:40 UTC → 2026-10-26 18:40 UTC (30 days, latest)",
+     "Actual  first 2026-10-15 04:46:27 UTC · last 2026-10-26 16:46:36 UTC",
+     "Flashes 36 archived in window · 36 drawn as points (index count 36 within the 40,000-point cap for this desktop)",
+     "Refresh archive 2026-10-26 18:37 UTC (0h 3min ago; expected every 1 h)",
+     "Searched EUMETSAT 39% of window · 288 successful runs · 2026-10-15 00:00 UTC → 2026-10-26 17:40 UTC",
+     "Not yet ingested: last 1h 0min of window (unknown, not zero) · Unknown: 2026-09-26 to 2026-10-14 precede archive start 2026-10-15 00:00 UTC (not zero) · Unknown: 19 of 31 UTC dates have no collection run",
+     "Times UTC · Optical flashes seen by MTG Lightning Imager (EUMETSAT L2-LFL), not confirmed ground strikes · Missing days are unknown, not zero · UK box −11.0,49.5 → 3.0,61.5"
+    ],
+    "features": 36,
+    "cluster": false,
+    "visibility": "visible",
+    "badCoords": 0,
+    "injected": null,
+    "markupNodes": 0,
+    "last": {
+     "state": "PARTIAL",
+     "stale": false,
+     "mode": "detail",
+     "period": "30d",
+     "drawn": 36,
+     "cluster": false,
+     "cap": 40000,
+     "cap_source": "index",
+     "index_count": 36,
+     "failures": 0,
+     "reasons": [
+      "tail not yet ingested",
+      "head before archive start",
+      "19 dates without a scan window"
+     ]
+    },
+    "origDiff": [],
+    "extra": {
+     "concurrency": {
+      "count": 18,
+      "maxInFlight": 12
+     },
+     "timeline": [
+      {
+       "u": "25.json",
+       "s": -5312,
+       "e": -2213
+      },
+      {
+       "u": "26.json",
+       "s": -5312,
+       "e": -2213
+      },
+      {
+       "u": "19.json",
+       "s": -206,
+       "e": 1501
+      },
+      {
+       "u": "20.json",
+       "s": -206,
+       "e": 1501
+      },
+      {
+       "u": "21.json",
+       "s": -206,
+       "e": 1501
+      },
+      {
+       "u": "22.json",
+       "s": -206,
+       "e": 1501
+      },
+      {
+       "u": "15.json",
+       "s": 530,
+       "e": 2081
+      },
+      {
+       "u": "16.json",
+       "s": 530,
+       "e": 2081
+      },
+      {
+       "u": "17.json",
+       "s": 530,
+       "e": 2081
+      },
+      {
+       "u": "18.json",
+       "s": 530,
+       "e": 2081
+      },
+      {
+       "u": "23.json",
+       "s": 1500,
+       "e": 3048
+      },
+      {
+       "u": "24.json",
+       "s": 1500,
+       "e": 3048
+      },
+      {
+       "u": "25.json",
+       "s": 1500,
+       "e": 3048
+      },
+      {
+       "u": "26.json",
+       "s": 1500,
+       "e": 3048
+      },
+      {
+       "u": "19.json",
+       "s": 2080,
+       "e": 3635
+      },
+      {
+       "u": "20.json",
+       "s": 2080,
+       "e": 3635
+      },
+      {
+       "u": "21.json",
+       "s": 2080,
+       "e": 3635
+      },
+      {
+       "u": "22.json",
+       "s": 2081,
+       "e": 3649
+      }
+     ]
+    }
+   }
+  ]
+ }
+]

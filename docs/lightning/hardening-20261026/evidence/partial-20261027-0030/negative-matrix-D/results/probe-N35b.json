@@ -1,0 +1,479 @@
+{
+ "harness": "lead-shim; Chromium iPhone 12 emulation (not WebKit)",
+ "candidate": "fda6b10 gen 202610261949",
+ "baseline": "production /home/claude/gridatlas (c08f3a6 gen 202609241334)",
+ "runs": [
+  {
+   "viewport": "393x852",
+   "route": "baseline",
+   "lastGroupOFF": {
+    "button": {
+     "text": "▾ HIDE LAYERS",
+     "position": "fixed",
+     "zIndex": "9999",
+     "rect": {
+      "top": 796,
+      "bottom": 840,
+      "left": 249,
+      "right": 381
+     }
+    },
+    "host": {
+     "scrollTop": 1832,
+     "maxScroll": 1832,
+     "bottom": 835
+    },
+    "leaves": [
+     {
+      "key": "PIPELINE NEWS (REPD)",
+      "top": 728,
+      "bottom": 739,
+      "left": 29,
+      "right": 376,
+      "samples": 172,
+      "coveredByHideBtn": 0,
+      "coveredPct": 0,
+      "otherOccluder": 0
+     },
+     {
+      "key": "Same technology [SELECT A PROJECT]",
+      "top": 747,
+      "bottom": 762,
+      "left": 58,
+      "right": 323,
+      "samples": 198,
+      "coveredByHideBtn": 0,
+      "coveredPct": 0,
+      "otherOccluder": 0
+     },
+     {
+      "key": "Wider fleet [SELECT A PROJECT]",
+      "top": 774,
+      "bottom": 789,
+      "left": 58,
+      "right": 292,
+      "samples": 174,
+      "coveredByHideBtn": 0,
+      "coveredPct": 0,
+      "otherOccluder": 0
+     },
+     {
+      "key": "All pipeline [SELECT A PROJECT]",
+      "top": 801,
+      "bottom": 816,
+      "left": 58,
+      "right": 300,
+      "samples": 180,
+      "coveredByHideBtn": 39,
+      "coveredPct": 22,
+      "otherOccluder": 0
+     }
+    ],
+    "anyCovered": true
+   }
+  },
+  {
+   "viewport": "393x852",
+   "route": "candidate",
+   "lastGroupOFF": {
+    "button": {
+     "text": "▾ HIDE LAYERS",
+     "position": "fixed",
+     "zIndex": "9999",
+     "rect": {
+      "top": 796,
+      "bottom": 840,
+      "left": 249,
+      "right": 381
+     }
+    },
+    "host": {
+     "scrollTop": 1888,
+     "maxScroll": 1888,
+     "bottom": 835
+    },
+    "leaves": [
+     {
+      "key": "PIPELINE NEWS (REPD)",
+      "top": 672,
+      "bottom": 683,
+      "left": 29,
+      "right": 376,
+      "samples": 172,
+      "coveredByHideBtn": 0,
+      "coveredPct": 0,
+      "otherOccluder": 0
+     },
+     {
+      "key": "Same technology [SELECT A PROJECT]",
+      "top": 691,
+      "bottom": 706,
+      "left": 58,
+      "right": 323,
+      "samples": 198,
+      "coveredByHideBtn": 0,
+      "coveredPct": 0,
+      "otherOccluder": 0
+     },
+     {
+      "key": "Wider fleet [SELECT A PROJECT]",
+      "top": 718,
+      "bottom": 733,
+      "left": 58,
+      "right": 292,
+      "samples": 174,
+      "coveredByHideBtn": 0,
+      "coveredPct": 0,
+      "otherOccluder": 0
+     },
+     {
+      "key": "All pipeline [SELECT A PROJECT]",
+      "top": 745,
+      "bottom": 760,
+      "left": 58,
+      "right": 300,
+      "samples": 180,
+      "coveredByHideBtn": 0,
+      "coveredPct": 0,
+      "otherOccluder": 0
+     }
+    ],
+    "anyCovered": false
+   },
+   "captionON7d": {
+    "button": {
+     "text": "▾ HIDE LAYERS",
+     "position": "fixed",
+     "zIndex": "9999",
+     "rect": {
+      "top": 796,
+      "bottom": 840,
+      "left": 249,
+      "right": 381
+     }
+    },
+    "host": {
+     "scrollTop": 2311,
+     "maxScroll": 2311,
+     "bottom": 835
+    },
+    "leaves": [
+     {
+      "key": "window",
+      "top": 560,
+      "bottom": 590,
+      "left": 29,
+      "right": 376,
+      "samples": 602,
+      "coveredByHideBtn": 0,
+      "coveredPct": 0,
+      "otherOccluder": 0
+     },
+     {
+      "key": "actual",
+      "top": 590,
+      "bottom": 620,
+      "left": 29,
+      "right": 376,
+      "samples": 602,
+      "coveredByHideBtn": 0,
+      "coveredPct": 0,
+      "otherOccluder": 0
+     },
+     {
+      "key": "flashes",
+      "top": 620,
+      "bottom": 665,
+      "left": 29,
+      "right": 376,
+      "samples": 946,
+      "coveredByHideBtn": 0,
+      "coveredPct": 0,
+      "otherOccluder": 0
+     },
+     {
+      "key": "refresh",
+      "top": 665,
+      "bottom": 695,
+      "left": 29,
+      "right": 376,
+      "samples": 602,
+      "coveredByHideBtn": 0,
+      "coveredPct": 0,
+      "otherOccluder": 0
+     },
+     {
+      "key": "searched",
+      "top": 695,
+      "bottom": 725,
+      "left": 29,
+      "right": 376,
+      "samples": 602,
+      "coveredByHideBtn": 0,
+      "coveredPct": 0,
+      "otherOccluder": 0
+     },
+     {
+      "key": "warning",
+      "top": 725,
+      "bottom": 785,
+      "left": 29,
+      "right": 376,
+      "samples": 1290,
+      "coveredByHideBtn": 0,
+      "coveredPct": 0,
+      "otherOccluder": 0
+     },
+     {
+      "key": "footer",
+      "top": 785,
+      "bottom": 826,
+      "left": 29,
+      "right": 376,
+      "samples": 860,
+      "coveredByHideBtn": 247,
+      "coveredPct": 29,
+      "otherOccluder": 0
+     }
+    ],
+    "anyCovered": true
+   }
+  },
+  {
+   "viewport": "360x740",
+   "route": "baseline",
+   "lastGroupOFF": {
+    "button": {
+     "text": "▾ HIDE LAYERS",
+     "position": "fixed",
+     "zIndex": "9999",
+     "rect": {
+      "top": 684,
+      "bottom": 728,
+      "left": 216,
+      "right": 348
+     }
+    },
+    "host": {
+     "scrollTop": 1908,
+     "maxScroll": 1908,
+     "bottom": 723
+    },
+    "leaves": [
+     {
+      "key": "PIPELINE NEWS (REPD)",
+      "top": 616,
+      "bottom": 627,
+      "left": 29,
+      "right": 343,
+      "samples": 156,
+      "coveredByHideBtn": 0,
+      "coveredPct": 0,
+      "otherOccluder": 0
+     },
+     {
+      "key": "Same technology [SELECT A PROJECT]",
+      "top": 635,
+      "bottom": 650,
+      "left": 58,
+      "right": 323,
+      "samples": 198,
+      "coveredByHideBtn": 0,
+      "coveredPct": 0,
+      "otherOccluder": 0
+     },
+     {
+      "key": "Wider fleet [SELECT A PROJECT]",
+      "top": 662,
+      "bottom": 677,
+      "left": 58,
+      "right": 292,
+      "samples": 174,
+      "coveredByHideBtn": 0,
+      "coveredPct": 0,
+      "otherOccluder": 0
+     },
+     {
+      "key": "All pipeline [SELECT A PROJECT]",
+      "top": 689,
+      "bottom": 704,
+      "left": 58,
+      "right": 300,
+      "samples": 180,
+      "coveredByHideBtn": 63,
+      "coveredPct": 35,
+      "otherOccluder": 0
+     }
+    ],
+    "anyCovered": true
+   }
+  },
+  {
+   "viewport": "360x740",
+   "route": "candidate",
+   "lastGroupOFF": {
+    "button": {
+     "text": "▾ HIDE LAYERS",
+     "position": "fixed",
+     "zIndex": "9999",
+     "rect": {
+      "top": 684,
+      "bottom": 728,
+      "left": 216,
+      "right": 348
+     }
+    },
+    "host": {
+     "scrollTop": 1964,
+     "maxScroll": 1964,
+     "bottom": 723
+    },
+    "leaves": [
+     {
+      "key": "PIPELINE NEWS (REPD)",
+      "top": 560,
+      "bottom": 571,
+      "left": 29,
+      "right": 343,
+      "samples": 156,
+      "coveredByHideBtn": 0,
+      "coveredPct": 0,
+      "otherOccluder": 0
+     },
+     {
+      "key": "Same technology [SELECT A PROJECT]",
+      "top": 579,
+      "bottom": 594,
+      "left": 58,
+      "right": 323,
+      "samples": 198,
+      "coveredByHideBtn": 0,
+      "coveredPct": 0,
+      "otherOccluder": 0
+     },
+     {
+      "key": "Wider fleet [SELECT A PROJECT]",
+      "top": 606,
+      "bottom": 621,
+      "left": 58,
+      "right": 292,
+      "samples": 174,
+      "coveredByHideBtn": 0,
+      "coveredPct": 0,
+      "otherOccluder": 0
+     },
+     {
+      "key": "All pipeline [SELECT A PROJECT]",
+      "top": 633,
+      "bottom": 648,
+      "left": 58,
+      "right": 300,
+      "samples": 180,
+      "coveredByHideBtn": 0,
+      "coveredPct": 0,
+      "otherOccluder": 0
+     }
+    ],
+    "anyCovered": false
+   },
+   "captionON7d": {
+    "button": {
+     "text": "▾ HIDE LAYERS",
+     "position": "fixed",
+     "zIndex": "9999",
+     "rect": {
+      "top": 684,
+      "bottom": 728,
+      "left": 216,
+      "right": 348
+     }
+    },
+    "host": {
+     "scrollTop": 2412,
+     "maxScroll": 2413,
+     "bottom": 723
+    },
+    "leaves": [
+     {
+      "key": "window",
+      "top": 434,
+      "bottom": 464,
+      "left": 29,
+      "right": 343,
+      "samples": 546,
+      "coveredByHideBtn": 0,
+      "coveredPct": 0,
+      "otherOccluder": 156
+     },
+     {
+      "key": "actual",
+      "top": 464,
+      "bottom": 494,
+      "left": 29,
+      "right": 343,
+      "samples": 546,
+      "coveredByHideBtn": 0,
+      "coveredPct": 0,
+      "otherOccluder": 0
+     },
+     {
+      "key": "flashes",
+      "top": 494,
+      "bottom": 539,
+      "left": 29,
+      "right": 343,
+      "samples": 858,
+      "coveredByHideBtn": 0,
+      "coveredPct": 0,
+      "otherOccluder": 0
+     },
+     {
+      "key": "refresh",
+      "top": 539,
+      "bottom": 569,
+      "left": 29,
+      "right": 343,
+      "samples": 546,
+      "coveredByHideBtn": 0,
+      "coveredPct": 0,
+      "otherOccluder": 0
+     },
+     {
+      "key": "searched",
+      "top": 569,
+      "bottom": 599,
+      "left": 29,
+      "right": 343,
+      "samples": 546,
+      "coveredByHideBtn": 0,
+      "coveredPct": 0,
+      "otherOccluder": 0
+     },
+     {
+      "key": "warning",
+      "top": 599,
+      "bottom": 674,
+      "left": 29,
+      "right": 343,
+      "samples": 1404,
+      "coveredByHideBtn": 0,
+      "coveredPct": 0,
+      "otherOccluder": 0
+     },
+     {
+      "key": "footer",
+      "top": 674,
+      "bottom": 714,
+      "left": 29,
+      "right": 343,
+      "samples": 780,
+      "coveredByHideBtn": 254,
+      "coveredPct": 33,
+      "otherOccluder": 0
+     }
+    ],
+    "anyCovered": true
+   }
+  }
+ ]
+}

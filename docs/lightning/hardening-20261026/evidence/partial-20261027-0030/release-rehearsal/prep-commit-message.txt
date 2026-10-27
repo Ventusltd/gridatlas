@@ -1,0 +1,6 @@
+Retire uk-lightning-preview.yml so the scope loop passes on main
+
+It is the tenth active workflow; tools/scope/loop.mjs allows nine, so
+`node tools/scope/loop.mjs lint` and `loop.mjs state` both exit 1
+("active workflow budget mismatch") on main since #35. It targets the
+retired atlas/preview/lightning route. No pointer or STATE.md change.

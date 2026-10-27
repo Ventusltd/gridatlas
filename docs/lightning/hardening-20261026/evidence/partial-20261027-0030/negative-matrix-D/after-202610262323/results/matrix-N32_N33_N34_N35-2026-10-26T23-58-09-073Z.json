@@ -1,0 +1,54 @@
+[
+ {
+  "id": "N32",
+  "title": "hostile INDEX and FEED metadata strings reaching the caption: HTML in first/last_observation_utc (overview), HTML in schema, HTML/garbage in feed latest_detection_utc/query_end_utc",
+  "acceptance_ids": [
+   "D15",
+   "D13",
+   "D06"
+  ],
+  "elapsedMs": 214341,
+  "harnessError": "page.waitForFunction: Target crashed \n    at Module.boot (/tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/negative-matrix-D/after-202610262323/lib.mjs:99:14)\n    at async start (/tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/negative-matrix-D/after-202610262323/matrix.mjs:435:9)\n    at async Object.run (/tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/negative-matrix-D/after-202610262323/matrix.mjs:372:3)\n    at async file:///tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/negative-matrix-D/after-202610262323/matrix.mjs:441:70",
+  "pageErrors": [],
+  "steps": []
+ },
+ {
+  "id": "N33",
+  "title": "OWNER-REPRO 1: feed-fallback (no index) at 393x852 — real taps on 30D, 3M, 6M, 12M: disabled / ignored / responsive, and what the caption says",
+  "acceptance_ids": [
+   "D05",
+   "D06",
+   "R05"
+  ],
+  "elapsedMs": 111627,
+  "harnessError": "page.waitForTimeout: Target page, context or browser has been closed\n    at waitForComposition (/tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/lightning/harness/offline-shim.mjs:116:14)\n    at async Module.boot (/tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/negative-matrix-D/after-202610262323/lib.mjs:98:16)\n    at async start (/tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/negative-matrix-D/after-202610262323/matrix.mjs:435:9)\n    at async file:///tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/negative-matrix-D/after-202610262323/matrix.mjs:441:9",
+  "pageErrors": [],
+  "steps": []
+ },
+ {
+  "id": "N34",
+  "title": "OWNER-REPRO 2: feed mode \"searched 2%\" at 7D — how coverage is derived from feed metadata; is it a truthful number?",
+  "acceptance_ids": [
+   "D13",
+   "D04",
+   "R06"
+  ],
+  "elapsedMs": 199,
+  "harnessError": "browser.newContext: Target page, context or browser has been closed\nBrowser logs:\n\n<launching> /opt/pw-browsers/chromium_headless_shell-1243/chrome-headless-shell-linux64/chrome-headless-shell --disable-field-trial-config --disable-background-networking --disable-background-timer-throttling --disable-backgrounding-occluded-windows --disable-back-forward-cache --disable-breakpad --disable-client-side-phishing-detection --disable-component-extensions-with-background-pages --disable-component-update --no-default-browser-check --disable-default-apps --disable-dev-shm-usage --disable-edgeupdater --disable-extensions --disable-features=AvoidUnnecessaryBeforeUnloadCheckSync,DestroyProfileOnBrowserClose,DialMediaRouteProvider,GlobalMediaControls,HttpsUpgrades,LensOverlay,MediaRouter,PaintHolding,ThirdPartyStoragePartitioning,BlockOriginHeaderModificationOnRedirect,Translate,AutoDeElevate,OptimizationHints,msForceBrowserSignIn,msEdgeUpdateLaunchServicesPreferredVersion --enable-features=CDPScreenshotNewSurface --allow-pre-commit-input --disable-hang-monitor --disable-ipc-flooding-protection --disable-popup-blocking --disable-prompt-on-repost --disable-renderer-backgrounding --disable-updater-scheduler --force-color-profile=srgb --metrics-recording-only --no-first-run --password-store=basic --use-mock-keychain --no-service-autorun --export-tagged-pdf --disable-search-engine-choice-screen --unsafely-disable-devtools-self-xss-warnings --edge-skip-compat-layer-relaunch --disable-infobars ",
+  "pageErrors": [],
+  "steps": []
+ },
+ {
+  "id": "N35",
+  "title": "OWNER-REPRO 3: 393x852 and 360x740, Layers open, lightning ON, scrolled to the end — does the fixed \"▾ HIDE LAYERS\" button occlude the caption lines? Compare with the baseline-last group while OFF",
+  "acceptance_ids": [
+   "P14",
+   "D13",
+   "R01"
+  ],
+  "elapsedMs": 21,
+  "harnessError": "browser.newContext: Target page, context or browser has been closed\n    at async Module.boot (/tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/negative-matrix-D/after-202610262323/lib.mjs:85:15)\n    at async start (/tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/negative-matrix-D/after-202610262323/matrix.mjs:435:9)\n    at async file:///tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/negative-matrix-D/after-202610262323/matrix.mjs:441:9",
+  "pageErrors": [],
+  "steps": []
+ }
+]

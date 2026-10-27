@@ -1,0 +1,22 @@
+{
+ "id": "N35",
+ "title": "OWNER-REPRO 3: 393x852 and 360x740, Layers open, lightning ON, scrolled to the end — does the fixed \"▾ HIDE LAYERS\" button occlude the caption lines? Compare with the baseline-last group while OFF",
+ "acceptance_ids": [
+  "P14",
+  "D13",
+  "R01"
+ ],
+ "candidate": {
+  "generation": "202610262323",
+  "sha": "fda6b10f7d2672bf1bf74c4fbf6184cd36b1ec1d",
+  "route": "http://127.0.0.1:8163/wt/atlas/v/202610262323/"
+ },
+ "harness": "lead-shim (offline-shim.mjs unmodified) + runner static server :8145; Chromium 153.0.8010.12 / Playwright 1.63.0; page.clock.install fake clock",
+ "viewport": "1440x900",
+ "clock": "2026-10-26T18:40:00Z",
+ "reducedMotion": "no-preference",
+ "steps": [],
+ "boots": [],
+ "harnessError": "browser.newContext: Target page, context or browser has been closed\n    at async Module.boot (/tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/negative-matrix-D/after-202610262323/lib.mjs:85:15)\n    at async start (/tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/negative-matrix-D/after-202610262323/matrix.mjs:435:9)\n    at async file:///tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/negative-matrix-D/after-202610262323/matrix.mjs:441:9",
+ "elapsedMs": 21
+}

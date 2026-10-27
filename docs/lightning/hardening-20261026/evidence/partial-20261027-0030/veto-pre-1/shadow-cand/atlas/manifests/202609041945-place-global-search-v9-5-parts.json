@@ -1,0 +1,16 @@
+{
+ "schema": "gridatlas.cartridge-parts.v1",
+ "generation": "202609041945",
+ "cartridge": "./cartridges/202609041945-place-global-search-v9-5.js",
+ "sha256": "21ab1507e98ee29961d03236e8b7853298104a33ecb1986d4d10ffc420a99c1c",
+ "bytes": 34731,
+ "assembled_from": [
+  {
+   "role": "part",
+   "path": "atlas/parts/202609040229-place-global-search-arrival-identity.js",
+   "bytes": 34339,
+   "sha256": "a40137cbae040a9e72329ce38fa8f3c6b9adc88689fb43e7a18a95222bca2401"
+  }
+ ],
+ "rule": "edit a part and rebuild under a new generation; this file is not edited by hand"
+}

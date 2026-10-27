@@ -1,0 +1,223 @@
+From 07882593ec3840e278fd6c3c9aa3bd7babf18b00 Mon Sep 17 00:00:00 2001
+From: "opus-pr2-patch (Claude)" <noreply@anthropic.com>
+Date: Mon, 26 Oct 2026 23:05:31 +0000
+Subject: [PATCH 5/5] verify: strict bytes/sha256/count checks, run before the
+ archive commit
+
+Proofs-lane finding, reproduced: update-lightning.yml committed data/history
+(step 5, if: always()) without running `history.py verify`, and
+verify_archive skipped the size and hash checks whenever a row lacked
+bytes or sha256 (history.py:282,284); it never compared feature counts.
+
+- verify_archive is strict: bytes and sha256 must be present and match;
+  each file's feature count must equal its row/part count; count is null
+  iff coverage none; count > 0 needs a path or parts. Ingest keeps the
+  lenient check for untouched rows (v1 upgrade path unchanged).
+- The archive step runs `history.py verify` right after ingest, so a bad
+  archive makes steps.archive.outcome a failure.
+- The archive commit stages data/history only when that outcome is
+  success; otherwise it restores the last committed archive (checkout +
+  clean) and commits status.json alone, which records the failure.
+
+Tests (all fail before): test_verify_requires_bytes_and_sha256_and_matching_counts,
+test_archive_step_runs_verify_after_ingest_and_fails_when_verify_fails,
+test_failed_archive_step_commits_status_only_and_restores_the_archive.
+
+Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
+Claude-Session: https://claude.ai/code/session_01JcZ2nJ9f9fgHY3X3JTk4DF
+---
+ .github/workflows/update-lightning.yml |  9 +++++-
+ history.py                             | 38 ++++++++++++++++++++++----
+ tests/test_history.py                  | 24 ++++++++++++++++
+ tests/test_workflow.py                 | 37 +++++++++++++++++++++++++
+ 4 files changed, 101 insertions(+), 7 deletions(-)
+
+diff --git a/.github/workflows/update-lightning.yml b/.github/workflows/update-lightning.yml
+index 16ba637..5582831 100644
+--- a/.github/workflows/update-lightning.yml
++++ b/.github/workflows/update-lightning.yml
+@@ -82,6 +82,8 @@ jobs:
+             --run-record "$RUNNER_TEMP/lightning-run-record.json" \
+             --seed-scan-windows data/seed_scan_windows.json \
+             --result-out "$RUNNER_TEMP/lightning-archive-result.json"
++          # Nothing unverified is committed: bytes, sha256 and counts vs the index.
++          python history.py verify --archive-dir data/history
+ 
+       # 4. Always record the outcome: last attempt, last error, consecutive
+       #    failures and the last successful scan end the next run looks back to.
+@@ -103,8 +105,13 @@ jobs:
+           # data/history does not exist and a combined pathspec aborts with 128,
+           # losing the heartbeat.
+           git add -A -- data/status.json
+-          if [ -d data/history ]; then
++          if [ "${{ steps.archive.outcome }}" = "success" ] && [ -d data/history ]; then
+             git add -A -- data/history
++          elif [ -d data/history ]; then
++            # A failed or unverified archive step is never committed: drop any
++            # half-written shard/index and keep the last committed archive.
++            git checkout -- data/history 2>/dev/null || true
++            git clean -fdq -- data/history
+           fi
+           if git diff --cached --quiet; then
+             echo "No changed archive or status"
+diff --git a/history.py b/history.py
+index ef8cc81..e2cf74b 100644
+--- a/history.py
++++ b/history.py
+@@ -267,8 +267,12 @@ def _plan_shards(day: str, records: list[dict], *, max_bytes: int, target_bytes:
+     return plan
+ 
+ 
+-def _verify_unchanged(archive_dir: Path, row: dict) -> None:
+-    """Cheap verification of an untouched day against its previous index row."""
++def _verify_unchanged(archive_dir: Path, row: dict, *, strict: bool = False) -> None:
++    """Cheap verification of an untouched day against its previous index row.
++
++    ``strict`` (used by ``verify``) refuses a listed file whose row lacks
++    ``bytes`` or ``sha256`` instead of skipping that check.
++    """
+     targets = []
+     if row.get("path"):
+         targets.append((row["path"], row.get("bytes"), row.get("sha256")))
+@@ -278,6 +282,8 @@ def _verify_unchanged(archive_dir: Path, row: dict) -> None:
+         file = archive_dir / rel
+         if not file.exists():
+             raise ValueError(f"{file}: listed in the index but missing on disk")
++        if strict and (size is None or not digest):
++            raise ValueError(f"{file}: index row lacks {'bytes' if size is None else 'sha256'}; cannot verify")
+         content = file.read_text(encoding="utf-8")
+         if size is not None and len(content.encode("utf-8")) != size:
+             raise ValueError(f"{file}: size differs from the index; refusing to overwrite")
+@@ -597,16 +603,36 @@ def load_seed_windows(path: Path | None) -> list[dict]:
+ 
+ 
+ def verify_archive(archive_dir: Path) -> dict:
+-    """Check every listed shard's bytes and sha256 against the index."""
++    """Check every listed shard against the index before it is committed.
++
++    Strict: bytes and sha256 must be present and match, each file's feature
++    count must equal its row (and part) count, and ``count`` must be null iff
++    coverage is none, with flashes always backed by a path or parts.
++    """
+     archive_dir = Path(archive_dir)
+     index = _load_old_index(archive_dir / "index.json")
+     if index is None:
+         raise ValueError("no index.json")
+     checked = 0
+     for row in index["days"]:
+-        if row.get("path") or row.get("parts"):
+-            _verify_unchanged(archive_dir, row)
+-            checked += 1
++        day, count = row.get("date"), row.get("count")
++        if (count is None) != (row.get("coverage") == "none"):
++            raise ValueError(f"{day}: count must be null iff coverage is none")
++        listed = [(row["path"], count)] if row.get("path") else [(p["path"], p.get("count")) for p in row.get("parts") or []]
++        if count and not listed:
++            raise ValueError(f"{day}: count {count} without path or parts")
++        if not listed:
++            continue
++        _verify_unchanged(archive_dir, row, strict=True)
++        found = 0
++        for rel, expected in listed:
++            n = len(_read_features(archive_dir / rel, day))
++            if n != expected:
++                raise ValueError(f"{archive_dir / rel}: {n} features but the index count is {expected}")
++            found += n
++        if found != count:
++            raise ValueError(f"{day}: parts hold {found} features but the row count is {count}")
++        checked += 1
+     return {"rows": len(index["days"]), "shards_checked": checked}
+ 
+ 
+diff --git a/tests/test_history.py b/tests/test_history.py
+index 8ccc3ca..c93d898 100644
+--- a/tests/test_history.py
++++ b/tests/test_history.py
+@@ -401,6 +401,30 @@ class LightningHistoryTests(unittest.TestCase):
+         self.assertEqual((today["coverage"], today["scanned_seconds"], today["count"]), ("none", 0, None))
+         self.assertEqual(len(windows_from_run_record({**record, "slots_parsed": True})), 1)
+ 
++    # --- verify: strict bytes/sha256 and counts ----------------------------------
++    def test_verify_requires_bytes_and_sha256_and_matching_counts(self):
++        archive_observations(self.root, [self.flash(self.now - timedelta(hours=1), "v")], now=self.now)
++        self.assertEqual(verify_archive(self.root)["shards_checked"], 1)
++        index_path = self.root / "index.json"
++        good = json.loads(index_path.read_text())
++        for field in ("sha256", "bytes"):
++            index = json.loads(json.dumps(good))
++            row = rows_with_flashes(index)[0]
++            row[field] = None
++            index_path.write_text(json.dumps(index))
++            with self.assertRaisesRegex(ValueError, field):
++                verify_archive(self.root)
++        index = json.loads(json.dumps(good))
++        rows_with_flashes(index)[0]["count"] = 5  # bytes and sha256 still match the file
++        index_path.write_text(json.dumps(index))
++        with self.assertRaisesRegex(ValueError, "count"):
++            verify_archive(self.root)
++        index = json.loads(json.dumps(good))
++        index["days"][0].update({"coverage": "full", "scanned_seconds": 86400, "count": None})
++        index_path.write_text(json.dumps(index))
++        with self.assertRaisesRegex(ValueError, "count"):
++            verify_archive(self.root)
++
+     # --- CLI --------------------------------------------------------------------
+     def test_cli_ingest_and_verify(self):
+         record_path = Path(self.temp.name) / "run.json"
+diff --git a/tests/test_workflow.py b/tests/test_workflow.py
+index a025743..53f9db2 100644
+--- a/tests/test_workflow.py
++++ b/tests/test_workflow.py
+@@ -8,6 +8,7 @@ import os
+ import re
+ import shutil
+ import subprocess
++import sys
+ import tempfile
+ import unittest
+ from pathlib import Path
+@@ -95,5 +96,41 @@ class WorkflowShellTests(unittest.TestCase):
+         self.assertTrue({"data/status.json", "data/history/index.json"} <= self.pushed_files())
+ 
+ 
++    # --- verify gate: nothing unverified is committed ---------------------------
++    def test_archive_step_runs_verify_after_ingest_and_fails_when_verify_fails(self):
++        bin_dir = Path(self.temp.name) / "bin"
++        bin_dir.mkdir()
++        (bin_dir / "python").symlink_to(sys.executable)
++        log = Path(self.temp.name) / "calls.log"
++        (self.repo / "history.py").write_text(  # stub: records the sub-command, fails on request
++            "import os, sys\n"
++            f"open({str(log)!r}, 'a').write(sys.argv[1] + '\\n')\n"
++            "sys.exit(1 if os.environ.get('FAIL_' + sys.argv[1].upper()) else 0)\n")
++        env = {"PATH": f"{bin_dir}{os.pathsep}{os.environ.get('PATH', '')}", "RUNNER_TEMP": self.temp.name}
++        good = self.run_step(ARCHIVE_STEP, {}, env)
++        self.assertEqual(good.returncode, 0, good.stderr)
++        self.assertEqual(log.read_text().split(), ["ingest", "verify"])
++        bad = self.run_step(ARCHIVE_STEP, {}, {**env, "FAIL_VERIFY": "1"})
++        self.assertNotEqual(bad.returncode, 0)
++
++    def test_failed_archive_step_commits_status_only_and_restores_the_archive(self):
++        history_dir = self.repo / "data" / "history"
++        (history_dir / "days").mkdir(parents=True)
++        (history_dir / "index.json").write_text('{"committed": true}\n')
++        self.git("add", "-A")
++        self.git("commit", "-q", "-m", "archive v1")
++        self.git("push", "-q")
++        (history_dir / "index.json").write_text('{"half": "written"}\n')  # ingest/verify failed mid-way
++        (history_dir / "days" / "partial.json").write_text("{}\n")
++        (self.repo / "data" / "status.json").write_text('{"archive": {"outcome": "failure"}}\n')
++        done = self.run_step(ARCHIVE_COMMIT, {"steps.archive.outcome": "failure"})
++        self.assertEqual(done.returncode, 0, done.stderr)
++        self.git("fetch", "-q", "origin")
++        files = self.pushed_files()
++        self.assertIn("data/status.json", files)
++        self.assertNotIn("data/history/days/partial.json", files)
++        self.assertEqual(self.git("show", "origin/main:data/history/index.json"), '{"committed": true}\n')
++        self.assertEqual(self.git("status", "--porcelain", "--", "data/history"), "")
++
+ if __name__ == "__main__":
+     unittest.main()
+-- 
+2.43.0
+

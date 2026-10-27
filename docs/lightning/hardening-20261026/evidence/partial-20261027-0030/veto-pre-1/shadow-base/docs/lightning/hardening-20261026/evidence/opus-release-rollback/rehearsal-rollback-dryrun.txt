@@ -1,0 +1,18 @@
+## rollback dry-runs | harness: self | tree: fda6b10 + uncommitted release edits (GEN 202610261949) | 2026-10-26T22:33:56Z
+$ node tools/rollback.mjs --to 202609241334 --reason "rehearsal" --dry-run
+  MATCH           streaming-parquet-bridge     atlas/cartridges/202609241251-streaming-parquet-bridge-v9-5.js
+  MATCH           uk-gazetteer-flyto           atlas/cartridges/202609071213-place-global-search-v9-5.js
+  MATCH           sld-sandbox                  atlas/cartridges/202609241334-sld-sandbox-v9-8.js
+  MATCH           substation-intelligence      atlas/cartridges/202609062358-substation-intelligence-v9-63.js
+  PRESENT         shell:index.html             atlas/releases/202608300453-atlas-v9/index.html
+
+  from        202610261949  v9.158
+  restoring   202609241334  v9.156   (1 generation back)
+  as          202610262233  202610262233-gridatlas-v9.156
+  cartridges  4 verified against committed bytes
+
+--dry-run: nothing written
+exit=0
+$ node tools/rollback.mjs --to 202610221600 --reason "rehearsal" --dry-run   (burned V1: must be refused)
+rollback: 202610221600 is not an ancestor of 202610261949; the lineage from here is 202610261949 <- 202609241334 <- 202609200022 <- 202609080850 <- 202609080846 <- 202609080837 <- 202609080430 <- 202609080030 <- 202609080000 <- 202609072337
+exit=1

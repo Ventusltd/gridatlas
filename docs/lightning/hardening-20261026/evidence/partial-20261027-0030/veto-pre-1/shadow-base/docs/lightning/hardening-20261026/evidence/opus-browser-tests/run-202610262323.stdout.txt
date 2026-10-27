@@ -1,0 +1,36 @@
+T1 PASS  CUSTOM during the first load
+T2 PASS  Malformed timestamp in the index
+T3 PASS  Feed revalidation (OFF then ON fetches the feed again)
+T4 PASS  Feed STALE after 4 h
+T5 PASS  Feed mode and PREV
+T6 PASS  Long chips in feed mode (owner device 393x852, Chromium emulation)
+T7 PASS  Feed coverage shown as unknown, not a percentage
+T8 FAIL  HIDE LAYERS does not occlude caption lines (393x852, 360x740)
+    x p393: [strict] rendered line window 1/2 hittable at 9 points along its width :: {"cap":"window","line":"1/2","rect":[29,498,318,11],"blocked":[{"x":61,"y":504,"hit":"div"},{"x":93,"y":504,"hit":"div"},{"x":124,"y":504,"hit":"div"},{"x":156,"y":504,"hit":"div"},{"x":188,"y":504,"hit":"div"},{"x":220,"y":504,"hit":"div"},{"x":252,"y":504,"hit":"div"},{"x":283,"y":504,"hit":"div"},{"x":315,"y":504,"hit":"div"}]}
+    x p360: [as specified] caption block "window" centre is hittable :: {"cap":"window","centre":[186,385],"hit":"canvas","text":"Window 2026-10-19 18:40 UTC → 2026-10-26 18:40 UTC (7 days, "}
+    x p360: [as specified] caption block "actual" centre is hittable :: {"cap":"actual","centre":[186,415],"hit":"canvas","text":"Actual first 2026-10-21 12:32:19 UTC · last 2026-10-25 11:15"}
+    x p360: [strict] rendered line window 1/2 hittable at 9 points along its width :: {"cap":"window","line":"1/2","rect":[29,372,300,11],"blocked":[{"x":59,"y":377,"hit":"button"},{"x":89,"y":377,"hit":"button"},{"x":119,"y":377,"hit":"button"},{"x":149,"y":377,"hit":"button"},{"x":179,"y":377,"hit":"canvas"},{"x":209,"y":377,"hit":"canvas"},{"x":239,"y":377,"hit":"canvas"},{"x":269,"y":377,"hit":"canvas"},{"x":299,"y":377,"hit":"canvas"}]}
+    x p360: [strict] rendered line window 2/2 hittable at 9 points along its width :: {"cap":"window","line":"2/2","rect":[29,387,96,11],"blocked":[{"x":39,"y":392,"hit":"button"},{"x":48,"y":392,"hit":"button"},{"x":58,"y":392,"hit":"button"},{"x":67,"y":392,"hit":"button"},{"x":77,"y":392,"hit":"button"},{"x":87,"y":392,"hit":"button"},{"x":96,"y":392,"hit":"button"},{"x":106,"y":392,"hit":"button"},{"x":115,"y":392,"hit":"button"}]}
+    x p360: [strict] rendered line actual 1/2 hittable at 9 points along its width :: {"cap":"actual","line":"1/2","rect":[29,402,312,11],"blocked":[{"x":60,"y":407,"hit":"canvas"},{"x":91,"y":407,"hit":"canvas"},{"x":123,"y":407,"hit":"canvas"},{"x":154,"y":407,"hit":"canvas"},{"x":185,"y":407,"hit":"canvas"},{"x":216,"y":407,"hit":"canvas"},{"x":247,"y":407,"hit":"canvas"},{"x":279,"y":407,"hit":"canvas"},{"x":310,"y":407,"hit":"canvas"}]}
+    x p360: [strict] rendered line actual 2/2 hittable at 9 points along its width :: {"cap":"actual","line":"2/2","rect":[29,417,90,11],"blocked":[{"x":38,"y":422,"hit":"canvas"},{"x":47,"y":422,"hit":"canvas"},{"x":56,"y":422,"hit":"canvas"},{"x":65,"y":422,"hit":"canvas"},{"x":74,"y":422,"hit":"canvas"},{"x":83,"y":422,"hit":"canvas"},{"x":92,"y":422,"hit":"canvas"},{"x":101,"y":422,"hit":"canvas"},{"x":110,"y":422,"hit":"canvas"}]}
+    x p360: [strict] rendered line flashes 1/3 hittable at 9 points along its width :: {"cap":"flashes","line":"1/3","rect":[29,432,312,11],"blocked":[{"x":60,"y":437,"hit":"div"},{"x":91,"y":437,"hit":"div"},{"x":123,"y":437,"hit":"div"},{"x":154,"y":437,"hit":"div"},{"x":185,"y":437,"hit":"div"},{"x":216,"y":437,"hit":"div"},{"x":247,"y":437,"hit":"div"},{"x":279,"y":437,"hit":"div"},{"x":310,"y":437,"hit":"div"}]}
+T9 PASS  Out-of-box and NaN coordinates rejected and reported
+T10 PASS  Shard count/bytes/sha256 disagreeing with the index named as mismatch
+T11 PASS  Sub-day (12H) caption never calls whole-day index counts "archived in window"
+T12 PASS  LOAD POINTS respects the promised cap and the 32 MB budget
+T13 PASS  menuBar.inspect() {60,3,63,63,true}, 63 proxies, 63 markers before/after every case; zero lightning requests while OFF
+
+T1	PASS	26s	CUSTOM during the first load
+T2	PASS	18s	Malformed timestamp in the index
+T3	PASS	16s	Feed revalidation (OFF then ON fetches the feed again)
+T4	PASS	33s	Feed STALE after 4 h
+T5	PASS	16s	Feed mode and PREV
+T6	PASS	18s	Long chips in feed mode (owner device 393x852, Chromium emulation)
+T7	PASS	16s	Feed coverage shown as unknown, not a percentage
+T8	FAIL	32s	HIDE LAYERS does not occlude caption lines (393x852, 360x740)
+T9	PASS	17s	Out-of-box and NaN coordinates rejected and reported
+T10	PASS	19s	Shard count/bytes/sha256 disagreeing with the index named as mismatch
+T11	PASS	17s	Sub-day (12H) caption never calls whole-day index counts "archived in window"
+T12	PASS	0s	LOAD POINTS respects the promised cap and the 32 MB budget
+T13	PASS	0s	menuBar.inspect() {60,3,63,63,true}, 63 proxies, 63 markers before/after every case; zero lightning requests while OFF
+out: /tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/opus-browser-tests/runs/202610262323-20261026T232417

@@ -1,0 +1,170 @@
+{
+ "fixture": "/tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/security/fixtures/S2-xss-schema/data",
+ "harness": "lead-shim, Chromium 153.0.8010.12 headless, desktop 1440x900, SYNTHETIC fixture",
+ "composition": {
+  "engine": 120,
+  "pn": 6,
+  "scada": true,
+  "curtain": true,
+  "menuInstalled": true,
+  "map": true,
+  "waitedMs": 36486
+ },
+ "before": {
+  "pwn": null,
+  "protoPolluted": null,
+  "protoKeys": [],
+  "injectedNodes": 0,
+  "injectedDoc": 0,
+  "label": "Lightning flashes (optical) [WAIT]",
+  "status": "LOADING",
+  "caps": {
+   "window": {
+    "len": 0,
+    "text": ""
+   },
+   "actual": {
+    "len": 0,
+    "text": ""
+   },
+   "flashes": {
+    "len": 0,
+    "text": ""
+   },
+   "refresh": {
+    "len": 0,
+    "text": ""
+   },
+   "searched": {
+    "len": 0,
+    "text": ""
+   },
+   "warning": {
+    "len": 0,
+    "text": ""
+   },
+   "footer": {
+    "len": 0,
+    "text": ""
+   }
+  },
+  "last": null,
+  "errors": [],
+  "requests": 0,
+  "inspect": {
+   "engine": 60,
+   "pipeline": 3,
+   "total": 63,
+   "unique": 63,
+   "complete": true
+  },
+  "mapOk": {
+   "center": "-3.490",
+   "layers": 100,
+   "lightningLayer": false
+  },
+  "sourceFeatures": null
+ },
+ "requestsBeforeOn": 1,
+ "settledMs": 765,
+ "maxMainThreadRttMs": 156,
+ "after": {
+  "pwn": null,
+  "protoPolluted": null,
+  "protoKeys": [],
+  "injectedNodes": 0,
+  "injectedDoc": 0,
+  "label": "Lightning flashes (optical) [UNKNOWN | 24h STALE]",
+  "status": "UNKNOWN · STALE",
+  "caps": {
+   "window": {
+    "len": 70,
+    "text": "Window  2026-10-25 18:40 UTC → 2026-10-26 18:40 UTC (24 hours, latest)"
+   },
+   "actual": {
+    "len": 50,
+    "text": "Actual  no flashes in the live feed in this window"
+   },
+   "flashes": {
+    "len": 48,
+    "text": "Flashes 0 in window (live feed, 7-day retention)"
+   },
+   "refresh": {
+    "len": 363,
+    "text": "Refresh live feed 2026-10-26 13:05 UTC (last collection window 2026-10-26 10:05 UTC → 2026-10-26 13:05 UTC; latest detection 2026-10-25 11:15:58 UTC; 7-day retention; archive unavailable: unsupported index schema <img src=x onerror=\"window.__PWN=(window.__PWN||0)+1\"><script>window.__PWN=99</script>\"'><svg onload=window.__PWN=7>; earlier hours unknown, not zero)"
+   },
+   "searched": {
+    "len": 77,
+    "text": "Searched EUMETSAT unknown (live feed records only its last collection window)"
+   },
+   "warning": {
+    "len": 0,
+    "text": ""
+   },
+   "footer": {
+    "len": 172,
+    "text": "Times UTC · Optical flashes seen by MTG Lightning Imager (EUMETSAT L2-LFL), not confirmed ground strikes · Missing days are unknown, not zero · UK box −11.0,49.5 → 3.0,61.5"
+   }
+  },
+  "last": {
+   "state": "UNKNOWN",
+   "stale": true,
+   "mode": "feed",
+   "period": "24h",
+   "drawn": 0,
+   "cluster": false,
+   "cap": 40000,
+   "cap_source": "live feed",
+   "index_count": 0,
+   "failures": 0,
+   "reasons": [
+    "feed coverage unknown"
+   ]
+  },
+  "errors": [],
+  "requests": 2,
+  "inspect": {
+   "engine": 60,
+   "pipeline": 3,
+   "total": 63,
+   "unique": 63,
+   "complete": true
+  },
+  "mapOk": {
+   "center": "-3.480",
+   "layers": 101,
+   "lightningLayer": true
+  },
+  "sourceFeatures": 0
+ },
+ "lightningRequestsWhileOn": 3,
+ "requestsAfterOff8s": 0,
+ "error": "page.evaluate: Target crashed ",
+ "pageErrors": [],
+ "dialogs": [],
+ "hosts": {
+  "127.0.0.1:8177": 21,
+  "cdn.jsdelivr.net": 5,
+  "raw.githubusercontent.com": 3,
+  "basemaps.cartocdn.com": 1,
+  "ventusltd.github.io": 1
+ },
+ "unexpected": [
+  "https://raw.githubusercontent.com/Ventusltd/data-grid-gb/1c9909d1138704b29235c27fd769436dda8a0b18/derived/connection-points.v3.json"
+ ],
+ "shim": {
+  "served": {
+   "maplibre": 2,
+   "style": 1,
+   "lightning-data": 2,
+   "duckdb": 3
+  },
+  "aborted": [
+   "https://raw.githubusercontent.com/Ventusltd/data-grid-gb/1c9909d1138704b29235c27fd769436dda8a0b18/derived/connection-points.v3.json",
+   "https://ventusltd.github.io/ventus-grid-engine/genome/engine-graph.json"
+  ],
+  "missing": [],
+  "missingCount": 0
+ },
+ "wallMs": 67659
+}

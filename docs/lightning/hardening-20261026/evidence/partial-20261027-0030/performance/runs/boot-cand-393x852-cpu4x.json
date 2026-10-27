@@ -1,0 +1,75 @@
+{
+ "mode": "boot",
+ "route": "http://127.0.0.1:8178/wt/atlas/v/202610262323/",
+ "routeKey": "cand",
+ "viewport": "393x852",
+ "cpuThrottle": 4,
+ "dataDir": null,
+ "harness": "lead-shim offline-shim.mjs; Chromium headless, SwiftShader GL; phone = Chromium emulation (isMobile, hasTouch), not WebKit",
+ "startedUtc": "2026-10-26T23:49:17.083Z",
+ "chromium": "153.0.8010.12",
+ "composition": {
+  "engine": 120,
+  "pn": 6,
+  "scada": true,
+  "curtain": true,
+  "menuInstalled": true,
+  "map": true,
+  "waitedMs": 7926
+ },
+ "boot": {
+  "menuInstalledMs": 8457,
+  "mapCreatedMs": 4609,
+  "mapLoadedMs": 8457,
+  "lightningInstalledMs": 8457,
+  "lightningAfterMenuMs": 0,
+  "longTasksToMenu": {
+   "count": 29,
+   "totalMs": 5083,
+   "maxMs": 835,
+   "over1s": 0
+  },
+  "longTasksMenuPlus5s": {
+   "count": 14,
+   "totalMs": 4864,
+   "maxMs": 1613,
+   "over1s": 1
+  },
+  "longTasksAll": {
+   "count": 57,
+   "totalMs": 13203,
+   "maxMs": 1613,
+   "over1s": 2
+  },
+  "requests": 29,
+  "lightningRequests": [],
+  "shim": {
+   "served": {
+    "maplibre": 2,
+    "style": 1,
+    "duckdb": 3
+   },
+   "aborted": [
+    "https://raw.githubusercontent.com/Ventusltd/data-grid-gb/1c9909d1138704b29235c27fd769436dda8a0b18/derived/connection-points.v3.json",
+    "https://ventusltd.github.io/ventus-grid-engine/genome/engine-graph.json"
+   ],
+   "missing": []
+  },
+  "lightningState": {
+   "installed": true,
+   "on": false,
+   "requests": 0,
+   "errors": [],
+   "nodes": 76,
+   "source": false,
+   "layer": false
+  },
+  "heapUsedMB": 17.95,
+  "heapTotalMB": 19,
+  "nodes": 2670,
+  "documents": 1,
+  "listeners": 184
+ },
+ "pageErrors": [],
+ "finishedUtc": "2026-10-26T23:49:46.300Z"
+}

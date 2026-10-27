@@ -1,0 +1,34 @@
+{
+  "schema": "gridatlas.deep-link-contract.v1",
+  "incepted_at": "2026-08-30T01:32:00Z",
+  "identity": {
+    "required": ["repd_ref", "technology"],
+    "repd_ref": {
+      "source": "official_repd_reference",
+      "pattern": "^[A-Za-z0-9-]{1,40}$"
+    },
+    "technology": {
+      "allowed": ["solar", "bess", "wind_onshore", "wind_offshore"]
+    }
+  },
+  "optional_evidence": ["name", "longitude", "latitude"],
+  "rules": {
+    "name_is_identity": false,
+    "coordinates_are_identity": false,
+    "consumer_base_pointer": "https://ventusltd.github.io/gridatlas/state/live-set.json",
+    "only_promotion_eligible_release": true,
+    "preserve_query_on_root_redirect": true
+  },
+  "sentinels": [
+    {
+      "label": "Beacon Fen",
+      "repd_ref": "13599",
+      "technology": "solar"
+    },
+    {
+      "label": "East Pye",
+      "repd_ref": "17494",
+      "technology": "solar"
+    }
+  ]
+}

@@ -1,0 +1,22 @@
+{
+ "id": "N34",
+ "title": "OWNER-REPRO 2: feed mode \"searched 2%\" at 7D — how coverage is derived from feed metadata; is it a truthful number?",
+ "acceptance_ids": [
+  "D13",
+  "D04",
+  "R06"
+ ],
+ "candidate": {
+  "generation": "202610262323",
+  "sha": "fda6b10f7d2672bf1bf74c4fbf6184cd36b1ec1d",
+  "route": "http://127.0.0.1:8163/wt/atlas/v/202610262323/"
+ },
+ "harness": "lead-shim (offline-shim.mjs unmodified) + runner static server :8145; Chromium 153.0.8010.12 / Playwright 1.63.0; page.clock.install fake clock",
+ "viewport": "390x844 iPhone-12 emulation (Chromium, NOT WebKit — geometry/UA only)",
+ "clock": "2026-10-26T18:40:00Z",
+ "reducedMotion": "no-preference",
+ "steps": [],
+ "boots": [],
+ "harnessError": "browser.newContext: Target page, context or browser has been closed\nBrowser logs:\n\n<launching> /opt/pw-browsers/chromium_headless_shell-1243/chrome-headless-shell-linux64/chrome-headless-shell --disable-field-trial-config --disable-background-networking --disable-background-timer-throttling --disable-backgrounding-occluded-windows --disable-back-forward-cache --disable-breakpad --disable-client-side-phishing-detection --disable-component-extensions-with-background-pages --disable-component-update --no-default-browser-check --disable-default-apps --disable-dev-shm-usage --disable-edgeupdater --disable-extensions --disable-features=AvoidUnnecessaryBeforeUnloadCheckSync,DestroyProfileOnBrowserClose,DialMediaRouteProvider,GlobalMediaControls,HttpsUpgrades,LensOverlay,MediaRouter,PaintHolding,ThirdPartyStoragePartitioning,BlockOriginHeaderModificationOnRedirect,Translate,AutoDeElevate,OptimizationHints,msForceBrowserSignIn,msEdgeUpdateLaunchServicesPreferredVersion --enable-features=CDPScreenshotNewSurface --allow-pre-commit-input --disable-hang-monitor --disable-ipc-flooding-protection --disable-popup-blocking --disable-prompt-on-repost --disable-renderer-backgrounding --disable-updater-scheduler --force-color-profile=srgb --metrics-recording-only --no-first-run --password-store=basic --use-mock-keychain --no-service-autorun --export-tagged-pdf --disable-search-engine-choice-screen --unsafely-disable-devtools-self-xss-warnings --edge-skip-compat-layer-relaunch --disable-infobars ",
+ "elapsedMs": 199
+}

@@ -1,0 +1,630 @@
+{
+  "startedAt": "2026-10-26T23:00:48.539Z",
+  "baseline": "http://127.0.0.1:8141/gridatlas/atlas/",
+  "candidate": "http://127.0.0.1:8142/wt/atlas/v/202610261949/",
+  "thresholdPct": 0.1,
+  "channelTolerance": 16,
+  "geometryTolerancePx": 1,
+  "shim": "/tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/lightning/harness/offline-shim.mjs",
+  "lightningDataDir": null,
+  "fixtures": null,
+  "maskMap": true,
+  "masks": [
+    "#clock",
+    "#date",
+    "#days"
+  ],
+  "additive": [
+    "[data-lightning-group]"
+  ],
+  "viewports": {
+    "desktop-1440x900": {
+      "states": {
+        "deeplink": {
+          "noteBaseline": {
+            "outcome": "deep link http://127.0.0.1:8141/gridatlas/atlas/?technology=solar&latitude=52.6369&longitude=-1.1398&zoom=10&project=GRIDATLAS_PROOF_controls&capacity_mw=10 -> card present"
+          },
+          "noteCandidate": {
+            "outcome": "deep link http://127.0.0.1:8142/wt/atlas/v/202610261949/?technology=solar&latitude=52.6369&longitude=-1.1398&zoom=10&project=GRIDATLAS_PROOF_controls&capacity_mw=10 -> card present"
+          },
+          "pixel": {
+            "width": 1440,
+            "height": 900,
+            "sameSize": true,
+            "changed": 28,
+            "masked": 536612,
+            "considered": 759388,
+            "changedPct": 0.0036871796762656243,
+            "bbox": {
+              "x": 545,
+              "y": 257,
+              "w": 1,
+              "h": 200
+            },
+            "bands": [
+              {
+                "fromY": 257,
+                "toY": 270
+              },
+              {
+                "fromY": 443,
+                "toY": 456
+              }
+            ],
+            "bandCount": 2,
+            "diffPng": "/tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/visual-challenge-B/parity/runs/deeplink-repeat-3/diff/desktop-1440x900.deeplink.diff.png"
+          },
+          "geometry": {
+            "compared": 56,
+            "diffs": [
+              {
+                "surface": "menu-panel-Grid",
+                "kind": "childCount",
+                "baseline": 3,
+                "candidate": 4,
+                "class": "additive-host"
+              },
+              {
+                "surface": "scada-ui-container",
+                "kind": "childCount",
+                "baseline": 13,
+                "candidate": 14,
+                "class": "additive-host"
+              },
+              {
+                "surface": "scada-ui-container",
+                "kind": "inventory.groupCount",
+                "baseline": 13,
+                "candidate": 14,
+                "class": "additive-host"
+              },
+              {
+                "surface": "scada-ui-container",
+                "kind": "inventory.inputs",
+                "baseline": 65,
+                "candidate": 68,
+                "class": "additive-host"
+              },
+              {
+                "surface": "scada-ui-container",
+                "kind": "inventory.groups",
+                "baseline": [
+                  "Topology (GeoJSON)",
+                  "Assets (GeoJSON)",
+                  "Supermarkets (GeoJSON)",
+                  "Transit (GeoJSON)",
+                  "Leisure & Sports (GeoJSON)",
+                  "Global Data Backbone",
+                  "Global Supply Chain & Chokepoints",
+                  "Highway Infrastructure",
+                  "EV (GeoJSON)",
+                  "Heavy Industry",
+                  "REPD (GeoJSON)",
+                  "Basemap",
+                  "PIPELINE NEWS (REPD)"
+                ],
+                "candidate": [
+                  "Topology (GeoJSON)",
+                  "Assets (GeoJSON)",
+                  "Supermarkets (GeoJSON)",
+                  "Transit (GeoJSON)",
+                  "Leisure & Sports (GeoJSON)",
+                  "Global Data Backbone",
+                  "Global Supply Chain & Chokepoints",
+                  "Highway Infrastructure",
+                  "EV (GeoJSON)",
+                  "Heavy Industry",
+                  "REPD (GeoJSON)",
+                  "Basemap",
+                  "PIPELINE NEWS (REPD)",
+                  "Weather · EUMETSAT Lightning Imager"
+                ],
+                "class": "additive-host"
+              },
+              {
+                "surface": "fs-curtain-keys",
+                "kind": "childCount",
+                "baseline": 13,
+                "candidate": 14,
+                "class": "additive-host"
+              },
+              {
+                "surface": "fs-curtain-keys",
+                "kind": "inventory.groupCount",
+                "baseline": 13,
+                "candidate": 14,
+                "class": "additive-host"
+              },
+              {
+                "surface": "fs-curtain-keys",
+                "kind": "inventory.inputs",
+                "baseline": 65,
+                "candidate": 68,
+                "class": "additive-host"
+              },
+              {
+                "surface": "fs-curtain-keys",
+                "kind": "inventory.groups",
+                "baseline": [
+                  "Topology (GeoJSON)",
+                  "Assets (GeoJSON)",
+                  "Supermarkets (GeoJSON)",
+                  "Transit (GeoJSON)",
+                  "Leisure & Sports (GeoJSON)",
+                  "Global Data Backbone",
+                  "Global Supply Chain & Chokepoints",
+                  "Highway Infrastructure",
+                  "EV (GeoJSON)",
+                  "Heavy Industry",
+                  "REPD (GeoJSON)",
+                  "Basemap",
+                  "PIPELINE NEWS (REPD)"
+                ],
+                "candidate": [
+                  "Topology (GeoJSON)",
+                  "Assets (GeoJSON)",
+                  "Supermarkets (GeoJSON)",
+                  "Transit (GeoJSON)",
+                  "Leisure & Sports (GeoJSON)",
+                  "Global Data Backbone",
+                  "Global Supply Chain & Chokepoints",
+                  "Highway Infrastructure",
+                  "EV (GeoJSON)",
+                  "Heavy Industry",
+                  "REPD (GeoJSON)",
+                  "Basemap",
+                  "PIPELINE NEWS (REPD)",
+                  "Weather · EUMETSAT Lightning Imager"
+                ],
+                "class": "additive-host"
+              }
+            ],
+            "originalDiffs": [],
+            "additiveHostDiffs": 9,
+            "additive": [
+              {
+                "ukLightning": {
+                  "installed": true,
+                  "on": false,
+                  "requests": 0,
+                  "errors": [],
+                  "waiting_for": [],
+                  "last": null
+                }
+              }
+            ]
+          },
+          "pass": false,
+          "extras": {
+            "elementCountBaseline": 1526,
+            "elementCountCandidate": 1526,
+            "movedElements": [],
+            "additiveHostGrowth": [],
+            "styleChangedElements": [
+              {
+                "index": 161,
+                "sig": "span#fs-lbl-solar",
+                "baseline": "\"Courier New\", monospace|11px|400|normal|rgb(255, 255, 0)|rgba(0, 0, 0, 0)|auto|block|visible|static|1",
+                "candidate": "\"Courier New\", monospace|11px|400|normal|rgb(255, 255, 0)|rgba(0, 0, 0, 0)|auto|block|visible|static|0.5"
+              }
+            ],
+            "signatureDivergence": {
+              "index": 1183,
+              "baseline": "div.maplibregl-popup.gridatlas-free.maplibregl-popup-anchor-top",
+              "candidate": "div.maplibregl-popup.gridatlas-free.maplibregl-popup-anchor-bottom"
+            },
+            "scrollDiffs": [],
+            "hitTargetDiffs": [],
+            "occluderChanged": [],
+            "hitTargetsCompared": 17,
+            "hitTargetsPreexistingNotSelf": [
+              {
+                "name": "attribution",
+                "result": "OUT-OF-VIEWPORT",
+                "clippedBy": [
+                  "div#map-container.map-container 4,4,1432,520"
+                ],
+                "rect": {
+                  "x": 0,
+                  "y": 0,
+                  "width": 0,
+                  "height": 0
+                }
+              },
+              {
+                "name": "layers-first-pipeline-row",
+                "result": "OUT-OF-VIEWPORT",
+                "clippedBy": [
+                  "div#scada-ui-container.scada-keys 17,541,1406,342",
+                  "body 0,0,1440,900",
+                  "html.gridatlas-menu-hosted 0,0,1440,900"
+                ],
+                "rect": {
+                  "x": 29,
+                  "y": 1812,
+                  "width": 685,
+                  "height": 19
+                }
+              }
+            ],
+            "styleElementsEqual": true,
+            "styleLinksEqual": true,
+            "lightningTargets": [
+              {
+                "name": "lightning-toggle-fs",
+                "present": true,
+                "rect": {
+                  "x": 0,
+                  "y": 0,
+                  "width": 0,
+                  "height": 0
+                },
+                "centre": [
+                  0,
+                  0
+                ],
+                "inViewport": false,
+                "result": "OUT-OF-VIEWPORT",
+                "clippedBy": [],
+                "text": "Lightning flashes (optical) [WAIT]",
+                "ariaLabel": null,
+                "role": null,
+                "type": "checkbox",
+                "checked": false
+              },
+              {
+                "name": "lightning-toggle-menu",
+                "present": true,
+                "rect": {
+                  "x": 0,
+                  "y": 0,
+                  "width": 0,
+                  "height": 0
+                },
+                "centre": [
+                  0,
+                  0
+                ],
+                "inViewport": false,
+                "result": "OUT-OF-VIEWPORT",
+                "clippedBy": [
+                  "div#map-container.map-container 4,4,1432,520"
+                ],
+                "text": "Lightning flashes (optical) [WAIT]",
+                "ariaLabel": "Lightning flashes (optical)",
+                "role": null,
+                "type": "checkbox",
+                "checked": false
+              },
+              {
+                "name": "lightning-toggle-main",
+                "present": true,
+                "rect": {
+                  "x": 738,
+                  "y": 1812,
+                  "width": 685,
+                  "height": 19
+                },
+                "centre": [
+                  1080.5,
+                  1821.5
+                ],
+                "inViewport": false,
+                "result": "OUT-OF-VIEWPORT",
+                "clippedBy": [
+                  "div#scada-ui-container.scada-keys 17,541,1406,342",
+                  "body 0,0,1440,900",
+                  "html.gridatlas-menu-hosted 0,0,1440,900"
+                ],
+                "text": "Lightning flashes (optical) [WAIT]",
+                "ariaLabel": null,
+                "role": null,
+                "type": "checkbox",
+                "checked": false
+              }
+            ],
+            "additiveNodes": [
+              {
+                "sig": "div.key-group[data-lightning-group=fs]",
+                "parent": "div#fs-curtain-keys",
+                "indexInParent": 13,
+                "siblings": 14,
+                "rect": {
+                  "x": 0,
+                  "y": 0,
+                  "width": 0,
+                  "height": 0
+                },
+                "descendants": 37
+              },
+              {
+                "sig": "div[data-lightning-group=menu]",
+                "parent": "div#gridatlas-menu-bar-panel-4.gm-panel.gm-panel-grid",
+                "indexInParent": 2,
+                "siblings": 4,
+                "rect": {
+                  "x": 0,
+                  "y": 0,
+                  "width": 0,
+                  "height": 0
+                },
+                "descendants": 5
+              },
+              {
+                "sig": "div.key-group[data-lightning-group=main]",
+                "parent": "div#scada-ui-container.scada-keys",
+                "indexInParent": 13,
+                "siblings": 14,
+                "rect": {
+                  "x": 726,
+                  "y": 1795,
+                  "width": 697,
+                  "height": 98
+                },
+                "descendants": 37
+              }
+            ],
+            "pass": false
+          },
+          "maskCounts": {
+            "baseline": {
+              "mask": 3,
+              "mask-map": 1,
+              "overlay": 7
+            },
+            "candidate": {
+              "mask": 3,
+              "mask-map": 1,
+              "overlay": 7,
+              "additive": 1
+            }
+          }
+        }
+      },
+      "settleBaseline": {
+        "composed": {
+          "generation": "202609241334",
+          "router": null,
+          "title": "GlobalGrid2050 | UK Region v8 (Experimental)"
+        },
+        "menuInstalled": true,
+        "waits": [
+          {
+            "wait": "goto:domcontentloaded",
+            "at_ms": 33
+          },
+          {
+            "wait": "composer:document.write-complete",
+            "at_ms": 317,
+            "generation": "202609241334",
+            "router": null,
+            "title": "GlobalGrid2050 | UK Region v8 (Experimental)"
+          },
+          {
+            "wait": "shim:waitForComposition(menuBar.installed)",
+            "at_ms": 1544,
+            "engine": 120,
+            "pn": 6,
+            "scada": true,
+            "curtain": true,
+            "menuInstalled": true,
+            "map": true,
+            "waitedMs": 1226
+          },
+          {
+            "wait": "menu-bar:6-titles+>=60-proxies",
+            "at_ms": 1692
+          },
+          {
+            "wait": "weather-module:installed-or-absent",
+            "at_ms": 1929
+          },
+          {
+            "0": "a",
+            "1": "b",
+            "2": "s",
+            "3": "e",
+            "4": "n",
+            "5": "t",
+            "wait": "uk-lightning:installed-or-absent",
+            "at_ms": 2030
+          },
+          {
+            "wait": "networkidle",
+            "at_ms": 2035
+          },
+          {
+            "wait": "fixed-settle:3000ms",
+            "at_ms": 5035
+          }
+        ]
+      },
+      "settleCandidate": {
+        "composed": {
+          "generation": "202610261949",
+          "router": null,
+          "title": "GlobalGrid2050 | UK Region v8 (Experimental)"
+        },
+        "menuInstalled": true,
+        "waits": [
+          {
+            "wait": "goto:domcontentloaded",
+            "at_ms": 36
+          },
+          {
+            "wait": "composer:document.write-complete",
+            "at_ms": 224,
+            "generation": "202610261949",
+            "router": null,
+            "title": "GlobalGrid2050 | UK Region v8 (Experimental)"
+          },
+          {
+            "wait": "shim:waitForComposition(menuBar.installed)",
+            "at_ms": 1323,
+            "engine": 120,
+            "pn": 6,
+            "scada": true,
+            "curtain": true,
+            "menuInstalled": true,
+            "map": true,
+            "waitedMs": 1099
+          },
+          {
+            "wait": "menu-bar:6-titles+>=60-proxies",
+            "at_ms": 1514
+          },
+          {
+            "wait": "weather-module:installed-or-absent",
+            "at_ms": 1609
+          },
+          {
+            "wait": "uk-lightning:installed-or-absent",
+            "at_ms": 1668,
+            "installed": true,
+            "on": false,
+            "requests": 0
+          },
+          {
+            "wait": "networkidle",
+            "at_ms": 4186
+          },
+          {
+            "wait": "fixed-settle:3000ms",
+            "at_ms": 7187
+          }
+        ]
+      },
+      "networkBaseline": {
+        "127.0.0.1:8141": {
+          "requests": 42,
+          "ok": 42,
+          "failed": 0,
+          "http4xx5xx": 0,
+          "fixture": 0,
+          "sampleFailure": null,
+          "sample": "http://127.0.0.1:8141/gridatlas/atlas/"
+        },
+        "cdn.jsdelivr.net": {
+          "requests": 10,
+          "ok": 0,
+          "failed": 0,
+          "http4xx5xx": 0,
+          "fixture": 10,
+          "sampleFailure": null,
+          "sample": "https://cdn.jsdelivr.net/npm/maplibre-gl@3.6.2/dist/maplibre-gl.css"
+        },
+        "raw.githubusercontent.com": {
+          "requests": 3,
+          "ok": 0,
+          "failed": 3,
+          "http4xx5xx": 0,
+          "fixture": 0,
+          "sampleFailure": "net::ERR_BLOCKED_BY_CLIENT.Inspector",
+          "sample": "https://raw.githubusercontent.com/Ventusltd/data-grid-gb/1c9909d1138704b29235c27fd769436dda8a0b18/derived/connection-points.v3.json"
+        },
+        "basemaps.cartocdn.com": {
+          "requests": 2,
+          "ok": 0,
+          "failed": 0,
+          "http4xx5xx": 0,
+          "fixture": 2,
+          "sampleFailure": null,
+          "sample": "https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json"
+        },
+        "ventusltd.github.io": {
+          "requests": 3,
+          "ok": 0,
+          "failed": 2,
+          "http4xx5xx": 0,
+          "fixture": 1,
+          "sampleFailure": "net::ERR_BLOCKED_BY_CLIENT.Inspector",
+          "sample": "https://ventusltd.github.io/ventus-grid-engine/genome/engine-graph.json"
+        },
+        "extensions.duckdb.org": {
+          "requests": 1,
+          "ok": 0,
+          "failed": 1,
+          "http4xx5xx": 0,
+          "fixture": 0,
+          "sampleFailure": "net::ERR_BLOCKED_BY_CLIENT.Inspector",
+          "sample": "https://extensions.duckdb.org/v1.1.1/wasm_eh/parquet.duckdb_extension.wasm"
+        }
+      },
+      "networkCandidate": {
+        "127.0.0.1:8142": {
+          "requests": 42,
+          "ok": 42,
+          "failed": 0,
+          "http4xx5xx": 0,
+          "fixture": 0,
+          "sampleFailure": null,
+          "sample": "http://127.0.0.1:8142/wt/atlas/v/202610261949/"
+        },
+        "cdn.jsdelivr.net": {
+          "requests": 12,
+          "ok": 0,
+          "failed": 2,
+          "http4xx5xx": 0,
+          "fixture": 10,
+          "sampleFailure": "net::ERR_ABORTED",
+          "sample": "https://cdn.jsdelivr.net/npm/maplibre-gl@3.6.2/dist/maplibre-gl.css"
+        },
+        "raw.githubusercontent.com": {
+          "requests": 3,
+          "ok": 0,
+          "failed": 3,
+          "http4xx5xx": 0,
+          "fixture": 0,
+          "sampleFailure": "net::ERR_BLOCKED_BY_CLIENT.Inspector",
+          "sample": "https://raw.githubusercontent.com/Ventusltd/data-grid-gb/1c9909d1138704b29235c27fd769436dda8a0b18/derived/connection-points.v3.json"
+        },
+        "basemaps.cartocdn.com": {
+          "requests": 2,
+          "ok": 0,
+          "failed": 0,
+          "http4xx5xx": 0,
+          "fixture": 2,
+          "sampleFailure": null,
+          "sample": "https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json"
+        },
+        "ventusltd.github.io": {
+          "requests": 3,
+          "ok": 0,
+          "failed": 2,
+          "http4xx5xx": 0,
+          "fixture": 1,
+          "sampleFailure": "net::ERR_BLOCKED_BY_CLIENT.Inspector",
+          "sample": "https://ventusltd.github.io/ventus-grid-engine/genome/engine-graph.json"
+        },
+        "extensions.duckdb.org": {
+          "requests": 1,
+          "ok": 0,
+          "failed": 1,
+          "http4xx5xx": 0,
+          "fixture": 0,
+          "sampleFailure": "net::ERR_BLOCKED_BY_CLIENT.Inspector",
+          "sample": "https://extensions.duckdb.org/v1.1.1/wasm_eh/parquet.duckdb_extension.wasm"
+        }
+      }
+    }
+  },
+  "verdict": "FAIL",
+  "failures": [
+    {
+      "viewport": "desktop-1440x900",
+      "state": "deeplink",
+      "kind": "extras",
+      "changedPct": 0.004,
+      "geometryDiffs": 9,
+      "originalSurfaceDiffs": 0,
+      "movedElements": 0,
+      "styleChangedElements": 1,
+      "hitTargetDiffs": 0,
+      "scrollDiffs": 0,
+      "firstGeometryDiffs": [],
+      "firstMoved": [],
+      "hitTargetDiffList": [],
+      "scrollDiffList": []
+    }
+  ]
+}

@@ -1,0 +1,88 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://globalgrid2050.com/schemas/gridatlas/render-ready-performance-record-v1.schema.json",
+  "title": "Grid Atlas render-ready performance record",
+  "type": "object",
+  "additionalProperties": true,
+  "required": [
+    "schema",
+    "record_id",
+    "generation",
+    "stage",
+    "observed_at",
+    "task",
+    "label",
+    "privacy",
+    "provenance",
+    "architecture_features",
+    "measurements",
+    "gates"
+  ],
+  "properties": {
+    "schema": {
+      "const": "gridatlas.ml.render-ready-performance-record.v1"
+    },
+    "record_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "generation": {
+      "const": "202608292311"
+    },
+    "stage": {
+      "enum": ["local", "public"]
+    },
+    "observed_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "task": {
+      "const": "binary_release_promotion"
+    },
+    "label": {
+      "enum": ["PROMOTE", "REJECT"]
+    },
+    "privacy": {
+      "const": "NO_PERSONAL_DATA"
+    },
+    "provenance": {
+      "type": "object",
+      "required": [
+        "candidate_release_id",
+        "parent_release_id",
+        "candidate_url",
+        "oracle_repository",
+        "oracle_commit",
+        "oracle_url",
+        "contract_sha256"
+      ]
+    },
+    "architecture_features": {
+      "type": "object",
+      "required": [
+        "critical_400kv_delivery",
+        "critical_400kv_window_prefetch",
+        "critical_400kv_main_thread_json_parse",
+        "critical_400kv_duplicate_fetch",
+        "engine_patch_anchors",
+        "v8_css_byte_identical",
+        "v8_html_surface_preserved"
+      ]
+    },
+    "measurements": {
+      "type": "object"
+    },
+    "gates": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "passed", "observed", "threshold", "importance"],
+        "properties": {
+          "id": { "type": "string" },
+          "passed": { "type": "boolean" },
+          "importance": { "const": "promotion" }
+        }
+      }
+    }
+  }
+}

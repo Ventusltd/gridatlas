@@ -1,0 +1,442 @@
+[
+ {
+  "id": "N11",
+  "title": "four simultaneous shard fetches: route-level in-flight counter; clean per-load fan-out (6 shards) and ON→7d→30d overlap (superseded loads not cancelled; LRU-8 evicts mid-load)",
+  "acceptance_ids": [
+   "D10"
+  ],
+  "elapsedMs": 67788,
+  "pageErrors": [],
+  "steps": [
+   {
+    "step": "ON 24h settled first (2 shards)",
+    "synthetic": true,
+    "label": {
+     "main": "Lightning flashes (optical) [4 | 24h]",
+     "fs": "Lightning flashes (optical) [4 | 24h]",
+     "menu": "Lightning flashes (optical) [4 | 24h]"
+    },
+    "toggles": {
+     "main": true,
+     "fs": true,
+     "menu": true
+    },
+    "stateLine": "PARTIAL · 4 FLASHES DRAWN · SEARCHED 96%",
+    "caption": [
+     "Window  2026-10-25 18:40 UTC → 2026-10-26 18:40 UTC (24 hours, latest)",
+     "Actual  first 2026-10-25 19:39:00 UTC · last 2026-10-26 16:46:36 UTC",
+     "Flashes 4 archived in window · 4 drawn as points (index count 6 within the 40,000-point cap for this desktop)",
+     "Refresh archive 2026-10-26 18:37 UTC (0h 3min ago; expected every 1 h)",
+     "Searched EUMETSAT 96% of window · 192 successful runs · 2026-10-25 18:40 UTC → 2026-10-26 17:40 UTC",
+     "Not yet ingested: last 1h 0min of window (unknown, not zero)",
+     "Times UTC · Optical flashes seen by MTG Lightning Imager (EUMETSAT L2-LFL), not confirmed ground strikes · Missing days are unknown, not zero · UK box −11.0,49.5 → 3.0,61.5"
+    ],
+    "features": 4,
+    "cluster": false,
+    "visibility": "visible",
+    "badCoords": 0,
+    "injected": null,
+    "markupNodes": 0,
+    "last": {
+     "state": "PARTIAL",
+     "stale": false,
+     "mode": "detail",
+     "period": "24h",
+     "drawn": 4,
+     "cluster": false,
+     "cap": 40000,
+     "cap_source": "index",
+     "index_count": 6,
+     "failures": 0,
+     "reasons": [
+      "tail not yet ingested"
+     ]
+    },
+    "origDiff": [],
+    "extra": {
+     "routeStats": {
+      "max": 2,
+      "count": 2
+     }
+    }
+   },
+   {
+    "step": "then 30d: 6 new shards (19–24; 25/26 from LRU), 1.5 s each → max in flight at the route = ?",
+    "synthetic": true,
+    "label": {
+     "main": "Lightning flashes (optical) [24 | 30d]",
+     "fs": "Lightning flashes (optical) [24 | 30d]",
+     "menu": "Lightning flashes (optical) [24 | 30d]"
+    },
+    "toggles": {
+     "main": true,
+     "fs": true,
+     "menu": true
+    },
+    "stateLine": "PARTIAL · 24 FLASHES DRAWN · SEARCHED 26%",
+    "caption": [
+     "Window  2026-09-26 18:40 UTC → 2026-10-26 18:40 UTC (30 days, latest)",
+     "Actual  first 2026-10-19 08:29:32 UTC · last 2026-10-26 16:46:36 UTC",
+     "Flashes 24 archived in window · 24 drawn as points (index count 24 within the 40,000-point cap for this desktop)",
+     "Refresh archive 2026-10-26 18:37 UTC (0h 3min ago; expected every 1 h)",
+     "Searched EUMETSAT 26% of window · 192 successful runs · 2026-10-19 00:00 UTC → 2026-10-26 17:40 UTC",
+     "Not yet ingested: last 1h 0min of window (unknown, not zero) · Unknown: 2026-09-26 to 2026-10-18 precede archive start 2026-10-19 00:00 UTC (not zero) · Unknown: 23 of 31 UTC dates have no collection run",
+     "Times UTC · Optical flashes seen by MTG Lightning Imager (EUMETSAT L2-LFL), not confirmed ground strikes · Missing days are unknown, not zero · UK box −11.0,49.5 → 3.0,61.5"
+    ],
+    "features": 24,
+    "cluster": false,
+    "visibility": "visible",
+    "badCoords": 0,
+    "injected": null,
+    "markupNodes": 0,
+    "last": {
+     "state": "PARTIAL",
+     "stale": false,
+     "mode": "detail",
+     "period": "30d",
+     "drawn": 24,
+     "cluster": false,
+     "cap": 40000,
+     "cap_source": "index",
+     "index_count": 24,
+     "failures": 0,
+     "reasons": [
+      "tail not yet ingested",
+      "head before archive start",
+      "23 dates without a scan window"
+     ]
+    },
+    "origDiff": [],
+    "extra": {
+     "routeStats": {
+      "maxInFlight": 4,
+      "requests": 6,
+      "log": [
+       {
+        "u": "2026/10/19.json",
+        "s": 3708,
+        "inFlightAtStart": 1
+       },
+       {
+        "u": "2026/10/20.json",
+        "s": 3708,
+        "inFlightAtStart": 2
+       },
+       {
+        "u": "2026/10/21.json",
+        "s": 3712,
+        "inFlightAtStart": 3
+       },
+       {
+        "u": "2026/10/22.json",
+        "s": 3712,
+        "inFlightAtStart": 4
+       },
+       {
+        "u": "2026/10/23.json",
+        "s": 5225,
+        "inFlightAtStart": 1
+       },
+       {
+        "u": "2026/10/24.json",
+        "s": 5238,
+        "inFlightAtStart": 2
+       }
+      ]
+     }
+    }
+   },
+   {
+    "step": "ON→7d→30d within 0.2 s: global in-flight at the route, and duplicate fetches of the same shard inside one load",
+    "synthetic": true,
+    "label": {
+     "main": "Lightning flashes (optical) [36 | 30d]",
+     "fs": "Lightning flashes (optical) [36 | 30d]",
+     "menu": "Lightning flashes (optical) [36 | 30d]"
+    },
+    "toggles": {
+     "main": true,
+     "fs": true,
+     "menu": true
+    },
+    "stateLine": "PARTIAL · 36 FLASHES DRAWN · SEARCHED 39%",
+    "caption": [
+     "Window  2026-09-26 18:40 UTC → 2026-10-26 18:40 UTC (30 days, latest)",
+     "Actual  first 2026-10-15 04:46:27 UTC · last 2026-10-26 16:46:36 UTC",
+     "Flashes 36 archived in window · 36 drawn as points (index count 36 within the 40,000-point cap for this desktop)",
+     "Refresh archive 2026-10-26 18:37 UTC (0h 3min ago; expected every 1 h)",
+     "Searched EUMETSAT 39% of window · 288 successful runs · 2026-10-15 00:00 UTC → 2026-10-26 17:40 UTC",
+     "Not yet ingested: last 1h 0min of window (unknown, not zero) · Unknown: 2026-09-26 to 2026-10-14 precede archive start 2026-10-15 00:00 UTC (not zero) · Unknown: 19 of 31 UTC dates have no collection run",
+     "Times UTC · Optical flashes seen by MTG Lightning Imager (EUMETSAT L2-LFL), not confirmed ground strikes · Missing days are unknown, not zero · UK box −11.0,49.5 → 3.0,61.5"
+    ],
+    "features": 36,
+    "cluster": false,
+    "visibility": "visible",
+    "badCoords": 0,
+    "injected": null,
+    "markupNodes": 0,
+    "last": {
+     "state": "PARTIAL",
+     "stale": false,
+     "mode": "detail",
+     "period": "30d",
+     "drawn": 36,
+     "cluster": false,
+     "cap": 40000,
+     "cap_source": "index",
+     "index_count": 36,
+     "failures": 0,
+     "reasons": [
+      "tail not yet ingested",
+      "head before archive start",
+      "19 dates without a scan window"
+     ]
+    },
+    "origDiff": [],
+    "extra": {
+     "routeStats": {
+      "maxInFlight": 10,
+      "requests": 18,
+      "distinct": 12,
+      "duplicates": [
+       [
+        "2026/10/25.json",
+        2
+       ],
+       [
+        "2026/10/26.json",
+        2
+       ],
+       [
+        "2026/10/19.json",
+        2
+       ],
+       [
+        "2026/10/20.json",
+        2
+       ],
+       [
+        "2026/10/21.json",
+        2
+       ],
+       [
+        "2026/10/22.json",
+        2
+       ]
+      ],
+      "log": [
+       {
+        "u": "2026/10/25.json",
+        "s": 4052,
+        "inFlightAtStart": 1
+       },
+       {
+        "u": "2026/10/26.json",
+        "s": 4052,
+        "inFlightAtStart": 2
+       },
+       {
+        "u": "2026/10/19.json",
+        "s": 4397,
+        "inFlightAtStart": 3
+       },
+       {
+        "u": "2026/10/20.json",
+        "s": 4397,
+        "inFlightAtStart": 4
+       },
+       {
+        "u": "2026/10/21.json",
+        "s": 4397,
+        "inFlightAtStart": 5
+       },
+       {
+        "u": "2026/10/22.json",
+        "s": 4397,
+        "inFlightAtStart": 6
+       },
+       {
+        "u": "2026/10/15.json",
+        "s": 5184,
+        "inFlightAtStart": 7
+       },
+       {
+        "u": "2026/10/16.json",
+        "s": 5185,
+        "inFlightAtStart": 8
+       },
+       {
+        "u": "2026/10/17.json",
+        "s": 5185,
+        "inFlightAtStart": 9
+       },
+       {
+        "u": "2026/10/18.json",
+        "s": 5185,
+        "inFlightAtStart": 10
+       },
+       {
+        "u": "2026/10/23.json",
+        "s": 5938,
+        "inFlightAtStart": 5
+       },
+       {
+        "u": "2026/10/24.json",
+        "s": 5938,
+        "inFlightAtStart": 6
+       },
+       {
+        "u": "2026/10/25.json",
+        "s": 5938,
+        "inFlightAtStart": 7
+       },
+       {
+        "u": "2026/10/26.json",
+        "s": 5938,
+        "inFlightAtStart": 8
+       },
+       {
+        "u": "2026/10/19.json",
+        "s": 6955,
+        "inFlightAtStart": 5
+       },
+       {
+        "u": "2026/10/20.json",
+        "s": 6955,
+        "inFlightAtStart": 6
+       },
+       {
+        "u": "2026/10/21.json",
+        "s": 6955,
+        "inFlightAtStart": 7
+       },
+       {
+        "u": "2026/10/22.json",
+        "s": 6955,
+        "inFlightAtStart": 8
+       }
+      ]
+     }
+    }
+   },
+   {
+    "step": "clean 30d over 12 days (10 new shards; LRU holds 8): duplicates within ONE load?",
+    "synthetic": true,
+    "label": {
+     "main": "Lightning flashes (optical) [36 | 30d]",
+     "fs": "Lightning flashes (optical) [36 | 30d]",
+     "menu": "Lightning flashes (optical) [36 | 30d]"
+    },
+    "toggles": {
+     "main": true,
+     "fs": true,
+     "menu": true
+    },
+    "stateLine": "PARTIAL · 36 FLASHES DRAWN · SEARCHED 39%",
+    "caption": [
+     "Window  2026-09-26 18:40 UTC → 2026-10-26 18:40 UTC (30 days, latest)",
+     "Actual  first 2026-10-15 04:46:27 UTC · last 2026-10-26 16:46:36 UTC",
+     "Flashes 36 archived in window · 36 drawn as points (index count 36 within the 40,000-point cap for this desktop)",
+     "Refresh archive 2026-10-26 18:37 UTC (0h 3min ago; expected every 1 h)",
+     "Searched EUMETSAT 39% of window · 288 successful runs · 2026-10-15 00:00 UTC → 2026-10-26 17:40 UTC",
+     "Not yet ingested: last 1h 0min of window (unknown, not zero) · Unknown: 2026-09-26 to 2026-10-14 precede archive start 2026-10-15 00:00 UTC (not zero) · Unknown: 19 of 31 UTC dates have no collection run",
+     "Times UTC · Optical flashes seen by MTG Lightning Imager (EUMETSAT L2-LFL), not confirmed ground strikes · Missing days are unknown, not zero · UK box −11.0,49.5 → 3.0,61.5"
+    ],
+    "features": 36,
+    "cluster": false,
+    "visibility": "visible",
+    "badCoords": 0,
+    "injected": null,
+    "markupNodes": 0,
+    "last": {
+     "state": "PARTIAL",
+     "stale": false,
+     "mode": "detail",
+     "period": "30d",
+     "drawn": 36,
+     "cluster": false,
+     "cap": 40000,
+     "cap_source": "index",
+     "index_count": 36,
+     "failures": 0,
+     "reasons": [
+      "tail not yet ingested",
+      "head before archive start",
+      "19 dates without a scan window"
+     ]
+    },
+    "origDiff": [],
+    "extra": {
+     "routeStats": {
+      "maxInFlight": 4,
+      "requests": 12,
+      "distinct": 12,
+      "duplicates": [],
+      "log": [
+       {
+        "u": "2026/10/15.json",
+        "s": 9728,
+        "inFlightAtStart": 1
+       },
+       {
+        "u": "2026/10/16.json",
+        "s": 9728,
+        "inFlightAtStart": 2
+       },
+       {
+        "u": "2026/10/17.json",
+        "s": 9728,
+        "inFlightAtStart": 3
+       },
+       {
+        "u": "2026/10/18.json",
+        "s": 9728,
+        "inFlightAtStart": 4
+       },
+       {
+        "u": "2026/10/19.json",
+        "s": 10568,
+        "inFlightAtStart": 1
+       },
+       {
+        "u": "2026/10/20.json",
+        "s": 10569,
+        "inFlightAtStart": 2
+       },
+       {
+        "u": "2026/10/21.json",
+        "s": 10569,
+        "inFlightAtStart": 3
+       },
+       {
+        "u": "2026/10/22.json",
+        "s": 10569,
+        "inFlightAtStart": 4
+       },
+       {
+        "u": "2026/10/23.json",
+        "s": 11490,
+        "inFlightAtStart": 1
+       },
+       {
+        "u": "2026/10/24.json",
+        "s": 11490,
+        "inFlightAtStart": 2
+       },
+       {
+        "u": "2026/10/25.json",
+        "s": 11490,
+        "inFlightAtStart": 3
+       },
+       {
+        "u": "2026/10/26.json",
+        "s": 11490,
+        "inFlightAtStart": 4
+       }
+      ]
+     }
+    }
+   }
+  ]
+ }
+]

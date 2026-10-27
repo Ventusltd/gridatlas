@@ -1,0 +1,188 @@
+{
+ "route": "candidate",
+ "vp": "393x852",
+ "harness": "lead-shim, Chromium headless emulation (isMobile, hasTouch)",
+ "steps": [
+  {
+   "label": "rest",
+   "vw": 393,
+   "vh": 852,
+   "fsEl": null,
+   "bodyFs": false,
+   "curtainOpen": false,
+   "curtain": {
+    "x": 0,
+    "y": 0,
+    "w": 0,
+    "h": 0
+   },
+   "curtainScroll": {
+    "top": 0,
+    "h": 0,
+    "client": 0
+   },
+   "tabText": "⬇ Layers",
+   "hideText": "▴ LAYERS",
+   "hideHidden": false,
+   "panelCollapsed": true,
+   "fixed": {
+    "tab": {
+     "shown": false,
+     "rect": {
+      "x": 0,
+      "y": 0,
+      "w": 0,
+      "h": 0
+     },
+     "hit": "hidden"
+    },
+    "exit": {
+     "shown": false,
+     "rect": {
+      "x": 0,
+      "y": 0,
+      "w": 0,
+      "h": 0
+     },
+     "hit": "hidden"
+    },
+    "hide": {
+     "shown": true,
+     "rect": {
+      "x": 289.5,
+      "y": 796,
+      "w": 91.5,
+      "h": 44
+     },
+     "hit": "self"
+    }
+   },
+   "origGroups": [
+    {
+     "t": "Topology (GeoJSON)",
+     "x": 0,
+     "y": 0,
+     "w": 0,
+     "h": 0
+    },
+    {
+     "t": "Assets (GeoJSON)",
+     "x": 0,
+     "y": 0,
+     "w": 0,
+     "h": 0
+    },
+    {
+     "t": "Supermarkets (GeoJSON)",
+     "x": 0,
+     "y": 0,
+     "w": 0,
+     "h": 0
+    },
+    {
+     "t": "Transit (GeoJSON)",
+     "x": 0,
+     "y": 0,
+     "w": 0,
+     "h": 0
+    },
+    {
+     "t": "Leisure & Sports (GeoJSO",
+     "x": 0,
+     "y": 0,
+     "w": 0,
+     "h": 0
+    },
+    {
+     "t": "Global Data Backbone",
+     "x": 0,
+     "y": 0,
+     "w": 0,
+     "h": 0
+    },
+    {
+     "t": "Global Supply Chain & Ch",
+     "x": 0,
+     "y": 0,
+     "w": 0,
+     "h": 0
+    },
+    {
+     "t": "Highway Infrastructure",
+     "x": 0,
+     "y": 0,
+     "w": 0,
+     "h": 0
+    },
+    {
+     "t": "EV (GeoJSON)",
+     "x": 0,
+     "y": 0,
+     "w": 0,
+     "h": 0
+    },
+    {
+     "t": "Heavy Industry",
+     "x": 0,
+     "y": 0,
+     "w": 0,
+     "h": 0
+    },
+    {
+     "t": "REPD (GeoJSON)",
+     "x": 0,
+     "y": 0,
+     "w": 0,
+     "h": 0
+    },
+    {
+     "t": "Basemap",
+     "x": 0,
+     "y": 0,
+     "w": 0,
+     "h": 0
+    },
+    {
+     "t": "PIPELINE NEWS (REPD)",
+     "x": 0,
+     "y": 0,
+     "w": 0,
+     "h": 0
+    }
+   ],
+   "origInputs": 65,
+   "origVisibleInputs": 0,
+   "origBlocked": [],
+   "lightning": {
+    "on": false,
+    "curtainChecked": false,
+    "mainChecked": false,
+    "curtainLabel": "Lightning flashes (optical) [WAIT]",
+    "mainLabel": "Lightning flashes (optical) [WAIT]",
+    "last": null
+   },
+   "overlap": {
+    "fsGroup×hide": false,
+    "mainGroupControls×hide": false,
+    "fsGroup×origGroups": false
+   },
+   "fsGroupRel": {
+    "x": 0,
+    "y": 0,
+    "w": 0,
+    "h": 0
+   },
+   "caption": {
+    "shown": false
+   }
+  }
+ ],
+ "errors": [
+  "enterFs: locator.tap: Target crashed  | Call log: | \u001b[2m  - waiting for locator('#btn-fullscreen')\u001b[22m | \u001b[2m    - locator resolved to <button title=\"Fullscreen\" id=\"btn-fullscreen\" onclick=\"enterFullscreen()\">⛶</button>\u001b[22m | \u001b[2m  - attempting tap action\u001b[22m | \u001b[2m    - waiting for element to be visible, enabled and stable\u001b[22m | \u001b[2m    - element is visible, enabled and stable\u001b[22m | \u001b[2m    - scrolling into view if needed\u001b[22m",
+  "curtainOn: page.evaluate: Target crashed ",
+  "rotate: page.setViewportSize: Target crashed ",
+  "exitOpen: locator.tap: Target crashed  | Call log: | \u001b[2m  - waiting for locator('#btn-fullscreen-exit')\u001b[22m | ",
+  "mainOff: page.evaluate: Target crashed ",
+  "rotatePanel: locator.scrollIntoViewIfNeeded: Target crashed  | Call log: | \u001b[2m  - waiting for locator('#scada-ui-container [data-lightning-control=\"toggle\"]')\u001b[22m | "
+ ]
+}

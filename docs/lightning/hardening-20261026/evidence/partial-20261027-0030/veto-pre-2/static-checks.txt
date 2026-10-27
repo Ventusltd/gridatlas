@@ -1,0 +1,17 @@
+# V1 sha256 -c lightning/evidence/atlas-merge-veto/baseline-sha256-manifest.txt in wt @ 68be91ee3ae86564756b5b7316d017b5a74e638b 2026-10-26T23:38:39Z
+0
+# git diff c08f3a6..HEAD on protected paths
+# V3 new index.html under atlas/ vs c08f3a6
+A	atlas/v/202610261949/index.html
+A	atlas/v/202610262310/index.html
+A	atlas/v/202610262318/index.html
+A	atlas/v/202610262323/index.html
+# workflows diff
+D	.github/workflows/uk-lightning-preview.yml
+# exact delta
+cartridge == live+\n+module: True 435218 23226 458445
+# V14 grep
+atlas/modules/202610262323-uk-lightning-overlay.js:0
+atlas/cartridges/202610262323-sld-sandbox-v9-8.js:0
+atlas/v/202610262323/current.json:0
+# forbidden tokens in module

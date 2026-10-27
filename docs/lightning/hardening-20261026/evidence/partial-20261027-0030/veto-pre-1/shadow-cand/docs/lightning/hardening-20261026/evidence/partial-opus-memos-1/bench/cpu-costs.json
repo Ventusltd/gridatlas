@@ -1,0 +1,74 @@
+{
+ "harness": "self-fixture, node v22.23.4, CPU time via process.cpuUsage",
+ "cores": 2,
+ "loadavg": [
+  13.8,
+  14.6,
+  10.6
+ ],
+ "data": "SYNTHETIC_BENCHMARK_NOT_OBSERVATIONS",
+ "results": {
+  "100000": {
+   "lfb1_bytes": 800612,
+   "binary_views_and_validate": {
+    "cpu_ms_median": 0.3,
+    "cpu_ms_min": 0.2,
+    "result": true
+   },
+   "interleave_xy": {
+    "cpu_ms_median": 0.6,
+    "cpu_ms_min": 0.6,
+    "result": 200000
+   },
+   "bin_grid_10km": {
+    "cpu_ms_median": 0.9,
+    "cpu_ms_min": 0.7,
+    "result": 12596
+   },
+   "kuiper_keys_and_place": {
+    "cpu_ms_median": 7,
+    "cpu_ms_min": 5.3,
+    "result": 200000
+   },
+   "lean_json_bytes": 12442850,
+   "lean_json_parse": {
+    "cpu_ms_median": 195.2,
+    "cpu_ms_min": 190.2,
+    "result": 100000
+   },
+   "lean_json_parse_then_typed": {
+    "cpu_ms_median": 198.4,
+    "cpu_ms_min": 180.4,
+    "result": 100000
+   }
+  },
+  "1000000": {
+   "lfb1_bytes": 8000612,
+   "binary_views_and_validate": {
+    "cpu_ms_median": 2,
+    "cpu_ms_min": 1.9,
+    "result": true
+   },
+   "interleave_xy": {
+    "cpu_ms_median": 6,
+    "cpu_ms_min": 4.3,
+    "result": 2000000
+   },
+   "bin_grid_10km": {
+    "cpu_ms_median": 4.3,
+    "cpu_ms_min": 4.2,
+    "result": 12596
+   },
+   "kuiper_keys_and_place": {
+    "cpu_ms_median": 52.3,
+    "cpu_ms_min": 51.6,
+    "result": 2000000
+   }
+  }
+ },
+ "loadavg_end": [
+  14.6,
+  14.7,
+  10.7
+ ]
+}

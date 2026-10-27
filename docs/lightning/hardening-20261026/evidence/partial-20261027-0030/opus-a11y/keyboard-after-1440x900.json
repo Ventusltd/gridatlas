@@ -1,0 +1,319 @@
+{
+ "harness": "lead-shim chromium headless",
+ "route": "after",
+ "viewport": "1440x900",
+ "errors": [],
+ "log": [
+  {
+   "step": "tab to Grid title",
+   "active": "button|gridatlas-menu-bar-title-4||Grid|menubar"
+  },
+  {
+   "step": "ArrowDown on Grid -> first focused",
+   "active": "input|||400kV [OK]|menubar",
+   "attrs": "type=checkbox data-gridatlas-layer-proxy=engine:400 aria-label=400kV [OK]",
+   "state": {
+    "open": [
+     "Grid"
+    ],
+    "lightningOn": false,
+    "period": "24h",
+    "last": null
+   },
+   "ring": {
+    "input": {
+     "outline": "solid 2px rgb(107, 235, 255)",
+     "boxShadow": "none",
+     "bg": "rgba(0, 0, 0, 0)",
+     "border": "rgb(0, 0, 0)",
+     "opacity": "0",
+     "w": 144.9296875
+    },
+    "label": {
+     "outline": "none 3px rgb(207, 238, 246)",
+     "boxShadow": "none",
+     "bg": "rgba(0, 0, 0, 0)",
+     "border": "rgb(207, 238, 246)",
+     "opacity": "1",
+     "w": 111.484375
+    },
+    "box": {
+     "outline": "solid 2px rgb(107, 235, 255)",
+     "boxShadow": "none",
+     "bg": "rgba(255, 255, 255, 0.04)",
+     "border": "rgb(74, 139, 150)",
+     "opacity": "1",
+     "w": 22
+    }
+   }
+  },
+  {
+   "step": "Tab through open Grid panel",
+   "count": 66,
+   "last5": [
+    {
+     "key": "input|||All pipeline [SELECT A PROJECT|menubar",
+     "lightning": false,
+     "open": "Grid",
+     "inViewport": true,
+     "rect": [
+      1242,
+      373,
+      145,
+      95
+     ]
+    },
+    {
+     "key": "input|||Dark|menubar",
+     "lightning": false,
+     "open": "Grid",
+     "inViewport": true,
+     "rect": [
+      1242,
+      466,
+      145,
+      57
+     ]
+    },
+    {
+     "key": "div|fs-curtain-tab||Open the fullscreen layer curt|menubar",
+     "lightning": false,
+     "open": "Grid",
+     "inViewport": true,
+     "rect": [
+      1002,
+      475,
+      374,
+      44
+     ]
+    },
+    {
+     "key": "button|gridatlas-menu-bar-title-5||About|menubar",
+     "lightning": false,
+     "open": "Grid",
+     "inViewport": true,
+     "rect": [
+      1377,
+      5,
+      58,
+      36
+     ]
+    },
+    {
+     "key": "canvas|||Map|other",
+     "lightning": false,
+     "open": "Grid",
+     "inViewport": true,
+     "rect": [
+      5,
+      5,
+      1430,
+      518
+     ]
+    }
+   ],
+   "lightningRows": []
+  },
+  {
+   "step": "ArrowDown again",
+   "active": "button|gridatlas-menu-bar-title-4||Grid|menubar"
+  },
+  {
+   "step": "Escape from first item",
+   "active": "button|gridatlas-menu-bar-title-4||Grid|menubar",
+   "state": {
+    "open": [],
+    "lightningOn": false,
+    "period": "24h",
+    "last": null
+   }
+  },
+  {
+   "step": "Tab to lightning menu row",
+   "active": "canvas|||Map|other",
+   "attrs": "aria-label=Map role=region",
+   "inViewport": true,
+   "rect": [
+    5,
+    5,
+    1430,
+    518
+   ],
+   "ring": null,
+   "state": {
+    "open": [
+     "Grid"
+    ],
+    "lightningOn": false,
+    "period": "24h",
+    "last": null
+   }
+  },
+  {
+   "step": "Space on menu row",
+   "active": "canvas|||Map|other",
+   "state": {
+    "open": [
+     "Grid"
+    ],
+    "lightningOn": false,
+    "period": "24h",
+    "last": null
+   }
+  },
+  {
+   "step": "Enter on menu row",
+   "active": "canvas|||Map|other",
+   "state": {
+    "open": [
+     "Grid"
+    ],
+    "lightningOn": false,
+    "period": "24h",
+    "last": null
+   }
+  },
+  {
+   "step": "Space on menu row again",
+   "active": "canvas|||Map|other",
+   "state": {
+    "open": [
+     "Grid"
+    ],
+    "lightningOn": false,
+    "period": "24h",
+    "last": null
+   }
+  },
+  {
+   "step": "Escape from menu row",
+   "active": "canvas|||Map|other",
+   "state": {
+    "open": [
+     "Grid"
+    ],
+    "lightningOn": false,
+    "period": "24h",
+    "last": null
+   }
+  },
+  {
+   "step": "original 400 checkbox",
+   "found": true,
+   "before": false,
+   "afterEnter": false,
+   "afterSpace": true
+  },
+  {
+   "step": "Tab to panel lightning toggle",
+   "active": "input||toggle|Lightning flashes (optical) [W|scada",
+   "outline": "auto 1px rgb(16, 16, 16)",
+   "fv": true
+  },
+  {
+   "step": "Enter on toggle",
+   "state": {
+    "open": [],
+    "lightningOn": false,
+    "period": "24h",
+    "last": null
+   }
+  },
+  {
+   "step": "Space on toggle",
+   "state": {
+    "open": [],
+    "lightningOn": true,
+    "period": "24h",
+    "last": "PARTIAL"
+   },
+   "active": "input||toggle|Lightning flashes (optical) [U|scada"
+  },
+  {
+   "step": "Shift+Tab from toggle",
+   "active": "input||all|All pipeline [SELECT A PROJECT|scada"
+  },
+  {
+   "step": "Tab -> first chip",
+   "active": "button||12h|12H|scada",
+   "outline": "solid 1px rgb(0, 255, 255)",
+   "fv": true,
+   "border": "rgb(51, 51, 51)"
+  },
+  {
+   "step": "Enter on chip",
+   "chip": "button||48h|48H|scada",
+   "active": "button||48h|48H|scada",
+   "state": {
+    "open": [],
+    "lightningOn": true,
+    "period": "48h",
+    "last": "PARTIAL"
+   },
+   "aria": "true",
+   "cls": "map-ctrl-btn active"
+  },
+  {
+   "step": "Space on chip",
+   "chip": "button||7d|7D|scada",
+   "active": "button||7d|7D|scada",
+   "state": {
+    "open": [],
+    "lightningOn": true,
+    "period": "7d",
+    "last": "PARTIAL"
+   }
+  },
+  {
+   "step": "Shift+Tab from chip",
+   "active": "button||48h|48H|scada"
+  },
+  {
+   "step": "Enter on PREV",
+   "found": true,
+   "activeImmediately": "button||prev|◀ PREV|scada",
+   "activeAfter2s": "button||prev|◀ PREV|scada",
+   "state": {
+    "open": [],
+    "lightningOn": true,
+    "period": "7d",
+    "last": "UNKNOWN"
+   }
+  },
+  {
+   "step": "next Tab after PREV",
+   "active": "button||latest|LATEST|scada"
+  },
+  {
+   "step": "ArrowRight on chip",
+   "active": "button||24h|24H|scada"
+  },
+  {
+   "step": "Tab after CUSTOM",
+   "active": "input||from|from date (UTC)|scada",
+   "outline": "none 3px rgb(0, 255, 255)",
+   "border": "rgb(0, 255, 255)",
+   "fv": true
+  },
+  {
+   "step": "Escape in panel",
+   "active": "input||from|from date (UTC)|scada",
+   "state": {
+    "open": [],
+    "lightningOn": true,
+    "period": "custom",
+    "last": "PARTIAL"
+   }
+  },
+  {
+   "step": "OFF while chip focused (programmatic menu click, labelled)",
+   "active": "BODY",
+   "state": {
+    "open": [],
+    "lightningOn": false,
+    "period": "custom",
+    "last": "PARTIAL"
+   }
+  }
+ ]
+}

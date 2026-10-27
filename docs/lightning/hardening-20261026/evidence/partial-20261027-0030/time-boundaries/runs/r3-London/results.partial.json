@@ -1,0 +1,327 @@
+{
+ "route": "http://127.0.0.1:8174/wt/atlas/v/202610262323/",
+ "harness": "lead-shim + self-fixture (SYNTHETIC); Chromium 153.0.8010.12 headless desktop 1440x900 locale en-GB; clock page.clock.install + pauseAt, then setSystemTime per case (Date frozen at the exact instant)",
+ "startedAt": "2026-10-26T23:53:20.591Z",
+ "tzs": [
+  "Europe/London"
+ ],
+ "results": [
+  {
+   "tz": "Europe/London",
+   "id": "T01",
+   "title": "24H window spanning the 25 Oct 01:00 UTC clock change",
+   "result": "FAIL",
+   "tries": 1,
+   "asserts": [
+    {
+     "what": "ERROR locator.click: Timeout 8000ms exceeded.",
+     "ok": false,
+     "observed": null
+    }
+   ],
+   "pageErrors": []
+  },
+  {
+   "tz": "Europe/London",
+   "id": "T02",
+   "title": "7D and 30D windows spanning the clock change",
+   "result": "FAIL",
+   "tries": 1,
+   "asserts": [
+    {
+     "what": "window [2026-10-21T12:00:00.000Z, 2026-10-28T12:00:00.000Z)",
+     "ok": false,
+     "observed": {
+      "s": "2026-10-27T12:00:00.000Z",
+      "e": "2026-10-28T12:00:00.000Z"
+     }
+    },
+    {
+     "what": "caption shows 2026-10-21 12:00 UTC → 2026-10-28 12:00 UTC",
+     "ok": false,
+     "observed": "Window 2026-10-27 12:00 UTC → 2026-10-28 12:00 UTC (24 hours, latest)"
+    },
+    {
+     "what": "all displayed times carry UTC, no local zone",
+     "ok": true,
+     "observed": []
+    },
+    {
+     "what": "flashes = 336 (no hour lost/double counted)",
+     "ok": false,
+     "observed": {
+      "got": 48,
+      "uniq": true,
+      "missing": [
+       "syn-2026-10-21-1200",
+       "syn-2026-10-21-1230",
+       "syn-2026-10-21-1300",
+       "syn-2026-10-21-1330",
+       "syn-2026-10-21-1400",
+       "syn-2026-10-21-1430"
+      ],
+      "extra": []
+     }
+    },
+    {
+     "what": "map source features = drawn",
+     "ok": true,
+     "observed": {
+      "map": 48,
+      "drawn": 48
+     }
+    },
+    {
+     "what": "7D = 336 flashes (168 h x 2)",
+     "ok": false,
+     "observed": 48
+    },
+    {
+     "what": "window [2026-09-28T12:00:00.000Z, 2026-10-28T12:00:00.000Z)",
+     "ok": true,
+     "observed": {
+      "s": "2026-09-28T12:00:00.000Z",
+      "e": "2026-10-28T12:00:00.000Z"
+     }
+    },
+    {
+     "what": "caption shows 2026-09-28 12:00 UTC → 2026-10-28 12:00 UTC",
+     "ok": true,
+     "observed": "Window 2026-09-28 12:00 UTC → 2026-10-28 12:00 UTC (30 days, latest)"
+    },
+    {
+     "what": "all displayed times carry UTC, no local zone",
+     "ok": true,
+     "observed": []
+    },
+    {
+     "what": "flashes = 1440 (no hour lost/double counted)",
+     "ok": true,
+     "observed": {
+      "got": 1440,
+      "uniq": true,
+      "missing": [],
+      "extra": []
+     }
+    },
+    {
+     "what": "map source features = drawn",
+     "ok": true,
+     "observed": {
+      "map": 1440,
+      "drawn": 1440
+     }
+    },
+    {
+     "what": "30D = 1440",
+     "ok": true,
+     "observed": 1440
+    }
+   ],
+   "pageErrors": []
+  },
+  {
+   "tz": "Europe/London",
+   "id": "T03",
+   "title": "CUSTOM From/To across the clock change; midnight UTC not local midnight",
+   "result": "FAIL",
+   "tries": 1,
+   "asserts": [
+    {
+     "what": "ERROR locator.click: Timeout 8000ms exceeded.",
+     "ok": false,
+     "observed": null
+    }
+   ],
+   "pageErrors": []
+  },
+  {
+   "tz": "Europe/London",
+   "id": "T04",
+   "title": "CUSTOM defaults and date-input max use the UTC date when local date differs",
+   "result": "FAIL",
+   "tries": 1,
+   "asserts": [
+    {
+     "what": "ERROR page.waitForSelector: Timeout 30000ms exceeded.",
+     "ok": false,
+     "observed": null
+    }
+   ],
+   "pageErrors": []
+  },
+  {
+   "tz": "Europe/London",
+   "id": "T05",
+   "title": "Day-shard selection at 23:59:59.999 and 00:00:00.000 UTC (split day 25 Oct)",
+   "result": "BLOCKED_HARNESS",
+   "tries": 3,
+   "asserts": [
+    {
+     "what": "ERROR browser.newContext: Target page, context or browser has been closed",
+     "ok": false,
+     "observed": null
+    }
+   ],
+   "pageErrors": []
+  },
+  {
+   "tz": "Europe/London",
+   "id": "T06",
+   "title": "24H PREV/NEXT across 31 Dec -> 1 Jan",
+   "result": "BLOCKED_HARNESS",
+   "tries": 3,
+   "asserts": [
+    {
+     "what": "ERROR browser.newContext: Target page, context or browser has been closed",
+     "ok": false,
+     "observed": null
+    }
+   ],
+   "pageErrors": []
+  },
+  {
+   "tz": "Europe/London",
+   "id": "T07",
+   "title": "7D PREV across year end; 30D PREV across Oct->Nov month end",
+   "result": "BLOCKED_HARNESS",
+   "tries": 3,
+   "asserts": [
+    {
+     "what": "ERROR browser.newContext: Target page, context or browser has been closed",
+     "ok": false,
+     "observed": null
+    }
+   ],
+   "pageErrors": []
+  },
+  {
+   "tz": "Europe/London",
+   "id": "T08",
+   "title": "3M/12M (calendar-month) PREV then NEXT returns to the same window",
+   "result": "BLOCKED_HARNESS",
+   "tries": 3,
+   "asserts": [
+    {
+     "what": "ERROR browser.newContext: Target page, context or browser has been closed",
+     "ok": false,
+     "observed": null
+    }
+   ],
+   "pageErrors": []
+  },
+  {
+   "tz": "Europe/London",
+   "id": "T09",
+   "title": "Leap day 2028-02-29 in CUSTOM and 24H",
+   "result": "BLOCKED_HARNESS",
+   "tries": 3,
+   "asserts": [
+    {
+     "what": "ERROR browser.newContext: Target page, context or browser has been closed",
+     "ok": false,
+     "observed": null
+    }
+   ],
+   "pageErrors": []
+  },
+  {
+   "tz": "Europe/London",
+   "id": "T10",
+   "title": "4 h staleness threshold (index)",
+   "result": "BLOCKED_HARNESS",
+   "tries": 3,
+   "asserts": [
+    {
+     "what": "ERROR browser.newContext: Target page, context or browser has been closed",
+     "ok": false,
+     "observed": null
+    }
+   ],
+   "pageErrors": []
+  },
+  {
+   "tz": "Europe/London",
+   "id": "T11",
+   "title": "Staleness in live-feed fallback (index 404)",
+   "result": "BLOCKED_HARNESS",
+   "tries": 3,
+   "asserts": [
+    {
+     "what": "ERROR browser.newContext: Target page, context or browser has been closed",
+     "ok": false,
+     "observed": null
+    }
+   ],
+   "pageErrors": []
+  },
+  {
+   "tz": "Europe/London",
+   "id": "T12",
+   "title": "\"Not yet ingested: last Xh Ymin\" arithmetic",
+   "result": "BLOCKED_HARNESS",
+   "tries": 3,
+   "asserts": [
+    {
+     "what": "ERROR browser.newContext: Target page, context or browser has been closed",
+     "ok": false,
+     "observed": null
+    }
+   ],
+   "pageErrors": []
+  },
+  {
+   "tz": "Europe/London",
+   "id": "T13",
+   "title": "Zone-less time_utc (malformed, no Z) must not shift with the browser timezone",
+   "result": "BLOCKED_HARNESS",
+   "tries": 3,
+   "asserts": [
+    {
+     "what": "ERROR browser.newContext: Target page, context or browser has been closed",
+     "ok": false,
+     "observed": null
+    }
+   ],
+   "pageErrors": []
+  }
+ ],
+ "shim-Europe/London-T01": {
+  "served": {
+   "maplibre": 2,
+   "style": 1,
+   "duckdb": 2
+  },
+  "aborted": [
+   "https://raw.githubusercontent.com/Ventusltd/data-grid-gb/1c9909d1138704b29235c27fd769436dda8a0b18/derived/connection-points.v3.json",
+   "https://ventusltd.github.io/ventus-grid-engine/genome/engine-graph.json"
+  ],
+  "missing": []
+ },
+ "shim-Europe/London-T02": {
+  "served": {
+   "maplibre": 2,
+   "style": 1,
+   "duckdb": 3,
+   "lightning-data": 87
+  },
+  "aborted": [
+   "https://raw.githubusercontent.com/Ventusltd/data-grid-gb/1c9909d1138704b29235c27fd769436dda8a0b18/derived/connection-points.v3.json",
+   "https://ventusltd.github.io/ventus-grid-engine/genome/engine-graph.json"
+  ],
+  "missing": []
+ },
+ "shim-Europe/London-T03": {
+  "served": {
+   "maplibre": 2,
+   "style": 1,
+   "duckdb": 3,
+   "lightning-data": 2
+  },
+  "aborted": [
+   "https://raw.githubusercontent.com/Ventusltd/data-grid-gb/1c9909d1138704b29235c27fd769436dda8a0b18/derived/connection-points.v3.json",
+   "https://ventusltd.github.io/ventus-grid-engine/genome/engine-graph.json"
+  ],
+  "missing": []
+ }
+}

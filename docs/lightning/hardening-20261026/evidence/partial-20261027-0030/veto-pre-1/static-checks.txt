@@ -1,0 +1,37 @@
+# 2026-10-26T23:48:57Z static checks on WT 5929c56, generation 202610262323
+## P03 exact delta
+prefix-identical
+0000000  \n
+suffix==module
+458445 atlas/cartridges/202610262323-sld-sandbox-v9-8.js
+ 23226 atlas/modules/202610262323-uk-lightning-overlay.js
+481671 total
+0
+b143bf05b28ac9b972ec90dced03cc0ad1f003fa844bdcb3f6601a33bd69891d  atlas/cartridges/202610262323-sld-sandbox-v9-8.js
+60be8215ba873ac2886786bf6e3fd51e5764e7c5e26684fde71ebe9974a329a2  atlas/cartridges/202609241251-streaming-parquet-bridge-v9-5.js
+## loader identical
+v-index==atlas/index.html
+## v/current.json slots
+202610262323 [["streaming-parquet-bridge","202609241251","../../cartridges/202609241251-streaming-parquet-bridge-v9-5.js","60be8215ba873ac2886786bf6e3fd51e5764e7c5e26684fde71ebe9974a329a2"],["uk-gazetteer-flyto","202609071213","../../cartridges/202609071213-place-global-search-v9-5.js","15f324e5c279050882f7e3ce83a915c070b6ed19095efcac4ae20af4ef19fdfa"],["sld-sandbox","202610262323","../../cartridges/202610262323-sld-sandbox-v9-8.js","b143bf05b28ac9b972ec90dced03cc0ad1f003fa844bdcb3f6601a33bd69891d"],["substation-intelligence","202609062358","../../cartridges/202609062358-substation-intelligence-v9-63.js","d94b0de50deddac77643325b10fbe490ce44b8c406dbc6c67e6e7cadbdaa8ec6"]]
+## V3 index.html dirs under atlas (vs prod)
+42,45d41
+< atlas/v/202610261949/index.html
+< atlas/v/202610262310/index.html
+< atlas/v/202610262318/index.html
+< atlas/v/202610262323/index.html
+## V2/V4 forbidden patterns in module
+## V14 transplant grep (whole candidate set)
+tools/proofs/202610262323-sld-sandbox.proof.mjs
+transplant-grep-exit=0
+## workflows
+9
+.github/workflows/202608301321-scope-loop.yml
+.github/workflows/202608301321-verify-live.yml
+.github/workflows/202608310015-gridatlas-overnight-next-versions.yml
+.github/workflows/202608310050-gridatlas-next-version-builders.yml
+.github/workflows/202608312212-cartridge-proof.yml
+.github/workflows/offshore-coordinate-reconcile.yml
+.github/workflows/pr-file-size-guard.yml
+.github/workflows/rollback-composition.yml
+.github/workflows/teleprint-parse-gate.yml
+10

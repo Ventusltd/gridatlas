@@ -1,0 +1,6 @@
+# agent proxy status, recentRelayFailures filtered to this run (22:30Z). Captured 2026-10-26T22:34:17Z via: curl -sS "$HTTPS_PROXY/__agentproxy/status"
+{"ts": "2026-10-26T22:30:00.687Z", "kind": "connect_rejected", "detail": "gateway answered 403 to CONNECT (policy denial or upstream failure)", "host": "ventusltd.github.io:443"}
+{"ts": "2026-10-26T22:30:01.026Z", "kind": "connect_rejected", "detail": "gateway answered 403 to CONNECT (policy denial or upstream failure)", "host": "basemaps.cartocdn.com:443"}
+{"ts": "2026-10-26T22:30:01.367Z", "kind": "connect_rejected", "detail": "gateway answered 403 to CONNECT (policy denial or upstream failure)", "host": "tiles.basemaps.cartocdn.com:443"}
+{"ts": "2026-10-26T22:30:01.748Z", "kind": "connect_rejected", "detail": "gateway answered 403 to CONNECT (policy denial or upstream failure)", "host": "extensions.duckdb.org:443"}
+{"ts": "2026-10-26T22:30:02.181Z", "kind": "connect_rejected", "detail": "gateway answered 403 to CONNECT (policy denial or upstream failure)", "host": "cdn.jsdelivr.net:443"}

@@ -64,3 +64,8 @@ Command form: `cd EV && node matrix.mjs --only <ids>`. Probes are `node probe-N3
 - Live raw.githubusercontent CORS/cache, EUMETSAT and basemap tiles: BLOCKED_DEPENDENCY. `rendered=` counts depend on the blank basemap viewport.
 - D12 25 MB shard refusal and sha256 checks: NOT_TESTED client-side (the client has no such check; see D08).
 - N08's concurrency figure of 5 comes from browser request-event timing; N11's route-level counter (exact) is authoritative: per-load max 4.
+
+## AFTER 202610262323 — INTERIM (in progress, 23:58 UTC; superseded by the final AFTER column when complete)
+Worktree HEAD 5929c56; `git diff --stat baf4e58 HEAD -- atlas tools` empty. Harness = BEFORE scripts with config-only diff (`after-202610262323/HARNESS-DIFF-vs-BEFORE.diff`: GEN, EV, PORT 8163, labels).
+Done: N01–N25 raw. Re-running N26–N30 after a host-memory renderer crash (other lanes' browsers; not attributed to the module). Pending: N31 (timeout), N32–N35, probes, conform pass (synthetic fixtures lack sha256/bytes, which the hardened module now verifies).
+Early reads: D09/R05 still FAIL (N17 future date → inverted window); D10 overlap still 10 in flight / 22 requests for 12 shards (N11); OFF→ON now re-reads (N21 fixed); feed coverage now "unknown" (N-OD2 fixed); D02 coords now rejected.

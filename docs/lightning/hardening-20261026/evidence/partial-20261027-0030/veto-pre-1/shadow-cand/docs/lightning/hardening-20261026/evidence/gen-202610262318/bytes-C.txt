@@ -1,0 +1,8 @@
+harness: self-fixture (node v22.23.4); start = variant B fixed-module.js (24170 B); diff base = wt atlas/modules/202610262310-uk-lightning-overlay.js (23984 B)
+     0  STAMP generation 202610262310 (header and GEN, as in the wt 202610262310 module)
+    42  A11Y-a P15-1 aria-pressed on the period chips
+    29  A11Y-b P15-2 accessible names on the From/To date inputs
+    19  A11Y-c/d P15-3 #555 -> #888 on the caption footer and the status line
+     0  A11Y-e P15-4 FAIL-state label opacity 0.5 -> 0.6
+ -1123  R01-C remove the Grid dropdown footer mirror and the gm-panel-body wait; sync paths use the panel + curtain twins only
+variant B 24170 -> C 23137 bytes (vs 202610262310: -847); new cap 24781: MET (1644 spare); old proof cap 24000: met

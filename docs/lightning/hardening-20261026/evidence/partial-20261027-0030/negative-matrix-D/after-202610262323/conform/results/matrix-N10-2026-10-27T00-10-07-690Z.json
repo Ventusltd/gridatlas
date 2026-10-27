@@ -1,0 +1,62 @@
+[
+ {
+  "id": "N10",
+  "title": "count mismatch between index and shard (index says 3 for 25 Oct, shard truncated to 2 genuine flashes; sha256 field unchanged)",
+  "acceptance_ids": [
+   "D08",
+   "D13"
+  ],
+  "elapsedMs": 101978,
+  "harnessError": "page.screenshot: Target crashed \nCall log:\n\u001b[2m  - taking page screenshot\u001b[22m\n\u001b[2m  - waiting for fonts to load...\u001b[22m\n\u001b[2m  - fonts loaded\u001b[22m\n\n    at shot (/tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/negative-matrix-D/after-202610262323/conform/lib.mjs:165:235)\n    at async file:///tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/negative-matrix-D/after-202610262323/conform/matrix.mjs:141:336\n    at async start (/tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/negative-matrix-D/after-202610262323/conform/matrix.mjs:439:13)\n    at async Object.run (/tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/negative-matrix-D/after-202610262323/conform/matrix.mjs:141:3)\n    at async file:///tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/negative-matrix-D/after-202610262323/conform/matrix.mjs:441:70",
+  "pageErrors": [],
+  "steps": [
+   {
+    "step": "ON 48h (index 118+3=121, shards 118+2=120)",
+    "synthetic": true,
+    "label": {
+     "main": "Lightning flashes (optical) [FAIL]",
+     "fs": "Lightning flashes (optical) [FAIL]",
+     "menu": null
+    },
+    "toggles": {
+     "main": true,
+     "fs": true,
+     "menu": null
+    },
+    "stateLine": "FAIL · 1 of 2 day files failed",
+    "caption": [
+     "Window  2026-10-24 06:00 UTC → 2026-10-26 06:00 UTC (48 hours, latest)",
+     "Actual  first 2026-10-24 12:58:54 UTC · last 2026-10-24 22:52:08 UTC",
+     "Flashes at least 118 archived in window · 118 drawn as points (index count 121 within the 40,000-point cap for this desktop)",
+     "Refresh archive 2026-10-26 05:50 UTC (0h 11min ago; expected every 1 h)",
+     "Searched EUMETSAT 59% of window · 10 successful runs · 2026-10-24 08:03 UTC → 2026-10-26 04:40 UTC",
+     "1 of 2 day files failed (2026-10-25 index mismatch: count); points incomplete, counts from index",
+     "Times UTC · Optical flashes seen by MTG Lightning Imager (EUMETSAT L2-LFL), not confirmed ground strikes · Missing days are unknown, not zero · UK box −11.0,49.5 → 3.0,61.5"
+    ],
+    "features": 118,
+    "cluster": false,
+    "visibility": "visible",
+    "badCoords": 0,
+    "injected": null,
+    "markupNodes": 0,
+    "last": {
+     "state": "FAIL",
+     "stale": false,
+     "mode": "detail",
+     "period": "48h",
+     "drawn": 118,
+     "cluster": false,
+     "cap": 40000,
+     "cap_source": "index",
+     "index_count": 121,
+     "failures": 1,
+     "reasons": [
+      "1 of 2 day files failed"
+     ]
+    },
+    "origDiff": [],
+    "extra": {}
+   }
+  ]
+ }
+]

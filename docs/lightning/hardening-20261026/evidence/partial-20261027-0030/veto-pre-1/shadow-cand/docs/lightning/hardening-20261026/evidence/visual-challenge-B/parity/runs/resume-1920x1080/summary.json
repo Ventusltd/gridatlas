@@ -1,0 +1,2826 @@
+{
+  "startedAt": "2026-10-26T22:56:23.483Z",
+  "baseline": "http://127.0.0.1:8141/gridatlas/atlas/",
+  "candidate": "http://127.0.0.1:8142/wt/atlas/v/202610261949/",
+  "thresholdPct": 0.1,
+  "channelTolerance": 16,
+  "geometryTolerancePx": 1,
+  "shim": "/tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/lightning/harness/offline-shim.mjs",
+  "lightningDataDir": null,
+  "fixtures": null,
+  "maskMap": true,
+  "masks": [
+    "#clock",
+    "#date",
+    "#days"
+  ],
+  "additive": [
+    "[data-lightning-group]"
+  ],
+  "viewports": {
+    "desktop-1920x1080": {
+      "states": {
+        "initial": {
+          "noteBaseline": {},
+          "noteCandidate": {},
+          "pixel": {
+            "width": 1920,
+            "height": 1080,
+            "sameSize": true,
+            "changed": 0,
+            "masked": 1130339,
+            "considered": 943261,
+            "changedPct": 0,
+            "bbox": null,
+            "bands": [],
+            "bandCount": 0,
+            "diffPng": "/tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/visual-challenge-B/parity/runs/resume-1920x1080/diff/desktop-1920x1080.initial.diff.png"
+          },
+          "geometry": {
+            "compared": 54,
+            "diffs": [
+              {
+                "surface": "menu-panel-Grid",
+                "kind": "childCount",
+                "baseline": 3,
+                "candidate": 4,
+                "class": "additive-host"
+              },
+              {
+                "surface": "scada-ui-container",
+                "kind": "childCount",
+                "baseline": 13,
+                "candidate": 14,
+                "class": "additive-host"
+              },
+              {
+                "surface": "scada-ui-container",
+                "kind": "inventory.groupCount",
+                "baseline": 13,
+                "candidate": 14,
+                "class": "additive-host"
+              },
+              {
+                "surface": "scada-ui-container",
+                "kind": "inventory.inputs",
+                "baseline": 65,
+                "candidate": 68,
+                "class": "additive-host"
+              },
+              {
+                "surface": "scada-ui-container",
+                "kind": "inventory.groups",
+                "baseline": [
+                  "Topology (GeoJSON)",
+                  "Assets (GeoJSON)",
+                  "Supermarkets (GeoJSON)",
+                  "Transit (GeoJSON)",
+                  "Leisure & Sports (GeoJSON)",
+                  "Global Data Backbone",
+                  "Global Supply Chain & Chokepoints",
+                  "Highway Infrastructure",
+                  "EV (GeoJSON)",
+                  "Heavy Industry",
+                  "REPD (GeoJSON)",
+                  "Basemap",
+                  "PIPELINE NEWS (REPD)"
+                ],
+                "candidate": [
+                  "Topology (GeoJSON)",
+                  "Assets (GeoJSON)",
+                  "Supermarkets (GeoJSON)",
+                  "Transit (GeoJSON)",
+                  "Leisure & Sports (GeoJSON)",
+                  "Global Data Backbone",
+                  "Global Supply Chain & Chokepoints",
+                  "Highway Infrastructure",
+                  "EV (GeoJSON)",
+                  "Heavy Industry",
+                  "REPD (GeoJSON)",
+                  "Basemap",
+                  "PIPELINE NEWS (REPD)",
+                  "Weather · EUMETSAT Lightning Imager"
+                ],
+                "class": "additive-host"
+              },
+              {
+                "surface": "fs-curtain-keys",
+                "kind": "childCount",
+                "baseline": 13,
+                "candidate": 14,
+                "class": "additive-host"
+              },
+              {
+                "surface": "fs-curtain-keys",
+                "kind": "inventory.groupCount",
+                "baseline": 13,
+                "candidate": 14,
+                "class": "additive-host"
+              },
+              {
+                "surface": "fs-curtain-keys",
+                "kind": "inventory.inputs",
+                "baseline": 65,
+                "candidate": 68,
+                "class": "additive-host"
+              },
+              {
+                "surface": "fs-curtain-keys",
+                "kind": "inventory.groups",
+                "baseline": [
+                  "Topology (GeoJSON)",
+                  "Assets (GeoJSON)",
+                  "Supermarkets (GeoJSON)",
+                  "Transit (GeoJSON)",
+                  "Leisure & Sports (GeoJSON)",
+                  "Global Data Backbone",
+                  "Global Supply Chain & Chokepoints",
+                  "Highway Infrastructure",
+                  "EV (GeoJSON)",
+                  "Heavy Industry",
+                  "REPD (GeoJSON)",
+                  "Basemap",
+                  "PIPELINE NEWS (REPD)"
+                ],
+                "candidate": [
+                  "Topology (GeoJSON)",
+                  "Assets (GeoJSON)",
+                  "Supermarkets (GeoJSON)",
+                  "Transit (GeoJSON)",
+                  "Leisure & Sports (GeoJSON)",
+                  "Global Data Backbone",
+                  "Global Supply Chain & Chokepoints",
+                  "Highway Infrastructure",
+                  "EV (GeoJSON)",
+                  "Heavy Industry",
+                  "REPD (GeoJSON)",
+                  "Basemap",
+                  "PIPELINE NEWS (REPD)",
+                  "Weather · EUMETSAT Lightning Imager"
+                ],
+                "class": "additive-host"
+              }
+            ],
+            "originalDiffs": [],
+            "additiveHostDiffs": 9,
+            "additive": [
+              {
+                "ukLightning": {
+                  "installed": true,
+                  "on": false,
+                  "requests": 0,
+                  "errors": [],
+                  "waiting_for": [],
+                  "last": null
+                }
+              }
+            ]
+          },
+          "pass": true,
+          "extras": {
+            "elementCountBaseline": 1468,
+            "elementCountCandidate": 1468,
+            "movedElements": [],
+            "additiveHostGrowth": [],
+            "styleChangedElements": [],
+            "signatureDivergence": null,
+            "scrollDiffs": [],
+            "hitTargetDiffs": [],
+            "occluderChanged": [],
+            "hitTargetsCompared": 15,
+            "hitTargetsPreexistingNotSelf": [
+              {
+                "name": "attribution",
+                "result": "OUT-OF-VIEWPORT",
+                "clippedBy": [
+                  "div#map-container.map-container 4,4,1912,632"
+                ],
+                "rect": {
+                  "x": 0,
+                  "y": 0,
+                  "width": 0,
+                  "height": 0
+                }
+              },
+              {
+                "name": "layers-first-pipeline-row",
+                "result": "OUT-OF-VIEWPORT",
+                "clippedBy": [
+                  "div#scada-ui-container.scada-keys 17,653,1886,410",
+                  "body 0,0,1920,1080",
+                  "html.gridatlas-menu-hosted 0,0,1920,1080"
+                ],
+                "rect": {
+                  "x": 29,
+                  "y": 1923.61,
+                  "width": 925,
+                  "height": 19
+                }
+              }
+            ],
+            "styleElementsEqual": true,
+            "styleLinksEqual": true,
+            "lightningTargets": [
+              {
+                "name": "lightning-toggle-fs",
+                "present": true,
+                "rect": {
+                  "x": 0,
+                  "y": 0,
+                  "width": 0,
+                  "height": 0
+                },
+                "centre": [
+                  0,
+                  0
+                ],
+                "inViewport": false,
+                "result": "OUT-OF-VIEWPORT",
+                "clippedBy": [],
+                "text": "Lightning flashes (optical) [WAIT]",
+                "ariaLabel": null,
+                "role": null,
+                "type": "checkbox",
+                "checked": false
+              },
+              {
+                "name": "lightning-toggle-menu",
+                "present": true,
+                "rect": {
+                  "x": 0,
+                  "y": 0,
+                  "width": 0,
+                  "height": 0
+                },
+                "centre": [
+                  0,
+                  0
+                ],
+                "inViewport": false,
+                "result": "OUT-OF-VIEWPORT",
+                "clippedBy": [
+                  "div#map-container.map-container 4,4,1912,632"
+                ],
+                "text": "Lightning flashes (optical) [WAIT]",
+                "ariaLabel": "Lightning flashes (optical)",
+                "role": null,
+                "type": "checkbox",
+                "checked": false
+              },
+              {
+                "name": "lightning-toggle-main",
+                "present": true,
+                "rect": {
+                  "x": 978,
+                  "y": 1923.61,
+                  "width": 925,
+                  "height": 19
+                },
+                "centre": [
+                  1440.5,
+                  1933.11
+                ],
+                "inViewport": false,
+                "result": "OUT-OF-VIEWPORT",
+                "clippedBy": [
+                  "div#scada-ui-container.scada-keys 17,653,1886,410",
+                  "body 0,0,1920,1080",
+                  "html.gridatlas-menu-hosted 0,0,1920,1080"
+                ],
+                "text": "Lightning flashes (optical) [WAIT]",
+                "ariaLabel": null,
+                "role": null,
+                "type": "checkbox",
+                "checked": false
+              }
+            ],
+            "additiveNodes": [
+              {
+                "sig": "div.key-group[data-lightning-group=fs]",
+                "parent": "div#fs-curtain-keys",
+                "indexInParent": 13,
+                "siblings": 14,
+                "rect": {
+                  "x": 0,
+                  "y": 0,
+                  "width": 0,
+                  "height": 0
+                },
+                "descendants": 37
+              },
+              {
+                "sig": "div[data-lightning-group=menu]",
+                "parent": "div#gridatlas-menu-bar-panel-4.gm-panel.gm-panel-grid",
+                "indexInParent": 2,
+                "siblings": 4,
+                "rect": {
+                  "x": 0,
+                  "y": 0,
+                  "width": 0,
+                  "height": 0
+                },
+                "descendants": 5
+              },
+              {
+                "sig": "div.key-group[data-lightning-group=main]",
+                "parent": "div#scada-ui-container.scada-keys",
+                "indexInParent": 13,
+                "siblings": 14,
+                "rect": {
+                  "x": 966,
+                  "y": 1906.61,
+                  "width": 937,
+                  "height": 98
+                },
+                "descendants": 37
+              }
+            ],
+            "pass": true
+          },
+          "maskCounts": {
+            "baseline": {
+              "mask": 3,
+              "mask-map": 1,
+              "overlay": 5
+            },
+            "candidate": {
+              "mask": 3,
+              "mask-map": 1,
+              "overlay": 5,
+              "additive": 1
+            }
+          }
+        },
+        "layers": {
+          "noteBaseline": {
+            "outcome": "already open on arrival (desktop default); screenshot equals initial state apart from clocks"
+          },
+          "noteCandidate": {
+            "outcome": "already open on arrival (desktop default); screenshot equals initial state apart from clocks"
+          },
+          "pixel": {
+            "width": 1920,
+            "height": 1080,
+            "sameSize": true,
+            "changed": 0,
+            "masked": 1130339,
+            "considered": 943261,
+            "changedPct": 0,
+            "bbox": null,
+            "bands": [],
+            "bandCount": 0,
+            "diffPng": "/tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/visual-challenge-B/parity/runs/resume-1920x1080/diff/desktop-1920x1080.layers.diff.png"
+          },
+          "geometry": {
+            "compared": 54,
+            "diffs": [
+              {
+                "surface": "menu-panel-Grid",
+                "kind": "childCount",
+                "baseline": 3,
+                "candidate": 4,
+                "class": "additive-host"
+              },
+              {
+                "surface": "scada-ui-container",
+                "kind": "childCount",
+                "baseline": 13,
+                "candidate": 14,
+                "class": "additive-host"
+              },
+              {
+                "surface": "scada-ui-container",
+                "kind": "inventory.groupCount",
+                "baseline": 13,
+                "candidate": 14,
+                "class": "additive-host"
+              },
+              {
+                "surface": "scada-ui-container",
+                "kind": "inventory.inputs",
+                "baseline": 65,
+                "candidate": 68,
+                "class": "additive-host"
+              },
+              {
+                "surface": "scada-ui-container",
+                "kind": "inventory.groups",
+                "baseline": [
+                  "Topology (GeoJSON)",
+                  "Assets (GeoJSON)",
+                  "Supermarkets (GeoJSON)",
+                  "Transit (GeoJSON)",
+                  "Leisure & Sports (GeoJSON)",
+                  "Global Data Backbone",
+                  "Global Supply Chain & Chokepoints",
+                  "Highway Infrastructure",
+                  "EV (GeoJSON)",
+                  "Heavy Industry",
+                  "REPD (GeoJSON)",
+                  "Basemap",
+                  "PIPELINE NEWS (REPD)"
+                ],
+                "candidate": [
+                  "Topology (GeoJSON)",
+                  "Assets (GeoJSON)",
+                  "Supermarkets (GeoJSON)",
+                  "Transit (GeoJSON)",
+                  "Leisure & Sports (GeoJSON)",
+                  "Global Data Backbone",
+                  "Global Supply Chain & Chokepoints",
+                  "Highway Infrastructure",
+                  "EV (GeoJSON)",
+                  "Heavy Industry",
+                  "REPD (GeoJSON)",
+                  "Basemap",
+                  "PIPELINE NEWS (REPD)",
+                  "Weather · EUMETSAT Lightning Imager"
+                ],
+                "class": "additive-host"
+              },
+              {
+                "surface": "fs-curtain-keys",
+                "kind": "childCount",
+                "baseline": 13,
+                "candidate": 14,
+                "class": "additive-host"
+              },
+              {
+                "surface": "fs-curtain-keys",
+                "kind": "inventory.groupCount",
+                "baseline": 13,
+                "candidate": 14,
+                "class": "additive-host"
+              },
+              {
+                "surface": "fs-curtain-keys",
+                "kind": "inventory.inputs",
+                "baseline": 65,
+                "candidate": 68,
+                "class": "additive-host"
+              },
+              {
+                "surface": "fs-curtain-keys",
+                "kind": "inventory.groups",
+                "baseline": [
+                  "Topology (GeoJSON)",
+                  "Assets (GeoJSON)",
+                  "Supermarkets (GeoJSON)",
+                  "Transit (GeoJSON)",
+                  "Leisure & Sports (GeoJSON)",
+                  "Global Data Backbone",
+                  "Global Supply Chain & Chokepoints",
+                  "Highway Infrastructure",
+                  "EV (GeoJSON)",
+                  "Heavy Industry",
+                  "REPD (GeoJSON)",
+                  "Basemap",
+                  "PIPELINE NEWS (REPD)"
+                ],
+                "candidate": [
+                  "Topology (GeoJSON)",
+                  "Assets (GeoJSON)",
+                  "Supermarkets (GeoJSON)",
+                  "Transit (GeoJSON)",
+                  "Leisure & Sports (GeoJSON)",
+                  "Global Data Backbone",
+                  "Global Supply Chain & Chokepoints",
+                  "Highway Infrastructure",
+                  "EV (GeoJSON)",
+                  "Heavy Industry",
+                  "REPD (GeoJSON)",
+                  "Basemap",
+                  "PIPELINE NEWS (REPD)",
+                  "Weather · EUMETSAT Lightning Imager"
+                ],
+                "class": "additive-host"
+              }
+            ],
+            "originalDiffs": [],
+            "additiveHostDiffs": 9,
+            "additive": [
+              {
+                "ukLightning": {
+                  "installed": true,
+                  "on": false,
+                  "requests": 0,
+                  "errors": [],
+                  "waiting_for": [],
+                  "last": null
+                }
+              }
+            ]
+          },
+          "pass": true,
+          "extras": {
+            "elementCountBaseline": 1468,
+            "elementCountCandidate": 1468,
+            "movedElements": [],
+            "additiveHostGrowth": [],
+            "styleChangedElements": [],
+            "signatureDivergence": null,
+            "scrollDiffs": [],
+            "hitTargetDiffs": [],
+            "occluderChanged": [],
+            "hitTargetsCompared": 15,
+            "hitTargetsPreexistingNotSelf": [
+              {
+                "name": "attribution",
+                "result": "OUT-OF-VIEWPORT",
+                "clippedBy": [
+                  "div#map-container.map-container 4,4,1912,632"
+                ],
+                "rect": {
+                  "x": 0,
+                  "y": 0,
+                  "width": 0,
+                  "height": 0
+                }
+              },
+              {
+                "name": "layers-first-pipeline-row",
+                "result": "OUT-OF-VIEWPORT",
+                "clippedBy": [
+                  "div#scada-ui-container.scada-keys 17,653,1886,410",
+                  "body 0,0,1920,1080",
+                  "html.gridatlas-menu-hosted 0,0,1920,1080"
+                ],
+                "rect": {
+                  "x": 29,
+                  "y": 1923.61,
+                  "width": 925,
+                  "height": 19
+                }
+              }
+            ],
+            "styleElementsEqual": true,
+            "styleLinksEqual": true,
+            "lightningTargets": [
+              {
+                "name": "lightning-toggle-fs",
+                "present": true,
+                "rect": {
+                  "x": 0,
+                  "y": 0,
+                  "width": 0,
+                  "height": 0
+                },
+                "centre": [
+                  0,
+                  0
+                ],
+                "inViewport": false,
+                "result": "OUT-OF-VIEWPORT",
+                "clippedBy": [],
+                "text": "Lightning flashes (optical) [WAIT]",
+                "ariaLabel": null,
+                "role": null,
+                "type": "checkbox",
+                "checked": false
+              },
+              {
+                "name": "lightning-toggle-menu",
+                "present": true,
+                "rect": {
+                  "x": 0,
+                  "y": 0,
+                  "width": 0,
+                  "height": 0
+                },
+                "centre": [
+                  0,
+                  0
+                ],
+                "inViewport": false,
+                "result": "OUT-OF-VIEWPORT",
+                "clippedBy": [
+                  "div#map-container.map-container 4,4,1912,632"
+                ],
+                "text": "Lightning flashes (optical) [WAIT]",
+                "ariaLabel": "Lightning flashes (optical)",
+                "role": null,
+                "type": "checkbox",
+                "checked": false
+              },
+              {
+                "name": "lightning-toggle-main",
+                "present": true,
+                "rect": {
+                  "x": 978,
+                  "y": 1923.61,
+                  "width": 925,
+                  "height": 19
+                },
+                "centre": [
+                  1440.5,
+                  1933.11
+                ],
+                "inViewport": false,
+                "result": "OUT-OF-VIEWPORT",
+                "clippedBy": [
+                  "div#scada-ui-container.scada-keys 17,653,1886,410",
+                  "body 0,0,1920,1080",
+                  "html.gridatlas-menu-hosted 0,0,1920,1080"
+                ],
+                "text": "Lightning flashes (optical) [WAIT]",
+                "ariaLabel": null,
+                "role": null,
+                "type": "checkbox",
+                "checked": false
+              }
+            ],
+            "additiveNodes": [
+              {
+                "sig": "div.key-group[data-lightning-group=fs]",
+                "parent": "div#fs-curtain-keys",
+                "indexInParent": 13,
+                "siblings": 14,
+                "rect": {
+                  "x": 0,
+                  "y": 0,
+                  "width": 0,
+                  "height": 0
+                },
+                "descendants": 37
+              },
+              {
+                "sig": "div[data-lightning-group=menu]",
+                "parent": "div#gridatlas-menu-bar-panel-4.gm-panel.gm-panel-grid",
+                "indexInParent": 2,
+                "siblings": 4,
+                "rect": {
+                  "x": 0,
+                  "y": 0,
+                  "width": 0,
+                  "height": 0
+                },
+                "descendants": 5
+              },
+              {
+                "sig": "div.key-group[data-lightning-group=main]",
+                "parent": "div#scada-ui-container.scada-keys",
+                "indexInParent": 13,
+                "siblings": 14,
+                "rect": {
+                  "x": 966,
+                  "y": 1906.61,
+                  "width": 937,
+                  "height": 98
+                },
+                "descendants": 37
+              }
+            ],
+            "pass": true
+          },
+          "maskCounts": {
+            "baseline": {
+              "mask": 3,
+              "mask-map": 1,
+              "overlay": 5
+            },
+            "candidate": {
+              "mask": 3,
+              "mask-map": 1,
+              "overlay": 5,
+              "additive": 1
+            }
+          }
+        },
+        "grid": {
+          "noteBaseline": {
+            "menuExpanded": "true",
+            "outcome": "opened \"Grid\" by real click (aria-expanded=true)"
+          },
+          "noteCandidate": {
+            "menuExpanded": "true",
+            "outcome": "opened \"Grid\" by real click (aria-expanded=true)"
+          },
+          "pixel": {
+            "width": 1920,
+            "height": 1080,
+            "sameSize": true,
+            "changed": 0,
+            "masked": 941436,
+            "considered": 1132164,
+            "changedPct": 0,
+            "bbox": null,
+            "bands": [],
+            "bandCount": 0,
+            "diffPng": "/tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/visual-challenge-B/parity/runs/resume-1920x1080/diff/desktop-1920x1080.grid.diff.png"
+          },
+          "geometry": {
+            "compared": 54,
+            "diffs": [
+              {
+                "surface": "menu-panel-Grid",
+                "kind": "childCount",
+                "baseline": 3,
+                "candidate": 4,
+                "class": "additive-host"
+              },
+              {
+                "surface": "grid-panel-body",
+                "kind": "rect.height",
+                "baseline": 512,
+                "candidate": 434,
+                "delta": -78,
+                "class": "original"
+              },
+              {
+                "surface": "scada-ui-container",
+                "kind": "childCount",
+                "baseline": 13,
+                "candidate": 14,
+                "class": "additive-host"
+              },
+              {
+                "surface": "scada-ui-container",
+                "kind": "inventory.groupCount",
+                "baseline": 13,
+                "candidate": 14,
+                "class": "additive-host"
+              },
+              {
+                "surface": "scada-ui-container",
+                "kind": "inventory.inputs",
+                "baseline": 65,
+                "candidate": 68,
+                "class": "additive-host"
+              },
+              {
+                "surface": "scada-ui-container",
+                "kind": "inventory.groups",
+                "baseline": [
+                  "Topology (GeoJSON)",
+                  "Assets (GeoJSON)",
+                  "Supermarkets (GeoJSON)",
+                  "Transit (GeoJSON)",
+                  "Leisure & Sports (GeoJSON)",
+                  "Global Data Backbone",
+                  "Global Supply Chain & Chokepoints",
+                  "Highway Infrastructure",
+                  "EV (GeoJSON)",
+                  "Heavy Industry",
+                  "REPD (GeoJSON)",
+                  "Basemap",
+                  "PIPELINE NEWS (REPD)"
+                ],
+                "candidate": [
+                  "Topology (GeoJSON)",
+                  "Assets (GeoJSON)",
+                  "Supermarkets (GeoJSON)",
+                  "Transit (GeoJSON)",
+                  "Leisure & Sports (GeoJSON)",
+                  "Global Data Backbone",
+                  "Global Supply Chain & Chokepoints",
+                  "Highway Infrastructure",
+                  "EV (GeoJSON)",
+                  "Heavy Industry",
+                  "REPD (GeoJSON)",
+                  "Basemap",
+                  "PIPELINE NEWS (REPD)",
+                  "Weather · EUMETSAT Lightning Imager"
+                ],
+                "class": "additive-host"
+              },
+              {
+                "surface": "fs-curtain-keys",
+                "kind": "childCount",
+                "baseline": 13,
+                "candidate": 14,
+                "class": "additive-host"
+              },
+              {
+                "surface": "fs-curtain-keys",
+                "kind": "inventory.groupCount",
+                "baseline": 13,
+                "candidate": 14,
+                "class": "additive-host"
+              },
+              {
+                "surface": "fs-curtain-keys",
+                "kind": "inventory.inputs",
+                "baseline": 65,
+                "candidate": 68,
+                "class": "additive-host"
+              },
+              {
+                "surface": "fs-curtain-keys",
+                "kind": "inventory.groups",
+                "baseline": [
+                  "Topology (GeoJSON)",
+                  "Assets (GeoJSON)",
+                  "Supermarkets (GeoJSON)",
+                  "Transit (GeoJSON)",
+                  "Leisure & Sports (GeoJSON)",
+                  "Global Data Backbone",
+                  "Global Supply Chain & Chokepoints",
+                  "Highway Infrastructure",
+                  "EV (GeoJSON)",
+                  "Heavy Industry",
+                  "REPD (GeoJSON)",
+                  "Basemap",
+                  "PIPELINE NEWS (REPD)"
+                ],
+                "candidate": [
+                  "Topology (GeoJSON)",
+                  "Assets (GeoJSON)",
+                  "Supermarkets (GeoJSON)",
+                  "Transit (GeoJSON)",
+                  "Leisure & Sports (GeoJSON)",
+                  "Global Data Backbone",
+                  "Global Supply Chain & Chokepoints",
+                  "Highway Infrastructure",
+                  "EV (GeoJSON)",
+                  "Heavy Industry",
+                  "REPD (GeoJSON)",
+                  "Basemap",
+                  "PIPELINE NEWS (REPD)",
+                  "Weather · EUMETSAT Lightning Imager"
+                ],
+                "class": "additive-host"
+              }
+            ],
+            "originalDiffs": [
+              {
+                "surface": "grid-panel-body",
+                "kind": "rect.height",
+                "baseline": 512,
+                "candidate": 434,
+                "delta": -78,
+                "class": "original"
+              }
+            ],
+            "additiveHostDiffs": 9,
+            "additive": [
+              {
+                "ukLightning": {
+                  "installed": true,
+                  "on": false,
+                  "requests": 0,
+                  "errors": [],
+                  "waiting_for": [],
+                  "last": null
+                }
+              }
+            ]
+          },
+          "pass": false,
+          "extras": {
+            "elementCountBaseline": 1468,
+            "elementCountCandidate": 1468,
+            "movedElements": [
+              {
+                "index": 297,
+                "sig": "div.gm-panel-body",
+                "baseline": [
+                  1481.67,
+                  100,
+                  374.45,
+                  512
+                ],
+                "candidate": [
+                  1481.67,
+                  100,
+                  374.45,
+                  434
+                ],
+                "delta": {
+                  "x": 0,
+                  "y": 0,
+                  "width": 0,
+                  "height": -78
+                }
+              }
+            ],
+            "additiveHostGrowth": [],
+            "styleChangedElements": [],
+            "signatureDivergence": null,
+            "scrollDiffs": [
+              {
+                "selector": "#gridatlas-menu-bar .gm-panel:not([hidden])",
+                "kind": "scrollWidth",
+                "baseline": 374,
+                "candidate": 423,
+                "delta": 49
+              },
+              {
+                "selector": "#gridatlas-menu-bar-panel-4",
+                "kind": "scrollWidth",
+                "baseline": 374,
+                "candidate": 423,
+                "delta": 49
+              },
+              {
+                "selector": "#gridatlas-menu-bar-panel-4 .gm-panel-body",
+                "kind": "clientHeight",
+                "baseline": 512,
+                "candidate": 434,
+                "delta": -78
+              },
+              {
+                "selector": "#gridatlas-menu-bar-panel-4 .gm-panel-body",
+                "kind": "hiddenOverflowPx",
+                "baseline": 931,
+                "candidate": 1009,
+                "delta": 78
+              }
+            ],
+            "hitTargetDiffs": [
+              {
+                "name": "grid-last-visible-proxy",
+                "kind": "rect",
+                "baseline": {
+                  "x": 1738.64,
+                  "y": 524.34,
+                  "width": 111.48,
+                  "height": 58.53
+                },
+                "candidate": {
+                  "x": 1738.64,
+                  "y": 436.13,
+                  "width": 111.48,
+                  "height": 88.22
+                },
+                "baselineText": "Battery Storage [WAIT]",
+                "candidateText": "Offshore Wind (Operational Only) [WAIT]",
+                "dynamicRow": true
+              }
+            ],
+            "occluderChanged": [],
+            "hitTargetsCompared": 21,
+            "hitTargetsPreexistingNotSelf": [
+              {
+                "name": "search-input",
+                "result": "OTHER:div.status-dot",
+                "clippedBy": [],
+                "rect": {
+                  "x": 1621.8,
+                  "y": 77,
+                  "width": 242,
+                  "height": 24
+                }
+              },
+              {
+                "name": "attribution",
+                "result": "OUT-OF-VIEWPORT",
+                "clippedBy": [
+                  "div#map-container.map-container 4,4,1912,632"
+                ],
+                "rect": {
+                  "x": 0,
+                  "y": 0,
+                  "width": 0,
+                  "height": 0
+                }
+              },
+              {
+                "name": "layers-first-pipeline-row",
+                "result": "OUT-OF-VIEWPORT",
+                "clippedBy": [
+                  "div#scada-ui-container.scada-keys 17,653,1886,410",
+                  "body 0,0,1920,1080",
+                  "html.gridatlas-menu-hosted 0,0,1920,1080"
+                ],
+                "rect": {
+                  "x": 29,
+                  "y": 1923.61,
+                  "width": 925,
+                  "height": 19
+                }
+              },
+              {
+                "name": "grid-last-proxy-in-dom",
+                "result": "OUT-OF-VIEWPORT",
+                "clippedBy": [
+                  "div.gm-panel-body 1482,100,374,512",
+                  "div#gridatlas-menu-bar-panel-4.gm-panel.gm-panel-grid 1481,40,376,620",
+                  "div#map-container.map-container 4,4,1912,632",
+                  "body 0,0,1920,1080",
+                  "html.gridatlas-menu-hosted 0,0,1920,1080"
+                ],
+                "rect": {
+                  "x": 1738.64,
+                  "y": 1468.41,
+                  "width": 111.48,
+                  "height": 44
+                }
+              }
+            ],
+            "styleElementsEqual": true,
+            "styleLinksEqual": true,
+            "lightningTargets": [
+              {
+                "name": "lightning-toggle-fs",
+                "present": true,
+                "rect": {
+                  "x": 0,
+                  "y": 0,
+                  "width": 0,
+                  "height": 0
+                },
+                "centre": [
+                  0,
+                  0
+                ],
+                "inViewport": false,
+                "result": "OUT-OF-VIEWPORT",
+                "clippedBy": [],
+                "text": "Lightning flashes (optical) [WAIT]",
+                "ariaLabel": null,
+                "role": null,
+                "type": "checkbox",
+                "checked": false
+              },
+              {
+                "name": "lightning-toggle-menu",
+                "present": true,
+                "rect": {
+                  "x": 1487.67,
+                  "y": 562,
+                  "width": 362.45,
+                  "height": 44
+                },
+                "centre": [
+                  1668.9,
+                  584
+                ],
+                "inViewport": true,
+                "result": "self",
+                "clippedBy": [],
+                "text": "Lightning flashes (optical) [WAIT]",
+                "ariaLabel": "Lightning flashes (optical)",
+                "role": null,
+                "type": "checkbox",
+                "checked": false
+              },
+              {
+                "name": "lightning-toggle-main",
+                "present": true,
+                "rect": {
+                  "x": 978,
+                  "y": 1923.61,
+                  "width": 925,
+                  "height": 19
+                },
+                "centre": [
+                  1440.5,
+                  1933.11
+                ],
+                "inViewport": false,
+                "result": "OUT-OF-VIEWPORT",
+                "clippedBy": [
+                  "div#scada-ui-container.scada-keys 17,653,1886,410",
+                  "body 0,0,1920,1080",
+                  "html.gridatlas-menu-hosted 0,0,1920,1080"
+                ],
+                "text": "Lightning flashes (optical) [WAIT]",
+                "ariaLabel": null,
+                "role": null,
+                "type": "checkbox",
+                "checked": false
+              }
+            ],
+            "additiveNodes": [
+              {
+                "sig": "div.key-group[data-lightning-group=fs]",
+                "parent": "div#fs-curtain-keys",
+                "indexInParent": 13,
+                "siblings": 14,
+                "rect": {
+                  "x": 0,
+                  "y": 0,
+                  "width": 0,
+                  "height": 0
+                },
+                "descendants": 37
+              },
+              {
+                "sig": "div[data-lightning-group=menu]",
+                "parent": "div#gridatlas-menu-bar-panel-4.gm-panel.gm-panel-grid",
+                "indexInParent": 2,
+                "siblings": 4,
+                "rect": {
+                  "x": 1481.67,
+                  "y": 534,
+                  "width": 374.45,
+                  "height": 78
+                },
+                "descendants": 5
+              },
+              {
+                "sig": "div.key-group[data-lightning-group=main]",
+                "parent": "div#scada-ui-container.scada-keys",
+                "indexInParent": 13,
+                "siblings": 14,
+                "rect": {
+                  "x": 966,
+                  "y": 1906.61,
+                  "width": 937,
+                  "height": 98
+                },
+                "descendants": 37
+              }
+            ],
+            "pass": false
+          },
+          "maskCounts": {
+            "baseline": {
+              "mask": 3,
+              "mask-map": 1,
+              "overlay": 7
+            },
+            "candidate": {
+              "mask": 3,
+              "mask-map": 1,
+              "overlay": 7,
+              "additive": 2
+            }
+          }
+        },
+        "about": {
+          "noteBaseline": {
+            "menuExpanded": "true",
+            "outcome": "opened \"About\" by real click (aria-expanded=true)"
+          },
+          "noteCandidate": {
+            "menuExpanded": "true",
+            "outcome": "opened \"About\" by real click (aria-expanded=true)"
+          },
+          "pixel": {
+            "width": 1920,
+            "height": 1080,
+            "sameSize": true,
+            "changed": 0,
+            "masked": 1030797,
+            "considered": 1042803,
+            "changedPct": 0,
+            "bbox": null,
+            "bands": [],
+            "bandCount": 0,
+            "diffPng": "/tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/visual-challenge-B/parity/runs/resume-1920x1080/diff/desktop-1920x1080.about.diff.png"
+          },
+          "geometry": {
+            "compared": 54,
+            "diffs": [
+              {
+                "surface": "menu-panel-Grid",
+                "kind": "childCount",
+                "baseline": 3,
+                "candidate": 4,
+                "class": "additive-host"
+              },
+              {
+                "surface": "scada-ui-container",
+                "kind": "childCount",
+                "baseline": 13,
+                "candidate": 14,
+                "class": "additive-host"
+              },
+              {
+                "surface": "scada-ui-container",
+                "kind": "inventory.groupCount",
+                "baseline": 13,
+                "candidate": 14,
+                "class": "additive-host"
+              },
+              {
+                "surface": "scada-ui-container",
+                "kind": "inventory.inputs",
+                "baseline": 65,
+                "candidate": 68,
+                "class": "additive-host"
+              },
+              {
+                "surface": "scada-ui-container",
+                "kind": "inventory.groups",
+                "baseline": [
+                  "Topology (GeoJSON)",
+                  "Assets (GeoJSON)",
+                  "Supermarkets (GeoJSON)",
+                  "Transit (GeoJSON)",
+                  "Leisure & Sports (GeoJSON)",
+                  "Global Data Backbone",
+                  "Global Supply Chain & Chokepoints",
+                  "Highway Infrastructure",
+                  "EV (GeoJSON)",
+                  "Heavy Industry",
+                  "REPD (GeoJSON)",
+                  "Basemap",
+                  "PIPELINE NEWS (REPD)"
+                ],
+                "candidate": [
+                  "Topology (GeoJSON)",
+                  "Assets (GeoJSON)",
+                  "Supermarkets (GeoJSON)",
+                  "Transit (GeoJSON)",
+                  "Leisure & Sports (GeoJSON)",
+                  "Global Data Backbone",
+                  "Global Supply Chain & Chokepoints",
+                  "Highway Infrastructure",
+                  "EV (GeoJSON)",
+                  "Heavy Industry",
+                  "REPD (GeoJSON)",
+                  "Basemap",
+                  "PIPELINE NEWS (REPD)",
+                  "Weather · EUMETSAT Lightning Imager"
+                ],
+                "class": "additive-host"
+              },
+              {
+                "surface": "fs-curtain-keys",
+                "kind": "childCount",
+                "baseline": 13,
+                "candidate": 14,
+                "class": "additive-host"
+              },
+              {
+                "surface": "fs-curtain-keys",
+                "kind": "inventory.groupCount",
+                "baseline": 13,
+                "candidate": 14,
+                "class": "additive-host"
+              },
+              {
+                "surface": "fs-curtain-keys",
+                "kind": "inventory.inputs",
+                "baseline": 65,
+                "candidate": 68,
+                "class": "additive-host"
+              },
+              {
+                "surface": "fs-curtain-keys",
+                "kind": "inventory.groups",
+                "baseline": [
+                  "Topology (GeoJSON)",
+                  "Assets (GeoJSON)",
+                  "Supermarkets (GeoJSON)",
+                  "Transit (GeoJSON)",
+                  "Leisure & Sports (GeoJSON)",
+                  "Global Data Backbone",
+                  "Global Supply Chain & Chokepoints",
+                  "Highway Infrastructure",
+                  "EV (GeoJSON)",
+                  "Heavy Industry",
+                  "REPD (GeoJSON)",
+                  "Basemap",
+                  "PIPELINE NEWS (REPD)"
+                ],
+                "candidate": [
+                  "Topology (GeoJSON)",
+                  "Assets (GeoJSON)",
+                  "Supermarkets (GeoJSON)",
+                  "Transit (GeoJSON)",
+                  "Leisure & Sports (GeoJSON)",
+                  "Global Data Backbone",
+                  "Global Supply Chain & Chokepoints",
+                  "Highway Infrastructure",
+                  "EV (GeoJSON)",
+                  "Heavy Industry",
+                  "REPD (GeoJSON)",
+                  "Basemap",
+                  "PIPELINE NEWS (REPD)",
+                  "Weather · EUMETSAT Lightning Imager"
+                ],
+                "class": "additive-host"
+              }
+            ],
+            "originalDiffs": [],
+            "additiveHostDiffs": 9,
+            "additive": [
+              {
+                "ukLightning": {
+                  "installed": true,
+                  "on": false,
+                  "requests": 0,
+                  "errors": [],
+                  "waiting_for": [],
+                  "last": null
+                }
+              }
+            ]
+          },
+          "pass": true,
+          "extras": {
+            "elementCountBaseline": 1468,
+            "elementCountCandidate": 1468,
+            "movedElements": [],
+            "additiveHostGrowth": [],
+            "styleChangedElements": [],
+            "signatureDivergence": null,
+            "scrollDiffs": [],
+            "hitTargetDiffs": [],
+            "occluderChanged": [],
+            "hitTargetsCompared": 17,
+            "hitTargetsPreexistingNotSelf": [
+              {
+                "name": "search-input",
+                "result": "OTHER:button",
+                "clippedBy": [],
+                "rect": {
+                  "x": 1621.8,
+                  "y": 77,
+                  "width": 242,
+                  "height": 24
+                }
+              },
+              {
+                "name": "search-btn",
+                "result": "OTHER:button",
+                "clippedBy": [],
+                "rect": {
+                  "x": 1869.8,
+                  "y": 77,
+                  "width": 35.2,
+                  "height": 24
+                }
+              },
+              {
+                "name": "layers-first-pipeline-row",
+                "result": "OUT-OF-VIEWPORT",
+                "clippedBy": [
+                  "div#scada-ui-container.scada-keys 17,653,1886,410",
+                  "body 0,0,1920,1080",
+                  "html.gridatlas-menu-hosted 0,0,1920,1080"
+                ],
+                "rect": {
+                  "x": 29,
+                  "y": 1923.61,
+                  "width": 925,
+                  "height": 19
+                }
+              },
+              {
+                "name": "about-last-control",
+                "result": "ANCESTOR:div.custom-map-attrib",
+                "clippedBy": [],
+                "rect": {
+                  "x": 1690,
+                  "y": 434.5,
+                  "width": 198.69,
+                  "height": 25.5
+                }
+              }
+            ],
+            "styleElementsEqual": true,
+            "styleLinksEqual": true,
+            "lightningTargets": [
+              {
+                "name": "lightning-toggle-fs",
+                "present": true,
+                "rect": {
+                  "x": 0,
+                  "y": 0,
+                  "width": 0,
+                  "height": 0
+                },
+                "centre": [
+                  0,
+                  0
+                ],
+                "inViewport": false,
+                "result": "OUT-OF-VIEWPORT",
+                "clippedBy": [],
+                "text": "Lightning flashes (optical) [WAIT]",
+                "ariaLabel": null,
+                "role": null,
+                "type": "checkbox",
+                "checked": false
+              },
+              {
+                "name": "lightning-toggle-menu",
+                "present": true,
+                "rect": {
+                  "x": 0,
+                  "y": 0,
+                  "width": 0,
+                  "height": 0
+                },
+                "centre": [
+                  0,
+                  0
+                ],
+                "inViewport": false,
+                "result": "OUT-OF-VIEWPORT",
+                "clippedBy": [
+                  "div#map-container.map-container 4,4,1912,632"
+                ],
+                "text": "Lightning flashes (optical) [WAIT]",
+                "ariaLabel": "Lightning flashes (optical)",
+                "role": null,
+                "type": "checkbox",
+                "checked": false
+              },
+              {
+                "name": "lightning-toggle-main",
+                "present": true,
+                "rect": {
+                  "x": 978,
+                  "y": 1923.61,
+                  "width": 925,
+                  "height": 19
+                },
+                "centre": [
+                  1440.5,
+                  1933.11
+                ],
+                "inViewport": false,
+                "result": "OUT-OF-VIEWPORT",
+                "clippedBy": [
+                  "div#scada-ui-container.scada-keys 17,653,1886,410",
+                  "body 0,0,1920,1080",
+                  "html.gridatlas-menu-hosted 0,0,1920,1080"
+                ],
+                "text": "Lightning flashes (optical) [WAIT]",
+                "ariaLabel": null,
+                "role": null,
+                "type": "checkbox",
+                "checked": false
+              }
+            ],
+            "additiveNodes": [
+              {
+                "sig": "div.key-group[data-lightning-group=fs]",
+                "parent": "div#fs-curtain-keys",
+                "indexInParent": 13,
+                "siblings": 14,
+                "rect": {
+                  "x": 0,
+                  "y": 0,
+                  "width": 0,
+                  "height": 0
+                },
+                "descendants": 37
+              },
+              {
+                "sig": "div[data-lightning-group=menu]",
+                "parent": "div#gridatlas-menu-bar-panel-4.gm-panel.gm-panel-grid",
+                "indexInParent": 2,
+                "siblings": 4,
+                "rect": {
+                  "x": 0,
+                  "y": 0,
+                  "width": 0,
+                  "height": 0
+                },
+                "descendants": 5
+              },
+              {
+                "sig": "div.key-group[data-lightning-group=main]",
+                "parent": "div#scada-ui-container.scada-keys",
+                "indexInParent": 13,
+                "siblings": 14,
+                "rect": {
+                  "x": 966,
+                  "y": 1906.61,
+                  "width": 937,
+                  "height": 98
+                },
+                "descendants": 37
+              }
+            ],
+            "pass": true
+          },
+          "maskCounts": {
+            "baseline": {
+              "mask": 3,
+              "mask-map": 1,
+              "overlay": 8
+            },
+            "candidate": {
+              "mask": 3,
+              "mask-map": 1,
+              "overlay": 8,
+              "additive": 1
+            }
+          }
+        },
+        "fullscreen": {
+          "noteBaseline": {
+            "menuExpanded": "true",
+            "outcome": "opened \"View\" by real click (aria-expanded=true); entered fullscreen by real click on #btn-fullscreen (body.fs-active); curtain opened by real click on #fs-curtain-tab (hit-tested self first)",
+            "fsActive": true,
+            "fullscreenElement": null,
+            "curtainTabHit": {
+              "rect": [
+                1487,
+                607,
+                374,
+                44
+              ],
+              "inViewport": true,
+              "hit": "self"
+            },
+            "curtainOpen": true
+          },
+          "noteCandidate": {
+            "menuExpanded": "true",
+            "outcome": "opened \"View\" by real click (aria-expanded=true); entered fullscreen by real click on #btn-fullscreen (body.fs-active); curtain opened by real click on #fs-curtain-tab (hit-tested self first)",
+            "fsActive": true,
+            "fullscreenElement": null,
+            "curtainTabHit": {
+              "rect": [
+                1487,
+                607,
+                374,
+                44
+              ],
+              "inViewport": true,
+              "hit": "self"
+            },
+            "curtainOpen": true
+          },
+          "pixel": {
+            "width": 1920,
+            "height": 1080,
+            "sameSize": true,
+            "changed": 0,
+            "masked": 646164,
+            "considered": 1427436,
+            "changedPct": 0,
+            "bbox": null,
+            "bands": [],
+            "bandCount": 0,
+            "diffPng": "/tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/visual-challenge-B/parity/runs/resume-1920x1080/diff/desktop-1920x1080.fullscreen.diff.png"
+          },
+          "geometry": {
+            "compared": 54,
+            "diffs": [
+              {
+                "surface": "menu-panel-Grid",
+                "kind": "childCount",
+                "baseline": 3,
+                "candidate": 4,
+                "class": "additive-host"
+              },
+              {
+                "surface": "grid-panel-body",
+                "kind": "rect.height",
+                "baseline": 512,
+                "candidate": 434,
+                "delta": -78,
+                "class": "original"
+              },
+              {
+                "surface": "scada-ui-container",
+                "kind": "childCount",
+                "baseline": 13,
+                "candidate": 14,
+                "class": "additive-host"
+              },
+              {
+                "surface": "scada-ui-container",
+                "kind": "inventory.groupCount",
+                "baseline": 13,
+                "candidate": 14,
+                "class": "additive-host"
+              },
+              {
+                "surface": "scada-ui-container",
+                "kind": "inventory.inputs",
+                "baseline": 65,
+                "candidate": 68,
+                "class": "additive-host"
+              },
+              {
+                "surface": "scada-ui-container",
+                "kind": "inventory.groups",
+                "baseline": [
+                  "Topology (GeoJSON)",
+                  "Assets (GeoJSON)",
+                  "Supermarkets (GeoJSON)",
+                  "Transit (GeoJSON)",
+                  "Leisure & Sports (GeoJSON)",
+                  "Global Data Backbone",
+                  "Global Supply Chain & Chokepoints",
+                  "Highway Infrastructure",
+                  "EV (GeoJSON)",
+                  "Heavy Industry",
+                  "REPD (GeoJSON)",
+                  "Basemap",
+                  "PIPELINE NEWS (REPD)"
+                ],
+                "candidate": [
+                  "Topology (GeoJSON)",
+                  "Assets (GeoJSON)",
+                  "Supermarkets (GeoJSON)",
+                  "Transit (GeoJSON)",
+                  "Leisure & Sports (GeoJSON)",
+                  "Global Data Backbone",
+                  "Global Supply Chain & Chokepoints",
+                  "Highway Infrastructure",
+                  "EV (GeoJSON)",
+                  "Heavy Industry",
+                  "REPD (GeoJSON)",
+                  "Basemap",
+                  "PIPELINE NEWS (REPD)",
+                  "Weather · EUMETSAT Lightning Imager"
+                ],
+                "class": "additive-host"
+              },
+              {
+                "surface": "fs-curtain-keys",
+                "kind": "childCount",
+                "baseline": 13,
+                "candidate": 14,
+                "class": "additive-host"
+              },
+              {
+                "surface": "fs-curtain-keys",
+                "kind": "inventory.groupCount",
+                "baseline": 13,
+                "candidate": 14,
+                "class": "additive-host"
+              },
+              {
+                "surface": "fs-curtain-keys",
+                "kind": "inventory.inputs",
+                "baseline": 65,
+                "candidate": 68,
+                "class": "additive-host"
+              },
+              {
+                "surface": "fs-curtain-keys",
+                "kind": "inventory.groups",
+                "baseline": [
+                  "Topology (GeoJSON)",
+                  "Assets (GeoJSON)",
+                  "Supermarkets (GeoJSON)",
+                  "Transit (GeoJSON)",
+                  "Leisure & Sports (GeoJSON)",
+                  "Global Data Backbone",
+                  "Global Supply Chain & Chokepoints",
+                  "Highway Infrastructure",
+                  "EV (GeoJSON)",
+                  "Heavy Industry",
+                  "REPD (GeoJSON)",
+                  "Basemap",
+                  "PIPELINE NEWS (REPD)"
+                ],
+                "candidate": [
+                  "Topology (GeoJSON)",
+                  "Assets (GeoJSON)",
+                  "Supermarkets (GeoJSON)",
+                  "Transit (GeoJSON)",
+                  "Leisure & Sports (GeoJSON)",
+                  "Global Data Backbone",
+                  "Global Supply Chain & Chokepoints",
+                  "Highway Infrastructure",
+                  "EV (GeoJSON)",
+                  "Heavy Industry",
+                  "REPD (GeoJSON)",
+                  "Basemap",
+                  "PIPELINE NEWS (REPD)",
+                  "Weather · EUMETSAT Lightning Imager"
+                ],
+                "class": "additive-host"
+              }
+            ],
+            "originalDiffs": [
+              {
+                "surface": "grid-panel-body",
+                "kind": "rect.height",
+                "baseline": 512,
+                "candidate": 434,
+                "delta": -78,
+                "class": "original"
+              }
+            ],
+            "additiveHostDiffs": 9,
+            "additive": [
+              {
+                "ukLightning": {
+                  "installed": true,
+                  "on": false,
+                  "requests": 0,
+                  "errors": [],
+                  "waiting_for": [],
+                  "last": null
+                }
+              }
+            ]
+          },
+          "pass": false,
+          "extras": {
+            "elementCountBaseline": 1468,
+            "elementCountCandidate": 1468,
+            "movedElements": [
+              {
+                "index": 297,
+                "sig": "div.gm-panel-body",
+                "baseline": [
+                  1486.67,
+                  95,
+                  374.45,
+                  512
+                ],
+                "candidate": [
+                  1486.67,
+                  95,
+                  374.45,
+                  434
+                ],
+                "delta": {
+                  "x": 0,
+                  "y": 0,
+                  "width": 0,
+                  "height": -78
+                }
+              }
+            ],
+            "additiveHostGrowth": [],
+            "styleChangedElements": [],
+            "signatureDivergence": null,
+            "scrollDiffs": [
+              {
+                "selector": "#gridatlas-menu-bar .gm-panel:not([hidden])",
+                "kind": "scrollWidth",
+                "baseline": 374,
+                "candidate": 423,
+                "delta": 49
+              },
+              {
+                "selector": "#gridatlas-menu-bar-panel-4",
+                "kind": "scrollWidth",
+                "baseline": 374,
+                "candidate": 423,
+                "delta": 49
+              },
+              {
+                "selector": "#gridatlas-menu-bar-panel-4 .gm-panel-body",
+                "kind": "clientHeight",
+                "baseline": 512,
+                "candidate": 434,
+                "delta": -78
+              },
+              {
+                "selector": "#gridatlas-menu-bar-panel-4 .gm-panel-body",
+                "kind": "hiddenOverflowPx",
+                "baseline": 931,
+                "candidate": 1009,
+                "delta": 78
+              }
+            ],
+            "hitTargetDiffs": [
+              {
+                "name": "grid-last-visible-proxy",
+                "kind": "rect",
+                "baseline": {
+                  "x": 1743.64,
+                  "y": 519.34,
+                  "width": 111.48,
+                  "height": 58.53
+                },
+                "candidate": {
+                  "x": 1743.64,
+                  "y": 431.13,
+                  "width": 111.48,
+                  "height": 88.22
+                },
+                "baselineText": "Battery Storage [WAIT]",
+                "candidateText": "Offshore Wind (Operational Only) [WAIT]",
+                "dynamicRow": true
+              }
+            ],
+            "occluderChanged": [],
+            "hitTargetsCompared": 25,
+            "hitTargetsPreexistingNotSelf": [
+              {
+                "name": "dash-toggle",
+                "result": "OTHER:canvas.maplibregl-canvas",
+                "clippedBy": [],
+                "rect": {
+                  "x": 1775.59,
+                  "y": 1024,
+                  "width": 132.41,
+                  "height": 44
+                }
+              },
+              {
+                "name": "search-input",
+                "result": "OTHER:div.gm-layer-group",
+                "clippedBy": [],
+                "rect": {
+                  "x": 1626.8,
+                  "y": 100,
+                  "width": 242,
+                  "height": 24
+                }
+              },
+              {
+                "name": "attribution",
+                "result": "OUT-OF-VIEWPORT",
+                "clippedBy": [],
+                "rect": {
+                  "x": 0,
+                  "y": 0,
+                  "width": 0,
+                  "height": 0
+                }
+              },
+              {
+                "name": "layers-400kv-row",
+                "result": "OTHER:canvas.maplibregl-canvas",
+                "clippedBy": [],
+                "rect": {
+                  "x": 29,
+                  "y": 34,
+                  "width": 925,
+                  "height": 19
+                }
+              },
+              {
+                "name": "layers-first-visible-row",
+                "result": "OTHER:canvas.maplibregl-canvas",
+                "clippedBy": [],
+                "rect": {
+                  "x": 29,
+                  "y": 34,
+                  "width": 925,
+                  "height": 19
+                }
+              },
+              {
+                "name": "layers-last-visible-row",
+                "result": "OTHER:canvas.maplibregl-canvas",
+                "clippedBy": [],
+                "rect": {
+                  "x": 978,
+                  "y": 387,
+                  "width": 925,
+                  "height": 19
+                }
+              },
+              {
+                "name": "layers-first-pipeline-row",
+                "result": "OUT-OF-VIEWPORT",
+                "clippedBy": [
+                  "div#scada-ui-container.scada-keys 17,17,1886,410",
+                  "body.fs-active 0,0,1920,1080",
+                  "html.gridatlas-menu-hosted.fs-active 0,0,1920,1080"
+                ],
+                "rect": {
+                  "x": 29,
+                  "y": 1288,
+                  "width": 925,
+                  "height": 19
+                }
+              },
+              {
+                "name": "grid-last-proxy-in-dom",
+                "result": "OUT-OF-VIEWPORT",
+                "clippedBy": [
+                  "div.gm-panel-body 1487,95,374,512",
+                  "div#gridatlas-menu-bar-panel-4.gm-panel.gm-panel-grid 1486,35,376,620",
+                  "div#map-container.map-container.is-fullscreen 0,0,1920,1080",
+                  "body.fs-active 0,0,1920,1080",
+                  "html.gridatlas-menu-hosted.fs-active 0,0,1920,1080"
+                ],
+                "rect": {
+                  "x": 1743.64,
+                  "y": 1463.41,
+                  "width": 111.48,
+                  "height": 44
+                }
+              },
+              {
+                "name": "btn-fullscreen-exit",
+                "result": "OUT-OF-VIEWPORT",
+                "clippedBy": [],
+                "rect": {
+                  "x": 0,
+                  "y": 0,
+                  "width": 0,
+                  "height": 0
+                }
+              },
+              {
+                "name": "curtain-400kv-row",
+                "result": "OTHER:canvas.maplibregl-canvas",
+                "clippedBy": [],
+                "rect": {
+                  "x": 28,
+                  "y": 65,
+                  "width": 924,
+                  "height": 19
+                }
+              },
+              {
+                "name": "curtain-first-visible-row",
+                "result": "OTHER:canvas.maplibregl-canvas",
+                "clippedBy": [],
+                "rect": {
+                  "x": 28,
+                  "y": 65,
+                  "width": 924,
+                  "height": 19
+                }
+              },
+              {
+                "name": "curtain-last-visible-row",
+                "result": "OTHER:canvas.maplibregl-canvas",
+                "clippedBy": [],
+                "rect": {
+                  "x": 980,
+                  "y": 719,
+                  "width": 924,
+                  "height": 19
+                }
+              }
+            ],
+            "styleElementsEqual": true,
+            "styleLinksEqual": true,
+            "lightningTargets": [
+              {
+                "name": "lightning-toggle-fs",
+                "present": true,
+                "rect": {
+                  "x": 980,
+                  "y": 1319,
+                  "width": 924,
+                  "height": 19
+                },
+                "centre": [
+                  1442,
+                  1328.5
+                ],
+                "inViewport": false,
+                "result": "OUT-OF-VIEWPORT",
+                "clippedBy": [
+                  "div#fs-curtain.curtain-open 0,0,1920,756",
+                  "body.fs-active 0,0,1920,1080",
+                  "html.gridatlas-menu-hosted.fs-active 0,0,1920,1080"
+                ],
+                "text": "Lightning flashes (optical) [WAIT]",
+                "ariaLabel": null,
+                "role": null,
+                "type": "checkbox",
+                "checked": false
+              },
+              {
+                "name": "lightning-toggle-menu",
+                "present": true,
+                "rect": {
+                  "x": 1492.67,
+                  "y": 557,
+                  "width": 362.45,
+                  "height": 44
+                },
+                "centre": [
+                  1673.9,
+                  579
+                ],
+                "inViewport": true,
+                "result": "self",
+                "clippedBy": [],
+                "text": "Lightning flashes (optical) [WAIT]",
+                "ariaLabel": "Lightning flashes (optical)",
+                "role": null,
+                "type": "checkbox",
+                "checked": false
+              },
+              {
+                "name": "lightning-toggle-main",
+                "present": true,
+                "rect": {
+                  "x": 978,
+                  "y": 1288,
+                  "width": 925,
+                  "height": 19
+                },
+                "centre": [
+                  1440.5,
+                  1297.5
+                ],
+                "inViewport": false,
+                "result": "OUT-OF-VIEWPORT",
+                "clippedBy": [
+                  "div#scada-ui-container.scada-keys 17,17,1886,410",
+                  "body.fs-active 0,0,1920,1080",
+                  "html.gridatlas-menu-hosted.fs-active 0,0,1920,1080"
+                ],
+                "text": "Lightning flashes (optical) [WAIT]",
+                "ariaLabel": null,
+                "role": null,
+                "type": "checkbox",
+                "checked": false
+              }
+            ],
+            "additiveNodes": [
+              {
+                "sig": "div.key-group[data-lightning-group=fs]",
+                "parent": "div#fs-curtain-keys",
+                "indexInParent": 13,
+                "siblings": 14,
+                "rect": {
+                  "x": 968,
+                  "y": 1302,
+                  "width": 936,
+                  "height": 98
+                },
+                "descendants": 37
+              },
+              {
+                "sig": "div[data-lightning-group=menu]",
+                "parent": "div#gridatlas-menu-bar-panel-4.gm-panel.gm-panel-grid",
+                "indexInParent": 2,
+                "siblings": 4,
+                "rect": {
+                  "x": 1486.67,
+                  "y": 529,
+                  "width": 374.45,
+                  "height": 78
+                },
+                "descendants": 5
+              },
+              {
+                "sig": "div.key-group[data-lightning-group=main]",
+                "parent": "div#scada-ui-container.scada-keys",
+                "indexInParent": 13,
+                "siblings": 14,
+                "rect": {
+                  "x": 966,
+                  "y": 1271,
+                  "width": 937,
+                  "height": 98
+                },
+                "descendants": 37
+              }
+            ],
+            "pass": false
+          },
+          "maskCounts": {
+            "baseline": {
+              "mask": 3,
+              "mask-map": 1,
+              "overlay": 8
+            },
+            "candidate": {
+              "mask": 3,
+              "mask-map": 1,
+              "overlay": 8,
+              "additive": 3
+            }
+          }
+        },
+        "deeplink": {
+          "noteBaseline": {
+            "outcome": "deep link http://127.0.0.1:8141/gridatlas/atlas/?technology=solar&latitude=52.6369&longitude=-1.1398&zoom=10&project=GRIDATLAS_PROOF_controls&capacity_mw=10 -> card present"
+          },
+          "noteCandidate": {
+            "outcome": "deep link http://127.0.0.1:8142/wt/atlas/v/202610261949/?technology=solar&latitude=52.6369&longitude=-1.1398&zoom=10&project=GRIDATLAS_PROOF_controls&capacity_mw=10 -> card present"
+          },
+          "pixel": {
+            "width": 1920,
+            "height": 1080,
+            "sameSize": true,
+            "changed": 0,
+            "masked": 937674,
+            "considered": 1135926,
+            "changedPct": 0,
+            "bbox": null,
+            "bands": [],
+            "bandCount": 0,
+            "diffPng": "/tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/visual-challenge-B/parity/runs/resume-1920x1080/diff/desktop-1920x1080.deeplink.diff.png"
+          },
+          "geometry": {
+            "compared": 56,
+            "diffs": [
+              {
+                "surface": "menu-panel-Grid",
+                "kind": "childCount",
+                "baseline": 3,
+                "candidate": 4,
+                "class": "additive-host"
+              },
+              {
+                "surface": "scada-ui-container",
+                "kind": "childCount",
+                "baseline": 13,
+                "candidate": 14,
+                "class": "additive-host"
+              },
+              {
+                "surface": "scada-ui-container",
+                "kind": "inventory.groupCount",
+                "baseline": 13,
+                "candidate": 14,
+                "class": "additive-host"
+              },
+              {
+                "surface": "scada-ui-container",
+                "kind": "inventory.inputs",
+                "baseline": 65,
+                "candidate": 68,
+                "class": "additive-host"
+              },
+              {
+                "surface": "scada-ui-container",
+                "kind": "inventory.groups",
+                "baseline": [
+                  "Topology (GeoJSON)",
+                  "Assets (GeoJSON)",
+                  "Supermarkets (GeoJSON)",
+                  "Transit (GeoJSON)",
+                  "Leisure & Sports (GeoJSON)",
+                  "Global Data Backbone",
+                  "Global Supply Chain & Chokepoints",
+                  "Highway Infrastructure",
+                  "EV (GeoJSON)",
+                  "Heavy Industry",
+                  "REPD (GeoJSON)",
+                  "Basemap",
+                  "PIPELINE NEWS (REPD)"
+                ],
+                "candidate": [
+                  "Topology (GeoJSON)",
+                  "Assets (GeoJSON)",
+                  "Supermarkets (GeoJSON)",
+                  "Transit (GeoJSON)",
+                  "Leisure & Sports (GeoJSON)",
+                  "Global Data Backbone",
+                  "Global Supply Chain & Chokepoints",
+                  "Highway Infrastructure",
+                  "EV (GeoJSON)",
+                  "Heavy Industry",
+                  "REPD (GeoJSON)",
+                  "Basemap",
+                  "PIPELINE NEWS (REPD)",
+                  "Weather · EUMETSAT Lightning Imager"
+                ],
+                "class": "additive-host"
+              },
+              {
+                "surface": "fs-curtain-keys",
+                "kind": "childCount",
+                "baseline": 13,
+                "candidate": 14,
+                "class": "additive-host"
+              },
+              {
+                "surface": "fs-curtain-keys",
+                "kind": "inventory.groupCount",
+                "baseline": 13,
+                "candidate": 14,
+                "class": "additive-host"
+              },
+              {
+                "surface": "fs-curtain-keys",
+                "kind": "inventory.inputs",
+                "baseline": 65,
+                "candidate": 68,
+                "class": "additive-host"
+              },
+              {
+                "surface": "fs-curtain-keys",
+                "kind": "inventory.groups",
+                "baseline": [
+                  "Topology (GeoJSON)",
+                  "Assets (GeoJSON)",
+                  "Supermarkets (GeoJSON)",
+                  "Transit (GeoJSON)",
+                  "Leisure & Sports (GeoJSON)",
+                  "Global Data Backbone",
+                  "Global Supply Chain & Chokepoints",
+                  "Highway Infrastructure",
+                  "EV (GeoJSON)",
+                  "Heavy Industry",
+                  "REPD (GeoJSON)",
+                  "Basemap",
+                  "PIPELINE NEWS (REPD)"
+                ],
+                "candidate": [
+                  "Topology (GeoJSON)",
+                  "Assets (GeoJSON)",
+                  "Supermarkets (GeoJSON)",
+                  "Transit (GeoJSON)",
+                  "Leisure & Sports (GeoJSON)",
+                  "Global Data Backbone",
+                  "Global Supply Chain & Chokepoints",
+                  "Highway Infrastructure",
+                  "EV (GeoJSON)",
+                  "Heavy Industry",
+                  "REPD (GeoJSON)",
+                  "Basemap",
+                  "PIPELINE NEWS (REPD)",
+                  "Weather · EUMETSAT Lightning Imager"
+                ],
+                "class": "additive-host"
+              }
+            ],
+            "originalDiffs": [],
+            "additiveHostDiffs": 9,
+            "additive": [
+              {
+                "ukLightning": {
+                  "installed": true,
+                  "on": false,
+                  "requests": 0,
+                  "errors": [],
+                  "waiting_for": [],
+                  "last": null
+                }
+              }
+            ]
+          },
+          "pass": true,
+          "extras": {
+            "elementCountBaseline": 1526,
+            "elementCountCandidate": 1526,
+            "movedElements": [],
+            "additiveHostGrowth": [],
+            "styleChangedElements": [],
+            "signatureDivergence": null,
+            "scrollDiffs": [],
+            "hitTargetDiffs": [],
+            "occluderChanged": [],
+            "hitTargetsCompared": 17,
+            "hitTargetsPreexistingNotSelf": [
+              {
+                "name": "attribution",
+                "result": "OUT-OF-VIEWPORT",
+                "clippedBy": [
+                  "div#map-container.map-container 4,4,1912,632"
+                ],
+                "rect": {
+                  "x": 0,
+                  "y": 0,
+                  "width": 0,
+                  "height": 0
+                }
+              },
+              {
+                "name": "layers-first-pipeline-row",
+                "result": "OUT-OF-VIEWPORT",
+                "clippedBy": [
+                  "div#scada-ui-container.scada-keys 17,653,1886,410",
+                  "body 0,0,1920,1080",
+                  "html.gridatlas-menu-hosted 0,0,1920,1080"
+                ],
+                "rect": {
+                  "x": 29,
+                  "y": 1923.61,
+                  "width": 925,
+                  "height": 19
+                }
+              }
+            ],
+            "styleElementsEqual": true,
+            "styleLinksEqual": true,
+            "lightningTargets": [
+              {
+                "name": "lightning-toggle-fs",
+                "present": true,
+                "rect": {
+                  "x": 0,
+                  "y": 0,
+                  "width": 0,
+                  "height": 0
+                },
+                "centre": [
+                  0,
+                  0
+                ],
+                "inViewport": false,
+                "result": "OUT-OF-VIEWPORT",
+                "clippedBy": [],
+                "text": "Lightning flashes (optical) [WAIT]",
+                "ariaLabel": null,
+                "role": null,
+                "type": "checkbox",
+                "checked": false
+              },
+              {
+                "name": "lightning-toggle-menu",
+                "present": true,
+                "rect": {
+                  "x": 0,
+                  "y": 0,
+                  "width": 0,
+                  "height": 0
+                },
+                "centre": [
+                  0,
+                  0
+                ],
+                "inViewport": false,
+                "result": "OUT-OF-VIEWPORT",
+                "clippedBy": [
+                  "div#map-container.map-container 4,4,1912,632"
+                ],
+                "text": "Lightning flashes (optical) [WAIT]",
+                "ariaLabel": "Lightning flashes (optical)",
+                "role": null,
+                "type": "checkbox",
+                "checked": false
+              },
+              {
+                "name": "lightning-toggle-main",
+                "present": true,
+                "rect": {
+                  "x": 978,
+                  "y": 1923.61,
+                  "width": 925,
+                  "height": 19
+                },
+                "centre": [
+                  1440.5,
+                  1933.11
+                ],
+                "inViewport": false,
+                "result": "OUT-OF-VIEWPORT",
+                "clippedBy": [
+                  "div#scada-ui-container.scada-keys 17,653,1886,410",
+                  "body 0,0,1920,1080",
+                  "html.gridatlas-menu-hosted 0,0,1920,1080"
+                ],
+                "text": "Lightning flashes (optical) [WAIT]",
+                "ariaLabel": null,
+                "role": null,
+                "type": "checkbox",
+                "checked": false
+              }
+            ],
+            "additiveNodes": [
+              {
+                "sig": "div.key-group[data-lightning-group=fs]",
+                "parent": "div#fs-curtain-keys",
+                "indexInParent": 13,
+                "siblings": 14,
+                "rect": {
+                  "x": 0,
+                  "y": 0,
+                  "width": 0,
+                  "height": 0
+                },
+                "descendants": 37
+              },
+              {
+                "sig": "div[data-lightning-group=menu]",
+                "parent": "div#gridatlas-menu-bar-panel-4.gm-panel.gm-panel-grid",
+                "indexInParent": 2,
+                "siblings": 4,
+                "rect": {
+                  "x": 0,
+                  "y": 0,
+                  "width": 0,
+                  "height": 0
+                },
+                "descendants": 5
+              },
+              {
+                "sig": "div.key-group[data-lightning-group=main]",
+                "parent": "div#scada-ui-container.scada-keys",
+                "indexInParent": 13,
+                "siblings": 14,
+                "rect": {
+                  "x": 966,
+                  "y": 1906.61,
+                  "width": 937,
+                  "height": 98
+                },
+                "descendants": 37
+              }
+            ],
+            "pass": true
+          },
+          "maskCounts": {
+            "baseline": {
+              "mask": 3,
+              "mask-map": 1,
+              "overlay": 7
+            },
+            "candidate": {
+              "mask": 3,
+              "mask-map": 1,
+              "overlay": 7,
+              "additive": 1
+            }
+          }
+        }
+      },
+      "settleBaseline": {
+        "composed": {
+          "generation": "202609241334",
+          "router": null,
+          "title": "GlobalGrid2050 | UK Region v8 (Experimental)"
+        },
+        "menuInstalled": true,
+        "waits": [
+          {
+            "wait": "goto:domcontentloaded",
+            "at_ms": 38
+          },
+          {
+            "wait": "composer:document.write-complete",
+            "at_ms": 499,
+            "generation": "202609241334",
+            "router": null,
+            "title": "GlobalGrid2050 | UK Region v8 (Experimental)"
+          },
+          {
+            "wait": "shim:waitForComposition(menuBar.installed)",
+            "at_ms": 1792,
+            "engine": 120,
+            "pn": 6,
+            "scada": true,
+            "curtain": true,
+            "menuInstalled": true,
+            "map": true,
+            "waitedMs": 1293
+          },
+          {
+            "wait": "menu-bar:6-titles+>=60-proxies",
+            "at_ms": 2067
+          },
+          {
+            "wait": "weather-module:installed-or-absent",
+            "at_ms": 2486
+          },
+          {
+            "0": "a",
+            "1": "b",
+            "2": "s",
+            "3": "e",
+            "4": "n",
+            "5": "t",
+            "wait": "uk-lightning:installed-or-absent",
+            "at_ms": 2779
+          },
+          {
+            "wait": "networkidle",
+            "at_ms": 6043
+          },
+          {
+            "wait": "fixed-settle:3000ms",
+            "at_ms": 9045
+          }
+        ]
+      },
+      "settleCandidate": {
+        "composed": {
+          "generation": "202610261949",
+          "router": null,
+          "title": "GlobalGrid2050 | UK Region v8 (Experimental)"
+        },
+        "menuInstalled": true,
+        "waits": [
+          {
+            "wait": "goto:domcontentloaded",
+            "at_ms": 25
+          },
+          {
+            "wait": "composer:document.write-complete",
+            "at_ms": 248,
+            "generation": "202610261949",
+            "router": null,
+            "title": "GlobalGrid2050 | UK Region v8 (Experimental)"
+          },
+          {
+            "wait": "shim:waitForComposition(menuBar.installed)",
+            "at_ms": 1362,
+            "engine": 120,
+            "pn": 6,
+            "scada": true,
+            "curtain": true,
+            "menuInstalled": true,
+            "map": true,
+            "waitedMs": 1113
+          },
+          {
+            "wait": "menu-bar:6-titles+>=60-proxies",
+            "at_ms": 1713
+          },
+          {
+            "wait": "weather-module:installed-or-absent",
+            "at_ms": 1800
+          },
+          {
+            "wait": "uk-lightning:installed-or-absent",
+            "at_ms": 2031,
+            "installed": true,
+            "on": false,
+            "requests": 0
+          },
+          {
+            "wait": "networkidle",
+            "at_ms": 4577
+          },
+          {
+            "wait": "fixed-settle:3000ms",
+            "at_ms": 7577
+          }
+        ]
+      },
+      "networkBaseline": {
+        "127.0.0.1:8141": {
+          "requests": 42,
+          "ok": 42,
+          "failed": 0,
+          "http4xx5xx": 0,
+          "fixture": 0,
+          "sampleFailure": null,
+          "sample": "http://127.0.0.1:8141/gridatlas/atlas/"
+        },
+        "cdn.jsdelivr.net": {
+          "requests": 10,
+          "ok": 0,
+          "failed": 0,
+          "http4xx5xx": 0,
+          "fixture": 10,
+          "sampleFailure": null,
+          "sample": "https://cdn.jsdelivr.net/npm/maplibre-gl@3.6.2/dist/maplibre-gl.css"
+        },
+        "raw.githubusercontent.com": {
+          "requests": 3,
+          "ok": 0,
+          "failed": 3,
+          "http4xx5xx": 0,
+          "fixture": 0,
+          "sampleFailure": "net::ERR_BLOCKED_BY_CLIENT.Inspector",
+          "sample": "https://raw.githubusercontent.com/Ventusltd/data-grid-gb/1c9909d1138704b29235c27fd769436dda8a0b18/derived/connection-points.v3.json"
+        },
+        "basemaps.cartocdn.com": {
+          "requests": 2,
+          "ok": 0,
+          "failed": 0,
+          "http4xx5xx": 0,
+          "fixture": 2,
+          "sampleFailure": null,
+          "sample": "https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json"
+        },
+        "ventusltd.github.io": {
+          "requests": 3,
+          "ok": 0,
+          "failed": 2,
+          "http4xx5xx": 0,
+          "fixture": 1,
+          "sampleFailure": "net::ERR_BLOCKED_BY_CLIENT.Inspector",
+          "sample": "https://ventusltd.github.io/ventus-grid-engine/genome/engine-graph.json"
+        },
+        "extensions.duckdb.org": {
+          "requests": 1,
+          "ok": 0,
+          "failed": 1,
+          "http4xx5xx": 0,
+          "fixture": 0,
+          "sampleFailure": "net::ERR_BLOCKED_BY_CLIENT.Inspector",
+          "sample": "https://extensions.duckdb.org/v1.1.1/wasm_eh/parquet.duckdb_extension.wasm"
+        }
+      },
+      "networkCandidate": {
+        "127.0.0.1:8142": {
+          "requests": 42,
+          "ok": 42,
+          "failed": 0,
+          "http4xx5xx": 0,
+          "fixture": 0,
+          "sampleFailure": null,
+          "sample": "http://127.0.0.1:8142/wt/atlas/v/202610261949/"
+        },
+        "cdn.jsdelivr.net": {
+          "requests": 10,
+          "ok": 0,
+          "failed": 0,
+          "http4xx5xx": 0,
+          "fixture": 10,
+          "sampleFailure": null,
+          "sample": "https://cdn.jsdelivr.net/npm/maplibre-gl@3.6.2/dist/maplibre-gl.css"
+        },
+        "raw.githubusercontent.com": {
+          "requests": 3,
+          "ok": 0,
+          "failed": 3,
+          "http4xx5xx": 0,
+          "fixture": 0,
+          "sampleFailure": "net::ERR_BLOCKED_BY_CLIENT.Inspector",
+          "sample": "https://raw.githubusercontent.com/Ventusltd/data-grid-gb/1c9909d1138704b29235c27fd769436dda8a0b18/derived/connection-points.v3.json"
+        },
+        "basemaps.cartocdn.com": {
+          "requests": 2,
+          "ok": 0,
+          "failed": 0,
+          "http4xx5xx": 0,
+          "fixture": 2,
+          "sampleFailure": null,
+          "sample": "https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json"
+        },
+        "ventusltd.github.io": {
+          "requests": 3,
+          "ok": 0,
+          "failed": 2,
+          "http4xx5xx": 0,
+          "fixture": 1,
+          "sampleFailure": "net::ERR_BLOCKED_BY_CLIENT.Inspector",
+          "sample": "https://ventusltd.github.io/ventus-grid-engine/genome/engine-graph.json"
+        },
+        "extensions.duckdb.org": {
+          "requests": 1,
+          "ok": 0,
+          "failed": 1,
+          "http4xx5xx": 0,
+          "fixture": 0,
+          "sampleFailure": "net::ERR_BLOCKED_BY_CLIENT.Inspector",
+          "sample": "https://extensions.duckdb.org/v1.1.1/wasm_eh/parquet.duckdb_extension.wasm"
+        }
+      }
+    }
+  },
+  "verdict": "FAIL",
+  "failures": [
+    {
+      "viewport": "desktop-1920x1080",
+      "state": "grid",
+      "kind": "geometry",
+      "changedPct": 0,
+      "geometryDiffs": 10,
+      "originalSurfaceDiffs": 1,
+      "movedElements": 1,
+      "styleChangedElements": 0,
+      "hitTargetDiffs": 1,
+      "scrollDiffs": 4,
+      "firstGeometryDiffs": [
+        {
+          "surface": "grid-panel-body",
+          "kind": "rect.height",
+          "baseline": 512,
+          "candidate": 434,
+          "delta": -78,
+          "class": "original"
+        }
+      ],
+      "firstMoved": [
+        {
+          "index": 297,
+          "sig": "div.gm-panel-body",
+          "baseline": [
+            1481.67,
+            100,
+            374.45,
+            512
+          ],
+          "candidate": [
+            1481.67,
+            100,
+            374.45,
+            434
+          ],
+          "delta": {
+            "x": 0,
+            "y": 0,
+            "width": 0,
+            "height": -78
+          }
+        }
+      ],
+      "hitTargetDiffList": [
+        {
+          "name": "grid-last-visible-proxy",
+          "kind": "rect",
+          "baseline": {
+            "x": 1738.64,
+            "y": 524.34,
+            "width": 111.48,
+            "height": 58.53
+          },
+          "candidate": {
+            "x": 1738.64,
+            "y": 436.13,
+            "width": 111.48,
+            "height": 88.22
+          },
+          "baselineText": "Battery Storage [WAIT]",
+          "candidateText": "Offshore Wind (Operational Only) [WAIT]",
+          "dynamicRow": true
+        }
+      ],
+      "scrollDiffList": [
+        {
+          "selector": "#gridatlas-menu-bar .gm-panel:not([hidden])",
+          "kind": "scrollWidth",
+          "baseline": 374,
+          "candidate": 423,
+          "delta": 49
+        },
+        {
+          "selector": "#gridatlas-menu-bar-panel-4",
+          "kind": "scrollWidth",
+          "baseline": 374,
+          "candidate": 423,
+          "delta": 49
+        },
+        {
+          "selector": "#gridatlas-menu-bar-panel-4 .gm-panel-body",
+          "kind": "clientHeight",
+          "baseline": 512,
+          "candidate": 434,
+          "delta": -78
+        },
+        {
+          "selector": "#gridatlas-menu-bar-panel-4 .gm-panel-body",
+          "kind": "hiddenOverflowPx",
+          "baseline": 931,
+          "candidate": 1009,
+          "delta": 78
+        }
+      ]
+    },
+    {
+      "viewport": "desktop-1920x1080",
+      "state": "fullscreen",
+      "kind": "geometry",
+      "changedPct": 0,
+      "geometryDiffs": 10,
+      "originalSurfaceDiffs": 1,
+      "movedElements": 1,
+      "styleChangedElements": 0,
+      "hitTargetDiffs": 1,
+      "scrollDiffs": 4,
+      "firstGeometryDiffs": [
+        {
+          "surface": "grid-panel-body",
+          "kind": "rect.height",
+          "baseline": 512,
+          "candidate": 434,
+          "delta": -78,
+          "class": "original"
+        }
+      ],
+      "firstMoved": [
+        {
+          "index": 297,
+          "sig": "div.gm-panel-body",
+          "baseline": [
+            1486.67,
+            95,
+            374.45,
+            512
+          ],
+          "candidate": [
+            1486.67,
+            95,
+            374.45,
+            434
+          ],
+          "delta": {
+            "x": 0,
+            "y": 0,
+            "width": 0,
+            "height": -78
+          }
+        }
+      ],
+      "hitTargetDiffList": [
+        {
+          "name": "grid-last-visible-proxy",
+          "kind": "rect",
+          "baseline": {
+            "x": 1743.64,
+            "y": 519.34,
+            "width": 111.48,
+            "height": 58.53
+          },
+          "candidate": {
+            "x": 1743.64,
+            "y": 431.13,
+            "width": 111.48,
+            "height": 88.22
+          },
+          "baselineText": "Battery Storage [WAIT]",
+          "candidateText": "Offshore Wind (Operational Only) [WAIT]",
+          "dynamicRow": true
+        }
+      ],
+      "scrollDiffList": [
+        {
+          "selector": "#gridatlas-menu-bar .gm-panel:not([hidden])",
+          "kind": "scrollWidth",
+          "baseline": 374,
+          "candidate": 423,
+          "delta": 49
+        },
+        {
+          "selector": "#gridatlas-menu-bar-panel-4",
+          "kind": "scrollWidth",
+          "baseline": 374,
+          "candidate": 423,
+          "delta": 49
+        },
+        {
+          "selector": "#gridatlas-menu-bar-panel-4 .gm-panel-body",
+          "kind": "clientHeight",
+          "baseline": 512,
+          "candidate": 434,
+          "delta": -78
+        },
+        {
+          "selector": "#gridatlas-menu-bar-panel-4 .gm-panel-body",
+          "kind": "hiddenOverflowPx",
+          "baseline": 931,
+          "candidate": 1009,
+          "delta": 78
+        }
+      ]
+    }
+  ]
+}

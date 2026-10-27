@@ -1,0 +1,12 @@
+  MATCH           streaming-parquet-bridge     atlas/cartridges/202609241251-streaming-parquet-bridge-v9-5.js
+  MATCH           uk-gazetteer-flyto           atlas/cartridges/202609071213-place-global-search-v9-5.js
+  MATCH           sld-sandbox                  atlas/cartridges/202609241334-sld-sandbox-v9-8.js
+  MATCH           substation-intelligence      atlas/cartridges/202609062358-substation-intelligence-v9-63.js
+  PRESENT         shell:index.html             atlas/releases/202608300453-atlas-v9/index.html
+
+  from        202610262323  v9.161
+  restoring   202609241334  v9.156   (1 generation back)
+  as          202610262352  202610262352-gridatlas-v9.156
+  cartridges  4 verified against committed bytes
+
+--dry-run: nothing written

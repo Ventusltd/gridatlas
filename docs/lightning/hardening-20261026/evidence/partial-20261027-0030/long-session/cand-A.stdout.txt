@@ -1,0 +1,14 @@
+{"label":"S0 boot (lightning OFF)","heap":18.56,"nodes":2660,"jsL":199,"dom":1560,"src":56,"lay":100,"iv":3,"ivL":0,"to":5,"toL":0,"S":{"on":false,"serial":0,"requests":0,"errors":0,"sfs":2,"timer":false,"period":"24h","last":null,"drawn":null},"lis":{"window":{"own":21,"subtree":21},"document":{"own":16,"subtree":160},"panel":{"own":3,"subtree":4},"lightningGroup":{"own":1,"subtree":1}}}
+{"label":"S1 ON + 7D settled","heap":19.87,"nodes":2678,"jsL":202,"dom":1560,"src":57,"lay":101,"iv":3,"ivL":0,"to":1,"toL":0,"S":{"on":true,"serial":2,"requests":6,"errors":0,"sfs":2,"timer":true,"period":"7d","last":"PARTIAL","drawn":408},"lis":{"window":{"own":21,"subtree":21},"document":{"own":16,"subtree":160},"panel":{"own":3,"subtree":4},"lightningGroup":{"own":1,"subtree":1}}}
+WALL A start 84s
+node:internal/modules/run_main:123
+    triggerUncaughtException(
+    ^
+
+page.waitForTimeout: Target page, context or browser has been closed
+    at settle (/tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/long-session/long-session.mjs:113:44)
+    at /tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/long-session/long-session.mjs:136:28 {
+  log: []
+}
+
+Node.js v22.23.4

@@ -1,0 +1,141 @@
+{
+ "route": "http://127.0.0.1:8174/wt/atlas/v/202610262323/",
+ "harness": "lead-shim + self-fixture (SYNTHETIC); Chromium 153.0.8010.12 headless desktop 1440x900 locale en-GB; clock page.clock.install + pauseAt, then setSystemTime per case (Date frozen at the exact instant)",
+ "startedAt": "2026-10-26T23:49:28.797Z",
+ "tzs": [
+  "UTC"
+ ],
+ "results": [
+  {
+   "tz": "UTC",
+   "id": "T01",
+   "title": "24H window spanning the 25 Oct 01:00 UTC clock change",
+   "result": "PASS",
+   "asserts": [
+    {
+     "what": "window [2026-10-24T01:30:00.000Z, 2026-10-25T01:30:00.000Z)",
+     "ok": true,
+     "observed": {
+      "s": "2026-10-24T01:30:00.000Z",
+      "e": "2026-10-25T01:30:00.000Z"
+     }
+    },
+    {
+     "what": "caption shows 2026-10-24 01:30 UTC → 2026-10-25 01:30 UTC",
+     "ok": true,
+     "observed": "Window 2026-10-24 01:30 UTC → 2026-10-25 01:30 UTC (24 hours, latest)"
+    },
+    {
+     "what": "all displayed times carry UTC, no local zone",
+     "ok": true,
+     "observed": []
+    },
+    {
+     "what": "flashes = 48 (no hour lost/double counted)",
+     "ok": true,
+     "observed": {
+      "got": 48,
+      "uniq": true,
+      "missing": [],
+      "extra": []
+     }
+    },
+    {
+     "what": "map source features = drawn",
+     "ok": true,
+     "observed": {
+      "map": 48,
+      "drawn": 48
+     }
+    },
+    {
+     "what": "window [2026-10-25T12:30:00.000Z, 2026-10-26T00:30:00.000Z)",
+     "ok": true,
+     "observed": {
+      "s": "2026-10-25T12:30:00.000Z",
+      "e": "2026-10-26T00:30:00.000Z"
+     }
+    },
+    {
+     "what": "caption shows 2026-10-25 12:30 UTC → 2026-10-26 00:30 UTC",
+     "ok": true,
+     "observed": "Window 2026-10-25 12:30 UTC → 2026-10-26 00:30 UTC (12 hours, latest)"
+    },
+    {
+     "what": "all displayed times carry UTC, no local zone",
+     "ok": true,
+     "observed": []
+    },
+    {
+     "what": "flashes = 24 (no hour lost/double counted)",
+     "ok": true,
+     "observed": {
+      "got": 24,
+      "uniq": true,
+      "missing": [],
+      "extra": []
+     }
+    },
+    {
+     "what": "map source features = drawn",
+     "ok": true,
+     "observed": {
+      "map": 24,
+      "drawn": 24
+     }
+    },
+    {
+     "what": "window [2026-10-25T00:30:00.000Z, 2026-10-26T00:30:00.000Z)",
+     "ok": true,
+     "observed": {
+      "s": "2026-10-25T00:30:00.000Z",
+      "e": "2026-10-26T00:30:00.000Z"
+     }
+    },
+    {
+     "what": "caption shows 2026-10-25 00:30 UTC → 2026-10-26 00:30 UTC",
+     "ok": true,
+     "observed": "Window 2026-10-25 00:30 UTC → 2026-10-26 00:30 UTC (24 hours, latest)"
+    },
+    {
+     "what": "all displayed times carry UTC, no local zone",
+     "ok": true,
+     "observed": []
+    },
+    {
+     "what": "flashes = 48 (no hour lost/double counted)",
+     "ok": true,
+     "observed": {
+      "got": 48,
+      "uniq": true,
+      "missing": [],
+      "extra": []
+     }
+    },
+    {
+     "what": "map source features = drawn",
+     "ok": true,
+     "observed": {
+      "map": 48,
+      "drawn": 48
+     }
+    }
+   ],
+   "pageErrors": []
+  }
+ ],
+ "shim-UTC": {
+  "served": {
+   "maplibre": 2,
+   "style": 1,
+   "duckdb": 3,
+   "lightning-data": 41
+  },
+  "aborted": [
+   "https://raw.githubusercontent.com/Ventusltd/data-grid-gb/1c9909d1138704b29235c27fd769436dda8a0b18/derived/connection-points.v3.json",
+   "https://ventusltd.github.io/ventus-grid-engine/genome/engine-graph.json"
+  ],
+  "missing": []
+ },
+ "finishedAt": "2026-10-26T23:49:59.235Z"
+}

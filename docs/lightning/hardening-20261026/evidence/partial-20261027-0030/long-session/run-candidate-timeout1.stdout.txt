@@ -1,0 +1,30 @@
+{"label":"S0 boot (lightning OFF)","heap":18.53,"nodes":2655,"jsL":199,"dom":1560,"src":56,"lay":100,"iv":2,"ivL":0,"to":2,"toL":0,"S":{"on":false,"serial":0,"requests":0,"errors":0,"sfs":2,"timer":false,"period":"24h","last":null,"drawn":null},"lis":{"window":{"own":21,"subtree":21},"document":{"own":16,"subtree":160},"panel":{"own":3,"subtree":4},"lightningGroup":{"own":1,"subtree":1}}}
+node:internal/modules/run_main:123
+    triggerUncaughtException(
+    ^
+
+locator.click: Timeout 30000ms exceeded.
+Call log:
+[2m  - waiting for locator('#scada-ui-container [data-lightning-group="main"] input[data-lightning-control="toggle"]')[22m
+[2m    - locator resolved to <input type="checkbox" data-lightning-control="toggle"/>[22m
+[2m  - attempting click action[22m
+[2m    - waiting for element to be visible, enabled and stable[22m
+[2m    - element is visible, enabled and stable[22m
+[2m    - scrolling into view if needed[22m
+[2m    - done scrolling[22m
+
+    at /tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/long-session/long-session.mjs:125:30 {
+  log: [
+    `  - waiting for locator('#scada-ui-container [data-lightning-group="main"] input[data-lightning-control="toggle"]')`,
+    '    - locator resolved to <input type="checkbox" data-lightning-control="toggle"/>',
+    '  - attempting click action',
+    '    - waiting for element to be visible, enabled and stable',
+    '    - element is visible, enabled and stable',
+    '    - scrolling into view if needed',
+    '    - done scrolling'
+  ],
+  name: 'TimeoutError'
+}
+
+Node.js v22.23.4
+exit 1

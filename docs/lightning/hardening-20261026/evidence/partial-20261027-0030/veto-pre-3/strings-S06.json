@@ -1,0 +1,12 @@
+{
+ "harness": "lead-shim + python http.server :8172",
+ "chromium": "153.0.8010.12",
+ "clock": "2026-10-26T18:40:00Z",
+ "started": "2026-10-27T00:03:36.117Z",
+ "cases": {
+  "S06-good-custom-23Oct": {
+   "error": "locator.scrollIntoViewIfNeeded: Target crashed \nCall log:\n\u001b[2m  - waiting for locator('#scada-ui-container input[data-lightning-control=\"toggle\"]')\u001b[22m\n\n    at clickToggle (/tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/veto-pre-3/lib.mjs:146:128)\n    at /tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/veto-pre-3/strings.mjs:65:29"
+  }
+ },
+ "finished": "2026-10-27T00:05:37.432Z"
+}

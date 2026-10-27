@@ -1,0 +1,116 @@
+..
+[S1] day scanned_seconds vs sum(hourly): {'2026-10-23': (42472, 42473), '2026-10-24': (50269, 50270)}
+Fwrote /tmp/tmpben1f_ha/tmpuqrn_exw/lightning.duckdb (536576 bytes): views archive_coverage, coverage_days, coverage_slots, daily_optical_flashes, flashes, hourly_optical_flashes, scan_windows, storm_episodes, substation_optical_flash_pairs, substation_optical_flash_proximity, substation_optical_flash_proximity_daily
+Fwrote /tmp/tmpben1f_ha/tmpj3vfwvf5/lightning.duckdb (536576 bytes): views archive_coverage, coverage_days, coverage_slots, daily_optical_flashes, flashes, hourly_optical_flashes, scan_windows, storm_episodes, substation_optical_flash_pairs, substation_optical_flash_proximity, substation_optical_flash_proximity_daily
+FFFFFFF
+======================================================================
+FAIL: test_S1_hourly_hours_sum_equals_day_hours (adversarial_test.Real.test_S1_hourly_hours_sum_equals_day_hours)
+Each searched day's hours_observed equals the sum of its hourly hours_observed.
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/pr3-review/adversarial_test.py", line 193, in test_S1_hourly_hours_sum_equals_day_hours
+    self.assertEqual(diff, {})
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^
+AssertionError: {'2026-10-23': (42472, 42473), '2026-10-24': (50269, 50270)} != {}
+- {'2026-10-23': (42472, 42473), '2026-10-24': (50269, 50270)}
++ {}
+
+======================================================================
+FAIL: test_T1_duckdb_file_reopened_in_local_timezone_keeps_utc_days (adversarial_test.Real.test_T1_duckdb_file_reopened_in_local_timezone_keeps_utc_days)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/pr3-review/adversarial_test.py", line 97, in test_T1_duckdb_file_reopened_in_local_timezone_keeps_utc_days
+    self.assertEqual(bad, {}, "daily view buckets by the session time zone, not UTC")
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: {'Europe/London': {datetime.date(2026, 10,[484 chars]65)}} != {}
+Diff is 742 characters long. Set self.maxDiff to None to see it. : daily view buckets by the session time zone, not UTC
+
+======================================================================
+FAIL: test_T2_default_session_timezone_of_duckdb_file (adversarial_test.Real.test_T2_default_session_timezone_of_duckdb_file)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/pr3-review/adversarial_test.py", line 106, in test_T2_default_session_timezone_of_duckdb_file
+    self.assertEqual(tz, "UTC", "a reopened lightning.duckdb does not pin the session to UTC")
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'America/New_York' != 'UTC'
+- America/New_York
++ UTC
+ : a reopened lightning.duckdb does not pin the session to UTC
+
+======================================================================
+FAIL: test_V1_unsearched_hour_relabelled_observed_zero (adversarial_test.Real.test_V1_unsearched_hour_relabelled_observed_zero)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/pr3-review/adversarial_test.py", line 129, in test_V1_unsearched_hour_relabelled_observed_zero
+    self.assert_verify_fails(store)
+    ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^
+  File "/tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/pr3-review/adversarial_test.py", line 59, in assert_verify_fails
+    with self.assertRaises((vp.VerifyError, ValueError)):
+         ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: (<class 'verify_parquet.VerifyError'>, <class 'ValueError'>) not raised
+
+======================================================================
+FAIL: test_V2_unsearched_slot_relabelled_full_zero (adversarial_test.Real.test_V2_unsearched_slot_relabelled_full_zero)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/pr3-review/adversarial_test.py", line 140, in test_V2_unsearched_slot_relabelled_full_zero
+    self.assert_verify_fails(store)
+    ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^
+  File "/tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/pr3-review/adversarial_test.py", line 59, in assert_verify_fails
+    with self.assertRaises((vp.VerifyError, ValueError)):
+         ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: (<class 'verify_parquet.VerifyError'>, <class 'ValueError'>) not raised
+
+======================================================================
+FAIL: test_V3_daily_rollup_hours_inflated (adversarial_test.Real.test_V3_daily_rollup_hours_inflated)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/pr3-review/adversarial_test.py", line 150, in test_V3_daily_rollup_hours_inflated
+    self.assert_verify_fails(store)
+    ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^
+  File "/tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/pr3-review/adversarial_test.py", line 59, in assert_verify_fails
+    with self.assertRaises((vp.VerifyError, ValueError)):
+         ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: (<class 'verify_parquet.VerifyError'>, <class 'ValueError'>) not raised
+
+======================================================================
+FAIL: test_V4_headline_claims_complete_coverage (adversarial_test.Real.test_V4_headline_claims_complete_coverage)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/pr3-review/adversarial_test.py", line 161, in test_V4_headline_claims_complete_coverage
+    self.assert_verify_fails(store)
+    ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^
+  File "/tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/pr3-review/adversarial_test.py", line 59, in assert_verify_fails
+    with self.assertRaises((vp.VerifyError, ValueError)):
+         ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: (<class 'verify_parquet.VerifyError'>, <class 'ValueError'>) not raised
+
+======================================================================
+FAIL: test_V5_episode_edges_claimed_searched (adversarial_test.Real.test_V5_episode_edges_claimed_searched)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/pr3-review/adversarial_test.py", line 171, in test_V5_episode_edges_claimed_searched
+    self.assert_verify_fails(store)
+    ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^
+  File "/tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/pr3-review/adversarial_test.py", line 59, in assert_verify_fails
+    with self.assertRaises((vp.VerifyError, ValueError)):
+         ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: (<class 'verify_parquet.VerifyError'>, <class 'ValueError'>) not raised
+
+======================================================================
+FAIL: test_V6_proximity_daily_hours_inflated (adversarial_test.Real.test_V6_proximity_daily_hours_inflated)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/pr3-review/adversarial_test.py", line 180, in test_V6_proximity_daily_hours_inflated
+    self.assert_verify_fails(store)
+    ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^
+  File "/tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/pr3-review/adversarial_test.py", line 59, in assert_verify_fails
+    with self.assertRaises((vp.VerifyError, ValueError)):
+         ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: (<class 'verify_parquet.VerifyError'>, <class 'ValueError'>) not raised
+
+----------------------------------------------------------------------
+Ran 11 tests in 454.655s
+
+FAILED (failures=9)
+rc=1

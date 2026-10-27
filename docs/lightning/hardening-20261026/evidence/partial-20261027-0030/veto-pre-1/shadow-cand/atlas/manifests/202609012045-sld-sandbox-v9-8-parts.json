@@ -1,0 +1,28 @@
+{
+ "schema": "gridatlas.cartridge-parts.v1",
+ "generation": "202609012045",
+ "cartridge": "./cartridges/202609012045-sld-sandbox-v9-8.js",
+ "sha256": "6e1c17e2950195a117d17dd6f61619fa1001b3f6e6083fccef90d29a40a03c19",
+ "bytes": 255950,
+ "assembled_from": [
+  {
+   "role": "module",
+   "path": "atlas/modules/202609011950-geodesy.js",
+   "bytes": 3898,
+   "sha256": "5fde38aaaa79dd9090d7facdc46f6ef8e7f62b5c5c667e9c9c0949aacf590cf5"
+  },
+  {
+   "role": "module",
+   "path": "atlas/modules/202609012040-grid-scope.js",
+   "bytes": 6417,
+   "sha256": "d51ec34795b7638260634e7eb66d30dadd3efe87ac3258a8ca912d87fff4c736"
+  },
+  {
+   "role": "part",
+   "path": "atlas/parts/202609012045-sld-sandbox-body.js",
+   "bytes": 245142,
+   "sha256": "f94b1781549107d60019e8f3e624dc38bfc0d76ad02ff55aa22fe4d7e4e15598"
+  }
+ ],
+ "rule": "edit a part and rebuild under a new generation; this file is not edited by hand"
+}

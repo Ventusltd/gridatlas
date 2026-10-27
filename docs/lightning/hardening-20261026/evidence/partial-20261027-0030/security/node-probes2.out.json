@@ -1,0 +1,29 @@
+{
+ "url": {
+  "../../../../../evil-owner/evil-repo/main/x.json": "raw.githubusercontent.com/evil-owner/evil-repo/main/x.json",
+  "https://evil.example/abs.json": "raw.githubusercontent.com/Ventusltd/lightning/main/data/history/https://evil.example/abs.json",
+  "//evil.example/proto-rel.json": "raw.githubusercontent.com/Ventusltd/lightning/main/data/history///evil.example/proto-rel.json",
+  "%2e%2e/%2e%2e/%2e%2e/%2e%2e/%2e%2e/enc-owner/enc-repo/main/enc.json": "raw.githubusercontent.com/enc-owner/enc-repo/main/enc.json",
+  "..\\..\\..\\..\\..\\bs-owner\\bs-repo\\main\\bs.json": "raw.githubusercontent.com/bs-owner/bs-repo/main/bs.json",
+  "days/2026/10/26/05.json?q=1#frag": "raw.githubusercontent.com/Ventusltd/lightning/main/data/history/days/2026/10/26/05.json?q=1",
+  "@evil.example/at.json": "raw.githubusercontent.com/Ventusltd/lightning/main/data/history/@evil.example/at.json",
+  "../../../../../../../../x": "raw.githubusercontent.com/x"
+ },
+ "okSpread_2": "ok",
+ "okSpread_100000": "ok",
+ "okSpread_200000": "RangeError: Maximum call stack size exceeded",
+ "okSpread_1000000": "RangeError: Maximum call stack size exceeded",
+ "dreArray": true,
+ "dre9999": [
+  true,
+  null
+ ],
+ "localeCompareArray": "TypeError: b.date.localeCompare is not a function",
+ "idCollapse": [
+  "undefined",
+  "null",
+  "a"
+ ],
+ "T_1e308": "RangeError",
+ "isFinite_1e308": true
+}

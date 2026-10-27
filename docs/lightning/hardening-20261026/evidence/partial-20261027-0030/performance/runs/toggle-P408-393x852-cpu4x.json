@@ -1,0 +1,89 @@
+{
+ "mode": "toggle",
+ "route": "http://127.0.0.1:8178/wt/atlas/v/202610262323/",
+ "routeKey": "cand",
+ "viewport": "393x852",
+ "cpuThrottle": 4,
+ "dataDir": "/tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/performance/fixtures/P408/data",
+ "harness": "lead-shim offline-shim.mjs; Chromium headless, SwiftShader GL; phone = Chromium emulation (isMobile, hasTouch), not WebKit",
+ "startedUtc": "2026-10-27T00:09:18.304Z",
+ "loadavgStart": [
+  69.36,
+  79.93,
+  57.24
+ ],
+ "freeMemMBStart": 1980,
+ "chromium": "153.0.8010.12",
+ "composition": {
+  "engine": 120,
+  "pn": 6,
+  "scada": true,
+  "curtain": true,
+  "menuInstalled": true,
+  "map": true,
+  "waitedMs": 23971
+ },
+ "boot": {
+  "menuInstalledMs": 24485,
+  "mapCreatedMs": 5079,
+  "mapLoadedMs": null,
+  "lightningInstalledMs": 24485,
+  "lightningAfterMenuMs": 0,
+  "longTasksToMenu": {
+   "count": 24,
+   "totalMs": 20480,
+   "maxMs": 8436,
+   "over1s": 3
+  },
+  "longTasksMenuPlus5s": {
+   "count": 15,
+   "totalMs": 5112,
+   "maxMs": 1351,
+   "over1s": 2
+  },
+  "longTasksAll": {
+   "count": 40,
+   "totalMs": 25744,
+   "maxMs": 8436,
+   "over1s": 5
+  },
+  "requests": 27,
+  "lightningRequests": [],
+  "shim": {
+   "served": {
+    "maplibre": 2,
+    "style": 1,
+    "duckdb": 3
+   },
+   "aborted": [
+    "https://raw.githubusercontent.com/Ventusltd/data-grid-gb/1c9909d1138704b29235c27fd769436dda8a0b18/derived/connection-points.v3.json",
+    "https://ventusltd.github.io/ventus-grid-engine/genome/engine-graph.json"
+   ],
+   "missing": []
+  },
+  "lightningState": {
+   "installed": true,
+   "on": false,
+   "requests": 0,
+   "errors": [],
+   "nodes": 76,
+   "source": false,
+   "layer": false
+  },
+  "heapUsedMB": 18.01,
+  "heapTotalMB": 19,
+  "nodes": 2670,
+  "documents": 1,
+  "listeners": 184
+ },
+ "toggle": {},
+ "stage": "gestures off",
+ "error": "cdpSession.send: Target page, context or browser has been closed",
+ "pageErrors": [],
+ "finishedUtc": "2026-10-27T00:11:05.540Z",
+ "loadavgEnd": [
+  47.8,
+  68.39,
+  55.56
+ ]
+}

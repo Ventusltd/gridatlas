@@ -1,0 +1,16 @@
+node:internal/modules/run_main:123
+    triggerUncaughtException(
+    ^
+
+locator.focus: Timeout 10000ms exceeded.
+Call log:
+[2m  - waiting for locator('#scada-ui-container [data-lightning-control="toggle"]')[22m
+
+    at /tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/opus-a11y/a11y-extra.mjs:15:77 {
+  log: [
+    `  - waiting for locator('#scada-ui-container [data-lightning-control="toggle"]')`
+  ],
+  name: 'TimeoutError'
+}
+
+Node.js v22.23.4

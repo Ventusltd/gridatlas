@@ -1,0 +1,21 @@
+== Case A: archive push fails transiently (remote temporarily refuses)
+
+step5 rc=1
+step6 rc=0
+remote log:
+b11efbe parquet
+cf6387f archive
+627c8e5 init
+== Case B: archive rebase conflict on index.json
+
+Auto-merging data/history/index.json
+CONFLICT (content): Merge conflict in data/history/index.json
+step5 rc=1
+interactive rebase in progress; onto 82a11db
+Last command done (1 command done):
+   pick e15d975 archive
+U	data/history/index.json
+step6 rc=128
+remote log:
+82a11db other
+2a73c37 init
