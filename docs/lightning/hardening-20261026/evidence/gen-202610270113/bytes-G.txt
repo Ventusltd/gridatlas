@@ -1,0 +1,9 @@
+harness: self-fixture (node v22.23.4); base = fixed-module-F.js (24773 B, stamped 202610262310)
+     0  R1/CRF-1 fractional part counts rejected again (||-1)
+    15  R2 a SEALED shard mismatch stays FAIL naming the field; only unsealed days may read "archive updating"
+    39  T10/CRF-3b/CRF-3c retry-exhausted text keeps date + field ("index mismatch: sha256; archive updating, reload later"); reason "archive updating"; status never SEARCHED n% while day files are unverified
+     8  E06 a future-dated index reads "? ago"
+   -54  TRIM-G unread placeholders in before/fail/overview records; shorter internal reason
+    83  I01 no WebCrypto: a day whose index gives a sha256 is "not verified (no WebCrypto)" -> PARTIAL, not drawn, never searched-as-verified
+   -87  TRIM-G2 budget for I01: cosmetic C01 reverted ("1 year"); shorter wording with the honesty phrase kept
+F 24773 -> G 24777 bytes (delta 4); cap 24781: MET (4 spare)
