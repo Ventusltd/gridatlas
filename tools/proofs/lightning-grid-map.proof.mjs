@@ -63,7 +63,7 @@ eq(map.layers.get('optical-cluster-tap').paint['circle-radius'],24,
   'cluster hit size should exceed minimum');
 eq(map.layers.get('nearby-solar-tap').paint['circle-radius'],22,
   'sized solar marks also use mobile touch targets');
-check(map.layers.get('optical-dots').paint['circle-radius'].includes('zoom'),
+check(JSON.stringify(map.layers.get('optical-dots').paint['circle-radius']).includes('"zoom"'),
   'visible optical pixels grow with zoom, without changing coordinates');
 check(map.options.style.sources['carto-dark'].tiles.length>0,
   'real basemap context configured');
