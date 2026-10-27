@@ -10,6 +10,9 @@ on:
       - 'tools/proofs/lightning-grid-feed-contract.test.mjs'
       - '.github/workflows/lightning-grid-lab-proof.yml'
   workflow_dispatch:
+concurrency:
+  group: lightning-grid-lab-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
 permissions:
   contents: read
 jobs:
