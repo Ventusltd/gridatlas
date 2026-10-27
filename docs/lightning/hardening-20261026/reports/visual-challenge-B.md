@@ -146,14 +146,18 @@ Script: `E/r01/r01-grid-footer.mjs`. Output: `r01-geometry.json`. Log: `logs/r01
 
 Not tested here: real iPhone Safari or Android devices (BLOCKED_HARNESS, apart from the owner's own receipt); basemap tiles and glyphs, and REPD/DuckDB (BLOCKED_DEPENDENCY: masked or blocked by the shim).
 
-## AFTER: generation 202610262323 (route `wt/atlas/v/202610262323/`, port 8160) — IN PROGRESS (updated 23:59 UTC)
+## AFTER runs (updated 00:30 UTC 27 Oct)
 
-Overlay `202610262323-uk-lightning-overlay.js` 23,226 B, sha256 61cf9b34…24e3e9; worktree HEAD 68be91e; production c08f3a6 unchanged (`after-202610262323/logs/00-provenance.txt`). Harness unchanged (`parity-harness.mjs`, same args; one viewport per invocation because the shared container is at load 35–93 and full runs crashed the renderer — crashed attempts kept in `after-202610262323/crashed-under-load/`).
+**202610262323** (superseded, not the release candidate): partial only. Two container restarts and memory-cgroup kills (evidence `after-202610262323/crashed-under-load/`). Measured:
+- P02 at 1440x900: FAIL in all 6 states. PIPELINE NEWS `div.key-group` grows by 10 px because the 64 px `paddingBottom` stretches the shared grid row.
+- P11 at 1440x900: 0.000 %.
+- P14 HIDE LAYERS in Chromium at 393 and 360: 0 caption lines occluded. ChatGPT's owner-iPhone veto (M01) reports otherwise on a real device.
 
-| ID | BEFORE (202610261949) | AFTER (202610262323) | AFTER evidence |
+**E = 202610270024** (variant E, overlay sha256 2976cae7…f890bf, 24,780 B; worktree 0424d45; loader identical; production c08f3a6 unchanged). Port 8191. ONE browser and ONE context at a time.
+
+| ID | BEFORE 202610261949 | E 202610270024 | E evidence |
 |---|---|---|---|
-| P02 | FAIL: Grid panel body −78 px with Grid open | **FAIL (new cause)** at 1440x900: Grid-open cell now has 0 Grid-panel change, but in **all 6 states** the last original group PIPELINE NEWS (REPD) `div.key-group` grows 98→108 px (+10) and `#scada-ui-container` scrollHeight +10, because the lightning group's `paddingBottom='64px'` (overlay line 182) stretches the shared 2-column grid row. Other viewports pending. | `after-202610262323/parity/desktop-1440x900/SUMMARY.md` |
-| P10 | FAIL (10/36 cells) | pending | |
-| P11 | PASS (≤0.011 %) | 1440x900: 0.000 % all 6 states | same |
-| P14 HIDE LAYERS | FAIL (3 footer lines occluded) | pending | |
-| P15 contrast | FAIL (footer #555 2.73:1) | source shows footer and status line `#888` (line 140, 142); measurement pending | |
+| P14 / M01 HIDE LAYERS, main panel and curtain | FAIL | running | `after-202610270024/` |
+| P02 / P10 | FAIL | pending | |
+| P11 | PASS | pending | |
+| M04 / P15 font and contrast | FAIL (#555, 9 px) | source: caption 12 px `#bbb`, footer 11 px `#bbb` (overlay lines 139–140); measurement pending | |
