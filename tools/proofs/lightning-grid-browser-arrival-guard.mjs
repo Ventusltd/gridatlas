@@ -217,7 +217,8 @@ try{
   await page.locator('#inspect').click();
   await page.waitForFunction(()=>{
     const s=document.querySelector('#status')?.textContent||'';
-    return s.includes('Ready ·')||s.includes('Unable to compute');
+    return s.includes('Ready ·')||s.includes('Unable to compute')||
+      s.includes('All infrastructure sources unavailable');
   },null,{timeout:35000});
   const allSourcesDownStatus=await page.locator('#status').textContent();
   assert.equal(await page.locator('#scenario').isDisabled(),true,
