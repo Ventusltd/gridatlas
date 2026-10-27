@@ -43,10 +43,11 @@ const errors=[];
 const browser=await chromium.launch({
   headless:true,args:['--use-gl=angle','--use-angle=swiftshader','--enable-webgl','--enable-unsafe-swiftshader']
 });
+let page;
 try{
   const context=await browser.newContext({viewport:{width:390,height:844},deviceScaleFactor:2,
     isMobile:true,hasTouch:true});
-  const page=await context.newPage();
+  page=await context.newPage();
   page.on('pageerror',e=>errors.push('PAGE:'+e.message));
   page.on('console',e=>{if(e.type()==='error')errors.push('CONSOLE:'+e.text())});
   await page.route('https://raw.githubusercontent.com/Ventusltd/lightning/main/data/uk_lightning.geojson',
@@ -60,7 +61,7 @@ try{
       body:JSON.stringify(route.request().url().endsWith('001.geojson')?SOLAR:EMPTY),
       headers:{'access-control-allow-origin':'*'}}));
   await page.goto(base,{waitUntil:'domcontentloaded',timeout:45000});
-  await page.locator('#flash option').first().waitFor({timeout:45000});
+  await page.waitForFunction(()=>document.querySelectorAll('#flash option').length>=2,null,{timeout:45000});
   const options=await page.locator('#flash option').count();
   assert.equal(options,2,'two synthetic source records must be visible');
   // Map may initially show an empty backdrop while network tiles load. A
@@ -105,6 +106,11 @@ try{
   console.log('PASS — real Chromium viewport 390x844: flash dot tapped, grid context populated, original MAP link, IT/DC scenarios NOT RUN.');
   console.log('Fixture counts: optical='+FEED.features.length+' substation='+SUBS.features.length+' solar='+SOLAR.features.length);
   if(errors.length)console.log('Nonfatal browser console notes: '+JSON.stringify(errors.slice(0,10)));
+}catch(error){
+  if(page){try{await page.screenshot({path:output+'/on-error.png',fullPage:true})}catch(_){}}
+  console.error('Browser smoke FAILED: '+String(error));
+  if(errors.length)console.error('Browser messages: '+JSON.stringify(errors.slice(0,20)));
+  throw error;
 }finally{
   await browser.close();
 }
