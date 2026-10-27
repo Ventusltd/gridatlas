@@ -48,9 +48,7 @@ export function initLightningMap({onPick,onStatus=()=>{},onError=()=>{}}={}) {
       filter:['has','point_count'],
       paint:{'circle-radius':['step',['get','point_count'],14,10,18,100,23,1000,27],
         'circle-color':'#e4a523','circle-stroke-color':'#15202b','circle-stroke-width':2}});
-    map.addLayer({id:'optical-cluster-count',type:'symbol',source:'optical-observations',
-      filter:['has','point_count'],layout:{'text-field':['get','point_count_abbreviated'],
-        'text-size':13},paint:{'text-color':'#111d26'}});
+    // Count-scaled cluster circles require no external glyph URL. Tap to expand.
     map.addLayer({id:'optical-cluster-tap',type:'circle',source:'optical-observations',
       filter:['has','point_count'],paint:{'circle-radius':24,'circle-opacity':0.01}});
     map.addLayer({id:'optical-dots',type:'circle',source:'optical-observations',
