@@ -1,0 +1,14 @@
+156,157c156,157
+< const k=subs.filter(s=>s&&Array.isArray(s.at)&&Array.isArray(s.kv)&&s.kv[0]>=132).map(s=>({s,km:dk(x,y,s.at[0],s.at[1])})).filter(a=>isFinite(a.km)).sort((a,b)=>a.km-b.km).slice(0,3);
+< say('Nearest substations to this optical flash (straight-line km). Not evidence any asset was struck; faults can have other causes.');for(const a of k)say(`${a.km.toFixed(2)} km · ${a.s.kv[0]} kV · ${a.s.name||'unnamed substation'}`);if(!k.length)return say('No transmission substation (132 kV or above) in the published list.');
+---
+> const ns=L.measure.nearestSubstations,k=typeof ns=='function'?ns(x,y,subs).map(s=>({s,km:s.km})):subs.filter(s=>s&&Array.isArray(s.at)&&Array.isArray(s.kv)&&s.kv[0]>=132).map(s=>({s,km:dk(x,y,s.at[0],s.at[1])})).filter(a=>isFinite(a.km)).sort((a,b)=>a.km-b.km).slice(0,3);
+> say('Nearest substations to this optical flash (straight-line km). Not evidence any asset was struck; faults can have other causes.');for(const a of k)say(`${a.km.toFixed(2)} km · ${a.s.kv[0]} kV · ${a.s.name||'unnamed substation'}`);if(!k.length)return say(typeof ns=='function'?'No mapped substation (33 kV or above) within 40 km.':'No transmission substation (132 kV or above) in the published list.');
+163c163
+< try{m.addLayer({id:NL[3],type:'symbol',source:NEAR,filter:PT,layout:{'text-field':['get','t'],'text-size':10,'text-offset':[0,-1.5],'text-anchor':'bottom','text-font':sf(m)},paint:{'text-color':'#a9c4c9','text-halo-color':'#000c10','text-halo-width':1.5}})}catch(e){note('nearest labels: '+msg(e))}},near=(m,c,x,y)=>{nr(m,c,x,y);cpos()},
+---
+> try{m.addLayer({id:NL[3],type:'symbol',source:NEAR,filter:PT,layout:{'text-field':['get','t'],'text-size':10,'text-offset':[0,-1.5],'text-anchor':'bottom','text-font':sf(m)},paint:{'text-color':'#a9c4c9','text-halo-color':'#000c10','text-halo-width':1.5}})}catch(e){note('nearest labels: '+msg(e))}let a=x,b=y,e=x,f=y;for(const q of k){const[u,v]=q.s.at;a=Math.min(a,u);b=Math.min(b,v);e=Math.max(e,u);f=Math.max(f,v)}m.fitBounds([[a,b],[e,f]],{padding:{top:Math.min((c.offsetHeight||0)+24,innerHeight/2),bottom:40,left:40,right:40},maxZoom:12})},near=(m,c,x,y)=>{nr(m,c,x,y);cpos()},
+182c182
+< const n=r.mode==='overview'?r.arch:r.ev.length;if(r.mode==='feed'&&r.old)return`${BASE} [${n>0?N(n):'UNKNOWN'} · last 7 days only${c.stale?' STALE':''}]`;return`${BASE} [${/UNKNOWN|BEFORE/.test(c.st)?'UNKNOWN':n>0?(c.st==='PARTIAL'?'≥':'')+N(n):c.st==='PARTIAL'?'UNKNOWN':'EMPTY'} | ${r.w.period}${c.stale?' STALE':''}]`},
+---
+> const n=r.mode==='overview'?r.arch:r.ev.length;if(r.mode==='feed'&&r.old)return`${BASE} [${n>0?N(n):'UNKNOWN'} · last 7 days only${c.stale?' STALE':''}]`;return`${BASE} [${/UNKNOWN|BEFORE/.test(c.st)?'UNKNOWN':n>0?(c.st==='PARTIAL'&&!r.cov?'≥':'')+N(n)+(c.st==='PARTIAL'&&r.cov?` · ${Math.floor(r.cov.f*100)}% searched`:''):c.st==='PARTIAL'?'UNKNOWN':'EMPTY'} | ${r.w.period}${c.stale?' STALE':''}]`},

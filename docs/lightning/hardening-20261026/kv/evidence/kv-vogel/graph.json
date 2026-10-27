@@ -1,6 +1,6 @@
 {
  "schema": "kv-vogel.spider-graph.v1",
- "generated_at": "2026-10-27T17:20:00+00:00",
+ "generated_at": "2026-10-27T16:42:45+00:00",
  "generator": "hardening/evidence/kv-vogel/tools/vogel.mjs",
  "source_pins": {
   "module": {
@@ -244,9 +244,43 @@
   "sf",
   "tm"
  ],
+ "both_complaints_shared_inputs": [
+  "global:__GRIDATLAS_MODULES__.menuBar",
+  "global:__GRIDATLAS_PIPELINE_LAYERS__",
+  "global:__GRIDATLAS_V9_MAP__",
+  "layer:l-gridatlas-lightning",
+  "layer:l-gridatlas-lightning-count",
+  "layer:l-gridatlas-lightning-hit",
+  "net:XMLHttpRequest",
+  "net:fetch()",
+  "net:lightning/data/history/days/YYYY/MM/DD[/HH].json",
+  "net:lightning/data/history/index.json",
+  "net:lightning/data/uk_lightning.geojson",
+  "source:gridatlas-lightning",
+  "state:S.ck",
+  "state:S.consent",
+  "state:S.end",
+  "state:S.fp",
+  "state:S.from",
+  "state:S.h",
+  "state:S.idx",
+  "state:S.ie",
+  "state:S.installed",
+  "state:S.ip",
+  "state:S.mode",
+  "state:S.on",
+  "state:S.period",
+  "state:S.requests",
+  "state:S.res",
+  "state:S.serial",
+  "state:S.sfs",
+  "state:S.timer",
+  "state:S.to",
+  "state:lru"
+ ],
  "orphans": {
   "bodies_without_caller": [],
-  "cartridge_without_edge": [
+  "cartridge_entry_points_outside_selection": [
    "cartridge:addCardBar",
    "cartridge:install(map)"
   ],
@@ -264,42 +298,30 @@
    "state:S.schema"
   ],
   "global_writers": {
-   "global:__GRIDATLAS_MODULES__": [
-    "cartridges/202609012045-sld-sandbox-v9-8.js",
-    "cartridges/202609012110-sld-sandbox-v9-8.js",
-    "cartridges/202609012130-sld-sandbox-v9-8.js",
-    "cartridges/202609012141-sld-sandbox-v9-8.js",
-    "cartridges/202609012155-sld-sandbox-v9-8.js"
-   ],
-   "global:__GRIDATLAS_MODULES__.ukLightning": [
-    "cartridges/202609012045-sld-sandbox-v9-8.js",
-    "cartridges/202609012110-sld-sandbox-v9-8.js",
-    "cartridges/202609012130-sld-sandbox-v9-8.js",
-    "cartridges/202609012141-sld-sandbox-v9-8.js",
-    "cartridges/202609012155-sld-sandbox-v9-8.js"
-   ],
-   "global:__GRIDATLAS_V9_MAP__": [
-    "cartridges/202608301136-place-postcode-search.js",
-    "cartridges/202609011141-place-global-search-v9-5.js",
-    "cartridges/202609040337-place-global-search-v9-5.js",
-    "cartridges/202609041945-place-global-search-v9-5.js",
-    "cartridges/202609071213-place-global-search-v9-5.js"
-   ],
-   "global:__GRIDATLAS_SUBSTATIONS__": [],
-   "global:__GRIDATLAS_MODULES__.menuBar": [
-    "cartridges/202609012045-sld-sandbox-v9-8.js",
-    "cartridges/202609012110-sld-sandbox-v9-8.js",
-    "cartridges/202609012130-sld-sandbox-v9-8.js",
-    "cartridges/202609012141-sld-sandbox-v9-8.js",
-    "cartridges/202609012155-sld-sandbox-v9-8.js"
-   ],
-   "global:__GRIDATLAS_PIPELINE_LAYERS__": [
-    "cartridges/202609030059-sld-sandbox-v9-8.js",
-    "cartridges/202609030109-sld-sandbox-v9-8.js",
-    "cartridges/202609030116-sld-sandbox-v9-8.js",
-    "cartridges/202609030119-sld-sandbox-v9-8.js",
-    "cartridges/202609030128-sld-sandbox-v9-8.js"
-   ]
+   "global:__GRIDATLAS_MODULES__": {
+    "files_writing": 175,
+    "first": "cartridges/202609012045-sld-sandbox-v9-8.js"
+   },
+   "global:__GRIDATLAS_MODULES__.ukLightning": {
+    "files_writing": 175,
+    "first": "cartridges/202609012045-sld-sandbox-v9-8.js"
+   },
+   "global:__GRIDATLAS_V9_MAP__": {
+    "files_writing": 10,
+    "first": "cartridges/202608301136-place-postcode-search.js"
+   },
+   "global:__GRIDATLAS_SUBSTATIONS__": {
+    "files_writing": 0,
+    "first": null
+   },
+   "global:__GRIDATLAS_MODULES__.menuBar": {
+    "files_writing": 175,
+    "first": "cartridges/202609012045-sld-sandbox-v9-8.js"
+   },
+   "global:__GRIDATLAS_PIPELINE_LAYERS__": {
+    "files_writing": 62,
+    "first": "cartridges/202609030059-sld-sandbox-v9-8.js"
+   }
   }
  },
  "cycles": [
@@ -3512,8 +3534,8 @@
    "paths": []
   },
   {
-   "id": "event:MutationObserver(map container)",
-   "label": "event:MutationObserver(map container)",
+   "id": "event:MutationObserver@cartridge-L6059",
+   "label": "event:MutationObserver@cartridge-L6059",
    "type": "event",
    "rag": "grey",
    "reason": "resource; not on a complaint path",
@@ -3568,13 +3590,10 @@
    "rag": "grey",
    "reason": "resource; not on a complaint path",
    "paths": [],
-   "writers_in_atlas": [
-    "cartridges/202609012045-sld-sandbox-v9-8.js",
-    "cartridges/202609012110-sld-sandbox-v9-8.js",
-    "cartridges/202609012130-sld-sandbox-v9-8.js",
-    "cartridges/202609012141-sld-sandbox-v9-8.js",
-    "cartridges/202609012155-sld-sandbox-v9-8.js"
-   ]
+   "writers_in_atlas": {
+    "files_writing": 175,
+    "first": "cartridges/202609012045-sld-sandbox-v9-8.js"
+   }
   },
   {
    "id": "global:__GRIDATLAS_MODULES__.menuBar",
@@ -3583,13 +3602,10 @@
    "rag": "grey",
    "reason": "resource; not on a complaint path",
    "paths": [],
-   "writers_in_atlas": [
-    "cartridges/202609012045-sld-sandbox-v9-8.js",
-    "cartridges/202609012110-sld-sandbox-v9-8.js",
-    "cartridges/202609012130-sld-sandbox-v9-8.js",
-    "cartridges/202609012141-sld-sandbox-v9-8.js",
-    "cartridges/202609012155-sld-sandbox-v9-8.js"
-   ]
+   "writers_in_atlas": {
+    "files_writing": 175,
+    "first": "cartridges/202609012045-sld-sandbox-v9-8.js"
+   }
   },
   {
    "id": "global:__GRIDATLAS_MODULES__.ukLightning",
@@ -3598,13 +3614,10 @@
    "rag": "grey",
    "reason": "resource; not on a complaint path",
    "paths": [],
-   "writers_in_atlas": [
-    "cartridges/202609012045-sld-sandbox-v9-8.js",
-    "cartridges/202609012110-sld-sandbox-v9-8.js",
-    "cartridges/202609012130-sld-sandbox-v9-8.js",
-    "cartridges/202609012141-sld-sandbox-v9-8.js",
-    "cartridges/202609012155-sld-sandbox-v9-8.js"
-   ]
+   "writers_in_atlas": {
+    "files_writing": 175,
+    "first": "cartridges/202609012045-sld-sandbox-v9-8.js"
+   }
   },
   {
    "id": "global:__GRIDATLAS_PIPELINE_LAYERS__",
@@ -3613,13 +3626,10 @@
    "rag": "grey",
    "reason": "resource; not on a complaint path",
    "paths": [],
-   "writers_in_atlas": [
-    "cartridges/202609030059-sld-sandbox-v9-8.js",
-    "cartridges/202609030109-sld-sandbox-v9-8.js",
-    "cartridges/202609030116-sld-sandbox-v9-8.js",
-    "cartridges/202609030119-sld-sandbox-v9-8.js",
-    "cartridges/202609030128-sld-sandbox-v9-8.js"
-   ]
+   "writers_in_atlas": {
+    "files_writing": 62,
+    "first": "cartridges/202609030059-sld-sandbox-v9-8.js"
+   }
   },
   {
    "id": "global:__GRIDATLAS_SUBSTATIONS__",
@@ -3628,7 +3638,10 @@
    "rag": "amber",
    "reason": "Fallback read by nr (L154) and by the cartridge (L8372, L8410, L8535). Nothing in hardening/wt/atlas writes it: a dead fallback.",
    "paths": [],
-   "writers_in_atlas": []
+   "writers_in_atlas": {
+    "files_writing": 0,
+    "first": null
+   }
   },
   {
    "id": "global:__GRIDATLAS_V9_MAP__",
@@ -3637,13 +3650,10 @@
    "rag": "grey",
    "reason": "resource; not on a complaint path",
    "paths": [],
-   "writers_in_atlas": [
-    "cartridges/202608301136-place-postcode-search.js",
-    "cartridges/202609011141-place-global-search-v9-5.js",
-    "cartridges/202609040337-place-global-search-v9-5.js",
-    "cartridges/202609041945-place-global-search-v9-5.js",
-    "cartridges/202609071213-place-global-search-v9-5.js"
-   ]
+   "writers_in_atlas": {
+    "files_writing": 10,
+    "first": "cartridges/202608301136-place-postcode-search.js"
+   }
   },
   {
    "id": "layer:gridatlas-lightning-nearest-core",
@@ -3726,14 +3736,6 @@
    ]
   },
   {
-   "id": "net:?",
-   "label": "net:?",
-   "type": "net",
-   "rag": "grey",
-   "reason": "resource; not on a complaint path",
-   "paths": []
-  },
-  {
    "id": "net:atlas/data/grid_substations.geojson",
    "label": "net:atlas/data/grid_substations.geojson",
    "type": "net",
@@ -3760,6 +3762,14 @@
   {
    "id": "net:lightning/data/history/index.json",
    "label": "net:lightning/data/history/index.json",
+   "type": "net",
+   "rag": "grey",
+   "reason": "resource; not on a complaint path",
+   "paths": []
+  },
+  {
+   "id": "net:lightning/data/uk_lightning.geojson",
+   "label": "net:lightning/data/uk_lightning.geojson",
    "type": "net",
    "rag": "grey",
    "reason": "resource; not on a complaint path",
@@ -4174,7 +4184,7 @@
    }
   },
   {
-   "from": "event:MutationObserver(map container)",
+   "from": "event:MutationObserver@cartridge-L6059",
    "to": "kv:1ac4484e",
    "type": "calls",
    "via": "event",
@@ -5325,7 +5335,7 @@
   },
   {
    "from": "kv:2a2899c5",
-   "to": "net:?",
+   "to": "net:lightning/data/uk_lightning.geojson",
    "type": "fetches",
    "via": "gx",
    "evidence": {
@@ -11119,6 +11129,30 @@
      129
     ],
     "snippet": "e.textContent=s"
+   }
+  },
+  {
+   "from": "kv:f84758d8",
+   "to": "event:map.click",
+   "type": "registers",
+   "evidence": {
+    "file": "202609241334-sld-sandbox-v9-8.js",
+    "lines": [
+     6191
+    ],
+    "snippet": "map.on('click', async (event) => { try { if (fromOwnUi(event)) return; const ids = interac"
+   }
+  },
+  {
+   "from": "kv:f84758d8",
+   "to": "event:MutationObserver@cartridge-L6059",
+   "type": "registers",
+   "evidence": {
+    "file": "202609241334-sld-sandbox-v9-8.js",
+    "lines": [
+     6059
+    ],
+    "snippet": "new MutationObserver(() => { if (link.links_drawn > 0 && !document.querySelector('.maplibr"
    }
   },
   {
