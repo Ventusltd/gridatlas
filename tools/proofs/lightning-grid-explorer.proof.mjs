@@ -42,7 +42,7 @@ check(js.includes('grid_substations.geojson'),'Actual original Atlas substation 
 check(js.includes('location.href'),'Deep-link selected genuine source event');
 check(js.includes('flash_id'),'Unique real flash key, not fake REPD identity');
 check(js.includes('Earlier than the seven-day feed remains UNKNOWN'),'Coverage honesty maintained');
-check(js.includes("target='_blank'")===false,'Links created with DOM methods');
+check(js.includes("a.target='_blank'") && !js.includes('innerHTML='),'External links created by DOM properties without HTML injection');
 check(js.includes("a.rel='noopener noreferrer'"),'External receiver links protect opener');
 check(!/setLayoutProperty|addLayer|addSource|atlas\/current\.json.*write/.test(js),'Do not edit or reimplement original map shell');
 check(!js.includes('calculateFaultCurrent('),'No fake quantitative protection calculations');
