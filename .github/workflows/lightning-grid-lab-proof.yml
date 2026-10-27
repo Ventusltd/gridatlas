@@ -5,6 +5,7 @@ on:
       - 'atlas/labs/lightning-grid/**'
       - 'tools/proofs/lightning-grid-explorer.proof.mjs'
       - 'tools/proofs/lightning-grid-map.proof.mjs'
+      - 'tools/proofs/lightning-grid-browser-smoke.mjs'
       - 'tools/proofs/lightning-grid-real-sources.proof.mjs'
       - 'tools/proofs/lightning-grid-feed-contract.test.mjs'
       - '.github/workflows/lightning-grid-lab-proof.yml'
@@ -49,3 +50,39 @@ jobs:
         if: always()
         run: |
           echo 'No site electrical solver, historical archive backfill, iPhone browser or deployment is performed.'
+
+
+  browser-phone-size-contract:
+    runs-on: ubuntu-latest
+    timeout-minutes: 16
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install ONE Chromium worker for real rendering (no swarm)
+        run: |
+          npm install --no-save playwright@1.54.2
+          npx playwright install --with-deps chromium
+      - name: Local static server for untouched draft lab
+        run: |
+          python3 -m http.server 8765 --bind 127.0.0.1 > /tmp/lightning-grid-http.log 2>&1 &
+          sleep 3
+          curl -fsS http://127.0.0.1:8765/atlas/labs/lightning-grid/ > /dev/null
+      - name: Real phone-sized Chromium click-to-Grid integration smoke
+        run: node tools/proofs/lightning-grid-browser-smoke.mjs
+      - name: Upload phone viewport smoke screenshots and evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: lightning-grid-click-chromium
+          path: artifacts/lightning-grid-browser/
+          if-no-files-found: warn
+      - name: Real-device limitation notice
+        if: always()
+        run: |
+          echo 'This was headless Chromium (ONE browser), NOT iPhone Safari.'
+          echo 'Third-party data were synthetically fulfilled; real code/CDN and WebGL rendered in browser.'
+          echo 'Do not infer a real ground strike, electrical fault result or one-year archive coverage.'
