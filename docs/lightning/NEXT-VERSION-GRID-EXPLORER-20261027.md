@@ -6,7 +6,7 @@ This next-version sidecar is a lightweight **separate page** at \`atlas/labs/lig
 
 ## Current dependencies and exact source
 
-- Engine: \`Ventusltd/ventus-grid-engine\` draft PR #2, currently pinned to commit \`1829ea0b132dc5f1650c1cacdc54635fec6b1fc1\` through jsDelivr; it imports the estate's nearest search, geodesy and MAP deep-link contract rather than duplicating algorithms.
+- Engine: \`Ventusltd/ventus-grid-engine\` draft PR #2, currently pinned to commit \`69b4e88c8464f0310bd67e47ec83ee8afa9e1921\` through jsDelivr; it imports the estate's nearest search, geodesy and MAP deep-link contract rather than duplicating algorithms.
 - Optical observations: \`Ventusltd/lightning/main/data/uk_lightning.geojson\`; seven-day feed only, indexed by authentic \`Feature.id\` with source UTC. Optical flashes **are not confirmed ground strikes**.
 - Substation locations: the existing GridAtlas immutable shell's \`grid_substations.geojson\`. Entries lacking coordinates or valid voltage must not be falsely ranked.
 - Solar plant catalogue: **eight Pipeline News V9.1 real GeoJSON solar partitions** under \`Ventusltd/pipelinenews/main/data/atlas/\`, not a generated mock list or the entire 35.7 MB register.
@@ -17,7 +17,7 @@ This next-version sidecar is a lightweight **separate page** at \`atlas/labs/lig
 
 1. **Current state:** code committed to a **draft** next-version branch. Not browser tested; CDN, raw GitHub CORS, real iOS Safari and 8-partition download remain unverified. Do not merge until actually smoke-tested.
 2. Run \`node tools/proofs/lightning-grid-explorer.proof.mjs\` from repository root. This is a STATIC Node proof only.
-3. Execute \`node proofs/lightning-click-context.proof.mjs\` in the pinned Grid Engine source. The first pre-PR functional isolation run showed 54 checks passing in a JS harness with a URL shim; **not a full Node CI result**. Require actual Node CI before merge.
+3. Execute \`node proofs/lightning-click-context.proof.mjs\` in the pinned Grid Engine source. The current functional isolation run showed **79 checks PASS** in a JS harness with a URL shim, including existing OSM polygon/MultiPolygon geodesy and owner-required non-diagnostic diligence. **Not a full Node CI result**. Require actual Node CI before merge.
 4. Validate the real \`grid_substations.geojson\` Feature/attribute shape and that nearest candidate counts are nonzero. Accept zero where legitimately none is located, but do not present missing coverage as no facilities.
 5. Exercise same-position Map links against actual GridAtlas receiver (historical wind bucket issue, null coordinates, numeric \`repd_ref\`, 44px targets, keyboard and touch). Test on owner iPhone.
 6. Capture memory/performance using real 408 observed optical events, all 8 solar partitions and the substation GeoJSON. If a partition fails, show PARTIAL SOURCE rather than a complete zero.
@@ -25,3 +25,11 @@ This next-version sidecar is a lightweight **separate page** at \`atlas/labs/lig
 8. All source licences and attribution remain attached (Ventus code under its declared licence; EUMETSAT/OSM/NESO data retain their respective terms).
 
 See [feature work order #36](https://github.com/Ventusltd/gridatlas/issues/36), [release-critical Issue #32](https://github.com/Ventusltd/gridatlas/issues/32) and [Grid Engine draft PR #2](https://github.com/Ventusltd/ventus-grid-engine/pull/2).
+
+## Owner's mandatory engineering boundaries (27 Oct)
+
+Every flash-to-site view explicitly states (1) EUMETSAT optical detection is not necessarily a ground strike or evidence that a site was hit; (2) faults and surges may have independent causes, including grid switching, equipment failure, insulation degradation, moisture or a second IT fault; and (3) post-event inspection is a **diligence recommendation**, not a diagnosis. The user may declare nearby pylons/overhead lines and wet/dry weather; neither is inferred from the optical source.
+
+The pure Grid Engine `postEventDiligence` helper supplies IMD/RCMU/SPD logs, insulation-resistance and earthing/bonding checks, cable/connector inspections, thermography and weather review, without claiming an electrical solution. DEHN White Paper WPX051/EN/0422 is linked as **manufacturer technical background**, not proof of a strike, a particular inverter installation, or a substitute for standards and site engineering.
+
+A static CI workflow was added to the draft branch to run the separate `node tools/proofs/lightning-grid-explorer.proof.mjs`; inspect its exact GitHub run for PASS/FAIL rather than assuming green. Full browser/CDN and owner-iPhone checks remain blocked until performed.
