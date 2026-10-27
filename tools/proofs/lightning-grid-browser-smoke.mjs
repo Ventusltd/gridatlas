@@ -68,7 +68,7 @@ try{
   await page.waitForFunction(()=>{
     const s=document.querySelector('#map-status')?.textContent||'';
     return s.includes('Map ready')||s.includes('could not start');
-  },{timeout:45000});
+  },null,{timeout:45000});
   const status=await page.locator('#map-status').textContent();
   assert.match(status,/Map ready/,'Real MapLibre map needs WebGL and source rendering');
   const canvas=page.locator('#flash-map canvas.maplibregl-canvas');
@@ -81,16 +81,16 @@ try{
   await canvas.click({position:{x:box.width/2,y:box.height/2},timeout:10000});
   await page.waitForFunction(
     ()=>document.querySelector('#flash')?.value==='browser-source-centre',
-    {timeout:12000}
+    null,{timeout:12000}
   );
   await page.waitForFunction(()=>{
     const text=document.querySelector('#status')?.textContent||'';
     return text.includes('Ready ·')||text.includes('Unable to compute');
-  },{timeout:35000});
+  },null,{timeout:35000});
   const uiStatus=await page.locator('#status').textContent();
   assert.match(uiStatus,/Ready ·/,'Map pixel tap must actually run Grid Engine context');
   const solarLink=page.locator('#solar a').first();
-  assert.equal(await solarLink.getAttribute('href')?.includes('repd_ref=12588'),true,
+  assert.equal((await solarLink.getAttribute('href'))?.includes('repd_ref=12588'),true,
     'Existing MAP receiver must receive authentic REPD reference');
   assert.equal(await page.locator('#scenario').isEnabled(),true,
     'Scenario becomes available only after genuine proximity context');
