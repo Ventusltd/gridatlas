@@ -9,8 +9,9 @@
 import {
   createLightningContextEngine,
   lightningElectricalScenario,
+  postEventDiligence,
   caveat
-} from 'https://cdn.jsdelivr.net/gh/Ventusltd/ventus-grid-engine@1829ea0b132dc5f1650c1cacdc54635fec6b1fc1/engine/lightning-click-context.js';
+} from 'https://cdn.jsdelivr.net/gh/Ventusltd/ventus-grid-engine@69b4e88c8464f0310bd67e47ec83ee8afa9e1921/engine/lightning-click-context.js';
 
 const FEED='https://raw.githubusercontent.com/Ventusltd/lightning/main/data/uk_lightning.geojson';
 const SUBSTATIONS='https://raw.githubusercontent.com/Ventusltd/gridatlas/main/atlas/releases/202608300453-atlas-v9/data/grid_substations.geojson';
@@ -127,6 +128,7 @@ function display(ctx,assets){
     card.appendChild(node('strong',p.name));
     line(card,pretty(p.km)+' km · '+(p.capacity_mw===null?'MW capacity not declared':pretty(p.capacity_mw)+' MW as recorded')+
       ' · symbol radius '+pretty(p.marker_radius_px)+' px (display only; not land area)');
+    line(card,'Observed optical lightning activity '+pretty(p.km)+' km from this mapped project. Consider post-event inspection as diligence, NOT as evidence of a strike, fault or damage.');
     const a=node('a','Open project in existing GridAtlas MAP');
     a.href=p.gridatlas_project_url;a.target='_blank';a.rel='noopener noreferrer';
     card.appendChild(a);solar.appendChild(card);
@@ -143,6 +145,11 @@ function scenario(){
       inverterIsolation:el('inverter').value,
       selectedRepdRef:el('project').value||null
     });
+    const diligence=postEventDiligence(state.ctx,{
+      selectedRepdRef:el('project').value||null,
+      overheadLineProximity:el('overhead').value,
+      wetWeather:el('weather').value
+    });
     const title=node('p','NOT RUN — no current, voltage, probability or event causality calculated','strong');
     t.appendChild(title);
     line(t,'Selected site: '+(result.site?.name||'None; generic hypothetical study inputs only'));
@@ -155,6 +162,15 @@ function scenario(){
       s.needs.forEach(need=>list.appendChild(node('li',need)));
       detail.appendChild(list);t.appendChild(detail);
     });
+    t.appendChild(node('h3','Post-event inspection: engineering diligence, not diagnosis'));
+    line(t,diligence.disclaimer);
+    line(t,diligence.overhead_note);
+    line(t,diligence.weather_note);
+    const inspection=node('ul');
+    diligence.actions.forEach(a=>inspection.appendChild(node('li',a)));
+    t.appendChild(inspection);
+    line(t,'Other possible causes: '+diligence.other_possible_causes.join('; ')+'.');
+    line(t,'Technical background: DEHN WPX051 / EN / 0422 on string-inverter AC-side surge paths; consult manufacturer instructions and applicable standards.');
   }catch(e){line(t,'Scenario setup refused: '+e.message)}
 }
 async function inspect(){
@@ -188,7 +204,13 @@ el('flash').addEventListener('change',()=>{
 el('inspect').addEventListener('click',inspect);
 el('scenario').addEventListener('click',scenario);
 for(const k of ['radius','kv'])el(k).addEventListener('change',()=>{
-  state.serial++;state.ctx=null;el('scenario').disabled=true
+  state.serial++;state.ctx=null;el('scenario').disabled=true;
+  clear('substations').textContent='Parameters changed. Run proximity search again.';
+  clear('solar').textContent='Parameters changed. Run proximity search again.';
+  el('provenance').textContent='Prior proximity results cleared; no new search yet.';
+  el('project').replaceChildren(node('option','No project selected'));
+  el('scenario-output').textContent='Parameters changed. Run proximity search again.';
+  status('Search parameters changed. Earlier results cleared; select Find nearest mapped infrastructure to recalculate.');
 });
 async function start(){
   try{
