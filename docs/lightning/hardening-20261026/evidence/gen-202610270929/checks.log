@@ -1,0 +1,38 @@
+== lint
+scope-ledger=PASS active=none master=done
+exit=0
+== state
+scope-ledger=PASS active=none master=done
+cmp=0
+== proof 202610270929
+exit=0
+== proof 202610270246
+exit=0
+== proof 202610270113
+exit=0
+== proof 202610261949
+exit=0
+== run-current
+exit=0
+== verify-compose
+{"composition":"PASS","generation":"202609241334","release_id":"202608300453-atlas-v9","immutable_re
+== verify-candidate
+ "result": "PASS",
+ "failures": []
+== parity on route
+  FAIL sld-sandbox: declared source derived/gb-transmission-network.v1.json is named by the bytes
+  FAIL sld-sandbox: declared source derived/price-decade-rollup.json is named by the bytes
+  FAIL substation-intelligence: declared source derived/connection-points.v3.json is named by the bytes
+12/15 checks passed
+FAILURES
+== loader
+cmp=0
+ 33623 atlas/modules/202610270929-uk-lightning-overlay.js
+468842 atlas/cartridges/202610270929-sld-sandbox-v9-8.js
+502465 total
+== chatgpt
+# pass 8
+# fail 0
+== fixtests
+# pass 91
+# fail 0
