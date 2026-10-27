@@ -1,0 +1,45 @@
+name: Build F optical-click sandbox proof
+on:
+  pull_request:
+    paths:
+      - atlas/experiments/lightning-grid-20261027/**
+      - tools/proofs/build-f-lightning-selection.test.mjs
+      - .github/workflows/lightning-build-f-20261027.yml
+      - docs/lightning/BUILD-F-ROADMAP-20261027.md
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  experimental-optical-selector:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Pin and print experimental source
+        run: |
+          git rev-parse HEAD
+          node -e "console.log('LIVE generation:',require('./atlas/current.json').generation)"
+      - name: Reject original live pointer changes
+        run: |
+          test "$(node -e "console.log(require('./atlas/current.json').generation)")" = 202609241334
+      - name: Run click-selection and cluster proofs
+        run: node --test tools/proofs/build-f-lightning-selection.test.mjs
+
+  grid-engine-scenario:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          repository: Ventusltd/ventus-grid-engine
+          ref: ced25abae2b8b4d0d719faf36e299632e69c2522
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Run existing nearest/deeplink optical scenario proof
+        run: node proofs/lightning-click-context.proof.mjs
