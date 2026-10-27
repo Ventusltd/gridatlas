@@ -193,6 +193,14 @@ async function inspect(){
   try{
     const assets=await getAssets();
     if(serial!==state.serial)return;
+    // No infrastructure dataset survived: do not present zero nearby assets
+    // as a completed search or enable a hypothetical site-specific scenario.
+    // The optical observation itself remains valid; asset context is UNKNOWN.
+    if(assets.issues.length===solarURLs.length+1){
+      fail('All infrastructure sources unavailable. Nearby solar and substations UNKNOWN; '+
+        'no proximity result or electrical scenario is available. Retry Inspect.');
+      return;
+    }
     const ctx=state.engine.selectFlash(f,{
       radiusKm:Number(el('radius').value),minimumKv:Number(el('kv').value),
       solarLimit:30,substationLimit:6
