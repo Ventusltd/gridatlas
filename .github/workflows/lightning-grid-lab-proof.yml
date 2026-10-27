@@ -4,6 +4,7 @@ on:
     paths:
       - 'atlas/labs/lightning-grid/**'
       - 'tools/proofs/lightning-grid-explorer.proof.mjs'
+      - 'tools/proofs/lightning-grid-real-sources.proof.mjs'
       - '.github/workflows/lightning-grid-lab-proof.yml'
   workflow_dispatch:
 permissions:
@@ -25,3 +26,20 @@ jobs:
         run: |
           echo 'No browser, iPhone, CDN/CORS, live EUMETSAT, historical archive or electrical solver was executed.'
           echo 'Build E and the original production pointer are outside this proof.'
+
+  real-source-contract:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Verify live read-only source formats and exact pinned CDN code
+        run: node tools/proofs/lightning-grid-real-sources.proof.mjs
+      - name: Explicit limits of real-source contract
+        if: always()
+        run: |
+          echo 'No site electrical solver, historical archive backfill, iPhone browser or deployment is performed.'
