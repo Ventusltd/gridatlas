@@ -1,0 +1,9 @@
+harness: self-fixture (node v22.23.4); base = fixed-module-G.js (24777 B, stamped 202610262310)
+   729  H1 feed-only long periods: label "[n · last 7 days only]", bold first caption line, status "7-DAY FEED ONLY · …", dim marker on 30D-12M chips
+   691  H2 bigger dots (6/8/10 px at z5/z8/z11, 1.5 px dark stroke, light core), invisible 22 px hit layer, cluster counts
+  1153  H3 tap popup (textContent only) when a flash is under the tap; cluster tap zooms in; never stops other handlers; closes on tap elsewhere, redraw and OFF
+   382  H4 FIT FLASHES (only when tapped) and the "outside the current view" recount on moveend (above)
+    48  H4 restored: CRF-2/2b lost day subtracted once per union of overlapping windows; "12 months"; aria-live
+   177  H2b cluster label font read from the basemap style (first symbol layer with a text-font), else Open Sans Regular; no hardcoded stack
+  1136  READ header and section comments restored (budget allows; no behaviour)
+G 24777 -> H 29093 bytes (delta +4316); new cap 44781 (480,000 − 435,218 − 1): MET (15688 spare)

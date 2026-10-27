@@ -1,0 +1,35 @@
+# line index, 202609241334-sld-sandbox-v9-8.js sha256 7812953671d8bb22
+623:  function nearestTransmission(origin, subs) {
+1975:  function nearestTransmission(origin, subs) {
+3273:  window.__GRIDATLAS_NEON_LINKS__ = link;
+3378:  function deepLinkPlan(rawLon, rawLat, rawRepdRef) {
+3398:  function createArrivalGate() {
+3431:  const arrivalGate = createArrivalGate();
+3435:  function claimPendingArrival(search = window.location.search) {
+3438:  function invalidatePendingArrival(reason) {
+3477:  function loadSubstations() {
+3513:  function nearestSubstations(lon, lat, subs) {
+3705:  function cardBlockHtml(links, direction, layerLoaded = true) {
+3950:  function addCardBar(content) {
+4067:  function resetCardGeometry(content, linksDrawn = null) {
+4111:  function injectIntoCard(links, direction, layerLoaded = true) {
+4205:  function ensureArrivalCard(lon, lat, name, tech, statedMw, repdRef, suppliedStatus) {
+4266:  function armCardKeeper(links, direction, layerLoaded) {
+4308:  function ensureLayers(map) {
+4414:  function startAnimation(map) {
+4457:  function recordArrivalEngine(engine, answered, reason, fallbackFrom, pending = false) {
+4501:  function clearLinks() {
+4522:  function drawLinks(map, origin, name, tech, links, direction, statedMw, layerLoaded = true) {
+5140:  function ensurePinLayers(map) {
+5193:  function setPin(map, origin, name, tech) {
+6045:  function install(map) {
+6059:    const popupWatcher = new MutationObserver(() => {
+6073:    async function selectAt(origin, name, tech, fromSubstation, statedMw,
+6168:    link.selectAt = selectAt;
+6191:    map.on('click', async (event) => {
+6320:    async function runDeepLink(expectedArrivalEpoch = null) {
+6707:        async function runArrivalSelection(arrival, waitForOwnerCard = false,
+6938:    function attemptArrival() {
+6974:      if (event.key === 'Escape') clearLinks();
+7654:    map.on('click', (event) => {
+8158:    map.on('click', (event) => {

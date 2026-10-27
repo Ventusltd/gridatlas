@@ -1,0 +1,16 @@
+opus-step-e-procedure evidence folder (issue #32 §8 Step E, R07, R08). Candidate gridatlas fda6b10f7d2672bf1bf74c4fbf6184cd36b1ec1d,
+generation 202610261949 (worktree HEAD 18842df changes docs only; git diff fda6b10 18842df -- atlas is empty). Production c08f3a6 untouched.
+Nothing here is Step E evidence of a PASS. Harness per artefact:
+- scripts/reachability-curls.sh, curl/*.txt|*.headers|*.body : sandbox shell curl through the session agent proxy (TLS verification on,
+  proxy not bypassed), one request per host, 2026-10-26T22:30:00Z-22:30:02Z. raw.githubusercontent.com reached (HTTP 404 index.json);
+  ventusltd.github.io, basemaps.cartocdn.com, tiles.basemaps.cartocdn.com, extensions.duckdb.org, cdn.jsdelivr.net = proxy CONNECT 403.
+- curl/proxy-status-relay-failures.txt : agent proxy status endpoint, recentRelayFailures filtered to this run (22:30Z).
+- scripts/step-e-console-snippet.js : the read-only owner console probe (sha256 in the report).
+- scripts/validate-snippet.mjs, snippet-validation/*.json|validate-snippet.log : lead-shim harness (offline-shim.mjs), Chromium headless
+  (Playwright 1.63 symlinked), 1440x900, routes /wt/atlas/ and /wt/atlas/v/202610261949/ on 127.0.0.1:8617; lightning data = local
+  /home/claude/lightning/data (no data/history -> index 404) or SYNTHETIC fixture lightning/fixtures/lightning-archive. Validates the
+  snippet only; raw.githubusercontent.com answered from local files.
+- scripts/secure-context-check.mjs, secure-context-check.log : Chromium headless, NO shim, 393x852, 127.0.0.1:8618 vs 192.0.2.2:8618.
+- STEP-E-OWNER-PROCEDURE.md : byte-identical copy of reports/opus-step-e-procedure.md.
+- curl/feed-resume.txt|.headers|-conditional.headers : sandbox shell curl through the agent proxy, 2026-10-26T22:56:41Z, after container restart:
+  uk_lightning.geojson 200 (215,536 B, 408 features, ACAO *, cache-control max-age=300, ETag) then If-None-Match -> 304. Body not retained in repo (feed-resume.body is a local copy of public data).

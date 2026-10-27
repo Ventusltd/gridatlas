@@ -1,0 +1,2575 @@
+{
+  "builtAt": "2026-10-26T23:39:45.230Z",
+  "rows": [
+    {
+      "id": "menu-bar-mobile-hit",
+      "baseline": "PASS",
+      "candidate": "PASS",
+      "same": true,
+      "bErr": "\"pageErrors\": [],",
+      "cErr": "\"pageErrors\": [],",
+      "cNote": "",
+      "bSrc": "pre-restart run (logs/baseline-browser-shim.log)",
+      "cSrc": "rows-fixtures.jsonl"
+    },
+    {
+      "id": "menu-bar-attrib-clearance",
+      "baseline": "FAIL",
+      "candidate": "FAIL",
+      "same": true,
+      "bErr": "FAILURES",
+      "cErr": "FAILURES",
+      "cNote": "exit 1",
+      "bSrc": "pre-restart run (logs/baseline-browser-shim.log)",
+      "cSrc": "rows-fixtures.jsonl"
+    },
+    {
+      "id": "menu-bar-instrument-panel-202609041250",
+      "baseline": "FAIL",
+      "candidate": "FAIL",
+      "same": true,
+      "bErr": "FAILURES",
+      "cErr": "FAILURES",
+      "cNote": "exit 1",
+      "bSrc": "pre-restart run (logs/baseline-browser-shim.log)",
+      "cSrc": "rows-fixtures.jsonl"
+    },
+    {
+      "id": "all-controls-desktop",
+      "baseline": "FAIL",
+      "candidate": "FAIL",
+      "same": true,
+      "bErr": "desktop csv-export-loaded false TimeoutError: page.waitForFunction: Timeout 60000ms exceeded.",
+      "cErr": "name: 'Error'",
+      "cNote": "exit 1",
+      "bSrc": "pre-restart run (logs/baseline-browser-shim.log)",
+      "cSrc": "rows-fixtures.jsonl"
+    },
+    {
+      "id": "all-controls-mobile",
+      "baseline": "FAIL",
+      "candidate": "FAIL",
+      "same": true,
+      "bErr": "android-emulation csv-export-loaded false TimeoutError: page.waitForFunction: Timeout 60000ms exceeded.",
+      "cErr": "android-emulation csv-export-loaded false TimeoutError: page.waitForFunction: Timeout 60000ms exceeded.",
+      "cNote": "exit 1",
+      "bSrc": "pre-restart run (logs/baseline-browser-shim.log)",
+      "cSrc": "rows-mobile.jsonl"
+    },
+    {
+      "id": "grid-subs-chips-on-desktop",
+      "baseline": "FAIL",
+      "candidate": "FAIL",
+      "same": true,
+      "bErr": "FAIL  1400x900 desktop  on the map: []",
+      "cErr": "FAIL  1400x900 desktop  on the map: []",
+      "bNote": "pre-existing on main — exit 1",
+      "cNote": "exit 1",
+      "bSrc": "rows-routeA.jsonl",
+      "cSrc": "rows-routeA.jsonl"
+    },
+    {
+      "id": "pdf-export-outcomes-202609051329",
+      "baseline": "BLOCKED_HARNESS",
+      "candidate": "BLOCKED_HARNESS",
+      "same": true,
+      "bErr": "name: 'Error'",
+      "cErr": "name: 'Error'",
+      "bNote": "tooling: Executable doesn't exist at /opt/pw-browsers/firefox-1543/firefox/firefox",
+      "cNote": "tooling: Executable doesn't exist at /opt/pw-browsers/firefox-1543/firefox/firefox",
+      "bSrc": "rows-routeA.jsonl",
+      "cSrc": "rows-routeA.jsonl"
+    },
+    {
+      "id": "screen-grab-print-outcomes",
+      "baseline": "PASS",
+      "candidate": "PASS",
+      "same": true,
+      "bErr": "18 passed, 0 failed, 18 checks",
+      "cErr": "18 passed, 0 failed, 18 checks",
+      "bNote": "",
+      "cNote": "",
+      "bSrc": "rows-routeA.jsonl",
+      "cSrc": "rows-routeA.jsonl"
+    },
+    {
+      "id": "teleprint-evidence",
+      "baseline": "PASS",
+      "candidate": "PASS",
+      "same": true,
+      "bErr": "2 passed, 0 failed, 2 sessions (1 pdf, 1 source)",
+      "cErr": "2 passed, 0 failed, 2 sessions (1 pdf, 1 source)",
+      "bNote": "",
+      "cNote": "",
+      "bSrc": "rows-routeA.jsonl",
+      "cSrc": "rows-routeA.jsonl"
+    },
+    {
+      "id": "deep-link-visibility",
+      "baseline": "FAIL",
+      "candidate": "FAIL",
+      "same": true,
+      "bErr": "FAILURES",
+      "cErr": "FAILURES",
+      "bNote": "pre-existing on main — exit 1",
+      "cNote": "exit 1",
+      "bSrc": "rows-selfA.jsonl",
+      "cSrc": "rows-selfA.jsonl"
+    },
+    {
+      "id": "deep-link-technology-buckets",
+      "baseline": "FAIL",
+      "candidate": "FAIL",
+      "same": true,
+      "bErr": "FAILURES",
+      "cErr": "FAILURES",
+      "bNote": "pre-existing on main — exit 1",
+      "cNote": "exit 1",
+      "bSrc": "rows-selfA.jsonl",
+      "cSrc": "rows-selfA.jsonl"
+    },
+    {
+      "id": "export-print-and-image-outcomes",
+      "baseline": "FAIL",
+      "candidate": "FAIL",
+      "same": true,
+      "bErr": "16 export outcome check(s) failed",
+      "cErr": "16 export outcome check(s) failed",
+      "bNote": "pre-existing on main — exit 1",
+      "cNote": "exit 1",
+      "bSrc": "rows-selfA.jsonl",
+      "cSrc": "rows-selfA.jsonl"
+    },
+    {
+      "id": "repd-deep-link-sweep",
+      "baseline": "PASS",
+      "candidate": "PASS",
+      "same": true,
+      "bErr": "arrived 2 · no identity 0 · page error 0  (of 2)",
+      "cErr": "arrived 2 · no identity 0 · page error 0  (of 2)",
+      "bNote": "",
+      "cNote": "",
+      "bSrc": "rows-selfA.jsonl",
+      "cSrc": "rows-selfA.jsonl"
+    },
+    {
+      "id": "arrival-engine-sweep-202609072356",
+      "baseline": "PASS",
+      "candidate": "PASS",
+      "same": true,
+      "bErr": "technology       cases  answered  declined  pending  silent  error  engines / reasons",
+      "cErr": "technology       cases  answered  declined  pending  silent  error  engines / reasons",
+      "bNote": "",
+      "cNote": "",
+      "bSrc": "rows-selfB.jsonl",
+      "cSrc": "rows-selfB.jsonl"
+    },
+    {
+      "id": "arrival-identity-202609040229",
+      "baseline": "FAIL",
+      "candidate": "FAIL",
+      "same": true,
+      "bErr": "name: 'Error'",
+      "cErr": "name: 'Error'",
+      "bNote": "pre-existing on main — exit 1",
+      "cNote": "exit 1",
+      "bSrc": "rows-selfC.jsonl",
+      "cSrc": "rows-selfC.jsonl"
+    },
+    {
+      "id": "transit-layer-availability-202609040219",
+      "baseline": "FAIL",
+      "candidate": "FAIL",
+      "same": true,
+      "bErr": "name: 'Error'",
+      "cErr": "name: 'Error'",
+      "bNote": "pre-existing on main — exit 1",
+      "cNote": "exit 1",
+      "bSrc": "rows-selfD.jsonl",
+      "cSrc": "rows-selfD.jsonl"
+    },
+    {
+      "id": "uk-lightning-preview",
+      "baseline": "PASS",
+      "candidate": "FAIL",
+      "same": false,
+      "bErr": "…",
+      "cErr": "AssertionError [ERR_ASSERTION]: baseline generation mismatch",
+      "bNote": "",
+      "cNote": "exit 1",
+      "bSrc": "rows-selfD.jsonl",
+      "cSrc": "rows-selfD.jsonl"
+    },
+    {
+      "id": "all-layer-clicks-1440 (per layer, 60 ids)",
+      "baseline": "{\"PASS\":12,\"NOT-LOADED [FAIL]\":40,\"ERR:target-crashed\":6,\"ERR:timeout getByRole('button', { name: 'Grid', exact: true })\\u001b[22m\":2}",
+      "candidate": "{\"PASS\":12,\"NOT-LOADED [FAIL]\":41,\"ERR:target-crashed\":7}",
+      "same": false,
+      "layerDiffs": [
+        {
+          "id": "metro",
+          "baseline": "ERR:timeout getByRole('button', { name: 'Grid', exact: true })\u001b[22m",
+          "candidate": "ERR:target-crashed",
+          "same": false,
+          "b": {
+            "chunk": "all-layer-clicks-1440"
+          },
+          "c": {
+            "chunk": "all-layer-clicks-1440-L1440-c2"
+          }
+        },
+        {
+          "id": "solar_operational",
+          "baseline": "ERR:timeout getByRole('button', { name: 'Grid', exact: true })\u001b[22m",
+          "candidate": "NOT-LOADED [FAIL]",
+          "same": false,
+          "b": {
+            "chunk": "all-layer-clicks-1440"
+          },
+          "c": {
+            "label": "Solar PV (Operational Only) [FAIL]",
+            "eligible": 0,
+            "chunk": "all-layer-clicks-1440-L1440-c3"
+          }
+        }
+      ]
+    },
+    {
+      "id": "all-layer-clicks-393 (per layer, 60 ids)",
+      "baseline": "{\"PASS\":12,\"NOT-LOADED [FAIL]\":41,\"ERR:target-crashed\":7}",
+      "candidate": "{\"PASS\":12,\"NOT-LOADED [FAIL]\":41,\"ERR:target-crashed\":7}",
+      "same": true,
+      "layerDiffs": []
+    }
+  ],
+  "layerPairs": {
+    "393": [
+      {
+        "id": "400",
+        "baseline": "PASS",
+        "candidate": "PASS",
+        "same": true,
+        "b": {
+          "label": "400kV [OK]",
+          "eligible": 4106,
+          "rendered": 6,
+          "popup": 1,
+          "off": true,
+          "chunk": "all-layer-clicks-393-L393-c1"
+        },
+        "c": {
+          "label": "400kV [OK]",
+          "eligible": 4106,
+          "rendered": 6,
+          "popup": 1,
+          "off": true,
+          "chunk": "all-layer-clicks-393-L393-c1"
+        }
+      },
+      {
+        "id": "275",
+        "baseline": "PASS",
+        "candidate": "PASS",
+        "same": true,
+        "b": {
+          "label": "275kV [OK]",
+          "eligible": 2935,
+          "rendered": 28,
+          "popup": 1,
+          "off": true,
+          "chunk": "all-layer-clicks-393-L393-c1"
+        },
+        "c": {
+          "label": "275kV [OK]",
+          "eligible": 2935,
+          "rendered": 28,
+          "popup": 1,
+          "off": true,
+          "chunk": "all-layer-clicks-393-L393-c1"
+        }
+      },
+      {
+        "id": "220",
+        "baseline": "PASS",
+        "candidate": "PASS",
+        "same": true,
+        "b": {
+          "label": "220kV [OK]",
+          "eligible": 126,
+          "rendered": 3,
+          "popup": 1,
+          "off": true,
+          "chunk": "all-layer-clicks-393-L393-c1"
+        },
+        "c": {
+          "label": "220kV [OK]",
+          "eligible": 126,
+          "rendered": 3,
+          "popup": 1,
+          "off": true,
+          "chunk": "all-layer-clicks-393-L393-c1"
+        }
+      },
+      {
+        "id": "132",
+        "baseline": "PASS",
+        "candidate": "PASS",
+        "same": true,
+        "b": {
+          "label": "132kV [OK]",
+          "eligible": 6227,
+          "rendered": 8,
+          "popup": 1,
+          "off": true,
+          "chunk": "all-layer-clicks-393-L393-c1"
+        },
+        "c": {
+          "label": "132kV [OK]",
+          "eligible": 6227,
+          "rendered": 8,
+          "popup": 1,
+          "off": true,
+          "chunk": "all-layer-clicks-393-L393-c1"
+        }
+      },
+      {
+        "id": "66",
+        "baseline": "PASS",
+        "candidate": "PASS",
+        "same": true,
+        "b": {
+          "label": "66kV [OK]",
+          "eligible": 1171,
+          "rendered": 6,
+          "popup": 1,
+          "off": true,
+          "chunk": "all-layer-clicks-393-L393-c1"
+        },
+        "c": {
+          "label": "66kV [OK]",
+          "eligible": 1171,
+          "rendered": 6,
+          "popup": 1,
+          "off": true,
+          "chunk": "all-layer-clicks-393-L393-c1"
+        }
+      },
+      {
+        "id": "11kv",
+        "baseline": "NOT-LOADED [FAIL]",
+        "candidate": "NOT-LOADED [FAIL]",
+        "same": true,
+        "b": {
+          "label": "11kV (UKPN) [FAIL]",
+          "eligible": 0,
+          "chunk": "all-layer-clicks-393-L393-c1"
+        },
+        "c": {
+          "label": "11kV (UKPN) [FAIL]",
+          "eligible": 0,
+          "chunk": "all-layer-clicks-393-L393-c1"
+        }
+      },
+      {
+        "id": "subs",
+        "baseline": "PASS",
+        "candidate": "PASS",
+        "same": true,
+        "b": {
+          "label": "Subs [OK]",
+          "eligible": 5800,
+          "rendered": 1,
+          "popup": 1,
+          "off": true,
+          "chunk": "all-layer-clicks-393-L393-c1"
+        },
+        "c": {
+          "label": "Subs [OK]",
+          "eligible": 5800,
+          "rendered": 1,
+          "popup": 1,
+          "off": true,
+          "chunk": "all-layer-clicks-393-L393-c1"
+        }
+      },
+      {
+        "id": "nuc",
+        "baseline": "PASS",
+        "candidate": "PASS",
+        "same": true,
+        "b": {
+          "label": "Nuclear [OK]",
+          "eligible": 4,
+          "rendered": 1,
+          "popup": 1,
+          "off": true,
+          "chunk": "all-layer-clicks-393-L393-c1"
+        },
+        "c": {
+          "label": "Nuclear [OK]",
+          "eligible": 4,
+          "rendered": 1,
+          "popup": 1,
+          "off": true,
+          "chunk": "all-layer-clicks-393-L393-c1"
+        }
+      },
+      {
+        "id": "gas",
+        "baseline": "PASS",
+        "candidate": "PASS",
+        "same": true,
+        "b": {
+          "label": "Gas [OK]",
+          "eligible": 174,
+          "rendered": 2,
+          "popup": 1,
+          "off": true,
+          "chunk": "all-layer-clicks-393-L393-c1"
+        },
+        "c": {
+          "label": "Gas [OK]",
+          "eligible": 174,
+          "rendered": 2,
+          "popup": 1,
+          "off": true,
+          "chunk": "all-layer-clicks-393-L393-c1"
+        }
+      },
+      {
+        "id": "ind",
+        "baseline": "PASS",
+        "candidate": "PASS",
+        "same": true,
+        "b": {
+          "label": "Industry [OK]",
+          "eligible": 5878,
+          "rendered": 34,
+          "popup": 1,
+          "off": true,
+          "chunk": "all-layer-clicks-393-L393-c1"
+        },
+        "c": {
+          "label": "Industry [OK]",
+          "eligible": 5878,
+          "rendered": 34,
+          "popup": 1,
+          "off": true,
+          "chunk": "all-layer-clicks-393-L393-c1"
+        }
+      },
+      {
+        "id": "dc",
+        "baseline": "PASS",
+        "candidate": "PASS",
+        "same": true,
+        "b": {
+          "label": "Data Ctrs [OK]",
+          "eligible": 240,
+          "rendered": 7,
+          "popup": 1,
+          "off": true,
+          "chunk": "all-layer-clicks-393-L393-c1"
+        },
+        "c": {
+          "label": "Data Ctrs [OK]",
+          "eligible": 240,
+          "rendered": 7,
+          "popup": 1,
+          "off": true,
+          "chunk": "all-layer-clicks-393-L393-c1"
+        }
+      },
+      {
+        "id": "air",
+        "baseline": "PASS",
+        "candidate": "PASS",
+        "same": true,
+        "b": {
+          "label": "Airports [OK]",
+          "eligible": 810,
+          "rendered": 12,
+          "popup": 1,
+          "off": true,
+          "chunk": "all-layer-clicks-393-L393-c1"
+        },
+        "c": {
+          "label": "Airports [OK]",
+          "eligible": 810,
+          "rendered": 12,
+          "popup": 1,
+          "off": true,
+          "chunk": "all-layer-clicks-393-L393-c1"
+        }
+      },
+      {
+        "id": "rail",
+        "baseline": "PASS",
+        "candidate": "PASS",
+        "same": true,
+        "b": {
+          "label": "Railways [OK]",
+          "eligible": 3596,
+          "rendered": 8,
+          "popup": 1,
+          "off": true,
+          "chunk": "all-layer-clicks-393-L393-c1"
+        },
+        "c": {
+          "label": "Railways [OK]",
+          "eligible": 3596,
+          "rendered": 8,
+          "popup": 1,
+          "off": true,
+          "chunk": "all-layer-clicks-393-L393-c1"
+        }
+      },
+      {
+        "id": "tesco",
+        "baseline": "NOT-LOADED [FAIL]",
+        "candidate": "NOT-LOADED [FAIL]",
+        "same": true,
+        "b": {
+          "label": "Tesco [FAIL]",
+          "eligible": 0,
+          "chunk": "all-layer-clicks-393-L393-c1"
+        },
+        "c": {
+          "label": "Tesco [FAIL]",
+          "eligible": 0,
+          "chunk": "all-layer-clicks-393-L393-c1"
+        }
+      },
+      {
+        "id": "sainsburys",
+        "baseline": "NOT-LOADED [FAIL]",
+        "candidate": "NOT-LOADED [FAIL]",
+        "same": true,
+        "b": {
+          "label": "Sainsbury's [FAIL]",
+          "eligible": 0,
+          "chunk": "all-layer-clicks-393-L393-c1"
+        },
+        "c": {
+          "label": "Sainsbury's [FAIL]",
+          "eligible": 0,
+          "chunk": "all-layer-clicks-393-L393-c1"
+        }
+      },
+      {
+        "id": "asda",
+        "baseline": "NOT-LOADED [FAIL]",
+        "candidate": "NOT-LOADED [FAIL]",
+        "same": true,
+        "b": {
+          "label": "Asda [FAIL]",
+          "eligible": 0,
+          "chunk": "all-layer-clicks-393-L393-c1"
+        },
+        "c": {
+          "label": "Asda [FAIL]",
+          "eligible": 0,
+          "chunk": "all-layer-clicks-393-L393-c1"
+        }
+      },
+      {
+        "id": "morrisons",
+        "baseline": "NOT-LOADED [FAIL]",
+        "candidate": "NOT-LOADED [FAIL]",
+        "same": true,
+        "b": {
+          "label": "Morrisons [FAIL]",
+          "eligible": 0,
+          "chunk": "all-layer-clicks-393-L393-c1"
+        },
+        "c": {
+          "label": "Morrisons [FAIL]",
+          "eligible": 0,
+          "chunk": "all-layer-clicks-393-L393-c1"
+        }
+      },
+      {
+        "id": "aldi",
+        "baseline": "NOT-LOADED [FAIL]",
+        "candidate": "NOT-LOADED [FAIL]",
+        "same": true,
+        "b": {
+          "label": "Aldi [FAIL]",
+          "eligible": 0,
+          "chunk": "all-layer-clicks-393-L393-c1"
+        },
+        "c": {
+          "label": "Aldi [FAIL]",
+          "eligible": 0,
+          "chunk": "all-layer-clicks-393-L393-c1"
+        }
+      },
+      {
+        "id": "lidl",
+        "baseline": "NOT-LOADED [FAIL]",
+        "candidate": "NOT-LOADED [FAIL]",
+        "same": true,
+        "b": {
+          "label": "Lidl [FAIL]",
+          "eligible": 0,
+          "chunk": "all-layer-clicks-393-L393-c1"
+        },
+        "c": {
+          "label": "Lidl [FAIL]",
+          "eligible": 0,
+          "chunk": "all-layer-clicks-393-L393-c1"
+        }
+      },
+      {
+        "id": "waitrose",
+        "baseline": "NOT-LOADED [FAIL]",
+        "candidate": "NOT-LOADED [FAIL]",
+        "same": true,
+        "b": {
+          "label": "Waitrose [FAIL]",
+          "eligible": 0,
+          "chunk": "all-layer-clicks-393-L393-c1"
+        },
+        "c": {
+          "label": "Waitrose [FAIL]",
+          "eligible": 0,
+          "chunk": "all-layer-clicks-393-L393-c1"
+        }
+      },
+      {
+        "id": "ms",
+        "baseline": "NOT-LOADED [FAIL]",
+        "candidate": "NOT-LOADED [FAIL]",
+        "same": true,
+        "b": {
+          "label": "M&S Food [FAIL]",
+          "eligible": 0,
+          "chunk": "all-layer-clicks-393-L393-c2"
+        },
+        "c": {
+          "label": "M&S Food [FAIL]",
+          "eligible": 0,
+          "chunk": "all-layer-clicks-393-L393-c2"
+        }
+      },
+      {
+        "id": "coop",
+        "baseline": "NOT-LOADED [FAIL]",
+        "candidate": "NOT-LOADED [FAIL]",
+        "same": true,
+        "b": {
+          "label": "Co-op [FAIL]",
+          "eligible": 0,
+          "chunk": "all-layer-clicks-393-L393-c2"
+        },
+        "c": {
+          "label": "Co-op [FAIL]",
+          "eligible": 0,
+          "chunk": "all-layer-clicks-393-L393-c2"
+        }
+      },
+      {
+        "id": "costco",
+        "baseline": "NOT-LOADED [FAIL]",
+        "candidate": "NOT-LOADED [FAIL]",
+        "same": true,
+        "b": {
+          "label": "Costco [FAIL]",
+          "eligible": 0,
+          "chunk": "all-layer-clicks-393-L393-c2"
+        },
+        "c": {
+          "label": "Costco [FAIL]",
+          "eligible": 0,
+          "chunk": "all-layer-clicks-393-L393-c2"
+        }
+      },
+      {
+        "id": "booths",
+        "baseline": "NOT-LOADED [FAIL]",
+        "candidate": "NOT-LOADED [FAIL]",
+        "same": true,
+        "b": {
+          "label": "Booths [FAIL]",
+          "eligible": 0,
+          "chunk": "all-layer-clicks-393-L393-c2"
+        },
+        "c": {
+          "label": "Booths [FAIL]",
+          "eligible": 0,
+          "chunk": "all-layer-clicks-393-L393-c2"
+        }
+      },
+      {
+        "id": "elizabeth",
+        "baseline": "NOT-LOADED [FAIL]",
+        "candidate": "NOT-LOADED [FAIL]",
+        "same": true,
+        "b": {
+          "label": "Elizabeth Line [FAIL]",
+          "eligible": 0,
+          "chunk": "all-layer-clicks-393-L393-c2"
+        },
+        "c": {
+          "label": "Elizabeth Line [FAIL]",
+          "eligible": 0,
+          "chunk": "all-layer-clicks-393-L393-c2"
+        }
+      },
+      {
+        "id": "lu",
+        "baseline": "NOT-LOADED [FAIL]",
+        "candidate": "NOT-LOADED [FAIL]",
+        "same": true,
+        "b": {
+          "label": "London Underground [FAIL]",
+          "eligible": 0,
+          "chunk": "all-layer-clicks-393-L393-c2"
+        },
+        "c": {
+          "label": "London Underground [FAIL]",
+          "eligible": 0,
+          "chunk": "all-layer-clicks-393-L393-c2"
+        }
+      },
+      {
+        "id": "dlr",
+        "baseline": "ERR:target-crashed",
+        "candidate": "ERR:target-crashed",
+        "same": true,
+        "b": {
+          "chunk": "all-layer-clicks-393-L393-c2"
+        },
+        "c": {
+          "chunk": "all-layer-clicks-393-L393-c2"
+        }
+      },
+      {
+        "id": "metro",
+        "baseline": "ERR:target-crashed",
+        "candidate": "ERR:target-crashed",
+        "same": true,
+        "b": {
+          "chunk": "all-layer-clicks-393-L393-c2"
+        },
+        "c": {
+          "chunk": "all-layer-clicks-393-L393-c2"
+        }
+      },
+      {
+        "id": "tram",
+        "baseline": "ERR:target-crashed",
+        "candidate": "ERR:target-crashed",
+        "same": true,
+        "b": {
+          "chunk": "all-layer-clicks-393-L393-c2"
+        },
+        "c": {
+          "chunk": "all-layer-clicks-393-L393-c2"
+        }
+      },
+      {
+        "id": "mainline_rail",
+        "baseline": "NOT-LOADED [FAIL]",
+        "candidate": "NOT-LOADED [FAIL]",
+        "same": true,
+        "b": {
+          "label": "UK Mainline Railways [FAIL]",
+          "eligible": 0,
+          "chunk": "all-layer-clicks-393-L393-c2"
+        },
+        "c": {
+          "label": "UK Mainline Railways [FAIL]",
+          "eligible": 0,
+          "chunk": "all-layer-clicks-393-L393-c2"
+        }
+      },
+      {
+        "id": "hs2",
+        "baseline": "NOT-LOADED [FAIL]",
+        "candidate": "NOT-LOADED [FAIL]",
+        "same": true,
+        "b": {
+          "label": "HS2 [FAIL]",
+          "eligible": 0,
+          "chunk": "all-layer-clicks-393-L393-c2"
+        },
+        "c": {
+          "label": "HS2 [FAIL]",
+          "eligible": 0,
+          "chunk": "all-layer-clicks-393-L393-c2"
+        }
+      },
+      {
+        "id": "eurostar_route",
+        "baseline": "NOT-LOADED [FAIL]",
+        "candidate": "NOT-LOADED [FAIL]",
+        "same": true,
+        "b": {
+          "label": "Eurostar (HS1) UK & Europe [FAIL]",
+          "eligible": 0,
+          "chunk": "all-layer-clicks-393-L393-c2"
+        },
+        "c": {
+          "label": "Eurostar (HS1) UK & Europe [FAIL]",
+          "eligible": 0,
+          "chunk": "all-layer-clicks-393-L393-c2"
+        }
+      },
+      {
+        "id": "eurostar_station",
+        "baseline": "NOT-LOADED [FAIL]",
+        "candidate": "NOT-LOADED [FAIL]",
+        "same": true,
+        "b": {
+          "label": "Eurostar Stations UK & Europe [FAIL]",
+          "eligible": 0,
+          "chunk": "all-layer-clicks-393-L393-c2"
+        },
+        "c": {
+          "label": "Eurostar Stations UK & Europe [FAIL]",
+          "eligible": 0,
+          "chunk": "all-layer-clicks-393-L393-c2"
+        }
+      },
+      {
+        "id": "stadiums",
+        "baseline": "NOT-LOADED [FAIL]",
+        "candidate": "NOT-LOADED [FAIL]",
+        "same": true,
+        "b": {
+          "label": "Major Stadiums [FAIL]",
+          "eligible": 0,
+          "chunk": "all-layer-clicks-393-L393-c2"
+        },
+        "c": {
+          "label": "Major Stadiums [FAIL]",
+          "eligible": 0,
+          "chunk": "all-layer-clicks-393-L393-c2"
+        }
+      },
+      {
+        "id": "subsea_data_cables",
+        "baseline": "NOT-LOADED [FAIL]",
+        "candidate": "NOT-LOADED [FAIL]",
+        "same": true,
+        "b": {
+          "label": "Subsea Data Cables (Fibre) (not all connections available yet) [FAIL]",
+          "eligible": 0,
+          "chunk": "all-layer-clicks-393-L393-c2"
+        },
+        "c": {
+          "label": "Subsea Data Cables (Fibre) (not all connections available yet) [FAIL]",
+          "eligible": 0,
+          "chunk": "all-layer-clicks-393-L393-c2"
+        }
+      },
+      {
+        "id": "global_ports_major",
+        "baseline": "ERR:target-crashed",
+        "candidate": "ERR:target-crashed",
+        "same": true,
+        "b": {
+          "chunk": "all-layer-clicks-393-L393-c2"
+        },
+        "c": {
+          "chunk": "all-layer-clicks-393-L393-c2"
+        }
+      },
+      {
+        "id": "global_ports_minor",
+        "baseline": "ERR:target-crashed",
+        "candidate": "ERR:target-crashed",
+        "same": true,
+        "b": {
+          "chunk": "all-layer-clicks-393-L393-c2"
+        },
+        "c": {
+          "chunk": "all-layer-clicks-393-L393-c2"
+        }
+      },
+      {
+        "id": "global_hydrocarbons",
+        "baseline": "NOT-LOADED [FAIL]",
+        "candidate": "NOT-LOADED [FAIL]",
+        "same": true,
+        "b": {
+          "label": "Global Hydrocarbons (Oil, Gas, LNG) [FAIL]",
+          "eligible": 0,
+          "chunk": "all-layer-clicks-393-L393-c2"
+        },
+        "c": {
+          "label": "Global Hydrocarbons (Oil, Gas, LNG) [FAIL]",
+          "eligible": 0,
+          "chunk": "all-layer-clicks-393-L393-c2"
+        }
+      },
+      {
+        "id": "motorways",
+        "baseline": "ERR:target-crashed",
+        "candidate": "ERR:target-crashed",
+        "same": true,
+        "b": {
+          "chunk": "all-layer-clicks-393-L393-c2"
+        },
+        "c": {
+          "chunk": "all-layer-clicks-393-L393-c2"
+        }
+      },
+      {
+        "id": "trunk_roads",
+        "baseline": "NOT-LOADED [FAIL]",
+        "candidate": "NOT-LOADED [FAIL]",
+        "same": true,
+        "b": {
+          "label": "Major A-Roads (Trunk) [FAIL]",
+          "eligible": 0,
+          "chunk": "all-layer-clicks-393-L393-c2"
+        },
+        "c": {
+          "label": "Major A-Roads (Trunk) [FAIL]",
+          "eligible": 0,
+          "chunk": "all-layer-clicks-393-L393-c2"
+        }
+      },
+      {
+        "id": "primary_roads",
+        "baseline": "NOT-LOADED [FAIL]",
+        "candidate": "NOT-LOADED [FAIL]",
+        "same": true,
+        "b": {
+          "label": "A-Roads (Primary) [FAIL]",
+          "eligible": 0,
+          "chunk": "all-layer-clicks-393-L393-c3"
+        },
+        "c": {
+          "label": "A-Roads (Primary) [FAIL]",
+          "eligible": 0,
+          "chunk": "all-layer-clicks-393-L393-c3"
+        }
+      },
+      {
+        "id": "motorway_services",
+        "baseline": "NOT-LOADED [FAIL]",
+        "candidate": "NOT-LOADED [FAIL]",
+        "same": true,
+        "b": {
+          "label": "Motorway Services [FAIL]",
+          "eligible": 0,
+          "chunk": "all-layer-clicks-393-L393-c3"
+        },
+        "c": {
+          "label": "Motorway Services [FAIL]",
+          "eligible": 0,
+          "chunk": "all-layer-clicks-393-L393-c3"
+        }
+      },
+      {
+        "id": "ev",
+        "baseline": "ERR:target-crashed",
+        "candidate": "ERR:target-crashed",
+        "same": true,
+        "b": {
+          "chunk": "all-layer-clicks-393-L393-c3"
+        },
+        "c": {
+          "chunk": "all-layer-clicks-393-L393-c3"
+        }
+      },
+      {
+        "id": "naei_co2",
+        "baseline": "NOT-LOADED [FAIL]",
+        "candidate": "NOT-LOADED [FAIL]",
+        "same": true,
+        "b": {
+          "label": "Major Industrial Sites [FAIL]",
+          "eligible": 0,
+          "chunk": "all-layer-clicks-393-L393-c3"
+        },
+        "c": {
+          "label": "Major Industrial Sites [FAIL]",
+          "eligible": 0,
+          "chunk": "all-layer-clicks-393-L393-c3"
+        }
+      },
+      {
+        "id": "solar",
+        "baseline": "NOT-LOADED [FAIL]",
+        "candidate": "NOT-LOADED [FAIL]",
+        "same": true,
+        "b": {
+          "label": "Solar PV [FAIL]",
+          "eligible": 0,
+          "chunk": "all-layer-clicks-393-L393-c3"
+        },
+        "c": {
+          "label": "Solar PV [FAIL]",
+          "eligible": 0,
+          "chunk": "all-layer-clicks-393-L393-c3"
+        }
+      },
+      {
+        "id": "solar_operational",
+        "baseline": "NOT-LOADED [FAIL]",
+        "candidate": "NOT-LOADED [FAIL]",
+        "same": true,
+        "b": {
+          "label": "Solar PV (Operational Only) [FAIL]",
+          "eligible": 0,
+          "chunk": "all-layer-clicks-393-L393-c3"
+        },
+        "c": {
+          "label": "Solar PV (Operational Only) [FAIL]",
+          "eligible": 0,
+          "chunk": "all-layer-clicks-393-L393-c3"
+        }
+      },
+      {
+        "id": "solar_roof",
+        "baseline": "NOT-LOADED [FAIL]",
+        "candidate": "NOT-LOADED [FAIL]",
+        "same": true,
+        "b": {
+          "label": "Solar Roof [FAIL]",
+          "eligible": 0,
+          "chunk": "all-layer-clicks-393-L393-c3"
+        },
+        "c": {
+          "label": "Solar Roof [FAIL]",
+          "eligible": 0,
+          "chunk": "all-layer-clicks-393-L393-c3"
+        }
+      },
+      {
+        "id": "wind",
+        "baseline": "NOT-LOADED [FAIL]",
+        "candidate": "NOT-LOADED [FAIL]",
+        "same": true,
+        "b": {
+          "label": "Wind [FAIL]",
+          "eligible": 0,
+          "chunk": "all-layer-clicks-393-L393-c3"
+        },
+        "c": {
+          "label": "Wind [FAIL]",
+          "eligible": 0,
+          "chunk": "all-layer-clicks-393-L393-c3"
+        }
+      },
+      {
+        "id": "wind_onshore_operational",
+        "baseline": "NOT-LOADED [FAIL]",
+        "candidate": "NOT-LOADED [FAIL]",
+        "same": true,
+        "b": {
+          "label": "Onshore Wind (Operational Only) [FAIL]",
+          "eligible": 0,
+          "chunk": "all-layer-clicks-393-L393-c3"
+        },
+        "c": {
+          "label": "Onshore Wind (Operational Only) [FAIL]",
+          "eligible": 0,
+          "chunk": "all-layer-clicks-393-L393-c3"
+        }
+      },
+      {
+        "id": "wind_offshore_operational",
+        "baseline": "NOT-LOADED [FAIL]",
+        "candidate": "NOT-LOADED [FAIL]",
+        "same": true,
+        "b": {
+          "label": "Offshore Wind (Operational Only) [FAIL]",
+          "eligible": 0,
+          "chunk": "all-layer-clicks-393-L393-c3"
+        },
+        "c": {
+          "label": "Offshore Wind (Operational Only) [FAIL]",
+          "eligible": 0,
+          "chunk": "all-layer-clicks-393-L393-c3"
+        }
+      },
+      {
+        "id": "bess",
+        "baseline": "NOT-LOADED [FAIL]",
+        "candidate": "NOT-LOADED [FAIL]",
+        "same": true,
+        "b": {
+          "label": "Battery Storage [FAIL]",
+          "eligible": 0,
+          "chunk": "all-layer-clicks-393-L393-c3"
+        },
+        "c": {
+          "label": "Battery Storage [FAIL]",
+          "eligible": 0,
+          "chunk": "all-layer-clicks-393-L393-c3"
+        }
+      },
+      {
+        "id": "bess_operational",
+        "baseline": "NOT-LOADED [FAIL]",
+        "candidate": "NOT-LOADED [FAIL]",
+        "same": true,
+        "b": {
+          "label": "Battery Storage (Operational Only) [FAIL]",
+          "eligible": 0,
+          "chunk": "all-layer-clicks-393-L393-c3"
+        },
+        "c": {
+          "label": "Battery Storage (Operational Only) [FAIL]",
+          "eligible": 0,
+          "chunk": "all-layer-clicks-393-L393-c3"
+        }
+      },
+      {
+        "id": "biomass",
+        "baseline": "NOT-LOADED [FAIL]",
+        "candidate": "NOT-LOADED [FAIL]",
+        "same": true,
+        "b": {
+          "label": "Biomass & EfW [FAIL]",
+          "eligible": 0,
+          "chunk": "all-layer-clicks-393-L393-c3"
+        },
+        "c": {
+          "label": "Biomass & EfW [FAIL]",
+          "eligible": 0,
+          "chunk": "all-layer-clicks-393-L393-c3"
+        }
+      },
+      {
+        "id": "tidal",
+        "baseline": "NOT-LOADED [FAIL]",
+        "candidate": "NOT-LOADED [FAIL]",
+        "same": true,
+        "b": {
+          "label": "Tidal & Wave [FAIL]",
+          "eligible": 0,
+          "chunk": "all-layer-clicks-393-L393-c3"
+        },
+        "c": {
+          "label": "Tidal & Wave [FAIL]",
+          "eligible": 0,
+          "chunk": "all-layer-clicks-393-L393-c3"
+        }
+      },
+      {
+        "id": "hydrogen",
+        "baseline": "NOT-LOADED [FAIL]",
+        "candidate": "NOT-LOADED [FAIL]",
+        "same": true,
+        "b": {
+          "label": "Hydrogen [FAIL]",
+          "eligible": 0,
+          "chunk": "all-layer-clicks-393-L393-c3"
+        },
+        "c": {
+          "label": "Hydrogen [FAIL]",
+          "eligible": 0,
+          "chunk": "all-layer-clicks-393-L393-c3"
+        }
+      },
+      {
+        "id": "hydro",
+        "baseline": "NOT-LOADED [FAIL]",
+        "candidate": "NOT-LOADED [FAIL]",
+        "same": true,
+        "b": {
+          "label": "Hydro & Pumped Storage [FAIL]",
+          "eligible": 0,
+          "chunk": "all-layer-clicks-393-L393-c3"
+        },
+        "c": {
+          "label": "Hydro & Pumped Storage [FAIL]",
+          "eligible": 0,
+          "chunk": "all-layer-clicks-393-L393-c3"
+        }
+      },
+      {
+        "id": "flywheel",
+        "baseline": "NOT-LOADED [FAIL]",
+        "candidate": "NOT-LOADED [FAIL]",
+        "same": true,
+        "b": {
+          "label": "Flywheel [FAIL]",
+          "eligible": 0,
+          "chunk": "all-layer-clicks-393-L393-c3"
+        },
+        "c": {
+          "label": "Flywheel [FAIL]",
+          "eligible": 0,
+          "chunk": "all-layer-clicks-393-L393-c3"
+        }
+      },
+      {
+        "id": "act",
+        "baseline": "NOT-LOADED [FAIL]",
+        "candidate": "NOT-LOADED [FAIL]",
+        "same": true,
+        "b": {
+          "label": "Advanced Conversion [FAIL]",
+          "eligible": 0,
+          "chunk": "all-layer-clicks-393-L393-c3"
+        },
+        "c": {
+          "label": "Advanced Conversion [FAIL]",
+          "eligible": 0,
+          "chunk": "all-layer-clicks-393-L393-c3"
+        }
+      },
+      {
+        "id": "geothermal",
+        "baseline": "NOT-LOADED [FAIL]",
+        "candidate": "NOT-LOADED [FAIL]",
+        "same": true,
+        "b": {
+          "label": "Geothermal [FAIL]",
+          "eligible": 0,
+          "chunk": "all-layer-clicks-393-L393-c3"
+        },
+        "c": {
+          "label": "Geothermal [FAIL]",
+          "eligible": 0,
+          "chunk": "all-layer-clicks-393-L393-c3"
+        }
+      },
+      {
+        "id": "caes",
+        "baseline": "NOT-LOADED [FAIL]",
+        "candidate": "NOT-LOADED [FAIL]",
+        "same": true,
+        "b": {
+          "label": "Compressed Air Storage [FAIL]",
+          "eligible": 0,
+          "chunk": "all-layer-clicks-393-L393-c3"
+        },
+        "c": {
+          "label": "Compressed Air Storage [FAIL]",
+          "eligible": 0,
+          "chunk": "all-layer-clicks-393-L393-c3"
+        }
+      }
+    ],
+    "1440": [
+      {
+        "id": "400",
+        "baseline": "PASS",
+        "candidate": "PASS",
+        "same": true,
+        "b": {
+          "label": "400kV [OK]",
+          "eligible": 4106,
+          "rendered": 53,
+          "popup": 1,
+          "off": true,
+          "chunk": "all-layer-clicks-1440"
+        },
+        "c": {
+          "label": "400kV [OK]",
+          "eligible": 4106,
+          "rendered": 53,
+          "popup": 1,
+          "off": true,
+          "chunk": "all-layer-clicks-1440-L1440-c1"
+        }
+      },
+      {
+        "id": "275",
+        "baseline": "PASS",
+        "candidate": "PASS",
+        "same": true,
+        "b": {
+          "label": "275kV [OK]",
+          "eligible": 2935,
+          "rendered": 53,
+          "popup": 1,
+          "off": true,
+          "chunk": "all-layer-clicks-1440"
+        },
+        "c": {
+          "label": "275kV [OK]",
+          "eligible": 2935,
+          "rendered": 53,
+          "popup": 1,
+          "off": true,
+          "chunk": "all-layer-clicks-1440-L1440-c1"
+        }
+      },
+      {
+        "id": "220",
+        "baseline": "PASS",
+        "candidate": "PASS",
+        "same": true,
+        "b": {
+          "label": "220kV [OK]",
+          "eligible": 126,
+          "rendered": 3,
+          "popup": 1,
+          "off": true,
+          "chunk": "all-layer-clicks-1440"
+        },
+        "c": {
+          "label": "220kV [OK]",
+          "eligible": 126,
+          "rendered": 3,
+          "popup": 1,
+          "off": true,
+          "chunk": "all-layer-clicks-1440-L1440-c1"
+        }
+      },
+      {
+        "id": "132",
+        "baseline": "PASS",
+        "candidate": "PASS",
+        "same": true,
+        "b": {
+          "label": "132kV [OK]",
+          "eligible": 6227,
+          "rendered": 19,
+          "popup": 1,
+          "off": true,
+          "chunk": "all-layer-clicks-1440"
+        },
+        "c": {
+          "label": "132kV [OK]",
+          "eligible": 6227,
+          "rendered": 19,
+          "popup": 1,
+          "off": true,
+          "chunk": "all-layer-clicks-1440-L1440-c1"
+        }
+      },
+      {
+        "id": "66",
+        "baseline": "PASS",
+        "candidate": "PASS",
+        "same": true,
+        "b": {
+          "label": "66kV [OK]",
+          "eligible": 1171,
+          "rendered": 8,
+          "popup": 1,
+          "off": true,
+          "chunk": "all-layer-clicks-1440"
+        },
+        "c": {
+          "label": "66kV [OK]",
+          "eligible": 1171,
+          "rendered": 8,
+          "popup": 1,
+          "off": true,
+          "chunk": "all-layer-clicks-1440-L1440-c1"
+        }
+      },
+      {
+        "id": "11kv",
+        "baseline": "NOT-LOADED [FAIL]",
+        "candidate": "NOT-LOADED [FAIL]",
+        "same": true,
+        "b": {
+          "label": "11kV (UKPN) [FAIL]",
+          "eligible": 0,
+          "chunk": "all-layer-clicks-1440"
+        },
+        "c": {
+          "label": "11kV (UKPN) [FAIL]",
+          "eligible": 0,
+          "chunk": "all-layer-clicks-1440-L1440-c1"
+        }
+      },
+      {
+        "id": "subs",
+        "baseline": "PASS",
+        "candidate": "PASS",
+        "same": true,
+        "b": {
+          "label": "Subs [OK]",
+          "eligible": 5800,
+          "rendered": 25,
+          "popup": 1,
+          "off": true,
+          "chunk": "all-layer-clicks-1440"
+        },
+        "c": {
+          "label": "Subs [OK]",
+          "eligible": 5800,
+          "rendered": 25,
+          "popup": 1,
+          "off": true,
+          "chunk": "all-layer-clicks-1440-L1440-c1"
+        }
+      },
+      {
+        "id": "nuc",
+        "baseline": "PASS",
+        "candidate": "PASS",
+        "same": true,
+        "b": {
+          "label": "Nuclear [OK]",
+          "eligible": 4,
+          "rendered": 1,
+          "popup": 1,
+          "off": true,
+          "chunk": "all-layer-clicks-1440"
+        },
+        "c": {
+          "label": "Nuclear [OK]",
+          "eligible": 4,
+          "rendered": 1,
+          "popup": 1,
+          "off": true,
+          "chunk": "all-layer-clicks-1440-L1440-c1"
+        }
+      },
+      {
+        "id": "gas",
+        "baseline": "PASS",
+        "candidate": "PASS",
+        "same": true,
+        "b": {
+          "label": "Gas [OK]",
+          "eligible": 174,
+          "rendered": 7,
+          "popup": 1,
+          "off": true,
+          "chunk": "all-layer-clicks-1440"
+        },
+        "c": {
+          "label": "Gas [OK]",
+          "eligible": 174,
+          "rendered": 7,
+          "popup": 1,
+          "off": true,
+          "chunk": "all-layer-clicks-1440-L1440-c1"
+        }
+      },
+      {
+        "id": "ind",
+        "baseline": "PASS",
+        "candidate": "PASS",
+        "same": true,
+        "b": {
+          "label": "Industry [OK]",
+          "eligible": 5878,
+          "rendered": 108,
+          "popup": 1,
+          "off": true,
+          "chunk": "all-layer-clicks-1440"
+        },
+        "c": {
+          "label": "Industry [OK]",
+          "eligible": 5878,
+          "rendered": 108,
+          "popup": 1,
+          "off": true,
+          "chunk": "all-layer-clicks-1440-L1440-c1"
+        }
+      },
+      {
+        "id": "dc",
+        "baseline": "PASS",
+        "candidate": "PASS",
+        "same": true,
+        "b": {
+          "label": "Data Ctrs [OK]",
+          "eligible": 240,
+          "rendered": 7,
+          "popup": 1,
+          "off": true,
+          "chunk": "all-layer-clicks-1440"
+        },
+        "c": {
+          "label": "Data Ctrs [OK]",
+          "eligible": 240,
+          "rendered": 7,
+          "popup": 1,
+          "off": true,
+          "chunk": "all-layer-clicks-1440-L1440-c1"
+        }
+      },
+      {
+        "id": "air",
+        "baseline": "PASS",
+        "candidate": "PASS",
+        "same": true,
+        "b": {
+          "label": "Airports [OK]",
+          "eligible": 810,
+          "rendered": 29,
+          "popup": 1,
+          "off": true,
+          "chunk": "all-layer-clicks-1440"
+        },
+        "c": {
+          "label": "Airports [OK]",
+          "eligible": 810,
+          "rendered": 29,
+          "popup": 1,
+          "off": true,
+          "chunk": "all-layer-clicks-1440-L1440-c1"
+        }
+      },
+      {
+        "id": "rail",
+        "baseline": "PASS",
+        "candidate": "PASS",
+        "same": true,
+        "b": {
+          "label": "Railways [OK]",
+          "eligible": 3596,
+          "rendered": 33,
+          "popup": 1,
+          "off": true,
+          "chunk": "all-layer-clicks-1440"
+        },
+        "c": {
+          "label": "Railways [OK]",
+          "eligible": 3596,
+          "rendered": 33,
+          "popup": 1,
+          "off": true,
+          "chunk": "all-layer-clicks-1440-L1440-c1"
+        }
+      },
+      {
+        "id": "tesco",
+        "baseline": "NOT-LOADED [FAIL]",
+        "candidate": "NOT-LOADED [FAIL]",
+        "same": true,
+        "b": {
+          "label": "Tesco [FAIL]",
+          "eligible": 0,
+          "chunk": "all-layer-clicks-1440"
+        },
+        "c": {
+          "label": "Tesco [FAIL]",
+          "eligible": 0,
+          "chunk": "all-layer-clicks-1440-L1440-c1"
+        }
+      },
+      {
+        "id": "sainsburys",
+        "baseline": "NOT-LOADED [FAIL]",
+        "candidate": "NOT-LOADED [FAIL]",
+        "same": true,
+        "b": {
+          "label": "Sainsbury's [FAIL]",
+          "eligible": 0,
+          "chunk": "all-layer-clicks-1440"
+        },
+        "c": {
+          "label": "Sainsbury's [FAIL]",
+          "eligible": 0,
+          "chunk": "all-layer-clicks-1440-L1440-c1"
+        }
+      },
+      {
+        "id": "asda",
+        "baseline": "NOT-LOADED [FAIL]",
+        "candidate": "NOT-LOADED [FAIL]",
+        "same": true,
+        "b": {
+          "label": "Asda [FAIL]",
+          "eligible": 0,
+          "chunk": "all-layer-clicks-1440"
+        },
+        "c": {
+          "label": "Asda [FAIL]",
+          "eligible": 0,
+          "chunk": "all-layer-clicks-1440-L1440-c1"
+        }
+      },
+      {
+        "id": "morrisons",
+        "baseline": "NOT-LOADED [FAIL]",
+        "candidate": "NOT-LOADED [FAIL]",
+        "same": true,
+        "b": {
+          "label": "Morrisons [FAIL]",
+          "eligible": 0,
+          "chunk": "all-layer-clicks-1440"
+        },
+        "c": {
+          "label": "Morrisons [FAIL]",
+          "eligible": 0,
+          "chunk": "all-layer-clicks-1440-L1440-c1"
+        }
+      },
+      {
+        "id": "aldi",
+        "baseline": "NOT-LOADED [FAIL]",
+        "candidate": "NOT-LOADED [FAIL]",
+        "same": true,
+        "b": {
+          "label": "Aldi [FAIL]",
+          "eligible": 0,
+          "chunk": "all-layer-clicks-1440"
+        },
+        "c": {
+          "label": "Aldi [FAIL]",
+          "eligible": 0,
+          "chunk": "all-layer-clicks-1440-L1440-c1"
+        }
+      },
+      {
+        "id": "lidl",
+        "baseline": "NOT-LOADED [FAIL]",
+        "candidate": "NOT-LOADED [FAIL]",
+        "same": true,
+        "b": {
+          "label": "Lidl [FAIL]",
+          "eligible": 0,
+          "chunk": "all-layer-clicks-1440"
+        },
+        "c": {
+          "label": "Lidl [FAIL]",
+          "eligible": 0,
+          "chunk": "all-layer-clicks-1440-L1440-c1"
+        }
+      },
+      {
+        "id": "waitrose",
+        "baseline": "NOT-LOADED [FAIL]",
+        "candidate": "NOT-LOADED [FAIL]",
+        "same": true,
+        "b": {
+          "label": "Waitrose [FAIL]",
+          "eligible": 0,
+          "chunk": "all-layer-clicks-1440"
+        },
+        "c": {
+          "label": "Waitrose [FAIL]",
+          "eligible": 0,
+          "chunk": "all-layer-clicks-1440-L1440-c1"
+        }
+      },
+      {
+        "id": "ms",
+        "baseline": "NOT-LOADED [FAIL]",
+        "candidate": "NOT-LOADED [FAIL]",
+        "same": true,
+        "b": {
+          "label": "M&S Food [FAIL]",
+          "eligible": 0,
+          "chunk": "all-layer-clicks-1440"
+        },
+        "c": {
+          "label": "M&S Food [FAIL]",
+          "eligible": 0,
+          "chunk": "all-layer-clicks-1440-L1440-c2"
+        }
+      },
+      {
+        "id": "coop",
+        "baseline": "NOT-LOADED [FAIL]",
+        "candidate": "NOT-LOADED [FAIL]",
+        "same": true,
+        "b": {
+          "label": "Co-op [FAIL]",
+          "eligible": 0,
+          "chunk": "all-layer-clicks-1440"
+        },
+        "c": {
+          "label": "Co-op [FAIL]",
+          "eligible": 0,
+          "chunk": "all-layer-clicks-1440-L1440-c2"
+        }
+      },
+      {
+        "id": "costco",
+        "baseline": "NOT-LOADED [FAIL]",
+        "candidate": "NOT-LOADED [FAIL]",
+        "same": true,
+        "b": {
+          "label": "Costco [FAIL]",
+          "eligible": 0,
+          "chunk": "all-layer-clicks-1440"
+        },
+        "c": {
+          "label": "Costco [FAIL]",
+          "eligible": 0,
+          "chunk": "all-layer-clicks-1440-L1440-c2"
+        }
+      },
+      {
+        "id": "booths",
+        "baseline": "NOT-LOADED [FAIL]",
+        "candidate": "NOT-LOADED [FAIL]",
+        "same": true,
+        "b": {
+          "label": "Booths [FAIL]",
+          "eligible": 0,
+          "chunk": "all-layer-clicks-1440"
+        },
+        "c": {
+          "label": "Booths [FAIL]",
+          "eligible": 0,
+          "chunk": "all-layer-clicks-1440-L1440-c2"
+        }
+      },
+      {
+        "id": "elizabeth",
+        "baseline": "NOT-LOADED [FAIL]",
+        "candidate": "NOT-LOADED [FAIL]",
+        "same": true,
+        "b": {
+          "label": "Elizabeth Line [FAIL]",
+          "eligible": 0,
+          "chunk": "all-layer-clicks-1440"
+        },
+        "c": {
+          "label": "Elizabeth Line [FAIL]",
+          "eligible": 0,
+          "chunk": "all-layer-clicks-1440-L1440-c2"
+        }
+      },
+      {
+        "id": "lu",
+        "baseline": "NOT-LOADED [FAIL]",
+        "candidate": "NOT-LOADED [FAIL]",
+        "same": true,
+        "b": {
+          "label": "London Underground [FAIL]",
+          "eligible": 0,
+          "chunk": "all-layer-clicks-1440"
+        },
+        "c": {
+          "label": "London Underground [FAIL]",
+          "eligible": 0,
+          "chunk": "all-layer-clicks-1440-L1440-c2"
+        }
+      },
+      {
+        "id": "dlr",
+        "baseline": "ERR:target-crashed",
+        "candidate": "ERR:target-crashed",
+        "same": true,
+        "b": {
+          "chunk": "all-layer-clicks-1440"
+        },
+        "c": {
+          "chunk": "all-layer-clicks-1440-L1440-c2"
+        }
+      },
+      {
+        "id": "metro",
+        "baseline": "ERR:timeout getByRole('button', { name: 'Grid', exact: true })\u001b[22m",
+        "candidate": "ERR:target-crashed",
+        "same": false,
+        "b": {
+          "chunk": "all-layer-clicks-1440"
+        },
+        "c": {
+          "chunk": "all-layer-clicks-1440-L1440-c2"
+        }
+      },
+      {
+        "id": "tram",
+        "baseline": "ERR:target-crashed",
+        "candidate": "ERR:target-crashed",
+        "same": true,
+        "b": {
+          "chunk": "all-layer-clicks-1440"
+        },
+        "c": {
+          "chunk": "all-layer-clicks-1440-L1440-c2"
+        }
+      },
+      {
+        "id": "mainline_rail",
+        "baseline": "NOT-LOADED [FAIL]",
+        "candidate": "NOT-LOADED [FAIL]",
+        "same": true,
+        "b": {
+          "label": "UK Mainline Railways [FAIL]",
+          "eligible": 0,
+          "chunk": "all-layer-clicks-1440"
+        },
+        "c": {
+          "label": "UK Mainline Railways [FAIL]",
+          "eligible": 0,
+          "chunk": "all-layer-clicks-1440-L1440-c2"
+        }
+      },
+      {
+        "id": "hs2",
+        "baseline": "NOT-LOADED [FAIL]",
+        "candidate": "NOT-LOADED [FAIL]",
+        "same": true,
+        "b": {
+          "label": "HS2 [FAIL]",
+          "eligible": 0,
+          "chunk": "all-layer-clicks-1440"
+        },
+        "c": {
+          "label": "HS2 [FAIL]",
+          "eligible": 0,
+          "chunk": "all-layer-clicks-1440-L1440-c2"
+        }
+      },
+      {
+        "id": "eurostar_route",
+        "baseline": "NOT-LOADED [FAIL]",
+        "candidate": "NOT-LOADED [FAIL]",
+        "same": true,
+        "b": {
+          "label": "Eurostar (HS1) UK & Europe [FAIL]",
+          "eligible": 0,
+          "chunk": "all-layer-clicks-1440"
+        },
+        "c": {
+          "label": "Eurostar (HS1) UK & Europe [FAIL]",
+          "eligible": 0,
+          "chunk": "all-layer-clicks-1440-L1440-c2"
+        }
+      },
+      {
+        "id": "eurostar_station",
+        "baseline": "NOT-LOADED [FAIL]",
+        "candidate": "NOT-LOADED [FAIL]",
+        "same": true,
+        "b": {
+          "label": "Eurostar Stations UK & Europe [FAIL]",
+          "eligible": 0,
+          "chunk": "all-layer-clicks-1440"
+        },
+        "c": {
+          "label": "Eurostar Stations UK & Europe [FAIL]",
+          "eligible": 0,
+          "chunk": "all-layer-clicks-1440-L1440-c2"
+        }
+      },
+      {
+        "id": "stadiums",
+        "baseline": "NOT-LOADED [FAIL]",
+        "candidate": "NOT-LOADED [FAIL]",
+        "same": true,
+        "b": {
+          "label": "Major Stadiums [FAIL]",
+          "eligible": 0,
+          "chunk": "all-layer-clicks-1440"
+        },
+        "c": {
+          "label": "Major Stadiums [FAIL]",
+          "eligible": 0,
+          "chunk": "all-layer-clicks-1440-L1440-c2"
+        }
+      },
+      {
+        "id": "subsea_data_cables",
+        "baseline": "NOT-LOADED [FAIL]",
+        "candidate": "NOT-LOADED [FAIL]",
+        "same": true,
+        "b": {
+          "label": "Subsea Data Cables (Fibre) (not all connections available yet) [FAIL]",
+          "eligible": 0,
+          "chunk": "all-layer-clicks-1440"
+        },
+        "c": {
+          "label": "Subsea Data Cables (Fibre) (not all connections available yet) [FAIL]",
+          "eligible": 0,
+          "chunk": "all-layer-clicks-1440-L1440-c2"
+        }
+      },
+      {
+        "id": "global_ports_major",
+        "baseline": "ERR:target-crashed",
+        "candidate": "ERR:target-crashed",
+        "same": true,
+        "b": {
+          "chunk": "all-layer-clicks-1440"
+        },
+        "c": {
+          "chunk": "all-layer-clicks-1440-L1440-c2"
+        }
+      },
+      {
+        "id": "global_ports_minor",
+        "baseline": "ERR:target-crashed",
+        "candidate": "ERR:target-crashed",
+        "same": true,
+        "b": {
+          "chunk": "all-layer-clicks-1440"
+        },
+        "c": {
+          "chunk": "all-layer-clicks-1440-L1440-c2"
+        }
+      },
+      {
+        "id": "global_hydrocarbons",
+        "baseline": "NOT-LOADED [FAIL]",
+        "candidate": "NOT-LOADED [FAIL]",
+        "same": true,
+        "b": {
+          "label": "Global Hydrocarbons (Oil, Gas, LNG) [FAIL]",
+          "eligible": 0,
+          "chunk": "all-layer-clicks-1440"
+        },
+        "c": {
+          "label": "Global Hydrocarbons (Oil, Gas, LNG) [FAIL]",
+          "eligible": 0,
+          "chunk": "all-layer-clicks-1440-L1440-c2"
+        }
+      },
+      {
+        "id": "motorways",
+        "baseline": "ERR:target-crashed",
+        "candidate": "ERR:target-crashed",
+        "same": true,
+        "b": {
+          "chunk": "all-layer-clicks-1440"
+        },
+        "c": {
+          "chunk": "all-layer-clicks-1440-L1440-c2"
+        }
+      },
+      {
+        "id": "trunk_roads",
+        "baseline": "NOT-LOADED [FAIL]",
+        "candidate": "NOT-LOADED [FAIL]",
+        "same": true,
+        "b": {
+          "label": "Major A-Roads (Trunk) [FAIL]",
+          "eligible": 0,
+          "chunk": "all-layer-clicks-1440"
+        },
+        "c": {
+          "label": "Major A-Roads (Trunk) [FAIL]",
+          "eligible": 0,
+          "chunk": "all-layer-clicks-1440-L1440-c2"
+        }
+      },
+      {
+        "id": "primary_roads",
+        "baseline": "NOT-LOADED [FAIL]",
+        "candidate": "NOT-LOADED [FAIL]",
+        "same": true,
+        "b": {
+          "label": "A-Roads (Primary) [FAIL]",
+          "eligible": 0,
+          "chunk": "all-layer-clicks-1440"
+        },
+        "c": {
+          "label": "A-Roads (Primary) [FAIL]",
+          "eligible": 0,
+          "chunk": "all-layer-clicks-1440-L1440-c3"
+        }
+      },
+      {
+        "id": "motorway_services",
+        "baseline": "NOT-LOADED [FAIL]",
+        "candidate": "NOT-LOADED [FAIL]",
+        "same": true,
+        "b": {
+          "label": "Motorway Services [FAIL]",
+          "eligible": 0,
+          "chunk": "all-layer-clicks-1440"
+        },
+        "c": {
+          "label": "Motorway Services [FAIL]",
+          "eligible": 0,
+          "chunk": "all-layer-clicks-1440-L1440-c3"
+        }
+      },
+      {
+        "id": "ev",
+        "baseline": "ERR:target-crashed",
+        "candidate": "ERR:target-crashed",
+        "same": true,
+        "b": {
+          "chunk": "all-layer-clicks-1440"
+        },
+        "c": {
+          "chunk": "all-layer-clicks-1440-L1440-c3"
+        }
+      },
+      {
+        "id": "naei_co2",
+        "baseline": "NOT-LOADED [FAIL]",
+        "candidate": "NOT-LOADED [FAIL]",
+        "same": true,
+        "b": {
+          "label": "Major Industrial Sites [FAIL]",
+          "eligible": 0,
+          "chunk": "all-layer-clicks-1440"
+        },
+        "c": {
+          "label": "Major Industrial Sites [FAIL]",
+          "eligible": 0,
+          "chunk": "all-layer-clicks-1440-L1440-c3"
+        }
+      },
+      {
+        "id": "solar",
+        "baseline": "NOT-LOADED [FAIL]",
+        "candidate": "NOT-LOADED [FAIL]",
+        "same": true,
+        "b": {
+          "label": "Solar PV [FAIL]",
+          "eligible": 0,
+          "chunk": "all-layer-clicks-1440"
+        },
+        "c": {
+          "label": "Solar PV [FAIL]",
+          "eligible": 0,
+          "chunk": "all-layer-clicks-1440-L1440-c3"
+        }
+      },
+      {
+        "id": "solar_operational",
+        "baseline": "ERR:timeout getByRole('button', { name: 'Grid', exact: true })\u001b[22m",
+        "candidate": "NOT-LOADED [FAIL]",
+        "same": false,
+        "b": {
+          "chunk": "all-layer-clicks-1440"
+        },
+        "c": {
+          "label": "Solar PV (Operational Only) [FAIL]",
+          "eligible": 0,
+          "chunk": "all-layer-clicks-1440-L1440-c3"
+        }
+      },
+      {
+        "id": "solar_roof",
+        "baseline": "NOT-LOADED [FAIL]",
+        "candidate": "NOT-LOADED [FAIL]",
+        "same": true,
+        "b": {
+          "label": "Solar Roof [FAIL]",
+          "eligible": 0,
+          "chunk": "all-layer-clicks-1440"
+        },
+        "c": {
+          "label": "Solar Roof [FAIL]",
+          "eligible": 0,
+          "chunk": "all-layer-clicks-1440-L1440-c3"
+        }
+      },
+      {
+        "id": "wind",
+        "baseline": "NOT-LOADED [FAIL]",
+        "candidate": "NOT-LOADED [FAIL]",
+        "same": true,
+        "b": {
+          "label": "Wind [FAIL]",
+          "eligible": 0,
+          "chunk": "all-layer-clicks-1440"
+        },
+        "c": {
+          "label": "Wind [FAIL]",
+          "eligible": 0,
+          "chunk": "all-layer-clicks-1440-L1440-c3"
+        }
+      },
+      {
+        "id": "wind_onshore_operational",
+        "baseline": "NOT-LOADED [FAIL]",
+        "candidate": "NOT-LOADED [FAIL]",
+        "same": true,
+        "b": {
+          "label": "Onshore Wind (Operational Only) [FAIL]",
+          "eligible": 0,
+          "chunk": "all-layer-clicks-1440"
+        },
+        "c": {
+          "label": "Onshore Wind (Operational Only) [FAIL]",
+          "eligible": 0,
+          "chunk": "all-layer-clicks-1440-L1440-c3"
+        }
+      },
+      {
+        "id": "wind_offshore_operational",
+        "baseline": "NOT-LOADED [FAIL]",
+        "candidate": "NOT-LOADED [FAIL]",
+        "same": true,
+        "b": {
+          "label": "Offshore Wind (Operational Only) [FAIL]",
+          "eligible": 0,
+          "chunk": "all-layer-clicks-1440"
+        },
+        "c": {
+          "label": "Offshore Wind (Operational Only) [FAIL]",
+          "eligible": 0,
+          "chunk": "all-layer-clicks-1440-L1440-c3"
+        }
+      },
+      {
+        "id": "bess",
+        "baseline": "NOT-LOADED [FAIL]",
+        "candidate": "NOT-LOADED [FAIL]",
+        "same": true,
+        "b": {
+          "label": "Battery Storage [FAIL]",
+          "eligible": 0,
+          "chunk": "all-layer-clicks-1440"
+        },
+        "c": {
+          "label": "Battery Storage [FAIL]",
+          "eligible": 0,
+          "chunk": "all-layer-clicks-1440-L1440-c3"
+        }
+      },
+      {
+        "id": "bess_operational",
+        "baseline": "NOT-LOADED [FAIL]",
+        "candidate": "NOT-LOADED [FAIL]",
+        "same": true,
+        "b": {
+          "label": "Battery Storage (Operational Only) [FAIL]",
+          "eligible": 0,
+          "chunk": "all-layer-clicks-1440"
+        },
+        "c": {
+          "label": "Battery Storage (Operational Only) [FAIL]",
+          "eligible": 0,
+          "chunk": "all-layer-clicks-1440-L1440-c3"
+        }
+      },
+      {
+        "id": "biomass",
+        "baseline": "NOT-LOADED [FAIL]",
+        "candidate": "NOT-LOADED [FAIL]",
+        "same": true,
+        "b": {
+          "label": "Biomass & EfW [FAIL]",
+          "eligible": 0,
+          "chunk": "all-layer-clicks-1440"
+        },
+        "c": {
+          "label": "Biomass & EfW [FAIL]",
+          "eligible": 0,
+          "chunk": "all-layer-clicks-1440-L1440-c3"
+        }
+      },
+      {
+        "id": "tidal",
+        "baseline": "NOT-LOADED [FAIL]",
+        "candidate": "NOT-LOADED [FAIL]",
+        "same": true,
+        "b": {
+          "label": "Tidal & Wave [FAIL]",
+          "eligible": 0,
+          "chunk": "all-layer-clicks-1440"
+        },
+        "c": {
+          "label": "Tidal & Wave [FAIL]",
+          "eligible": 0,
+          "chunk": "all-layer-clicks-1440-L1440-c3"
+        }
+      },
+      {
+        "id": "hydrogen",
+        "baseline": "NOT-LOADED [FAIL]",
+        "candidate": "NOT-LOADED [FAIL]",
+        "same": true,
+        "b": {
+          "label": "Hydrogen [FAIL]",
+          "eligible": 0,
+          "chunk": "all-layer-clicks-1440"
+        },
+        "c": {
+          "label": "Hydrogen [FAIL]",
+          "eligible": 0,
+          "chunk": "all-layer-clicks-1440-L1440-c3"
+        }
+      },
+      {
+        "id": "hydro",
+        "baseline": "NOT-LOADED [FAIL]",
+        "candidate": "NOT-LOADED [FAIL]",
+        "same": true,
+        "b": {
+          "label": "Hydro & Pumped Storage [FAIL]",
+          "eligible": 0,
+          "chunk": "all-layer-clicks-1440"
+        },
+        "c": {
+          "label": "Hydro & Pumped Storage [FAIL]",
+          "eligible": 0,
+          "chunk": "all-layer-clicks-1440-L1440-c3"
+        }
+      },
+      {
+        "id": "flywheel",
+        "baseline": "NOT-LOADED [FAIL]",
+        "candidate": "NOT-LOADED [FAIL]",
+        "same": true,
+        "b": {
+          "label": "Flywheel [FAIL]",
+          "eligible": 0,
+          "chunk": "all-layer-clicks-1440"
+        },
+        "c": {
+          "label": "Flywheel [FAIL]",
+          "eligible": 0,
+          "chunk": "all-layer-clicks-1440-L1440-c3"
+        }
+      },
+      {
+        "id": "act",
+        "baseline": "NOT-LOADED [FAIL]",
+        "candidate": "NOT-LOADED [FAIL]",
+        "same": true,
+        "b": {
+          "label": "Advanced Conversion [FAIL]",
+          "eligible": 0,
+          "chunk": "all-layer-clicks-1440"
+        },
+        "c": {
+          "label": "Advanced Conversion [FAIL]",
+          "eligible": 0,
+          "chunk": "all-layer-clicks-1440-L1440-c3"
+        }
+      },
+      {
+        "id": "geothermal",
+        "baseline": "NOT-LOADED [FAIL]",
+        "candidate": "NOT-LOADED [FAIL]",
+        "same": true,
+        "b": {
+          "label": "Geothermal [FAIL]",
+          "eligible": 0,
+          "chunk": "all-layer-clicks-1440-L1440-tail"
+        },
+        "c": {
+          "label": "Geothermal [FAIL]",
+          "eligible": 0,
+          "chunk": "all-layer-clicks-1440-L1440-c3"
+        }
+      },
+      {
+        "id": "caes",
+        "baseline": "NOT-LOADED [FAIL]",
+        "candidate": "NOT-LOADED [FAIL]",
+        "same": true,
+        "b": {
+          "label": "Compressed Air Storage [FAIL]",
+          "eligible": 0,
+          "chunk": "all-layer-clicks-1440-L1440-tail"
+        },
+        "c": {
+          "label": "Compressed Air Storage [FAIL]",
+          "eligible": 0,
+          "chunk": "all-layer-clicks-1440-L1440-c3"
+        }
+      }
+    ]
+  },
+  "stepPairs": {
+    "all-controls-desktop": [
+      {
+        "step": "menu-File",
+        "baseline": "ok",
+        "candidate": "ok",
+        "same": true
+      },
+      {
+        "step": "menu-Edit",
+        "baseline": "ok",
+        "candidate": "ok",
+        "same": true
+      },
+      {
+        "step": "menu-View",
+        "baseline": "ok",
+        "candidate": "ok",
+        "same": true
+      },
+      {
+        "step": "menu-Scope",
+        "baseline": "ok",
+        "candidate": "ok",
+        "same": true
+      },
+      {
+        "step": "menu-Grid",
+        "baseline": "ok",
+        "candidate": "ok",
+        "same": true
+      },
+      {
+        "step": "menu-About",
+        "baseline": "ok",
+        "candidate": "ok",
+        "same": true
+      },
+      {
+        "step": "btn-status",
+        "baseline": "ok",
+        "candidate": "ok",
+        "same": true
+      },
+      {
+        "step": "btn-radius",
+        "baseline": "ok",
+        "candidate": "ok",
+        "same": true
+      },
+      {
+        "step": "btn-radius-area",
+        "baseline": "ok",
+        "candidate": "ok",
+        "same": true
+      },
+      {
+        "step": "btn-zonedraw",
+        "baseline": "ok",
+        "candidate": "ok",
+        "same": true
+      },
+      {
+        "step": "btn-measure",
+        "baseline": "ok",
+        "candidate": "ok",
+        "same": true
+      },
+      {
+        "step": "fullscreen",
+        "baseline": "ok",
+        "candidate": "ok",
+        "same": true
+      },
+      {
+        "step": "basemaps",
+        "baseline": "ok",
+        "candidate": "ok",
+        "same": true
+      },
+      {
+        "step": "csv-export",
+        "baseline": "ok",
+        "candidate": "ok",
+        "same": true
+      },
+      {
+        "step": "expand-View",
+        "baseline": "ok",
+        "candidate": "ok",
+        "same": true
+      },
+      {
+        "step": "expand-About",
+        "baseline": "ok",
+        "candidate": "ok",
+        "same": true
+      },
+      {
+        "step": "layer-panel-toggle",
+        "baseline": "ok",
+        "candidate": "ok",
+        "same": true
+      },
+      {
+        "step": "gridatlas-export-image",
+        "baseline": "ok",
+        "candidate": "ok",
+        "same": true
+      },
+      {
+        "step": "gridatlas-export-pdf",
+        "baseline": "ok",
+        "candidate": "ok",
+        "same": true
+      },
+      {
+        "step": "gridatlas-export-print",
+        "baseline": "ok",
+        "candidate": "ok",
+        "same": true
+      },
+      {
+        "step": "csv-export-loaded",
+        "baseline": "timeout",
+        "candidate": "timeout",
+        "same": true
+      },
+      {
+        "step": "search",
+        "baseline": "timeout",
+        "candidate": "timeout",
+        "same": true
+      },
+      {
+        "step": "pipeline-same",
+        "baseline": "timeout",
+        "candidate": "timeout",
+        "same": true
+      },
+      {
+        "step": "pipeline-wider",
+        "baseline": "timeout",
+        "candidate": "ERR:renderer-crashed(OOM)",
+        "same": false
+      },
+      {
+        "step": "pipeline-all",
+        "baseline": "timeout",
+        "candidate": "ERR:renderer-crashed(OOM)",
+        "same": false
+      },
+      {
+        "step": "card-minimise-restore-close",
+        "baseline": "ok",
+        "candidate": "ERR:renderer-crashed(OOM)",
+        "same": false
+      }
+    ],
+    "all-controls-mobile": [
+      {
+        "step": "menu-File",
+        "baseline": "ok",
+        "candidate": "ok",
+        "same": true
+      },
+      {
+        "step": "menu-Edit",
+        "baseline": "ok",
+        "candidate": "ok",
+        "same": true
+      },
+      {
+        "step": "menu-View",
+        "baseline": "ok",
+        "candidate": "ok",
+        "same": true
+      },
+      {
+        "step": "menu-Scope",
+        "baseline": "ok",
+        "candidate": "ok",
+        "same": true
+      },
+      {
+        "step": "menu-Grid",
+        "baseline": "ok",
+        "candidate": "ok",
+        "same": true
+      },
+      {
+        "step": "menu-About",
+        "baseline": "ok",
+        "candidate": "ok",
+        "same": true
+      },
+      {
+        "step": "btn-status",
+        "baseline": "ok",
+        "candidate": "ok",
+        "same": true
+      },
+      {
+        "step": "btn-radius",
+        "baseline": "ok",
+        "candidate": "ok",
+        "same": true
+      },
+      {
+        "step": "btn-radius-area",
+        "baseline": "ok",
+        "candidate": "ok",
+        "same": true
+      },
+      {
+        "step": "btn-zonedraw",
+        "baseline": "ok",
+        "candidate": "ok",
+        "same": true
+      },
+      {
+        "step": "btn-measure",
+        "baseline": "ok",
+        "candidate": "ok",
+        "same": true
+      },
+      {
+        "step": "fullscreen",
+        "baseline": "ok",
+        "candidate": "ok",
+        "same": true
+      },
+      {
+        "step": "basemaps",
+        "baseline": "ok",
+        "candidate": "ok",
+        "same": true
+      },
+      {
+        "step": "csv-export",
+        "baseline": "ok",
+        "candidate": "ok",
+        "same": true
+      },
+      {
+        "step": "expand-View",
+        "baseline": "ok",
+        "candidate": "ok",
+        "same": true
+      },
+      {
+        "step": "expand-About",
+        "baseline": "ok",
+        "candidate": "ok",
+        "same": true
+      },
+      {
+        "step": "layer-panel-toggle",
+        "baseline": "ok",
+        "candidate": "ok",
+        "same": true
+      },
+      {
+        "step": "gridatlas-export-image",
+        "baseline": "ok",
+        "candidate": "ok",
+        "same": true
+      },
+      {
+        "step": "gridatlas-export-pdf",
+        "baseline": "ok",
+        "candidate": "ok",
+        "same": true
+      },
+      {
+        "step": "gridatlas-export-print",
+        "baseline": "ok",
+        "candidate": "ok",
+        "same": true
+      },
+      {
+        "step": "csv-export-loaded",
+        "baseline": "timeout",
+        "candidate": "timeout",
+        "same": true
+      },
+      {
+        "step": "search",
+        "baseline": "timeout",
+        "candidate": "timeout",
+        "same": true
+      },
+      {
+        "step": "pipeline-same",
+        "baseline": "timeout",
+        "candidate": "timeout",
+        "same": true
+      },
+      {
+        "step": "pipeline-wider",
+        "baseline": "timeout",
+        "candidate": "timeout",
+        "same": true
+      },
+      {
+        "step": "pipeline-all",
+        "baseline": "timeout",
+        "candidate": "timeout",
+        "same": true
+      },
+      {
+        "step": "card-minimise-restore-close",
+        "baseline": "ok",
+        "candidate": "ok",
+        "same": true
+      }
+    ]
+  }
+}

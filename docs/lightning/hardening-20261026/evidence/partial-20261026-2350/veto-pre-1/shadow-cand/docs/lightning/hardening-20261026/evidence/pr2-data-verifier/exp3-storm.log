@@ -1,0 +1,13 @@
+constants: MAX_SHARD_BYTES 25000000 TARGET_SHARD_BYTES 8388608
+A: 1.7s, split_days=['2026-10-24'], count=100000, bytes(sum)=53,876,154, path=None, sha256=None, parts=24
+A: part bytes min=2,238,663 max=2,245,940; all <= 25,000,000: True; any > 8 MiB target: False
+A: part keys: ['hour', 'path', 'count', 'bytes', 'sha256', 'first_observation_utc', 'last_observation_utc']
+A: every part verified (bytes, sha256, hour_utc, part_of_day, counts); verify_archive: {'rows': 366, 'shards_checked': 1}
+A: index.json size with one 24-part day: 75,218 bytes
+A: re-ingest of 10 known ids -> files_changed 0 (index only expected = 1)
+B: ShardTooLarge raised -> days/2026/10/24/00.json would be 53867278 bytes > max_shard_bytes 25000000; refusing to write (feed unaffected; archive step fails loudly)
+B: files written before the raise: none (dir absent)
+C: one-hour burst capacity at the real shape: ~46,210 flashes per hour before ShardTooLarge (25 MB)
+C: whole-day single-file capacity (8 MiB target): ~15,797 flashes; split kicks in above that
+C: synthetic shape bytes/feature: 535.2
+OK experiment 3 (synthetic fixtures only)

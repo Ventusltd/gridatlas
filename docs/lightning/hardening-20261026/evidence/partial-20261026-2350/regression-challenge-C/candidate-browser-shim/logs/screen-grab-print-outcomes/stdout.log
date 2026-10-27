@@ -1,0 +1,23 @@
+-- 393x852 phone portrait: 64/192 controls, menubar 385x34, pinned 393px
+-- 852x393 phone landscape: 64/192 controls, menubar 844x36, pinned 852px
+-- 1400x900 desktop: 64/192 controls, menubar 1392x36, pinned 1400px
+PASS  393x852 phone portrait  the app's own Print control is reachable  -- clicked
+PASS  393x852 phone portrait  layer controls are on the sheet  -- 64 of 192 controls have a box; hidden by DIV#fs-curtain
+PASS  393x852 phone portrait  the menu bar is on the sheet  -- {"w":385,"h":34,"top":5,"left":5,"display":"flex","visibility":"visible"}
+PASS  393x852 phone portrait  the layout keeps the screen's width, not the paper's  -- --gpf-vw is "393px", viewport is 393px
+PASS  393x852 phone portrait  the raster is inside the canvas box, not over the page  -- raster 385x838 in <div.maplibregl-canvas-container>
+PASS  393x852 phone portrait  the provenance strip does not cover the view  -- furniture top 852, view bottom 852
+PASS  852x393 phone landscape  the app's own Print control is reachable  -- clicked
+PASS  852x393 phone landscape  layer controls are on the sheet  -- 64 of 192 controls have a box; hidden by DIV#fs-curtain
+PASS  852x393 phone landscape  the menu bar is on the sheet  -- {"w":844,"h":36,"top":5,"left":5,"display":"flex","visibility":"visible"}
+PASS  852x393 phone landscape  the layout keeps the screen's width, not the paper's  -- --gpf-vw is "852px", viewport is 852px
+PASS  852x393 phone landscape  the raster is inside the canvas box, not over the page  -- raster 844x243 in <div.maplibregl-canvas-container>
+PASS  852x393 phone landscape  the provenance strip does not cover the view  -- furniture top 393, view bottom 393
+PASS  1400x900 desktop  the app's own Print control is reachable  -- clicked
+PASS  1400x900 desktop  layer controls are on the sheet  -- 64 of 192 controls have a box; hidden by DIV#fs-curtain
+PASS  1400x900 desktop  the menu bar is on the sheet  -- {"w":1392,"h":36,"top":5,"left":5,"display":"flex","visibility":"visible"}
+PASS  1400x900 desktop  the layout keeps the screen's width, not the paper's  -- --gpf-vw is "1400px", viewport is 1400px
+PASS  1400x900 desktop  the raster is inside the canvas box, not over the page  -- raster 1392x518 in <div.maplibregl-canvas-container>
+PASS  1400x900 desktop  the provenance strip does not cover the view  -- furniture top 900, view bottom 900
+
+18 passed, 0 failed, 18 checks

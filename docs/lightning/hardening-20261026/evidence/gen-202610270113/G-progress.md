@@ -1,0 +1,12 @@
+# Variant G progress
+- 01:08 UTC start from fixed-module-F.js (24,773 B).
+- 01:09 UTC G built; CRF-2/2b (+26 B) dropped first per order: G with it was 24,819 B (38 over).
+- FINAL G: fixed-module-G.js 24,781 B (= cap, 0 spare); FINAL-G.diff vs fixed-module-F.js; bytes-G.txt (build-G.mjs).
+  Done: R1/CRF-1 (||-1); R2 (sealed mismatch stays FAIL "<date> index mismatch: <field>", only unsealed days retry); T10/CRF-3b/CRF-3c (retry-exhausted text keeps date+field: "<date> index mismatch: count; archive updating, reload later"; reason "archive updating" instead of "gaps in window"; status shows SEARCHED UNKNOWN while day files are unverified); E06 ("? ago" for a future index).
+  Dropped (nice-to-have, first per order): CRF-2/2b lost-day once-per-union subtraction (+26 B; real data has no overlapping windows).
+  Funding: unread placeholders removed from the before-archive, fail and overview records (rows/cov/arch/clp) and reason "N unscanned dates" (−54 B). Sweep-F's ResizeObserver typeof trim NOT used: fit() runs at install (rest state), which this order freezes.
+  Rest-state: no edit touches bg/install/fit/header code; REST test compares the installed group markup and style with F (identical) and asserts zero requests and no map source before ON.
+  Tests: G 74/74; F 70/74 (R1, R2, T10, E06 fail on F; REST passes on both as a guard). Test change: F2's warning regex now accepts "reload later". ChatGPT suite 4f9bcdf (veto branch head) G 8/8. Parity sim and real fixtures unchanged (pass).
+- I01 added (coordinator order, ChatGPT Testcode PR #2): when crypto.subtle is absent and the index gives a sha256, sh() throws "not verified (no WebCrypto)" after the count/bytes checks; lw marks it u (no retry), so the day is PARTIAL, not drawn, status SEARCHED UNKNOWN, warning "<date> not verified (no WebCrypto)". Reason text for unverified/updating day files is now "unverified" (was "archive updating"). I03 = T10/CRF-3b (mismatch field kept in caption).
+  Funding (−87 B): cosmetic C01 reverted ("1 year" again); "— unknown, not zero" replaces "— nothing can be shown; not zero lightning"; "Archive unavailable: <e> — nothing shown (unknown, not zero)" drops "at <time>"; reasons "tail unknown"/"head unknown"; feed Actual "none seen in the 7-day feed (unknown, not zero)". All post-ON text; honesty phrases kept.
+  FINAL G: 24,777 B (4 spare). Tests: G 75/75; F 70/75 (R1, R2, T10, E06, I01 fail on F). M02 test now reads the period label from the window (C01 revert). ChatGPT 4f9bcdf G 8/8. Parity sim and real fixtures (10/10 with WebCrypto) pass.

@@ -1,0 +1,730 @@
+{
+ "schema": "ventus-grid-engine.genome.v1",
+ "label": "Lightning data-and-code path · EUMETSAT to what the owner sees (kv-spider, 27 Oct 2026)",
+ "generated_utc": "2026-10-27T17:00:00Z",
+ "note": "Same node and edge shape as ventus-grid-engine/genome/engine-graph.json (nodes {label,type,rag,reason,gh,ext}; edges {from,to,type,evidence{file,lines,method}}). RAG is today: lightning main d32e6b6 (15:24 UTC), generation 202610270929. An edge whose evidence.method starts \"CONTRACT MISMATCH POSSIBLE\" is one where producer and consumer can disagree; \"RISK n/5\" ranks the five riskiest. Module lines are module-file lines; add 8667 for the published cartridge.",
+ "focus_default": 19,
+ "kind_labels": {
+  "external": "external",
+  "workflow": "workflow",
+  "governance": "governance",
+  "data": "data",
+  "imports": "imports",
+  "should_import": "should import",
+  "drifts_from": "drifts from"
+ },
+ "nodes": [
+  {
+   "label": "EUMETSAT MTG LI L2-LFL (EO:EUM:DAT:0691)",
+   "type": "source",
+   "rag": "green",
+   "reason": "Answered the 15:20 run: 36 of 36 ten-minute product slots examined (status.json last_slots_examined). Optical flashes, not ground strikes.",
+   "gh": "",
+   "ext": "https://api.eumetsat.int/data/browse/collections/EO%3AEUM%3ADAT%3A0691?format=html"
+  },
+  {
+   "label": "collect.py",
+   "type": "code",
+   "rag": "green",
+   "reason": "Self-healing lookback max(6 h, since last scan end + 30 min) capped 48 h; writes the 7-day feed and an uncapped run record. --rebuild-day for backfill.",
+   "gh": "https://github.com/Ventusltd/lightning/blob/d32e6b6/collect.py#L33-L38",
+   "ext": ""
+  },
+  {
+   "label": "history.py (ingest / verify / backfill)",
+   "type": "code",
+   "rag": "green",
+   "reason": "Index v2 + day shards with bytes/sha256/count; verify before commit. Sets next_update_due = now + 1 h + 2 h grace (l.641), a promise the cron does not keep.",
+   "gh": "https://github.com/Ventusltd/lightning/blob/d32e6b6/history.py#L636-L655",
+   "ext": ""
+  },
+  {
+   "label": "status.py",
+   "type": "code",
+   "rag": "amber",
+   "reason": "Freshness ok / warn &gt;6 h / stale &gt;12 h / stopped &gt;24 h (l.43-52). A second STALE definition; the module uses 3 h and never reads status.json.",
+   "gh": "https://github.com/Ventusltd/lightning/blob/d32e6b6/status.py#L40-L53",
+   "ext": ""
+  },
+  {
+   "label": "update-lightning.yml (cron 17 * * * *)",
+   "type": "workflow",
+   "rag": "red",
+   "reason": "Declared hourly. Fired 21 times since 23 Oct 00:00 vs ~112 expected; median gap 5.5 h; 0 cancelled runs. Today: 00:26, 08:55 (queued 91 min behind backfill), 15:19.",
+   "gh": "https://github.com/Ventusltd/lightning/blob/d32e6b6/.github/workflows/update-lightning.yml#L1-L21",
+   "ext": "https://github.com/Ventusltd/lightning/actions/workflows/update-lightning.yml"
+  },
+  {
+   "label": "backfill-lightning.yml (manual, <=31 d, 200 min)",
+   "type": "workflow",
+   "rag": "amber",
+   "reason": "Runs 03:14-07:01 and 07:02-10:26 filled 10 + 11 dates (09-29..10-19 gaps). 20 planned dates remain never searched (09-09..09-28); 337 of 366 index dates never searched.",
+   "gh": "https://github.com/Ventusltd/lightning/blob/d32e6b6/.github/workflows/backfill-lightning.yml#L26-L40",
+   "ext": "https://github.com/Ventusltd/lightning/actions/workflows/backfill-lightning.yml"
+  },
+  {
+   "label": "GitHub scheduler + concurrency group uk-lightning-update",
+   "type": "external",
+   "rag": "red",
+   "reason": "Schedule events are best-effort and were dropped before any backfill existed (23-26 Oct: 4-5 runs/day). Shared group adds queueing: the 08:55 run waited until 10:26.",
+   "gh": "https://github.com/Ventusltd/lightning/blob/d32e6b6/.github/workflows/update-lightning.yml#L19-L21",
+   "ext": ""
+  },
+  {
+   "label": "data/uk_lightning.geojson (7-day feed)",
+   "type": "data",
+   "rag": "green",
+   "reason": "471 features at 15:20 (total_before_display_cap 471, cap 40,000). Metadata query_start/end = last window only.",
+   "gh": "https://github.com/Ventusltd/lightning/blob/d32e6b6/data/uk_lightning.geojson#L1",
+   "ext": ""
+  },
+  {
+   "label": "data/history/index.json (uk-lightning-history-index.v2)",
+   "type": "data",
+   "rag": "amber",
+   "reason": "366 rows; 29 searched (2026-09-29..10-27), 1,507 flashes now (1,480 at 10:43). next_update_due_utc = generated + 3 h. status archive_partial.",
+   "gh": "https://github.com/Ventusltd/lightning/blob/d32e6b6/data/history/index.json#L1",
+   "ext": ""
+  },
+  {
+   "label": "data/history/days/YYYY/MM/DD.json",
+   "type": "data",
+   "rag": "green",
+   "reason": "22 day shards (days with flashes), schema uk-lightning-history-day.v1, no hourly splits yet. sha256/bytes verified by the module in-browser.",
+   "gh": "https://github.com/Ventusltd/lightning/tree/d32e6b6/data/history/days",
+   "ext": ""
+  },
+  {
+   "label": "data/status.json",
+   "type": "data",
+   "rag": "amber",
+   "reason": "health ok, freshness ok at 15:24; carries backfill remaining_unknown_days. Not read by GridAtlas at all.",
+   "gh": "https://github.com/Ventusltd/lightning/blob/d32e6b6/data/status.json#L1",
+   "ext": ""
+  },
+  {
+   "label": "raw.githubusercontent.com (ref main, Fastly)",
+   "type": "external",
+   "rag": "amber",
+   "reason": "cache-control max-age=300, etag per file, ACAO *. Index and shards cached independently on a moving ref: up to 5 min of mixed commits.",
+   "gh": "",
+   "ext": "https://raw.githubusercontent.com/Ventusltd/lightning/main/data/history/index.json"
+  },
+  {
+   "label": "Generation 202610270929 (current.json + cartridge)",
+   "type": "release",
+   "rag": "green",
+   "reason": "Published sld-sandbox cartridge (sha256 e37b754d...) = original 202609241334 + newline + module (33,623 B): byte check passed. Module at cartridge l.8668-8891.",
+   "gh": "https://github.com/Ventusltd/gridatlas/blob/main/atlas/v/202610270929/current.json",
+   "ext": "https://ventusltd.github.io/gridatlas/atlas/v/202610270929/"
+  },
+  {
+   "label": "module gj/gx/li/sh (transport, LRU 8)",
+   "type": "function",
+   "rag": "green",
+   "reason": "fetch for index/shards (index cache:no-cache, sealed shards default), XHR for feed; 15 s timeout; redirects refused.",
+   "gh": "https://github.com/Ventusltd/gridatlas/blob/main/atlas/cartridges/202610270929-sld-sandbox-v9-8.js#L8693-L8699",
+   "ext": ""
+  },
+  {
+   "label": "module ni/vk (index v2 validation)",
+   "type": "function",
+   "rag": "green",
+   "reason": "Every row validated; exact schema and exact observation prose required.",
+   "gh": "https://github.com/Ventusltd/gridatlas/blob/main/atlas/cartridges/202610270929-sld-sandbox-v9-8.js#L8700-L8713",
+   "ext": ""
+  },
+  {
+   "label": "module lw/cv/fr (windows, coverage, tiers)",
+   "type": "function",
+   "rag": "amber",
+   "reason": "Sums whole-day known counts of overlapping dates (l.80-81); cv() knows 29/366 dates searched but only the status line shows a percentage.",
+   "gh": "https://github.com/Ventusltd/gridatlas/blob/main/atlas/cartridges/202610270929-sld-sandbox-v9-8.js#L8716-L8755",
+   "ext": ""
+  },
+  {
+   "label": "module stale()",
+   "type": "function",
+   "rag": "red",
+   "reason": "STALE when index older than 4 h or now &gt; next_update_due (gen + 3 h). With the real cadence this is true ~45% of the time; at 13:45 it had been true for 2 min.",
+   "gh": "https://github.com/Ventusltd/gridatlas/blob/main/atlas/cartridges/202610270929-sld-sandbox-v9-8.js#L8714",
+   "ext": ""
+  },
+  {
+   "label": "module lt/sl/cp (label, status line, caption)",
+   "type": "function",
+   "rag": "red",
+   "reason": "Label is [&gt;=N | period STALE] only: 30D/3M/6M/12M all read &gt;=1,480. Searched 88/28/14/7% is in the status line, unknown dates only in the caption.",
+   "gh": "https://github.com/Ventusltd/gridatlas/blob/main/atlas/cartridges/202610270929-sld-sandbox-v9-8.js#L8848-L8851",
+   "ext": ""
+  },
+  {
+   "label": "module dw/tap (points, hit layer, card)",
+   "type": "function",
+   "rag": "amber",
+   "reason": "Own black card (#000/#00ffff), 143-char flash IDs wrapped; max-width 280 px but height up to the map; no card bar, no minimise.",
+   "gh": "https://github.com/Ventusltd/gridatlas/blob/main/atlas/cartridges/202610270929-sld-sandbox-v9-8.js#L8801-L8816",
+   "ext": ""
+  },
+  {
+   "label": "module nr/near (NEAREST SUBSTATIONS)",
+   "type": "function",
+   "rag": "red",
+   "reason": "kv[0] &gt;= 132 only, top 3, no 40 km cap, no camera move. Node probe: 3 lines are added, 0 camera calls; 33 kV neighbours dropped.",
+   "gh": "https://github.com/Ventusltd/gridatlas/blob/main/atlas/cartridges/202610270929-sld-sandbox-v9-8.js#L8817-L8830",
+   "ext": ""
+  },
+  {
+   "label": "window.__GRIDATLAS_NEON_LINKS__ (link)",
+   "type": "engine",
+   "rag": "green",
+   "reason": "schema gridatlas.neon-substation-links.v1. Internal surface, no versioned public API for a non-project origin.",
+   "gh": "https://github.com/Ventusltd/gridatlas/blob/main/atlas/cartridges/202610270929-sld-sandbox-v9-8.js#L3229-L3273",
+   "ext": ""
+  },
+  {
+   "label": "link.substations / loadSubstations()",
+   "type": "engine",
+   "rag": "green",
+   "reason": "5,800 features, all &gt;= 33 kV after voltagesKv; 1,668 &gt;= 132 kV. Published only after the fetch resolves (started at install, l.6054).",
+   "gh": "https://github.com/Ventusltd/gridatlas/blob/main/atlas/cartridges/202610270929-sld-sandbox-v9-8.js#L3477-L3511",
+   "ext": ""
+  },
+  {
+   "label": "link.measure.distanceKm -> geodesy module",
+   "type": "engine",
+   "rag": "green",
+   "reason": "(lon1, lat1, lon2, lat2), EARTH_RADIUS_KM 6378.137; module call order matches.",
+   "gh": "https://github.com/Ventusltd/gridatlas/blob/main/atlas/cartridges/202610270929-sld-sandbox-v9-8.js#L3299-L3301",
+   "ext": ""
+  },
+  {
+   "label": "link.measure.nearestSubstations (33 kV, 5 links, 40 km)",
+   "type": "engine",
+   "rag": "green",
+   "reason": "Pure, exported (l.3584). MIN_KV 33, LINK_COUNT 5, MAX_LINK_KM 40. The rule the owner sees on project arrival; unused by Lightning.",
+   "gh": "https://github.com/Ventusltd/gridatlas/blob/main/atlas/cartridges/202610270929-sld-sandbox-v9-8.js#L3509-L3540",
+   "ext": ""
+  },
+  {
+   "label": "link.selectAt + drawLinks + popup watcher",
+   "type": "engine",
+   "rag": "amber",
+   "reason": "Draws the neon links, but treats the origin as a project and clears lines when no .maplibregl-popup exists (l.6060): not reusable for a flash as is.",
+   "gh": "https://github.com/Ventusltd/gridatlas/blob/main/atlas/cartridges/202610270929-sld-sandbox-v9-8.js#L6073-L6168",
+   "ext": ""
+  },
+  {
+   "label": "deepLinkPlan / runDeepLink (project arrival)",
+   "type": "engine",
+   "rag": "green",
+   "reason": "Frames the point (flyTo zoom 12, l.6628-6630), red pulsing origin pin, then drawLinks with nearestSubstations.",
+   "gh": "https://github.com/Ventusltd/gridatlas/blob/main/atlas/cartridges/202610270929-sld-sandbox-v9-8.js#L3378-L3391",
+   "ext": "https://ventusltd.github.io/gridatlas/atlas/?repd_ref=12588&technology=solar&latitude=51.8132088&longitude=-1.3489728&zoom=12"
+  },
+  {
+   "label": "grid_substations.geojson (OSM, release 202608300453-atlas-v9)",
+   "type": "data",
+   "rag": "green",
+   "reason": "The substation list Lightning actually measures against: 5,800 OSM features, fetched relative to the shell base. Not data-grid-gb.",
+   "gh": "https://github.com/Ventusltd/gridatlas/blob/main/atlas/releases/202608300453-atlas-v9/data/grid_substations.geojson",
+   "ext": ""
+  },
+  {
+   "label": "Ventusltd/data-grid-gb (connection-points v3, transmission-network v1)",
+   "type": "external",
+   "rag": "grey",
+   "reason": "Feeds declared NESO connections and ETYS topology for projects only. Not on the lightning path today; the brief named it as the substation source.",
+   "gh": "https://github.com/Ventusltd/gridatlas/blob/main/atlas/cartridges/202610270929-sld-sandbox-v9-8.js#L264-L293",
+   "ext": "https://github.com/Ventusltd/data-grid-gb"
+  },
+  {
+   "label": "User sees: [>=1,480 | 30d STALE] on 30D, 3M, 6M, 12M",
+   "type": "ui",
+   "rag": "red",
+   "reason": "Reproduced exactly in node from index 2a49652 at 13:45 UTC; 48H gives [&gt;=29 | 48h STALE]. Now (15:24 index) &gt;=1,507 and not stale until 18:24.",
+   "gh": "",
+   "ext": ""
+  },
+  {
+   "label": "User sees: flash card + text list, no lines",
+   "type": "ui",
+   "rag": "red",
+   "reason": "Reproduced: flash 2026-10-18 13:46 near Hitchin gives 5.42 km 400 kV Wymondley. Lines exist but at z6 are 7-9 px against a 6.7 px flash dot, under the card, with no reframe.",
+   "gh": "",
+   "ext": ""
+  },
+  {
+   "label": "User expects: project deep-link arrival",
+   "type": "ui",
+   "rag": "blue",
+   "reason": "Framed point, red pulsing origin, ~5 neon links labelled km and kV including 33 kV, original card bar. Engine would give Wymondley 400, unnamed 33, Stevenage 132, Luton South 132, unnamed 33.",
+   "gh": "",
+   "ext": ""
+  }
+ ],
+ "node_ids": [
+  "eumetsat",
+  "collect",
+  "history",
+  "status",
+  "wf_hourly",
+  "wf_backfill",
+  "gh_sched",
+  "feed",
+  "index",
+  "shards",
+  "statusjson",
+  "cdn",
+  "release",
+  "m_transport",
+  "m_index",
+  "m_window",
+  "m_stale",
+  "m_label",
+  "m_points",
+  "m_nearest",
+  "neon",
+  "subs",
+  "geodesy",
+  "nearestfn",
+  "selectat",
+  "deeplink",
+  "gridsubs",
+  "datagridgb",
+  "ui_label",
+  "ui_card",
+  "ui_expect"
+ ],
+ "edges": [
+  {
+   "from": 0,
+   "to": 1,
+   "type": "external",
+   "evidence": {
+    "file": "lightning@d32e6b6/collect.py",
+    "lines": "33-38",
+    "method": "COLLECTION EO:EUM:DAT:0691, UK_BOUNDS (-11,49.5,3,61.5); keys from secrets (update-lightning.yml:43-45)."
+   }
+  },
+  {
+   "from": 4,
+   "to": 1,
+   "type": "workflow",
+   "evidence": {
+    "file": "lightning@d32e6b6/.github/workflows/update-lightning.yml",
+    "lines": "40-57",
+    "method": "--auto-window, feed + run record to $RUNNER_TEMP."
+   }
+  },
+  {
+   "from": 4,
+   "to": 2,
+   "type": "workflow",
+   "evidence": {
+    "file": "lightning@d32e6b6/.github/workflows/update-lightning.yml",
+    "lines": "75-86",
+    "method": "history.py ingest then verify; failure never blocks the feed commit."
+   }
+  },
+  {
+   "from": 4,
+   "to": 3,
+   "type": "workflow",
+   "evidence": {
+    "file": "lightning@d32e6b6/.github/workflows/update-lightning.yml",
+    "lines": "90-98",
+    "method": "status.py write, always()."
+   }
+  },
+  {
+   "from": 5,
+   "to": 1,
+   "type": "workflow",
+   "evidence": {
+    "file": "lightning@d32e6b6/.github/workflows/backfill-lightning.yml",
+    "lines": "95",
+    "method": "collect.py --rebuild-day per never-searched date, newest first."
+   }
+  },
+  {
+   "from": 5,
+   "to": 2,
+   "type": "workflow",
+   "evidence": {
+    "file": "lightning@d32e6b6/.github/workflows/backfill-lightning.yml",
+    "lines": "102-108",
+    "method": "history.py backfill + verify; one commit per run (l.125-143)."
+   }
+  },
+  {
+   "from": 6,
+   "to": 4,
+   "type": "workflow",
+   "evidence": {
+    "file": "lightning@d32e6b6/.github/workflows/update-lightning.yml",
+    "lines": "8",
+    "method": "CONTRACT MISMATCH POSSIBLE · RISK 4/5 — cron \"17 * * * *\" is the only clock. gh run list: 21 scheduled successes since 23 Oct vs ~112 slots, 0 cancelled; median gap 5.5 h (evidence/kv-spider/hourly-runs.json). The index promises hourly (history.py:49-50)."
+   }
+  },
+  {
+   "from": 6,
+   "to": 5,
+   "type": "governance",
+   "evidence": {
+    "file": "lightning@d32e6b6/.github/workflows/backfill-lightning.yml",
+    "lines": "29-31",
+    "method": "CONTRACT MISMATCH POSSIBLE — Same concurrency group as update-lightning.yml:19-21, cancel-in-progress false. Run 40476905747 created 08:55:15, finished 10:43:39, behind backfill 07:02-10:26. One pending slot: further schedule ticks are replaced, not queued."
+   }
+  },
+  {
+   "from": 1,
+   "to": 7,
+   "type": "data",
+   "evidence": {
+    "file": "lightning@d32e6b6/collect.py",
+    "lines": "86-97, 207-224",
+    "method": "CONTRACT MISMATCH POSSIBLE — Feature props time_utc, observation_kind optical_lightning_flash; rows[-40000:] display cap. Module ok() requires the same kind and box (module:69) but counts features, never total_before_display_cap (module:19)."
+   }
+  },
+  {
+   "from": 1,
+   "to": 2,
+   "type": "data",
+   "evidence": {
+    "file": "lightning@d32e6b6/collect.py",
+    "lines": "358-403",
+    "method": "Run record (examined slots, scanned ranges) handed to history.py ingest --run-record; never committed."
+   }
+  },
+  {
+   "from": 2,
+   "to": 8,
+   "type": "data",
+   "evidence": {
+    "file": "lightning@d32e6b6/history.py",
+    "lines": "630-660",
+    "method": "CONTRACT MISMATCH POSSIBLE — Index v2 fields; observation prose at l.646 must equal module:40 exactly, schema at module:39. Any wording change empties every window to FAIL."
+   }
+  },
+  {
+   "from": 2,
+   "to": 9,
+   "type": "data",
+   "evidence": {
+    "file": "lightning@d32e6b6/history.py",
+    "lines": "283-334, 548-556",
+    "method": "CONTRACT MISMATCH POSSIBLE — Whole-day shard or hourly parts days/YYYY/MM/DD/HH.json. Module vk (module:37) and tg hour = path.slice(-7,-5) (module:59) accept that shape; no split day exists yet, so the parts branch is untested on real data."
+   }
+  },
+  {
+   "from": 3,
+   "to": 10,
+   "type": "data",
+   "evidence": {
+    "file": "lightning@d32e6b6/status.py",
+    "lines": "40-53, 160-165",
+    "method": "thresholds_hours warn 6 / stale 12 / stopped 24."
+   }
+  },
+  {
+   "from": 7,
+   "to": 11,
+   "type": "data",
+   "evidence": {
+    "file": "lightning@d32e6b6/.github/workflows/update-lightning.yml",
+    "lines": "60-71",
+    "method": "Feed committed first, separately from the archive (l.101-123)."
+   }
+  },
+  {
+   "from": 8,
+   "to": 11,
+   "type": "data",
+   "evidence": {
+    "file": "lightning@d32e6b6/.github/workflows/update-lightning.yml",
+    "lines": "101-123",
+    "method": "Archive + status commit ~2 s after the feed commit (d32e6b6 15:24:22 vs fd2d89b 15:24:20)."
+   }
+  },
+  {
+   "from": 9,
+   "to": 11,
+   "type": "data",
+   "evidence": {
+    "file": "lightning@d32e6b6/.github/workflows/update-lightning.yml",
+    "lines": "101-123",
+    "method": "Same commit as the index."
+   }
+  },
+  {
+   "from": 10,
+   "to": 11,
+   "type": "data",
+   "evidence": {
+    "file": "lightning@d32e6b6/.github/workflows/update-lightning.yml",
+    "lines": "107",
+    "method": "Committed every run; served but never fetched by GridAtlas."
+   }
+  },
+  {
+   "from": 11,
+   "to": 13,
+   "type": "external",
+   "evidence": {
+    "file": "atlas/modules/202610270929-uk-lightning-overlay.js",
+    "lines": "10-11, 27-31, 48, 60-65",
+    "method": "CONTRACT MISMATCH POSSIBLE — Fixed URLs on ref main. Fastly max-age=300 per file (curl -I, 16:4x): cache:no-cache on index.json (l.48) cannot bypass the CDN; today's unsealed shard and index can come from different commits for 5 min. Handled by one ?q= retry then \"archive updating, reload later\" (l.88)."
+   }
+  },
+  {
+   "from": 12,
+   "to": 13,
+   "type": "imports",
+   "evidence": {
+    "file": "atlas/cartridges/202610270929-sld-sandbox-v9-8.js",
+    "lines": "8668-8891",
+    "method": "Module appended after the original; verified live-cartridge.js startsWith(original) && includes(module)."
+   }
+  },
+  {
+   "from": 13,
+   "to": 14,
+   "type": "imports",
+   "evidence": {
+    "file": "atlas/modules/202610270929-uk-lightning-overlay.js",
+    "lines": "48",
+    "method": "li() -> ni()."
+   }
+  },
+  {
+   "from": 14,
+   "to": 15,
+   "type": "imports",
+   "evidence": {
+    "file": "atlas/modules/202610270929-uk-lightning-overlay.js",
+    "lines": "76-81",
+    "method": "lw() picks feed / overview / detail."
+   }
+  },
+  {
+   "from": 15,
+   "to": 17,
+   "type": "data",
+   "evidence": {
+    "file": "atlas/modules/202610270929-uk-lightning-overlay.js",
+    "lines": "80-81, 182",
+    "method": "CONTRACT MISMATCH POSSIBLE · RISK 3/5 — arch = sum of known counts on overlapping dates; label shows only >=N. 30D/3M/6M/12M = same 29 searched dates = same 1,480 (probe-result.json). Searched share (88/28/14/7%) lives in cv() but not the label."
+   }
+  },
+  {
+   "from": 8,
+   "to": 16,
+   "type": "data",
+   "evidence": {
+    "file": "lightning@d32e6b6/history.py",
+    "lines": "49-50, 641",
+    "method": "CONTRACT MISMATCH POSSIBLE · RISK 5/5 — next_update_due = generated + 1 h + 2 h; module:45-47 marks STALE after it (or after 4 h). With the real cadence STALE ~45% of the time; status.py:43-52 still says ok up to 6 h."
+   }
+  },
+  {
+   "from": 10,
+   "to": 17,
+   "type": "data",
+   "evidence": {
+    "file": "atlas/modules/202610270929-uk-lightning-overlay.js",
+    "lines": "1-224",
+    "method": "CONTRACT MISMATCH POSSIBLE — NOT READ: no reference to status.json in the module, so backfill remaining_unknown_days and freshness ok/warn never reach the user."
+   }
+  },
+  {
+   "from": 16,
+   "to": 17,
+   "type": "imports",
+   "evidence": {
+    "file": "atlas/modules/202610270929-uk-lightning-overlay.js",
+    "lines": "96, 115, 182",
+    "method": "c.stale appended as \" STALE\" to label, status and caption."
+   }
+  },
+  {
+   "from": 17,
+   "to": 28,
+   "type": "data",
+   "evidence": {
+    "file": "atlas/modules/202610270929-uk-lightning-overlay.js",
+    "lines": "186-193",
+    "method": "pt() writes label text to every Layers group (main + fullscreen curtain)."
+   }
+  },
+  {
+   "from": 15,
+   "to": 18,
+   "type": "imports",
+   "evidence": {
+    "file": "atlas/modules/202610270929-uk-lightning-overlay.js",
+    "lines": "206",
+    "method": "dw() draws r.ev; tap reads S.res.ev[i]."
+   }
+  },
+  {
+   "from": 18,
+   "to": 19,
+   "type": "imports",
+   "evidence": {
+    "file": "atlas/modules/202610270929-uk-lightning-overlay.js",
+    "lines": "148",
+    "method": "NEAREST SUBSTATIONS button -> near()."
+   }
+  },
+  {
+   "from": 18,
+   "to": 29,
+   "type": "data",
+   "evidence": {
+    "file": "atlas/modules/202610270929-uk-lightning-overlay.js",
+    "lines": "145-149",
+    "method": "Card: time, 143-char flash ID, lat/lon, disclaimer, NEAREST button; own div, not maplibregl.Popup."
+   }
+  },
+  {
+   "from": 19,
+   "to": 20,
+   "type": "imports",
+   "evidence": {
+    "file": "atlas/modules/202610270929-uk-lightning-overlay.js",
+    "lines": "154",
+    "method": "CONTRACT MISMATCH POSSIBLE — Reads window.__GRIDATLAS_NEON_LINKS__ (cartridge:3273), an internal object of another lane with no versioned contract for this use."
+   }
+  },
+  {
+   "from": 20,
+   "to": 21,
+   "type": "imports",
+   "evidence": {
+    "file": "atlas/cartridges/202610270929-sld-sandbox-v9-8.js",
+    "lines": "3503",
+    "method": "link.substations assigned only after loadSubstations() resolves; module:155 says \"not loaded yet\" until then."
+   }
+  },
+  {
+   "from": 26,
+   "to": 21,
+   "type": "data",
+   "evidence": {
+    "file": "atlas/cartridges/202610270929-sld-sandbox-v9-8.js",
+    "lines": "1666, 3480-3503",
+    "method": "fetch(new URL('data/grid_substations.geojson', document.baseURI)); base = current.json shell.base (../../releases/202608300453-atlas-v9/)."
+   }
+  },
+  {
+   "from": 19,
+   "to": 22,
+   "type": "imports",
+   "evidence": {
+    "file": "atlas/modules/202610270929-uk-lightning-overlay.js",
+    "lines": "154, 156",
+    "method": "dk(x, y, s.at[0], s.at[1]) matches distanceKm(lon1, lat1, lon2, lat2) at cartridge:3299."
+   }
+  },
+  {
+   "from": 19,
+   "to": 21,
+   "type": "drifts_from",
+   "evidence": {
+    "file": "atlas/modules/202610270929-uk-lightning-overlay.js",
+    "lines": "156",
+    "method": "CONTRACT MISMATCH POSSIBLE — Filters kv[0] >= 132, slice(0,3), no radius. Engine: MIN_KV 33, LINK_COUNT 5, MAX_LINK_KM 40 (cartridge:1663-1665, 3509-3540). Probe: drops 5.67 km and 7.10 km 33 kV."
+   }
+  },
+  {
+   "from": 19,
+   "to": 23,
+   "type": "should_import",
+   "evidence": {
+    "file": "atlas/cartridges/202610270929-sld-sandbox-v9-8.js",
+    "lines": "3584",
+    "method": "CONTRACT MISMATCH POSSIBLE · RISK 2/5 — link.measure.nearestSubstations is public and pure; the module re-implements a narrower rule instead. Owner expects 33 kV and ~5 links."
+   }
+  },
+  {
+   "from": 19,
+   "to": 24,
+   "type": "drifts_from",
+   "evidence": {
+    "file": "atlas/modules/202610270929-uk-lightning-overlay.js",
+    "lines": "150-151",
+    "method": "Own source gridatlas-lightning-nearest with paint copied from the neon layers; selectAt not callable for a flash (cartridge:6060 watcher, project semantics)."
+   }
+  },
+  {
+   "from": 19,
+   "to": 29,
+   "type": "data",
+   "evidence": {
+    "file": "atlas/modules/202610270929-uk-lightning-overlay.js",
+    "lines": "157-163",
+    "method": "CONTRACT MISMATCH POSSIBLE · RISK 1/5 — Text list + 3 Lightning lines; no fitBounds/flyTo (probe camera_calls 0). Lines 7-9 px at z6 vs flash radius 6.7 px, under the card; label layer needs glyphs."
+   }
+  },
+  {
+   "from": 23,
+   "to": 24,
+   "type": "imports",
+   "evidence": {
+    "file": "atlas/cartridges/202610270929-sld-sandbox-v9-8.js",
+    "lines": "6156-6165",
+    "method": "selectAt -> drawLinks(nearestSubstations(origin...))."
+   }
+  },
+  {
+   "from": 27,
+   "to": 24,
+   "type": "data",
+   "evidence": {
+    "file": "atlas/cartridges/202610270929-sld-sandbox-v9-8.js",
+    "lines": "264-293, 6156-6162",
+    "method": "Declared NESO connection for projects only (resolveNesoConnection). Lightning never reaches it."
+   }
+  },
+  {
+   "from": 25,
+   "to": 24,
+   "type": "imports",
+   "evidence": {
+    "file": "atlas/cartridges/202610270929-sld-sandbox-v9-8.js",
+    "lines": "6320-6364, 6628-6630",
+    "method": "Arrival: flyTo zoom 12, then the neon links."
+   }
+  },
+  {
+   "from": 25,
+   "to": 30,
+   "type": "data",
+   "evidence": {
+    "file": "atlas/cartridges/202610270929-sld-sandbox-v9-8.js",
+    "lines": "6628-6630, 4522-4625",
+    "method": "What the owner compares against."
+   }
+  },
+  {
+   "from": 29,
+   "to": 30,
+   "type": "drifts_from",
+   "evidence": {
+    "file": "atlas/modules/202610270929-uk-lightning-overlay.js",
+    "lines": "152-163",
+    "method": "Gap: framing, origin pulse, 33 kV links, card bar."
+   }
+  }
+ ],
+ "edge_kind_counts": {
+  "external": 2,
+  "workflow": 6,
+  "governance": 1,
+  "data": 18,
+  "imports": 11,
+  "drifts_from": 3,
+  "should_import": 1
+ }
+}

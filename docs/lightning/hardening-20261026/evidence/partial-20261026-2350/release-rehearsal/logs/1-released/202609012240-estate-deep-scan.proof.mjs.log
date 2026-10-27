@@ -1,0 +1,66 @@
+PASS scanner source contains no literal backspace bytes
+PASS zero deep-link matches are an explicit failure
+PASS Pipeline News producer scan is restricted to GridAtlas surfaces
+PASS composition proofs derive from generation and cartridge id
+node:internal/errors:983
+  const err = new Error(message);
+              ^
+
+Error: Command failed: /opt/node22/bin/node /tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/release-rehearsal/wt/tools/ci/202609012240-estate-deep-scan.mjs --out /tmp/gridatlas-estate-scan-nynJ3F
+file:///tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/release-rehearsal/wt/tools/ci/202609012240-estate-deep-scan.mjs:28
+const git = (repo, args, max = 256) => execFileSync('git', ['-C', repo.path, ...args],
+                                                                       ^
+
+TypeError: Cannot read properties of undefined (reading 'path')
+    at git (file:///tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/release-rehearsal/wt/tools/ci/202609012240-estate-deep-scan.mjs:28:72)
+    at queryContract (file:///tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/release-rehearsal/wt/tools/ci/202609012240-estate-deep-scan.mjs:81:22)
+    at file:///tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/release-rehearsal/wt/tools/ci/202609012240-estate-deep-scan.mjs:109:18
+    at ModuleJob.run (node:internal/modules/esm/module_job:343:25)
+    at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:681:26)
+    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:117:5)
+
+Node.js v22.23.4
+
+    at genericNodeError (node:internal/errors:983:15)
+    at wrappedFn (node:internal/errors:537:14)
+    at checkExecSyncError (node:child_process:916:11)
+    at execFileSync (node:child_process:952:15)
+    at file:///tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/release-rehearsal/wt/tools/proofs/202609012240-estate-deep-scan.proof.mjs:25:1
+    at ModuleJob.run (node:internal/modules/esm/module_job:343:25)
+    at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:681:26)
+    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:117:5) {
+  status: 1,
+  signal: null,
+  output: [
+    null,
+    Buffer(0) [Uint8Array] [],
+    Buffer(1206) [Uint8Array] [
+      102, 105, 108, 101,  58,  47,  47,  47, 116, 109, 112,  47,
+       99, 108,  97, 117, 100, 101,  45,  48,  47,  45, 104, 111,
+      109, 101,  45,  99, 108,  97, 117, 100, 101,  47,  57, 100,
+       51,  57,  97, 100,  53,  52,  45,  56,  98,  55,  55,  45,
+       53, 100,  48,  98,  45,  56, 101,  52,  57,  45,  97,  50,
+      102,  98,  53,  51,  56,  50,  49,  49, 100,  98,  47, 115,
+       99, 114,  97, 116,  99, 104, 112,  97, 100,  47, 104,  97,
+      114, 100, 101, 110, 105, 110, 103,  47, 101, 118, 105, 100,
+      101, 110,  99, 101,
+      ... 1106 more items
+    ]
+  ],
+  pid: 11928,
+  stdout: Buffer(0) [Uint8Array] [],
+  stderr: Buffer(1206) [Uint8Array] [
+    102, 105, 108, 101,  58,  47,  47,  47, 116, 109, 112,  47,
+     99, 108,  97, 117, 100, 101,  45,  48,  47,  45, 104, 111,
+    109, 101,  45,  99, 108,  97, 117, 100, 101,  47,  57, 100,
+     51,  57,  97, 100,  53,  52,  45,  56,  98,  55,  55,  45,
+     53, 100,  48,  98,  45,  56, 101,  52,  57,  45,  97,  50,
+    102,  98,  53,  51,  56,  50,  49,  49, 100,  98,  47, 115,
+     99, 114,  97, 116,  99, 104, 112,  97, 100,  47, 104,  97,
+    114, 100, 101, 110, 105, 110, 103,  47, 101, 118, 105, 100,
+    101, 110,  99, 101,
+    ... 1106 more items
+  ]
+}
+
+Node.js v22.23.4

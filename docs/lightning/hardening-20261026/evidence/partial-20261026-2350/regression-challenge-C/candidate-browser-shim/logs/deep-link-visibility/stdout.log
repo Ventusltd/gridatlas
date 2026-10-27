@@ -1,0 +1,14 @@
+
+=== chromium ===
+  [PASS] chromium: document really reads hidden
+  [PASS] chromium: the arrival was never attempted while hidden (the old code would have started, burned the 12s budget, and failed)
+  [PASS] chromium: the camera never flew while hidden
+  [PASS] chromium: nothing drawn while hidden
+  [FAIL] chromium: no spurious "layer controls" failure was recorded for time nobody could see spent -- ["the basemap serves no glyphs, so link labels are omitted","the basemap serves no glyphs, so layout labels are omitted"]
+  [PASS] chromium: the camera flew to the requested coordinates once visible
+  [PASS] chromium: links were drawn once visible
+  [PASS] chromium: the project card is on screen
+  [PASS] chromium: the resumed-on-visibility counter recorded the recovery
+  [PASS] chromium: no page errors across the whole run
+
+SOME checks passed (1 failure(s))

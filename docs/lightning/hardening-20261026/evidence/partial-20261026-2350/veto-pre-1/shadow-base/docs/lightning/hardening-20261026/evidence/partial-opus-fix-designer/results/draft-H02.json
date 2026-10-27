@@ -1,0 +1,176 @@
+{
+ "harness": "self-fixture: Playwright 1.63 Chromium 153.0.8010.12 headless, 1440x900, synthetic host https://probe.test/, page.route data, fixed clock",
+ "overlay": "work/H02/atlas/modules/202610261949-uk-lightning-overlay.js",
+ "overlay_bytes": 24222,
+ "overlay_sha256": "47cc3af3f3f0e70a288e1da472caf8720cc2c459bead26927d40a552d0ad9f12",
+ "label": "draft-H02",
+ "ran_utc": "2026-10-26T22:42:12.269Z",
+ "scenarios": {
+  "H02_feed_72h": {
+   "finding": "H02",
+   "bug": false,
+   "obs": {
+    "feed_age_h": 72,
+    "expect_stale": true,
+    "stale_shown": true,
+    "label": "Lightning flashes (optical) [1 | 7d STALE]",
+    "status": "PARTIAL · 1 FLASHES DRAWN · SEARCHED 2% · STALE",
+    "refresh": "Refresh live feed 2026-10-23 13:30 UTC (last collection window 2026-10-23 10:30 UTC → 2026-10-23 13:30 UTC; latest detection 2026-10-23 12:30:00 UTC; 7-day retention; archive not yet published: HTTP 404; earlier hours unknown, not zero) · STALE",
+    "state": "PARTIAL",
+    "stale_flag": true
+   }
+  },
+  "H02_feed_25h": {
+   "finding": "H02",
+   "bug": false,
+   "obs": {
+    "feed_age_h": 25,
+    "expect_stale": true,
+    "stale_shown": true,
+    "label": "Lightning flashes (optical) [1 | 7d STALE]",
+    "status": "PARTIAL · 1 FLASHES DRAWN · SEARCHED 2% · STALE",
+    "refresh": "Refresh live feed 2026-10-25 12:30 UTC (last collection window 2026-10-25 09:30 UTC → 2026-10-25 12:30 UTC; latest detection 2026-10-25 11:30:00 UTC; 7-day retention; archive not yet published: HTTP 404; earlier hours unknown, not zero) · STALE",
+    "state": "PARTIAL",
+    "stale_flag": true
+   }
+  },
+  "H02_feed_5h": {
+   "finding": "H02",
+   "bug": false,
+   "obs": {
+    "feed_age_h": 5,
+    "expect_stale": true,
+    "stale_shown": true,
+    "label": "Lightning flashes (optical) [1 | 7d STALE]",
+    "status": "PARTIAL · 1 FLASHES DRAWN · SEARCHED 2% · STALE",
+    "refresh": "Refresh live feed 2026-10-26 08:30 UTC (last collection window 2026-10-26 05:30 UTC → 2026-10-26 08:30 UTC; latest detection 2026-10-26 07:30:00 UTC; 7-day retention; archive not yet published: HTTP 404; earlier hours unknown, not zero) · STALE",
+    "state": "PARTIAL",
+    "stale_flag": true
+   }
+  },
+  "H02_feed_2h_fresh": {
+   "finding": "H02",
+   "bug": false,
+   "obs": {
+    "feed_age_h": 2,
+    "expect_stale": false,
+    "stale_shown": false,
+    "label": "Lightning flashes (optical) [1 | 7d]",
+    "status": "PARTIAL · 1 FLASHES DRAWN · SEARCHED 2%",
+    "refresh": "Refresh live feed 2026-10-26 11:30 UTC (last collection window 2026-10-26 08:30 UTC → 2026-10-26 11:30 UTC; latest detection 2026-10-26 10:30:00 UTC; 7-day retention; archive not yet published: HTTP 404; earlier hours unknown, not zero)",
+    "state": "PARTIAL",
+    "stale_flag": false
+   }
+  },
+  "H02_feed_undated": {
+   "finding": "H02",
+   "bug": false,
+   "obs": {
+    "feed_age_h": null,
+    "expect_stale": true,
+    "stale_shown": true,
+    "label": "Lightning flashes (optical) [UNKNOWN | 7d STALE]",
+    "status": "UNKNOWN · STALE",
+    "refresh": "Refresh live feed unknown (last collection window unknown → unknown; latest detection 2026-10-26 10:30:00 UTC; 7-day retention; archive not yet published: HTTP 404; earlier hours unknown, not zero) · STALE",
+    "state": "UNKNOWN",
+    "stale_flag": true
+   }
+  },
+  "H02_feed_pr2_published_30h": {
+   "finding": "H02",
+   "bug": false,
+   "obs": {
+    "feed_age_h": 30,
+    "expect_stale": true,
+    "stale_shown": true,
+    "label": "Lightning flashes (optical) [1 | 7d STALE]",
+    "status": "PARTIAL · 1 FLASHES DRAWN · SEARCHED 2% · STALE",
+    "refresh": "Refresh live feed 2026-10-25 07:30 UTC (last collection window 2026-10-25 04:30 UTC → 2026-10-25 07:30 UTC; latest detection 2026-10-25 06:30:00 UTC; 7-day retention; archive not yet published: HTTP 404; earlier hours unknown, not zero) · STALE",
+    "state": "PARTIAL",
+    "stale_flag": true
+   }
+  },
+  "H02_control_index_5h": {
+   "finding": "H02 control",
+   "bug": false,
+   "obs": {
+    "label": "Lightning flashes (optical) [1 | 24h STALE]",
+    "refresh": "Refresh archive 2026-10-26 08:30 UTC (5h 0min ago; expected every 1 h) · STALE"
+   }
+  },
+  "R_genuine_archive_7d": {
+   "finding": "regression",
+   "bug": false,
+   "obs": {
+    "state": "PARTIAL",
+    "drawn": 408,
+    "failures": 0,
+    "status": "PARTIAL · 408 FLASHES DRAWN · SEARCHED 56%",
+    "flashes": "Flashes 408 archived in window · 408 drawn as points (index count 408 within the 40,000-point cap for this desktop)",
+    "warning": "Not yet ingested: last 6h 0min of window (unknown, not zero) · Unknown: 2026-10-19 to 2026-10-20 precede archive start 2026-10-20 22:41 UTC (not zero) · Unknown: 1 of 8 UTC dates have no collection run",
+    "refresh": "Refresh archive 2026-10-26 18:37 UTC (0h 23min ago; expected every 1 h)",
+    "requests": [
+     "history/index.json",
+     "history/days/2026/10/25.json",
+     "history/days/2026/10/21.json",
+     "history/days/2026/10/22.json",
+     "history/days/2026/10/23.json",
+     "history/days/2026/10/24.json"
+    ]
+   }
+  },
+  "R_genuine_noindex_feed_7d": {
+   "finding": "regression",
+   "bug": false,
+   "obs": {
+    "state": "PARTIAL",
+    "stale": false,
+    "drawn": 408,
+    "label": "Lightning flashes (optical) [408 | 7d]",
+    "flashes": "Flashes 408 in window (live feed, 7-day retention) · 408 drawn as points (live feed count 408 within the 40,000-point cap for this desktop)",
+    "refresh": "Refresh live feed 2026-10-26 13:05 UTC (last collection window 2026-10-26 10:05 UTC → 2026-10-26 13:05 UTC; latest detection 2026-10-25 11:15:58 UTC; 7-day retention; archive not yet published: HTTP 404; earlier hours unknown, not zero)",
+    "warning": "Not yet ingested: last 0h 54min of window (unknown, not zero)"
+   }
+  },
+  "R_genuine_noindex_feed_7d_at_1900": {
+   "finding": "regression (feed 5.9 h old)",
+   "bug": false,
+   "obs": {
+    "state": "PARTIAL",
+    "stale": true,
+    "label": "Lightning flashes (optical) [408 | 7d STALE]",
+    "refresh": "Refresh live feed 2026-10-26 13:05 UTC (last collection window 2026-10-26 10:05 UTC → 2026-10-26 13:05 UTC; latest detection 2026-10-25 11:15:58 UTC; 7-day retention; archive not yet published: HTTP 404; earlier hours unknown, not zero) · STALE"
+   }
+  },
+  "R_missing_shard_7d": {
+   "finding": "regression",
+   "bug": false,
+   "obs": {
+    "state": "FAIL",
+    "drawn": 219,
+    "status": "FAIL · 1 of 5 day files failed",
+    "warning": "Not yet ingested: last 6h 0min of window (unknown, not zero) · Unknown: 2026-10-19 to 2026-10-20 precede archive start 2026-10-20 22:41 UTC (not zero) · Unknown: 1 of 8 UTC dates have no collection run · 1 of 5 day files failed (2026-10-23 HTTP 404); points incomplete, counts from index"
+   }
+  },
+  "R_big_count_30d_load_points": {
+   "finding": "regression (fixture row 2026-10-23 has SYNTHETIC count/bytes)",
+   "bug": false,
+   "obs": {
+    "summary_flashes": "Flashes 120,000 archived on 31 overlapping UTC dates · none drawn (summary mode; index sum 120,000 flashes, 48,000,000 bytes exceeds the budget; LOAD POINTS draws the newest 40,000)",
+    "state": "PARTIAL",
+    "drawn": 310,
+    "status": "PARTIAL · 310 FLASHES CLUSTERED · SEARCHED 13%",
+    "flashes": "Flashes 120,000 archived in window (index) · 310 downloaded from the newest 3 of 5 days (budget 40,000; 2 older days not loaded) · 310 drawn as clusters (index count 119,902 exceeds the 40,000-point cap for this desktop)",
+    "warning": "Not yet ingested: last 6h 0min of window (unknown, not zero) · Unknown: 2026-09-26 to 2026-10-20 precede archive start 2026-10-20 22:41 UTC (not zero) · Unknown: 24 of 31 UTC dates have no collection run"
+   }
+  },
+  "R_off_no_traffic": {
+   "finding": "regression",
+   "bug": false,
+   "obs": {
+    "requests_while_off": 0,
+    "sources_plus_layers": 0
+   }
+  }
+ }
+}

@@ -1,0 +1,3857 @@
+{
+  "harness": "lead-shim + lightningDataDir=/tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/lightning/fixtures/lightning-archive/data",
+  "chromium": "153.0.8010.12",
+  "node": "v22.23.4",
+  "candidate": "http://127.0.0.1:8142/wt/atlas/v/202610261949/",
+  "startedAt": "2026-10-26T23:09:53.972Z",
+  "viewports": {
+    "android-393x852": {
+      "profile": "Chromium phone emulation (touch, mobile UA)",
+      "motion": {
+        "no-preference": {
+          "reducedMotionMatches": false,
+          "layers": {
+            "toggleText": "▴ LAYERS",
+            "toggleHit": {
+              "present": true,
+              "rect": [
+                290,
+                796,
+                91,
+                44
+              ],
+              "inViewport": true,
+              "hit": "self"
+            },
+            "openedByTap": true,
+            "atRest": {
+              "present": true,
+              "rect": [
+                31,
+                2688,
+                17,
+                17
+              ],
+              "inViewport": false,
+              "hit": "OUT-OF-VIEWPORT"
+            },
+            "originalLastGroupAtRest": {
+              "present": true,
+              "rect": [
+                31,
+                2578,
+                17,
+                17
+              ],
+              "inViewport": false,
+              "hit": "OUT-OF-VIEWPORT"
+            },
+            "scrollContainer": {
+              "overflowY": "auto",
+              "scrollHeight": 2212,
+              "clientHeight": 324,
+              "userScrollable": true
+            },
+            "wheel": {
+              "gesture": "page.mouse.wheel(0,400) per step over the container (Chromium touch emulation accepts wheel; NOT a real finger drag)",
+              "steps": [
+                {
+                  "step": 0,
+                  "hit": "OUT-OF-VIEWPORT",
+                  "targetRect": [
+                    31,
+                    2688,
+                    17,
+                    17
+                  ],
+                  "containerScrollTop": 0,
+                  "containerMaxScrollTop": 1888
+                },
+                {
+                  "step": 1,
+                  "hit": "OUT-OF-VIEWPORT",
+                  "targetRect": [
+                    31,
+                    2288,
+                    17,
+                    17
+                  ],
+                  "containerScrollTop": 400,
+                  "containerMaxScrollTop": 1888
+                },
+                {
+                  "step": 2,
+                  "hit": "OUT-OF-VIEWPORT",
+                  "targetRect": [
+                    31,
+                    1888,
+                    17,
+                    17
+                  ],
+                  "containerScrollTop": 800,
+                  "containerMaxScrollTop": 1888
+                },
+                {
+                  "step": 3,
+                  "hit": "OUT-OF-VIEWPORT",
+                  "targetRect": [
+                    31,
+                    1488,
+                    17,
+                    17
+                  ],
+                  "containerScrollTop": 1200,
+                  "containerMaxScrollTop": 1888
+                },
+                {
+                  "step": 4,
+                  "hit": "OUT-OF-VIEWPORT",
+                  "targetRect": [
+                    31,
+                    1088,
+                    17,
+                    17
+                  ],
+                  "containerScrollTop": 1600,
+                  "containerMaxScrollTop": 1888
+                },
+                {
+                  "step": 5,
+                  "hit": "self",
+                  "targetRect": [
+                    31,
+                    800,
+                    17,
+                    17
+                  ],
+                  "containerScrollTop": 1888,
+                  "containerMaxScrollTop": 1888
+                }
+              ],
+              "reached": true
+            },
+            "originalLastGroupAfterWheel": {
+              "present": true,
+              "rect": [
+                31,
+                690,
+                17,
+                17
+              ],
+              "inViewport": true,
+              "hit": "self"
+            }
+          },
+          "menu": {
+            "footerToggle": {
+              "present": true,
+              "rect": [
+                -38,
+                740,
+                469,
+                57
+              ],
+              "inViewport": true,
+              "hit": "OTHER:div.key-group"
+            },
+            "originalFirstProxy": {
+              "present": true,
+              "rect": [
+                16,
+                132,
+                361,
+                44
+              ],
+              "inViewport": true,
+              "hit": "self"
+            },
+            "originalCurtainTab": {
+              "present": true,
+              "rect": [
+                10,
+                797,
+                373,
+                44
+              ],
+              "inViewport": true,
+              "hit": "OTHER:div.key-group[data-lightning-group=main]"
+            },
+            "panelClipped": {
+              "panelBottom": 851,
+              "mapContainerBottom": 494,
+              "clippedPx": 357,
+              "mapContainerOverflow": "hidden",
+              "panelPosition": "fixed"
+            }
+          },
+          "curtain": {
+            "fsActive": true,
+            "tabHit": {
+              "present": true,
+              "rect": [
+                5,
+                792,
+                383,
+                44
+              ],
+              "inViewport": true,
+              "hit": "self"
+            },
+            "open": true,
+            "scrollContainer": {
+              "overflowY": "auto",
+              "scrollHeight": 2243,
+              "clientHeight": 595,
+              "userScrollable": true
+            },
+            "atRest": {
+              "present": true,
+              "rect": [
+                30,
+                2197,
+                17,
+                17
+              ],
+              "inViewport": false,
+              "hit": "OUT-OF-VIEWPORT"
+            },
+            "wheel": {
+              "gesture": "page.mouse.wheel(0,400) per step over the container (Chromium touch emulation accepts wheel; NOT a real finger drag)",
+              "steps": [
+                {
+                  "step": 0,
+                  "hit": "OUT-OF-VIEWPORT",
+                  "targetRect": [
+                    30,
+                    2197,
+                    17,
+                    17
+                  ],
+                  "containerScrollTop": 0,
+                  "containerMaxScrollTop": 1648
+                },
+                {
+                  "step": 0,
+                  "note": "no point inside the container is hit-testable"
+                }
+              ],
+              "reached": false
+            },
+            "originalLastGroupAfterWheel": {
+              "present": true,
+              "rect": [
+                30,
+                2087,
+                17,
+                17
+              ],
+              "inViewport": false,
+              "hit": "OUT-OF-VIEWPORT"
+            },
+            "screenshot": "/tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/visual-challenge-B/p14-p15/curtain-android-393x852-no-preference.png"
+          },
+          "a11y": {
+            "mainGroupAriaSnapshot": "- text: Weather · EUMETSAT Lightning Imager\n- checkbox \"Lightning flashes (optical) [WAIT]\"\n- text: Lightning flashes (optical) [WAIT]",
+            "menuGroupAriaSnapshot": "",
+            "mainToggle": {
+              "tag": "INPUT",
+              "type": "checkbox",
+              "implicitRole": "checkbox (input type=checkbox)",
+              "explicitRole": null,
+              "ariaLabel": null,
+              "labelledByWrappingLabel": true,
+              "labelText": "Lightning flashes (optical) [WAIT]",
+              "checked": false,
+              "ariaChecked": null,
+              "focusable": true,
+              "groupTitle": "Weather · EUMETSAT Lightning Imager",
+              "groupHasRoleOrLabel": false,
+              "originalRowExample": {
+                "ariaLabel": null,
+                "labelText": "400kV [OK]",
+                "role": null
+              }
+            },
+            "menuToggle": {
+              "ariaLabel": "Lightning flashes (optical)",
+              "labelText": "Lightning flashes (optical) [WAIT]",
+              "checked": false,
+              "originalProxyExample": {
+                "ariaLabel": "400kV [OK]",
+                "labelText": "400kV [OK]"
+              }
+            },
+            "afterSpace": {
+              "checked": true,
+              "stateOn": true,
+              "focused": true,
+              "labelText": "Lightning flashes (optical) [LOAD]"
+            },
+            "afterSecondSpace": {
+              "checked": false,
+              "stateOn": false,
+              "requestsSoFar": 1,
+              "mapHasLightningLayer": false
+            },
+            "fsGroupAriaSnapshot": "- text: Weather · EUMETSAT Lightning Imager\n- checkbox \"Lightning flashes (optical) [WAIT]\"\n- text: Lightning flashes (optical) [WAIT]"
+          },
+          "contrast": {
+            "labelOFF": {
+              "selector": "#scada-ui-container [data-lightning-group=\"main\"] [data-lightning-label]",
+              "color": "rgb(255, 223, 68)",
+              "fontSize": "13px",
+              "fontWeight": "400",
+              "opacity": "1",
+              "effectiveBackground": "rgb(5,5,5)",
+              "backgroundChain": [
+                "html.gridatlas-menu-hosted",
+                "body",
+                "div.scada-wrapper"
+              ],
+              "ratio": 15.42,
+              "wcagAA_normalText": true,
+              "wcagAA_largeText": true,
+              "text": "Lightning flashes (optical) [WAIT]"
+            },
+            "originalLabel": {
+              "selector": "#scada-ui-container label.key-item span[id^=\"lbl-\"]",
+              "color": "rgb(0, 84, 255)",
+              "fontSize": "13px",
+              "fontWeight": "400",
+              "opacity": "1",
+              "effectiveBackground": "rgb(5,5,5)",
+              "backgroundChain": [
+                "html.gridatlas-menu-hosted",
+                "body",
+                "div.scada-wrapper"
+              ],
+              "ratio": 3.6,
+              "wcagAA_normalText": false,
+              "wcagAA_largeText": true,
+              "text": "400kV [OK]"
+            },
+            "groupTitle": {
+              "selector": "#scada-ui-container [data-lightning-group=\"main\"] .key-title",
+              "color": "rgb(102, 204, 255)",
+              "fontSize": "10px",
+              "fontWeight": "700",
+              "opacity": "1",
+              "effectiveBackground": "rgb(5,5,5)",
+              "backgroundChain": [
+                "html.gridatlas-menu-hosted",
+                "body",
+                "div.scada-wrapper"
+              ],
+              "ratio": 11.3,
+              "wcagAA_normalText": true,
+              "wcagAA_largeText": true,
+              "text": "Weather · EUMETSAT Lightning Imager"
+            },
+            "menuLabel": {
+              "selector": "[data-lightning-group=\"menu\"] .gm-layer-name",
+              "color": "rgb(207, 238, 246)",
+              "fontSize": "11px",
+              "fontWeight": "400",
+              "opacity": "1",
+              "effectiveBackground": "rgb(4,10,13)",
+              "backgroundChain": [
+                "html.gridatlas-menu-hosted",
+                "body",
+                "div#map-container.map-container",
+                "nav#gridatlas-menu-bar",
+                "div#gridatlas-menu-bar-panel-4.gm-panel"
+              ],
+              "ratio": 16.33,
+              "wcagAA_normalText": true,
+              "wcagAA_largeText": true,
+              "text": "Lightning flashes (optical) [WAIT]"
+            },
+            "menuGroupTitle": {
+              "selector": "[data-lightning-group=\"menu\"] .gm-layer-group",
+              "color": "rgb(111, 162, 174)",
+              "fontSize": "10px",
+              "fontWeight": "400",
+              "opacity": "1",
+              "effectiveBackground": "rgb(4,10,13)",
+              "backgroundChain": [
+                "html.gridatlas-menu-hosted",
+                "body",
+                "div#map-container.map-container",
+                "nav#gridatlas-menu-bar",
+                "div#gridatlas-menu-bar-panel-4.gm-panel"
+              ],
+              "ratio": 7.07,
+              "wcagAA_normalText": true,
+              "wcagAA_largeText": true,
+              "text": "Weather · EUMETSAT Lightning Imager"
+            },
+            "caption": {
+              "selector": "#scada-ui-container [data-lightning-group=\"main\"] [data-cap=\"window\"]",
+              "color": "rgb(136, 136, 136)",
+              "fontSize": "10px",
+              "fontWeight": "400",
+              "opacity": "1",
+              "effectiveBackground": "rgb(5,5,5)",
+              "backgroundChain": [
+                "html.gridatlas-menu-hosted",
+                "body",
+                "div.scada-wrapper"
+              ],
+              "ratio": 5.75,
+              "wcagAA_normalText": true,
+              "wcagAA_largeText": true,
+              "text": "Window 2026-10-25 23:10 UTC → 2026-10-26 23:10 UTC (24 hours"
+            },
+            "captionWarning": {
+              "selector": "#scada-ui-container [data-lightning-group=\"main\"] [data-cap=\"warning\"]",
+              "color": "rgb(255, 204, 0)",
+              "fontSize": "10px",
+              "fontWeight": "400",
+              "opacity": "1",
+              "effectiveBackground": "rgb(5,5,5)",
+              "backgroundChain": [
+                "html.gridatlas-menu-hosted",
+                "body",
+                "div.scada-wrapper"
+              ],
+              "ratio": 13.48,
+              "wcagAA_normalText": true,
+              "wcagAA_largeText": true,
+              "text": "Not yet ingested: last 10h 10min of window (unknown, not zer"
+            },
+            "captionFooter": {
+              "selector": "#scada-ui-container [data-lightning-group=\"main\"] [data-cap=\"footer\"]",
+              "color": "rgb(85, 85, 85)",
+              "fontSize": "9px",
+              "fontWeight": "400",
+              "opacity": "1",
+              "effectiveBackground": "rgb(5,5,5)",
+              "backgroundChain": [
+                "html.gridatlas-menu-hosted",
+                "body",
+                "div.scada-wrapper"
+              ],
+              "ratio": 2.73,
+              "wcagAA_normalText": false,
+              "wcagAA_largeText": false,
+              "text": "Times UTC · Optical flashes seen by MTG Lightning Imager (EU"
+            },
+            "statusLine": {
+              "selector": "#scada-ui-container [data-lightning-group=\"main\"] .status-dot",
+              "color": "rgb(85, 85, 85)",
+              "fontSize": "8px",
+              "fontWeight": "400",
+              "opacity": "1",
+              "effectiveBackground": "rgb(5,5,5)",
+              "backgroundChain": [
+                "html.gridatlas-menu-hosted",
+                "body",
+                "div.scada-wrapper"
+              ],
+              "ratio": 2.73,
+              "wcagAA_normalText": false,
+              "wcagAA_largeText": false,
+              "text": "PARTIAL · 0 FLASHES DRAWN · SEARCHED 24% · STALE"
+            },
+            "labelON": {
+              "selector": "#scada-ui-container [data-lightning-group=\"main\"] [data-lightning-label]",
+              "color": "rgb(255, 223, 68)",
+              "fontSize": "13px",
+              "fontWeight": "400",
+              "opacity": "1",
+              "effectiveBackground": "rgb(5,5,5)",
+              "backgroundChain": [
+                "html.gridatlas-menu-hosted",
+                "body",
+                "div.scada-wrapper"
+              ],
+              "ratio": 15.42,
+              "wcagAA_normalText": true,
+              "wcagAA_largeText": true,
+              "text": "Lightning flashes (optical) [UNKNOWN | 24h STALE]"
+            },
+            "activeChip": {
+              "selector": "#scada-ui-container [data-lightning-group=\"main\"] .map-ctrl-btn.active",
+              "color": "rgb(0, 255, 255)",
+              "fontSize": "9px",
+              "fontWeight": "400",
+              "opacity": "1",
+              "effectiveBackground": "rgb(5,25,25)",
+              "backgroundChain": [
+                "html.gridatlas-menu-hosted",
+                "body",
+                "div.scada-wrapper",
+                "button.map-ctrl-btn"
+              ],
+              "ratio": 14.45,
+              "wcagAA_normalText": true,
+              "wcagAA_largeText": true,
+              "text": "24H"
+            },
+            "chip": {
+              "selector": "#scada-ui-container [data-lightning-group=\"main\"] .map-ctrl-btn:not(.active)",
+              "color": "rgb(136, 136, 136)",
+              "fontSize": "9px",
+              "fontWeight": "400",
+              "opacity": "1",
+              "effectiveBackground": "rgb(5,5,5)",
+              "backgroundChain": [
+                "html.gridatlas-menu-hosted",
+                "body",
+                "div.scada-wrapper",
+                "button.map-ctrl-btn"
+              ],
+              "ratio": 5.75,
+              "wcagAA_normalText": true,
+              "wcagAA_largeText": true,
+              "text": "12H"
+            }
+          },
+          "flashing": {
+            "whileLoading": {
+              "width": 359,
+              "height": 403,
+              "area": 144677,
+              "consecutiveFrameChangedPixels": [
+                0,
+                0,
+                25007,
+                0,
+                0,
+                0,
+                0
+              ],
+              "framesWithChange": 1,
+              "maxChangedPct": 17.28
+            },
+            "whileReadyIdle5s": {
+              "width": 359,
+              "height": 403,
+              "area": 144677,
+              "consecutiveFrameChangedPixels": [
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "framesWithChange": 0,
+              "maxChangedPct": 0
+            },
+            "computedAnimations": {
+              "count": 0,
+              "sample": [],
+              "getAnimations": 0
+            }
+          },
+          "on": {
+            "toggledBy": "real tap on the checkbox input",
+            "loadingSnapshot": {
+              "label": "Lightning flashes (optical) [LOAD]",
+              "status": "LOADING",
+              "dot": "rgb(136, 136, 136)",
+              "controlsHidden": false,
+              "ariaLive": "polite",
+              "role": "status"
+            },
+            "readySnapshot": {
+              "label": "Lightning flashes (optical) [UNKNOWN | 24h STALE]",
+              "status": "PARTIAL · 0 FLASHES DRAWN · SEARCHED 24% · STALE",
+              "state": {
+                "state": "PARTIAL",
+                "stale": true,
+                "mode": "detail",
+                "period": "24h",
+                "drawn": 0,
+                "cluster": false,
+                "cap": 10000,
+                "cap_source": "index",
+                "index_count": 3,
+                "failures": 0,
+                "reasons": [
+                  "tail not yet ingested"
+                ]
+              },
+              "requests": 2,
+              "errors": [],
+              "captions": {
+                "window": "Window  2026-10-25 23:10 UTC → 2026-10-26 23:10 UTC (24 hours, latest)",
+                "actual": "Actual  no archived flashes within this window",
+                "flashes": "Flashes 0 archived in window",
+                "refresh": "Refresh archive 2026-10-26 18:37 UTC (4h 33min ago; expected every 1 h) · STALE",
+                "searched": "Searched EUMETSAT 24% of window · 4 successful runs · 2026-10-25 23:10 UTC → 2026-10-26 13:00 UTC",
+                "warning": "Not yet ingested: last 10h 10min of window (unknown, not zero)",
+                "footer": "Times UTC · Optical flashes seen by MTG Lightning Imager (EUMETSAT L2-LFL), not confirmed ground strikes · Missing days are unknown, not zero · UK box −11.0,49.5 → 3.0,61.5"
+              },
+              "groupRect": [
+                17,
+                511,
+                359,
+                403
+              ],
+              "chipMinSize": [
+                44,
+                44
+              ],
+              "mapLayer": true
+            },
+            "originalRowsMovedByON": 65,
+            "originalRowsCompared": 65,
+            "screenshot": "/tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/visual-challenge-B/p14-p15/layers-ON-android-393x852-no-preference.png",
+            "afterOFF": {
+              "on": false,
+              "mapLayer": false,
+              "source": false,
+              "label": "Lightning flashes (optical) [WAIT]",
+              "controlsHidden": true
+            }
+          },
+          "lightningRequestsAtBoot": 0,
+          "pageErrors": [],
+          "shim": {
+            "served": {
+              "maplibre": 2,
+              "style": 1,
+              "duckdb": 3,
+              "lightning-data": 2
+            },
+            "aborted": [
+              "https://raw.githubusercontent.com/Ventusltd/data-grid-gb/1c9909d1138704b29235c27fd769436dda8a0b18/derived/connection-points.v3.json",
+              "https://ventusltd.github.io/ventus-grid-engine/genome/engine-graph.json"
+            ],
+            "missing": []
+          }
+        },
+        "reduce": {
+          "reducedMotionMatches": true,
+          "layers": {
+            "toggleText": "▴ LAYERS",
+            "toggleHit": {
+              "present": true,
+              "rect": [
+                290,
+                796,
+                91,
+                44
+              ],
+              "inViewport": true,
+              "hit": "self"
+            },
+            "openedByTap": true,
+            "atRest": {
+              "present": true,
+              "rect": [
+                31,
+                2688,
+                17,
+                17
+              ],
+              "inViewport": false,
+              "hit": "OUT-OF-VIEWPORT"
+            },
+            "originalLastGroupAtRest": {
+              "present": true,
+              "rect": [
+                31,
+                2578,
+                17,
+                17
+              ],
+              "inViewport": false,
+              "hit": "OUT-OF-VIEWPORT"
+            },
+            "scrollContainer": {
+              "overflowY": "auto",
+              "scrollHeight": 2212,
+              "clientHeight": 324,
+              "userScrollable": true
+            },
+            "wheel": {
+              "gesture": "page.mouse.wheel(0,400) per step over the container (Chromium touch emulation accepts wheel; NOT a real finger drag)",
+              "steps": [
+                {
+                  "step": 0,
+                  "hit": "OUT-OF-VIEWPORT",
+                  "targetRect": [
+                    31,
+                    2688,
+                    17,
+                    17
+                  ],
+                  "containerScrollTop": 0,
+                  "containerMaxScrollTop": 1888
+                },
+                {
+                  "step": 1,
+                  "hit": "OUT-OF-VIEWPORT",
+                  "targetRect": [
+                    31,
+                    2288,
+                    17,
+                    17
+                  ],
+                  "containerScrollTop": 400,
+                  "containerMaxScrollTop": 1888
+                },
+                {
+                  "step": 2,
+                  "hit": "OUT-OF-VIEWPORT",
+                  "targetRect": [
+                    31,
+                    1888,
+                    17,
+                    17
+                  ],
+                  "containerScrollTop": 800,
+                  "containerMaxScrollTop": 1888
+                },
+                {
+                  "step": 3,
+                  "hit": "OUT-OF-VIEWPORT",
+                  "targetRect": [
+                    31,
+                    1488,
+                    17,
+                    17
+                  ],
+                  "containerScrollTop": 1200,
+                  "containerMaxScrollTop": 1888
+                },
+                {
+                  "step": 4,
+                  "hit": "OUT-OF-VIEWPORT",
+                  "targetRect": [
+                    31,
+                    1088,
+                    17,
+                    17
+                  ],
+                  "containerScrollTop": 1600,
+                  "containerMaxScrollTop": 1888
+                },
+                {
+                  "step": 5,
+                  "hit": "self",
+                  "targetRect": [
+                    31,
+                    800,
+                    17,
+                    17
+                  ],
+                  "containerScrollTop": 1888,
+                  "containerMaxScrollTop": 1888
+                }
+              ],
+              "reached": true
+            },
+            "originalLastGroupAfterWheel": {
+              "present": true,
+              "rect": [
+                31,
+                690,
+                17,
+                17
+              ],
+              "inViewport": true,
+              "hit": "self"
+            }
+          },
+          "menu": {
+            "footerToggle": {
+              "present": true,
+              "rect": [
+                -38,
+                740,
+                469,
+                57
+              ],
+              "inViewport": true,
+              "hit": "OTHER:div.key-group"
+            },
+            "originalFirstProxy": {
+              "present": true,
+              "rect": [
+                16,
+                132,
+                361,
+                44
+              ],
+              "inViewport": true,
+              "hit": "self"
+            },
+            "originalCurtainTab": {
+              "present": true,
+              "rect": [
+                10,
+                797,
+                373,
+                44
+              ],
+              "inViewport": true,
+              "hit": "OTHER:div.key-group[data-lightning-group=main]"
+            },
+            "panelClipped": {
+              "panelBottom": 851,
+              "mapContainerBottom": 494,
+              "clippedPx": 357,
+              "mapContainerOverflow": "hidden",
+              "panelPosition": "fixed"
+            }
+          },
+          "curtain": {
+            "fsActive": true,
+            "tabHit": {
+              "present": true,
+              "rect": [
+                5,
+                792,
+                383,
+                44
+              ],
+              "inViewport": true,
+              "hit": "self"
+            },
+            "open": true,
+            "scrollContainer": {
+              "overflowY": "auto",
+              "scrollHeight": 2243,
+              "clientHeight": 595,
+              "userScrollable": true
+            },
+            "atRest": {
+              "present": true,
+              "rect": [
+                30,
+                2197,
+                17,
+                17
+              ],
+              "inViewport": false,
+              "hit": "OUT-OF-VIEWPORT"
+            },
+            "wheel": {
+              "gesture": "page.mouse.wheel(0,400) per step over the container (Chromium touch emulation accepts wheel; NOT a real finger drag)",
+              "steps": [
+                {
+                  "step": 0,
+                  "hit": "OUT-OF-VIEWPORT",
+                  "targetRect": [
+                    30,
+                    2197,
+                    17,
+                    17
+                  ],
+                  "containerScrollTop": 0,
+                  "containerMaxScrollTop": 1648
+                },
+                {
+                  "step": 0,
+                  "note": "no point inside the container is hit-testable"
+                }
+              ],
+              "reached": false
+            },
+            "originalLastGroupAfterWheel": {
+              "present": true,
+              "rect": [
+                30,
+                2087,
+                17,
+                17
+              ],
+              "inViewport": false,
+              "hit": "OUT-OF-VIEWPORT"
+            },
+            "screenshot": "/tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/visual-challenge-B/p14-p15/curtain-android-393x852-reduce.png"
+          },
+          "a11y": {
+            "mainGroupAriaSnapshot": "- text: Weather · EUMETSAT Lightning Imager\n- checkbox \"Lightning flashes (optical) [WAIT]\"\n- text: Lightning flashes (optical) [WAIT]",
+            "menuGroupAriaSnapshot": "",
+            "mainToggle": {
+              "tag": "INPUT",
+              "type": "checkbox",
+              "implicitRole": "checkbox (input type=checkbox)",
+              "explicitRole": null,
+              "ariaLabel": null,
+              "labelledByWrappingLabel": true,
+              "labelText": "Lightning flashes (optical) [WAIT]",
+              "checked": false,
+              "ariaChecked": null,
+              "focusable": true,
+              "groupTitle": "Weather · EUMETSAT Lightning Imager",
+              "groupHasRoleOrLabel": false,
+              "originalRowExample": {
+                "ariaLabel": null,
+                "labelText": "400kV [OK]",
+                "role": null
+              }
+            },
+            "menuToggle": {
+              "ariaLabel": "Lightning flashes (optical)",
+              "labelText": "Lightning flashes (optical) [WAIT]",
+              "checked": false,
+              "originalProxyExample": {
+                "ariaLabel": "400kV [OK]",
+                "labelText": "400kV [OK]"
+              }
+            },
+            "afterSpace": {
+              "checked": true,
+              "stateOn": true,
+              "focused": true,
+              "labelText": "Lightning flashes (optical) [LOAD]"
+            },
+            "afterSecondSpace": {
+              "checked": false,
+              "stateOn": false,
+              "requestsSoFar": 1,
+              "mapHasLightningLayer": false
+            },
+            "fsGroupAriaSnapshot": "- text: Weather · EUMETSAT Lightning Imager\n- checkbox \"Lightning flashes (optical) [WAIT]\"\n- text: Lightning flashes (optical) [WAIT]"
+          },
+          "contrast": {
+            "labelOFF": {
+              "selector": "#scada-ui-container [data-lightning-group=\"main\"] [data-lightning-label]",
+              "color": "rgb(255, 223, 68)",
+              "fontSize": "13px",
+              "fontWeight": "400",
+              "opacity": "1",
+              "effectiveBackground": "rgb(5,5,5)",
+              "backgroundChain": [
+                "html.gridatlas-menu-hosted",
+                "body",
+                "div.scada-wrapper"
+              ],
+              "ratio": 15.42,
+              "wcagAA_normalText": true,
+              "wcagAA_largeText": true,
+              "text": "Lightning flashes (optical) [WAIT]"
+            },
+            "originalLabel": {
+              "selector": "#scada-ui-container label.key-item span[id^=\"lbl-\"]",
+              "color": "rgb(0, 84, 255)",
+              "fontSize": "13px",
+              "fontWeight": "400",
+              "opacity": "1",
+              "effectiveBackground": "rgb(5,5,5)",
+              "backgroundChain": [
+                "html.gridatlas-menu-hosted",
+                "body",
+                "div.scada-wrapper"
+              ],
+              "ratio": 3.6,
+              "wcagAA_normalText": false,
+              "wcagAA_largeText": true,
+              "text": "400kV [OK]"
+            },
+            "groupTitle": {
+              "selector": "#scada-ui-container [data-lightning-group=\"main\"] .key-title",
+              "color": "rgb(102, 204, 255)",
+              "fontSize": "10px",
+              "fontWeight": "700",
+              "opacity": "1",
+              "effectiveBackground": "rgb(5,5,5)",
+              "backgroundChain": [
+                "html.gridatlas-menu-hosted",
+                "body",
+                "div.scada-wrapper"
+              ],
+              "ratio": 11.3,
+              "wcagAA_normalText": true,
+              "wcagAA_largeText": true,
+              "text": "Weather · EUMETSAT Lightning Imager"
+            },
+            "menuLabel": {
+              "selector": "[data-lightning-group=\"menu\"] .gm-layer-name",
+              "color": "rgb(207, 238, 246)",
+              "fontSize": "11px",
+              "fontWeight": "400",
+              "opacity": "1",
+              "effectiveBackground": "rgb(4,10,13)",
+              "backgroundChain": [
+                "html.gridatlas-menu-hosted",
+                "body",
+                "div#map-container.map-container",
+                "nav#gridatlas-menu-bar",
+                "div#gridatlas-menu-bar-panel-4.gm-panel"
+              ],
+              "ratio": 16.33,
+              "wcagAA_normalText": true,
+              "wcagAA_largeText": true,
+              "text": "Lightning flashes (optical) [WAIT]"
+            },
+            "menuGroupTitle": {
+              "selector": "[data-lightning-group=\"menu\"] .gm-layer-group",
+              "color": "rgb(111, 162, 174)",
+              "fontSize": "10px",
+              "fontWeight": "400",
+              "opacity": "1",
+              "effectiveBackground": "rgb(4,10,13)",
+              "backgroundChain": [
+                "html.gridatlas-menu-hosted",
+                "body",
+                "div#map-container.map-container",
+                "nav#gridatlas-menu-bar",
+                "div#gridatlas-menu-bar-panel-4.gm-panel"
+              ],
+              "ratio": 7.07,
+              "wcagAA_normalText": true,
+              "wcagAA_largeText": true,
+              "text": "Weather · EUMETSAT Lightning Imager"
+            },
+            "caption": {
+              "selector": "#scada-ui-container [data-lightning-group=\"main\"] [data-cap=\"window\"]",
+              "color": "rgb(136, 136, 136)",
+              "fontSize": "10px",
+              "fontWeight": "400",
+              "opacity": "1",
+              "effectiveBackground": "rgb(5,5,5)",
+              "backgroundChain": [
+                "html.gridatlas-menu-hosted",
+                "body",
+                "div.scada-wrapper"
+              ],
+              "ratio": 5.75,
+              "wcagAA_normalText": true,
+              "wcagAA_largeText": true,
+              "text": "Window 2026-10-25 23:10 UTC → 2026-10-26 23:10 UTC (24 hours"
+            },
+            "captionWarning": {
+              "selector": "#scada-ui-container [data-lightning-group=\"main\"] [data-cap=\"warning\"]",
+              "color": "rgb(255, 204, 0)",
+              "fontSize": "10px",
+              "fontWeight": "400",
+              "opacity": "1",
+              "effectiveBackground": "rgb(5,5,5)",
+              "backgroundChain": [
+                "html.gridatlas-menu-hosted",
+                "body",
+                "div.scada-wrapper"
+              ],
+              "ratio": 13.48,
+              "wcagAA_normalText": true,
+              "wcagAA_largeText": true,
+              "text": "Not yet ingested: last 10h 10min of window (unknown, not zer"
+            },
+            "captionFooter": {
+              "selector": "#scada-ui-container [data-lightning-group=\"main\"] [data-cap=\"footer\"]",
+              "color": "rgb(85, 85, 85)",
+              "fontSize": "9px",
+              "fontWeight": "400",
+              "opacity": "1",
+              "effectiveBackground": "rgb(5,5,5)",
+              "backgroundChain": [
+                "html.gridatlas-menu-hosted",
+                "body",
+                "div.scada-wrapper"
+              ],
+              "ratio": 2.73,
+              "wcagAA_normalText": false,
+              "wcagAA_largeText": false,
+              "text": "Times UTC · Optical flashes seen by MTG Lightning Imager (EU"
+            },
+            "statusLine": {
+              "selector": "#scada-ui-container [data-lightning-group=\"main\"] .status-dot",
+              "color": "rgb(85, 85, 85)",
+              "fontSize": "8px",
+              "fontWeight": "400",
+              "opacity": "1",
+              "effectiveBackground": "rgb(5,5,5)",
+              "backgroundChain": [
+                "html.gridatlas-menu-hosted",
+                "body",
+                "div.scada-wrapper"
+              ],
+              "ratio": 2.73,
+              "wcagAA_normalText": false,
+              "wcagAA_largeText": false,
+              "text": "PARTIAL · 0 FLASHES DRAWN · SEARCHED 24% · STALE"
+            },
+            "labelON": {
+              "selector": "#scada-ui-container [data-lightning-group=\"main\"] [data-lightning-label]",
+              "color": "rgb(255, 223, 68)",
+              "fontSize": "13px",
+              "fontWeight": "400",
+              "opacity": "1",
+              "effectiveBackground": "rgb(5,5,5)",
+              "backgroundChain": [
+                "html.gridatlas-menu-hosted",
+                "body",
+                "div.scada-wrapper"
+              ],
+              "ratio": 15.42,
+              "wcagAA_normalText": true,
+              "wcagAA_largeText": true,
+              "text": "Lightning flashes (optical) [UNKNOWN | 24h STALE]"
+            },
+            "activeChip": {
+              "selector": "#scada-ui-container [data-lightning-group=\"main\"] .map-ctrl-btn.active",
+              "color": "rgb(0, 255, 255)",
+              "fontSize": "9px",
+              "fontWeight": "400",
+              "opacity": "1",
+              "effectiveBackground": "rgb(5,25,25)",
+              "backgroundChain": [
+                "html.gridatlas-menu-hosted",
+                "body",
+                "div.scada-wrapper",
+                "button.map-ctrl-btn"
+              ],
+              "ratio": 14.45,
+              "wcagAA_normalText": true,
+              "wcagAA_largeText": true,
+              "text": "24H"
+            },
+            "chip": {
+              "selector": "#scada-ui-container [data-lightning-group=\"main\"] .map-ctrl-btn:not(.active)",
+              "color": "rgb(136, 136, 136)",
+              "fontSize": "9px",
+              "fontWeight": "400",
+              "opacity": "1",
+              "effectiveBackground": "rgb(5,5,5)",
+              "backgroundChain": [
+                "html.gridatlas-menu-hosted",
+                "body",
+                "div.scada-wrapper",
+                "button.map-ctrl-btn"
+              ],
+              "ratio": 5.75,
+              "wcagAA_normalText": true,
+              "wcagAA_largeText": true,
+              "text": "12H"
+            }
+          },
+          "flashing": {
+            "whileLoading": {
+              "width": 359,
+              "height": 403,
+              "area": 144677,
+              "consecutiveFrameChangedPixels": [
+                0,
+                0,
+                0,
+                25005,
+                0,
+                0,
+                0
+              ],
+              "framesWithChange": 1,
+              "maxChangedPct": 17.28
+            },
+            "whileReadyIdle5s": {
+              "width": 359,
+              "height": 403,
+              "area": 144677,
+              "consecutiveFrameChangedPixels": [
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "framesWithChange": 0,
+              "maxChangedPct": 0
+            },
+            "computedAnimations": {
+              "count": 0,
+              "sample": [],
+              "getAnimations": 0
+            }
+          },
+          "on": {
+            "toggledBy": "real tap on the checkbox input",
+            "loadingSnapshot": {
+              "label": "Lightning flashes (optical) [LOAD]",
+              "status": "LOADING",
+              "dot": "rgb(136, 136, 136)",
+              "controlsHidden": false,
+              "ariaLive": "polite",
+              "role": "status"
+            },
+            "readySnapshot": {
+              "label": "Lightning flashes (optical) [UNKNOWN | 24h STALE]",
+              "status": "PARTIAL · 0 FLASHES DRAWN · SEARCHED 24% · STALE",
+              "state": {
+                "state": "PARTIAL",
+                "stale": true,
+                "mode": "detail",
+                "period": "24h",
+                "drawn": 0,
+                "cluster": false,
+                "cap": 10000,
+                "cap_source": "index",
+                "index_count": 3,
+                "failures": 0,
+                "reasons": [
+                  "tail not yet ingested"
+                ]
+              },
+              "requests": 2,
+              "errors": [],
+              "captions": {
+                "window": "Window  2026-10-25 23:10 UTC → 2026-10-26 23:10 UTC (24 hours, latest)",
+                "actual": "Actual  no archived flashes within this window",
+                "flashes": "Flashes 0 archived in window",
+                "refresh": "Refresh archive 2026-10-26 18:37 UTC (4h 33min ago; expected every 1 h) · STALE",
+                "searched": "Searched EUMETSAT 24% of window · 2 successful runs · 2026-10-26 01:49 UTC → 2026-10-26 13:00 UTC",
+                "warning": "Not yet ingested: last 10h 10min of window (unknown, not zero)",
+                "footer": "Times UTC · Optical flashes seen by MTG Lightning Imager (EUMETSAT L2-LFL), not confirmed ground strikes · Missing days are unknown, not zero · UK box −11.0,49.5 → 3.0,61.5"
+              },
+              "groupRect": [
+                17,
+                511,
+                359,
+                403
+              ],
+              "chipMinSize": [
+                44,
+                44
+              ],
+              "mapLayer": true
+            },
+            "originalRowsMovedByON": 65,
+            "originalRowsCompared": 65,
+            "screenshot": "/tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/visual-challenge-B/p14-p15/layers-ON-android-393x852-reduce.png",
+            "afterOFF": {
+              "on": false,
+              "mapLayer": false,
+              "source": false,
+              "label": "Lightning flashes (optical) [WAIT]",
+              "controlsHidden": true
+            }
+          },
+          "lightningRequestsAtBoot": 0,
+          "pageErrors": [],
+          "shim": {
+            "served": {
+              "maplibre": 2,
+              "style": 1,
+              "duckdb": 3,
+              "lightning-data": 2
+            },
+            "aborted": [
+              "https://raw.githubusercontent.com/Ventusltd/data-grid-gb/1c9909d1138704b29235c27fd769436dda8a0b18/derived/connection-points.v3.json",
+              "https://ventusltd.github.io/ventus-grid-engine/genome/engine-graph.json"
+            ],
+            "missing": []
+          }
+        }
+      }
+    },
+    "android-360x740": {
+      "profile": "Chromium phone emulation (touch, mobile UA)",
+      "motion": {
+        "no-preference": {
+          "reducedMotionMatches": false,
+          "layers": {
+            "toggleText": "▴ LAYERS",
+            "toggleHit": {
+              "present": true,
+              "rect": [
+                257,
+                684,
+                91,
+                44
+              ],
+              "inViewport": true,
+              "hit": "self"
+            },
+            "openedByTap": true,
+            "atRest": {
+              "present": true,
+              "rect": [
+                31,
+                2652,
+                17,
+                17
+              ],
+              "inViewport": false,
+              "hit": "OUT-OF-VIEWPORT"
+            },
+            "originalLastGroupAtRest": {
+              "present": true,
+              "rect": [
+                31,
+                2542,
+                17,
+                17
+              ],
+              "inViewport": false,
+              "hit": "OUT-OF-VIEWPORT"
+            },
+            "scrollContainer": {
+              "overflowY": "auto",
+              "scrollHeight": 2245,
+              "clientHeight": 281,
+              "userScrollable": true
+            },
+            "wheel": {
+              "gesture": "page.mouse.wheel(0,400) per step over the container (Chromium touch emulation accepts wheel; NOT a real finger drag)",
+              "steps": [
+                {
+                  "step": 0,
+                  "hit": "OUT-OF-VIEWPORT",
+                  "targetRect": [
+                    31,
+                    2652,
+                    17,
+                    17
+                  ],
+                  "containerScrollTop": 0,
+                  "containerMaxScrollTop": 1964
+                },
+                {
+                  "step": 1,
+                  "hit": "OUT-OF-VIEWPORT",
+                  "targetRect": [
+                    31,
+                    2252,
+                    17,
+                    17
+                  ],
+                  "containerScrollTop": 400,
+                  "containerMaxScrollTop": 1964
+                },
+                {
+                  "step": 2,
+                  "hit": "OUT-OF-VIEWPORT",
+                  "targetRect": [
+                    31,
+                    1852,
+                    17,
+                    17
+                  ],
+                  "containerScrollTop": 800,
+                  "containerMaxScrollTop": 1964
+                },
+                {
+                  "step": 3,
+                  "hit": "OUT-OF-VIEWPORT",
+                  "targetRect": [
+                    31,
+                    1452,
+                    17,
+                    17
+                  ],
+                  "containerScrollTop": 1200,
+                  "containerMaxScrollTop": 1964
+                },
+                {
+                  "step": 4,
+                  "hit": "OUT-OF-VIEWPORT",
+                  "targetRect": [
+                    31,
+                    1052,
+                    17,
+                    17
+                  ],
+                  "containerScrollTop": 1600,
+                  "containerMaxScrollTop": 1964
+                },
+                {
+                  "step": 5,
+                  "hit": "self",
+                  "targetRect": [
+                    31,
+                    688,
+                    17,
+                    17
+                  ],
+                  "containerScrollTop": 1964,
+                  "containerMaxScrollTop": 1964
+                }
+              ],
+              "reached": true
+            },
+            "originalLastGroupAfterWheel": {
+              "present": true,
+              "rect": [
+                31,
+                578,
+                17,
+                17
+              ],
+              "inViewport": true,
+              "hit": "self"
+            }
+          },
+          "menu": {
+            "footerToggle": {
+              "present": true,
+              "rect": [
+                -33,
+                628,
+                426,
+                57
+              ],
+              "inViewport": true,
+              "hit": "OTHER:div.key-group"
+            },
+            "originalFirstProxy": {
+              "present": true,
+              "rect": [
+                16,
+                132,
+                328,
+                44
+              ],
+              "inViewport": true,
+              "hit": "self"
+            },
+            "originalCurtainTab": {
+              "present": true,
+              "rect": [
+                10,
+                685,
+                340,
+                44
+              ],
+              "inViewport": true,
+              "hit": "OTHER:div.key-group[data-lightning-group=main]"
+            },
+            "panelClipped": {
+              "panelBottom": 739,
+              "mapContainerBottom": 425,
+              "clippedPx": 314,
+              "mapContainerOverflow": "hidden",
+              "panelPosition": "fixed"
+            }
+          },
+          "curtain": {
+            "fsActive": true,
+            "tabHit": {
+              "present": true,
+              "rect": [
+                5,
+                680,
+                350,
+                44
+              ],
+              "inViewport": true,
+              "hit": "self"
+            },
+            "open": true,
+            "scrollContainer": {
+              "overflowY": "auto",
+              "scrollHeight": 2243,
+              "clientHeight": 517,
+              "userScrollable": true
+            },
+            "atRest": {
+              "present": true,
+              "rect": [
+                30,
+                2197,
+                17,
+                17
+              ],
+              "inViewport": false,
+              "hit": "OUT-OF-VIEWPORT"
+            },
+            "wheel": {
+              "gesture": "page.mouse.wheel(0,400) per step over the container (Chromium touch emulation accepts wheel; NOT a real finger drag)",
+              "steps": [
+                {
+                  "step": 0,
+                  "hit": "OUT-OF-VIEWPORT",
+                  "targetRect": [
+                    30,
+                    2197,
+                    17,
+                    17
+                  ],
+                  "containerScrollTop": 0,
+                  "containerMaxScrollTop": 1726
+                },
+                {
+                  "step": 0,
+                  "note": "no point inside the container is hit-testable"
+                }
+              ],
+              "reached": false
+            },
+            "originalLastGroupAfterWheel": {
+              "present": true,
+              "rect": [
+                30,
+                2087,
+                17,
+                17
+              ],
+              "inViewport": false,
+              "hit": "OUT-OF-VIEWPORT"
+            },
+            "screenshot": "/tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/visual-challenge-B/p14-p15/curtain-android-360x740-no-preference.png"
+          },
+          "a11y": {
+            "mainGroupAriaSnapshot": "- text: Weather · EUMETSAT Lightning Imager\n- checkbox \"Lightning flashes (optical) [WAIT]\"\n- text: Lightning flashes (optical) [WAIT]",
+            "menuGroupAriaSnapshot": "",
+            "mainToggle": {
+              "tag": "INPUT",
+              "type": "checkbox",
+              "implicitRole": "checkbox (input type=checkbox)",
+              "explicitRole": null,
+              "ariaLabel": null,
+              "labelledByWrappingLabel": true,
+              "labelText": "Lightning flashes (optical) [WAIT]",
+              "checked": false,
+              "ariaChecked": null,
+              "focusable": true,
+              "groupTitle": "Weather · EUMETSAT Lightning Imager",
+              "groupHasRoleOrLabel": false,
+              "originalRowExample": {
+                "ariaLabel": null,
+                "labelText": "400kV [OK]",
+                "role": null
+              }
+            },
+            "menuToggle": {
+              "ariaLabel": "Lightning flashes (optical)",
+              "labelText": "Lightning flashes (optical) [WAIT]",
+              "checked": false,
+              "originalProxyExample": {
+                "ariaLabel": "400kV [OK]",
+                "labelText": "400kV [OK]"
+              }
+            },
+            "afterSpace": {
+              "checked": true,
+              "stateOn": true,
+              "focused": true,
+              "labelText": "Lightning flashes (optical) [LOAD]"
+            },
+            "afterSecondSpace": {
+              "checked": false,
+              "stateOn": false,
+              "requestsSoFar": 1,
+              "mapHasLightningLayer": false
+            },
+            "fsGroupAriaSnapshot": "- text: Weather · EUMETSAT Lightning Imager\n- checkbox \"Lightning flashes (optical) [WAIT]\"\n- text: Lightning flashes (optical) [WAIT]"
+          },
+          "contrast": {
+            "labelOFF": {
+              "selector": "#scada-ui-container [data-lightning-group=\"main\"] [data-lightning-label]",
+              "color": "rgb(255, 223, 68)",
+              "fontSize": "13px",
+              "fontWeight": "400",
+              "opacity": "1",
+              "effectiveBackground": "rgb(5,5,5)",
+              "backgroundChain": [
+                "html.gridatlas-menu-hosted",
+                "body",
+                "div.scada-wrapper"
+              ],
+              "ratio": 15.42,
+              "wcagAA_normalText": true,
+              "wcagAA_largeText": true,
+              "text": "Lightning flashes (optical) [WAIT]"
+            },
+            "originalLabel": {
+              "selector": "#scada-ui-container label.key-item span[id^=\"lbl-\"]",
+              "color": "rgb(0, 84, 255)",
+              "fontSize": "13px",
+              "fontWeight": "400",
+              "opacity": "1",
+              "effectiveBackground": "rgb(5,5,5)",
+              "backgroundChain": [
+                "html.gridatlas-menu-hosted",
+                "body",
+                "div.scada-wrapper"
+              ],
+              "ratio": 3.6,
+              "wcagAA_normalText": false,
+              "wcagAA_largeText": true,
+              "text": "400kV [OK]"
+            },
+            "groupTitle": {
+              "selector": "#scada-ui-container [data-lightning-group=\"main\"] .key-title",
+              "color": "rgb(102, 204, 255)",
+              "fontSize": "10px",
+              "fontWeight": "700",
+              "opacity": "1",
+              "effectiveBackground": "rgb(5,5,5)",
+              "backgroundChain": [
+                "html.gridatlas-menu-hosted",
+                "body",
+                "div.scada-wrapper"
+              ],
+              "ratio": 11.3,
+              "wcagAA_normalText": true,
+              "wcagAA_largeText": true,
+              "text": "Weather · EUMETSAT Lightning Imager"
+            },
+            "menuLabel": {
+              "selector": "[data-lightning-group=\"menu\"] .gm-layer-name",
+              "color": "rgb(207, 238, 246)",
+              "fontSize": "11px",
+              "fontWeight": "400",
+              "opacity": "1",
+              "effectiveBackground": "rgb(4,10,13)",
+              "backgroundChain": [
+                "html.gridatlas-menu-hosted",
+                "body",
+                "div#map-container.map-container",
+                "nav#gridatlas-menu-bar",
+                "div#gridatlas-menu-bar-panel-4.gm-panel"
+              ],
+              "ratio": 16.33,
+              "wcagAA_normalText": true,
+              "wcagAA_largeText": true,
+              "text": "Lightning flashes (optical) [WAIT]"
+            },
+            "menuGroupTitle": {
+              "selector": "[data-lightning-group=\"menu\"] .gm-layer-group",
+              "color": "rgb(111, 162, 174)",
+              "fontSize": "10px",
+              "fontWeight": "400",
+              "opacity": "1",
+              "effectiveBackground": "rgb(4,10,13)",
+              "backgroundChain": [
+                "html.gridatlas-menu-hosted",
+                "body",
+                "div#map-container.map-container",
+                "nav#gridatlas-menu-bar",
+                "div#gridatlas-menu-bar-panel-4.gm-panel"
+              ],
+              "ratio": 7.07,
+              "wcagAA_normalText": true,
+              "wcagAA_largeText": true,
+              "text": "Weather · EUMETSAT Lightning Imager"
+            },
+            "caption": {
+              "selector": "#scada-ui-container [data-lightning-group=\"main\"] [data-cap=\"window\"]",
+              "color": "rgb(136, 136, 136)",
+              "fontSize": "10px",
+              "fontWeight": "400",
+              "opacity": "1",
+              "effectiveBackground": "rgb(5,5,5)",
+              "backgroundChain": [
+                "html.gridatlas-menu-hosted",
+                "body",
+                "div.scada-wrapper"
+              ],
+              "ratio": 5.75,
+              "wcagAA_normalText": true,
+              "wcagAA_largeText": true,
+              "text": "Window 2026-10-25 23:10 UTC → 2026-10-26 23:10 UTC (24 hours"
+            },
+            "captionWarning": {
+              "selector": "#scada-ui-container [data-lightning-group=\"main\"] [data-cap=\"warning\"]",
+              "color": "rgb(255, 204, 0)",
+              "fontSize": "10px",
+              "fontWeight": "400",
+              "opacity": "1",
+              "effectiveBackground": "rgb(5,5,5)",
+              "backgroundChain": [
+                "html.gridatlas-menu-hosted",
+                "body",
+                "div.scada-wrapper"
+              ],
+              "ratio": 13.48,
+              "wcagAA_normalText": true,
+              "wcagAA_largeText": true,
+              "text": "Not yet ingested: last 10h 11min of window (unknown, not zer"
+            },
+            "captionFooter": {
+              "selector": "#scada-ui-container [data-lightning-group=\"main\"] [data-cap=\"footer\"]",
+              "color": "rgb(85, 85, 85)",
+              "fontSize": "9px",
+              "fontWeight": "400",
+              "opacity": "1",
+              "effectiveBackground": "rgb(5,5,5)",
+              "backgroundChain": [
+                "html.gridatlas-menu-hosted",
+                "body",
+                "div.scada-wrapper"
+              ],
+              "ratio": 2.73,
+              "wcagAA_normalText": false,
+              "wcagAA_largeText": false,
+              "text": "Times UTC · Optical flashes seen by MTG Lightning Imager (EU"
+            },
+            "statusLine": {
+              "selector": "#scada-ui-container [data-lightning-group=\"main\"] .status-dot",
+              "color": "rgb(85, 85, 85)",
+              "fontSize": "8px",
+              "fontWeight": "400",
+              "opacity": "1",
+              "effectiveBackground": "rgb(5,5,5)",
+              "backgroundChain": [
+                "html.gridatlas-menu-hosted",
+                "body",
+                "div.scada-wrapper"
+              ],
+              "ratio": 2.73,
+              "wcagAA_normalText": false,
+              "wcagAA_largeText": false,
+              "text": "PARTIAL · 0 FLASHES DRAWN · SEARCHED 24% · STALE"
+            },
+            "labelON": {
+              "selector": "#scada-ui-container [data-lightning-group=\"main\"] [data-lightning-label]",
+              "color": "rgb(255, 223, 68)",
+              "fontSize": "13px",
+              "fontWeight": "400",
+              "opacity": "1",
+              "effectiveBackground": "rgb(5,5,5)",
+              "backgroundChain": [
+                "html.gridatlas-menu-hosted",
+                "body",
+                "div.scada-wrapper"
+              ],
+              "ratio": 15.42,
+              "wcagAA_normalText": true,
+              "wcagAA_largeText": true,
+              "text": "Lightning flashes (optical) [UNKNOWN | 24h STALE]"
+            },
+            "activeChip": {
+              "selector": "#scada-ui-container [data-lightning-group=\"main\"] .map-ctrl-btn.active",
+              "color": "rgb(0, 255, 255)",
+              "fontSize": "9px",
+              "fontWeight": "400",
+              "opacity": "1",
+              "effectiveBackground": "rgb(5,25,25)",
+              "backgroundChain": [
+                "html.gridatlas-menu-hosted",
+                "body",
+                "div.scada-wrapper",
+                "button.map-ctrl-btn"
+              ],
+              "ratio": 14.45,
+              "wcagAA_normalText": true,
+              "wcagAA_largeText": true,
+              "text": "24H"
+            },
+            "chip": {
+              "selector": "#scada-ui-container [data-lightning-group=\"main\"] .map-ctrl-btn:not(.active)",
+              "color": "rgb(136, 136, 136)",
+              "fontSize": "9px",
+              "fontWeight": "400",
+              "opacity": "1",
+              "effectiveBackground": "rgb(5,5,5)",
+              "backgroundChain": [
+                "html.gridatlas-menu-hosted",
+                "body",
+                "div.scada-wrapper",
+                "button.map-ctrl-btn"
+              ],
+              "ratio": 5.75,
+              "wcagAA_normalText": true,
+              "wcagAA_largeText": true,
+              "text": "12H"
+            }
+          },
+          "flashing": {
+            "whileLoading": {
+              "width": 326,
+              "height": 404,
+              "area": 131704,
+              "consecutiveFrameChangedPixels": [
+                0,
+                0,
+                0,
+                22454,
+                0,
+                0,
+                0
+              ],
+              "framesWithChange": 1,
+              "maxChangedPct": 17.05
+            },
+            "whileReadyIdle5s": {
+              "width": 326,
+              "height": 404,
+              "area": 131704,
+              "consecutiveFrameChangedPixels": [
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "framesWithChange": 0,
+              "maxChangedPct": 0
+            },
+            "computedAnimations": {
+              "count": 0,
+              "sample": [],
+              "getAnimations": 0
+            }
+          },
+          "on": {
+            "toggledBy": "real tap on the checkbox input",
+            "loadingSnapshot": {
+              "label": "Lightning flashes (optical) [LOAD]",
+              "status": "LOADING",
+              "dot": "rgb(136, 136, 136)",
+              "controlsHidden": false,
+              "ariaLive": "polite",
+              "role": "status"
+            },
+            "readySnapshot": {
+              "label": "Lightning flashes (optical) [UNKNOWN | 24h STALE]",
+              "status": "PARTIAL · 0 FLASHES DRAWN · SEARCHED 24% · STALE",
+              "state": {
+                "state": "PARTIAL",
+                "stale": true,
+                "mode": "detail",
+                "period": "24h",
+                "drawn": 0,
+                "cluster": false,
+                "cap": 10000,
+                "cap_source": "index",
+                "index_count": 3,
+                "failures": 0,
+                "reasons": [
+                  "tail not yet ingested"
+                ]
+              },
+              "requests": 2,
+              "errors": [],
+              "captions": {
+                "window": "Window  2026-10-25 23:10 UTC → 2026-10-26 23:10 UTC (24 hours, latest)",
+                "actual": "Actual  no archived flashes within this window",
+                "flashes": "Flashes 0 archived in window",
+                "refresh": "Refresh archive 2026-10-26 18:37 UTC (4h 34min ago; expected every 1 h) · STALE",
+                "searched": "Searched EUMETSAT 24% of window · 2 successful runs · 2026-10-26 01:49 UTC → 2026-10-26 13:00 UTC",
+                "warning": "Not yet ingested: last 10h 11min of window (unknown, not zero)",
+                "footer": "Times UTC · Optical flashes seen by MTG Lightning Imager (EUMETSAT L2-LFL), not confirmed ground strikes · Missing days are unknown, not zero · UK box −11.0,49.5 → 3.0,61.5"
+              },
+              "groupRect": [
+                17,
+                442,
+                326,
+                403
+              ],
+              "chipMinSize": [
+                44,
+                44
+              ],
+              "mapLayer": true
+            },
+            "originalRowsMovedByON": 65,
+            "originalRowsCompared": 65,
+            "screenshot": "/tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/visual-challenge-B/p14-p15/layers-ON-android-360x740-no-preference.png",
+            "afterOFF": {
+              "on": false,
+              "mapLayer": false,
+              "source": false,
+              "label": "Lightning flashes (optical) [WAIT]",
+              "controlsHidden": true
+            }
+          },
+          "lightningRequestsAtBoot": 0,
+          "pageErrors": [],
+          "shim": {
+            "served": {
+              "maplibre": 2,
+              "style": 1,
+              "duckdb": 3,
+              "lightning-data": 2
+            },
+            "aborted": [
+              "https://raw.githubusercontent.com/Ventusltd/data-grid-gb/1c9909d1138704b29235c27fd769436dda8a0b18/derived/connection-points.v3.json",
+              "https://ventusltd.github.io/ventus-grid-engine/genome/engine-graph.json"
+            ],
+            "missing": []
+          }
+        },
+        "reduce": {
+          "reducedMotionMatches": true,
+          "layers": {
+            "toggleText": "▴ LAYERS",
+            "toggleHit": {
+              "present": true,
+              "rect": [
+                257,
+                684,
+                91,
+                44
+              ],
+              "inViewport": true,
+              "hit": "self"
+            },
+            "openedByTap": true,
+            "atRest": {
+              "present": true,
+              "rect": [
+                31,
+                2652,
+                17,
+                17
+              ],
+              "inViewport": false,
+              "hit": "OUT-OF-VIEWPORT"
+            },
+            "originalLastGroupAtRest": {
+              "present": true,
+              "rect": [
+                31,
+                2542,
+                17,
+                17
+              ],
+              "inViewport": false,
+              "hit": "OUT-OF-VIEWPORT"
+            },
+            "scrollContainer": {
+              "overflowY": "auto",
+              "scrollHeight": 2245,
+              "clientHeight": 281,
+              "userScrollable": true
+            },
+            "wheel": {
+              "gesture": "page.mouse.wheel(0,400) per step over the container (Chromium touch emulation accepts wheel; NOT a real finger drag)",
+              "steps": [
+                {
+                  "step": 0,
+                  "hit": "OUT-OF-VIEWPORT",
+                  "targetRect": [
+                    31,
+                    2652,
+                    17,
+                    17
+                  ],
+                  "containerScrollTop": 0,
+                  "containerMaxScrollTop": 1964
+                },
+                {
+                  "step": 1,
+                  "hit": "OUT-OF-VIEWPORT",
+                  "targetRect": [
+                    31,
+                    2252,
+                    17,
+                    17
+                  ],
+                  "containerScrollTop": 400,
+                  "containerMaxScrollTop": 1964
+                },
+                {
+                  "step": 2,
+                  "hit": "OUT-OF-VIEWPORT",
+                  "targetRect": [
+                    31,
+                    1852,
+                    17,
+                    17
+                  ],
+                  "containerScrollTop": 800,
+                  "containerMaxScrollTop": 1964
+                },
+                {
+                  "step": 3,
+                  "hit": "OUT-OF-VIEWPORT",
+                  "targetRect": [
+                    31,
+                    1452,
+                    17,
+                    17
+                  ],
+                  "containerScrollTop": 1200,
+                  "containerMaxScrollTop": 1964
+                },
+                {
+                  "step": 4,
+                  "hit": "OUT-OF-VIEWPORT",
+                  "targetRect": [
+                    31,
+                    1052,
+                    17,
+                    17
+                  ],
+                  "containerScrollTop": 1600,
+                  "containerMaxScrollTop": 1964
+                },
+                {
+                  "step": 5,
+                  "hit": "self",
+                  "targetRect": [
+                    31,
+                    688,
+                    17,
+                    17
+                  ],
+                  "containerScrollTop": 1964,
+                  "containerMaxScrollTop": 1964
+                }
+              ],
+              "reached": true
+            },
+            "originalLastGroupAfterWheel": {
+              "present": true,
+              "rect": [
+                31,
+                578,
+                17,
+                17
+              ],
+              "inViewport": true,
+              "hit": "self"
+            }
+          },
+          "menu": {
+            "footerToggle": {
+              "present": true,
+              "rect": [
+                -33,
+                628,
+                426,
+                57
+              ],
+              "inViewport": true,
+              "hit": "OTHER:div.key-group"
+            },
+            "originalFirstProxy": {
+              "present": true,
+              "rect": [
+                16,
+                132,
+                328,
+                44
+              ],
+              "inViewport": true,
+              "hit": "self"
+            },
+            "originalCurtainTab": {
+              "present": true,
+              "rect": [
+                10,
+                685,
+                340,
+                44
+              ],
+              "inViewport": true,
+              "hit": "OTHER:div.key-group[data-lightning-group=main]"
+            },
+            "panelClipped": {
+              "panelBottom": 739,
+              "mapContainerBottom": 425,
+              "clippedPx": 314,
+              "mapContainerOverflow": "hidden",
+              "panelPosition": "fixed"
+            }
+          },
+          "curtain": {
+            "fsActive": true,
+            "tabHit": {
+              "present": true,
+              "rect": [
+                5,
+                680,
+                350,
+                44
+              ],
+              "inViewport": true,
+              "hit": "self"
+            },
+            "open": true,
+            "scrollContainer": {
+              "overflowY": "auto",
+              "scrollHeight": 2243,
+              "clientHeight": 517,
+              "userScrollable": true
+            },
+            "atRest": {
+              "present": true,
+              "rect": [
+                30,
+                2197,
+                17,
+                17
+              ],
+              "inViewport": false,
+              "hit": "OUT-OF-VIEWPORT"
+            },
+            "wheel": {
+              "gesture": "page.mouse.wheel(0,400) per step over the container (Chromium touch emulation accepts wheel; NOT a real finger drag)",
+              "steps": [
+                {
+                  "step": 0,
+                  "hit": "OUT-OF-VIEWPORT",
+                  "targetRect": [
+                    30,
+                    2197,
+                    17,
+                    17
+                  ],
+                  "containerScrollTop": 0,
+                  "containerMaxScrollTop": 1726
+                },
+                {
+                  "step": 0,
+                  "note": "no point inside the container is hit-testable"
+                }
+              ],
+              "reached": false
+            },
+            "originalLastGroupAfterWheel": {
+              "present": true,
+              "rect": [
+                30,
+                2087,
+                17,
+                17
+              ],
+              "inViewport": false,
+              "hit": "OUT-OF-VIEWPORT"
+            },
+            "screenshot": "/tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/visual-challenge-B/p14-p15/curtain-android-360x740-reduce.png"
+          },
+          "a11y": {
+            "mainGroupAriaSnapshot": "- text: Weather · EUMETSAT Lightning Imager\n- checkbox \"Lightning flashes (optical) [WAIT]\"\n- text: Lightning flashes (optical) [WAIT]",
+            "menuGroupAriaSnapshot": "",
+            "mainToggle": {
+              "tag": "INPUT",
+              "type": "checkbox",
+              "implicitRole": "checkbox (input type=checkbox)",
+              "explicitRole": null,
+              "ariaLabel": null,
+              "labelledByWrappingLabel": true,
+              "labelText": "Lightning flashes (optical) [WAIT]",
+              "checked": false,
+              "ariaChecked": null,
+              "focusable": true,
+              "groupTitle": "Weather · EUMETSAT Lightning Imager",
+              "groupHasRoleOrLabel": false,
+              "originalRowExample": {
+                "ariaLabel": null,
+                "labelText": "400kV [OK]",
+                "role": null
+              }
+            },
+            "menuToggle": {
+              "ariaLabel": "Lightning flashes (optical)",
+              "labelText": "Lightning flashes (optical) [WAIT]",
+              "checked": false,
+              "originalProxyExample": {
+                "ariaLabel": "400kV [OK]",
+                "labelText": "400kV [OK]"
+              }
+            },
+            "afterSpace": {
+              "checked": true,
+              "stateOn": true,
+              "focused": true,
+              "labelText": "Lightning flashes (optical) [LOAD]"
+            },
+            "afterSecondSpace": {
+              "checked": false,
+              "stateOn": false,
+              "requestsSoFar": 1,
+              "mapHasLightningLayer": false
+            },
+            "fsGroupAriaSnapshot": "- text: Weather · EUMETSAT Lightning Imager\n- checkbox \"Lightning flashes (optical) [WAIT]\"\n- text: Lightning flashes (optical) [WAIT]"
+          },
+          "contrast": {
+            "labelOFF": {
+              "selector": "#scada-ui-container [data-lightning-group=\"main\"] [data-lightning-label]",
+              "color": "rgb(255, 223, 68)",
+              "fontSize": "13px",
+              "fontWeight": "400",
+              "opacity": "1",
+              "effectiveBackground": "rgb(5,5,5)",
+              "backgroundChain": [
+                "html.gridatlas-menu-hosted",
+                "body",
+                "div.scada-wrapper"
+              ],
+              "ratio": 15.42,
+              "wcagAA_normalText": true,
+              "wcagAA_largeText": true,
+              "text": "Lightning flashes (optical) [WAIT]"
+            },
+            "originalLabel": {
+              "selector": "#scada-ui-container label.key-item span[id^=\"lbl-\"]",
+              "color": "rgb(0, 84, 255)",
+              "fontSize": "13px",
+              "fontWeight": "400",
+              "opacity": "1",
+              "effectiveBackground": "rgb(5,5,5)",
+              "backgroundChain": [
+                "html.gridatlas-menu-hosted",
+                "body",
+                "div.scada-wrapper"
+              ],
+              "ratio": 3.6,
+              "wcagAA_normalText": false,
+              "wcagAA_largeText": true,
+              "text": "400kV [OK]"
+            },
+            "groupTitle": {
+              "selector": "#scada-ui-container [data-lightning-group=\"main\"] .key-title",
+              "color": "rgb(102, 204, 255)",
+              "fontSize": "10px",
+              "fontWeight": "700",
+              "opacity": "1",
+              "effectiveBackground": "rgb(5,5,5)",
+              "backgroundChain": [
+                "html.gridatlas-menu-hosted",
+                "body",
+                "div.scada-wrapper"
+              ],
+              "ratio": 11.3,
+              "wcagAA_normalText": true,
+              "wcagAA_largeText": true,
+              "text": "Weather · EUMETSAT Lightning Imager"
+            },
+            "menuLabel": {
+              "selector": "[data-lightning-group=\"menu\"] .gm-layer-name",
+              "color": "rgb(207, 238, 246)",
+              "fontSize": "11px",
+              "fontWeight": "400",
+              "opacity": "1",
+              "effectiveBackground": "rgb(4,10,13)",
+              "backgroundChain": [
+                "html.gridatlas-menu-hosted",
+                "body",
+                "div#map-container.map-container",
+                "nav#gridatlas-menu-bar",
+                "div#gridatlas-menu-bar-panel-4.gm-panel"
+              ],
+              "ratio": 16.33,
+              "wcagAA_normalText": true,
+              "wcagAA_largeText": true,
+              "text": "Lightning flashes (optical) [WAIT]"
+            },
+            "menuGroupTitle": {
+              "selector": "[data-lightning-group=\"menu\"] .gm-layer-group",
+              "color": "rgb(111, 162, 174)",
+              "fontSize": "10px",
+              "fontWeight": "400",
+              "opacity": "1",
+              "effectiveBackground": "rgb(4,10,13)",
+              "backgroundChain": [
+                "html.gridatlas-menu-hosted",
+                "body",
+                "div#map-container.map-container",
+                "nav#gridatlas-menu-bar",
+                "div#gridatlas-menu-bar-panel-4.gm-panel"
+              ],
+              "ratio": 7.07,
+              "wcagAA_normalText": true,
+              "wcagAA_largeText": true,
+              "text": "Weather · EUMETSAT Lightning Imager"
+            },
+            "caption": {
+              "selector": "#scada-ui-container [data-lightning-group=\"main\"] [data-cap=\"window\"]",
+              "color": "rgb(136, 136, 136)",
+              "fontSize": "10px",
+              "fontWeight": "400",
+              "opacity": "1",
+              "effectiveBackground": "rgb(5,5,5)",
+              "backgroundChain": [
+                "html.gridatlas-menu-hosted",
+                "body",
+                "div.scada-wrapper"
+              ],
+              "ratio": 5.75,
+              "wcagAA_normalText": true,
+              "wcagAA_largeText": true,
+              "text": "Window 2026-10-25 23:11 UTC → 2026-10-26 23:11 UTC (24 hours"
+            },
+            "captionWarning": {
+              "selector": "#scada-ui-container [data-lightning-group=\"main\"] [data-cap=\"warning\"]",
+              "color": "rgb(255, 204, 0)",
+              "fontSize": "10px",
+              "fontWeight": "400",
+              "opacity": "1",
+              "effectiveBackground": "rgb(5,5,5)",
+              "backgroundChain": [
+                "html.gridatlas-menu-hosted",
+                "body",
+                "div.scada-wrapper"
+              ],
+              "ratio": 13.48,
+              "wcagAA_normalText": true,
+              "wcagAA_largeText": true,
+              "text": "Not yet ingested: last 10h 11min of window (unknown, not zer"
+            },
+            "captionFooter": {
+              "selector": "#scada-ui-container [data-lightning-group=\"main\"] [data-cap=\"footer\"]",
+              "color": "rgb(85, 85, 85)",
+              "fontSize": "9px",
+              "fontWeight": "400",
+              "opacity": "1",
+              "effectiveBackground": "rgb(5,5,5)",
+              "backgroundChain": [
+                "html.gridatlas-menu-hosted",
+                "body",
+                "div.scada-wrapper"
+              ],
+              "ratio": 2.73,
+              "wcagAA_normalText": false,
+              "wcagAA_largeText": false,
+              "text": "Times UTC · Optical flashes seen by MTG Lightning Imager (EU"
+            },
+            "statusLine": {
+              "selector": "#scada-ui-container [data-lightning-group=\"main\"] .status-dot",
+              "color": "rgb(85, 85, 85)",
+              "fontSize": "8px",
+              "fontWeight": "400",
+              "opacity": "1",
+              "effectiveBackground": "rgb(5,5,5)",
+              "backgroundChain": [
+                "html.gridatlas-menu-hosted",
+                "body",
+                "div.scada-wrapper"
+              ],
+              "ratio": 2.73,
+              "wcagAA_normalText": false,
+              "wcagAA_largeText": false,
+              "text": "PARTIAL · 0 FLASHES DRAWN · SEARCHED 24% · STALE"
+            },
+            "labelON": {
+              "selector": "#scada-ui-container [data-lightning-group=\"main\"] [data-lightning-label]",
+              "color": "rgb(255, 223, 68)",
+              "fontSize": "13px",
+              "fontWeight": "400",
+              "opacity": "1",
+              "effectiveBackground": "rgb(5,5,5)",
+              "backgroundChain": [
+                "html.gridatlas-menu-hosted",
+                "body",
+                "div.scada-wrapper"
+              ],
+              "ratio": 15.42,
+              "wcagAA_normalText": true,
+              "wcagAA_largeText": true,
+              "text": "Lightning flashes (optical) [UNKNOWN | 24h STALE]"
+            },
+            "activeChip": {
+              "selector": "#scada-ui-container [data-lightning-group=\"main\"] .map-ctrl-btn.active",
+              "color": "rgb(0, 255, 255)",
+              "fontSize": "9px",
+              "fontWeight": "400",
+              "opacity": "1",
+              "effectiveBackground": "rgb(5,25,25)",
+              "backgroundChain": [
+                "html.gridatlas-menu-hosted",
+                "body",
+                "div.scada-wrapper",
+                "button.map-ctrl-btn"
+              ],
+              "ratio": 14.45,
+              "wcagAA_normalText": true,
+              "wcagAA_largeText": true,
+              "text": "24H"
+            },
+            "chip": {
+              "selector": "#scada-ui-container [data-lightning-group=\"main\"] .map-ctrl-btn:not(.active)",
+              "color": "rgb(136, 136, 136)",
+              "fontSize": "9px",
+              "fontWeight": "400",
+              "opacity": "1",
+              "effectiveBackground": "rgb(5,5,5)",
+              "backgroundChain": [
+                "html.gridatlas-menu-hosted",
+                "body",
+                "div.scada-wrapper",
+                "button.map-ctrl-btn"
+              ],
+              "ratio": 5.75,
+              "wcagAA_normalText": true,
+              "wcagAA_largeText": true,
+              "text": "12H"
+            }
+          },
+          "flashing": {
+            "whileLoading": {
+              "width": 326,
+              "height": 404,
+              "area": 131704,
+              "consecutiveFrameChangedPixels": [
+                0,
+                0,
+                0,
+                22432,
+                0,
+                0,
+                0
+              ],
+              "framesWithChange": 1,
+              "maxChangedPct": 17.03
+            },
+            "whileReadyIdle5s": {
+              "width": 326,
+              "height": 404,
+              "area": 131704,
+              "consecutiveFrameChangedPixels": [
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "framesWithChange": 0,
+              "maxChangedPct": 0
+            },
+            "computedAnimations": {
+              "count": 0,
+              "sample": [],
+              "getAnimations": 0
+            }
+          },
+          "on": {
+            "toggledBy": "real tap on the checkbox input",
+            "loadingSnapshot": {
+              "label": "Lightning flashes (optical) [LOAD]",
+              "status": "LOADING",
+              "dot": "rgb(136, 136, 136)",
+              "controlsHidden": false,
+              "ariaLive": "polite",
+              "role": "status"
+            },
+            "readySnapshot": {
+              "label": "Lightning flashes (optical) [UNKNOWN | 24h STALE]",
+              "status": "PARTIAL · 0 FLASHES DRAWN · SEARCHED 24% · STALE",
+              "state": {
+                "state": "PARTIAL",
+                "stale": true,
+                "mode": "detail",
+                "period": "24h",
+                "drawn": 0,
+                "cluster": false,
+                "cap": 10000,
+                "cap_source": "index",
+                "index_count": 3,
+                "failures": 0,
+                "reasons": [
+                  "tail not yet ingested"
+                ]
+              },
+              "requests": 2,
+              "errors": [],
+              "captions": {
+                "window": "Window  2026-10-25 23:11 UTC → 2026-10-26 23:11 UTC (24 hours, latest)",
+                "actual": "Actual  no archived flashes within this window",
+                "flashes": "Flashes 0 archived in window",
+                "refresh": "Refresh archive 2026-10-26 18:37 UTC (4h 34min ago; expected every 1 h) · STALE",
+                "searched": "Searched EUMETSAT 24% of window · 2 successful runs · 2026-10-26 01:49 UTC → 2026-10-26 13:00 UTC",
+                "warning": "Not yet ingested: last 10h 11min of window (unknown, not zero)",
+                "footer": "Times UTC · Optical flashes seen by MTG Lightning Imager (EUMETSAT L2-LFL), not confirmed ground strikes · Missing days are unknown, not zero · UK box −11.0,49.5 → 3.0,61.5"
+              },
+              "groupRect": [
+                17,
+                442,
+                326,
+                403
+              ],
+              "chipMinSize": [
+                44,
+                44
+              ],
+              "mapLayer": true
+            },
+            "originalRowsMovedByON": 65,
+            "originalRowsCompared": 65,
+            "screenshot": "/tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/visual-challenge-B/p14-p15/layers-ON-android-360x740-reduce.png",
+            "afterOFF": {
+              "on": false,
+              "mapLayer": false,
+              "source": false,
+              "label": "Lightning flashes (optical) [WAIT]",
+              "controlsHidden": true
+            }
+          },
+          "lightningRequestsAtBoot": 0,
+          "pageErrors": [],
+          "shim": {
+            "served": {
+              "maplibre": 2,
+              "style": 1,
+              "duckdb": 3,
+              "lightning-data": 2
+            },
+            "aborted": [
+              "https://raw.githubusercontent.com/Ventusltd/data-grid-gb/1c9909d1138704b29235c27fd769436dda8a0b18/derived/connection-points.v3.json",
+              "https://ventusltd.github.io/ventus-grid-engine/genome/engine-graph.json"
+            ],
+            "missing": []
+          }
+        }
+      }
+    },
+    "iphone-390x844-geometry-only": {
+      "profile": "Chromium phone emulation (touch, mobile UA) — Chromium with an iPhone UA; WebKit not installed; geometry only, NOT Safari",
+      "motion": {
+        "no-preference": {
+          "reducedMotionMatches": false,
+          "layers": {
+            "toggleText": "▴ LAYERS",
+            "toggleHit": {
+              "present": true,
+              "rect": [
+                287,
+                788,
+                91,
+                44
+              ],
+              "inViewport": true,
+              "hit": "self"
+            },
+            "openedByTap": true,
+            "atRest": {
+              "present": true,
+              "rect": [
+                31,
+                2683,
+                17,
+                17
+              ],
+              "inViewport": false,
+              "hit": "OUT-OF-VIEWPORT"
+            },
+            "originalLastGroupAtRest": {
+              "present": true,
+              "rect": [
+                31,
+                2573,
+                17,
+                17
+              ],
+              "inViewport": false,
+              "hit": "OUT-OF-VIEWPORT"
+            },
+            "scrollContainer": {
+              "overflowY": "auto",
+              "scrollHeight": 2212,
+              "clientHeight": 321,
+              "userScrollable": true
+            },
+            "wheel": {
+              "gesture": "page.mouse.wheel(0,400) per step over the container (Chromium touch emulation accepts wheel; NOT a real finger drag)",
+              "steps": [
+                {
+                  "step": 0,
+                  "hit": "OUT-OF-VIEWPORT",
+                  "targetRect": [
+                    31,
+                    2683,
+                    17,
+                    17
+                  ],
+                  "containerScrollTop": 0,
+                  "containerMaxScrollTop": 1891
+                },
+                {
+                  "step": 1,
+                  "hit": "OUT-OF-VIEWPORT",
+                  "targetRect": [
+                    31,
+                    2283,
+                    17,
+                    17
+                  ],
+                  "containerScrollTop": 400,
+                  "containerMaxScrollTop": 1891
+                },
+                {
+                  "step": 2,
+                  "hit": "OUT-OF-VIEWPORT",
+                  "targetRect": [
+                    31,
+                    1883,
+                    17,
+                    17
+                  ],
+                  "containerScrollTop": 800,
+                  "containerMaxScrollTop": 1891
+                },
+                {
+                  "step": 3,
+                  "hit": "OUT-OF-VIEWPORT",
+                  "targetRect": [
+                    31,
+                    1483,
+                    17,
+                    17
+                  ],
+                  "containerScrollTop": 1200,
+                  "containerMaxScrollTop": 1891
+                },
+                {
+                  "step": 4,
+                  "hit": "OUT-OF-VIEWPORT",
+                  "targetRect": [
+                    31,
+                    1083,
+                    17,
+                    17
+                  ],
+                  "containerScrollTop": 1600,
+                  "containerMaxScrollTop": 1891
+                },
+                {
+                  "step": 5,
+                  "hit": "self",
+                  "targetRect": [
+                    31,
+                    792,
+                    17,
+                    17
+                  ],
+                  "containerScrollTop": 1891,
+                  "containerMaxScrollTop": 1891
+                }
+              ],
+              "reached": true
+            },
+            "originalLastGroupAfterWheel": {
+              "present": true,
+              "rect": [
+                31,
+                682,
+                17,
+                17
+              ],
+              "inViewport": true,
+              "hit": "self"
+            }
+          },
+          "menu": {
+            "footerToggle": {
+              "present": true,
+              "rect": [
+                -38,
+                732,
+                465,
+                57
+              ],
+              "inViewport": true,
+              "hit": "OTHER:div.key-group"
+            },
+            "originalFirstProxy": {
+              "present": true,
+              "rect": [
+                16,
+                132,
+                358,
+                44
+              ],
+              "inViewport": true,
+              "hit": "self"
+            },
+            "originalCurtainTab": {
+              "present": true,
+              "rect": [
+                10,
+                789,
+                370,
+                44
+              ],
+              "inViewport": true,
+              "hit": "OTHER:div.key-group[data-lightning-group=main]"
+            },
+            "panelClipped": {
+              "panelBottom": 843,
+              "mapContainerBottom": 489,
+              "clippedPx": 354,
+              "mapContainerOverflow": "hidden",
+              "panelPosition": "fixed"
+            }
+          },
+          "curtain": {
+            "fsActive": true,
+            "tabHit": {
+              "present": true,
+              "rect": [
+                5,
+                784,
+                380,
+                44
+              ],
+              "inViewport": true,
+              "hit": "self"
+            },
+            "open": true,
+            "scrollContainer": {
+              "overflowY": "auto",
+              "scrollHeight": 2243,
+              "clientHeight": 590,
+              "userScrollable": true
+            },
+            "atRest": {
+              "present": true,
+              "rect": [
+                30,
+                2197,
+                17,
+                17
+              ],
+              "inViewport": false,
+              "hit": "OUT-OF-VIEWPORT"
+            },
+            "wheel": {
+              "gesture": "page.mouse.wheel(0,400) per step over the container (Chromium touch emulation accepts wheel; NOT a real finger drag)",
+              "steps": [
+                {
+                  "step": 0,
+                  "hit": "OUT-OF-VIEWPORT",
+                  "targetRect": [
+                    30,
+                    2197,
+                    17,
+                    17
+                  ],
+                  "containerScrollTop": 0,
+                  "containerMaxScrollTop": 1653
+                },
+                {
+                  "step": 1,
+                  "hit": "OUT-OF-VIEWPORT",
+                  "targetRect": [
+                    30,
+                    1797,
+                    17,
+                    17
+                  ],
+                  "containerScrollTop": 400,
+                  "containerMaxScrollTop": 1653
+                },
+                {
+                  "step": 2,
+                  "hit": "OUT-OF-VIEWPORT",
+                  "targetRect": [
+                    30,
+                    1397,
+                    17,
+                    17
+                  ],
+                  "containerScrollTop": 800,
+                  "containerMaxScrollTop": 1653
+                },
+                {
+                  "step": 3,
+                  "hit": "OUT-OF-VIEWPORT",
+                  "targetRect": [
+                    30,
+                    997,
+                    17,
+                    17
+                  ],
+                  "containerScrollTop": 1200,
+                  "containerMaxScrollTop": 1653
+                },
+                {
+                  "step": 4,
+                  "hit": "OTHER:input",
+                  "targetRect": [
+                    30,
+                    597,
+                    17,
+                    17
+                  ],
+                  "containerScrollTop": 1600,
+                  "containerMaxScrollTop": 1653
+                },
+                {
+                  "step": 5,
+                  "hit": "self",
+                  "targetRect": [
+                    30,
+                    544,
+                    17,
+                    17
+                  ],
+                  "containerScrollTop": 1653,
+                  "containerMaxScrollTop": 1653
+                }
+              ],
+              "reached": true
+            },
+            "originalLastGroupAfterWheel": {
+              "present": true,
+              "rect": [
+                30,
+                434,
+                17,
+                17
+              ],
+              "inViewport": true,
+              "hit": "self"
+            },
+            "screenshot": "/tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/visual-challenge-B/p14-p15/curtain-iphone-390x844-geometry-only-no-preference.png"
+          },
+          "a11y": {
+            "mainGroupAriaSnapshot": "- text: Weather · EUMETSAT Lightning Imager\n- checkbox \"Lightning flashes (optical) [WAIT]\"\n- text: Lightning flashes (optical) [WAIT]",
+            "menuGroupAriaSnapshot": "",
+            "mainToggle": {
+              "tag": "INPUT",
+              "type": "checkbox",
+              "implicitRole": "checkbox (input type=checkbox)",
+              "explicitRole": null,
+              "ariaLabel": null,
+              "labelledByWrappingLabel": true,
+              "labelText": "Lightning flashes (optical) [WAIT]",
+              "checked": false,
+              "ariaChecked": null,
+              "focusable": true,
+              "groupTitle": "Weather · EUMETSAT Lightning Imager",
+              "groupHasRoleOrLabel": false,
+              "originalRowExample": {
+                "ariaLabel": null,
+                "labelText": "400kV [OK]",
+                "role": null
+              }
+            },
+            "menuToggle": {
+              "ariaLabel": "Lightning flashes (optical)",
+              "labelText": "Lightning flashes (optical) [WAIT]",
+              "checked": false,
+              "originalProxyExample": {
+                "ariaLabel": "400kV [OK]",
+                "labelText": "400kV [OK]"
+              }
+            },
+            "afterSpace": {
+              "checked": true,
+              "stateOn": true,
+              "focused": true,
+              "labelText": "Lightning flashes (optical) [LOAD]"
+            },
+            "afterSecondSpace": {
+              "checked": false,
+              "stateOn": false,
+              "requestsSoFar": 1,
+              "mapHasLightningLayer": false
+            },
+            "fsGroupAriaSnapshot": "- text: Weather · EUMETSAT Lightning Imager\n- checkbox \"Lightning flashes (optical) [WAIT]\"\n- text: Lightning flashes (optical) [WAIT]"
+          },
+          "contrast": {
+            "labelOFF": {
+              "selector": "#scada-ui-container [data-lightning-group=\"main\"] [data-lightning-label]",
+              "color": "rgb(255, 223, 68)",
+              "fontSize": "13px",
+              "fontWeight": "400",
+              "opacity": "1",
+              "effectiveBackground": "rgb(5,5,5)",
+              "backgroundChain": [
+                "html.gridatlas-menu-hosted",
+                "body",
+                "div.scada-wrapper"
+              ],
+              "ratio": 15.42,
+              "wcagAA_normalText": true,
+              "wcagAA_largeText": true,
+              "text": "Lightning flashes (optical) [WAIT]"
+            },
+            "originalLabel": {
+              "selector": "#scada-ui-container label.key-item span[id^=\"lbl-\"]",
+              "color": "rgb(0, 84, 255)",
+              "fontSize": "13px",
+              "fontWeight": "400",
+              "opacity": "1",
+              "effectiveBackground": "rgb(5,5,5)",
+              "backgroundChain": [
+                "html.gridatlas-menu-hosted",
+                "body",
+                "div.scada-wrapper"
+              ],
+              "ratio": 3.6,
+              "wcagAA_normalText": false,
+              "wcagAA_largeText": true,
+              "text": "400kV [OK]"
+            },
+            "groupTitle": {
+              "selector": "#scada-ui-container [data-lightning-group=\"main\"] .key-title",
+              "color": "rgb(102, 204, 255)",
+              "fontSize": "10px",
+              "fontWeight": "700",
+              "opacity": "1",
+              "effectiveBackground": "rgb(5,5,5)",
+              "backgroundChain": [
+                "html.gridatlas-menu-hosted",
+                "body",
+                "div.scada-wrapper"
+              ],
+              "ratio": 11.3,
+              "wcagAA_normalText": true,
+              "wcagAA_largeText": true,
+              "text": "Weather · EUMETSAT Lightning Imager"
+            },
+            "menuLabel": {
+              "selector": "[data-lightning-group=\"menu\"] .gm-layer-name",
+              "color": "rgb(207, 238, 246)",
+              "fontSize": "11px",
+              "fontWeight": "400",
+              "opacity": "1",
+              "effectiveBackground": "rgb(4,10,13)",
+              "backgroundChain": [
+                "html.gridatlas-menu-hosted",
+                "body",
+                "div#map-container.map-container",
+                "nav#gridatlas-menu-bar",
+                "div#gridatlas-menu-bar-panel-4.gm-panel"
+              ],
+              "ratio": 16.33,
+              "wcagAA_normalText": true,
+              "wcagAA_largeText": true,
+              "text": "Lightning flashes (optical) [WAIT]"
+            },
+            "menuGroupTitle": {
+              "selector": "[data-lightning-group=\"menu\"] .gm-layer-group",
+              "color": "rgb(111, 162, 174)",
+              "fontSize": "10px",
+              "fontWeight": "400",
+              "opacity": "1",
+              "effectiveBackground": "rgb(4,10,13)",
+              "backgroundChain": [
+                "html.gridatlas-menu-hosted",
+                "body",
+                "div#map-container.map-container",
+                "nav#gridatlas-menu-bar",
+                "div#gridatlas-menu-bar-panel-4.gm-panel"
+              ],
+              "ratio": 7.07,
+              "wcagAA_normalText": true,
+              "wcagAA_largeText": true,
+              "text": "Weather · EUMETSAT Lightning Imager"
+            },
+            "caption": {
+              "selector": "#scada-ui-container [data-lightning-group=\"main\"] [data-cap=\"window\"]",
+              "color": "rgb(136, 136, 136)",
+              "fontSize": "10px",
+              "fontWeight": "400",
+              "opacity": "1",
+              "effectiveBackground": "rgb(5,5,5)",
+              "backgroundChain": [
+                "html.gridatlas-menu-hosted",
+                "body",
+                "div.scada-wrapper"
+              ],
+              "ratio": 5.75,
+              "wcagAA_normalText": true,
+              "wcagAA_largeText": true,
+              "text": "Window 2026-10-25 23:11 UTC → 2026-10-26 23:11 UTC (24 hours"
+            },
+            "captionWarning": {
+              "selector": "#scada-ui-container [data-lightning-group=\"main\"] [data-cap=\"warning\"]",
+              "color": "rgb(255, 204, 0)",
+              "fontSize": "10px",
+              "fontWeight": "400",
+              "opacity": "1",
+              "effectiveBackground": "rgb(5,5,5)",
+              "backgroundChain": [
+                "html.gridatlas-menu-hosted",
+                "body",
+                "div.scada-wrapper"
+              ],
+              "ratio": 13.48,
+              "wcagAA_normalText": true,
+              "wcagAA_largeText": true,
+              "text": "Not yet ingested: last 10h 11min of window (unknown, not zer"
+            },
+            "captionFooter": {
+              "selector": "#scada-ui-container [data-lightning-group=\"main\"] [data-cap=\"footer\"]",
+              "color": "rgb(85, 85, 85)",
+              "fontSize": "9px",
+              "fontWeight": "400",
+              "opacity": "1",
+              "effectiveBackground": "rgb(5,5,5)",
+              "backgroundChain": [
+                "html.gridatlas-menu-hosted",
+                "body",
+                "div.scada-wrapper"
+              ],
+              "ratio": 2.73,
+              "wcagAA_normalText": false,
+              "wcagAA_largeText": false,
+              "text": "Times UTC · Optical flashes seen by MTG Lightning Imager (EU"
+            },
+            "statusLine": {
+              "selector": "#scada-ui-container [data-lightning-group=\"main\"] .status-dot",
+              "color": "rgb(85, 85, 85)",
+              "fontSize": "8px",
+              "fontWeight": "400",
+              "opacity": "1",
+              "effectiveBackground": "rgb(5,5,5)",
+              "backgroundChain": [
+                "html.gridatlas-menu-hosted",
+                "body",
+                "div.scada-wrapper"
+              ],
+              "ratio": 2.73,
+              "wcagAA_normalText": false,
+              "wcagAA_largeText": false,
+              "text": "PARTIAL · 0 FLASHES DRAWN · SEARCHED 24% · STALE"
+            },
+            "labelON": {
+              "selector": "#scada-ui-container [data-lightning-group=\"main\"] [data-lightning-label]",
+              "color": "rgb(255, 223, 68)",
+              "fontSize": "13px",
+              "fontWeight": "400",
+              "opacity": "1",
+              "effectiveBackground": "rgb(5,5,5)",
+              "backgroundChain": [
+                "html.gridatlas-menu-hosted",
+                "body",
+                "div.scada-wrapper"
+              ],
+              "ratio": 15.42,
+              "wcagAA_normalText": true,
+              "wcagAA_largeText": true,
+              "text": "Lightning flashes (optical) [UNKNOWN | 24h STALE]"
+            },
+            "activeChip": {
+              "selector": "#scada-ui-container [data-lightning-group=\"main\"] .map-ctrl-btn.active",
+              "color": "rgb(0, 255, 255)",
+              "fontSize": "9px",
+              "fontWeight": "400",
+              "opacity": "1",
+              "effectiveBackground": "rgb(5,25,25)",
+              "backgroundChain": [
+                "html.gridatlas-menu-hosted",
+                "body",
+                "div.scada-wrapper",
+                "button.map-ctrl-btn"
+              ],
+              "ratio": 14.45,
+              "wcagAA_normalText": true,
+              "wcagAA_largeText": true,
+              "text": "24H"
+            },
+            "chip": {
+              "selector": "#scada-ui-container [data-lightning-group=\"main\"] .map-ctrl-btn:not(.active)",
+              "color": "rgb(136, 136, 136)",
+              "fontSize": "9px",
+              "fontWeight": "400",
+              "opacity": "1",
+              "effectiveBackground": "rgb(5,5,5)",
+              "backgroundChain": [
+                "html.gridatlas-menu-hosted",
+                "body",
+                "div.scada-wrapper",
+                "button.map-ctrl-btn"
+              ],
+              "ratio": 5.75,
+              "wcagAA_normalText": true,
+              "wcagAA_largeText": true,
+              "text": "12H"
+            }
+          },
+          "flashing": {
+            "whileLoading": {
+              "width": 356,
+              "height": 403,
+              "area": 143468,
+              "consecutiveFrameChangedPixels": [
+                0,
+                0,
+                0,
+                24664,
+                0,
+                0,
+                0
+              ],
+              "framesWithChange": 1,
+              "maxChangedPct": 17.19
+            },
+            "whileReadyIdle5s": {
+              "width": 356,
+              "height": 403,
+              "area": 143468,
+              "consecutiveFrameChangedPixels": [
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "framesWithChange": 0,
+              "maxChangedPct": 0
+            },
+            "computedAnimations": {
+              "count": 0,
+              "sample": [],
+              "getAnimations": 0
+            }
+          },
+          "on": {
+            "toggledBy": "real tap on the checkbox input",
+            "loadingSnapshot": {
+              "label": "Lightning flashes (optical) [LOAD]",
+              "status": "LOADING",
+              "dot": "rgb(136, 136, 136)",
+              "controlsHidden": false,
+              "ariaLive": "polite",
+              "role": "status"
+            },
+            "readySnapshot": {
+              "label": "Lightning flashes (optical) [UNKNOWN | 24h STALE]",
+              "status": "PARTIAL · 0 FLASHES DRAWN · SEARCHED 24% · STALE",
+              "state": {
+                "state": "PARTIAL",
+                "stale": true,
+                "mode": "detail",
+                "period": "24h",
+                "drawn": 0,
+                "cluster": false,
+                "cap": 10000,
+                "cap_source": "index",
+                "index_count": 3,
+                "failures": 0,
+                "reasons": [
+                  "tail not yet ingested"
+                ]
+              },
+              "requests": 2,
+              "errors": [],
+              "captions": {
+                "window": "Window  2026-10-25 23:11 UTC → 2026-10-26 23:11 UTC (24 hours, latest)",
+                "actual": "Actual  no archived flashes within this window",
+                "flashes": "Flashes 0 archived in window",
+                "refresh": "Refresh archive 2026-10-26 18:37 UTC (4h 35min ago; expected every 1 h) · STALE",
+                "searched": "Searched EUMETSAT 24% of window · 2 successful runs · 2026-10-26 01:49 UTC → 2026-10-26 13:00 UTC",
+                "warning": "Not yet ingested: last 10h 11min of window (unknown, not zero)",
+                "footer": "Times UTC · Optical flashes seen by MTG Lightning Imager (EUMETSAT L2-LFL), not confirmed ground strikes · Missing days are unknown, not zero · UK box −11.0,49.5 → 3.0,61.5"
+              },
+              "groupRect": [
+                17,
+                506,
+                356,
+                403
+              ],
+              "chipMinSize": [
+                44,
+                44
+              ],
+              "mapLayer": true
+            },
+            "originalRowsMovedByON": 65,
+            "originalRowsCompared": 65,
+            "screenshot": "/tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/visual-challenge-B/p14-p15/layers-ON-iphone-390x844-geometry-only-no-preference.png",
+            "afterOFF": {
+              "on": false,
+              "mapLayer": false,
+              "source": false,
+              "label": "Lightning flashes (optical) [WAIT]",
+              "controlsHidden": true
+            }
+          },
+          "lightningRequestsAtBoot": 0,
+          "pageErrors": [],
+          "shim": {
+            "served": {
+              "maplibre": 2,
+              "style": 1,
+              "duckdb": 3,
+              "lightning-data": 2
+            },
+            "aborted": [
+              "https://raw.githubusercontent.com/Ventusltd/data-grid-gb/1c9909d1138704b29235c27fd769436dda8a0b18/derived/connection-points.v3.json",
+              "https://ventusltd.github.io/ventus-grid-engine/genome/engine-graph.json"
+            ],
+            "missing": []
+          }
+        },
+        "reduce": {
+          "reducedMotionMatches": true,
+          "layers": {
+            "toggleText": "▴ LAYERS",
+            "toggleHit": {
+              "present": true,
+              "rect": [
+                287,
+                788,
+                91,
+                44
+              ],
+              "inViewport": true,
+              "hit": "self"
+            },
+            "openedByTap": true,
+            "atRest": {
+              "present": true,
+              "rect": [
+                31,
+                2683,
+                17,
+                17
+              ],
+              "inViewport": false,
+              "hit": "OUT-OF-VIEWPORT"
+            },
+            "originalLastGroupAtRest": {
+              "present": true,
+              "rect": [
+                31,
+                2573,
+                17,
+                17
+              ],
+              "inViewport": false,
+              "hit": "OUT-OF-VIEWPORT"
+            },
+            "scrollContainer": {
+              "overflowY": "auto",
+              "scrollHeight": 2212,
+              "clientHeight": 321,
+              "userScrollable": true
+            },
+            "wheel": {
+              "gesture": "page.mouse.wheel(0,400) per step over the container (Chromium touch emulation accepts wheel; NOT a real finger drag)",
+              "steps": [
+                {
+                  "step": 0,
+                  "hit": "OUT-OF-VIEWPORT",
+                  "targetRect": [
+                    31,
+                    2683,
+                    17,
+                    17
+                  ],
+                  "containerScrollTop": 0,
+                  "containerMaxScrollTop": 1891
+                },
+                {
+                  "step": 1,
+                  "hit": "OUT-OF-VIEWPORT",
+                  "targetRect": [
+                    31,
+                    2283,
+                    17,
+                    17
+                  ],
+                  "containerScrollTop": 400,
+                  "containerMaxScrollTop": 1891
+                },
+                {
+                  "step": 2,
+                  "hit": "OUT-OF-VIEWPORT",
+                  "targetRect": [
+                    31,
+                    1883,
+                    17,
+                    17
+                  ],
+                  "containerScrollTop": 800,
+                  "containerMaxScrollTop": 1891
+                },
+                {
+                  "step": 3,
+                  "hit": "OUT-OF-VIEWPORT",
+                  "targetRect": [
+                    31,
+                    1483,
+                    17,
+                    17
+                  ],
+                  "containerScrollTop": 1200,
+                  "containerMaxScrollTop": 1891
+                },
+                {
+                  "step": 4,
+                  "hit": "OUT-OF-VIEWPORT",
+                  "targetRect": [
+                    31,
+                    1083,
+                    17,
+                    17
+                  ],
+                  "containerScrollTop": 1600,
+                  "containerMaxScrollTop": 1891
+                },
+                {
+                  "step": 5,
+                  "hit": "self",
+                  "targetRect": [
+                    31,
+                    792,
+                    17,
+                    17
+                  ],
+                  "containerScrollTop": 1891,
+                  "containerMaxScrollTop": 1891
+                }
+              ],
+              "reached": true
+            },
+            "originalLastGroupAfterWheel": {
+              "present": true,
+              "rect": [
+                31,
+                682,
+                17,
+                17
+              ],
+              "inViewport": true,
+              "hit": "self"
+            }
+          },
+          "menu": {
+            "footerToggle": {
+              "present": true,
+              "rect": [
+                -38,
+                732,
+                465,
+                57
+              ],
+              "inViewport": true,
+              "hit": "OTHER:div.key-group"
+            },
+            "originalFirstProxy": {
+              "present": true,
+              "rect": [
+                16,
+                132,
+                358,
+                44
+              ],
+              "inViewport": true,
+              "hit": "self"
+            },
+            "originalCurtainTab": {
+              "present": true,
+              "rect": [
+                10,
+                789,
+                370,
+                44
+              ],
+              "inViewport": true,
+              "hit": "OTHER:div.key-group[data-lightning-group=main]"
+            },
+            "panelClipped": {
+              "panelBottom": 843,
+              "mapContainerBottom": 489,
+              "clippedPx": 354,
+              "mapContainerOverflow": "hidden",
+              "panelPosition": "fixed"
+            }
+          },
+          "curtain": {
+            "fsActive": true,
+            "tabHit": {
+              "present": true,
+              "rect": [
+                5,
+                784,
+                380,
+                44
+              ],
+              "inViewport": true,
+              "hit": "self"
+            },
+            "open": true,
+            "scrollContainer": {
+              "overflowY": "auto",
+              "scrollHeight": 2243,
+              "clientHeight": 590,
+              "userScrollable": true
+            },
+            "atRest": {
+              "present": true,
+              "rect": [
+                30,
+                2197,
+                17,
+                17
+              ],
+              "inViewport": false,
+              "hit": "OUT-OF-VIEWPORT"
+            },
+            "wheel": {
+              "gesture": "page.mouse.wheel(0,400) per step over the container (Chromium touch emulation accepts wheel; NOT a real finger drag)",
+              "steps": [
+                {
+                  "step": 0,
+                  "hit": "OUT-OF-VIEWPORT",
+                  "targetRect": [
+                    30,
+                    2197,
+                    17,
+                    17
+                  ],
+                  "containerScrollTop": 0,
+                  "containerMaxScrollTop": 1653
+                },
+                {
+                  "step": 1,
+                  "hit": "OUT-OF-VIEWPORT",
+                  "targetRect": [
+                    30,
+                    1797,
+                    17,
+                    17
+                  ],
+                  "containerScrollTop": 400,
+                  "containerMaxScrollTop": 1653
+                },
+                {
+                  "step": 2,
+                  "hit": "OUT-OF-VIEWPORT",
+                  "targetRect": [
+                    30,
+                    1397,
+                    17,
+                    17
+                  ],
+                  "containerScrollTop": 800,
+                  "containerMaxScrollTop": 1653
+                },
+                {
+                  "step": 3,
+                  "hit": "OUT-OF-VIEWPORT",
+                  "targetRect": [
+                    30,
+                    997,
+                    17,
+                    17
+                  ],
+                  "containerScrollTop": 1200,
+                  "containerMaxScrollTop": 1653
+                },
+                {
+                  "step": 4,
+                  "hit": "OTHER:input",
+                  "targetRect": [
+                    30,
+                    597,
+                    17,
+                    17
+                  ],
+                  "containerScrollTop": 1600,
+                  "containerMaxScrollTop": 1653
+                },
+                {
+                  "step": 5,
+                  "hit": "self",
+                  "targetRect": [
+                    30,
+                    544,
+                    17,
+                    17
+                  ],
+                  "containerScrollTop": 1653,
+                  "containerMaxScrollTop": 1653
+                }
+              ],
+              "reached": true
+            },
+            "originalLastGroupAfterWheel": {
+              "present": true,
+              "rect": [
+                30,
+                434,
+                17,
+                17
+              ],
+              "inViewport": true,
+              "hit": "self"
+            },
+            "screenshot": "/tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/visual-challenge-B/p14-p15/curtain-iphone-390x844-geometry-only-reduce.png"
+          },
+          "a11y": {
+            "mainGroupAriaSnapshot": "- text: Weather · EUMETSAT Lightning Imager\n- checkbox \"Lightning flashes (optical) [WAIT]\"\n- text: Lightning flashes (optical) [WAIT]",
+            "menuGroupAriaSnapshot": "",
+            "mainToggle": {
+              "tag": "INPUT",
+              "type": "checkbox",
+              "implicitRole": "checkbox (input type=checkbox)",
+              "explicitRole": null,
+              "ariaLabel": null,
+              "labelledByWrappingLabel": true,
+              "labelText": "Lightning flashes (optical) [WAIT]",
+              "checked": false,
+              "ariaChecked": null,
+              "focusable": true,
+              "groupTitle": "Weather · EUMETSAT Lightning Imager",
+              "groupHasRoleOrLabel": false,
+              "originalRowExample": {
+                "ariaLabel": null,
+                "labelText": "400kV [OK]",
+                "role": null
+              }
+            },
+            "menuToggle": {
+              "ariaLabel": "Lightning flashes (optical)",
+              "labelText": "Lightning flashes (optical) [WAIT]",
+              "checked": false,
+              "originalProxyExample": {
+                "ariaLabel": "400kV [OK]",
+                "labelText": "400kV [OK]"
+              }
+            },
+            "afterSpace": {
+              "checked": true,
+              "stateOn": true,
+              "focused": true,
+              "labelText": "Lightning flashes (optical) [LOAD]"
+            },
+            "afterSecondSpace": {
+              "checked": false,
+              "stateOn": false,
+              "requestsSoFar": 1,
+              "mapHasLightningLayer": false
+            },
+            "fsGroupAriaSnapshot": "- text: Weather · EUMETSAT Lightning Imager\n- checkbox \"Lightning flashes (optical) [WAIT]\"\n- text: Lightning flashes (optical) [WAIT]"
+          },
+          "contrast": {
+            "labelOFF": {
+              "selector": "#scada-ui-container [data-lightning-group=\"main\"] [data-lightning-label]",
+              "color": "rgb(255, 223, 68)",
+              "fontSize": "13px",
+              "fontWeight": "400",
+              "opacity": "1",
+              "effectiveBackground": "rgb(5,5,5)",
+              "backgroundChain": [
+                "html.gridatlas-menu-hosted",
+                "body",
+                "div.scada-wrapper"
+              ],
+              "ratio": 15.42,
+              "wcagAA_normalText": true,
+              "wcagAA_largeText": true,
+              "text": "Lightning flashes (optical) [WAIT]"
+            },
+            "originalLabel": {
+              "selector": "#scada-ui-container label.key-item span[id^=\"lbl-\"]",
+              "color": "rgb(0, 84, 255)",
+              "fontSize": "13px",
+              "fontWeight": "400",
+              "opacity": "1",
+              "effectiveBackground": "rgb(5,5,5)",
+              "backgroundChain": [
+                "html.gridatlas-menu-hosted",
+                "body",
+                "div.scada-wrapper"
+              ],
+              "ratio": 3.6,
+              "wcagAA_normalText": false,
+              "wcagAA_largeText": true,
+              "text": "400kV [OK]"
+            },
+            "groupTitle": {
+              "selector": "#scada-ui-container [data-lightning-group=\"main\"] .key-title",
+              "color": "rgb(102, 204, 255)",
+              "fontSize": "10px",
+              "fontWeight": "700",
+              "opacity": "1",
+              "effectiveBackground": "rgb(5,5,5)",
+              "backgroundChain": [
+                "html.gridatlas-menu-hosted",
+                "body",
+                "div.scada-wrapper"
+              ],
+              "ratio": 11.3,
+              "wcagAA_normalText": true,
+              "wcagAA_largeText": true,
+              "text": "Weather · EUMETSAT Lightning Imager"
+            },
+            "menuLabel": {
+              "selector": "[data-lightning-group=\"menu\"] .gm-layer-name",
+              "color": "rgb(207, 238, 246)",
+              "fontSize": "11px",
+              "fontWeight": "400",
+              "opacity": "1",
+              "effectiveBackground": "rgb(4,10,13)",
+              "backgroundChain": [
+                "html.gridatlas-menu-hosted",
+                "body",
+                "div#map-container.map-container",
+                "nav#gridatlas-menu-bar",
+                "div#gridatlas-menu-bar-panel-4.gm-panel"
+              ],
+              "ratio": 16.33,
+              "wcagAA_normalText": true,
+              "wcagAA_largeText": true,
+              "text": "Lightning flashes (optical) [WAIT]"
+            },
+            "menuGroupTitle": {
+              "selector": "[data-lightning-group=\"menu\"] .gm-layer-group",
+              "color": "rgb(111, 162, 174)",
+              "fontSize": "10px",
+              "fontWeight": "400",
+              "opacity": "1",
+              "effectiveBackground": "rgb(4,10,13)",
+              "backgroundChain": [
+                "html.gridatlas-menu-hosted",
+                "body",
+                "div#map-container.map-container",
+                "nav#gridatlas-menu-bar",
+                "div#gridatlas-menu-bar-panel-4.gm-panel"
+              ],
+              "ratio": 7.07,
+              "wcagAA_normalText": true,
+              "wcagAA_largeText": true,
+              "text": "Weather · EUMETSAT Lightning Imager"
+            },
+            "caption": {
+              "selector": "#scada-ui-container [data-lightning-group=\"main\"] [data-cap=\"window\"]",
+              "color": "rgb(136, 136, 136)",
+              "fontSize": "10px",
+              "fontWeight": "400",
+              "opacity": "1",
+              "effectiveBackground": "rgb(5,5,5)",
+              "backgroundChain": [
+                "html.gridatlas-menu-hosted",
+                "body",
+                "div.scada-wrapper"
+              ],
+              "ratio": 5.75,
+              "wcagAA_normalText": true,
+              "wcagAA_largeText": true,
+              "text": "Window 2026-10-25 23:11 UTC → 2026-10-26 23:11 UTC (24 hours"
+            },
+            "captionWarning": {
+              "selector": "#scada-ui-container [data-lightning-group=\"main\"] [data-cap=\"warning\"]",
+              "color": "rgb(255, 204, 0)",
+              "fontSize": "10px",
+              "fontWeight": "400",
+              "opacity": "1",
+              "effectiveBackground": "rgb(5,5,5)",
+              "backgroundChain": [
+                "html.gridatlas-menu-hosted",
+                "body",
+                "div.scada-wrapper"
+              ],
+              "ratio": 13.48,
+              "wcagAA_normalText": true,
+              "wcagAA_largeText": true,
+              "text": "Not yet ingested: last 10h 12min of window (unknown, not zer"
+            },
+            "captionFooter": {
+              "selector": "#scada-ui-container [data-lightning-group=\"main\"] [data-cap=\"footer\"]",
+              "color": "rgb(85, 85, 85)",
+              "fontSize": "9px",
+              "fontWeight": "400",
+              "opacity": "1",
+              "effectiveBackground": "rgb(5,5,5)",
+              "backgroundChain": [
+                "html.gridatlas-menu-hosted",
+                "body",
+                "div.scada-wrapper"
+              ],
+              "ratio": 2.73,
+              "wcagAA_normalText": false,
+              "wcagAA_largeText": false,
+              "text": "Times UTC · Optical flashes seen by MTG Lightning Imager (EU"
+            },
+            "statusLine": {
+              "selector": "#scada-ui-container [data-lightning-group=\"main\"] .status-dot",
+              "color": "rgb(85, 85, 85)",
+              "fontSize": "8px",
+              "fontWeight": "400",
+              "opacity": "1",
+              "effectiveBackground": "rgb(5,5,5)",
+              "backgroundChain": [
+                "html.gridatlas-menu-hosted",
+                "body",
+                "div.scada-wrapper"
+              ],
+              "ratio": 2.73,
+              "wcagAA_normalText": false,
+              "wcagAA_largeText": false,
+              "text": "PARTIAL · 0 FLASHES DRAWN · SEARCHED 24% · STALE"
+            },
+            "labelON": {
+              "selector": "#scada-ui-container [data-lightning-group=\"main\"] [data-lightning-label]",
+              "color": "rgb(255, 223, 68)",
+              "fontSize": "13px",
+              "fontWeight": "400",
+              "opacity": "1",
+              "effectiveBackground": "rgb(5,5,5)",
+              "backgroundChain": [
+                "html.gridatlas-menu-hosted",
+                "body",
+                "div.scada-wrapper"
+              ],
+              "ratio": 15.42,
+              "wcagAA_normalText": true,
+              "wcagAA_largeText": true,
+              "text": "Lightning flashes (optical) [UNKNOWN | 24h STALE]"
+            },
+            "activeChip": {
+              "selector": "#scada-ui-container [data-lightning-group=\"main\"] .map-ctrl-btn.active",
+              "color": "rgb(0, 255, 255)",
+              "fontSize": "9px",
+              "fontWeight": "400",
+              "opacity": "1",
+              "effectiveBackground": "rgb(5,25,25)",
+              "backgroundChain": [
+                "html.gridatlas-menu-hosted",
+                "body",
+                "div.scada-wrapper",
+                "button.map-ctrl-btn"
+              ],
+              "ratio": 14.45,
+              "wcagAA_normalText": true,
+              "wcagAA_largeText": true,
+              "text": "24H"
+            },
+            "chip": {
+              "selector": "#scada-ui-container [data-lightning-group=\"main\"] .map-ctrl-btn:not(.active)",
+              "color": "rgb(136, 136, 136)",
+              "fontSize": "9px",
+              "fontWeight": "400",
+              "opacity": "1",
+              "effectiveBackground": "rgb(5,5,5)",
+              "backgroundChain": [
+                "html.gridatlas-menu-hosted",
+                "body",
+                "div.scada-wrapper",
+                "button.map-ctrl-btn"
+              ],
+              "ratio": 5.75,
+              "wcagAA_normalText": true,
+              "wcagAA_largeText": true,
+              "text": "12H"
+            }
+          },
+          "flashing": {
+            "whileLoading": {
+              "width": 356,
+              "height": 403,
+              "area": 143468,
+              "consecutiveFrameChangedPixels": [
+                0,
+                0,
+                0,
+                24664,
+                0,
+                0,
+                0
+              ],
+              "framesWithChange": 1,
+              "maxChangedPct": 17.19
+            },
+            "whileReadyIdle5s": {
+              "width": 356,
+              "height": 403,
+              "area": 143468,
+              "consecutiveFrameChangedPixels": [
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "framesWithChange": 0,
+              "maxChangedPct": 0
+            },
+            "computedAnimations": {
+              "count": 0,
+              "sample": [],
+              "getAnimations": 0
+            }
+          },
+          "on": {
+            "toggledBy": "real tap on the checkbox input",
+            "loadingSnapshot": {
+              "label": "Lightning flashes (optical) [LOAD]",
+              "status": "LOADING",
+              "dot": "rgb(136, 136, 136)",
+              "controlsHidden": false,
+              "ariaLive": "polite",
+              "role": "status"
+            },
+            "readySnapshot": {
+              "label": "Lightning flashes (optical) [UNKNOWN | 24h STALE]",
+              "status": "PARTIAL · 0 FLASHES DRAWN · SEARCHED 24% · STALE",
+              "state": {
+                "state": "PARTIAL",
+                "stale": true,
+                "mode": "detail",
+                "period": "24h",
+                "drawn": 0,
+                "cluster": false,
+                "cap": 10000,
+                "cap_source": "index",
+                "index_count": 3,
+                "failures": 0,
+                "reasons": [
+                  "tail not yet ingested"
+                ]
+              },
+              "requests": 2,
+              "errors": [],
+              "captions": {
+                "window": "Window  2026-10-25 23:11 UTC → 2026-10-26 23:11 UTC (24 hours, latest)",
+                "actual": "Actual  no archived flashes within this window",
+                "flashes": "Flashes 0 archived in window",
+                "refresh": "Refresh archive 2026-10-26 18:37 UTC (4h 35min ago; expected every 1 h) · STALE",
+                "searched": "Searched EUMETSAT 24% of window · 2 successful runs · 2026-10-26 01:49 UTC → 2026-10-26 13:00 UTC",
+                "warning": "Not yet ingested: last 10h 12min of window (unknown, not zero)",
+                "footer": "Times UTC · Optical flashes seen by MTG Lightning Imager (EUMETSAT L2-LFL), not confirmed ground strikes · Missing days are unknown, not zero · UK box −11.0,49.5 → 3.0,61.5"
+              },
+              "groupRect": [
+                17,
+                506,
+                356,
+                403
+              ],
+              "chipMinSize": [
+                44,
+                44
+              ],
+              "mapLayer": true
+            },
+            "originalRowsMovedByON": 65,
+            "originalRowsCompared": 65,
+            "screenshot": "/tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/visual-challenge-B/p14-p15/layers-ON-iphone-390x844-geometry-only-reduce.png",
+            "afterOFF": {
+              "on": false,
+              "mapLayer": false,
+              "source": false,
+              "label": "Lightning flashes (optical) [WAIT]",
+              "controlsHidden": true
+            }
+          },
+          "lightningRequestsAtBoot": 0,
+          "pageErrors": [],
+          "shim": {
+            "served": {
+              "maplibre": 2,
+              "style": 1,
+              "duckdb": 3,
+              "lightning-data": 2
+            },
+            "aborted": [
+              "https://raw.githubusercontent.com/Ventusltd/data-grid-gb/1c9909d1138704b29235c27fd769436dda8a0b18/derived/connection-points.v3.json",
+              "https://ventusltd.github.io/ventus-grid-engine/genome/engine-graph.json"
+            ],
+            "missing": []
+          }
+        }
+      }
+    }
+  },
+  "finishedAt": "2026-10-26T23:12:10.116Z"
+}

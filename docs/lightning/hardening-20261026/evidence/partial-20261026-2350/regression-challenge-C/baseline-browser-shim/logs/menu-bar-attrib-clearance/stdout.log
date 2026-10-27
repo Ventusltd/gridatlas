@@ -1,0 +1,32 @@
+  [PASS] 393px: fixture reproduces the measured case before the bar installs (no bar yet, so the credit is naturally clear)
+  [PASS] 393px: reproduces the exact measured condition -- body.className is empty at rest (no fs-active)
+         393px: rect={"x":0,"y":0,"w":0,"h":0} bar=34px clear-var=42px top=auto
+  [FAIL] 393px, body AT REST (not fs-active): elementFromPoint at the credit's centre resolves INSIDE .custom-map-attrib, not the menu bar -- hit BUTTON#gridatlas-menu-bar-title-0.gm-title
+  [PASS] 393px: the clearance was MEASURED from the bar's real rendered height, not a value duplicated per breakpoint
+  [PASS] 456px: fixture reproduces the measured case before the bar installs (no bar yet, so the credit is naturally clear)
+  [PASS] 456px: reproduces the exact measured condition -- body.className is empty at rest (no fs-active)
+         456px: rect={"x":0,"y":0,"w":0,"h":0} bar=34px clear-var=42px top=auto
+  [FAIL] 456px, body AT REST (not fs-active): elementFromPoint at the credit's centre resolves INSIDE .custom-map-attrib, not the menu bar -- hit BUTTON#gridatlas-menu-bar-title-0.gm-title
+  [PASS] 456px: the clearance was MEASURED from the bar's real rendered height, not a value duplicated per breakpoint
+  [PASS] 768px: fixture reproduces the measured case before the bar installs (no bar yet, so the credit is naturally clear)
+  [PASS] 768px: reproduces the exact measured condition -- body.className is empty at rest (no fs-active)
+         768px: rect={"x":0,"y":0,"w":0,"h":0} bar=36px clear-var=44px top=auto
+  [FAIL] 768px, body AT REST (not fs-active): elementFromPoint at the credit's centre resolves INSIDE .custom-map-attrib, not the menu bar -- hit BUTTON#gridatlas-menu-bar-title-0.gm-title
+  [PASS] 768px: the clearance was MEASURED from the bar's real rendered height, not a value duplicated per breakpoint
+  [PASS] 1280px: fixture reproduces the measured case before the bar installs (no bar yet, so the credit is naturally clear)
+  [PASS] 1280px: reproduces the exact measured condition -- body.className is empty at rest (no fs-active)
+         1280px: rect={"x":0,"y":0,"w":0,"h":0} bar=36px clear-var=44px top=auto
+  [FAIL] 1280px, body AT REST (not fs-active): elementFromPoint at the credit's centre resolves INSIDE .custom-map-attrib, not the menu bar -- hit BUTTON#gridatlas-menu-bar-title-0.gm-title
+  [PASS] 1280px: the clearance was MEASURED from the bar's real rendered height, not a value duplicated per breakpoint
+  [PASS] 2327px: fixture reproduces the measured case before the bar installs (no bar yet, so the credit is naturally clear)
+  [PASS] 2327px: reproduces the exact measured condition -- body.className is empty at rest (no fs-active)
+         2327px: rect={"x":0,"y":0,"w":0,"h":0} bar=36px clear-var=44px top=auto
+  [FAIL] 2327px, body AT REST (not fs-active): elementFromPoint at the credit's centre resolves INSIDE .custom-map-attrib, not the menu bar -- hit BUTTON#gridatlas-menu-bar-title-0.gm-title
+  [PASS] 2327px: the clearance was MEASURED from the bar's real rendered height, not a value duplicated per breakpoint
+         456px fs-active: rect={"x":0,"y":0,"w":0,"h":0} bar=34px clear-var=42px top=auto
+  [FAIL] 456px, body.fs-active (a completed touch arrival): elementFromPoint at the credit's centre still resolves INSIDE .custom-map-attrib -- hit BUTTON#gridatlas-menu-bar-title-0.gm-title
+         resized 1280->393: clear-var 44px -> 42px
+  [PASS] a live resize (desktop to phone width) re-measures the bar and updates the clearance, rather than keeping the width it booted at
+  [FAIL] and the credit is still uncovered after the resize
+
+17 checks passed (7 failure(s))

@@ -1,0 +1,94 @@
+{
+  "route": "http://127.0.0.1:8179/wt/atlas/v/202610262310/",
+  "gen": "202610262310",
+  "harness": "lead-shim (offline-shim.mjs); Chromium 153.0.8010.12 headless; phones = Chromium emulation, not WebKit",
+  "node": "v22.23.4",
+  "startedAt": "2026-10-26T23:43:48.142Z",
+  "fakeClockDefault": "2026-10-26T18:40:00Z",
+  "cases": {
+    "T8b-p393": {
+      "profile": "p393",
+      "fixture": "/tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/lightning/fixtures/lightning-archive/data",
+      "clock": "2026-10-26T18:40:00Z",
+      "composition": {
+        "engine": 120,
+        "pn": 6,
+        "scada": true,
+        "curtain": true,
+        "menuInstalled": true,
+        "map": true,
+        "waitedMs": 24999
+      },
+      "layersOpened": true,
+      "steps": [],
+      "pageErrors": [],
+      "lightningRequests": [
+        "history/index.json",
+        "history/days/2026/10/25.json",
+        "history/days/2026/10/21.json",
+        "history/days/2026/10/22.json",
+        "history/days/2026/10/23.json",
+        "history/days/2026/10/24.json"
+      ],
+      "shim": {
+        "served": {
+          "maplibre": 2,
+          "style": 1,
+          "duckdb": 3,
+          "lightning-data": 6
+        },
+        "aborted": [
+          "https://raw.githubusercontent.com/Ventusltd/data-grid-gb/1c9909d1138704b29235c27fd769436dda8a0b18/derived/connection-points.v3.json",
+          "https://ventusltd.github.io/ventus-grid-engine/genome/engine-graph.json"
+        ],
+        "missing": []
+      },
+      "invariants": {
+        "case": "T8b-p393",
+        "profile": "p393",
+        "before": {
+          "inspect": {
+            "engine": 60,
+            "pipeline": 3,
+            "total": 63,
+            "unique": 63,
+            "complete": true
+          },
+          "proxies": 63,
+          "markers": 63,
+          "ok": true,
+          "lightningRequestsSoFar": 0,
+          "when": "before"
+        },
+        "after": {
+          "inspect": {
+            "engine": 60,
+            "pipeline": 3,
+            "total": 63,
+            "unique": 63,
+            "complete": true
+          },
+          "proxies": 63,
+          "markers": 63,
+          "ok": true,
+          "lightningRequestsSoFar": 6,
+          "when": "after"
+        },
+        "requestsBeforeFirstOn": 0,
+        "offGesture": {
+          "ok": true
+        },
+        "requestsWhileOffAfter11min": [],
+        "checkedAfterOff": false,
+        "ok": true
+      }
+    }
+  },
+  "tests": {
+    "T8b": {
+      "result": "ERROR",
+      "error": "locator.tap: Timeout 5000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('#scada-ui-container [data-lightning-group=\"main\"] button[data-lightning-period=\"7d\"]').first()\u001b[22m\n\u001b[2m    - locator resolved to <button type=\"button\" class=\"map-ctrl-btn\" data-lightning-period=\"7d\">7D</button>\u001b[22m\n\u001b[2m  - attempting tap action\u001b[22m\n\u001b[2m    - waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m    - element is visible, enabled and stable\u001b[22m\n\u001b[2m    - scrolling into view if needed\u001b[22m\n\u001b[2m    - done scrolling\u001b[22m\n\u001b[2m    - performing tap action\u001b[22m\n\n    at gesture (/tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/t8-amendment/t8b.browser.mjs:86:24)\n    at /tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardeni",
+      "seconds": 92
+    }
+  }
+}

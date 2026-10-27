@@ -1,0 +1,38 @@
+
+the module is what it says it is
+
+  [PASS] both modules registered
+  [PASS] the distance module declares the graph contract it requires
+  [PASS] it says a hop is not a distance
+  [PASS] it says a path is not a capacity
+  [PASS] the module contains no impedance arithmetic
+  [PASS] the module never reduces or sums a parameter list
+  [PASS] it never fetches and never renders
+  [PASS] it never decodes a voltage from a node code
+  [PASS] the denials do deny headroom rather than staying silent about it
+  [PASS] nothing outside the denials speaks of headroom, spare or availability
+  [PASS] no key or identifier in the module names headroom
+
+the rule that only a transformer may change voltage
+
+  [PASS] a circuit between two 400 kV nodes is one hop
+  [PASS] the hop names both nodes and both sites
+  [PASS] the hop carries the published rating and parameter, unaltered
+  [PASS] no voltage changed and no transformer was crossed
+  [PASS] a circuit that appears to change voltage is NOT walked
+  [PASS] the refusal is recorded, not swallowed
+  [PASS] the refusal names both voltages it saw
+  [PASS] from a 400 kV node the path reaches a 132 kV site through the transformer
+  [PASS] the transformer is named as the thing that changed the voltage
+  [PASS] the transformer carries its PUBLISHED ratio, not a reconstructed one
+  [PASS] the transformer carries its own rating field
+  [PASS] an unpublished voltage ratio is null, not reconstructed from the nodes
+  [PASS] a node whose site does not vouch for its voltage is undeclared, not 275
+  [PASS] an undeclared end is not treated as a voltage change
+  [PASS] a circuit published for 2030 is not a path a current can take today
+  [PASS] an unknown site is null, not an empty answer
+  [PASS] an index without a graph is refused
+  [PASS] the same site is zero hops and says so
+
+the published network, 921 sites and 2,679 nodes
+

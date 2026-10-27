@@ -1,0 +1,444 @@
+{
+ "harness": "self-fixture; headless Chromium 153.0.8010.12 via Playwright; MapLibre 3.6.2 vendored; background-only style",
+ "cpu_throttle": 4,
+ "viewport": "393x852@3",
+ "data": "SYNTHETIC_BENCHMARK_NOT_OBSERVATIONS",
+ "file_sizes": {
+  "p10k.lfb": {
+   "raw": 80612,
+   "gzip": 62148
+  },
+  "p100k.lfb": {
+   "raw": 800612,
+   "gzip": 471717
+  },
+  "p100k.json": {
+   "raw": 12474463,
+   "gzip": 1161014
+  },
+  "p1m.lfb": {
+   "raw": 8000612,
+   "gzip": 5393717
+  },
+  "p10k.json": {
+   "raw": 1244653,
+   "gzip": 128067
+  }
+ },
+ "runs": [
+  {
+   "scenario": "A10k",
+   "init": {
+    "load_ms": 914,
+    "webgl2": true,
+    "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+    "dpr": 3,
+    "heapMB": 4
+   },
+   "loadavg_before": [
+    13.2,
+    14.5,
+    10.5
+   ],
+   "decode": {
+    "n": 10000,
+    "bytes": 80612,
+    "fetch_ms": 60.1,
+    "views_ms": 0,
+    "validate_ms": 8.4,
+    "offsets_ok": true,
+    "time_sorted": true,
+    "longTasks": {
+     "n": 0,
+     "total_ms": 0,
+     "max_ms": 0
+    },
+    "heapMB": 4.1
+   },
+   "add": {
+    "compile_ms": 10.3,
+    "interleave_ms": 10.1,
+    "upload_ms": 1.4,
+    "gpu_bytes": 40000,
+    "layer_first_draw_ms": 6.1,
+    "add_to_first_frame_ms": 40.3,
+    "longTasks": {
+     "n": 0,
+     "total_ms": 0,
+     "max_ms": 0
+    },
+    "heapMB": 4.5
+   },
+   "frames": {
+    "frames": 10,
+    "interval_median_ms": 815.3,
+    "interval_p90_ms": 1438.9,
+    "layer_draw_median_ms": 1.9,
+    "layer_draw_p90_ms": 3.6,
+    "longTasks": {
+     "n": 10,
+     "total_ms": 8075,
+     "max_ms": 1427
+    }
+   },
+   "loadavg_after": [
+    13.1,
+    14.5,
+    10.5
+   ],
+   "cores": 2,
+   "wall_s": 8.9
+  },
+  {
+   "scenario": "B100k",
+   "init": {
+    "load_ms": 440,
+    "webgl2": true,
+    "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+    "dpr": 3,
+    "heapMB": 4.1
+   },
+   "loadavg_before": [
+    13.1,
+    14.5,
+    10.5
+   ],
+   "decode": {
+    "n": 100000,
+    "bytes": 800612,
+    "fetch_ms": 115.8,
+    "views_ms": 0,
+    "validate_ms": 3.1,
+    "offsets_ok": true,
+    "time_sorted": true,
+    "longTasks": {
+     "n": 0,
+     "total_ms": 0,
+     "max_ms": 0
+    },
+    "heapMB": 4.9
+   },
+   "add": {
+    "compile_ms": 104.6,
+    "interleave_ms": 12.6,
+    "upload_ms": 1.2,
+    "gpu_bytes": 400000,
+    "layer_first_draw_ms": 0.1,
+    "add_to_first_frame_ms": 136.5,
+    "longTasks": {
+     "n": 0,
+     "total_ms": 0,
+     "max_ms": 0
+    },
+    "heapMB": 5.7
+   },
+   "frames": {
+    "frames": 10,
+    "interval_median_ms": 847.4,
+    "interval_p90_ms": 3750.3,
+    "layer_draw_median_ms": 0.1,
+    "layer_draw_p90_ms": 1.2,
+    "longTasks": {
+     "n": 10,
+     "total_ms": 13212,
+     "max_ms": 3721
+    }
+   },
+   "windows": [
+    {
+     "label": "24h",
+     "drawn": 0,
+     "search_ms": 0.6,
+     "frames": {
+      "frames": 3,
+      "interval_median_ms": 393.2,
+      "interval_p90_ms": 625.6,
+      "layer_draw_median_ms": 1,
+      "layer_draw_p90_ms": 1.6,
+      "longTasks": {
+       "n": 3,
+       "total_ms": 1761,
+       "max_ms": 750
+      }
+     }
+    },
+    {
+     "label": "7d",
+     "drawn": 717,
+     "search_ms": 0.1,
+     "frames": {
+      "frames": 3,
+      "interval_median_ms": 170.3,
+      "interval_p90_ms": 364.6,
+      "layer_draw_median_ms": 0.2,
+      "layer_draw_p90_ms": 1.9,
+      "longTasks": {
+       "n": 3,
+       "total_ms": 828,
+       "max_ms": 355
+      }
+     }
+    },
+    {
+     "label": "30d",
+     "drawn": 3455,
+     "search_ms": 0,
+     "frames": {
+      "frames": 3,
+      "interval_median_ms": 367.8,
+      "interval_p90_ms": 957.4,
+      "layer_draw_median_ms": 0.8,
+      "layer_draw_p90_ms": 11,
+      "longTasks": {
+       "n": 3,
+       "total_ms": 1869,
+       "max_ms": 947
+      }
+     }
+    },
+    {
+     "label": "365d",
+     "drawn": 16882,
+     "search_ms": 0,
+     "frames": {
+      "frames": 3,
+      "interval_median_ms": 545.3,
+      "interval_p90_ms": 823.3,
+      "layer_draw_median_ms": 1.5,
+      "layer_draw_p90_ms": 2,
+      "longTasks": {
+       "n": 2,
+       "total_ms": 1363,
+       "max_ms": 818
+      }
+     }
+    }
+   ],
+   "loadavg_after": [
+    15,
+    14.8,
+    10.7
+   ],
+   "cores": 2,
+   "wall_s": 23.3
+  },
+  {
+   "scenario": "D100kjson",
+   "init": {
+    "load_ms": 673,
+    "webgl2": true,
+    "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+    "dpr": 3,
+    "heapMB": 4.1
+   },
+   "loadavg_before": [
+    15,
+    14.8,
+    10.7
+   ],
+   "json": {
+    "n": 100000,
+    "bytes": 12474463,
+    "fetch_text_ms": 2146.4,
+    "json_parse_ms": 951,
+    "to_typed_ms": 33.8,
+    "longTasks": {
+     "n": 0,
+     "total_ms": 0,
+     "max_ms": 0
+    },
+    "heapMB": 30.2
+   },
+   "binary_same_n": {
+    "n": 100000,
+    "bytes": 800612,
+    "fetch_ms": 196,
+    "views_ms": 0,
+    "validate_ms": 12.5,
+    "offsets_ok": true,
+    "time_sorted": true,
+    "longTasks": {
+     "n": 0,
+     "total_ms": 0,
+     "max_ms": 0
+    },
+    "heapMB": 22.4
+   },
+   "loadavg_after": [
+    15.3,
+    14.9,
+    10.8
+   ],
+   "cores": 2,
+   "wall_s": 4.4
+  },
+  {
+   "scenario": "E1mgrid",
+   "init": {
+    "load_ms": 555,
+    "webgl2": true,
+    "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+    "dpr": 3,
+    "heapMB": 4.1
+   },
+   "loadavg_before": [
+    15.7,
+    14.9,
+    10.8
+   ],
+   "decode": {
+    "n": 1000000,
+    "bytes": 8000612,
+    "fetch_ms": 3114.6,
+    "views_ms": 0,
+    "validate_ms": 16,
+    "offsets_ok": true,
+    "time_sorted": true,
+    "longTasks": {
+     "n": 0,
+     "total_ms": 0,
+     "max_ms": 0
+    },
+    "heapMB": 11.8
+   },
+   "bin": {
+    "cells": 12596,
+    "nx": 94,
+    "ny": 134,
+    "bin_ms": 45.4,
+    "to_texture_ms": 10.6,
+    "raw_u16_bytes": 25192,
+    "longTasks": {
+     "n": 0,
+     "total_ms": 0,
+     "max_ms": 0
+    }
+   },
+   "add": {
+    "setup_ms": 20.5,
+    "first_draw_ms": 0.8,
+    "add_to_first_frame_ms": 41.8,
+    "longTasks": {
+     "n": 0,
+     "total_ms": 0,
+     "max_ms": 0
+    }
+   },
+   "frames": {
+    "frames": 10,
+    "interval_median_ms": 700.2,
+    "interval_p90_ms": 1093,
+    "layer_draw_median_ms": 1.8,
+    "layer_draw_p90_ms": 3.6,
+    "longTasks": {
+     "n": 10,
+     "total_ms": 6519,
+     "max_ms": 1096
+    }
+   },
+   "loadavg_after": [
+    16.7,
+    15.2,
+    10.9
+   ],
+   "cores": 2,
+   "wall_s": 10.3
+  },
+  {
+   "scenario": "F10kgeojson",
+   "init": {
+    "load_ms": 569,
+    "webgl2": true,
+    "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+    "dpr": 3,
+    "heapMB": 4
+   },
+   "loadavg_before": [
+    16.7,
+    15.2,
+    10.9
+   ],
+   "geojson": {
+    "n": 10000,
+    "fetch_parse_ms": 535,
+    "add_to_idle_ms": 4464,
+    "longTasks": {
+     "n": 9,
+     "total_ms": 4016,
+     "max_ms": 878
+    },
+    "heapMB": 9.4
+   },
+   "loadavg_after": [
+    17.7,
+    15.4,
+    11
+   ],
+   "cores": 2,
+   "wall_s": 5.7
+  },
+  {
+   "scenario": "C1m",
+   "init": {
+    "load_ms": 425,
+    "webgl2": true,
+    "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+    "dpr": 3,
+    "heapMB": 4
+   },
+   "loadavg_before": [
+    17.6,
+    15.5,
+    11.1
+   ],
+   "decode": {
+    "n": 1000000,
+    "bytes": 8000612,
+    "fetch_ms": 1320.3,
+    "views_ms": 0,
+    "validate_ms": 15.6,
+    "offsets_ok": true,
+    "time_sorted": true,
+    "longTasks": {
+     "n": 3,
+     "total_ms": 1012,
+     "max_ms": 777
+    },
+    "heapMB": 11.7
+   },
+   "add": {
+    "compile_ms": 4.7,
+    "interleave_ms": 38.1,
+    "upload_ms": 8.2,
+    "gpu_bytes": 4000000,
+    "layer_first_draw_ms": 5.2,
+    "add_to_first_frame_ms": 80.1,
+    "longTasks": {
+     "n": 0,
+     "total_ms": 0,
+     "max_ms": 0
+    },
+    "heapMB": 15.9
+   },
+   "frames": {
+    "frames": 6,
+    "interval_median_ms": 6533.3,
+    "interval_p90_ms": 8269.8,
+    "layer_draw_median_ms": 0.1,
+    "layer_draw_p90_ms": 3.9,
+    "longTasks": {
+     "n": 6,
+     "total_ms": 35287,
+     "max_ms": 8279
+    }
+   },
+   "loadavg_after": [
+    19.4,
+    16.2,
+    11.5
+   ],
+   "cores": 2,
+   "wall_s": 37.4
+  }
+ ]
+}

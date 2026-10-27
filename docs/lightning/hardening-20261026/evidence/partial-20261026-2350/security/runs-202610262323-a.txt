@@ -1,0 +1,28 @@
+S0 settled=6341 rtt=1335 pwn=null proto=null inj=0/0 req=3 afterOff=undefined unexpected=1 pageErr=0 inspect={"engine":60,"pipeline":3,"total":63,"unique":63,"complete":true} map={"center":"-3.480","layers":101,"lightningLayer":true} feats=0
+   label=Lightning flashes (optical) [UNKNOWN | 24h]
+   status=PARTIAL · 0 FLASHES DRAWN · SEARCHED 43%
+   last={"state":"PARTIAL","stale":false,"mode":"detail","period":"24h","drawn":0,"cluster":false,"cap":40000,"cap_source":"index","index_count":3,"failures":0,"reasons":["tail not yet ingested"]}
+   errors=[] locator.click: Timeout 30000ms exceeded.
+S1 settled=undefined rtt=undefined pwn=undefined proto=undefined inj=undefined/undefined req=undefined afterOff=undefined unexpected=1 pageErr=0 inspect=undefined map=undefined feats=undefined
+   label=undefined
+   status=undefined
+   last=undefined
+   errors=undefined page.waitForSelector: Target crashed 
+S2 settled=765 rtt=156 pwn=null proto=null inj=0/0 req=3 afterOff=0 unexpected=1 pageErr=0 inspect={"engine":60,"pipeline":3,"total":63,"unique":63,"complete":true} map={"center":"-3.480","layers":101,"lightningLayer":true} feats=0
+   label=Lightning flashes (optical) [UNKNOWN | 24h STALE]
+   status=UNKNOWN · STALE
+   last={"state":"UNKNOWN","stale":true,"mode":"feed","period":"24h","drawn":0,"cluster":false,"cap":40000,"cap_source":"live feed","index_count":0,"failures":0,"reasons":["feed coverage unknown"]}
+   errors=[] page.evaluate: Target crashed 
+/opt/npm-tools/node_modules/playwright-core/lib/coreBundle.js:838
+    throw new Error(message || "Assertion error");
+          ^
+
+Error: Invalid InterceptionId.
+    at assert (/opt/npm-tools/node_modules/playwright-core/lib/coreBundle.js:838:11)
+    at _CRSession._onMessage (/opt/npm-tools/node_modules/playwright-core/lib/coreBundle.js:35014:11)
+    at CRConnection._onMessage (/opt/npm-tools/node_modules/playwright-core/lib/coreBundle.js:34951:20)
+    at Immediate.<anonymous> (/opt/npm-tools/node_modules/playwright-core/lib/coreBundle.js:39445:28)
+    at process.processImmediate (node:internal/timers:484:21)
+    at process.callbackTrampoline (node:internal/async_hooks:130:17)
+
+Node.js v22.23.4

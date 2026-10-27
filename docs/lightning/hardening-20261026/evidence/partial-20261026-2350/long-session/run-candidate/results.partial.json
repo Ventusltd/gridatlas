@@ -1,0 +1,72 @@
+{
+  "mode": "candidate",
+  "route": "http://127.0.0.1:8175/wt/atlas/v/202610262323/",
+  "harness": "lead-shim; Chromium 153.0.8010.12 headless; desktop 1440x900; Playwright fake clock",
+  "fakeStart": "2026-10-26T18:40:00Z",
+  "samples": [
+    {
+      "label": "S0 boot (lightning OFF)",
+      "realSec": 37,
+      "heapUsedMB": 19.39,
+      "heapTotalMB": 20.37,
+      "cdpNodes": 2673,
+      "cdpJSEventListeners": 202,
+      "cdpDocuments": 1,
+      "cdpFrames": 1,
+      "fakeNow": "2026-10-26T18:40:36.677Z",
+      "domNodesInDocument": 1560,
+      "intervals": 2,
+      "intervalsLightning": 0,
+      "timeouts": 2,
+      "timeoutsLightning": 0,
+      "intervalDetail": "1000:other,1000:other",
+      "mapSources": 56,
+      "mapLayers": 100,
+      "lightningSources": 0,
+      "lightningLayers": 0,
+      "lightningGroups": 2,
+      "S": {
+        "on": false,
+        "serial": 0,
+        "requests": 0,
+        "errors": 0,
+        "sfs": 2,
+        "timer": false,
+        "period": "24h",
+        "last": null,
+        "drawn": null
+      },
+      "reqLogged": 0,
+      "listeners": {
+        "window": {
+          "own": 21,
+          "subtree": 21
+        },
+        "document": {
+          "own": 16,
+          "subtree": 160
+        },
+        "panel": {
+          "own": 3,
+          "subtree": 4
+        },
+        "lightningGroup": {
+          "own": 1,
+          "subtree": 1
+        }
+      }
+    }
+  ],
+  "phases": {},
+  "startedAt": "2026-10-26T23:41:18.133Z",
+  "composition": {
+    "engine": 120,
+    "pn": 6,
+    "scada": true,
+    "curtain": true,
+    "menuInstalled": true,
+    "map": true,
+    "waitedMs": 19260
+  },
+  "probeWrappedFake": true
+}

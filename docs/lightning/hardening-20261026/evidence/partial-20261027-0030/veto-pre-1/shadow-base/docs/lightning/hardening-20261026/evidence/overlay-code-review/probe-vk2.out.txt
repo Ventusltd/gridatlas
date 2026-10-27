@@ -1,0 +1,7 @@
+vk parts path traversal (count 50, path null): ACCEPTED - parts entries are never validated
+vk date 2026-99-99: ACCEPTED; ds("2026-99-99")=NaN
+vk bytes "100": ACCEPTED; "100">=0 -> true; null>=0 -> true; 5+"100" -> 5100
+vk count=Infinity: ACCEPTED
+ni cutoff 9999-99-99: ACCEPTED; cutoff ms = NaN (NaN disables BEFORE-ARCHIVE/clamp/PREV-disable; input min="9999-99-99")
+ni row first_observation_utc="not-a-date": ACCEPTED (reaches cp() line 107 -> Ts(NaN) -> RangeError at paint)
+ni v1 schema -> error text: unsupported index schema uk-lightning-history-index.v1

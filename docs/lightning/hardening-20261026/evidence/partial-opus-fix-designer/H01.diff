@@ -1,0 +1,18 @@
+--- a/atlas/modules/202610261949-uk-lightning-overlay.js
++++ b/atlas/modules/202610261949-uk-lightning-overlay.js
+@@ -165,13 +165,13 @@
+ if(!good)return txt(sf.caps.warning,'Custom dates: From must not be after To — nothing loaded');S.from=f;S.to=t}
+ else if(which==='latest'){S.end=null;return ld(true)}else if(which==='prev')S.end=w.s;else if(which==='next'){const e=w.e+w.span;S.end=e>=now-9e5?null:e}
+ ld()},
+-ld=refresh=>{const serial=++S.serial,now=Date.now();if(refresh)S.ip=null;pt(true);
++ld=refresh=>{const serial=++S.serial,now=Date.now();if(refresh)S.ip=S.fp=null;pt(true);
+ lw(now).then(r=>({r}),e=>({e})).then(({r,e})=>{if(serial!==S.serial||!S.on)return;
+ if(e){note(e);r={mode:'fail',fail:msg(e),w:wf(now),idx:S.idx,ie:S.ie,fl:[],ev:[],rows:[],arch:0}}
+ S.res=r;try{dw(FC(r.ev),!!r.cl)}catch(err){note('draw: '+err.message);r.fail=r.fail||'map layer: '+err.message}pt(false)})},
+ so=(on,from)=>{if(S.on===on)return;S.on=on;
+ if(on){S.end=null;S.consent=false;S.res=null;if(from==='menu'&&ph()){const h=Q('scada-ui-container'),g=S.sfs[0]&&S.sfs[0].group;if(h&&g)h.scrollTop+=g.getBoundingClientRect().top-h.getBoundingClientRect().top}
+-ld();if(!S.timer)S.timer=setInterval(()=>{if(S.on&&S.res&&S.res.w.atLatest)ld(true)},6e5)}
++ld(true);if(!S.timer)S.timer=setInterval(()=>{if(S.on&&S.res&&S.res.w.atLatest)ld(true)},6e5)}
+ else{S.serial++;S.res=null;cx();if(S.timer){clearInterval(S.timer);S.timer=null}pt(false)}},
+ bt=(c,from)=>c.addEventListener('change',ev=>{const t=ev.target;if(t&&t.dataset&&t.dataset.lightningControl==='toggle')so(!!t.checked,from)}),
+ // install after menu, Pipeline News and map exist

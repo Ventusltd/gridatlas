@@ -1,0 +1,478 @@
+route under test: /atlas/
+generation under test: 202609241334
+export cartridge: ./cartridges/202609062358-substation-intelligence-v9-63.js
+export cartridge sha256: d94b0de50deddac77643325b10fbe490ce44b8c406dbc6c67e6e7cadbdaa8ec6
+{
+  "route": "/atlas/",
+  "generation": "202609241334",
+  "export_cartridge": "./cartridges/202609062358-substation-intelligence-v9-63.js",
+  "export_cartridge_sha256": "d94b0de50deddac77643325b10fbe490ce44b8c406dbc6c67e6e7cadbdaa8ec6",
+  "viewports": {
+    "393x852 phone": {
+      "handles": {
+        "v9": {
+          "present": true,
+          "tag": null,
+          "getCanvas": "function",
+          "once": "function",
+          "triggerRepaint": "function"
+        },
+        "windowMap": {
+          "present": true,
+          "tag": "DIV",
+          "getCanvas": "undefined",
+          "once": "undefined",
+          "triggerRepaint": "undefined"
+        },
+        "legacyMap": {
+          "present": false
+        },
+        "legacyCurrent": "undefined",
+        "atlasGeneration": "202609241334",
+        "datasetGeneration": "202609241334"
+      },
+      "selectors": {
+        "print": "#gridatlas-export-print",
+        "image": "#gridatlas-export-image"
+      },
+      "menu_before_save": {
+        "open": true,
+        "menuTitle": "File",
+        "expanded": "true",
+        "panelHidden": false
+      },
+      "imageButtonText": "✓ Image saved",
+      "downloadName": "gridatlas-202610262331.png",
+      "pngBytes": 9533,
+      "pixels": {
+        "naturalWidth": 383,
+        "naturalHeight": 838,
+        "sampled": 5005,
+        "opaque": 5005,
+        "distinctColours": 1,
+        "dominantShare": 1
+      },
+      "capturedHref": "data:image/png;base64,iVBORw0KGg",
+      "menu_before_print": {
+        "open": true,
+        "menuTitle": "File",
+        "expanded": "true",
+        "panelHidden": false
+      },
+      "printCalls": 1,
+      "printCssInstalled": true,
+      "stamp": "generation 202609241334 · 2026-10-26 23:31 UTC",
+      "attrib": "Data © OpenStreetMap contributors | © CARTO | EV data © Open Charge Map",
+      "screenCanvas": {
+        "width": 383,
+        "height": 838
+      },
+      "canvasBuffer": {
+        "width": 383,
+        "height": 838
+      },
+      "printCanvas": {
+        "width": 385,
+        "height": 838
+      },
+      "pdf": {
+        "reader paper (@page size:auto)": {
+          "bytes": 60869,
+          "pagePt": {
+            "width": 612,
+            "height": 792
+          },
+          "pages": 1,
+          "imageCount": 1,
+          "images": [
+            {
+              "id": 11,
+              "width": 383,
+              "height": 838,
+              "streamBytes": 959,
+              "content": {
+                "components": 3,
+                "sampled": 3309,
+                "distinct": 1,
+                "dominantShare": 1,
+                "nonZeroShare": 1
+              },
+              "placed": {
+                "widthPt": 288.74998796875,
+                "heightPt": 628.4999738125
+              },
+              "coverage": {
+                "width": 0.472,
+                "height": 0.794
+              }
+            }
+          ],
+          "verdict": {
+            "images": 1,
+            "big_and_filling_the_sheet": 0,
+            "carrying_visible_map_pixels": 0
+          }
+        },
+        "A4 portrait": {
+          "bytes": 61032,
+          "pagePt": {
+            "width": 595.91998,
+            "height": 841.91998
+          },
+          "pages": 1,
+          "imageCount": 1,
+          "images": [
+            {
+              "id": 11,
+              "width": 383,
+              "height": 838,
+              "streamBytes": 959,
+              "content": {
+                "components": 3,
+                "sampled": 3309,
+                "distinct": 1,
+                "dominantShare": 1,
+                "nonZeroShare": 1
+              },
+              "placed": {
+                "widthPt": 288.74998796875,
+                "heightPt": 628.4999738125
+              },
+              "coverage": {
+                "width": 0.485,
+                "height": 0.747
+              }
+            }
+          ],
+          "verdict": {
+            "images": 1,
+            "big_and_filling_the_sheet": 0,
+            "carrying_visible_map_pixels": 0
+          }
+        },
+        "A4 landscape": {
+          "bytes": 63570,
+          "pagePt": {
+            "width": 841.91998,
+            "height": 595.91998
+          },
+          "pages": 2,
+          "imageCount": 1,
+          "images": [
+            {
+              "id": 4,
+              "width": 383,
+              "height": 838,
+              "streamBytes": 959,
+              "content": {
+                "components": 3,
+                "sampled": 3309,
+                "distinct": 1,
+                "dominantShare": 1,
+                "nonZeroShare": 1
+              },
+              "placed": {
+                "widthPt": 288.74998796875,
+                "heightPt": 628.4999738125
+              },
+              "coverage": {
+                "width": 0.343,
+                "height": 1.055
+              }
+            }
+          ],
+          "verdict": {
+            "images": 1,
+            "big_and_filling_the_sheet": 0,
+            "carrying_visible_map_pixels": 0
+          }
+        }
+      },
+      "menu_before_print for reader paper (@page size:auto)": {
+        "open": true,
+        "menuTitle": "File",
+        "expanded": "true",
+        "panelHidden": false
+      },
+      "menu_before_print for A4 portrait": {
+        "open": true,
+        "menuTitle": "File",
+        "expanded": "true",
+        "panelHidden": false
+      },
+      "menu_before_print for A4 landscape": {
+        "open": true,
+        "menuTitle": "File",
+        "expanded": "true",
+        "panelHidden": false
+      }
+    },
+    "1400x900 desktop": {
+      "handles": {
+        "v9": {
+          "present": true,
+          "tag": null,
+          "getCanvas": "function",
+          "once": "function",
+          "triggerRepaint": "function"
+        },
+        "windowMap": {
+          "present": true,
+          "tag": "DIV",
+          "getCanvas": "undefined",
+          "once": "undefined",
+          "triggerRepaint": "undefined"
+        },
+        "legacyMap": {
+          "present": false
+        },
+        "legacyCurrent": "undefined",
+        "atlasGeneration": "202609241334",
+        "datasetGeneration": "202609241334"
+      },
+      "selectors": {
+        "print": "#gridatlas-export-print",
+        "image": "#gridatlas-export-image"
+      },
+      "menu_before_save": {
+        "open": true,
+        "menuTitle": "File",
+        "expanded": "true",
+        "panelHidden": false
+      },
+      "imageButtonText": "✓ Image saved",
+      "downloadName": "gridatlas-202610262331.png",
+      "pngBytes": 16101,
+      "pixels": {
+        "naturalWidth": 1390,
+        "naturalHeight": 518,
+        "sampled": 4355,
+        "opaque": 4355,
+        "distinctColours": 1,
+        "dominantShare": 1
+      },
+      "capturedHref": "data:image/png;base64,iVBORw0KGg",
+      "menu_before_print": {
+        "open": true,
+        "menuTitle": "File",
+        "expanded": "true",
+        "panelHidden": false
+      },
+      "printCalls": 1,
+      "printCssInstalled": true,
+      "stamp": "generation 202609241334 · 2026-10-26 23:31 UTC",
+      "attrib": "Data © OpenStreetMap contributors | © CARTO | EV data © Open Charge Map",
+      "screenCanvas": {
+        "width": 1390,
+        "height": 518
+      },
+      "canvasBuffer": {
+        "width": 1390,
+        "height": 518
+      },
+      "printCanvas": {
+        "width": 1392,
+        "height": 518
+      },
+      "pdf": {
+        "reader paper (@page size:auto)": {
+          "bytes": 128507,
+          "pagePt": {
+            "width": 612,
+            "height": 792
+          },
+          "pages": 1,
+          "imageCount": 1,
+          "images": [
+            {
+              "id": 48,
+              "width": 1390,
+              "height": 518,
+              "streamBytes": 2121,
+              "content": {
+                "components": 3,
+                "sampled": 7423,
+                "distinct": 1,
+                "dominantShare": 1,
+                "nonZeroShare": 1
+              },
+              "placed": {
+                "widthPt": 696.000018999998,
+                "heightPt": 129.0000090249994
+              },
+              "coverage": {
+                "width": 1.137,
+                "height": 0.163
+              }
+            }
+          ],
+          "verdict": {
+            "images": 1,
+            "big_and_filling_the_sheet": 0,
+            "carrying_visible_map_pixels": 0
+          }
+        },
+        "A4 portrait": {
+          "bytes": 134498,
+          "pagePt": {
+            "width": 595.91998,
+            "height": 841.91998
+          },
+          "pages": 1,
+          "imageCount": 1,
+          "images": [
+            {
+              "id": 52,
+              "width": 1390,
+              "height": 518,
+              "streamBytes": 2121,
+              "content": {
+                "components": 3,
+                "sampled": 7423,
+                "distinct": 1,
+                "dominantShare": 1,
+                "nonZeroShare": 1
+              },
+              "placed": {
+                "widthPt": 696.000018999998,
+                "heightPt": 109.9999970166666
+              },
+              "coverage": {
+                "width": 1.168,
+                "height": 0.131
+              }
+            }
+          ],
+          "verdict": {
+            "images": 1,
+            "big_and_filling_the_sheet": 0,
+            "carrying_visible_map_pixels": 0
+          }
+        },
+        "A4 landscape": {
+          "bytes": 112773,
+          "pagePt": {
+            "width": 841.91998,
+            "height": 595.91998
+          },
+          "pages": 2,
+          "imageCount": 1,
+          "images": [
+            {
+              "id": 32,
+              "width": 1390,
+              "height": 518,
+              "streamBytes": 2121,
+              "content": {
+                "components": 3,
+                "sampled": 7423,
+                "distinct": 1,
+                "dominantShare": 1,
+                "nonZeroShare": 1
+              },
+              "placed": {
+                "widthPt": 837.437125106785,
+                "heightPt": 291.1778494675891
+              },
+              "coverage": {
+                "width": 0.995,
+                "height": 0.489
+              }
+            }
+          ],
+          "verdict": {
+            "images": 1,
+            "big_and_filling_the_sheet": 1,
+            "carrying_visible_map_pixels": 0
+          }
+        }
+      },
+      "menu_before_print for reader paper (@page size:auto)": {
+        "open": true,
+        "menuTitle": "File",
+        "expanded": "true",
+        "panelHidden": false
+      },
+      "menu_before_print for A4 portrait": {
+        "open": true,
+        "menuTitle": "File",
+        "expanded": "true",
+        "panelHidden": false
+      },
+      "menu_before_print for A4 landscape": {
+        "open": true,
+        "menuTitle": "File",
+        "expanded": "true",
+        "panelHidden": false
+      }
+    }
+  }
+}
+PASS  393x852 phone: CONTROL - the published map handle is a live map object  [__GRIDATLAS_V9_MAP__ getCanvas=function once=function triggerRepaint=function]
+PASS  393x852 phone: CONTROL - window.map is the DIV, so it can never be the handle  [window.map is <DIV> getCanvas=undefined]
+PASS  393x852 phone: the composition publishes its generation to the page  [__GRIDATLAS_ATLAS__.generation=202609241334 current.json=202609241334]
+PASS  393x852 phone: both export controls are addressable without reading their text  [print via #gridatlas-export-print; image via #gridatlas-export-image]
+PASS  393x852 phone: the export menu is open before save is clicked  [open=true aria-expanded=true panel.hidden=false (menu titled "File")]
+PASS  393x852 phone: saving an image reports success rather than refusing  [button reads "✓ Image saved"]
+PASS  393x852 phone: the browser actually received a download  [download=gridatlas-202610262331.png href starts "data:image/png;base64,iVBORw0KGg"]
+FAIL  393x852 phone: the saved PNG is a plausible size for a map view  [9533 bytes]
+FAIL  393x852 phone: the saved PNG carries map content, not a solid rectangle  [383x838, 1 distinct colours over 5005 sampled pixels, dominant colour 1 of them, 5005 non-transparent]
+PASS  393x852 phone: the export menu is open before print is clicked  [open=true aria-expanded=true panel.hidden=false (menu titled "File")]
+PASS  393x852 phone: the print stylesheet is installed by the Print control  [window.print called 1 time(s)]
+PASS  393x852 phone: the export stamp names the generation it came from  [stamp="generation 202609241334 · 2026-10-26 23:31 UTC"]
+PASS  393x852 phone: the export stamp still carries the attribution  [Data © OpenStreetMap contributors | © CARTO | EV data © Open Charge Map]
+PASS  393x852 phone: the map canvas has a height greater than zero under print media  [screen 383x838 -> print 385x838]
+PASS  393x852 phone: the printed map keeps at least half its on-screen height  [838 vs 838 on screen]
+PASS  393x852 phone: the export menu is open before print for reader paper (@page size:auto) is clicked  [open=true aria-expanded=true panel.hidden=false (menu titled "File")]
+PASS  393x852 phone / reader paper (@page size:auto): the print overlays are on the page, exactly once each  [1 furniture node(s), 1 captured-map node(s)]
+PASS  393x852 phone / reader paper (@page size:auto): the PDF contains a rasterised map  [1 image XObjects (masks excluded) in 60869 bytes]
+FAIL  393x852 phone / reader paper (@page size:auto): an image the size of the sheet is on the page, not just an icon  [#11 383x838px placed 0.472x0.794 of the sheet, 1 distinct/3309 sampled, dominant 1, no mask]
+FAIL  393x852 phone / reader paper (@page size:auto): that image carries visible map pixels, not one flat colour behind an empty mask  [no sheet-sized image to inspect]
+PASS  393x852 phone / reader paper (@page size:auto): the slide is one page  [1 pages]
+PASS  393x852 phone: the export menu is open before print for A4 portrait is clicked  [open=true aria-expanded=true panel.hidden=false (menu titled "File")]
+PASS  393x852 phone / A4 portrait: the print overlays are on the page, exactly once each  [1 furniture node(s), 1 captured-map node(s)]
+PASS  393x852 phone / A4 portrait: the PDF contains a rasterised map  [1 image XObjects (masks excluded) in 61032 bytes]
+FAIL  393x852 phone / A4 portrait: an image the size of the sheet is on the page, not just an icon  [#11 383x838px placed 0.485x0.747 of the sheet, 1 distinct/3309 sampled, dominant 1, no mask]
+FAIL  393x852 phone / A4 portrait: that image carries visible map pixels, not one flat colour behind an empty mask  [no sheet-sized image to inspect]
+PASS  393x852 phone / A4 portrait: the slide is one page  [1 pages]
+PASS  393x852 phone: the export menu is open before print for A4 landscape is clicked  [open=true aria-expanded=true panel.hidden=false (menu titled "File")]
+PASS  393x852 phone / A4 landscape: the print overlays are on the page, exactly once each  [1 furniture node(s), 1 captured-map node(s)]
+PASS  393x852 phone / A4 landscape: the PDF contains a rasterised map  [1 image XObjects (masks excluded) in 63570 bytes]
+FAIL  393x852 phone / A4 landscape: an image the size of the sheet is on the page, not just an icon  [#4 383x838px placed 0.343x1.055 of the sheet, 1 distinct/3309 sampled, dominant 1, no mask]
+FAIL  393x852 phone / A4 landscape: that image carries visible map pixels, not one flat colour behind an empty mask  [no sheet-sized image to inspect]
+FAIL  393x852 phone / A4 landscape: the slide is one page  [2 pages]
+PASS  1400x900 desktop: CONTROL - the published map handle is a live map object  [__GRIDATLAS_V9_MAP__ getCanvas=function once=function triggerRepaint=function]
+PASS  1400x900 desktop: CONTROL - window.map is the DIV, so it can never be the handle  [window.map is <DIV> getCanvas=undefined]
+PASS  1400x900 desktop: the composition publishes its generation to the page  [__GRIDATLAS_ATLAS__.generation=202609241334 current.json=202609241334]
+PASS  1400x900 desktop: both export controls are addressable without reading their text  [print via #gridatlas-export-print; image via #gridatlas-export-image]
+PASS  1400x900 desktop: the export menu is open before save is clicked  [open=true aria-expanded=true panel.hidden=false (menu titled "File")]
+PASS  1400x900 desktop: saving an image reports success rather than refusing  [button reads "✓ Image saved"]
+PASS  1400x900 desktop: the browser actually received a download  [download=gridatlas-202610262331.png href starts "data:image/png;base64,iVBORw0KGg"]
+PASS  1400x900 desktop: the saved PNG is a plausible size for a map view  [16101 bytes]
+FAIL  1400x900 desktop: the saved PNG carries map content, not a solid rectangle  [1390x518, 1 distinct colours over 4355 sampled pixels, dominant colour 1 of them, 4355 non-transparent]
+PASS  1400x900 desktop: the export menu is open before print is clicked  [open=true aria-expanded=true panel.hidden=false (menu titled "File")]
+PASS  1400x900 desktop: the print stylesheet is installed by the Print control  [window.print called 1 time(s)]
+PASS  1400x900 desktop: the export stamp names the generation it came from  [stamp="generation 202609241334 · 2026-10-26 23:31 UTC"]
+PASS  1400x900 desktop: the export stamp still carries the attribution  [Data © OpenStreetMap contributors | © CARTO | EV data © Open Charge Map]
+PASS  1400x900 desktop: the map canvas has a height greater than zero under print media  [screen 1390x518 -> print 1392x518]
+PASS  1400x900 desktop: the printed map keeps at least half its on-screen height  [518 vs 518 on screen]
+PASS  1400x900 desktop: the export menu is open before print for reader paper (@page size:auto) is clicked  [open=true aria-expanded=true panel.hidden=false (menu titled "File")]
+PASS  1400x900 desktop / reader paper (@page size:auto): the print overlays are on the page, exactly once each  [1 furniture node(s), 1 captured-map node(s)]
+PASS  1400x900 desktop / reader paper (@page size:auto): the PDF contains a rasterised map  [1 image XObjects (masks excluded) in 128507 bytes]
+FAIL  1400x900 desktop / reader paper (@page size:auto): an image the size of the sheet is on the page, not just an icon  [#48 1390x518px placed 1.137x0.163 of the sheet, 1 distinct/7423 sampled, dominant 1, no mask]
+FAIL  1400x900 desktop / reader paper (@page size:auto): that image carries visible map pixels, not one flat colour behind an empty mask  [no sheet-sized image to inspect]
+PASS  1400x900 desktop / reader paper (@page size:auto): the slide is one page  [1 pages]
+PASS  1400x900 desktop: the export menu is open before print for A4 portrait is clicked  [open=true aria-expanded=true panel.hidden=false (menu titled "File")]
+PASS  1400x900 desktop / A4 portrait: the print overlays are on the page, exactly once each  [1 furniture node(s), 1 captured-map node(s)]
+PASS  1400x900 desktop / A4 portrait: the PDF contains a rasterised map  [1 image XObjects (masks excluded) in 134498 bytes]
+FAIL  1400x900 desktop / A4 portrait: an image the size of the sheet is on the page, not just an icon  [#52 1390x518px placed 1.168x0.131 of the sheet, 1 distinct/7423 sampled, dominant 1, no mask]
+FAIL  1400x900 desktop / A4 portrait: that image carries visible map pixels, not one flat colour behind an empty mask  [no sheet-sized image to inspect]
+PASS  1400x900 desktop / A4 portrait: the slide is one page  [1 pages]
+PASS  1400x900 desktop: the export menu is open before print for A4 landscape is clicked  [open=true aria-expanded=true panel.hidden=false (menu titled "File")]
+PASS  1400x900 desktop / A4 landscape: the print overlays are on the page, exactly once each  [1 furniture node(s), 1 captured-map node(s)]
+PASS  1400x900 desktop / A4 landscape: the PDF contains a rasterised map  [1 image XObjects (masks excluded) in 112773 bytes]
+PASS  1400x900 desktop / A4 landscape: an image the size of the sheet is on the page, not just an icon  [#32 1390x518px placed 0.995x0.489 of the sheet, 1 distinct/7423 sampled, dominant 1, no mask]
+FAIL  1400x900 desktop / A4 landscape: that image carries visible map pixels, not one flat colour behind an empty mask  [#32 1390x518px placed 0.995x0.489 of the sheet, 1 distinct/7423 sampled, dominant 1, no mask [floors: 8 distinct, dominant < 0.95, alpha >= 0.5]]
+FAIL  1400x900 desktop / A4 landscape: the slide is one page  [2 pages]
+
+50/66 export outcome checks passed

@@ -1,0 +1,112 @@
+{
+  "schema": "gridatlas.overnight-programme-ledger.v1",
+  "generation": "202608310015",
+  "requested_start": "2026-08-31T00:15:00+01:00",
+  "installed_baseline_sha": "4522c9266dd58a8f13e7673ad95707a9976e3609",
+  "study_started_at": "2026-08-30T23:40:36.640Z",
+  "not_before": "2026-08-31T00:40:36.640Z",
+  "minimum_study_seconds": 3600,
+  "expected_scope_words": 43000,
+  "active_until": "2026-08-31T08:00:00Z",
+  "next_candidate_sequence": 1,
+  "observations": [
+    {
+      "generation": "202608310040",
+      "observed_at": "2026-08-30T23:40:36.640Z",
+      "source_fingerprint": "38973f807fef8673b9b91a43d44d73faec7fee4665b79f6c713312c124ea7ad1",
+      "main_sha": "fa9cf4770d430a1b63d435685df8c30142c9b1b5",
+      "refs": [
+        {
+          "ref": "origin/main",
+          "sha": "fa9cf4770d430a1b63d435685df8c30142c9b1b5",
+          "committed_at": "2026-08-31T00:40:28+01:00"
+        }
+      ],
+      "visible_unique_words": 15213,
+      "study_folder": "nightly/202608310015-gridatlas-overnight-next-versions/runs/202608310040-gridatlas-study-artifact-38973f80-run-33342440280",
+      "timer_mature": false,
+      "selected_composition": null
+    },
+    {
+      "generation": "202608310043",
+      "observed_at": "2026-08-30T23:43:33.108Z",
+      "source_fingerprint": "38973f807fef8673b9b91a43d44d73faec7fee4665b79f6c713312c124ea7ad1",
+      "main_sha": "1586d0394a148cc57fa0879e448ce53e5396d75c",
+      "refs": [
+        {
+          "ref": "origin/automation/202608310043-gridatlas-hard-scope-gate",
+          "sha": "f5c6ec14cb7d250d9af9105e4fbd635f9aa76381",
+          "committed_at": "2026-08-31T00:43:08+01:00"
+        },
+        {
+          "ref": "origin/main",
+          "sha": "1586d0394a148cc57fa0879e448ce53e5396d75c",
+          "committed_at": "2026-08-31T00:43:25+01:00"
+        }
+      ],
+      "visible_unique_words": 15213,
+      "study_folder": "nightly/202608310015-gridatlas-overnight-next-versions/runs/202608310043-gridatlas-study-artifact-38973f80-run-33342561875",
+      "timer_mature": false,
+      "selected_composition": null
+    },
+    {
+      "generation": "202608310237",
+      "observed_at": "2026-08-31T01:37:10.404Z",
+      "source_fingerprint": "9f699c189a90256b5edcee379495a0ced6e554c9e07e2f84618e0513e3ecf0d3",
+      "main_sha": "cd4ef33430a3e989d9cd53f87498c40112b95504",
+      "refs": [
+        {
+          "ref": "origin/automation/202608310043-gridatlas-hard-scope-gate",
+          "sha": "f5c6ec14cb7d250d9af9105e4fbd635f9aa76381",
+          "committed_at": "2026-08-31T00:43:08+01:00"
+        },
+        {
+          "ref": "origin/main",
+          "sha": "cd4ef33430a3e989d9cd53f87498c40112b95504",
+          "committed_at": "2026-08-31T00:59:10+01:00"
+        }
+      ],
+      "visible_unique_words": 23622,
+      "study_folder": "nightly/202608310015-gridatlas-overnight-next-versions/runs/202608310237-gridatlas-study-artifact-9f699c18-run-33348127158",
+      "timer_mature": true,
+      "selected_composition": null
+    },
+    {
+      "generation": "202608310446",
+      "observed_at": "2026-08-31T03:46:27.394Z",
+      "source_fingerprint": "9f699c189a90256b5edcee379495a0ced6e554c9e07e2f84618e0513e3ecf0d3",
+      "main_sha": "71365bb857e2f16c892dc8bbc9dfe6da1bc46eb5",
+      "refs": [
+        {
+          "ref": "origin/automation/202608310043-gridatlas-hard-scope-gate",
+          "sha": "f5c6ec14cb7d250d9af9105e4fbd635f9aa76381",
+          "committed_at": "2026-08-31T00:43:08+01:00"
+        },
+        {
+          "ref": "origin/main",
+          "sha": "71365bb857e2f16c892dc8bbc9dfe6da1bc46eb5",
+          "committed_at": "2026-08-31T01:37:11Z"
+        }
+      ],
+      "visible_unique_words": 23622,
+      "study_folder": "nightly/202608310015-gridatlas-overnight-next-versions/runs/202608310446-gridatlas-study-artifact-9f699c18-run-33354907599",
+      "timer_mature": true,
+      "selected_composition": null
+    }
+  ],
+  "candidates": [],
+  "last_observed_at": "2026-08-31T03:46:27.394Z",
+  "last_source_fingerprint": "9f699c189a90256b5edcee379495a0ced6e554c9e07e2f84618e0513e3ecf0d3",
+  "last_main_sha": "71365bb857e2f16c892dc8bbc9dfe6da1bc46eb5",
+  "last_visible_unique_words": 23622,
+  "last_scope_word_status": "ADDITIONAL_ARTIFACTS_EXPECTED",
+  "last_corpus_gate": {
+    "checked_at": "2026-08-31T03:46:28.755239Z",
+    "source_fingerprint": "9f699c189a90256b5edcee379495a0ced6e554c9e07e2f84618e0513e3ecf0d3",
+    "visible_unique_words": 23622,
+    "required_unique_words": 43000,
+    "scope_ready": false,
+    "candidate_suppressed": true,
+    "candidate_id": "202608310446-gridatlas-app-candidate-01-9f699c18"
+  }
+}

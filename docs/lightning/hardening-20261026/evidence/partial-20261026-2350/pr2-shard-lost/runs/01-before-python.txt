@@ -1,0 +1,375 @@
+test_defaults_to_six_hours_without_history (test_collect.LookbackWindowTests.test_defaults_to_six_hours_without_history) ... ok
+test_exactly_at_the_cap_is_not_flagged (test_collect.LookbackWindowTests.test_exactly_at_the_cap_is_not_flagged) ... ok
+test_gap_is_capped_at_48_hours_and_flagged (test_collect.LookbackWindowTests.test_gap_is_capped_at_48_hours_and_flagged) ... ok
+test_gap_since_last_success_plus_margin_wins_over_minimum (test_collect.LookbackWindowTests.test_gap_since_last_success_plus_margin_wins_over_minimum) ... ok
+test_last_success_comes_from_status_then_index_then_default (test_collect.LookbackWindowTests.test_last_success_comes_from_status_then_index_then_default) ... ok
+test_recent_success_keeps_the_six_hour_minimum (test_collect.LookbackWindowTests.test_recent_success_keeps_the_six_hour_minimum) ... ok
+test_adjacent_slots_merge_and_clip_to_the_query_window (test_collect.ProductSlotTests.test_adjacent_slots_merge_and_clip_to_the_query_window) ... ok
+test_long_tail_is_also_reported_as_a_gap (test_collect.ProductSlotTests.test_long_tail_is_also_reported_as_a_gap) ... ok
+test_merge_ranges_tolerates_one_second_seams (test_collect.ProductSlotTests.test_merge_ranges_tolerates_one_second_seams) ... ok
+test_missing_middle_slot_is_a_source_gap (test_collect.ProductSlotTests.test_missing_middle_slot_is_a_source_gap) ... ok
+test_real_product_name_yields_its_sensing_slot (test_collect.ProductSlotTests.test_real_product_name_yields_its_sensing_slot) ... ok
+test_unparseable_names_fall_back_to_the_query_window_and_say_so (test_collect.ProductSlotTests.test_unparseable_names_fall_back_to_the_query_window_and_say_so) ... ok
+test_main_without_credentials_writes_a_failure_record_and_raises (test_collect.RunRecordTests.test_main_without_credentials_writes_a_failure_record_and_raises) ... Query window 2026-10-26T17:42:22.421Z -> 2026-10-26T23:42:22.421Z (6.00 h, source=default, capped=False, last successful scan end=none)
+ok
+test_run_record_carries_window_slots_and_uncapped_features (test_collect.RunRecordTests.test_run_record_carries_window_slots_and_uncapped_features) ... ok
+test_deduplicate_and_retention (test_collect.UKLightningTests.test_deduplicate_and_retention) ... ok
+test_empty_collection_has_no_synthetic_strikes (test_collect.UKLightningTests.test_empty_collection_has_no_synthetic_strikes) ... ok
+test_feature_timestamp_and_provenance (test_collect.UKLightningTests.test_feature_timestamp_and_provenance) ... ok
+test_iso_utc_keeps_whole_seconds_and_strips_only_fractional_zeros (test_collect.UKLightningTests.test_iso_utc_keeps_whole_seconds_and_strips_only_fractional_zeros) ... ok
+test_no_outside_points (test_collect.UKLightningTests.test_no_outside_points) ... ok
+test_uk_extent_and_neighbouring_waters (test_collect.UKLightningTests.test_uk_extent_and_neighbouring_waters) ... ok
+test_utc_normalisation (test_collect.UKLightningTests.test_utc_normalisation) ... ok
+test_calendar_year_cutoff_handles_leap_day (test_history.LightningHistoryTests.test_calendar_year_cutoff_handles_leap_day) ... ok
+test_cli_ingest_and_verify (test_history.LightningHistoryTests.test_cli_ingest_and_verify) ... Archived 1 dated optical observations; 2 files changed, 0 days expired, 0 observations older than the cutoff clamped away, split days: none.
+{"rows": 366, "shards_checked": 1}
+ok
+test_damaged_day_archive_fails_without_erasure (test_history.LightningHistoryTests.test_damaged_day_archive_fails_without_erasure) ... ok
+test_day_shard_v1_shape_bytes_and_sha256_are_indexed (test_history.LightningHistoryTests.test_day_shard_v1_shape_bytes_and_sha256_are_indexed) ... ok
+test_day_with_flashes_but_no_recorded_window_gets_a_proven_lower_bound (test_history.LightningHistoryTests.test_day_with_flashes_but_no_recorded_window_gets_a_proven_lower_bound) ... ok
+test_duplicate_reingestion_and_rerun_are_idempotent_and_existing_bytes_win (test_history.LightningHistoryTests.test_duplicate_reingestion_and_rerun_are_idempotent_and_existing_bytes_win) ... ok
+test_index_v2_has_the_f8_fields_and_one_row_per_utc_date (test_history.LightningHistoryTests.test_index_v2_has_the_f8_fields_and_one_row_per_utc_date) ... ok
+test_listed_shard_missing_on_disk_becomes_unknown_not_zero (test_history.LightningHistoryTests.test_listed_shard_missing_on_disk_becomes_unknown_not_zero) ... ERROR
+test_missing_days_never_claim_zero_lightning (test_history.LightningHistoryTests.test_missing_days_never_claim_zero_lightning) ... ok
+test_missing_hourly_part_marks_the_whole_day_unknown (test_history.LightningHistoryTests.test_missing_hourly_part_marks_the_whole_day_unknown) ... ok
+test_never_scanned_and_scanned_zero_are_different_rows (test_history.LightningHistoryTests.test_never_scanned_and_scanned_zero_are_different_rows) ... ok
+test_observations_before_the_cutoff_are_clamped_and_flagged_not_raised (test_history.LightningHistoryTests.test_observations_before_the_cutoff_are_clamped_and_flagged_not_raised) ... ok
+test_outside_location_non_source_and_future_are_rejected (test_history.LightningHistoryTests.test_outside_location_non_source_and_future_are_rejected) ... ok
+test_overlap_scan_windows_merge_without_false_complete_coverage_claim (test_history.LightningHistoryTests.test_overlap_scan_windows_merge_without_false_complete_coverage_claim) ... ok
+test_partial_coverage_counts_only_scanned_seconds (test_history.LightningHistoryTests.test_partial_coverage_counts_only_scanned_seconds) ... ok
+test_real_constants_split_a_genuine_shape_storm_day (test_history.LightningHistoryTests.test_real_constants_split_a_genuine_shape_storm_day) ... ok
+test_retention_prunes_day_files_but_not_current (test_history.LightningHistoryTests.test_retention_prunes_day_files_but_not_current) ... ok
+test_sealed_rule (test_history.LightningHistoryTests.test_sealed_rule) ... ok
+test_seed_windows_are_used_only_when_no_index_exists (test_history.LightningHistoryTests.test_seed_windows_are_used_only_when_no_index_exists) ... ok
+test_shard_above_max_bytes_fails_loudly_and_writes_nothing (test_history.LightningHistoryTests.test_shard_above_max_bytes_fails_loudly_and_writes_nothing) ... ok
+test_storm_day_splits_into_hourly_parts_above_the_target (test_history.LightningHistoryTests.test_storm_day_splits_into_hourly_parts_above_the_target) ... ok
+test_unparsed_slot_names_record_no_coverage (test_history.LightningHistoryTests.test_unparsed_slot_names_record_no_coverage) ... ok
+test_untouched_days_are_verified_by_sha256_not_reparsed (test_history.LightningHistoryTests.test_untouched_days_are_verified_by_sha256_not_reparsed) ... ok
+test_v1_index_from_pr1_is_accepted_and_upgraded (test_history.LightningHistoryTests.test_v1_index_from_pr1_is_accepted_and_upgraded) ... ok
+test_verify_requires_bytes_and_sha256_and_matching_counts (test_history.LightningHistoryTests.test_verify_requires_bytes_and_sha256_and_matching_counts) ... ok
+test_windows_from_run_record_use_examined_ranges_only (test_history.LightningHistoryTests.test_windows_from_run_record_use_examined_ranges_only) ... ok
+test_zero_product_search_cannot_be_recorded_as_coverage (test_history.LightningHistoryTests.test_zero_product_search_cannot_be_recorded_as_coverage) ... ok
+test_cli_ingest_prints_the_alert_and_still_succeeds (test_shard_lost.ShardLostTests.test_cli_ingest_prints_the_alert_and_still_succeeds) ... Archived 1 dated optical observations; 0 files changed, 0 days expired, 0 observations older than the cutoff clamped away, split days: none.
+ERROR
+test_cli_recover (test_shard_lost.ShardLostTests.test_cli_recover) ... usage: python3 -m unittest [-h] {ingest,verify} ...
+python3 -m unittest: error: argument command: invalid choice: 'recover' (choose from 'ingest', 'verify')
+usage: python3 -m unittest [-h] {ingest,verify} ...
+python3 -m unittest: error: argument command: invalid choice: 'recover' (choose from 'ingest', 'verify')
+ERROR
+test_healthy_archive_reports_integrity_ok (test_shard_lost.ShardLostTests.test_healthy_archive_reports_integrity_ok) ... ERROR
+test_healthy_days_continue_while_the_archive_stays_flagged (test_shard_lost.ShardLostTests.test_healthy_days_continue_while_the_archive_stays_flagged) ... ERROR
+test_index_carries_an_explicit_integrity_alert (test_shard_lost.ShardLostTests.test_index_carries_an_explicit_integrity_alert) ... ERROR
+test_later_flashes_for_a_lost_day_are_quarantined_never_counted_or_discarded (test_shard_lost.ShardLostTests.test_later_flashes_for_a_lost_day_are_quarantined_never_counted_or_discarded) ... ERROR
+test_lost_day_is_unknown_and_its_last_recorded_entry_is_kept_as_evidence (test_shard_lost.ShardLostTests.test_lost_day_is_unknown_and_its_last_recorded_entry_is_kept_as_evidence) ... ERROR
+test_rebuild_must_contain_every_quarantined_flash (test_shard_lost.ShardLostTests.test_rebuild_must_contain_every_quarantined_flash) ... ERROR
+test_rebuild_must_cover_the_recorded_scan_and_match_the_recorded_count (test_shard_lost.ShardLostTests.test_rebuild_must_cover_the_recorded_scan_and_match_the_recorded_count) ... ERROR
+test_recover_from_a_verified_earlier_shard_restores_the_row_and_audits_it (test_shard_lost.ShardLostTests.test_recover_from_a_verified_earlier_shard_restores_the_row_and_audits_it) ... ERROR
+test_recover_refuses_a_day_that_is_not_lost (test_shard_lost.ShardLostTests.test_recover_refuses_a_day_that_is_not_lost) ... ERROR
+test_recover_refuses_a_partial_or_altered_shard_and_changes_nothing (test_shard_lost.ShardLostTests.test_recover_refuses_a_partial_or_altered_shard_and_changes_nothing) ... ERROR
+test_recover_refuses_without_a_recorded_entry_unless_an_earlier_index_is_given (test_shard_lost.ShardLostTests.test_recover_refuses_without_a_recorded_entry_unless_an_earlier_index_is_given) ... ERROR
+test_recover_split_day_needs_every_missing_part_and_verifies_survivors (test_shard_lost.ShardLostTests.test_recover_split_day_needs_every_missing_part_and_verifies_survivors) ... ERROR
+test_unanchored_rebuild_needs_an_explicit_flag_and_is_audited_as_such (test_shard_lost.ShardLostTests.test_unanchored_rebuild_needs_an_explicit_flag_and_is_audited_as_such) ... ERROR
+test_verify_rejects_a_silently_cleared_flag_or_a_lost_row_with_a_count (test_shard_lost.ShardLostTests.test_verify_rejects_a_silently_cleared_flag_or_a_lost_row_with_a_count) ... FAIL
+test_alert_command_exits_nonzero_while_a_shard_is_lost (test_status.StatusTests.test_alert_command_exits_nonzero_while_a_shard_is_lost) ... usage: python3 -m unittest [-h] {write} ...
+python3 -m unittest: error: argument command: invalid choice: 'alert' (choose from 'write')
+ERROR
+test_archive_failure_is_recorded_without_touching_feed_success (test_status.StatusTests.test_archive_failure_is_recorded_without_touching_feed_success) ... ok
+test_cli_writes_the_file_even_without_a_run_record (test_status.StatusTests.test_cli_writes_the_file_even_without_a_run_record) ... status: failure health=never last_successful_scan_end=None consecutive_failures=1 archive=skipped
+status: success health=ok last_successful_scan_end=2026-10-26T14:10:09.000Z consecutive_failures=0 archive=success
+ok
+test_failure_keeps_previous_success_and_counts_consecutive_failures (test_status.StatusTests.test_failure_keeps_previous_success_and_counts_consecutive_failures) ... ok
+test_health_thresholds (test_status.StatusTests.test_health_thresholds) ... ok
+test_integrity_alert_is_carried_when_the_archive_step_fails_or_is_skipped (test_status.StatusTests.test_integrity_alert_is_carried_when_the_archive_step_fails_or_is_skipped) ... ERROR
+test_lost_days_reach_the_status_file (test_status.StatusTests.test_lost_days_reach_the_status_file) ... ok
+test_recovered_archive_reports_ok_again (test_status.StatusTests.test_recovered_archive_reports_ok_again) ... ERROR
+test_shard_lost_degrades_health_and_raises_an_integrity_alert (test_status.StatusTests.test_shard_lost_degrades_health_and_raises_an_integrity_alert) ... ERROR
+test_success_records_the_examined_scan_end_not_now (test_status.StatusTests.test_success_records_the_examined_scan_end_not_now) ... ok
+test_unparsed_slots_do_not_advance_the_scan_end (test_status.StatusTests.test_unparsed_slots_do_not_advance_the_scan_end) ... ok
+test_archive_and_status_are_committed_together_after_a_good_run (test_workflow.WorkflowShellTests.test_archive_and_status_are_committed_together_after_a_good_run) ... ok
+test_archive_step_runs_verify_after_ingest_and_fails_when_verify_fails (test_workflow.WorkflowShellTests.test_archive_step_runs_verify_after_ingest_and_fails_when_verify_fails) ... ok
+test_failed_archive_step_commits_status_only_and_restores_the_archive (test_workflow.WorkflowShellTests.test_failed_archive_step_commits_status_only_and_restores_the_archive) ... ok
+test_status_is_committed_when_data_history_does_not_exist_yet (test_workflow.WorkflowShellTests.test_status_is_committed_when_data_history_does_not_exist_yet) ... ok
+test_surface_step_fails_on_an_integrity_alert_even_when_collect_and_archive_succeed (test_workflow.WorkflowShellTests.test_surface_step_fails_on_an_integrity_alert_even_when_collect_and_archive_succeed) ... ERROR
+
+======================================================================
+ERROR: test_listed_shard_missing_on_disk_becomes_unknown_not_zero (test_history.LightningHistoryTests.test_listed_shard_missing_on_disk_becomes_unknown_not_zero)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/pr2-shard-lost/wt/tests/test_history.py", line 380, in test_listed_shard_missing_on_disk_becomes_unknown_not_zero
+    self.assertEqual((third["quarantined_lost_day"], third["dropped_lost_day"]), (1, 0))
+                      ~~~~~^^^^^^^^^^^^^^^^^^^^^^^^
+KeyError: 'quarantined_lost_day'
+
+======================================================================
+ERROR: test_cli_ingest_prints_the_alert_and_still_succeeds (test_shard_lost.ShardLostTests.test_cli_ingest_prints_the_alert_and_still_succeeds)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/pr2-shard-lost/wt/tests/test_shard_lost.py", line 115, in test_cli_ingest_prints_the_alert_and_still_succeeds
+    self.assertEqual(json.loads(out.read_text())["integrity"]["state"], "shard_lost")
+                     ~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+KeyError: 'integrity'
+
+======================================================================
+ERROR: test_cli_recover (test_shard_lost.ShardLostTests.test_cli_recover)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.13/argparse.py", line 1965, in _parse_known_args2
+    namespace, args = self._parse_known_args(args, namespace, intermixed)
+                      ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.13/argparse.py", line 2197, in _parse_known_args
+    positionals_end_index = consume_positionals(start_index)
+  File "/usr/local/lib/python3.13/argparse.py", line 2172, in consume_positionals
+    take_action(action, args)
+    ~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.13/argparse.py", line 2026, in take_action
+    argument_values = self._get_values(action, argument_strings)
+  File "/usr/local/lib/python3.13/argparse.py", line 2556, in _get_values
+    self._check_value(action, value[0])
+    ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.13/argparse.py", line 2606, in _check_value
+    raise ArgumentError(action, msg % args)
+argparse.ArgumentError: argument command: invalid choice: 'recover' (choose from 'ingest', 'verify')
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/pr2-shard-lost/wt/tests/test_shard_lost.py", line 281, in test_cli_recover
+    history.main(["recover", "--archive-dir", str(self.root), "--day", LOST, "--from-shard", str(bad),
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                  "--now", self.now.isoformat()])
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/pr2-shard-lost/wt/history.py", line 651, in main
+    args = parser.parse_args(argv)
+  File "/usr/local/lib/python3.13/argparse.py", line 1926, in parse_args
+    args, argv = self.parse_known_args(args, namespace)
+                 ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.13/argparse.py", line 1936, in parse_known_args
+    return self._parse_known_args2(args, namespace, intermixed=False)
+           ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.13/argparse.py", line 1967, in _parse_known_args2
+    self.error(str(err))
+    ~~~~~~~~~~^^^^^^^^^^
+  File "/usr/local/lib/python3.13/argparse.py", line 2686, in error
+    self.exit(2, _('%(prog)s: error: %(message)s\n') % args)
+    ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.13/argparse.py", line 2673, in exit
+    _sys.exit(status)
+    ~~~~~~~~~^^^^^^^^
+SystemExit: 2
+
+======================================================================
+ERROR: test_healthy_archive_reports_integrity_ok (test_shard_lost.ShardLostTests.test_healthy_archive_reports_integrity_ok)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/pr2-shard-lost/wt/tests/test_shard_lost.py", line 103, in test_healthy_archive_reports_integrity_ok
+    self.assertEqual(result["index"]["integrity"], {"state": "ok", "alert": None, "lost_days": [], "recoveries": []})
+                     ~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+KeyError: 'integrity'
+
+======================================================================
+ERROR: test_healthy_days_continue_while_the_archive_stays_flagged (test_shard_lost.ShardLostTests.test_healthy_days_continue_while_the_archive_stays_flagged)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/pr2-shard-lost/wt/tests/test_shard_lost.py", line 126, in test_healthy_days_continue_while_the_archive_stays_flagged
+    self.assertEqual(later["index"]["integrity"]["state"], "shard_lost")
+                     ~~~~~~~~~~~~~~^^^^^^^^^^^^^
+KeyError: 'integrity'
+
+======================================================================
+ERROR: test_index_carries_an_explicit_integrity_alert (test_shard_lost.ShardLostTests.test_index_carries_an_explicit_integrity_alert)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/pr2-shard-lost/wt/tests/test_shard_lost.py", line 93, in test_index_carries_an_explicit_integrity_alert
+    integrity = result["index"]["integrity"]
+                ~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+KeyError: 'integrity'
+
+======================================================================
+ERROR: test_later_flashes_for_a_lost_day_are_quarantined_never_counted_or_discarded (test_shard_lost.ShardLostTests.test_later_flashes_for_a_lost_day_are_quarantined_never_counted_or_discarded)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/pr2-shard-lost/wt/tests/test_shard_lost.py", line 82, in test_later_flashes_for_a_lost_day_are_quarantined_never_counted_or_discarded
+    self.assertEqual((late["quarantined_lost_day"], late["dropped_lost_day"]), (1, 0))
+                      ~~~~^^^^^^^^^^^^^^^^^^^^^^^^
+KeyError: 'quarantined_lost_day'
+
+======================================================================
+ERROR: test_lost_day_is_unknown_and_its_last_recorded_entry_is_kept_as_evidence (test_shard_lost.ShardLostTests.test_lost_day_is_unknown_and_its_last_recorded_entry_is_kept_as_evidence)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/pr2-shard-lost/wt/tests/test_shard_lost.py", line 70, in test_lost_day_is_unknown_and_its_last_recorded_entry_is_kept_as_evidence
+    lost = result["index"]["integrity"]["lost_days"]
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+KeyError: 'integrity'
+
+======================================================================
+ERROR: test_rebuild_must_contain_every_quarantined_flash (test_shard_lost.ShardLostTests.test_rebuild_must_contain_every_quarantined_flash)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/pr2-shard-lost/wt/tests/test_shard_lost.py", line 259, in test_rebuild_must_contain_every_quarantined_flash
+    history.recover_day(self.root, LOST, now=self.now + timedelta(hours=2), rebuild_record=record)
+    ^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'history' has no attribute 'recover_day'
+
+======================================================================
+ERROR: test_rebuild_must_cover_the_recorded_scan_and_match_the_recorded_count (test_shard_lost.ShardLostTests.test_rebuild_must_cover_the_recorded_scan_and_match_the_recorded_count)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/pr2-shard-lost/wt/tests/test_shard_lost.py", line 234, in test_rebuild_must_cover_the_recorded_scan_and_match_the_recorded_count
+    history.recover_day(self.root, LOST, now=later, rebuild_record=half)
+    ^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'history' has no attribute 'recover_day'
+
+======================================================================
+ERROR: test_recover_from_a_verified_earlier_shard_restores_the_row_and_audits_it (test_shard_lost.ShardLostTests.test_recover_from_a_verified_earlier_shard_restores_the_row_and_audits_it)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/pr2-shard-lost/wt/tests/test_shard_lost.py", line 147, in test_recover_from_a_verified_earlier_shard_restores_the_row_and_audits_it
+    result = history.recover_day(self.root, LOST, now=self.now + timedelta(hours=1),
+             ^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'history' has no attribute 'recover_day'
+
+======================================================================
+ERROR: test_recover_refuses_a_day_that_is_not_lost (test_shard_lost.ShardLostTests.test_recover_refuses_a_day_that_is_not_lost)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/pr2-shard-lost/wt/tests/test_shard_lost.py", line 215, in test_recover_refuses_a_day_that_is_not_lost
+    history.recover_day(self.root, LOST, now=self.now, from_shards=[self.root / day_path(self.day.date())])
+    ^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'history' has no attribute 'recover_day'
+
+======================================================================
+ERROR: test_recover_refuses_a_partial_or_altered_shard_and_changes_nothing (test_shard_lost.ShardLostTests.test_recover_refuses_a_partial_or_altered_shard_and_changes_nothing)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/pr2-shard-lost/wt/tests/test_shard_lost.py", line 177, in test_recover_refuses_a_partial_or_altered_shard_and_changes_nothing
+    history.recover_day(self.root, LOST, now=self.now, from_shards=[bad])
+    ^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'history' has no attribute 'recover_day'
+
+======================================================================
+ERROR: test_recover_refuses_without_a_recorded_entry_unless_an_earlier_index_is_given (test_shard_lost.ShardLostTests.test_recover_refuses_without_a_recorded_entry_unless_an_earlier_index_is_given)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/pr2-shard-lost/wt/tests/test_shard_lost.py", line 184, in test_recover_refuses_without_a_recorded_entry_unless_an_earlier_index_is_given
+    index["integrity"]["lost_days"][0]["last_recorded"] = None  # e.g. lost before evidence was kept
+    ~~~~~^^^^^^^^^^^^^
+KeyError: 'integrity'
+
+======================================================================
+ERROR: test_recover_split_day_needs_every_missing_part_and_verifies_survivors (test_shard_lost.ShardLostTests.test_recover_split_day_needs_every_missing_part_and_verifies_survivors)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/pr2-shard-lost/wt/tests/test_shard_lost.py", line 204, in test_recover_split_day_needs_every_missing_part_and_verifies_survivors
+    history.recover_day(self.root, LOST, now=self.now, from_shards=[self.saved / "03.json"],
+    ^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'history' has no attribute 'recover_day'
+
+======================================================================
+ERROR: test_unanchored_rebuild_needs_an_explicit_flag_and_is_audited_as_such (test_shard_lost.ShardLostTests.test_unanchored_rebuild_needs_an_explicit_flag_and_is_audited_as_such)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/pr2-shard-lost/wt/tests/test_shard_lost.py", line 264, in test_unanchored_rebuild_needs_an_explicit_flag_and_is_audited_as_such
+    index["integrity"]["lost_days"][0]["last_recorded"] = None
+    ~~~~~^^^^^^^^^^^^^
+KeyError: 'integrity'
+
+======================================================================
+ERROR: test_alert_command_exits_nonzero_while_a_shard_is_lost (test_status.StatusTests.test_alert_command_exits_nonzero_while_a_shard_is_lost)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.13/argparse.py", line 1965, in _parse_known_args2
+    namespace, args = self._parse_known_args(args, namespace, intermixed)
+                      ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.13/argparse.py", line 2197, in _parse_known_args
+    positionals_end_index = consume_positionals(start_index)
+  File "/usr/local/lib/python3.13/argparse.py", line 2172, in consume_positionals
+    take_action(action, args)
+    ~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.13/argparse.py", line 2026, in take_action
+    argument_values = self._get_values(action, argument_strings)
+  File "/usr/local/lib/python3.13/argparse.py", line 2556, in _get_values
+    self._check_value(action, value[0])
+    ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.13/argparse.py", line 2606, in _check_value
+    raise ArgumentError(action, msg % args)
+argparse.ArgumentError: argument command: invalid choice: 'alert' (choose from 'write')
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/pr2-shard-lost/wt/tests/test_status.py", line 131, in test_alert_command_exits_nonzero_while_a_shard_is_lost
+    self.assertEqual(status_module.main(["alert", "--status", str(target)]), 1)
+                     ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/pr2-shard-lost/wt/status.py", line 147, in main
+    args = parser.parse_args(argv)
+  File "/usr/local/lib/python3.13/argparse.py", line 1926, in parse_args
+    args, argv = self.parse_known_args(args, namespace)
+                 ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.13/argparse.py", line 1936, in parse_known_args
+    return self._parse_known_args2(args, namespace, intermixed=False)
+           ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.13/argparse.py", line 1967, in _parse_known_args2
+    self.error(str(err))
+    ~~~~~~~~~~^^^^^^^^^^
+  File "/usr/local/lib/python3.13/argparse.py", line 2686, in error
+    self.exit(2, _('%(prog)s: error: %(message)s\n') % args)
+    ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.13/argparse.py", line 2673, in exit
+    _sys.exit(status)
+    ~~~~~~~~~^^^^^^^^
+SystemExit: 2
+
+======================================================================
+ERROR: test_integrity_alert_is_carried_when_the_archive_step_fails_or_is_skipped (test_status.StatusTests.test_integrity_alert_is_carried_when_the_archive_step_fails_or_is_skipped)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/pr2-shard-lost/wt/tests/test_status.py", line 113, in test_integrity_alert_is_carried_when_the_archive_step_fails_or_is_skipped
+    self.assertEqual(later["integrity"]["state"], "shard_lost", outcome)
+                     ~~~~~^^^^^^^^^^^^^
+KeyError: 'integrity'
+
+======================================================================
+ERROR: test_recovered_archive_reports_ok_again (test_status.StatusTests.test_recovered_archive_reports_ok_again)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/pr2-shard-lost/wt/tests/test_status.py", line 123, in test_recovered_archive_reports_ok_again
+    self.assertEqual((ok["health"], ok["integrity"]["state"], ok["integrity"]["alert"]), ("ok", "ok", None))
+                                    ~~^^^^^^^^^^^^^
+KeyError: 'integrity'
+
+======================================================================
+ERROR: test_shard_lost_degrades_health_and_raises_an_integrity_alert (test_status.StatusTests.test_shard_lost_degrades_health_and_raises_an_integrity_alert)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/pr2-shard-lost/wt/tests/test_status.py", line 100, in test_shard_lost_degrades_health_and_raises_an_integrity_alert
+    self.assertEqual(result["freshness"], "ok")
+                     ~~~~~~^^^^^^^^^^^^^
+KeyError: 'freshness'
+
+======================================================================
+ERROR: test_surface_step_fails_on_an_integrity_alert_even_when_collect_and_archive_succeed (test_workflow.WorkflowShellTests.test_surface_step_fails_on_an_integrity_alert_even_when_collect_and_archive_succeed)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/pr2-shard-lost/wt/tests/test_workflow.py", line 142, in test_surface_step_fails_on_an_integrity_alert_even_when_collect_and_archive_succeed
+    done = self.run_step(SURFACE_STEP, ok)
+  File "/tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/pr2-shard-lost/wt/tests/test_workflow.py", line 74, in run_step
+    script = substitute(step_script(name), outcomes)
+                        ~~~~~~~~~~~^^^^^^
+  File "/tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/pr2-shard-lost/wt/tests/test_workflow.py", line 26, in step_script
+    start = next(i for i, line in enumerate(lines) if line.strip() == f"- name: {name}")
+StopIteration
+
+======================================================================
+FAIL: test_verify_rejects_a_silently_cleared_flag_or_a_lost_row_with_a_count (test_shard_lost.ShardLostTests.test_verify_rejects_a_silently_cleared_flag_or_a_lost_row_with_a_count)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/pr2-shard-lost/wt/tests/test_shard_lost.py", line 135, in test_verify_rejects_a_silently_cleared_flag_or_a_lost_row_with_a_count
+    with self.assertRaisesRegex(ValueError, "shard_lost"):
+         ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: ValueError not raised
+
+----------------------------------------------------------------------
+Ran 80 tests in 27.978s
+
+FAILED (failures=1, errors=21)

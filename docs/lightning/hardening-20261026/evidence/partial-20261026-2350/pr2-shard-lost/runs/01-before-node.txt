@@ -1,0 +1,180 @@
+TAP version 13
+# Subtest: V6-like names, leap-year calendar and exact UTC window boundaries
+ok 1 - V6-like names, leap-year calendar and exact UTC window boundaries
+  ---
+  duration_ms: 69.286481
+  type: 'test'
+  ...
+# Subtest: Previous and next period navigation uses UTC and avoids future lookahead
+ok 2 - Previous and next period navigation uses UTC and avoids future lookahead
+  ---
+  duration_ms: 0.444249
+  type: 'test'
+  ...
+# Subtest: Window end is clamped to now, never a future window
+ok 3 - Window end is clamped to now, never a future window
+  ---
+  duration_ms: 0.293496
+  type: 'test'
+  ...
+# Subtest: Retention edge clamps and flags instead of throwing; entirely-before is a state
+ok 4 - Retention edge clamps and flags instead of throwing; entirely-before is a state
+  ---
+  duration_ms: 100.375635
+  type: 'test'
+  ...
+# Subtest: Index v2 is accepted and validated; v1 is normalised to v2 rows with coverage from scan_windows
+ok 5 - Index v2 is accepted and validated; v1 is normalised to v2 rows with coverage from scan_windows
+  ---
+  duration_ms: 120.096163
+  type: 'test'
+  ...
+# Subtest: Staleness uses generated_utc age or next_update_due_utc
+ok 6 - Staleness uses generated_utc age or next_update_due_utc
+  ---
+  duration_ms: 26.764037
+  type: 'test'
+  ...
+# Subtest: Coverage per day and per window: searched fraction, runs, not-yet-ingested tail, unknown days
+ok 7 - Coverage per day and per window: searched fraction, runs, not-yet-ingested tail, unknown days
+  ---
+  duration_ms: 21.927988
+  type: 'test'
+  ...
+# Subtest: Budget is decided from index bytes and counts before any shard request
+ok 8 - Budget is decided from index bytes and counts before any shard request
+  ---
+  duration_ms: 2378.909655
+  type: 'test'
+  ...
+# Subtest: Hourly parts: only the parts overlapping the window are targeted
+ok 9 - Hourly parts: only the parts overlapping the window are targeted
+  ---
+  duration_ms: 51.607345
+  type: 'test'
+  ...
+# Subtest: Year lookback reads index only; no 365 day downloads on mobile
+ok 10 - Year lookback reads index only; no 365 day downloads on mobile
+  ---
+  duration_ms: 162.282967
+  type: 'test'
+  ...
+# Subtest: Detail is the default for short windows: exact time filter, dedupe, sealed-aware cache mode, LRU reuse
+ok 11 - Detail is the default for short windows: exact time filter, dedupe, sealed-aware cache mode, LRU reuse
+  ---
+  duration_ms: 157.282738
+  type: 'test'
+  ...
+# Subtest: Long range refuses bulk exact points, and short range can display cap honestly
+ok 12 - Long range refuses bulk exact points, and short range can display cap honestly
+  ---
+  duration_ms: 9.985369
+  type: 'test'
+  ...
+# Subtest: Never-scanned is UNKNOWN; scanned with zero flashes is EMPTY-COVERED; never zero strikes
+ok 13 - Never-scanned is UNKNOWN; scanned with zero flashes is EMPTY-COVERED; never zero strikes
+  ---
+  duration_ms: 8.306721
+  type: 'test'
+  ...
+# Subtest: Archive network and invalid manifest failures are explicit, never fabricated
+ok 14 - Archive network and invalid manifest failures are explicit, never fabricated
+  ---
+  duration_ms: 1.77947
+  type: 'test'
+  ...
+# Subtest: Requests older than the retained year are clamped and flagged; entirely before is BEFORE-ARCHIVE with zero shard requests
+ok 15 - Requests older than the retained year are clamped and flagged; entirely before is BEFORE-ARCHIVE with zero shard requests
+  ---
+  duration_ms: 1.137558
+  type: 'test'
+  ...
+# Subtest: allSettled: one missing day file is named, other data and index counts are still returned, state FAIL
+ok 16 - allSettled: one missing day file is named, other data and index counts are still returned, state FAIL
+  ---
+  duration_ms: 45.162718
+  type: 'test'
+  ...
+# Subtest: Shard count mismatch against the index is a named warning (mid-write race)
+ok 17 - Shard count mismatch against the index is a named warning (mid-write race)
+  ---
+  duration_ms: 8.017721
+  type: 'test'
+  ...
+# Subtest: Budget gate: a storm month is summary-first; LOAD POINTS loads newest days up to the cap and says N of M
+ok 18 - Budget gate: a storm month is summary-first; LOAD POINTS loads newest days up to the cap and says N of M
+  ---
+  duration_ms: 17.774849
+  type: 'test'
+  ...
+# Subtest: LRU keeps at most 8 shards; evicted shards are re-fetched, cached ones are not
+ok 19 - LRU keeps at most 8 shards; evicted shards are re-fetched, cached ones are not
+  ---
+  duration_ms: 32.246001
+  type: 'test'
+  ...
+# Subtest: Index refresh invalidates only unsealed or changed shards
+ok 20 - Index refresh invalidates only unsealed or changed shards
+  ---
+  duration_ms: 24.717233
+  type: 'test'
+  ...
+# Subtest: Tier A: the live feed serves 12h-7d windows ending now with one request; the cap gap is completed from shards
+ok 21 - Tier A: the live feed serves 12h-7d windows ending now with one request; the cap gap is completed from shards
+  ---
+  duration_ms: 1.500631
+  type: 'test'
+  ...
+# Subtest: Fallback: index 404 but feed available → feed result flagged, never a zero; both down → both named
+ok 22 - Fallback: index 404 but feed available → feed result flagged, never a zero; both down → both named
+  ---
+  duration_ms: 59.403638
+  type: 'test'
+  ...
+# Subtest: The nine UX states exist with their colours, and the data states are reachable
+ok 23 - The nine UX states exist with their colours, and the data states are reachable
+  ---
+  duration_ms: 34.620063
+  type: 'test'
+  ...
+# Subtest: Caption templates carry window, actual, flashes, refresh, searched, warning and the optical-flash footer
+ok 24 - Caption templates carry window, actual, flashes, refresh, searched, warning and the optical-flash footer
+  ---
+  duration_ms: 42.117464
+  type: 'test'
+  ...
+# Subtest: A shard_lost date is unknown: its scan-window seconds are not claimed as searched, and it is named
+not ok 25 - A shard_lost date is unknown: its scan-window seconds are not claimed as searched, and it is named
+  ---
+  duration_ms: 18.504862
+  type: 'test'
+  location: '/tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/pr2-shard-lost/wt/tests/test_history_window.mjs:487:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    
+    129600 !== 43200
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 43200
+  actual: 129600
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/pr2-shard-lost/wt/tests/test_history_window.mjs:496:10)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+1..25
+# tests 25
+# suites 0
+# pass 24
+# fail 1
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 5147.823183

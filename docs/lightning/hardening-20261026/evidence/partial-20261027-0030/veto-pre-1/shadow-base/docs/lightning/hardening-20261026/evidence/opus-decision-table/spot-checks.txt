@@ -1,0 +1,32 @@
+# opus-decision-table spot checks — harness: self (node, no browser); tree: /tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/wt @ 18842dfb5d283e4569989b2fced773dd594e2866 (app files == fda6b10); 2026-10-26T22:28:50Z; node v22.23.4
+## git diff --name-only fda6b10 HEAD -- atlas tools .github (expect empty: 18842df is docs-only)
+exit=0
+## V1: sha256sum -c ../evidence/baseline-sha256-manifest.txt
+31
+exit=0
+## V1: manifest identical to PR #31 veto manifest?
+../evidence/baseline-sha256-manifest.txt /tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/lightning/evidence/atlas-merge-veto/baseline-sha256-manifest.txt differ: char 1, line 1
+## V12: node tools/scope/loop.mjs lint
+scope-ledger=PASS active=none master=done
+exit=0
+## V12: state --stdout | cmp - STATE.md
+cmp exit=0
+## V12/R11: workflows present vs ACTIVE_WORKFLOWS
+202608301321-scope-loop.yml
+202608301321-verify-live.yml
+202608310015-gridatlas-overnight-next-versions.yml
+202608310050-gridatlas-next-version-builders.yml
+202608312212-cartridge-proof.yml
+offshore-coordinate-reconcile.yml
+pr-file-size-guard.yml
+rollback-composition.yml
+teleprint-parse-gate.yml
+42:export const ACTIVE_WORKFLOWS = Object.freeze([
+## V14: grep forbidden V6 ids in overlay (expect no output, exit 1)
+exit=1
+## V3: new index.html files under atlas/ vs main (c08f3a6)
+A	atlas/v/202610261949/index.html
+## V3: cmp loader
+LOADER_BYTE_IDENTICAL
+## V1: hash-set comparison step-a manifest vs PR #31 veto manifest (format differs: veto has 4 header lines)
+sorted 64-hex sets identical (31/31); step-a file == PR #31 candidate-verify/baseline-sha256-manifest.sha256sum-format.txt byte-for-byte

@@ -1,0 +1,349 @@
+{
+  "route": "http://127.0.0.1:8146/wt/atlas/v/202610261949/",
+  "harness": "lead-shim",
+  "viewport": "1440x900",
+  "browser": "153.0.8010.12",
+  "scenarios": {
+    "C_hostile_index_first_obs": {
+      "fixture": "SYNTHETIC-hostile-index-first-obs",
+      "steps": [
+        {
+          "step": "ON 24h (detail path; line 107 not reached)",
+          "label": "Lightning flashes (optical) [UNKNOWN | 24h]",
+          "status": "PARTIAL · 0 FLASHES DRAWN · SEARCHED 43%",
+          "period": "24h",
+          "on": true,
+          "activeChip": "24H",
+          "dot": "rgb(255, 204, 0)",
+          "caps": {
+            "window": "Window  2026-10-25 18:40 UTC → 2026-10-26 18:40 UTC (24 hours, latest)",
+            "actual": "Actual  no archived flashes within this window",
+            "flashes": "Flashes 0 archived in window",
+            "refresh": "Refresh archive 2026-10-26 18:37 UTC (0h 3min ago; expected every 1 h)",
+            "searched": "Searched EUMETSAT 43% of window · 4 successful runs · 2026-10-25 18:40 UTC → 2026-10-26 13:00 UTC",
+            "warning": "Not yet ingested: last 5h 40min of window (unknown, not zero)"
+          },
+          "requests": 2,
+          "errors": [],
+          "last": {
+            "state": "PARTIAL",
+            "stale": false,
+            "mode": "detail",
+            "period": "24h",
+            "drawn": 0,
+            "cluster": false,
+            "cap": 40000,
+            "cap_source": "index",
+            "index_count": 3,
+            "failures": 0,
+            "reasons": [
+              "tail not yet ingested"
+            ]
+          },
+          "source": true,
+          "layerVisibility": "none",
+          "resMode": "detail",
+          "resEvents": 0,
+          "pageErrors": []
+        },
+        {
+          "step": "12M clicked (overview -> line 107)",
+          "label": "Lightning flashes (optical) [LOAD]",
+          "status": "LOADING",
+          "period": "12m",
+          "on": true,
+          "activeChip": "12M",
+          "dot": "rgb(136, 136, 136)",
+          "caps": {
+            "window": "Window  2026-10-25 18:40 UTC → 2026-10-26 18:40 UTC (24 hours, latest)",
+            "actual": "Actual  no archived flashes within this window",
+            "flashes": "Flashes 0 archived in window",
+            "refresh": "Refresh archive 2026-10-26 18:37 UTC (0h 3min ago; expected every 1 h)",
+            "searched": "Searched EUMETSAT 43% of window · 4 successful runs · 2026-10-25 18:40 UTC → 2026-10-26 13:00 UTC",
+            "warning": "Not yet ingested: last 5h 40min of window (unknown, not zero)"
+          },
+          "requests": 2,
+          "errors": [],
+          "last": {
+            "state": "PARTIAL",
+            "stale": false,
+            "mode": "detail",
+            "period": "24h",
+            "drawn": 0,
+            "cluster": false,
+            "cap": 40000,
+            "cap_source": "index",
+            "index_count": 3,
+            "failures": 0,
+            "reasons": [
+              "tail not yet ingested"
+            ]
+          },
+          "source": true,
+          "layerVisibility": "none",
+          "resMode": "overview",
+          "resEvents": 0,
+          "pageErrors": [
+            "Invalid time value"
+          ]
+        },
+        {
+          "step": "+10 min timer",
+          "clockError": "clock.runFor: RangeError: Invalid time value |     at Date.toISOString (<anonymous>) |     at ymd (blob:http://127.0.0.1:8146/443deb88-1d3a-467a-8ade-c74629d41f74:8683:53) |     at T (blob:http://127.0.0.1:8146/443deb88-1d3a-467a-8ade-c74629d41f74:8684:36) |     at Ts (blob:http://127.0.0.1:8146/443deb88-1d3a-467a-8ade-c74629d41f74:8684:106) |     at cp (blob:http://127.0.0.1:8146/443deb88-1d3a-467a-8ade-c74629d41f74:8774:71) |     at pt (blob:http://127.0.0.1:8146/443deb88-1d3a-467a-8ade-c74629d41f74:8820:66) |     at ld (blob:http://127.0.0.1:8146/443deb88-1d3a-467a-8ade-c74629d41f74:8835:74) |     at blob:http://127.0.0.1:8146/443deb88-1d3a-467a-8ade-c74629d41f74:8841:76",
+          "label": "Lightning flashes (optical) [LOAD]",
+          "status": "LOADING",
+          "period": "12m",
+          "on": true,
+          "activeChip": "12M",
+          "dot": "rgb(136, 136, 136)",
+          "caps": {
+            "window": "Window  2026-10-25 18:40 UTC → 2026-10-26 18:40 UTC (24 hours, latest)",
+            "actual": "Actual  no archived flashes within this window",
+            "flashes": "Flashes 0 archived in window",
+            "refresh": "Refresh archive 2026-10-26 18:37 UTC (0h 3min ago; expected every 1 h)",
+            "searched": "Searched EUMETSAT 43% of window · 4 successful runs · 2026-10-25 18:40 UTC → 2026-10-26 13:00 UTC",
+            "warning": "Not yet ingested: last 5h 40min of window (unknown, not zero)"
+          },
+          "requests": 2,
+          "errors": [],
+          "last": {
+            "state": "PARTIAL",
+            "stale": false,
+            "mode": "detail",
+            "period": "24h",
+            "drawn": 0,
+            "cluster": false,
+            "cap": 40000,
+            "cap_source": "index",
+            "index_count": 3,
+            "failures": 0,
+            "reasons": [
+              "tail not yet ingested"
+            ]
+          },
+          "source": true,
+          "layerVisibility": "none",
+          "resMode": "overview",
+          "resEvents": 0,
+          "pageErrors": [
+            "Invalid time value"
+          ]
+        },
+        {
+          "step": "7D clicked (does the UI recover?)",
+          "label": "Lightning flashes (optical) [LOAD]",
+          "status": "LOADING",
+          "period": "7d",
+          "on": true,
+          "activeChip": "12M",
+          "dot": "rgb(136, 136, 136)",
+          "caps": {
+            "window": "Window  2026-10-25 18:40 UTC → 2026-10-26 18:40 UTC (24 hours, latest)",
+            "actual": "Actual  no archived flashes within this window",
+            "flashes": "Flashes 0 archived in window",
+            "refresh": "Refresh archive 2026-10-26 18:37 UTC (0h 3min ago; expected every 1 h)",
+            "searched": "Searched EUMETSAT 43% of window · 4 successful runs · 2026-10-25 18:40 UTC → 2026-10-26 13:00 UTC",
+            "warning": "Not yet ingested: last 5h 40min of window (unknown, not zero)"
+          },
+          "requests": 2,
+          "errors": [],
+          "last": {
+            "state": "PARTIAL",
+            "stale": false,
+            "mode": "detail",
+            "period": "24h",
+            "drawn": 0,
+            "cluster": false,
+            "cap": 40000,
+            "cap_source": "index",
+            "index_count": 3,
+            "failures": 0,
+            "reasons": [
+              "tail not yet ingested"
+            ]
+          },
+          "source": true,
+          "layerVisibility": "none",
+          "resMode": "overview",
+          "resEvents": 0,
+          "pageErrors": [
+            "Invalid time value",
+            "Invalid time value"
+          ]
+        },
+        {
+          "step": "OFF then ON (recovery via toggle)",
+          "label": "Lightning flashes (optical) [408 | 7d]",
+          "status": "PARTIAL · 408 FLASHES DRAWN · SEARCHED 56%",
+          "period": "7d",
+          "on": true,
+          "activeChip": "7D",
+          "dot": "rgb(255, 204, 0)",
+          "caps": {
+            "window": "Window  2026-10-19 18:50 UTC → 2026-10-26 18:50 UTC (7 days, latest)",
+            "actual": "Actual  first 2026-10-21 12:32:19 UTC · last 2026-10-25 11:15:58 UTC",
+            "flashes": "Flashes 408 archived in window · 408 drawn as points (index count 408 within the 40,000-point cap for this desktop)",
+            "refresh": "Refresh archive 2026-10-26 18:37 UTC (0h 13min ago; expected every 1 h)",
+            "searched": "Searched EUMETSAT 56% of window · 17 successful runs · 2026-10-20 22:41 UTC → 2026-10-26 13:00 UTC",
+            "warning": "Not yet ingested: last 5h 50min of window (unknown, not zero) · Unknown: 2026-10-19 to 2026-10-20 precede archive start 2026-10-20 22:41 UTC (not zero) · Unknown: 1 of 8 UTC dates have no collection run"
+          },
+          "requests": 8,
+          "errors": [],
+          "last": {
+            "state": "PARTIAL",
+            "stale": false,
+            "mode": "detail",
+            "period": "7d",
+            "drawn": 408,
+            "cluster": false,
+            "cap": 40000,
+            "cap_source": "index",
+            "index_count": 408,
+            "failures": 0,
+            "reasons": [
+              "tail not yet ingested",
+              "head before archive start",
+              "1 dates without a scan window"
+            ]
+          },
+          "source": true,
+          "layerVisibility": "visible",
+          "resMode": "detail",
+          "resEvents": 408,
+          "pageErrors": [
+            "Invalid time value",
+            "Invalid time value"
+          ]
+        }
+      ],
+      "composition": {
+        "engine": 120,
+        "pn": 6,
+        "scada": true,
+        "curtain": true,
+        "menuInstalled": true,
+        "map": true,
+        "waitedMs": 6574
+      },
+      "lightningRequests": [
+        "data/history/index.json",
+        "data/history/days/2026/10/25.json",
+        "data/history/index.json",
+        "data/history/days/2026/10/21.json",
+        "data/history/days/2026/10/22.json",
+        "data/history/days/2026/10/23.json",
+        "data/history/days/2026/10/24.json",
+        "data/history/days/2026/10/25.json"
+      ],
+      "pageErrors": [
+        "Invalid time value",
+        "Invalid time value"
+      ]
+    },
+    "D_hostile_feed_query_end": {
+      "fixture": "SYNTHETIC-hostile-feed-query-end (no index)",
+      "steps": [
+        {
+          "step": "ON 24h (feed fallback -> line 102)",
+          "label": "Lightning flashes (optical) [LOAD]",
+          "status": "LOADING",
+          "period": "24h",
+          "on": true,
+          "activeChip": "24H",
+          "dot": "rgb(136, 136, 136)",
+          "caps": {
+            "window": "",
+            "actual": "",
+            "flashes": "",
+            "refresh": "",
+            "searched": "",
+            "warning": ""
+          },
+          "requests": 2,
+          "errors": [],
+          "last": null,
+          "source": true,
+          "layerVisibility": "none",
+          "resMode": "feed",
+          "resEvents": 0,
+          "pageErrors": [
+            "Invalid time value"
+          ]
+        },
+        {
+          "step": "7D clicked",
+          "label": "Lightning flashes (optical) [LOAD]",
+          "status": "LOADING",
+          "period": "7d",
+          "on": true,
+          "activeChip": "24H",
+          "dot": "rgb(136, 136, 136)",
+          "caps": {
+            "window": "",
+            "actual": "",
+            "flashes": "",
+            "refresh": "",
+            "searched": "",
+            "warning": ""
+          },
+          "requests": 2,
+          "errors": [],
+          "last": null,
+          "source": true,
+          "layerVisibility": "none",
+          "resMode": "feed",
+          "resEvents": 0,
+          "pageErrors": [
+            "Invalid time value",
+            "Invalid time value"
+          ]
+        },
+        {
+          "step": "OFF",
+          "label": "Lightning flashes (optical) [WAIT]",
+          "status": "LOADING",
+          "period": "7d",
+          "on": false,
+          "activeChip": "24H",
+          "dot": "rgb(136, 136, 136)",
+          "caps": {
+            "window": "",
+            "actual": "",
+            "flashes": "",
+            "refresh": "",
+            "searched": "",
+            "warning": ""
+          },
+          "requests": 2,
+          "errors": [],
+          "last": null,
+          "source": false,
+          "layerVisibility": null,
+          "resMode": null,
+          "resEvents": null,
+          "pageErrors": [
+            "Invalid time value",
+            "Invalid time value"
+          ]
+        }
+      ],
+      "composition": {
+        "engine": 120,
+        "pn": 6,
+        "scada": true,
+        "curtain": true,
+        "menuInstalled": true,
+        "map": true,
+        "waitedMs": 6834
+      },
+      "lightningRequests": [
+        "data/history/index.json",
+        "data/uk_lightning.geojson"
+      ],
+      "pageErrors": [
+        "Invalid time value",
+        "Invalid time value"
+      ]
+    }
+  }
+}

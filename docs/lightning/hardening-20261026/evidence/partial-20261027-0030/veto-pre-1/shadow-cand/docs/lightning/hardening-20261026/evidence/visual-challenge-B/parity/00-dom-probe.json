@@ -1,0 +1,502 @@
+{
+  "harness": "lead-shim",
+  "chromium": "153.0.8010.12",
+  "viewport": "1440x900",
+  "routes": {
+    "baseline": {
+      "url": "http://127.0.0.1:8141/gridatlas/atlas/",
+      "composition": {
+        "engine": 120,
+        "pn": 6,
+        "scada": true,
+        "curtain": true,
+        "menuInstalled": true,
+        "map": true,
+        "waitedMs": 5509
+      },
+      "probe": {
+        "generation": "202609241334",
+        "panels": [
+          {
+            "id": "gridatlas-menu-bar-panel-0",
+            "class": "gm-panel",
+            "hidden": true,
+            "hasBody": false,
+            "children": [
+              "button#btn-export.map-ctrl-btn",
+              "div.gm-layer-group",
+              "button#gridatlas-export-print",
+              "button#gridatlas-teleprint-pdf",
+              "button#gridatlas-teleprint-source",
+              "button#gridatlas-export-pdf",
+              "button#gridatlas-export-image",
+              "div#gridatlas-teleprint-status"
+            ]
+          },
+          {
+            "id": "gridatlas-menu-bar-panel-1",
+            "class": "gm-panel",
+            "hidden": true,
+            "hasBody": false,
+            "children": [
+              "button#btn-status.map-ctrl-btn"
+            ]
+          },
+          {
+            "id": "gridatlas-menu-bar-panel-2",
+            "class": "gm-panel",
+            "hidden": true,
+            "hasBody": false,
+            "children": [
+              "button#btn-fullscreen",
+              "div#gridatlas-gb-conditions",
+              "button#btn-fullscreen-exit",
+              "div.gm-layer-group",
+              "a"
+            ]
+          },
+          {
+            "id": "gridatlas-menu-bar-panel-3",
+            "class": "gm-panel",
+            "hidden": true,
+            "hasBody": false,
+            "children": [
+              "button#btn-radius.map-ctrl-btn",
+              "button#btn-radius-area.map-ctrl-btn",
+              "button#btn-zonedraw.map-ctrl-btn",
+              "button#btn-measure.map-ctrl-btn"
+            ]
+          },
+          {
+            "id": "gridatlas-menu-bar-panel-4",
+            "class": "gm-panel gm-panel-grid",
+            "hidden": true,
+            "hasBody": true,
+            "children": [
+              "div.gm-panel-head",
+              "div.gm-panel-body",
+              "div#fs-curtain-tab"
+            ]
+          },
+          {
+            "id": "gridatlas-menu-bar-panel-5",
+            "class": "gm-panel",
+            "hidden": true,
+            "hasBody": false,
+            "children": [
+              "div#gridatlas-version-ledger",
+              "div.disclaimer-box",
+              "div.podcast-shoutout",
+              "div.gm-layer-group",
+              "a",
+              "a",
+              "a",
+              "div.custom-map-attrib"
+            ]
+          }
+        ],
+        "firstBodyPanel": "gridatlas-menu-bar-panel-4 gm-panel gm-panel-grid",
+        "lightning": [],
+        "styles": [
+          {
+            "i": 0,
+            "id": null,
+            "attrs": "",
+            "bytes": 549,
+            "head40": ".scada-wrapper[data-gridatlas-collapsed=\"1\"]{max-height:0;ov"
+          },
+          {
+            "i": 1,
+            "id": "gridatlas-neon-css",
+            "attrs": "id=gridatlas-neon-css",
+            "bytes": 8582,
+            "head40": " .gridatlas-neon-block{margin-top:7px;padding-top:6px;border"
+          },
+          {
+            "i": 2,
+            "id": "gridatlas-gb-conditions-style",
+            "attrs": "id=gridatlas-gb-conditions-style",
+            "bytes": 1543,
+            "head40": " #gridatlas-gb-conditions{margin-top:6px;font:11px/1.5 ui-mo"
+          },
+          {
+            "i": 3,
+            "id": "gridatlas-version-ledger-style",
+            "attrs": "id=gridatlas-version-ledger-style",
+            "bytes": 1430,
+            "head40": " #gridatlas-version-ledger{margin-top:6px;font:11px/1.5 ui-m"
+          },
+          {
+            "i": 4,
+            "id": "gridatlas-sld-css",
+            "attrs": "id=gridatlas-sld-css",
+            "bytes": 6077,
+            "head40": " /* Top RIGHT, below the search box. The Atlas keeps its own"
+          },
+          {
+            "i": 5,
+            "id": null,
+            "attrs": "",
+            "bytes": 211,
+            "head40": ".gridatlas-fs-layers{position:absolute !important;left:0;rig"
+          },
+          {
+            "i": 6,
+            "id": null,
+            "attrs": "",
+            "bytes": 1292,
+            "head40": ".gridatlas-corridor-open{display:block;width:100%;min-height"
+          },
+          {
+            "i": 7,
+            "id": "gridatlas-menu-bar-css",
+            "attrs": "id=gridatlas-menu-bar-css",
+            "bytes": 7909,
+            "head40": "#gridatlas-menu-bar{position:absolute;top:0;left:0;right:0;h"
+          }
+        ],
+        "links": [
+          "https://cdn.jsdelivr.net/npm/maplibre-gl@3.6.2/dist/maplibre-gl.css",
+          "http://127.0.0.1:8141/gridatlas/atlas/releases/202608300453-atlas-v9/ventusv8.css"
+        ],
+        "anyLightningStyle": 0,
+        "scadaGroups": [
+          "Topology (GeoJSON)",
+          "Assets (GeoJSON)",
+          "Supermarkets (GeoJSON)",
+          "Transit (GeoJSON)",
+          "Leisure & Sports (GeoJSON)",
+          "Global Data Backbone",
+          "Global Supply Chain & Chokepoints",
+          "Highway Infrastructure",
+          "EV (GeoJSON)",
+          "Heavy Industry",
+          "REPD (GeoJSON)",
+          "Basemap",
+          "PIPELINE NEWS (REPD)"
+        ],
+        "curtainGroups": [
+          "Topology (GeoJSON)",
+          "Assets (GeoJSON)",
+          "Supermarkets (GeoJSON)",
+          "Transit (GeoJSON)",
+          "Leisure & Sports (GeoJSON)",
+          "Global Data Backbone",
+          "Global Supply Chain & Chokepoints",
+          "Highway Infrastructure",
+          "EV (GeoJSON)",
+          "Heavy Industry",
+          "REPD (GeoJSON)",
+          "Basemap",
+          "PIPELINE NEWS (REPD)"
+        ],
+        "menuInspect": {
+          "engine": 60,
+          "pipeline": 3,
+          "total": 63,
+          "unique": 63,
+          "complete": true
+        },
+        "proxies": 63,
+        "lightningState": null,
+        "storage": {
+          "local": [],
+          "session": []
+        }
+      },
+      "shim": {
+        "served": {
+          "maplibre": 2,
+          "style": 1,
+          "duckdb": 3
+        },
+        "aborted": [
+          "https://raw.githubusercontent.com/Ventusltd/data-grid-gb/1c9909d1138704b29235c27fd769436dda8a0b18/derived/connection-points.v3.json",
+          "https://ventusltd.github.io/ventus-grid-engine/genome/engine-graph.json"
+        ],
+        "missing": []
+      }
+    },
+    "candidate": {
+      "url": "http://127.0.0.1:8142/wt/atlas/v/202610261949/",
+      "composition": {
+        "engine": 120,
+        "pn": 6,
+        "scada": true,
+        "curtain": true,
+        "menuInstalled": true,
+        "map": true,
+        "waitedMs": 4374
+      },
+      "probe": {
+        "generation": "202610261949",
+        "panels": [
+          {
+            "id": "gridatlas-menu-bar-panel-0",
+            "class": "gm-panel",
+            "hidden": true,
+            "hasBody": false,
+            "children": [
+              "button#btn-export.map-ctrl-btn",
+              "div.gm-layer-group",
+              "button#gridatlas-export-print",
+              "button#gridatlas-teleprint-pdf",
+              "button#gridatlas-teleprint-source",
+              "button#gridatlas-export-pdf",
+              "button#gridatlas-export-image",
+              "div#gridatlas-teleprint-status"
+            ]
+          },
+          {
+            "id": "gridatlas-menu-bar-panel-1",
+            "class": "gm-panel",
+            "hidden": true,
+            "hasBody": false,
+            "children": [
+              "button#btn-status.map-ctrl-btn"
+            ]
+          },
+          {
+            "id": "gridatlas-menu-bar-panel-2",
+            "class": "gm-panel",
+            "hidden": true,
+            "hasBody": false,
+            "children": [
+              "button#btn-fullscreen",
+              "div#gridatlas-gb-conditions",
+              "button#btn-fullscreen-exit",
+              "div.gm-layer-group",
+              "a"
+            ]
+          },
+          {
+            "id": "gridatlas-menu-bar-panel-3",
+            "class": "gm-panel",
+            "hidden": true,
+            "hasBody": false,
+            "children": [
+              "button#btn-radius.map-ctrl-btn",
+              "button#btn-radius-area.map-ctrl-btn",
+              "button#btn-zonedraw.map-ctrl-btn",
+              "button#btn-measure.map-ctrl-btn"
+            ]
+          },
+          {
+            "id": "gridatlas-menu-bar-panel-4",
+            "class": "gm-panel gm-panel-grid",
+            "hidden": true,
+            "hasBody": true,
+            "children": [
+              "div.gm-panel-head",
+              "div.gm-panel-body",
+              "div[data-lightning-group=\"menu\"]",
+              "div#fs-curtain-tab"
+            ]
+          },
+          {
+            "id": "gridatlas-menu-bar-panel-5",
+            "class": "gm-panel",
+            "hidden": true,
+            "hasBody": false,
+            "children": [
+              "div#gridatlas-version-ledger",
+              "div.disclaimer-box",
+              "div.podcast-shoutout",
+              "div.gm-layer-group",
+              "a",
+              "a",
+              "a",
+              "div.custom-map-attrib"
+            ]
+          }
+        ],
+        "firstBodyPanel": "gridatlas-menu-bar-panel-4 gm-panel gm-panel-grid",
+        "lightning": [
+          {
+            "sig": "div.key-group[data-lightning-group=\"fs\"]",
+            "parent": "div#fs-curtain-keys",
+            "indexInParent": 13,
+            "siblings": 14,
+            "toggle": {
+              "tag": "INPUT",
+              "type": "checkbox",
+              "role": null,
+              "ariaLabel": null,
+              "checked": false,
+              "attrs": [
+                "type=checkbox",
+                "data-lightning-control=toggle"
+              ]
+            },
+            "otherNamespaced": 0,
+            "inlineStyle": null
+          },
+          {
+            "sig": "div[data-lightning-group=\"menu\"]",
+            "parent": "div#gridatlas-menu-bar-panel-4.gm-panel.gm-panel-grid",
+            "indexInParent": 2,
+            "siblings": 4,
+            "toggle": {
+              "tag": "INPUT",
+              "type": "checkbox",
+              "role": null,
+              "ariaLabel": "Lightning flashes (optical)",
+              "checked": false,
+              "attrs": [
+                "type=checkbox",
+                "data-lightning-control=toggle",
+                "aria-label=Lightning flashes (optical)"
+              ]
+            },
+            "otherNamespaced": 0,
+            "inlineStyle": "flex: 0 0 auto; padding: 0px 6px 6px; border-top: 1px solid rgb(25, 52, 59);"
+          },
+          {
+            "sig": "div.key-group[data-lightning-group=\"main\"]",
+            "parent": "div#scada-ui-container.scada-keys",
+            "indexInParent": 13,
+            "siblings": 14,
+            "toggle": {
+              "tag": "INPUT",
+              "type": "checkbox",
+              "role": null,
+              "ariaLabel": null,
+              "checked": false,
+              "attrs": [
+                "type=checkbox",
+                "data-lightning-control=toggle"
+              ]
+            },
+            "otherNamespaced": 0,
+            "inlineStyle": null
+          }
+        ],
+        "styles": [
+          {
+            "i": 0,
+            "id": null,
+            "attrs": "",
+            "bytes": 549,
+            "head40": ".scada-wrapper[data-gridatlas-collapsed=\"1\"]{max-height:0;ov"
+          },
+          {
+            "i": 1,
+            "id": "gridatlas-neon-css",
+            "attrs": "id=gridatlas-neon-css",
+            "bytes": 8582,
+            "head40": " .gridatlas-neon-block{margin-top:7px;padding-top:6px;border"
+          },
+          {
+            "i": 2,
+            "id": "gridatlas-gb-conditions-style",
+            "attrs": "id=gridatlas-gb-conditions-style",
+            "bytes": 1543,
+            "head40": " #gridatlas-gb-conditions{margin-top:6px;font:11px/1.5 ui-mo"
+          },
+          {
+            "i": 3,
+            "id": "gridatlas-version-ledger-style",
+            "attrs": "id=gridatlas-version-ledger-style",
+            "bytes": 1430,
+            "head40": " #gridatlas-version-ledger{margin-top:6px;font:11px/1.5 ui-m"
+          },
+          {
+            "i": 4,
+            "id": "gridatlas-sld-css",
+            "attrs": "id=gridatlas-sld-css",
+            "bytes": 6077,
+            "head40": " /* Top RIGHT, below the search box. The Atlas keeps its own"
+          },
+          {
+            "i": 5,
+            "id": null,
+            "attrs": "",
+            "bytes": 211,
+            "head40": ".gridatlas-fs-layers{position:absolute !important;left:0;rig"
+          },
+          {
+            "i": 6,
+            "id": null,
+            "attrs": "",
+            "bytes": 1292,
+            "head40": ".gridatlas-corridor-open{display:block;width:100%;min-height"
+          },
+          {
+            "i": 7,
+            "id": "gridatlas-menu-bar-css",
+            "attrs": "id=gridatlas-menu-bar-css",
+            "bytes": 7909,
+            "head40": "#gridatlas-menu-bar{position:absolute;top:0;left:0;right:0;h"
+          }
+        ],
+        "links": [
+          "https://cdn.jsdelivr.net/npm/maplibre-gl@3.6.2/dist/maplibre-gl.css",
+          "http://127.0.0.1:8142/wt/atlas/releases/202608300453-atlas-v9/ventusv8.css"
+        ],
+        "anyLightningStyle": 0,
+        "scadaGroups": [
+          "Topology (GeoJSON)",
+          "Assets (GeoJSON)",
+          "Supermarkets (GeoJSON)",
+          "Transit (GeoJSON)",
+          "Leisure & Sports (GeoJSON)",
+          "Global Data Backbone",
+          "Global Supply Chain & Chokepoints",
+          "Highway Infrastructure",
+          "EV (GeoJSON)",
+          "Heavy Industry",
+          "REPD (GeoJSON)",
+          "Basemap",
+          "PIPELINE NEWS (REPD)",
+          "Weather · EUMETSAT Lightning Imager"
+        ],
+        "curtainGroups": [
+          "Topology (GeoJSON)",
+          "Assets (GeoJSON)",
+          "Supermarkets (GeoJSON)",
+          "Transit (GeoJSON)",
+          "Leisure & Sports (GeoJSON)",
+          "Global Data Backbone",
+          "Global Supply Chain & Chokepoints",
+          "Highway Infrastructure",
+          "EV (GeoJSON)",
+          "Heavy Industry",
+          "REPD (GeoJSON)",
+          "Basemap",
+          "PIPELINE NEWS (REPD)",
+          "Weather · EUMETSAT Lightning Imager"
+        ],
+        "menuInspect": {
+          "engine": 60,
+          "pipeline": 3,
+          "total": 63,
+          "unique": 63,
+          "complete": true
+        },
+        "proxies": 63,
+        "lightningState": {
+          "installed": true,
+          "on": false,
+          "requests": 0,
+          "waiting_for": []
+        },
+        "storage": {
+          "local": [],
+          "session": []
+        }
+      },
+      "shim": {
+        "served": {
+          "maplibre": 2,
+          "style": 1,
+          "duckdb": 3
+        },
+        "aborted": [
+          "https://raw.githubusercontent.com/Ventusltd/data-grid-gb/1c9909d1138704b29235c27fd769436dda8a0b18/derived/connection-points.v3.json",
+          "https://ventusltd.github.io/ventus-grid-engine/genome/engine-graph.json"
+        ],
+        "missing": []
+      }
+    }
+  }
+}

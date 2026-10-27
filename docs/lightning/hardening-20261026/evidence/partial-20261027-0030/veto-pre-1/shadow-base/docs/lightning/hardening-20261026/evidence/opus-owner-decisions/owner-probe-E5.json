@@ -1,0 +1,103 @@
+{
+ "started": "2026-10-26T22:45:14.482Z",
+ "harness": "lead-shim",
+ "candidateSha": "fda6b10 (worktree HEAD 18842df, docs-only on top)",
+ "experiments": {
+  "E5": [
+   {
+    "vp": "1440x900",
+    "boot": {
+     "engine": 120,
+     "pn": 6,
+     "scada": true,
+     "curtain": true,
+     "menuInstalled": true,
+     "map": true,
+     "waitedMs": 6002
+    },
+    "fsActive": true,
+    "fullscreenElement": "map-container",
+    "geometry": {
+     "mapContainer": [
+      0,
+      0,
+      1440,
+      900
+     ],
+     "footerInput": [
+      958,
+      550,
+      471,
+      57
+     ],
+     "footerHit": "self",
+     "curtainTab": [
+      1007,
+      607,
+      374,
+      44
+     ],
+     "curtainTabHit": "self"
+    },
+    "afterClick": {
+     "on": true,
+     "labels": [
+      "Lightning flashes (optical) [UNKNOWN | 24h STALE]",
+      "Lightning flashes (optical) [UNKNOWN | 24h STALE]",
+      "Lightning flashes (optical) [UNKNOWN | 24h STALE]"
+     ],
+     "captionVisibleOnScreen": false
+    },
+    "pageErrors": []
+   },
+   {
+    "vp": "1280x720",
+    "boot": {
+     "engine": 120,
+     "pn": 6,
+     "scada": true,
+     "curtain": true,
+     "menuInstalled": true,
+     "map": true,
+     "waitedMs": 5262
+    },
+    "fsActive": true,
+    "fullscreenElement": "map-container",
+    "geometry": {
+     "mapContainer": [
+      0,
+      0,
+      1280,
+      720
+     ],
+     "footerInput": [
+      798,
+      449,
+      471,
+      57
+     ],
+     "footerHit": "self",
+     "curtainTab": [
+      847,
+      505,
+      374,
+      44
+     ],
+     "curtainTabHit": "self"
+    },
+    "afterClick": {
+     "on": true,
+     "labels": [
+      "Lightning flashes (optical) [UNKNOWN | 24h STALE]",
+      "Lightning flashes (optical) [UNKNOWN | 24h STALE]",
+      "Lightning flashes (optical) [UNKNOWN | 24h STALE]"
+     ],
+     "captionVisibleOnScreen": false
+    },
+    "pageErrors": []
+   }
+  ]
+ },
+ "browser": "chromium 153.0.8010.12",
+ "finished": "2026-10-26T22:45:52.343Z"
+}

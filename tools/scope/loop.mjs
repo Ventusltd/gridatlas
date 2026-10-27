@@ -191,7 +191,7 @@ function validateAtlasLayout(scopeState) {
          substation-intelligence into parts and assemble it the way the
          gazetteer already does (`assembled_from`); until that is done this
          number must not be raised again to admit further growth. */
-      invariant(fs.statSync(cartridgePath).size <= 460_000, `${id}: cartridge exceeds the 460 kB recorded ceiling (400 kB target)`);
+      invariant(fs.statSync(cartridgePath).size <= 480_000, `${id}: cartridge exceeds the 480 kB recorded ceiling (400 kB target; raised from 460 kB by the owner on 27 Oct 2026 for the lightning overlay)`);
     }
     const atlasIndex = fs.readFileSync(atlasIndexPath, 'utf8');
     invariant(atlasIndex.includes('crypto.subtle.digest'), 'atlas loader does not verify cartridge SHA-256');

@@ -1,0 +1,51 @@
+
+## S10-good-custom-clamped
+LABEL  Lightning flashes (optical) [UNKNOWN | custom]
+STATUS UNKNOWN
+window: Window  UTC dates 2025-10-26 to 2025-10-30 inclusive = 2025-10-26 00:00 UTC → 2025-10-31 00:00 UTC · start clamped to retention start 2025-10-26
+actual: Actual  no archived flashes within this window
+flashes: Flashes 0 archived in window
+refresh: Refresh archive 2026-10-26 18:37 UTC (0h 3min ago; expected every 1 h)
+searched: Searched EUMETSAT 0% of window — no collection run covers these dates
+warning: Unknown: 2025-10-26 to 2025-10-30 precede archive start 2026-10-20 22:41 UTC (not zero) · Unknown: 5 of 5 UTC dates have no collection run
+footer: Times UTC · Optical flashes seen by MTG Lightning Imager (EUMETSAT L2-LFL), not confirmed ground strikes · Missing days are unknown, not zero · UK box −11.0,49.5 → 3.0,61.5
+
+## S11-good-custom-bad-dates
+LABEL  Lightning flashes (optical) [UNKNOWN | custom]
+STATUS PARTIAL · 0 FLASHES DRAWN · SEARCHED 31%
+window: Window  UTC dates 2026-10-26 to 2026-10-26 inclusive = 2026-10-26 00:00 UTC → 2026-10-26 18:40 UTC
+actual: Actual  no archived flashes within this window
+flashes: Flashes 0 archived in window
+refresh: Refresh archive 2026-10-26 18:37 UTC (0h 3min ago; expected every 1 h)
+searched: Searched EUMETSAT 31% of window · 2 successful runs · 2026-10-26 01:49 UTC → 2026-10-26 13:00 UTC
+warning: Custom dates: From must not be after To — nothing loaded
+footer: Times UTC · Optical flashes seen by MTG Lightning Imager (EUMETSAT L2-LFL), not confirmed ground strikes · Missing days are unknown, not zero · UK box −11.0,49.5 → 3.0,61.5
+## S12-good-7d-prev ERROR Error: page.waitForTimeout: Page crashed
+
+## S13-noindex-24h
+LABEL  Lightning flashes (optical) [UNKNOWN | 24h STALE]
+STATUS UNKNOWN · STALE
+window: Window  2026-10-25 18:41 UTC → 2026-10-26 18:41 UTC (24 hours, latest)
+actual: Actual  no flashes in the live feed in this window
+flashes: Flashes 0 in window (live feed, 7-day retention)
+refresh: Refresh live feed 2026-10-26 13:05 UTC (last collection window 2026-10-26 10:05 UTC → 2026-10-26 13:05 UTC; latest detection 2026-10-25 11:15:58 UTC; 7-day retention; archive not yet published: HTTP 404; earlier hours unknown, not zero)
+searched: Searched EUMETSAT unknown (live feed records only its last collection window)
+warning: 
+footer: Times UTC · Optical flashes seen by MTG Lightning Imager (EUMETSAT L2-LFL), not confirmed ground strikes · Missing days are unknown, not zero · UK box −11.0,49.5 → 3.0,61.5
+## S14-noindex-7d ERROR TimeoutError: locator.click: Timeout 30000ms exceeded.
+Call log:
+[2m  - waiting for locator('#scada-ui-container [data-lightning-period="7d"]')[22m
+[2m    - locator resolved to <button type="button" class="map-ctrl-btn" aria-pressed="false" data-lightning-period="7d">7D</button>[22m
+[2m  - attempting click action[22m
+[2m    - waiting for element to be visible, enabled and stable[22m
+[2m    - element is visible, enabled and stable[22m
+[2m    - scrolling into view if needed[22m
+[2m    - done scrolling[22m
+[2m    - performing click action[22m
+
+## S15-noindex-30d ERROR Error: page.waitForFunction: Target crashed 
+## S16-brokenjson-7d ERROR Error: page.waitForTimeout: Page crashed
+## S17-missingshard-7d ERROR Error: page.goto: net::ERR_ABORTED; maybe frame was detached?
+Call log:
+[2m  - navigating to "http://127.0.0.1:8172/wt/atlas/v/202610262323/", waiting until "domcontentloaded"[22m
+

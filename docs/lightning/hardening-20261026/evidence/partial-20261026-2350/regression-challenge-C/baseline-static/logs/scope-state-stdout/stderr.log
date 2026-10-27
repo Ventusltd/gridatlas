@@ -1,0 +1,8 @@
+[scope-loop:state] Error: active workflow budget mismatch: ["202608301321-scope-loop.yml","202608301321-verify-live.yml","202608310015-gridatlas-overnight-next-versions.yml","202608310050-gridatlas-next-version-builders.yml","202608312212-cartridge-proof.yml","offshore-coordinate-reconcile.yml","pr-file-size-guard.yml","rollback-composition.yml","teleprint-parse-gate.yml","uk-lightning-preview.yml"]
+    at invariant (file:///tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/regression-challenge-C/shadow-baseline/tools/scope/lib.mjs:68:25)
+    at validateWorkflowBudget (file:///tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/regression-challenge-C/shadow-baseline/tools/scope/loop.mjs:105:3)
+    at lint (file:///tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/regression-challenge-C/shadow-baseline/tools/scope/loop.mjs:211:3)
+    at file:///tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/regression-challenge-C/shadow-baseline/tools/scope/loop.mjs:285:17
+    at ModuleJob.run (node:internal/modules/esm/module_job:343:25)
+    at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:681:26)
+    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:117:5)

@@ -1,0 +1,29 @@
+{
+ "spread_10000": "ok",
+ "spread_100000": "ok",
+ "spread_120000": "ok",
+ "spread_200000": "RangeError: Maximum call stack size exceeded",
+ "spread_500000": "RangeError: Maximum call stack size exceeded",
+ "spread_1000000": "RangeError: Maximum call stack size exceeded",
+ "regex_DRE_ms": 7.64612,
+ "regex_PATH_ms": 6.315558,
+ "regex_NA404_ms": 38.172328,
+ "proto": {
+  "plainPolluted": "no",
+  "spreadOwnProtoKey": true,
+  "spreadProtoIsObject": true
+ },
+ "count": {
+  "inf": "accept",
+  "str": "accept",
+  "arr": "accept",
+  "neg0": "accept",
+  "frac": "accept",
+  "bool": "accept",
+  "nullNonNone": "accept"
+ },
+ "archSumStrings": "053",
+ "Ninf": "∞",
+ "Date_parse_feb30": 1772409600000,
+ "Date_parse_13": null
+}

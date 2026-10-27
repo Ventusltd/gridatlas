@@ -1,0 +1,577 @@
+node:internal/modules/run_main:123
+    triggerUncaughtException(
+    ^
+
+AssertionError [ERR_ASSERTION]: fixture drift: regenerate /tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/regression-challenge-C/shadow-after/tools/proofs/fixtures/202609010002-original-sld-finance.json only after reviewing original source changes
++ actual - expected
+
+  '{\n' +
+    '  "schema": "globalgrid2050.original-sld-electrical-finance-fixture.v1",\n' +
+    '  "provenance": {\n' +
+    '    "original_directory_name": "gis-sld-financial-sandbox",\n' +
+    '    "sha256": {\n' +
++   '      "index.html": "039846b49f596a6087b47b6c368e3402260f91ee132e846655ad7b8b6f7011d1",\n' +
++   '      "gis-sld-v5-helpers.js": "7a0895234b75b08d8530099601d462431f552bd56548ef5758c16761b02d958a",\n' +
++   '      "gis-sld-v5-state.js": "8b1e82afe7ae2522fb067ca2a461861b78f1c17bb0e1bd8319c135d1aa149929",\n' +
++   '      "gis-sld-v5-calculations.js": "d018bdc6b7970fac36c98d32c793d936433370111675775ff2e0db782eb9c9a3",\n' +
++   '      "gis-sld-v5-finance.js": "08a3544ac26e2fffdcc39f42e53b5d3e53ca2ffc10074d6186373456b5eb6284"\n' +
+-   '      "index.html": "95b8d275a5e9d7463032b524f1b5f142e4af586c377eb7f2cc0bb55e4b7e2646",\n' +
+-   '      "gis-sld-v5-helpers.js": "ce8f4409428f96ac5013ac0bb27bde98867693922b9291455a9c930c24fc6d07",\n' +
+-   '      "gis-sld-v5-state.js": "1e45e43eafbce30e96b6bed7351bfe3142c27c2d8c3ab1aef32e66f4bf13ef66",\n' +
+-   '      "gis-sld-v5-calculations.js": "440c232a79bca028fb961144969ba5fa6c15658eb57096a5e19313729dd3c005",\n' +
+-   '      "gis-sld-v5-finance.js": "16183b9e3bcd53ab8eca497b0ace074b9c6da5ce67a52658bdd06093ada66b6c"\n' +
+    '    },\n' +
+    '    "execution": "Original helper, state, calculation and finance JavaScript evaluated in a minimal DOM parsed from the original index.html."\n' +
+    '  },\n' +
+    '  "reference_behavior": {\n' +
+    '    "z_strings_default": 18,\n' +
+
+    at file:///tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/regression-challenge-C/shadow-after/tools/proofs/202609010002-original-sld-finance-fixture.mjs:341:10
+    at ModuleJob.run (node:internal/modules/esm/module_job:343:25)
+    at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:681:26)
+    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:117:5) {
+  generatedMessage: false,
+  code: 'ERR_ASSERTION',
+  actual: '{\n' +
+    '  "schema": "globalgrid2050.original-sld-electrical-finance-fixture.v1",\n' +
+    '  "provenance": {\n' +
+    '    "original_directory_name": "gis-sld-financial-sandbox",\n' +
+    '    "sha256": {\n' +
+    '      "index.html": "039846b49f596a6087b47b6c368e3402260f91ee132e846655ad7b8b6f7011d1",\n' +
+    '      "gis-sld-v5-helpers.js": "7a0895234b75b08d8530099601d462431f552bd56548ef5758c16761b02d958a",\n' +
+    '      "gis-sld-v5-state.js": "8b1e82afe7ae2522fb067ca2a461861b78f1c17bb0e1bd8319c135d1aa149929",\n' +
+    '      "gis-sld-v5-calculations.js": "d018bdc6b7970fac36c98d32c793d936433370111675775ff2e0db782eb9c9a3",\n' +
+    '      "gis-sld-v5-finance.js": "08a3544ac26e2fffdcc39f42e53b5d3e53ca2ffc10074d6186373456b5eb6284"\n' +
+    '    },\n' +
+    '    "execution": "Original helper, state, calculation and finance JavaScript evaluated in a minimal DOM parsed from the original index.html."\n' +
+    '  },\n' +
+    '  "reference_behavior": {\n' +
+    '    "z_strings_default": 18,\n' +
+    '    "declared_string_dc_ac_ratio": 1.2,\n' +
+    '    "z_strings_is_independent_input": true,\n' +
+    '    "reason": "The original reads z_strings directly. Its string AC is supplied by skid export, so buildStats recomputes actual DC/AC and does not use the declared ratio to alter z_strings.",\n' +
+    '    "known_central_defect": "Original central ac_mw_direct multiplies total_blocks by both central_skid_mva and inv_per_mv even though total_blocks already includes inv_per_mv. A corrected port must encode an explicit expected divergence for inv_per_mv greater than one."\n' +
+    '  },\n' +
+    '  "cases": [\n' +
+    '    {\n' +
+    '      "id": "string_reference_defaults",\n' +
+    '      "mode": "string",\n' +
+    '      "inputs": {\n' +
+    '        "b_cols": "6",\n' +
+    '        "dc_ac_ratio": "1.20",\n' +
+    '        "fin_string_bess_capex": "0",\n' +
+    '        "fin_string_bess_cycles": "0",\n' +
+    '        "fin_string_bess_eff": "88",\n' +
+    '        "fin_string_bess_mw": "0",\n' +
+    '        "fin_string_bess_mwh": "0",\n' +
+    '        "fin_string_bess_spread": "0",\n' +
+    '        "fin_string_bifacial": "5",\n' +
+    '        "fin_string_cont": "7",\n' +
+    '        "fin_string_deg": "0.4",\n' +
+    '        "fin_string_dev_cost_mw": "0.1",\n' +
+    '        "fin_string_dev_epc_mw": "0.5",\n' +
+    '        "fin_string_dev_exit_mwp": "1.35",\n' +
+    '        "fin_string_dev_grid_mw": "0.1",\n' +
+    '        "fin_string_dev_module_mwp": "0.15",\n' +
+    '        "fin_string_dev_npv_mwp": "1.2",\n' +
+    '        "fin_string_dev_owner_mw": "0.1",\n' +
+    '        "fin_string_dev_stage": "0.100",\n' +
+    '        "fin_string_dev_success": "15",\n' +
+    '        "fin_string_dev_years": "4",\n' +
+    '        "fin_string_epc_ex": "0.30",\n' +
+    '        "fin_string_fixed_capex": "1500000",\n' +
+    '        "fin_string_flood": false,\n' +
+    '        "fin_string_flood_rate": "0.03",\n' +
+    '        "fin_string_loss_dc_string": "0",\n' +
+    '        "fin_string_loss_lv_ac": "0",\n' +
+    '        "fin_string_loss_lv_dc": "0",\n' +
+    '        "fin_string_loss_other": "0",\n' +
+    '        "fin_string_loss_tx": "0",\n' +
+    '        "fin_string_losses": "2",\n' +
+    '        "fin_string_modules": "0.15",\n' +
+    '        "fin_string_opex": "25000",\n' +
+    '        "fin_string_other": "0",\n' +
+    '        "fin_string_other_capex": "0.20",\n' +
+    '        "fin_string_price": "65",\n' +
+    '        "fin_string_yield": "1000",\n' +
+    '        "gross_factor": "1.35",\n' +
+    '        "mod_l": "2.38",\n' +
+    '        "mod_w": "1.30",\n' +
+    '        "mod_wp": "660",\n' +
+    '        "mods_container": "594",\n' +
+    '        "mods_pallet": "33",\n' +
+    '        "mounting_type": "0.45",\n' +
+    '        "s_subs": "5",\n' +
+    '        "spare_pct": "1.0",\n' +
+    '        "string_inv_kva": "352",\n' +
+    '        "string_skid_mva": "8.96",\n' +
+    '        "x_mods": "28",\n' +
+    '        "y_invs": "28",\n' +
+    '        "z_strings": "18"\n' +
+    '      },\n' +
+    '      "stats": {\n' +
+    '        "total_blocks": 30,\n' +
+    '        "block_ground_area_m2": 97027.84,\n' +
+    '        "dc_mwp": 279.4176,\n' +
+    '        "ac_mw": 268.8,\n' +
+    '        "module_count": 423360,\n' +
+    '        "net_mod_area_m2": 1309875.8399999999,\n' +
+    '        "net_array_area_m2": 2910835.1999999997,\n' +
+    '        "gross_site_area_m2": 3929627.52,\n' +
+    '        "dc_ac_ratio": 1.0394999999999999,\n' +
+    '        "pallets": 12830,\n' +
+    '        "containers": 713,\n' +
+    '        "spares_pct": 1,\n' +
+    '        "modules_inc_spares": 427594,\n' +
+    '        "pallets_inc_spares": 12958,\n' +
+    '        "containers_inc_spares": 720,\n' +
+    '        "mods_pallet": 33,\n' +
+    '        "mods_container": 594,\n' +
+    '        "combiner_boxes_per_inverter": 0,\n' +
+    '        "total_combiner_boxes": 0,\n' +
+    '        "string_inverter_kva": 352,\n' +
+    '        "inverter_acmax_mva": 9.856,\n' +
+    '        "production_substation_ac_mva": 8.96,\n' +
+    '        "ring_main_ac_mva": 44.800000000000004,\n' +
+    '        "central_inverter_mwac": 0,\n' +
+    '        "central_inverter_mwdc": 0,\n' +
+    '        "combiner_box_dc_kw": 0,\n' +
+    '        "combiner_design_limit_kwdc": 0,\n' +
+    '        "engineering_warning": "Inverter ACmax exceeds skid transformer rating. Verify temperature rating, overload strategy and clipping assumptions."\n' +
+    '      },\n' +
+    '      "finance": {\n' +
+    '        "annualRevenue": 18688846.176,\n' +
+    '        "revenue25": 445467408.87768126,\n' +
+    '        "revenue35": 611526153.7575545,\n' +
+    '        "totalCapex": 195834940.79999998,\n' +
+    '        "capexPerWp": 0.7008683089397374,\n' +
+    '        "surplus25": 81632468.07768127,\n' +
+    '        "surplus35": 180491212.95755455,\n' +
+    '        "devStage": "Construction Contract Signed and Finance Committed (Financial Close)",\n' +
+    '        "devCostPerMw": 0.1,\n' +
+    '        "devModulePerMwp": 0.15,\n' +
+    '        "devEpcPerMw": 0.5,\n' +
+    '        "devOwnerPerMw": 0.1,\n' +
+    '        "devGridPerMw": 0.1,\n' +
+    '        "devExitPerMwp": 1.35,\n' +
+    '        "devNpvPerMwp": 1.2,\n' +
+    '        "devSuccessPct": 15,\n' +
+    '        "devYears": 4,\n' +
+    '        "devCapitalAtRisk": 27941760,\n' +
+    '        "devModuleCost": 41912640,\n' +
+    '        "devEpcCost": 139708800,\n' +
+    '        "devOwnerCost": 27941760,\n' +
+    '        "devGridCost": 27941760,\n' +
+    '        "devTotalBuildCost": 265446720,\n' +
+    '        "devExitValue": 377213760,\n' +
+    '        "devOperatingNpv": 335301120,\n' +
+    '        "devGrossMargin": 111767040,\n' +
+    '        "devRiskAdjustedValue": 16765056,\n' +
+    '        "devReturnMultiple": 4,\n' +
+    '        "price": 65,\n' +
+    '        "other": 0,\n' +
+    '        "yieldVal": 1000,\n' +
+    '        "bifacial": 5,\n' +
+    '        "baseLoss": 2,\n' +
+    '        "deg": 0.4,\n' +
+    '        "opexRate": 25000,\n' +
+    '        "epcEx": 0.3,\n' +
+    '        "floodActive": false,\n' +
+    '        "floodRate": 0.03,\n' +
+    '        "modules": 0.15,\n' +
+    '        "otherCapex": 0.2,\n' +
+    '        "fixedCapex": 1500000,\n' +
+    '        "cont": 7,\n' +
+    '        "totalLoss": 2,\n' +
+    '        "bessMw": 0,\n' +
+    '        "bessMwh": 0,\n' +
+    '        "bessCapexRate": 0,\n' +
+    '        "bessCycles": 0,\n' +
+    '        "bessSpread": 0,\n' +
+    '        "bessEff": 88,\n' +
+    '        "epcIncModules": 0.44999999999999996\n' +
+    '      }\n' +
+    '    },\n' +
+    '    {\n' +
+    '      "id": "central_reference_defaults",\n' +
+    '      "mode": "central",\n' +
+    '      "inputs": {\n' +
+    '        "central_rating_mode": null,\n' +
+    '        "central_skid_mva_c": "4.40",\n' +
+    '        "combiner_limit_kwdc_c": "500",\n' +
+    '        "fin_central_bess_capex": "0",\n' +
+    '        "fin_central_bess_cycles": "0",\n' +
+    '        "fin_central_bess_eff": "88",\n' +
+    '        "fin_central_bess_mw": "0",\n' +
+    '        "fin_central_bess_mwh": "0",\n' +
+    '        "fin_central_bess_spread": "0",\n' +
+    '        "fin_central_bifacial": "5",\n' +
+    '        "fin_central_cont": "7",\n' +
+    '        "fin_central_deg": "0.4",\n' +
+    '        "fin_central_dev_cost_mw": "0.1",\n' +
+    '        "fin_central_dev_epc_mw": "0.5",\n' +
+    '        "fin_central_dev_exit_mwp": "1.35",\n' +
+    '        "fin_central_dev_grid_mw": "0.1",\n' +
+    '        "fin_central_dev_module_mwp": "0.15",\n' +
+    '        "fin_central_dev_npv_mwp": "1.2",\n' +
+    '        "fin_central_dev_owner_mw": "0.1",\n' +
+    '        "fin_central_dev_stage": "0.100",\n' +
+    '        "fin_central_dev_success": "15",\n' +
+    '        "fin_central_dev_years": "4",\n' +
+    '        "fin_central_epc_ex": "0.30",\n' +
+    '        "fin_central_fixed_capex": "1500000",\n' +
+    '        "fin_central_flood": false,\n' +
+    '        "fin_central_flood_rate": "0.03",\n' +
+    '        "fin_central_loss_dc_string": "0",\n' +
+    '        "fin_central_loss_lv_ac": "0",\n' +
+    '        "fin_central_loss_lv_dc": "0",\n' +
+    '        "fin_central_loss_other": "0",\n' +
+    '        "fin_central_loss_tx": "0",\n' +
+    '        "fin_central_losses": "2",\n' +
+    '        "fin_central_modules": "0.15",\n' +
+    '        "fin_central_opex": "25000",\n' +
+    '        "fin_central_other": "0",\n' +
+    '        "fin_central_other_capex": "0.20",\n' +
+    '        "fin_central_price": "65",\n' +
+    '        "fin_central_yield": "1000",\n' +
+    '        "gross_factor_c": "1.35",\n' +
+    '        "inv_ac_mw_c": "4.40",\n' +
+    '        "inv_ac_mw_custom_c": null,\n' +
+    '        "inv_dc_mw_c": "5.28",\n' +
+    '        "inv_per_mv_c": "1",\n' +
+    '        "mod_l_c": "2.38",\n' +
+    '        "mod_w_c": "1.30",\n' +
+    '        "mod_wp_c": "660",\n' +
+    '        "mods_container_c": "594",\n' +
+    '        "mods_pallet_c": "33",\n' +
+    '        "mounting_type_c": "0.45",\n' +
+    '        "mv_per_ring_c": "4",\n' +
+    '        "rings_c": "4",\n' +
+    '        "spare_pct_c": "1.0",\n' +
+    '        "str_per_cb_c": "24",\n' +
+    '        "x_mods_c": "28"\n' +
+    '      },\n' +
+    '      "stats": {\n' +
+    '        "total_blocks": 16,\n' +
+    '        "block_ground_area_m2": 55059.44888888889,\n' +
+    '        "dc_mwp": 84.56448,\n' +
+    '        "ac_mw": 70.4,\n' +
+    '        "module_count": 128128,\n' +
+    '        "net_mod_area_m2": 396428.032,\n' +
+    '        "net_array_area_m2": 880951.1822222222,\n' +
+    '        "gross_site_area_m2": 1189284.0960000001,\n' +
+    '        "dc_ac_ratio": 1.2012,\n' +
+    '        "pallets": 3883,\n' +
+    '        "containers": 216,\n' +
+    '        "spares_pct": 1,\n' +
+    '        "modules_inc_spares": 129410,\n' +
+    '        "pallets_inc_spares": 3922,\n' +
+    '        "containers_inc_spares": 218,\n' +
+    '        "mods_pallet": 33,\n' +
+    '        "mods_container": 594,\n' +
+    '        "combiner_boxes_per_inverter": 12,\n' +
+    '        "total_combiner_boxes": 192,\n' +
+    '        "string_inverter_kva": 0,\n' +
+    '        "inverter_acmax_mva": 0,\n' +
+    '        "production_substation_ac_mva": 4.4,\n' +
+    '        "ring_main_ac_mva": 17.6,\n' +
+    '        "central_inverter_mwac": 4.4,\n' +
+    '        "central_inverter_mwdc": 5.28,\n' +
+    '        "combiner_box_dc_kw": 443.52,\n' +
+    '        "combiner_design_limit_kwdc": 500,\n' +
+    '        "engineering_warning": "Check skid rating, transformer rating, cable ratings, protection, losses and grid compliance."\n' +
+    '      },\n' +
+    '      "finance": {\n' +
+    '        "annualRevenue": 5656095.2447999995,\n' +
+    '        "revenue25": 134818707.8719755,\n' +
+    '        "revenue35": 185075640.18482596,\n' +
+    '        "totalCapex": 60314595.83999999,\n' +
+    '        "capexPerWp": 0.7132379438743074,\n' +
+    '        "surplus25": 30504112.031975523,\n' +
+    '        "surplus35": 63161044.34482597,\n' +
+    '        "devStage": "Construction Contract Signed and Finance Committed (Financial Close)",\n' +
+    '        "devCostPerMw": 0.1,\n' +
+    '        "devModulePerMwp": 0.15,\n' +
+    '        "devEpcPerMw": 0.5,\n' +
+    '        "devOwnerPerMw": 0.1,\n' +
+    '        "devGridPerMw": 0.1,\n' +
+    '        "devExitPerMwp": 1.35,\n' +
+    '        "devNpvPerMwp": 1.2,\n' +
+    '        "devSuccessPct": 15,\n' +
+    '        "devYears": 4,\n' +
+    '        "devCapitalAtRisk": 8456448,\n' +
+    '        "devModuleCost": 12'... 10865 more characters,
+  expected: '{\n' +
+    '  "schema": "globalgrid2050.original-sld-electrical-finance-fixture.v1",\n' +
+    '  "provenance": {\n' +
+    '    "original_directory_name": "gis-sld-financial-sandbox",\n' +
+    '    "sha256": {\n' +
+    '      "index.html": "95b8d275a5e9d7463032b524f1b5f142e4af586c377eb7f2cc0bb55e4b7e2646",\n' +
+    '      "gis-sld-v5-helpers.js": "ce8f4409428f96ac5013ac0bb27bde98867693922b9291455a9c930c24fc6d07",\n' +
+    '      "gis-sld-v5-state.js": "1e45e43eafbce30e96b6bed7351bfe3142c27c2d8c3ab1aef32e66f4bf13ef66",\n' +
+    '      "gis-sld-v5-calculations.js": "440c232a79bca028fb961144969ba5fa6c15658eb57096a5e19313729dd3c005",\n' +
+    '      "gis-sld-v5-finance.js": "16183b9e3bcd53ab8eca497b0ace074b9c6da5ce67a52658bdd06093ada66b6c"\n' +
+    '    },\n' +
+    '    "execution": "Original helper, state, calculation and finance JavaScript evaluated in a minimal DOM parsed from the original index.html."\n' +
+    '  },\n' +
+    '  "reference_behavior": {\n' +
+    '    "z_strings_default": 18,\n' +
+    '    "declared_string_dc_ac_ratio": 1.2,\n' +
+    '    "z_strings_is_independent_input": true,\n' +
+    '    "reason": "The original reads z_strings directly. Its string AC is supplied by skid export, so buildStats recomputes actual DC/AC and does not use the declared ratio to alter z_strings.",\n' +
+    '    "known_central_defect": "Original central ac_mw_direct multiplies total_blocks by both central_skid_mva and inv_per_mv even though total_blocks already includes inv_per_mv. A corrected port must encode an explicit expected divergence for inv_per_mv greater than one."\n' +
+    '  },\n' +
+    '  "cases": [\n' +
+    '    {\n' +
+    '      "id": "string_reference_defaults",\n' +
+    '      "mode": "string",\n' +
+    '      "inputs": {\n' +
+    '        "b_cols": "6",\n' +
+    '        "dc_ac_ratio": "1.20",\n' +
+    '        "fin_string_bess_capex": "0",\n' +
+    '        "fin_string_bess_cycles": "0",\n' +
+    '        "fin_string_bess_eff": "88",\n' +
+    '        "fin_string_bess_mw": "0",\n' +
+    '        "fin_string_bess_mwh": "0",\n' +
+    '        "fin_string_bess_spread": "0",\n' +
+    '        "fin_string_bifacial": "5",\n' +
+    '        "fin_string_cont": "7",\n' +
+    '        "fin_string_deg": "0.4",\n' +
+    '        "fin_string_dev_cost_mw": "0.1",\n' +
+    '        "fin_string_dev_epc_mw": "0.5",\n' +
+    '        "fin_string_dev_exit_mwp": "1.35",\n' +
+    '        "fin_string_dev_grid_mw": "0.1",\n' +
+    '        "fin_string_dev_module_mwp": "0.15",\n' +
+    '        "fin_string_dev_npv_mwp": "1.2",\n' +
+    '        "fin_string_dev_owner_mw": "0.1",\n' +
+    '        "fin_string_dev_stage": "0.100",\n' +
+    '        "fin_string_dev_success": "15",\n' +
+    '        "fin_string_dev_years": "4",\n' +
+    '        "fin_string_epc_ex": "0.30",\n' +
+    '        "fin_string_fixed_capex": "1500000",\n' +
+    '        "fin_string_flood": false,\n' +
+    '        "fin_string_flood_rate": "0.03",\n' +
+    '        "fin_string_loss_dc_string": "0",\n' +
+    '        "fin_string_loss_lv_ac": "0",\n' +
+    '        "fin_string_loss_lv_dc": "0",\n' +
+    '        "fin_string_loss_other": "0",\n' +
+    '        "fin_string_loss_tx": "0",\n' +
+    '        "fin_string_losses": "2",\n' +
+    '        "fin_string_modules": "0.15",\n' +
+    '        "fin_string_opex": "25000",\n' +
+    '        "fin_string_other": "0",\n' +
+    '        "fin_string_other_capex": "0.20",\n' +
+    '        "fin_string_price": "65",\n' +
+    '        "fin_string_yield": "1000",\n' +
+    '        "gross_factor": "1.35",\n' +
+    '        "mod_l": "2.38",\n' +
+    '        "mod_w": "1.30",\n' +
+    '        "mod_wp": "660",\n' +
+    '        "mods_container": "594",\n' +
+    '        "mods_pallet": "33",\n' +
+    '        "mounting_type": "0.45",\n' +
+    '        "s_subs": "5",\n' +
+    '        "spare_pct": "1.0",\n' +
+    '        "string_inv_kva": "352",\n' +
+    '        "string_skid_mva": "8.96",\n' +
+    '        "x_mods": "28",\n' +
+    '        "y_invs": "28",\n' +
+    '        "z_strings": "18"\n' +
+    '      },\n' +
+    '      "stats": {\n' +
+    '        "total_blocks": 30,\n' +
+    '        "block_ground_area_m2": 97027.84,\n' +
+    '        "dc_mwp": 279.4176,\n' +
+    '        "ac_mw": 268.8,\n' +
+    '        "module_count": 423360,\n' +
+    '        "net_mod_area_m2": 1309875.8399999999,\n' +
+    '        "net_array_area_m2": 2910835.1999999997,\n' +
+    '        "gross_site_area_m2": 3929627.52,\n' +
+    '        "dc_ac_ratio": 1.0394999999999999,\n' +
+    '        "pallets": 12830,\n' +
+    '        "containers": 713,\n' +
+    '        "spares_pct": 1,\n' +
+    '        "modules_inc_spares": 427594,\n' +
+    '        "pallets_inc_spares": 12958,\n' +
+    '        "containers_inc_spares": 720,\n' +
+    '        "mods_pallet": 33,\n' +
+    '        "mods_container": 594,\n' +
+    '        "combiner_boxes_per_inverter": 0,\n' +
+    '        "total_combiner_boxes": 0,\n' +
+    '        "string_inverter_kva": 352,\n' +
+    '        "inverter_acmax_mva": 9.856,\n' +
+    '        "production_substation_ac_mva": 8.96,\n' +
+    '        "ring_main_ac_mva": 44.800000000000004,\n' +
+    '        "central_inverter_mwac": 0,\n' +
+    '        "central_inverter_mwdc": 0,\n' +
+    '        "combiner_box_dc_kw": 0,\n' +
+    '        "combiner_design_limit_kwdc": 0,\n' +
+    '        "engineering_warning": "Inverter ACmax exceeds skid transformer rating. Verify temperature rating, overload strategy and clipping assumptions."\n' +
+    '      },\n' +
+    '      "finance": {\n' +
+    '        "annualRevenue": 18688846.176,\n' +
+    '        "revenue25": 445467408.87768126,\n' +
+    '        "revenue35": 611526153.7575545,\n' +
+    '        "totalCapex": 195834940.79999998,\n' +
+    '        "capexPerWp": 0.7008683089397374,\n' +
+    '        "surplus25": 81632468.07768127,\n' +
+    '        "surplus35": 180491212.95755455,\n' +
+    '        "devStage": "Construction Contract Signed and Finance Committed (Financial Close)",\n' +
+    '        "devCostPerMw": 0.1,\n' +
+    '        "devModulePerMwp": 0.15,\n' +
+    '        "devEpcPerMw": 0.5,\n' +
+    '        "devOwnerPerMw": 0.1,\n' +
+    '        "devGridPerMw": 0.1,\n' +
+    '        "devExitPerMwp": 1.35,\n' +
+    '        "devNpvPerMwp": 1.2,\n' +
+    '        "devSuccessPct": 15,\n' +
+    '        "devYears": 4,\n' +
+    '        "devCapitalAtRisk": 27941760,\n' +
+    '        "devModuleCost": 41912640,\n' +
+    '        "devEpcCost": 139708800,\n' +
+    '        "devOwnerCost": 27941760,\n' +
+    '        "devGridCost": 27941760,\n' +
+    '        "devTotalBuildCost": 265446720,\n' +
+    '        "devExitValue": 377213760,\n' +
+    '        "devOperatingNpv": 335301120,\n' +
+    '        "devGrossMargin": 111767040,\n' +
+    '        "devRiskAdjustedValue": 16765056,\n' +
+    '        "devReturnMultiple": 4,\n' +
+    '        "price": 65,\n' +
+    '        "other": 0,\n' +
+    '        "yieldVal": 1000,\n' +
+    '        "bifacial": 5,\n' +
+    '        "baseLoss": 2,\n' +
+    '        "deg": 0.4,\n' +
+    '        "opexRate": 25000,\n' +
+    '        "epcEx": 0.3,\n' +
+    '        "floodActive": false,\n' +
+    '        "floodRate": 0.03,\n' +
+    '        "modules": 0.15,\n' +
+    '        "otherCapex": 0.2,\n' +
+    '        "fixedCapex": 1500000,\n' +
+    '        "cont": 7,\n' +
+    '        "totalLoss": 2,\n' +
+    '        "bessMw": 0,\n' +
+    '        "bessMwh": 0,\n' +
+    '        "bessCapexRate": 0,\n' +
+    '        "bessCycles": 0,\n' +
+    '        "bessSpread": 0,\n' +
+    '        "bessEff": 88,\n' +
+    '        "epcIncModules": 0.44999999999999996\n' +
+    '      }\n' +
+    '    },\n' +
+    '    {\n' +
+    '      "id": "central_reference_defaults",\n' +
+    '      "mode": "central",\n' +
+    '      "inputs": {\n' +
+    '        "central_rating_mode": null,\n' +
+    '        "central_skid_mva_c": "4.40",\n' +
+    '        "combiner_limit_kwdc_c": "500",\n' +
+    '        "fin_central_bess_capex": "0",\n' +
+    '        "fin_central_bess_cycles": "0",\n' +
+    '        "fin_central_bess_eff": "88",\n' +
+    '        "fin_central_bess_mw": "0",\n' +
+    '        "fin_central_bess_mwh": "0",\n' +
+    '        "fin_central_bess_spread": "0",\n' +
+    '        "fin_central_bifacial": "5",\n' +
+    '        "fin_central_cont": "7",\n' +
+    '        "fin_central_deg": "0.4",\n' +
+    '        "fin_central_dev_cost_mw": "0.1",\n' +
+    '        "fin_central_dev_epc_mw": "0.5",\n' +
+    '        "fin_central_dev_exit_mwp": "1.35",\n' +
+    '        "fin_central_dev_grid_mw": "0.1",\n' +
+    '        "fin_central_dev_module_mwp": "0.15",\n' +
+    '        "fin_central_dev_npv_mwp": "1.2",\n' +
+    '        "fin_central_dev_owner_mw": "0.1",\n' +
+    '        "fin_central_dev_stage": "0.100",\n' +
+    '        "fin_central_dev_success": "15",\n' +
+    '        "fin_central_dev_years": "4",\n' +
+    '        "fin_central_epc_ex": "0.30",\n' +
+    '        "fin_central_fixed_capex": "1500000",\n' +
+    '        "fin_central_flood": false,\n' +
+    '        "fin_central_flood_rate": "0.03",\n' +
+    '        "fin_central_loss_dc_string": "0",\n' +
+    '        "fin_central_loss_lv_ac": "0",\n' +
+    '        "fin_central_loss_lv_dc": "0",\n' +
+    '        "fin_central_loss_other": "0",\n' +
+    '        "fin_central_loss_tx": "0",\n' +
+    '        "fin_central_losses": "2",\n' +
+    '        "fin_central_modules": "0.15",\n' +
+    '        "fin_central_opex": "25000",\n' +
+    '        "fin_central_other": "0",\n' +
+    '        "fin_central_other_capex": "0.20",\n' +
+    '        "fin_central_price": "65",\n' +
+    '        "fin_central_yield": "1000",\n' +
+    '        "gross_factor_c": "1.35",\n' +
+    '        "inv_ac_mw_c": "4.40",\n' +
+    '        "inv_ac_mw_custom_c": null,\n' +
+    '        "inv_dc_mw_c": "5.28",\n' +
+    '        "inv_per_mv_c": "1",\n' +
+    '        "mod_l_c": "2.38",\n' +
+    '        "mod_w_c": "1.30",\n' +
+    '        "mod_wp_c": "660",\n' +
+    '        "mods_container_c": "594",\n' +
+    '        "mods_pallet_c": "33",\n' +
+    '        "mounting_type_c": "0.45",\n' +
+    '        "mv_per_ring_c": "4",\n' +
+    '        "rings_c": "4",\n' +
+    '        "spare_pct_c": "1.0",\n' +
+    '        "str_per_cb_c": "24",\n' +
+    '        "x_mods_c": "28"\n' +
+    '      },\n' +
+    '      "stats": {\n' +
+    '        "total_blocks": 16,\n' +
+    '        "block_ground_area_m2": 55059.44888888889,\n' +
+    '        "dc_mwp": 84.56448,\n' +
+    '        "ac_mw": 70.4,\n' +
+    '        "module_count": 128128,\n' +
+    '        "net_mod_area_m2": 396428.032,\n' +
+    '        "net_array_area_m2": 880951.1822222222,\n' +
+    '        "gross_site_area_m2": 1189284.0960000001,\n' +
+    '        "dc_ac_ratio": 1.2012,\n' +
+    '        "pallets": 3883,\n' +
+    '        "containers": 216,\n' +
+    '        "spares_pct": 1,\n' +
+    '        "modules_inc_spares": 129410,\n' +
+    '        "pallets_inc_spares": 3922,\n' +
+    '        "containers_inc_spares": 218,\n' +
+    '        "mods_pallet": 33,\n' +
+    '        "mods_container": 594,\n' +
+    '        "combiner_boxes_per_inverter": 12,\n' +
+    '        "total_combiner_boxes": 192,\n' +
+    '        "string_inverter_kva": 0,\n' +
+    '        "inverter_acmax_mva": 0,\n' +
+    '        "production_substation_ac_mva": 4.4,\n' +
+    '        "ring_main_ac_mva": 17.6,\n' +
+    '        "central_inverter_mwac": 4.4,\n' +
+    '        "central_inverter_mwdc": 5.28,\n' +
+    '        "combiner_box_dc_kw": 443.52,\n' +
+    '        "combiner_design_limit_kwdc": 500,\n' +
+    '        "engineering_warning": "Check skid rating, transformer rating, cable ratings, protection, losses and grid compliance."\n' +
+    '      },\n' +
+    '      "finance": {\n' +
+    '        "annualRevenue": 5656095.2447999995,\n' +
+    '        "revenue25": 134818707.8719755,\n' +
+    '        "revenue35": 185075640.18482596,\n' +
+    '        "totalCapex": 60314595.83999999,\n' +
+    '        "capexPerWp": 0.7132379438743074,\n' +
+    '        "surplus25": 30504112.031975523,\n' +
+    '        "surplus35": 63161044.34482597,\n' +
+    '        "devStage": "Construction Contract Signed and Finance Committed (Financial Close)",\n' +
+    '        "devCostPerMw": 0.1,\n' +
+    '        "devModulePerMwp": 0.15,\n' +
+    '        "devEpcPerMw": 0.5,\n' +
+    '        "devOwnerPerMw": 0.1,\n' +
+    '        "devGridPerMw": 0.1,\n' +
+    '        "devExitPerMwp": 1.35,\n' +
+    '        "devNpvPerMwp": 1.2,\n' +
+    '        "devSuccessPct": 15,\n' +
+    '        "devYears": 4,\n' +
+    '        "devCapitalAtRisk": 8456448,\n' +
+    '        "devModuleCost": 12'... 10865 more characters,
+  operator: 'strictEqual',
+  diff: 'simple'
+}
+
+Node.js v22.23.4

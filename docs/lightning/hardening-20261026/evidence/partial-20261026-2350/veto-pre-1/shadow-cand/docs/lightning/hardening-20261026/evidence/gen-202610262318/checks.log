@@ -1,0 +1,52 @@
+== lint
+scope-ledger=PASS active=none master=done
+exit=0
+== state
+scope-ledger=PASS active=none master=done
+cmp=0
+== proof 202610262318
+SLD exact delta (202609241334 bytes + \n + 202610262318 uk-lightning-overlay module), SHA-256, byte budget, static negatives, static positives and syntax PASS; browser verification runs separately.
+exit=0
+== proof 202610262310
+SLD exact delta (202609241334 bytes + \n + 202610262310 uk-lightning-overlay module), SHA-256, byte budget, static negatives, static positives and syntax PASS; browser verification runs separately.
+exit=0
+== proof 202610261949
+SLD exact delta (202609241334 bytes + \n + 202610261949 uk-lightning-overlay module), SHA-256, byte budget, static negatives, static positives and syntax PASS; browser verification runs separately.
+exit=0
+== run-current
+exit=0
+== verify-compose
+{"composition":"PASS","generation":"202609241334","release_id":"202608300453-atlas-v9","immutable_releases":8,"cartridges":["streaming-parquet-bridge","uk-gazetteer-flyto","substation-intelligence","sld-sandbox"]}
+exit=0
+== verify-candidate
+ "result": "PASS",
+ "failures": []
+exit=0
+== loader cmp
+cmp=0
+ 23137 atlas/modules/202610262318-uk-lightning-overlay.js
+458356 atlas/cartridges/202610262318-sld-sandbox-v9-8.js
+481493 total
+== protected diff vs fda6b10
+(empty = unchanged)
+== 2310 untouched
+none
+== chatgpt 202610262318
+# pass 6
+# fail 0
+== fixtests 202610262318
+# pass 24
+# fail 0
+== chatgpt 202610262310
+# pass 6
+# fail 0
+== fixtests 202610262310
+not ok 14 - LP: LOAD POINTS stops before a day that would break 40,000 flashes or 32 MB
+not ok 18 - A11Y P15-1: period chips expose aria-pressed and it follows the selected period
+not ok 19 - A11Y P15-2: the custom From/To date inputs have accessible names
+not ok 20 - A11Y P15-3: no \#555 text on lightning nodes; caption footer and status line are \#888
+not ok 21 - A11Y P15-4: FAIL-state label opacity is 0.6
+not ok 22 - R01/P02/P10: no Grid dropdown mirror is inserted; the original Grid panel keeps its children
+not ok 23 - R01: boot no longer waits for .gm-panel-body
+# pass 17
+# fail 7

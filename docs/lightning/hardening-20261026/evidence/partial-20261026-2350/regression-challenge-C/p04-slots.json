@@ -1,0 +1,224 @@
+{
+ "prod": {
+  "generation": "202609241334",
+  "slots": [
+   {
+    "id": "streaming-parquet-bridge",
+    "slot": "replace-script",
+    "type": "script",
+    "replace_script": "202608292311-maplibre-worker-bridge.js",
+    "path": "cartridges/202609241251-streaming-parquet-bridge-v9-5.js",
+    "sha256": "60be8215ba873ac2886786bf6e3fd51e5764e7c5e26684fde71ebe9974a329a2",
+    "generation": "202609241251"
+   },
+   {
+    "id": "uk-gazetteer-flyto",
+    "slot": "replace-script",
+    "type": "script",
+    "replace_script": "202608291818-place-postcode-search.js",
+    "path": "cartridges/202609071213-place-global-search-v9-5.js",
+    "sha256": "15f324e5c279050882f7e3ce83a915c070b6ed19095efcac4ae20af4ef19fdfa",
+    "generation": "202609071213"
+   },
+   {
+    "id": "sld-sandbox",
+    "slot": "replace-script",
+    "type": "script",
+    "replace_script": "202608292126-pre-snapped-config-adapter.js",
+    "path": "cartridges/202609241334-sld-sandbox-v9-8.js",
+    "sha256": "7812953671d8bb22a566de5e98fd3137da2d23411c5aecd526df5afa111ca4ca",
+    "generation": "202609241334"
+   },
+   {
+    "id": "substation-intelligence",
+    "slot": "replace-script",
+    "type": "script",
+    "replace_script": "ventus-corev8engine.js",
+    "path": "cartridges/202609062358-substation-intelligence-v9-63.js",
+    "sha256": "d94b0de50deddac77643325b10fbe490ce44b8c406dbc6c67e6e7cadbdaa8ec6",
+    "generation": "202609062358"
+   }
+  ],
+  "order": [
+   "streaming-parquet-bridge",
+   "uk-gazetteer-flyto",
+   "substation-intelligence",
+   "sld-sandbox"
+  ],
+  "shell": {
+   "release_id": "202608300453-atlas-v9",
+   "index": "./releases/202608300453-atlas-v9/index.html",
+   "base": "./releases/202608300453-atlas-v9/"
+  },
+  "n": 4
+ },
+ "cand": {
+  "generation": "202610261949",
+  "slots": [
+   {
+    "id": "streaming-parquet-bridge",
+    "slot": "replace-script",
+    "type": "script",
+    "replace_script": "202608292311-maplibre-worker-bridge.js",
+    "path": "cartridges/202609241251-streaming-parquet-bridge-v9-5.js",
+    "sha256": "60be8215ba873ac2886786bf6e3fd51e5764e7c5e26684fde71ebe9974a329a2",
+    "generation": "202609241251"
+   },
+   {
+    "id": "uk-gazetteer-flyto",
+    "slot": "replace-script",
+    "type": "script",
+    "replace_script": "202608291818-place-postcode-search.js",
+    "path": "cartridges/202609071213-place-global-search-v9-5.js",
+    "sha256": "15f324e5c279050882f7e3ce83a915c070b6ed19095efcac4ae20af4ef19fdfa",
+    "generation": "202609071213"
+   },
+   {
+    "id": "sld-sandbox",
+    "slot": "replace-script",
+    "type": "script",
+    "replace_script": "202608292126-pre-snapped-config-adapter.js",
+    "path": "cartridges/202610261949-sld-sandbox-v9-8.js",
+    "sha256": "b7d4d6657b1d52624b51a90da477291dbd079fa83adf97b678f4610cd8725f85",
+    "generation": "202610261949"
+   },
+   {
+    "id": "substation-intelligence",
+    "slot": "replace-script",
+    "type": "script",
+    "replace_script": "ventus-corev8engine.js",
+    "path": "cartridges/202609062358-substation-intelligence-v9-63.js",
+    "sha256": "d94b0de50deddac77643325b10fbe490ce44b8c406dbc6c67e6e7cadbdaa8ec6",
+    "generation": "202609062358"
+   }
+  ],
+  "order": [
+   "streaming-parquet-bridge",
+   "uk-gazetteer-flyto",
+   "substation-intelligence",
+   "sld-sandbox"
+  ],
+  "shell": {
+   "release_id": "202608300453-atlas-v9",
+   "index": "../../releases/202608300453-atlas-v9/index.html",
+   "base": "../../releases/202608300453-atlas-v9/"
+  },
+  "n": 4
+ },
+ "manifest": {
+  "generation": "202610261949",
+  "slots": [
+   {
+    "id": "streaming-parquet-bridge",
+    "slot": "replace-script",
+    "type": "script",
+    "replace_script": "202608292311-maplibre-worker-bridge.js",
+    "path": "cartridges/202609241251-streaming-parquet-bridge-v9-5.js",
+    "sha256": "60be8215ba873ac2886786bf6e3fd51e5764e7c5e26684fde71ebe9974a329a2",
+    "generation": "202609241251"
+   },
+   {
+    "id": "uk-gazetteer-flyto",
+    "slot": "replace-script",
+    "type": "script",
+    "replace_script": "202608291818-place-postcode-search.js",
+    "path": "cartridges/202609071213-place-global-search-v9-5.js",
+    "sha256": "15f324e5c279050882f7e3ce83a915c070b6ed19095efcac4ae20af4ef19fdfa",
+    "generation": "202609071213"
+   },
+   {
+    "id": "sld-sandbox",
+    "slot": "replace-script",
+    "type": "script",
+    "replace_script": "202608292126-pre-snapped-config-adapter.js",
+    "path": "cartridges/202610261949-sld-sandbox-v9-8.js",
+    "sha256": "b7d4d6657b1d52624b51a90da477291dbd079fa83adf97b678f4610cd8725f85",
+    "generation": "202610261949"
+   },
+   {
+    "id": "substation-intelligence",
+    "slot": "replace-script",
+    "type": "script",
+    "replace_script": "ventus-corev8engine.js",
+    "path": "cartridges/202609062358-substation-intelligence-v9-63.js",
+    "sha256": "d94b0de50deddac77643325b10fbe490ce44b8c406dbc6c67e6e7cadbdaa8ec6",
+    "generation": "202609062358"
+   }
+  ],
+  "order": [
+   "streaming-parquet-bridge",
+   "uk-gazetteer-flyto",
+   "substation-intelligence",
+   "sld-sandbox"
+  ],
+  "shell": {
+   "release_id": "202608300453-atlas-v9",
+   "index": "./releases/202608300453-atlas-v9/index.html",
+   "base": "./releases/202608300453-atlas-v9/"
+  },
+  "n": 4
+ },
+ "checks": {
+  "four_slots_prod": true,
+  "four_slots_cand": true,
+  "four_slots_manifest": true,
+  "order_equal": true,
+  "all_replace_script_slots": true,
+  "replace_script_targets_equal": true,
+  "shell_release_equal": true,
+  "bridge_sha_equal": true,
+  "gazetteer_sha_equal": true,
+  "manifest_vs_current_sha_equal": true,
+  "live_route_equal": true,
+  "release_route_equal": true,
+  "cand_shell_paths_relative_two_up": true,
+  "prod_pointer_untouched": true,
+  "by_id": {
+   "bridge_sha_equal": true,
+   "gazetteer_sha_equal": true,
+   "substation_sha_equal": true,
+   "sld_sha_differs_as_expected": true,
+   "sld_replace_script_slot_same": true,
+   "cartridges_array_order_same": true,
+   "note": "cartridges[] array order in both files is bridge, gazetteer, sld-sandbox, substation; cartridge_order[] runs substation before sld. Same in production and candidate."
+  }
+ },
+ "file_hashes": {
+  "prod": [
+   {
+    "id": "streaming-parquet-bridge",
+    "ok": true
+   },
+   {
+    "id": "uk-gazetteer-flyto",
+    "ok": true
+   },
+   {
+    "id": "sld-sandbox",
+    "ok": true
+   },
+   {
+    "id": "substation-intelligence",
+    "ok": true
+   }
+  ],
+  "cand": [
+   {
+    "id": "streaming-parquet-bridge",
+    "ok": true
+   },
+   {
+    "id": "uk-gazetteer-flyto",
+    "ok": true
+   },
+   {
+    "id": "sld-sandbox",
+    "ok": true
+   },
+   {
+    "id": "substation-intelligence",
+    "ok": true
+   }
+  ]
+ }
+}

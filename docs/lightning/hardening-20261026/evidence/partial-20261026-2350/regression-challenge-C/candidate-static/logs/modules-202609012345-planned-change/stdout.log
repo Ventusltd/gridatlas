@@ -1,0 +1,67 @@
+
+the module is what it says it is
+
+  [PASS] the module registered and froze its surface
+  [PASS] it names the one product it reads
+  [PASS] it declares the graph contract it borrows
+  [PASS] it says a plan is not existing infrastructure
+  [PASS] it says a plan is not a commitment, a consent or a connection date
+  [PASS] it carries the not-an-assessment discipline
+  [PASS] the module contains no impedance arithmetic
+  [PASS] the module never reduces a parameter or rating list
+  [PASS] no arithmetic operator is applied to a rating value
+  [PASS] it never fetches, never renders and never waits
+  [PASS] it never decodes a voltage from a node code
+  [PASS] it has no traversal: no path, hop, frontier or neighbour
+  [PASS] the denials were found and they deny spare capacity
+  [PASS] nothing outside the denials speaks of headroom, spare or availability
+  [PASS] no key or identifier in the module names headroom
+
+it fails closed
+
+  [PASS] an unrecognised schema yields no index
+  [PASS] a v2 of the same product is refused until it is read for
+  [PASS] null and undefined are refused
+
+behaviour, on products built for the edge cases
+
+  [PASS] the index accepts the schema and counts every row once
+  [PASS] three rows land at the site
+  [PASS] years are grouped in ascending order
+  [PASS] within a year, statuses are grouped Addition before Change
+  [PASS] the year counts are real
+  [PASS] the top-level tallies agree with the groups
+  [PASS] a change carries its published ratings, unaltered
+  [PASS] a change carries R, X and B as published and nothing derived from them
+  [PASS] a change carries circuit type and lengths
+  [PASS] every entry is marked as a publication, not as a circuit
+  [PASS] the change on the existing pair says the pair is published today
+  [PASS] the addition on a pair with nothing today says so
+  [PASS] the count of rows on a pair published today is surfaced
+  [PASS] the answer carries all three denials
+  [PASS] the far site sees the same row
+  [PASS] the planned addition is reported
+  [PASS] the topology view counts zero circuits at the site
+  [PASS] the topology view names no neighbour
+  [PASS] the electrical-distance traversal cannot walk it
+  [PASS] the planned entry says the pair is NOT published today
+  [PASS] no key in the answer is called circuits or transformers
+  [PASS] an internal transformer row is reported once, not once per end
+  [PASS] the transformer carries its published rating and ratio
+  [PASS] an unpublished ratio is null, never reconstructed from 400 and 275
+  [PASS] a transformer entry carries no seasonal circuit ratings
+  [PASS] the internal row is marked as within this site
+  [PASS] the count by asset is real
+  [PASS] scoped to 400 kV, only the 400 kV row is reported
+  [PASS] the scope says which voltage it is
+  [PASS] unscoped, all three rows are reported and each carries its own voltage
+  [PASS] a node whose site does not vouch for its voltage is undeclared, not 275
+  [PASS] scoped to 275 kV, the undeclared node is not counted as 275
+  [PASS] an unknown site is null, not an empty answer
+  [PASS] a row to a node the product does not list is still reported, with no invented site
+  [PASS] a row with no year is grouped as unstated, after the real years
+  [PASS] an unrecognised status is kept and named, not dropped
+  [PASS] an empty site answers with zero and says so
+
+the published network, 2,230 planned rows
+

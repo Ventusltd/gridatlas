@@ -1,0 +1,191 @@
+# opus-release-rollback | REHEARSAL release diff (private worktree, never committed) | base fda6b10 | GEN 202610261949 | 2026-10-26T22:36:43Z
+ STATE.md                  |  2 +-
+ atlas/current.json        | 54 ++++++++++++++++++++++++++++++++++-------------
+ atlas/state/live-set.json |  4 ++--
+ releases/current-v5.json  |  4 ++--
+ state/live-set.json       |  4 ++--
+ 5 files changed, 46 insertions(+), 22 deletions(-)
+diff --git a/STATE.md b/STATE.md
+index 5383099..5306b13 100644
+--- a/STATE.md
++++ b/STATE.md
+@@ -2,7 +2,7 @@
+ 
+ - Master: `done`
+ - Active scope: `none`
+-- Composition: `202609241334 · 202608300453-atlas-v9 · streaming-parquet-bridge → uk-gazetteer-flyto → substation-intelligence → sld-sandbox`
++- Composition: `202610261949 · 202608300453-atlas-v9 · streaming-parquet-bridge → uk-gazetteer-flyto → substation-intelligence → sld-sandbox`
+ - Top-level full release copies: `0`
+ - Immutable releases under atlas/releases: `8`
+ - Active workflows: `9`
+diff --git a/atlas/current.json b/atlas/current.json
+index a73cbbf..b39ef68 100644
+--- a/atlas/current.json
++++ b/atlas/current.json
+@@ -1,7 +1,7 @@
+ {
+  "schema": "gridatlas.current.v2",
+- "generation": "202609241334",
+- "previous_generation": "202609200022",
++ "generation": "202610261949",
++ "previous_generation": "202609241334",
+  "architecture": "IMMUTABLE_SHELL_PLUS_HASHED_CARTRIDGES",
+  "live_route": "/gridatlas/atlas/",
+  "release_id": "202608300453-atlas-v9",
+@@ -77,13 +77,13 @@
+   },
+   {
+    "id": "sld-sandbox",
+-   "generation": "202609241334",
+-   "version": "v9.156",
++   "generation": "202610261949",
++   "version": "v9.158",
+    "type": "script",
+    "slot": "replace-script",
+    "replace_script": "202608292126-pre-snapped-config-adapter.js",
+-   "path": "./cartridges/202609241334-sld-sandbox-v9-8.js",
+-   "sha256": "7812953671d8bb22a566de5e98fd3137da2d23411c5aecd526df5afa111ca4ca",
++   "path": "./cartridges/202610261949-sld-sandbox-v9-8.js",
++   "sha256": "b7d4d6657b1d52624b51a90da477291dbd079fa83adf97b678f4610cd8725f85",
+    "capabilities": [
+     "pre-snapped-config-adapter-carried-forward",
+     "project-or-substation-selection",
+@@ -219,7 +219,8 @@
+     "status-box-places-itself-clear-of-the-top-furniture",
+     "card-top-and-side-bounds-with-effective-scroll-height",
+     "ordinary-feature-card-close-clear-of-mobile-search",
+-    "ordinary-card-styles-returned-when-project-controls-arrive"
++    "ordinary-card-styles-returned-when-project-controls-arrive",
++    "uk-lightning-optical-flash-overlay-off-by-default"
+    ],
+    "immutable_shell_modified": false,
+    "supersedes_shell_script": {
+@@ -557,8 +558,31 @@
+      "upstream": "Elexon settlement prices as the owner repository publishes them"
+     }
+    ],
+-   "bytes": 435218,
+-   "derived_from": "./cartridges/202609200022-sld-sandbox-v9-8.js"
++   "bytes": 459192,
++   "derived_from": "./cartridges/202609241334-sld-sandbox-v9-8.js",
++   "uk_lightning": {
++    "module": "./modules/202610261949-uk-lightning-overlay.js",
++    "module_bytes": 23973,
++    "delta": "live 202609241334 bytes + \"\\n\" + module; nothing replaced",
++    "default": "OFF, never persisted; no request, source or layer until the first switch-on",
++    "surfaces": [
++     "#scada-ui-container (appended last)",
++     "#fs-curtain-keys (appended last)",
++     "Grid dropdown footer after .gm-panel-body (toggle only)"
++    ],
++    "contract": "no data-layer-id, data-pn-layer, data-gridatlas-layer-proxy, data-gridatlas-layer-key, lbl-* id or name=bm; menuBar.inspect() stays {60,3,63,63,true}",
++    "transport": "fetch of .json index and day files (passes the untouched bridge); XMLHttpRequest for the live uk_lightning feed while the archive is unpublished",
++    "caps": {
++     "phone_points": 10000,
++     "desktop_points": 40000,
++     "above_cap": "cluster:true (radius 40, maxZoom 10), circles sized by point_count, no symbol layer",
++     "download_budget": {
++      "count": 40000,
++      "bytes": 32000000
++     }
++    },
++    "observation": "EUMETSAT MTG LI L2-LFL optical flashes, not confirmed ground strikes; missing days are unknown, never zero"
++   }
+   },
+   {
+    "id": "substation-intelligence",
+@@ -671,15 +695,15 @@
+    "result_class": "LOCATION_ONLY"
+   }
+  },
+- "composition_manifest": "./manifests/202609241334-composition.json",
++ "composition_manifest": "./manifests/202610261949-composition.json",
+  "scope_closure": {
+   "generation": "202609010726",
+   "status": "DONE",
+   "scope": "GridAtlas v9.42 the price panel revalidates",
+   "schedule_retired": true
+  },
+- "composition_version": "v9.156",
+- "composition_id": "202609241334-gridatlas-v9.156",
++ "composition_version": "v9.158",
++ "composition_id": "202610261949-gridatlas-v9.158",
+  "transport": {
+   "response_contract": "HEADERS_BEFORE_PARQUET_BODY",
+   "engine_timeout_seconds": 15,
+@@ -694,7 +718,7 @@
+   "fidelity_workflow": ".github/workflows/202608301931-layer-fidelity.yml",
+   "payload_cache": "RELEASE_AFTER_SERIALISATION"
+  },
+- "composition_note": "Restore DLR, UK Metro and Trams station controls by explicitly selecting the existing point station partition, validated against geometry, filters, GPU/CPU census and real browser clicks. Historical shell and datasets preserved. Keep project cards within the map and apply their calculated scrolling height despite the shared !important style.",
+- "superseded_generation": "202609200022",
+- "candidate_predecessor": "202609241251"
++ "composition_note": "v9.158: the EUMETSAT MTG Lightning Imager optical-flash overlay joins the original Atlas as one module appended to the sld-sandbox cartridge, OFF by default, last in the Layers panel, the fullscreen curtain and the Grid footer, with UTC windows, honest coverage captions and device caps. Everything the original composition serves is byte-identical.",
++ "superseded_generation": "202609241334",
++ "candidate_predecessor": "202610221600"
+ }
+diff --git a/atlas/state/live-set.json b/atlas/state/live-set.json
+index b601f0c..4ea27a7 100644
+--- a/atlas/state/live-set.json
++++ b/atlas/state/live-set.json
+@@ -1,6 +1,6 @@
+ {
+  "schema": "gridatlas.atlas-live-set.v1",
+- "generation": "202609060259",
++ "generation": "202610261949",
+  "live_route": "/gridatlas/atlas/",
+  "release_id": "202608300453-atlas-v9",
+  "shell": {
+@@ -14,7 +14,7 @@
+   "substation-intelligence",
+   "sld-sandbox"
+  ],
+- "composition_manifest": "./manifests/202609060259-composition.json",
++ "composition_manifest": "./manifests/202610261949-composition.json",
+  "last_known_green": {
+   "release_id": "202608300453-atlas-v9",
+   "route": "/gridatlas/atlas/releases/202608300453-atlas-v9/"
+diff --git a/releases/current-v5.json b/releases/current-v5.json
+index c87b131..e4b8178 100644
+--- a/releases/current-v5.json
++++ b/releases/current-v5.json
+@@ -37,7 +37,7 @@
+   "atlas_router_generation": "202608301321",
+   "atlas_composition": {
+    "schema": "gridatlas.composition-pointer.v1",
+-   "generation": "202609051624",
++   "generation": "202610261949",
+    "route": "/gridatlas/atlas/",
+    "shell_release_id": "202608300453-atlas-v9",
+    "cartridge_order": [
+@@ -46,7 +46,7 @@
+     "substation-intelligence",
+     "sld-sandbox"
+    ],
+-   "manifest": "atlas/manifests/202609051624-composition.json"
++   "manifest": "atlas/manifests/202610261949-composition.json"
+   }
+  },
+  "generation": "202608300453",
+diff --git a/state/live-set.json b/state/live-set.json
+index c87b131..e4b8178 100644
+--- a/state/live-set.json
++++ b/state/live-set.json
+@@ -37,7 +37,7 @@
+   "atlas_router_generation": "202608301321",
+   "atlas_composition": {
+    "schema": "gridatlas.composition-pointer.v1",
+-   "generation": "202609051624",
++   "generation": "202610261949",
+    "route": "/gridatlas/atlas/",
+    "shell_release_id": "202608300453-atlas-v9",
+    "cartridge_order": [
+@@ -46,7 +46,7 @@
+     "substation-intelligence",
+     "sld-sandbox"
+    ],
+-   "manifest": "atlas/manifests/202609051624-composition.json"
++   "manifest": "atlas/manifests/202610261949-composition.json"
+   }
+  },
+  "generation": "202608300453",

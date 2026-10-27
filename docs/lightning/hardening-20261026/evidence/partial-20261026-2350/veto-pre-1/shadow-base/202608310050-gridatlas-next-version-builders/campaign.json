@@ -1,0 +1,21 @@
+{
+  "schema": "gridatlas.next-version-builder-campaign.v1",
+  "campaign_id": "202608310050-gridatlas-next-version-builders",
+  "parent_campaign": "202608310015-gridatlas-overnight-next-versions",
+  "time_zone": "Europe/London",
+  "study_started_at": "2026-08-31T00:15:00+01:00",
+  "build_not_before": "2026-08-31T01:15:00+01:00",
+  "minimum_source_words": 43000,
+  "source_ref_policy": "MOST_COMPLETE_FETCHED_BRANCH_WITH_ALL_REQUIRED_FILES",
+  "stages": ["n1", "n2", "n3", "n4", "n5", "n6", "n11", "handover"],
+  "contracts": {
+    "source_folder_read_only": true,
+    "one_new_timestamped_output_folder_per_run": true,
+    "immutable_shell_mutation": false,
+    "live_pointer_mutation": false,
+    "producer_repository_mutation": false,
+    "full_application_copy": false,
+    "automatic_promotion": false,
+    "failed_gate_preserves_evidence": true
+  }
+}

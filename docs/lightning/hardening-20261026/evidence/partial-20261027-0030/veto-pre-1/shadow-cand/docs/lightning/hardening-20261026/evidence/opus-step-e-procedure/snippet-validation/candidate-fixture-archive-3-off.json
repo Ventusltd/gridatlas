@@ -1,0 +1,105 @@
+{
+ "t_utc": "2026-10-26T22:52:28.079Z",
+ "href": "http://127.0.0.1:8617/wt/atlas/v/202610261949/",
+ "ua": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/153.0.8010.12 Safari/537.36",
+ "viewport": [
+  1440,
+  900,
+  1
+ ],
+ "coarse": false,
+ "secure": true,
+ "generation": "202610261949",
+ "sld_sha256": "b7d4d6657b1d52624b51a90da477291dbd079fa83adf97b678f4610cd8725f85",
+ "menu_inspect": {
+  "engine": 60,
+  "pipeline": 3,
+  "total": 63,
+  "unique": 63,
+  "complete": true
+ },
+ "proxies": 63,
+ "markers": 63,
+ "inputs": [
+  120,
+  6
+ ],
+ "leak": 0,
+ "fetch_name": "gridAtlasMaplibreWorkerFetch",
+ "intercepted_on_demand": 0,
+ "bridge": {
+  "failures": [],
+  "loaded": []
+ },
+ "search": {
+  "ready": true,
+  "failures": 0,
+  "geocoder_failures": 0
+ },
+ "style_layers_sources": [
+  100,
+  56
+ ],
+ "lightning": {
+  "schema": "gridatlas.module.uk-lightning-overlay.v1",
+  "generation": "202610261949",
+  "installed": true,
+  "on": false,
+  "requests": 2,
+  "period": "24h",
+  "end": null,
+  "from": "",
+  "to": "",
+  "consent": false,
+  "serial": 2,
+  "ie": null,
+  "fp": null,
+  "res": null,
+  "mode": null,
+  "timer": null,
+  "phase": "OFF-after-ON",
+  "waiting_for": [],
+  "errors": [],
+  "last": {
+   "state": "PARTIAL",
+   "stale": true,
+   "mode": "detail",
+   "period": "24h",
+   "drawn": 0,
+   "cluster": false,
+   "cap": 40000,
+   "cap_source": "index",
+   "index_count": 3,
+   "failures": 0,
+   "reasons": [
+    "tail not yet ingested"
+   ]
+  },
+  "feed_cached": false,
+  "index": {
+   "generated_utc": "2026-10-26T18:37:03.000Z",
+   "cutoff": "2025-10-26",
+   "days": 366
+  },
+  "surfaces": [
+   "fs=false",
+   "menu=false",
+   "main=false"
+  ],
+  "labels": [
+   "Lightning flashes (optical) [WAIT]",
+   "Lightning flashes (optical) [WAIT]",
+   "Lightning flashes (optical) [WAIT]"
+  ],
+  "status": [
+   "hidden",
+   "hidden"
+  ],
+  "captions": [
+   "hidden",
+   "hidden"
+  ],
+  "map_layer": null,
+  "map_source": false
+ }
+}

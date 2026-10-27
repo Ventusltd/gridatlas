@@ -1,0 +1,229 @@
+{
+ "harness": "self-fixture, python -I, numpy+scipy, no network",
+ "flashes": 408,
+ "flashes_inside_recorded_scan_windows": 408,
+ "searched_seconds": 337277,
+ "searched_hours": 93.69,
+ "searched_slot_equivalents": 562.1,
+ "substations": {
+  "assets": 5800,
+  "with_flash_within_1km": 6,
+  "with_flash_within_5km": 109,
+  "with_flash_within_10km": 238,
+  "within_10km": {
+   "count_median": 2.0,
+   "count_p90": 9.0,
+   "count_max": 60,
+   "distinct_utc_days_median": 1.0,
+   "distinct_utc_days_max": 1,
+   "distinct_utc_hours_median": 1.0,
+   "share_of_assets_whose_flashes_all_fall_in_one_utc_hour": 0.634,
+   "share_of_assets_whose_flashes_all_fall_on_one_utc_day": 1.0,
+   "median_share_from_busiest_hour": 1.0
+  },
+  "coincidence_base_rate_10km": {
+   "asset_slot_pairs_with_flash": 502,
+   "of_asset_searched_slot_pairs": 3260340,
+   "rate_same_slot": 0.000154,
+   "rate_pm1_slot_30min": 0.000341
+  },
+  "with_flash_within_20km": 510
+ },
+ "repd_fields": {
+  "technology_field": "repd_technology",
+  "status_field": "status",
+  "with_coordinates": 11069,
+  "records": 11069
+ },
+ "repd_all": {
+  "assets": 11069,
+  "with_flash_within_1km": 26,
+  "with_flash_within_5km": 201,
+  "with_flash_within_10km": 452,
+  "within_10km": {
+   "count_median": 2.0,
+   "count_p90": 8.0,
+   "count_max": 60,
+   "distinct_utc_days_median": 1.0,
+   "distinct_utc_days_max": 1,
+   "distinct_utc_hours_median": 1.0,
+   "share_of_assets_whose_flashes_all_fall_in_one_utc_hour": 0.69,
+   "share_of_assets_whose_flashes_all_fall_on_one_utc_day": 1.0,
+   "median_share_from_busiest_hour": 1.0
+  },
+  "coincidence_base_rate_10km": {
+   "asset_slot_pairs_with_flash": 1016,
+   "of_asset_searched_slot_pairs": 6222190,
+   "rate_same_slot": 0.000163,
+   "rate_pm1_slot_30min": 0.000346
+  },
+  "with_flash_within_20km": 1022
+ },
+ "repd_status_application submitted": {
+  "assets": 1539,
+  "with_flash_within_1km": 3,
+  "with_flash_within_5km": 26,
+  "with_flash_within_10km": 60,
+  "with_flash_within_20km": 152
+ },
+ "repd_status_awaiting construction": {
+  "assets": 5942,
+  "with_flash_within_1km": 20,
+  "with_flash_within_5km": 117,
+  "with_flash_within_10km": 232,
+  "with_flash_within_20km": 498
+ },
+ "repd_status_operational": {
+  "assets": 3132,
+  "with_flash_within_1km": 3,
+  "with_flash_within_5km": 54,
+  "with_flash_within_10km": 141,
+  "with_flash_within_20km": 318
+ },
+ "repd_status_under construction": {
+  "assets": 456,
+  "with_flash_within_1km": 0,
+  "with_flash_within_5km": 4,
+  "with_flash_within_10km": 19,
+  "with_flash_within_20km": 54
+ },
+ "lines": {
+  "400": {
+   "route_km": 7340,
+   "km_within_5km_of_a_flash": 76,
+   "km_within_10km_of_a_flash": 164
+  },
+  "275": {
+   "route_km": 4209,
+   "km_within_5km_of_a_flash": 19,
+   "km_within_10km_of_a_flash": 75
+  },
+  "132": {
+   "route_km": 14036,
+   "km_within_5km_of_a_flash": 270,
+   "km_within_10km_of_a_flash": 632
+  }
+ },
+ "viewing_geometry_0E": [
+  {
+   "lat": 49.5,
+   "lon": -11.0,
+   "vza_deg": 57.7,
+   "parallax_km_per_km_of_height_error": 1.58,
+   "footprint_across_km": 4.8,
+   "footprint_along_km": 9.0
+  },
+  {
+   "lat": 49.5,
+   "lon": 0.0,
+   "vza_deg": 56.8,
+   "parallax_km_per_km_of_height_error": 1.53,
+   "footprint_across_km": 4.8,
+   "footprint_along_km": 8.8
+  },
+  {
+   "lat": 49.5,
+   "lon": 3.0,
+   "vza_deg": 56.8,
+   "parallax_km_per_km_of_height_error": 1.53,
+   "footprint_across_km": 4.8,
+   "footprint_along_km": 8.8
+  },
+  {
+   "lat": 52.0,
+   "lon": -11.0,
+   "vza_deg": 60.4,
+   "parallax_km_per_km_of_height_error": 1.76,
+   "footprint_across_km": 4.9,
+   "footprint_along_km": 9.8
+  },
+  {
+   "lat": 52.0,
+   "lon": 0.0,
+   "vza_deg": 59.5,
+   "parallax_km_per_km_of_height_error": 1.7,
+   "footprint_across_km": 4.8,
+   "footprint_along_km": 9.5
+  },
+  {
+   "lat": 52.0,
+   "lon": 3.0,
+   "vza_deg": 59.5,
+   "parallax_km_per_km_of_height_error": 1.7,
+   "footprint_across_km": 4.8,
+   "footprint_along_km": 9.6
+  },
+  {
+   "lat": 55.0,
+   "lon": -11.0,
+   "vza_deg": 63.5,
+   "parallax_km_per_km_of_height_error": 2.01,
+   "footprint_across_km": 4.9,
+   "footprint_along_km": 11.0
+  },
+  {
+   "lat": 55.0,
+   "lon": 0.0,
+   "vza_deg": 62.7,
+   "parallax_km_per_km_of_height_error": 1.94,
+   "footprint_across_km": 4.9,
+   "footprint_along_km": 10.7
+  },
+  {
+   "lat": 55.0,
+   "lon": 3.0,
+   "vza_deg": 62.8,
+   "parallax_km_per_km_of_height_error": 1.94,
+   "footprint_across_km": 4.9,
+   "footprint_along_km": 10.7
+  },
+  {
+   "lat": 58.0,
+   "lon": -11.0,
+   "vza_deg": 66.6,
+   "parallax_km_per_km_of_height_error": 2.31,
+   "footprint_across_km": 4.9,
+   "footprint_along_km": 12.4
+  },
+  {
+   "lat": 58.0,
+   "lon": 0.0,
+   "vza_deg": 65.9,
+   "parallax_km_per_km_of_height_error": 2.24,
+   "footprint_across_km": 4.9,
+   "footprint_along_km": 12.1
+  },
+  {
+   "lat": 58.0,
+   "lon": 3.0,
+   "vza_deg": 66.0,
+   "parallax_km_per_km_of_height_error": 2.24,
+   "footprint_across_km": 4.9,
+   "footprint_along_km": 12.1
+  },
+  {
+   "lat": 61.5,
+   "lon": -11.0,
+   "vza_deg": 70.2,
+   "parallax_km_per_km_of_height_error": 2.78,
+   "footprint_across_km": 5.0,
+   "footprint_along_km": 14.7
+  },
+  {
+   "lat": 61.5,
+   "lon": 0.0,
+   "vza_deg": 69.6,
+   "parallax_km_per_km_of_height_error": 2.7,
+   "footprint_across_km": 5.0,
+   "footprint_along_km": 14.3
+  },
+  {
+   "lat": 61.5,
+   "lon": 3.0,
+   "vza_deg": 69.7,
+   "parallax_km_per_km_of_height_error": 2.7,
+   "footprint_across_km": 5.0,
+   "footprint_along_km": 14.3
+  }
+ ]
+}

@@ -1,0 +1,104 @@
+{
+  "label": "candidate-browser-shim",
+  "shim": {
+    "preload": "/tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/regression-challenge-C/runners/shim-preload.cjs",
+    "lightningDataDir": "(lead default)"
+  },
+  "generation": "202610261949",
+  "base": "http://127.0.0.1:8144/wt/atlas/v/202610261949/",
+  "live": "https://ventusltd.github.io/gridatlas/atlas/",
+  "repo": "/tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/regression-challenge-C/shadow-candidate",
+  "startedAt": "2026-10-26T23:12:36.989Z",
+  "routeBoots": true,
+  "liveReachable": null,
+  "routeProbe": {
+    "url": "http://127.0.0.1:8144/wt/atlas/v/202610261949/",
+    "viewport": {
+      "width": 1440,
+      "height": 1000
+    },
+    "elapsedMs": 13516,
+    "mapArrived": true,
+    "waitUsed": "waitForFunction(map && >=60 proxies, 60000 ms) then networkidle<=20 s then fixed 3 s",
+    "state": {
+      "title": "GlobalGrid2050 | UK Region v8 (Experimental)",
+      "generation": "202610261949",
+      "htmlGeneration": "202610261949",
+      "maplibregl": "function",
+      "map": true,
+      "menuBarInstalled": true,
+      "menuTitles": [
+        "File",
+        "Edit",
+        "View",
+        "Scope",
+        "Grid",
+        "About"
+      ],
+      "engineControls": 120,
+      "pipelineControls": 6,
+      "layerProxies": 63,
+      "scadaContainer": true,
+      "bodyText": "FILE EDIT VIEW SYSTEM TIME 23:07:32 26/10/2026 VENTUS CABLES & CONNECTIVITY® 2050 TARGET 8467 DAYS SCOPE GRID ABOUT GO TOPOLOGY (GEOJSON) 400kV [OK] 275kV [OK] 220kV [OK] 132kV [OK] 66kV [OK] 11kV (UKPN) [WAIT] Subs [OK] ASSETS (GEOJSON) Nuclear [OK] Gas [OK] Industry [OK] Data Ctrs [OK] Airports [OK] Railways [OK] SUPERMARKETS (GEOJSON) Tesco [WAIT] Sainsbury's [WAIT] Asda [WAIT] Morrisons [WAIT] Aldi [WAIT] Lidl [WAIT] Waitrose [WAIT] M&S Food [WAIT] Co-op [WAIT] Costco [WAIT] Booths [WAIT] TRANSIT (GEOJSON) Elizabeth Line [WAIT] London Underground [WAIT] DLR [WAIT] UK Metro [WAIT] Trams & L",
+      "scripts": [
+        "https://cdn.jsdelivr.net/npm/maplibre-gl@3.6.2/dist/maplibre-gl.js",
+        "blob:http://127.0.0.1:8144/39cacc7d-7f4a-49be-bd95-5c8f4d259c62",
+        "blob:http://127.0.0.1:8144/a3782245-2b0b-4ab7-b45f-abf8fd7b9ee9",
+        "blob:http://127.0.0.1:8144/8016fe00-3188-49d5-bb6e-24f1a2964a1c",
+        "blob:http://127.0.0.1:8144/20774c85-b15b-426f-bdbd-f0c7a70d907e"
+      ]
+    },
+    "failedHosts": {
+      "ventusltd.github.io": {
+        "count": 1,
+        "errors": [
+          "net::ERR_BLOCKED_BY_CLIENT.Inspector"
+        ],
+        "sample": "https://ventusltd.github.io/ventus-grid-engine/genome/engine-graph.json"
+      }
+    },
+    "requestHosts": [
+      "127.0.0.1:8144",
+      "cdn.jsdelivr.net",
+      "raw.githubusercontent.com",
+      "basemaps.cartocdn.com",
+      "ventusltd.github.io"
+    ],
+    "consoleErrors": [
+      "Failed to load resource: net::ERR_BLOCKED_BY_CLIENT.Inspector"
+    ],
+    "pageErrors": [],
+    "screenshot": "/tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/regression-challenge-C/candidate-browser-shim/probe-route/probe-1440x1000.png"
+  },
+  "liveProbe": null,
+  "tally": {
+    "FAIL": 1
+  },
+  "playwright": "1.63.0",
+  "node": "v22.23.4",
+  "results": [
+    {
+      "id": "all-controls-mobile",
+      "group": "browser",
+      "kind": "browser-route",
+      "tests": "same 26 checks at 393x852 Android touch emulation",
+      "target": "http://127.0.0.1:8144/wt/atlas/v/202610261949/",
+      "deps": [
+        "chromium",
+        "cdn.jsdelivr.net (maplibre-gl 3.6.2)",
+        "ventusltd.github.io/data-gridatlas partitions",
+        "basemaps.cartocdn.com"
+      ],
+      "invocation": "/opt/node22/bin/node tools/proofs/all-controls.browser.mjs --url http://127.0.0.1:8144/wt/atlas/v/202610261949/ --mobile --out <out>/all-controls-mobile",
+      "env": {},
+      "exit": 1,
+      "signal": null,
+      "timedOut": false,
+      "durationMs": 303269,
+      "result": "FAIL",
+      "note": "exit 1",
+      "firstError": "android-emulation csv-export-loaded false TimeoutError: page.waitForFunction: Timeout 60000ms exceeded.",
+      "log": "logs/all-controls-mobile"
+    }
+  ]
+}

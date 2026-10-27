@@ -1,0 +1,65 @@
+--- ../../wt/atlas/modules/202610270929-uk-lightning-overlay.js	2026-10-27 09:29:03.734756593 +0000
++++ patched-module-I.js	2026-10-27 16:21:09.628387640 +0000
+@@ -66,7 +66,7 @@
+ fr=async(rows,ws,we,sn)=>{const jobs=[];for(const row of rows)for(const t of tg(row,ws,we))jobs.push({row,t});const parts=new Array(jobs.length),fl=[];let pos=0;
+ await Promise.all(Array.from({length:Math.min(4,jobs.length)},async()=>{while(pos<jobs.length&&sn===S.serial){const i=pos++,{row,t}=jobs[i];try{parts[i]=await sh(t,row.date)}catch(e){parts[i]=[];fl.push({date:row.date,error:msg(e),t})}}}));
+ return{parts,fl,rq:jobs.length}},
+-ok=f=>f&&f.type==='Feature'&&f.geometry&&f.geometry.type==='Point'&&(c=>Array.isArray(c)&&c.length<4&&bx(c[0],c[1]))(f.geometry.coordinates)&&f.properties&&FEED_SCHEMA.split('/')[1]===f.properties.observation_kind&&isFinite(tm(f)),
++ok=f=>f&&f.type==='Feature'&&f.geometry&&f.geometry.type==='Point'&&(c=>Array.isArray(c)&&c.length<4&&bx(c[0],c[1]))(f.geometry.coordinates)&&f.properties&&FEED_SCHEMA.split('/')[1]===f.properties.observation_kind&&isFinite(tm(f))&&!(f.id instanceof Object),
+ co=(parts,ws,we)=>{const m=new Map();let k=0;for(const part of parts)for(const f of part){if(!ok(f)){k++;continue}const t=tm(f);if(t>=ws&&t<we)m.set(f.id==null?t+','+f.geometry.coordinates:JSON.stringify(f.id),f)}const a=[...m.values()].sort((a,b)=>tm(a)-tm(b));a.bad=k;return a},
+ // tiers: live feed (7 days only), archive overview (>31 days), archive detail (budgeted)
+ ff=async(w,now,reason)=>{
+@@ -126,9 +126,9 @@
+ mh=()=>{const m=window.__GRIDATLAS_V9_MAP__;return m&&typeof m.addSource==='function'?m:null},
+ sf=m=>{try{for(const l of m.getStyle().layers||[]){const f=l.type==='symbol'&&l.layout&&l.layout['text-font'];if(Array.isArray(f)&&f.length&&typeof f[0]==='string')return f}}catch(_){}return['Open Sans Regular']},
+ HIT=LAYER+'-hit',CNT=LAYER+'-count',pc=()=>{if(S.pp){S.pp.remove();S.pp=null}nc()},
+-el=(t,css,s)=>{const e=document.createElement(t);if(css)e.style.cssText=css;if(s!=null)e.textContent=s;return e},
++cs=v=>(v+'').replace(/\p{Cf}/gu,'').slice(0,200),el=(t,css,s)=>{const e=document.createElement(t);if(css)e.style.cssText=css;if(s!=null)e.textContent=s;return e},
+ // above the flash when it fits below the menu bar, else below it; clamped inside the map; scrolls when taller than the map
+-cpos=()=>{const c=S.pp,m=mh();if(!c||!m)return;const p=m.project(c.ll),k=m.getContainer().getBoundingClientRect(),b=Q('gridatlas-menu-bar'),t=Math.max(0,(b?b.getBoundingClientRect().bottom:0)-k.top)+8,w=c.offsetWidth||0,h=c.offsetHeight||0;
++cpos=()=>{const c=S.pp,m=mh();if(!c||!m)return;const p=m.project(c.ll);if(!isFinite(p.x+p.y))return;const k=m.getContainer().getBoundingClientRect(),b=Q('gridatlas-menu-bar'),t=Math.max(0,(b?b.getBoundingClientRect().bottom:0)-k.top)+8,w=c.offsetWidth||0,h=c.offsetHeight||0;
+ c.style.maxHeight=Math.max(120,k.height-t-8)+'px';c.style.left=Math.min(Math.max(p.x,w/2+8),Math.max(w/2+8,k.width-w/2-8))+'px';c.style.top=(p.y-h-14>=t?p.y-h-14:Math.max(t,Math.min(p.y+14,k.height-h-8)))+'px'},
+ cx=()=>{const m=mh();pc();if(m)try{for(const l of[CNT,HIT,LAYER])if(m.getLayer(l))m.removeLayer(l);if(m.getSource(SRC))m.removeSource(SRC)}catch(e){note(e)}S.mode=null},
+ dw=(fc,cl)=>{const m=mh(),K={'circle-stroke-width':1.5,'circle-stroke-color':'#1a1a1a'},Z=k=>['interpolate',['linear'],['zoom'],5,k(6),8,k(8),11,k(10)];if(!m)E('no map');const mode=cl?'cluster':'raw';if(S.mode&&S.mode!==mode)cx();
+@@ -142,25 +142,25 @@
+ tap=e=>{const m=mh();if(!S.on||!m||!m.getLayer(HIT))return;const px=e.point.x??e.point[0],py=e.point.y??e.point[1];let f=null,dm=Infinity;
+ for(const q of m.queryRenderedFeatures(e.point,{layers:[HIT]})){const g=q.properties&&!q.properties.cluster&&S.res&&S.res.ev[q.properties.i],a=m.project((g||q).geometry.coordinates),d=(a.x-px)**2+(a.y-py)**2;if(d<dm){dm=d;f=q}}pc();if(!f)return;
+ const p=f.properties||{};if(p.cluster){const go=z=>m.easeTo({center:f.geometry.coordinates,zoom:z}),z=m.getSource(SRC).getClusterExpansionZoom(p.cluster_id,(err,z)=>err||go(z));if(z&&z.then)z.then(go,note);return}
+-const g=S.res&&S.res.ev[p.i];if(!g)return;const[x,y]=g.geometry.coordinates,c=el('div','position:absolute;z-index:5;max-width:280px;box-sizing:border-box;background:#000;color:#e8f4f5;border:1px solid #00ffff;border-radius:4px;padding:8px 48px 8px 10px;font:12px/1.45 monospace;overflow-wrap:anywhere;overflow:auto;transform:translateX(-50%)');
++const g=S.res&&p.s===S.res.s&&S.res.ev[p.i];if(!g)return;const[x,y]=g.geometry.coordinates,c=el('div','position:absolute;z-index:5;max-width:280px;box-sizing:border-box;background:#000;color:#e8f4f5;border:1px solid #00ffff;border-radius:4px;padding:8px 48px 8px 10px;font:12px/1.45 monospace;overflow-wrap:anywhere;overflow:auto;transform:translateX(-50%)');
+ c.dataset.lightningCard='';c.ll=[x,y];const b=el('button','position:absolute;top:0;right:0;width:44px;height:44px;background:none;border:0;color:#e8f4f5;font:20px monospace;cursor:pointer','×');b.type='button';b.setAttribute('aria-label','Close');b.addEventListener('click',pc);c.appendChild(b);
+-for(const s of[Ts(tm(g)),'Flash ID '+(g.id==null?'(none)':g.id),`lat ${y.toFixed(3)}, lon ${x.toFixed(3)}`,'EUMETSAT MTG Lightning Imager · optical flash, not necessarily a ground strike'])c.appendChild(el('div','',s));
++for(const s of[Ts(tm(g)),'Flash ID '+(g.id==null?'(none)':cs(g.id)),`lat ${y.toFixed(3)}, lon ${x.toFixed(3)}`,'EUMETSAT MTG Lightning Imager · optical flash, not necessarily a ground strike'])c.appendChild(el('div','',s));
+ const n=el('button','margin-top:6px;min-height:44px;padding:0 10px;background:#001418;color:#00ffff;border:1px solid #00ffff;font:12px monospace;cursor:pointer','NEAREST SUBSTATIONS');n.type='button';n.dataset.lightningNearest='';n.addEventListener('click',()=>near(m,c,x,y));c.appendChild(n);
+ c.out=el('div','margin-top:6px');c.appendChild(c.out);m.getContainer().appendChild(c);S.pp=c;cpos()},
+ // nearest substations: no public draw entry exists (link.selectAt treats its origin as a project and needs the engine's popup),
+ // so the neon-links lane's PUBLIC list and distance function are reused; the lines are Lightning-owned, styled like the originals.
+ NEAR='gridatlas-lightning-nearest',NL=[NEAR+'-glow',NEAR+'-core',NEAR+'-node',NEAR+'-label'],
+ nc=()=>{const m=mh();if(m)try{for(const l of NL)if(m.getLayer(l))m.removeLayer(l);if(m.getSource(NEAR))m.removeSource(NEAR)}catch(e){note(e)}},
+-nr=(m,c,x,y)=>{const L=window.__GRIDATLAS_NEON_LINKS__||{},subs=L.substations||window.__GRIDATLAS_SUBSTATIONS__||[],dk=L.measure&&L.measure.distanceKm,say=s=>c.out.appendChild(el('div','',s));c.out.textContent='';nc();
+-if(!subs.length||typeof dk!=='function')return say('Substation data not loaded yet; try again in a moment.');
+-const k=subs.filter(s=>s&&Array.isArray(s.at)&&Array.isArray(s.kv)&&s.kv[0]>=132).map(s=>({s,km:dk(x,y,s.at[0],s.at[1])})).filter(a=>isFinite(a.km)).sort((a,b)=>a.km-b.km).slice(0,3);
+-say('Nearest substations to this optical flash (straight-line km). Not evidence any asset was struck; faults can have other causes.');for(const a of k)say(`${a.km.toFixed(2)} km · ${a.s.kv[0]} kV · ${a.s.name||'unnamed substation'}`);if(!k.length)return say('No transmission substation (132 kV or above) in the published list.');
++nr=(m,c,x,y)=>{const L=window.__GRIDATLAS_NEON_LINKS__||{},subs=Object.hasOwn(L,'substations')?L.substations:[],dk=L.measure&&L.measure.distanceKm,say=s=>c.out.appendChild(el('div','',s));c.out.textContent='';nc();
++if(!Array.isArray(subs)||!subs.length||typeof dk!=='function')return say('Substation data not loaded yet; try again in a moment.');
++const k=subs.filter(s=>s&&Array.isArray(s.at)&&Array.isArray(s.kv)&&s.kv[0]>=132).map(s=>({s,km:+dk(x,y,s.at[0],s.at[1])})).filter(a=>isFinite(a.km)).sort((a,b)=>a.km-b.km).slice(0,3);
++say('Nearest substations to this optical flash (straight-line km). Not evidence any asset was struck; faults can have other causes.');for(const a of k)say(`${a.km.toFixed(2)} km · ${a.s.kv[0]} kV · ${cs(a.s.name||'unnamed substation')}`);if(!k.length)return say('No transmission substation (132 kV or above) in the published list.');
+ const F=[];k.forEach((a,i)=>F.push({type:'Feature',properties:{o:Math.max(.2,.62-i*.1)},geometry:{type:'LineString',coordinates:[[x,y],a.s.at]}},{type:'Feature',properties:{t:`${a.km.toFixed(2)} km · ${a.s.kv[0]} kV`},geometry:{type:'Point',coordinates:a.s.at}}));
+ const C='#5fbdc2',LS=['==',['geometry-type'],'LineString'],PT=['==',['geometry-type'],'Point'];m.addSource(NEAR,{type:'geojson',data:FC(F)});
+ m.addLayer({id:NL[0],type:'line',source:NEAR,filter:LS,paint:{'line-color':C,'line-width':['interpolate',['linear'],['zoom'],6,5,12,12],'line-opacity':0.1,'line-blur':['interpolate',['linear'],['zoom'],6,3,12,8]}});
+ m.addLayer({id:NL[1],type:'line',source:NEAR,filter:LS,paint:{'line-color':C,'line-width':['interpolate',['linear'],['zoom'],6,0.9,12,1.8],'line-opacity':['get','o']}});
+ m.addLayer({id:NL[2],type:'circle',source:NEAR,filter:PT,paint:{'circle-radius':['interpolate',['linear'],['zoom'],6,2.2,12,4],'circle-color':C,'circle-opacity':0.8}});
+-try{m.addLayer({id:NL[3],type:'symbol',source:NEAR,filter:PT,layout:{'text-field':['get','t'],'text-size':10,'text-offset':[0,-1.5],'text-anchor':'bottom','text-font':sf(m)},paint:{'text-color':'#a9c4c9','text-halo-color':'#000c10','text-halo-width':1.5}})}catch(e){note('nearest labels: '+msg(e))}},near=(m,c,x,y)=>{nr(m,c,x,y);cpos()},
++try{m.addLayer({id:NL[3],type:'symbol',source:NEAR,filter:PT,layout:{'text-field':['get','t'],'text-size':10,'text-offset':[0,-1.5],'text-anchor':'bottom','text-font':sf(m)},paint:{'text-color':'#a9c4c9','text-halo-color':'#000c10','text-halo-width':1.5}})}catch(e){note('nearest labels: '+msg(e))}},near=(m,c,x,y)=>{try{nr(m,c,x,y)}catch(e){note('nearest: '+msg(e));nc();c.out.textContent='Substation data unavailable.'}cpos()},
+ // DOM: shell classes, inline styles on own nodes only
+ BTN=(a,t,x)=>`<button type="button" class="map-ctrl-btn" ${a}${x||''}>${t}</button>`,NAV=(k,t,x)=>BTN(`data-lightning-nav="${k}"`,t,x),ROW='style="display:flex;flex-wrap:wrap;gap:4px;margin:4px 0"',
+ DATE=k=>`<input type="date" class="search-input" data-lightning-date="${k}" aria-label="${k} date (UTC)" style="width:9.5em;color-scheme:dark">`,
+@@ -203,7 +203,7 @@
+ ld=refresh=>{const serial=++S.serial,now=Date.now();if(refresh)S.ip=S.fp=null;pt(true);
+ lw(now,serial).then(r=>({r}),e=>({e})).then(({r,e})=>{if(serial!==S.serial||!S.on)return;
+ if(e){note(e);r={mode:'fail',fail:msg(e),w:wf(now),idx:S.idx,ie:S.ie,fl:[],ev:[]}}
+-S.res=r;try{dw(FC(r.ev.map((f,i)=>({type:'Feature',id:f.id,geometry:f.geometry,properties:{i}}))),!!r.cl)}catch(err){note('draw: '+err.message);r.fail=r.fail||'map layer: '+err.message}pt(false)})},
++S.res=r;r.s=serial;try{dw(FC(r.ev.map((f,i)=>({type:'Feature',id:f.id,geometry:f.geometry,properties:{i,s:serial}}))),!!r.cl)}catch(err){note('draw: '+err.message);r.fail=r.fail||'map layer: '+err.message}pt(false)})},
+ so=on=>{if(S.on===on)return;S.on=on;
+ if(on){S.end=null;S.consent=false;S.res=null;const m=mh();if(m&&!S.ck&&typeof m.on==='function'){S.ck=1;m.on('click',tap);m.on('move',cpos);m.on('moveend',()=>{if(S.on&&S.res&&!S.busy)pt(false)})}
+ ld(true);if(!S.timer)S.timer=setInterval(()=>{if(S.on&&S.res&&S.res.w.atLatest)ld(true)},6e5)}

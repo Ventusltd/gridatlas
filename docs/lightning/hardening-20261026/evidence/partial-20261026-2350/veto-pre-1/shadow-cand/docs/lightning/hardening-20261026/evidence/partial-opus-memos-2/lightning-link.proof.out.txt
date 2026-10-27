@@ -1,0 +1,51 @@
+PROVENANCE (harness: self-fixture, node v22.23.4, static, no network)
+  ventus-grid-engine      6c1c75c
+  gridatlas main          c08f3a6
+  hardening wt            4fad8e7
+  kuiper-belt             d5fec2c
+  lightning data-plane wt f7db76c
+  sha256/16 60be8215ba873ac2  /home/claude/gridatlas/atlas/cartridges/202609241251-streaming-parquet-bridge-v9-5.js
+  sha256/16 15f324e5c2790508  /home/claude/gridatlas/atlas/cartridges/202609071213-place-global-search-v9-5.js
+  sha256/16 7812953671d8bb22  /home/claude/gridatlas/atlas/cartridges/202609241334-sld-sandbox-v9-8.js
+  sha256/16 d94b0de50deddac7  /home/claude/gridatlas/atlas/cartridges/202609062358-substation-intelligence-v9-63.js
+  sha256/16 87a3aaf463843ce3  /home/claude/gridatlas/atlas/releases/202608300453-atlas-v9/index.html
+  sha256/16 e1e403f6defe984e  /home/claude/gridatlas/atlas/index.html
+  sha256/16 3ce0ddc1059f5de0  <scratch>/hardening/wt/atlas/modules/202610261949-uk-lightning-overlay.js
+  sha256/16 d0e0464e7b9f6fe1  /home/claude/ventusltd/kuiper-belt/see-through/index.html
+  sha256/16 b31fdd98792d0786  /home/claude/ventusltd/kuiper-belt/see-through/202610050609/descent.js
+ok    A1 lightning keys are disjoint from contract.js PARAMS, which still has its 5 keys  -- repd_ref,technology,latitude,longitude,zoom
+ok    A2 a project link built by the contract carries no lightning key and no fragment  -- https://ventusltd.github.io/gridatlas/atlas/?repd_ref=13599&technology=solar&latitude=53.1&longitude=-0.2&zoom=12
+ok    A3 one namespace: every key starts with "lightning"  -- lightning,lightning_end,lightning_start,lightning_lon,lightning_lat,lightning_zoom
+ok    A4 the period list is exactly history-window.mjs PERIODS
+ok    A5 no lightning key is read by any live Atlas script  -- anchor,capacity_mw,interconnector,latitude,longitude,project,repd_ref,status,technology,zoom
+ok    B1 zero location.hash reads in composer, shell and the four live cartridges  -- reads=0
+ok    B2 the Atlas map is built without MapLibre's hash option  -- new maplibregl.Map({ container: 'map', style: 'https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json', center
+ok    B3 the GridAtlas root redirect forwards search AND hash
+ok    B4 sld-sandbox projectKeys equals ARRIVAL_KEYS minus interconnector, and a plain visit is recorded as such  -- repd_ref,longitude,latitude,project,technology,capacity_mw,status
+ok    B5 a lightning link leaves the query empty, so the live deepLinkPlan routes NO_USABLE_POINT  -- https://ventusltd.github.io/gridatlas/atlas/#lightning=24h&lightning_end=2026-10-23T18%3A00%3A00.000Z&lightning_lon=-0.417&lightning_lat=53.231&lightning_zoom=9
+ok    B6 sld-sandbox invalidates a pending arrival on hashchange, so no lightning code may write the hash
+ok    B7 the candidate overlay (fda6b10) neither reads nor writes the address today  -- 23973 B
+ok    B8 place search rewrites the address from location.href (keeping the fragment), and the parser refuses the mixed result  -- a project or interconnector arrival and a lightning window cannot share one URL in v1
+ok    C1 the retired See Through link (202610050356 descent.js:840) would arrive as a project, measured and named "Deep-linked project"
+ok    D1 the See Through stable route forwards location.hash and not location.search  -- 202610050609/
+ok    D2 the newest See Through generation reads no URL state, so it cannot honour a link yet  -- 202610050609
+ok    D3 ATLAS_URL is declared once and never used in the newest generation (the hand-off is dead code)  -- occurrences=1
+ok    E1 today both receivers are refused, and the refusal says why
+ok    E2 round trip through both receivers returns the same window and view, rounded to 3 decimals, gesture-only  -- https://ventusltd.github.io/kuiper-belt/see-through-lightning/#lightning=24h&lightning_end=2026-10-23T18%3A00%3A00.000Z&lightning_lon=-0.417&lightning_lat=53.231&lightning_zoom=9
+ok    F1 "latest" never crosses: a link without an end is refused
+ok    F2 an end without Z is refused, not guessed as local time  -- end is not a UTC instant ending in Z
+ok    F3 an unknown period is reported, never coerced
+ok    F4 derived starts equal history-window.mjs selectUtcWindow (month ends, leap day, both 2026 DST instants, new year)  -- 64 cases
+ok    F5 a custom window without a start is reported, not filled in
+ok    F6 a window longer than one calendar year is refused by parser and builder
+ok    F7 an end in the future is honoured only with a visible clamp note
+ok    G1 half a coordinate pair is dropped whole: absent is null, never 0
+ok    G2 Null Island is no place
+ok    G3 zoom above 10 is capped with a note by the parser, and never emitted by the builder  -- #lightning=24h&lightning_end=2026-10-23T18%3A00%3A00.000Z&lightning_lon=-0.417&lightning_lat=53.231&lightning_zoom=10
+ok    G4 a view outside the archive box is flagged, not refused
+ok    H1 the candidate overlay carries no star field, Kuiper placement, 3D, terrain, audio, second MapLibre or CERN text  -- none
+ok    H2 MapLibre split: the Atlas shell pins 3.6.2, See Through vendors 4.7.1
+ok    H3 licence boundary: See Through is CERN-OHL-S v2, GridAtlas NOTICE is Apache-2.0
+ok    H4 budget: the emitter alone fits the cartridge headroom only if hardening spends little; emitter + receiver do not fit  -- headroom=808 B (460,000 - 459192); emitter~807 B; receiver~1047 B; both~1854 B
+
+34/34 checks passed (vocabulary lightning-window.v1); browser half NOT_TESTED

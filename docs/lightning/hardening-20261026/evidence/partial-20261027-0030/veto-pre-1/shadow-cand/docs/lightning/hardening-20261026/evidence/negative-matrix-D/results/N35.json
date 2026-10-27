@@ -1,0 +1,1627 @@
+{
+ "id": "N35",
+ "title": "OWNER-REPRO 3: 393x852 and 360x740, Layers open, lightning ON, scrolled to the end — does the fixed \"▾ HIDE LAYERS\" button occlude the caption lines? Compare with the baseline-last group while OFF",
+ "acceptance_ids": [
+  "P14",
+  "D13",
+  "R01"
+ ],
+ "candidate": {
+  "generation": "202610261949",
+  "sha": "fda6b10f7d2672bf1bf74c4fbf6184cd36b1ec1d",
+  "route": "http://127.0.0.1:8145/wt/atlas/v/202610261949/"
+ },
+ "harness": "lead-shim (offline-shim.mjs unmodified) + runner static server :8145; Chromium 153.0.8010.12 / Playwright 1.63.0; page.clock.install fake clock",
+ "viewport": "1440x900",
+ "clock": "2026-10-26T18:40:00Z",
+ "reducedMotion": "no-preference",
+ "steps": [
+  {
+   "step": "393x852 OFF, Layers open, scrolled to the end (baseline-equivalent: last original group + lightning header)",
+   "boot": 1,
+   "fixture": "/tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/lightning/fixtures/lightning-archive/data",
+   "synthetic": false,
+   "snap": {
+    "label": {
+     "main": "Lightning flashes (optical) [WAIT]",
+     "fs": "Lightning flashes (optical) [WAIT]",
+     "menu": "Lightning flashes (optical) [WAIT]"
+    },
+    "toggles": {
+     "main": false,
+     "fs": false,
+     "menu": false
+    },
+    "stateLine": "LOADING",
+    "dot": "rgb(136, 136, 136)",
+    "caption": [
+     "",
+     "",
+     "",
+     "",
+     "",
+     "",
+     ""
+    ],
+    "captionHTML": "\n\n\n\n\n\n",
+    "captionVisible": false,
+    "captionRect": {
+     "x": 0,
+     "y": 0,
+     "w": 0,
+     "h": 0
+    },
+    "controlsHidden": true,
+    "chips": {
+     "12h": "",
+     "24h": "",
+     "48h": "",
+     "7d": "",
+     "30d": "",
+     "3m": "",
+     "6m": "",
+     "12m": "",
+     "custom": ""
+    },
+    "nav": {
+     "apply": "enabled",
+     "prev": "enabled",
+     "latest": "disabled",
+     "next": "disabled",
+     "points": "enabled hidden"
+    },
+    "customRow": "none",
+    "dates": {
+     "from": "",
+     "to": "",
+     "min": "",
+     "max": "",
+     "fromBorder": ""
+    },
+    "map": {
+     "source": false,
+     "layer": false,
+     "visibility": null,
+     "features": null,
+     "cluster": null,
+     "firstTime": null,
+     "lastTime": null,
+     "badCoords": null,
+     "rendered": null,
+     "styleLayerCount": 100
+    },
+    "S": {
+     "on": false,
+     "serial": 0,
+     "requests": 0,
+     "errors": [],
+     "last": null,
+     "mode": null,
+     "timer": false,
+     "period": "24h",
+     "consent": false,
+     "idx": false,
+     "ie": null,
+     "lruNote": null
+    },
+    "injected": null,
+    "lightningMarkupNodes": 0,
+    "orig": {
+     "engine": "400:0,275:0,220:0,132:0,66:0,11kv:0,subs:0,nuc:0,gas:0,ind:0,dc:0,air:0,rail:0,tesco:0,sainsburys:0,asda:0,morrisons:0,aldi:0,lidl:0,waitrose:0,ms:0,coop:0,costco:0,booths:0,elizabeth:0,lu:0,dlr:0,metro:0,tram:0,mainline_rail:0,hs2:0,eurostar_route:0,eurostar_station:0,stadiums:0,subsea_data_cables:0,global_ports_major:0,global_ports_minor:0,global_hydrocarbons:0,motorways:0,trunk_roads:0,primary_roads:0,motorway_services:0,ev:0,naei_co2:0,solar:0,solar_operational:0,solar_roof:0,wind:0,wind_onshore_operational:0,wind_offshore_operational:0,bess:0,bess_operational:0,biomass:0,tidal:0,hydrogen:0,hydro:0,flywheel:0,act:0,geothermal:0,caes:0",
+     "pn": "same:0,wider:0,all:0",
+     "bm": "dark",
+     "groups": [
+      "Topology (GeoJSON)",
+      "Assets (GeoJSON)",
+      "Supermarkets (GeoJSON)",
+      "Transit (GeoJSON)",
+      "Leisure & Sports (GeoJSON)",
+      "Global Data Backbone",
+      "Global Supply Chain & Chokepoints",
+      "Highway Infrastructure",
+      "EV (GeoJSON)",
+      "Heavy Industry",
+      "REPD (GeoJSON)",
+      "Basemap",
+      "PIPELINE NEWS (REPD)",
+      "Weather · EUMETSAT Lightning Imager"
+     ],
+     "proxies": 63,
+     "keys": 63,
+     "inspect": {
+      "engine": 60,
+      "pipeline": 3,
+      "total": 63,
+      "unique": 63,
+      "complete": true
+     },
+     "styleLayers": "background,l-neon-glow,l-neon-core,l-neon-flow,l-neon-flow-b,l-neon-node-ring,l-neon-node,l-sld-boundary,l-sld-boundary-line,l-sld-block,l-sld-bess,l-sld-radial,l-sld-radial-flow,l-sld-cable-glow,l-sld-cable,l-sld-cable-flow,l-sld-cable-flow-b,l-sld-node,l-sld-pin,l-sld-handle,l-sat,l-radius-circle-fill,l-radius-circle-stroke,l-radius-area-fill,l-radius-area-stroke,l-measure-fill,l-measure-line,l-measure-points,l-zonedraw-fill,l-zonedraw-line,l-zonedraw-points,l-400,l-275,l-220,l-132,l-66,l-11kv,l-subs,l-nuc,l-gas,l-ind,l-dc,l-air,l-rail,l-tesco,l-sainsburys,l-asda,l-morrisons,l-aldi,l-lidl,l-waitrose,l-ms,l-coop,l-costco,l-booths,l-mainline_rail,l-eurostar_route,l-eurostar_station,l-stadiums,l-subsea_data_cables,l-global_ports_major,l-global_ports_minor,l-global_hydrocarbons,l-motorways,l-trunk_roads,l-primary_roads,l-motorway_services,l-naei_co2-glow,l-naei_co2,l-elizabeth,l-lu,l-dlr,l-metro,l-tram,l-hs2,l-ev,l-solar-glow,l-solar,l-solar_operational-glow,l-solar_operational,l-solar_roof-glow,l-solar_roof,l-wind,l-wind_onshore_operational-glow,l-wind_onshore_operational,l-wind_offshore_operational-glow,l-wind_offshore_operational,l-bess,l-bess_operational-glow,l-bess_operational,l-biomass,l-tidal,l-hydrogen,l-hydro,l-flywheel,l-act,l-geothermal,l-caes,l-interconnectors,l-interconnector-nodes",
+     "sources": "gridatlas-neon-links,gridatlas-neon-nodes,gridatlas-sld,sat-s,src-radius-circle,src-radius-area,src-measure-line,src-measure-fill,src-measure-points,src-zonedraw-fill,src-zonedraw-line,src-zonedraw-points,src-400,src-275,src-220,src-132,src-66,src-11kv,src-subs,src-nuc,src-gas,src-ind,src-dc,src-air,src-rail,src-tesco,src-sainsburys,src-asda,src-morrisons,src-aldi,src-lidl,src-waitrose,src-ms,src-coop,src-costco,src-booths,src-mainline_rail,src-eurostar_route,src-eurostar_station,src-stadiums,src-subsea_data_cables,src-global_ports_major,src-global_ports_minor,src-global_hydrocarbons,src-motorways,src-trunk_roads,src-primary_roads,src-motorway_services,src-naei_co2,src-elizabeth,src-lu,src-metros,src-hs2,src-ev,src-repd,src-interconnectors",
+     "styleEls": 9,
+     "fetchName": "gridAtlasMaplibreWorkerFetch",
+     "mapScroll": [
+      0,
+      0
+     ],
+     "bodyScroll": [
+      0,
+      0
+     ],
+     "storage": [],
+     "menuOpen": false,
+     "search": "",
+     "bridge": {
+      "intercepted": 0,
+      "failures": 0
+     }
+    },
+    "nmd": {
+     "mapErrors": [],
+     "rejections": []
+    },
+    "now": "2026-10-26T18:40:12.631Z",
+    "active": "BUTTON#gridatlas-dash-toggle"
+   },
+   "origDiff": [],
+   "probe": {
+    "hostScroll": {
+     "top": 1888,
+     "height": 2212,
+     "client": 324,
+     "bottom": 835
+    },
+    "hideBtn": {
+     "text": "HIDE LAYERS collapsed the elem",
+     "id": "",
+     "pos": "static",
+     "top": 0,
+     "bottom": 0,
+     "left": 0,
+     "right": 0
+    },
+    "lines": [],
+    "groupBottom": 826,
+    "lastOriginalGroup": {
+     "title": "PIPELINE NEWS (REPD)",
+     "bottom": 770,
+     "coveredByHide": false
+    }
+   }
+  },
+  {
+   "step": "393x852 ON 7d, scrolled to the end: elementFromPoint over each caption line",
+   "boot": 1,
+   "fixture": "/tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/lightning/fixtures/lightning-archive/data",
+   "synthetic": false,
+   "snap": {
+    "label": {
+     "main": "Lightning flashes (optical) [408 | 7d]",
+     "fs": "Lightning flashes (optical) [408 | 7d]",
+     "menu": "Lightning flashes (optical) [408 | 7d]"
+    },
+    "toggles": {
+     "main": true,
+     "fs": true,
+     "menu": true
+    },
+    "stateLine": "PARTIAL · 408 FLASHES DRAWN · SEARCHED 56%",
+    "dot": "rgb(255, 204, 0)",
+    "caption": [
+     "Window  2026-10-19 18:40 UTC → 2026-10-26 18:40 UTC (7 days, latest)",
+     "Actual  first 2026-10-21 12:32:19 UTC · last 2026-10-25 11:15:58 UTC",
+     "Flashes 408 archived in window · 408 drawn as points (index count 408 within the 10,000-point cap for this phone)",
+     "Refresh archive 2026-10-26 18:37 UTC (0h 3min ago; expected every 1 h)",
+     "Searched EUMETSAT 56% of window · 17 successful runs · 2026-10-20 22:41 UTC → 2026-10-26 13:00 UTC",
+     "Not yet ingested: last 5h 40min of window (unknown, not zero) · Unknown: 2026-10-19 to 2026-10-20 precede archive start 2026-10-20 22:41 UTC (not zero) · Unknown: 1 of 8 UTC dates have no collection run",
+     "Times UTC · Optical flashes seen by MTG Lightning Imager (EUMETSAT L2-LFL), not confirmed ground strikes · Missing days are unknown, not zero · UK box −11.0,49.5 → 3.0,61.5"
+    ],
+    "captionHTML": "Window  2026-10-19 18:40 UTC → 2026-10-26 18:40 UTC (7 days, latest)\nActual  first 2026-10-21 12:32:19 UTC · last 2026-10-25 11:15:58 UTC\nFlashes 408 archived in window · 408 drawn as points (index count 408 within the 10,000-point cap for this phone)\nRefresh archive 2026-10-26 18:37 UTC (0h 3min ago; expected every 1 h)\nSearched EUMETSAT 56% of window · 17 successful runs · 2026-10-20 22:41 UTC → 2026-10-26 13:00 UTC\nNot yet ingested: last 5h 40min of window (unknown, not zero) · Unknown: 2026-10-19 to 2026-10-20 precede archive start 2026-10-20 22:41 UTC (not zero) · Unknown: 1 of 8 UTC dates have no collection run\nTimes UTC · Optical flashes seen by MTG Lightning Imager (EUMETSAT L2-LFL), not confirmed ground strikes · Missing days are unknown, not zero · UK box −11.0,49.5 → 3.0,61.5",
+    "captionVisible": true,
+    "captionRect": {
+     "x": 29,
+     "y": 560,
+     "w": 347,
+     "h": 266
+    },
+    "controlsHidden": false,
+    "chips": {
+     "12h": "",
+     "24h": "",
+     "48h": "",
+     "7d": "active",
+     "30d": "",
+     "3m": "",
+     "6m": "",
+     "12m": "",
+     "custom": ""
+    },
+    "nav": {
+     "apply": "enabled",
+     "prev": "enabled",
+     "latest": "disabled",
+     "next": "disabled",
+     "points": "enabled hidden"
+    },
+    "customRow": "none",
+    "dates": {
+     "from": "",
+     "to": "",
+     "min": "2025-10-26",
+     "max": "2026-10-26",
+     "fromBorder": ""
+    },
+    "map": {
+     "source": true,
+     "layer": true,
+     "visibility": "visible",
+     "features": 408,
+     "cluster": false,
+     "firstTime": "2026-10-21T12:32:19.282Z",
+     "lastTime": "2026-10-25T11:15:58.149Z",
+     "badCoords": 0,
+     "rendered": 401,
+     "styleLayerCount": 101
+    },
+    "S": {
+     "on": true,
+     "serial": 2,
+     "requests": 6,
+     "errors": [],
+     "last": {
+      "state": "PARTIAL",
+      "stale": false,
+      "mode": "detail",
+      "period": "7d",
+      "drawn": 408,
+      "cluster": false,
+      "cap": 10000,
+      "cap_source": "index",
+      "index_count": 408,
+      "failures": 0,
+      "reasons": [
+       "tail not yet ingested",
+       "head before archive start",
+       "1 dates without a scan window"
+      ]
+     },
+     "mode": "raw",
+     "timer": true,
+     "period": "7d",
+     "consent": false,
+     "idx": true,
+     "ie": null,
+     "lruNote": null
+    },
+    "injected": null,
+    "lightningMarkupNodes": 0,
+    "orig": {
+     "engine": "400:0,275:0,220:0,132:0,66:0,11kv:0,subs:0,nuc:0,gas:0,ind:0,dc:0,air:0,rail:0,tesco:0,sainsburys:0,asda:0,morrisons:0,aldi:0,lidl:0,waitrose:0,ms:0,coop:0,costco:0,booths:0,elizabeth:0,lu:0,dlr:0,metro:0,tram:0,mainline_rail:0,hs2:0,eurostar_route:0,eurostar_station:0,stadiums:0,subsea_data_cables:0,global_ports_major:0,global_ports_minor:0,global_hydrocarbons:0,motorways:0,trunk_roads:0,primary_roads:0,motorway_services:0,ev:0,naei_co2:0,solar:0,solar_operational:0,solar_roof:0,wind:0,wind_onshore_operational:0,wind_offshore_operational:0,bess:0,bess_operational:0,biomass:0,tidal:0,hydrogen:0,hydro:0,flywheel:0,act:0,geothermal:0,caes:0",
+     "pn": "same:0,wider:0,all:0",
+     "bm": "dark",
+     "groups": [
+      "Topology (GeoJSON)",
+      "Assets (GeoJSON)",
+      "Supermarkets (GeoJSON)",
+      "Transit (GeoJSON)",
+      "Leisure & Sports (GeoJSON)",
+      "Global Data Backbone",
+      "Global Supply Chain & Chokepoints",
+      "Highway Infrastructure",
+      "EV (GeoJSON)",
+      "Heavy Industry",
+      "REPD (GeoJSON)",
+      "Basemap",
+      "PIPELINE NEWS (REPD)",
+      "Weather · EUMETSAT Lightning Imager"
+     ],
+     "proxies": 63,
+     "keys": 63,
+     "inspect": {
+      "engine": 60,
+      "pipeline": 3,
+      "total": 63,
+      "unique": 63,
+      "complete": true
+     },
+     "styleLayers": "background,l-neon-glow,l-neon-core,l-neon-flow,l-neon-flow-b,l-neon-node-ring,l-neon-node,l-sld-boundary,l-sld-boundary-line,l-sld-block,l-sld-bess,l-sld-radial,l-sld-radial-flow,l-sld-cable-glow,l-sld-cable,l-sld-cable-flow,l-sld-cable-flow-b,l-sld-node,l-sld-pin,l-sld-handle,l-sat,l-radius-circle-fill,l-radius-circle-stroke,l-radius-area-fill,l-radius-area-stroke,l-measure-fill,l-measure-line,l-measure-points,l-zonedraw-fill,l-zonedraw-line,l-zonedraw-points,l-400,l-275,l-220,l-132,l-66,l-11kv,l-subs,l-nuc,l-gas,l-ind,l-dc,l-air,l-rail,l-tesco,l-sainsburys,l-asda,l-morrisons,l-aldi,l-lidl,l-waitrose,l-ms,l-coop,l-costco,l-booths,l-mainline_rail,l-eurostar_route,l-eurostar_station,l-stadiums,l-subsea_data_cables,l-global_ports_major,l-global_ports_minor,l-global_hydrocarbons,l-motorways,l-trunk_roads,l-primary_roads,l-motorway_services,l-naei_co2-glow,l-naei_co2,l-elizabeth,l-lu,l-dlr,l-metro,l-tram,l-hs2,l-ev,l-solar-glow,l-solar,l-solar_operational-glow,l-solar_operational,l-solar_roof-glow,l-solar_roof,l-wind,l-wind_onshore_operational-glow,l-wind_onshore_operational,l-wind_offshore_operational-glow,l-wind_offshore_operational,l-bess,l-bess_operational-glow,l-bess_operational,l-biomass,l-tidal,l-hydrogen,l-hydro,l-flywheel,l-act,l-geothermal,l-caes,l-interconnectors,l-interconnector-nodes",
+     "sources": "gridatlas-neon-links,gridatlas-neon-nodes,gridatlas-sld,sat-s,src-radius-circle,src-radius-area,src-measure-line,src-measure-fill,src-measure-points,src-zonedraw-fill,src-zonedraw-line,src-zonedraw-points,src-400,src-275,src-220,src-132,src-66,src-11kv,src-subs,src-nuc,src-gas,src-ind,src-dc,src-air,src-rail,src-tesco,src-sainsburys,src-asda,src-morrisons,src-aldi,src-lidl,src-waitrose,src-ms,src-coop,src-costco,src-booths,src-mainline_rail,src-eurostar_route,src-eurostar_station,src-stadiums,src-subsea_data_cables,src-global_ports_major,src-global_ports_minor,src-global_hydrocarbons,src-motorways,src-trunk_roads,src-primary_roads,src-motorway_services,src-naei_co2,src-elizabeth,src-lu,src-metros,src-hs2,src-ev,src-repd,src-interconnectors",
+     "styleEls": 9,
+     "fetchName": "gridAtlasMaplibreWorkerFetch",
+     "mapScroll": [
+      0,
+      0
+     ],
+     "bodyScroll": [
+      0,
+      0
+     ],
+     "storage": [],
+     "menuOpen": false,
+     "search": "",
+     "bridge": {
+      "intercepted": 0,
+      "failures": 0
+     }
+    },
+    "nmd": {
+     "mapErrors": [],
+     "rejections": []
+    },
+    "now": "2026-10-26T18:40:18.564Z",
+    "active": "BUTTON.map-ctrl-btn"
+   },
+   "origDiff": [],
+   "probe": {
+    "hostScroll": {
+     "top": 2311,
+     "height": 2635,
+     "client": 324,
+     "bottom": 835
+    },
+    "hideBtn": {
+     "text": "HIDE LAYERS collapsed the elem",
+     "id": "",
+     "pos": "static",
+     "top": 0,
+     "bottom": 0,
+     "left": 0,
+     "right": 0
+    },
+    "lines": [
+     {
+      "cap": "window",
+      "top": 560,
+      "bottom": 590,
+      "hits": [
+       "caption",
+       "caption",
+       "caption"
+      ]
+     },
+     {
+      "cap": "actual",
+      "top": 590,
+      "bottom": 620,
+      "hits": [
+       "caption",
+       "caption",
+       "caption"
+      ]
+     },
+     {
+      "cap": "flashes",
+      "top": 620,
+      "bottom": 665,
+      "hits": [
+       "caption",
+       "caption",
+       "caption"
+      ]
+     },
+     {
+      "cap": "refresh",
+      "top": 665,
+      "bottom": 695,
+      "hits": [
+       "caption",
+       "caption",
+       "caption"
+      ]
+     },
+     {
+      "cap": "searched",
+      "top": 695,
+      "bottom": 725,
+      "hits": [
+       "caption",
+       "caption",
+       "caption"
+      ]
+     },
+     {
+      "cap": "warning",
+      "top": 725,
+      "bottom": 785,
+      "hits": [
+       "caption",
+       "caption",
+       "caption"
+      ]
+     },
+     {
+      "cap": "footer",
+      "top": 785,
+      "bottom": 826,
+      "hits": [
+       "caption",
+       "caption",
+       "BUTTON#gridatlas-dash-toggle."
+      ]
+     }
+    ],
+    "groupBottom": 826,
+    "lastOriginalGroup": {
+     "title": "PIPELINE NEWS (REPD)",
+     "bottom": 347,
+     "coveredByHide": false
+    }
+   }
+  },
+  {
+   "step": "393x852 ON 7d after 40 wheel steps (real scroll gesture)",
+   "boot": 1,
+   "fixture": "/tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/lightning/fixtures/lightning-archive/data",
+   "synthetic": false,
+   "snap": {
+    "label": {
+     "main": "Lightning flashes (optical) [408 | 7d]",
+     "fs": "Lightning flashes (optical) [408 | 7d]",
+     "menu": "Lightning flashes (optical) [408 | 7d]"
+    },
+    "toggles": {
+     "main": true,
+     "fs": true,
+     "menu": true
+    },
+    "stateLine": "PARTIAL · 408 FLASHES DRAWN · SEARCHED 56%",
+    "dot": "rgb(255, 204, 0)",
+    "caption": [
+     "Window  2026-10-19 18:40 UTC → 2026-10-26 18:40 UTC (7 days, latest)",
+     "Actual  first 2026-10-21 12:32:19 UTC · last 2026-10-25 11:15:58 UTC",
+     "Flashes 408 archived in window · 408 drawn as points (index count 408 within the 10,000-point cap for this phone)",
+     "Refresh archive 2026-10-26 18:37 UTC (0h 3min ago; expected every 1 h)",
+     "Searched EUMETSAT 56% of window · 17 successful runs · 2026-10-20 22:41 UTC → 2026-10-26 13:00 UTC",
+     "Not yet ingested: last 5h 40min of window (unknown, not zero) · Unknown: 2026-10-19 to 2026-10-20 precede archive start 2026-10-20 22:41 UTC (not zero) · Unknown: 1 of 8 UTC dates have no collection run",
+     "Times UTC · Optical flashes seen by MTG Lightning Imager (EUMETSAT L2-LFL), not confirmed ground strikes · Missing days are unknown, not zero · UK box −11.0,49.5 → 3.0,61.5"
+    ],
+    "captionHTML": "Window  2026-10-19 18:40 UTC → 2026-10-26 18:40 UTC (7 days, latest)\nActual  first 2026-10-21 12:32:19 UTC · last 2026-10-25 11:15:58 UTC\nFlashes 408 archived in window · 408 drawn as points (index count 408 within the 10,000-point cap for this phone)\nRefresh archive 2026-10-26 18:37 UTC (0h 3min ago; expected every 1 h)\nSearched EUMETSAT 56% of window · 17 successful runs · 2026-10-20 22:41 UTC → 2026-10-26 13:00 UTC\nNot yet ingested: last 5h 40min of window (unknown, not zero) · Unknown: 2026-10-19 to 2026-10-20 precede archive start 2026-10-20 22:41 UTC (not zero) · Unknown: 1 of 8 UTC dates have no collection run\nTimes UTC · Optical flashes seen by MTG Lightning Imager (EUMETSAT L2-LFL), not confirmed ground strikes · Missing days are unknown, not zero · UK box −11.0,49.5 → 3.0,61.5",
+    "captionVisible": true,
+    "captionRect": {
+     "x": 29,
+     "y": 560,
+     "w": 347,
+     "h": 266
+    },
+    "controlsHidden": false,
+    "chips": {
+     "12h": "",
+     "24h": "",
+     "48h": "",
+     "7d": "active",
+     "30d": "",
+     "3m": "",
+     "6m": "",
+     "12m": "",
+     "custom": ""
+    },
+    "nav": {
+     "apply": "enabled",
+     "prev": "enabled",
+     "latest": "disabled",
+     "next": "disabled",
+     "points": "enabled hidden"
+    },
+    "customRow": "none",
+    "dates": {
+     "from": "",
+     "to": "",
+     "min": "2025-10-26",
+     "max": "2026-10-26",
+     "fromBorder": ""
+    },
+    "map": {
+     "source": true,
+     "layer": true,
+     "visibility": "visible",
+     "features": 408,
+     "cluster": false,
+     "firstTime": "2026-10-21T12:32:19.282Z",
+     "lastTime": "2026-10-25T11:15:58.149Z",
+     "badCoords": 0,
+     "rendered": 401,
+     "styleLayerCount": 101
+    },
+    "S": {
+     "on": true,
+     "serial": 2,
+     "requests": 6,
+     "errors": [],
+     "last": {
+      "state": "PARTIAL",
+      "stale": false,
+      "mode": "detail",
+      "period": "7d",
+      "drawn": 408,
+      "cluster": false,
+      "cap": 10000,
+      "cap_source": "index",
+      "index_count": 408,
+      "failures": 0,
+      "reasons": [
+       "tail not yet ingested",
+       "head before archive start",
+       "1 dates without a scan window"
+      ]
+     },
+     "mode": "raw",
+     "timer": true,
+     "period": "7d",
+     "consent": false,
+     "idx": true,
+     "ie": null,
+     "lruNote": null
+    },
+    "injected": null,
+    "lightningMarkupNodes": 0,
+    "orig": {
+     "engine": "400:0,275:0,220:0,132:0,66:0,11kv:0,subs:0,nuc:0,gas:0,ind:0,dc:0,air:0,rail:0,tesco:0,sainsburys:0,asda:0,morrisons:0,aldi:0,lidl:0,waitrose:0,ms:0,coop:0,costco:0,booths:0,elizabeth:0,lu:0,dlr:0,metro:0,tram:0,mainline_rail:0,hs2:0,eurostar_route:0,eurostar_station:0,stadiums:0,subsea_data_cables:0,global_ports_major:0,global_ports_minor:0,global_hydrocarbons:0,motorways:0,trunk_roads:0,primary_roads:0,motorway_services:0,ev:0,naei_co2:0,solar:0,solar_operational:0,solar_roof:0,wind:0,wind_onshore_operational:0,wind_offshore_operational:0,bess:0,bess_operational:0,biomass:0,tidal:0,hydrogen:0,hydro:0,flywheel:0,act:0,geothermal:0,caes:0",
+     "pn": "same:0,wider:0,all:0",
+     "bm": "dark",
+     "groups": [
+      "Topology (GeoJSON)",
+      "Assets (GeoJSON)",
+      "Supermarkets (GeoJSON)",
+      "Transit (GeoJSON)",
+      "Leisure & Sports (GeoJSON)",
+      "Global Data Backbone",
+      "Global Supply Chain & Chokepoints",
+      "Highway Infrastructure",
+      "EV (GeoJSON)",
+      "Heavy Industry",
+      "REPD (GeoJSON)",
+      "Basemap",
+      "PIPELINE NEWS (REPD)",
+      "Weather · EUMETSAT Lightning Imager"
+     ],
+     "proxies": 63,
+     "keys": 63,
+     "inspect": {
+      "engine": 60,
+      "pipeline": 3,
+      "total": 63,
+      "unique": 63,
+      "complete": true
+     },
+     "styleLayers": "background,l-neon-glow,l-neon-core,l-neon-flow,l-neon-flow-b,l-neon-node-ring,l-neon-node,l-sld-boundary,l-sld-boundary-line,l-sld-block,l-sld-bess,l-sld-radial,l-sld-radial-flow,l-sld-cable-glow,l-sld-cable,l-sld-cable-flow,l-sld-cable-flow-b,l-sld-node,l-sld-pin,l-sld-handle,l-sat,l-radius-circle-fill,l-radius-circle-stroke,l-radius-area-fill,l-radius-area-stroke,l-measure-fill,l-measure-line,l-measure-points,l-zonedraw-fill,l-zonedraw-line,l-zonedraw-points,l-400,l-275,l-220,l-132,l-66,l-11kv,l-subs,l-nuc,l-gas,l-ind,l-dc,l-air,l-rail,l-tesco,l-sainsburys,l-asda,l-morrisons,l-aldi,l-lidl,l-waitrose,l-ms,l-coop,l-costco,l-booths,l-mainline_rail,l-eurostar_route,l-eurostar_station,l-stadiums,l-subsea_data_cables,l-global_ports_major,l-global_ports_minor,l-global_hydrocarbons,l-motorways,l-trunk_roads,l-primary_roads,l-motorway_services,l-naei_co2-glow,l-naei_co2,l-elizabeth,l-lu,l-dlr,l-metro,l-tram,l-hs2,l-ev,l-solar-glow,l-solar,l-solar_operational-glow,l-solar_operational,l-solar_roof-glow,l-solar_roof,l-wind,l-wind_onshore_operational-glow,l-wind_onshore_operational,l-wind_offshore_operational-glow,l-wind_offshore_operational,l-bess,l-bess_operational-glow,l-bess_operational,l-biomass,l-tidal,l-hydrogen,l-hydro,l-flywheel,l-act,l-geothermal,l-caes,l-interconnectors,l-interconnector-nodes",
+     "sources": "gridatlas-neon-links,gridatlas-neon-nodes,gridatlas-sld,sat-s,src-radius-circle,src-radius-area,src-measure-line,src-measure-fill,src-measure-points,src-zonedraw-fill,src-zonedraw-line,src-zonedraw-points,src-400,src-275,src-220,src-132,src-66,src-11kv,src-subs,src-nuc,src-gas,src-ind,src-dc,src-air,src-rail,src-tesco,src-sainsburys,src-asda,src-morrisons,src-aldi,src-lidl,src-waitrose,src-ms,src-coop,src-costco,src-booths,src-mainline_rail,src-eurostar_route,src-eurostar_station,src-stadiums,src-subsea_data_cables,src-global_ports_major,src-global_ports_minor,src-global_hydrocarbons,src-motorways,src-trunk_roads,src-primary_roads,src-motorway_services,src-naei_co2,src-elizabeth,src-lu,src-metros,src-hs2,src-ev,src-repd,src-interconnectors",
+     "styleEls": 9,
+     "fetchName": "gridAtlasMaplibreWorkerFetch",
+     "mapScroll": [
+      0,
+      0
+     ],
+     "bodyScroll": [
+      0,
+      0
+     ],
+     "storage": [],
+     "menuOpen": false,
+     "search": "",
+     "bridge": {
+      "intercepted": 0,
+      "failures": 0
+     }
+    },
+    "nmd": {
+     "mapErrors": [],
+     "rejections": []
+    },
+    "now": "2026-10-26T18:40:21.137Z",
+    "active": "BUTTON.map-ctrl-btn"
+   },
+   "origDiff": [],
+   "probe": {
+    "hostScroll": {
+     "top": 2311,
+     "height": 2635,
+     "client": 324,
+     "bottom": 835
+    },
+    "hideBtn": {
+     "text": "HIDE LAYERS collapsed the elem",
+     "id": "",
+     "pos": "static",
+     "top": 0,
+     "bottom": 0,
+     "left": 0,
+     "right": 0
+    },
+    "lines": [
+     {
+      "cap": "window",
+      "top": 560,
+      "bottom": 590,
+      "hits": [
+       "caption",
+       "caption",
+       "caption"
+      ]
+     },
+     {
+      "cap": "actual",
+      "top": 590,
+      "bottom": 620,
+      "hits": [
+       "caption",
+       "caption",
+       "caption"
+      ]
+     },
+     {
+      "cap": "flashes",
+      "top": 620,
+      "bottom": 665,
+      "hits": [
+       "caption",
+       "caption",
+       "caption"
+      ]
+     },
+     {
+      "cap": "refresh",
+      "top": 665,
+      "bottom": 695,
+      "hits": [
+       "caption",
+       "caption",
+       "caption"
+      ]
+     },
+     {
+      "cap": "searched",
+      "top": 695,
+      "bottom": 725,
+      "hits": [
+       "caption",
+       "caption",
+       "caption"
+      ]
+     },
+     {
+      "cap": "warning",
+      "top": 725,
+      "bottom": 785,
+      "hits": [
+       "caption",
+       "caption",
+       "caption"
+      ]
+     },
+     {
+      "cap": "footer",
+      "top": 785,
+      "bottom": 826,
+      "hits": [
+       "caption",
+       "caption",
+       "BUTTON#gridatlas-dash-toggle."
+      ]
+     }
+    ],
+    "groupBottom": 826,
+    "lastOriginalGroup": {
+     "title": "PIPELINE NEWS (REPD)",
+     "bottom": 347,
+     "coveredByHide": false
+    }
+   }
+  },
+  {
+   "step": "360x740 OFF, Layers open, scrolled to the end (baseline-equivalent: last original group + lightning header)",
+   "boot": 2,
+   "fixture": "/tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/lightning/fixtures/lightning-archive/data",
+   "synthetic": false,
+   "snap": {
+    "label": {
+     "main": "Lightning flashes (optical) [WAIT]",
+     "fs": "Lightning flashes (optical) [WAIT]",
+     "menu": "Lightning flashes (optical) [WAIT]"
+    },
+    "toggles": {
+     "main": false,
+     "fs": false,
+     "menu": false
+    },
+    "stateLine": "LOADING",
+    "dot": "rgb(136, 136, 136)",
+    "caption": [
+     "",
+     "",
+     "",
+     "",
+     "",
+     "",
+     ""
+    ],
+    "captionHTML": "\n\n\n\n\n\n",
+    "captionVisible": false,
+    "captionRect": {
+     "x": 0,
+     "y": 0,
+     "w": 0,
+     "h": 0
+    },
+    "controlsHidden": true,
+    "chips": {
+     "12h": "",
+     "24h": "",
+     "48h": "",
+     "7d": "",
+     "30d": "",
+     "3m": "",
+     "6m": "",
+     "12m": "",
+     "custom": ""
+    },
+    "nav": {
+     "apply": "enabled",
+     "prev": "enabled",
+     "latest": "disabled",
+     "next": "disabled",
+     "points": "enabled hidden"
+    },
+    "customRow": "none",
+    "dates": {
+     "from": "",
+     "to": "",
+     "min": "",
+     "max": "",
+     "fromBorder": ""
+    },
+    "map": {
+     "source": false,
+     "layer": false,
+     "visibility": null,
+     "features": null,
+     "cluster": null,
+     "firstTime": null,
+     "lastTime": null,
+     "badCoords": null,
+     "rendered": null,
+     "styleLayerCount": 100
+    },
+    "S": {
+     "on": false,
+     "serial": 0,
+     "requests": 0,
+     "errors": [],
+     "last": null,
+     "mode": null,
+     "timer": false,
+     "period": "24h",
+     "consent": false,
+     "idx": false,
+     "ie": null,
+     "lruNote": null
+    },
+    "injected": null,
+    "lightningMarkupNodes": 0,
+    "orig": {
+     "engine": "400:0,275:0,220:0,132:0,66:0,11kv:0,subs:0,nuc:0,gas:0,ind:0,dc:0,air:0,rail:0,tesco:0,sainsburys:0,asda:0,morrisons:0,aldi:0,lidl:0,waitrose:0,ms:0,coop:0,costco:0,booths:0,elizabeth:0,lu:0,dlr:0,metro:0,tram:0,mainline_rail:0,hs2:0,eurostar_route:0,eurostar_station:0,stadiums:0,subsea_data_cables:0,global_ports_major:0,global_ports_minor:0,global_hydrocarbons:0,motorways:0,trunk_roads:0,primary_roads:0,motorway_services:0,ev:0,naei_co2:0,solar:0,solar_operational:0,solar_roof:0,wind:0,wind_onshore_operational:0,wind_offshore_operational:0,bess:0,bess_operational:0,biomass:0,tidal:0,hydrogen:0,hydro:0,flywheel:0,act:0,geothermal:0,caes:0",
+     "pn": "same:0,wider:0,all:0",
+     "bm": "dark",
+     "groups": [
+      "Topology (GeoJSON)",
+      "Assets (GeoJSON)",
+      "Supermarkets (GeoJSON)",
+      "Transit (GeoJSON)",
+      "Leisure & Sports (GeoJSON)",
+      "Global Data Backbone",
+      "Global Supply Chain & Chokepoints",
+      "Highway Infrastructure",
+      "EV (GeoJSON)",
+      "Heavy Industry",
+      "REPD (GeoJSON)",
+      "Basemap",
+      "PIPELINE NEWS (REPD)",
+      "Weather · EUMETSAT Lightning Imager"
+     ],
+     "proxies": 63,
+     "keys": 63,
+     "inspect": {
+      "engine": 60,
+      "pipeline": 3,
+      "total": 63,
+      "unique": 63,
+      "complete": true
+     },
+     "styleLayers": "background,l-neon-glow,l-neon-core,l-neon-flow,l-neon-flow-b,l-neon-node-ring,l-neon-node,l-sld-boundary,l-sld-boundary-line,l-sld-block,l-sld-bess,l-sld-radial,l-sld-radial-flow,l-sld-cable-glow,l-sld-cable,l-sld-cable-flow,l-sld-cable-flow-b,l-sld-node,l-sld-pin,l-sld-handle,l-sat,l-radius-circle-fill,l-radius-circle-stroke,l-radius-area-fill,l-radius-area-stroke,l-measure-fill,l-measure-line,l-measure-points,l-zonedraw-fill,l-zonedraw-line,l-zonedraw-points,l-400,l-275,l-220,l-132,l-66,l-11kv,l-subs,l-nuc,l-gas,l-ind,l-dc,l-air,l-rail,l-tesco,l-sainsburys,l-asda,l-morrisons,l-aldi,l-lidl,l-waitrose,l-ms,l-coop,l-costco,l-booths,l-mainline_rail,l-eurostar_route,l-eurostar_station,l-stadiums,l-subsea_data_cables,l-global_ports_major,l-global_ports_minor,l-global_hydrocarbons,l-motorways,l-trunk_roads,l-primary_roads,l-motorway_services,l-naei_co2-glow,l-naei_co2,l-elizabeth,l-lu,l-dlr,l-metro,l-tram,l-hs2,l-ev,l-solar-glow,l-solar,l-solar_operational-glow,l-solar_operational,l-solar_roof-glow,l-solar_roof,l-wind,l-wind_onshore_operational-glow,l-wind_onshore_operational,l-wind_offshore_operational-glow,l-wind_offshore_operational,l-bess,l-bess_operational-glow,l-bess_operational,l-biomass,l-tidal,l-hydrogen,l-hydro,l-flywheel,l-act,l-geothermal,l-caes,l-interconnectors,l-interconnector-nodes",
+     "sources": "gridatlas-neon-links,gridatlas-neon-nodes,gridatlas-sld,sat-s,src-radius-circle,src-radius-area,src-measure-line,src-measure-fill,src-measure-points,src-zonedraw-fill,src-zonedraw-line,src-zonedraw-points,src-400,src-275,src-220,src-132,src-66,src-11kv,src-subs,src-nuc,src-gas,src-ind,src-dc,src-air,src-rail,src-tesco,src-sainsburys,src-asda,src-morrisons,src-aldi,src-lidl,src-waitrose,src-ms,src-coop,src-costco,src-booths,src-mainline_rail,src-eurostar_route,src-eurostar_station,src-stadiums,src-subsea_data_cables,src-global_ports_major,src-global_ports_minor,src-global_hydrocarbons,src-motorways,src-trunk_roads,src-primary_roads,src-motorway_services,src-naei_co2,src-elizabeth,src-lu,src-metros,src-hs2,src-ev,src-repd,src-interconnectors",
+     "styleEls": 9,
+     "fetchName": "gridAtlasMaplibreWorkerFetch",
+     "mapScroll": [
+      0,
+      0
+     ],
+     "bodyScroll": [
+      0,
+      0
+     ],
+     "storage": [],
+     "menuOpen": false,
+     "search": "",
+     "bridge": {
+      "intercepted": 0,
+      "failures": 0
+     }
+    },
+    "nmd": {
+     "mapErrors": [],
+     "rejections": []
+    },
+    "now": "2026-10-26T18:40:15.951Z",
+    "active": "BUTTON#gridatlas-dash-toggle"
+   },
+   "origDiff": [],
+   "probe": {
+    "hostScroll": {
+     "top": 1964,
+     "height": 2245,
+     "client": 281,
+     "bottom": 723
+    },
+    "hideBtn": {
+     "text": "HIDE LAYERS collapsed the elem",
+     "id": "",
+     "pos": "static",
+     "top": 0,
+     "bottom": 0,
+     "left": 0,
+     "right": 0
+    },
+    "lines": [],
+    "groupBottom": 714,
+    "lastOriginalGroup": {
+     "title": "PIPELINE NEWS (REPD)",
+     "bottom": 658,
+     "coveredByHide": false
+    }
+   }
+  },
+  {
+   "step": "360x740 ON 7d, scrolled to the end: elementFromPoint over each caption line",
+   "boot": 2,
+   "fixture": "/tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/lightning/fixtures/lightning-archive/data",
+   "synthetic": false,
+   "snap": {
+    "label": {
+     "main": "Lightning flashes (optical) [408 | 7d]",
+     "fs": "Lightning flashes (optical) [408 | 7d]",
+     "menu": "Lightning flashes (optical) [408 | 7d]"
+    },
+    "toggles": {
+     "main": true,
+     "fs": true,
+     "menu": true
+    },
+    "stateLine": "PARTIAL · 408 FLASHES DRAWN · SEARCHED 56%",
+    "dot": "rgb(255, 204, 0)",
+    "caption": [
+     "Window  2026-10-19 18:40 UTC → 2026-10-26 18:40 UTC (7 days, latest)",
+     "Actual  first 2026-10-21 12:32:19 UTC · last 2026-10-25 11:15:58 UTC",
+     "Flashes 408 archived in window · 408 drawn as points (index count 408 within the 10,000-point cap for this phone)",
+     "Refresh archive 2026-10-26 18:37 UTC (0h 3min ago; expected every 1 h)",
+     "Searched EUMETSAT 56% of window · 17 successful runs · 2026-10-20 22:41 UTC → 2026-10-26 13:00 UTC",
+     "Not yet ingested: last 5h 40min of window (unknown, not zero) · Unknown: 2026-10-19 to 2026-10-20 precede archive start 2026-10-20 22:41 UTC (not zero) · Unknown: 1 of 8 UTC dates have no collection run",
+     "Times UTC · Optical flashes seen by MTG Lightning Imager (EUMETSAT L2-LFL), not confirmed ground strikes · Missing days are unknown, not zero · UK box −11.0,49.5 → 3.0,61.5"
+    ],
+    "captionHTML": "Window  2026-10-19 18:40 UTC → 2026-10-26 18:40 UTC (7 days, latest)\nActual  first 2026-10-21 12:32:19 UTC · last 2026-10-25 11:15:58 UTC\nFlashes 408 archived in window · 408 drawn as points (index count 408 within the 10,000-point cap for this phone)\nRefresh archive 2026-10-26 18:37 UTC (0h 3min ago; expected every 1 h)\nSearched EUMETSAT 56% of window · 17 successful runs · 2026-10-20 22:41 UTC → 2026-10-26 13:00 UTC\nNot yet ingested: last 5h 40min of window (unknown, not zero) · Unknown: 2026-10-19 to 2026-10-20 precede archive start 2026-10-20 22:41 UTC (not zero) · Unknown: 1 of 8 UTC dates have no collection run\nTimes UTC · Optical flashes seen by MTG Lightning Imager (EUMETSAT L2-LFL), not confirmed ground strikes · Missing days are unknown, not zero · UK box −11.0,49.5 → 3.0,61.5",
+    "captionVisible": true,
+    "captionRect": {
+     "x": 29,
+     "y": 433,
+     "w": 314,
+     "h": 281
+    },
+    "controlsHidden": false,
+    "chips": {
+     "12h": "",
+     "24h": "",
+     "48h": "",
+     "7d": "active",
+     "30d": "",
+     "3m": "",
+     "6m": "",
+     "12m": "",
+     "custom": ""
+    },
+    "nav": {
+     "apply": "enabled",
+     "prev": "enabled",
+     "latest": "disabled",
+     "next": "disabled",
+     "points": "enabled hidden"
+    },
+    "customRow": "none",
+    "dates": {
+     "from": "",
+     "to": "",
+     "min": "2025-10-26",
+     "max": "2026-10-26",
+     "fromBorder": ""
+    },
+    "map": {
+     "source": true,
+     "layer": true,
+     "visibility": "visible",
+     "features": 408,
+     "cluster": false,
+     "firstTime": "2026-10-21T12:32:19.282Z",
+     "lastTime": "2026-10-25T11:15:58.149Z",
+     "badCoords": 0,
+     "rendered": 373,
+     "styleLayerCount": 101
+    },
+    "S": {
+     "on": true,
+     "serial": 2,
+     "requests": 6,
+     "errors": [],
+     "last": {
+      "state": "PARTIAL",
+      "stale": false,
+      "mode": "detail",
+      "period": "7d",
+      "drawn": 408,
+      "cluster": false,
+      "cap": 10000,
+      "cap_source": "index",
+      "index_count": 408,
+      "failures": 0,
+      "reasons": [
+       "tail not yet ingested",
+       "head before archive start",
+       "1 dates without a scan window"
+      ]
+     },
+     "mode": "raw",
+     "timer": true,
+     "period": "7d",
+     "consent": false,
+     "idx": true,
+     "ie": null,
+     "lruNote": null
+    },
+    "injected": null,
+    "lightningMarkupNodes": 0,
+    "orig": {
+     "engine": "400:0,275:0,220:0,132:0,66:0,11kv:0,subs:0,nuc:0,gas:0,ind:0,dc:0,air:0,rail:0,tesco:0,sainsburys:0,asda:0,morrisons:0,aldi:0,lidl:0,waitrose:0,ms:0,coop:0,costco:0,booths:0,elizabeth:0,lu:0,dlr:0,metro:0,tram:0,mainline_rail:0,hs2:0,eurostar_route:0,eurostar_station:0,stadiums:0,subsea_data_cables:0,global_ports_major:0,global_ports_minor:0,global_hydrocarbons:0,motorways:0,trunk_roads:0,primary_roads:0,motorway_services:0,ev:0,naei_co2:0,solar:0,solar_operational:0,solar_roof:0,wind:0,wind_onshore_operational:0,wind_offshore_operational:0,bess:0,bess_operational:0,biomass:0,tidal:0,hydrogen:0,hydro:0,flywheel:0,act:0,geothermal:0,caes:0",
+     "pn": "same:0,wider:0,all:0",
+     "bm": "dark",
+     "groups": [
+      "Topology (GeoJSON)",
+      "Assets (GeoJSON)",
+      "Supermarkets (GeoJSON)",
+      "Transit (GeoJSON)",
+      "Leisure & Sports (GeoJSON)",
+      "Global Data Backbone",
+      "Global Supply Chain & Chokepoints",
+      "Highway Infrastructure",
+      "EV (GeoJSON)",
+      "Heavy Industry",
+      "REPD (GeoJSON)",
+      "Basemap",
+      "PIPELINE NEWS (REPD)",
+      "Weather · EUMETSAT Lightning Imager"
+     ],
+     "proxies": 63,
+     "keys": 63,
+     "inspect": {
+      "engine": 60,
+      "pipeline": 3,
+      "total": 63,
+      "unique": 63,
+      "complete": true
+     },
+     "styleLayers": "background,l-neon-glow,l-neon-core,l-neon-flow,l-neon-flow-b,l-neon-node-ring,l-neon-node,l-sld-boundary,l-sld-boundary-line,l-sld-block,l-sld-bess,l-sld-radial,l-sld-radial-flow,l-sld-cable-glow,l-sld-cable,l-sld-cable-flow,l-sld-cable-flow-b,l-sld-node,l-sld-pin,l-sld-handle,l-sat,l-radius-circle-fill,l-radius-circle-stroke,l-radius-area-fill,l-radius-area-stroke,l-measure-fill,l-measure-line,l-measure-points,l-zonedraw-fill,l-zonedraw-line,l-zonedraw-points,l-400,l-275,l-220,l-132,l-66,l-11kv,l-subs,l-nuc,l-gas,l-ind,l-dc,l-air,l-rail,l-tesco,l-sainsburys,l-asda,l-morrisons,l-aldi,l-lidl,l-waitrose,l-ms,l-coop,l-costco,l-booths,l-mainline_rail,l-eurostar_route,l-eurostar_station,l-stadiums,l-subsea_data_cables,l-global_ports_major,l-global_ports_minor,l-global_hydrocarbons,l-motorways,l-trunk_roads,l-primary_roads,l-motorway_services,l-naei_co2-glow,l-naei_co2,l-elizabeth,l-lu,l-dlr,l-metro,l-tram,l-hs2,l-ev,l-solar-glow,l-solar,l-solar_operational-glow,l-solar_operational,l-solar_roof-glow,l-solar_roof,l-wind,l-wind_onshore_operational-glow,l-wind_onshore_operational,l-wind_offshore_operational-glow,l-wind_offshore_operational,l-bess,l-bess_operational-glow,l-bess_operational,l-biomass,l-tidal,l-hydrogen,l-hydro,l-flywheel,l-act,l-geothermal,l-caes,l-interconnectors,l-interconnector-nodes",
+     "sources": "gridatlas-neon-links,gridatlas-neon-nodes,gridatlas-sld,sat-s,src-radius-circle,src-radius-area,src-measure-line,src-measure-fill,src-measure-points,src-zonedraw-fill,src-zonedraw-line,src-zonedraw-points,src-400,src-275,src-220,src-132,src-66,src-11kv,src-subs,src-nuc,src-gas,src-ind,src-dc,src-air,src-rail,src-tesco,src-sainsburys,src-asda,src-morrisons,src-aldi,src-lidl,src-waitrose,src-ms,src-coop,src-costco,src-booths,src-mainline_rail,src-eurostar_route,src-eurostar_station,src-stadiums,src-subsea_data_cables,src-global_ports_major,src-global_ports_minor,src-global_hydrocarbons,src-motorways,src-trunk_roads,src-primary_roads,src-motorway_services,src-naei_co2,src-elizabeth,src-lu,src-metros,src-hs2,src-ev,src-repd,src-interconnectors",
+     "styleEls": 9,
+     "fetchName": "gridAtlasMaplibreWorkerFetch",
+     "mapScroll": [
+      0,
+      0
+     ],
+     "bodyScroll": [
+      0,
+      0
+     ],
+     "storage": [],
+     "menuOpen": false,
+     "search": "",
+     "bridge": {
+      "intercepted": 0,
+      "failures": 0
+     }
+    },
+    "nmd": {
+     "mapErrors": [],
+     "rejections": []
+    },
+    "now": "2026-10-26T18:40:19.166Z",
+    "active": "BUTTON.map-ctrl-btn"
+   },
+   "origDiff": [],
+   "probe": {
+    "hostScroll": {
+     "top": 2413,
+     "height": 2694,
+     "client": 281,
+     "bottom": 723
+    },
+    "hideBtn": {
+     "text": "HIDE LAYERS collapsed the elem",
+     "id": "",
+     "pos": "static",
+     "top": 0,
+     "bottom": 0,
+     "left": 0,
+     "right": 0
+    },
+    "lines": [
+     {
+      "cap": "window",
+      "top": 433,
+      "bottom": 463,
+      "hits": [
+       "caption",
+       "caption",
+       "caption"
+      ]
+     },
+     {
+      "cap": "actual",
+      "top": 463,
+      "bottom": 493,
+      "hits": [
+       "caption",
+       "caption",
+       "caption"
+      ]
+     },
+     {
+      "cap": "flashes",
+      "top": 493,
+      "bottom": 538,
+      "hits": [
+       "caption",
+       "caption",
+       "caption"
+      ]
+     },
+     {
+      "cap": "refresh",
+      "top": 538,
+      "bottom": 568,
+      "hits": [
+       "caption",
+       "caption",
+       "caption"
+      ]
+     },
+     {
+      "cap": "searched",
+      "top": 568,
+      "bottom": 598,
+      "hits": [
+       "caption",
+       "caption",
+       "caption"
+      ]
+     },
+     {
+      "cap": "warning",
+      "top": 598,
+      "bottom": 673,
+      "hits": [
+       "caption",
+       "caption",
+       "caption"
+      ]
+     },
+     {
+      "cap": "footer",
+      "top": 673,
+      "bottom": 713,
+      "hits": [
+       "caption",
+       "caption",
+       "BUTTON#gridatlas-dash-toggle."
+      ]
+     }
+    ],
+    "groupBottom": 713,
+    "lastOriginalGroup": {
+     "title": "PIPELINE NEWS (REPD)",
+     "bottom": 209,
+     "coveredByHide": false
+    }
+   }
+  },
+  {
+   "step": "360x740 ON 7d after 40 wheel steps (real scroll gesture)",
+   "boot": 2,
+   "fixture": "/tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/lightning/fixtures/lightning-archive/data",
+   "synthetic": false,
+   "snap": {
+    "label": {
+     "main": "Lightning flashes (optical) [408 | 7d]",
+     "fs": "Lightning flashes (optical) [408 | 7d]",
+     "menu": "Lightning flashes (optical) [408 | 7d]"
+    },
+    "toggles": {
+     "main": true,
+     "fs": true,
+     "menu": true
+    },
+    "stateLine": "PARTIAL · 408 FLASHES DRAWN · SEARCHED 56%",
+    "dot": "rgb(255, 204, 0)",
+    "caption": [
+     "Window  2026-10-19 18:40 UTC → 2026-10-26 18:40 UTC (7 days, latest)",
+     "Actual  first 2026-10-21 12:32:19 UTC · last 2026-10-25 11:15:58 UTC",
+     "Flashes 408 archived in window · 408 drawn as points (index count 408 within the 10,000-point cap for this phone)",
+     "Refresh archive 2026-10-26 18:37 UTC (0h 3min ago; expected every 1 h)",
+     "Searched EUMETSAT 56% of window · 17 successful runs · 2026-10-20 22:41 UTC → 2026-10-26 13:00 UTC",
+     "Not yet ingested: last 5h 40min of window (unknown, not zero) · Unknown: 2026-10-19 to 2026-10-20 precede archive start 2026-10-20 22:41 UTC (not zero) · Unknown: 1 of 8 UTC dates have no collection run",
+     "Times UTC · Optical flashes seen by MTG Lightning Imager (EUMETSAT L2-LFL), not confirmed ground strikes · Missing days are unknown, not zero · UK box −11.0,49.5 → 3.0,61.5"
+    ],
+    "captionHTML": "Window  2026-10-19 18:40 UTC → 2026-10-26 18:40 UTC (7 days, latest)\nActual  first 2026-10-21 12:32:19 UTC · last 2026-10-25 11:15:58 UTC\nFlashes 408 archived in window · 408 drawn as points (index count 408 within the 10,000-point cap for this phone)\nRefresh archive 2026-10-26 18:37 UTC (0h 3min ago; expected every 1 h)\nSearched EUMETSAT 56% of window · 17 successful runs · 2026-10-20 22:41 UTC → 2026-10-26 13:00 UTC\nNot yet ingested: last 5h 40min of window (unknown, not zero) · Unknown: 2026-10-19 to 2026-10-20 precede archive start 2026-10-20 22:41 UTC (not zero) · Unknown: 1 of 8 UTC dates have no collection run\nTimes UTC · Optical flashes seen by MTG Lightning Imager (EUMETSAT L2-LFL), not confirmed ground strikes · Missing days are unknown, not zero · UK box −11.0,49.5 → 3.0,61.5",
+    "captionVisible": true,
+    "captionRect": {
+     "x": 29,
+     "y": 434,
+     "w": 314,
+     "h": 281
+    },
+    "controlsHidden": false,
+    "chips": {
+     "12h": "",
+     "24h": "",
+     "48h": "",
+     "7d": "active",
+     "30d": "",
+     "3m": "",
+     "6m": "",
+     "12m": "",
+     "custom": ""
+    },
+    "nav": {
+     "apply": "enabled",
+     "prev": "enabled",
+     "latest": "disabled",
+     "next": "disabled",
+     "points": "enabled hidden"
+    },
+    "customRow": "none",
+    "dates": {
+     "from": "",
+     "to": "",
+     "min": "2025-10-26",
+     "max": "2026-10-26",
+     "fromBorder": ""
+    },
+    "map": {
+     "source": true,
+     "layer": true,
+     "visibility": "visible",
+     "features": 408,
+     "cluster": false,
+     "firstTime": "2026-10-21T12:32:19.282Z",
+     "lastTime": "2026-10-25T11:15:58.149Z",
+     "badCoords": 0,
+     "rendered": 373,
+     "styleLayerCount": 101
+    },
+    "S": {
+     "on": true,
+     "serial": 2,
+     "requests": 6,
+     "errors": [],
+     "last": {
+      "state": "PARTIAL",
+      "stale": false,
+      "mode": "detail",
+      "period": "7d",
+      "drawn": 408,
+      "cluster": false,
+      "cap": 10000,
+      "cap_source": "index",
+      "index_count": 408,
+      "failures": 0,
+      "reasons": [
+       "tail not yet ingested",
+       "head before archive start",
+       "1 dates without a scan window"
+      ]
+     },
+     "mode": "raw",
+     "timer": true,
+     "period": "7d",
+     "consent": false,
+     "idx": true,
+     "ie": null,
+     "lruNote": null
+    },
+    "injected": null,
+    "lightningMarkupNodes": 0,
+    "orig": {
+     "engine": "400:0,275:0,220:0,132:0,66:0,11kv:0,subs:0,nuc:0,gas:0,ind:0,dc:0,air:0,rail:0,tesco:0,sainsburys:0,asda:0,morrisons:0,aldi:0,lidl:0,waitrose:0,ms:0,coop:0,costco:0,booths:0,elizabeth:0,lu:0,dlr:0,metro:0,tram:0,mainline_rail:0,hs2:0,eurostar_route:0,eurostar_station:0,stadiums:0,subsea_data_cables:0,global_ports_major:0,global_ports_minor:0,global_hydrocarbons:0,motorways:0,trunk_roads:0,primary_roads:0,motorway_services:0,ev:0,naei_co2:0,solar:0,solar_operational:0,solar_roof:0,wind:0,wind_onshore_operational:0,wind_offshore_operational:0,bess:0,bess_operational:0,biomass:0,tidal:0,hydrogen:0,hydro:0,flywheel:0,act:0,geothermal:0,caes:0",
+     "pn": "same:0,wider:0,all:0",
+     "bm": "dark",
+     "groups": [
+      "Topology (GeoJSON)",
+      "Assets (GeoJSON)",
+      "Supermarkets (GeoJSON)",
+      "Transit (GeoJSON)",
+      "Leisure & Sports (GeoJSON)",
+      "Global Data Backbone",
+      "Global Supply Chain & Chokepoints",
+      "Highway Infrastructure",
+      "EV (GeoJSON)",
+      "Heavy Industry",
+      "REPD (GeoJSON)",
+      "Basemap",
+      "PIPELINE NEWS (REPD)",
+      "Weather · EUMETSAT Lightning Imager"
+     ],
+     "proxies": 63,
+     "keys": 63,
+     "inspect": {
+      "engine": 60,
+      "pipeline": 3,
+      "total": 63,
+      "unique": 63,
+      "complete": true
+     },
+     "styleLayers": "background,l-neon-glow,l-neon-core,l-neon-flow,l-neon-flow-b,l-neon-node-ring,l-neon-node,l-sld-boundary,l-sld-boundary-line,l-sld-block,l-sld-bess,l-sld-radial,l-sld-radial-flow,l-sld-cable-glow,l-sld-cable,l-sld-cable-flow,l-sld-cable-flow-b,l-sld-node,l-sld-pin,l-sld-handle,l-sat,l-radius-circle-fill,l-radius-circle-stroke,l-radius-area-fill,l-radius-area-stroke,l-measure-fill,l-measure-line,l-measure-points,l-zonedraw-fill,l-zonedraw-line,l-zonedraw-points,l-400,l-275,l-220,l-132,l-66,l-11kv,l-subs,l-nuc,l-gas,l-ind,l-dc,l-air,l-rail,l-tesco,l-sainsburys,l-asda,l-morrisons,l-aldi,l-lidl,l-waitrose,l-ms,l-coop,l-costco,l-booths,l-mainline_rail,l-eurostar_route,l-eurostar_station,l-stadiums,l-subsea_data_cables,l-global_ports_major,l-global_ports_minor,l-global_hydrocarbons,l-motorways,l-trunk_roads,l-primary_roads,l-motorway_services,l-naei_co2-glow,l-naei_co2,l-elizabeth,l-lu,l-dlr,l-metro,l-tram,l-hs2,l-ev,l-solar-glow,l-solar,l-solar_operational-glow,l-solar_operational,l-solar_roof-glow,l-solar_roof,l-wind,l-wind_onshore_operational-glow,l-wind_onshore_operational,l-wind_offshore_operational-glow,l-wind_offshore_operational,l-bess,l-bess_operational-glow,l-bess_operational,l-biomass,l-tidal,l-hydrogen,l-hydro,l-flywheel,l-act,l-geothermal,l-caes,l-interconnectors,l-interconnector-nodes",
+     "sources": "gridatlas-neon-links,gridatlas-neon-nodes,gridatlas-sld,sat-s,src-radius-circle,src-radius-area,src-measure-line,src-measure-fill,src-measure-points,src-zonedraw-fill,src-zonedraw-line,src-zonedraw-points,src-400,src-275,src-220,src-132,src-66,src-11kv,src-subs,src-nuc,src-gas,src-ind,src-dc,src-air,src-rail,src-tesco,src-sainsburys,src-asda,src-morrisons,src-aldi,src-lidl,src-waitrose,src-ms,src-coop,src-costco,src-booths,src-mainline_rail,src-eurostar_route,src-eurostar_station,src-stadiums,src-subsea_data_cables,src-global_ports_major,src-global_ports_minor,src-global_hydrocarbons,src-motorways,src-trunk_roads,src-primary_roads,src-motorway_services,src-naei_co2,src-elizabeth,src-lu,src-metros,src-hs2,src-ev,src-repd,src-interconnectors",
+     "styleEls": 9,
+     "fetchName": "gridAtlasMaplibreWorkerFetch",
+     "mapScroll": [
+      0,
+      0
+     ],
+     "bodyScroll": [
+      0,
+      0
+     ],
+     "storage": [],
+     "menuOpen": false,
+     "search": "",
+     "bridge": {
+      "intercepted": 0,
+      "failures": 0
+     }
+    },
+    "nmd": {
+     "mapErrors": [],
+     "rejections": []
+    },
+    "now": "2026-10-26T18:40:21.367Z",
+    "active": "BUTTON.map-ctrl-btn"
+   },
+   "origDiff": [],
+   "probe": {
+    "hostScroll": {
+     "top": 2412,
+     "height": 2694,
+     "client": 281,
+     "bottom": 723
+    },
+    "hideBtn": {
+     "text": "HIDE LAYERS collapsed the elem",
+     "id": "",
+     "pos": "static",
+     "top": 0,
+     "bottom": 0,
+     "left": 0,
+     "right": 0
+    },
+    "lines": [
+     {
+      "cap": "window",
+      "top": 434,
+      "bottom": 464,
+      "hits": [
+       "caption",
+       "caption",
+       "caption"
+      ]
+     },
+     {
+      "cap": "actual",
+      "top": 464,
+      "bottom": 494,
+      "hits": [
+       "caption",
+       "caption",
+       "caption"
+      ]
+     },
+     {
+      "cap": "flashes",
+      "top": 494,
+      "bottom": 539,
+      "hits": [
+       "caption",
+       "caption",
+       "caption"
+      ]
+     },
+     {
+      "cap": "refresh",
+      "top": 539,
+      "bottom": 569,
+      "hits": [
+       "caption",
+       "caption",
+       "caption"
+      ]
+     },
+     {
+      "cap": "searched",
+      "top": 569,
+      "bottom": 599,
+      "hits": [
+       "caption",
+       "caption",
+       "caption"
+      ]
+     },
+     {
+      "cap": "warning",
+      "top": 599,
+      "bottom": 674,
+      "hits": [
+       "caption",
+       "caption",
+       "caption"
+      ]
+     },
+     {
+      "cap": "footer",
+      "top": 674,
+      "bottom": 714,
+      "hits": [
+       "caption",
+       "caption",
+       "BUTTON#gridatlas-dash-toggle."
+      ]
+     }
+    ],
+    "groupBottom": 714,
+    "lastOriginalGroup": {
+     "title": "PIPELINE NEWS (REPD)",
+     "bottom": 210,
+     "coveredByHide": false
+    }
+   }
+  }
+ ],
+ "boots": [
+  {
+   "dir": "/tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/lightning/fixtures/lightning-archive/data",
+   "synthetic": false,
+   "requests": [
+    {
+     "url": "https://raw.githubusercontent.com/Ventusltd/data-grid-gb/1c9909d1138704b29235c27fd769436dda8a0b18/derived/connection-points.v3.json",
+     "method": "GET",
+     "start": 1793055208868,
+     "end": 1793055209096,
+     "status": null,
+     "failure": "net::ERR_BLOCKED_BY_CLIENT.Inspector"
+    }
+   ],
+   "pageErrors": [],
+   "consoleErrors": [
+    "warning: A parser-blocking, cross site (i.e. different eTLD+1) script, https://cdn.jsdelivr.net/npm/maplibre-gl@3.6.2/dist/maplibre-gl.js, is invoked via document.write. The network request for this script MAY be blocked by the browser in this or a future page load due to poor network connectivity. ",
+    "warning: A parser-blocking, cross site (i.e. different eTLD+1) script, https://cdn.jsdelivr.net/npm/maplibre-gl@3.6.2/dist/maplibre-gl.js, is invoked via document.write. The network request for this script MAY be blocked by the browser in this or a future page load due to poor network connectivity. ",
+    "error: Failed to load resource: net::ERR_BLOCKED_BY_CLIENT.Inspector",
+    "error: Failed to load resource: net::ERR_BLOCKED_BY_CLIENT.Inspector"
+   ],
+   "shim": {
+    "served": {
+     "maplibre": 2,
+     "style": 1,
+     "duckdb": 2
+    },
+    "aborted": [
+     "https://raw.githubusercontent.com/Ventusltd/data-grid-gb/1c9909d1138704b29235c27fd769436dda8a0b18/derived/connection-points.v3.json",
+     "https://ventusltd.github.io/ventus-grid-engine/genome/engine-graph.json"
+    ],
+    "missing": []
+   },
+   "comp": {
+    "engine": 120,
+    "pn": 6,
+    "scada": true,
+    "curtain": true,
+    "menuInstalled": true,
+    "map": true,
+    "waitedMs": 4923
+   }
+  },
+  {
+   "dir": "/tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/lightning/fixtures/lightning-archive/data",
+   "synthetic": false,
+   "requests": [
+    {
+     "url": "https://raw.githubusercontent.com/Ventusltd/data-grid-gb/1c9909d1138704b29235c27fd769436dda8a0b18/derived/connection-points.v3.json",
+     "method": "GET",
+     "start": 1793055213752,
+     "end": 1793055213758,
+     "status": null,
+     "failure": "net::ERR_BLOCKED_BY_CLIENT.Inspector"
+    },
+    {
+     "url": "AR/index.json",
+     "method": "GET",
+     "start": 1793055226463,
+     "end": 1793055226534,
+     "status": 200,
+     "failure": null
+    },
+    {
+     "url": "AR/days/2026/10/25.json",
+     "method": "GET",
+     "start": 1793055226523,
+     "end": 1793055226539,
+     "status": 200,
+     "failure": null
+    },
+    {
+     "url": "AR/days/2026/10/21.json",
+     "method": "GET",
+     "start": 1793055228444,
+     "end": 1793055228777,
+     "status": 200,
+     "failure": null
+    },
+    {
+     "url": "AR/days/2026/10/22.json",
+     "method": "GET",
+     "start": 1793055228445,
+     "end": 1793055228777,
+     "status": 200,
+     "failure": null
+    },
+    {
+     "url": "AR/days/2026/10/23.json",
+     "method": "GET",
+     "start": 1793055228449,
+     "end": 1793055228777,
+     "status": 200,
+     "failure": null
+    },
+    {
+     "url": "AR/days/2026/10/24.json",
+     "method": "GET",
+     "start": 1793055228449,
+     "end": 1793055228777,
+     "status": 200,
+     "failure": null
+    }
+   ],
+   "pageErrors": [],
+   "consoleErrors": [
+    "warning: A parser-blocking, cross site (i.e. different eTLD+1) script, https://cdn.jsdelivr.net/npm/maplibre-gl@3.6.2/dist/maplibre-gl.js, is invoked via document.write. The network request for this script MAY be blocked by the browser in this or a future page load due to poor network connectivity. ",
+    "warning: A parser-blocking, cross site (i.e. different eTLD+1) script, https://cdn.jsdelivr.net/npm/maplibre-gl@3.6.2/dist/maplibre-gl.js, is invoked via document.write. The network request for this script MAY be blocked by the browser in this or a future page load due to poor network connectivity. ",
+    "error: Failed to load resource: net::ERR_BLOCKED_BY_CLIENT.Inspector",
+    "error: Failed to load resource: net::ERR_BLOCKED_BY_CLIENT.Inspector"
+   ],
+   "shim": {
+    "served": {
+     "maplibre": 2,
+     "style": 1,
+     "duckdb": 3,
+     "lightning-data": 6
+    },
+    "aborted": [
+     "https://raw.githubusercontent.com/Ventusltd/data-grid-gb/1c9909d1138704b29235c27fd769436dda8a0b18/derived/connection-points.v3.json",
+     "https://ventusltd.github.io/ventus-grid-engine/genome/engine-graph.json"
+    ],
+    "missing": []
+   },
+   "comp": {
+    "engine": 120,
+    "pn": 6,
+    "scada": true,
+    "curtain": true,
+    "menuInstalled": true,
+    "map": true,
+    "waitedMs": 6034
+   }
+  },
+  {
+   "dir": "/tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/lightning/fixtures/lightning-archive/data",
+   "synthetic": false,
+   "requests": [
+    {
+     "url": "https://raw.githubusercontent.com/Ventusltd/data-grid-gb/1c9909d1138704b29235c27fd769436dda8a0b18/derived/connection-points.v3.json",
+     "method": "GET",
+     "start": 1793055235435,
+     "end": 1793055235585,
+     "status": null,
+     "failure": "net::ERR_BLOCKED_BY_CLIENT.Inspector"
+    },
+    {
+     "url": "AR/index.json",
+     "method": "GET",
+     "start": 1793055251048,
+     "end": 1793055251131,
+     "status": 200,
+     "failure": null
+    },
+    {
+     "url": "AR/days/2026/10/25.json",
+     "method": "GET",
+     "start": 1793055251125,
+     "end": 1793055251144,
+     "status": 200,
+     "failure": null
+    },
+    {
+     "url": "AR/days/2026/10/21.json",
+     "method": "GET",
+     "start": 1793055252013,
+     "end": 1793055252031,
+     "status": 200,
+     "failure": null
+    },
+    {
+     "url": "AR/days/2026/10/22.json",
+     "method": "GET",
+     "start": 1793055252013,
+     "end": 1793055252035,
+     "status": 200,
+     "failure": null
+    },
+    {
+     "url": "AR/days/2026/10/23.json",
+     "method": "GET",
+     "start": 1793055252013,
+     "end": 1793055252124,
+     "status": 200,
+     "failure": null
+    },
+    {
+     "url": "AR/days/2026/10/24.json",
+     "method": "GET",
+     "start": 1793055252013,
+     "end": 1793055252124,
+     "status": 200,
+     "failure": null
+    }
+   ],
+   "pageErrors": [],
+   "consoleErrors": [
+    "warning: A parser-blocking, cross site (i.e. different eTLD+1) script, https://cdn.jsdelivr.net/npm/maplibre-gl@3.6.2/dist/maplibre-gl.js, is invoked via document.write. The network request for this script MAY be blocked by the browser in this or a future page load due to poor network connectivity. ",
+    "warning: A parser-blocking, cross site (i.e. different eTLD+1) script, https://cdn.jsdelivr.net/npm/maplibre-gl@3.6.2/dist/maplibre-gl.js, is invoked via document.write. The network request for this script MAY be blocked by the browser in this or a future page load due to poor network connectivity. ",
+    "error: Failed to load resource: net::ERR_BLOCKED_BY_CLIENT.Inspector",
+    "error: Failed to load resource: net::ERR_BLOCKED_BY_CLIENT.Inspector"
+   ],
+   "shim": {
+    "served": {
+     "maplibre": 2,
+     "style": 1,
+     "duckdb": 3,
+     "lightning-data": 6
+    },
+    "aborted": [
+     "https://raw.githubusercontent.com/Ventusltd/data-grid-gb/1c9909d1138704b29235c27fd769436dda8a0b18/derived/connection-points.v3.json",
+     "https://ventusltd.github.io/ventus-grid-engine/genome/engine-graph.json"
+    ],
+    "missing": []
+   },
+   "comp": {
+    "engine": 120,
+    "pn": 6,
+    "scada": true,
+    "curtain": true,
+    "menuInstalled": true,
+    "map": true,
+    "waitedMs": 4435
+   }
+  }
+ ],
+ "elapsedMs": 48830
+}

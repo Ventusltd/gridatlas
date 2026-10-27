@@ -1,0 +1,19 @@
+== atlas/cartridges/202610262323-sld-sandbox-v9-8.js
+IDENTICAL
+== atlas/manifests/202610262323-composition.json
+723c723
+<  "candidate_predecessor": "202610261949",
+---
+>  "candidate_predecessor": "202610262318",
+== atlas/modules/202610262323-uk-lightning-overlay.js
+IDENTICAL
+== atlas/v/202610262323/current.json
+IDENTICAL
+== atlas/v/202610262323/index.html
+IDENTICAL
+== tools/proofs/202610262323-sld-sandbox.proof.mjs
+37c37,38
+< for(const needle of ["visibility:'none'",'not confirmed ground strikes','unknown','data-lightning-control="toggle"','scada-ui-container','fs-curtain-keys','gm-panel-body','appendChild','insertBefore','cluster:true','10000','40000','AbortController','EUMETSAT'])
+---
+> assert.equal(module.includes('gm-panel-body'),false,'the Grid dropdown mirror was removed: the module must not touch the original Grid panel body (P02/P10)');
+> for(const needle of ["visibility:'none'",'not confirmed ground strikes','unknown','data-lightning-control="toggle"','scada-ui-container','fs-curtain-keys','appendChild','cluster:true','10000','40000','AbortController','EUMETSAT'])

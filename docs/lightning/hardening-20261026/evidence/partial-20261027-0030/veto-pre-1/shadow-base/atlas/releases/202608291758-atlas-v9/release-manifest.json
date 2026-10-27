@@ -1,0 +1,25 @@
+{
+  "schema": "gridatlas.v8-product-mirror-candidate.v1",
+  "classification": "V8_PRODUCT_MIRROR_CANDIDATE",
+  "release_id": "202608291758-atlas-v9",
+  "source_commit": "2a294f5e784635e50dc9d4c128d8848dc6011f07",
+  "immutable_after_publication": true,
+  "product_oracle": {
+    "repository": "Ventusltd/globalgrid2050",
+    "commit": "f2f343a92ee972cc74ed23b4b99d8a22896791ad",
+    "index_blob": "278c3f55d3b61af9d13417c99bfb558374131143",
+    "css_blob": "29a2edb490407f489c29433d84e329b1038e0657",
+    "engine_blob": "0a647c32c346770851704727bbf86fb7167e2596"
+  },
+  "permitted_product_delta": [
+    "insert v9-parquet-fetch-bridge.js immediately before the unchanged V8 engine"
+  ],
+  "data_plane": {
+    "repository": "Ventusltd/data-gridatlas",
+    "release_id": "202608291237-data-gridatlas",
+    "manifest_sha256": "3246dbdaa042ae8352ec9b7128cb6c2fe65e4f1aba0534302510661828df2526",
+    "format": "ZSTD_PARQUET",
+    "browser_query": "DUCKDB_WASM"
+  },
+  "promotion_policy": "NO_ROOT_PROMOTION_UNTIL_USER_VISIBLE_V8_PARITY_AND_BROWSER_GATE_PASS"
+}

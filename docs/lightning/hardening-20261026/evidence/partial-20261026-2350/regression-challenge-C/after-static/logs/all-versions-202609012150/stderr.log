@@ -1,0 +1,8 @@
+file:///tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/regression-challenge-C/shadow-after/tools/proofs/202609012150-all-versions.proof.mjs:420
+const ledger = JSON.parse(shipped.match(/const VERSION_LEDGER = (\[[\s\S]*?\]);/)[1]);
+                                                                                 ^
+
+TypeError: Cannot read properties of null (reading '1')
+    at file:///tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/regression-challenge-C/shadow-after/tools/proofs/202609012150-all-versions.proof.mjs:420:82
+
+Node.js v22.23.4

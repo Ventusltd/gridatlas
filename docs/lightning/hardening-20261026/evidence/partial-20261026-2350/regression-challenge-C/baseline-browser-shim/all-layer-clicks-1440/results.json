@@ -1,0 +1,2399 @@
+{
+  "url": "http://127.0.0.1:8143/gridatlas/atlas/",
+  "width": 1440,
+  "results": [
+    {
+      "id": "400",
+      "errors": [],
+      "generation": "202609241334",
+      "initialLabel": "400kV [OK]",
+      "label": "400kV [OK]",
+      "checked": true,
+      "disabled": false,
+      "layer": {
+        "id": "l-400",
+        "type": "line",
+        "source": "src-400",
+        "layout": {
+          "visibility": "visible"
+        },
+        "paint": {
+          "line-color": "#0054ff",
+          "line-width": 2.5
+        }
+      },
+      "featureCount": 4106,
+      "eligible": 4106,
+      "target": [
+        -1.0453368,
+        52.2441634
+      ],
+      "sample": {
+        "id": "grid_400kv:0",
+        "properties": {
+          "name": "National Grid East Claydon-Enderby",
+          "operator": "National Grid",
+          "source": "Bing;survey",
+          "voltage": "400000"
+        }
+      },
+      "rendered": 53,
+      "popup": 1,
+      "popupText": [
+        "National Grid East Claydon-Enderby | 400000National Grid×"
+      ],
+      "off": true,
+      "pass": true
+    },
+    {
+      "id": "275",
+      "errors": [],
+      "generation": "202609241334",
+      "initialLabel": "275kV [OK]",
+      "label": "275kV [OK]",
+      "checked": true,
+      "disabled": false,
+      "layer": {
+        "id": "l-275",
+        "type": "line",
+        "source": "src-275",
+        "layout": {
+          "visibility": "visible"
+        },
+        "paint": {
+          "line-color": "#ff0000",
+          "line-width": 2
+        }
+      },
+      "featureCount": 2935,
+      "eligible": 2935,
+      "target": [
+        -0.4220372,
+        51.3373927
+      ],
+      "sample": {
+        "id": "grid_275kv:0",
+        "properties": {
+          "name": "National Grid Chessington-West Weybridge",
+          "voltage": "275000"
+        }
+      },
+      "rendered": 53,
+      "popup": 1,
+      "popupText": [
+        "National Grid Chessington-West Weybridge | 275000×"
+      ],
+      "off": true,
+      "pass": true
+    },
+    {
+      "id": "220",
+      "errors": [],
+      "generation": "202609241334",
+      "initialLabel": "220kV [OK]",
+      "label": "220kV [OK]",
+      "checked": true,
+      "disabled": false,
+      "layer": {
+        "id": "l-220",
+        "type": "line",
+        "source": "src-220",
+        "layout": {
+          "visibility": "visible"
+        },
+        "paint": {
+          "line-color": "#ff9900",
+          "line-width": 1.8
+        }
+      },
+      "featureCount": 126,
+      "eligible": 126,
+      "target": [
+        -3.4531866,
+        53.2838131
+      ],
+      "sample": {
+        "id": "grid_220kv:0",
+        "properties": {
+          "name": "Burbo Bank Windfarm Underground Cable > Burbo Bank Offshore Wind Farm Substation",
+          "source": "Route visible on digging scars, ESRI imagery, 2019-03",
+          "voltage": "220000"
+        }
+      },
+      "rendered": 3,
+      "popup": 1,
+      "popupText": [
+        "Burbo Bank Windfarm Underground Cable > Burbo Bank Offshore Wind Farm Substation | 220000×"
+      ],
+      "off": true,
+      "pass": true
+    },
+    {
+      "id": "132",
+      "errors": [],
+      "generation": "202609241334",
+      "initialLabel": "132kV [OK]",
+      "label": "132kV [OK]",
+      "checked": true,
+      "disabled": false,
+      "layer": {
+        "id": "l-132",
+        "type": "line",
+        "source": "src-132",
+        "layout": {
+          "visibility": "visible"
+        },
+        "paint": {
+          "line-color": "#00cc00",
+          "line-width": 1.5
+        }
+      },
+      "featureCount": 6227,
+      "eligible": 6227,
+      "target": [
+        -0.5034134,
+        51.3433492
+      ],
+      "sample": {
+        "id": "grid_132kv:0",
+        "properties": {
+          "name": "West Weybridge - Byfleet",
+          "operator": "UK Power Networks",
+          "voltage": "132000"
+        }
+      },
+      "rendered": 19,
+      "popup": 1,
+      "popupText": [
+        "West Weybridge - Byfleet | 132000UK Power Networks×"
+      ],
+      "off": true,
+      "pass": true
+    },
+    {
+      "id": "66",
+      "errors": [],
+      "generation": "202609241334",
+      "initialLabel": "66kV [OK]",
+      "label": "66kV [OK]",
+      "checked": true,
+      "disabled": false,
+      "layer": {
+        "id": "l-66",
+        "type": "line",
+        "source": "src-66",
+        "layout": {
+          "visibility": "visible"
+        },
+        "paint": {
+          "line-color": "#b200ff",
+          "line-width": 1.2
+        }
+      },
+      "featureCount": 1171,
+      "eligible": 1171,
+      "target": [
+        -3.4455308,
+        52.2845234
+      ],
+      "sample": {
+        "id": "grid_66kv:0",
+        "properties": {
+          "brand": "National Grid",
+          "operator": "National Grid Electricity Distribution Plc",
+          "source": "OS Opendata Vectormap District",
+          "voltage": "66000"
+        }
+      },
+      "rendered": 8,
+      "popup": 1,
+      "popupText": [
+        "Unnamed Asset | 66000National Grid Electricity Distribution Plc×"
+      ],
+      "off": true,
+      "pass": true
+    },
+    {
+      "id": "11kv",
+      "errors": [],
+      "generation": "202609241334",
+      "initialLabel": "11kV (UKPN) [WAIT]",
+      "label": "11kV (UKPN) [FAIL]",
+      "checked": true,
+      "disabled": false,
+      "layer": {
+        "id": "l-11kv",
+        "type": "circle",
+        "source": "src-11kv",
+        "minzoom": 13.5,
+        "layout": {
+          "visibility": "visible"
+        },
+        "paint": {
+          "circle-color": "#ff00ff",
+          "circle-radius": [
+            "interpolate",
+            [
+              "linear"
+            ],
+            [
+              "zoom"
+            ],
+            13.5,
+            4,
+            15,
+            8,
+            18,
+            18
+          ],
+          "circle-stroke-width": 1,
+          "circle-stroke-color": "#000"
+        }
+      },
+      "featureCount": 0,
+      "eligible": 0,
+      "target": null,
+      "sample": null,
+      "pass": false
+    },
+    {
+      "id": "subs",
+      "errors": [],
+      "generation": "202609241334",
+      "initialLabel": "Subs [OK]",
+      "label": "Subs [OK]",
+      "checked": true,
+      "disabled": false,
+      "layer": {
+        "id": "l-subs",
+        "type": "circle",
+        "source": "src-subs",
+        "layout": {
+          "visibility": "visible"
+        },
+        "paint": {
+          "circle-color": "#ffffff",
+          "circle-radius": [
+            "interpolate",
+            [
+              "linear"
+            ],
+            [
+              "zoom"
+            ],
+            5,
+            3,
+            10,
+            5,
+            14,
+            10,
+            18,
+            22
+          ],
+          "circle-stroke-width": 1,
+          "circle-stroke-color": "#000"
+        }
+      },
+      "featureCount": 5800,
+      "eligible": 5800,
+      "target": [
+        1.6221121,
+        51.4374246
+      ],
+      "sample": {
+        "id": "grid_substations:0",
+        "properties": {
+          "voltage": "132000;33000"
+        }
+      },
+      "rendered": 25,
+      "popup": 1,
+      "popupText": [
+        "⋮⋮Unnamed Asset−×Unnamed Asset | 132000;33000×Nearest projectsBetaThe project layers are switched off, so there is nothing to measure against. Turn on Solar PV, Wind or Battery Storage and click again. This is not a statement that no project is here.Beta analytics, not an actual grid connection. Straight-line distance to mapped geometry — not a cable route, not a connection length, and no route has been walked. A real connection depends on factors that must be studied: network impedance and fault level, thermal headroom, existing committed connections and queue position, right of way, wayleaves and easements, crossings, terrain, land control and consent. None of those can be inferred from a distance. A mapped substation does not confirm capacity, voltage suitability or acceptance by any network party, and absence from a mapped layer is not absence on the ground."
+      ],
+      "off": true,
+      "pass": true
+    },
+    {
+      "id": "nuc",
+      "errors": [],
+      "generation": "202609241334",
+      "initialLabel": "Nuclear [OK]",
+      "label": "Nuclear [OK]",
+      "checked": true,
+      "disabled": false,
+      "layer": {
+        "id": "l-nuc",
+        "type": "circle",
+        "source": "src-nuc",
+        "filter": [
+          "==",
+          [
+            "get",
+            "source"
+          ],
+          "nuclear"
+        ],
+        "layout": {
+          "visibility": "visible"
+        },
+        "paint": {
+          "circle-color": "#39ff14",
+          "circle-radius": 4.5,
+          "circle-stroke-width": 1,
+          "circle-stroke-color": "#000"
+        }
+      },
+      "featureCount": 178,
+      "eligible": 4,
+      "target": [
+        -1.1812918,
+        54.6351559
+      ],
+      "sample": {
+        "id": "power_plants:0",
+        "properties": {
+          "name": "Hartlepool Nuclear Power Station",
+          "operator": "EDF Energy",
+          "source": "nuclear"
+        }
+      },
+      "rendered": 1,
+      "popup": 1,
+      "popupText": [
+        "Hartlepool Nuclear Power StationEDF Energy×"
+      ],
+      "off": true,
+      "pass": true
+    },
+    {
+      "id": "gas",
+      "errors": [],
+      "generation": "202609241334",
+      "initialLabel": "Gas [OK]",
+      "label": "Gas [OK]",
+      "checked": true,
+      "disabled": false,
+      "layer": {
+        "id": "l-gas",
+        "type": "circle",
+        "source": "src-gas",
+        "filter": [
+          "!=",
+          [
+            "get",
+            "source"
+          ],
+          "nuclear"
+        ],
+        "layout": {
+          "visibility": "visible"
+        },
+        "paint": {
+          "circle-color": "#ff4500",
+          "circle-radius": 4.5,
+          "circle-stroke-width": 1,
+          "circle-stroke-color": "#000"
+        }
+      },
+      "featureCount": 178,
+      "eligible": 174,
+      "target": [
+        -2.670294,
+        51.5391657
+      ],
+      "sample": {
+        "id": "power_plants:1",
+        "properties": {
+          "name": "Seabank Power Station",
+          "operator": "SSE Thermal",
+          "source": "gas"
+        }
+      },
+      "rendered": 7,
+      "popup": 1,
+      "popupText": [
+        "Seabank Power StationSSE Thermal×"
+      ],
+      "off": true,
+      "pass": true
+    },
+    {
+      "id": "ind",
+      "errors": [],
+      "generation": "202609241334",
+      "initialLabel": "Industry [OK]",
+      "label": "Industry [OK]",
+      "checked": true,
+      "disabled": false,
+      "layer": {
+        "id": "l-ind",
+        "type": "circle",
+        "source": "src-ind",
+        "layout": {
+          "visibility": "visible"
+        },
+        "paint": {
+          "circle-color": "#ff6600",
+          "circle-radius": 4.5,
+          "circle-stroke-width": 1,
+          "circle-stroke-color": "#000"
+        }
+      },
+      "featureCount": 5878,
+      "eligible": 5878,
+      "target": [
+        -0.0514823,
+        51.604335
+      ],
+      "sample": {
+        "id": "industrial_offtakers:0",
+        "properties": {
+          "name": "Alcohols Ltd",
+          "operator": "Unknown Operator",
+          "type": "Chemical"
+        }
+      },
+      "rendered": 108,
+      "popup": 1,
+      "popupText": [
+        "Alcohols LtdChemicalUnknown Operator×"
+      ],
+      "off": true,
+      "pass": true
+    },
+    {
+      "id": "dc",
+      "errors": [],
+      "generation": "202609241334",
+      "initialLabel": "Data Ctrs [OK]",
+      "label": "Data Ctrs [OK]",
+      "checked": true,
+      "disabled": false,
+      "layer": {
+        "id": "l-dc",
+        "type": "circle",
+        "source": "src-dc",
+        "layout": {
+          "visibility": "visible"
+        },
+        "paint": {
+          "circle-color": "#00ffff",
+          "circle-radius": 4.5,
+          "circle-stroke-width": 1,
+          "circle-stroke-color": "#000"
+        }
+      },
+      "featureCount": 240,
+      "eligible": 240,
+      "target": [
+        -3.0382722,
+        51.5550188
+      ],
+      "sample": {
+        "id": "datacentres:0",
+        "properties": {
+          "name": "Next Generation Data",
+          "operator": "Next Generation Data"
+        }
+      },
+      "rendered": 7,
+      "popup": 1,
+      "popupText": [
+        "Vantage Data Centers - CWL1Vantage Data Centers×"
+      ],
+      "off": true,
+      "pass": true
+    },
+    {
+      "id": "air",
+      "errors": [],
+      "generation": "202609241334",
+      "initialLabel": "Airports [OK]",
+      "label": "Airports [OK]",
+      "checked": true,
+      "disabled": false,
+      "layer": {
+        "id": "l-air",
+        "type": "circle",
+        "source": "src-air",
+        "layout": {
+          "visibility": "visible"
+        },
+        "paint": {
+          "circle-color": "#ff00ff",
+          "circle-radius": 4.5,
+          "circle-stroke-width": 1,
+          "circle-stroke-color": "#000"
+        }
+      },
+      "featureCount": 810,
+      "eligible": 810,
+      "target": [
+        -0.0074609,
+        51.848411
+      ],
+      "sample": {
+        "id": "airports:0",
+        "properties": {
+          "name": "High Cross Airstrip"
+        }
+      },
+      "rendered": 29,
+      "popup": 1,
+      "popupText": [
+        "High Cross Airstrip×"
+      ],
+      "off": true,
+      "pass": true
+    },
+    {
+      "id": "rail",
+      "errors": [],
+      "generation": "202609241334",
+      "initialLabel": "Railways [OK]",
+      "label": "Railways [OK]",
+      "checked": true,
+      "disabled": false,
+      "layer": {
+        "id": "l-rail",
+        "type": "circle",
+        "source": "src-rail",
+        "layout": {
+          "visibility": "visible"
+        },
+        "paint": {
+          "circle-color": "#ffd700",
+          "circle-radius": 4.5,
+          "circle-stroke-width": 1,
+          "circle-stroke-color": "#000"
+        }
+      },
+      "featureCount": 3596,
+      "eligible": 3596,
+      "target": [
+        -1.7852844,
+        51.5657001
+      ],
+      "sample": {
+        "id": "railways:0",
+        "properties": {
+          "name": "Swindon"
+        }
+      },
+      "rendered": 33,
+      "popup": 1,
+      "popupText": [
+        "Swindon×"
+      ],
+      "off": true,
+      "pass": true
+    },
+    {
+      "id": "tesco",
+      "errors": [],
+      "generation": "202609241334",
+      "initialLabel": "Tesco [WAIT]",
+      "label": "Tesco [FAIL]",
+      "checked": true,
+      "disabled": false,
+      "layer": {
+        "id": "l-tesco",
+        "type": "circle",
+        "source": "src-tesco",
+        "layout": {
+          "visibility": "visible"
+        },
+        "paint": {
+          "circle-color": "#ee1c2e",
+          "circle-radius": 4.5,
+          "circle-stroke-width": 1,
+          "circle-stroke-color": "#000"
+        }
+      },
+      "featureCount": 0,
+      "eligible": 0,
+      "target": null,
+      "sample": null,
+      "pass": false
+    },
+    {
+      "id": "sainsburys",
+      "errors": [],
+      "generation": "202609241334",
+      "initialLabel": "Sainsbury's [WAIT]",
+      "label": "Sainsbury's [FAIL]",
+      "checked": true,
+      "disabled": false,
+      "layer": {
+        "id": "l-sainsburys",
+        "type": "circle",
+        "source": "src-sainsburys",
+        "layout": {
+          "visibility": "visible"
+        },
+        "paint": {
+          "circle-color": "#ff8200",
+          "circle-radius": 4.5,
+          "circle-stroke-width": 1,
+          "circle-stroke-color": "#000"
+        }
+      },
+      "featureCount": 0,
+      "eligible": 0,
+      "target": null,
+      "sample": null,
+      "pass": false
+    },
+    {
+      "id": "asda",
+      "errors": [],
+      "generation": "202609241334",
+      "initialLabel": "Asda [WAIT]",
+      "label": "Asda [FAIL]",
+      "checked": true,
+      "disabled": false,
+      "layer": {
+        "id": "l-asda",
+        "type": "circle",
+        "source": "src-asda",
+        "layout": {
+          "visibility": "visible"
+        },
+        "paint": {
+          "circle-color": "#78be20",
+          "circle-radius": 4.5,
+          "circle-stroke-width": 1,
+          "circle-stroke-color": "#000"
+        }
+      },
+      "featureCount": 0,
+      "eligible": 0,
+      "target": null,
+      "sample": null,
+      "pass": false
+    },
+    {
+      "id": "morrisons",
+      "errors": [],
+      "generation": "202609241334",
+      "initialLabel": "Morrisons [WAIT]",
+      "label": "Morrisons [FAIL]",
+      "checked": true,
+      "disabled": false,
+      "layer": {
+        "id": "l-morrisons",
+        "type": "circle",
+        "source": "src-morrisons",
+        "layout": {
+          "visibility": "visible"
+        },
+        "paint": {
+          "circle-color": "#ffd700",
+          "circle-radius": 4.5,
+          "circle-stroke-width": 1,
+          "circle-stroke-color": "#000"
+        }
+      },
+      "featureCount": 0,
+      "eligible": 0,
+      "target": null,
+      "sample": null,
+      "pass": false
+    },
+    {
+      "id": "aldi",
+      "errors": [],
+      "generation": "202609241334",
+      "initialLabel": "Aldi [WAIT]",
+      "label": "Aldi [FAIL]",
+      "checked": true,
+      "disabled": false,
+      "layer": {
+        "id": "l-aldi",
+        "type": "circle",
+        "source": "src-aldi",
+        "layout": {
+          "visibility": "visible"
+        },
+        "paint": {
+          "circle-color": "#003087",
+          "circle-radius": 4.5,
+          "circle-stroke-width": 1,
+          "circle-stroke-color": "#000"
+        }
+      },
+      "featureCount": 0,
+      "eligible": 0,
+      "target": null,
+      "sample": null,
+      "pass": false
+    },
+    {
+      "id": "lidl",
+      "errors": [],
+      "generation": "202609241334",
+      "initialLabel": "Lidl [WAIT]",
+      "label": "Lidl [FAIL]",
+      "checked": true,
+      "disabled": false,
+      "layer": {
+        "id": "l-lidl",
+        "type": "circle",
+        "source": "src-lidl",
+        "layout": {
+          "visibility": "visible"
+        },
+        "paint": {
+          "circle-color": "#0050aa",
+          "circle-radius": 4.5,
+          "circle-stroke-width": 1,
+          "circle-stroke-color": "#000"
+        }
+      },
+      "featureCount": 0,
+      "eligible": 0,
+      "target": null,
+      "sample": null,
+      "pass": false
+    },
+    {
+      "id": "waitrose",
+      "errors": [],
+      "generation": "202609241334",
+      "initialLabel": "Waitrose [WAIT]",
+      "label": "Waitrose [FAIL]",
+      "checked": true,
+      "disabled": false,
+      "layer": {
+        "id": "l-waitrose",
+        "type": "circle",
+        "source": "src-waitrose",
+        "layout": {
+          "visibility": "visible"
+        },
+        "paint": {
+          "circle-color": "#7ab800",
+          "circle-radius": 4.5,
+          "circle-stroke-width": 1,
+          "circle-stroke-color": "#000"
+        }
+      },
+      "featureCount": 0,
+      "eligible": 0,
+      "target": null,
+      "sample": null,
+      "pass": false
+    },
+    {
+      "id": "ms",
+      "errors": [],
+      "generation": "202609241334",
+      "initialLabel": "M&S Food [WAIT]",
+      "label": "M&S Food [FAIL]",
+      "checked": true,
+      "disabled": false,
+      "layer": {
+        "id": "l-ms",
+        "type": "circle",
+        "source": "src-ms",
+        "layout": {
+          "visibility": "visible"
+        },
+        "paint": {
+          "circle-color": "#009b77",
+          "circle-radius": 4.5,
+          "circle-stroke-width": 1,
+          "circle-stroke-color": "#000"
+        }
+      },
+      "featureCount": 0,
+      "eligible": 0,
+      "target": null,
+      "sample": null,
+      "pass": false
+    },
+    {
+      "id": "coop",
+      "errors": [],
+      "generation": "202609241334",
+      "initialLabel": "Co-op [WAIT]",
+      "label": "Co-op [FAIL]",
+      "checked": true,
+      "disabled": false,
+      "layer": {
+        "id": "l-coop",
+        "type": "circle",
+        "source": "src-coop",
+        "layout": {
+          "visibility": "visible"
+        },
+        "paint": {
+          "circle-color": "#00b1a9",
+          "circle-radius": 4.5,
+          "circle-stroke-width": 1,
+          "circle-stroke-color": "#000"
+        }
+      },
+      "featureCount": 0,
+      "eligible": 0,
+      "target": null,
+      "sample": null,
+      "pass": false
+    },
+    {
+      "id": "costco",
+      "errors": [],
+      "generation": "202609241334",
+      "initialLabel": "Costco [WAIT]",
+      "label": "Costco [FAIL]",
+      "checked": true,
+      "disabled": false,
+      "layer": {
+        "id": "l-costco",
+        "type": "circle",
+        "source": "src-costco",
+        "layout": {
+          "visibility": "visible"
+        },
+        "paint": {
+          "circle-color": "#005daa",
+          "circle-radius": 4.5,
+          "circle-stroke-width": 1,
+          "circle-stroke-color": "#000"
+        }
+      },
+      "featureCount": 0,
+      "eligible": 0,
+      "target": null,
+      "sample": null,
+      "pass": false
+    },
+    {
+      "id": "booths",
+      "errors": [],
+      "generation": "202609241334",
+      "initialLabel": "Booths [WAIT]",
+      "label": "Booths [FAIL]",
+      "checked": true,
+      "disabled": false,
+      "layer": {
+        "id": "l-booths",
+        "type": "circle",
+        "source": "src-booths",
+        "layout": {
+          "visibility": "visible"
+        },
+        "paint": {
+          "circle-color": "#6d2077",
+          "circle-radius": 4.5,
+          "circle-stroke-width": 1,
+          "circle-stroke-color": "#000"
+        }
+      },
+      "featureCount": 0,
+      "eligible": 0,
+      "target": null,
+      "sample": null,
+      "pass": false
+    },
+    {
+      "id": "elizabeth",
+      "errors": [],
+      "generation": "202609241334",
+      "initialLabel": "Elizabeth Line [WAIT]",
+      "label": "Elizabeth Line [FAIL]",
+      "checked": true,
+      "disabled": false,
+      "layer": {
+        "id": "l-elizabeth",
+        "type": "circle",
+        "source": "src-elizabeth",
+        "layout": {
+          "visibility": "visible"
+        },
+        "paint": {
+          "circle-color": "#60399E",
+          "circle-radius": 5,
+          "circle-stroke-width": 1,
+          "circle-stroke-color": "#000",
+          "circle-opacity": 0.9
+        }
+      },
+      "featureCount": 0,
+      "eligible": 0,
+      "target": null,
+      "sample": null,
+      "pass": false
+    },
+    {
+      "id": "lu",
+      "errors": [],
+      "generation": "202609241334",
+      "initialLabel": "London Underground [WAIT]",
+      "label": "London Underground [FAIL]",
+      "checked": true,
+      "disabled": false,
+      "layer": {
+        "id": "l-lu",
+        "type": "circle",
+        "source": "src-lu",
+        "layout": {
+          "visibility": "visible"
+        },
+        "paint": {
+          "circle-color": "#e32017",
+          "circle-radius": 5,
+          "circle-stroke-width": 1,
+          "circle-stroke-color": "#000",
+          "circle-opacity": 0.9
+        }
+      },
+      "featureCount": 0,
+      "eligible": 0,
+      "target": null,
+      "sample": null,
+      "pass": false
+    },
+    {
+      "id": "dlr",
+      "errors": [],
+      "generation": "202609241334",
+      "initialLabel": "DLR [WAIT]",
+      "error": "Error: page.waitForFunction: Target crashed ",
+      "pass": false
+    },
+    {
+      "id": "metro",
+      "errors": [],
+      "generation": "202609241334",
+      "error": "TimeoutError: locator.click: Timeout 15000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('button', { name: 'Grid', exact: true })\u001b[22m\n\u001b[2m    - locator resolved to <button type=\"button\" class=\"gm-title\" aria-haspopup=\"menu\" aria-expanded=\"false\" id=\"gridatlas-menu-bar-title-4\" aria-controls=\"gridatlas-menu-bar-panel-4\">Grid</button>\u001b[22m\n\u001b[2m  - attempting click action\u001b[22m\n\u001b[2m    - waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m    - element is visible, enabled and stable\u001b[22m\n\u001b[2m    - scrolling into view if needed\u001b[22m\n",
+      "pass": false
+    },
+    {
+      "id": "tram",
+      "errors": [],
+      "generation": "202609241334",
+      "initialLabel": "Trams & Light Rail [WAIT]",
+      "error": "Error: page.waitForFunction: Target crashed ",
+      "pass": false
+    },
+    {
+      "id": "mainline_rail",
+      "errors": [],
+      "generation": "202609241334",
+      "initialLabel": "UK Mainline Railways [WAIT]",
+      "label": "UK Mainline Railways [FAIL]",
+      "checked": true,
+      "disabled": false,
+      "layer": {
+        "id": "l-mainline_rail",
+        "type": "line",
+        "source": "src-mainline_rail",
+        "layout": {
+          "visibility": "visible"
+        },
+        "paint": {
+          "line-color": "#ff8800",
+          "line-width": 1.5
+        }
+      },
+      "featureCount": 0,
+      "eligible": 0,
+      "target": null,
+      "sample": null,
+      "pass": false
+    },
+    {
+      "id": "hs2",
+      "errors": [],
+      "generation": "202609241334",
+      "initialLabel": "HS2 [WAIT]",
+      "label": "HS2 [FAIL]",
+      "checked": true,
+      "disabled": false,
+      "layer": {
+        "id": "l-hs2",
+        "type": "circle",
+        "source": "src-hs2",
+        "layout": {
+          "visibility": "visible"
+        },
+        "paint": {
+          "circle-color": "#2c6fad",
+          "circle-radius": 4,
+          "circle-stroke-width": 1,
+          "circle-stroke-color": "#000",
+          "circle-opacity": 0.9
+        }
+      },
+      "featureCount": 0,
+      "eligible": 0,
+      "target": null,
+      "sample": null,
+      "pass": false
+    },
+    {
+      "id": "eurostar_route",
+      "errors": [],
+      "generation": "202609241334",
+      "initialLabel": "Eurostar (HS1) UK & Europe [WAIT]",
+      "label": "Eurostar (HS1) UK & Europe [FAIL]",
+      "checked": true,
+      "disabled": false,
+      "layer": {
+        "id": "l-eurostar_route",
+        "type": "line",
+        "source": "src-eurostar_route",
+        "filter": [
+          "==",
+          [
+            "get",
+            "type"
+          ],
+          "route"
+        ],
+        "layout": {
+          "visibility": "visible"
+        },
+        "paint": {
+          "line-color": "#001489",
+          "line-width": 2.5
+        }
+      },
+      "featureCount": 0,
+      "eligible": 0,
+      "target": null,
+      "sample": null,
+      "pass": false
+    },
+    {
+      "id": "eurostar_station",
+      "errors": [],
+      "generation": "202609241334",
+      "initialLabel": "Eurostar Stations UK & Europe [WAIT]",
+      "label": "Eurostar Stations UK & Europe [FAIL]",
+      "checked": true,
+      "disabled": false,
+      "layer": {
+        "id": "l-eurostar_station",
+        "type": "circle",
+        "source": "src-eurostar_station",
+        "filter": [
+          "==",
+          [
+            "get",
+            "type"
+          ],
+          "eurostar_station"
+        ],
+        "layout": {
+          "visibility": "visible"
+        },
+        "paint": {
+          "circle-color": "#ffd700",
+          "circle-radius": 5.5,
+          "circle-stroke-width": 1,
+          "circle-stroke-color": "#000"
+        }
+      },
+      "featureCount": 0,
+      "eligible": 0,
+      "target": null,
+      "sample": null,
+      "pass": false
+    },
+    {
+      "id": "stadiums",
+      "errors": [],
+      "generation": "202609241334",
+      "initialLabel": "Major Stadiums [WAIT]",
+      "label": "Major Stadiums [FAIL]",
+      "checked": true,
+      "disabled": false,
+      "layer": {
+        "id": "l-stadiums",
+        "type": "circle",
+        "source": "src-stadiums",
+        "layout": {
+          "visibility": "visible"
+        },
+        "paint": {
+          "circle-color": "#e5ff00",
+          "circle-radius": 5.5,
+          "circle-stroke-width": 1,
+          "circle-stroke-color": "#000"
+        }
+      },
+      "featureCount": 0,
+      "eligible": 0,
+      "target": null,
+      "sample": null,
+      "pass": false
+    },
+    {
+      "id": "subsea_data_cables",
+      "errors": [],
+      "generation": "202609241334",
+      "initialLabel": "Subsea Data Cables (Fibre) (not all connections available yet) [WAIT]",
+      "label": "Subsea Data Cables (Fibre) (not all connections available yet) [FAIL]",
+      "checked": true,
+      "disabled": false,
+      "layer": {
+        "id": "l-subsea_data_cables",
+        "type": "line",
+        "source": "src-subsea_data_cables",
+        "layout": {
+          "visibility": "visible"
+        },
+        "paint": {
+          "line-color": "#00e5ff",
+          "line-width": 1.5
+        }
+      },
+      "featureCount": 0,
+      "eligible": 0,
+      "target": null,
+      "sample": null,
+      "pass": false
+    },
+    {
+      "id": "global_ports_major",
+      "errors": [],
+      "generation": "202609241334",
+      "initialLabel": "Major Ports (Deep Water/Ferry) [WAIT]",
+      "error": "Error: page.waitForFunction: Target crashed ",
+      "pass": false
+    },
+    {
+      "id": "global_ports_minor",
+      "errors": [],
+      "generation": "202609241334",
+      "initialLabel": "Inland / Minor Harbours [WAIT]",
+      "error": "Error: page.waitForFunction: Target crashed ",
+      "pass": false
+    },
+    {
+      "id": "global_hydrocarbons",
+      "errors": [],
+      "generation": "202609241334",
+      "initialLabel": "Global Hydrocarbons (Oil, Gas, LNG) [WAIT]",
+      "label": "Global Hydrocarbons (Oil, Gas, LNG) [FAIL]",
+      "checked": true,
+      "disabled": false,
+      "layer": {
+        "id": "l-global_hydrocarbons",
+        "type": "circle",
+        "source": "src-global_hydrocarbons",
+        "layout": {
+          "visibility": "visible"
+        },
+        "paint": {
+          "circle-color": "#ff3300",
+          "circle-radius": [
+            "interpolate",
+            [
+              "linear"
+            ],
+            [
+              "get",
+              "area_ha"
+            ],
+            0,
+            4,
+            100,
+            8,
+            1000,
+            15
+          ],
+          "circle-stroke-width": 1,
+          "circle-stroke-color": "#000"
+        }
+      },
+      "featureCount": 0,
+      "eligible": 0,
+      "target": null,
+      "sample": null,
+      "pass": false
+    },
+    {
+      "id": "motorways",
+      "errors": [],
+      "generation": "202609241334",
+      "initialLabel": "Motorways [WAIT]",
+      "error": "Error: page.waitForFunction: Target crashed ",
+      "pass": false
+    },
+    {
+      "id": "trunk_roads",
+      "errors": [],
+      "generation": "202609241334",
+      "initialLabel": "Major A-Roads (Trunk) [WAIT]",
+      "label": "Major A-Roads (Trunk) [FAIL]",
+      "checked": true,
+      "disabled": false,
+      "layer": {
+        "id": "l-trunk_roads",
+        "type": "line",
+        "source": "src-trunk_roads",
+        "layout": {
+          "visibility": "visible"
+        },
+        "paint": {
+          "line-color": "#00cc00",
+          "line-width": 1.8
+        }
+      },
+      "featureCount": 0,
+      "eligible": 0,
+      "target": null,
+      "sample": null,
+      "pass": false
+    },
+    {
+      "id": "primary_roads",
+      "errors": [],
+      "generation": "202609241334",
+      "initialLabel": "A-Roads (Primary) [WAIT]",
+      "label": "A-Roads (Primary) [FAIL]",
+      "checked": true,
+      "disabled": false,
+      "layer": {
+        "id": "l-primary_roads",
+        "type": "line",
+        "source": "src-primary_roads",
+        "layout": {
+          "visibility": "visible"
+        },
+        "paint": {
+          "line-color": "#ff4400",
+          "line-width": 1.2
+        }
+      },
+      "featureCount": 0,
+      "eligible": 0,
+      "target": null,
+      "sample": null,
+      "pass": false
+    },
+    {
+      "id": "motorway_services",
+      "errors": [],
+      "generation": "202609241334",
+      "initialLabel": "Motorway Services [WAIT]",
+      "label": "Motorway Services [FAIL]",
+      "checked": true,
+      "disabled": false,
+      "layer": {
+        "id": "l-motorway_services",
+        "type": "circle",
+        "source": "src-motorway_services",
+        "layout": {
+          "visibility": "visible"
+        },
+        "paint": {
+          "circle-color": "#ff00ff",
+          "circle-radius": 5.5,
+          "circle-stroke-width": 1,
+          "circle-stroke-color": "#000"
+        }
+      },
+      "featureCount": 0,
+      "eligible": 0,
+      "target": null,
+      "sample": null,
+      "pass": false
+    },
+    {
+      "id": "ev",
+      "errors": [],
+      "generation": "202609241334",
+      "initialLabel": "EV Rapid (100kW+) [WAIT]",
+      "error": "Error: page.waitForFunction: Target crashed ",
+      "pass": false
+    },
+    {
+      "id": "naei_co2",
+      "errors": [],
+      "generation": "202609241334",
+      "initialLabel": "Major Industrial Sites [WAIT]",
+      "label": "Major Industrial Sites [FAIL]",
+      "checked": true,
+      "disabled": false,
+      "layer": {
+        "id": "l-naei_co2",
+        "type": "circle",
+        "source": "src-naei_co2",
+        "layout": {
+          "visibility": "visible"
+        },
+        "paint": {
+          "circle-color": [
+            "interpolate",
+            [
+              "linear"
+            ],
+            [
+              "coalesce",
+              [
+                "get",
+                "emission_tco2e"
+              ],
+              0
+            ],
+            0,
+            "#ffcc00",
+            50000,
+            "#ffaa00",
+            200000,
+            "#ff6600",
+            1000000,
+            "#ff0000"
+          ],
+          "circle-radius": [
+            "interpolate",
+            [
+              "linear"
+            ],
+            [
+              "coalesce",
+              [
+                "get",
+                "emission_tco2e"
+              ],
+              0
+            ],
+            0,
+            6,
+            50000,
+            10,
+            200000,
+            14,
+            1000000,
+            20,
+            5000000,
+            28
+          ],
+          "circle-stroke-width": 1.5,
+          "circle-stroke-color": "#000",
+          "circle-opacity": 0.85
+        }
+      },
+      "featureCount": 0,
+      "eligible": 0,
+      "target": null,
+      "sample": null,
+      "pass": false
+    },
+    {
+      "id": "solar",
+      "errors": [],
+      "generation": "202609241334",
+      "initialLabel": "Solar PV [WAIT]",
+      "label": "Solar PV [FAIL]",
+      "checked": true,
+      "disabled": false,
+      "layer": {
+        "id": "l-solar",
+        "type": "circle",
+        "source": "src-repd",
+        "filter": [
+          "==",
+          [
+            "get",
+            "tech"
+          ],
+          "solar"
+        ],
+        "layout": {
+          "visibility": "visible"
+        },
+        "paint": {
+          "circle-color": [
+            "interpolate",
+            [
+              "linear"
+            ],
+            [
+              "coalesce",
+              [
+                "get",
+                "capacity"
+              ],
+              0
+            ],
+            0,
+            "#ffff00",
+            20,
+            "#ffcc00",
+            50,
+            "#ffaa00",
+            200,
+            "#ff6600",
+            500,
+            "#ff2200"
+          ],
+          "circle-radius": [
+            "interpolate",
+            [
+              "linear"
+            ],
+            [
+              "coalesce",
+              [
+                "get",
+                "capacity"
+              ],
+              0
+            ],
+            0,
+            8,
+            10,
+            10,
+            50,
+            13,
+            200,
+            17,
+            500,
+            22,
+            1000,
+            28
+          ],
+          "circle-stroke-width": 1.5,
+          "circle-stroke-color": "#000",
+          "circle-opacity": 0.85
+        }
+      },
+      "featureCount": 0,
+      "eligible": 0,
+      "target": null,
+      "sample": null,
+      "pass": false
+    },
+    {
+      "id": "solar_operational",
+      "errors": [],
+      "generation": "202609241334",
+      "error": "TimeoutError: locator.click: Timeout 15000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('button', { name: 'Grid', exact: true })\u001b[22m\n\u001b[2m    - locator resolved to <button type=\"button\" class=\"gm-title\" aria-haspopup=\"menu\" aria-expanded=\"false\" id=\"gridatlas-menu-bar-title-4\" aria-controls=\"gridatlas-menu-bar-panel-4\">Grid</button>\u001b[22m\n\u001b[2m  - attempting click action\u001b[22m\n\u001b[2m    - waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m    - element is visible, enabled and stable\u001b[22m\n\u001b[2m    - scrolling into view if needed\u001b[22m\n",
+      "pass": false
+    },
+    {
+      "id": "solar_roof",
+      "errors": [],
+      "generation": "202609241334",
+      "initialLabel": "Solar Roof [WAIT]",
+      "label": "Solar Roof [FAIL]",
+      "checked": true,
+      "disabled": false,
+      "layer": {
+        "id": "l-solar_roof",
+        "type": "circle",
+        "source": "src-repd",
+        "filter": [
+          "==",
+          [
+            "get",
+            "tech"
+          ],
+          "solar_roof"
+        ],
+        "layout": {
+          "visibility": "visible"
+        },
+        "paint": {
+          "circle-color": [
+            "interpolate",
+            [
+              "linear"
+            ],
+            [
+              "coalesce",
+              [
+                "get",
+                "capacity"
+              ],
+              0
+            ],
+            0,
+            "#ffcc00",
+            0.99,
+            "#ffcc00",
+            1,
+            "#ff8c00",
+            5,
+            "#ff6600",
+            10,
+            "#ff4400"
+          ],
+          "circle-radius": [
+            "interpolate",
+            [
+              "linear"
+            ],
+            [
+              "coalesce",
+              [
+                "get",
+                "capacity"
+              ],
+              0
+            ],
+            0,
+            7,
+            0.5,
+            7,
+            0.99,
+            8,
+            1,
+            16,
+            2,
+            18,
+            5,
+            22,
+            10,
+            28
+          ],
+          "circle-stroke-width": [
+            "interpolate",
+            [
+              "linear"
+            ],
+            [
+              "coalesce",
+              [
+                "get",
+                "capacity"
+              ],
+              0
+            ],
+            0,
+            1,
+            0.99,
+            1,
+            1,
+            2
+          ],
+          "circle-stroke-color": "#000",
+          "circle-opacity": 0.9
+        }
+      },
+      "featureCount": 0,
+      "eligible": 0,
+      "target": null,
+      "sample": null,
+      "pass": false
+    },
+    {
+      "id": "wind",
+      "errors": [],
+      "generation": "202609241334",
+      "initialLabel": "Wind [WAIT]",
+      "label": "Wind [FAIL]",
+      "checked": true,
+      "disabled": false,
+      "layer": {
+        "id": "l-wind",
+        "type": "circle",
+        "source": "src-repd",
+        "filter": [
+          "==",
+          [
+            "get",
+            "tech"
+          ],
+          "wind"
+        ],
+        "layout": {
+          "visibility": "visible"
+        },
+        "paint": {
+          "circle-color": "#00ffff",
+          "circle-radius": [
+            "interpolate",
+            [
+              "linear"
+            ],
+            [
+              "coalesce",
+              [
+                "get",
+                "capacity"
+              ],
+              0
+            ],
+            0,
+            8,
+            10,
+            10,
+            50,
+            13,
+            200,
+            17,
+            500,
+            22,
+            1000,
+            28
+          ],
+          "circle-stroke-width": 1.5,
+          "circle-stroke-color": "#000",
+          "circle-opacity": 0.85
+        }
+      },
+      "featureCount": 0,
+      "eligible": 0,
+      "target": null,
+      "sample": null,
+      "pass": false
+    },
+    {
+      "id": "wind_onshore_operational",
+      "errors": [],
+      "generation": "202609241334",
+      "initialLabel": "Onshore Wind (Operational Only) [WAIT]",
+      "label": "Onshore Wind (Operational Only) [FAIL]",
+      "checked": true,
+      "disabled": false,
+      "layer": {
+        "id": "l-wind_onshore_operational",
+        "type": "circle",
+        "source": "src-repd",
+        "filter": [
+          "all",
+          [
+            "==",
+            [
+              "get",
+              "raw_tech"
+            ],
+            "Wind Onshore"
+          ],
+          [
+            "==",
+            [
+              "get",
+              "status"
+            ],
+            "operational"
+          ]
+        ],
+        "layout": {
+          "visibility": "visible"
+        },
+        "paint": {
+          "circle-color": [
+            "interpolate",
+            [
+              "linear"
+            ],
+            [
+              "coalesce",
+              [
+                "get",
+                "capacity"
+              ],
+              0
+            ],
+            0,
+            "#ccfff5",
+            10,
+            "#99ffee",
+            50,
+            "#00ffcc",
+            100,
+            "#00ddaa",
+            200,
+            "#00aa88",
+            350,
+            "#007766",
+            500,
+            "#004433"
+          ],
+          "circle-radius": [
+            "interpolate",
+            [
+              "linear"
+            ],
+            [
+              "coalesce",
+              [
+                "get",
+                "capacity"
+              ],
+              0
+            ],
+            0,
+            8,
+            10,
+            12,
+            50,
+            16,
+            100,
+            20,
+            200,
+            26,
+            350,
+            32,
+            500,
+            38
+          ],
+          "circle-stroke-width": 2,
+          "circle-stroke-color": "#000",
+          "circle-opacity": 0.9
+        }
+      },
+      "featureCount": 0,
+      "eligible": 0,
+      "target": null,
+      "sample": null,
+      "pass": false
+    },
+    {
+      "id": "wind_offshore_operational",
+      "errors": [],
+      "generation": "202609241334",
+      "initialLabel": "Offshore Wind (Operational Only) [WAIT]",
+      "label": "Offshore Wind (Operational Only) [FAIL]",
+      "checked": true,
+      "disabled": false,
+      "layer": {
+        "id": "l-wind_offshore_operational",
+        "type": "circle",
+        "source": "src-repd",
+        "filter": [
+          "all",
+          [
+            "==",
+            [
+              "get",
+              "raw_tech"
+            ],
+            "Wind Offshore"
+          ],
+          [
+            "==",
+            [
+              "get",
+              "status"
+            ],
+            "operational"
+          ]
+        ],
+        "layout": {
+          "visibility": "visible"
+        },
+        "paint": {
+          "circle-color": [
+            "interpolate",
+            [
+              "linear"
+            ],
+            [
+              "coalesce",
+              [
+                "get",
+                "capacity"
+              ],
+              0
+            ],
+            0,
+            "#cce5ff",
+            10,
+            "#99ccff",
+            50,
+            "#3399ff",
+            100,
+            "#0066ee",
+            200,
+            "#0044bb",
+            350,
+            "#003399",
+            500,
+            "#001166"
+          ],
+          "circle-radius": [
+            "interpolate",
+            [
+              "linear"
+            ],
+            [
+              "coalesce",
+              [
+                "get",
+                "capacity"
+              ],
+              0
+            ],
+            0,
+            8,
+            10,
+            12,
+            50,
+            16,
+            100,
+            20,
+            200,
+            26,
+            350,
+            32,
+            500,
+            38
+          ],
+          "circle-stroke-width": 2,
+          "circle-stroke-color": "#000",
+          "circle-opacity": 0.9
+        }
+      },
+      "featureCount": 0,
+      "eligible": 0,
+      "target": null,
+      "sample": null,
+      "pass": false
+    },
+    {
+      "id": "bess",
+      "errors": [],
+      "generation": "202609241334",
+      "initialLabel": "Battery Storage [WAIT]",
+      "label": "Battery Storage [FAIL]",
+      "checked": true,
+      "disabled": false,
+      "layer": {
+        "id": "l-bess",
+        "type": "circle",
+        "source": "src-repd",
+        "filter": [
+          "==",
+          [
+            "get",
+            "tech"
+          ],
+          "bess"
+        ],
+        "layout": {
+          "visibility": "visible"
+        },
+        "paint": {
+          "circle-color": "#ffae00",
+          "circle-radius": [
+            "interpolate",
+            [
+              "linear"
+            ],
+            [
+              "coalesce",
+              [
+                "get",
+                "capacity"
+              ],
+              0
+            ],
+            0,
+            8,
+            10,
+            10,
+            50,
+            13,
+            200,
+            17,
+            500,
+            22,
+            1000,
+            28
+          ],
+          "circle-stroke-width": 1.5,
+          "circle-stroke-color": "#000",
+          "circle-opacity": 0.85
+        }
+      },
+      "featureCount": 0,
+      "eligible": 0,
+      "target": null,
+      "sample": null,
+      "pass": false
+    },
+    {
+      "id": "bess_operational",
+      "errors": [],
+      "generation": "202609241334",
+      "initialLabel": "Battery Storage (Operational Only) [WAIT]",
+      "label": "Battery Storage (Operational Only) [FAIL]",
+      "checked": true,
+      "disabled": false,
+      "layer": {
+        "id": "l-bess_operational",
+        "type": "circle",
+        "source": "src-repd",
+        "filter": [
+          "all",
+          [
+            "==",
+            [
+              "get",
+              "tech"
+            ],
+            "bess"
+          ],
+          [
+            "==",
+            [
+              "get",
+              "status"
+            ],
+            "operational"
+          ]
+        ],
+        "layout": {
+          "visibility": "visible"
+        },
+        "paint": {
+          "circle-color": [
+            "interpolate",
+            [
+              "linear"
+            ],
+            [
+              "coalesce",
+              [
+                "get",
+                "capacity"
+              ],
+              0
+            ],
+            0,
+            "#ffccee",
+            10,
+            "#ffb3d9",
+            50,
+            "#ff69b4",
+            100,
+            "#ff1493",
+            200,
+            "#dd0077",
+            350,
+            "#990066",
+            500,
+            "#660044"
+          ],
+          "circle-radius": [
+            "interpolate",
+            [
+              "linear"
+            ],
+            [
+              "coalesce",
+              [
+                "get",
+                "capacity"
+              ],
+              0
+            ],
+            0,
+            8,
+            10,
+            12,
+            50,
+            16,
+            100,
+            20,
+            200,
+            26,
+            350,
+            32,
+            500,
+            38
+          ],
+          "circle-stroke-width": 2,
+          "circle-stroke-color": "#000",
+          "circle-opacity": 0.9
+        }
+      },
+      "featureCount": 0,
+      "eligible": 0,
+      "target": null,
+      "sample": null,
+      "pass": false
+    },
+    {
+      "id": "biomass",
+      "errors": [],
+      "generation": "202609241334",
+      "initialLabel": "Biomass & EfW [WAIT]",
+      "label": "Biomass & EfW [FAIL]",
+      "checked": true,
+      "disabled": false,
+      "layer": {
+        "id": "l-biomass",
+        "type": "circle",
+        "source": "src-repd",
+        "filter": [
+          "==",
+          [
+            "get",
+            "tech"
+          ],
+          "biomass"
+        ],
+        "layout": {
+          "visibility": "visible"
+        },
+        "paint": {
+          "circle-color": "#39ff14",
+          "circle-radius": [
+            "interpolate",
+            [
+              "linear"
+            ],
+            [
+              "coalesce",
+              [
+                "get",
+                "capacity"
+              ],
+              0
+            ],
+            0,
+            8,
+            10,
+            10,
+            50,
+            13,
+            200,
+            17,
+            500,
+            22,
+            1000,
+            28
+          ],
+          "circle-stroke-width": 1.5,
+          "circle-stroke-color": "#000",
+          "circle-opacity": 0.85
+        }
+      },
+      "featureCount": 0,
+      "eligible": 0,
+      "target": null,
+      "sample": null,
+      "pass": false
+    },
+    {
+      "id": "tidal",
+      "errors": [],
+      "generation": "202609241334",
+      "initialLabel": "Tidal & Wave [WAIT]",
+      "label": "Tidal & Wave [FAIL]",
+      "checked": true,
+      "disabled": false,
+      "layer": {
+        "id": "l-tidal",
+        "type": "circle",
+        "source": "src-repd",
+        "filter": [
+          "==",
+          [
+            "get",
+            "tech"
+          ],
+          "tidal"
+        ],
+        "layout": {
+          "visibility": "visible"
+        },
+        "paint": {
+          "circle-color": "#00bfff",
+          "circle-radius": [
+            "interpolate",
+            [
+              "linear"
+            ],
+            [
+              "coalesce",
+              [
+                "get",
+                "capacity"
+              ],
+              0
+            ],
+            0,
+            8,
+            10,
+            10,
+            50,
+            13,
+            200,
+            17,
+            500,
+            22,
+            1000,
+            28
+          ],
+          "circle-stroke-width": 1.5,
+          "circle-stroke-color": "#000",
+          "circle-opacity": 0.85
+        }
+      },
+      "featureCount": 0,
+      "eligible": 0,
+      "target": null,
+      "sample": null,
+      "pass": false
+    },
+    {
+      "id": "hydrogen",
+      "errors": [],
+      "generation": "202609241334",
+      "initialLabel": "Hydrogen [WAIT]",
+      "label": "Hydrogen [FAIL]",
+      "checked": true,
+      "disabled": false,
+      "layer": {
+        "id": "l-hydrogen",
+        "type": "circle",
+        "source": "src-repd",
+        "filter": [
+          "==",
+          [
+            "get",
+            "tech"
+          ],
+          "hydrogen"
+        ],
+        "layout": {
+          "visibility": "visible"
+        },
+        "paint": {
+          "circle-color": "#ffffff",
+          "circle-radius": [
+            "interpolate",
+            [
+              "linear"
+            ],
+            [
+              "coalesce",
+              [
+                "get",
+                "capacity"
+              ],
+              0
+            ],
+            0,
+            8,
+            10,
+            10,
+            50,
+            13,
+            200,
+            17,
+            500,
+            22,
+            1000,
+            28
+          ],
+          "circle-stroke-width": 1.5,
+          "circle-stroke-color": "#000",
+          "circle-opacity": 0.85
+        }
+      },
+      "featureCount": 0,
+      "eligible": 0,
+      "target": null,
+      "sample": null,
+      "pass": false
+    },
+    {
+      "id": "hydro",
+      "errors": [],
+      "generation": "202609241334",
+      "initialLabel": "Hydro & Pumped Storage [WAIT]",
+      "label": "Hydro & Pumped Storage [FAIL]",
+      "checked": true,
+      "disabled": false,
+      "layer": {
+        "id": "l-hydro",
+        "type": "circle",
+        "source": "src-repd",
+        "filter": [
+          "==",
+          [
+            "get",
+            "tech"
+          ],
+          "hydro"
+        ],
+        "layout": {
+          "visibility": "visible"
+        },
+        "paint": {
+          "circle-color": "#00aaff",
+          "circle-radius": [
+            "interpolate",
+            [
+              "linear"
+            ],
+            [
+              "coalesce",
+              [
+                "get",
+                "capacity"
+              ],
+              0
+            ],
+            0,
+            8,
+            10,
+            10,
+            50,
+            13,
+            200,
+            17,
+            500,
+            22,
+            1000,
+            28
+          ],
+          "circle-stroke-width": 1.5,
+          "circle-stroke-color": "#000",
+          "circle-opacity": 0.85
+        }
+      },
+      "featureCount": 0,
+      "eligible": 0,
+      "target": null,
+      "sample": null,
+      "pass": false
+    },
+    {
+      "id": "flywheel",
+      "errors": [],
+      "generation": "202609241334",
+      "initialLabel": "Flywheel [WAIT]",
+      "label": "Flywheel [FAIL]",
+      "checked": true,
+      "disabled": false,
+      "layer": {
+        "id": "l-flywheel",
+        "type": "circle",
+        "source": "src-repd",
+        "filter": [
+          "==",
+          [
+            "get",
+            "tech"
+          ],
+          "flywheel"
+        ],
+        "layout": {
+          "visibility": "visible"
+        },
+        "paint": {
+          "circle-color": "#ff69b4",
+          "circle-radius": [
+            "interpolate",
+            [
+              "linear"
+            ],
+            [
+              "coalesce",
+              [
+                "get",
+                "capacity"
+              ],
+              0
+            ],
+            0,
+            8,
+            10,
+            10,
+            50,
+            13,
+            200,
+            17,
+            500,
+            22,
+            1000,
+            28
+          ],
+          "circle-stroke-width": 1.5,
+          "circle-stroke-color": "#000",
+          "circle-opacity": 0.85
+        }
+      },
+      "featureCount": 0,
+      "eligible": 0,
+      "target": null,
+      "sample": null,
+      "pass": false
+    },
+    {
+      "id": "act",
+      "errors": [],
+      "generation": "202609241334",
+      "initialLabel": "Advanced Conversion [WAIT]",
+      "label": "Advanced Conversion [FAIL]",
+      "checked": true,
+      "disabled": false,
+      "layer": {
+        "id": "l-act",
+        "type": "circle",
+        "source": "src-repd",
+        "filter": [
+          "==",
+          [
+            "get",
+            "tech"
+          ],
+          "act"
+        ],
+        "layout": {
+          "visibility": "visible"
+        },
+        "paint": {
+          "circle-color": "#ff6600",
+          "circle-radius": [
+            "interpolate",
+            [
+              "linear"
+            ],
+            [
+              "coalesce",
+              [
+                "get",
+                "capacity"
+              ],
+              0
+            ],
+            0,
+            8,
+            10,
+            10,
+            50,
+            13,
+            200,
+            17,
+            500,
+            22,
+            1000,
+            28
+          ],
+          "circle-stroke-width": 1.5,
+          "circle-stroke-color": "#000",
+          "circle-opacity": 0.85
+        }
+      },
+      "featureCount": 0,
+      "eligible": 0,
+      "target": null,
+      "sample": null,
+      "pass": false
+    },
+    {
+      "id": "geothermal",
+      "error": "Error: page.waitForFunction: Target page, context or browser has been closed",
+      "pass": false
+    },
+    {
+      "id": "caes",
+      "error": "Error: browser.newContext: Target page, context or browser has been closed",
+      "pass": false
+    }
+  ]
+}

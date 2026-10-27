@@ -1,0 +1,12 @@
+[runner] candidate-browser-shim: generation 202610261949, 4 of 81 catalogue entries, base http://127.0.0.1:8144/wt/atlas/v/202610261949/
+[runner] route probe: mapArrived=true failedHosts=["ventusltd.github.io","cdn.jsdelivr.net"] pageErrors=[]
+[runner] start menu-bar-mobile-hit (budget 120s)
+[runner] PASS               menu-bar-mobile-hit                          0.8s  "pageErrors": [],
+[runner] start menu-bar-attrib-clearance (budget 120s)
+[runner] FAIL               menu-bar-attrib-clearance                    1.8s  FAILURES
+[runner] start menu-bar-instrument-panel-202609041250 (budget 120s)
+[runner] FAIL               menu-bar-instrument-panel-202609041250       4.0s  FAILURES
+[runner] start all-controls-desktop (budget 420s)
+[runner] FAIL               all-controls-desktop                         199.8s  name: 'Error'
+
+[runner] done: {"PASS":1,"FAIL":3}  ->  /tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/regression-challenge-C/candidate-browser-shim/results-fixtures.md

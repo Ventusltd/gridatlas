@@ -1,0 +1,86 @@
+{
+ "harness": "lead-shim + python http.server :8172",
+ "chromium": "153.0.8010.12",
+ "clock": "2026-10-26T18:40:00Z",
+ "started": "2026-10-27T00:08:21.523Z",
+ "cases": {
+  "S07-good-custom-Sep1-3-unsearched": {
+   "fixture": "/tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/lightning/fixtures/lightning-archive/data",
+   "viewport": {
+    "width": 1440,
+    "height": 900
+   },
+   "phone": false,
+   "title": "Weather · EUMETSAT Lightning Imager",
+   "label": {
+    "main": "Lightning flashes (optical) [UNKNOWN | custom]",
+    "fs": "Lightning flashes (optical) [UNKNOWN | custom]",
+    "menu": null
+   },
+   "status": "UNKNOWN",
+   "caption": [
+    "Window  UTC dates 2026-09-01 to 2026-09-03 inclusive = 2026-09-01 00:00 UTC → 2026-09-04 00:00 UTC",
+    "Actual  no archived flashes within this window",
+    "Flashes 0 archived in window",
+    "Refresh archive 2026-10-26 18:37 UTC (0h 4min ago; expected every 1 h)",
+    "Searched EUMETSAT 0% of window — no collection run covers these dates",
+    "Unknown: 2026-09-01 to 2026-09-03 precede archive start 2026-10-20 22:41 UTC (not zero) · Unknown: 3 of 3 UTC dates have no collection run",
+    "Times UTC · Optical flashes seen by MTG Lightning Imager (EUMETSAT L2-LFL), not confirmed ground strikes · Missing days are unknown, not zero · UK box −11.0,49.5 → 3.0,61.5"
+   ],
+   "fsCaptionEqual": true,
+   "buttons": [
+    "12H",
+    "24H",
+    "48H",
+    "7D",
+    "30D",
+    "3M",
+    "6M",
+    "12M",
+    "CUSTOM",
+    "APPLY",
+    "◀ PREV",
+    "LATEST",
+    "NEXT ▶"
+   ],
+   "last": {
+    "state": "UNKNOWN",
+    "stale": false,
+    "mode": "detail",
+    "period": "custom",
+    "drawn": 0,
+    "cluster": false,
+    "cap": 40000,
+    "cap_source": "index",
+    "index_count": 0,
+    "failures": 0,
+    "reasons": [
+     "0% searched"
+    ]
+   },
+   "errors": [],
+   "drawn": 0,
+   "firstTime": null,
+   "lastTime": null,
+   "trail": [
+    {
+     "step": "on",
+     "label": "Lightning flashes (optical) [UNKNOWN | 24h]",
+     "status": "PARTIAL · 0 FLASHES DRAWN · SEARCHED 43%"
+    },
+    {
+     "step": [
+      "custom",
+      "2026-09-01",
+      "2026-09-03"
+     ],
+     "label": "Lightning flashes (optical) [UNKNOWN | custom]",
+     "status": "UNKNOWN"
+    }
+   ],
+   "pageErrors": [],
+   "now": "2026-10-26T18:41:20.688Z"
+  }
+ },
+ "finished": "2026-10-27T00:09:48.480Z"
+}

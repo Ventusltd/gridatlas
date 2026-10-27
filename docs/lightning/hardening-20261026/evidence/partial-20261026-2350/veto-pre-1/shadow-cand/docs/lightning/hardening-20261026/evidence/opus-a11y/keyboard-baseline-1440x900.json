@@ -1,0 +1,139 @@
+{
+ "harness": "lead-shim chromium headless",
+ "route": "baseline",
+ "viewport": "1440x900",
+ "errors": [],
+ "log": [
+  {
+   "step": "tab to Grid title",
+   "active": "button|gridatlas-menu-bar-title-4||Grid|menubar"
+  },
+  {
+   "step": "ArrowDown on Grid -> first focused",
+   "active": "input|||400kV [OK]|menubar",
+   "attrs": "type=checkbox data-gridatlas-layer-proxy=engine:400 aria-label=400kV [OK]",
+   "state": {
+    "open": [
+     "Grid"
+    ],
+    "lightningOn": null,
+    "period": null,
+    "last": null
+   },
+   "ring": {
+    "input": {
+     "outline": "solid 2px rgb(107, 235, 255)",
+     "boxShadow": "none",
+     "bg": "rgba(0, 0, 0, 0)",
+     "border": "rgb(0, 0, 0)",
+     "opacity": "0",
+     "w": 144.9296875
+    },
+    "label": {
+     "outline": "none 3px rgb(207, 238, 246)",
+     "boxShadow": "none",
+     "bg": "rgba(0, 0, 0, 0)",
+     "border": "rgb(207, 238, 246)",
+     "opacity": "1",
+     "w": 111.484375
+    },
+    "box": {
+     "outline": "solid 2px rgb(107, 235, 255)",
+     "boxShadow": "none",
+     "bg": "rgba(255, 255, 255, 0.04)",
+     "border": "rgb(74, 139, 150)",
+     "opacity": "1",
+     "w": 22
+    }
+   }
+  },
+  {
+   "step": "Tab through open Grid panel",
+   "count": 66,
+   "last5": [
+    {
+     "key": "input|||All pipeline [SELECT A PROJECT|menubar",
+     "lightning": false,
+     "open": "Grid",
+     "inViewport": true,
+     "rect": [
+      1242,
+      373,
+      145,
+      95
+     ]
+    },
+    {
+     "key": "input|||Dark|menubar",
+     "lightning": false,
+     "open": "Grid",
+     "inViewport": true,
+     "rect": [
+      1242,
+      466,
+      145,
+      57
+     ]
+    },
+    {
+     "key": "div|fs-curtain-tab||Open the fullscreen layer curt|menubar",
+     "lightning": false,
+     "open": "Grid",
+     "inViewport": true,
+     "rect": [
+      1002,
+      475,
+      374,
+      44
+     ]
+    },
+    {
+     "key": "button|gridatlas-menu-bar-title-5||About|menubar",
+     "lightning": false,
+     "open": "Grid",
+     "inViewport": true,
+     "rect": [
+      1377,
+      5,
+      58,
+      36
+     ]
+    },
+    {
+     "key": "canvas|||Map|other",
+     "lightning": false,
+     "open": "Grid",
+     "inViewport": true,
+     "rect": [
+      5,
+      5,
+      1430,
+      518
+     ]
+    }
+   ],
+   "lightningRows": []
+  },
+  {
+   "step": "ArrowDown again",
+   "active": "button|gridatlas-menu-bar-title-4||Grid|menubar"
+  },
+  {
+   "step": "Escape from first item",
+   "active": "button|gridatlas-menu-bar-title-4||Grid|menubar",
+   "state": {
+    "open": [],
+    "lightningOn": null,
+    "period": null,
+    "last": null
+   }
+  },
+  {
+   "step": "original 400 checkbox",
+   "found": true,
+   "before": false,
+   "afterEnter": false,
+   "afterSpace": true
+  }
+ ]
+}

@@ -1,0 +1,41 @@
+== production atlas/current.json (base atlas/) (12 relative paths)
+ok     .shell.index  ./releases/202608300453-atlas-v9/index.html  ->  ../../../../../../../home/claude/gridatlas/atlas/releases/202608300453-atlas-v9/index.html
+ok     .shell.base  ./releases/202608300453-atlas-v9/  ->  ../../../../../../../home/claude/gridatlas/atlas/releases/202608300453-atlas-v9
+ok     .cartridges.0.path  ./cartridges/202609241251-streaming-parquet-bridge-v9-5.js  ->  ../../../../../../../home/claude/gridatlas/atlas/cartridges/202609241251-streaming-parquet-bridge-v9-5.js
+ok     .cartridges.0.contract  ../ui/cartridges/202609241251-streaming-parquet-bridge-v9-5.mjs  ->  ../../../../../../../home/claude/gridatlas/ui/cartridges/202609241251-streaming-parquet-bridge-v9-5.mjs
+ok     .cartridges.1.path  ./cartridges/202609071213-place-global-search-v9-5.js  ->  ../../../../../../../home/claude/gridatlas/atlas/cartridges/202609071213-place-global-search-v9-5.js
+ok     .cartridges.1.contract  ../ui/cartridges/202609040337-global-gazetteer-flyto-v9-106.mjs  ->  ../../../../../../../home/claude/gridatlas/ui/cartridges/202609040337-global-gazetteer-flyto-v9-106.mjs
+ok     .cartridges.1.assembled_from  ./manifests/202609041945-place-global-search-v9-5-parts.json  ->  ../../../../../../../home/claude/gridatlas/atlas/manifests/202609041945-place-global-search-v9-5-parts.json
+ok     .cartridges.2.path  ./cartridges/202609241334-sld-sandbox-v9-8.js  ->  ../../../../../../../home/claude/gridatlas/atlas/cartridges/202609241334-sld-sandbox-v9-8.js
+ok     .cartridges.2.derived_from  ./cartridges/202609200022-sld-sandbox-v9-8.js  ->  ../../../../../../../home/claude/gridatlas/atlas/cartridges/202609200022-sld-sandbox-v9-8.js
+ok     .cartridges.3.path  ./cartridges/202609062358-substation-intelligence-v9-63.js  ->  ../../../../../../../home/claude/gridatlas/atlas/cartridges/202609062358-substation-intelligence-v9-63.js
+ok     .cartridges.3.assembled_from  ./manifests/202609051329-substation-intelligence-v9-63-parts.json  ->  ../../../../../../../home/claude/gridatlas/atlas/manifests/202609051329-substation-intelligence-v9-63-parts.json
+ok     .composition_manifest  ./manifests/202609241334-composition.json  ->  ../../../../../../../home/claude/gridatlas/atlas/manifests/202609241334-composition.json
+== candidate atlas/v/202610261949/current.json (base atlas/v/202610261949/) (13 relative paths)
+ok     .shell.index  ../../releases/202608300453-atlas-v9/index.html  ->  atlas/releases/202608300453-atlas-v9/index.html
+ok     .shell.base  ../../releases/202608300453-atlas-v9/  ->  atlas/releases/202608300453-atlas-v9
+ok     .cartridges.0.path  ../../cartridges/202609241251-streaming-parquet-bridge-v9-5.js  ->  atlas/cartridges/202609241251-streaming-parquet-bridge-v9-5.js
+MISSING  .cartridges.0.contract  ../../ui/cartridges/202609241251-streaming-parquet-bridge-v9-5.mjs  ->  atlas/ui/cartridges/202609241251-streaming-parquet-bridge-v9-5.mjs
+ok     .cartridges.1.path  ../../cartridges/202609071213-place-global-search-v9-5.js  ->  atlas/cartridges/202609071213-place-global-search-v9-5.js
+MISSING  .cartridges.1.contract  ../../ui/cartridges/202609040337-global-gazetteer-flyto-v9-106.mjs  ->  atlas/ui/cartridges/202609040337-global-gazetteer-flyto-v9-106.mjs
+ok     .cartridges.1.assembled_from  ../../manifests/202609041945-place-global-search-v9-5-parts.json  ->  atlas/manifests/202609041945-place-global-search-v9-5-parts.json
+ok     .cartridges.2.path  ../../cartridges/202610261949-sld-sandbox-v9-8.js  ->  atlas/cartridges/202610261949-sld-sandbox-v9-8.js
+ok     .cartridges.2.derived_from  ../../cartridges/202609241334-sld-sandbox-v9-8.js  ->  atlas/cartridges/202609241334-sld-sandbox-v9-8.js
+ok     .cartridges.2.uk_lightning.module  ../../modules/202610261949-uk-lightning-overlay.js  ->  atlas/modules/202610261949-uk-lightning-overlay.js
+ok     .cartridges.3.path  ../../cartridges/202609062358-substation-intelligence-v9-63.js  ->  atlas/cartridges/202609062358-substation-intelligence-v9-63.js
+ok     .cartridges.3.assembled_from  ../../manifests/202609051329-substation-intelligence-v9-63-parts.json  ->  atlas/manifests/202609051329-substation-intelligence-v9-63-parts.json
+ok     .composition_manifest  ../../manifests/202610261949-composition.json  ->  atlas/manifests/202610261949-composition.json
+== candidate manifest (base atlas/, as the production manifest is read) (13 relative paths)
+ok     .shell.index  ./releases/202608300453-atlas-v9/index.html  ->  atlas/releases/202608300453-atlas-v9/index.html
+ok     .shell.base  ./releases/202608300453-atlas-v9/  ->  atlas/releases/202608300453-atlas-v9
+ok     .cartridges.0.path  ./cartridges/202609241251-streaming-parquet-bridge-v9-5.js  ->  atlas/cartridges/202609241251-streaming-parquet-bridge-v9-5.js
+ok     .cartridges.0.contract  ../ui/cartridges/202609241251-streaming-parquet-bridge-v9-5.mjs  ->  ui/cartridges/202609241251-streaming-parquet-bridge-v9-5.mjs
+ok     .cartridges.1.path  ./cartridges/202609071213-place-global-search-v9-5.js  ->  atlas/cartridges/202609071213-place-global-search-v9-5.js
+ok     .cartridges.1.contract  ../ui/cartridges/202609040337-global-gazetteer-flyto-v9-106.mjs  ->  ui/cartridges/202609040337-global-gazetteer-flyto-v9-106.mjs
+ok     .cartridges.1.assembled_from  ./manifests/202609041945-place-global-search-v9-5-parts.json  ->  atlas/manifests/202609041945-place-global-search-v9-5-parts.json
+ok     .cartridges.2.path  ./cartridges/202610261949-sld-sandbox-v9-8.js  ->  atlas/cartridges/202610261949-sld-sandbox-v9-8.js
+ok     .cartridges.2.derived_from  ./cartridges/202609241334-sld-sandbox-v9-8.js  ->  atlas/cartridges/202609241334-sld-sandbox-v9-8.js
+ok     .cartridges.2.uk_lightning.module  ./modules/202610261949-uk-lightning-overlay.js  ->  atlas/modules/202610261949-uk-lightning-overlay.js
+ok     .cartridges.3.path  ./cartridges/202609062358-substation-intelligence-v9-63.js  ->  atlas/cartridges/202609062358-substation-intelligence-v9-63.js
+ok     .cartridges.3.assembled_from  ./manifests/202609051329-substation-intelligence-v9-63-parts.json  ->  atlas/manifests/202609051329-substation-intelligence-v9-63-parts.json
+ok     .composition_manifest  ./manifests/202610261949-composition.json  ->  atlas/manifests/202610261949-composition.json

@@ -1,0 +1,14 @@
+import { chromium } from '/home/claude/gridatlas/node_modules/playwright/index.mjs';
+import { installOfflineShim, waitForComposition } from '../../../lightning/harness/offline-shim.mjs';
+process.on('uncaughtException', e => console.log('UNCAUGHT', e.message));
+const b = await chromium.launch({ headless: true });
+const ctx = await b.newContext({ viewport: { width: 1440, height: 900 } });
+const page = await ctx.newPage();
+await page.clock.install({ time: '2026-10-26T18:40:00Z' });
+await installOfflineShim(page, { lightningDataDir: '../../../lightning/fixtures/lightning-archive/data' });
+const t0 = Date.now();
+await page.goto('http://127.0.0.1:8181/wt/atlas/v/202610262323/', { waitUntil: 'domcontentloaded' });
+console.log(JSON.stringify(await waitForComposition(page, { deadlineMs: 90000, settleMs: 500 })), Date.now() - t0);
+const G = '#scada-ui-container [data-lightning-group="main"]';
+console.log(await page.evaluate(G => { const g = document.querySelector(G); const i = g && g.querySelector('input[data-lightning-control="toggle"]'); return { g: !!g, i: !!i, html: g && g.outerHTML.slice(0, 600), vis: i && [i.offsetWidth, i.offsetHeight, getComputedStyle(i).display, getComputedStyle(i).opacity] }; }, G));
+await b.close();

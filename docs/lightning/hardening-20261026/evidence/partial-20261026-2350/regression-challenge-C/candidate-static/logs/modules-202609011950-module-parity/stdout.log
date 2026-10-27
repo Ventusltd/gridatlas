@@ -1,0 +1,41 @@
+
+the modules load alone, and declare themselves
+
+  [PASS] geodesy registers
+  [PASS] substation-lookup registers
+  [PASS] the estate radius is the estate radius
+  [PASS] a module refuses to load without its dependency
+
+parity: geodesy against the incumbent measurement
+
+  [PASS] the incumbent exposes its measurement for comparison
+  [PASS] distance parity: Cottam to its substation
+  [PASS] distance parity: West Burton to its PoC
+  [PASS] distance parity: Cleve Hill, a two-kilometre hop
+  [PASS] distance parity: the length of GB
+  [PASS] distance parity: identical points
+  [PASS] distance parity: across the prime meridian
+  [PASS] every distance case agrees to floating point
+
+parity: the voltage contract, where magnitude is not the unit
+
+  [PASS] voltage parity: a 400 kV substation
+  [PASS] voltage parity: two voltages at one site
+  [PASS] voltage parity: the traction supply that read as 750 kV
+  [PASS] voltage parity: a 415 V works supply
+  [PASS] voltage parity: an explicit kv property
+  [PASS] voltage parity: nothing at all
+  [PASS] voltage parity: a malformed token
+
+parity: representative point, where a polygon is not its first corner
+
+  [PASS] geometry parity: a point
+  [PASS] geometry parity: a square polygon
+  [PASS] geometry parity: a multipolygon
+  [PASS] geometry parity: a line
+  [PASS] geometry parity: nothing
+  [PASS] the one deliberate difference is defensive, not behavioural
+
+parity: substation lookup against the incumbent cartridge
+
+  [FAIL] the incumbent loaded the fixture product

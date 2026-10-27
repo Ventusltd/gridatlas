@@ -1,0 +1,24 @@
+
+the slot contract - the check v9.57 did not have
+
+  [PASS] the shell loads the scripts this proof thinks it does
+  [PASS] streaming-parquet-bridge claims a slot the shell actually loads: 202608292311-maplibre-worker-bridge.js
+  [PASS] uk-gazetteer-flyto claims a slot the shell actually loads: 202608291818-place-postcode-search.js
+  [PASS] sld-sandbox claims a slot the shell actually loads: 202608292126-pre-snapped-config-adapter.js
+  [PASS] substation-intelligence claims a slot the shell actually loads: ventus-corev8engine.js
+  [PASS] every cartridge in the order is in the cartridge list
+node:internal/fs/promises:639
+  return new FileHandle(await PromisePrototypeThen(
+                        ^
+
+Error: ENOENT: no such file or directory, open '/tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/release-rehearsal/wt/atlas/manifests/202610262323-substation-intelligence-v9-63-parts.json'
+    at async open (node:internal/fs/promises:639:25)
+    at async readFile (node:internal/fs/promises:1252:14)
+    at async file:///tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/release-rehearsal/wt/tools/proofs/202609051624-substation-intelligence.proof.mjs:124:34 {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: '/tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/release-rehearsal/wt/atlas/manifests/202610262323-substation-intelligence-v9-63-parts.json'
+}
+
+Node.js v22.23.4

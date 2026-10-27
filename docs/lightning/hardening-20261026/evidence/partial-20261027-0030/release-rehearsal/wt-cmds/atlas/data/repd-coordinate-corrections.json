@@ -1,0 +1,104 @@
+{
+ "schema": "gridatlas.repd-coordinate-corrections.v1",
+ "generated_utc": "2026-09-08T04:20:00Z",
+ "status": "PARTIAL",
+ "statement": "Real coordinates for register rows that carry the REPD placeholder point at 49.766807 N, 7.55716 W - a location in the Western Approaches south-west of the Scillies which is not where any of these projects are. Every coordinate here is the one the applicant or the authority published, converted where it was published in OSGB. Nothing is derived from a project name, a postcode or a nearest-coast guess. A row that could not be bound to a published coordinate is listed under unresolved with what is missing, not filled in.",
+ "placeholder_point": {"longitude": -7.55716, "latitude": 49.766807, "rows_affected": 36, "of_which_offshore_wind": 13},
+ "why": "The engine refuses to measure from the placeholder, which is right - measuring from it would report a distance to the Isles of Scilly and print it as fact. But a refusal leaves the project with no measurement at all, so the placeholder has to be replaced with the published truth rather than merely rejected.",
+ "conversion": "OSGB36 eastings/northings to WGS84 by inverse Transverse Mercator on the Airy 1830 spheroid, then the OSGB36 to WGS84 Helmert transform (tx 446.448, ty -125.157, tz 542.060; rx 0.1502, ry 0.2470, rz 0.8421 arc-seconds; scale -20.4894 ppm).",
+ "records": [
+  {
+   "repd_refs": ["14796", "18489"],
+   "project": "Alwen Forest Project",
+   "note_on_refs": "One site, two register rows - the wind farm (14796) and its co-located battery (18489). Both carry the placeholder and both take this coordinate.",
+   "longitude": -3.564258,
+   "latitude": 53.087468,
+   "precision": "TURBINE_LAYOUT_CENTROID",
+   "derivation": "Mean of the nine consented turbine positions published as OSGB eastings/northings in Table 1 (Final layout), section 6.4.1. No site centre or red-line centroid is published in that document, so the centroid of the turbines is used and labelled as such rather than presented as a site centre.",
+   "published_positions_osgb": [[295366, 357224], [295579, 356880], [295542, 356363], [295678, 355821], [294738, 355508], [294859, 355036], [295663, 354983], [295027, 354452], [295537, 354281]],
+   "datum_caveat": "The Design and Access Statement does not state its datum; OSGB36 is assumed, which is the convention for OS eastings and northings. The range maps to about SH 947 543 to SH 957 572, between Alwen Reservoir and Llyn Brenig, consistent with the stated site.",
+   "confidence": "HIGH",
+   "sources": [
+    {"url": "https://dns.planninginspectorate.gov.uk/projects/wales/alwen-forest-wind/", "publisher": "Planning Inspectorate Wales, DNS/3214855", "supports": "case record"},
+    {"publisher": "Alwen Forest Wind Farm and Grid Connection, Design and Access Statement, Natural Power for RWE Renewables UK, Table 1 Final layout, section 6.4.1", "date": "2024-09", "supports": "coordinates"},
+    {"url": "https://planningcasework.service.gov.wales/dns/CAS-01262-P8S6Y6", "publisher": "Welsh Government planning casework", "supports": "case record"}
+   ]
+  },
+  {
+   "repd_refs": ["14773", "17724"],
+   "project": "Mynydd Maen Solar Farm (Cil-Lonydd)",
+   "note_on_refs": "One site, two register rows - the solar farm (14773) and its battery (17724).",
+   "longitude": -3.116909,
+   "latitude": 51.669624,
+   "precision": "PUBLISHED_SITE_CENTRE",
+   "derivation": "Converted from the grid reference ST 22856 97352 published in the Environmental Statement, which states it explicitly: 'The approximate central point of the Site is at Ordnance Survey Grid Reference (OSGR) ST 22856 97352.'",
+   "published_positions_osgb": [[322856, 197352]],
+   "caveat": "The site includes a cable route running east to the Mynydd Maen wind farm substation (DNS/3276725), so this centre sits within an elongated red line rather than a compact block.",
+   "confidence": "HIGH",
+   "sources": [
+    {"url": "https://cil-lonyddsolar.co.uk/wp-content/uploads/2024/04/Volume-1-Environmental-Statement.pdf", "publisher": "Cil-lonydd Solar Farm, Volume 1 Environmental Statement, RPS ref JPW2051, chapter 6 section 6.2.1", "date": "2024-04-16", "supports": "coordinates"},
+    {"url": "https://planningcasework.service.gov.wales/case/CAS-02446-R8X8W2", "publisher": "Welsh Government planning casework, CAS-02446-R8X8W2", "supports": "case record"}
+   ]
+  },
+  {
+   "repd_refs": ["17672"],
+   "project": "Scout Moor 2 - Wind Farm",
+   "longitude": -2.223529,
+   "latitude": 53.666994,
+   "precision": "TURBINE_LAYOUT_CENTROID",
+   "derivation": "Mean of the seventeen proposed turbine positions in Table 4.1 (Proposed wind turbine co-ordinates), ES Volume 1 Chapter 4 Development Specification, section 4.141.",
+   "published_positions_osgb": [[386584, 417511], [386287, 417715], [386072, 418157], [386057, 418580], [386007, 419011], [385469, 418509], [385305, 417929], [385146, 419146], [385604, 419634], [386115, 420016], [385182, 419867], [385635, 420147], [383671, 418779], [383369, 419137], [383047, 419489], [386086, 419460], [384943, 419391]],
+   "caveat": "Positions carry a 50 m micrositing allowance. The copy of Chapter 4 fetched is flagged superseded in the Rossendale document list, so a later revision may change the layout - re-check before relying on it as final. This is unambiguously Scout Moor 2 and not the operational farm: the existing Scout Moor centre is at 382817 E, 418180 N and REPD 3177 already carries a real coordinate for it; these turbines sit 0.5 to 4 km east and north of that.",
+   "confidence": "HIGH",
+   "sources": [
+    {"url": "https://publicaccess.rossendale.gov.uk/online-applications/applicationDetails.do?keyVal=SZ0U9GND05V00&activeTab=documents", "publisher": "Rossendale Borough Council, application 2025/0267 (twin Rochdale reference 25/00680/FUL)", "supports": "case record"},
+    {"publisher": "Scout Moor II ES Volume 1 Chapter 4 Development Specification, Table 4.1", "supports": "coordinates"}
+   ]
+  },
+  {
+   "repd_refs": ["13601"],
+   "project": "Tees Green Hydrogen",
+   "longitude": -1.142676,
+   "latitude": 54.58956,
+   "precision": "APPLICATION_FORM_SITE_POINT",
+   "derivation": "Converted from the easting 455499 and northing 521934 entered in the Site Location fields of the planning application form, Planning Portal reference PP-12640999.",
+   "published_positions_osgb": [[455499, 521934]],
+   "correction": "The site is at Lackenby, on the former BOS Plant within Teesworks, bounded by Teesworks road infrastructure and Tees Dock Road - NOT at TS11 Marske as previously assumed in this estate. It sits inside the South Tees Development Corporation outline consent R/2020/0820/ESM.",
+   "caveat": "This is the locator point entered on the application form, not a surveyed centroid and not the red line; the site location plan gives the Phase 1 boundary as 48,830 square metres. Application R/2024/0005/ESM was WITHDRAWN, so the coordinate is HIGH confidence as published and MEDIUM as a description of the current scheme.",
+   "confidence": "HIGH_AS_PUBLISHED_MEDIUM_AS_CURRENT",
+   "sources": [
+    {"url": "https://planning.redcar-cleveland.gov.uk/Planning/Display/R/2024/0005/ESM", "publisher": "Redcar and Cleveland Borough Council, R/2024/0005/ESM, Tees Green Hydrogen Phase 1 7.5 MW Production Site", "supports": "coordinates"}
+   ]
+  }
+ ],
+ "unresolved": [
+  {
+   "repd_refs": ["17044"],
+   "project": "La Rue Du Moulin A Vent - Solar PV Arrays, St Clement, Jersey",
+   "reason": "Road located, site not. OpenStreetMap way 837423061 puts Rue du Moulin a Vent, Pontac, St Clement at 49.1788307 N, -2.0506976 E, but that is the ROAD, not fields C210, C213, C214 or C221, and nothing establishes which side of it or how far along they lie. Jersey's ArcGIS server is reachable but its Planning, Property and Jersey_Mapping folders are access-restricted, so the official field polygons could not be retrieved.",
+   "what_would_settle_it": "The Jersey planning field polygons, or a field reference to coordinate lookup."
+  },
+  {
+   "repd_refs": ["17120"],
+   "project": "La Rue De La Hougue Mauger - Solar Farm, St Mary, Jersey",
+   "reason": "Road located, site not. OpenStreetMap way 236865193 puts La Rue de la Hougue Mauger, Crabbe, St Mary at 49.2455766 N, -2.1716098 E - the road, not field My452. Note a separate adjacent road named La Hougue Mauger without the Rue de la (OSM way 169432715, 49.2432580, -2.1741985) sits about 250 m away and is easy to confuse; the application names the Rue de la form.",
+   "what_would_settle_it": "The Jersey planning field polygon for My452."
+  }
+ ],
+ "corrections_to_record": [
+  {
+   "subject": "Solar Farm, Steeple Road, Antrim (LA03/2024/0661/S54)",
+   "correction": "The postcode BT41 3SF is NOT this site. postcodes.io resolves it to 54.758041 N, -6.472908 E in the Mid Ulster district, roughly 16 km west-north-west of the described site, which is in Antrim and Newtownabbey. It is likely an applicant or agent address. Do not use it as a location.",
+   "official_site_description": "Lands extending north and south of the M2 Motorway approx. 950m east of Dunsilly roundabout. Lands at the north begin approx. 80m south of 102 Steeple Road extending to approx. 370m east of 16 Kilgavanagh Road at the lands most westerly extremities. Lands to the south of the motorway fringe the northern and western boundary of 82 Steeple Road extending southwards to approx. 290m north of 58 Niblock Road Antrim.",
+   "note": "REPD 6024 'Steeple Road' already carries a real coordinate at 54.74766, -6.209631, which is consistent with that description; this correction concerns the postcode, not that row.",
+   "source": "https://planningregister.planningsystemni.gov.uk/application/arn/LA03_2016_0135_F"
+  },
+  {
+   "subject": "Wind Turbine, Bravallen Road, Ballymoney (LA01/2024/1005/F)",
+   "correction": "The proposal is a Vestas V44 at 150 kW (40 m hub, 44 m rotor), replacing an existing turbine approved under D/2012/0045/F - NOT 0.6 MW. The application status is WITHDRAWN as of 11 May 2026. The road spelling is Bravallen; Brovallen returns nothing in OSM or the register.",
+   "note": "Four separate OpenStreetMap ways carry the name Bravallen Road and it cannot be determined which stretch holds number 100c, so no coordinate is offered.",
+   "source": "https://planningregister.planningsystemni.gov.uk/application/arn/LA01_2024_1005_F"
+  }
+ ],
+ "blocked": "Two Northern Ireland rows could not be resolved because the NI Planning Register's document downloads are JavaScript-driven and could not be reached without a browser. The P1 application form carries an easting and northing field, the same TerraQuest form used in England, so one browser session on each ARN would settle both. The ARN URL format replaces slashes with underscores: /application/arn/LA03_2024_0661_S54."
+}

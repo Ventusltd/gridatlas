@@ -1,0 +1,390 @@
+{
+ "set": "/tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/data-contract/sets/pr3/data",
+ "now": "2026-10-26T23:43:51.937Z",
+ "module": "/tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/wt/atlas/modules/202610262323-uk-lightning-overlay.js",
+ "unit": {
+  "index": "HTTP 404 (absent)",
+  "feed": {
+   "isFC": true,
+   "features": 408,
+   "accepted": 408,
+   "rejected": 0,
+   "meta_keys_module_reads": {
+    "query_start_utc": "2026-10-26T10:05:58.649Z",
+    "query_end_utc": "2026-10-26T13:05:58.649Z",
+    "latest_detection_utc": "2026-10-25T11:15:58.149Z"
+   },
+   "first": "2026-10-21T12:32:19.282Z",
+   "last": "2026-10-25T11:15:58.149Z",
+   "feed_age_h": 10.63
+  }
+ },
+ "panel": [
+  {
+   "tag": "ON (default 24h)",
+   "label": "Lightning flashes (optical) [UNKNOWN | 24h STALE]",
+   "status": "UNKNOWN · STALE",
+   "dot": "#ff8800",
+   "caps": {
+    "window": "Window  2026-10-25 23:43 UTC → 2026-10-26 23:43 UTC (24 hours, latest)",
+    "actual": "Actual  no flashes in the live feed in this window",
+    "flashes": "Flashes 0 in window (live feed, 7-day retention)",
+    "refresh": "Refresh live feed 2026-10-26 13:05 UTC (last collection window 2026-10-26 10:05 UTC → 2026-10-26 13:05 UTC; latest detection 2026-10-25 11:15:58 UTC; 7-day retention; archive not yet published: HTTP 404; earlier hours unknown, not zero)",
+    "searched": "Searched EUMETSAT unknown (live feed records only its last collection window)",
+    "warning": "",
+    "footer": "Times UTC · Optical flashes seen by MTG Lightning Imager (EUMETSAT L2-LFL), not confirmed ground strikes · Missing days are unknown, not zero · UK box −11.0,49.5 → 3.0,61.5"
+   },
+   "last": {
+    "state": "UNKNOWN",
+    "stale": true,
+    "mode": "feed",
+    "period": "24h",
+    "drawn": 0,
+    "cluster": false,
+    "cap": 40000,
+    "cap_source": "live feed",
+    "index_count": 0,
+    "failures": 0,
+    "reasons": [
+     "feed coverage unknown"
+    ]
+   },
+   "layer": "none",
+   "drawn": 0,
+   "points_btn_hidden": true,
+   "prev_disabled": true
+  },
+  {
+   "tag": "12h",
+   "label": "Lightning flashes (optical) [UNKNOWN | 12h STALE]",
+   "status": "UNKNOWN · STALE",
+   "dot": "#ff8800",
+   "caps": {
+    "window": "Window  2026-10-26 11:43 UTC → 2026-10-26 23:43 UTC (12 hours, latest)",
+    "actual": "Actual  no flashes in the live feed in this window",
+    "flashes": "Flashes 0 in window (live feed, 7-day retention)",
+    "refresh": "Refresh live feed 2026-10-26 13:05 UTC (last collection window 2026-10-26 10:05 UTC → 2026-10-26 13:05 UTC; latest detection 2026-10-25 11:15:58 UTC; 7-day retention; archive not yet published: HTTP 404; earlier hours unknown, not zero)",
+    "searched": "Searched EUMETSAT unknown (live feed records only its last collection window)",
+    "warning": "",
+    "footer": "Times UTC · Optical flashes seen by MTG Lightning Imager (EUMETSAT L2-LFL), not confirmed ground strikes · Missing days are unknown, not zero · UK box −11.0,49.5 → 3.0,61.5"
+   },
+   "last": {
+    "state": "UNKNOWN",
+    "stale": true,
+    "mode": "feed",
+    "period": "12h",
+    "drawn": 0,
+    "cluster": false,
+    "cap": 40000,
+    "cap_source": "live feed",
+    "index_count": 0,
+    "failures": 0,
+    "reasons": [
+     "feed coverage unknown"
+    ]
+   },
+   "layer": "none",
+   "drawn": 0,
+   "points_btn_hidden": true,
+   "prev_disabled": true
+  },
+  {
+   "tag": "48h",
+   "label": "Lightning flashes (optical) [3 | 48h STALE]",
+   "status": "PARTIAL · 3 FLASHES DRAWN · SEARCHED UNKNOWN · STALE",
+   "dot": "#ffcc00",
+   "caps": {
+    "window": "Window  2026-10-24 23:43 UTC → 2026-10-26 23:43 UTC (48 hours, latest)",
+    "actual": "Actual  first 2026-10-25 03:28:34 UTC · last 2026-10-25 11:15:58 UTC",
+    "flashes": "Flashes 3 in window (live feed, 7-day retention) · 3 drawn as points (live feed count 3 within the 40,000-point cap for this desktop)",
+    "refresh": "Refresh live feed 2026-10-26 13:05 UTC (last collection window 2026-10-26 10:05 UTC → 2026-10-26 13:05 UTC; latest detection 2026-10-25 11:15:58 UTC; 7-day retention; archive not yet published: HTTP 404; earlier hours unknown, not zero)",
+    "searched": "Searched EUMETSAT unknown (live feed records only its last collection window)",
+    "warning": "",
+    "footer": "Times UTC · Optical flashes seen by MTG Lightning Imager (EUMETSAT L2-LFL), not confirmed ground strikes · Missing days are unknown, not zero · UK box −11.0,49.5 → 3.0,61.5"
+   },
+   "last": {
+    "state": "PARTIAL",
+    "stale": true,
+    "mode": "feed",
+    "period": "48h",
+    "drawn": 3,
+    "cluster": false,
+    "cap": 40000,
+    "cap_source": "live feed",
+    "index_count": 3,
+    "failures": 0,
+    "reasons": [
+     "feed coverage unknown"
+    ]
+   },
+   "layer": "visible",
+   "drawn": 3,
+   "points_btn_hidden": true,
+   "prev_disabled": true
+  },
+  {
+   "tag": "7d",
+   "label": "Lightning flashes (optical) [408 | 7d STALE]",
+   "status": "PARTIAL · 408 FLASHES DRAWN · SEARCHED UNKNOWN · STALE",
+   "dot": "#ffcc00",
+   "caps": {
+    "window": "Window  2026-10-19 23:43 UTC → 2026-10-26 23:43 UTC (7 days, latest)",
+    "actual": "Actual  first 2026-10-21 12:32:19 UTC · last 2026-10-25 11:15:58 UTC",
+    "flashes": "Flashes 408 in window (live feed, 7-day retention) · 408 drawn as points (live feed count 408 within the 40,000-point cap for this desktop)",
+    "refresh": "Refresh live feed 2026-10-26 13:05 UTC (last collection window 2026-10-26 10:05 UTC → 2026-10-26 13:05 UTC; latest detection 2026-10-25 11:15:58 UTC; 7-day retention; archive not yet published: HTTP 404; earlier hours unknown, not zero)",
+    "searched": "Searched EUMETSAT unknown (live feed records only its last collection window)",
+    "warning": "",
+    "footer": "Times UTC · Optical flashes seen by MTG Lightning Imager (EUMETSAT L2-LFL), not confirmed ground strikes · Missing days are unknown, not zero · UK box −11.0,49.5 → 3.0,61.5"
+   },
+   "last": {
+    "state": "PARTIAL",
+    "stale": true,
+    "mode": "feed",
+    "period": "7d",
+    "drawn": 408,
+    "cluster": false,
+    "cap": 40000,
+    "cap_source": "live feed",
+    "index_count": 408,
+    "failures": 0,
+    "reasons": [
+     "feed coverage unknown"
+    ]
+   },
+   "layer": "visible",
+   "drawn": 408,
+   "points_btn_hidden": true,
+   "prev_disabled": true
+  },
+  {
+   "tag": "30d",
+   "label": "Lightning flashes (optical) [408 | 30d STALE]",
+   "status": "PARTIAL · 408 FLASHES DRAWN · SEARCHED UNKNOWN · STALE",
+   "dot": "#ffcc00",
+   "caps": {
+    "window": "Window  2026-09-26 23:43 UTC → 2026-10-26 23:43 UTC (30 days, latest)",
+    "actual": "Actual  first 2026-10-21 12:32:19 UTC · last 2026-10-25 11:15:58 UTC",
+    "flashes": "Flashes 408 in window (live feed, 7-day retention) · 408 drawn as points (live feed count 408 within the 40,000-point cap for this desktop)",
+    "refresh": "Refresh live feed 2026-10-26 13:05 UTC (last collection window 2026-10-26 10:05 UTC → 2026-10-26 13:05 UTC; latest detection 2026-10-25 11:15:58 UTC; 7-day retention; archive not yet published: HTTP 404; earlier hours unknown, not zero)",
+    "searched": "Searched EUMETSAT unknown (live feed records only its last collection window)",
+    "warning": "archive not yet published: earlier coverage unknown, not zero",
+    "footer": "Times UTC · Optical flashes seen by MTG Lightning Imager (EUMETSAT L2-LFL), not confirmed ground strikes · Missing days are unknown, not zero · UK box −11.0,49.5 → 3.0,61.5"
+   },
+   "last": {
+    "state": "PARTIAL",
+    "stale": true,
+    "mode": "feed",
+    "period": "30d",
+    "drawn": 408,
+    "cluster": false,
+    "cap": 40000,
+    "cap_source": "live feed",
+    "index_count": 408,
+    "failures": 0,
+    "reasons": [
+     "feed coverage unknown"
+    ]
+   },
+   "layer": "visible",
+   "drawn": 408,
+   "points_btn_hidden": true,
+   "prev_disabled": true
+  },
+  {
+   "tag": "3m",
+   "label": "Lightning flashes (optical) [408 | 3m STALE]",
+   "status": "PARTIAL · 408 FLASHES DRAWN · SEARCHED UNKNOWN · STALE",
+   "dot": "#ffcc00",
+   "caps": {
+    "window": "Window  2026-07-26 23:43 UTC → 2026-10-26 23:43 UTC (3 months, latest)",
+    "actual": "Actual  first 2026-10-21 12:32:19 UTC · last 2026-10-25 11:15:58 UTC",
+    "flashes": "Flashes 408 in window (live feed, 7-day retention) · 408 drawn as points (live feed count 408 within the 40,000-point cap for this desktop)",
+    "refresh": "Refresh live feed 2026-10-26 13:05 UTC (last collection window 2026-10-26 10:05 UTC → 2026-10-26 13:05 UTC; latest detection 2026-10-25 11:15:58 UTC; 7-day retention; archive not yet published: HTTP 404; earlier hours unknown, not zero)",
+    "searched": "Searched EUMETSAT unknown (live feed records only its last collection window)",
+    "warning": "archive not yet published: earlier coverage unknown, not zero",
+    "footer": "Times UTC · Optical flashes seen by MTG Lightning Imager (EUMETSAT L2-LFL), not confirmed ground strikes · Missing days are unknown, not zero · UK box −11.0,49.5 → 3.0,61.5"
+   },
+   "last": {
+    "state": "PARTIAL",
+    "stale": true,
+    "mode": "feed",
+    "period": "3m",
+    "drawn": 408,
+    "cluster": false,
+    "cap": 40000,
+    "cap_source": "live feed",
+    "index_count": 408,
+    "failures": 0,
+    "reasons": [
+     "feed coverage unknown"
+    ]
+   },
+   "layer": "visible",
+   "drawn": 408,
+   "points_btn_hidden": true,
+   "prev_disabled": true
+  },
+  {
+   "tag": "6m",
+   "label": "Lightning flashes (optical) [408 | 6m STALE]",
+   "status": "PARTIAL · 408 FLASHES DRAWN · SEARCHED UNKNOWN · STALE",
+   "dot": "#ffcc00",
+   "caps": {
+    "window": "Window  2026-04-26 23:43 UTC → 2026-10-26 23:43 UTC (6 months, latest)",
+    "actual": "Actual  first 2026-10-21 12:32:19 UTC · last 2026-10-25 11:15:58 UTC",
+    "flashes": "Flashes 408 in window (live feed, 7-day retention) · 408 drawn as points (live feed count 408 within the 40,000-point cap for this desktop)",
+    "refresh": "Refresh live feed 2026-10-26 13:05 UTC (last collection window 2026-10-26 10:05 UTC → 2026-10-26 13:05 UTC; latest detection 2026-10-25 11:15:58 UTC; 7-day retention; archive not yet published: HTTP 404; earlier hours unknown, not zero)",
+    "searched": "Searched EUMETSAT unknown (live feed records only its last collection window)",
+    "warning": "archive not yet published: earlier coverage unknown, not zero",
+    "footer": "Times UTC · Optical flashes seen by MTG Lightning Imager (EUMETSAT L2-LFL), not confirmed ground strikes · Missing days are unknown, not zero · UK box −11.0,49.5 → 3.0,61.5"
+   },
+   "last": {
+    "state": "PARTIAL",
+    "stale": true,
+    "mode": "feed",
+    "period": "6m",
+    "drawn": 408,
+    "cluster": false,
+    "cap": 40000,
+    "cap_source": "live feed",
+    "index_count": 408,
+    "failures": 0,
+    "reasons": [
+     "feed coverage unknown"
+    ]
+   },
+   "layer": "visible",
+   "drawn": 408,
+   "points_btn_hidden": true,
+   "prev_disabled": true
+  },
+  {
+   "tag": "12m",
+   "label": "Lightning flashes (optical) [408 | 12m STALE]",
+   "status": "PARTIAL · 408 FLASHES DRAWN · SEARCHED UNKNOWN · STALE",
+   "dot": "#ffcc00",
+   "caps": {
+    "window": "Window  2025-10-26 23:43 UTC → 2026-10-26 23:43 UTC (1 year, latest)",
+    "actual": "Actual  first 2026-10-21 12:32:19 UTC · last 2026-10-25 11:15:58 UTC",
+    "flashes": "Flashes 408 in window (live feed, 7-day retention) · 408 drawn as points (live feed count 408 within the 40,000-point cap for this desktop)",
+    "refresh": "Refresh live feed 2026-10-26 13:05 UTC (last collection window 2026-10-26 10:05 UTC → 2026-10-26 13:05 UTC; latest detection 2026-10-25 11:15:58 UTC; 7-day retention; archive not yet published: HTTP 404; earlier hours unknown, not zero)",
+    "searched": "Searched EUMETSAT unknown (live feed records only its last collection window)",
+    "warning": "archive not yet published: earlier coverage unknown, not zero",
+    "footer": "Times UTC · Optical flashes seen by MTG Lightning Imager (EUMETSAT L2-LFL), not confirmed ground strikes · Missing days are unknown, not zero · UK box −11.0,49.5 → 3.0,61.5"
+   },
+   "last": {
+    "state": "PARTIAL",
+    "stale": true,
+    "mode": "feed",
+    "period": "12m",
+    "drawn": 408,
+    "cluster": false,
+    "cap": 40000,
+    "cap_source": "live feed",
+    "index_count": 408,
+    "failures": 0,
+    "reasons": [
+     "feed coverage unknown"
+    ]
+   },
+   "layer": "visible",
+   "drawn": 408,
+   "points_btn_hidden": true,
+   "prev_disabled": true
+  },
+  {
+   "tag": "7d PREV",
+   "skipped": "PREV button disabled (a real click would not fire)"
+  },
+  {
+   "tag": "custom 2026-10-21..25",
+   "label": "Lightning flashes (optical) [408 | custom STALE]",
+   "status": "PARTIAL · 408 FLASHES DRAWN · SEARCHED UNKNOWN · STALE",
+   "dot": "#ffcc00",
+   "caps": {
+    "window": "Window  UTC dates 2026-10-21 to 2026-10-25 inclusive = 2026-10-21 00:00 UTC → 2026-10-26 00:00 UTC",
+    "actual": "Actual  first 2026-10-21 12:32:19 UTC · last 2026-10-25 11:15:58 UTC",
+    "flashes": "Flashes 408 in window (live feed, 7-day retention) · 408 drawn as points (live feed count 408 within the 40,000-point cap for this desktop)",
+    "refresh": "Refresh live feed 2026-10-26 13:05 UTC (last collection window 2026-10-26 10:05 UTC → 2026-10-26 13:05 UTC; latest detection 2026-10-25 11:15:58 UTC; 7-day retention; archive not yet published: HTTP 404; earlier hours unknown, not zero)",
+    "searched": "Searched EUMETSAT unknown (live feed records only its last collection window)",
+    "warning": "",
+    "footer": "Times UTC · Optical flashes seen by MTG Lightning Imager (EUMETSAT L2-LFL), not confirmed ground strikes · Missing days are unknown, not zero · UK box −11.0,49.5 → 3.0,61.5"
+   },
+   "last": {
+    "state": "PARTIAL",
+    "stale": true,
+    "mode": "feed",
+    "period": "custom",
+    "drawn": 408,
+    "cluster": false,
+    "cap": 40000,
+    "cap_source": "live feed",
+    "index_count": 408,
+    "failures": 0,
+    "reasons": [
+     "feed coverage unknown"
+    ]
+   },
+   "layer": "visible",
+   "drawn": 408,
+   "points_btn_hidden": true,
+   "prev_disabled": true
+  }
+ ],
+ "requests": {
+  "fetch": [
+   [
+    "history/index.json",
+    404
+   ],
+   [
+    "history/index.json",
+    404
+   ],
+   [
+    "history/index.json",
+    404
+   ],
+   [
+    "history/index.json",
+    404
+   ],
+   [
+    "history/index.json",
+    404
+   ],
+   [
+    "history/index.json",
+    404
+   ],
+   [
+    "history/index.json",
+    404
+   ],
+   [
+    "history/index.json",
+    404
+   ],
+   [
+    "history/index.json",
+    404
+   ],
+   [
+    "history/index.json",
+    404
+   ],
+   [
+    "history/index.json",
+    404
+   ]
+  ],
+  "xhr": [
+   [
+    "uk_lightning.geojson",
+    200
+   ]
+  ]
+ },
+ "handler_errors": [],
+ "module_errors": []
+}

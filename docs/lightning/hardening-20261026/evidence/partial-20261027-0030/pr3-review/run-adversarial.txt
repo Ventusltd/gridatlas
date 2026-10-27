@@ -1,0 +1,22 @@
+test_D1_two_fresh_builds_byte_identical (adversarial_test.Real.test_D1_two_fresh_builds_byte_identical) ... ok
+test_D2_fresh_builds_in_other_process_timezones_byte_identical (adversarial_test.Real.test_D2_fresh_builds_in_other_process_timezones_byte_identical) ... ok
+test_S1_hourly_hours_sum_equals_day_hours (adversarial_test.Real.test_S1_hourly_hours_sum_equals_day_hours)
+Each searched day's hours_observed equals the sum of its hourly hours_observed. ... 
+[S1] day scanned_seconds vs sum(hourly): {'2026-10-23': (42472, 42473), '2026-10-24': (50269, 50270)}
+FAIL
+test_T1_duckdb_file_reopened_in_local_timezone_keeps_utc_days (adversarial_test.Real.test_T1_duckdb_file_reopened_in_local_timezone_keeps_utc_days) ... wrote /tmp/tmp_wii69ps/tmpzjwhzmze/lightning.duckdb (536576 bytes): views archive_coverage, coverage_days, coverage_slots, daily_optical_flashes, flashes, hourly_optical_flashes, scan_windows, storm_episodes, substation_optical_flash_pairs, substation_optical_flash_proximity, substation_optical_flash_proximity_daily
+FAIL
+test_T2_default_session_timezone_of_duckdb_file (adversarial_test.Real.test_T2_default_session_timezone_of_duckdb_file) ... wrote /tmp/tmp_wii69ps/tmpyc2uou6w/lightning.duckdb (536576 bytes): views archive_coverage, coverage_days, coverage_slots, daily_optical_flashes, flashes, hourly_optical_flashes, scan_windows, storm_episodes, substation_optical_flash_pairs, substation_optical_flash_proximity, substation_optical_flash_proximity_daily
+FAIL
+test_V1_unsearched_hour_relabelled_observed_zero (adversarial_test.Real.test_V1_unsearched_hour_relabelled_observed_zero) ... FAIL
+test_V2_unsearched_slot_relabelled_full_zero (adversarial_test.Real.test_V2_unsearched_slot_relabelled_full_zero) ... FAIL
+test_V3_daily_rollup_hours_inflated (adversarial_test.Real.test_V3_daily_rollup_hours_inflated) ... FAIL
+test_V4_headline_claims_complete_coverage (adversarial_test.Real.test_V4_headline_claims_complete_coverage) ... FAIL
+test_V5_episode_edges_claimed_searched (adversarial_test.Real.test_V5_episode_edges_claimed_searched) ... FAIL
+test_V6_proximity_daily_hours_inflated (adversarial_test.Real.test_V6_proximity_daily_hours_inflated) ... FAIL
+test_E1_episode_next_to_shard_lost_day_is_not_complete (adversarial_test.Synthetic.test_E1_episode_next_to_shard_lost_day_is_not_complete)
+An episode ending 5 min before a shard_lost day must not claim its after-edge was searched. ... 
+[E1] episode before lost day: {'start_utc': datetime.datetime(2026, 10, 23, 23, 55, 30, tzinfo=zoneinfo.ZoneInfo(key='UTC')), 'flash_count': 1, 'searched_30min_after': True, 'coverage': 'complete'}
+FAIL
+test_Z1_zero_searched_hours_must_not_publish_zero_proximity (adversarial_test.Synthetic.test_Z1_zero_searched_hours_must_not_publish_zero_proximity)
+An index with no searched time: proximity counts must be UNKNOWN, not 0. ... 

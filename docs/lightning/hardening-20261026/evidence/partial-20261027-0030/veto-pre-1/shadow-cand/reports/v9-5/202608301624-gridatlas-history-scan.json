@@ -1,0 +1,1610 @@
+{
+  "elapsed_seconds": 0.035,
+  "findings": [
+    {
+      "evidence": [],
+      "id": "scanner-duplication-check",
+      "status": "CREATE_ONCE"
+    },
+    {
+      "head_release_count": 8,
+      "id": "immutable-release-lineage",
+      "release_count": 8,
+      "status": "OBSERVED"
+    },
+    {
+      "id": "cartridge-not-app-copy",
+      "rule": "v9.5 changes one hashed cartridge and current composition; no new full application folder",
+      "status": "REQUIRED"
+    }
+  ],
+  "generated_at": "2026-08-30T15:48:27.427534+00:00",
+  "max_seconds": 30.0,
+  "repositories": {
+    "cvaa_reference": {
+      "branch": "HEAD",
+      "commit_count": 12,
+      "commits_scanned": 12,
+      "comparator_pattern_changes": [],
+      "files_in_head": 28,
+      "head": "daada0fe917e82c170b866a06c493c1e2b1c1ee3",
+      "most_changed_paths": [
+        [
+          "vaccines/README.md",
+          2
+        ],
+        [
+          "README.md",
+          2
+        ],
+        [
+          ".github/workflows/202608301446-inoculate.yml",
+          1
+        ],
+        [
+          ".github/workflows/202608301447-selftest.yml",
+          1
+        ],
+        [
+          "vaccines/202608301321-one-active-scope.md",
+          1
+        ],
+        [
+          "vaccines/202608301322-no-app-copies.md",
+          1
+        ],
+        [
+          "vaccines/202608301323-no-per-release-workflows.md",
+          1
+        ],
+        [
+          "vaccines/202608301324-no-expiry-windows.md",
+          1
+        ],
+        [
+          "vaccines/202608301325-self-terminating-loops.md",
+          1
+        ],
+        [
+          "vaccines/202608301326-chaining-token.md",
+          1
+        ],
+        [
+          "vaccines/202608301327-pointer-verifies.md",
+          1
+        ],
+        [
+          "vaccines/202608301328-derived-state-not-authored.md",
+          1
+        ],
+        [
+          "vaccines/202608301329-context-diet.md",
+          1
+        ],
+        [
+          "vaccines/202608301330-rollback-exists.md",
+          1
+        ],
+        [
+          "vaccines/202608301440-registry-integrity.md",
+          1
+        ],
+        [
+          "vaccines/202608301441-no-dangerous-apis.md",
+          1
+        ],
+        [
+          "vaccines/202608301442-pinned-actions.md",
+          1
+        ],
+        [
+          "vaccines/202608301443-least-permissions.md",
+          1
+        ],
+        [
+          "vaccines/202608301444-agent-quarantine.md",
+          1
+        ],
+        [
+          "vaccines/202608301445-vocabulary.md",
+          1
+        ],
+        [
+          "tools/selftest.mjs",
+          1
+        ],
+        [
+          "tools/README.md",
+          1
+        ],
+        [
+          "tooLa/README.md",
+          1
+        ],
+        [
+          "202608301448-upload-order.txt",
+          1
+        ],
+        [
+          "consumer-workflow-template.yml",
+          1
+        ],
+        [
+          "cvaa.json",
+          1
+        ],
+        [
+          "inoculate.mjs",
+          1
+        ],
+        [
+          "vaccines.lock",
+          1
+        ],
+        [
+          "202608301431-hardening-cvaa.md",
+          1
+        ],
+        [
+          "202608301321-gridatlas-amnesia-vaccine.txt",
+          1
+        ]
+      ],
+      "path": "/home/runner/work/gridatlas/gridatlas/work/cvaa",
+      "release_first_seen": {},
+      "releases_in_head": [],
+      "scanner_candidates_before_this_change": [],
+      "scanner_candidates_now": [],
+      "scanner_was_already_present": false,
+      "search_pattern_changes": [],
+      "timestamp_groups": {
+        "202608301321": [
+          "202608301321-gridatlas-amnesia-vaccine.txt",
+          "vaccines/202608301321-one-active-scope.md"
+        ],
+        "202608301322": [
+          "vaccines/202608301322-no-app-copies.md"
+        ],
+        "202608301323": [
+          "vaccines/202608301323-no-per-release-workflows.md"
+        ],
+        "202608301324": [
+          "vaccines/202608301324-no-expiry-windows.md"
+        ],
+        "202608301325": [
+          "vaccines/202608301325-self-terminating-loops.md"
+        ],
+        "202608301326": [
+          "vaccines/202608301326-chaining-token.md"
+        ],
+        "202608301327": [
+          "vaccines/202608301327-pointer-verifies.md"
+        ],
+        "202608301328": [
+          "vaccines/202608301328-derived-state-not-authored.md"
+        ],
+        "202608301329": [
+          "vaccines/202608301329-context-diet.md"
+        ],
+        "202608301330": [
+          "vaccines/202608301330-rollback-exists.md"
+        ],
+        "202608301431": [
+          "202608301431-hardening-cvaa.md"
+        ],
+        "202608301440": [
+          "vaccines/202608301440-registry-integrity.md"
+        ],
+        "202608301441": [
+          "vaccines/202608301441-no-dangerous-apis.md"
+        ],
+        "202608301442": [
+          "vaccines/202608301442-pinned-actions.md"
+        ],
+        "202608301443": [
+          "vaccines/202608301443-least-permissions.md"
+        ],
+        "202608301444": [
+          "vaccines/202608301444-agent-quarantine.md"
+        ],
+        "202608301445": [
+          "vaccines/202608301445-vocabulary.md"
+        ],
+        "202608301446": [
+          ".github/workflows/202608301446-inoculate.yml"
+        ],
+        "202608301447": [
+          ".github/workflows/202608301447-selftest.yml"
+        ],
+        "202608301448": [
+          "202608301448-upload-order.txt"
+        ]
+      },
+      "workflow_files_touched": {
+        "202608301446-inoculate.yml": 1,
+        "202608301447-selftest.yml": 1
+      }
+    },
+    "gridatlas": {
+      "branch": "main",
+      "commit_count": 135,
+      "commits_scanned": 135,
+      "comparator_pattern_changes": [
+        {
+          "commit": "df146c64f5d602cead8109b079a6e40aa0185809",
+          "path": ".github/workflows/202608301321-verify-live.yml",
+          "subject": "202608301624-gridatlas-v9.5: add bounded history scanner and CI/CD build request"
+        },
+        {
+          "commit": "df146c64f5d602cead8109b079a6e40aa0185809",
+          "path": "atman/202608301624-verify-v9-5-search.mjs",
+          "subject": "202608301624-gridatlas-v9.5: add bounded history scanner and CI/CD build request"
+        },
+        {
+          "commit": "bb8c28a56241cb63f23dd8d543b450e9af5aaba8",
+          "path": ".github/workflows/202608301321-verify-live.yml",
+          "subject": "202608301528-gridatlas: request final public cartridge acceptance"
+        },
+        {
+          "commit": "fc7a0b510dd59612e6ed120783b46c782eaa7db2",
+          "path": "tools/scope/verify-compose.mjs",
+          "subject": "202608301321-gridatlas: establish durable scope ledger and antibodies"
+        },
+        {
+          "commit": "fc7a0b510dd59612e6ed120783b46c782eaa7db2",
+          "path": "tools/scope/verify-live.mjs",
+          "subject": "202608301321-gridatlas: establish durable scope ledger and antibodies"
+        },
+        {
+          "commit": "e587e8b05205f9dc47cb77e58bc0a726dd5f7d6e",
+          "path": ".github/workflow-archive/202608301321-hostile-amnesia/202608290716-build-verify-publish-atlas-v9.yml",
+          "subject": "202608301321-gridatlas: inoculate bounded scope loop and archive expired workflows"
+        },
+        {
+          "commit": "e587e8b05205f9dc47cb77e58bc0a726dd5f7d6e",
+          "path": ".github/workflow-archive/202608301321-hostile-amnesia/202608291237-build-verify-publish-atlas-v9.yml",
+          "subject": "202608301321-gridatlas: inoculate bounded scope loop and archive expired workflows"
+        },
+        {
+          "commit": "e587e8b05205f9dc47cb77e58bc0a726dd5f7d6e",
+          "path": ".github/workflow-archive/202608301321-hostile-amnesia/202608291239-build-verify-publish-atlas-v9.yml",
+          "subject": "202608301321-gridatlas: inoculate bounded scope loop and archive expired workflows"
+        },
+        {
+          "commit": "e587e8b05205f9dc47cb77e58bc0a726dd5f7d6e",
+          "path": ".github/workflow-archive/202608301321-hostile-amnesia/202608291430-build-verify-publish-atlas-v9.yml",
+          "subject": "202608301321-gridatlas: inoculate bounded scope loop and archive expired workflows"
+        },
+        {
+          "commit": "e587e8b05205f9dc47cb77e58bc0a726dd5f7d6e",
+          "path": ".github/workflow-archive/202608301321-hostile-amnesia/202608292311-build-verify-publish-render-ready-v9.yml",
+          "subject": "202608301321-gridatlas: inoculate bounded scope loop and archive expired workflows"
+        },
+        {
+          "commit": "e587e8b05205f9dc47cb77e58bc0a726dd5f7d6e",
+          "path": ".github/workflow-archive/202608301321-hostile-amnesia/202608300453-build-verify-promote-exact-repd-deep-link.yml",
+          "subject": "202608301321-gridatlas: inoculate bounded scope loop and archive expired workflows"
+        },
+        {
+          "commit": "e587e8b05205f9dc47cb77e58bc0a726dd5f7d6e",
+          "path": ".github/workflows/202608301321-verify-live.yml",
+          "subject": "202608301321-gridatlas: inoculate bounded scope loop and archive expired workflows"
+        },
+        {
+          "commit": "fa14ed727ce46efc0b56b463b0ade08fde069983",
+          "path": "machine-learning/proofs/202608300453-local-exact-repd-deep-link-proof.json",
+          "subject": "202608300453: promote exact REPD receiver after all public gates"
+        },
+        {
+          "commit": "fa14ed727ce46efc0b56b463b0ade08fde069983",
+          "path": "machine-learning/proofs/202608300453-local-render-ready-proof.json",
+          "subject": "202608300453: promote exact REPD receiver after all public gates"
+        },
+        {
+          "commit": "fa14ed727ce46efc0b56b463b0ade08fde069983",
+          "path": "machine-learning/proofs/202608300453-public-exact-repd-deep-link-proof.json",
+          "subject": "202608300453: promote exact REPD receiver after all public gates"
+        },
+        {
+          "commit": "fa14ed727ce46efc0b56b463b0ade08fde069983",
+          "path": "machine-learning/proofs/202608300453-public-render-ready-proof.json",
+          "subject": "202608300453: promote exact REPD receiver after all public gates"
+        },
+        {
+          "commit": "4f3e8fc5c7ea28edf83dbac9b231024723bcf231",
+          "path": "atman/202608300453-verify-exact-repd-deep-link.mjs",
+          "subject": "202608300501: bound inherited duplicate deep-link console path"
+        },
+        {
+          "commit": "c33c4e969f6422c81a55a15ca774d61d40326a99",
+          "path": "compiler/202608300453-build-exact-repd-deep-link-successor.py",
+          "subject": "202608300500: serve shared 400kV cartridge in local successor proof"
+        },
+        {
+          "commit": "6f442e40b04dff1d0dfe08ffa14da4c2b301f7db",
+          "path": ".github/workflows/202608300453-build-verify-promote-exact-repd-deep-link.yml",
+          "subject": "202608300453: run five-hour exact REPD receiver successor"
+        },
+        {
+          "commit": "d0b698b49a6053301bfc109124d6569a7331c24e",
+          "path": "atman/202608300453-verify-exact-repd-deep-link.mjs",
+          "subject": "202608300453: add exact REPD deep-link browser proof"
+        },
+        {
+          "commit": "f420518363b2141434f2c9d92e23617d3670cf03",
+          "path": ".github/workflows/202608300442-repair-five-hour-comparator-parent.yml",
+          "subject": "202608300447: retire one-shot comparator repair wrapper"
+        },
+        {
+          "commit": "3ee6a34aa2c6ef9f26616600c62690faa8363d99",
+          "path": ".github/workflows/202608300437-five-hour-v8-v9-watchdog.yml",
+          "subject": "202608300443: supply dynamic Atman parent and harden five-hour proof"
+        },
+        {
+          "commit": "526bad25f11165519b5900cbc9da1ae5cedf5b51",
+          "path": ".github/workflows/202608300442-repair-five-hour-comparator-parent.yml",
+          "subject": "202608300442: repair five-hour comparator parent input"
+        },
+        {
+          "commit": "1fc70cd224cd627d2ea1da9a57390c55a48a6e42",
+          "path": ".github/workflows/202608300437-five-hour-v8-v9-watchdog.yml",
+          "subject": "202608300437: start five-hour strict V8 V9 comparator"
+        },
+        {
+          "commit": "1677575af05849c76c99501369de563f9a45647f",
+          "path": ".github/workflows/202608300327-three-hour-v8-v9-watchdog.yml",
+          "subject": "202608300327: start bounded hourly V8 V9 comparator watchdog"
+        },
+        {
+          "commit": "eecfeacdb5d7acb134591614285a90db385e5b59",
+          "path": "index.html",
+          "subject": "202608292311: promote actual-render V8 mirror after public comparator"
+        },
+        {
+          "commit": "eecfeacdb5d7acb134591614285a90db385e5b59",
+          "path": "machine-learning/proofs/202608292311-local-render-ready-proof.json",
+          "subject": "202608292311: promote actual-render V8 mirror after public comparator"
+        },
+        {
+          "commit": "eecfeacdb5d7acb134591614285a90db385e5b59",
+          "path": "machine-learning/proofs/202608292311-public-render-ready-proof.json",
+          "subject": "202608292311: promote actual-render V8 mirror after public comparator"
+        },
+        {
+          "commit": "eecfeacdb5d7acb134591614285a90db385e5b59",
+          "path": "machine-learning/records/202608292311-render-ready-performance.jsonl",
+          "subject": "202608292311: promote actual-render V8 mirror after public comparator"
+        },
+        {
+          "commit": "eecfeacdb5d7acb134591614285a90db385e5b59",
+          "path": "releases/current-v5.json",
+          "subject": "202608292311: promote actual-render V8 mirror after public comparator"
+        },
+        {
+          "commit": "eecfeacdb5d7acb134591614285a90db385e5b59",
+          "path": "state/live-set.json",
+          "subject": "202608292311: promote actual-render V8 mirror after public comparator"
+        },
+        {
+          "commit": "150c4ad7b04686182c27c47ee581960396378dec",
+          "path": "atman/202608292311-render-ready-comparator.mjs",
+          "subject": "202608300327: compare approved V9 adapters against clean V8 oracle"
+        },
+        {
+          "commit": "748e9fd58d5f2fbe94af6c7d1e06af58295d945b",
+          "path": ".github/workflows/202608292311-build-verify-publish-render-ready-v9.yml",
+          "subject": "202608300316: install WebKit for mobile render comparator"
+        },
+        {
+          "commit": "f9864e85ffbc4673d530ce58598ec6a528da8105",
+          "path": "atman/202608292311-render-ready-comparator.mjs",
+          "subject": "202608300313: serialise V8 parent candidate render measurements"
+        },
+        {
+          "commit": "77164dd4f2987857767c43c0e1fb3a7521a3c9f0",
+          "path": "atman/202608292311-render-ready-comparator.mjs",
+          "subject": "202608300300: run mobile render gate on installed Chromium runtime"
+        },
+        {
+          "commit": "0b376ebdc1b41b836d02583eed035070f9fc814d",
+          "path": ".github/workflows/202608292311-build-verify-publish-render-ready-v9.yml",
+          "subject": "202608300232: activate render-ready CI/CD"
+        },
+        {
+          "commit": "1f68aefbe86d3df730c8e79410d0e468e54e62ef",
+          "path": "atman/202608292311-render-ready-comparator.mjs",
+          "subject": "202608300232: add actual-render comparator"
+        },
+        {
+          "commit": "edd56fac489aac9eed911303742003649f295362",
+          "path": "index.html",
+          "subject": "202608292126: promote map-ready V8 mirror after public comparator"
+        },
+        {
+          "commit": "edd56fac489aac9eed911303742003649f295362",
+          "path": "machine-learning/proofs/202608292126-local-map-ready-proof.json",
+          "subject": "202608292126: promote map-ready V8 mirror after public comparator"
+        },
+        {
+          "commit": "edd56fac489aac9eed911303742003649f295362",
+          "path": "machine-learning/proofs/202608292126-public-map-ready-proof.json",
+          "subject": "202608292126: promote map-ready V8 mirror after public comparator"
+        },
+        {
+          "commit": "edd56fac489aac9eed911303742003649f295362",
+          "path": "machine-learning/records/202608292126-layer-performance.jsonl",
+          "subject": "202608292126: promote map-ready V8 mirror after public comparator"
+        },
+        {
+          "commit": "edd56fac489aac9eed911303742003649f295362",
+          "path": "releases/current-v4.json",
+          "subject": "202608292126: promote map-ready V8 mirror after public comparator"
+        },
+        {
+          "commit": "edd56fac489aac9eed911303742003649f295362",
+          "path": "state/live-set.json",
+          "subject": "202608292126: promote map-ready V8 mirror after public comparator"
+        },
+        {
+          "commit": "65bf947b70f6eb3dc3997854cc3837b49d65edb1",
+          "path": "atman/202608292126-layer-performance-comparator.mjs",
+          "subject": "202608292325: record strict browser render equivalence in V8 comparator"
+        },
+        {
+          "commit": "dcaad9683ffff1ec89caa2beac6e3e8354d7b74a",
+          "path": "atman/202608292126-layer-performance-comparator.mjs",
+          "subject": "202608292319: make V8 header pixel proof deterministic"
+        },
+        {
+          "commit": "d9c135a98e002ffe7054bb5aeae0a575a8570213",
+          "path": "atman/202608292126-layer-performance-comparator.mjs",
+          "subject": "202608292314: remove flaky mask geometry from V8 parity proof"
+        },
+        {
+          "commit": "d6e533bd7e4f03f6641a01e7680a8268eb608401",
+          "path": "atman/202608292126-layer-performance-comparator.mjs",
+          "subject": "202608292308: freeze live clock during deterministic V8 pixel proof"
+        },
+        {
+          "commit": "a86bd25479df0da10178e1a1bc384b4ed556fa5b",
+          "path": "atman/202608292126-layer-performance-comparator.mjs",
+          "subject": "202608292303: fix comparator wrapper syntax without weakening gates"
+        },
+        {
+          "commit": "600525dbfbb56d75f7bdc0ec2a06a65d91f01b8d",
+          "path": "atman/202608292126-layer-performance-comparator.mjs",
+          "subject": "202608292258: measure 400kV warm toggle at actual map state boundary"
+        },
+        {
+          "commit": "df779d9871748cd01dcee8f72853e7a75d9cb927",
+          "path": "atman/202608292126-layer-performance-comparator.mjs",
+          "subject": "202608292252: restore proven volatile-header mask in map-ready comparator"
+        },
+        {
+          "commit": "450d954e9765f98aa96e3e14d6b6530e8bad0d39",
+          "path": ".github/workflows/202608291430-build-verify-publish-atlas-v9.yml",
+          "subject": "202608292217: retire stale 1430 staged publication workflow"
+        },
+        {
+          "commit": "ce82aeec6b4465eb495d0222110a1176c63d13e8",
+          "path": "atman/202608292126-layer-performance-comparator.mjs",
+          "subject": "202608292206: install map-ready runtime and comparator source"
+        },
+        {
+          "commit": "ce82aeec6b4465eb495d0222110a1176c63d13e8",
+          "path": "compiler/202608292126-build-map-ready-v9.py",
+          "subject": "202608292206: install map-ready runtime and comparator source"
+        },
+        {
+          "commit": "ce82aeec6b4465eb495d0222110a1176c63d13e8",
+          "path": "contracts/202608292126-map-ready-runtime.json",
+          "subject": "202608292206: install map-ready runtime and comparator source"
+        },
+        {
+          "commit": "ce82aeec6b4465eb495d0222110a1176c63d13e8",
+          "path": "machine-learning/schemas/layer-performance-record-v1.schema.json",
+          "subject": "202608292206: install map-ready runtime and comparator source"
+        },
+        {
+          "commit": "ce82aeec6b4465eb495d0222110a1176c63d13e8",
+          "path": "ui/v8-mirror/202608292126-map-ready-fetch-bridge.js",
+          "subject": "202608292206: install map-ready runtime and comparator source"
+        },
+        {
+          "commit": "ce82aeec6b4465eb495d0222110a1176c63d13e8",
+          "path": "ui/v8-mirror/202608292126-pre-snapped-config-adapter.js",
+          "subject": "202608292206: install map-ready runtime and comparator source"
+        },
+        {
+          "commit": "c85d99d3eca66d08e941b4be395460962e5b1e89",
+          "path": "atman/202608291818-prove-v8-product-mirror.mjs",
+          "subject": "202608291842: compare decoded screenshot RGBA for mirror proof"
+        },
+        {
+          "commit": "4960c8c2aa1479b7c353e38562aab12bbda293c0",
+          "path": ".github/workflows/202608291818-prove-v8-product-mirror.yml",
+          "subject": "202608291842: compare decoded RGBA pixels not PNG encoding bytes"
+        },
+        {
+          "commit": "9d9ba2041663d887528e2b6c577916d9d4d2f207",
+          "path": "atman/202608291818-prove-v8-product-mirror.mjs",
+          "subject": "202608291838: compare stable SCADA components, not async wrapper bitmap"
+        },
+        {
+          "commit": "97c705473664d1714d69f2d1fb64137267a3c460",
+          "path": "atman/202608291818-prove-v8-product-mirror.mjs",
+          "subject": "202608291834: isolate live clock and map backdrop in pixel proof"
+        },
+        {
+          "commit": "b1b0012abd95704c35c75df310a7362a65fab72e",
+          "path": "atman/202608291818-prove-v8-product-mirror.mjs",
+          "subject": "202608291831: mask asynchronous SCADA status text in pixel proof"
+        },
+        {
+          "commit": "2673f679ef0dc3e33547ace91683a72498ec21f7",
+          "path": "atman/202608291818-prove-v8-product-mirror.mjs",
+          "subject": "202608291826: stabilise V8 pixel mirror proof"
+        },
+        {
+          "commit": "8026c285a3290f508d2fcaf977f34c6fd113d092",
+          "path": "atman/202608291818-prove-v8-product-mirror.mjs",
+          "subject": "202608291826: mask volatile map canvas from pixel mirror proof"
+        },
+        {
+          "commit": "b193de0ceb8ef90cc0bc36d74b36aa1dbafe4e26",
+          "path": "atman/202608291818-verify-place-postcode-release.mjs",
+          "subject": "202608291818: prove V8 mirror then add place/postcode search"
+        },
+        {
+          "commit": "493d2632ba05df962c11c8628efdb3d04b0e6d6b",
+          "path": "atman/202608291818-verify-place-postcode-release.mjs",
+          "subject": "202608291818: preserve search placeholder during parity snapshot"
+        },
+        {
+          "commit": "07c6e5a663544960d83486573faba960a37e327a",
+          "path": ".github/workflows/202608291818-build-place-postcode-search.yml",
+          "subject": "202608291818: build timestamped place postcode successor after mirror proof"
+        },
+        {
+          "commit": "3fac783cb6851a8fa8c911e149695171cb58b8e4",
+          "path": "atman/202608291818-verify-place-postcode-release.mjs",
+          "subject": "202608291818: add place postcode release browser gate"
+        },
+        {
+          "commit": "79f6c3895c4713fb166376dcf1d744e4257debf4",
+          "path": "atman/202608291818-prove-v8-product-mirror.mjs",
+          "subject": "202608291818: add strict public V8 mirror proof"
+        },
+        {
+          "commit": "5c97f34eef0d426de5c3534676317d0fa51f4ccc",
+          "path": ".github/workflows/202608291239-build-verify-publish-atlas-v9.yml",
+          "subject": "202608291430: seal exact-routing Atlas V9 source"
+        },
+        {
+          "commit": "5c97f34eef0d426de5c3534676317d0fa51f4ccc",
+          "path": ".github/workflows/202608291430-build-verify-publish-atlas-v9.yml",
+          "subject": "202608291430: seal exact-routing Atlas V9 source"
+        },
+        {
+          "commit": "5c97f34eef0d426de5c3534676317d0fa51f4ccc",
+          "path": "atman/202608291430-compare-repd-coverage.mjs",
+          "subject": "202608291430: seal exact-routing Atlas V9 source"
+        },
+        {
+          "commit": "5c97f34eef0d426de5c3534676317d0fa51f4ccc",
+          "path": "atman/202608291430-public-browser-readback.mjs",
+          "subject": "202608291430: seal exact-routing Atlas V9 source"
+        },
+        {
+          "commit": "5c97f34eef0d426de5c3534676317d0fa51f4ccc",
+          "path": "atman/202608291430-rendered-browser-audit.mjs",
+          "subject": "202608291430: seal exact-routing Atlas V9 source"
+        },
+        {
+          "commit": "5c97f34eef0d426de5c3534676317d0fa51f4ccc",
+          "path": "atman/202608291430-verify-live-release.mjs",
+          "subject": "202608291430: seal exact-routing Atlas V9 source"
+        },
+        {
+          "commit": "ac00b9f326187a1e3bfabb5b45397210850c6052",
+          "path": ".github/workflows/202608291237-build-verify-publish-atlas-v9.yml",
+          "subject": "202608291239: stage glyphless immutable Atlas V9 patch"
+        },
+        {
+          "commit": "ac00b9f326187a1e3bfabb5b45397210850c6052",
+          "path": ".github/workflows/202608291239-build-verify-publish-atlas-v9.yml",
+          "subject": "202608291239: stage glyphless immutable Atlas V9 patch"
+        },
+        {
+          "commit": "ac00b9f326187a1e3bfabb5b45397210850c6052",
+          "path": "atman/202608291239-compare-incumbent-successor.py",
+          "subject": "202608291239: stage glyphless immutable Atlas V9 patch"
+        },
+        {
+          "commit": "ac00b9f326187a1e3bfabb5b45397210850c6052",
+          "path": "atman/202608291239-public-browser-readback.mjs",
+          "subject": "202608291239: stage glyphless immutable Atlas V9 patch"
+        },
+        {
+          "commit": "ac00b9f326187a1e3bfabb5b45397210850c6052",
+          "path": "atman/202608291239-rendered-browser-audit.mjs",
+          "subject": "202608291239: stage glyphless immutable Atlas V9 patch"
+        },
+        {
+          "commit": "ac00b9f326187a1e3bfabb5b45397210850c6052",
+          "path": "atman/202608291239-verify-live-release.mjs",
+          "subject": "202608291239: stage glyphless immutable Atlas V9 patch"
+        },
+        {
+          "commit": "390f8b48b54e231f403ce2baf613d63910d62b2a",
+          "path": ".github/workflows/202608291237-build-verify-publish-atlas-v9.yml",
+          "subject": "202608291237: retain full V8 history for cumulative comparator"
+        },
+        {
+          "commit": "efeb473c1908498d138c4ede8e27291a5484569c",
+          "path": ".github/workflows/202608291237-build-verify-publish-atlas-v9.yml",
+          "subject": "202608291237: click fail-closed layer without retained-state assertion"
+        },
+        {
+          "commit": "efeb473c1908498d138c4ede8e27291a5484569c",
+          "path": "atman/202608291237-rendered-browser-audit.mjs",
+          "subject": "202608291237: click fail-closed layer without retained-state assertion"
+        },
+        {
+          "commit": "f941d118f8109fcf8c27b3aef69e372f53486952",
+          "path": ".github/workflows/202608291237-build-verify-publish-atlas-v9.yml",
+          "subject": "202608291237: open collapsed layer controls in browser gate"
+        },
+        {
+          "commit": "f941d118f8109fcf8c27b3aef69e372f53486952",
+          "path": "atman/202608291237-rendered-browser-audit.mjs",
+          "subject": "202608291237: open collapsed layer controls in browser gate"
+        },
+        {
+          "commit": "9579636922a7ffa1a58fc413e1654ea2c3bbb928",
+          "path": ".github/workflows/202608291237-build-verify-publish-atlas-v9.yml",
+          "subject": "202608291237: programme staged Atlas V9 publication"
+        },
+        {
+          "commit": "9579636922a7ffa1a58fc413e1654ea2c3bbb928",
+          "path": "atman/202608291237-compare-incumbent-successor.py",
+          "subject": "202608291237: programme staged Atlas V9 publication"
+        },
+        {
+          "commit": "9579636922a7ffa1a58fc413e1654ea2c3bbb928",
+          "path": "atman/202608291237-public-browser-readback.mjs",
+          "subject": "202608291237: programme staged Atlas V9 publication"
+        },
+        {
+          "commit": "9579636922a7ffa1a58fc413e1654ea2c3bbb928",
+          "path": "atman/202608291237-rendered-browser-audit.mjs",
+          "subject": "202608291237: programme staged Atlas V9 publication"
+        },
+        {
+          "commit": "9579636922a7ffa1a58fc413e1654ea2c3bbb928",
+          "path": "atman/202608291237-verify-live-release.mjs",
+          "subject": "202608291237: programme staged Atlas V9 publication"
+        },
+        {
+          "commit": "0d92ae20573a4313f095f131d4b75571f0edd3e4",
+          "path": ".github/workflows/202608290716-build-verify-publish-atlas-v9.yml",
+          "subject": "202608290846: gate V9 with rendered browser audit"
+        },
+        {
+          "commit": "0d92ae20573a4313f095f131d4b75571f0edd3e4",
+          "path": ".gitignore",
+          "subject": "202608290846: gate V9 with rendered browser audit"
+        },
+        {
+          "commit": "0d92ae20573a4313f095f131d4b75571f0edd3e4",
+          "path": "atman/202608290836-rendered-browser-audit.mjs",
+          "subject": "202608290846: gate V9 with rendered browser audit"
+        },
+        {
+          "commit": "0d92ae20573a4313f095f131d4b75571f0edd3e4",
+          "path": "package-lock.json",
+          "subject": "202608290846: gate V9 with rendered browser audit"
+        },
+        {
+          "commit": "0d92ae20573a4313f095f131d4b75571f0edd3e4",
+          "path": "package.json",
+          "subject": "202608290846: gate V9 with rendered browser audit"
+        },
+        {
+          "commit": "0d92ae20573a4313f095f131d4b75571f0edd3e4",
+          "path": "ui/site/atlas-v9.mjs",
+          "subject": "202608290846: gate V9 with rendered browser audit"
+        },
+        {
+          "commit": "0d92ae20573a4313f095f131d4b75571f0edd3e4",
+          "path": "ui/site/index.html",
+          "subject": "202608290846: gate V9 with rendered browser audit"
+        },
+        {
+          "commit": "d5510827e171d7ee0745d5badffd2ff21689f398",
+          "path": ".github/workflows/202608290716-build-verify-publish-atlas-v9.yml",
+          "subject": "202608290828: harden V9 verification and compare incumbent"
+        },
+        {
+          "commit": "d5510827e171d7ee0745d5badffd2ff21689f398",
+          "path": "atman/202608290828-compare-live-vs-candidate.py",
+          "subject": "202608290828: harden V9 verification and compare incumbent"
+        }
+      ],
+      "files_in_head": 242,
+      "head": "e257a7dba84b2e1b2cd7e349cfbefc1e6e332a71",
+      "most_changed_paths": [
+        [
+          "atman/202608291818-prove-v8-product-mirror.mjs",
+          12
+        ],
+        [
+          "state/live-set.json",
+          11
+        ],
+        [
+          "index.html",
+          9
+        ],
+        [
+          "releases/current-v5.json",
+          8
+        ],
+        [
+          "atman/202608292126-layer-performance-comparator.mjs",
+          8
+        ],
+        [
+          "STATE.md",
+          7
+        ],
+        [
+          "scope-of-works/202608301321-scope-of-works.md",
+          7
+        ],
+        [
+          "atlas/current.json",
+          6
+        ],
+        [
+          "ui/v8-mirror/202608291818-place-postcode-search.js",
+          5
+        ],
+        [
+          ".github/workflows/202608292126-bootstrap-map-ready-source.yml",
+          5
+        ],
+        [
+          ".github/workflows/202608291237-build-verify-publish-atlas-v9.yml",
+          5
+        ],
+        [
+          ".github/workflows/202608290716-build-verify-publish-atlas-v9.yml",
+          5
+        ],
+        [
+          "atman/202608292311-render-ready-comparator.mjs",
+          4
+        ],
+        [
+          ".github/workflows/202608291818-prove-v8-product-mirror.yml",
+          4
+        ],
+        [
+          ".github/workflows/202608301321-verify-live.yml",
+          3
+        ],
+        [
+          "assets/atlas-v9.mjs",
+          3
+        ],
+        [
+          "ui/v8-mirror/v9-parquet-fetch-bridge.js",
+          3
+        ],
+        [
+          ".github/workflows/202608300430-bootstrap-five-hour-v8-v9-closure.yml",
+          3
+        ],
+        [
+          ".github/workflows/202608300327-three-hour-v8-v9-watchdog.yml",
+          3
+        ],
+        [
+          ".github/workflows/202608291742-promote-root-current.yml",
+          3
+        ],
+        [
+          ".github/workflows/202608291742-v9-transfer-closure.yml",
+          3
+        ],
+        [
+          "atman/202608291818-verify-place-postcode-release.mjs",
+          3
+        ],
+        [
+          "atman/202608291237-rendered-browser-audit.mjs",
+          3
+        ],
+        [
+          "ui/site/index.html",
+          3
+        ],
+        [
+          "tools/v9_5/compiler.py",
+          2
+        ],
+        [
+          ".github/workflows/202608301321-scope-loop.yml",
+          2
+        ],
+        [
+          "scope-of-works/202608301524-06-close-and-harden-cicd-loop.md",
+          2
+        ],
+        [
+          "scope-of-works/202608301522-05-compile-and-attest-cartridge-composition.md",
+          2
+        ],
+        [
+          "scope-of-works/202608301521-04-add-uk-location-search-cartridge.md",
+          2
+        ],
+        [
+          "scope-of-works/202608301520-03-apply-pipelinenews-lessons.md",
+          2
+        ]
+      ],
+      "path": "/home/runner/work/gridatlas/gridatlas",
+      "release_first_seen": {
+        "202608291237-atlas-v9": {
+          "commit": "e5ad420a363a879cc84e33133a673ac165e16891",
+          "committed_at": "2026-08-30T14:18:51Z",
+          "subject": "202608301321-gridatlas-scope-01: Scope 1 \u2014 move the Atlas into `atlas/`"
+        },
+        "202608291239-atlas-v9": {
+          "commit": "e5ad420a363a879cc84e33133a673ac165e16891",
+          "committed_at": "2026-08-30T14:18:51Z",
+          "subject": "202608301321-gridatlas-scope-01: Scope 1 \u2014 move the Atlas into `atlas/`"
+        },
+        "202608291430-atlas-v9": {
+          "commit": "e5ad420a363a879cc84e33133a673ac165e16891",
+          "committed_at": "2026-08-30T14:18:51Z",
+          "subject": "202608301321-gridatlas-scope-01: Scope 1 \u2014 move the Atlas into `atlas/`"
+        },
+        "202608291758-atlas-v9": {
+          "commit": "e5ad420a363a879cc84e33133a673ac165e16891",
+          "committed_at": "2026-08-30T14:18:51Z",
+          "subject": "202608301321-gridatlas-scope-01: Scope 1 \u2014 move the Atlas into `atlas/`"
+        },
+        "202608291818-atlas-v9": {
+          "commit": "e5ad420a363a879cc84e33133a673ac165e16891",
+          "committed_at": "2026-08-30T14:18:51Z",
+          "subject": "202608301321-gridatlas-scope-01: Scope 1 \u2014 move the Atlas into `atlas/`"
+        },
+        "202608292126-atlas-v9": {
+          "commit": "e5ad420a363a879cc84e33133a673ac165e16891",
+          "committed_at": "2026-08-30T14:18:51Z",
+          "subject": "202608301321-gridatlas-scope-01: Scope 1 \u2014 move the Atlas into `atlas/`"
+        },
+        "202608292311-atlas-v9": {
+          "commit": "e5ad420a363a879cc84e33133a673ac165e16891",
+          "committed_at": "2026-08-30T14:18:51Z",
+          "subject": "202608301321-gridatlas-scope-01: Scope 1 \u2014 move the Atlas into `atlas/`"
+        },
+        "202608300453-atlas-v9": {
+          "commit": "e5ad420a363a879cc84e33133a673ac165e16891",
+          "committed_at": "2026-08-30T14:18:51Z",
+          "subject": "202608301321-gridatlas-scope-01: Scope 1 \u2014 move the Atlas into `atlas/`"
+        }
+      },
+      "releases_in_head": [
+        "202608291237-atlas-v9",
+        "202608291239-atlas-v9",
+        "202608291430-atlas-v9",
+        "202608291758-atlas-v9",
+        "202608291818-atlas-v9",
+        "202608292126-atlas-v9",
+        "202608292311-atlas-v9",
+        "202608300453-atlas-v9"
+      ],
+      "scanner_candidates_before_this_change": [],
+      "scanner_candidates_now": [
+        "tools/history/scan_gridatlas_versions.py"
+      ],
+      "scanner_was_already_present": false,
+      "search_pattern_changes": [
+        {
+          "commit": "9a0e62fedd0a07c5ee19fc517c856b32e2d45c52",
+          "path": "STATE.md",
+          "subject": "202608301521-gridatlas-scope-04: Scope 4 \u2014 add UK postcode and town location search"
+        },
+        {
+          "commit": "9a0e62fedd0a07c5ee19fc517c856b32e2d45c52",
+          "path": "atlas/cartridges/202608301136-place-postcode-search.js",
+          "subject": "202608301521-gridatlas-scope-04: Scope 4 \u2014 add UK postcode and town location search"
+        },
+        {
+          "commit": "9a0e62fedd0a07c5ee19fc517c856b32e2d45c52",
+          "path": "atlas/current.json",
+          "subject": "202608301521-gridatlas-scope-04: Scope 4 \u2014 add UK postcode and town location search"
+        },
+        {
+          "commit": "9a0e62fedd0a07c5ee19fc517c856b32e2d45c52",
+          "path": "scope-of-works/202608301321-scope-of-works.md",
+          "subject": "202608301521-gridatlas-scope-04: Scope 4 \u2014 add UK postcode and town location search"
+        },
+        {
+          "commit": "9a0e62fedd0a07c5ee19fc517c856b32e2d45c52",
+          "path": "scope-of-works/202608301521-04-add-uk-location-search-cartridge.md",
+          "subject": "202608301521-gridatlas-scope-04: Scope 4 \u2014 add UK postcode and town location search"
+        },
+        {
+          "commit": "9a0e62fedd0a07c5ee19fc517c856b32e2d45c52",
+          "path": "scope-of-works/202608301522-05-compile-and-attest-cartridge-composition.md",
+          "subject": "202608301521-gridatlas-scope-04: Scope 4 \u2014 add UK postcode and town location search"
+        },
+        {
+          "commit": "9a0e62fedd0a07c5ee19fc517c856b32e2d45c52",
+          "path": "ui/cartridges/202608301136-uk-gazetteer-flyto.mjs",
+          "subject": "202608301521-gridatlas-scope-04: Scope 4 \u2014 add UK postcode and town location search"
+        },
+        {
+          "commit": "e17e4fc233284f0c68467a4cf2b6567e7d2598d8",
+          "path": "cartridges/202608290716-repd-address-flyto.mjs",
+          "subject": "202608301518-gridatlas-scope-02: Scope 2 \u2014 modularise the Atlas shell and cartridges"
+        },
+        {
+          "commit": "e17e4fc233284f0c68467a4cf2b6567e7d2598d8",
+          "path": "ui/successor-202608291239/cartridges/202608290716-repd-address-flyto.mjs",
+          "subject": "202608301518-gridatlas-scope-02: Scope 2 \u2014 modularise the Atlas shell and cartridges"
+        },
+        {
+          "commit": "e17e4fc233284f0c68467a4cf2b6567e7d2598d8",
+          "path": "ui/successor/cartridges/202608290716-repd-address-flyto.mjs",
+          "subject": "202608301518-gridatlas-scope-02: Scope 2 \u2014 modularise the Atlas shell and cartridges"
+        },
+        {
+          "commit": "e17e4fc233284f0c68467a4cf2b6567e7d2598d8",
+          "path": "ui/v8-mirror/202608291818-place-postcode-search.js",
+          "subject": "202608301518-gridatlas-scope-02: Scope 2 \u2014 modularise the Atlas shell and cartridges"
+        },
+        {
+          "commit": "e5ad420a363a879cc84e33133a673ac165e16891",
+          "path": "atlas/releases/202608291237-atlas-v9/cartridges/202608290716-repd-address-flyto.mjs",
+          "subject": "202608301321-gridatlas-scope-01: Scope 1 \u2014 move the Atlas into `atlas/`"
+        },
+        {
+          "commit": "e5ad420a363a879cc84e33133a673ac165e16891",
+          "path": "atlas/releases/202608291239-atlas-v9/cartridges/202608290716-repd-address-flyto.mjs",
+          "subject": "202608301321-gridatlas-scope-01: Scope 1 \u2014 move the Atlas into `atlas/`"
+        },
+        {
+          "commit": "e5ad420a363a879cc84e33133a673ac165e16891",
+          "path": "atlas/releases/202608291430-atlas-v9/cartridges/202608290716-repd-address-flyto.mjs",
+          "subject": "202608301321-gridatlas-scope-01: Scope 1 \u2014 move the Atlas into `atlas/`"
+        },
+        {
+          "commit": "e5ad420a363a879cc84e33133a673ac165e16891",
+          "path": "atlas/releases/202608291818-atlas-v9/202608291818-place-postcode-search.js",
+          "subject": "202608301321-gridatlas-scope-01: Scope 1 \u2014 move the Atlas into `atlas/`"
+        },
+        {
+          "commit": "e5ad420a363a879cc84e33133a673ac165e16891",
+          "path": "atlas/releases/202608292126-atlas-v9/202608291818-place-postcode-search.js",
+          "subject": "202608301321-gridatlas-scope-01: Scope 1 \u2014 move the Atlas into `atlas/`"
+        },
+        {
+          "commit": "e5ad420a363a879cc84e33133a673ac165e16891",
+          "path": "atlas/releases/202608292311-atlas-v9/202608291818-place-postcode-search.js",
+          "subject": "202608301321-gridatlas-scope-01: Scope 1 \u2014 move the Atlas into `atlas/`"
+        },
+        {
+          "commit": "e5ad420a363a879cc84e33133a673ac165e16891",
+          "path": "atlas/releases/202608300453-atlas-v9/202608291818-place-postcode-search.js",
+          "subject": "202608301321-gridatlas-scope-01: Scope 1 \u2014 move the Atlas into `atlas/`"
+        },
+        {
+          "commit": "fc7a0b510dd59612e6ed120783b46c782eaa7db2",
+          "path": "tools/scope/patches/202608301136-gazetteer.jsfrag",
+          "subject": "202608301321-gridatlas: establish durable scope ledger and antibodies"
+        },
+        {
+          "commit": "e587e8b05205f9dc47cb77e58bc0a726dd5f7d6e",
+          "path": ".github/workflow-archive/202608301321-hostile-amnesia/202608291818-build-place-postcode-search.yml",
+          "subject": "202608301321-gridatlas: inoculate bounded scope loop and archive expired workflows"
+        },
+        {
+          "commit": "bf16a713b9e5d926822efe80c681c017cc4edcee",
+          "path": "202608300453-atlas-v9/202608291818-place-postcode-search.js",
+          "subject": "202608300453: publish exact REPD receiver candidate"
+        },
+        {
+          "commit": "0597f4654a675e575690a6eab43f3c17707ef613",
+          "path": "202608292311-atlas-v9/202608291818-place-postcode-search.js",
+          "subject": "202608292311: publish worker-source render-ready V8 mirror candidate"
+        },
+        {
+          "commit": "0454c456a459802fc5b7c890302e97576b104574",
+          "path": ".github/workflows/202608300315-export-render-ready-webkit-patch.yml",
+          "subject": "202608300315: export workflow replacement outside hidden directory"
+        },
+        {
+          "commit": "e03337510861b26344a738d9d82de9bcdcbc1510",
+          "path": "202608292126-atlas-v9/202608291818-place-postcode-search.js",
+          "subject": "202608292126: publish map-ready V8 mirror performance candidate"
+        },
+        {
+          "commit": "31fec5ef30571c0c7c5c488d08493495fce9c731",
+          "path": "202608291818-atlas-v9/202608291818-place-postcode-search.js",
+          "subject": "202608291818: stage V8 mirror with place and postcode search"
+        },
+        {
+          "commit": "31fec5ef30571c0c7c5c488d08493495fce9c731",
+          "path": "202608291818-atlas-v9/index.html",
+          "subject": "202608291818: stage V8 mirror with place and postcode search"
+        },
+        {
+          "commit": "31fec5ef30571c0c7c5c488d08493495fce9c731",
+          "path": "202608291818-atlas-v9/release-manifest.json",
+          "subject": "202608291818: stage V8 mirror with place and postcode search"
+        },
+        {
+          "commit": "31fec5ef30571c0c7c5c488d08493495fce9c731",
+          "path": "202608291818-atlas-v9/v9-parquet-fetch-bridge.js",
+          "subject": "202608291818: stage V8 mirror with place and postcode search"
+        },
+        {
+          "commit": "31fec5ef30571c0c7c5c488d08493495fce9c731",
+          "path": "202608291818-atlas-v9/ventus-corev8engine.js",
+          "subject": "202608291818: stage V8 mirror with place and postcode search"
+        },
+        {
+          "commit": "31fec5ef30571c0c7c5c488d08493495fce9c731",
+          "path": "202608291818-atlas-v9/ventusv8.css",
+          "subject": "202608291818: stage V8 mirror with place and postcode search"
+        },
+        {
+          "commit": "b43dc85af3e0f58645d3c792ea8fb6f81508fb64",
+          "path": ".github/workflows/202608291818-prove-v8-product-mirror.yml",
+          "subject": "202608291842: prove decoded pixels and normalise compact postcodes"
+        },
+        {
+          "commit": "b43dc85af3e0f58645d3c792ea8fb6f81508fb64",
+          "path": "atman/202608291818-prove-v8-product-mirror.mjs",
+          "subject": "202608291842: prove decoded pixels and normalise compact postcodes"
+        },
+        {
+          "commit": "b43dc85af3e0f58645d3c792ea8fb6f81508fb64",
+          "path": "ui/v8-mirror/202608291818-place-postcode-search.js",
+          "subject": "202608291842: prove decoded pixels and normalise compact postcodes"
+        },
+        {
+          "commit": "6b7d68172118c5991bd03ed5cbc3700bb8b55141",
+          "path": "ui/v8-mirror/202608291818-place-postcode-search.js",
+          "subject": "202608291842: make postcode search spacing-insensitive"
+        },
+        {
+          "commit": "b193de0ceb8ef90cc0bc36d74b36aa1dbafe4e26",
+          "path": ".github/workflows/202608291818-build-place-postcode-search.yml",
+          "subject": "202608291818: prove V8 mirror then add place/postcode search"
+        },
+        {
+          "commit": "b193de0ceb8ef90cc0bc36d74b36aa1dbafe4e26",
+          "path": ".github/workflows/202608291818-prove-v8-product-mirror.yml",
+          "subject": "202608291818: prove V8 mirror then add place/postcode search"
+        },
+        {
+          "commit": "b193de0ceb8ef90cc0bc36d74b36aa1dbafe4e26",
+          "path": "atman/202608291818-prove-v8-product-mirror.mjs",
+          "subject": "202608291818: prove V8 mirror then add place/postcode search"
+        },
+        {
+          "commit": "b193de0ceb8ef90cc0bc36d74b36aa1dbafe4e26",
+          "path": "atman/202608291818-verify-place-postcode-release.mjs",
+          "subject": "202608291818: prove V8 mirror then add place/postcode search"
+        },
+        {
+          "commit": "b193de0ceb8ef90cc0bc36d74b36aa1dbafe4e26",
+          "path": "ui/v8-mirror/202608291818-place-postcode-search.js",
+          "subject": "202608291818: prove V8 mirror then add place/postcode search"
+        },
+        {
+          "commit": "493d2632ba05df962c11c8628efdb3d04b0e6d6b",
+          "path": "atman/202608291818-verify-place-postcode-release.mjs",
+          "subject": "202608291818: preserve search placeholder during parity snapshot"
+        },
+        {
+          "commit": "07c6e5a663544960d83486573faba960a37e327a",
+          "path": ".github/workflows/202608291818-build-place-postcode-search.yml",
+          "subject": "202608291818: build timestamped place postcode successor after mirror proof"
+        },
+        {
+          "commit": "3fac783cb6851a8fa8c911e149695171cb58b8e4",
+          "path": "atman/202608291818-verify-place-postcode-release.mjs",
+          "subject": "202608291818: add place postcode release browser gate"
+        },
+        {
+          "commit": "18f28365cd15cd25c9dd8bb7548f55dcc16f078a",
+          "path": "ui/v8-mirror/202608291818-place-postcode-search.js",
+          "subject": "202608291818: add place and postcode search adapter"
+        },
+        {
+          "commit": "2524e3d81cc084e2e6cd1aed62ed9516dd8d4b28",
+          "path": "202608291430-atlas-v9/cartridges/202608290716-repd-address-flyto.mjs",
+          "subject": "202608291430: stage immutable exact-routing Atlas V9 for App promotion"
+        },
+        {
+          "commit": "1898184ccbf52ca836cf1482362fc5933baf3e8d",
+          "path": "202608291239-atlas-v9/cartridges/202608290716-repd-address-flyto.mjs",
+          "subject": "202608291239: stage immutable Atlas V9 folder for App promotion"
+        },
+        {
+          "commit": "ac00b9f326187a1e3bfabb5b45397210850c6052",
+          "path": "ui/successor-202608291239/cartridges/202608290716-repd-address-flyto.mjs",
+          "subject": "202608291239: stage glyphless immutable Atlas V9 patch"
+        },
+        {
+          "commit": "ce88cd8fdba9c60411cd91c419d43f3bfff38b4c",
+          "path": "202608291237-atlas-v9/cartridges/202608290716-repd-address-flyto.mjs",
+          "subject": "202608291237: stage immutable Atlas V9 folder for App promotion"
+        },
+        {
+          "commit": "9579636922a7ffa1a58fc413e1654ea2c3bbb928",
+          "path": "ui/successor/cartridges/202608290716-repd-address-flyto.mjs",
+          "subject": "202608291237: programme staged Atlas V9 publication"
+        },
+        {
+          "commit": "514fce2f3605ae53267c5ee955b301604a91b2fd",
+          "path": "assets/atlas-v9.mjs",
+          "subject": "202608290716: publish verified Atlas V9 address search"
+        },
+        {
+          "commit": "514fce2f3605ae53267c5ee955b301604a91b2fd",
+          "path": "index.html",
+          "subject": "202608290716: publish verified Atlas V9 address search"
+        },
+        {
+          "commit": "e73f1076fe7534750ca0141dc738f4bb80fc7c51",
+          "path": "index.html",
+          "subject": "202608290716: publish verified Atlas V9 address search"
+        },
+        {
+          "commit": "0777dc75c07578b786dc23c3bc5bd117eeb0a98f",
+          "path": "assets/atlas-v9.css",
+          "subject": "202608290716: publish verified Atlas V9 address search"
+        },
+        {
+          "commit": "0777dc75c07578b786dc23c3bc5bd117eeb0a98f",
+          "path": "assets/atlas-v9.mjs",
+          "subject": "202608290716: publish verified Atlas V9 address search"
+        },
+        {
+          "commit": "0777dc75c07578b786dc23c3bc5bd117eeb0a98f",
+          "path": "cartridges/202608290716-repd-address-flyto.mjs",
+          "subject": "202608290716: publish verified Atlas V9 address search"
+        },
+        {
+          "commit": "0777dc75c07578b786dc23c3bc5bd117eeb0a98f",
+          "path": "data/repd_browser_registry_202608290716.json",
+          "subject": "202608290716: publish verified Atlas V9 address search"
+        },
+        {
+          "commit": "0777dc75c07578b786dc23c3bc5bd117eeb0a98f",
+          "path": "data/repd_projects_202608290716.parquet",
+          "subject": "202608290716: publish verified Atlas V9 address search"
+        },
+        {
+          "commit": "0777dc75c07578b786dc23c3bc5bd117eeb0a98f",
+          "path": "data/repd_v9_manifest_202608290716.json",
+          "subject": "202608290716: publish verified Atlas V9 address search"
+        },
+        {
+          "commit": "0777dc75c07578b786dc23c3bc5bd117eeb0a98f",
+          "path": "index.html",
+          "subject": "202608290716: publish verified Atlas V9 address search"
+        },
+        {
+          "commit": "67f84326190145ffd7fed12f4678a0356743a501",
+          "path": "ui/cartridges/202608290716-repd-address-flyto.mjs",
+          "subject": "202608290731: normalise compact REPD postcode search"
+        },
+        {
+          "commit": "a35daa18625fa3c0e07ba281b090d45aa1b26550",
+          "path": "ui/cartridges/202608290716-repd-address-flyto.mjs",
+          "subject": "202608290716: add Atlas V9 REPD CI/CD control plane"
+        }
+      ],
+      "timestamp_groups": {
+        "202608290716": [
+          ".github/workflows/202608290716-build-verify-publish-atlas-v9.yml",
+          "atman/202608290716-verify-atlas-v9.py",
+          "cartridges/202608290716-repd-address-flyto.mjs",
+          "compiler/202608290716-compile-atlas-v9.py",
+          "contracts/202608290716-atlas-v9-source.json",
+          "ui/cartridges/202608290716-repd-address-flyto.mjs",
+          "ui/successor-202608291239/cartridges/202608290716-repd-address-flyto.mjs",
+          "ui/successor/cartridges/202608290716-repd-address-flyto.mjs"
+        ],
+        "202608290828": [
+          "atman/202608290828-compare-live-vs-candidate.py"
+        ],
+        "202608290836": [
+          "atman/202608290836-rendered-browser-audit.mjs"
+        ],
+        "202608291237": [
+          ".github/workflows/202608291237-build-verify-publish-atlas-v9.yml",
+          "202608291237-atlas-v9/assets/atlas-v9.css",
+          "202608291237-atlas-v9/assets/atlas-v9.mjs",
+          "202608291237-atlas-v9/assets/data-gridatlas-client.mjs",
+          "202608291237-atlas-v9/build-manifest.json",
+          "202608291237-atlas-v9/cartridges/202608290716-repd-address-flyto.mjs",
+          "202608291237-atlas-v9/index.html",
+          "202608291237-atlas-v9/release-manifest.json",
+          "atlas/releases/202608291237-atlas-v9/assets/atlas-v9.css",
+          "atlas/releases/202608291237-atlas-v9/assets/atlas-v9.mjs",
+          "atlas/releases/202608291237-atlas-v9/assets/data-gridatlas-client.mjs",
+          "atlas/releases/202608291237-atlas-v9/build-manifest.json",
+          "atlas/releases/202608291237-atlas-v9/cartridges/202608290716-repd-address-flyto.mjs",
+          "atlas/releases/202608291237-atlas-v9/index.html",
+          "atlas/releases/202608291237-atlas-v9/release-manifest.json",
+          "atman/202608291237-compare-incumbent-successor.py",
+          "atman/202608291237-public-browser-readback.mjs",
+          "atman/202608291237-rendered-browser-audit.mjs",
+          "atman/202608291237-verify-live-release.mjs",
+          "compiler/202608291237-compile-atlas-v9-live.py",
+          "contracts/202608291237-atlas-v9-live-release.json"
+        ],
+        "202608291239": [
+          ".github/workflows/202608291239-build-verify-publish-atlas-v9.yml",
+          "202608291239-atlas-v9/assets/atlas-v9.css",
+          "202608291239-atlas-v9/assets/atlas-v9.mjs",
+          "202608291239-atlas-v9/assets/data-gridatlas-client.mjs",
+          "202608291239-atlas-v9/build-manifest.json",
+          "202608291239-atlas-v9/cartridges/202608290716-repd-address-flyto.mjs",
+          "202608291239-atlas-v9/index.html",
+          "202608291239-atlas-v9/release-manifest.json",
+          "atlas/releases/202608291239-atlas-v9/assets/atlas-v9.css",
+          "atlas/releases/202608291239-atlas-v9/assets/atlas-v9.mjs",
+          "atlas/releases/202608291239-atlas-v9/assets/data-gridatlas-client.mjs",
+          "atlas/releases/202608291239-atlas-v9/build-manifest.json",
+          "atlas/releases/202608291239-atlas-v9/cartridges/202608290716-repd-address-flyto.mjs",
+          "atlas/releases/202608291239-atlas-v9/index.html",
+          "atlas/releases/202608291239-atlas-v9/release-manifest.json",
+          "atman/202608291239-compare-incumbent-successor.py",
+          "atman/202608291239-public-browser-readback.mjs",
+          "atman/202608291239-rendered-browser-audit.mjs",
+          "atman/202608291239-verify-live-release.mjs",
+          "compiler/202608291239-compile-atlas-v9-live.py",
+          "contracts/202608291239-atlas-v9-live-release.json"
+        ],
+        "202608291430": [
+          ".github/workflows/202608291430-build-verify-publish-atlas-v9.yml",
+          "202608291430-atlas-v9/assets/atlas-v9.css",
+          "202608291430-atlas-v9/assets/atlas-v9.mjs",
+          "202608291430-atlas-v9/assets/data-gridatlas-client.mjs",
+          "202608291430-atlas-v9/assets/repd-routing-client.mjs",
+          "202608291430-atlas-v9/build-manifest.json",
+          "202608291430-atlas-v9/cartridges/202608290716-repd-address-flyto.mjs",
+          "202608291430-atlas-v9/index.html",
+          "202608291430-atlas-v9/release-manifest.json",
+          "atlas/releases/202608291430-atlas-v9/assets/atlas-v9.css",
+          "atlas/releases/202608291430-atlas-v9/assets/atlas-v9.mjs",
+          "atlas/releases/202608291430-atlas-v9/assets/data-gridatlas-client.mjs",
+          "atlas/releases/202608291430-atlas-v9/assets/repd-routing-client.mjs",
+          "atlas/releases/202608291430-atlas-v9/build-manifest.json",
+          "atlas/releases/202608291430-atlas-v9/cartridges/202608290716-repd-address-flyto.mjs",
+          "atlas/releases/202608291430-atlas-v9/index.html",
+          "atlas/releases/202608291430-atlas-v9/release-manifest.json",
+          "atman/202608291430-compare-repd-coverage.mjs",
+          "atman/202608291430-public-browser-readback.mjs",
+          "atman/202608291430-rendered-browser-audit.mjs",
+          "atman/202608291430-verify-live-release.mjs",
+          "compiler/202608291430-compile-atlas-v9-live.py",
+          "contracts/202608291430-atlas-v9-live-release.json"
+        ],
+        "202608291742": [
+          ".github/workflows/202608291742-promote-root-current.yml",
+          ".github/workflows/202608291742-v9-transfer-closure.yml"
+        ],
+        "202608291758": [
+          ".github/workflows/202608291758-build-v8-product-mirror.yml",
+          "202608291758-atlas-v9/index.html",
+          "202608291758-atlas-v9/release-manifest.json",
+          "202608291758-atlas-v9/v9-parquet-fetch-bridge.js",
+          "202608291758-atlas-v9/ventus-corev8engine.js",
+          "202608291758-atlas-v9/ventusv8.css",
+          "atlas/releases/202608291758-atlas-v9/index.html",
+          "atlas/releases/202608291758-atlas-v9/release-manifest.json",
+          "atlas/releases/202608291758-atlas-v9/v9-parquet-fetch-bridge.js",
+          "atlas/releases/202608291758-atlas-v9/ventus-corev8engine.js",
+          "atlas/releases/202608291758-atlas-v9/ventusv8.css",
+          "atman/202608291758-v8-product-parity.mjs"
+        ],
+        "202608291818": [
+          ".github/workflows/202608291818-build-place-postcode-search.yml",
+          ".github/workflows/202608291818-prove-v8-product-mirror.yml",
+          "202608291818-atlas-v9/202608291818-place-postcode-search.js",
+          "202608291818-atlas-v9/index.html",
+          "202608291818-atlas-v9/release-manifest.json",
+          "202608291818-atlas-v9/v9-parquet-fetch-bridge.js",
+          "202608291818-atlas-v9/ventus-corev8engine.js",
+          "202608291818-atlas-v9/ventusv8.css",
+          "atlas/releases/202608291818-atlas-v9/202608291818-place-postcode-search.js",
+          "atlas/releases/202608291818-atlas-v9/index.html",
+          "atlas/releases/202608291818-atlas-v9/release-manifest.json",
+          "atlas/releases/202608291818-atlas-v9/v9-parquet-fetch-bridge.js",
+          "atlas/releases/202608291818-atlas-v9/ventus-corev8engine.js",
+          "atlas/releases/202608291818-atlas-v9/ventusv8.css",
+          "atman/202608291818-prove-v8-product-mirror.mjs",
+          "atman/202608291818-verify-place-postcode-release.mjs",
+          "ui/v8-mirror/202608291818-place-postcode-search.js"
+        ],
+        "202608292126": [
+          ".github/workflows/202608292126-bootstrap-map-ready-source.yml",
+          ".github/workflows/202608292126-build-publish-map-ready-v9.yml",
+          "202608292126-atlas-v9/202608291818-place-postcode-search.js",
+          "202608292126-atlas-v9/202608292126-map-ready-fetch-bridge.js",
+          "202608292126-atlas-v9/202608292126-pre-snapped-config-adapter.js",
+          "202608292126-atlas-v9/build-manifest.json",
+          "202608292126-atlas-v9/data/airports.geojson",
+          "202608292126-atlas-v9/data/datacentres.geojson",
+          "202608292126-atlas-v9/data/grid_132kv.geojson",
+          "202608292126-atlas-v9/data/grid_220kv.geojson",
+          "202608292126-atlas-v9/data/grid_275kv.geojson",
+          "202608292126-atlas-v9/data/grid_400kv.geojson",
+          "202608292126-atlas-v9/data/grid_66kv.geojson",
+          "202608292126-atlas-v9/data/grid_substations.geojson",
+          "202608292126-atlas-v9/data/industrial_offtakers.geojson",
+          "202608292126-atlas-v9/data/power_plants.geojson",
+          "202608292126-atlas-v9/data/railways.geojson",
+          "202608292126-atlas-v9/index.html",
+          "202608292126-atlas-v9/map-ready-manifest.json",
+          "202608292126-atlas-v9/release-manifest.json",
+          "202608292126-atlas-v9/sha256sums.txt",
+          "202608292126-atlas-v9/ventus-corev8engine.js",
+          "202608292126-atlas-v9/ventusv8.css",
+          "atlas/releases/202608292126-atlas-v9/202608291818-place-postcode-search.js",
+          "atlas/releases/202608292126-atlas-v9/202608292126-map-ready-fetch-bridge.js",
+          "atlas/releases/202608292126-atlas-v9/202608292126-pre-snapped-config-adapter.js",
+          "atlas/releases/202608292126-atlas-v9/build-manifest.json",
+          "atlas/releases/202608292126-atlas-v9/data/airports.geojson",
+          "atlas/releases/202608292126-atlas-v9/data/datacentres.geojson",
+          "atlas/releases/202608292126-atlas-v9/data/grid_132kv.geojson",
+          "atlas/releases/202608292126-atlas-v9/data/grid_220kv.geojson",
+          "atlas/releases/202608292126-atlas-v9/data/grid_275kv.geojson",
+          "atlas/releases/202608292126-atlas-v9/data/grid_400kv.geojson",
+          "atlas/releases/202608292126-atlas-v9/data/grid_66kv.geojson",
+          "atlas/releases/202608292126-atlas-v9/data/grid_substations.geojson",
+          "atlas/releases/202608292126-atlas-v9/data/industrial_offtakers.geojson",
+          "atlas/releases/202608292126-atlas-v9/data/power_plants.geojson",
+          "atlas/releases/202608292126-atlas-v9/data/railways.geojson",
+          "atlas/releases/202608292126-atlas-v9/index.html",
+          "atlas/releases/202608292126-atlas-v9/map-ready-manifest.json"
+        ],
+        "202608292311": [
+          ".github/workflows/202608292311-build-verify-publish-render-ready-v9.yml",
+          "202608292311-atlas-v9/202608291818-place-postcode-search.js",
+          "202608292311-atlas-v9/202608292126-map-ready-fetch-bridge.js",
+          "202608292311-atlas-v9/202608292126-pre-snapped-config-adapter.js",
+          "202608292311-atlas-v9/202608292311-maplibre-worker-bridge.js",
+          "202608292311-atlas-v9/build-manifest.json",
+          "202608292311-atlas-v9/data/airports.geojson",
+          "202608292311-atlas-v9/data/datacentres.geojson",
+          "202608292311-atlas-v9/data/grid_132kv.geojson",
+          "202608292311-atlas-v9/data/grid_220kv.geojson",
+          "202608292311-atlas-v9/data/grid_275kv.geojson",
+          "202608292311-atlas-v9/data/grid_400kv.geojson",
+          "202608292311-atlas-v9/data/grid_66kv.geojson",
+          "202608292311-atlas-v9/data/grid_substations.geojson",
+          "202608292311-atlas-v9/data/industrial_offtakers.geojson",
+          "202608292311-atlas-v9/data/power_plants.geojson",
+          "202608292311-atlas-v9/data/railways.geojson",
+          "202608292311-atlas-v9/index.html",
+          "202608292311-atlas-v9/map-ready-manifest.json",
+          "202608292311-atlas-v9/release-manifest.json",
+          "202608292311-atlas-v9/sha256sums.txt",
+          "202608292311-atlas-v9/ventus-corev8engine.js",
+          "202608292311-atlas-v9/ventusv8.css",
+          "atlas/releases/202608292311-atlas-v9/202608291818-place-postcode-search.js",
+          "atlas/releases/202608292311-atlas-v9/202608292126-map-ready-fetch-bridge.js",
+          "atlas/releases/202608292311-atlas-v9/202608292126-pre-snapped-config-adapter.js",
+          "atlas/releases/202608292311-atlas-v9/202608292311-maplibre-worker-bridge.js",
+          "atlas/releases/202608292311-atlas-v9/build-manifest.json",
+          "atlas/releases/202608292311-atlas-v9/data/airports.geojson",
+          "atlas/releases/202608292311-atlas-v9/data/datacentres.geojson",
+          "atlas/releases/202608292311-atlas-v9/data/grid_132kv.geojson",
+          "atlas/releases/202608292311-atlas-v9/data/grid_220kv.geojson",
+          "atlas/releases/202608292311-atlas-v9/data/grid_275kv.geojson",
+          "atlas/releases/202608292311-atlas-v9/data/grid_400kv.geojson",
+          "atlas/releases/202608292311-atlas-v9/data/grid_66kv.geojson",
+          "atlas/releases/202608292311-atlas-v9/data/grid_substations.geojson",
+          "atlas/releases/202608292311-atlas-v9/data/industrial_offtakers.geojson",
+          "atlas/releases/202608292311-atlas-v9/data/power_plants.geojson",
+          "atlas/releases/202608292311-atlas-v9/data/railways.geojson",
+          "atlas/releases/202608292311-atlas-v9/index.html"
+        ],
+        "202608300232": [
+          ".github/workflows/202608300232-evaluate-cross-repo-atlas-v9.yml",
+          ".github/workflows/202608300232-repair-render-ready-browser-install.yml",
+          "governance/202608300232-cross-repo-atlas-v9-milestones.md",
+          "orchestration/202608300232-evaluate-cross-repo-atlas-v9.py"
+        ],
+        "202608300257": [
+          ".github/workflows/202608300257-repair-render-ready-browser-install.yml"
+        ],
+        "202608300305": [
+          "docs/milestones/202608300305-atlas-v9-federated-deep-links.md"
+        ],
+        "202608300315": [
+          ".github/workflows/202608300315-export-render-ready-webkit-patch.yml"
+        ],
+        "202608300327": [
+          ".github/workflows/202608300327-three-hour-v8-v9-watchdog.yml"
+        ],
+        "202608300345": [
+          ".github/workflows/202608300345-attest-live-pointer-lineage.yml"
+        ],
+        "202608300430": [
+          ".github/workflows/202608300430-bootstrap-five-hour-v8-v9-closure.yml"
+        ],
+        "202608300437": [
+          ".github/workflows/202608300437-five-hour-v8-v9-watchdog.yml"
+        ],
+        "202608300442": [
+          ".github/workflows/202608300442-repair-five-hour-comparator-parent.yml"
+        ],
+        "202608300453": [
+          ".github/workflows/202608300453-build-verify-promote-exact-repd-deep-link.yml",
+          "202608300453-atlas-v9/202608291818-place-postcode-search.js",
+          "202608300453-atlas-v9/202608292126-map-ready-fetch-bridge.js",
+          "202608300453-atlas-v9/202608292126-pre-snapped-config-adapter.js",
+          "202608300453-atlas-v9/202608292311-maplibre-worker-bridge.js",
+          "202608300453-atlas-v9/build-manifest.json",
+          "202608300453-atlas-v9/data/airports.geojson",
+          "202608300453-atlas-v9/data/datacentres.geojson",
+          "202608300453-atlas-v9/data/grid_132kv.geojson",
+          "202608300453-atlas-v9/data/grid_220kv.geojson",
+          "202608300453-atlas-v9/data/grid_275kv.geojson",
+          "202608300453-atlas-v9/data/grid_400kv.geojson",
+          "202608300453-atlas-v9/data/grid_66kv.geojson",
+          "202608300453-atlas-v9/data/grid_substations.geojson",
+          "202608300453-atlas-v9/data/industrial_offtakers.geojson",
+          "202608300453-atlas-v9/data/power_plants.geojson",
+          "202608300453-atlas-v9/data/railways.geojson",
+          "202608300453-atlas-v9/deep-link-receiver-manifest.json",
+          "202608300453-atlas-v9/index.html",
+          "202608300453-atlas-v9/map-ready-manifest.json",
+          "202608300453-atlas-v9/release-manifest.json",
+          "202608300453-atlas-v9/sha256sums.txt",
+          "202608300453-atlas-v9/ventus-corev8engine.js",
+          "202608300453-atlas-v9/ventusv8.css",
+          "atlas/releases/202608300453-atlas-v9/202608291818-place-postcode-search.js",
+          "atlas/releases/202608300453-atlas-v9/202608292126-map-ready-fetch-bridge.js",
+          "atlas/releases/202608300453-atlas-v9/202608292126-pre-snapped-config-adapter.js",
+          "atlas/releases/202608300453-atlas-v9/202608292311-maplibre-worker-bridge.js",
+          "atlas/releases/202608300453-atlas-v9/build-manifest.json",
+          "atlas/releases/202608300453-atlas-v9/data/airports.geojson",
+          "atlas/releases/202608300453-atlas-v9/data/datacentres.geojson",
+          "atlas/releases/202608300453-atlas-v9/data/grid_132kv.geojson",
+          "atlas/releases/202608300453-atlas-v9/data/grid_220kv.geojson",
+          "atlas/releases/202608300453-atlas-v9/data/grid_275kv.geojson",
+          "atlas/releases/202608300453-atlas-v9/data/grid_400kv.geojson",
+          "atlas/releases/202608300453-atlas-v9/data/grid_66kv.geojson",
+          "atlas/releases/202608300453-atlas-v9/data/grid_substations.geojson",
+          "atlas/releases/202608300453-atlas-v9/data/industrial_offtakers.geojson",
+          "atlas/releases/202608300453-atlas-v9/data/power_plants.geojson",
+          "atlas/releases/202608300453-atlas-v9/data/railways.geojson"
+        ],
+        "202608301136": [
+          "atlas/cartridges/202608301136-place-postcode-search.js",
+          "tools/scope/patches/202608301136-gazetteer.jsfrag",
+          "tools/scope/patches/202608301136-render-execute.jsfrag",
+          "ui/cartridges/202608301136-uk-gazetteer-flyto.mjs"
+        ],
+        "202608301321": [
+          ".github/workflow-archive/202608301321-hostile-amnesia/202608290716-build-verify-publish-atlas-v9.yml",
+          ".github/workflow-archive/202608301321-hostile-amnesia/202608291237-build-verify-publish-atlas-v9.yml",
+          ".github/workflow-archive/202608301321-hostile-amnesia/202608291239-build-verify-publish-atlas-v9.yml",
+          ".github/workflow-archive/202608301321-hostile-amnesia/202608291430-build-verify-publish-atlas-v9.yml",
+          ".github/workflow-archive/202608301321-hostile-amnesia/202608291742-promote-root-current.yml",
+          ".github/workflow-archive/202608301321-hostile-amnesia/202608291742-v9-transfer-closure.yml",
+          ".github/workflow-archive/202608301321-hostile-amnesia/202608291758-build-v8-product-mirror.yml",
+          ".github/workflow-archive/202608301321-hostile-amnesia/202608291818-build-place-postcode-search.yml",
+          ".github/workflow-archive/202608301321-hostile-amnesia/202608291818-prove-v8-product-mirror.yml",
+          ".github/workflow-archive/202608301321-hostile-amnesia/202608292126-bootstrap-map-ready-source.yml",
+          ".github/workflow-archive/202608301321-hostile-amnesia/202608292126-build-publish-map-ready-v9.yml",
+          ".github/workflow-archive/202608301321-hostile-amnesia/202608292311-build-verify-publish-render-ready-v9.yml",
+          ".github/workflow-archive/202608301321-hostile-amnesia/202608300232-evaluate-cross-repo-atlas-v9.yml",
+          ".github/workflow-archive/202608301321-hostile-amnesia/202608300232-repair-render-ready-browser-install.yml",
+          ".github/workflow-archive/202608301321-hostile-amnesia/202608300257-repair-render-ready-browser-install.yml",
+          ".github/workflow-archive/202608301321-hostile-amnesia/202608300315-export-render-ready-webkit-patch.yml",
+          ".github/workflow-archive/202608301321-hostile-amnesia/202608300327-three-hour-v8-v9-watchdog.yml",
+          ".github/workflow-archive/202608301321-hostile-amnesia/202608300345-attest-live-pointer-lineage.yml",
+          ".github/workflow-archive/202608301321-hostile-amnesia/202608300430-bootstrap-five-hour-v8-v9-closure.yml",
+          ".github/workflow-archive/202608301321-hostile-amnesia/202608300437-five-hour-v8-v9-watchdog.yml",
+          ".github/workflow-archive/202608301321-hostile-amnesia/202608300453-build-verify-promote-exact-repd-deep-link.yml",
+          ".github/workflows/202608301321-scope-loop.yml",
+          ".github/workflows/202608301321-verify-live.yml",
+          "scope-of-works/202608301321-01-move-atlas-into-atlas-folder.md",
+          "scope-of-works/202608301321-scope-of-works.md"
+        ],
+        "202608301518": [
+          "scope-of-works/202608301518-02-modularise-immutable-shell-and-cartridges.md"
+        ],
+        "202608301520": [
+          "atlas/architecture/202608301520-pipelinenews-lessons.md",
+          "scope-of-works/202608301520-03-apply-pipelinenews-lessons.md"
+        ],
+        "202608301521": [
+          "scope-of-works/202608301521-04-add-uk-location-search-cartridge.md"
+        ],
+        "202608301522": [
+          "atlas/manifests/202608301522-composition.json",
+          "scope-of-works/202608301522-05-compile-and-attest-cartridge-composition.md"
+        ],
+        "202608301524": [
+          "governance/202608301524-cvaa-gridatlas-application.md",
+          "reports/scope-loop/202608301524-live-verification.json",
+          "scope-of-works/202608301524-06-close-and-harden-cicd-loop.md"
+        ],
+        "202608301525": [
+          "scope-of-works/202608301525-closure.md"
+        ],
+        "202608301624": [
+          "atman/202608301624-verify-v9-5-search.mjs"
+        ]
+      },
+      "workflow_files_touched": {
+        "202608290716-build-verify-publish-atlas-v9.yml": 5,
+        "202608291237-build-verify-publish-atlas-v9.yml": 5,
+        "202608291239-build-verify-publish-atlas-v9.yml": 2,
+        "202608291430-build-verify-publish-atlas-v9.yml": 2,
+        "202608291742-promote-root-current.yml": 3,
+        "202608291742-v9-transfer-closure.yml": 3,
+        "202608291758-build-v8-product-mirror.yml": 2,
+        "202608291818-build-place-postcode-search.yml": 2,
+        "202608291818-prove-v8-product-mirror.yml": 4,
+        "202608292126-bootstrap-map-ready-source.yml": 5,
+        "202608292126-build-publish-map-ready-v9.yml": 1,
+        "202608292311-build-verify-publish-render-ready-v9.yml": 2,
+        "202608300232-evaluate-cross-repo-atlas-v9.yml": 1,
+        "202608300232-repair-render-ready-browser-install.yml": 1,
+        "202608300257-repair-render-ready-browser-install.yml": 1,
+        "202608300315-export-render-ready-webkit-patch.yml": 2,
+        "202608300327-three-hour-v8-v9-watchdog.yml": 3,
+        "202608300345-attest-live-pointer-lineage.yml": 1,
+        "202608300430-bootstrap-five-hour-v8-v9-closure.yml": 3,
+        "202608300437-five-hour-v8-v9-watchdog.yml": 2,
+        "202608300442-repair-five-hour-comparator-parent.yml": 2,
+        "202608300453-build-verify-promote-exact-repd-deep-link.yml": 1,
+        "202608301321-hostile-amnesia/202608290716-build-verify-publish-atlas-v9.yml": 1,
+        "202608301321-hostile-amnesia/202608291237-build-verify-publish-atlas-v9.yml": 1,
+        "202608301321-hostile-amnesia/202608291239-build-verify-publish-atlas-v9.yml": 1,
+        "202608301321-hostile-amnesia/202608291430-build-verify-publish-atlas-v9.yml": 1,
+        "202608301321-hostile-amnesia/202608291742-promote-root-current.yml": 1,
+        "202608301321-hostile-amnesia/202608291742-v9-transfer-closure.yml": 1,
+        "202608301321-hostile-amnesia/202608291758-build-v8-product-mirror.yml": 1,
+        "202608301321-hostile-amnesia/202608291818-build-place-postcode-search.yml": 1,
+        "202608301321-hostile-amnesia/202608291818-prove-v8-product-mirror.yml": 1,
+        "202608301321-hostile-amnesia/202608292126-bootstrap-map-ready-source.yml": 1,
+        "202608301321-hostile-amnesia/202608292126-build-publish-map-ready-v9.yml": 1,
+        "202608301321-hostile-amnesia/202608292311-build-verify-publish-render-ready-v9.yml": 1,
+        "202608301321-hostile-amnesia/202608300232-evaluate-cross-repo-atlas-v9.yml": 1,
+        "202608301321-hostile-amnesia/202608300232-repair-render-ready-browser-install.yml": 1,
+        "202608301321-hostile-amnesia/202608300257-repair-render-ready-browser-install.yml": 1,
+        "202608301321-hostile-amnesia/202608300315-export-render-ready-webkit-patch.yml": 1,
+        "202608301321-hostile-amnesia/202608300327-three-hour-v8-v9-watchdog.yml": 1,
+        "202608301321-hostile-amnesia/202608300345-attest-live-pointer-lineage.yml": 1,
+        "202608301321-hostile-amnesia/202608300430-bootstrap-five-hour-v8-v9-closure.yml": 1,
+        "202608301321-hostile-amnesia/202608300437-five-hour-v8-v9-watchdog.yml": 1,
+        "202608301321-hostile-amnesia/202608300453-build-verify-promote-exact-repd-deep-link.yml": 1,
+        "202608301321-scope-loop.yml": 2,
+        "202608301321-verify-live.yml": 3
+      }
+    }
+  },
+  "schema": "gridatlas.history-pattern-scan.v1",
+  "status": "PASS",
+  "truncated": false
+}

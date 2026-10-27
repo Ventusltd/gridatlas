@@ -1,0 +1,64 @@
+
+the capsule exists and is the newest one
+
+  [PASS] a timestamped recovery capsule exists
+  (reading 202609012305-quantumspawn-recovery.md)
+  [PASS] this proof is named so the antibody can find it
+
+the unattended loop the capsule describes is really there
+
+  [PASS] the loop directory exists
+  [PASS] exactly one runner is present
+  [PASS] the capsule names the runner that is actually on disk
+  [PASS] the loop has at least one step to run
+
+every gate the capsule names is a file that exists
+
+  [PASS] the capsule names some gates at all
+  [PASS] tools/proofs/run-current.mjs exists
+  [PASS] tools/proofs/202609012105-parts-integrity.proof.mjs exists
+  [PASS] tools/proofs/202609012150-all-versions.proof.mjs exists
+  [PASS] tools/proofs/202609012214-data-contract-parity.proof.mjs exists
+  [PASS] tools/proofs/202609012305-quantumspawn-recovery.proof.mjs exists
+  [PASS] tools/ci/202609012200-local-ci.mjs exists
+
+the capsule tells the truth about what is shipped
+
+  [FAIL] the capsule names the generation that current.json points at - 202610262323
+  [FAIL] the capsule names the version that is pointed at - v9.161
+  [PASS] the shift log exists
+  [PASS] the log records at least one live cut
+  [PASS] every generation the log calls live is named in the capsule
+  [PASS] the capsule does not claim a generation the log never marked live
+  [PASS] the capsule distinguishes attended cuts from unattended ones
+  [PASS] an attended run in the log is described as attended in the capsule
+
+the standards that stop a release are all carried
+
+  [PASS] the capsule carries: never grade a grid position
+  [PASS] the capsule carries: a straight line is not a route
+  [PASS] the capsule carries: never mix voltages
+  [PASS] the capsule carries: never decode voltage from a node code
+  [PASS] the capsule carries: R/X/B carried never computed with
+  [PASS] the capsule carries: ratings are never summed
+  [PASS] the capsule carries: a rating is not headroom
+  [PASS] the capsule carries: a skip is not a pass
+  [PASS] the capsule carries: fail closed on an unknown schema
+  [PASS] the capsule carries: never amend a shipped generation
+  [PASS] the capsule carries: stamps are read from the clock
+
+it is a witness, not an authority
+
+  [PASS] the capsule says current Git wins over itself
+  [PASS] the wake sequence is read-only before it changes anything
+  [PASS] it points at the coordination board
+  [PASS] it records what is NOT yet done rather than only what is
+
+the capsule is committed, not just sitting in the tree
+
+  [PASS] the capsule is tracked by git
+
+35/37 checks passed
+FAILURES
+  the capsule names the generation that current.json points at - 202610262323
+  the capsule names the version that is pointed at - v9.161

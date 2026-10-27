@@ -1,0 +1,15 @@
+# 2026-10-27T00:10:50Z curl live (via agent proxy; NOT a browser CORS proof)
+## https://raw.githubusercontent.com/Ventusltd/lightning/main/data/uk_lightning.geojson
+HTTP/1.1 200 Connection Established
+HTTP/2 200 
+cache-control: max-age=300
+content-type: text/plain; charset=utf-8
+etag: "9377c6c1f540feca13ce6fa7d77c132b4b7689965d0526c79c1dbbaf14a77fe4"
+x-content-type-options: nosniff
+access-control-allow-origin: *
+## https://raw.githubusercontent.com/Ventusltd/lightning/main/data/history/index.json
+HTTP/1.1 200 Connection Established
+HTTP/2 404 
+x-content-type-options: nosniff
+content-type: text/plain; charset=utf-8
+access-control-allow-origin: *

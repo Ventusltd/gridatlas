@@ -1,0 +1,63 @@
+{
+ "harness": "lead-shim 1440x900",
+ "steps": [
+  {
+   "step": "ON 7d",
+   "layer": true,
+   "source": true,
+   "feats": 408,
+   "vis": "visible",
+   "label": "Lightning flashes (optical) [408 | 7d]",
+   "stateLine": null,
+   "styleLayers": 101
+  },
+  {
+   "step": "real basemap radio → sat",
+   "layer": true,
+   "source": true,
+   "feats": 408,
+   "vis": "visible",
+   "label": "Lightning flashes (optical) [408 | 7d]",
+   "stateLine": null,
+   "styleLayers": 101,
+   "radioFound": 1
+  },
+  {
+   "step": "real basemap radio → dark",
+   "layer": true,
+   "source": true,
+   "feats": 408,
+   "vis": "visible",
+   "label": "Lightning flashes (optical) [408 | 7d]",
+   "stateLine": null,
+   "styleLayers": 101,
+   "radioFound": 1
+  },
+  {
+   "step": "SYNTHETIC PROBE (not a user gesture): full style replacement without the lightning layer, setStyle(..., {diff:false}), +6 s",
+   "layer": false,
+   "source": false,
+   "feats": null,
+   "vis": null,
+   "label": "Lightning flashes (optical) [408 | 7d]",
+   "stateLine": null,
+   "styleLayers": 100,
+   "events": [
+    "styledata",
+    "style.load",
+    "idle"
+   ]
+  },
+  {
+   "step": "real click 7d after style replacement → layer re-added?",
+   "layer": true,
+   "source": true,
+   "feats": 408,
+   "vis": "visible",
+   "label": "Lightning flashes (optical) [408 | 7d]",
+   "stateLine": null,
+   "styleLayers": 101
+  }
+ ],
+ "pageErrors": []
+}

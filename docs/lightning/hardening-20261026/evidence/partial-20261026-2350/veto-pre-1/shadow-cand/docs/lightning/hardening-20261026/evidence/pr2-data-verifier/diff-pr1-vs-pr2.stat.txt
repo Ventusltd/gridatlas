@@ -1,0 +1,15 @@
+ .github/workflows/test-lightning.yml   |   4 +-
+ .github/workflows/update-lightning.yml |  96 +++-
+ .gitignore                             |   2 +
+ README.md                              |  20 +-
+ collect.py                             | 315 +++++++++++--
+ data/seed_scan_windows.json            | 160 +++++++
+ docs/HISTORY_ONE_YEAR.md               | 246 +++++++---
+ history-window.mjs                     | 794 ++++++++++++++++++++++++++-------
+ history.py                             | 569 ++++++++++++++++++-----
+ status.py                              | 159 +++++++
+ tests/test_collect.py                  | 176 +++++++-
+ tests/test_history.py                  | 331 ++++++++++++--
+ tests/test_history_window.mjs          | 615 +++++++++++++++++++------
+ tests/test_status.py                   | 101 +++++
+ 14 files changed, 3022 insertions(+), 566 deletions(-)

@@ -1,0 +1,246 @@
+[
+ {
+  "url": "http://127.0.0.1:8173/evidence/release-rehearsal/wt-main/atlas/",
+  "expectedGeneration": "202610262323",
+  "verdict": "PASS",
+  "composition": {
+   "engine": 120,
+   "pn": 6,
+   "scada": true,
+   "curtain": true,
+   "menuInstalled": true,
+   "map": true,
+   "waitedMs": 71250
+  },
+  "dataGeneration": "202610262323",
+  "atlasGeneration": "202610262323",
+  "compositionId": null,
+  "inspect": {
+   "engine": 60,
+   "pipeline": 3,
+   "total": 63,
+   "unique": 63,
+   "complete": true
+  },
+  "installed": true,
+  "proxies": 63,
+  "markers": 63,
+  "loaded": [
+   {
+    "id": "streaming-parquet-bridge",
+    "sha256": "60be8215ba873ac2886786bf6e3fd51e5764e7c5e26684fde71ebe9974a329a2"
+   },
+   {
+    "id": "uk-gazetteer-flyto",
+    "sha256": "15f324e5c279050882f7e3ce83a915c070b6ed19095efcac4ae20af4ef19fdfa"
+   },
+   {
+    "id": "substation-intelligence",
+    "sha256": "d94b0de50deddac77643325b10fbe490ce44b8c406dbc6c67e6e7cadbdaa8ec6"
+   },
+   {
+    "id": "sld-sandbox",
+    "sha256": "b143bf05b28ac9b972ec90dced03cc0ad1f003fa844bdcb3f6601a33bd69891d"
+   }
+  ],
+  "keyGroups": 28,
+  "firstGroup": "Topology (GeoJSON) 400kV [OK] ",
+  "lastGroup": "12H",
+  "lightningInputs": [
+   {
+    "id": "",
+    "checked": false
+   },
+   {
+    "id": "",
+    "checked": false
+   },
+   {
+    "id": "",
+    "checked": false
+   },
+   {
+    "id": "",
+    "checked": false
+   },
+   {
+    "id": "",
+    "checked": false
+   },
+   {
+    "id": "",
+    "checked": false
+   }
+  ],
+  "currentJsonGeneration": "202610262323",
+  "digestsOk": true,
+  "lightningRequests": 0,
+  "pageErrors": [],
+  "shim": {
+   "served": {
+    "maplibre": 2,
+    "style": 1
+   },
+   "aborted": [
+    "https://raw.githubusercontent.com/Ventusltd/data-grid-gb/1c9909d1138704b29235c27fd769436dda8a0b18/derived/connection-points.v3.json",
+    "https://ventusltd.github.io/ventus-grid-engine/genome/engine-graph.json"
+   ],
+   "missing": []
+  }
+ },
+ {
+  "url": "http://127.0.0.1:8173/evidence/release-rehearsal/wt/atlas/",
+  "expectedGeneration": "202610262323",
+  "verdict": "PASS",
+  "composition": {
+   "engine": 120,
+   "pn": 6,
+   "scada": true,
+   "curtain": true,
+   "menuInstalled": true,
+   "map": true,
+   "waitedMs": 70609
+  },
+  "dataGeneration": "202610262323",
+  "atlasGeneration": "202610262323",
+  "compositionId": null,
+  "inspect": {
+   "engine": 60,
+   "pipeline": 3,
+   "total": 63,
+   "unique": 63,
+   "complete": true
+  },
+  "installed": true,
+  "proxies": 63,
+  "markers": 63,
+  "loaded": [
+   {
+    "id": "streaming-parquet-bridge",
+    "sha256": "60be8215ba873ac2886786bf6e3fd51e5764e7c5e26684fde71ebe9974a329a2"
+   },
+   {
+    "id": "uk-gazetteer-flyto",
+    "sha256": "15f324e5c279050882f7e3ce83a915c070b6ed19095efcac4ae20af4ef19fdfa"
+   },
+   {
+    "id": "substation-intelligence",
+    "sha256": "d94b0de50deddac77643325b10fbe490ce44b8c406dbc6c67e6e7cadbdaa8ec6"
+   },
+   {
+    "id": "sld-sandbox",
+    "sha256": "b143bf05b28ac9b972ec90dced03cc0ad1f003fa844bdcb3f6601a33bd69891d"
+   }
+  ],
+  "keyGroups": 28,
+  "firstGroup": "Topology (GeoJSON) 400kV [OK] ",
+  "lastGroup": "12H",
+  "lightningInputs": [
+   {
+    "id": "",
+    "checked": false
+   },
+   {
+    "id": "",
+    "checked": false
+   },
+   {
+    "id": "",
+    "checked": false
+   },
+   {
+    "id": "",
+    "checked": false
+   },
+   {
+    "id": "",
+    "checked": false
+   },
+   {
+    "id": "",
+    "checked": false
+   }
+  ],
+  "currentJsonGeneration": "202610262323",
+  "digestsOk": true,
+  "lightningRequests": 0,
+  "pageErrors": [],
+  "shim": {
+   "served": {
+    "maplibre": 2,
+    "style": 1,
+    "duckdb": 1
+   },
+   "aborted": [
+    "https://raw.githubusercontent.com/Ventusltd/data-grid-gb/1c9909d1138704b29235c27fd769436dda8a0b18/derived/connection-points.v3.json",
+    "https://ventusltd.github.io/ventus-grid-engine/genome/engine-graph.json"
+   ],
+   "missing": []
+  }
+ },
+ {
+  "url": "http://127.0.0.1:8173/evidence/release-rehearsal/wt-base/atlas/",
+  "expectedGeneration": "202609241334",
+  "verdict": "PASS",
+  "composition": {
+   "engine": 120,
+   "pn": 6,
+   "scada": true,
+   "curtain": true,
+   "menuInstalled": true,
+   "map": true,
+   "waitedMs": 86517
+  },
+  "dataGeneration": "202609241334",
+  "atlasGeneration": "202609241334",
+  "compositionId": null,
+  "inspect": {
+   "engine": 60,
+   "pipeline": 3,
+   "total": 63,
+   "unique": 63,
+   "complete": true
+  },
+  "installed": true,
+  "proxies": 63,
+  "markers": 63,
+  "loaded": [
+   {
+    "id": "streaming-parquet-bridge",
+    "sha256": "60be8215ba873ac2886786bf6e3fd51e5764e7c5e26684fde71ebe9974a329a2"
+   },
+   {
+    "id": "uk-gazetteer-flyto",
+    "sha256": "15f324e5c279050882f7e3ce83a915c070b6ed19095efcac4ae20af4ef19fdfa"
+   },
+   {
+    "id": "substation-intelligence",
+    "sha256": "d94b0de50deddac77643325b10fbe490ce44b8c406dbc6c67e6e7cadbdaa8ec6"
+   },
+   {
+    "id": "sld-sandbox",
+    "sha256": "7812953671d8bb22a566de5e98fd3137da2d23411c5aecd526df5afa111ca4ca"
+   }
+  ],
+  "keyGroups": 26,
+  "firstGroup": "Topology (GeoJSON) 400kV [OK] ",
+  "lastGroup": "PIPELINE NEWS (REPD) Same tech",
+  "lightningInputs": [],
+  "currentJsonGeneration": "202609241334",
+  "digestsOk": true,
+  "lightningRequests": 0,
+  "pageErrors": [],
+  "shim": {
+   "served": {
+    "maplibre": 2,
+    "style": 1,
+    "duckdb": 1
+   },
+   "aborted": [
+    "https://raw.githubusercontent.com/Ventusltd/data-grid-gb/1c9909d1138704b29235c27fd769436dda8a0b18/derived/connection-points.v3.json",
+    "https://ventusltd.github.io/ventus-grid-engine/genome/engine-graph.json"
+   ],
+   "missing": []
+  }
+ }
+]

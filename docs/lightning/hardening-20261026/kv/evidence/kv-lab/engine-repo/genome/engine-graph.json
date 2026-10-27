@@ -1,0 +1,958 @@
+{
+  "schema": "ventus-grid-engine.genome.v1",
+  "label": "ventus-grid-engine genome · the spider pattern applied to the engine’s own maths",
+  "generated_utc": "2026-09-06T03:28:25.268Z",
+  "note": "Nodes and edges match the node shape used by the live Spider Sandbox (data-federation-map-for-globalgrid2050-all-repos/dashboard/sandbox/spider_full_po_test.html: SCOPES[key].nodes = [{label,type,rag,reason,gh,ext,child}], edges = [from,to,type]). Edges here are objects, not bare [from,to,type] tuples, because every edge in this genome must carry evidence; edge.type stays a plain string for compatibility with a receiver expecting the tuple shape (read edges[i].type, .from, .to as the tuple).",
+  "focus_default": 0,
+  "kind_labels": {
+    "duplicates": "duplicates",
+    "supersedes": "supersedes",
+    "imports": "imports",
+    "should_import": "should import",
+    "drifts_from": "drifts from"
+  },
+  "nodes": [
+    {
+      "label": "engine/geo-core.js",
+      "type": "canonical",
+      "rag": "green",
+      "reason": "the one haversine + R_ATLAS/R_UK/R_MEAN, (lon,lat) order",
+      "gh": "https://github.com/Ventusltd/ventus-grid-engine/blob/main/engine/geo-core.js"
+    },
+    {
+      "label": "engine/geo-area.js",
+      "type": "canonical",
+      "rag": "green",
+      "reason": "polygonAreaKm2, polylinePerimeterKm, circleCapAreaKm2",
+      "gh": "https://github.com/Ventusltd/ventus-grid-engine/blob/main/engine/geo-area.js"
+    },
+    {
+      "label": "engine/geo-shapes.js",
+      "type": "canonical",
+      "rag": "green",
+      "reason": "destinationCirclePoints, the deduplicated circle generator",
+      "gh": "https://github.com/Ventusltd/ventus-grid-engine/blob/main/engine/geo-shapes.js"
+    },
+    {
+      "label": "engine/geo-geojson.js",
+      "type": "canonical",
+      "rag": "green",
+      "reason": "circleFeatureCollection, GeoJSON shaping kept out of the maths",
+      "gh": "https://github.com/Ventusltd/ventus-grid-engine/blob/main/engine/geo-geojson.js"
+    },
+    {
+      "label": "engine/v9-geodesy.js",
+      "type": "canonical",
+      "rag": "green",
+      "reason": "distanceKm, destinationPoint, initialBearingDeg, voltagesKv, representativePoint",
+      "gh": "https://github.com/Ventusltd/ventus-grid-engine/blob/main/engine/v9-geodesy.js"
+    },
+    {
+      "label": "engine/v9-nearest-search.js",
+      "type": "canonical",
+      "rag": "green",
+      "reason": "normalise + index, exhaustive scan, proven free of the ring-search bug",
+      "gh": "https://github.com/Ventusltd/ventus-grid-engine/blob/main/engine/v9-nearest-search.js"
+    },
+    {
+      "label": "deeplink/contract.js",
+      "type": "canonical",
+      "rag": "green",
+      "reason": "buildDeepLink/parseDeepLink, LAYER_ID_FOR_BUCKET, the MAP button as one testable thing",
+      "gh": "https://github.com/Ventusltd/ventus-grid-engine/blob/main/deeplink/contract.js"
+    },
+    {
+      "label": "engine/network-topology.js",
+      "type": "canonical",
+      "rag": "green",
+      "reason": "PROMOTED this session: index/at/graph over one site’s published nodes/branches",
+      "gh": "https://github.com/Ventusltd/ventus-grid-engine/blob/main/engine/network-topology.js"
+    },
+    {
+      "label": "engine/electrical-distance.js",
+      "type": "canonical",
+      "rag": "green",
+      "reason": "PROMOTED this session: between/within, BFS hop-count over network-topology.graph()",
+      "gh": "https://github.com/Ventusltd/ventus-grid-engine/blob/main/engine/electrical-distance.js"
+    },
+    {
+      "label": "engine/rating-envelope.js",
+      "type": "canonical",
+      "rag": "green",
+      "reason": "PROMOTED this session: at(), per-season lowest/highest range, never summed",
+      "gh": "https://github.com/Ventusltd/ventus-grid-engine/blob/main/engine/rating-envelope.js"
+    },
+    {
+      "label": "engine/corridor-estimate.js",
+      "type": "canonical",
+      "rag": "green",
+      "reason": "PROMOTED this session: forCable(), calibrated straight-line-to-corridor multiplier",
+      "gh": "https://github.com/Ventusltd/ventus-grid-engine/blob/main/engine/corridor-estimate.js"
+    },
+    {
+      "label": "engine/published-fault-level.js",
+      "type": "canonical",
+      "rag": "green",
+      "reason": "AUTHORED 2026-09-05: record() and quote() for a fault figure that is published, dated and named by exact metric; no callable computes a current or a headroom, and the proof asserts that absence. Vocabulary copied from data-grid-gb ingest_etys.py FAULT_COLUMNS.",
+      "gh": "https://github.com/Ventusltd/ventus-grid-engine/blob/main/engine/published-fault-level.js"
+    },
+    {
+      "label": "engine/electrification-demand.js",
+      "type": "canonical",
+      "rag": "green",
+      "reason": "AUTHORED 2026-09-06: the arithmetic of the electrification paper made exact — average power, peak from a stated load factor, load factor measured from a published peak, nameplate at a capacity factor, and electricity for displaced fuel. Every worked example in the paper is recomputed by the proof. No callable returns headroom, connection availability, per-site uplift or adequacy, and the proof asserts that absence.",
+      "gh": "https://github.com/Ventusltd/ventus-grid-engine/blob/main/engine/electrification-demand.js"
+    },
+    {
+      "label": "engine/firm-capacity.js",
+      "type": "canonical",
+      "rag": "green",
+      "reason": "AUTHORED 2026-09-06: N-1 firm capacity, apparent power from a stated power factor, and utilisation against a caller-supplied rating. Exposes the gap the paper names - a site at 42 MVA on two 30 MVA units is 70% of installed and 140% of firm. Refuses spare capacity, connection availability, cyclic ratings and P2/7 compliance; the proof asserts that absence.",
+      "gh": "https://github.com/Ventusltd/ventus-grid-engine/blob/main/engine/firm-capacity.js"
+    },
+    {
+      "label": "engine/diversified-demand.js",
+      "type": "canonical",
+      "rag": "green",
+      "reason": "AUTHORED 2026-09-06: After Diversity Maximum Demand, coincidence measured from a group peak rather than assumed, and average-across-a-window kept separate from peak-inside-a-window. The 10 million vehicles in the paper read 2.85 GW annual average, 8.56 GW across an 8-hour window and 14 GW at 20% coincidence - the same vehicles, differing by a factor of five.",
+      "gh": "https://github.com/Ventusltd/ventus-grid-engine/blob/main/engine/diversified-demand.js"
+    },
+    {
+      "label": "engine/connection-capacity.js",
+      "type": "canonical",
+      "rag": "green",
+      "reason": "AUTHORED 2026-09-06: sizing against a STATED connection cap for developers, EPCs and heavy users. Exceedance over a profile, battery power from the peak excess and store from the area above the cap, solar clipping, and net position against separate import/export caps. A spike and a plateau share a peak and need eight times the store; the proof holds both.",
+      "gh": "https://github.com/Ventusltd/ventus-grid-engine/blob/main/engine/connection-capacity.js"
+    },
+    {
+      "label": "engine/route-obstacles.js",
+      "type": "canonical",
+      "rag": "green",
+      "reason": "AUTHORED 2026-09-06: the check a scalar corridor function could not make. corridor-estimate.forCable() takes one kilometre and never sees coordinates, so it printed 177.05 km of highway corridor for South Antrim to Western HVDC - 142 km of Irish Sea. This module classifies declared crossings, refuses a corridor factor across open water, and sizes trenchless crossings where the setback dominates. corridor-estimate is UNCHANGED and remains the first pass; the proof asserts it still returns 177.05 km over land.",
+      "gh": "https://github.com/Ventusltd/ventus-grid-engine/blob/main/engine/route-obstacles.js"
+    },
+    {
+      "label": "engine/interconnector-economics.js",
+      "type": "canonical",
+      "rag": "green",
+      "reason": "AUTHORED 2026-09-06: an interconnector as an edge between two systems, priced. Direction follows the spread, congestion rent is gross and never called profit, and fleet capacity separates the 10.3 GW that carries a BMRS code and is observable from the 7.65 GW that is a plan. Holds NO geometry: subsea routes are licensed (TeleGeography) and neither NESO nor National Grid publishes an alternative, so the estate does not draw them. The proof asserts no export carries a coordinate.",
+      "gh": "https://github.com/Ventusltd/ventus-grid-engine/blob/main/engine/interconnector-economics.js"
+    },
+    {
+      "label": "engine/power-factor.js",
+      "type": "canonical",
+      "rag": "green",
+      "reason": "AUTHORED 2026-09-06: the cheapest capacity anybody buys. 1,000 kW at 0.85 draws 1,176 kVA; corrected to 0.98 it draws 1,020 and releases 156 kVA - 13.3% of the site demand on its connection, for no reduction in consumption. Reactive power is computed from the identity rather than arccos/tan so unity is exactly zero. Refuses capacitor bank design, because a real bank needs a harmonic resonance study against the supply impedance.",
+      "gh": "https://github.com/Ventusltd/ventus-grid-engine/blob/main/engine/power-factor.js"
+    },
+    {
+      "label": "engine/voltage-drop.js",
+      "type": "canonical",
+      "rag": "green",
+      "reason": "AUTHORED 2026-09-06: volts and watts along a run, which decides cable size on a long collection more often than ampacity does. Phase factor is sqrt(3) or 2 and never typed as 1.73; the reactance term is carried against sin(phi), because ignoring X on a large cable feeding a poorly corrected load under-states the drop by over a third. Losses take only R, and the loss load factor is required rather than derived from the load factor. Refuses cable selection and carries no conductor parameters, since a plausible default would be the dangerous thing.",
+      "gh": "https://github.com/Ventusltd/ventus-grid-engine/blob/main/engine/voltage-drop.js"
+    },
+    {
+      "label": "sources/v9-extracts/sizing-arithmetic.mjs",
+      "type": "extract",
+      "rag": "blue",
+      "reason": "staged verbatim, promotion DECLINED this session — impure + financial-domain, see population-plan.md §4",
+      "gh": "https://github.com/Ventusltd/ventus-grid-engine/blob/main/sources/v9-extracts/sizing-arithmetic.mjs"
+    },
+    {
+      "label": "ventus-corev8engine.js haversine()",
+      "type": "fragment",
+      "rag": "green",
+      "reason": "the one distance primitive in the V8 monolith, correctly reused everywhere — not duplicated",
+      "gh": "https://github.com/Ventusltd/globalgrid2050/blob/main/repd_grid_atlasv8/ventus-corev8engine.js#L45-L50"
+    },
+    {
+      "label": "gridatlas 202609011950-geodesy.js",
+      "type": "fragment",
+      "rag": "green",
+      "reason": "live, composed module; source that engine/v9-geodesy.js was extracted from, byte-identical",
+      "gh": "https://github.com/Ventusltd/gridatlas/blob/main/atlas/modules/202609011950-geodesy.js"
+    },
+    {
+      "label": "substation-intelligence cartridge, geodesy copy #1",
+      "type": "fragment",
+      "rag": "amber",
+      "reason": "inline legacy V8 haversine at line 57 of a 6,277-line composed cartridge",
+      "gh": "https://github.com/Ventusltd/gridatlas/blob/main/atlas/cartridges/202609041330-substation-intelligence-v9-63.js#L57-L71"
+    },
+    {
+      "label": "substation-intelligence cartridge, geodesy copy #2",
+      "type": "fragment",
+      "rag": "amber",
+      "reason": "a SECOND inline NS.geodesy IIFE at line 1544 of the SAME file as copy #1",
+      "gh": "https://github.com/Ventusltd/gridatlas/blob/main/atlas/cartridges/202609041330-substation-intelligence-v9-63.js#L1541-L1550"
+    },
+    {
+      "label": "neon-substation-links-v9-6.js R_ATLAS/distanceKm",
+      "type": "fragment",
+      "rag": "amber",
+      "reason": "hand-rolled constant and distance function, own comment: “the house constant”",
+      "gh": "https://github.com/Ventusltd/gridatlas/blob/main/atlas/cartridges/202608311910-neon-substation-links-v9-6.js#L120"
+    },
+    {
+      "label": "grid-proximity/build_payload.py haversine_km()",
+      "type": "fragment",
+      "rag": "amber",
+      "reason": "hand-rolled A_WGS84/R_ATLAS + haversine_km, does not import grid-distance-maths despite a sibling cartridge doing so",
+      "gh": "https://github.com/Ventusltd/pipelinenews/blob/main/tools/intelligence/cartridges/grid-proximity/build_payload.py#L44-L90"
+    },
+    {
+      "label": "grid-distance-column/build_payload.py",
+      "type": "fragment",
+      "rag": "green",
+      "reason": "the POSITIVE control: imports grid-distance-maths/src/geodesy.py directly and refuses to run without it",
+      "gh": "https://github.com/Ventusltd/pipelinenews/blob/main/tools/intelligence/cartridges/grid-distance-column/build_payload.py#L50-L69"
+    },
+    {
+      "label": "grid-distance-maths/src/geodesy.mjs",
+      "type": "reference",
+      "rag": "blue",
+      "reason": "the estate’s canonical geodesy repository — R_ATLAS/R_UK/R_MEAN identical to geo-core.js, by design",
+      "gh": "https://github.com/Ventusltd/grid-distance-maths/blob/main/src/geodesy.mjs"
+    },
+    {
+      "label": "ventus-corev8engine.js _zoneDrawCalcArea (Impl A)",
+      "type": "fragment",
+      "rag": "green",
+      "reason": "spherical-excess polygon area, Zone Draw tool",
+      "gh": "https://github.com/Ventusltd/globalgrid2050/blob/main/repd_grid_atlasv8/ventus-corev8engine.js#L134-L149"
+    },
+    {
+      "label": "ventus-corev8engine.js updateMeasureDisplay (Impl B)",
+      "type": "fragment",
+      "rag": "amber",
+      "reason": "the identical shoelace-on-sphere formula, copy-pasted into the Measure tool",
+      "gh": "https://github.com/Ventusltd/globalgrid2050/blob/main/repd_grid_atlasv8/ventus-corev8engine.js#L481-L490"
+    },
+    {
+      "label": "ventus-corev8engine.js doRadiusAreaMeasure (Impl C)",
+      "type": "fragment",
+      "rag": "green",
+      "reason": "spherical-cap area — a different question, correctly kept separate",
+      "gh": "https://github.com/Ventusltd/globalgrid2050/blob/main/repd_grid_atlasv8/ventus-corev8engine.js#L576-L582"
+    },
+    {
+      "label": "ventus-corev8engine.js _zoneDrawCirclePoints",
+      "type": "fragment",
+      "rag": "green",
+      "reason": "destination-point circle generator, Zone Draw (n=24)",
+      "gh": "https://github.com/Ventusltd/globalgrid2050/blob/main/repd_grid_atlasv8/ventus-corev8engine.js#L122-L132"
+    },
+    {
+      "label": "ventus-corev8engine.js createGeoJSONCircle",
+      "type": "fragment",
+      "rag": "amber",
+      "reason": "byte-identical destination-point formula, Radius tool (n=64/96/128), plus FeatureCollection wrapping",
+      "gh": "https://github.com/Ventusltd/globalgrid2050/blob/main/repd_grid_atlasv8/ventus-corev8engine.js#L727-L740"
+    },
+    {
+      "label": "solar-bess-topology-v5/gis-sld-v5-calculations.js",
+      "type": "fragment",
+      "rag": "red",
+      "reason": "ac_mw_direct double-count bug, line 147, LIVE and unfixed",
+      "gh": "https://github.com/Ventusltd/globalgrid2050/blob/main/solar-bess-topology-v5/gis-sld-v5-calculations.js#L147"
+    },
+    {
+      "label": "solar-bess-topology-v6/.../gis-sld-v5-calculations.js",
+      "type": "fragment",
+      "rag": "red",
+      "reason": "the same bug, same line number, byte-identical",
+      "gh": "https://github.com/Ventusltd/globalgrid2050/blob/main/solar-bess-topology-v6/gis-sld-financial-sandbox/gis-sld-v5-calculations.js#L147"
+    },
+    {
+      "label": "solar-bess-topology-v7/.../gis-sld-v5-calculations.js",
+      "type": "fragment",
+      "rag": "red",
+      "reason": "the same bug, same line number, byte-identical",
+      "gh": "https://github.com/Ventusltd/globalgrid2050/blob/main/solar-bess-topology-v7/gis-sld-financial-sandbox/gis-sld-v5-calculations.js#L147"
+    },
+    {
+      "label": "solar-bess-topology-v8/bess-gis-sld-financial-sandbox/gis-sld-v5-calculations.js",
+      "type": "fragment",
+      "rag": "red",
+      "reason": "the same bug, same line number, byte-identical",
+      "gh": "https://github.com/Ventusltd/globalgrid2050/blob/main/solar-bess-topology-v8/bess-gis-sld-financial-sandbox/gis-sld-v5-calculations.js#L147"
+    },
+    {
+      "label": "solar-bess-topology-v8/bess-pcs-standalone/gis-sld-v5-calculations.js",
+      "type": "fragment",
+      "rag": "red",
+      "reason": "the same bug, same line number, byte-identical — fifth copy",
+      "gh": "https://github.com/Ventusltd/globalgrid2050/blob/main/solar-bess-topology-v8/bess-pcs-standalone/gis-sld-v5-calculations.js#L147"
+    },
+    {
+      "label": "gridatlas 202609012205-sizing-arithmetic.js",
+      "type": "fragment",
+      "rag": "green",
+      "reason": "the CORRECTED port: Math.min(inverter_ac_total, skid_ac_total) — the fix none of the five above has",
+      "gh": "https://github.com/Ventusltd/gridatlas/blob/main/atlas/modules/202609012205-sizing-arithmetic.js#L220-L250"
+    },
+    {
+      "label": "gridatlas 202609011950-substation-lookup.js",
+      "type": "fragment",
+      "rag": "grey",
+      "reason": "committed but DEAD — zero manifests reference it; source engine/v9-nearest-search.js was extracted from",
+      "gh": "https://github.com/Ventusltd/gridatlas/blob/main/atlas/modules/202609011950-substation-lookup.js"
+    },
+    {
+      "label": "substation-intelligence cartridge, inline nearest()",
+      "type": "fragment",
+      "rag": "red",
+      "reason": "live duplicate, LESS defensive than the dead module — can throw on a point with no voltages_kv",
+      "gh": "https://github.com/Ventusltd/gridatlas/blob/main/atlas/cartridges/202609041330-substation-intelligence-v9-63.js#L6014-L6095"
+    },
+    {
+      "label": "declared-connections.js nearestTransmission()",
+      "type": "fragment",
+      "rag": "amber",
+      "reason": "hand-rolled running-min scan, correct by construction but not importing the shared search",
+      "gh": "https://github.com/Ventusltd/gridatlas/blob/main/atlas/modules/202609012128-declared-connections.js#L213-L244"
+    },
+    {
+      "label": "grid-proximity/build_payload.py nearest_segment()/nearest_substations()",
+      "type": "fragment",
+      "rag": "green",
+      "reason": "the estate’s REFERENCE ring-search: cell-bucketed with a proven early-termination bound; grid-distance-maths credits it as origin",
+      "gh": "https://github.com/Ventusltd/pipelinenews/blob/main/tools/intelligence/cartridges/grid-proximity/build_payload.py#L190-L299"
+    },
+    {
+      "label": "atlas-pointer-deep-link.mjs buildAtlasV9DeepLink()",
+      "type": "fragment",
+      "rag": "amber",
+      "reason": "the LIVE emitter app.mjs actually imports; hand-rolls its own URL construction",
+      "gh": "https://github.com/Ventusltd/pipelinenews/blob/main/releases/202609032329-pipelinenews/assets/202608312037-atlas-pointer-deep-link.mjs#L156-L187"
+    },
+    {
+      "label": "wider-fleet.mjs atlasLink()",
+      "type": "fragment",
+      "rag": "amber",
+      "reason": "a SECOND, independent emitter for ~20 non-spine technology types; its own URLSearchParams, own code path",
+      "gh": "https://github.com/Ventusltd/pipelinenews/blob/main/tools/intelligence/cartridges/wider-fleet/assets/wider-fleet.mjs#L58-L70"
+    },
+    {
+      "label": "sld-sandbox-technology-buckets.js LAYER_ID_FOR_BUCKET",
+      "type": "fragment",
+      "rag": "green",
+      "reason": "the LIVE source table deeplink/contract.js copied verbatim from; the v9.109 100%-failure fix",
+      "gh": "https://github.com/Ventusltd/gridatlas/blob/main/atlas/parts/202609041234-sld-sandbox-technology-buckets.js#L266-L276"
+    },
+    {
+      "label": "ventus-corev8engine-exact-repd-delegation.js",
+      "type": "fragment",
+      "rag": "grey",
+      "reason": "the engine’s OWN former deep-link handler, now inert: publishes DEFERRED_TO_EXACT_REPD_RECEIVER and returns",
+      "gh": "https://github.com/Ventusltd/gridatlas/blob/main/atlas/parts/202609040229-ventus-corev8engine-exact-repd-delegation.js#L796-L840"
+    },
+    {
+      "label": "place-global-search-arrival-identity.js receiveExactRepdDeepLink()",
+      "type": "fragment",
+      "rag": "red",
+      "reason": "the LIVE receiver-side parse — its identity regex is BROADER than the emitter’s, a live pattern drift",
+      "gh": "https://github.com/Ventusltd/gridatlas/blob/main/atlas/parts/202609040229-place-global-search-arrival-identity.js#L566-L747"
+    },
+    {
+      "label": "gridatlas 202609012245-network-topology.js",
+      "type": "fragment",
+      "rag": "green",
+      "reason": "live, composed module — the direct source engine/network-topology.js was promoted from",
+      "gh": "https://github.com/Ventusltd/gridatlas/blob/main/atlas/modules/202609012245-network-topology.js"
+    },
+    {
+      "label": "gridatlas 202609012245-electrical-distance.js",
+      "type": "fragment",
+      "rag": "green",
+      "reason": "live, composed module — the direct source engine/electrical-distance.js was promoted from",
+      "gh": "https://github.com/Ventusltd/gridatlas/blob/main/atlas/modules/202609012245-electrical-distance.js"
+    },
+    {
+      "label": "gridatlas 202609012250-rating-envelope.js",
+      "type": "fragment",
+      "rag": "green",
+      "reason": "live, composed module — the direct source engine/rating-envelope.js was promoted from",
+      "gh": "https://github.com/Ventusltd/gridatlas/blob/main/atlas/modules/202609012250-rating-envelope.js"
+    },
+    {
+      "label": "gridatlas 202609030205-corridor-estimate.js",
+      "type": "fragment",
+      "rag": "green",
+      "reason": "live, composed module — the direct source engine/corridor-estimate.js was promoted from",
+      "gh": "https://github.com/Ventusltd/gridatlas/blob/main/atlas/modules/202609030205-corridor-estimate.js"
+    }
+  ],
+  "node_ids": [
+    "geo-core",
+    "geo-area",
+    "geo-shapes",
+    "geo-geojson",
+    "v9-geodesy",
+    "v9-nearest-search",
+    "deeplink-contract",
+    "network-topology",
+    "electrical-distance",
+    "rating-envelope",
+    "corridor-estimate",
+    "published-fault-level",
+    "electrification-demand",
+    "firm-capacity",
+    "diversified-demand",
+    "connection-capacity",
+    "route-obstacles",
+    "interconnector-economics",
+    "power-factor",
+    "voltage-drop",
+    "sizing-arithmetic-extract",
+    "v8-haversine",
+    "gridatlas-geodesy-module",
+    "gridatlas-cartridge-geodesy-1",
+    "gridatlas-cartridge-geodesy-2",
+    "neon-links-geodesy",
+    "pipelinenews-grid-proximity-geodesy",
+    "pipelinenews-grid-distance-column",
+    "grid-distance-maths-geodesy",
+    "v8-area-a",
+    "v8-area-b",
+    "v8-area-c",
+    "v8-circle-a",
+    "v8-circle-b",
+    "sld-calc-v5",
+    "sld-calc-v6",
+    "sld-calc-v7",
+    "sld-calc-v8a",
+    "sld-calc-v8b",
+    "gridatlas-sizing-arithmetic",
+    "gridatlas-substation-lookup",
+    "gridatlas-cartridge-nearest",
+    "declared-connections-nearest",
+    "pipelinenews-ring-search",
+    "pipelinenews-spine-emitter",
+    "pipelinenews-wider-fleet-emitter",
+    "gridatlas-bucket-table",
+    "gridatlas-v8-delegation",
+    "gridatlas-identity-receiver",
+    "gridatlas-network-topology-live",
+    "gridatlas-electrical-distance-live",
+    "gridatlas-rating-envelope-live",
+    "gridatlas-corridor-estimate-live"
+  ],
+  "edges": [
+    {
+      "from": 0,
+      "to": 21,
+      "type": "supersedes",
+      "evidence": {
+        "file": "globalgrid2050/repd_grid_atlasv8/ventus-corev8engine.js",
+        "lines": "45-50",
+        "method": "verbatim extraction, verified by sha256 in sources/provenance.json; docs/v8-duplication.md confirms this was the one undupliated primitive"
+      }
+    },
+    {
+      "from": 4,
+      "to": 22,
+      "type": "supersedes",
+      "evidence": {
+        "file": "gridatlas/atlas/modules/202609011950-geodesy.js",
+        "lines": "1-145",
+        "method": "sources/provenance.json: \"otherwise byte-identical to the source\"; parity asserted bit-for-bit by proofs/v9-engine.proof.mjs"
+      }
+    },
+    {
+      "from": 22,
+      "to": 23,
+      "type": "duplicates",
+      "evidence": {
+        "file": "gridatlas/atlas/cartridges/202609041330-substation-intelligence-v9-63.js",
+        "lines": "50-71",
+        "method": "grep -n EARTH_RADIUS_KM across gridatlas; docs/v9-constants.md row \"gridatlas (live cartridge, copy #1)\""
+      }
+    },
+    {
+      "from": 23,
+      "to": 24,
+      "type": "duplicates",
+      "evidence": {
+        "file": "gridatlas/atlas/cartridges/202609041330-substation-intelligence-v9-63.js",
+        "lines": "57 and 1544",
+        "method": "docs/v9-constants.md finding 3: two EARTH_RADIUS_KM definitions in the same 6,277-line file"
+      }
+    },
+    {
+      "from": 23,
+      "to": 4,
+      "type": "should_import",
+      "evidence": {
+        "file": "genome/population-plan.md",
+        "lines": "§1, row 1",
+        "method": "manual review: this inline copy could be replaced by an import with no behaviour change (constants already agree)"
+      }
+    },
+    {
+      "from": 24,
+      "to": 4,
+      "type": "should_import",
+      "evidence": {
+        "file": "genome/population-plan.md",
+        "lines": "§1, row 1",
+        "method": "same as copy #1 — second inline copy in the same file"
+      }
+    },
+    {
+      "from": 25,
+      "to": 4,
+      "type": "duplicates",
+      "evidence": {
+        "file": "gridatlas/atlas/cartridges/202608311910-neon-substation-links-v9-6.js",
+        "lines": "120, 174-180",
+        "method": "docs/v9-duplication.md 2(b) item 2: own comment \"Identical in form and constant to ventus-corev8engine.js haversine()\""
+      }
+    },
+    {
+      "from": 25,
+      "to": 4,
+      "type": "should_import",
+      "evidence": {
+        "file": "genome/population-plan.md",
+        "lines": "§1, row 2",
+        "method": "manual review"
+      }
+    },
+    {
+      "from": 26,
+      "to": 28,
+      "type": "duplicates",
+      "evidence": {
+        "file": "pipelinenews/tools/intelligence/cartridges/grid-proximity/build_payload.py",
+        "lines": "44-47, 90",
+        "method": "docs/v9-constants.md row \"pipelinenews\"; A_WGS84/R_ATLAS hard-coded, matches canonical value exactly (no drift)"
+      }
+    },
+    {
+      "from": 26,
+      "to": 28,
+      "type": "should_import",
+      "evidence": {
+        "file": "genome/population-plan.md",
+        "lines": "§1, row 3",
+        "method": "sibling cartridge grid-distance-column/build_payload.py:50-69 already does this in the same directory"
+      }
+    },
+    {
+      "from": 27,
+      "to": 28,
+      "type": "imports",
+      "evidence": {
+        "file": "pipelinenews/tools/intelligence/cartridges/grid-distance-column/build_payload.py",
+        "lines": "50-69",
+        "method": "source inspection: sys.path.insert + `from geodesy import ...`, raises SystemExit if the canonical repo is not present"
+      }
+    },
+    {
+      "from": 0,
+      "to": 28,
+      "type": "duplicates",
+      "evidence": {
+        "file": "engine/geo-core.js vs grid-distance-maths/src/geodesy.mjs",
+        "lines": "50-60 vs 16-27",
+        "method": "value comparison: R_ATLAS/R_UK/R_MEAN identical to the last published digit; README states this repo follows grid-distance-maths/docs/EARTH-MODEL.md by design, so no drift is expected or found"
+      }
+    },
+    {
+      "from": 1,
+      "to": 29,
+      "type": "supersedes",
+      "evidence": {
+        "file": "globalgrid2050/repd_grid_atlasv8/ventus-corev8engine.js",
+        "lines": "134-149",
+        "method": "sources/provenance.json engine/geo-area.js entry"
+      }
+    },
+    {
+      "from": 1,
+      "to": 30,
+      "type": "supersedes",
+      "evidence": {
+        "file": "globalgrid2050/repd_grid_atlasv8/ventus-corev8engine.js",
+        "lines": "481-490",
+        "method": "sources/provenance.json engine/geo-area.js entry: \"Implementations A and B verified numerically identical and collapsed\""
+      }
+    },
+    {
+      "from": 29,
+      "to": 30,
+      "type": "duplicates",
+      "evidence": {
+        "file": "globalgrid2050/repd_grid_atlasv8/ventus-corev8engine.js",
+        "lines": "134-149 vs 481-490",
+        "method": "docs/v8-duplication.md: identical to 8 decimal places on a reference London polygon (0.30664823 km2) and a 1km square"
+      }
+    },
+    {
+      "from": 1,
+      "to": 31,
+      "type": "supersedes",
+      "evidence": {
+        "file": "globalgrid2050/repd_grid_atlasv8/ventus-corev8engine.js",
+        "lines": "576-582",
+        "method": "sources/provenance.json: \"kept separate and unmerged: different question, correct as written\""
+      }
+    },
+    {
+      "from": 2,
+      "to": 32,
+      "type": "supersedes",
+      "evidence": {
+        "file": "globalgrid2050/repd_grid_atlasv8/ventus-corev8engine.js",
+        "lines": "122-132",
+        "method": "sources/provenance.json engine/geo-shapes.js entry"
+      }
+    },
+    {
+      "from": 2,
+      "to": 33,
+      "type": "supersedes",
+      "evidence": {
+        "file": "globalgrid2050/repd_grid_atlasv8/ventus-corev8engine.js",
+        "lines": "727-740",
+        "method": "sources/provenance.json engine/geo-shapes.js entry"
+      }
+    },
+    {
+      "from": 32,
+      "to": 33,
+      "type": "duplicates",
+      "evidence": {
+        "file": "globalgrid2050/repd_grid_atlasv8/ventus-corev8engine.js",
+        "lines": "122-132 vs 727-740",
+        "method": "docs/v8-duplication.md: \"0 absolute difference over 64 points\" between the two destination-point implementations"
+      }
+    },
+    {
+      "from": 34,
+      "to": 35,
+      "type": "duplicates",
+      "evidence": {
+        "file": "globalgrid2050/solar-bess-topology-v{5,6}/.../gis-sld-v5-calculations.js",
+        "lines": "147",
+        "method": "grep -n \"ac_mw_direct = total_blocks \\* central_skid_mva \\* inv_per_mv\" across both files, both 170 lines, byte-identical"
+      }
+    },
+    {
+      "from": 34,
+      "to": 36,
+      "type": "duplicates",
+      "evidence": {
+        "file": "globalgrid2050/solar-bess-topology-v{5,7}/.../gis-sld-v5-calculations.js",
+        "lines": "147",
+        "method": "grep -n across both files, both 170 lines, byte-identical"
+      }
+    },
+    {
+      "from": 34,
+      "to": 37,
+      "type": "duplicates",
+      "evidence": {
+        "file": "globalgrid2050/solar-bess-topology-v{5,8}/.../gis-sld-v5-calculations.js",
+        "lines": "147",
+        "method": "grep -n across both files, both 170 lines, byte-identical"
+      }
+    },
+    {
+      "from": 34,
+      "to": 38,
+      "type": "duplicates",
+      "evidence": {
+        "file": "globalgrid2050/solar-bess-topology-v5 vs v8/bess-pcs-standalone",
+        "lines": "147",
+        "method": "grep -n across both files, both 170 lines, byte-identical — fifth copy of the same file"
+      }
+    },
+    {
+      "from": 34,
+      "to": 39,
+      "type": "drifts_from",
+      "evidence": {
+        "file": "globalgrid2050/solar-bess-topology-v5/gis-sld-v5-calculations.js:147 vs gridatlas/atlas/modules/202609012205-sizing-arithmetic.js:~230",
+        "method": "docs/v9-maths-inventory.md §7: shipped defaults give 211.2 MW (bug: total_blocks double-counts inv_per_mv and multiplies by a transformer rating) vs the corrected Math.min(inverter_ac_total=105.6, skid_ac_total=52.8)=52.8 MW"
+      }
+    },
+    {
+      "from": 35,
+      "to": 39,
+      "type": "drifts_from",
+      "evidence": {
+        "file": "globalgrid2050/solar-bess-topology-v6/.../gis-sld-v5-calculations.js:147",
+        "lines": "147",
+        "method": "same bug, same worked numbers, confirmed by direct file read of this copy"
+      }
+    },
+    {
+      "from": 36,
+      "to": 39,
+      "type": "drifts_from",
+      "evidence": {
+        "file": "globalgrid2050/solar-bess-topology-v7/.../gis-sld-v5-calculations.js:147",
+        "lines": "147",
+        "method": "same bug, same worked numbers, confirmed by direct file read of this copy"
+      }
+    },
+    {
+      "from": 37,
+      "to": 39,
+      "type": "drifts_from",
+      "evidence": {
+        "file": "globalgrid2050/solar-bess-topology-v8/bess-gis-sld-financial-sandbox/gis-sld-v5-calculations.js:147",
+        "lines": "147",
+        "method": "same bug, same worked numbers, confirmed by direct file read of this copy"
+      }
+    },
+    {
+      "from": 38,
+      "to": 39,
+      "type": "drifts_from",
+      "evidence": {
+        "file": "globalgrid2050/solar-bess-topology-v8/bess-pcs-standalone/gis-sld-v5-calculations.js:147",
+        "lines": "147",
+        "method": "same bug, same worked numbers, confirmed by direct file read of this copy"
+      }
+    },
+    {
+      "from": 20,
+      "to": 39,
+      "type": "duplicates",
+      "evidence": {
+        "file": "sources/v9-maths-provenance.json",
+        "lines": "extract/sizing-arithmetic.mjs entry",
+        "method": "verbatim staged copy, promotion declined this session (see population-plan.md §4) — correctly carries the FIXED form, not the bug"
+      }
+    },
+    {
+      "from": 5,
+      "to": 40,
+      "type": "supersedes",
+      "evidence": {
+        "file": "gridatlas/atlas/modules/202609011950-substation-lookup.js",
+        "lines": "1-82",
+        "method": "sources/provenance.json engine/v9-nearest-search.js entry"
+      }
+    },
+    {
+      "from": 40,
+      "to": 41,
+      "type": "duplicates",
+      "evidence": {
+        "file": "gridatlas/atlas/cartridges/202609041330-substation-intelligence-v9-63.js",
+        "lines": "6014-6095",
+        "method": "docs/v9-duplication.md 2(a): full side-by-side diff of normalise() and nearest(), byte-different, semantically near-identical"
+      }
+    },
+    {
+      "from": 41,
+      "to": 5,
+      "type": "should_import",
+      "evidence": {
+        "file": "genome/population-plan.md",
+        "lines": "§3, row 1",
+        "method": "manual review"
+      }
+    },
+    {
+      "from": 41,
+      "to": 40,
+      "type": "drifts_from",
+      "evidence": {
+        "file": "gridatlas/atlas/cartridges/202609041330-substation-intelligence-v9-63.js:6083-6092 vs atlas/modules/202609011950-substation-lookup.js:57-70",
+        "method": "docs/v9-duplication.md 2(a) points 2-3: options?.limit ?? 1 vs (options&&options.limit)||1 disagree at limit:0; cartridge lacks the voltages_kv||[] default and can throw where the module cannot — confirmed by proofs/v9-engine.proof.mjs"
+      }
+    },
+    {
+      "from": 42,
+      "to": 5,
+      "type": "duplicates",
+      "evidence": {
+        "file": "gridatlas/atlas/modules/202609012128-declared-connections.js",
+        "lines": "213-244",
+        "method": "docs/v9-duplication.md 2(b) item 3: running-min scan over every candidate"
+      }
+    },
+    {
+      "from": 42,
+      "to": 5,
+      "type": "should_import",
+      "evidence": {
+        "file": "genome/population-plan.md",
+        "lines": "§3, row 2",
+        "method": "manual review"
+      }
+    },
+    {
+      "from": 43,
+      "to": 5,
+      "type": "duplicates",
+      "evidence": {
+        "file": "pipelinenews/tools/intelligence/cartridges/grid-proximity/build_payload.py",
+        "lines": "190-299",
+        "method": "docs/v9-duplication.md 2(b) item 4: same nearest-node concern, but an INDEXED ring-search rather than v9-nearest-search’s exhaustive scan — algorithmically ahead, not a should_import candidate"
+      }
+    },
+    {
+      "from": 6,
+      "to": 46,
+      "type": "supersedes",
+      "evidence": {
+        "file": "gridatlas/atlas/parts/202609041234-sld-sandbox-technology-buckets.js",
+        "lines": "266-276",
+        "method": "sources/provenance.json deeplink/contract.js entry: \"LAYER_ID_FOR_BUCKET and layerIdForBucket copied verbatim from the receiver\""
+      }
+    },
+    {
+      "from": 46,
+      "to": 6,
+      "type": "should_import",
+      "evidence": {
+        "file": "genome/population-plan.md",
+        "lines": "§5, row 3",
+        "method": "values already agree byte-for-byte; only packaging (composed, SHA-256-verified cartridge) is open"
+      }
+    },
+    {
+      "from": 44,
+      "to": 6,
+      "type": "duplicates",
+      "evidence": {
+        "file": "pipelinenews/.../202608312037-atlas-pointer-deep-link.mjs",
+        "lines": "104-187",
+        "method": "docs/deeplink-contract.md §1a; sources/provenance.json: \"buildDeepLink and parseDeepLink are NEW... neither was a reusable function\" before this extraction"
+      }
+    },
+    {
+      "from": 44,
+      "to": 6,
+      "type": "should_import",
+      "evidence": {
+        "file": "genome/population-plan.md",
+        "lines": "§5, row 1",
+        "method": "manual review"
+      }
+    },
+    {
+      "from": 45,
+      "to": 44,
+      "type": "duplicates",
+      "evidence": {
+        "file": "pipelinenews/tools/intelligence/cartridges/wider-fleet/assets/wider-fleet.mjs",
+        "lines": "58-70",
+        "method": "docs/deeplink-contract.md §1b: \"a SECOND cartridge... builds its own URLSearchParams independently... own code path\""
+      }
+    },
+    {
+      "from": 45,
+      "to": 6,
+      "type": "should_import",
+      "evidence": {
+        "file": "genome/population-plan.md",
+        "lines": "§5, row 1",
+        "method": "manual review"
+      }
+    },
+    {
+      "from": 47,
+      "to": 6,
+      "type": "duplicates",
+      "evidence": {
+        "file": "gridatlas/atlas/parts/202609040229-ventus-corev8engine-exact-repd-delegation.js",
+        "lines": "796-840",
+        "method": "docs/deeplink-contract.md §3 Step 2: re-parses repd_ref/technology, validates, then publishes DEFERRED_TO_EXACT_REPD_RECEIVER and returns — inert but structurally a second parser"
+      }
+    },
+    {
+      "from": 48,
+      "to": 6,
+      "type": "should_import",
+      "evidence": {
+        "file": "genome/population-plan.md",
+        "lines": "§5, row 2",
+        "method": "manual review"
+      }
+    },
+    {
+      "from": 48,
+      "to": 44,
+      "type": "drifts_from",
+      "evidence": {
+        "file": "gridatlas/atlas/parts/202609040229-place-global-search-arrival-identity.js:604 vs pipelinenews/.../atlas-pointer-deep-link.mjs:161",
+        "method": "docs/deeplink-contract.md §3 Step 1 and §1a: receiver regex /^[A-Za-z0-9-]{1,40}$/ vs emitter regex /^\\d+$/ — the receiver silently accepts identities the live emitter would never send"
+      }
+    },
+    {
+      "from": 7,
+      "to": 49,
+      "type": "supersedes",
+      "evidence": {
+        "file": "gridatlas/atlas/modules/202609012245-network-topology.js",
+        "lines": "1-384",
+        "method": "sources/provenance.json engine/network-topology.js entry (added this session); sha256 recorded"
+      }
+    },
+    {
+      "from": 8,
+      "to": 50,
+      "type": "supersedes",
+      "evidence": {
+        "file": "gridatlas/atlas/modules/202609012245-electrical-distance.js",
+        "lines": "1-365",
+        "method": "sources/provenance.json engine/electrical-distance.js entry (added this session); sha256 recorded"
+      }
+    },
+    {
+      "from": 9,
+      "to": 51,
+      "type": "supersedes",
+      "evidence": {
+        "file": "gridatlas/atlas/modules/202609012250-rating-envelope.js",
+        "lines": "1-213",
+        "method": "sources/provenance.json engine/rating-envelope.js entry (added this session); sha256 recorded"
+      }
+    },
+    {
+      "from": 10,
+      "to": 52,
+      "type": "supersedes",
+      "evidence": {
+        "file": "gridatlas/atlas/modules/202609030205-corridor-estimate.js",
+        "lines": "1-114",
+        "method": "sources/provenance.json engine/corridor-estimate.js entry (added this session); sha256 recorded"
+      }
+    },
+    {
+      "from": 8,
+      "to": 7,
+      "type": "imports",
+      "evidence": {
+        "file": "engine/electrical-distance.js",
+        "lines": "21-22, 111-113",
+        "method": "source inspection: REQUIRES = \"gridatlas.module.network-topology.graph.v1\"; between()/within() call index.graph() and refuse to run on a mismatched schema; exercised by proofs/electrical-distance.proof.mjs"
+      }
+    },
+    {
+      "from": 9,
+      "to": 7,
+      "type": "imports",
+      "evidence": {
+        "file": "engine/rating-envelope.js",
+        "lines": "21-22, 85-87",
+        "method": "source inspection: REQUIRES = \"gridatlas.module.network-topology.graph.v1\"; at() calls index.graph() and refuses on schema mismatch; exercised by proofs/rating-envelope.proof.mjs"
+      }
+    }
+  ],
+  "edge_kind_counts": {
+    "supersedes": 13,
+    "duplicates": 18,
+    "should_import": 10,
+    "imports": 3,
+    "drifts_from": 7
+  }
+}

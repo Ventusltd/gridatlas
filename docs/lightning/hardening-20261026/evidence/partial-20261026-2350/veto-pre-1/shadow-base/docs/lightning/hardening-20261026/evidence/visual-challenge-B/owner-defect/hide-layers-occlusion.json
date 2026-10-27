@@ -1,0 +1,3130 @@
+{
+  "harness": "lead-shim; candidate lightningDataDir=/tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/lightning/fixtures/lightning-archive/data (fixture from the genuine 408-flash seed); Chromium phone emulation, NOT Safari",
+  "chromium": "153.0.8010.12",
+  "node": "v22.23.4",
+  "routes": {
+    "baseline": "http://127.0.0.1:8141/gridatlas/atlas/",
+    "candidate": "http://127.0.0.1:8142/wt/atlas/v/202610261949/"
+  },
+  "startedAt": "2026-10-26T23:02:06.162Z",
+  "viewports": {
+    "android-393x852": {
+      "profile": "Chromium phone emulation (isMobile, hasTouch, Android UA)",
+      "baseline": {
+        "url": "http://127.0.0.1:8141/gridatlas/atlas/",
+        "toggleBefore": {
+          "text": "▴ LAYERS",
+          "ariaPressed": "true"
+        },
+        "toggleHitBefore": "self",
+        "toggleAfterOpen": {
+          "text": "▾ HIDE LAYERS",
+          "ariaPressed": "false"
+        },
+        "lastOriginalGroupTitle": "PIPELINE NEWS (REPD)",
+        "originalGroupCount": 13,
+        "lastOriginalSelector": "#scada-ui-container > .key-group:nth-child(13)",
+        "scrollToEnd": {
+          "gesture": "page.mouse.wheel(0,500) over #scada-ui-container per step (Chromium touch emulation; NOT a finger drag)",
+          "steps": 5,
+          "final": {
+            "i": 4,
+            "containerScrollTop": 1832,
+            "windowScrollY": 0
+          }
+        },
+        "atEnd": {
+          "lastOriginal": {
+            "present": true,
+            "group": "div.key-group",
+            "title": "PIPELINE NEWS (REPD)",
+            "groupRect": [
+              17,
+              728.3,
+              359,
+              98
+            ],
+            "clip": {
+              "top": 511.3,
+              "bottom": 835,
+              "left": 17,
+              "right": 376
+            },
+            "button": {
+              "text": "▾ HIDE LAYERS",
+              "rect": [
+                248.6,
+                796,
+                132.4,
+                44
+              ],
+              "position": "fixed",
+              "zIndex": "9999",
+              "hidden": false,
+              "ariaLabel": "Hide the layers panel"
+            },
+            "scroll": {
+              "windowScrollY": 0,
+              "docScrollHeight": 852,
+              "innerHeight": 852,
+              "container": {
+                "scrollTop": 1832,
+                "scrollHeight": 2156,
+                "clientHeight": 324,
+                "max": 1832,
+                "overflowY": "auto",
+                "paddingBottom": "5px",
+                "rect": [
+                  17,
+                  511.3,
+                  359,
+                  323.8
+                ]
+              }
+            },
+            "lines": [
+              {
+                "owner": "div.key-title",
+                "cap": null,
+                "textApprox": "PIPELINE NEWS (REPD)",
+                "rect": [
+                  29,
+                  728.3,
+                  120,
+                  11
+                ],
+                "visibleInClip": true,
+                "overlapPx": 0,
+                "overlapPctOfLine": 0,
+                "topAtOverlap": null
+              },
+              {
+                "owner": "span",
+                "cap": null,
+                "textApprox": "Same technology [SELECT A PROJECT]",
+                "rect": [
+                  58,
+                  747.3,
+                  265.3,
+                  15
+                ],
+                "visibleInClip": true,
+                "overlapPx": 0,
+                "overlapPctOfLine": 0,
+                "topAtOverlap": null
+              },
+              {
+                "owner": "span",
+                "cap": null,
+                "textApprox": "Wider fleet [SELECT A PROJECT]",
+                "rect": [
+                  58,
+                  774.3,
+                  234,
+                  15
+                ],
+                "visibleInClip": true,
+                "overlapPx": 0,
+                "overlapPctOfLine": 0,
+                "topAtOverlap": null
+              },
+              {
+                "owner": "span",
+                "cap": null,
+                "textApprox": "All pipeline [SELECT A PROJECT]",
+                "rect": [
+                  58,
+                  801.3,
+                  241.8,
+                  15
+                ],
+                "visibleInClip": true,
+                "overlapPx": 769,
+                "overlapPctOfLine": 21.2,
+                "topAtOverlap": "HIDE-LAYERS-BUTTON"
+              }
+            ],
+            "linesVisible": 4,
+            "linesOccluded": 1,
+            "occludedText": [
+              "All pipeline [SELECT A PROJECT] (21.2% of line)"
+            ]
+          }
+        },
+        "lightningRequests": 0,
+        "pageErrors": [],
+        "shim": {
+          "served": {
+            "maplibre": 2,
+            "style": 1,
+            "duckdb": 3
+          },
+          "aborted": [
+            "https://raw.githubusercontent.com/Ventusltd/data-grid-gb/1c9909d1138704b29235c27fd769436dda8a0b18/derived/connection-points.v3.json",
+            "https://ventusltd.github.io/ventus-grid-engine/genome/engine-graph.json"
+          ],
+          "missing": []
+        }
+      },
+      "candidate": {
+        "url": "http://127.0.0.1:8142/wt/atlas/v/202610261949/",
+        "toggleBefore": {
+          "text": "▴ LAYERS",
+          "ariaPressed": "true"
+        },
+        "toggleHitBefore": "self",
+        "toggleAfterOpen": {
+          "text": "▾ HIDE LAYERS",
+          "ariaPressed": "false"
+        },
+        "lastOriginalGroupTitle": "PIPELINE NEWS (REPD)",
+        "originalGroupCount": 13,
+        "lastOriginalSelector": "#scada-ui-container > .key-group:nth-child(13)",
+        "scrollToEndOFF": {
+          "gesture": "page.mouse.wheel(0,500) over #scada-ui-container per step (Chromium touch emulation; NOT a finger drag)",
+          "steps": 5,
+          "final": {
+            "i": 4,
+            "containerScrollTop": 1888,
+            "windowScrollY": 0
+          }
+        },
+        "atEndOFF": {
+          "lightning": {
+            "present": true,
+            "group": "div.key-group",
+            "title": "Weather · EUMETSAT Lightning Imager",
+            "groupRect": [
+              17,
+              782.3,
+              359,
+              44
+            ],
+            "clip": {
+              "top": 511.3,
+              "bottom": 835,
+              "left": 17,
+              "right": 376
+            },
+            "button": {
+              "text": "▾ HIDE LAYERS",
+              "rect": [
+                248.6,
+                796,
+                132.4,
+                44
+              ],
+              "position": "fixed",
+              "zIndex": "9999",
+              "hidden": false,
+              "ariaLabel": "Hide the layers panel"
+            },
+            "scroll": {
+              "windowScrollY": 0,
+              "docScrollHeight": 852,
+              "innerHeight": 852,
+              "container": {
+                "scrollTop": 1888,
+                "scrollHeight": 2212,
+                "clientHeight": 324,
+                "max": 1888,
+                "overflowY": "auto",
+                "paddingBottom": "5px",
+                "rect": [
+                  17,
+                  511.3,
+                  359,
+                  323.8
+                ]
+              }
+            },
+            "lines": [
+              {
+                "owner": "div.key-title",
+                "cap": null,
+                "textApprox": "Weather · EUMETSAT Lightning Imager",
+                "rect": [
+                  29,
+                  782.3,
+                  210,
+                  11
+                ],
+                "visibleInClip": true,
+                "overlapPx": 0,
+                "overlapPctOfLine": 0,
+                "topAtOverlap": null
+              },
+              {
+                "owner": "span",
+                "cap": null,
+                "textApprox": "Lightning flashes (optical) [WAIT]",
+                "rect": [
+                  58,
+                  801.3,
+                  265.3,
+                  15
+                ],
+                "visibleInClip": true,
+                "overlapPx": 1120,
+                "overlapPctOfLine": 28.1,
+                "topAtOverlap": "HIDE-LAYERS-BUTTON"
+              }
+            ],
+            "linesVisible": 2,
+            "linesOccluded": 1,
+            "occludedText": [
+              "Lightning flashes (optical) [WAIT] (28.1% of line)"
+            ]
+          },
+          "lastOriginal": {
+            "present": true,
+            "group": "div.key-group",
+            "title": "PIPELINE NEWS (REPD)",
+            "groupRect": [
+              17,
+              672.3,
+              359,
+              98
+            ],
+            "clip": {
+              "top": 511.3,
+              "bottom": 835,
+              "left": 17,
+              "right": 376
+            },
+            "button": {
+              "text": "▾ HIDE LAYERS",
+              "rect": [
+                248.6,
+                796,
+                132.4,
+                44
+              ],
+              "position": "fixed",
+              "zIndex": "9999",
+              "hidden": false,
+              "ariaLabel": "Hide the layers panel"
+            },
+            "scroll": {
+              "windowScrollY": 0,
+              "docScrollHeight": 852,
+              "innerHeight": 852,
+              "container": {
+                "scrollTop": 1888,
+                "scrollHeight": 2212,
+                "clientHeight": 324,
+                "max": 1888,
+                "overflowY": "auto",
+                "paddingBottom": "5px",
+                "rect": [
+                  17,
+                  511.3,
+                  359,
+                  323.8
+                ]
+              }
+            },
+            "lines": [
+              {
+                "owner": "div.key-title",
+                "cap": null,
+                "textApprox": "PIPELINE NEWS (REPD)",
+                "rect": [
+                  29,
+                  672.3,
+                  120,
+                  11
+                ],
+                "visibleInClip": true,
+                "overlapPx": 0,
+                "overlapPctOfLine": 0,
+                "topAtOverlap": null
+              },
+              {
+                "owner": "span",
+                "cap": null,
+                "textApprox": "Same technology [SELECT A PROJECT]",
+                "rect": [
+                  58,
+                  691.3,
+                  265.3,
+                  15
+                ],
+                "visibleInClip": true,
+                "overlapPx": 0,
+                "overlapPctOfLine": 0,
+                "topAtOverlap": null
+              },
+              {
+                "owner": "span",
+                "cap": null,
+                "textApprox": "Wider fleet [SELECT A PROJECT]",
+                "rect": [
+                  58,
+                  718.3,
+                  234,
+                  15
+                ],
+                "visibleInClip": true,
+                "overlapPx": 0,
+                "overlapPctOfLine": 0,
+                "topAtOverlap": null
+              },
+              {
+                "owner": "span",
+                "cap": null,
+                "textApprox": "All pipeline [SELECT A PROJECT]",
+                "rect": [
+                  58,
+                  745.3,
+                  241.8,
+                  15
+                ],
+                "visibleInClip": true,
+                "overlapPx": 0,
+                "overlapPctOfLine": 0,
+                "topAtOverlap": null
+              }
+            ],
+            "linesVisible": 4,
+            "linesOccluded": 0,
+            "occludedText": []
+          },
+          "checkboxHit": "self"
+        },
+        "checkboxBackoff": [],
+        "toggledOnBy": "real tap on the lightning checkbox",
+        "lightningState": {
+          "on": true,
+          "last": {
+            "state": "PARTIAL",
+            "stale": true,
+            "mode": "detail",
+            "period": "24h",
+            "drawn": 0,
+            "cluster": false,
+            "cap": 10000,
+            "cap_source": "index",
+            "index_count": 3,
+            "failures": 0,
+            "reasons": [
+              "tail not yet ingested"
+            ]
+          },
+          "requests": 2
+        },
+        "scrollToEndON": {
+          "gesture": "page.mouse.wheel(0,500) over #scada-ui-container per step (Chromium touch emulation; NOT a finger drag)",
+          "steps": 2,
+          "final": {
+            "i": 1,
+            "containerScrollTop": 2247,
+            "windowScrollY": 0
+          }
+        },
+        "atEndON": {
+          "lightning": {
+            "present": true,
+            "group": "div.key-group",
+            "title": "Weather · EUMETSAT Lightning Imager",
+            "groupRect": [
+              17,
+              423.3,
+              359,
+              402.5
+            ],
+            "clip": {
+              "top": 511.3,
+              "bottom": 835,
+              "left": 17,
+              "right": 376
+            },
+            "button": {
+              "text": "▾ HIDE LAYERS",
+              "rect": [
+                248.6,
+                796,
+                132.4,
+                44
+              ],
+              "position": "fixed",
+              "zIndex": "9999",
+              "hidden": false,
+              "ariaLabel": "Hide the layers panel"
+            },
+            "scroll": {
+              "windowScrollY": 0,
+              "docScrollHeight": 852,
+              "innerHeight": 852,
+              "container": {
+                "scrollTop": 2247,
+                "scrollHeight": 2571,
+                "clientHeight": 324,
+                "max": 2247,
+                "overflowY": "auto",
+                "paddingBottom": "5px",
+                "rect": [
+                  17,
+                  511.3,
+                  359,
+                  323.8
+                ]
+              }
+            },
+            "lines": [
+              {
+                "owner": "div.key-title",
+                "cap": null,
+                "textApprox": "Weather · EUMETSAT Lightning Imager",
+                "rect": [
+                  29,
+                  423.3,
+                  210,
+                  11
+                ],
+                "visibleInClip": false,
+                "overlapPx": 0,
+                "overlapPctOfLine": 0,
+                "topAtOverlap": null
+              },
+              {
+                "owner": "span",
+                "cap": null,
+                "textApprox": "(1/2) Lightning flashes (optical) [UNKNOWN | 24h STALE]",
+                "rect": [
+                  58,
+                  440.3,
+                  296.5,
+                  15
+                ],
+                "visibleInClip": false,
+                "overlapPx": 0,
+                "overlapPctOfLine": 0,
+                "topAtOverlap": null
+              },
+              {
+                "owner": "span",
+                "cap": null,
+                "textApprox": "(2/2) Lightning flashes (optical) [UNKNOWN | 24h STALE]",
+                "rect": [
+                  58,
+                  455.3,
+                  78,
+                  15
+                ],
+                "visibleInClip": false,
+                "overlapPx": 0,
+                "overlapPctOfLine": 0,
+                "topAtOverlap": null
+              },
+              {
+                "owner": "button.map-ctrl-btn",
+                "cap": null,
+                "textApprox": "12H",
+                "rect": [
+                  41.4,
+                  495.3,
+                  19.2,
+                  10
+                ],
+                "visibleInClip": false,
+                "overlapPx": 0,
+                "overlapPctOfLine": 0,
+                "topAtOverlap": null
+              },
+              {
+                "owner": "button.map-ctrl-btn.active",
+                "cap": null,
+                "textApprox": "24H",
+                "rect": [
+                  89.4,
+                  495.3,
+                  19.2,
+                  10
+                ],
+                "visibleInClip": false,
+                "overlapPx": 0,
+                "overlapPctOfLine": 0,
+                "topAtOverlap": null
+              },
+              {
+                "owner": "button.map-ctrl-btn",
+                "cap": null,
+                "textApprox": "48H",
+                "rect": [
+                  137.4,
+                  495.3,
+                  19.2,
+                  10
+                ],
+                "visibleInClip": false,
+                "overlapPx": 0,
+                "overlapPctOfLine": 0,
+                "topAtOverlap": null
+              },
+              {
+                "owner": "button.map-ctrl-btn",
+                "cap": null,
+                "textApprox": "7D",
+                "rect": [
+                  188.6,
+                  495.3,
+                  12.8,
+                  10
+                ],
+                "visibleInClip": false,
+                "overlapPx": 0,
+                "overlapPctOfLine": 0,
+                "topAtOverlap": null
+              },
+              {
+                "owner": "button.map-ctrl-btn",
+                "cap": null,
+                "textApprox": "30D",
+                "rect": [
+                  233.4,
+                  495.3,
+                  19.2,
+                  10
+                ],
+                "visibleInClip": false,
+                "overlapPx": 0,
+                "overlapPctOfLine": 0,
+                "topAtOverlap": null
+              },
+              {
+                "owner": "button.map-ctrl-btn",
+                "cap": null,
+                "textApprox": "3M",
+                "rect": [
+                  284.6,
+                  495.3,
+                  12.8,
+                  10
+                ],
+                "visibleInClip": false,
+                "overlapPx": 0,
+                "overlapPctOfLine": 0,
+                "topAtOverlap": null
+              },
+              {
+                "owner": "button.map-ctrl-btn",
+                "cap": null,
+                "textApprox": "6M",
+                "rect": [
+                  332.6,
+                  495.3,
+                  12.8,
+                  10
+                ],
+                "visibleInClip": false,
+                "overlapPx": 0,
+                "overlapPctOfLine": 0,
+                "topAtOverlap": null
+              },
+              {
+                "owner": "button.map-ctrl-btn",
+                "cap": null,
+                "textApprox": "12M",
+                "rect": [
+                  41.4,
+                  543.3,
+                  19.2,
+                  10
+                ],
+                "visibleInClip": true,
+                "overlapPx": 0,
+                "overlapPctOfLine": 0,
+                "topAtOverlap": null
+              },
+              {
+                "owner": "button.map-ctrl-btn",
+                "cap": null,
+                "textApprox": "CUSTOM",
+                "rect": [
+                  86,
+                  543.3,
+                  38.4,
+                  10
+                ],
+                "visibleInClip": true,
+                "overlapPx": 0,
+                "overlapPctOfLine": 0,
+                "topAtOverlap": null
+              },
+              {
+                "owner": "button.map-ctrl-btn",
+                "cap": null,
+                "textApprox": "◀ PREV",
+                "rect": [
+                  38,
+                  591.8,
+                  38.4,
+                  10
+                ],
+                "visibleInClip": true,
+                "overlapPx": 0,
+                "overlapPctOfLine": 0,
+                "topAtOverlap": null
+              },
+              {
+                "owner": "button.map-ctrl-btn",
+                "cap": null,
+                "textApprox": "LATEST",
+                "rect": [
+                  98.4,
+                  591.3,
+                  38.4,
+                  10
+                ],
+                "visibleInClip": true,
+                "overlapPx": 0,
+                "overlapPctOfLine": 0,
+                "topAtOverlap": null
+              },
+              {
+                "owner": "button.map-ctrl-btn",
+                "cap": null,
+                "textApprox": "NEXT ▶",
+                "rect": [
+                  158.8,
+                  591.8,
+                  38.4,
+                  10
+                ],
+                "visibleInClip": true,
+                "overlapPx": 0,
+                "overlapPctOfLine": 0,
+                "topAtOverlap": null
+              },
+              {
+                "owner": "div.status-dot",
+                "cap": null,
+                "textApprox": "PARTIAL · 0 FLASHES DRAWN · SEARCHED 24% · STALE",
+                "rect": [
+                  40,
+                  624.3,
+                  230.4,
+                  9
+                ],
+                "visibleInClip": true,
+                "overlapPx": 0,
+                "overlapPctOfLine": 0,
+                "topAtOverlap": null
+              },
+              {
+                "owner": "div",
+                "cap": "window",
+                "textApprox": "(1/2) Window 2026-10-25 23:02 UTC → 2026-10-26 23:02 UTC (24 hours, latest)",
+                "rect": [
+                  29,
+                  637.3,
+                  324.1,
+                  11
+                ],
+                "visibleInClip": true,
+                "overlapPx": 0,
+                "overlapPctOfLine": 0,
+                "topAtOverlap": null
+              },
+              {
+                "owner": "div",
+                "cap": "window",
+                "textApprox": "(2/2) Window 2026-10-25 23:02 UTC → 2026-10-26 23:02 UTC (24 hours, latest)",
+                "rect": [
+                  29,
+                  652.3,
+                  84,
+                  11
+                ],
+                "visibleInClip": true,
+                "overlapPx": 0,
+                "overlapPctOfLine": 0,
+                "topAtOverlap": null
+              },
+              {
+                "owner": "div",
+                "cap": "actual",
+                "textApprox": "Actual no archived flashes within this window",
+                "rect": [
+                  29,
+                  667.3,
+                  270,
+                  11
+                ],
+                "visibleInClip": true,
+                "overlapPx": 0,
+                "overlapPctOfLine": 0,
+                "topAtOverlap": null
+              },
+              {
+                "owner": "div",
+                "cap": "flashes",
+                "textApprox": "Flashes 0 archived in window",
+                "rect": [
+                  29,
+                  682.3,
+                  168,
+                  11
+                ],
+                "visibleInClip": true,
+                "overlapPx": 0,
+                "overlapPctOfLine": 0,
+                "topAtOverlap": null
+              },
+              {
+                "owner": "div",
+                "cap": "refresh",
+                "textApprox": "(1/2) Refresh archive 2026-10-26 18:37 UTC (4h 25min ago; expected every 1 h) · STALE",
+                "rect": [
+                  29,
+                  697.3,
+                  306.1,
+                  11
+                ],
+                "visibleInClip": true,
+                "overlapPx": 0,
+                "overlapPctOfLine": 0,
+                "topAtOverlap": null
+              },
+              {
+                "owner": "div",
+                "cap": "refresh",
+                "textApprox": "(2/2) Refresh archive 2026-10-26 18:37 UTC (4h 25min ago; expected every 1 h) · STALE",
+                "rect": [
+                  29,
+                  712.3,
+                  162,
+                  11
+                ],
+                "visibleInClip": true,
+                "overlapPx": 0,
+                "overlapPctOfLine": 0,
+                "topAtOverlap": null
+              },
+              {
+                "owner": "div",
+                "cap": "searched",
+                "textApprox": "(1/2) Searched EUMETSAT 24% of window · 4 successful runs · 2026-10-25 23:02 UTC → 202",
+                "rect": [
+                  29,
+                  727.3,
+                  318.1,
+                  11
+                ],
+                "visibleInClip": true,
+                "overlapPx": 0,
+                "overlapPctOfLine": 0,
+                "topAtOverlap": null
+              },
+              {
+                "owner": "div",
+                "cap": "searched",
+                "textApprox": "(2/2) Searched EUMETSAT 24% of window · 4 successful runs · 2026-10-25 23:02 UTC → 202",
+                "rect": [
+                  29,
+                  742.3,
+                  258,
+                  11
+                ],
+                "visibleInClip": true,
+                "overlapPx": 0,
+                "overlapPctOfLine": 0,
+                "topAtOverlap": null
+              },
+              {
+                "owner": "div",
+                "cap": "warning",
+                "textApprox": "(1/2) Not yet ingested: last 10h 2min of window (unknown, not zero)",
+                "rect": [
+                  29,
+                  757.3,
+                  330.1,
+                  11
+                ],
+                "visibleInClip": true,
+                "overlapPx": 0,
+                "overlapPctOfLine": 0,
+                "topAtOverlap": null
+              },
+              {
+                "owner": "div",
+                "cap": "warning",
+                "textApprox": "(2/2) Not yet ingested: last 10h 2min of window (unknown, not zero)",
+                "rect": [
+                  29,
+                  772.3,
+                  30,
+                  11
+                ],
+                "visibleInClip": true,
+                "overlapPx": 0,
+                "overlapPctOfLine": 0,
+                "topAtOverlap": null
+              },
+              {
+                "owner": "div",
+                "cap": "footer",
+                "textApprox": "(1/3) Times UTC · Optical flashes seen by MTG Lightning Imager (EUMETSAT L2-LFL), not ",
+                "rect": [
+                  29,
+                  786.3,
+                  302.5,
+                  10
+                ],
+                "visibleInClip": true,
+                "overlapPx": 21,
+                "overlapPctOfLine": 0.7,
+                "topAtOverlap": "HIDE-LAYERS-BUTTON"
+              },
+              {
+                "owner": "div",
+                "cap": "footer",
+                "textApprox": "(2/3) Times UTC · Optical flashes seen by MTG Lightning Imager (EUMETSAT L2-LFL), not ",
+                "rect": [
+                  29,
+                  799.8,
+                  334.9,
+                  10
+                ],
+                "visibleInClip": true,
+                "overlapPx": 1153,
+                "overlapPctOfLine": 34.4,
+                "topAtOverlap": "HIDE-LAYERS-BUTTON"
+              },
+              {
+                "owner": "div",
+                "cap": "footer",
+                "textApprox": "(3/3) Times UTC · Optical flashes seen by MTG Lightning Imager (EUMETSAT L2-LFL), not ",
+                "rect": [
+                  29,
+                  813.3,
+                  280.9,
+                  10
+                ],
+                "visibleInClip": true,
+                "overlapPx": 613,
+                "overlapPctOfLine": 21.8,
+                "topAtOverlap": "HIDE-LAYERS-BUTTON"
+              }
+            ],
+            "linesVisible": 19,
+            "linesOccluded": 3,
+            "occludedText": [
+              "[footer] (1/3) Times UTC · Optical flashes seen by MTG Lightning Imager (EUMETSAT L2-LFL), not  (0.7% of line)",
+              "[footer] (2/3) Times UTC · Optical flashes seen by MTG Lightning Imager (EUMETSAT L2-LFL), not  (34.4% of line)",
+              "[footer] (3/3) Times UTC · Optical flashes seen by MTG Lightning Imager (EUMETSAT L2-LFL), not  (21.8% of line)"
+            ]
+          },
+          "lastOriginal": {
+            "present": true,
+            "group": "div.key-group",
+            "title": "PIPELINE NEWS (REPD)",
+            "groupRect": [
+              17,
+              313.3,
+              359,
+              98
+            ],
+            "clip": {
+              "top": 511.3,
+              "bottom": 835,
+              "left": 17,
+              "right": 376
+            },
+            "button": {
+              "text": "▾ HIDE LAYERS",
+              "rect": [
+                248.6,
+                796,
+                132.4,
+                44
+              ],
+              "position": "fixed",
+              "zIndex": "9999",
+              "hidden": false,
+              "ariaLabel": "Hide the layers panel"
+            },
+            "scroll": {
+              "windowScrollY": 0,
+              "docScrollHeight": 852,
+              "innerHeight": 852,
+              "container": {
+                "scrollTop": 2247,
+                "scrollHeight": 2571,
+                "clientHeight": 324,
+                "max": 2247,
+                "overflowY": "auto",
+                "paddingBottom": "5px",
+                "rect": [
+                  17,
+                  511.3,
+                  359,
+                  323.8
+                ]
+              }
+            },
+            "lines": [
+              {
+                "owner": "div.key-title",
+                "cap": null,
+                "textApprox": "PIPELINE NEWS (REPD)",
+                "rect": [
+                  29,
+                  313.3,
+                  120,
+                  11
+                ],
+                "visibleInClip": false,
+                "overlapPx": 0,
+                "overlapPctOfLine": 0,
+                "topAtOverlap": null
+              },
+              {
+                "owner": "span",
+                "cap": null,
+                "textApprox": "Same technology [SELECT A PROJECT]",
+                "rect": [
+                  58,
+                  332.3,
+                  265.3,
+                  15
+                ],
+                "visibleInClip": false,
+                "overlapPx": 0,
+                "overlapPctOfLine": 0,
+                "topAtOverlap": null
+              },
+              {
+                "owner": "span",
+                "cap": null,
+                "textApprox": "Wider fleet [SELECT A PROJECT]",
+                "rect": [
+                  58,
+                  359.3,
+                  234,
+                  15
+                ],
+                "visibleInClip": false,
+                "overlapPx": 0,
+                "overlapPctOfLine": 0,
+                "topAtOverlap": null
+              },
+              {
+                "owner": "span",
+                "cap": null,
+                "textApprox": "All pipeline [SELECT A PROJECT]",
+                "rect": [
+                  58,
+                  386.3,
+                  241.8,
+                  15
+                ],
+                "visibleInClip": false,
+                "overlapPx": 0,
+                "overlapPctOfLine": 0,
+                "topAtOverlap": null
+              }
+            ],
+            "linesVisible": 0,
+            "linesOccluded": 0,
+            "occludedText": []
+          }
+        },
+        "pageErrors": [],
+        "shim": {
+          "served": {
+            "maplibre": 2,
+            "style": 1,
+            "duckdb": 3,
+            "lightning-data": 2
+          },
+          "aborted": [
+            "https://raw.githubusercontent.com/Ventusltd/data-grid-gb/1c9909d1138704b29235c27fd769436dda8a0b18/derived/connection-points.v3.json",
+            "https://ventusltd.github.io/ventus-grid-engine/genome/engine-graph.json"
+          ],
+          "missing": []
+        }
+      }
+    },
+    "android-360x740": {
+      "profile": "Chromium phone emulation (isMobile, hasTouch, Android UA)",
+      "baseline": {
+        "url": "http://127.0.0.1:8141/gridatlas/atlas/",
+        "toggleBefore": {
+          "text": "▴ LAYERS",
+          "ariaPressed": "true"
+        },
+        "toggleHitBefore": "self",
+        "toggleAfterOpen": {
+          "text": "▾ HIDE LAYERS",
+          "ariaPressed": "false"
+        },
+        "lastOriginalGroupTitle": "PIPELINE NEWS (REPD)",
+        "originalGroupCount": 13,
+        "lastOriginalSelector": "#scada-ui-container > .key-group:nth-child(13)",
+        "scrollToEnd": {
+          "gesture": "page.mouse.wheel(0,500) over #scada-ui-container per step (Chromium touch emulation; NOT a finger drag)",
+          "steps": 5,
+          "final": {
+            "i": 4,
+            "containerScrollTop": 1908,
+            "windowScrollY": 0
+          }
+        },
+        "atEnd": {
+          "lastOriginal": {
+            "present": true,
+            "group": "div.key-group",
+            "title": "PIPELINE NEWS (REPD)",
+            "groupRect": [
+              17,
+              615.8,
+              326,
+              98
+            ],
+            "clip": {
+              "top": 441.8,
+              "bottom": 723,
+              "left": 17,
+              "right": 343
+            },
+            "button": {
+              "text": "▾ HIDE LAYERS",
+              "rect": [
+                215.6,
+                684,
+                132.4,
+                44
+              ],
+              "position": "fixed",
+              "zIndex": "9999",
+              "hidden": false,
+              "ariaLabel": "Hide the layers panel"
+            },
+            "scroll": {
+              "windowScrollY": 0,
+              "docScrollHeight": 740,
+              "innerHeight": 740,
+              "container": {
+                "scrollTop": 1908,
+                "scrollHeight": 2189,
+                "clientHeight": 281,
+                "max": 1908,
+                "overflowY": "auto",
+                "paddingBottom": "5px",
+                "rect": [
+                  17,
+                  441.8,
+                  326,
+                  281.2
+                ]
+              }
+            },
+            "lines": [
+              {
+                "owner": "div.key-title",
+                "cap": null,
+                "textApprox": "PIPELINE NEWS (REPD)",
+                "rect": [
+                  29,
+                  615.8,
+                  120,
+                  11
+                ],
+                "visibleInClip": true,
+                "overlapPx": 0,
+                "overlapPctOfLine": 0,
+                "topAtOverlap": null
+              },
+              {
+                "owner": "span",
+                "cap": null,
+                "textApprox": "Same technology [SELECT A PROJECT]",
+                "rect": [
+                  58,
+                  634.8,
+                  265.3,
+                  15
+                ],
+                "visibleInClip": true,
+                "overlapPx": 0,
+                "overlapPctOfLine": 0,
+                "topAtOverlap": null
+              },
+              {
+                "owner": "span",
+                "cap": null,
+                "textApprox": "Wider fleet [SELECT A PROJECT]",
+                "rect": [
+                  58,
+                  661.8,
+                  234,
+                  15
+                ],
+                "visibleInClip": true,
+                "overlapPx": 0,
+                "overlapPctOfLine": 0,
+                "topAtOverlap": null
+              },
+              {
+                "owner": "span",
+                "cap": null,
+                "textApprox": "All pipeline [SELECT A PROJECT]",
+                "rect": [
+                  58,
+                  688.8,
+                  241.8,
+                  15
+                ],
+                "visibleInClip": true,
+                "overlapPx": 1264,
+                "overlapPctOfLine": 34.8,
+                "topAtOverlap": "HIDE-LAYERS-BUTTON"
+              }
+            ],
+            "linesVisible": 4,
+            "linesOccluded": 1,
+            "occludedText": [
+              "All pipeline [SELECT A PROJECT] (34.8% of line)"
+            ]
+          }
+        },
+        "lightningRequests": 0,
+        "pageErrors": [],
+        "shim": {
+          "served": {
+            "maplibre": 2,
+            "style": 1,
+            "duckdb": 3
+          },
+          "aborted": [
+            "https://raw.githubusercontent.com/Ventusltd/data-grid-gb/1c9909d1138704b29235c27fd769436dda8a0b18/derived/connection-points.v3.json",
+            "https://ventusltd.github.io/ventus-grid-engine/genome/engine-graph.json"
+          ],
+          "missing": []
+        }
+      },
+      "candidate": {
+        "url": "http://127.0.0.1:8142/wt/atlas/v/202610261949/",
+        "toggleBefore": {
+          "text": "▴ LAYERS",
+          "ariaPressed": "true"
+        },
+        "toggleHitBefore": "self",
+        "toggleAfterOpen": {
+          "text": "▾ HIDE LAYERS",
+          "ariaPressed": "false"
+        },
+        "lastOriginalGroupTitle": "PIPELINE NEWS (REPD)",
+        "originalGroupCount": 13,
+        "lastOriginalSelector": "#scada-ui-container > .key-group:nth-child(13)",
+        "scrollToEndOFF": {
+          "gesture": "page.mouse.wheel(0,500) over #scada-ui-container per step (Chromium touch emulation; NOT a finger drag)",
+          "steps": 5,
+          "final": {
+            "i": 4,
+            "containerScrollTop": 1964,
+            "windowScrollY": 0
+          }
+        },
+        "atEndOFF": {
+          "lightning": {
+            "present": true,
+            "group": "div.key-group",
+            "title": "Weather · EUMETSAT Lightning Imager",
+            "groupRect": [
+              17,
+              669.8,
+              326,
+              44
+            ],
+            "clip": {
+              "top": 441.8,
+              "bottom": 723,
+              "left": 17,
+              "right": 343
+            },
+            "button": {
+              "text": "▾ HIDE LAYERS",
+              "rect": [
+                215.6,
+                684,
+                132.4,
+                44
+              ],
+              "position": "fixed",
+              "zIndex": "9999",
+              "hidden": false,
+              "ariaLabel": "Hide the layers panel"
+            },
+            "scroll": {
+              "windowScrollY": 0,
+              "docScrollHeight": 740,
+              "innerHeight": 740,
+              "container": {
+                "scrollTop": 1964,
+                "scrollHeight": 2245,
+                "clientHeight": 281,
+                "max": 1964,
+                "overflowY": "auto",
+                "paddingBottom": "5px",
+                "rect": [
+                  17,
+                  441.8,
+                  326,
+                  281.2
+                ]
+              }
+            },
+            "lines": [
+              {
+                "owner": "div.key-title",
+                "cap": null,
+                "textApprox": "Weather · EUMETSAT Lightning Imager",
+                "rect": [
+                  29,
+                  669.8,
+                  210,
+                  11
+                ],
+                "visibleInClip": true,
+                "overlapPx": 0,
+                "overlapPctOfLine": 0,
+                "topAtOverlap": null
+              },
+              {
+                "owner": "span",
+                "cap": null,
+                "textApprox": "Lightning flashes (optical) [WAIT]",
+                "rect": [
+                  58,
+                  688.8,
+                  265.3,
+                  15
+                ],
+                "visibleInClip": true,
+                "overlapPx": 1615,
+                "overlapPctOfLine": 40.6,
+                "topAtOverlap": "HIDE-LAYERS-BUTTON"
+              }
+            ],
+            "linesVisible": 2,
+            "linesOccluded": 1,
+            "occludedText": [
+              "Lightning flashes (optical) [WAIT] (40.6% of line)"
+            ]
+          },
+          "lastOriginal": {
+            "present": true,
+            "group": "div.key-group",
+            "title": "PIPELINE NEWS (REPD)",
+            "groupRect": [
+              17,
+              559.8,
+              326,
+              98
+            ],
+            "clip": {
+              "top": 441.8,
+              "bottom": 723,
+              "left": 17,
+              "right": 343
+            },
+            "button": {
+              "text": "▾ HIDE LAYERS",
+              "rect": [
+                215.6,
+                684,
+                132.4,
+                44
+              ],
+              "position": "fixed",
+              "zIndex": "9999",
+              "hidden": false,
+              "ariaLabel": "Hide the layers panel"
+            },
+            "scroll": {
+              "windowScrollY": 0,
+              "docScrollHeight": 740,
+              "innerHeight": 740,
+              "container": {
+                "scrollTop": 1964,
+                "scrollHeight": 2245,
+                "clientHeight": 281,
+                "max": 1964,
+                "overflowY": "auto",
+                "paddingBottom": "5px",
+                "rect": [
+                  17,
+                  441.8,
+                  326,
+                  281.2
+                ]
+              }
+            },
+            "lines": [
+              {
+                "owner": "div.key-title",
+                "cap": null,
+                "textApprox": "PIPELINE NEWS (REPD)",
+                "rect": [
+                  29,
+                  559.8,
+                  120,
+                  11
+                ],
+                "visibleInClip": true,
+                "overlapPx": 0,
+                "overlapPctOfLine": 0,
+                "topAtOverlap": null
+              },
+              {
+                "owner": "span",
+                "cap": null,
+                "textApprox": "Same technology [SELECT A PROJECT]",
+                "rect": [
+                  58,
+                  578.8,
+                  265.3,
+                  15
+                ],
+                "visibleInClip": true,
+                "overlapPx": 0,
+                "overlapPctOfLine": 0,
+                "topAtOverlap": null
+              },
+              {
+                "owner": "span",
+                "cap": null,
+                "textApprox": "Wider fleet [SELECT A PROJECT]",
+                "rect": [
+                  58,
+                  605.8,
+                  234,
+                  15
+                ],
+                "visibleInClip": true,
+                "overlapPx": 0,
+                "overlapPctOfLine": 0,
+                "topAtOverlap": null
+              },
+              {
+                "owner": "span",
+                "cap": null,
+                "textApprox": "All pipeline [SELECT A PROJECT]",
+                "rect": [
+                  58,
+                  632.8,
+                  241.8,
+                  15
+                ],
+                "visibleInClip": true,
+                "overlapPx": 0,
+                "overlapPctOfLine": 0,
+                "topAtOverlap": null
+              }
+            ],
+            "linesVisible": 4,
+            "linesOccluded": 0,
+            "occludedText": []
+          },
+          "checkboxHit": "self"
+        },
+        "checkboxBackoff": [],
+        "toggledOnBy": "real tap on the lightning checkbox",
+        "lightningState": {
+          "on": true,
+          "last": {
+            "state": "PARTIAL",
+            "stale": true,
+            "mode": "detail",
+            "period": "24h",
+            "drawn": 0,
+            "cluster": false,
+            "cap": 10000,
+            "cap_source": "index",
+            "index_count": 3,
+            "failures": 0,
+            "reasons": [
+              "tail not yet ingested"
+            ]
+          },
+          "requests": 2
+        },
+        "scrollToEndON": {
+          "gesture": "page.mouse.wheel(0,500) over #scada-ui-container per step (Chromium touch emulation; NOT a finger drag)",
+          "steps": 2,
+          "final": {
+            "i": 1,
+            "containerScrollTop": 2322,
+            "windowScrollY": 0
+          }
+        },
+        "atEndON": {
+          "lightning": {
+            "present": true,
+            "group": "div.key-group",
+            "title": "Weather · EUMETSAT Lightning Imager",
+            "groupRect": [
+              17,
+              311.8,
+              326,
+              402.5
+            ],
+            "clip": {
+              "top": 441.8,
+              "bottom": 723,
+              "left": 17,
+              "right": 343
+            },
+            "button": {
+              "text": "▾ HIDE LAYERS",
+              "rect": [
+                215.6,
+                684,
+                132.4,
+                44
+              ],
+              "position": "fixed",
+              "zIndex": "9999",
+              "hidden": false,
+              "ariaLabel": "Hide the layers panel"
+            },
+            "scroll": {
+              "windowScrollY": 0,
+              "docScrollHeight": 740,
+              "innerHeight": 740,
+              "container": {
+                "scrollTop": 2322,
+                "scrollHeight": 2604,
+                "clientHeight": 281,
+                "max": 2323,
+                "overflowY": "auto",
+                "paddingBottom": "5px",
+                "rect": [
+                  17,
+                  441.8,
+                  326,
+                  281.2
+                ]
+              }
+            },
+            "lines": [
+              {
+                "owner": "div.key-title",
+                "cap": null,
+                "textApprox": "Weather · EUMETSAT Lightning Imager",
+                "rect": [
+                  29,
+                  311.8,
+                  210,
+                  11
+                ],
+                "visibleInClip": false,
+                "overlapPx": 0,
+                "overlapPctOfLine": 0,
+                "topAtOverlap": null
+              },
+              {
+                "owner": "span",
+                "cap": null,
+                "textApprox": "(1/2) Lightning flashes (optical) [UNKNOWN | 24h STALE]",
+                "rect": [
+                  58,
+                  328.8,
+                  280.9,
+                  15
+                ],
+                "visibleInClip": false,
+                "overlapPx": 0,
+                "overlapPctOfLine": 0,
+                "topAtOverlap": null
+              },
+              {
+                "owner": "span",
+                "cap": null,
+                "textApprox": "(2/2) Lightning flashes (optical) [UNKNOWN | 24h STALE]",
+                "rect": [
+                  58,
+                  343.8,
+                  93.6,
+                  15
+                ],
+                "visibleInClip": false,
+                "overlapPx": 0,
+                "overlapPctOfLine": 0,
+                "topAtOverlap": null
+              },
+              {
+                "owner": "button.map-ctrl-btn",
+                "cap": null,
+                "textApprox": "12H",
+                "rect": [
+                  41.4,
+                  383.8,
+                  19.2,
+                  10
+                ],
+                "visibleInClip": false,
+                "overlapPx": 0,
+                "overlapPctOfLine": 0,
+                "topAtOverlap": null
+              },
+              {
+                "owner": "button.map-ctrl-btn.active",
+                "cap": null,
+                "textApprox": "24H",
+                "rect": [
+                  89.4,
+                  383.8,
+                  19.2,
+                  10
+                ],
+                "visibleInClip": false,
+                "overlapPx": 0,
+                "overlapPctOfLine": 0,
+                "topAtOverlap": null
+              },
+              {
+                "owner": "button.map-ctrl-btn",
+                "cap": null,
+                "textApprox": "48H",
+                "rect": [
+                  137.4,
+                  383.8,
+                  19.2,
+                  10
+                ],
+                "visibleInClip": false,
+                "overlapPx": 0,
+                "overlapPctOfLine": 0,
+                "topAtOverlap": null
+              },
+              {
+                "owner": "button.map-ctrl-btn",
+                "cap": null,
+                "textApprox": "7D",
+                "rect": [
+                  188.6,
+                  383.8,
+                  12.8,
+                  10
+                ],
+                "visibleInClip": false,
+                "overlapPx": 0,
+                "overlapPctOfLine": 0,
+                "topAtOverlap": null
+              },
+              {
+                "owner": "button.map-ctrl-btn",
+                "cap": null,
+                "textApprox": "30D",
+                "rect": [
+                  233.4,
+                  383.8,
+                  19.2,
+                  10
+                ],
+                "visibleInClip": false,
+                "overlapPx": 0,
+                "overlapPctOfLine": 0,
+                "topAtOverlap": null
+              },
+              {
+                "owner": "button.map-ctrl-btn",
+                "cap": null,
+                "textApprox": "3M",
+                "rect": [
+                  284.6,
+                  383.8,
+                  12.8,
+                  10
+                ],
+                "visibleInClip": false,
+                "overlapPx": 0,
+                "overlapPctOfLine": 0,
+                "topAtOverlap": null
+              },
+              {
+                "owner": "button.map-ctrl-btn",
+                "cap": null,
+                "textApprox": "6M",
+                "rect": [
+                  44.6,
+                  431.8,
+                  12.8,
+                  10
+                ],
+                "visibleInClip": false,
+                "overlapPx": 0,
+                "overlapPctOfLine": 0,
+                "topAtOverlap": null
+              },
+              {
+                "owner": "button.map-ctrl-btn",
+                "cap": null,
+                "textApprox": "12M",
+                "rect": [
+                  89.4,
+                  431.8,
+                  19.2,
+                  10
+                ],
+                "visibleInClip": false,
+                "overlapPx": 0,
+                "overlapPctOfLine": 0,
+                "topAtOverlap": null
+              },
+              {
+                "owner": "button.map-ctrl-btn",
+                "cap": null,
+                "textApprox": "CUSTOM",
+                "rect": [
+                  134,
+                  431.8,
+                  38.4,
+                  10
+                ],
+                "visibleInClip": false,
+                "overlapPx": 0,
+                "overlapPctOfLine": 0,
+                "topAtOverlap": null
+              },
+              {
+                "owner": "button.map-ctrl-btn",
+                "cap": null,
+                "textApprox": "◀ PREV",
+                "rect": [
+                  38,
+                  480.3,
+                  38.4,
+                  10
+                ],
+                "visibleInClip": true,
+                "overlapPx": 0,
+                "overlapPctOfLine": 0,
+                "topAtOverlap": null
+              },
+              {
+                "owner": "button.map-ctrl-btn",
+                "cap": null,
+                "textApprox": "LATEST",
+                "rect": [
+                  98.4,
+                  479.8,
+                  38.4,
+                  10
+                ],
+                "visibleInClip": true,
+                "overlapPx": 0,
+                "overlapPctOfLine": 0,
+                "topAtOverlap": null
+              },
+              {
+                "owner": "button.map-ctrl-btn",
+                "cap": null,
+                "textApprox": "NEXT ▶",
+                "rect": [
+                  158.8,
+                  480.3,
+                  38.4,
+                  10
+                ],
+                "visibleInClip": true,
+                "overlapPx": 0,
+                "overlapPctOfLine": 0,
+                "topAtOverlap": null
+              },
+              {
+                "owner": "div.status-dot",
+                "cap": null,
+                "textApprox": "PARTIAL · 0 FLASHES DRAWN · SEARCHED 24% · STALE",
+                "rect": [
+                  40,
+                  512.8,
+                  230.4,
+                  9
+                ],
+                "visibleInClip": true,
+                "overlapPx": 0,
+                "overlapPctOfLine": 0,
+                "topAtOverlap": null
+              },
+              {
+                "owner": "div",
+                "cap": "window",
+                "textApprox": "(1/2) Window 2026-10-25 23:02 UTC → 2026-10-26 23:02 UTC (24 hours, latest)",
+                "rect": [
+                  29,
+                  525.8,
+                  300.1,
+                  11
+                ],
+                "visibleInClip": true,
+                "overlapPx": 0,
+                "overlapPctOfLine": 0,
+                "topAtOverlap": null
+              },
+              {
+                "owner": "div",
+                "cap": "window",
+                "textApprox": "(2/2) Window 2026-10-25 23:02 UTC → 2026-10-26 23:02 UTC (24 hours, latest)",
+                "rect": [
+                  29,
+                  540.8,
+                  108,
+                  11
+                ],
+                "visibleInClip": true,
+                "overlapPx": 0,
+                "overlapPctOfLine": 0,
+                "topAtOverlap": null
+              },
+              {
+                "owner": "div",
+                "cap": "actual",
+                "textApprox": "Actual no archived flashes within this window",
+                "rect": [
+                  29,
+                  555.8,
+                  270,
+                  11
+                ],
+                "visibleInClip": true,
+                "overlapPx": 0,
+                "overlapPctOfLine": 0,
+                "topAtOverlap": null
+              },
+              {
+                "owner": "div",
+                "cap": "flashes",
+                "textApprox": "Flashes 0 archived in window",
+                "rect": [
+                  29,
+                  570.8,
+                  168,
+                  11
+                ],
+                "visibleInClip": true,
+                "overlapPx": 0,
+                "overlapPctOfLine": 0,
+                "topAtOverlap": null
+              },
+              {
+                "owner": "div",
+                "cap": "refresh",
+                "textApprox": "(1/2) Refresh archive 2026-10-26 18:37 UTC (4h 25min ago; expected every 1 h) · STALE",
+                "rect": [
+                  29,
+                  585.8,
+                  306.1,
+                  11
+                ],
+                "visibleInClip": true,
+                "overlapPx": 0,
+                "overlapPctOfLine": 0,
+                "topAtOverlap": null
+              },
+              {
+                "owner": "div",
+                "cap": "refresh",
+                "textApprox": "(2/2) Refresh archive 2026-10-26 18:37 UTC (4h 25min ago; expected every 1 h) · STALE",
+                "rect": [
+                  29,
+                  600.8,
+                  162,
+                  11
+                ],
+                "visibleInClip": true,
+                "overlapPx": 0,
+                "overlapPctOfLine": 0,
+                "topAtOverlap": null
+              },
+              {
+                "owner": "div",
+                "cap": "searched",
+                "textApprox": "(1/2) Searched EUMETSAT 24% of window · 4 successful runs · 2026-10-25 23:02 UTC → 202",
+                "rect": [
+                  29,
+                  615.8,
+                  306.1,
+                  11
+                ],
+                "visibleInClip": true,
+                "overlapPx": 0,
+                "overlapPctOfLine": 0,
+                "topAtOverlap": null
+              },
+              {
+                "owner": "div",
+                "cap": "searched",
+                "textApprox": "(2/2) Searched EUMETSAT 24% of window · 4 successful runs · 2026-10-25 23:02 UTC → 202",
+                "rect": [
+                  29,
+                  630.8,
+                  270,
+                  11
+                ],
+                "visibleInClip": true,
+                "overlapPx": 0,
+                "overlapPctOfLine": 0,
+                "topAtOverlap": null
+              },
+              {
+                "owner": "div",
+                "cap": "warning",
+                "textApprox": "(1/2) Not yet ingested: last 10h 2min of window (unknown, not zero)",
+                "rect": [
+                  29,
+                  645.8,
+                  306.1,
+                  11
+                ],
+                "visibleInClip": true,
+                "overlapPx": 0,
+                "overlapPctOfLine": 0,
+                "topAtOverlap": null
+              },
+              {
+                "owner": "div",
+                "cap": "warning",
+                "textApprox": "(2/2) Not yet ingested: last 10h 2min of window (unknown, not zero)",
+                "rect": [
+                  29,
+                  660.8,
+                  54,
+                  11
+                ],
+                "visibleInClip": true,
+                "overlapPx": 0,
+                "overlapPctOfLine": 0,
+                "topAtOverlap": null
+              },
+              {
+                "owner": "div",
+                "cap": "footer",
+                "textApprox": "(1/3) Times UTC · Optical flashes seen by MTG Lightning Imager (EUMETSAT L2-LFL), not ",
+                "rect": [
+                  29,
+                  674.8,
+                  302.5,
+                  10
+                ],
+                "visibleInClip": true,
+                "overlapPx": 94,
+                "overlapPctOfLine": 3.1,
+                "topAtOverlap": "HIDE-LAYERS-BUTTON"
+              },
+              {
+                "owner": "div",
+                "cap": "footer",
+                "textApprox": "(2/3) Times UTC · Optical flashes seen by MTG Lightning Imager (EUMETSAT L2-LFL), not ",
+                "rect": [
+                  29,
+                  688.3,
+                  307.9,
+                  10
+                ],
+                "visibleInClip": true,
+                "overlapPx": 1213,
+                "overlapPctOfLine": 39.4,
+                "topAtOverlap": "HIDE-LAYERS-BUTTON"
+              },
+              {
+                "owner": "div",
+                "cap": "footer",
+                "textApprox": "(3/3) Times UTC · Optical flashes seen by MTG Lightning Imager (EUMETSAT L2-LFL), not ",
+                "rect": [
+                  29,
+                  701.8,
+                  307.9,
+                  10
+                ],
+                "visibleInClip": true,
+                "overlapPx": 1213,
+                "overlapPctOfLine": 39.4,
+                "topAtOverlap": "HIDE-LAYERS-BUTTON"
+              }
+            ],
+            "linesVisible": 17,
+            "linesOccluded": 3,
+            "occludedText": [
+              "[footer] (1/3) Times UTC · Optical flashes seen by MTG Lightning Imager (EUMETSAT L2-LFL), not  (3.1% of line)",
+              "[footer] (2/3) Times UTC · Optical flashes seen by MTG Lightning Imager (EUMETSAT L2-LFL), not  (39.4% of line)",
+              "[footer] (3/3) Times UTC · Optical flashes seen by MTG Lightning Imager (EUMETSAT L2-LFL), not  (39.4% of line)"
+            ]
+          },
+          "lastOriginal": {
+            "present": true,
+            "group": "div.key-group",
+            "title": "PIPELINE NEWS (REPD)",
+            "groupRect": [
+              17,
+              201.8,
+              326,
+              98
+            ],
+            "clip": {
+              "top": 441.8,
+              "bottom": 723,
+              "left": 17,
+              "right": 343
+            },
+            "button": {
+              "text": "▾ HIDE LAYERS",
+              "rect": [
+                215.6,
+                684,
+                132.4,
+                44
+              ],
+              "position": "fixed",
+              "zIndex": "9999",
+              "hidden": false,
+              "ariaLabel": "Hide the layers panel"
+            },
+            "scroll": {
+              "windowScrollY": 0,
+              "docScrollHeight": 740,
+              "innerHeight": 740,
+              "container": {
+                "scrollTop": 2322,
+                "scrollHeight": 2604,
+                "clientHeight": 281,
+                "max": 2323,
+                "overflowY": "auto",
+                "paddingBottom": "5px",
+                "rect": [
+                  17,
+                  441.8,
+                  326,
+                  281.2
+                ]
+              }
+            },
+            "lines": [
+              {
+                "owner": "div.key-title",
+                "cap": null,
+                "textApprox": "PIPELINE NEWS (REPD)",
+                "rect": [
+                  29,
+                  201.8,
+                  120,
+                  11
+                ],
+                "visibleInClip": false,
+                "overlapPx": 0,
+                "overlapPctOfLine": 0,
+                "topAtOverlap": null
+              },
+              {
+                "owner": "span",
+                "cap": null,
+                "textApprox": "Same technology [SELECT A PROJECT]",
+                "rect": [
+                  58,
+                  220.8,
+                  265.3,
+                  15
+                ],
+                "visibleInClip": false,
+                "overlapPx": 0,
+                "overlapPctOfLine": 0,
+                "topAtOverlap": null
+              },
+              {
+                "owner": "span",
+                "cap": null,
+                "textApprox": "Wider fleet [SELECT A PROJECT]",
+                "rect": [
+                  58,
+                  247.8,
+                  234,
+                  15
+                ],
+                "visibleInClip": false,
+                "overlapPx": 0,
+                "overlapPctOfLine": 0,
+                "topAtOverlap": null
+              },
+              {
+                "owner": "span",
+                "cap": null,
+                "textApprox": "All pipeline [SELECT A PROJECT]",
+                "rect": [
+                  58,
+                  274.8,
+                  241.8,
+                  15
+                ],
+                "visibleInClip": false,
+                "overlapPx": 0,
+                "overlapPctOfLine": 0,
+                "topAtOverlap": null
+              }
+            ],
+            "linesVisible": 0,
+            "linesOccluded": 0,
+            "occludedText": []
+          }
+        },
+        "pageErrors": [],
+        "shim": {
+          "served": {
+            "maplibre": 2,
+            "style": 1,
+            "duckdb": 3,
+            "lightning-data": 2
+          },
+          "aborted": [
+            "https://raw.githubusercontent.com/Ventusltd/data-grid-gb/1c9909d1138704b29235c27fd769436dda8a0b18/derived/connection-points.v3.json",
+            "https://ventusltd.github.io/ventus-grid-engine/genome/engine-graph.json"
+          ],
+          "missing": []
+        }
+      }
+    },
+    "iphone-390x844-geometry-only": {
+      "profile": "Chromium phone emulation (isMobile, hasTouch, Chromium with an iPhone UA; NOT Safari/WebKit)",
+      "baseline": {
+        "url": "http://127.0.0.1:8141/gridatlas/atlas/",
+        "toggleBefore": {
+          "text": "▴ LAYERS",
+          "ariaPressed": "true"
+        },
+        "toggleHitBefore": "self",
+        "toggleAfterOpen": {
+          "text": "▾ HIDE LAYERS",
+          "ariaPressed": "false"
+        },
+        "lastOriginalGroupTitle": "PIPELINE NEWS (REPD)",
+        "originalGroupCount": 13,
+        "lastOriginalSelector": "#scada-ui-container > .key-group:nth-child(13)",
+        "scrollToEnd": {
+          "gesture": "page.mouse.wheel(0,500) over #scada-ui-container per step (Chromium touch emulation; NOT a finger drag)",
+          "steps": 5,
+          "final": {
+            "i": 4,
+            "containerScrollTop": 1835,
+            "windowScrollY": 0
+          }
+        },
+        "atEnd": {
+          "lastOriginal": {
+            "present": true,
+            "group": "div.key-group",
+            "title": "PIPELINE NEWS (REPD)",
+            "groupRect": [
+              17,
+              720.3,
+              356,
+              98
+            ],
+            "clip": {
+              "top": 506.3,
+              "bottom": 827,
+              "left": 17,
+              "right": 373
+            },
+            "button": {
+              "text": "▾ HIDE LAYERS",
+              "rect": [
+                245.6,
+                788,
+                132.4,
+                44
+              ],
+              "position": "fixed",
+              "zIndex": "9999",
+              "hidden": false,
+              "ariaLabel": "Hide the layers panel"
+            },
+            "scroll": {
+              "windowScrollY": 0,
+              "docScrollHeight": 844,
+              "innerHeight": 844,
+              "container": {
+                "scrollTop": 1835,
+                "scrollHeight": 2156,
+                "clientHeight": 321,
+                "max": 1835,
+                "overflowY": "auto",
+                "paddingBottom": "5px",
+                "rect": [
+                  17,
+                  506.3,
+                  356,
+                  320.7
+                ]
+              }
+            },
+            "lines": [
+              {
+                "owner": "div.key-title",
+                "cap": null,
+                "textApprox": "PIPELINE NEWS (REPD)",
+                "rect": [
+                  29,
+                  720.3,
+                  120,
+                  11
+                ],
+                "visibleInClip": true,
+                "overlapPx": 0,
+                "overlapPctOfLine": 0,
+                "topAtOverlap": null
+              },
+              {
+                "owner": "span",
+                "cap": null,
+                "textApprox": "Same technology [SELECT A PROJECT]",
+                "rect": [
+                  58,
+                  739.3,
+                  265.3,
+                  15
+                ],
+                "visibleInClip": true,
+                "overlapPx": 0,
+                "overlapPctOfLine": 0,
+                "topAtOverlap": null
+              },
+              {
+                "owner": "span",
+                "cap": null,
+                "textApprox": "Wider fleet [SELECT A PROJECT]",
+                "rect": [
+                  58,
+                  766.3,
+                  234,
+                  15
+                ],
+                "visibleInClip": true,
+                "overlapPx": 0,
+                "overlapPctOfLine": 0,
+                "topAtOverlap": null
+              },
+              {
+                "owner": "span",
+                "cap": null,
+                "textApprox": "All pipeline [SELECT A PROJECT]",
+                "rect": [
+                  58,
+                  793.3,
+                  241.8,
+                  15
+                ],
+                "visibleInClip": true,
+                "overlapPx": 814,
+                "overlapPctOfLine": 22.4,
+                "topAtOverlap": "HIDE-LAYERS-BUTTON"
+              }
+            ],
+            "linesVisible": 4,
+            "linesOccluded": 1,
+            "occludedText": [
+              "All pipeline [SELECT A PROJECT] (22.4% of line)"
+            ]
+          }
+        },
+        "lightningRequests": 0,
+        "pageErrors": [],
+        "shim": {
+          "served": {
+            "maplibre": 2,
+            "style": 1,
+            "duckdb": 3
+          },
+          "aborted": [
+            "https://raw.githubusercontent.com/Ventusltd/data-grid-gb/1c9909d1138704b29235c27fd769436dda8a0b18/derived/connection-points.v3.json",
+            "https://ventusltd.github.io/ventus-grid-engine/genome/engine-graph.json"
+          ],
+          "missing": []
+        }
+      },
+      "candidate": {
+        "url": "http://127.0.0.1:8142/wt/atlas/v/202610261949/",
+        "toggleBefore": {
+          "text": "▴ LAYERS",
+          "ariaPressed": "true"
+        },
+        "toggleHitBefore": "self",
+        "toggleAfterOpen": {
+          "text": "▾ HIDE LAYERS",
+          "ariaPressed": "false"
+        },
+        "lastOriginalGroupTitle": "PIPELINE NEWS (REPD)",
+        "originalGroupCount": 13,
+        "lastOriginalSelector": "#scada-ui-container > .key-group:nth-child(13)",
+        "scrollToEndOFF": {
+          "gesture": "page.mouse.wheel(0,500) over #scada-ui-container per step (Chromium touch emulation; NOT a finger drag)",
+          "steps": 5,
+          "final": {
+            "i": 4,
+            "containerScrollTop": 1891,
+            "windowScrollY": 0
+          }
+        },
+        "atEndOFF": {
+          "lightning": {
+            "present": true,
+            "group": "div.key-group",
+            "title": "Weather · EUMETSAT Lightning Imager",
+            "groupRect": [
+              17,
+              774.3,
+              356,
+              44
+            ],
+            "clip": {
+              "top": 506.3,
+              "bottom": 827,
+              "left": 17,
+              "right": 373
+            },
+            "button": {
+              "text": "▾ HIDE LAYERS",
+              "rect": [
+                245.6,
+                788,
+                132.4,
+                44
+              ],
+              "position": "fixed",
+              "zIndex": "9999",
+              "hidden": false,
+              "ariaLabel": "Hide the layers panel"
+            },
+            "scroll": {
+              "windowScrollY": 0,
+              "docScrollHeight": 844,
+              "innerHeight": 844,
+              "container": {
+                "scrollTop": 1891,
+                "scrollHeight": 2212,
+                "clientHeight": 321,
+                "max": 1891,
+                "overflowY": "auto",
+                "paddingBottom": "5px",
+                "rect": [
+                  17,
+                  506.3,
+                  356,
+                  320.7
+                ]
+              }
+            },
+            "lines": [
+              {
+                "owner": "div.key-title",
+                "cap": null,
+                "textApprox": "Weather · EUMETSAT Lightning Imager",
+                "rect": [
+                  29,
+                  774.3,
+                  210,
+                  11
+                ],
+                "visibleInClip": true,
+                "overlapPx": 0,
+                "overlapPctOfLine": 0,
+                "topAtOverlap": null
+              },
+              {
+                "owner": "span",
+                "cap": null,
+                "textApprox": "Lightning flashes (optical) [WAIT]",
+                "rect": [
+                  58,
+                  793.3,
+                  265.3,
+                  15
+                ],
+                "visibleInClip": true,
+                "overlapPx": 1165,
+                "overlapPctOfLine": 29.3,
+                "topAtOverlap": "HIDE-LAYERS-BUTTON"
+              }
+            ],
+            "linesVisible": 2,
+            "linesOccluded": 1,
+            "occludedText": [
+              "Lightning flashes (optical) [WAIT] (29.3% of line)"
+            ]
+          },
+          "lastOriginal": {
+            "present": true,
+            "group": "div.key-group",
+            "title": "PIPELINE NEWS (REPD)",
+            "groupRect": [
+              17,
+              664.3,
+              356,
+              98
+            ],
+            "clip": {
+              "top": 506.3,
+              "bottom": 827,
+              "left": 17,
+              "right": 373
+            },
+            "button": {
+              "text": "▾ HIDE LAYERS",
+              "rect": [
+                245.6,
+                788,
+                132.4,
+                44
+              ],
+              "position": "fixed",
+              "zIndex": "9999",
+              "hidden": false,
+              "ariaLabel": "Hide the layers panel"
+            },
+            "scroll": {
+              "windowScrollY": 0,
+              "docScrollHeight": 844,
+              "innerHeight": 844,
+              "container": {
+                "scrollTop": 1891,
+                "scrollHeight": 2212,
+                "clientHeight": 321,
+                "max": 1891,
+                "overflowY": "auto",
+                "paddingBottom": "5px",
+                "rect": [
+                  17,
+                  506.3,
+                  356,
+                  320.7
+                ]
+              }
+            },
+            "lines": [
+              {
+                "owner": "div.key-title",
+                "cap": null,
+                "textApprox": "PIPELINE NEWS (REPD)",
+                "rect": [
+                  29,
+                  664.3,
+                  120,
+                  11
+                ],
+                "visibleInClip": true,
+                "overlapPx": 0,
+                "overlapPctOfLine": 0,
+                "topAtOverlap": null
+              },
+              {
+                "owner": "span",
+                "cap": null,
+                "textApprox": "Same technology [SELECT A PROJECT]",
+                "rect": [
+                  58,
+                  683.3,
+                  265.3,
+                  15
+                ],
+                "visibleInClip": true,
+                "overlapPx": 0,
+                "overlapPctOfLine": 0,
+                "topAtOverlap": null
+              },
+              {
+                "owner": "span",
+                "cap": null,
+                "textApprox": "Wider fleet [SELECT A PROJECT]",
+                "rect": [
+                  58,
+                  710.3,
+                  234,
+                  15
+                ],
+                "visibleInClip": true,
+                "overlapPx": 0,
+                "overlapPctOfLine": 0,
+                "topAtOverlap": null
+              },
+              {
+                "owner": "span",
+                "cap": null,
+                "textApprox": "All pipeline [SELECT A PROJECT]",
+                "rect": [
+                  58,
+                  737.3,
+                  241.8,
+                  15
+                ],
+                "visibleInClip": true,
+                "overlapPx": 0,
+                "overlapPctOfLine": 0,
+                "topAtOverlap": null
+              }
+            ],
+            "linesVisible": 4,
+            "linesOccluded": 0,
+            "occludedText": []
+          },
+          "checkboxHit": "self"
+        },
+        "checkboxBackoff": [],
+        "toggledOnBy": "real tap on the lightning checkbox",
+        "lightningState": {
+          "on": true,
+          "last": {
+            "state": "PARTIAL",
+            "stale": true,
+            "mode": "detail",
+            "period": "24h",
+            "drawn": 0,
+            "cluster": false,
+            "cap": 10000,
+            "cap_source": "index",
+            "index_count": 3,
+            "failures": 0,
+            "reasons": [
+              "tail not yet ingested"
+            ]
+          },
+          "requests": 2
+        },
+        "scrollToEndON": {
+          "gesture": "page.mouse.wheel(0,500) over #scada-ui-container per step (Chromium touch emulation; NOT a finger drag)",
+          "steps": 2,
+          "final": {
+            "i": 1,
+            "containerScrollTop": 2250,
+            "windowScrollY": 0
+          }
+        },
+        "atEndON": {
+          "lightning": {
+            "present": true,
+            "group": "div.key-group",
+            "title": "Weather · EUMETSAT Lightning Imager",
+            "groupRect": [
+              17,
+              415.3,
+              356,
+              402.5
+            ],
+            "clip": {
+              "top": 506.3,
+              "bottom": 827,
+              "left": 17,
+              "right": 373
+            },
+            "button": {
+              "text": "▾ HIDE LAYERS",
+              "rect": [
+                245.6,
+                788,
+                132.4,
+                44
+              ],
+              "position": "fixed",
+              "zIndex": "9999",
+              "hidden": false,
+              "ariaLabel": "Hide the layers panel"
+            },
+            "scroll": {
+              "windowScrollY": 0,
+              "docScrollHeight": 844,
+              "innerHeight": 844,
+              "container": {
+                "scrollTop": 2250,
+                "scrollHeight": 2571,
+                "clientHeight": 321,
+                "max": 2250,
+                "overflowY": "auto",
+                "paddingBottom": "5px",
+                "rect": [
+                  17,
+                  506.3,
+                  356,
+                  320.7
+                ]
+              }
+            },
+            "lines": [
+              {
+                "owner": "div.key-title",
+                "cap": null,
+                "textApprox": "Weather · EUMETSAT Lightning Imager",
+                "rect": [
+                  29,
+                  415.3,
+                  210,
+                  11
+                ],
+                "visibleInClip": false,
+                "overlapPx": 0,
+                "overlapPctOfLine": 0,
+                "topAtOverlap": null
+              },
+              {
+                "owner": "span",
+                "cap": null,
+                "textApprox": "(1/2) Lightning flashes (optical) [UNKNOWN | 24h STALE]",
+                "rect": [
+                  58,
+                  432.3,
+                  296.5,
+                  15
+                ],
+                "visibleInClip": false,
+                "overlapPx": 0,
+                "overlapPctOfLine": 0,
+                "topAtOverlap": null
+              },
+              {
+                "owner": "span",
+                "cap": null,
+                "textApprox": "(2/2) Lightning flashes (optical) [UNKNOWN | 24h STALE]",
+                "rect": [
+                  58,
+                  447.3,
+                  78,
+                  15
+                ],
+                "visibleInClip": false,
+                "overlapPx": 0,
+                "overlapPctOfLine": 0,
+                "topAtOverlap": null
+              },
+              {
+                "owner": "button.map-ctrl-btn",
+                "cap": null,
+                "textApprox": "12H",
+                "rect": [
+                  41.4,
+                  487.3,
+                  19.2,
+                  10
+                ],
+                "visibleInClip": false,
+                "overlapPx": 0,
+                "overlapPctOfLine": 0,
+                "topAtOverlap": null
+              },
+              {
+                "owner": "button.map-ctrl-btn.active",
+                "cap": null,
+                "textApprox": "24H",
+                "rect": [
+                  89.4,
+                  487.3,
+                  19.2,
+                  10
+                ],
+                "visibleInClip": false,
+                "overlapPx": 0,
+                "overlapPctOfLine": 0,
+                "topAtOverlap": null
+              },
+              {
+                "owner": "button.map-ctrl-btn",
+                "cap": null,
+                "textApprox": "48H",
+                "rect": [
+                  137.4,
+                  487.3,
+                  19.2,
+                  10
+                ],
+                "visibleInClip": false,
+                "overlapPx": 0,
+                "overlapPctOfLine": 0,
+                "topAtOverlap": null
+              },
+              {
+                "owner": "button.map-ctrl-btn",
+                "cap": null,
+                "textApprox": "7D",
+                "rect": [
+                  188.6,
+                  487.3,
+                  12.8,
+                  10
+                ],
+                "visibleInClip": false,
+                "overlapPx": 0,
+                "overlapPctOfLine": 0,
+                "topAtOverlap": null
+              },
+              {
+                "owner": "button.map-ctrl-btn",
+                "cap": null,
+                "textApprox": "30D",
+                "rect": [
+                  233.4,
+                  487.3,
+                  19.2,
+                  10
+                ],
+                "visibleInClip": false,
+                "overlapPx": 0,
+                "overlapPctOfLine": 0,
+                "topAtOverlap": null
+              },
+              {
+                "owner": "button.map-ctrl-btn",
+                "cap": null,
+                "textApprox": "3M",
+                "rect": [
+                  284.6,
+                  487.3,
+                  12.8,
+                  10
+                ],
+                "visibleInClip": false,
+                "overlapPx": 0,
+                "overlapPctOfLine": 0,
+                "topAtOverlap": null
+              },
+              {
+                "owner": "button.map-ctrl-btn",
+                "cap": null,
+                "textApprox": "6M",
+                "rect": [
+                  332.6,
+                  487.3,
+                  12.8,
+                  10
+                ],
+                "visibleInClip": false,
+                "overlapPx": 0,
+                "overlapPctOfLine": 0,
+                "topAtOverlap": null
+              },
+              {
+                "owner": "button.map-ctrl-btn",
+                "cap": null,
+                "textApprox": "12M",
+                "rect": [
+                  41.4,
+                  535.3,
+                  19.2,
+                  10
+                ],
+                "visibleInClip": true,
+                "overlapPx": 0,
+                "overlapPctOfLine": 0,
+                "topAtOverlap": null
+              },
+              {
+                "owner": "button.map-ctrl-btn",
+                "cap": null,
+                "textApprox": "CUSTOM",
+                "rect": [
+                  86,
+                  535.3,
+                  38.4,
+                  10
+                ],
+                "visibleInClip": true,
+                "overlapPx": 0,
+                "overlapPctOfLine": 0,
+                "topAtOverlap": null
+              },
+              {
+                "owner": "button.map-ctrl-btn",
+                "cap": null,
+                "textApprox": "◀ PREV",
+                "rect": [
+                  38,
+                  583.8,
+                  38.4,
+                  10
+                ],
+                "visibleInClip": true,
+                "overlapPx": 0,
+                "overlapPctOfLine": 0,
+                "topAtOverlap": null
+              },
+              {
+                "owner": "button.map-ctrl-btn",
+                "cap": null,
+                "textApprox": "LATEST",
+                "rect": [
+                  98.4,
+                  583.3,
+                  38.4,
+                  10
+                ],
+                "visibleInClip": true,
+                "overlapPx": 0,
+                "overlapPctOfLine": 0,
+                "topAtOverlap": null
+              },
+              {
+                "owner": "button.map-ctrl-btn",
+                "cap": null,
+                "textApprox": "NEXT ▶",
+                "rect": [
+                  158.8,
+                  583.8,
+                  38.4,
+                  10
+                ],
+                "visibleInClip": true,
+                "overlapPx": 0,
+                "overlapPctOfLine": 0,
+                "topAtOverlap": null
+              },
+              {
+                "owner": "div.status-dot",
+                "cap": null,
+                "textApprox": "PARTIAL · 0 FLASHES DRAWN · SEARCHED 24% · STALE",
+                "rect": [
+                  40,
+                  616.3,
+                  230.4,
+                  9
+                ],
+                "visibleInClip": true,
+                "overlapPx": 0,
+                "overlapPctOfLine": 0,
+                "topAtOverlap": null
+              },
+              {
+                "owner": "div",
+                "cap": "window",
+                "textApprox": "(1/2) Window 2026-10-25 23:02 UTC → 2026-10-26 23:02 UTC (24 hours, latest)",
+                "rect": [
+                  29,
+                  629.3,
+                  324.1,
+                  11
+                ],
+                "visibleInClip": true,
+                "overlapPx": 0,
+                "overlapPctOfLine": 0,
+                "topAtOverlap": null
+              },
+              {
+                "owner": "div",
+                "cap": "window",
+                "textApprox": "(2/2) Window 2026-10-25 23:02 UTC → 2026-10-26 23:02 UTC (24 hours, latest)",
+                "rect": [
+                  29,
+                  644.3,
+                  84,
+                  11
+                ],
+                "visibleInClip": true,
+                "overlapPx": 0,
+                "overlapPctOfLine": 0,
+                "topAtOverlap": null
+              },
+              {
+                "owner": "div",
+                "cap": "actual",
+                "textApprox": "Actual no archived flashes within this window",
+                "rect": [
+                  29,
+                  659.3,
+                  270,
+                  11
+                ],
+                "visibleInClip": true,
+                "overlapPx": 0,
+                "overlapPctOfLine": 0,
+                "topAtOverlap": null
+              },
+              {
+                "owner": "div",
+                "cap": "flashes",
+                "textApprox": "Flashes 0 archived in window",
+                "rect": [
+                  29,
+                  674.3,
+                  168,
+                  11
+                ],
+                "visibleInClip": true,
+                "overlapPx": 0,
+                "overlapPctOfLine": 0,
+                "topAtOverlap": null
+              },
+              {
+                "owner": "div",
+                "cap": "refresh",
+                "textApprox": "(1/2) Refresh archive 2026-10-26 18:37 UTC (4h 26min ago; expected every 1 h) · STALE",
+                "rect": [
+                  29,
+                  689.3,
+                  306.1,
+                  11
+                ],
+                "visibleInClip": true,
+                "overlapPx": 0,
+                "overlapPctOfLine": 0,
+                "topAtOverlap": null
+              },
+              {
+                "owner": "div",
+                "cap": "refresh",
+                "textApprox": "(2/2) Refresh archive 2026-10-26 18:37 UTC (4h 26min ago; expected every 1 h) · STALE",
+                "rect": [
+                  29,
+                  704.3,
+                  162,
+                  11
+                ],
+                "visibleInClip": true,
+                "overlapPx": 0,
+                "overlapPctOfLine": 0,
+                "topAtOverlap": null
+              },
+              {
+                "owner": "div",
+                "cap": "searched",
+                "textApprox": "(1/2) Searched EUMETSAT 24% of window · 4 successful runs · 2026-10-25 23:02 UTC → 202",
+                "rect": [
+                  29,
+                  719.3,
+                  318.1,
+                  11
+                ],
+                "visibleInClip": true,
+                "overlapPx": 0,
+                "overlapPctOfLine": 0,
+                "topAtOverlap": null
+              },
+              {
+                "owner": "div",
+                "cap": "searched",
+                "textApprox": "(2/2) Searched EUMETSAT 24% of window · 4 successful runs · 2026-10-25 23:02 UTC → 202",
+                "rect": [
+                  29,
+                  734.3,
+                  258,
+                  11
+                ],
+                "visibleInClip": true,
+                "overlapPx": 0,
+                "overlapPctOfLine": 0,
+                "topAtOverlap": null
+              },
+              {
+                "owner": "div",
+                "cap": "warning",
+                "textApprox": "(1/2) Not yet ingested: last 10h 3min of window (unknown, not zero)",
+                "rect": [
+                  29,
+                  749.3,
+                  330.1,
+                  11
+                ],
+                "visibleInClip": true,
+                "overlapPx": 0,
+                "overlapPctOfLine": 0,
+                "topAtOverlap": null
+              },
+              {
+                "owner": "div",
+                "cap": "warning",
+                "textApprox": "(2/2) Not yet ingested: last 10h 3min of window (unknown, not zero)",
+                "rect": [
+                  29,
+                  764.3,
+                  30,
+                  11
+                ],
+                "visibleInClip": true,
+                "overlapPx": 0,
+                "overlapPctOfLine": 0,
+                "topAtOverlap": null
+              },
+              {
+                "owner": "div",
+                "cap": "footer",
+                "textApprox": "(1/3) Times UTC · Optical flashes seen by MTG Lightning Imager (EUMETSAT L2-LFL), not ",
+                "rect": [
+                  29,
+                  778.3,
+                  302.5,
+                  10
+                ],
+                "visibleInClip": true,
+                "overlapPx": 24,
+                "overlapPctOfLine": 0.8,
+                "topAtOverlap": "HIDE-LAYERS-BUTTON"
+              },
+              {
+                "owner": "div",
+                "cap": "footer",
+                "textApprox": "(2/3) Times UTC · Optical flashes seen by MTG Lightning Imager (EUMETSAT L2-LFL), not ",
+                "rect": [
+                  29,
+                  791.8,
+                  334.9,
+                  10
+                ],
+                "visibleInClip": true,
+                "overlapPx": 1183,
+                "overlapPctOfLine": 35.3,
+                "topAtOverlap": "HIDE-LAYERS-BUTTON"
+              },
+              {
+                "owner": "div",
+                "cap": "footer",
+                "textApprox": "(3/3) Times UTC · Optical flashes seen by MTG Lightning Imager (EUMETSAT L2-LFL), not ",
+                "rect": [
+                  29,
+                  805.3,
+                  280.9,
+                  10
+                ],
+                "visibleInClip": true,
+                "overlapPx": 643,
+                "overlapPctOfLine": 22.9,
+                "topAtOverlap": "HIDE-LAYERS-BUTTON"
+              }
+            ],
+            "linesVisible": 19,
+            "linesOccluded": 3,
+            "occludedText": [
+              "[footer] (1/3) Times UTC · Optical flashes seen by MTG Lightning Imager (EUMETSAT L2-LFL), not  (0.8% of line)",
+              "[footer] (2/3) Times UTC · Optical flashes seen by MTG Lightning Imager (EUMETSAT L2-LFL), not  (35.3% of line)",
+              "[footer] (3/3) Times UTC · Optical flashes seen by MTG Lightning Imager (EUMETSAT L2-LFL), not  (22.9% of line)"
+            ]
+          },
+          "lastOriginal": {
+            "present": true,
+            "group": "div.key-group",
+            "title": "PIPELINE NEWS (REPD)",
+            "groupRect": [
+              17,
+              305.3,
+              356,
+              98
+            ],
+            "clip": {
+              "top": 506.3,
+              "bottom": 827,
+              "left": 17,
+              "right": 373
+            },
+            "button": {
+              "text": "▾ HIDE LAYERS",
+              "rect": [
+                245.6,
+                788,
+                132.4,
+                44
+              ],
+              "position": "fixed",
+              "zIndex": "9999",
+              "hidden": false,
+              "ariaLabel": "Hide the layers panel"
+            },
+            "scroll": {
+              "windowScrollY": 0,
+              "docScrollHeight": 844,
+              "innerHeight": 844,
+              "container": {
+                "scrollTop": 2250,
+                "scrollHeight": 2571,
+                "clientHeight": 321,
+                "max": 2250,
+                "overflowY": "auto",
+                "paddingBottom": "5px",
+                "rect": [
+                  17,
+                  506.3,
+                  356,
+                  320.7
+                ]
+              }
+            },
+            "lines": [
+              {
+                "owner": "div.key-title",
+                "cap": null,
+                "textApprox": "PIPELINE NEWS (REPD)",
+                "rect": [
+                  29,
+                  305.3,
+                  120,
+                  11
+                ],
+                "visibleInClip": false,
+                "overlapPx": 0,
+                "overlapPctOfLine": 0,
+                "topAtOverlap": null
+              },
+              {
+                "owner": "span",
+                "cap": null,
+                "textApprox": "Same technology [SELECT A PROJECT]",
+                "rect": [
+                  58,
+                  324.3,
+                  265.3,
+                  15
+                ],
+                "visibleInClip": false,
+                "overlapPx": 0,
+                "overlapPctOfLine": 0,
+                "topAtOverlap": null
+              },
+              {
+                "owner": "span",
+                "cap": null,
+                "textApprox": "Wider fleet [SELECT A PROJECT]",
+                "rect": [
+                  58,
+                  351.3,
+                  234,
+                  15
+                ],
+                "visibleInClip": false,
+                "overlapPx": 0,
+                "overlapPctOfLine": 0,
+                "topAtOverlap": null
+              },
+              {
+                "owner": "span",
+                "cap": null,
+                "textApprox": "All pipeline [SELECT A PROJECT]",
+                "rect": [
+                  58,
+                  378.3,
+                  241.8,
+                  15
+                ],
+                "visibleInClip": false,
+                "overlapPx": 0,
+                "overlapPctOfLine": 0,
+                "topAtOverlap": null
+              }
+            ],
+            "linesVisible": 0,
+            "linesOccluded": 0,
+            "occludedText": []
+          }
+        },
+        "pageErrors": [],
+        "shim": {
+          "served": {
+            "maplibre": 2,
+            "style": 1,
+            "duckdb": 3,
+            "lightning-data": 2
+          },
+          "aborted": [
+            "https://raw.githubusercontent.com/Ventusltd/data-grid-gb/1c9909d1138704b29235c27fd769436dda8a0b18/derived/connection-points.v3.json",
+            "https://ventusltd.github.io/ventus-grid-engine/genome/engine-graph.json"
+          ],
+          "missing": []
+        }
+      }
+    }
+  },
+  "finishedAt": "2026-10-26T23:02:47.231Z"
+}

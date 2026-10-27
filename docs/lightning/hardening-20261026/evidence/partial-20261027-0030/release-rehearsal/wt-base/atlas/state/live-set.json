@@ -1,0 +1,22 @@
+{
+ "schema": "gridatlas.atlas-live-set.v1",
+ "generation": "202609060259",
+ "live_route": "/gridatlas/atlas/",
+ "release_id": "202608300453-atlas-v9",
+ "shell": {
+  "release_id": "202608300453-atlas-v9",
+  "index": "./releases/202608300453-atlas-v9/index.html",
+  "base": "./releases/202608300453-atlas-v9/"
+ },
+ "cartridge_order": [
+  "streaming-parquet-bridge",
+  "uk-gazetteer-flyto",
+  "substation-intelligence",
+  "sld-sandbox"
+ ],
+ "composition_manifest": "./manifests/202609060259-composition.json",
+ "last_known_green": {
+  "release_id": "202608300453-atlas-v9",
+  "route": "/gridatlas/atlas/releases/202608300453-atlas-v9/"
+ }
+}

@@ -1,0 +1,52 @@
+== lint
+scope-ledger=PASS active=none master=done
+exit=0
+== state
+scope-ledger=PASS active=none master=done
+cmp=0
+== proof 202610270113
+exit=0
+== proof 202610270047
+exit=0
+== proof 202610270024
+exit=0
+== proof 202610262323
+exit=0
+== proof 202610262318
+exit=0
+== proof 202610262310
+exit=0
+== proof 202610261949
+exit=0
+== run-current
+exit=0
+== verify-compose
+{"composition":"PASS","generation":"202609241334","release_id":"202608300453-atlas-v9","immutable_releases":8,"cartridges":["streaming-parquet-bridge","uk-gazetteer-flyto","substation-intelligence","sld-sandbox"]}
+exit=0
+== verify-candidate
+ "result": "PASS",
+ "failures": []
+== parity on route (expect only the 3 pre-existing original FAILs)
+  FAIL sld-sandbox: declared source derived/gb-transmission-network.v1.json is named by the bytes
+  FAIL sld-sandbox: declared source derived/price-decade-rollup.json is named by the bytes
+  FAIL substation-intelligence: declared source derived/connection-points.v3.json is named by the bytes
+12/15 checks passed
+FAILURES
+== loader
+cmp=0
+ 24777 atlas/modules/202610270113-uk-lightning-overlay.js
+459996 atlas/cartridges/202610270113-sld-sandbox-v9-8.js
+484773 total
+== protected vs fda6b10
+(empty=unchanged)
+== earlier gens untouched
+none
+== chatgpt latest
+# pass 8
+# fail 0
+== fixtests
+not ok 74 - REST: before the toggle turns ON there are no requests, no map source and the group is unchanged from F
+# pass 74
+# fail 1
+# pass 75
+# fail 0

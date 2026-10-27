@@ -1,0 +1,50 @@
+160c160
+< ok=f=>f&&f.type==='Feature'&&f.geometry&&f.geometry.type==='Point'&&(c=>Array.isArray(c)&&c.length<4&&bx(c[0],c[1]))(f.geometry.coordinates)&&f.properties&&FEED_SCHEMA.split('/')[1]===f.properties.observation_kind&&isFinite(tm(f)),
+---
+> ok=f=>f&&f.type==='Feature'&&f.geometry&&f.geometry.type==='Point'&&(c=>Array.isArray(c)&&c.length<4&&bx(c[0],c[1]))(f.geometry.coordinates)&&f.properties&&FEED_SCHEMA.split('/')[1]===f.properties.observation_kind&&isFinite(tm(f))&&!(f.id instanceof Object),
+322c322
+< el=(t,css,s)=>{const e=document.createElement(t)
+---
+> cs=v=>(v+'').replace(/\p{Cf}/gu,'').slice(0,200),el=(t,css,s)=>{const e=document.createElement(t)
+331c331,333
+< const p=m.project(c.ll),k=m.getContainer().getBoundingClientRect(),b=Q('gridatlas-menu-bar'),t=Math.max(0,(b?b.getBoundingClientRect().bottom:0)-k.top)+8,w=c.offsetWidth||0,h=c.offsetHeight||0
+---
+> const p=m.project(c.ll)
+> if(!isFinite(p.x+p.y))return
+> const k=m.getContainer().getBoundingClientRect(),b=Q('gridatlas-menu-bar'),t=Math.max(0,(b?b.getBoundingClientRect().bottom:0)-k.top)+8,w=c.offsetWidth||0,h=c.offsetHeight||0
+372c374
+< const g=S.res&&S.res.ev[p.i]
+---
+> const g=S.res&&p.s===S.res.s&&S.res.ev[p.i]
+405c407
+< for(const s of[Ts(tm(g)),'Flash ID '+(g.id==null?'(none)':g.id),`lat ${y.toFixed(3)}, lon ${x.toFixed(3)}`,'EUMETSAT MTG Lightning Imager · optical flash, not necessarily a ground strike'])c.appendChild(el('div','',s))
+---
+> for(const s of[Ts(tm(g)),'Flash ID '+(g.id==null?'(none)':cs(g.id)),`lat ${y.toFixed(3)}, lon ${x.toFixed(3)}`,'EUMETSAT MTG Lightning Imager · optical flash, not necessarily a ground strike'])c.appendChild(el('div','',s))
+432c434
+< nr=(m,c,x,y)=>{const L=window.__GRIDATLAS_NEON_LINKS__||{},subs=L.substations||window.__GRIDATLAS_SUBSTATIONS__||[],dk=L.measure&&L.measure.distanceKm,say=s=>c.out.appendChild(el('div','',s))
+---
+> nr=(m,c,x,y)=>{const L=window.__GRIDATLAS_NEON_LINKS__||{},subs=Object.hasOwn(L,'substations')?L.substations:[],dk=L.measure&&L.measure.distanceKm,say=s=>c.out.appendChild(el('div','',s))
+436c438
+< if(!subs.length||typeof dk!=='function')return say('Substation data not loaded yet
+---
+> if(!Array.isArray(subs)||!subs.length||typeof dk!=='function')return say('Substation data not loaded yet
+439c441
+< const k=subs.filter(s=>s&&Array.isArray(s.at)&&Array.isArray(s.kv)&&s.kv[0]>=132).map(s=>({s,km:dk(x,y,s.at[0],s.at[1])})).filter(a=>isFinite(a.km)).sort((a,b)=>a.km-b.km).slice(0,3)
+---
+> const k=subs.filter(s=>s&&Array.isArray(s.at)&&Array.isArray(s.kv)&&s.kv[0]>=132).map(s=>({s,km:+dk(x,y,s.at[0],s.at[1])})).filter(a=>isFinite(a.km)).sort((a,b)=>a.km-b.km).slice(0,3)
+443c445
+< for(const a of k)say(`${a.km.toFixed(2)} km · ${a.s.kv[0]} kV · ${a.s.name||'unnamed substation'}`)
+---
+> for(const a of k)say(`${a.km.toFixed(2)} km · ${a.s.kv[0]} kV · ${cs(a.s.name||'unnamed substation')}`)
+458,459c460,462
+< try{m.addLayer({id:NL[3],type:'symbol',source:NEAR,filter:PT,layout:{'text-field':['get','t'],'text-size':10,'text-offset':[0,-1.5],'text-anchor':'bottom','text-font':sf(m)},paint:{'text-color':'#a9c4c9','text-halo-color':'#000c10','text-halo-width':1.5}})}catch(e){note('nearest labels: '+msg(e))}},near=(m,c,x,y)=>{nr(m,c,x,y)
+< cpos()},
+---
+> try{m.addLayer({id:NL[3],type:'symbol',source:NEAR,filter:PT,layout:{'text-field':['get','t'],'text-size':10,'text-offset':[0,-1.5],'text-anchor':'bottom','text-font':sf(m)},paint:{'text-color':'#a9c4c9','text-halo-color':'#000c10','text-halo-width':1.5}})}catch(e){note('nearest labels: '+msg(e))}},near=(m,c,x,y)=>{try{nr(m,c,x,y)}catch(e){note('nearest: '+msg(e))
+> nc()
+> c.out.textContent='Substation data unavailable.'}cpos()},
+588c591,592
+< try{dw(FC(r.ev.map((f,i)=>({type:'Feature',id:f.id,geometry:f.geometry,properties:{i}}))),!!r.cl)}catch(err){note('draw: '+err.message)
+---
+> r.s=serial
+> try{dw(FC(r.ev.map((f,i)=>({type:'Feature',id:f.id,geometry:f.geometry,properties:{i,s:serial}}))),!!r.cl)}catch(err){note('draw: '+err.message)

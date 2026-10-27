@@ -1,0 +1,35 @@
+[
+ {
+  "variant": "baseline",
+  "viewport": "1440x900",
+  "url": "http://127.0.0.1:8171/wt/atlas/?technology=solar&latitude=52.6369&longitude=-1.1398&zoom=12&project=GRIDATLAS_PROOF_parity&capacity_mw=10",
+  "t0": "2026-10-26T23:59:23.596Z",
+  "booted": "timeout",
+  "deeplink": "timeout",
+  "error": "Error: page.waitForTimeout: Page crashed",
+  "pageErrors": [],
+  "lightningRequests": []
+ },
+ {
+  "variant": "candidate",
+  "viewport": "1440x900",
+  "url": "http://127.0.0.1:8171/wt/atlas/v/202610262323/?technology=solar&latitude=52.6369&longitude=-1.1398&zoom=12&project=GRIDATLAS_PROOF_parity&capacity_mw=10",
+  "t0": "2026-10-27T00:03:32.772Z",
+  "booted": "timeout",
+  "deeplink": "timeout",
+  "error": "Error: page.waitForTimeout: Page crashed",
+  "pageErrors": [],
+  "lightningRequests": []
+ },
+ {
+  "variant": "throw-mid-install",
+  "viewport": "1440x900",
+  "url": "http://127.0.0.1:8171/evidence/veto-pre-2/fx/throw-mid-install/?technology=solar&latitude=52.6369&longitude=-1.1398&zoom=12&project=GRIDATLAS_PROOF_parity&capacity_mw=10",
+  "t0": "2026-10-27T00:08:10.847Z",
+  "booted": "timeout",
+  "deeplink": "timeout",
+  "error": "Error: page.waitForTimeout: Target page, context or browser has been closed",
+  "pageErrors": [],
+  "lightningRequests": []
+ }
+]

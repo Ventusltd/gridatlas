@@ -1,0 +1,75 @@
+{
+ "id": "N32",
+ "title": "hostile INDEX and FEED metadata strings reaching the caption: HTML in first/last_observation_utc (overview), HTML in schema, HTML/garbage in feed latest_detection_utc/query_end_utc",
+ "acceptance_ids": [
+  "D15",
+  "D13",
+  "D06"
+ ],
+ "candidate": {
+  "generation": "202610262323",
+  "sha": "fda6b10f7d2672bf1bf74c4fbf6184cd36b1ec1d",
+  "route": "http://127.0.0.1:8163/wt/atlas/v/202610262323/"
+ },
+ "harness": "lead-shim (offline-shim.mjs unmodified) + runner static server :8145; Chromium 153.0.8010.12 / Playwright 1.63.0; page.clock.install fake clock",
+ "viewport": "1440x900",
+ "clock": "2026-10-26T18:40:00Z",
+ "reducedMotion": "no-preference",
+ "steps": [],
+ "boots": [
+  {
+   "dir": "/tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/lightning/fixtures/lightning-archive/data",
+   "synthetic": false,
+   "requests": [
+    {
+     "url": "https://raw.githubusercontent.com/Ventusltd/data-grid-gb/1c9909d1138704b29235c27fd769436dda8a0b18/derived/connection-points.v3.json",
+     "method": "GET",
+     "start": 1793058789261,
+     "end": 1793058789443,
+     "status": null,
+     "failure": "net::ERR_BLOCKED_BY_CLIENT.Inspector"
+    }
+   ],
+   "pageErrors": [],
+   "consoleErrors": [
+    "warning: A parser-blocking, cross site (i.e. different eTLD+1) script, https://cdn.jsdelivr.net/npm/maplibre-gl@3.6.2/dist/maplibre-gl.js, is invoked via document.write. The network request for this script MAY be blocked by the browser in this or a future page load due to poor network connectivity. ",
+    "warning: A parser-blocking, cross site (i.e. different eTLD+1) script, https://cdn.jsdelivr.net/npm/maplibre-gl@3.6.2/dist/maplibre-gl.js, is invoked via document.write. The network request for this script MAY be blocked by the browser in this or a future page load due to poor network connectivity. ",
+    "warning: [.WebGL-0x8d4001aa800]GL Driver Message (OpenGL, Performance, GL_CLOSE_PATH_NV, High): GPU stall due to ReadPixels",
+    "error: Failed to load resource: net::ERR_BLOCKED_BY_CLIENT.Inspector",
+    "warning: [.WebGL-0x8d4001aa800]GL Driver Message (OpenGL, Performance, GL_CLOSE_PATH_NV, High): GPU stall due to ReadPixels",
+    "warning: [.WebGL-0x8d4001aa800]GL Driver Message (OpenGL, Performance, GL_CLOSE_PATH_NV, High): GPU stall due to ReadPixels",
+    "error: Failed to load resource: net::ERR_BLOCKED_BY_CLIENT.Inspector",
+    "warning: [.WebGL-0x8d4001aa800]GL Driver Message (OpenGL, Performance, GL_CLOSE_PATH_NV, High): GPU stall due to ReadPixels (this message will no longer repeat)",
+    "error: [FETCH ERROR] data/datacentres.geojson AbortError: signal is aborted without reason\n    at blob:http://127.0.0.1:8163/74e41129-e0ab-41e7-b730-8a637fb2eec3:712:48\n    at ClockController._callFirstTimer (<anonymous>:285:20)\n    at ClockController._runTo (<anonymous>:120:33)",
+    "error: [LAYER FAILED] dc: AbortError: signal is aborted without reason\n    at blob:http://127.0.0.1:8163/74e41129-e0ab-41e7-b730-8a637fb2eec3:712:48\n    at ClockController._callFirstTimer (<anonymous>:285:20)\n    at ClockController._runTo (<anonymous>:120:33)",
+    "error: [FETCH ERROR] data/airports.geojson AbortError: signal is aborted without reason\n    at blob:http://127.0.0.1:8163/74e41129-e0ab-41e7-b730-8a637fb2eec3:712:48\n    at ClockController._callFirstTimer (<anonymous>:285:20)\n    at ClockController._runTo (<anonymous>:120:33)",
+    "error: [LAYER FAILED] air: AbortError: signal is aborted without reason\n    at blob:http://127.0.0.1:8163/74e41129-e0ab-41e7-b730-8a637fb2eec3:712:48\n    at ClockController._callFirstTimer (<anonymous>:285:20)\n    at ClockController._runTo (<anonymous>:120:33)",
+    "error: [FETCH ERROR] data/railways.geojson AbortError: signal is aborted without reason\n    at blob:http://127.0.0.1:8163/74e41129-e0ab-41e7-b730-8a637fb2eec3:712:48\n    at ClockController._callFirstTimer (<anonymous>:285:20)\n    at ClockController._runTo (<anonymous>:120:33)",
+    "error: [LAYER FAILED] rail: AbortError: signal is aborted without reason\n    at blob:http://127.0.0.1:8163/74e41129-e0ab-41e7-b730-8a637fb2eec3:712:48\n    at ClockController._callFirstTimer (<anonymous>:285:20)\n    at ClockController._runTo (<anonymous>:120:33)"
+   ],
+   "shim": {
+    "served": {
+     "maplibre": 2,
+     "style": 1,
+     "duckdb": 2
+    },
+    "aborted": [
+     "https://raw.githubusercontent.com/Ventusltd/data-grid-gb/1c9909d1138704b29235c27fd769436dda8a0b18/derived/connection-points.v3.json",
+     "https://ventusltd.github.io/ventus-grid-engine/genome/engine-graph.json"
+    ],
+    "missing": []
+   },
+   "comp": {
+    "engine": 120,
+    "pn": 6,
+    "scada": true,
+    "curtain": true,
+    "menuInstalled": true,
+    "map": true,
+    "waitedMs": 69031
+   }
+  }
+ ],
+ "harnessError": "page.waitForFunction: Target crashed \n    at Module.boot (/tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/negative-matrix-D/after-202610262323/lib.mjs:99:14)\n    at async start (/tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/negative-matrix-D/after-202610262323/matrix.mjs:435:9)\n    at async Object.run (/tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/negative-matrix-D/after-202610262323/matrix.mjs:372:3)\n    at async file:///tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/negative-matrix-D/after-202610262323/matrix.mjs:441:70",
+ "elapsedMs": 214341
+}

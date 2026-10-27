@@ -1,0 +1,137 @@
+
+[1mPASS 1 — code change across every version to date[0m
+
+  [1mgridatlas[0m  105 commits, 7,348,754 added / 1,108 removed, 40 stamped generations
+  of which computation: 3,071,470 added / 403 removed (42% of additions)
+  the generations that changed the computation most:
+    202609051217  v9.124 682433  ############################
+    202609051527  v9.131  35983  #
+    202609051540  v9.135  21708  #
+    202609051511  v9.129  18591  #
+    202609051311  v9.125  14100  #
+    202609060259  v9.139  10134  #
+    202609051618  v9.137   9759  #
+    202609051624  v9.138   9711  #
+
+[1mPASS 2 — the computation engine, across every version ever committed[0m
+  101 distinct versions of computing files carry an Earth radius
+    haversine form atan2          82 version(s)
+    haversine form asin           19 version(s)
+  canonical form: atan2 (82 versions)
+  57 in the working tree, 0 in history only
+    [31m[radius, working tree][0m 22ceba8  carries 6371.0088, 6371.008
+        gridatlas:atlas/cartridges/202609070913-sld-sandbox-v9-8.js
+    [31m[radius, working tree][0m 22ceba8  does not carry the estate radius
+        gridatlas:atlas/cartridges/202609070913-sld-sandbox-v9-8.js
+    [31m[radius, working tree][0m 6ce6785  carries 6371.0088, 6371.008
+        gridatlas:atlas/cartridges/202609071005-sld-sandbox-v9-8.js
+    [31m[radius, working tree][0m 6ce6785  does not carry the estate radius
+        gridatlas:atlas/cartridges/202609071005-sld-sandbox-v9-8.js
+    [31m[radius, working tree][0m eb9cd97  carries 6371.0088, 6371.008
+        gridatlas:atlas/cartridges/202609071232-sld-sandbox-v9-8.js
+    [31m[radius, working tree][0m eb9cd97  does not carry the estate radius
+        gridatlas:atlas/cartridges/202609071232-sld-sandbox-v9-8.js
+    [31m[radius, working tree][0m e0599ef  carries 6371.0088, 6371.008
+        gridatlas:atlas/cartridges/202609072329-sld-sandbox-v9-8.js
+    [31m[radius, working tree][0m e0599ef  does not carry the estate radius
+        gridatlas:atlas/cartridges/202609072329-sld-sandbox-v9-8.js
+    [31m[radius, working tree][0m a15b535  carries 6371.0088, 6371.008
+        gridatlas:atlas/cartridges/202609072337-sld-sandbox-v9-8.js
+    [31m[radius, working tree][0m a15b535  does not carry the estate radius
+        gridatlas:atlas/cartridges/202609072337-sld-sandbox-v9-8.js
+    [31m[radius, working tree][0m 3fb9ec3  carries 6371.0088, 6371.008
+        gridatlas:atlas/cartridges/202609080000-sld-sandbox-v9-8.js
+    [31m[radius, working tree][0m 3fb9ec3  does not carry the estate radius
+        gridatlas:atlas/cartridges/202609080000-sld-sandbox-v9-8.js
+    [31m[radius, working tree][0m 4682bbd  carries 6371.0088, 6371.008
+        gridatlas:atlas/cartridges/202609080030-sld-sandbox-v9-8.js
+    [31m[radius, working tree][0m 4682bbd  does not carry the estate radius
+        gridatlas:atlas/cartridges/202609080030-sld-sandbox-v9-8.js
+    [31m[radius, working tree][0m 251662c  carries 6371.0088, 6371.008
+        gridatlas:atlas/cartridges/202609080430-sld-sandbox-v9-8.js
+    [31m[radius, working tree][0m 251662c  does not carry the estate radius
+        gridatlas:atlas/cartridges/202609080430-sld-sandbox-v9-8.js
+    [31m[radius, working tree][0m 96cff87  carries 6371.0088, 6371.008
+        gridatlas:atlas/cartridges/202609080837-sld-sandbox-v9-8.js
+    [31m[radius, working tree][0m 96cff87  does not carry the estate radius
+        gridatlas:atlas/cartridges/202609080837-sld-sandbox-v9-8.js
+    [31m[radius, working tree][0m 31be756  carries 6371.0088, 6371.008
+        gridatlas:atlas/cartridges/202609080846-sld-sandbox-v9-8.js
+    [31m[radius, working tree][0m 31be756  does not carry the estate radius
+        gridatlas:atlas/cartridges/202609080846-sld-sandbox-v9-8.js
+    ... 37 more
+
+[1mPASS 3 — the gates[0m
+  [32mPASS[0m  composition            PASS
+  [32mPASS[0m  scope ledger           PASS
+  [32mPASS[0m  composed cartridges    ok
+  [32mPASS[0m  parts integrity        231/231
+file:///tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/release-rehearsal/wt/tools/proofs/202609012150-all-versions.proof.mjs:420
+const ledger = JSON.parse(shipped.match(/const VERSION_LEDGER = (\[[\s\S]*?\]);/)[1]);
+                                                                                 ^
+
+TypeError: Cannot read properties of null (reading '1')
+    at file:///tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/release-rehearsal/wt/tools/proofs/202609012150-all-versions.proof.mjs:420:82
+
+Node.js v22.23.4
+  [31mFAIL[0m  all versions           failed
+file:///tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/release-rehearsal/wt/tools/proofs/modules/202609011950-module-parity.proof.mjs:263
+  const a = network.byName(name);
+                    ^
+
+TypeError: Cannot read properties of undefined (reading 'byName')
+    at file:///tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/release-rehearsal/wt/tools/proofs/modules/202609011950-module-parity.proof.mjs:263:21
+
+Node.js v22.23.4
+  [31mFAIL[0m  module parity          failed
+  [32mPASS[0m  grid scope             33/33
+
+FAILURES
+  the published product this module reads is available — not found at /tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/data-grid-gb/derived/gb-transmission-network.v1.json - clone Ventusltd/data-grid-gb beside this repository, or set GRIDATLAS_ALLOW_MISSING_PRODUCT=1 to accept an unverified run
+  [31mFAIL[0m  network topology       35/36
+  [32mPASS[0m  assembler              31/31
+  [32mPASS[0m  source registry        42/42
+  [32mPASS[0m  map-click network      13/13
+
+FAILURES
+  nearestTransmission(): identical, including the unnamed-wins-on-distance case
+  [31mFAIL[0m  declared connections   22/23
+  [32mPASS[0m  sizing arithmetic      ok
+  [31mFAIL[0m  data-contract parity   6/11
+
+FAILED: the published product is not at /tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/release-rehearsal/data-grid-gb/derived/gb-transmission-network.v1.json.
+A skip is not a pass. Check out Ventusltd/data-grid-gb beside this
+repository; this proof does not report success on half of itself.
+  [31mFAIL[0m  electrical distance    failed
+
+FAILED: the published product is not at /tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/release-rehearsal/data-grid-gb/derived/gb-transmission-network.v1.json.
+A skip is not a pass. Check out Ventusltd/data-grid-gb beside this repository.
+  [31mFAIL[0m  rating envelope        failed
+
+FAILED: the published product is not at /tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/release-rehearsal/data-grid-gb/derived/gb-transmission-network.v1.json.
+A skip is not a pass. Check out Ventusltd/data-grid-gb beside this repository.
+  [31mFAIL[0m  injection response (powerflow) failed
+
+FAILED: the published product is not at /tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/release-rehearsal/data-grid-gb/derived/gb-transmission-network.v1.json.
+A skip is not a pass. Check out Ventusltd/data-grid-gb beside this repository;
+this proof does not report success on half of itself.
+  [31mFAIL[0m  planned change         failed
+
+FAILED: the published product is not at /tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/release-rehearsal/data-grid-gb/derived/gb-transmission-network.v1.json.
+A skip is not a pass. Check out Ventusltd/data-grid-gb beside this repository;
+this proof does not report success on half of itself.
+  [31mFAIL[0m  owner boundary         failed
+
+[1mPASS 4 - checks that decline to check, and report success[0m
+  96 proof/verifier files read across 1 repositories
+  [32mno check skips its assertions on a missing dependency without a named opt-in[0m
+
+[1mPASS 5 - a stamp is a clock[0m
+
+  [1mgridatlas[0m  105 commits, 1 stamped more than 15 min from the commit clock; worst 579b6b1 202610262323 vs 202610262359 (-36 min)
+    [32mno file in the working tree is stamped ahead of 202610262342 UTC[0m
+    [31mcvaa is not beside this repository (/tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/cvaa/inoculate.mjs); a skip is not a pass[0m
+
+report written to /tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/release-rehearsal/logs/1-released/local-ci.json
+
+[31m68 flaw(s) found across 1 repositories.[0m

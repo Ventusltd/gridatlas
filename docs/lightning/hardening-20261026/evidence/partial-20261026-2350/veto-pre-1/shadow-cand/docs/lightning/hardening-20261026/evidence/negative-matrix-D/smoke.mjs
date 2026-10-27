@@ -1,0 +1,25 @@
+// smoke.mjs — boot the candidate route under the lead shim with a fake clock; harness: lead-shim; viewport 1440x900
+import http from 'node:http'; import fs from 'node:fs'; import path from 'node:path';
+import { chromium } from '/home/claude/gridatlas/node_modules/playwright/index.mjs';
+import { installOfflineShim, waitForComposition } from '/tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/lightning/harness/offline-shim.mjs';
+const ROOT='/tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening'; const PORT=8145;
+const MIME={'.html':'text/html','.js':'application/javascript','.mjs':'application/javascript','.json':'application/json','.css':'text/css','.geojson':'application/geo+json','.png':'image/png','.parquet':'application/octet-stream','.wasm':'application/wasm'};
+const srv=http.createServer((req,res)=>{let p=decodeURIComponent(new URL(req.url,'http://x').pathname);if(p.endsWith('/'))p+='index.html';const f=path.join(ROOT,p);if(!f.startsWith(ROOT)||!fs.existsSync(f)||fs.statSync(f).isDirectory()){res.writeHead(404);return res.end('404')}res.writeHead(200,{'content-type':MIME[path.extname(f)]||'application/octet-stream','cache-control':'no-store'});fs.createReadStream(f).pipe(res)});
+await new Promise(r=>srv.listen(PORT,'127.0.0.1',r));
+const browser=await chromium.launch(); const ctx=await browser.newContext({viewport:{width:1440,height:900},locale:'en-GB',timezoneId:'Europe/London'}); const page=await ctx.newPage();
+const errs=[]; page.on('pageerror',e=>errs.push(String(e)));
+const t0=Date.now();
+await page.clock.install({time:'2026-10-26T18:40:00Z'});
+const shim=await installOfflineShim(page,{lightningDataDir:'/tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/lightning/fixtures/lightning-archive/data'});
+await page.goto(`http://127.0.0.1:${PORT}/wt/atlas/v/202610261949/`,{waitUntil:'domcontentloaded'});
+const boot=await waitForComposition(page,{deadlineMs:90000,settleMs:2000});
+console.log('boot',boot,'elapsed',Date.now()-t0);
+await page.waitForFunction(()=>window.__GRIDATLAS_MODULES__?.ukLightning?.state?.installed,null,{timeout:30000});
+console.log('version', await browser.version(), 'now-in-page', await page.evaluate(()=>new Date().toISOString()));
+const tg=page.locator('#scada-ui-container input[data-lightning-control="toggle"]'); await tg.scrollIntoViewIfNeeded(); await tg.click();
+await page.waitForFunction(()=>{const s=window.__GRIDATLAS_MODULES__.ukLightning.state;return s.on&&s.last},null,{timeout:40000});
+await page.waitForTimeout(800);
+console.log(await page.evaluate(()=>{const m=window.__GRIDATLAS_V9_MAP__,src=m.getSource('gridatlas-lightning');return{label:document.querySelector('#scada-ui-container [data-lightning-label]').textContent,state:document.querySelector('#scada-ui-container [data-lightning-group] .status-dot').textContent,caption:[...document.querySelectorAll('#gridatlas-lightning-caption-main [data-cap]')].map(n=>n.textContent),features:src&&src._data&&src._data.features.length,last:window.__GRIDATLAS_MODULES__.ukLightning.state.last,inspect:window.__GRIDATLAS_MODULES__.menuBar.inspect()}}));
+console.log('errors',errs,'shim',shim.summary().served, 'missing', shim.summary().missing);
+await page.screenshot({path:'shots/smoke-1440x900.png'});
+await browser.close(); srv.close();

@@ -1,0 +1,330 @@
+{
+  "harness": "lead-shim offline-shim.mjs (default lightning data = shim cache of the real feed) + page.route overrides for SYNTHETIC V10 fixtures; Chromium 153.0.8010.12; desktop-1440x900",
+  "startedAt": "2026-10-27T00:07:52.589Z",
+  "cand": "http://127.0.0.1:8170/wt/atlas/v/202610262323/",
+  "steps": {
+    "offBoot": {
+      "label": "Lightning flashes (optical) [WAIT]",
+      "labelFs": "Lightning flashes (optical) [WAIT]",
+      "status": "LOADING",
+      "caps": {
+        "window": "",
+        "actual": "",
+        "flashes": "",
+        "refresh": "",
+        "searched": "",
+        "warning": "",
+        "footer": ""
+      },
+      "capsVisible": false,
+      "checked": [
+        false,
+        false
+      ],
+      "lstate": {
+        "on": false,
+        "requests": 0,
+        "errors": [],
+        "last": null,
+        "timer": false
+      },
+      "mapSource": null,
+      "mapLayerVis": null,
+      "lightningLayers": [],
+      "inspect": {
+        "engine": 60,
+        "pipeline": 3,
+        "total": 63,
+        "unique": 63,
+        "complete": true
+      },
+      "proxies": 63,
+      "markers": 63,
+      "bridge": {
+        "intercepted_on_demand": 0,
+        "failures": []
+      },
+      "fetchName": "gridAtlasMaplibreWorkerFetch",
+      "xhrOpenNative": true,
+      "initVentusMap": "gridAtlasMapReadyInit|975",
+      "storage": {
+        "ls": [],
+        "ss": [],
+        "ck": ""
+      },
+      "keyTitles": [
+        "Topology (GeoJSON)",
+        "Assets (GeoJSON)",
+        "Supermarkets (GeoJSON)",
+        "Transit (GeoJSON)",
+        "Leisure & Sports (GeoJSON)",
+        "Global Data Backbone",
+        "Global Supply Chain & Chokepoints",
+        "Highway Infrastructure",
+        "EV (GeoJSON)",
+        "Heavy Industry",
+        "REPD (GeoJSON)",
+        "Basemap",
+        "PIPELINE NEWS (REPD)",
+        "Weather · EUMETSAT Lightning Imager"
+      ],
+      "curtainTitles": [
+        "Topology (GeoJSON)",
+        "Assets (GeoJSON)",
+        "Supermarkets (GeoJSON)",
+        "Transit (GeoJSON)",
+        "Leisure & Sports (GeoJSON)",
+        "Global Data Backbone",
+        "Global Supply Chain & Chokepoints",
+        "Highway Infrastructure",
+        "EV (GeoJSON)",
+        "Heavy Industry",
+        "REPD (GeoJSON)",
+        "Basemap",
+        "PIPELINE NEWS (REPD)",
+        "Weather · EUMETSAT Lightning Imager"
+      ],
+      "styles": [
+        "(no id)",
+        "gridatlas-neon-css",
+        "gridatlas-gb-conditions-style",
+        "gridatlas-version-ledger-style",
+        "gridatlas-sld-css",
+        "(no id)",
+        "(no id)",
+        "gridatlas-menu-bar-css"
+      ],
+      "lightningGroups": [
+        {
+          "key": "fs",
+          "parent": "fs-curtain-keys",
+          "last": true
+        },
+        {
+          "key": "main",
+          "parent": "scada-ui-container",
+          "last": true
+        }
+      ],
+      "lightningForbidden": false,
+      "lightningInGridPanel": false,
+      "gmRows": 65,
+      "scadaInputsNonLightning": 65,
+      "curtainInputsNonLightning": 65,
+      "firstLabel": "400kV [OK]",
+      "mapControlsEmptied": "1",
+      "layers": "desktop default open",
+      "lightningRequests": 0,
+      "ms": 3029
+    },
+    "toggleOn24h": {
+      "hit": "self",
+      "label": "Lightning flashes (optical) [UNKNOWN | 24h STALE]",
+      "labelFs": "Lightning flashes (optical) [UNKNOWN | 24h STALE]",
+      "status": "UNKNOWN · STALE",
+      "caps": {
+        "window": "Window  2026-10-26 00:09 UTC → 2026-10-27 00:09 UTC (24 hours, latest)",
+        "actual": "Actual  no flashes in the live feed in this window",
+        "flashes": "Flashes 0 in window (live feed, 7-day retention)",
+        "refresh": "Refresh live feed 2026-10-26 13:05 UTC (last collection window 2026-10-26 10:05 UTC → 2026-10-26 13:05 UTC; latest detection 2026-10-25 11:15:58 UTC; 7-day retention; archive not yet published: HTTP 404; earlier hours unknown, not zero)",
+        "searched": "Searched EUMETSAT unknown (live feed records only its last collection window)",
+        "warning": "",
+        "footer": "Times UTC · Optical flashes seen by MTG Lightning Imager (EUMETSAT L2-LFL), not confirmed ground strikes · Missing days are unknown, not zero · UK box −11.0,49.5 → 3.0,61.5"
+      },
+      "capsVisible": true,
+      "checked": [
+        true,
+        true
+      ],
+      "lstate": {
+        "on": true,
+        "requests": 2,
+        "errors": [],
+        "last": {
+          "state": "UNKNOWN",
+          "stale": true,
+          "mode": "feed",
+          "period": "24h",
+          "drawn": 0,
+          "cluster": false,
+          "cap": 40000,
+          "cap_source": "live feed",
+          "index_count": 0,
+          "failures": 0,
+          "reasons": [
+            "feed coverage unknown"
+          ]
+        },
+        "timer": true
+      },
+      "mapSource": {
+        "n": 0
+      },
+      "mapLayerVis": "none",
+      "lightningLayers": [
+        "l-gridatlas-lightning"
+      ],
+      "inspect": {
+        "engine": 60,
+        "pipeline": 3,
+        "total": 63,
+        "unique": 63,
+        "complete": true
+      },
+      "proxies": 63,
+      "markers": 63,
+      "bridge": {
+        "intercepted_on_demand": 0,
+        "failures": []
+      },
+      "fetchName": "gridAtlasMaplibreWorkerFetch",
+      "xhrOpenNative": true,
+      "initVentusMap": "gridAtlasMapReadyInit|975",
+      "storage": {
+        "ls": [],
+        "ss": [],
+        "ck": ""
+      },
+      "keyTitles": [
+        "Topology (GeoJSON)",
+        "Assets (GeoJSON)",
+        "Supermarkets (GeoJSON)",
+        "Transit (GeoJSON)",
+        "Leisure & Sports (GeoJSON)",
+        "Global Data Backbone",
+        "Global Supply Chain & Chokepoints",
+        "Highway Infrastructure",
+        "EV (GeoJSON)",
+        "Heavy Industry",
+        "REPD (GeoJSON)",
+        "Basemap",
+        "PIPELINE NEWS (REPD)",
+        "Weather · EUMETSAT Lightning Imager"
+      ],
+      "curtainTitles": [
+        "Topology (GeoJSON)",
+        "Assets (GeoJSON)",
+        "Supermarkets (GeoJSON)",
+        "Transit (GeoJSON)",
+        "Leisure & Sports (GeoJSON)",
+        "Global Data Backbone",
+        "Global Supply Chain & Chokepoints",
+        "Highway Infrastructure",
+        "EV (GeoJSON)",
+        "Heavy Industry",
+        "REPD (GeoJSON)",
+        "Basemap",
+        "PIPELINE NEWS (REPD)",
+        "Weather · EUMETSAT Lightning Imager"
+      ],
+      "styles": [
+        "(no id)",
+        "gridatlas-neon-css",
+        "gridatlas-gb-conditions-style",
+        "gridatlas-version-ledger-style",
+        "gridatlas-sld-css",
+        "(no id)",
+        "(no id)",
+        "gridatlas-menu-bar-css"
+      ],
+      "lightningGroups": [
+        {
+          "key": "fs",
+          "parent": "fs-curtain-keys",
+          "last": true
+        },
+        {
+          "key": "main",
+          "parent": "scada-ui-container",
+          "last": true
+        }
+      ],
+      "lightningForbidden": false,
+      "lightningInGridPanel": false,
+      "gmRows": 65,
+      "scadaInputsNonLightning": 65,
+      "curtainInputsNonLightning": 65,
+      "firstLabel": "400kV [OK]",
+      "mapControlsEmptied": "1",
+      "ms": 36537
+    },
+    "on7d": {
+      "error": "Error: page.evaluate: Target crashed ",
+      "ms": 12928
+    },
+    "on30d": {
+      "error": "Error: locator.scrollIntoViewIfNeeded: Target crashed \nCall log:\n\u001b[2m  - waiting for locator('[data-lightning-group=\"main\"] button[data-lightning-period=\"30d\"]')\u001b[22m\n",
+      "ms": 9
+    },
+    "on12m": {
+      "error": "Error: locator.scrollIntoViewIfNeeded: Target crashed \nCall log:\n\u001b[2m  - waiting for locator('[data-lightning-group=\"main\"] button[data-lightning-period=\"12m\"]')\u001b[22m\n",
+      "ms": 19
+    },
+    "v15idleOn30s": {
+      "error": "Error: locator.scrollIntoViewIfNeeded: Target crashed \nCall log:\n\u001b[2m  - waiting for locator('[data-lightning-group=\"main\"] button[data-lightning-period=\"7d\"]')\u001b[22m\n",
+      "ms": 17
+    },
+    "offAgain": {
+      "error": "Error: locator.scrollIntoViewIfNeeded: Target crashed \nCall log:\n\u001b[2m  - waiting for locator('[data-lightning-group=\"main\"] input[data-lightning-control=\"toggle\"]')\u001b[22m\n",
+      "ms": 3
+    },
+    "v10_empty": {
+      "error": "Error: locator.scrollIntoViewIfNeeded: Target crashed \nCall log:\n\u001b[2m  - waiting for locator('[data-lightning-group=\"main\"] input[data-lightning-control=\"toggle\"]')\u001b[22m\n",
+      "ms": 20
+    },
+    "v10_http404": {
+      "error": "Error: locator.scrollIntoViewIfNeeded: Target crashed \nCall log:\n\u001b[2m  - waiting for locator('[data-lightning-group=\"main\"] input[data-lightning-control=\"toggle\"]')\u001b[22m\n",
+      "ms": 3
+    },
+    "v10_http500": {
+      "error": "Error: locator.scrollIntoViewIfNeeded: Target crashed \nCall log:\n\u001b[2m  - waiting for locator('[data-lightning-group=\"main\"] input[data-lightning-control=\"toggle\"]')\u001b[22m\n",
+      "ms": 40
+    },
+    "v10_stale": {
+      "error": "Error: locator.scrollIntoViewIfNeeded: Target crashed \nCall log:\n\u001b[2m  - waiting for locator('[data-lightning-group=\"main\"] input[data-lightning-control=\"toggle\"]')\u001b[22m\n",
+      "ms": 15
+    },
+    "v10_fresh": {
+      "error": "Error: locator.scrollIntoViewIfNeeded: Target crashed \nCall log:\n\u001b[2m  - waiting for locator('[data-lightning-group=\"main\"] input[data-lightning-control=\"toggle\"]')\u001b[22m\n",
+      "ms": 3
+    },
+    "afterReload": {
+      "error": "Error: page.reload: Page crashed\nCall log:\n\u001b[2m  - waiting for navigation until \"domcontentloaded\"\u001b[22m\n",
+      "ms": 2
+    }
+  },
+  "errors": [],
+  "lightningRequests": [
+    {
+      "t": "2026-10-27T00:09:43.967Z",
+      "url": "https://raw.githubusercontent.com/Ventusltd/lightning/main/data/history/index.json",
+      "type": "fetch"
+    },
+    {
+      "t": "2026-10-27T00:09:44.246Z",
+      "url": "https://raw.githubusercontent.com/Ventusltd/lightning/main/data/history/index.json",
+      "status": 404
+    },
+    {
+      "t": "2026-10-27T00:09:44.259Z",
+      "url": "https://raw.githubusercontent.com/Ventusltd/lightning/main/data/uk_lightning.geojson",
+      "type": "xhr"
+    },
+    {
+      "t": "2026-10-27T00:09:45.401Z",
+      "url": "https://raw.githubusercontent.com/Ventusltd/lightning/main/data/uk_lightning.geojson",
+      "status": 200
+    },
+    {
+      "t": "2026-10-27T00:09:52.325Z",
+      "url": "https://raw.githubusercontent.com/Ventusltd/lightning/main/data/history/index.json",
+      "type": "fetch"
+    },
+    {
+      "t": "2026-10-27T00:09:52.430Z",
+      "url": "https://raw.githubusercontent.com/Ventusltd/lightning/main/data/history/index.json",
+      "status": 404
+    }
+  ],
+  "finishedAt": "2026-10-27T00:10:04.861Z"
+}

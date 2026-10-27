@@ -1,0 +1,4 @@
+# D-4 probe: git add -A with a missing pathspec (git 2.43.0)
+$ git add -A data/history data/status.json   # data/history absent, data/status.json present
+fatal: pathspec 'data/history' did not match any files
+exit=128 ; git status --short -> "?? data/" (nothing staged)

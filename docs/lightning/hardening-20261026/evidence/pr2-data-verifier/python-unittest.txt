@@ -1,0 +1,65 @@
+# cmd: python3 -m unittest discover -s tests -v
+# cwd: /tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/pr2-data-verifier/wt
+# HEAD: f7db76cddd4dde7a635daed97c912f85ca811db1
+# python: Python 3.13.17
+# date: 2026-10-26T22:14:18Z
+test_defaults_to_six_hours_without_history (test_collect.LookbackWindowTests.test_defaults_to_six_hours_without_history) ... ok
+test_exactly_at_the_cap_is_not_flagged (test_collect.LookbackWindowTests.test_exactly_at_the_cap_is_not_flagged) ... ok
+test_gap_is_capped_at_48_hours_and_flagged (test_collect.LookbackWindowTests.test_gap_is_capped_at_48_hours_and_flagged) ... ok
+test_gap_since_last_success_plus_margin_wins_over_minimum (test_collect.LookbackWindowTests.test_gap_since_last_success_plus_margin_wins_over_minimum) ... ok
+test_last_success_comes_from_status_then_index_then_default (test_collect.LookbackWindowTests.test_last_success_comes_from_status_then_index_then_default) ... ok
+test_recent_success_keeps_the_six_hour_minimum (test_collect.LookbackWindowTests.test_recent_success_keeps_the_six_hour_minimum) ... ok
+test_adjacent_slots_merge_and_clip_to_the_query_window (test_collect.ProductSlotTests.test_adjacent_slots_merge_and_clip_to_the_query_window) ... ok
+test_long_tail_is_also_reported_as_a_gap (test_collect.ProductSlotTests.test_long_tail_is_also_reported_as_a_gap) ... ok
+test_merge_ranges_tolerates_one_second_seams (test_collect.ProductSlotTests.test_merge_ranges_tolerates_one_second_seams) ... ok
+test_missing_middle_slot_is_a_source_gap (test_collect.ProductSlotTests.test_missing_middle_slot_is_a_source_gap) ... ok
+test_real_product_name_yields_its_sensing_slot (test_collect.ProductSlotTests.test_real_product_name_yields_its_sensing_slot) ... ok
+test_unparseable_names_fall_back_to_the_query_window_and_say_so (test_collect.ProductSlotTests.test_unparseable_names_fall_back_to_the_query_window_and_say_so) ... ok
+test_main_without_credentials_writes_a_failure_record_and_raises (test_collect.RunRecordTests.test_main_without_credentials_writes_a_failure_record_and_raises) ... Query window 2026-10-26T16:14:18.646Z -> 2026-10-26T22:14:18.646Z (6.00 h, source=default, capped=False, last successful scan end=none)
+ok
+test_run_record_carries_window_slots_and_uncapped_features (test_collect.RunRecordTests.test_run_record_carries_window_slots_and_uncapped_features) ... ok
+test_deduplicate_and_retention (test_collect.UKLightningTests.test_deduplicate_and_retention) ... ok
+test_empty_collection_has_no_synthetic_strikes (test_collect.UKLightningTests.test_empty_collection_has_no_synthetic_strikes) ... ok
+test_feature_timestamp_and_provenance (test_collect.UKLightningTests.test_feature_timestamp_and_provenance) ... ok
+test_iso_utc_keeps_whole_seconds_and_strips_only_fractional_zeros (test_collect.UKLightningTests.test_iso_utc_keeps_whole_seconds_and_strips_only_fractional_zeros) ... ok
+test_no_outside_points (test_collect.UKLightningTests.test_no_outside_points) ... ok
+test_uk_extent_and_neighbouring_waters (test_collect.UKLightningTests.test_uk_extent_and_neighbouring_waters) ... ok
+test_utc_normalisation (test_collect.UKLightningTests.test_utc_normalisation) ... ok
+test_calendar_year_cutoff_handles_leap_day (test_history.LightningHistoryTests.test_calendar_year_cutoff_handles_leap_day) ... ok
+test_cli_ingest_and_verify (test_history.LightningHistoryTests.test_cli_ingest_and_verify) ... Archived 1 dated optical observations; 2 files changed, 0 days expired, 0 observations older than the cutoff clamped away, split days: none.
+{"rows": 366, "shards_checked": 1}
+ok
+test_damaged_day_archive_fails_without_erasure (test_history.LightningHistoryTests.test_damaged_day_archive_fails_without_erasure) ... ok
+test_day_shard_v1_shape_bytes_and_sha256_are_indexed (test_history.LightningHistoryTests.test_day_shard_v1_shape_bytes_and_sha256_are_indexed) ... ok
+test_day_with_flashes_but_no_recorded_window_gets_a_proven_lower_bound (test_history.LightningHistoryTests.test_day_with_flashes_but_no_recorded_window_gets_a_proven_lower_bound) ... ok
+test_duplicate_reingestion_and_rerun_are_idempotent_and_existing_bytes_win (test_history.LightningHistoryTests.test_duplicate_reingestion_and_rerun_are_idempotent_and_existing_bytes_win) ... ok
+test_index_v2_has_the_f8_fields_and_one_row_per_utc_date (test_history.LightningHistoryTests.test_index_v2_has_the_f8_fields_and_one_row_per_utc_date) ... ok
+test_missing_days_never_claim_zero_lightning (test_history.LightningHistoryTests.test_missing_days_never_claim_zero_lightning) ... ok
+test_never_scanned_and_scanned_zero_are_different_rows (test_history.LightningHistoryTests.test_never_scanned_and_scanned_zero_are_different_rows) ... ok
+test_observations_before_the_cutoff_are_clamped_and_flagged_not_raised (test_history.LightningHistoryTests.test_observations_before_the_cutoff_are_clamped_and_flagged_not_raised) ... ok
+test_outside_location_non_source_and_future_are_rejected (test_history.LightningHistoryTests.test_outside_location_non_source_and_future_are_rejected) ... ok
+test_overlap_scan_windows_merge_without_false_complete_coverage_claim (test_history.LightningHistoryTests.test_overlap_scan_windows_merge_without_false_complete_coverage_claim) ... ok
+test_partial_coverage_counts_only_scanned_seconds (test_history.LightningHistoryTests.test_partial_coverage_counts_only_scanned_seconds) ... ok
+test_real_constants_split_a_genuine_shape_storm_day (test_history.LightningHistoryTests.test_real_constants_split_a_genuine_shape_storm_day) ... ok
+test_retention_prunes_day_files_but_not_current (test_history.LightningHistoryTests.test_retention_prunes_day_files_but_not_current) ... ok
+test_sealed_rule (test_history.LightningHistoryTests.test_sealed_rule) ... ok
+test_seed_windows_are_used_only_when_no_index_exists (test_history.LightningHistoryTests.test_seed_windows_are_used_only_when_no_index_exists) ... ok
+test_shard_above_max_bytes_fails_loudly_and_writes_nothing (test_history.LightningHistoryTests.test_shard_above_max_bytes_fails_loudly_and_writes_nothing) ... ok
+test_storm_day_splits_into_hourly_parts_above_the_target (test_history.LightningHistoryTests.test_storm_day_splits_into_hourly_parts_above_the_target) ... ok
+test_untouched_days_are_verified_by_sha256_not_reparsed (test_history.LightningHistoryTests.test_untouched_days_are_verified_by_sha256_not_reparsed) ... ok
+test_v1_index_from_pr1_is_accepted_and_upgraded (test_history.LightningHistoryTests.test_v1_index_from_pr1_is_accepted_and_upgraded) ... ok
+test_windows_from_run_record_use_examined_ranges_only (test_history.LightningHistoryTests.test_windows_from_run_record_use_examined_ranges_only) ... ok
+test_zero_product_search_cannot_be_recorded_as_coverage (test_history.LightningHistoryTests.test_zero_product_search_cannot_be_recorded_as_coverage) ... ok
+test_archive_failure_is_recorded_without_touching_feed_success (test_status.StatusTests.test_archive_failure_is_recorded_without_touching_feed_success) ... ok
+test_cli_writes_the_file_even_without_a_run_record (test_status.StatusTests.test_cli_writes_the_file_even_without_a_run_record) ... status: failure health=never last_successful_scan_end=None consecutive_failures=1 archive=skipped
+status: success health=ok last_successful_scan_end=2026-10-26T14:10:09.000Z consecutive_failures=0 archive=success
+ok
+test_failure_keeps_previous_success_and_counts_consecutive_failures (test_status.StatusTests.test_failure_keeps_previous_success_and_counts_consecutive_failures) ... ok
+test_health_thresholds (test_status.StatusTests.test_health_thresholds) ... ok
+test_success_records_the_examined_scan_end_not_now (test_status.StatusTests.test_success_records_the_examined_scan_end_not_now) ... ok
+
+----------------------------------------------------------------------
+Ran 49 tests in 0.628s
+
+OK
+exit=0

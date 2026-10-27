@@ -1,0 +1,173 @@
+{
+  "label": "candidate-browser-shim",
+  "shim": {
+    "preload": "/tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/regression-challenge-C/runners/shim-preload.cjs",
+    "lightningDataDir": "(lead default)"
+  },
+  "generation": "202610261949",
+  "base": "http://127.0.0.1:8144/wt/atlas/v/202610261949/",
+  "live": "https://ventusltd.github.io/gridatlas/atlas/",
+  "repo": "/tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/regression-challenge-C/shadow-candidate",
+  "startedAt": "2026-10-26T23:07:15.427Z",
+  "routeBoots": true,
+  "liveReachable": null,
+  "routeProbe": {
+    "url": "http://127.0.0.1:8144/wt/atlas/v/202610261949/",
+    "viewport": {
+      "width": 1440,
+      "height": 1000
+    },
+    "elapsedMs": 7887,
+    "mapArrived": true,
+    "waitUsed": "waitForFunction(map && >=60 proxies, 60000 ms) then networkidle<=20 s then fixed 3 s",
+    "state": {
+      "title": "GlobalGrid2050 | UK Region v8 (Experimental)",
+      "generation": "202610261949",
+      "htmlGeneration": "202610261949",
+      "maplibregl": "function",
+      "map": true,
+      "menuBarInstalled": true,
+      "menuTitles": [
+        "File",
+        "Edit",
+        "View",
+        "Scope",
+        "Grid",
+        "About"
+      ],
+      "engineControls": 120,
+      "pipelineControls": 6,
+      "layerProxies": 63,
+      "scadaContainer": true,
+      "bodyText": "FILE EDIT VIEW SYSTEM TIME 23:03:48 26/10/2026 VENTUS CABLES & CONNECTIVITY® 2050 TARGET 8467 DAYS SCOPE GRID ABOUT GO TOPOLOGY (GEOJSON) 400kV [OK] 275kV [OK] 220kV [OK] 132kV [OK] 66kV [OK] 11kV (UKPN) [WAIT] Subs [OK] ASSETS (GEOJSON) Nuclear [OK] Gas [OK] Industry [OK] Data Ctrs [OK] Airports [OK] Railways [OK] SUPERMARKETS (GEOJSON) Tesco [WAIT] Sainsbury's [WAIT] Asda [WAIT] Morrisons [WAIT] Aldi [WAIT] Lidl [WAIT] Waitrose [WAIT] M&S Food [WAIT] Co-op [WAIT] Costco [WAIT] Booths [WAIT] TRANSIT (GEOJSON) Elizabeth Line [WAIT] London Underground [WAIT] DLR [WAIT] UK Metro [WAIT] Trams & L",
+      "scripts": [
+        "https://cdn.jsdelivr.net/npm/maplibre-gl@3.6.2/dist/maplibre-gl.js",
+        "blob:http://127.0.0.1:8144/98ecf855-73fe-4777-867e-cc7b86b1e974",
+        "blob:http://127.0.0.1:8144/05cd2034-104e-41e3-b5fb-3d6c21b250a7",
+        "blob:http://127.0.0.1:8144/5dbeec82-9e63-4b20-bf51-66559df51d4b",
+        "blob:http://127.0.0.1:8144/7c8f58bd-9c66-4aa6-8626-c53956405903"
+      ]
+    },
+    "failedHosts": {
+      "ventusltd.github.io": {
+        "count": 1,
+        "errors": [
+          "net::ERR_BLOCKED_BY_CLIENT.Inspector"
+        ],
+        "sample": "https://ventusltd.github.io/ventus-grid-engine/genome/engine-graph.json"
+      },
+      "cdn.jsdelivr.net": {
+        "count": 1,
+        "errors": [
+          "net::ERR_ABORTED"
+        ],
+        "sample": "https://cdn.jsdelivr.net/npm/@duckdb/duckdb-wasm@1.29.0/dist/duckdb-eh.wasm"
+      }
+    },
+    "requestHosts": [
+      "127.0.0.1:8144",
+      "cdn.jsdelivr.net",
+      "raw.githubusercontent.com",
+      "basemaps.cartocdn.com",
+      "ventusltd.github.io"
+    ],
+    "consoleErrors": [
+      "Failed to load resource: net::ERR_BLOCKED_BY_CLIENT.Inspector"
+    ],
+    "pageErrors": [],
+    "screenshot": "/tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/regression-challenge-C/candidate-browser-shim/probe-route/probe-1440x1000.png"
+  },
+  "liveProbe": null,
+  "tally": {
+    "PASS": 1,
+    "FAIL": 3
+  },
+  "playwright": "1.63.0",
+  "node": "v22.23.4",
+  "results": [
+    {
+      "id": "menu-bar-mobile-hit",
+      "group": "browser",
+      "kind": "browser-fixture",
+      "tests": "fixture DOM at 393x852: Grid proxy wins the hit test over a project sheet; fullscreen keeps the six menus; no page errors",
+      "target": "fixture DOM + atlas/modules/202609031958-menu-bar.js + production fullscreen handler",
+      "deps": [
+        "chromium"
+      ],
+      "invocation": "/opt/node22/bin/node tools/proofs/menu-bar-mobile-hit.browser.mjs",
+      "env": {},
+      "exit": 0,
+      "signal": null,
+      "timedOut": false,
+      "durationMs": 848,
+      "result": "PASS",
+      "note": "",
+      "firstError": "\"pageErrors\": [],",
+      "log": "logs/menu-bar-mobile-hit"
+    },
+    {
+      "id": "menu-bar-attrib-clearance",
+      "group": "browser",
+      "kind": "browser-fixture",
+      "tests": "fixture DOM at 393/456/768/1280/2327: attribution never occluded by the menu bar",
+      "target": "fixture DOM + menu-bar module",
+      "deps": [
+        "chromium"
+      ],
+      "invocation": "/opt/node22/bin/node tools/proofs/menu-bar-attrib-clearance.browser.mjs",
+      "env": {},
+      "exit": 1,
+      "signal": null,
+      "timedOut": false,
+      "durationMs": 1836,
+      "result": "FAIL",
+      "note": "exit 1",
+      "firstError": "FAILURES",
+      "log": "logs/menu-bar-attrib-clearance"
+    },
+    {
+      "id": "menu-bar-instrument-panel-202609041250",
+      "group": "browser",
+      "kind": "browser-fixture",
+      "tests": "fixture DOM: masthead survives install, SCADA panel controls >=44px, panels inside viewport at 393/456/1280/1568, attribution clear under every open menu",
+      "target": "fixture DOM + menu-bar module",
+      "deps": [
+        "chromium"
+      ],
+      "invocation": "/opt/node22/bin/node tools/proofs/202609041250-menu-bar-instrument-panel.browser.mjs",
+      "env": {},
+      "exit": 1,
+      "signal": null,
+      "timedOut": false,
+      "durationMs": 3979,
+      "result": "FAIL",
+      "note": "exit 1",
+      "firstError": "FAILURES",
+      "log": "logs/menu-bar-instrument-panel-202609041250"
+    },
+    {
+      "id": "all-controls-desktop",
+      "group": "browser",
+      "kind": "browser-route",
+      "tests": "menus x6, status/radius/area/zone/measure tools, fullscreen, basemaps, CSV export, GB conditions + version ledger, Layers toggle, image/pdf/print export, solar CSV, search London, deep link, Pipeline same/wider/all, card min/restore/close (1440x1000)",
+      "target": "http://127.0.0.1:8144/wt/atlas/v/202610261949/",
+      "deps": [
+        "chromium",
+        "cdn.jsdelivr.net (maplibre-gl 3.6.2)",
+        "ventusltd.github.io/data-gridatlas partitions",
+        "basemaps.cartocdn.com",
+        "api.postcodes.io / nominatim for search"
+      ],
+      "invocation": "/opt/node22/bin/node tools/proofs/all-controls.browser.mjs --url http://127.0.0.1:8144/wt/atlas/v/202610261949/ --desktop --out <out>/all-controls-desktop",
+      "env": {},
+      "exit": 1,
+      "signal": null,
+      "timedOut": false,
+      "durationMs": 199759,
+      "result": "FAIL",
+      "note": "exit 1",
+      "firstError": "name: 'Error'",
+      "log": "logs/all-controls-desktop"
+    }
+  ]
+}

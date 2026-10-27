@@ -1,0 +1,189 @@
+SHA 49696b5b2300b5c4bad786a09ad60946f73a942b  node v22.23.4  2026-10-26T22:19:31Z
+=== node --test tools/proofs/chatgpt-lightning-regression.test.mjs
+TAP version 13
+# Subtest: Sanity: lightning starts OFF with zero network and map work
+ok 1 - Sanity: lightning starts OFF with zero network and map work
+  ---
+  duration_ms: 9.285015
+  type: 'test'
+  ...
+# Subtest: H01: reactivating feed fetches newer observations, not a cached promise
+not ok 2 - H01: reactivating feed fetches newer observations, not a cached promise
+  ---
+  duration_ms: 27.927372
+  type: 'test'
+  location: '/tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/chatgpt-suite-run/wt/tools/proofs/chatgpt-lightning-regression.test.mjs:63:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    refresh / OFF→ON must revalidate the live feed
+    
+    1 !== 2
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 2
+  actual: 1
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/chatgpt-suite-run/wt/tools/proofs/chatgpt-lightning-regression.test.mjs:72:10)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: H02: fallback feed older than 24h carries visible STALE state
+not ok 3 - H02: fallback feed older than 24h carries visible STALE state
+  ---
+  duration_ms: 1.861294
+  type: 'test'
+  location: '/tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/chatgpt-suite-run/wt/tools/proofs/chatgpt-lightning-regression.test.mjs:76:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    
+    false !== true
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: true
+  actual: false
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/chatgpt-suite-run/wt/tools/proofs/chatgpt-lightning-regression.test.mjs:81:10)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: H03: geodesy rejects out-of-bounds and malformed coordinates
+not ok 4 - H03: geodesy rejects out-of-bounds and malformed coordinates
+  ---
+  duration_ms: 2.092829
+  type: 'test'
+  location: '/tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/chatgpt-suite-run/wt/tools/proofs/chatgpt-lightning-regression.test.mjs:84:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    bad coordinate: [150,10]
+    
+    true !== false
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: false
+  actual: true
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/chatgpt-suite-run/wt/tools/proofs/chatgpt-lightning-regression.test.mjs:88:12)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: H04: reject a dated shard whose index count, bytes and hash are wrong
+not ok 5 - H04: reject a dated shard whose index count, bytes and hash are wrong
+  ---
+  duration_ms: 1.959886
+  type: 'test'
+  location: '/tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/chatgpt-suite-run/wt/tools/proofs/chatgpt-lightning-regression.test.mjs:92:1'
+  failureType: 'testCodeFailure'
+  error: 'Missing expected rejection.'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+  operator: 'rejects'
+  stack: |-
+    async TestContext.<anonymous> (file:///tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/chatgpt-suite-run/wt/tools/proofs/chatgpt-lightning-regression.test.mjs:97:3)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: H05: do not call overlapping whole-day index counts exact in-window totals
+not ok 6 - H05: do not call overlapping whole-day index counts exact in-window totals
+  ---
+  duration_ms: 1.75877
+  type: 'test'
+  location: '/tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/chatgpt-suite-run/wt/tools/proofs/chatgpt-lightning-regression.test.mjs:103:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    The input was expected to not match the regular expression /50,000 archived in window/i. Input:
+    
+    'Flashes 50,000 archived in window (index) · 1 downloaded from the newest 1 of 2 days (budget 40,000; 1 older days not loaded) · 1 drawn as clusters (index count 40,000 exceeds the 40,000-point cap for this desktop)'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+  actual: 'Flashes 50,000 archived in window (index) · 1 downloaded from the newest 1 of 2 days (budget 40,000; 1 older days not loaded) · 1 drawn as clusters (index count 40,000 exceeds the 40,000-point cap for this desktop)'
+  operator: 'doesNotMatch'
+  stack: |-
+    TestContext.<anonymous> (file:///tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/chatgpt-suite-run/wt/tools/proofs/chatgpt-lightning-regression.test.mjs:111:10)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+1..6
+# tests 6
+# suites 0
+# pass 1
+# fail 5
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 126.139384
+exit=1
+
+=== node tools/proofs/chatgpt-lightning-static-review.mjs
+PASS_STATIC: live generation retained
+PASS_STATIC: candidate names chosen generation
+PASS_STATIC: candidate points back to live generation
+PASS_STATIC: original composer and candidate loader are byte-identical
+PASS_STATIC: all four original live cartridges hash to live pointer
+PASS_STATIC: no fifth cartridge slot
+PASS_STATIC: three unaffected candidate cartridge hashes equal original
+PASS_STATIC: candidate is strictly original bytes + LF + one module
+PASS_STATIC: candidate cartridge hash matches candidate composition
+PASS_STATIC: new cartridge stays under 460000-byte ceiling
+PASS_STATIC: overlay stays under 24000-byte ceiling
+PASS_STATIC: overlay avoids original config mutations and global fetch overwrite
+PASS_STATIC: source attribution and unknown-does-not-mean-zero remain in code
+PASS_STATIC: data/archive requests use original raw endpoint
+PASS_STATIC: OFF state is initial and selected source/layer is controlled
+NEEDS_DYNAMIC_TEST: W01 rolling live feed may remain cached across 10-minute refresh
+NEEDS_DYNAMIC_TEST: W02 live feed has no explicit freshness classifier
+NEEDS_DYNAMIC_TEST: W03 coordinate/bounds validation incomplete
+NEEDS_DYNAMIC_TEST: W04 shard bytes/hash/count metadata not cross-validated
+{
+  "kind": "static-source-review-only",
+  "generation": "202610261949",
+  "source_bytes": 23973,
+  "cartridge_bytes": 459192,
+  "static_pass": 15,
+  "static_fail": 0,
+  "needs_dynamic_test": 4,
+  "warnings": [
+    {
+      "result": "NEEDS_DYNAMIC_TEST",
+      "name": "W01 rolling live feed may remain cached across 10-minute refresh",
+      "description": "The refresh resets the index promise but apparently not the successful fallback feed promise. Reproduce with changing feed fixtures and advance fake time."
+    },
+    {
+      "result": "NEEDS_DYNAMIC_TEST",
+      "name": "W02 live feed has no explicit freshness classifier",
+      "description": "If mode=feed and idx=null, STALE is always false regardless of last ingestion. Test a >24-hour-old feed."
+    },
+    {
+      "result": "NEEDS_DYNAMIC_TEST",
+      "name": "W03 coordinate/bounds validation incomplete",
+      "description": "Point type and timestamp are checked; malformed/out-of-UK lon/lat must be rejected and tested."
+    },
+    {
+      "result": "NEEDS_DYNAMIC_TEST",
+      "name": "W04 shard bytes/hash/count metadata not cross-validated",
+      "description": "Do not infer that an index-to-shard hash/size/count mismatch has been verified just because index v2 stores those fields."
+    }
+  ]
+}
+exit=0

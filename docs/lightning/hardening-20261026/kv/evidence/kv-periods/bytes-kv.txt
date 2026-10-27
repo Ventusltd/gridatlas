@@ -1,0 +1,21 @@
+K1 stale(): measure from the search frontier (lastScan), not generated_utc that backfill bumps
+   Build I line 47 (patched-file line 47) · +14 B
+K2 cf(): STALE only on the latest window, not on PREV pages
+   Build I line 96 (patched-file line 96) · +14 B
+K3 cp(): flashes sentence names searched days/hours and the unsearched remainder
+   Build I line 111 (patched-file line 111) · -21 B
+K4 cp(): refresh line says when the collector last searched and when the next update was due
+   Build I line 115 (patched-file line 115) · +87 B
+K5 cp(): searched line in hours, no "successful runs", hull named earliest/latest
+   Build I line 117 (patched-file line 117) · +60 B
+K6 cp(): no second "precede archive start" warning for the same never-searched dates
+   Build I line 119 (patched-file line 119) · +13 B
+K7 sx()/fx() helpers + label without "≥": count · searched days or hours | period | STALE
+   Build I line 181 (patched-file line 181) · +774 B
+K8 lt(): label body
+   Build I line 182 (patched-file line 185) · +54 B
+K9 sl(): PARTIAL status says what was searched
+   Build I line 184 (patched-file line 187) · -8 B
+K10 PREV: stop at searched coverage start, and never open a page the retention clamp would cut short
+   Build I line 192 (patched-file line 195) · +27 B
+TOTAL 33623 -> 34637 B (+1014 B; budget 44,781 B headroom -> 43767 B left)

@@ -1,0 +1,124 @@
+{
+  "harness": "lead-shim offline-shim.mjs; Chromium 153.0.8010.12 headless; phones = Chromium emulation, not WebKit",
+  "startedAt": "2026-10-26T23:59:42.895Z",
+  "base": "http://127.0.0.1:8170/wt/atlas/",
+  "cand": "http://127.0.0.1:8170/wt/atlas/v/202610262323/",
+  "results": {
+    "android-393x852": {
+      "baseline": {
+        "inspect": {
+          "engine": 60,
+          "pipeline": 3,
+          "total": 63,
+          "unique": 63,
+          "complete": true
+        },
+        "proxies": 63,
+        "markers": 63,
+        "scadaEngine": 60,
+        "scadaPn": 3,
+        "scadaInputsNonLightning": 65,
+        "curtainInputsNonLightning": 65,
+        "keyTitles": [
+          "Topology (GeoJSON)",
+          "Assets (GeoJSON)",
+          "Supermarkets (GeoJSON)",
+          "Transit (GeoJSON)",
+          "Leisure & Sports (GeoJSON)",
+          "Global Data Backbone",
+          "Global Supply Chain & Chokepoints",
+          "Highway Infrastructure",
+          "EV (GeoJSON)",
+          "Heavy Industry",
+          "REPD (GeoJSON)",
+          "Basemap",
+          "PIPELINE NEWS (REPD)"
+        ],
+        "curtainTitles": [
+          "Topology (GeoJSON)",
+          "Assets (GeoJSON)",
+          "Supermarkets (GeoJSON)",
+          "Transit (GeoJSON)",
+          "Leisure & Sports (GeoJSON)",
+          "Global Data Backbone",
+          "Global Supply Chain & Chokepoints",
+          "Highway Infrastructure",
+          "EV (GeoJSON)",
+          "Heavy Industry",
+          "REPD (GeoJSON)",
+          "Basemap",
+          "PIPELINE NEWS (REPD)"
+        ],
+        "firstLabel": "400kV [OK]",
+        "gmGroups": [
+          "Export this view",
+          "Studies",
+          "Topology (GeoJSON)",
+          "Assets (GeoJSON)",
+          "Supermarkets (GeoJSON)",
+          "Transit (GeoJSON)",
+          "Leisure & Sports (GeoJSON)",
+          "Global Data Backbone",
+          "Global Supply Chain & Chokepoints",
+          "Highway Infrastructure",
+          "EV (GeoJSON)",
+          "Heavy Industry",
+          "REPD (GeoJSON)",
+          "PIPELINE NEWS (REPD)",
+          "Basemap",
+          "Estate"
+        ],
+        "gmRows": 65,
+        "styles": [
+          "(no id)",
+          "gridatlas-neon-css",
+          "gridatlas-gb-conditions-style",
+          "gridatlas-version-ledger-style",
+          "gridatlas-mobile-tray-style",
+          "gridatlas-sld-css",
+          "(no id)",
+          "(no id)",
+          "gridatlas-menu-bar-css"
+        ],
+        "links": [
+          "https://cdn.jsdelivr.net/npm/maplibre-gl@3.6.2/dist/maplibre-gl.css",
+          "ventusv8.css"
+        ],
+        "mapControlsEmptied": null,
+        "lightningCtlAttrs": [],
+        "lightningForbidden": false,
+        "lightningInGridPanel": false,
+        "lightningGroups": [],
+        "checked": [],
+        "label": null,
+        "labelFs": null,
+        "status": null,
+        "caps": {},
+        "capsVisible": false,
+        "lstate": null,
+        "fetchName": "gridAtlasMaplibreWorkerFetch",
+        "xhrOpenNative": true,
+        "bridge": {
+          "intercepted_on_demand": 0,
+          "failures": []
+        },
+        "initVentusMap": "gridAtlasMapReadyInit|975",
+        "mapSource": null,
+        "mapLayerVis": null,
+        "mapLayerCount": 98,
+        "lightningLayers": [],
+        "storage": {
+          "ls": [],
+          "ss": [],
+          "ck": ""
+        }
+      },
+      "baselineErrors": [],
+      "error": "page.goto: net::ERR_CONNECTION_REFUSED at http://127.0.0.1:8170/wt/atlas/v/202610262323/\nCall log:\n\u001b[2m  - navigating to \"http://127.0.0.1:8170/wt/atlas/v/202610262323/\", waiting until \"domcontentloaded\"\u001b[22m\n\n    at boot (/tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/veto-pre-1/veto-interact2.mjs:53:14)\n    at async file:///tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/veto-pre-1/veto-interact2.mjs:115:15"
+    }
+  },
+  "v10": {},
+  "v9": {},
+  "v15": {},
+  "finishedAt": "2026-10-26T23:59:57.637Z"
+}

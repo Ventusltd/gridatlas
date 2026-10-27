@@ -1,0 +1,24 @@
+harness: self-fixture (node v22.23.4); base = fixed-module-E.js (24780 B, stamped 202610262310)
+     8  E1 full coverage means f===1 (no 0.999 tolerance next to a floored %); E4 dates without a row keep PARTIAL
+   -29  E2/E02/E03 PREV/NEXT window-end stack S.h (NEXT pops, null = latest)
+     5  E3 part hour comes from the validated path
+    -5  E5 install paints LOADING when ON before install (no null deref); fit runs from pt()
+     2  E6 observation_kind compared with === (via FEED_SCHEMA)
+    29  E7 budget PARTIAL carries a reason
+    16  E06 an index dated more than 15 min in the future is STALE
+   -25  F-A/zero parts/line-34 counts via >>>0 (negative, fractional, string, zero part counts rejected)
+    12  F-B one row per date (index Map keeps the last)
+    12  F-C overlapping scan windows counted once (union)
+     9  DATES rollover dates (2026-02-30) rejected
+   170  F1 no bare "Flashes 0 archived" while UNKNOWN/PARTIAL; lost days get their own Searched line
+   181  F2 index/shard mismatch: refetch the index once (cache-busted), retry; then PARTIAL "archive updating, retrying next refresh"
+    45  M01 fit() after every render (incl. ON) and on window click/transitionend (bubbling from the Layers toggle and panel)
+    65  DOTS circle radius >= 4 px at low zoom with a dark 1 px stroke (coordinates unchanged)
+    75  NF1 failed day files: Actual "unknown (day files failed)", Flashes "<index> in index · <loaded> loaded" (never "at least 0")
+    95  NF2 redirects rejected: fetch r.redirected; XHR responseURL must start with the requested URL
+  -359  TRIM-F section comments removed (budget; no proof needle, no behaviour)
+  -187  TRIM-F header comment condensed (generation, contract, honesty rule, provenance and glossary kept)
+  -160  TRIM-F2 shorter wording where honesty is unaffected (budget for NF1/NF2)
+    90  RO M01 inset follows the HIDE LAYERS button live size (ResizeObserver, re-attached if the button is replaced)
+   -56  TRIM-F3 budget for RO: implicit aria-live of role=status; private caches start undefined
+E 24780 -> F 24773 bytes (delta -7); cap 24781: MET (8 spare)

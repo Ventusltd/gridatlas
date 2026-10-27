@@ -1,0 +1,61 @@
+
+the module is what it says it is
+
+  [PASS] the module registered and froze its surface
+  [PASS] it names the one product it reads
+  [PASS] it says ownership is not a counterparty
+  [PASS] it says an owner is never inferred
+  [PASS] it carries the not-an-assessment discipline
+  [PASS] the module contains no impedance arithmetic
+  [PASS] the module never reduces a parameter or rating list
+  [PASS] no arithmetic operator is applied to a rating value
+  [PASS] it never fetches, never renders and never waits
+  [PASS] it never decodes a voltage from a node code
+  [PASS] the only source of an owner is a transmission_owner field
+  [PASS] the owner values are not hard-coded as a list to default to
+  [PASS] the denials were found and they deny spare capacity
+  [PASS] nothing outside the denials speaks of headroom, spare or availability
+  [PASS] no key or identifier in the module names headroom
+
+it fails closed
+
+  [PASS] an unrecognised schema yields no index
+  [PASS] a v2 of the same product is refused until it is read for
+  [PASS] null and undefined are refused
+
+behaviour, on products built for the edge cases
+
+  [PASS] the site reports its own published owner
+  [PASS] exactly one circuit is a boundary
+  [PASS] the boundary circuit names both owners
+  [PASS] the boundary circuit names both sites
+  [PASS] the circuit's own owner is carried separately from the owners of its ends
+  [PASS] its rating and parameter are carried, unaltered
+  [PASS] the internal circuit is not listed as a boundary
+  [PASS] assets are counted per owner at the site: one SPT circuit and one SHET circuit
+  [PASS] the node is counted under its own owner
+  [PASS] both owners are listed as present
+  [PASS] the far site sees the same boundary from its side
+  [PASS] the answer carries the counterparty denial
+  [PASS] a circuit to a node with no published owner is undetermined, not a boundary
+  [PASS] the unknown end is reported as unknown, not as OFTO from the circuit and not as NGET from the site
+  [PASS] whether the asset owner matches an end is null when an end is unknown
+  [PASS] the asset is still counted under its own published owner
+  [PASS] the far node with no site is carried with its code and no invented name
+  [PASS] its voltage is undeclared, not decoded from "220KV" in the node name
+  [PASS] a node with no published owner is unknown even when its site publishes one
+  [PASS] an internal circuit between two SHET nodes is not a boundary
+  [PASS] but its own owner differing from both ends is reported as exactly that
+  [PASS] the circuit is counted under SPT, its published owner, not under the site's
+  [PASS] voltages are bands, highest first, undeclared last
+  [PASS] the 400 kV band counts one circuit and no transformer, the 132 kV band one circuit and two transformers
+  [PASS] an internal transformer is counted once, under the voltage it was first met at
+  [PASS] scoped to 400 kV, only the 400 kV boundary is reported
+  [PASS] scoped to 132 kV, the boundary transformer to OFTO is reported with both owners
+  [PASS] a node the site does not vouch for is counted as undeclared, never as 275
+  [PASS] the unscoped scope says no count spans two voltages
+  [PASS] an unknown site is null
+  [PASS] the product-wide list names each boundary branch once with both owners
+
+the published network, four owners
+

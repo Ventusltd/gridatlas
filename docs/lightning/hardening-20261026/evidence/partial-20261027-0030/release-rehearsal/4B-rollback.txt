@@ -1,0 +1,25 @@
+  MATCH           streaming-parquet-bridge     atlas/cartridges/202609241251-streaming-parquet-bridge-v9-5.js
+  MATCH           uk-gazetteer-flyto           atlas/cartridges/202609071213-place-global-search-v9-5.js
+  MATCH           sld-sandbox                  atlas/cartridges/202609241334-sld-sandbox-v9-8.js
+  MATCH           substation-intelligence      atlas/cartridges/202609062358-substation-intelligence-v9-63.js
+  PRESENT         shell:index.html             atlas/releases/202608300453-atlas-v9/index.html
+
+  from        202610262323  v9.161
+  restoring   202609241334  v9.156   (1 generation back)
+  as          202610270006  202610270006-gridatlas-v9.156
+  cartridges  4 verified against committed bytes
+
+rolled back to 202609241334 as 202610270006-gridatlas-v9.156
+run `node tools/scope/loop.mjs state` and `node tools/proofs/run-current.mjs` before committing
+scope-ledger=PASS active=none master=done
+STATE.md=UPDATED
+DIFFERS atlas/current.json
+DIFFERS STATE.md
+key differs: generation "202609241334" -> "202610270006"
+key differs: previous_generation "202609200022" -> "202610262323"
+key differs: composition_manifest "./manifests/202609241334-composition.json" -> "./manifests/202610270006-composition.json"
+key differs: composition_id "202609241334-gridatlas-v9.156" -> "202610270006-gridatlas-v9.156"
+key differs: composition_note "Restore DLR, UK Metro and Trams station controls by explici -> "release-rehearsal: rollback of 202610262323"
+key differs: superseded_generation "202609200022" -> "202609241334"
+key differs: candidate_predecessor "202609241251" -> "202610262318"
+key order same: true

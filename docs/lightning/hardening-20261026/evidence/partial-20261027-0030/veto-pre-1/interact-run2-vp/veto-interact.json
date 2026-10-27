@@ -1,0 +1,1103 @@
+{
+  "harness": "lead-shim offline-shim.mjs; Chromium 153.0.8010.12 headless; phones = Chromium emulation, not WebKit",
+  "startedAt": "2026-10-26T23:50:32.390Z",
+  "base": "http://127.0.0.1:8170/wt/atlas/",
+  "cand": "http://127.0.0.1:8170/wt/atlas/v/202610262323/",
+  "results": {
+    "desktop-1440x900": {
+      "baseline": {
+        "inspect": {
+          "engine": 60,
+          "pipeline": 3,
+          "total": 63,
+          "unique": 63,
+          "complete": true
+        },
+        "proxies": 63,
+        "markers": 63,
+        "scadaEngine": 60,
+        "scadaPn": 3,
+        "scadaInputsNonLightning": 65,
+        "curtainInputsNonLightning": 65,
+        "keyTitles": [
+          "Topology (GeoJSON)",
+          "Assets (GeoJSON)",
+          "Supermarkets (GeoJSON)",
+          "Transit (GeoJSON)",
+          "Leisure & Sports (GeoJSON)",
+          "Global Data Backbone",
+          "Global Supply Chain & Chokepoints",
+          "Highway Infrastructure",
+          "EV (GeoJSON)",
+          "Heavy Industry",
+          "REPD (GeoJSON)",
+          "Basemap",
+          "PIPELINE NEWS (REPD)"
+        ],
+        "curtainTitles": [
+          "Topology (GeoJSON)",
+          "Assets (GeoJSON)",
+          "Supermarkets (GeoJSON)",
+          "Transit (GeoJSON)",
+          "Leisure & Sports (GeoJSON)",
+          "Global Data Backbone",
+          "Global Supply Chain & Chokepoints",
+          "Highway Infrastructure",
+          "EV (GeoJSON)",
+          "Heavy Industry",
+          "REPD (GeoJSON)",
+          "Basemap",
+          "PIPELINE NEWS (REPD)"
+        ],
+        "firstLabel": "400kV [OK]",
+        "gmGroups": [
+          "Export this view",
+          "Studies",
+          "Topology (GeoJSON)",
+          "Assets (GeoJSON)",
+          "Supermarkets (GeoJSON)",
+          "Transit (GeoJSON)",
+          "Leisure & Sports (GeoJSON)",
+          "Global Data Backbone",
+          "Global Supply Chain & Chokepoints",
+          "Highway Infrastructure",
+          "EV (GeoJSON)",
+          "Heavy Industry",
+          "REPD (GeoJSON)",
+          "PIPELINE NEWS (REPD)",
+          "Basemap",
+          "Estate"
+        ],
+        "gmRows": 65,
+        "styles": [
+          "(no id)",
+          "gridatlas-neon-css",
+          "gridatlas-gb-conditions-style",
+          "gridatlas-version-ledger-style",
+          "gridatlas-sld-css",
+          "(no id)",
+          "(no id)",
+          "gridatlas-menu-bar-css"
+        ],
+        "links": [
+          "https://cdn.jsdelivr.net/npm/maplibre-gl@3.6.2/dist/maplibre-gl.css",
+          "ventusv8.css"
+        ],
+        "mapControlsEmptied": "1",
+        "lightningCtlAttrs": [],
+        "lightningForbidden": false,
+        "lightningInGridPanel": false,
+        "lightningGroups": [],
+        "checked": [],
+        "label": null,
+        "labelFs": null,
+        "status": null,
+        "caps": {},
+        "capsVisible": false,
+        "lstate": null,
+        "fetchName": "gridAtlasMaplibreWorkerFetch",
+        "xhrOpenNative": true,
+        "bridge": {
+          "intercepted_on_demand": 0,
+          "failures": []
+        },
+        "initVentusMap": "gridAtlasMapReadyInit|975",
+        "mapSource": null,
+        "mapLayerVis": null,
+        "mapLayerCount": 100,
+        "lightningLayers": [],
+        "storage": {
+          "ls": [],
+          "ss": [],
+          "ck": ""
+        }
+      },
+      "baselineErrors": [],
+      "offBoot": {
+        "inspect": {
+          "engine": 60,
+          "pipeline": 3,
+          "total": 63,
+          "unique": 63,
+          "complete": true
+        },
+        "proxies": 63,
+        "markers": 63,
+        "scadaEngine": 60,
+        "scadaPn": 3,
+        "scadaInputsNonLightning": 65,
+        "curtainInputsNonLightning": 65,
+        "keyTitles": [
+          "Topology (GeoJSON)",
+          "Assets (GeoJSON)",
+          "Supermarkets (GeoJSON)",
+          "Transit (GeoJSON)",
+          "Leisure & Sports (GeoJSON)",
+          "Global Data Backbone",
+          "Global Supply Chain & Chokepoints",
+          "Highway Infrastructure",
+          "EV (GeoJSON)",
+          "Heavy Industry",
+          "REPD (GeoJSON)",
+          "Basemap",
+          "PIPELINE NEWS (REPD)",
+          "Weather · EUMETSAT Lightning Imager"
+        ],
+        "curtainTitles": [
+          "Topology (GeoJSON)",
+          "Assets (GeoJSON)",
+          "Supermarkets (GeoJSON)",
+          "Transit (GeoJSON)",
+          "Leisure & Sports (GeoJSON)",
+          "Global Data Backbone",
+          "Global Supply Chain & Chokepoints",
+          "Highway Infrastructure",
+          "EV (GeoJSON)",
+          "Heavy Industry",
+          "REPD (GeoJSON)",
+          "Basemap",
+          "PIPELINE NEWS (REPD)",
+          "Weather · EUMETSAT Lightning Imager"
+        ],
+        "firstLabel": "400kV [OK]",
+        "gmGroups": [
+          "Export this view",
+          "Studies",
+          "Topology (GeoJSON)",
+          "Assets (GeoJSON)",
+          "Supermarkets (GeoJSON)",
+          "Transit (GeoJSON)",
+          "Leisure & Sports (GeoJSON)",
+          "Global Data Backbone",
+          "Global Supply Chain & Chokepoints",
+          "Highway Infrastructure",
+          "EV (GeoJSON)",
+          "Heavy Industry",
+          "REPD (GeoJSON)",
+          "PIPELINE NEWS (REPD)",
+          "Basemap",
+          "Estate"
+        ],
+        "gmRows": 65,
+        "styles": [
+          "(no id)",
+          "gridatlas-neon-css",
+          "gridatlas-gb-conditions-style",
+          "gridatlas-version-ledger-style",
+          "gridatlas-sld-css",
+          "(no id)",
+          "(no id)",
+          "gridatlas-menu-bar-css"
+        ],
+        "links": [
+          "https://cdn.jsdelivr.net/npm/maplibre-gl@3.6.2/dist/maplibre-gl.css",
+          "ventusv8.css"
+        ],
+        "mapControlsEmptied": "1",
+        "lightningCtlAttrs": [
+          [
+            "type",
+            "data-lightning-control"
+          ],
+          [
+            "type",
+            "data-lightning-control"
+          ]
+        ],
+        "lightningForbidden": false,
+        "lightningInGridPanel": false,
+        "lightningGroups": [
+          {
+            "key": "fs",
+            "parent": "fs-curtain-keys",
+            "last": true
+          },
+          {
+            "key": "main",
+            "parent": "scada-ui-container",
+            "last": true
+          }
+        ],
+        "checked": [
+          false,
+          false
+        ],
+        "label": "Lightning flashes (optical) [WAIT]",
+        "labelFs": "Lightning flashes (optical) [WAIT]",
+        "status": "LOADING",
+        "caps": {
+          "window": "",
+          "actual": "",
+          "flashes": "",
+          "refresh": "",
+          "searched": "",
+          "warning": "",
+          "footer": ""
+        },
+        "capsVisible": false,
+        "lstate": {
+          "on": false,
+          "requests": 0,
+          "errors": [],
+          "last": null,
+          "timer": false
+        },
+        "fetchName": "gridAtlasMaplibreWorkerFetch",
+        "xhrOpenNative": true,
+        "bridge": {
+          "intercepted_on_demand": 0,
+          "failures": []
+        },
+        "initVentusMap": "gridAtlasMapReadyInit|975",
+        "mapSource": null,
+        "mapLayerVis": null,
+        "mapLayerCount": 100,
+        "lightningLayers": [],
+        "storage": {
+          "ls": [],
+          "ss": [],
+          "ck": ""
+        }
+      },
+      "layers": "desktop default open",
+      "offAfterLayers": {
+        "inspect": {
+          "engine": 60,
+          "pipeline": 3,
+          "total": 63,
+          "unique": 63,
+          "complete": true
+        },
+        "proxies": 63,
+        "markers": 63,
+        "scadaEngine": 60,
+        "scadaPn": 3,
+        "scadaInputsNonLightning": 65,
+        "curtainInputsNonLightning": 65,
+        "keyTitles": [
+          "Topology (GeoJSON)",
+          "Assets (GeoJSON)",
+          "Supermarkets (GeoJSON)",
+          "Transit (GeoJSON)",
+          "Leisure & Sports (GeoJSON)",
+          "Global Data Backbone",
+          "Global Supply Chain & Chokepoints",
+          "Highway Infrastructure",
+          "EV (GeoJSON)",
+          "Heavy Industry",
+          "REPD (GeoJSON)",
+          "Basemap",
+          "PIPELINE NEWS (REPD)",
+          "Weather · EUMETSAT Lightning Imager"
+        ],
+        "curtainTitles": [
+          "Topology (GeoJSON)",
+          "Assets (GeoJSON)",
+          "Supermarkets (GeoJSON)",
+          "Transit (GeoJSON)",
+          "Leisure & Sports (GeoJSON)",
+          "Global Data Backbone",
+          "Global Supply Chain & Chokepoints",
+          "Highway Infrastructure",
+          "EV (GeoJSON)",
+          "Heavy Industry",
+          "REPD (GeoJSON)",
+          "Basemap",
+          "PIPELINE NEWS (REPD)",
+          "Weather · EUMETSAT Lightning Imager"
+        ],
+        "firstLabel": "400kV [OK]",
+        "gmGroups": [
+          "Export this view",
+          "Studies",
+          "Topology (GeoJSON)",
+          "Assets (GeoJSON)",
+          "Supermarkets (GeoJSON)",
+          "Transit (GeoJSON)",
+          "Leisure & Sports (GeoJSON)",
+          "Global Data Backbone",
+          "Global Supply Chain & Chokepoints",
+          "Highway Infrastructure",
+          "EV (GeoJSON)",
+          "Heavy Industry",
+          "REPD (GeoJSON)",
+          "PIPELINE NEWS (REPD)",
+          "Basemap",
+          "Estate"
+        ],
+        "gmRows": 65,
+        "styles": [
+          "(no id)",
+          "gridatlas-neon-css",
+          "gridatlas-gb-conditions-style",
+          "gridatlas-version-ledger-style",
+          "gridatlas-sld-css",
+          "(no id)",
+          "(no id)",
+          "gridatlas-menu-bar-css"
+        ],
+        "links": [
+          "https://cdn.jsdelivr.net/npm/maplibre-gl@3.6.2/dist/maplibre-gl.css",
+          "ventusv8.css"
+        ],
+        "mapControlsEmptied": "1",
+        "lightningCtlAttrs": [
+          [
+            "type",
+            "data-lightning-control"
+          ],
+          [
+            "type",
+            "data-lightning-control"
+          ]
+        ],
+        "lightningForbidden": false,
+        "lightningInGridPanel": false,
+        "lightningGroups": [
+          {
+            "key": "fs",
+            "parent": "fs-curtain-keys",
+            "last": true
+          },
+          {
+            "key": "main",
+            "parent": "scada-ui-container",
+            "last": true
+          }
+        ],
+        "checked": [
+          false,
+          false
+        ],
+        "label": "Lightning flashes (optical) [WAIT]",
+        "labelFs": "Lightning flashes (optical) [WAIT]",
+        "status": "LOADING",
+        "caps": {
+          "window": "",
+          "actual": "",
+          "flashes": "",
+          "refresh": "",
+          "searched": "",
+          "warning": "",
+          "footer": ""
+        },
+        "capsVisible": false,
+        "lstate": {
+          "on": false,
+          "requests": 0,
+          "errors": [],
+          "last": null,
+          "timer": false
+        },
+        "fetchName": "gridAtlasMaplibreWorkerFetch",
+        "xhrOpenNative": true,
+        "bridge": {
+          "intercepted_on_demand": 0,
+          "failures": []
+        },
+        "initVentusMap": "gridAtlasMapReadyInit|975",
+        "mapSource": null,
+        "mapLayerVis": null,
+        "mapLayerCount": 100,
+        "lightningLayers": [],
+        "storage": {
+          "ls": [],
+          "ss": [],
+          "ck": ""
+        }
+      },
+      "toggleHitBefore": "self",
+      "requestsBeforeOn": 0,
+      "on24h": {
+        "inspect": {
+          "engine": 60,
+          "pipeline": 3,
+          "total": 63,
+          "unique": 63,
+          "complete": true
+        },
+        "proxies": 63,
+        "markers": 63,
+        "scadaEngine": 60,
+        "scadaPn": 3,
+        "scadaInputsNonLightning": 65,
+        "curtainInputsNonLightning": 65,
+        "keyTitles": [
+          "Topology (GeoJSON)",
+          "Assets (GeoJSON)",
+          "Supermarkets (GeoJSON)",
+          "Transit (GeoJSON)",
+          "Leisure & Sports (GeoJSON)",
+          "Global Data Backbone",
+          "Global Supply Chain & Chokepoints",
+          "Highway Infrastructure",
+          "EV (GeoJSON)",
+          "Heavy Industry",
+          "REPD (GeoJSON)",
+          "Basemap",
+          "PIPELINE NEWS (REPD)",
+          "Weather · EUMETSAT Lightning Imager"
+        ],
+        "curtainTitles": [
+          "Topology (GeoJSON)",
+          "Assets (GeoJSON)",
+          "Supermarkets (GeoJSON)",
+          "Transit (GeoJSON)",
+          "Leisure & Sports (GeoJSON)",
+          "Global Data Backbone",
+          "Global Supply Chain & Chokepoints",
+          "Highway Infrastructure",
+          "EV (GeoJSON)",
+          "Heavy Industry",
+          "REPD (GeoJSON)",
+          "Basemap",
+          "PIPELINE NEWS (REPD)",
+          "Weather · EUMETSAT Lightning Imager"
+        ],
+        "firstLabel": "400kV [OK]",
+        "gmGroups": [
+          "Export this view",
+          "Studies",
+          "Topology (GeoJSON)",
+          "Assets (GeoJSON)",
+          "Supermarkets (GeoJSON)",
+          "Transit (GeoJSON)",
+          "Leisure & Sports (GeoJSON)",
+          "Global Data Backbone",
+          "Global Supply Chain & Chokepoints",
+          "Highway Infrastructure",
+          "EV (GeoJSON)",
+          "Heavy Industry",
+          "REPD (GeoJSON)",
+          "PIPELINE NEWS (REPD)",
+          "Basemap",
+          "Estate"
+        ],
+        "gmRows": 65,
+        "styles": [
+          "(no id)",
+          "gridatlas-neon-css",
+          "gridatlas-gb-conditions-style",
+          "gridatlas-version-ledger-style",
+          "gridatlas-sld-css",
+          "(no id)",
+          "(no id)",
+          "gridatlas-menu-bar-css"
+        ],
+        "links": [
+          "https://cdn.jsdelivr.net/npm/maplibre-gl@3.6.2/dist/maplibre-gl.css",
+          "ventusv8.css"
+        ],
+        "mapControlsEmptied": "1",
+        "lightningCtlAttrs": [
+          [
+            "type",
+            "data-lightning-control"
+          ],
+          [
+            "type",
+            "data-lightning-control"
+          ]
+        ],
+        "lightningForbidden": false,
+        "lightningInGridPanel": false,
+        "lightningGroups": [
+          {
+            "key": "fs",
+            "parent": "fs-curtain-keys",
+            "last": true
+          },
+          {
+            "key": "main",
+            "parent": "scada-ui-container",
+            "last": true
+          }
+        ],
+        "checked": [
+          true,
+          true
+        ],
+        "label": "Lightning flashes (optical) [UNKNOWN | 24h STALE]",
+        "labelFs": "Lightning flashes (optical) [UNKNOWN | 24h STALE]",
+        "status": "UNKNOWN · STALE",
+        "caps": {
+          "window": "Window  2026-10-25 23:52 UTC → 2026-10-26 23:52 UTC (24 hours, latest)",
+          "actual": "Actual  no flashes in the live feed in this window",
+          "flashes": "Flashes 0 in window (live feed, 7-day retention)",
+          "refresh": "Refresh live feed 2026-10-26 13:05 UTC (last collection window 2026-10-26 10:05 UTC → 2026-10-26 13:05 UTC; latest detection 2026-10-25 11:15:58 UTC; 7-day retention; archive not yet published: HTTP 404; earlier hours unknown, not zero)",
+          "searched": "Searched EUMETSAT unknown (live feed records only its last collection window)",
+          "warning": "",
+          "footer": "Times UTC · Optical flashes seen by MTG Lightning Imager (EUMETSAT L2-LFL), not confirmed ground strikes · Missing days are unknown, not zero · UK box −11.0,49.5 → 3.0,61.5"
+        },
+        "capsVisible": true,
+        "lstate": {
+          "on": true,
+          "requests": 2,
+          "errors": [],
+          "last": {
+            "state": "UNKNOWN",
+            "stale": true,
+            "mode": "feed",
+            "period": "24h",
+            "drawn": 0,
+            "cluster": false,
+            "cap": 40000,
+            "cap_source": "live feed",
+            "index_count": 0,
+            "failures": 0,
+            "reasons": [
+              "feed coverage unknown"
+            ]
+          },
+          "timer": true
+        },
+        "fetchName": "gridAtlasMaplibreWorkerFetch",
+        "xhrOpenNative": true,
+        "bridge": {
+          "intercepted_on_demand": 0,
+          "failures": []
+        },
+        "initVentusMap": "gridAtlasMapReadyInit|975",
+        "mapSource": {
+          "n": 0
+        },
+        "mapLayerVis": "none",
+        "mapLayerCount": 101,
+        "lightningLayers": [
+          "l-gridatlas-lightning"
+        ],
+        "storage": {
+          "ls": [],
+          "ss": [],
+          "ck": ""
+        }
+      },
+      "error": "locator.textContent: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('[data-lightning-group=\"main\"] [data-lightning-label]')\u001b[22m\n\n    at settle (/tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/veto-pre-1/veto-interact.mjs:103:253)\n    at async file:///tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/veto-pre-1/veto-interact.mjs:122:78"
+    },
+    "android-393x852": {
+      "baseline": {
+        "inspect": {
+          "engine": 60,
+          "pipeline": 3,
+          "total": 63,
+          "unique": 63,
+          "complete": true
+        },
+        "proxies": 63,
+        "markers": 63,
+        "scadaEngine": 60,
+        "scadaPn": 3,
+        "scadaInputsNonLightning": 65,
+        "curtainInputsNonLightning": 65,
+        "keyTitles": [
+          "Topology (GeoJSON)",
+          "Assets (GeoJSON)",
+          "Supermarkets (GeoJSON)",
+          "Transit (GeoJSON)",
+          "Leisure & Sports (GeoJSON)",
+          "Global Data Backbone",
+          "Global Supply Chain & Chokepoints",
+          "Highway Infrastructure",
+          "EV (GeoJSON)",
+          "Heavy Industry",
+          "REPD (GeoJSON)",
+          "Basemap",
+          "PIPELINE NEWS (REPD)"
+        ],
+        "curtainTitles": [
+          "Topology (GeoJSON)",
+          "Assets (GeoJSON)",
+          "Supermarkets (GeoJSON)",
+          "Transit (GeoJSON)",
+          "Leisure & Sports (GeoJSON)",
+          "Global Data Backbone",
+          "Global Supply Chain & Chokepoints",
+          "Highway Infrastructure",
+          "EV (GeoJSON)",
+          "Heavy Industry",
+          "REPD (GeoJSON)",
+          "Basemap",
+          "PIPELINE NEWS (REPD)"
+        ],
+        "firstLabel": "400kV [OK]",
+        "gmGroups": [
+          "Export this view",
+          "Studies",
+          "Topology (GeoJSON)",
+          "Assets (GeoJSON)",
+          "Supermarkets (GeoJSON)",
+          "Transit (GeoJSON)",
+          "Leisure & Sports (GeoJSON)",
+          "Global Data Backbone",
+          "Global Supply Chain & Chokepoints",
+          "Highway Infrastructure",
+          "EV (GeoJSON)",
+          "Heavy Industry",
+          "REPD (GeoJSON)",
+          "PIPELINE NEWS (REPD)",
+          "Basemap",
+          "Estate"
+        ],
+        "gmRows": 65,
+        "styles": [
+          "(no id)",
+          "gridatlas-neon-css",
+          "gridatlas-gb-conditions-style",
+          "gridatlas-version-ledger-style",
+          "gridatlas-mobile-tray-style",
+          "gridatlas-sld-css",
+          "(no id)",
+          "(no id)",
+          "gridatlas-menu-bar-css"
+        ],
+        "links": [
+          "https://cdn.jsdelivr.net/npm/maplibre-gl@3.6.2/dist/maplibre-gl.css",
+          "ventusv8.css"
+        ],
+        "mapControlsEmptied": null,
+        "lightningCtlAttrs": [],
+        "lightningForbidden": false,
+        "lightningInGridPanel": false,
+        "lightningGroups": [],
+        "checked": [],
+        "label": null,
+        "labelFs": null,
+        "status": null,
+        "caps": {},
+        "capsVisible": false,
+        "lstate": null,
+        "fetchName": "gridAtlasMaplibreWorkerFetch",
+        "xhrOpenNative": true,
+        "bridge": {
+          "intercepted_on_demand": 0,
+          "failures": []
+        },
+        "initVentusMap": "gridAtlasMapReadyInit|975",
+        "mapSource": null,
+        "mapLayerVis": null,
+        "mapLayerCount": 100,
+        "lightningLayers": [],
+        "storage": {
+          "ls": [],
+          "ss": [],
+          "ck": ""
+        }
+      },
+      "baselineErrors": [],
+      "offBoot": {
+        "inspect": {
+          "engine": 60,
+          "pipeline": 3,
+          "total": 63,
+          "unique": 63,
+          "complete": true
+        },
+        "proxies": 63,
+        "markers": 63,
+        "scadaEngine": 60,
+        "scadaPn": 3,
+        "scadaInputsNonLightning": 65,
+        "curtainInputsNonLightning": 65,
+        "keyTitles": [
+          "Topology (GeoJSON)",
+          "Assets (GeoJSON)",
+          "Supermarkets (GeoJSON)",
+          "Transit (GeoJSON)",
+          "Leisure & Sports (GeoJSON)",
+          "Global Data Backbone",
+          "Global Supply Chain & Chokepoints",
+          "Highway Infrastructure",
+          "EV (GeoJSON)",
+          "Heavy Industry",
+          "REPD (GeoJSON)",
+          "Basemap",
+          "PIPELINE NEWS (REPD)",
+          "Weather · EUMETSAT Lightning Imager"
+        ],
+        "curtainTitles": [
+          "Topology (GeoJSON)",
+          "Assets (GeoJSON)",
+          "Supermarkets (GeoJSON)",
+          "Transit (GeoJSON)",
+          "Leisure & Sports (GeoJSON)",
+          "Global Data Backbone",
+          "Global Supply Chain & Chokepoints",
+          "Highway Infrastructure",
+          "EV (GeoJSON)",
+          "Heavy Industry",
+          "REPD (GeoJSON)",
+          "Basemap",
+          "PIPELINE NEWS (REPD)",
+          "Weather · EUMETSAT Lightning Imager"
+        ],
+        "firstLabel": "400kV [OK]",
+        "gmGroups": [
+          "Export this view",
+          "Studies",
+          "Topology (GeoJSON)",
+          "Assets (GeoJSON)",
+          "Supermarkets (GeoJSON)",
+          "Transit (GeoJSON)",
+          "Leisure & Sports (GeoJSON)",
+          "Global Data Backbone",
+          "Global Supply Chain & Chokepoints",
+          "Highway Infrastructure",
+          "EV (GeoJSON)",
+          "Heavy Industry",
+          "REPD (GeoJSON)",
+          "PIPELINE NEWS (REPD)",
+          "Basemap",
+          "Estate"
+        ],
+        "gmRows": 65,
+        "styles": [
+          "(no id)",
+          "gridatlas-neon-css",
+          "gridatlas-gb-conditions-style",
+          "gridatlas-version-ledger-style",
+          "gridatlas-mobile-tray-style",
+          "gridatlas-sld-css",
+          "(no id)",
+          "(no id)",
+          "gridatlas-menu-bar-css"
+        ],
+        "links": [
+          "https://cdn.jsdelivr.net/npm/maplibre-gl@3.6.2/dist/maplibre-gl.css",
+          "ventusv8.css"
+        ],
+        "mapControlsEmptied": null,
+        "lightningCtlAttrs": [
+          [
+            "type",
+            "data-lightning-control"
+          ],
+          [
+            "type",
+            "data-lightning-control"
+          ]
+        ],
+        "lightningForbidden": false,
+        "lightningInGridPanel": false,
+        "lightningGroups": [
+          {
+            "key": "fs",
+            "parent": "fs-curtain-keys",
+            "last": true
+          },
+          {
+            "key": "main",
+            "parent": "scada-ui-container",
+            "last": true
+          }
+        ],
+        "checked": [
+          false,
+          false
+        ],
+        "label": "Lightning flashes (optical) [WAIT]",
+        "labelFs": "Lightning flashes (optical) [WAIT]",
+        "status": "LOADING",
+        "caps": {
+          "window": "",
+          "actual": "",
+          "flashes": "",
+          "refresh": "",
+          "searched": "",
+          "warning": "",
+          "footer": ""
+        },
+        "capsVisible": false,
+        "lstate": {
+          "on": false,
+          "requests": 0,
+          "errors": [],
+          "last": null,
+          "timer": false
+        },
+        "fetchName": "gridAtlasMaplibreWorkerFetch",
+        "xhrOpenNative": true,
+        "bridge": {
+          "intercepted_on_demand": 0,
+          "failures": []
+        },
+        "initVentusMap": "gridAtlasMapReadyInit|975",
+        "mapSource": null,
+        "mapLayerVis": null,
+        "mapLayerCount": 100,
+        "lightningLayers": [],
+        "storage": {
+          "ls": [],
+          "ss": [],
+          "ck": ""
+        }
+      },
+      "error": "locator.tap: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('#gridatlas-dash-toggle')\u001b[22m\n\n    at openLayers (/tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/veto-pre-1/veto-interact.mjs:100:67)\n    at async file:///tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/veto-pre-1/veto-interact.mjs:115:18"
+    },
+    "android-360x740": {
+      "baseline": {
+        "inspect": {
+          "engine": 60,
+          "pipeline": 3,
+          "total": 63,
+          "unique": 63,
+          "complete": true
+        },
+        "proxies": 63,
+        "markers": 63,
+        "scadaEngine": 60,
+        "scadaPn": 3,
+        "scadaInputsNonLightning": 65,
+        "curtainInputsNonLightning": 65,
+        "keyTitles": [
+          "Topology (GeoJSON)",
+          "Assets (GeoJSON)",
+          "Supermarkets (GeoJSON)",
+          "Transit (GeoJSON)",
+          "Leisure & Sports (GeoJSON)",
+          "Global Data Backbone",
+          "Global Supply Chain & Chokepoints",
+          "Highway Infrastructure",
+          "EV (GeoJSON)",
+          "Heavy Industry",
+          "REPD (GeoJSON)",
+          "Basemap",
+          "PIPELINE NEWS (REPD)"
+        ],
+        "curtainTitles": [
+          "Topology (GeoJSON)",
+          "Assets (GeoJSON)",
+          "Supermarkets (GeoJSON)",
+          "Transit (GeoJSON)",
+          "Leisure & Sports (GeoJSON)",
+          "Global Data Backbone",
+          "Global Supply Chain & Chokepoints",
+          "Highway Infrastructure",
+          "EV (GeoJSON)",
+          "Heavy Industry",
+          "REPD (GeoJSON)",
+          "Basemap",
+          "PIPELINE NEWS (REPD)"
+        ],
+        "firstLabel": "400kV [OK]",
+        "gmGroups": [
+          "Export this view",
+          "Studies",
+          "Topology (GeoJSON)",
+          "Assets (GeoJSON)",
+          "Supermarkets (GeoJSON)",
+          "Transit (GeoJSON)",
+          "Leisure & Sports (GeoJSON)",
+          "Global Data Backbone",
+          "Global Supply Chain & Chokepoints",
+          "Highway Infrastructure",
+          "EV (GeoJSON)",
+          "Heavy Industry",
+          "REPD (GeoJSON)",
+          "PIPELINE NEWS (REPD)",
+          "Basemap",
+          "Estate"
+        ],
+        "gmRows": 65,
+        "styles": [
+          "(no id)",
+          "gridatlas-neon-css",
+          "gridatlas-gb-conditions-style",
+          "gridatlas-version-ledger-style",
+          "gridatlas-mobile-tray-style",
+          "gridatlas-sld-css",
+          "(no id)",
+          "(no id)",
+          "gridatlas-menu-bar-css"
+        ],
+        "links": [
+          "https://cdn.jsdelivr.net/npm/maplibre-gl@3.6.2/dist/maplibre-gl.css",
+          "ventusv8.css"
+        ],
+        "mapControlsEmptied": null,
+        "lightningCtlAttrs": [],
+        "lightningForbidden": false,
+        "lightningInGridPanel": false,
+        "lightningGroups": [],
+        "checked": [],
+        "label": null,
+        "labelFs": null,
+        "status": null,
+        "caps": {},
+        "capsVisible": false,
+        "lstate": null,
+        "fetchName": "gridAtlasMaplibreWorkerFetch",
+        "xhrOpenNative": true,
+        "bridge": {
+          "intercepted_on_demand": 0,
+          "failures": []
+        },
+        "initVentusMap": "gridAtlasMapReadyInit|975",
+        "mapSource": null,
+        "mapLayerVis": null,
+        "mapLayerCount": 100,
+        "lightningLayers": [],
+        "storage": {
+          "ls": [],
+          "ss": [],
+          "ck": ""
+        }
+      },
+      "baselineErrors": [],
+      "offBoot": {
+        "inspect": {
+          "engine": 60,
+          "pipeline": 3,
+          "total": 63,
+          "unique": 63,
+          "complete": true
+        },
+        "proxies": 63,
+        "markers": 63,
+        "scadaEngine": 60,
+        "scadaPn": 3,
+        "scadaInputsNonLightning": 65,
+        "curtainInputsNonLightning": 65,
+        "keyTitles": [
+          "Topology (GeoJSON)",
+          "Assets (GeoJSON)",
+          "Supermarkets (GeoJSON)",
+          "Transit (GeoJSON)",
+          "Leisure & Sports (GeoJSON)",
+          "Global Data Backbone",
+          "Global Supply Chain & Chokepoints",
+          "Highway Infrastructure",
+          "EV (GeoJSON)",
+          "Heavy Industry",
+          "REPD (GeoJSON)",
+          "Basemap",
+          "PIPELINE NEWS (REPD)",
+          "Weather · EUMETSAT Lightning Imager"
+        ],
+        "curtainTitles": [
+          "Topology (GeoJSON)",
+          "Assets (GeoJSON)",
+          "Supermarkets (GeoJSON)",
+          "Transit (GeoJSON)",
+          "Leisure & Sports (GeoJSON)",
+          "Global Data Backbone",
+          "Global Supply Chain & Chokepoints",
+          "Highway Infrastructure",
+          "EV (GeoJSON)",
+          "Heavy Industry",
+          "REPD (GeoJSON)",
+          "Basemap",
+          "PIPELINE NEWS (REPD)",
+          "Weather · EUMETSAT Lightning Imager"
+        ],
+        "firstLabel": "400kV [OK]",
+        "gmGroups": [
+          "Export this view",
+          "Studies",
+          "Topology (GeoJSON)",
+          "Assets (GeoJSON)",
+          "Supermarkets (GeoJSON)",
+          "Transit (GeoJSON)",
+          "Leisure & Sports (GeoJSON)",
+          "Global Data Backbone",
+          "Global Supply Chain & Chokepoints",
+          "Highway Infrastructure",
+          "EV (GeoJSON)",
+          "Heavy Industry",
+          "REPD (GeoJSON)",
+          "PIPELINE NEWS (REPD)",
+          "Basemap",
+          "Estate"
+        ],
+        "gmRows": 65,
+        "styles": [
+          "(no id)",
+          "gridatlas-neon-css",
+          "gridatlas-gb-conditions-style",
+          "gridatlas-version-ledger-style",
+          "gridatlas-mobile-tray-style",
+          "gridatlas-sld-css",
+          "(no id)",
+          "(no id)",
+          "gridatlas-menu-bar-css"
+        ],
+        "links": [
+          "https://cdn.jsdelivr.net/npm/maplibre-gl@3.6.2/dist/maplibre-gl.css",
+          "ventusv8.css"
+        ],
+        "mapControlsEmptied": null,
+        "lightningCtlAttrs": [
+          [
+            "type",
+            "data-lightning-control"
+          ],
+          [
+            "type",
+            "data-lightning-control"
+          ]
+        ],
+        "lightningForbidden": false,
+        "lightningInGridPanel": false,
+        "lightningGroups": [
+          {
+            "key": "fs",
+            "parent": "fs-curtain-keys",
+            "last": true
+          },
+          {
+            "key": "main",
+            "parent": "scada-ui-container",
+            "last": true
+          }
+        ],
+        "checked": [
+          false,
+          false
+        ],
+        "label": "Lightning flashes (optical) [WAIT]",
+        "labelFs": "Lightning flashes (optical) [WAIT]",
+        "status": "LOADING",
+        "caps": {
+          "window": "",
+          "actual": "",
+          "flashes": "",
+          "refresh": "",
+          "searched": "",
+          "warning": "",
+          "footer": ""
+        },
+        "capsVisible": false,
+        "lstate": {
+          "on": false,
+          "requests": 0,
+          "errors": [],
+          "last": null,
+          "timer": false
+        },
+        "fetchName": "gridAtlasMaplibreWorkerFetch",
+        "xhrOpenNative": true,
+        "bridge": {
+          "intercepted_on_demand": 0,
+          "failures": []
+        },
+        "initVentusMap": "gridAtlasMapReadyInit|975",
+        "mapSource": null,
+        "mapLayerVis": null,
+        "mapLayerCount": 100,
+        "lightningLayers": [],
+        "storage": {
+          "ls": [],
+          "ss": [],
+          "ck": ""
+        }
+      },
+      "error": "locator.tap: Target page, context or browser has been closed\nCall log:\n\u001b[2m  - waiting for locator('#gridatlas-dash-toggle')\u001b[22m\n\n    at openLayers (/tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/veto-pre-1/veto-interact.mjs:100:67)\n    at async file:///tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/veto-pre-1/veto-interact.mjs:115:18"
+    },
+    "iphone-390x844-chromium-emulation": {
+      "error": "browser.newContext: Target page, context or browser has been closed\nBrowser logs:\n\n<launching> /opt/pw-browsers/chromium_headless_shell-1243/chrome-headless-shell-linux64/chrome-headless-shell --disable-field-trial-config --disable-background-networking --disable-background-timer-throttling --disable-backgrounding-occluded-windows --disable-back-forward-cache --disable-breakpad --disable-client-side-phishing-detection --disable-component-extensions-with-background-pages --disable-component-update --no-default-browser-check --disable-default-apps --disable-dev-shm-usage --disable-edgeupdater --"
+    }
+  },
+  "v10": {},
+  "v9": {},
+  "v15": {},
+  "finishedAt": "2026-10-26T23:59:45.464Z"
+}

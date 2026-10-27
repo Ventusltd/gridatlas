@@ -1,0 +1,115 @@
+--- a/atlas/modules/202610261949-uk-lightning-overlay.js
++++ b/atlas/modules/202610261949-uk-lightning-overlay.js
+@@ -23,8 +23,8 @@
+ period:'24h',end:null,from:'',to:'',consent:false,serial:0,idx:null,ie:null,ip:null,fp:null,res:null,mode:null,timer:null,sfs:[],menu:null},lru=new Map(),
+ note=m=>S.errors.push(String(m)),
+ // transport: fetch for .json, XMLHttpRequest for the live feed
+-gj=(u,cache)=>{const c=new AbortController(),t=setTimeout(()=>c.abort(),TMO);S.requests++;
+-return fetch(u,{cache,signal:c.signal}).then(r=>{if(!r.ok)throw new Error('HTTP '+r.status);return r.json()}).catch(e=>{throw e&&e.name==='AbortError'?new Error(TOE):e}).finally(()=>clearTimeout(t))},
++gj=(u,cache,body='json')=>{const c=new AbortController(),t=setTimeout(()=>c.abort(),TMO);S.requests++;
++return fetch(u,{cache,signal:c.signal}).then(r=>{if(!r.ok)throw new Error('HTTP '+r.status);return r[body]()}).catch(e=>{throw e&&e.name==='AbortError'?new Error(TOE):e}).finally(()=>clearTimeout(t))},
+ gx=u=>{S.requests++;return new Promise((res,rej)=>{const x=new XMLHttpRequest();x.open('GET',u);x.timeout=TMO;
+ x.onload=()=>{if(x.status>=200&&x.status<300){try{res(JSON.parse(x.responseText))}catch(e){rej(e)}}else rej(new Error('HTTP '+x.status))};
+ x.onerror=()=>rej(new Error('network error'));x.ontimeout=()=>rej(new Error(TOE));x.send()})},
+@@ -42,7 +42,8 @@
+ cutoff=ds(raw.cutoff_date_utc),iv=Number(raw.collection_interval_hours)||3;
+ return{raw,days:raw.days,by:new Map(raw.days.map(r=>[r.date,r])),sw,gen,cutoff,iv,nextDue:Date.parse(raw.next_update_due_utc||'')||gen+(iv+1)*HOUR,lastScan:sw.length?Math.max(...sw.map(w=>w.e)):null,
+ covStart:Date.parse(raw.coverage_start_utc||'')||(sw.length?Math.min(...sw.map(w=>w.s)):cutoff),cutoffDate:raw.cutoff_date_utc}},
+-stale=(x,now)=>now-x.gen>4*HOUR||now>x.nextDue,
++// STALE (UX spec): > 4 h old, undated, or past next_update_due_utc
++stale=(x,now)=>!(now-x.gen<=4*HOUR)||now>x.nextDue,
+ li=()=>{if(!S.ip)S.ip=gj(AR+'index.json','no-cache').then(ni).then(m=>{for(const k of[...lru.keys()])if(!lru.get(k).sealed)lru.delete(k);S.idx=m;S.ie=null;return m}).catch(e=>{S.ip=null;S.ie=msg(e);throw e});return S.ip},
+ // coverage from scan_windows
+ cv=(x,ws,we)=>{const win=we-ws,u=[];let r=0,a=null,b=null,sd=0,d=0;
+@@ -53,22 +54,29 @@
+ wf=now=>{const P=PERIODS.find(p=>p[0]===S.period)||PERIODS[1];let s,e,atLatest;
+ if(S.period==='custom'){s=ds(S.from);e=Math.min(ds(S.to)+DAY,now);atLatest=ds(S.to)+DAY>=now}else{e=S.end===null?now:Math.min(S.end,now);atLatest=S.end===null;s=P[2]<0?mm(e,-P[2]):e-P[2]}
+ return{s,e,atLatest,period:P[0],label:P[1],span:e-s,clamped:false,custom:S.period==='custom'}},
+-tg=(row,ws,we)=>!row||!row.count?[]:row.path?[{path:row.path,bytes:row.bytes,count:row.count,sealed:row.sealed}]
+-:(row.parts||[]).filter(p=>{const h=ds(row.date)+Number(p.hour)*HOUR;return h<we&&h+HOUR>ws}).map(p=>({path:p.path,bytes:p.bytes,count:p.count,sealed:row.sealed})),
++tg=(row,ws,we)=>!row||!row.count?[]:row.path?[row]
++:(row.parts||[]).filter(p=>{const h=ds(row.date)+Number(p.hour)*HOUR;return h<we&&h+HOUR>ws}).map(p=>({...p,sealed:row.sealed})),
+ sh=(t,date)=>{const u=AR+t.path,c=lg(u);if(c)return c.p;
+-const p=gj(u,t.sealed?'default':'no-cache').then(o=>{if(!o||o.schema!=='uk-lightning-history-day.v1'||o.type!=='FeatureCollection'||!Array.isArray(o.features)||!o.metadata||o.metadata.date_utc!==date)E('invalid day file');return o.features}).catch(e=>{lru.delete(u);throw e});
++const p=gj(u,t.sealed?'default':'no-cache','arrayBuffer').then(async b=>{const o=await new Response(b).json();
++if(!o||o.schema!=='uk-lightning-history-day.v1'||o.type!=='FeatureCollection'||!Array.isArray(o.features)||!o.metadata||o.metadata.date_utc!==date)E('invalid day file');
++// D08: shard must match its index row (plain http has no crypto.subtle: sha256 unverified)
++const h=crypto.subtle?[...new Uint8Array(await crypto.subtle.digest('SHA-256',b))].map(x=>pad(x.toString(16))).join(''):t.sha256,
++bad=[o.features.length!==t.count&&'count',b.byteLength!==t.bytes&&'bytes',h!==t.sha256&&'sha256'].filter(Boolean);
++if(bad.length)E('index mismatch: '+bad.join(', '));return o.features}).catch(e=>{lru.delete(u);throw e});
+ ls(u,{p,sealed:!!t.sealed});return p},
+ fr=async(rows,ws,we)=>{const jobs=[];for(const row of rows)for(const t of tg(row,ws,we))jobs.push({row,t});const parts=new Array(jobs.length),fl=[];let pos=0;
+ await Promise.all(Array.from({length:Math.min(4,jobs.length)},async()=>{while(pos<jobs.length){const i=pos++,{row,t}=jobs[i];try{parts[i]=await sh(t,row.date)}catch(e){parts[i]=[];fl.push({date:row.date,error:msg(e)})}}}));
+ return{parts,fl,rq:jobs.length}},
+-ok=f=>f&&f.type==='Feature'&&f.geometry&&f.geometry.type==='Point'&&f.properties&&f.properties.observation_kind==='optical_lightning_flash'&&isFinite(tm(f)),
+-co=(parts,ws,we)=>{const m=new Map();for(const part of parts)for(const f of part){if(!ok(f))continue;const t=tm(f);if(t>=ws&&t<we)m.set(String(f.id),f)}return[...m.values()].sort((a,b)=>tm(a)-tm(b))},
++// D02: finite lon/lat in the box W,S,E,N, edges included as in collect.py
++inb=c=>Array.isArray(c)&&Number.isFinite(c[0])&&Number.isFinite(c[1])&&c[0]>=-11&&c[0]<=3&&c[1]>=49.5&&c[1]<=61.5,
++ok=f=>f&&f.type==='Feature'&&f.geometry&&f.geometry.type==='Point'&&inb(f.geometry.coordinates)&&f.properties&&f.properties.observation_kind==='optical_lightning_flash'&&isFinite(tm(f)),
++co=(parts,ws,we)=>{const m=new Map();let q=0;for(const part of parts)for(const f of part){const t=f&&f.properties?tm(f):NaN;if(t<ws||t>=we)continue;if(ok(f))m.set(String(f.id),f);else q++}return{ev:[...m.values()].sort((a,b)=>tm(a)-tm(b)),q}},
+ // tiers
+ ff=async(w,now,reason)=>{
+ if(w.s<now-7*DAY)E(`${w.label} needs the archive (${NA}); the live feed keeps 7 days`);
+ const f=await(S.fp||(S.fp=gx(FEED).catch(e=>{S.fp=null;throw e})));if(!f||f.type!=='FeatureCollection'||!Array.isArray(f.features))E('invalid live feed');
+-const m=f.metadata||{},ev=co([f.features],w.s,w.e),qs=Date.parse(m.query_start_utc||''),qe=Date.parse(m.scan_end_utc||m.query_end_utc||''),one=isFinite(qs)&&isFinite(qe)&&qe>qs;
+-return{mode:'feed',w,idx:null,ie:reason,meta:m,ev,fl:[],rq:1,cs:'live feed',ic:ev.length,cl:ev.length>cap(),ld:[],sk:[],cov:cv({sw:one?[{s:qs,e:qe,n:1}]:[],by:{get:()=>({coverage:'partial'})},lastScan:one?qe:null,covStart:-Infinity},w.s,w.e)}},
++const m=f.metadata||{},{ev,q}=co([f.features],w.s,w.e),qs=Date.parse(m.query_start_utc||''),qe=Date.parse(m.scan_end_utc||m.query_end_utc||''),one=isFinite(qs)&&isFinite(qe)&&qe>qs;
++return{mode:'feed',w,idx:null,ie:reason,meta:m,gen:Date.parse(m.query_end_utc),ev,q,fl:[],rq:1,cs:'live feed',ic:ev.length,cl:ev.length>cap(),ld:[],sk:[],cov:cv({sw:one?[{s:qs,e:qe,n:1}]:[],by:{get:()=>({coverage:'partial'})},lastScan:one?qe:null,covStart:-Infinity},w.s,w.e)}},
+ lw=async now=>{const w=wf(now);let x=null,ie=null;try{x=await li()}catch(e){ie=msg(e)}
+ if(!x)return ff(w,now,ie);
+ if(w.e<=x.cutoff)return{mode:'overview',w,idx:x,before:true,rows:[],cov:null,fl:[],ev:[],arch:0};
+@@ -81,7 +89,7 @@
+ if(count>BUDGET||bytes>32e6){if(!S.consent){r.clp=true;r.budget=`${N(count)} flashes, ${N(bytes)} bytes`;return r}
+ let run=0;tf.sort((a,b)=>b.date.localeCompare(a.date));const keep=[];for(const y of tf){if(run>=BUDGET){r.sk.push(y.date);continue}keep.push(y);run+=y.count}tf=keep;count=run}
+ r.ld=tf.map(y=>y.date);r.ic=count;r.cs='index';r.cl=count>cap();
+-const got=await fr(tf,w.s,w.e);r.mode='detail';r.fl=got.fl;r.rq=got.rq;r.ev=co(got.parts,w.s,w.e);return r},
++const got=await fr(tf,w.s,w.e);r.mode='detail';r.fl=got.fl;r.rq=got.rq;Object.assign(r,co(got.parts,w.s,w.e));return r},
+ // state machine
+ cf=(r,now)=>{let st;const rs=[];
+ if(r.fail){st='FAIL';rs.push(r.fail)}else if(r.before){st='BEFORE-ARCHIVE';rs.push('window entirely before the archive')}
+@@ -89,7 +97,7 @@
+ else{const c=r.cov,f=c?c.f:0;if(!c||f<=0){st='UNKNOWN';rs.push('0% searched')}
+ else if(f<0.999){st='PARTIAL';if(c.ny>0)rs.push('tail not yet ingested');if(c.bf>0)rs.push('head before archive start');if(c.u.length)rs.push(`${c.u.length} dates without a scan window`);if(!rs.length)rs.push('gaps inside the window')}
+ else if(r.mode!=='overview')st=r.ev.length?'READY·DETAIL':'EMPTY-COVERED';else st=r.arch>0?'READY·SUMMARY':'EMPTY-COVERED'}
+-return{st,stale:!!(r.idx&&stale(r.idx,now)),colour:COLOUR(st),rs}},
++return{st,stale:r.idx?stale(r.idx,now):r.mode==='feed'&&stale(r,now),colour:COLOUR(st),rs}},
+ // the seven caption templates
+ cp=(r,now)=>{const w=r.w,x=r.idx,L={window:'',actual:'',flashes:'',refresh:'',searched:'',warning:'',footer:FOOTER};
+ L.window=w.custom?`Window  UTC dates ${ymd(w.s)} to ${ymd(w.e-1)} inclusive = ${T(w.s)} → ${T(w.e)}`:`Window  ${T(w.s)} → ${T(w.e)} (${w.label}${w.atLatest?', latest':', end exclusive'})`;
+@@ -99,10 +107,10 @@
+ const n=r.ev.length,dev=ph()?'phone':'desktop',first=n?`Actual  first ${Ts(tm(r.ev[0]))} · last ${Ts(tm(r.ev[n-1]))}`:'',
+ drawn=!n?'':` · ${N(n)} drawn as ${r.cl?'clusters':'points'} (${r.cs} count ${N(r.ic)} ${r.cl?'exceeds':'within'} the ${N(cap())}-point cap for this ${dev})`;
+ if(r.mode==='feed'){const m=r.meta,P=k=>m[k]?T(Date.parse(m[k])):'unknown';
+-L.refresh=`Refresh live feed ${P('query_end_utc')} (last collection window ${P('query_start_utc')} → ${P('query_end_utc')}; latest detection ${m.latest_detection_utc?Ts(Date.parse(m.latest_detection_utc)):'unknown'}; 7-day retention; ${NA}${r.ie?': '+r.ie:''}; earlier hours unknown, not zero)`;
++L.refresh=`Refresh live feed ${P('query_end_utc')} (last collection window ${P('query_start_utc')} → ${P('query_end_utc')}; latest detection ${m.latest_detection_utc?Ts(Date.parse(m.latest_detection_utc)):'unknown'}; 7-day retention; ${NA}${r.ie?': '+r.ie:''}; earlier hours unknown, not zero)${stale(r,now)?' · STALE':''}`;
+ L.actual=first||'Actual  no flashes in the live feed in this window';L.flashes=`Flashes ${N(n)} in window (live feed, 7-day retention)${drawn}`}
+ else if(r.mode==='detail'){L.actual=first||'Actual  no archived flashes within this window';
+-L.flashes=r.sk.length?`Flashes ${N(r.arch)} archived in window (index) · ${N(n)} downloaded from the newest ${r.ld.length} of ${r.ld.length+r.sk.length} days (budget ${N(BUDGET)}; ${r.sk.length} older days not loaded)${drawn}`:`Flashes ${r.fl.length?'at least ':''}${N(n)} archived in window${drawn}`}
++L.flashes=r.sk.length?`Flashes ${N(r.arch)} archived on the overlapping UTC dates (whole days; window is ${w.label}) · ${N(n)} downloaded from the newest ${r.ld.length} of ${r.ld.length+r.sk.length} days (budget ${N(BUDGET)}; ${r.sk.length} older days not loaded)${drawn}`:`Flashes ${r.fl.length?'at least ':''}${N(n)} archived in window${drawn}`}
+ else{const o=r.rows.filter(y=>y.first_observation_utc),k=r.rows.length;
+ L.actual=o.length?`Actual  on the ${k} overlapping UTC dates: first ${Ts(Date.parse(o[0].first_observation_utc))} · last ${Ts(Date.parse(o[o.length-1].last_observation_utc))} (day-level; may lie outside a mid-day window edge)`:`Actual  no archived flashes on the ${k} overlapping UTC dates`;
+ L.flashes=`Flashes ${N(r.arch)} archived on ${k} overlapping UTC dates · none drawn (summary mode; ${r.clp?`index sum ${r.budget} exceeds the budget; LOAD POINTS draws the newest ${N(BUDGET)}`:'choose ≤31 days for points'})`}
+@@ -113,6 +121,7 @@
+ if(c.bf>0&&x)warn.push(`Unknown: ${ymd(w.s)} to ${ymd(Math.min(w.e,x.covStart)-1)} precede archive start ${T(x.covStart)} (not zero)`);
+ if(c.u.length)warn.push(`Unknown: ${c.u.length} of ${c.d} UTC dates have no collection run`);
+ if(r.fl.length)warn.push(`${r.fl.length} of ${r.rq} day files failed (${r.fl.map(f=>f.date+' '+f.error).join(', ')}); points incomplete, counts from index`);
++if(r.q)warn.push(`${N(r.q)} records quarantined (malformed or outside the UK box)`);
+ L.warning=warn.join(' · ')}
+ return L},
+ // map: one source, one circle layer, hidden until data
+@@ -165,13 +174,13 @@
+ if(!good)return txt(sf.caps.warning,'Custom dates: From must not be after To — nothing loaded');S.from=f;S.to=t}
+ else if(which==='latest'){S.end=null;return ld(true)}else if(which==='prev')S.end=w.s;else if(which==='next'){const e=w.e+w.span;S.end=e>=now-9e5?null:e}
+ ld()},
+-ld=refresh=>{const serial=++S.serial,now=Date.now();if(refresh)S.ip=null;pt(true);
++ld=refresh=>{const serial=++S.serial,now=Date.now();if(refresh)S.ip=S.fp=null;pt(true);
+ lw(now).then(r=>({r}),e=>({e})).then(({r,e})=>{if(serial!==S.serial||!S.on)return;
+ if(e){note(e);r={mode:'fail',fail:msg(e),w:wf(now),idx:S.idx,ie:S.ie,fl:[],ev:[],rows:[],arch:0}}
+ S.res=r;try{dw(FC(r.ev),!!r.cl)}catch(err){note('draw: '+err.message);r.fail=r.fail||'map layer: '+err.message}pt(false)})},
+ so=(on,from)=>{if(S.on===on)return;S.on=on;
+ if(on){S.end=null;S.consent=false;S.res=null;if(from==='menu'&&ph()){const h=Q('scada-ui-container'),g=S.sfs[0]&&S.sfs[0].group;if(h&&g)h.scrollTop+=g.getBoundingClientRect().top-h.getBoundingClientRect().top}
+-ld();if(!S.timer)S.timer=setInterval(()=>{if(S.on&&S.res&&S.res.w.atLatest)ld(true)},6e5)}
++ld(true);if(!S.timer)S.timer=setInterval(()=>{if(S.on&&S.res&&S.res.w.atLatest)ld(true)},6e5)}
+ else{S.serial++;S.res=null;cx();if(S.timer){clearInterval(S.timer);S.timer=null}pt(false)}},
+ bt=(c,from)=>c.addEventListener('change',ev=>{const t=ev.target;if(t&&t.dataset&&t.dataset.lightningControl==='toggle')so(!!t.checked,from)}),
+ // install after menu, Pipeline News and map exist

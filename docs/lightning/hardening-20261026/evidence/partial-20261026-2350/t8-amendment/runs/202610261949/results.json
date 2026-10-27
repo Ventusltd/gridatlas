@@ -1,0 +1,5888 @@
+{
+  "route": "http://127.0.0.1:8179/wt/atlas/v/202610261949/",
+  "gen": "202610261949",
+  "harness": "lead-shim (offline-shim.mjs); Chromium 153.0.8010.12 headless; phones = Chromium emulation, not WebKit",
+  "node": "v22.23.4",
+  "startedAt": "2026-10-26T23:38:40.813Z",
+  "fakeClockDefault": "2026-10-26T18:40:00Z",
+  "cases": {
+    "T8b-p393": {
+      "profile": "p393",
+      "fixture": "/tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/lightning/fixtures/lightning-archive/data",
+      "clock": "2026-10-26T18:40:00Z",
+      "composition": {
+        "engine": 120,
+        "pn": 6,
+        "scada": true,
+        "curtain": true,
+        "menuInstalled": true,
+        "map": true,
+        "waitedMs": 4518
+      },
+      "layersOpened": true,
+      "steps": [
+        {
+          "what": "T8b measurements",
+          "wheels": 1,
+          "button": {
+            "text": "▾ HIDE LAYERS",
+            "rect": [
+              249,
+              796,
+              132,
+              44
+            ]
+          }
+        }
+      ],
+      "pageErrors": [],
+      "lightningRequests": [
+        "history/index.json",
+        "history/days/2026/10/25.json",
+        "history/days/2026/10/21.json",
+        "history/days/2026/10/22.json",
+        "history/days/2026/10/23.json",
+        "history/days/2026/10/24.json"
+      ],
+      "shim": {
+        "served": {
+          "maplibre": 2,
+          "style": 1,
+          "duckdb": 3,
+          "lightning-data": 6
+        },
+        "aborted": [
+          "https://raw.githubusercontent.com/Ventusltd/data-grid-gb/1c9909d1138704b29235c27fd769436dda8a0b18/derived/connection-points.v3.json",
+          "https://ventusltd.github.io/ventus-grid-engine/genome/engine-graph.json"
+        ],
+        "missing": []
+      },
+      "invariants": {
+        "case": "T8b-p393",
+        "profile": "p393",
+        "before": {
+          "inspect": {
+            "engine": 60,
+            "pipeline": 3,
+            "total": 63,
+            "unique": 63,
+            "complete": true
+          },
+          "proxies": 63,
+          "markers": 63,
+          "ok": true,
+          "lightningRequestsSoFar": 0,
+          "when": "before"
+        },
+        "after": {
+          "inspect": {
+            "engine": 60,
+            "pipeline": 3,
+            "total": 63,
+            "unique": 63,
+            "complete": true
+          },
+          "proxies": 63,
+          "markers": 63,
+          "ok": true,
+          "lightningRequestsSoFar": 6,
+          "when": "after"
+        },
+        "requestsBeforeFirstOn": 0,
+        "offGesture": {
+          "ok": true
+        },
+        "requestsWhileOffAfter11min": [],
+        "checkedAfterOff": false,
+        "ok": true
+      }
+    },
+    "T8b-p360": {
+      "profile": "p360",
+      "fixture": "/tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/lightning/fixtures/lightning-archive/data",
+      "clock": "2026-10-26T18:40:00Z",
+      "composition": {
+        "engine": 120,
+        "pn": 6,
+        "scada": true,
+        "curtain": true,
+        "menuInstalled": true,
+        "map": true,
+        "waitedMs": 3616
+      },
+      "layersOpened": true,
+      "steps": [
+        {
+          "what": "T8b measurements",
+          "wheels": 1,
+          "button": {
+            "text": "▾ HIDE LAYERS",
+            "rect": [
+              216,
+              684,
+              132,
+              44
+            ]
+          }
+        }
+      ],
+      "pageErrors": [],
+      "lightningRequests": [
+        "history/index.json",
+        "history/days/2026/10/25.json",
+        "history/days/2026/10/21.json",
+        "history/days/2026/10/22.json",
+        "history/days/2026/10/23.json",
+        "history/days/2026/10/24.json"
+      ],
+      "shim": {
+        "served": {
+          "maplibre": 2,
+          "style": 1,
+          "duckdb": 3,
+          "lightning-data": 6
+        },
+        "aborted": [
+          "https://raw.githubusercontent.com/Ventusltd/data-grid-gb/1c9909d1138704b29235c27fd769436dda8a0b18/derived/connection-points.v3.json",
+          "https://ventusltd.github.io/ventus-grid-engine/genome/engine-graph.json"
+        ],
+        "missing": []
+      },
+      "invariants": {
+        "case": "T8b-p360",
+        "profile": "p360",
+        "before": {
+          "inspect": {
+            "engine": 60,
+            "pipeline": 3,
+            "total": 63,
+            "unique": 63,
+            "complete": true
+          },
+          "proxies": 63,
+          "markers": 63,
+          "ok": true,
+          "lightningRequestsSoFar": 0,
+          "when": "before"
+        },
+        "after": {
+          "inspect": {
+            "engine": 60,
+            "pipeline": 3,
+            "total": 63,
+            "unique": 63,
+            "complete": true
+          },
+          "proxies": 63,
+          "markers": 63,
+          "ok": true,
+          "lightningRequestsSoFar": 6,
+          "when": "after"
+        },
+        "requestsBeforeFirstOn": 0,
+        "offGesture": {
+          "ok": true
+        },
+        "requestsWhileOffAfter11min": [],
+        "checkedAfterOff": false,
+        "ok": true
+      }
+    }
+  },
+  "tests": {
+    "T8b": {
+      "title": "Caption lines inside the panel clip rect are not occluded at max scroll, and every line is reachable 9/9 (393x852, 360x740)",
+      "result": "FAIL",
+      "asserts": [
+        {
+          "what": "p393: Layers open",
+          "ok": true,
+          "observed": true
+        },
+        {
+          "what": "p393: (A) at max scroll, visible line window 1/2 hittable at 9 points",
+          "ok": true,
+          "observed": {
+            "key": "window 1/2",
+            "cap": "window",
+            "rect": [
+              29,
+              562,
+              318,
+              11
+            ],
+            "clip": [
+              17,
+              511,
+              376,
+              835
+            ],
+            "clipChain": [
+              "#scada-ui-container"
+            ],
+            "inside": true,
+            "blocked": [],
+            "buttonHits": 0
+          }
+        },
+        {
+          "what": "p393: (A) at max scroll, visible line window 2/2 hittable at 9 points",
+          "ok": true,
+          "observed": {
+            "key": "window 2/2",
+            "cap": "window",
+            "rect": [
+              29,
+              577,
+              78,
+              11
+            ],
+            "clip": [
+              17,
+              511,
+              376,
+              835
+            ],
+            "clipChain": [
+              "#scada-ui-container"
+            ],
+            "inside": true,
+            "blocked": [],
+            "buttonHits": 0
+          }
+        },
+        {
+          "what": "p393: (A) at max scroll, visible line actual 1/2 hittable at 9 points",
+          "ok": true,
+          "observed": {
+            "key": "actual 1/2",
+            "cap": "actual",
+            "rect": [
+              29,
+              592,
+              324,
+              11
+            ],
+            "clip": [
+              17,
+              511,
+              376,
+              835
+            ],
+            "clipChain": [
+              "#scada-ui-container"
+            ],
+            "inside": true,
+            "blocked": [],
+            "buttonHits": 0
+          }
+        },
+        {
+          "what": "p393: (A) at max scroll, visible line actual 2/2 hittable at 9 points",
+          "ok": true,
+          "observed": {
+            "key": "actual 2/2",
+            "cap": "actual",
+            "rect": [
+              29,
+              607,
+              72,
+              11
+            ],
+            "clip": [
+              17,
+              511,
+              376,
+              835
+            ],
+            "clipChain": [
+              "#scada-ui-container"
+            ],
+            "inside": true,
+            "blocked": [],
+            "buttonHits": 0
+          }
+        },
+        {
+          "what": "p393: (A) at max scroll, visible line flashes 1/3 hittable at 9 points",
+          "ok": true,
+          "observed": {
+            "key": "flashes 1/3",
+            "cap": "flashes",
+            "rect": [
+              29,
+              622,
+              312,
+              11
+            ],
+            "clip": [
+              17,
+              511,
+              376,
+              835
+            ],
+            "clipChain": [
+              "#scada-ui-container"
+            ],
+            "inside": true,
+            "blocked": [],
+            "buttonHits": 0
+          }
+        },
+        {
+          "what": "p393: (A) at max scroll, visible line flashes 2/3 hittable at 9 points",
+          "ok": true,
+          "observed": {
+            "key": "flashes 2/3",
+            "cap": "flashes",
+            "rect": [
+              29,
+              637,
+              318,
+              11
+            ],
+            "clip": [
+              17,
+              511,
+              376,
+              835
+            ],
+            "clipChain": [
+              "#scada-ui-container"
+            ],
+            "inside": true,
+            "blocked": [],
+            "buttonHits": 0
+          }
+        },
+        {
+          "what": "p393: (A) at max scroll, visible line flashes 3/3 hittable at 9 points",
+          "ok": true,
+          "observed": {
+            "key": "flashes 3/3",
+            "cap": "flashes",
+            "rect": [
+              29,
+              652,
+              36,
+              11
+            ],
+            "clip": [
+              17,
+              511,
+              376,
+              835
+            ],
+            "clipChain": [
+              "#scada-ui-container"
+            ],
+            "inside": true,
+            "blocked": [],
+            "buttonHits": 0
+          }
+        },
+        {
+          "what": "p393: (A) at max scroll, visible line refresh 1/2 hittable at 9 points",
+          "ok": true,
+          "observed": {
+            "key": "refresh 1/2",
+            "cap": "refresh",
+            "rect": [
+              29,
+              667,
+              300,
+              11
+            ],
+            "clip": [
+              17,
+              511,
+              376,
+              835
+            ],
+            "clipChain": [
+              "#scada-ui-container"
+            ],
+            "inside": true,
+            "blocked": [],
+            "buttonHits": 0
+          }
+        },
+        {
+          "what": "p393: (A) at max scroll, visible line refresh 2/2 hittable at 9 points",
+          "ok": true,
+          "observed": {
+            "key": "refresh 2/2",
+            "cap": "refresh",
+            "rect": [
+              29,
+              682,
+              114,
+              11
+            ],
+            "clip": [
+              17,
+              511,
+              376,
+              835
+            ],
+            "clipChain": [
+              "#scada-ui-container"
+            ],
+            "inside": true,
+            "blocked": [],
+            "buttonHits": 0
+          }
+        },
+        {
+          "what": "p393: (A) at max scroll, visible line searched 1/2 hittable at 9 points",
+          "ok": true,
+          "observed": {
+            "key": "searched 1/2",
+            "cap": "searched",
+            "rect": [
+              29,
+              697,
+              324,
+              11
+            ],
+            "clip": [
+              17,
+              511,
+              376,
+              835
+            ],
+            "clipChain": [
+              "#scada-ui-container"
+            ],
+            "inside": true,
+            "blocked": [],
+            "buttonHits": 0
+          }
+        },
+        {
+          "what": "p393: (A) at max scroll, visible line searched 2/2 hittable at 9 points",
+          "ok": true,
+          "observed": {
+            "key": "searched 2/2",
+            "cap": "searched",
+            "rect": [
+              29,
+              712,
+              258,
+              11
+            ],
+            "clip": [
+              17,
+              511,
+              376,
+              835
+            ],
+            "clipChain": [
+              "#scada-ui-container"
+            ],
+            "inside": true,
+            "blocked": [],
+            "buttonHits": 0
+          }
+        },
+        {
+          "what": "p393: (A) at max scroll, visible line warning 1/4 hittable at 9 points",
+          "ok": true,
+          "observed": {
+            "key": "warning 1/4",
+            "cap": "warning",
+            "rect": [
+              29,
+              727,
+              330,
+              11
+            ],
+            "clip": [
+              17,
+              511,
+              376,
+              835
+            ],
+            "clipChain": [
+              "#scada-ui-container"
+            ],
+            "inside": true,
+            "blocked": [],
+            "buttonHits": 0
+          }
+        },
+        {
+          "what": "p393: (A) at max scroll, visible line warning 2/4 hittable at 9 points",
+          "ok": true,
+          "observed": {
+            "key": "warning 2/4",
+            "cap": "warning",
+            "rect": [
+              29,
+              742,
+              342,
+              11
+            ],
+            "clip": [
+              17,
+              511,
+              376,
+              835
+            ],
+            "clipChain": [
+              "#scada-ui-container"
+            ],
+            "inside": true,
+            "blocked": [],
+            "buttonHits": 0
+          }
+        },
+        {
+          "what": "p393: (A) at max scroll, visible line warning 3/4 hittable at 9 points",
+          "ok": true,
+          "observed": {
+            "key": "warning 3/4",
+            "cap": "warning",
+            "rect": [
+              29,
+              757,
+              330,
+              11
+            ],
+            "clip": [
+              17,
+              511,
+              376,
+              835
+            ],
+            "clipChain": [
+              "#scada-ui-container"
+            ],
+            "inside": true,
+            "blocked": [],
+            "buttonHits": 0
+          }
+        },
+        {
+          "what": "p393: (A) at max scroll, visible line warning 4/4 hittable at 9 points",
+          "ok": true,
+          "observed": {
+            "key": "warning 4/4",
+            "cap": "warning",
+            "rect": [
+              29,
+              772,
+              192,
+              11
+            ],
+            "clip": [
+              17,
+              511,
+              376,
+              835
+            ],
+            "clipChain": [
+              "#scada-ui-container"
+            ],
+            "inside": true,
+            "blocked": [],
+            "buttonHits": 0
+          }
+        },
+        {
+          "what": "p393: (A) at max scroll, visible line footer 1/3 hittable at 9 points",
+          "ok": true,
+          "observed": {
+            "key": "footer 1/3",
+            "cap": "footer",
+            "rect": [
+              29,
+              786,
+              302,
+              10
+            ],
+            "clip": [
+              17,
+              511,
+              376,
+              835
+            ],
+            "clipChain": [
+              "#scada-ui-container"
+            ],
+            "inside": true,
+            "blocked": [],
+            "buttonHits": 0
+          }
+        },
+        {
+          "what": "p393: (A) at max scroll, visible line footer 2/3 hittable at 9 points",
+          "ok": false,
+          "observed": {
+            "key": "footer 2/3",
+            "cap": "footer",
+            "rect": [
+              29,
+              800,
+              335,
+              10
+            ],
+            "clip": [
+              17,
+              511,
+              376,
+              835
+            ],
+            "clipChain": [
+              "#scada-ui-container"
+            ],
+            "inside": true,
+            "blocked": [
+              {
+                "x": 263,
+                "y": 805,
+                "hit": "HIDE-LAYERS-BUTTON"
+              },
+              {
+                "x": 297,
+                "y": 805,
+                "hit": "HIDE-LAYERS-BUTTON"
+              },
+              {
+                "x": 330,
+                "y": 805,
+                "hit": "HIDE-LAYERS-BUTTON"
+              }
+            ],
+            "buttonHits": 3
+          }
+        },
+        {
+          "what": "p393: (A) at max scroll, visible line footer 3/3 hittable at 9 points",
+          "ok": false,
+          "observed": {
+            "key": "footer 3/3",
+            "cap": "footer",
+            "rect": [
+              29,
+              813,
+              281,
+              10
+            ],
+            "clip": [
+              17,
+              511,
+              376,
+              835
+            ],
+            "clipChain": [
+              "#scada-ui-container"
+            ],
+            "inside": true,
+            "blocked": [
+              {
+                "x": 254,
+                "y": 818,
+                "hit": "HIDE-LAYERS-BUTTON"
+              },
+              {
+                "x": 282,
+                "y": 818,
+                "hit": "HIDE-LAYERS-BUTTON"
+              }
+            ],
+            "buttonHits": 2
+          }
+        },
+        {
+          "what": "p393: (B) line window 1/2 reachable: some scroll position puts it inside the clip rect with 9/9 points hittable",
+          "ok": true,
+          "observed": {
+            "key": "window 1/2",
+            "tries": [
+              {
+                "where": "top",
+                "scroll": {
+                  "scroller": "scada-ui-container",
+                  "scrollTop": 2311,
+                  "max": 2311
+                },
+                "inside": true,
+                "rect": [
+                  29,
+                  562,
+                  318,
+                  11
+                ],
+                "clip": [
+                  17,
+                  511,
+                  376,
+                  835
+                ],
+                "blocked": []
+              }
+            ]
+          }
+        },
+        {
+          "what": "p393: (B) line window 2/2 reachable: some scroll position puts it inside the clip rect with 9/9 points hittable",
+          "ok": true,
+          "observed": {
+            "key": "window 2/2",
+            "tries": [
+              {
+                "where": "top",
+                "scroll": {
+                  "scroller": "scada-ui-container",
+                  "scrollTop": 2311,
+                  "max": 2311
+                },
+                "inside": true,
+                "rect": [
+                  29,
+                  577,
+                  78,
+                  11
+                ],
+                "clip": [
+                  17,
+                  511,
+                  376,
+                  835
+                ],
+                "blocked": []
+              }
+            ]
+          }
+        },
+        {
+          "what": "p393: (B) line actual 1/2 reachable: some scroll position puts it inside the clip rect with 9/9 points hittable",
+          "ok": true,
+          "observed": {
+            "key": "actual 1/2",
+            "tries": [
+              {
+                "where": "top",
+                "scroll": {
+                  "scroller": "scada-ui-container",
+                  "scrollTop": 2311,
+                  "max": 2311
+                },
+                "inside": true,
+                "rect": [
+                  29,
+                  592,
+                  324,
+                  11
+                ],
+                "clip": [
+                  17,
+                  511,
+                  376,
+                  835
+                ],
+                "blocked": []
+              }
+            ]
+          }
+        },
+        {
+          "what": "p393: (B) line actual 2/2 reachable: some scroll position puts it inside the clip rect with 9/9 points hittable",
+          "ok": true,
+          "observed": {
+            "key": "actual 2/2",
+            "tries": [
+              {
+                "where": "top",
+                "scroll": {
+                  "scroller": "scada-ui-container",
+                  "scrollTop": 2311,
+                  "max": 2311
+                },
+                "inside": true,
+                "rect": [
+                  29,
+                  607,
+                  72,
+                  11
+                ],
+                "clip": [
+                  17,
+                  511,
+                  376,
+                  835
+                ],
+                "blocked": []
+              }
+            ]
+          }
+        },
+        {
+          "what": "p393: (B) line flashes 1/3 reachable: some scroll position puts it inside the clip rect with 9/9 points hittable",
+          "ok": true,
+          "observed": {
+            "key": "flashes 1/3",
+            "tries": [
+              {
+                "where": "top",
+                "scroll": {
+                  "scroller": "scada-ui-container",
+                  "scrollTop": 2311,
+                  "max": 2311
+                },
+                "inside": true,
+                "rect": [
+                  29,
+                  622,
+                  312,
+                  11
+                ],
+                "clip": [
+                  17,
+                  511,
+                  376,
+                  835
+                ],
+                "blocked": []
+              }
+            ]
+          }
+        },
+        {
+          "what": "p393: (B) line flashes 2/3 reachable: some scroll position puts it inside the clip rect with 9/9 points hittable",
+          "ok": true,
+          "observed": {
+            "key": "flashes 2/3",
+            "tries": [
+              {
+                "where": "top",
+                "scroll": {
+                  "scroller": "scada-ui-container",
+                  "scrollTop": 2311,
+                  "max": 2311
+                },
+                "inside": true,
+                "rect": [
+                  29,
+                  637,
+                  318,
+                  11
+                ],
+                "clip": [
+                  17,
+                  511,
+                  376,
+                  835
+                ],
+                "blocked": []
+              }
+            ]
+          }
+        },
+        {
+          "what": "p393: (B) line flashes 3/3 reachable: some scroll position puts it inside the clip rect with 9/9 points hittable",
+          "ok": true,
+          "observed": {
+            "key": "flashes 3/3",
+            "tries": [
+              {
+                "where": "top",
+                "scroll": {
+                  "scroller": "scada-ui-container",
+                  "scrollTop": 2311,
+                  "max": 2311
+                },
+                "inside": true,
+                "rect": [
+                  29,
+                  652,
+                  36,
+                  11
+                ],
+                "clip": [
+                  17,
+                  511,
+                  376,
+                  835
+                ],
+                "blocked": []
+              }
+            ]
+          }
+        },
+        {
+          "what": "p393: (B) line refresh 1/2 reachable: some scroll position puts it inside the clip rect with 9/9 points hittable",
+          "ok": true,
+          "observed": {
+            "key": "refresh 1/2",
+            "tries": [
+              {
+                "where": "top",
+                "scroll": {
+                  "scroller": "scada-ui-container",
+                  "scrollTop": 2311,
+                  "max": 2311
+                },
+                "inside": true,
+                "rect": [
+                  29,
+                  667,
+                  300,
+                  11
+                ],
+                "clip": [
+                  17,
+                  511,
+                  376,
+                  835
+                ],
+                "blocked": []
+              }
+            ]
+          }
+        },
+        {
+          "what": "p393: (B) line refresh 2/2 reachable: some scroll position puts it inside the clip rect with 9/9 points hittable",
+          "ok": true,
+          "observed": {
+            "key": "refresh 2/2",
+            "tries": [
+              {
+                "where": "top",
+                "scroll": {
+                  "scroller": "scada-ui-container",
+                  "scrollTop": 2311,
+                  "max": 2311
+                },
+                "inside": true,
+                "rect": [
+                  29,
+                  682,
+                  114,
+                  11
+                ],
+                "clip": [
+                  17,
+                  511,
+                  376,
+                  835
+                ],
+                "blocked": []
+              }
+            ]
+          }
+        },
+        {
+          "what": "p393: (B) line searched 1/2 reachable: some scroll position puts it inside the clip rect with 9/9 points hittable",
+          "ok": true,
+          "observed": {
+            "key": "searched 1/2",
+            "tries": [
+              {
+                "where": "top",
+                "scroll": {
+                  "scroller": "scada-ui-container",
+                  "scrollTop": 2311,
+                  "max": 2311
+                },
+                "inside": true,
+                "rect": [
+                  29,
+                  697,
+                  324,
+                  11
+                ],
+                "clip": [
+                  17,
+                  511,
+                  376,
+                  835
+                ],
+                "blocked": []
+              }
+            ]
+          }
+        },
+        {
+          "what": "p393: (B) line searched 2/2 reachable: some scroll position puts it inside the clip rect with 9/9 points hittable",
+          "ok": true,
+          "observed": {
+            "key": "searched 2/2",
+            "tries": [
+              {
+                "where": "top",
+                "scroll": {
+                  "scroller": "scada-ui-container",
+                  "scrollTop": 2311,
+                  "max": 2311
+                },
+                "inside": true,
+                "rect": [
+                  29,
+                  712,
+                  258,
+                  11
+                ],
+                "clip": [
+                  17,
+                  511,
+                  376,
+                  835
+                ],
+                "blocked": []
+              }
+            ]
+          }
+        },
+        {
+          "what": "p393: (B) line warning 1/4 reachable: some scroll position puts it inside the clip rect with 9/9 points hittable",
+          "ok": true,
+          "observed": {
+            "key": "warning 1/4",
+            "tries": [
+              {
+                "where": "top",
+                "scroll": {
+                  "scroller": "scada-ui-container",
+                  "scrollTop": 2311,
+                  "max": 2311
+                },
+                "inside": true,
+                "rect": [
+                  29,
+                  727,
+                  330,
+                  11
+                ],
+                "clip": [
+                  17,
+                  511,
+                  376,
+                  835
+                ],
+                "blocked": []
+              }
+            ]
+          }
+        },
+        {
+          "what": "p393: (B) line warning 2/4 reachable: some scroll position puts it inside the clip rect with 9/9 points hittable",
+          "ok": true,
+          "observed": {
+            "key": "warning 2/4",
+            "tries": [
+              {
+                "where": "top",
+                "scroll": {
+                  "scroller": "scada-ui-container",
+                  "scrollTop": 2311,
+                  "max": 2311
+                },
+                "inside": true,
+                "rect": [
+                  29,
+                  742,
+                  342,
+                  11
+                ],
+                "clip": [
+                  17,
+                  511,
+                  376,
+                  835
+                ],
+                "blocked": []
+              }
+            ]
+          }
+        },
+        {
+          "what": "p393: (B) line warning 3/4 reachable: some scroll position puts it inside the clip rect with 9/9 points hittable",
+          "ok": true,
+          "observed": {
+            "key": "warning 3/4",
+            "tries": [
+              {
+                "where": "top",
+                "scroll": {
+                  "scroller": "scada-ui-container",
+                  "scrollTop": 2311,
+                  "max": 2311
+                },
+                "inside": true,
+                "rect": [
+                  29,
+                  757,
+                  330,
+                  11
+                ],
+                "clip": [
+                  17,
+                  511,
+                  376,
+                  835
+                ],
+                "blocked": []
+              }
+            ]
+          }
+        },
+        {
+          "what": "p393: (B) line warning 4/4 reachable: some scroll position puts it inside the clip rect with 9/9 points hittable",
+          "ok": true,
+          "observed": {
+            "key": "warning 4/4",
+            "tries": [
+              {
+                "where": "top",
+                "scroll": {
+                  "scroller": "scada-ui-container",
+                  "scrollTop": 2311,
+                  "max": 2311
+                },
+                "inside": true,
+                "rect": [
+                  29,
+                  772,
+                  192,
+                  11
+                ],
+                "clip": [
+                  17,
+                  511,
+                  376,
+                  835
+                ],
+                "blocked": []
+              }
+            ]
+          }
+        },
+        {
+          "what": "p393: (B) line footer 1/3 reachable: some scroll position puts it inside the clip rect with 9/9 points hittable",
+          "ok": true,
+          "observed": {
+            "key": "footer 1/3",
+            "tries": [
+              {
+                "where": "top",
+                "scroll": {
+                  "scroller": "scada-ui-container",
+                  "scrollTop": 2311,
+                  "max": 2311
+                },
+                "inside": true,
+                "rect": [
+                  29,
+                  786,
+                  302,
+                  10
+                ],
+                "clip": [
+                  17,
+                  511,
+                  376,
+                  835
+                ],
+                "blocked": []
+              }
+            ]
+          }
+        },
+        {
+          "what": "p393: (B) line footer 2/3 reachable: some scroll position puts it inside the clip rect with 9/9 points hittable",
+          "ok": false,
+          "observed": {
+            "key": "footer 2/3",
+            "tries": [
+              {
+                "where": "top",
+                "scroll": {
+                  "scroller": "scada-ui-container",
+                  "scrollTop": 2311,
+                  "max": 2311
+                },
+                "inside": true,
+                "rect": [
+                  29,
+                  800,
+                  335,
+                  10
+                ],
+                "clip": [
+                  17,
+                  511,
+                  376,
+                  835
+                ],
+                "blocked": [
+                  {
+                    "x": 263,
+                    "y": 805,
+                    "hit": "HIDE-LAYERS-BUTTON"
+                  },
+                  {
+                    "x": 297,
+                    "y": 805,
+                    "hit": "HIDE-LAYERS-BUTTON"
+                  },
+                  {
+                    "x": 330,
+                    "y": 805,
+                    "hit": "HIDE-LAYERS-BUTTON"
+                  }
+                ]
+              },
+              {
+                "where": "centre",
+                "scroll": {
+                  "scroller": "scada-ui-container",
+                  "scrollTop": 2311,
+                  "max": 2311
+                },
+                "inside": true,
+                "rect": [
+                  29,
+                  800,
+                  335,
+                  10
+                ],
+                "clip": [
+                  17,
+                  511,
+                  376,
+                  835
+                ],
+                "blocked": [
+                  {
+                    "x": 263,
+                    "y": 805,
+                    "hit": "HIDE-LAYERS-BUTTON"
+                  },
+                  {
+                    "x": 297,
+                    "y": 805,
+                    "hit": "HIDE-LAYERS-BUTTON"
+                  },
+                  {
+                    "x": 330,
+                    "y": 805,
+                    "hit": "HIDE-LAYERS-BUTTON"
+                  }
+                ]
+              },
+              {
+                "where": "bottom",
+                "scroll": {
+                  "scroller": "scada-ui-container",
+                  "scrollTop": 2288,
+                  "max": 2311
+                },
+                "inside": true,
+                "rect": [
+                  29,
+                  823,
+                  335,
+                  10
+                ],
+                "clip": [
+                  17,
+                  511,
+                  376,
+                  835
+                ],
+                "blocked": [
+                  {
+                    "x": 263,
+                    "y": 828,
+                    "hit": "HIDE-LAYERS-BUTTON"
+                  },
+                  {
+                    "x": 297,
+                    "y": 828,
+                    "hit": "HIDE-LAYERS-BUTTON"
+                  },
+                  {
+                    "x": 330,
+                    "y": 828,
+                    "hit": "HIDE-LAYERS-BUTTON"
+                  }
+                ]
+              },
+              {
+                "where": "min",
+                "scroll": {
+                  "scroller": "scada-ui-container",
+                  "scrollTop": 0,
+                  "max": 2311
+                },
+                "inside": false,
+                "rect": [
+                  29,
+                  3111,
+                  335,
+                  10
+                ],
+                "clip": [
+                  17,
+                  511,
+                  376,
+                  835
+                ],
+                "blocked": [
+                  {
+                    "x": 62,
+                    "y": 3116,
+                    "hit": "OUT-OF-VIEWPORT"
+                  },
+                  {
+                    "x": 96,
+                    "y": 3116,
+                    "hit": "OUT-OF-VIEWPORT"
+                  },
+                  {
+                    "x": 129,
+                    "y": 3116,
+                    "hit": "OUT-OF-VIEWPORT"
+                  },
+                  {
+                    "x": 163,
+                    "y": 3116,
+                    "hit": "OUT-OF-VIEWPORT"
+                  },
+                  {
+                    "x": 196,
+                    "y": 3116,
+                    "hit": "OUT-OF-VIEWPORT"
+                  },
+                  {
+                    "x": 230,
+                    "y": 3116,
+                    "hit": "OUT-OF-VIEWPORT"
+                  },
+                  {
+                    "x": 263,
+                    "y": 3116,
+                    "hit": "OUT-OF-VIEWPORT"
+                  },
+                  {
+                    "x": 297,
+                    "y": 3116,
+                    "hit": "OUT-OF-VIEWPORT"
+                  },
+                  {
+                    "x": 330,
+                    "y": 3116,
+                    "hit": "OUT-OF-VIEWPORT"
+                  }
+                ]
+              },
+              {
+                "where": "max",
+                "scroll": {
+                  "scroller": "scada-ui-container",
+                  "scrollTop": 2311,
+                  "max": 2311
+                },
+                "inside": true,
+                "rect": [
+                  29,
+                  800,
+                  335,
+                  10
+                ],
+                "clip": [
+                  17,
+                  511,
+                  376,
+                  835
+                ],
+                "blocked": [
+                  {
+                    "x": 263,
+                    "y": 805,
+                    "hit": "HIDE-LAYERS-BUTTON"
+                  },
+                  {
+                    "x": 297,
+                    "y": 805,
+                    "hit": "HIDE-LAYERS-BUTTON"
+                  },
+                  {
+                    "x": 330,
+                    "y": 805,
+                    "hit": "HIDE-LAYERS-BUTTON"
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "what": "p393: (B) line footer 3/3 reachable: some scroll position puts it inside the clip rect with 9/9 points hittable",
+          "ok": false,
+          "observed": {
+            "key": "footer 3/3",
+            "tries": [
+              {
+                "where": "top",
+                "scroll": {
+                  "scroller": "scada-ui-container",
+                  "scrollTop": 2311,
+                  "max": 2311
+                },
+                "inside": true,
+                "rect": [
+                  29,
+                  813,
+                  281,
+                  10
+                ],
+                "clip": [
+                  17,
+                  511,
+                  376,
+                  835
+                ],
+                "blocked": [
+                  {
+                    "x": 254,
+                    "y": 818,
+                    "hit": "HIDE-LAYERS-BUTTON"
+                  },
+                  {
+                    "x": 282,
+                    "y": 818,
+                    "hit": "HIDE-LAYERS-BUTTON"
+                  }
+                ]
+              },
+              {
+                "where": "centre",
+                "scroll": {
+                  "scroller": "scada-ui-container",
+                  "scrollTop": 2311,
+                  "max": 2311
+                },
+                "inside": true,
+                "rect": [
+                  29,
+                  813,
+                  281,
+                  10
+                ],
+                "clip": [
+                  17,
+                  511,
+                  376,
+                  835
+                ],
+                "blocked": [
+                  {
+                    "x": 254,
+                    "y": 818,
+                    "hit": "HIDE-LAYERS-BUTTON"
+                  },
+                  {
+                    "x": 282,
+                    "y": 818,
+                    "hit": "HIDE-LAYERS-BUTTON"
+                  }
+                ]
+              },
+              {
+                "where": "bottom",
+                "scroll": {
+                  "scroller": "scada-ui-container",
+                  "scrollTop": 2301,
+                  "max": 2311
+                },
+                "inside": true,
+                "rect": [
+                  29,
+                  823,
+                  281,
+                  10
+                ],
+                "clip": [
+                  17,
+                  511,
+                  376,
+                  835
+                ],
+                "blocked": [
+                  {
+                    "x": 254,
+                    "y": 828,
+                    "hit": "HIDE-LAYERS-BUTTON"
+                  },
+                  {
+                    "x": 282,
+                    "y": 828,
+                    "hit": "HIDE-LAYERS-BUTTON"
+                  }
+                ]
+              },
+              {
+                "where": "min",
+                "scroll": {
+                  "scroller": "scada-ui-container",
+                  "scrollTop": 0,
+                  "max": 2311
+                },
+                "inside": false,
+                "rect": [
+                  29,
+                  3124,
+                  281,
+                  10
+                ],
+                "clip": [
+                  17,
+                  511,
+                  376,
+                  835
+                ],
+                "blocked": [
+                  {
+                    "x": 57,
+                    "y": 3129,
+                    "hit": "OUT-OF-VIEWPORT"
+                  },
+                  {
+                    "x": 85,
+                    "y": 3129,
+                    "hit": "OUT-OF-VIEWPORT"
+                  },
+                  {
+                    "x": 113,
+                    "y": 3129,
+                    "hit": "OUT-OF-VIEWPORT"
+                  },
+                  {
+                    "x": 141,
+                    "y": 3129,
+                    "hit": "OUT-OF-VIEWPORT"
+                  },
+                  {
+                    "x": 169,
+                    "y": 3129,
+                    "hit": "OUT-OF-VIEWPORT"
+                  },
+                  {
+                    "x": 198,
+                    "y": 3129,
+                    "hit": "OUT-OF-VIEWPORT"
+                  },
+                  {
+                    "x": 226,
+                    "y": 3129,
+                    "hit": "OUT-OF-VIEWPORT"
+                  },
+                  {
+                    "x": 254,
+                    "y": 3129,
+                    "hit": "OUT-OF-VIEWPORT"
+                  },
+                  {
+                    "x": 282,
+                    "y": 3129,
+                    "hit": "OUT-OF-VIEWPORT"
+                  }
+                ]
+              },
+              {
+                "where": "max",
+                "scroll": {
+                  "scroller": "scada-ui-container",
+                  "scrollTop": 2311,
+                  "max": 2311
+                },
+                "inside": true,
+                "rect": [
+                  29,
+                  813,
+                  281,
+                  10
+                ],
+                "clip": [
+                  17,
+                  511,
+                  376,
+                  835
+                ],
+                "blocked": [
+                  {
+                    "x": 254,
+                    "y": 818,
+                    "hit": "HIDE-LAYERS-BUTTON"
+                  },
+                  {
+                    "x": 282,
+                    "y": 818,
+                    "hit": "HIDE-LAYERS-BUTTON"
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "what": "p360: Layers open",
+          "ok": true,
+          "observed": true
+        },
+        {
+          "what": "p360: (A) at max scroll, visible line window 2/2 hittable at 9 points",
+          "ok": true,
+          "observed": {
+            "key": "window 2/2",
+            "cap": "window",
+            "rect": [
+              29,
+              451,
+              96,
+              11
+            ],
+            "clip": [
+              17,
+              442,
+              343,
+              723
+            ],
+            "clipChain": [
+              "#scada-ui-container"
+            ],
+            "inside": true,
+            "blocked": [],
+            "buttonHits": 0
+          }
+        },
+        {
+          "what": "p360: (A) at max scroll, visible line actual 1/2 hittable at 9 points",
+          "ok": true,
+          "observed": {
+            "key": "actual 1/2",
+            "cap": "actual",
+            "rect": [
+              29,
+              466,
+              312,
+              11
+            ],
+            "clip": [
+              17,
+              442,
+              343,
+              723
+            ],
+            "clipChain": [
+              "#scada-ui-container"
+            ],
+            "inside": true,
+            "blocked": [],
+            "buttonHits": 0
+          }
+        },
+        {
+          "what": "p360: (A) at max scroll, visible line actual 2/2 hittable at 9 points",
+          "ok": true,
+          "observed": {
+            "key": "actual 2/2",
+            "cap": "actual",
+            "rect": [
+              29,
+              481,
+              90,
+              11
+            ],
+            "clip": [
+              17,
+              442,
+              343,
+              723
+            ],
+            "clipChain": [
+              "#scada-ui-container"
+            ],
+            "inside": true,
+            "blocked": [],
+            "buttonHits": 0
+          }
+        },
+        {
+          "what": "p360: (A) at max scroll, visible line flashes 1/3 hittable at 9 points",
+          "ok": true,
+          "observed": {
+            "key": "flashes 1/3",
+            "cap": "flashes",
+            "rect": [
+              29,
+              496,
+              312,
+              11
+            ],
+            "clip": [
+              17,
+              442,
+              343,
+              723
+            ],
+            "clipChain": [
+              "#scada-ui-container"
+            ],
+            "inside": true,
+            "blocked": [],
+            "buttonHits": 0
+          }
+        },
+        {
+          "what": "p360: (A) at max scroll, visible line flashes 2/3 hittable at 9 points",
+          "ok": true,
+          "observed": {
+            "key": "flashes 2/3",
+            "cap": "flashes",
+            "rect": [
+              29,
+              511,
+              288,
+              11
+            ],
+            "clip": [
+              17,
+              442,
+              343,
+              723
+            ],
+            "clipChain": [
+              "#scada-ui-container"
+            ],
+            "inside": true,
+            "blocked": [],
+            "buttonHits": 0
+          }
+        },
+        {
+          "what": "p360: (A) at max scroll, visible line flashes 3/3 hittable at 9 points",
+          "ok": true,
+          "observed": {
+            "key": "flashes 3/3",
+            "cap": "flashes",
+            "rect": [
+              29,
+              526,
+              66,
+              11
+            ],
+            "clip": [
+              17,
+              442,
+              343,
+              723
+            ],
+            "clipChain": [
+              "#scada-ui-container"
+            ],
+            "inside": true,
+            "blocked": [],
+            "buttonHits": 0
+          }
+        },
+        {
+          "what": "p360: (A) at max scroll, visible line refresh 1/2 hittable at 9 points",
+          "ok": true,
+          "observed": {
+            "key": "refresh 1/2",
+            "cap": "refresh",
+            "rect": [
+              29,
+              541,
+              300,
+              11
+            ],
+            "clip": [
+              17,
+              442,
+              343,
+              723
+            ],
+            "clipChain": [
+              "#scada-ui-container"
+            ],
+            "inside": true,
+            "blocked": [],
+            "buttonHits": 0
+          }
+        },
+        {
+          "what": "p360: (A) at max scroll, visible line refresh 2/2 hittable at 9 points",
+          "ok": true,
+          "observed": {
+            "key": "refresh 2/2",
+            "cap": "refresh",
+            "rect": [
+              29,
+              556,
+              114,
+              11
+            ],
+            "clip": [
+              17,
+              442,
+              343,
+              723
+            ],
+            "clipChain": [
+              "#scada-ui-container"
+            ],
+            "inside": true,
+            "blocked": [],
+            "buttonHits": 0
+          }
+        },
+        {
+          "what": "p360: (A) at max scroll, visible line searched 1/2 hittable at 9 points",
+          "ok": true,
+          "observed": {
+            "key": "searched 1/2",
+            "cap": "searched",
+            "rect": [
+              29,
+              571,
+              312,
+              11
+            ],
+            "clip": [
+              17,
+              442,
+              343,
+              723
+            ],
+            "clipChain": [
+              "#scada-ui-container"
+            ],
+            "inside": true,
+            "blocked": [],
+            "buttonHits": 0
+          }
+        },
+        {
+          "what": "p360: (A) at max scroll, visible line searched 2/2 hittable at 9 points",
+          "ok": true,
+          "observed": {
+            "key": "searched 2/2",
+            "cap": "searched",
+            "rect": [
+              29,
+              586,
+              270,
+              11
+            ],
+            "clip": [
+              17,
+              442,
+              343,
+              723
+            ],
+            "clipChain": [
+              "#scada-ui-container"
+            ],
+            "inside": true,
+            "blocked": [],
+            "buttonHits": 0
+          }
+        },
+        {
+          "what": "p360: (A) at max scroll, visible line warning 1/5 hittable at 9 points",
+          "ok": true,
+          "observed": {
+            "key": "warning 1/5",
+            "cap": "warning",
+            "rect": [
+              29,
+              601,
+              306,
+              11
+            ],
+            "clip": [
+              17,
+              442,
+              343,
+              723
+            ],
+            "clipChain": [
+              "#scada-ui-container"
+            ],
+            "inside": true,
+            "blocked": [],
+            "buttonHits": 0
+          }
+        },
+        {
+          "what": "p360: (A) at max scroll, visible line warning 2/5 hittable at 9 points",
+          "ok": true,
+          "observed": {
+            "key": "warning 2/5",
+            "cap": "warning",
+            "rect": [
+              29,
+              616,
+              270,
+              11
+            ],
+            "clip": [
+              17,
+              442,
+              343,
+              723
+            ],
+            "clipChain": [
+              "#scada-ui-container"
+            ],
+            "inside": true,
+            "blocked": [],
+            "buttonHits": 0
+          }
+        },
+        {
+          "what": "p360: (A) at max scroll, visible line warning 3/5 hittable at 9 points",
+          "ok": true,
+          "observed": {
+            "key": "warning 3/5",
+            "cap": "warning",
+            "rect": [
+              29,
+              631,
+              282,
+              11
+            ],
+            "clip": [
+              17,
+              442,
+              343,
+              723
+            ],
+            "clipChain": [
+              "#scada-ui-container"
+            ],
+            "inside": true,
+            "blocked": [],
+            "buttonHits": 0
+          }
+        },
+        {
+          "what": "p360: (A) at max scroll, visible line warning 4/5 hittable at 9 points",
+          "ok": true,
+          "observed": {
+            "key": "warning 4/5",
+            "cap": "warning",
+            "rect": [
+              29,
+              646,
+              312,
+              11
+            ],
+            "clip": [
+              17,
+              442,
+              343,
+              723
+            ],
+            "clipChain": [
+              "#scada-ui-container"
+            ],
+            "inside": true,
+            "blocked": [],
+            "buttonHits": 0
+          }
+        },
+        {
+          "what": "p360: (A) at max scroll, visible line warning 5/5 hittable at 9 points",
+          "ok": true,
+          "observed": {
+            "key": "warning 5/5",
+            "cap": "warning",
+            "rect": [
+              29,
+              661,
+              18,
+              11
+            ],
+            "clip": [
+              17,
+              442,
+              343,
+              723
+            ],
+            "clipChain": [
+              "#scada-ui-container"
+            ],
+            "inside": true,
+            "blocked": [],
+            "buttonHits": 0
+          }
+        },
+        {
+          "what": "p360: (A) at max scroll, visible line footer 1/3 hittable at 9 points",
+          "ok": true,
+          "observed": {
+            "key": "footer 1/3",
+            "cap": "footer",
+            "rect": [
+              29,
+              675,
+              302,
+              10
+            ],
+            "clip": [
+              17,
+              442,
+              343,
+              723
+            ],
+            "clipChain": [
+              "#scada-ui-container"
+            ],
+            "inside": true,
+            "blocked": [],
+            "buttonHits": 0
+          }
+        },
+        {
+          "what": "p360: (A) at max scroll, visible line footer 2/3 hittable at 9 points",
+          "ok": false,
+          "observed": {
+            "key": "footer 2/3",
+            "cap": "footer",
+            "rect": [
+              29,
+              688,
+              308,
+              10
+            ],
+            "clip": [
+              17,
+              442,
+              343,
+              723
+            ],
+            "clipChain": [
+              "#scada-ui-container"
+            ],
+            "inside": true,
+            "blocked": [
+              {
+                "x": 245,
+                "y": 693,
+                "hit": "HIDE-LAYERS-BUTTON"
+              },
+              {
+                "x": 275,
+                "y": 693,
+                "hit": "HIDE-LAYERS-BUTTON"
+              },
+              {
+                "x": 306,
+                "y": 693,
+                "hit": "HIDE-LAYERS-BUTTON"
+              }
+            ],
+            "buttonHits": 3
+          }
+        },
+        {
+          "what": "p360: (A) at max scroll, visible line footer 3/3 hittable at 9 points",
+          "ok": false,
+          "observed": {
+            "key": "footer 3/3",
+            "cap": "footer",
+            "rect": [
+              29,
+              702,
+              308,
+              10
+            ],
+            "clip": [
+              17,
+              442,
+              343,
+              723
+            ],
+            "clipChain": [
+              "#scada-ui-container"
+            ],
+            "inside": true,
+            "blocked": [
+              {
+                "x": 245,
+                "y": 707,
+                "hit": "HIDE-LAYERS-BUTTON"
+              },
+              {
+                "x": 275,
+                "y": 707,
+                "hit": "HIDE-LAYERS-BUTTON"
+              },
+              {
+                "x": 306,
+                "y": 707,
+                "hit": "HIDE-LAYERS-BUTTON"
+              }
+            ],
+            "buttonHits": 3
+          }
+        },
+        {
+          "what": "p360: (B) line window 1/2 reachable: some scroll position puts it inside the clip rect with 9/9 points hittable",
+          "ok": true,
+          "observed": {
+            "key": "window 1/2",
+            "tries": [
+              {
+                "where": "top",
+                "scroll": {
+                  "scroller": "scada-ui-container",
+                  "scrollTop": 2404,
+                  "max": 2413
+                },
+                "inside": true,
+                "rect": [
+                  29,
+                  444,
+                  300,
+                  11
+                ],
+                "clip": [
+                  17,
+                  442,
+                  343,
+                  723
+                ],
+                "blocked": []
+              }
+            ]
+          }
+        },
+        {
+          "what": "p360: (B) line window 2/2 reachable: some scroll position puts it inside the clip rect with 9/9 points hittable",
+          "ok": true,
+          "observed": {
+            "key": "window 2/2",
+            "tries": [
+              {
+                "where": "top",
+                "scroll": {
+                  "scroller": "scada-ui-container",
+                  "scrollTop": 2413,
+                  "max": 2413
+                },
+                "inside": true,
+                "rect": [
+                  29,
+                  450,
+                  96,
+                  11
+                ],
+                "clip": [
+                  17,
+                  442,
+                  343,
+                  723
+                ],
+                "blocked": []
+              }
+            ]
+          }
+        },
+        {
+          "what": "p360: (B) line actual 1/2 reachable: some scroll position puts it inside the clip rect with 9/9 points hittable",
+          "ok": true,
+          "observed": {
+            "key": "actual 1/2",
+            "tries": [
+              {
+                "where": "top",
+                "scroll": {
+                  "scroller": "scada-ui-container",
+                  "scrollTop": 2413,
+                  "max": 2413
+                },
+                "inside": true,
+                "rect": [
+                  29,
+                  465,
+                  312,
+                  11
+                ],
+                "clip": [
+                  17,
+                  442,
+                  343,
+                  723
+                ],
+                "blocked": []
+              }
+            ]
+          }
+        },
+        {
+          "what": "p360: (B) line actual 2/2 reachable: some scroll position puts it inside the clip rect with 9/9 points hittable",
+          "ok": true,
+          "observed": {
+            "key": "actual 2/2",
+            "tries": [
+              {
+                "where": "top",
+                "scroll": {
+                  "scroller": "scada-ui-container",
+                  "scrollTop": 2413,
+                  "max": 2413
+                },
+                "inside": true,
+                "rect": [
+                  29,
+                  480,
+                  90,
+                  11
+                ],
+                "clip": [
+                  17,
+                  442,
+                  343,
+                  723
+                ],
+                "blocked": []
+              }
+            ]
+          }
+        },
+        {
+          "what": "p360: (B) line flashes 1/3 reachable: some scroll position puts it inside the clip rect with 9/9 points hittable",
+          "ok": true,
+          "observed": {
+            "key": "flashes 1/3",
+            "tries": [
+              {
+                "where": "top",
+                "scroll": {
+                  "scroller": "scada-ui-container",
+                  "scrollTop": 2413,
+                  "max": 2413
+                },
+                "inside": true,
+                "rect": [
+                  29,
+                  495,
+                  312,
+                  11
+                ],
+                "clip": [
+                  17,
+                  442,
+                  343,
+                  723
+                ],
+                "blocked": []
+              }
+            ]
+          }
+        },
+        {
+          "what": "p360: (B) line flashes 2/3 reachable: some scroll position puts it inside the clip rect with 9/9 points hittable",
+          "ok": true,
+          "observed": {
+            "key": "flashes 2/3",
+            "tries": [
+              {
+                "where": "top",
+                "scroll": {
+                  "scroller": "scada-ui-container",
+                  "scrollTop": 2413,
+                  "max": 2413
+                },
+                "inside": true,
+                "rect": [
+                  29,
+                  510,
+                  288,
+                  11
+                ],
+                "clip": [
+                  17,
+                  442,
+                  343,
+                  723
+                ],
+                "blocked": []
+              }
+            ]
+          }
+        },
+        {
+          "what": "p360: (B) line flashes 3/3 reachable: some scroll position puts it inside the clip rect with 9/9 points hittable",
+          "ok": true,
+          "observed": {
+            "key": "flashes 3/3",
+            "tries": [
+              {
+                "where": "top",
+                "scroll": {
+                  "scroller": "scada-ui-container",
+                  "scrollTop": 2413,
+                  "max": 2413
+                },
+                "inside": true,
+                "rect": [
+                  29,
+                  525,
+                  66,
+                  11
+                ],
+                "clip": [
+                  17,
+                  442,
+                  343,
+                  723
+                ],
+                "blocked": []
+              }
+            ]
+          }
+        },
+        {
+          "what": "p360: (B) line refresh 1/2 reachable: some scroll position puts it inside the clip rect with 9/9 points hittable",
+          "ok": true,
+          "observed": {
+            "key": "refresh 1/2",
+            "tries": [
+              {
+                "where": "top",
+                "scroll": {
+                  "scroller": "scada-ui-container",
+                  "scrollTop": 2413,
+                  "max": 2413
+                },
+                "inside": true,
+                "rect": [
+                  29,
+                  540,
+                  300,
+                  11
+                ],
+                "clip": [
+                  17,
+                  442,
+                  343,
+                  723
+                ],
+                "blocked": []
+              }
+            ]
+          }
+        },
+        {
+          "what": "p360: (B) line refresh 2/2 reachable: some scroll position puts it inside the clip rect with 9/9 points hittable",
+          "ok": true,
+          "observed": {
+            "key": "refresh 2/2",
+            "tries": [
+              {
+                "where": "top",
+                "scroll": {
+                  "scroller": "scada-ui-container",
+                  "scrollTop": 2413,
+                  "max": 2413
+                },
+                "inside": true,
+                "rect": [
+                  29,
+                  555,
+                  114,
+                  11
+                ],
+                "clip": [
+                  17,
+                  442,
+                  343,
+                  723
+                ],
+                "blocked": []
+              }
+            ]
+          }
+        },
+        {
+          "what": "p360: (B) line searched 1/2 reachable: some scroll position puts it inside the clip rect with 9/9 points hittable",
+          "ok": true,
+          "observed": {
+            "key": "searched 1/2",
+            "tries": [
+              {
+                "where": "top",
+                "scroll": {
+                  "scroller": "scada-ui-container",
+                  "scrollTop": 2413,
+                  "max": 2413
+                },
+                "inside": true,
+                "rect": [
+                  29,
+                  570,
+                  312,
+                  11
+                ],
+                "clip": [
+                  17,
+                  442,
+                  343,
+                  723
+                ],
+                "blocked": []
+              }
+            ]
+          }
+        },
+        {
+          "what": "p360: (B) line searched 2/2 reachable: some scroll position puts it inside the clip rect with 9/9 points hittable",
+          "ok": true,
+          "observed": {
+            "key": "searched 2/2",
+            "tries": [
+              {
+                "where": "top",
+                "scroll": {
+                  "scroller": "scada-ui-container",
+                  "scrollTop": 2413,
+                  "max": 2413
+                },
+                "inside": true,
+                "rect": [
+                  29,
+                  585,
+                  270,
+                  11
+                ],
+                "clip": [
+                  17,
+                  442,
+                  343,
+                  723
+                ],
+                "blocked": []
+              }
+            ]
+          }
+        },
+        {
+          "what": "p360: (B) line warning 1/5 reachable: some scroll position puts it inside the clip rect with 9/9 points hittable",
+          "ok": true,
+          "observed": {
+            "key": "warning 1/5",
+            "tries": [
+              {
+                "where": "top",
+                "scroll": {
+                  "scroller": "scada-ui-container",
+                  "scrollTop": 2413,
+                  "max": 2413
+                },
+                "inside": true,
+                "rect": [
+                  29,
+                  600,
+                  306,
+                  11
+                ],
+                "clip": [
+                  17,
+                  442,
+                  343,
+                  723
+                ],
+                "blocked": []
+              }
+            ]
+          }
+        },
+        {
+          "what": "p360: (B) line warning 2/5 reachable: some scroll position puts it inside the clip rect with 9/9 points hittable",
+          "ok": true,
+          "observed": {
+            "key": "warning 2/5",
+            "tries": [
+              {
+                "where": "top",
+                "scroll": {
+                  "scroller": "scada-ui-container",
+                  "scrollTop": 2413,
+                  "max": 2413
+                },
+                "inside": true,
+                "rect": [
+                  29,
+                  615,
+                  270,
+                  11
+                ],
+                "clip": [
+                  17,
+                  442,
+                  343,
+                  723
+                ],
+                "blocked": []
+              }
+            ]
+          }
+        },
+        {
+          "what": "p360: (B) line warning 3/5 reachable: some scroll position puts it inside the clip rect with 9/9 points hittable",
+          "ok": true,
+          "observed": {
+            "key": "warning 3/5",
+            "tries": [
+              {
+                "where": "top",
+                "scroll": {
+                  "scroller": "scada-ui-container",
+                  "scrollTop": 2413,
+                  "max": 2413
+                },
+                "inside": true,
+                "rect": [
+                  29,
+                  630,
+                  282,
+                  11
+                ],
+                "clip": [
+                  17,
+                  442,
+                  343,
+                  723
+                ],
+                "blocked": []
+              }
+            ]
+          }
+        },
+        {
+          "what": "p360: (B) line warning 4/5 reachable: some scroll position puts it inside the clip rect with 9/9 points hittable",
+          "ok": true,
+          "observed": {
+            "key": "warning 4/5",
+            "tries": [
+              {
+                "where": "top",
+                "scroll": {
+                  "scroller": "scada-ui-container",
+                  "scrollTop": 2413,
+                  "max": 2413
+                },
+                "inside": true,
+                "rect": [
+                  29,
+                  645,
+                  312,
+                  11
+                ],
+                "clip": [
+                  17,
+                  442,
+                  343,
+                  723
+                ],
+                "blocked": []
+              }
+            ]
+          }
+        },
+        {
+          "what": "p360: (B) line warning 5/5 reachable: some scroll position puts it inside the clip rect with 9/9 points hittable",
+          "ok": true,
+          "observed": {
+            "key": "warning 5/5",
+            "tries": [
+              {
+                "where": "top",
+                "scroll": {
+                  "scroller": "scada-ui-container",
+                  "scrollTop": 2413,
+                  "max": 2413
+                },
+                "inside": true,
+                "rect": [
+                  29,
+                  660,
+                  18,
+                  11
+                ],
+                "clip": [
+                  17,
+                  442,
+                  343,
+                  723
+                ],
+                "blocked": []
+              }
+            ]
+          }
+        },
+        {
+          "what": "p360: (B) line footer 1/3 reachable: some scroll position puts it inside the clip rect with 9/9 points hittable",
+          "ok": true,
+          "observed": {
+            "key": "footer 1/3",
+            "tries": [
+              {
+                "where": "top",
+                "scroll": {
+                  "scroller": "scada-ui-container",
+                  "scrollTop": 2413,
+                  "max": 2413
+                },
+                "inside": true,
+                "rect": [
+                  29,
+                  674,
+                  302,
+                  10
+                ],
+                "clip": [
+                  17,
+                  442,
+                  343,
+                  723
+                ],
+                "blocked": []
+              }
+            ]
+          }
+        },
+        {
+          "what": "p360: (B) line footer 2/3 reachable: some scroll position puts it inside the clip rect with 9/9 points hittable",
+          "ok": false,
+          "observed": {
+            "key": "footer 2/3",
+            "tries": [
+              {
+                "where": "top",
+                "scroll": {
+                  "scroller": "scada-ui-container",
+                  "scrollTop": 2413,
+                  "max": 2413
+                },
+                "inside": true,
+                "rect": [
+                  29,
+                  687,
+                  308,
+                  10
+                ],
+                "clip": [
+                  17,
+                  442,
+                  343,
+                  723
+                ],
+                "blocked": [
+                  {
+                    "x": 245,
+                    "y": 692,
+                    "hit": "HIDE-LAYERS-BUTTON"
+                  },
+                  {
+                    "x": 275,
+                    "y": 692,
+                    "hit": "HIDE-LAYERS-BUTTON"
+                  },
+                  {
+                    "x": 306,
+                    "y": 692,
+                    "hit": "HIDE-LAYERS-BUTTON"
+                  }
+                ]
+              },
+              {
+                "where": "centre",
+                "scroll": {
+                  "scroller": "scada-ui-container",
+                  "scrollTop": 2413,
+                  "max": 2413
+                },
+                "inside": true,
+                "rect": [
+                  29,
+                  687,
+                  308,
+                  10
+                ],
+                "clip": [
+                  17,
+                  442,
+                  343,
+                  723
+                ],
+                "blocked": [
+                  {
+                    "x": 245,
+                    "y": 692,
+                    "hit": "HIDE-LAYERS-BUTTON"
+                  },
+                  {
+                    "x": 275,
+                    "y": 692,
+                    "hit": "HIDE-LAYERS-BUTTON"
+                  },
+                  {
+                    "x": 306,
+                    "y": 692,
+                    "hit": "HIDE-LAYERS-BUTTON"
+                  }
+                ]
+              },
+              {
+                "where": "bottom",
+                "scroll": {
+                  "scroller": "scada-ui-container",
+                  "scrollTop": 2390,
+                  "max": 2413
+                },
+                "inside": true,
+                "rect": [
+                  29,
+                  710,
+                  308,
+                  10
+                ],
+                "clip": [
+                  17,
+                  442,
+                  343,
+                  723
+                ],
+                "blocked": [
+                  {
+                    "x": 245,
+                    "y": 715,
+                    "hit": "HIDE-LAYERS-BUTTON"
+                  },
+                  {
+                    "x": 275,
+                    "y": 715,
+                    "hit": "HIDE-LAYERS-BUTTON"
+                  },
+                  {
+                    "x": 306,
+                    "y": 715,
+                    "hit": "HIDE-LAYERS-BUTTON"
+                  }
+                ]
+              },
+              {
+                "where": "min",
+                "scroll": {
+                  "scroller": "scada-ui-container",
+                  "scrollTop": 0,
+                  "max": 2413
+                },
+                "inside": false,
+                "rect": [
+                  29,
+                  3100,
+                  308,
+                  10
+                ],
+                "clip": [
+                  17,
+                  442,
+                  343,
+                  723
+                ],
+                "blocked": [
+                  {
+                    "x": 60,
+                    "y": 3105,
+                    "hit": "OUT-OF-VIEWPORT"
+                  },
+                  {
+                    "x": 91,
+                    "y": 3105,
+                    "hit": "OUT-OF-VIEWPORT"
+                  },
+                  {
+                    "x": 121,
+                    "y": 3105,
+                    "hit": "OUT-OF-VIEWPORT"
+                  },
+                  {
+                    "x": 152,
+                    "y": 3105,
+                    "hit": "OUT-OF-VIEWPORT"
+                  },
+                  {
+                    "x": 183,
+                    "y": 3105,
+                    "hit": "OUT-OF-VIEWPORT"
+                  },
+                  {
+                    "x": 214,
+                    "y": 3105,
+                    "hit": "OUT-OF-VIEWPORT"
+                  },
+                  {
+                    "x": 245,
+                    "y": 3105,
+                    "hit": "OUT-OF-VIEWPORT"
+                  },
+                  {
+                    "x": 275,
+                    "y": 3105,
+                    "hit": "OUT-OF-VIEWPORT"
+                  },
+                  {
+                    "x": 306,
+                    "y": 3105,
+                    "hit": "OUT-OF-VIEWPORT"
+                  }
+                ]
+              },
+              {
+                "where": "max",
+                "scroll": {
+                  "scroller": "scada-ui-container",
+                  "scrollTop": 2413,
+                  "max": 2413
+                },
+                "inside": true,
+                "rect": [
+                  29,
+                  687,
+                  308,
+                  10
+                ],
+                "clip": [
+                  17,
+                  442,
+                  343,
+                  723
+                ],
+                "blocked": [
+                  {
+                    "x": 245,
+                    "y": 692,
+                    "hit": "HIDE-LAYERS-BUTTON"
+                  },
+                  {
+                    "x": 275,
+                    "y": 692,
+                    "hit": "HIDE-LAYERS-BUTTON"
+                  },
+                  {
+                    "x": 306,
+                    "y": 692,
+                    "hit": "HIDE-LAYERS-BUTTON"
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "what": "p360: (B) line footer 3/3 reachable: some scroll position puts it inside the clip rect with 9/9 points hittable",
+          "ok": false,
+          "observed": {
+            "key": "footer 3/3",
+            "tries": [
+              {
+                "where": "top",
+                "scroll": {
+                  "scroller": "scada-ui-container",
+                  "scrollTop": 2413,
+                  "max": 2413
+                },
+                "inside": true,
+                "rect": [
+                  29,
+                  701,
+                  308,
+                  10
+                ],
+                "clip": [
+                  17,
+                  442,
+                  343,
+                  723
+                ],
+                "blocked": [
+                  {
+                    "x": 245,
+                    "y": 706,
+                    "hit": "HIDE-LAYERS-BUTTON"
+                  },
+                  {
+                    "x": 275,
+                    "y": 706,
+                    "hit": "HIDE-LAYERS-BUTTON"
+                  },
+                  {
+                    "x": 306,
+                    "y": 706,
+                    "hit": "HIDE-LAYERS-BUTTON"
+                  }
+                ]
+              },
+              {
+                "where": "centre",
+                "scroll": {
+                  "scroller": "scada-ui-container",
+                  "scrollTop": 2413,
+                  "max": 2413
+                },
+                "inside": true,
+                "rect": [
+                  29,
+                  701,
+                  308,
+                  10
+                ],
+                "clip": [
+                  17,
+                  442,
+                  343,
+                  723
+                ],
+                "blocked": [
+                  {
+                    "x": 245,
+                    "y": 706,
+                    "hit": "HIDE-LAYERS-BUTTON"
+                  },
+                  {
+                    "x": 275,
+                    "y": 706,
+                    "hit": "HIDE-LAYERS-BUTTON"
+                  },
+                  {
+                    "x": 306,
+                    "y": 706,
+                    "hit": "HIDE-LAYERS-BUTTON"
+                  }
+                ]
+              },
+              {
+                "where": "bottom",
+                "scroll": {
+                  "scroller": "scada-ui-container",
+                  "scrollTop": 2403,
+                  "max": 2413
+                },
+                "inside": true,
+                "rect": [
+                  29,
+                  711,
+                  308,
+                  10
+                ],
+                "clip": [
+                  17,
+                  442,
+                  343,
+                  723
+                ],
+                "blocked": [
+                  {
+                    "x": 245,
+                    "y": 716,
+                    "hit": "HIDE-LAYERS-BUTTON"
+                  },
+                  {
+                    "x": 275,
+                    "y": 716,
+                    "hit": "HIDE-LAYERS-BUTTON"
+                  },
+                  {
+                    "x": 306,
+                    "y": 716,
+                    "hit": "HIDE-LAYERS-BUTTON"
+                  }
+                ]
+              },
+              {
+                "where": "min",
+                "scroll": {
+                  "scroller": "scada-ui-container",
+                  "scrollTop": 0,
+                  "max": 2413
+                },
+                "inside": false,
+                "rect": [
+                  29,
+                  3114,
+                  308,
+                  10
+                ],
+                "clip": [
+                  17,
+                  442,
+                  343,
+                  723
+                ],
+                "blocked": [
+                  {
+                    "x": 60,
+                    "y": 3119,
+                    "hit": "OUT-OF-VIEWPORT"
+                  },
+                  {
+                    "x": 91,
+                    "y": 3119,
+                    "hit": "OUT-OF-VIEWPORT"
+                  },
+                  {
+                    "x": 121,
+                    "y": 3119,
+                    "hit": "OUT-OF-VIEWPORT"
+                  },
+                  {
+                    "x": 152,
+                    "y": 3119,
+                    "hit": "OUT-OF-VIEWPORT"
+                  },
+                  {
+                    "x": 183,
+                    "y": 3119,
+                    "hit": "OUT-OF-VIEWPORT"
+                  },
+                  {
+                    "x": 214,
+                    "y": 3119,
+                    "hit": "OUT-OF-VIEWPORT"
+                  },
+                  {
+                    "x": 245,
+                    "y": 3119,
+                    "hit": "OUT-OF-VIEWPORT"
+                  },
+                  {
+                    "x": 275,
+                    "y": 3119,
+                    "hit": "OUT-OF-VIEWPORT"
+                  },
+                  {
+                    "x": 306,
+                    "y": 3119,
+                    "hit": "OUT-OF-VIEWPORT"
+                  }
+                ]
+              },
+              {
+                "where": "max",
+                "scroll": {
+                  "scroller": "scada-ui-container",
+                  "scrollTop": 2413,
+                  "max": 2413
+                },
+                "inside": true,
+                "rect": [
+                  29,
+                  701,
+                  308,
+                  10
+                ],
+                "clip": [
+                  17,
+                  442,
+                  343,
+                  723
+                ],
+                "blocked": [
+                  {
+                    "x": 245,
+                    "y": 706,
+                    "hit": "HIDE-LAYERS-BUTTON"
+                  },
+                  {
+                    "x": 275,
+                    "y": 706,
+                    "hit": "HIDE-LAYERS-BUTTON"
+                  },
+                  {
+                    "x": 306,
+                    "y": 706,
+                    "hit": "HIDE-LAYERS-BUTTON"
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ],
+      "detail": {
+        "p393": {
+          "wheels": 1,
+          "layersOpened": true,
+          "button": {
+            "text": "▾ HIDE LAYERS",
+            "rect": [
+              249,
+              796,
+              132,
+              44
+            ]
+          },
+          "clipChain": [
+            "#scada-ui-container"
+          ],
+          "clip": [
+            17,
+            511,
+            376,
+            835
+          ],
+          "linesTotal": 18,
+          "linesInsideAtMax": 18,
+          "excludedAtMax": [],
+          "buttonHitsAtMaxInside": 5,
+          "buttonHitsAtMaxAll": 5,
+          "atMax": [
+            {
+              "key": "window 1/2",
+              "cap": "window",
+              "rect": [
+                29,
+                562,
+                318,
+                11
+              ],
+              "clip": [
+                17,
+                511,
+                376,
+                835
+              ],
+              "clipChain": [
+                "#scada-ui-container"
+              ],
+              "inside": true,
+              "blocked": [],
+              "buttonHits": 0
+            },
+            {
+              "key": "window 2/2",
+              "cap": "window",
+              "rect": [
+                29,
+                577,
+                78,
+                11
+              ],
+              "clip": [
+                17,
+                511,
+                376,
+                835
+              ],
+              "clipChain": [
+                "#scada-ui-container"
+              ],
+              "inside": true,
+              "blocked": [],
+              "buttonHits": 0
+            },
+            {
+              "key": "actual 1/2",
+              "cap": "actual",
+              "rect": [
+                29,
+                592,
+                324,
+                11
+              ],
+              "clip": [
+                17,
+                511,
+                376,
+                835
+              ],
+              "clipChain": [
+                "#scada-ui-container"
+              ],
+              "inside": true,
+              "blocked": [],
+              "buttonHits": 0
+            },
+            {
+              "key": "actual 2/2",
+              "cap": "actual",
+              "rect": [
+                29,
+                607,
+                72,
+                11
+              ],
+              "clip": [
+                17,
+                511,
+                376,
+                835
+              ],
+              "clipChain": [
+                "#scada-ui-container"
+              ],
+              "inside": true,
+              "blocked": [],
+              "buttonHits": 0
+            },
+            {
+              "key": "flashes 1/3",
+              "cap": "flashes",
+              "rect": [
+                29,
+                622,
+                312,
+                11
+              ],
+              "clip": [
+                17,
+                511,
+                376,
+                835
+              ],
+              "clipChain": [
+                "#scada-ui-container"
+              ],
+              "inside": true,
+              "blocked": [],
+              "buttonHits": 0
+            },
+            {
+              "key": "flashes 2/3",
+              "cap": "flashes",
+              "rect": [
+                29,
+                637,
+                318,
+                11
+              ],
+              "clip": [
+                17,
+                511,
+                376,
+                835
+              ],
+              "clipChain": [
+                "#scada-ui-container"
+              ],
+              "inside": true,
+              "blocked": [],
+              "buttonHits": 0
+            },
+            {
+              "key": "flashes 3/3",
+              "cap": "flashes",
+              "rect": [
+                29,
+                652,
+                36,
+                11
+              ],
+              "clip": [
+                17,
+                511,
+                376,
+                835
+              ],
+              "clipChain": [
+                "#scada-ui-container"
+              ],
+              "inside": true,
+              "blocked": [],
+              "buttonHits": 0
+            },
+            {
+              "key": "refresh 1/2",
+              "cap": "refresh",
+              "rect": [
+                29,
+                667,
+                300,
+                11
+              ],
+              "clip": [
+                17,
+                511,
+                376,
+                835
+              ],
+              "clipChain": [
+                "#scada-ui-container"
+              ],
+              "inside": true,
+              "blocked": [],
+              "buttonHits": 0
+            },
+            {
+              "key": "refresh 2/2",
+              "cap": "refresh",
+              "rect": [
+                29,
+                682,
+                114,
+                11
+              ],
+              "clip": [
+                17,
+                511,
+                376,
+                835
+              ],
+              "clipChain": [
+                "#scada-ui-container"
+              ],
+              "inside": true,
+              "blocked": [],
+              "buttonHits": 0
+            },
+            {
+              "key": "searched 1/2",
+              "cap": "searched",
+              "rect": [
+                29,
+                697,
+                324,
+                11
+              ],
+              "clip": [
+                17,
+                511,
+                376,
+                835
+              ],
+              "clipChain": [
+                "#scada-ui-container"
+              ],
+              "inside": true,
+              "blocked": [],
+              "buttonHits": 0
+            },
+            {
+              "key": "searched 2/2",
+              "cap": "searched",
+              "rect": [
+                29,
+                712,
+                258,
+                11
+              ],
+              "clip": [
+                17,
+                511,
+                376,
+                835
+              ],
+              "clipChain": [
+                "#scada-ui-container"
+              ],
+              "inside": true,
+              "blocked": [],
+              "buttonHits": 0
+            },
+            {
+              "key": "warning 1/4",
+              "cap": "warning",
+              "rect": [
+                29,
+                727,
+                330,
+                11
+              ],
+              "clip": [
+                17,
+                511,
+                376,
+                835
+              ],
+              "clipChain": [
+                "#scada-ui-container"
+              ],
+              "inside": true,
+              "blocked": [],
+              "buttonHits": 0
+            },
+            {
+              "key": "warning 2/4",
+              "cap": "warning",
+              "rect": [
+                29,
+                742,
+                342,
+                11
+              ],
+              "clip": [
+                17,
+                511,
+                376,
+                835
+              ],
+              "clipChain": [
+                "#scada-ui-container"
+              ],
+              "inside": true,
+              "blocked": [],
+              "buttonHits": 0
+            },
+            {
+              "key": "warning 3/4",
+              "cap": "warning",
+              "rect": [
+                29,
+                757,
+                330,
+                11
+              ],
+              "clip": [
+                17,
+                511,
+                376,
+                835
+              ],
+              "clipChain": [
+                "#scada-ui-container"
+              ],
+              "inside": true,
+              "blocked": [],
+              "buttonHits": 0
+            },
+            {
+              "key": "warning 4/4",
+              "cap": "warning",
+              "rect": [
+                29,
+                772,
+                192,
+                11
+              ],
+              "clip": [
+                17,
+                511,
+                376,
+                835
+              ],
+              "clipChain": [
+                "#scada-ui-container"
+              ],
+              "inside": true,
+              "blocked": [],
+              "buttonHits": 0
+            },
+            {
+              "key": "footer 1/3",
+              "cap": "footer",
+              "rect": [
+                29,
+                786,
+                302,
+                10
+              ],
+              "clip": [
+                17,
+                511,
+                376,
+                835
+              ],
+              "clipChain": [
+                "#scada-ui-container"
+              ],
+              "inside": true,
+              "blocked": [],
+              "buttonHits": 0
+            },
+            {
+              "key": "footer 2/3",
+              "cap": "footer",
+              "rect": [
+                29,
+                800,
+                335,
+                10
+              ],
+              "clip": [
+                17,
+                511,
+                376,
+                835
+              ],
+              "clipChain": [
+                "#scada-ui-container"
+              ],
+              "inside": true,
+              "blocked": [
+                {
+                  "x": 263,
+                  "y": 805,
+                  "hit": "HIDE-LAYERS-BUTTON"
+                },
+                {
+                  "x": 297,
+                  "y": 805,
+                  "hit": "HIDE-LAYERS-BUTTON"
+                },
+                {
+                  "x": 330,
+                  "y": 805,
+                  "hit": "HIDE-LAYERS-BUTTON"
+                }
+              ],
+              "buttonHits": 3
+            },
+            {
+              "key": "footer 3/3",
+              "cap": "footer",
+              "rect": [
+                29,
+                813,
+                281,
+                10
+              ],
+              "clip": [
+                17,
+                511,
+                376,
+                835
+              ],
+              "clipChain": [
+                "#scada-ui-container"
+              ],
+              "inside": true,
+              "blocked": [
+                {
+                  "x": 254,
+                  "y": 818,
+                  "hit": "HIDE-LAYERS-BUTTON"
+                },
+                {
+                  "x": 282,
+                  "y": 818,
+                  "hit": "HIDE-LAYERS-BUTTON"
+                }
+              ],
+              "buttonHits": 2
+            }
+          ],
+          "reach": [
+            {
+              "key": "window 1/2",
+              "ok": true,
+              "tries": [
+                {
+                  "where": "top",
+                  "scroll": {
+                    "scroller": "scada-ui-container",
+                    "scrollTop": 2311,
+                    "max": 2311
+                  },
+                  "inside": true,
+                  "rect": [
+                    29,
+                    562,
+                    318,
+                    11
+                  ],
+                  "clip": [
+                    17,
+                    511,
+                    376,
+                    835
+                  ],
+                  "blocked": []
+                }
+              ]
+            },
+            {
+              "key": "window 2/2",
+              "ok": true,
+              "tries": [
+                {
+                  "where": "top",
+                  "scroll": {
+                    "scroller": "scada-ui-container",
+                    "scrollTop": 2311,
+                    "max": 2311
+                  },
+                  "inside": true,
+                  "rect": [
+                    29,
+                    577,
+                    78,
+                    11
+                  ],
+                  "clip": [
+                    17,
+                    511,
+                    376,
+                    835
+                  ],
+                  "blocked": []
+                }
+              ]
+            },
+            {
+              "key": "actual 1/2",
+              "ok": true,
+              "tries": [
+                {
+                  "where": "top",
+                  "scroll": {
+                    "scroller": "scada-ui-container",
+                    "scrollTop": 2311,
+                    "max": 2311
+                  },
+                  "inside": true,
+                  "rect": [
+                    29,
+                    592,
+                    324,
+                    11
+                  ],
+                  "clip": [
+                    17,
+                    511,
+                    376,
+                    835
+                  ],
+                  "blocked": []
+                }
+              ]
+            },
+            {
+              "key": "actual 2/2",
+              "ok": true,
+              "tries": [
+                {
+                  "where": "top",
+                  "scroll": {
+                    "scroller": "scada-ui-container",
+                    "scrollTop": 2311,
+                    "max": 2311
+                  },
+                  "inside": true,
+                  "rect": [
+                    29,
+                    607,
+                    72,
+                    11
+                  ],
+                  "clip": [
+                    17,
+                    511,
+                    376,
+                    835
+                  ],
+                  "blocked": []
+                }
+              ]
+            },
+            {
+              "key": "flashes 1/3",
+              "ok": true,
+              "tries": [
+                {
+                  "where": "top",
+                  "scroll": {
+                    "scroller": "scada-ui-container",
+                    "scrollTop": 2311,
+                    "max": 2311
+                  },
+                  "inside": true,
+                  "rect": [
+                    29,
+                    622,
+                    312,
+                    11
+                  ],
+                  "clip": [
+                    17,
+                    511,
+                    376,
+                    835
+                  ],
+                  "blocked": []
+                }
+              ]
+            },
+            {
+              "key": "flashes 2/3",
+              "ok": true,
+              "tries": [
+                {
+                  "where": "top",
+                  "scroll": {
+                    "scroller": "scada-ui-container",
+                    "scrollTop": 2311,
+                    "max": 2311
+                  },
+                  "inside": true,
+                  "rect": [
+                    29,
+                    637,
+                    318,
+                    11
+                  ],
+                  "clip": [
+                    17,
+                    511,
+                    376,
+                    835
+                  ],
+                  "blocked": []
+                }
+              ]
+            },
+            {
+              "key": "flashes 3/3",
+              "ok": true,
+              "tries": [
+                {
+                  "where": "top",
+                  "scroll": {
+                    "scroller": "scada-ui-container",
+                    "scrollTop": 2311,
+                    "max": 2311
+                  },
+                  "inside": true,
+                  "rect": [
+                    29,
+                    652,
+                    36,
+                    11
+                  ],
+                  "clip": [
+                    17,
+                    511,
+                    376,
+                    835
+                  ],
+                  "blocked": []
+                }
+              ]
+            },
+            {
+              "key": "refresh 1/2",
+              "ok": true,
+              "tries": [
+                {
+                  "where": "top",
+                  "scroll": {
+                    "scroller": "scada-ui-container",
+                    "scrollTop": 2311,
+                    "max": 2311
+                  },
+                  "inside": true,
+                  "rect": [
+                    29,
+                    667,
+                    300,
+                    11
+                  ],
+                  "clip": [
+                    17,
+                    511,
+                    376,
+                    835
+                  ],
+                  "blocked": []
+                }
+              ]
+            },
+            {
+              "key": "refresh 2/2",
+              "ok": true,
+              "tries": [
+                {
+                  "where": "top",
+                  "scroll": {
+                    "scroller": "scada-ui-container",
+                    "scrollTop": 2311,
+                    "max": 2311
+                  },
+                  "inside": true,
+                  "rect": [
+                    29,
+                    682,
+                    114,
+                    11
+                  ],
+                  "clip": [
+                    17,
+                    511,
+                    376,
+                    835
+                  ],
+                  "blocked": []
+                }
+              ]
+            },
+            {
+              "key": "searched 1/2",
+              "ok": true,
+              "tries": [
+                {
+                  "where": "top",
+                  "scroll": {
+                    "scroller": "scada-ui-container",
+                    "scrollTop": 2311,
+                    "max": 2311
+                  },
+                  "inside": true,
+                  "rect": [
+                    29,
+                    697,
+                    324,
+                    11
+                  ],
+                  "clip": [
+                    17,
+                    511,
+                    376,
+                    835
+                  ],
+                  "blocked": []
+                }
+              ]
+            },
+            {
+              "key": "searched 2/2",
+              "ok": true,
+              "tries": [
+                {
+                  "where": "top",
+                  "scroll": {
+                    "scroller": "scada-ui-container",
+                    "scrollTop": 2311,
+                    "max": 2311
+                  },
+                  "inside": true,
+                  "rect": [
+                    29,
+                    712,
+                    258,
+                    11
+                  ],
+                  "clip": [
+                    17,
+                    511,
+                    376,
+                    835
+                  ],
+                  "blocked": []
+                }
+              ]
+            },
+            {
+              "key": "warning 1/4",
+              "ok": true,
+              "tries": [
+                {
+                  "where": "top",
+                  "scroll": {
+                    "scroller": "scada-ui-container",
+                    "scrollTop": 2311,
+                    "max": 2311
+                  },
+                  "inside": true,
+                  "rect": [
+                    29,
+                    727,
+                    330,
+                    11
+                  ],
+                  "clip": [
+                    17,
+                    511,
+                    376,
+                    835
+                  ],
+                  "blocked": []
+                }
+              ]
+            },
+            {
+              "key": "warning 2/4",
+              "ok": true,
+              "tries": [
+                {
+                  "where": "top",
+                  "scroll": {
+                    "scroller": "scada-ui-container",
+                    "scrollTop": 2311,
+                    "max": 2311
+                  },
+                  "inside": true,
+                  "rect": [
+                    29,
+                    742,
+                    342,
+                    11
+                  ],
+                  "clip": [
+                    17,
+                    511,
+                    376,
+                    835
+                  ],
+                  "blocked": []
+                }
+              ]
+            },
+            {
+              "key": "warning 3/4",
+              "ok": true,
+              "tries": [
+                {
+                  "where": "top",
+                  "scroll": {
+                    "scroller": "scada-ui-container",
+                    "scrollTop": 2311,
+                    "max": 2311
+                  },
+                  "inside": true,
+                  "rect": [
+                    29,
+                    757,
+                    330,
+                    11
+                  ],
+                  "clip": [
+                    17,
+                    511,
+                    376,
+                    835
+                  ],
+                  "blocked": []
+                }
+              ]
+            },
+            {
+              "key": "warning 4/4",
+              "ok": true,
+              "tries": [
+                {
+                  "where": "top",
+                  "scroll": {
+                    "scroller": "scada-ui-container",
+                    "scrollTop": 2311,
+                    "max": 2311
+                  },
+                  "inside": true,
+                  "rect": [
+                    29,
+                    772,
+                    192,
+                    11
+                  ],
+                  "clip": [
+                    17,
+                    511,
+                    376,
+                    835
+                  ],
+                  "blocked": []
+                }
+              ]
+            },
+            {
+              "key": "footer 1/3",
+              "ok": true,
+              "tries": [
+                {
+                  "where": "top",
+                  "scroll": {
+                    "scroller": "scada-ui-container",
+                    "scrollTop": 2311,
+                    "max": 2311
+                  },
+                  "inside": true,
+                  "rect": [
+                    29,
+                    786,
+                    302,
+                    10
+                  ],
+                  "clip": [
+                    17,
+                    511,
+                    376,
+                    835
+                  ],
+                  "blocked": []
+                }
+              ]
+            },
+            {
+              "key": "footer 2/3",
+              "ok": false,
+              "tries": [
+                {
+                  "where": "top",
+                  "scroll": {
+                    "scroller": "scada-ui-container",
+                    "scrollTop": 2311,
+                    "max": 2311
+                  },
+                  "inside": true,
+                  "rect": [
+                    29,
+                    800,
+                    335,
+                    10
+                  ],
+                  "clip": [
+                    17,
+                    511,
+                    376,
+                    835
+                  ],
+                  "blocked": [
+                    {
+                      "x": 263,
+                      "y": 805,
+                      "hit": "HIDE-LAYERS-BUTTON"
+                    },
+                    {
+                      "x": 297,
+                      "y": 805,
+                      "hit": "HIDE-LAYERS-BUTTON"
+                    },
+                    {
+                      "x": 330,
+                      "y": 805,
+                      "hit": "HIDE-LAYERS-BUTTON"
+                    }
+                  ]
+                },
+                {
+                  "where": "centre",
+                  "scroll": {
+                    "scroller": "scada-ui-container",
+                    "scrollTop": 2311,
+                    "max": 2311
+                  },
+                  "inside": true,
+                  "rect": [
+                    29,
+                    800,
+                    335,
+                    10
+                  ],
+                  "clip": [
+                    17,
+                    511,
+                    376,
+                    835
+                  ],
+                  "blocked": [
+                    {
+                      "x": 263,
+                      "y": 805,
+                      "hit": "HIDE-LAYERS-BUTTON"
+                    },
+                    {
+                      "x": 297,
+                      "y": 805,
+                      "hit": "HIDE-LAYERS-BUTTON"
+                    },
+                    {
+                      "x": 330,
+                      "y": 805,
+                      "hit": "HIDE-LAYERS-BUTTON"
+                    }
+                  ]
+                },
+                {
+                  "where": "bottom",
+                  "scroll": {
+                    "scroller": "scada-ui-container",
+                    "scrollTop": 2288,
+                    "max": 2311
+                  },
+                  "inside": true,
+                  "rect": [
+                    29,
+                    823,
+                    335,
+                    10
+                  ],
+                  "clip": [
+                    17,
+                    511,
+                    376,
+                    835
+                  ],
+                  "blocked": [
+                    {
+                      "x": 263,
+                      "y": 828,
+                      "hit": "HIDE-LAYERS-BUTTON"
+                    },
+                    {
+                      "x": 297,
+                      "y": 828,
+                      "hit": "HIDE-LAYERS-BUTTON"
+                    },
+                    {
+                      "x": 330,
+                      "y": 828,
+                      "hit": "HIDE-LAYERS-BUTTON"
+                    }
+                  ]
+                },
+                {
+                  "where": "min",
+                  "scroll": {
+                    "scroller": "scada-ui-container",
+                    "scrollTop": 0,
+                    "max": 2311
+                  },
+                  "inside": false,
+                  "rect": [
+                    29,
+                    3111,
+                    335,
+                    10
+                  ],
+                  "clip": [
+                    17,
+                    511,
+                    376,
+                    835
+                  ],
+                  "blocked": [
+                    {
+                      "x": 62,
+                      "y": 3116,
+                      "hit": "OUT-OF-VIEWPORT"
+                    },
+                    {
+                      "x": 96,
+                      "y": 3116,
+                      "hit": "OUT-OF-VIEWPORT"
+                    },
+                    {
+                      "x": 129,
+                      "y": 3116,
+                      "hit": "OUT-OF-VIEWPORT"
+                    },
+                    {
+                      "x": 163,
+                      "y": 3116,
+                      "hit": "OUT-OF-VIEWPORT"
+                    },
+                    {
+                      "x": 196,
+                      "y": 3116,
+                      "hit": "OUT-OF-VIEWPORT"
+                    },
+                    {
+                      "x": 230,
+                      "y": 3116,
+                      "hit": "OUT-OF-VIEWPORT"
+                    },
+                    {
+                      "x": 263,
+                      "y": 3116,
+                      "hit": "OUT-OF-VIEWPORT"
+                    },
+                    {
+                      "x": 297,
+                      "y": 3116,
+                      "hit": "OUT-OF-VIEWPORT"
+                    },
+                    {
+                      "x": 330,
+                      "y": 3116,
+                      "hit": "OUT-OF-VIEWPORT"
+                    }
+                  ]
+                },
+                {
+                  "where": "max",
+                  "scroll": {
+                    "scroller": "scada-ui-container",
+                    "scrollTop": 2311,
+                    "max": 2311
+                  },
+                  "inside": true,
+                  "rect": [
+                    29,
+                    800,
+                    335,
+                    10
+                  ],
+                  "clip": [
+                    17,
+                    511,
+                    376,
+                    835
+                  ],
+                  "blocked": [
+                    {
+                      "x": 263,
+                      "y": 805,
+                      "hit": "HIDE-LAYERS-BUTTON"
+                    },
+                    {
+                      "x": 297,
+                      "y": 805,
+                      "hit": "HIDE-LAYERS-BUTTON"
+                    },
+                    {
+                      "x": 330,
+                      "y": 805,
+                      "hit": "HIDE-LAYERS-BUTTON"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "key": "footer 3/3",
+              "ok": false,
+              "tries": [
+                {
+                  "where": "top",
+                  "scroll": {
+                    "scroller": "scada-ui-container",
+                    "scrollTop": 2311,
+                    "max": 2311
+                  },
+                  "inside": true,
+                  "rect": [
+                    29,
+                    813,
+                    281,
+                    10
+                  ],
+                  "clip": [
+                    17,
+                    511,
+                    376,
+                    835
+                  ],
+                  "blocked": [
+                    {
+                      "x": 254,
+                      "y": 818,
+                      "hit": "HIDE-LAYERS-BUTTON"
+                    },
+                    {
+                      "x": 282,
+                      "y": 818,
+                      "hit": "HIDE-LAYERS-BUTTON"
+                    }
+                  ]
+                },
+                {
+                  "where": "centre",
+                  "scroll": {
+                    "scroller": "scada-ui-container",
+                    "scrollTop": 2311,
+                    "max": 2311
+                  },
+                  "inside": true,
+                  "rect": [
+                    29,
+                    813,
+                    281,
+                    10
+                  ],
+                  "clip": [
+                    17,
+                    511,
+                    376,
+                    835
+                  ],
+                  "blocked": [
+                    {
+                      "x": 254,
+                      "y": 818,
+                      "hit": "HIDE-LAYERS-BUTTON"
+                    },
+                    {
+                      "x": 282,
+                      "y": 818,
+                      "hit": "HIDE-LAYERS-BUTTON"
+                    }
+                  ]
+                },
+                {
+                  "where": "bottom",
+                  "scroll": {
+                    "scroller": "scada-ui-container",
+                    "scrollTop": 2301,
+                    "max": 2311
+                  },
+                  "inside": true,
+                  "rect": [
+                    29,
+                    823,
+                    281,
+                    10
+                  ],
+                  "clip": [
+                    17,
+                    511,
+                    376,
+                    835
+                  ],
+                  "blocked": [
+                    {
+                      "x": 254,
+                      "y": 828,
+                      "hit": "HIDE-LAYERS-BUTTON"
+                    },
+                    {
+                      "x": 282,
+                      "y": 828,
+                      "hit": "HIDE-LAYERS-BUTTON"
+                    }
+                  ]
+                },
+                {
+                  "where": "min",
+                  "scroll": {
+                    "scroller": "scada-ui-container",
+                    "scrollTop": 0,
+                    "max": 2311
+                  },
+                  "inside": false,
+                  "rect": [
+                    29,
+                    3124,
+                    281,
+                    10
+                  ],
+                  "clip": [
+                    17,
+                    511,
+                    376,
+                    835
+                  ],
+                  "blocked": [
+                    {
+                      "x": 57,
+                      "y": 3129,
+                      "hit": "OUT-OF-VIEWPORT"
+                    },
+                    {
+                      "x": 85,
+                      "y": 3129,
+                      "hit": "OUT-OF-VIEWPORT"
+                    },
+                    {
+                      "x": 113,
+                      "y": 3129,
+                      "hit": "OUT-OF-VIEWPORT"
+                    },
+                    {
+                      "x": 141,
+                      "y": 3129,
+                      "hit": "OUT-OF-VIEWPORT"
+                    },
+                    {
+                      "x": 169,
+                      "y": 3129,
+                      "hit": "OUT-OF-VIEWPORT"
+                    },
+                    {
+                      "x": 198,
+                      "y": 3129,
+                      "hit": "OUT-OF-VIEWPORT"
+                    },
+                    {
+                      "x": 226,
+                      "y": 3129,
+                      "hit": "OUT-OF-VIEWPORT"
+                    },
+                    {
+                      "x": 254,
+                      "y": 3129,
+                      "hit": "OUT-OF-VIEWPORT"
+                    },
+                    {
+                      "x": 282,
+                      "y": 3129,
+                      "hit": "OUT-OF-VIEWPORT"
+                    }
+                  ]
+                },
+                {
+                  "where": "max",
+                  "scroll": {
+                    "scroller": "scada-ui-container",
+                    "scrollTop": 2311,
+                    "max": 2311
+                  },
+                  "inside": true,
+                  "rect": [
+                    29,
+                    813,
+                    281,
+                    10
+                  ],
+                  "clip": [
+                    17,
+                    511,
+                    376,
+                    835
+                  ],
+                  "blocked": [
+                    {
+                      "x": 254,
+                      "y": 818,
+                      "hit": "HIDE-LAYERS-BUTTON"
+                    },
+                    {
+                      "x": 282,
+                      "y": 818,
+                      "hit": "HIDE-LAYERS-BUTTON"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        "p360": {
+          "wheels": 1,
+          "layersOpened": true,
+          "button": {
+            "text": "▾ HIDE LAYERS",
+            "rect": [
+              216,
+              684,
+              132,
+              44
+            ]
+          },
+          "clipChain": [
+            "#scada-ui-container"
+          ],
+          "clip": [
+            17,
+            442,
+            343,
+            723
+          ],
+          "linesTotal": 19,
+          "linesInsideAtMax": 18,
+          "excludedAtMax": [
+            {
+              "key": "window 1/2",
+              "rect": [
+                29,
+                436,
+                300,
+                11
+              ],
+              "clip": [
+                17,
+                442,
+                343,
+                723
+              ],
+              "blockedAtMax": 0
+            }
+          ],
+          "buttonHitsAtMaxInside": 6,
+          "buttonHitsAtMaxAll": 6,
+          "atMax": [
+            {
+              "key": "window 1/2",
+              "cap": "window",
+              "rect": [
+                29,
+                436,
+                300,
+                11
+              ],
+              "clip": [
+                17,
+                442,
+                343,
+                723
+              ],
+              "clipChain": [
+                "#scada-ui-container"
+              ],
+              "inside": false,
+              "blocked": [],
+              "buttonHits": 0
+            },
+            {
+              "key": "window 2/2",
+              "cap": "window",
+              "rect": [
+                29,
+                451,
+                96,
+                11
+              ],
+              "clip": [
+                17,
+                442,
+                343,
+                723
+              ],
+              "clipChain": [
+                "#scada-ui-container"
+              ],
+              "inside": true,
+              "blocked": [],
+              "buttonHits": 0
+            },
+            {
+              "key": "actual 1/2",
+              "cap": "actual",
+              "rect": [
+                29,
+                466,
+                312,
+                11
+              ],
+              "clip": [
+                17,
+                442,
+                343,
+                723
+              ],
+              "clipChain": [
+                "#scada-ui-container"
+              ],
+              "inside": true,
+              "blocked": [],
+              "buttonHits": 0
+            },
+            {
+              "key": "actual 2/2",
+              "cap": "actual",
+              "rect": [
+                29,
+                481,
+                90,
+                11
+              ],
+              "clip": [
+                17,
+                442,
+                343,
+                723
+              ],
+              "clipChain": [
+                "#scada-ui-container"
+              ],
+              "inside": true,
+              "blocked": [],
+              "buttonHits": 0
+            },
+            {
+              "key": "flashes 1/3",
+              "cap": "flashes",
+              "rect": [
+                29,
+                496,
+                312,
+                11
+              ],
+              "clip": [
+                17,
+                442,
+                343,
+                723
+              ],
+              "clipChain": [
+                "#scada-ui-container"
+              ],
+              "inside": true,
+              "blocked": [],
+              "buttonHits": 0
+            },
+            {
+              "key": "flashes 2/3",
+              "cap": "flashes",
+              "rect": [
+                29,
+                511,
+                288,
+                11
+              ],
+              "clip": [
+                17,
+                442,
+                343,
+                723
+              ],
+              "clipChain": [
+                "#scada-ui-container"
+              ],
+              "inside": true,
+              "blocked": [],
+              "buttonHits": 0
+            },
+            {
+              "key": "flashes 3/3",
+              "cap": "flashes",
+              "rect": [
+                29,
+                526,
+                66,
+                11
+              ],
+              "clip": [
+                17,
+                442,
+                343,
+                723
+              ],
+              "clipChain": [
+                "#scada-ui-container"
+              ],
+              "inside": true,
+              "blocked": [],
+              "buttonHits": 0
+            },
+            {
+              "key": "refresh 1/2",
+              "cap": "refresh",
+              "rect": [
+                29,
+                541,
+                300,
+                11
+              ],
+              "clip": [
+                17,
+                442,
+                343,
+                723
+              ],
+              "clipChain": [
+                "#scada-ui-container"
+              ],
+              "inside": true,
+              "blocked": [],
+              "buttonHits": 0
+            },
+            {
+              "key": "refresh 2/2",
+              "cap": "refresh",
+              "rect": [
+                29,
+                556,
+                114,
+                11
+              ],
+              "clip": [
+                17,
+                442,
+                343,
+                723
+              ],
+              "clipChain": [
+                "#scada-ui-container"
+              ],
+              "inside": true,
+              "blocked": [],
+              "buttonHits": 0
+            },
+            {
+              "key": "searched 1/2",
+              "cap": "searched",
+              "rect": [
+                29,
+                571,
+                312,
+                11
+              ],
+              "clip": [
+                17,
+                442,
+                343,
+                723
+              ],
+              "clipChain": [
+                "#scada-ui-container"
+              ],
+              "inside": true,
+              "blocked": [],
+              "buttonHits": 0
+            },
+            {
+              "key": "searched 2/2",
+              "cap": "searched",
+              "rect": [
+                29,
+                586,
+                270,
+                11
+              ],
+              "clip": [
+                17,
+                442,
+                343,
+                723
+              ],
+              "clipChain": [
+                "#scada-ui-container"
+              ],
+              "inside": true,
+              "blocked": [],
+              "buttonHits": 0
+            },
+            {
+              "key": "warning 1/5",
+              "cap": "warning",
+              "rect": [
+                29,
+                601,
+                306,
+                11
+              ],
+              "clip": [
+                17,
+                442,
+                343,
+                723
+              ],
+              "clipChain": [
+                "#scada-ui-container"
+              ],
+              "inside": true,
+              "blocked": [],
+              "buttonHits": 0
+            },
+            {
+              "key": "warning 2/5",
+              "cap": "warning",
+              "rect": [
+                29,
+                616,
+                270,
+                11
+              ],
+              "clip": [
+                17,
+                442,
+                343,
+                723
+              ],
+              "clipChain": [
+                "#scada-ui-container"
+              ],
+              "inside": true,
+              "blocked": [],
+              "buttonHits": 0
+            },
+            {
+              "key": "warning 3/5",
+              "cap": "warning",
+              "rect": [
+                29,
+                631,
+                282,
+                11
+              ],
+              "clip": [
+                17,
+                442,
+                343,
+                723
+              ],
+              "clipChain": [
+                "#scada-ui-container"
+              ],
+              "inside": true,
+              "blocked": [],
+              "buttonHits": 0
+            },
+            {
+              "key": "warning 4/5",
+              "cap": "warning",
+              "rect": [
+                29,
+                646,
+                312,
+                11
+              ],
+              "clip": [
+                17,
+                442,
+                343,
+                723
+              ],
+              "clipChain": [
+                "#scada-ui-container"
+              ],
+              "inside": true,
+              "blocked": [],
+              "buttonHits": 0
+            },
+            {
+              "key": "warning 5/5",
+              "cap": "warning",
+              "rect": [
+                29,
+                661,
+                18,
+                11
+              ],
+              "clip": [
+                17,
+                442,
+                343,
+                723
+              ],
+              "clipChain": [
+                "#scada-ui-container"
+              ],
+              "inside": true,
+              "blocked": [],
+              "buttonHits": 0
+            },
+            {
+              "key": "footer 1/3",
+              "cap": "footer",
+              "rect": [
+                29,
+                675,
+                302,
+                10
+              ],
+              "clip": [
+                17,
+                442,
+                343,
+                723
+              ],
+              "clipChain": [
+                "#scada-ui-container"
+              ],
+              "inside": true,
+              "blocked": [],
+              "buttonHits": 0
+            },
+            {
+              "key": "footer 2/3",
+              "cap": "footer",
+              "rect": [
+                29,
+                688,
+                308,
+                10
+              ],
+              "clip": [
+                17,
+                442,
+                343,
+                723
+              ],
+              "clipChain": [
+                "#scada-ui-container"
+              ],
+              "inside": true,
+              "blocked": [
+                {
+                  "x": 245,
+                  "y": 693,
+                  "hit": "HIDE-LAYERS-BUTTON"
+                },
+                {
+                  "x": 275,
+                  "y": 693,
+                  "hit": "HIDE-LAYERS-BUTTON"
+                },
+                {
+                  "x": 306,
+                  "y": 693,
+                  "hit": "HIDE-LAYERS-BUTTON"
+                }
+              ],
+              "buttonHits": 3
+            },
+            {
+              "key": "footer 3/3",
+              "cap": "footer",
+              "rect": [
+                29,
+                702,
+                308,
+                10
+              ],
+              "clip": [
+                17,
+                442,
+                343,
+                723
+              ],
+              "clipChain": [
+                "#scada-ui-container"
+              ],
+              "inside": true,
+              "blocked": [
+                {
+                  "x": 245,
+                  "y": 707,
+                  "hit": "HIDE-LAYERS-BUTTON"
+                },
+                {
+                  "x": 275,
+                  "y": 707,
+                  "hit": "HIDE-LAYERS-BUTTON"
+                },
+                {
+                  "x": 306,
+                  "y": 707,
+                  "hit": "HIDE-LAYERS-BUTTON"
+                }
+              ],
+              "buttonHits": 3
+            }
+          ],
+          "reach": [
+            {
+              "key": "window 1/2",
+              "ok": true,
+              "tries": [
+                {
+                  "where": "top",
+                  "scroll": {
+                    "scroller": "scada-ui-container",
+                    "scrollTop": 2404,
+                    "max": 2413
+                  },
+                  "inside": true,
+                  "rect": [
+                    29,
+                    444,
+                    300,
+                    11
+                  ],
+                  "clip": [
+                    17,
+                    442,
+                    343,
+                    723
+                  ],
+                  "blocked": []
+                }
+              ]
+            },
+            {
+              "key": "window 2/2",
+              "ok": true,
+              "tries": [
+                {
+                  "where": "top",
+                  "scroll": {
+                    "scroller": "scada-ui-container",
+                    "scrollTop": 2413,
+                    "max": 2413
+                  },
+                  "inside": true,
+                  "rect": [
+                    29,
+                    450,
+                    96,
+                    11
+                  ],
+                  "clip": [
+                    17,
+                    442,
+                    343,
+                    723
+                  ],
+                  "blocked": []
+                }
+              ]
+            },
+            {
+              "key": "actual 1/2",
+              "ok": true,
+              "tries": [
+                {
+                  "where": "top",
+                  "scroll": {
+                    "scroller": "scada-ui-container",
+                    "scrollTop": 2413,
+                    "max": 2413
+                  },
+                  "inside": true,
+                  "rect": [
+                    29,
+                    465,
+                    312,
+                    11
+                  ],
+                  "clip": [
+                    17,
+                    442,
+                    343,
+                    723
+                  ],
+                  "blocked": []
+                }
+              ]
+            },
+            {
+              "key": "actual 2/2",
+              "ok": true,
+              "tries": [
+                {
+                  "where": "top",
+                  "scroll": {
+                    "scroller": "scada-ui-container",
+                    "scrollTop": 2413,
+                    "max": 2413
+                  },
+                  "inside": true,
+                  "rect": [
+                    29,
+                    480,
+                    90,
+                    11
+                  ],
+                  "clip": [
+                    17,
+                    442,
+                    343,
+                    723
+                  ],
+                  "blocked": []
+                }
+              ]
+            },
+            {
+              "key": "flashes 1/3",
+              "ok": true,
+              "tries": [
+                {
+                  "where": "top",
+                  "scroll": {
+                    "scroller": "scada-ui-container",
+                    "scrollTop": 2413,
+                    "max": 2413
+                  },
+                  "inside": true,
+                  "rect": [
+                    29,
+                    495,
+                    312,
+                    11
+                  ],
+                  "clip": [
+                    17,
+                    442,
+                    343,
+                    723
+                  ],
+                  "blocked": []
+                }
+              ]
+            },
+            {
+              "key": "flashes 2/3",
+              "ok": true,
+              "tries": [
+                {
+                  "where": "top",
+                  "scroll": {
+                    "scroller": "scada-ui-container",
+                    "scrollTop": 2413,
+                    "max": 2413
+                  },
+                  "inside": true,
+                  "rect": [
+                    29,
+                    510,
+                    288,
+                    11
+                  ],
+                  "clip": [
+                    17,
+                    442,
+                    343,
+                    723
+                  ],
+                  "blocked": []
+                }
+              ]
+            },
+            {
+              "key": "flashes 3/3",
+              "ok": true,
+              "tries": [
+                {
+                  "where": "top",
+                  "scroll": {
+                    "scroller": "scada-ui-container",
+                    "scrollTop": 2413,
+                    "max": 2413
+                  },
+                  "inside": true,
+                  "rect": [
+                    29,
+                    525,
+                    66,
+                    11
+                  ],
+                  "clip": [
+                    17,
+                    442,
+                    343,
+                    723
+                  ],
+                  "blocked": []
+                }
+              ]
+            },
+            {
+              "key": "refresh 1/2",
+              "ok": true,
+              "tries": [
+                {
+                  "where": "top",
+                  "scroll": {
+                    "scroller": "scada-ui-container",
+                    "scrollTop": 2413,
+                    "max": 2413
+                  },
+                  "inside": true,
+                  "rect": [
+                    29,
+                    540,
+                    300,
+                    11
+                  ],
+                  "clip": [
+                    17,
+                    442,
+                    343,
+                    723
+                  ],
+                  "blocked": []
+                }
+              ]
+            },
+            {
+              "key": "refresh 2/2",
+              "ok": true,
+              "tries": [
+                {
+                  "where": "top",
+                  "scroll": {
+                    "scroller": "scada-ui-container",
+                    "scrollTop": 2413,
+                    "max": 2413
+                  },
+                  "inside": true,
+                  "rect": [
+                    29,
+                    555,
+                    114,
+                    11
+                  ],
+                  "clip": [
+                    17,
+                    442,
+                    343,
+                    723
+                  ],
+                  "blocked": []
+                }
+              ]
+            },
+            {
+              "key": "searched 1/2",
+              "ok": true,
+              "tries": [
+                {
+                  "where": "top",
+                  "scroll": {
+                    "scroller": "scada-ui-container",
+                    "scrollTop": 2413,
+                    "max": 2413
+                  },
+                  "inside": true,
+                  "rect": [
+                    29,
+                    570,
+                    312,
+                    11
+                  ],
+                  "clip": [
+                    17,
+                    442,
+                    343,
+                    723
+                  ],
+                  "blocked": []
+                }
+              ]
+            },
+            {
+              "key": "searched 2/2",
+              "ok": true,
+              "tries": [
+                {
+                  "where": "top",
+                  "scroll": {
+                    "scroller": "scada-ui-container",
+                    "scrollTop": 2413,
+                    "max": 2413
+                  },
+                  "inside": true,
+                  "rect": [
+                    29,
+                    585,
+                    270,
+                    11
+                  ],
+                  "clip": [
+                    17,
+                    442,
+                    343,
+                    723
+                  ],
+                  "blocked": []
+                }
+              ]
+            },
+            {
+              "key": "warning 1/5",
+              "ok": true,
+              "tries": [
+                {
+                  "where": "top",
+                  "scroll": {
+                    "scroller": "scada-ui-container",
+                    "scrollTop": 2413,
+                    "max": 2413
+                  },
+                  "inside": true,
+                  "rect": [
+                    29,
+                    600,
+                    306,
+                    11
+                  ],
+                  "clip": [
+                    17,
+                    442,
+                    343,
+                    723
+                  ],
+                  "blocked": []
+                }
+              ]
+            },
+            {
+              "key": "warning 2/5",
+              "ok": true,
+              "tries": [
+                {
+                  "where": "top",
+                  "scroll": {
+                    "scroller": "scada-ui-container",
+                    "scrollTop": 2413,
+                    "max": 2413
+                  },
+                  "inside": true,
+                  "rect": [
+                    29,
+                    615,
+                    270,
+                    11
+                  ],
+                  "clip": [
+                    17,
+                    442,
+                    343,
+                    723
+                  ],
+                  "blocked": []
+                }
+              ]
+            },
+            {
+              "key": "warning 3/5",
+              "ok": true,
+              "tries": [
+                {
+                  "where": "top",
+                  "scroll": {
+                    "scroller": "scada-ui-container",
+                    "scrollTop": 2413,
+                    "max": 2413
+                  },
+                  "inside": true,
+                  "rect": [
+                    29,
+                    630,
+                    282,
+                    11
+                  ],
+                  "clip": [
+                    17,
+                    442,
+                    343,
+                    723
+                  ],
+                  "blocked": []
+                }
+              ]
+            },
+            {
+              "key": "warning 4/5",
+              "ok": true,
+              "tries": [
+                {
+                  "where": "top",
+                  "scroll": {
+                    "scroller": "scada-ui-container",
+                    "scrollTop": 2413,
+                    "max": 2413
+                  },
+                  "inside": true,
+                  "rect": [
+                    29,
+                    645,
+                    312,
+                    11
+                  ],
+                  "clip": [
+                    17,
+                    442,
+                    343,
+                    723
+                  ],
+                  "blocked": []
+                }
+              ]
+            },
+            {
+              "key": "warning 5/5",
+              "ok": true,
+              "tries": [
+                {
+                  "where": "top",
+                  "scroll": {
+                    "scroller": "scada-ui-container",
+                    "scrollTop": 2413,
+                    "max": 2413
+                  },
+                  "inside": true,
+                  "rect": [
+                    29,
+                    660,
+                    18,
+                    11
+                  ],
+                  "clip": [
+                    17,
+                    442,
+                    343,
+                    723
+                  ],
+                  "blocked": []
+                }
+              ]
+            },
+            {
+              "key": "footer 1/3",
+              "ok": true,
+              "tries": [
+                {
+                  "where": "top",
+                  "scroll": {
+                    "scroller": "scada-ui-container",
+                    "scrollTop": 2413,
+                    "max": 2413
+                  },
+                  "inside": true,
+                  "rect": [
+                    29,
+                    674,
+                    302,
+                    10
+                  ],
+                  "clip": [
+                    17,
+                    442,
+                    343,
+                    723
+                  ],
+                  "blocked": []
+                }
+              ]
+            },
+            {
+              "key": "footer 2/3",
+              "ok": false,
+              "tries": [
+                {
+                  "where": "top",
+                  "scroll": {
+                    "scroller": "scada-ui-container",
+                    "scrollTop": 2413,
+                    "max": 2413
+                  },
+                  "inside": true,
+                  "rect": [
+                    29,
+                    687,
+                    308,
+                    10
+                  ],
+                  "clip": [
+                    17,
+                    442,
+                    343,
+                    723
+                  ],
+                  "blocked": [
+                    {
+                      "x": 245,
+                      "y": 692,
+                      "hit": "HIDE-LAYERS-BUTTON"
+                    },
+                    {
+                      "x": 275,
+                      "y": 692,
+                      "hit": "HIDE-LAYERS-BUTTON"
+                    },
+                    {
+                      "x": 306,
+                      "y": 692,
+                      "hit": "HIDE-LAYERS-BUTTON"
+                    }
+                  ]
+                },
+                {
+                  "where": "centre",
+                  "scroll": {
+                    "scroller": "scada-ui-container",
+                    "scrollTop": 2413,
+                    "max": 2413
+                  },
+                  "inside": true,
+                  "rect": [
+                    29,
+                    687,
+                    308,
+                    10
+                  ],
+                  "clip": [
+                    17,
+                    442,
+                    343,
+                    723
+                  ],
+                  "blocked": [
+                    {
+                      "x": 245,
+                      "y": 692,
+                      "hit": "HIDE-LAYERS-BUTTON"
+                    },
+                    {
+                      "x": 275,
+                      "y": 692,
+                      "hit": "HIDE-LAYERS-BUTTON"
+                    },
+                    {
+                      "x": 306,
+                      "y": 692,
+                      "hit": "HIDE-LAYERS-BUTTON"
+                    }
+                  ]
+                },
+                {
+                  "where": "bottom",
+                  "scroll": {
+                    "scroller": "scada-ui-container",
+                    "scrollTop": 2390,
+                    "max": 2413
+                  },
+                  "inside": true,
+                  "rect": [
+                    29,
+                    710,
+                    308,
+                    10
+                  ],
+                  "clip": [
+                    17,
+                    442,
+                    343,
+                    723
+                  ],
+                  "blocked": [
+                    {
+                      "x": 245,
+                      "y": 715,
+                      "hit": "HIDE-LAYERS-BUTTON"
+                    },
+                    {
+                      "x": 275,
+                      "y": 715,
+                      "hit": "HIDE-LAYERS-BUTTON"
+                    },
+                    {
+                      "x": 306,
+                      "y": 715,
+                      "hit": "HIDE-LAYERS-BUTTON"
+                    }
+                  ]
+                },
+                {
+                  "where": "min",
+                  "scroll": {
+                    "scroller": "scada-ui-container",
+                    "scrollTop": 0,
+                    "max": 2413
+                  },
+                  "inside": false,
+                  "rect": [
+                    29,
+                    3100,
+                    308,
+                    10
+                  ],
+                  "clip": [
+                    17,
+                    442,
+                    343,
+                    723
+                  ],
+                  "blocked": [
+                    {
+                      "x": 60,
+                      "y": 3105,
+                      "hit": "OUT-OF-VIEWPORT"
+                    },
+                    {
+                      "x": 91,
+                      "y": 3105,
+                      "hit": "OUT-OF-VIEWPORT"
+                    },
+                    {
+                      "x": 121,
+                      "y": 3105,
+                      "hit": "OUT-OF-VIEWPORT"
+                    },
+                    {
+                      "x": 152,
+                      "y": 3105,
+                      "hit": "OUT-OF-VIEWPORT"
+                    },
+                    {
+                      "x": 183,
+                      "y": 3105,
+                      "hit": "OUT-OF-VIEWPORT"
+                    },
+                    {
+                      "x": 214,
+                      "y": 3105,
+                      "hit": "OUT-OF-VIEWPORT"
+                    },
+                    {
+                      "x": 245,
+                      "y": 3105,
+                      "hit": "OUT-OF-VIEWPORT"
+                    },
+                    {
+                      "x": 275,
+                      "y": 3105,
+                      "hit": "OUT-OF-VIEWPORT"
+                    },
+                    {
+                      "x": 306,
+                      "y": 3105,
+                      "hit": "OUT-OF-VIEWPORT"
+                    }
+                  ]
+                },
+                {
+                  "where": "max",
+                  "scroll": {
+                    "scroller": "scada-ui-container",
+                    "scrollTop": 2413,
+                    "max": 2413
+                  },
+                  "inside": true,
+                  "rect": [
+                    29,
+                    687,
+                    308,
+                    10
+                  ],
+                  "clip": [
+                    17,
+                    442,
+                    343,
+                    723
+                  ],
+                  "blocked": [
+                    {
+                      "x": 245,
+                      "y": 692,
+                      "hit": "HIDE-LAYERS-BUTTON"
+                    },
+                    {
+                      "x": 275,
+                      "y": 692,
+                      "hit": "HIDE-LAYERS-BUTTON"
+                    },
+                    {
+                      "x": 306,
+                      "y": 692,
+                      "hit": "HIDE-LAYERS-BUTTON"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "key": "footer 3/3",
+              "ok": false,
+              "tries": [
+                {
+                  "where": "top",
+                  "scroll": {
+                    "scroller": "scada-ui-container",
+                    "scrollTop": 2413,
+                    "max": 2413
+                  },
+                  "inside": true,
+                  "rect": [
+                    29,
+                    701,
+                    308,
+                    10
+                  ],
+                  "clip": [
+                    17,
+                    442,
+                    343,
+                    723
+                  ],
+                  "blocked": [
+                    {
+                      "x": 245,
+                      "y": 706,
+                      "hit": "HIDE-LAYERS-BUTTON"
+                    },
+                    {
+                      "x": 275,
+                      "y": 706,
+                      "hit": "HIDE-LAYERS-BUTTON"
+                    },
+                    {
+                      "x": 306,
+                      "y": 706,
+                      "hit": "HIDE-LAYERS-BUTTON"
+                    }
+                  ]
+                },
+                {
+                  "where": "centre",
+                  "scroll": {
+                    "scroller": "scada-ui-container",
+                    "scrollTop": 2413,
+                    "max": 2413
+                  },
+                  "inside": true,
+                  "rect": [
+                    29,
+                    701,
+                    308,
+                    10
+                  ],
+                  "clip": [
+                    17,
+                    442,
+                    343,
+                    723
+                  ],
+                  "blocked": [
+                    {
+                      "x": 245,
+                      "y": 706,
+                      "hit": "HIDE-LAYERS-BUTTON"
+                    },
+                    {
+                      "x": 275,
+                      "y": 706,
+                      "hit": "HIDE-LAYERS-BUTTON"
+                    },
+                    {
+                      "x": 306,
+                      "y": 706,
+                      "hit": "HIDE-LAYERS-BUTTON"
+                    }
+                  ]
+                },
+                {
+                  "where": "bottom",
+                  "scroll": {
+                    "scroller": "scada-ui-container",
+                    "scrollTop": 2403,
+                    "max": 2413
+                  },
+                  "inside": true,
+                  "rect": [
+                    29,
+                    711,
+                    308,
+                    10
+                  ],
+                  "clip": [
+                    17,
+                    442,
+                    343,
+                    723
+                  ],
+                  "blocked": [
+                    {
+                      "x": 245,
+                      "y": 716,
+                      "hit": "HIDE-LAYERS-BUTTON"
+                    },
+                    {
+                      "x": 275,
+                      "y": 716,
+                      "hit": "HIDE-LAYERS-BUTTON"
+                    },
+                    {
+                      "x": 306,
+                      "y": 716,
+                      "hit": "HIDE-LAYERS-BUTTON"
+                    }
+                  ]
+                },
+                {
+                  "where": "min",
+                  "scroll": {
+                    "scroller": "scada-ui-container",
+                    "scrollTop": 0,
+                    "max": 2413
+                  },
+                  "inside": false,
+                  "rect": [
+                    29,
+                    3114,
+                    308,
+                    10
+                  ],
+                  "clip": [
+                    17,
+                    442,
+                    343,
+                    723
+                  ],
+                  "blocked": [
+                    {
+                      "x": 60,
+                      "y": 3119,
+                      "hit": "OUT-OF-VIEWPORT"
+                    },
+                    {
+                      "x": 91,
+                      "y": 3119,
+                      "hit": "OUT-OF-VIEWPORT"
+                    },
+                    {
+                      "x": 121,
+                      "y": 3119,
+                      "hit": "OUT-OF-VIEWPORT"
+                    },
+                    {
+                      "x": 152,
+                      "y": 3119,
+                      "hit": "OUT-OF-VIEWPORT"
+                    },
+                    {
+                      "x": 183,
+                      "y": 3119,
+                      "hit": "OUT-OF-VIEWPORT"
+                    },
+                    {
+                      "x": 214,
+                      "y": 3119,
+                      "hit": "OUT-OF-VIEWPORT"
+                    },
+                    {
+                      "x": 245,
+                      "y": 3119,
+                      "hit": "OUT-OF-VIEWPORT"
+                    },
+                    {
+                      "x": 275,
+                      "y": 3119,
+                      "hit": "OUT-OF-VIEWPORT"
+                    },
+                    {
+                      "x": 306,
+                      "y": 3119,
+                      "hit": "OUT-OF-VIEWPORT"
+                    }
+                  ]
+                },
+                {
+                  "where": "max",
+                  "scroll": {
+                    "scroller": "scada-ui-container",
+                    "scrollTop": 2413,
+                    "max": 2413
+                  },
+                  "inside": true,
+                  "rect": [
+                    29,
+                    701,
+                    308,
+                    10
+                  ],
+                  "clip": [
+                    17,
+                    442,
+                    343,
+                    723
+                  ],
+                  "blocked": [
+                    {
+                      "x": 245,
+                      "y": 706,
+                      "hit": "HIDE-LAYERS-BUTTON"
+                    },
+                    {
+                      "x": 275,
+                      "y": 706,
+                      "hit": "HIDE-LAYERS-BUTTON"
+                    },
+                    {
+                      "x": 306,
+                      "y": 706,
+                      "hit": "HIDE-LAYERS-BUTTON"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "seconds": 48
+    }
+  },
+  "finishedAt": "2026-10-26T23:39:35.972Z"
+}

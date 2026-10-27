@@ -1,0 +1,16 @@
+{
+  "route": "http://127.0.0.1:8179/wt/atlas/v/202610262323/",
+  "gen": "202610262323",
+  "harness": "lead-shim (offline-shim.mjs); Chromium 153.0.8010.12 headless; phones = Chromium emulation, not WebKit",
+  "node": "v22.23.4",
+  "startedAt": "2026-10-27T00:08:51.367Z",
+  "fakeClockDefault": "2026-10-26T18:40:00Z",
+  "cases": {},
+  "tests": {
+    "T8b": {
+      "result": "ERROR",
+      "error": "page.waitForTimeout: Page crashed\n    at waitForComposition (/tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/lightning/harness/offline-shim.mjs:114:16)\n    at async boot (/tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/t8-amendment/t8b.browser.mjs:68:21)\n    at async file:///tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/t8-amendment/t8b.browser.mjs:238:15\n    at async runTest (/tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/t8-amendment/t8b.browser.mjs:154:9)\n    at async file:///tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/t8-amendment/t8b.browser.mjs:235:1",
+      "seconds": 26
+    }
+  }
+}

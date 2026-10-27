@@ -1,0 +1,1456 @@
+{
+ "set": "/tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/data-contract-E/sets/merged-pr4-split-SYNTHETIC-threshold/data",
+ "now": "2026-10-27T00:45:00.034Z",
+ "module": "/tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/kv-regress/module-H.js",
+ "generation": "202610270246",
+ "constants": {
+  "IX_SCHEMA": "uk-lightning-history-index.v2",
+  "FEED_SCHEMA": "FeatureCollection/optical_lightning_flash",
+  "AR": "https://raw.githubusercontent.com/Ventusltd/lightning/main/data/history/",
+  "FEED": "https://raw.githubusercontent.com/Ventusltd/lightning/main/data/uk_lightning.geojson"
+ },
+ "unit": {
+  "index_schema": {
+   "schema": "uk-lightning-history-index.v2",
+   "schema_ok": true,
+   "observation": "satellite optical lightning flashes, not ground strikes",
+   "integrity": {
+    "state": "ok",
+    "alert": null,
+    "lost": []
+   }
+  },
+  "rows_rejected_by_vk": [],
+  "row_kinds": {
+   "none/null": 358,
+   "partial/0": 3,
+   "full/>0/path": 1,
+   "partial/>0/parts": 3,
+   "partial/>0/path": 1
+  },
+  "index": {
+   "ok": true,
+   "rows": 366,
+   "cutoff": "2025-10-27",
+   "gen": "2026-10-27T00:40:00.000Z",
+   "iv": 1,
+   "nextDue": "2026-10-27T03:40:00.000Z",
+   "covStart": "2026-10-20T22:41:54.847Z",
+   "lastScan": "2026-10-27T00:20:09.000Z",
+   "windows": 16,
+   "lost": [],
+   "stale_now": false
+  },
+  "shards": [
+   {
+    "date": "2026-10-21",
+    "path": "days/2026/10/21.json",
+    "ok": true,
+    "features": 31,
+    "okFeatures": 31
+   },
+   {
+    "date": "2026-10-22",
+    "path": "days/2026/10/22/00.json",
+    "ok": true,
+    "features": 15,
+    "okFeatures": 15
+   },
+   {
+    "date": "2026-10-22",
+    "path": "days/2026/10/22/01.json",
+    "ok": true,
+    "features": 8,
+    "okFeatures": 8
+   },
+   {
+    "date": "2026-10-22",
+    "path": "days/2026/10/22/02.json",
+    "ok": true,
+    "features": 9,
+    "okFeatures": 9
+   },
+   {
+    "date": "2026-10-22",
+    "path": "days/2026/10/22/03.json",
+    "ok": true,
+    "features": 3,
+    "okFeatures": 3
+   },
+   {
+    "date": "2026-10-22",
+    "path": "days/2026/10/22/05.json",
+    "ok": true,
+    "features": 2,
+    "okFeatures": 2
+   },
+   {
+    "date": "2026-10-22",
+    "path": "days/2026/10/22/06.json",
+    "ok": true,
+    "features": 10,
+    "okFeatures": 10
+   },
+   {
+    "date": "2026-10-22",
+    "path": "days/2026/10/22/07.json",
+    "ok": true,
+    "features": 8,
+    "okFeatures": 8
+   },
+   {
+    "date": "2026-10-22",
+    "path": "days/2026/10/22/18.json",
+    "ok": true,
+    "features": 5,
+    "okFeatures": 5
+   },
+   {
+    "date": "2026-10-22",
+    "path": "days/2026/10/22/19.json",
+    "ok": true,
+    "features": 1,
+    "okFeatures": 1
+   },
+   {
+    "date": "2026-10-22",
+    "path": "days/2026/10/22/20.json",
+    "ok": true,
+    "features": 5,
+    "okFeatures": 5
+   },
+   {
+    "date": "2026-10-22",
+    "path": "days/2026/10/22/22.json",
+    "ok": true,
+    "features": 1,
+    "okFeatures": 1
+   },
+   {
+    "date": "2026-10-23",
+    "path": "days/2026/10/23/01.json",
+    "ok": true,
+    "features": 1,
+    "okFeatures": 1
+   },
+   {
+    "date": "2026-10-23",
+    "path": "days/2026/10/23/02.json",
+    "ok": true,
+    "features": 23,
+    "okFeatures": 23
+   },
+   {
+    "date": "2026-10-23",
+    "path": "days/2026/10/23/03.json",
+    "ok": true,
+    "features": 10,
+    "okFeatures": 10
+   },
+   {
+    "date": "2026-10-23",
+    "path": "days/2026/10/23/14.json",
+    "ok": true,
+    "features": 59,
+    "okFeatures": 59
+   },
+   {
+    "date": "2026-10-23",
+    "path": "days/2026/10/23/15.json",
+    "ok": true,
+    "features": 71,
+    "okFeatures": 71
+   },
+   {
+    "date": "2026-10-23",
+    "path": "days/2026/10/23/16.json",
+    "ok": true,
+    "features": 21,
+    "okFeatures": 21
+   },
+   {
+    "date": "2026-10-23",
+    "path": "days/2026/10/23/18.json",
+    "ok": true,
+    "features": 2,
+    "okFeatures": 2
+   },
+   {
+    "date": "2026-10-23",
+    "path": "days/2026/10/23/19.json",
+    "ok": true,
+    "features": 2,
+    "okFeatures": 2
+   },
+   {
+    "date": "2026-10-24",
+    "path": "days/2026/10/24/12.json",
+    "ok": true,
+    "features": 1,
+    "okFeatures": 1
+   },
+   {
+    "date": "2026-10-24",
+    "path": "days/2026/10/24/13.json",
+    "ok": true,
+    "features": 41,
+    "okFeatures": 41
+   },
+   {
+    "date": "2026-10-24",
+    "path": "days/2026/10/24/14.json",
+    "ok": true,
+    "features": 13,
+    "okFeatures": 13
+   },
+   {
+    "date": "2026-10-24",
+    "path": "days/2026/10/24/18.json",
+    "ok": true,
+    "features": 10,
+    "okFeatures": 10
+   },
+   {
+    "date": "2026-10-24",
+    "path": "days/2026/10/24/19.json",
+    "ok": true,
+    "features": 19,
+    "okFeatures": 19
+   },
+   {
+    "date": "2026-10-24",
+    "path": "days/2026/10/24/20.json",
+    "ok": true,
+    "features": 11,
+    "okFeatures": 11
+   },
+   {
+    "date": "2026-10-24",
+    "path": "days/2026/10/24/21.json",
+    "ok": true,
+    "features": 17,
+    "okFeatures": 17
+   },
+   {
+    "date": "2026-10-24",
+    "path": "days/2026/10/24/22.json",
+    "ok": true,
+    "features": 6,
+    "okFeatures": 6
+   },
+   {
+    "date": "2026-10-25",
+    "path": "days/2026/10/25.json",
+    "ok": true,
+    "features": 3,
+    "okFeatures": 3
+   }
+  ],
+  "cv_since_20oct": {
+   "f": 0.5723,
+   "runs": 18,
+   "unknownDates": [],
+   "lostDates": 0,
+   "days": 8,
+   "notYet_min": 25,
+   "beforeStart_min": 1362
+  },
+  "feed": {
+   "isFC": true,
+   "features": 408,
+   "accepted": 408,
+   "rejected": 0,
+   "observation_kinds": [
+    "optical_lightning_flash"
+   ],
+   "meta_keys_module_reads": {
+    "query_start_utc": "2026-10-26T21:27:07.304Z",
+    "query_end_utc": "2026-10-27T00:27:07.304Z",
+    "latest_detection_utc": "2026-10-25T11:15:58.149Z"
+   },
+   "first": "2026-10-21T12:32:19.282Z",
+   "last": "2026-10-25T11:15:58.149Z",
+   "feed_age_h": 0.3
+  },
+  "status_json_present": false
+ },
+ "panel": [
+  {
+   "tag": "ON (default 24h)",
+   "label": "Lightning Flashes (Optical) [UNKNOWN | 24h]",
+   "status": "PARTIAL · 0 FLASHES DRAWN · SEARCHED 35%",
+   "dot": "#ffcc00",
+   "caps": {
+    "notice": "",
+    "window": "Window  2026-10-26 00:45 UTC → 2026-10-27 00:45 UTC (24 hours, latest)",
+    "actual": "Actual  no archived flashes within this window",
+    "flashes": "Flashes 0 archived in window (unknown, not zero)",
+    "refresh": "Refresh archive 2026-10-27 00:40 UTC (0h 5min ago; expected every 1 h)",
+    "searched": "Searched EUMETSAT 35% of window · 3 successful runs · 2026-10-26 01:49 UTC → 2026-10-27 00:20 UTC",
+    "warning": "Not yet ingested: last 0h 25min of window (unknown, not zero)",
+    "footer": "Times UTC · Optical flashes seen by MTG Lightning Imager (EUMETSAT L2-LFL), not confirmed ground strikes · Missing days are unknown, not zero · UK box −11.0,49.5 → 3.0,61.5"
+   },
+   "last": {
+    "state": "PARTIAL",
+    "stale": false,
+    "mode": "detail",
+    "period": "24h",
+    "drawn": 0,
+    "cluster": false,
+    "cap": 40000,
+    "cap_source": "index",
+    "index_count": 0,
+    "failures": 0,
+    "reasons": [
+     "tail unknown"
+    ]
+   },
+   "layer": "none",
+   "drawn": 0,
+   "points_btn_hidden": true,
+   "prev_disabled": false
+  },
+  {
+   "tag": "12h",
+   "label": "Lightning Flashes (Optical) [UNKNOWN | 12h]",
+   "status": "PARTIAL · 0 FLASHES DRAWN · SEARCHED 26%",
+   "dot": "#ffcc00",
+   "caps": {
+    "notice": "",
+    "window": "Window  2026-10-26 12:45 UTC → 2026-10-27 00:45 UTC (12 hours, latest)",
+    "actual": "Actual  no archived flashes within this window",
+    "flashes": "Flashes 0 archived in window (unknown, not zero)",
+    "refresh": "Refresh archive 2026-10-27 00:40 UTC (0h 5min ago; expected every 1 h)",
+    "searched": "Searched EUMETSAT 26% of window · 2 successful runs · 2026-10-26 12:45 UTC → 2026-10-27 00:20 UTC",
+    "warning": "Not yet ingested: last 0h 25min of window (unknown, not zero)",
+    "footer": "Times UTC · Optical flashes seen by MTG Lightning Imager (EUMETSAT L2-LFL), not confirmed ground strikes · Missing days are unknown, not zero · UK box −11.0,49.5 → 3.0,61.5"
+   },
+   "last": {
+    "state": "PARTIAL",
+    "stale": false,
+    "mode": "detail",
+    "period": "12h",
+    "drawn": 0,
+    "cluster": false,
+    "cap": 40000,
+    "cap_source": "index",
+    "index_count": 0,
+    "failures": 0,
+    "reasons": [
+     "tail unknown"
+    ]
+   },
+   "layer": "none",
+   "drawn": 0,
+   "points_btn_hidden": true,
+   "prev_disabled": false
+  },
+  {
+   "tag": "48h",
+   "label": "Lightning Flashes (Optical) [≥3 | 48h]",
+   "status": "PARTIAL · 3 FLASHES DRAWN · SEARCHED 47%",
+   "dot": "#ffcc00",
+   "caps": {
+    "notice": "",
+    "window": "Window  2026-10-25 00:45 UTC → 2026-10-27 00:45 UTC (48 hours, latest)",
+    "actual": "Actual  first 2026-10-25 03:28:34 UTC · last 2026-10-25 11:15:58 UTC",
+    "flashes": "Flashes 3 archived in window · 3 drawn as points (cap 40,000)",
+    "refresh": "Refresh archive 2026-10-27 00:40 UTC (0h 5min ago; expected every 1 h)",
+    "searched": "Searched EUMETSAT 47% of window · 8 successful runs · 2026-10-25 01:43 UTC → 2026-10-27 00:20 UTC",
+    "warning": "Not yet ingested: last 0h 25min of window (unknown, not zero)",
+    "footer": "Times UTC · Optical flashes seen by MTG Lightning Imager (EUMETSAT L2-LFL), not confirmed ground strikes · Missing days are unknown, not zero · UK box −11.0,49.5 → 3.0,61.5"
+   },
+   "last": {
+    "state": "PARTIAL",
+    "stale": false,
+    "mode": "detail",
+    "period": "48h",
+    "drawn": 3,
+    "cluster": false,
+    "cap": 40000,
+    "cap_source": "index",
+    "index_count": 3,
+    "failures": 0,
+    "reasons": [
+     "tail unknown"
+    ]
+   },
+   "layer": "visible",
+   "drawn": 3,
+   "points_btn_hidden": true,
+   "prev_disabled": false
+  },
+  {
+   "tag": "7d",
+   "label": "Lightning Flashes (Optical) [≥408 | 7d]",
+   "status": "PARTIAL · 408 FLASHES DRAWN · SEARCHED 57%",
+   "dot": "#ffcc00",
+   "caps": {
+    "notice": "",
+    "window": "Window  2026-10-20 00:45 UTC → 2026-10-27 00:45 UTC (7 days, latest)",
+    "actual": "Actual  first 2026-10-21 12:32:19 UTC · last 2026-10-25 11:15:58 UTC",
+    "flashes": "Flashes 408 archived in window · 408 drawn as points (cap 40,000)",
+    "refresh": "Refresh archive 2026-10-27 00:40 UTC (0h 5min ago; expected every 1 h)",
+    "searched": "Searched EUMETSAT 57% of window · 18 successful runs · 2026-10-20 22:41 UTC → 2026-10-27 00:20 UTC",
+    "warning": "Not yet ingested: last 0h 25min of window (unknown, not zero) · Unknown: 2026-10-20 to 2026-10-20 precede archive start 2026-10-20 22:41 UTC (not zero)",
+    "footer": "Times UTC · Optical flashes seen by MTG Lightning Imager (EUMETSAT L2-LFL), not confirmed ground strikes · Missing days are unknown, not zero · UK box −11.0,49.5 → 3.0,61.5"
+   },
+   "last": {
+    "state": "PARTIAL",
+    "stale": false,
+    "mode": "detail",
+    "period": "7d",
+    "drawn": 408,
+    "cluster": false,
+    "cap": 40000,
+    "cap_source": "index",
+    "index_count": 408,
+    "failures": 0,
+    "reasons": [
+     "tail unknown",
+     "head unknown"
+    ]
+   },
+   "layer": "visible",
+   "drawn": 408,
+   "points_btn_hidden": true,
+   "prev_disabled": false
+  },
+  {
+   "tag": "30d",
+   "label": "Lightning Flashes (Optical) [≥408 | 30d]",
+   "status": "PARTIAL · 408 FLASHES DRAWN · SEARCHED 13%",
+   "dot": "#ffcc00",
+   "caps": {
+    "notice": "",
+    "window": "Window  2026-09-27 00:45 UTC → 2026-10-27 00:45 UTC (30 days, latest)",
+    "actual": "Actual  first 2026-10-21 12:32:19 UTC · last 2026-10-25 11:15:58 UTC",
+    "flashes": "Flashes 408 archived in window · 408 drawn as points (cap 40,000)",
+    "refresh": "Refresh archive 2026-10-27 00:40 UTC (0h 5min ago; expected every 1 h)",
+    "searched": "Searched EUMETSAT 13% of window · 18 successful runs · 2026-10-20 22:41 UTC → 2026-10-27 00:20 UTC",
+    "warning": "Not yet ingested: last 0h 25min of window (unknown, not zero) · Unknown: 2026-09-27 to 2026-10-20 precede archive start 2026-10-20 22:41 UTC (not zero) · Unknown: 23 of 31 UTC dates have no collection run",
+    "footer": "Times UTC · Optical flashes seen by MTG Lightning Imager (EUMETSAT L2-LFL), not confirmed ground strikes · Missing days are unknown, not zero · UK box −11.0,49.5 → 3.0,61.5"
+   },
+   "last": {
+    "state": "PARTIAL",
+    "stale": false,
+    "mode": "detail",
+    "period": "30d",
+    "drawn": 408,
+    "cluster": false,
+    "cap": 40000,
+    "cap_source": "index",
+    "index_count": 408,
+    "failures": 0,
+    "reasons": [
+     "tail unknown",
+     "head unknown",
+     "23 unscanned dates"
+    ]
+   },
+   "layer": "visible",
+   "drawn": 408,
+   "points_btn_hidden": true,
+   "prev_disabled": false
+  },
+  {
+   "tag": "3m",
+   "label": "Lightning Flashes (Optical) [≥408 | 3m]",
+   "status": "PARTIAL · 408 ARCHIVED · SEARCHED 4%",
+   "dot": "#ffcc00",
+   "caps": {
+    "notice": "",
+    "window": "Window  2026-07-27 00:45 UTC → 2026-10-27 00:45 UTC (3 months, latest)",
+    "actual": "Actual  on the 93 overlapping UTC dates: first 2026-10-21 12:32:19 UTC · last 2026-10-25 11:15:58 UTC (day-level; may lie outside a midday window edge)",
+    "flashes": "Flashes 408 archived on 93 overlapping UTC dates · none drawn (summary mode; choose ≤31 days for points)",
+    "refresh": "Refresh archive 2026-10-27 00:40 UTC (0h 5min ago; expected every 1 h)",
+    "searched": "Searched EUMETSAT 4% of window · 18 successful runs · 2026-10-20 22:41 UTC → 2026-10-27 00:20 UTC",
+    "warning": "Not yet ingested: last 0h 25min of window (unknown, not zero) · Unknown: 2026-07-27 to 2026-10-20 precede archive start 2026-10-20 22:41 UTC (not zero) · Unknown: 85 of 93 UTC dates have no collection run",
+    "footer": "Times UTC · Optical flashes seen by MTG Lightning Imager (EUMETSAT L2-LFL), not confirmed ground strikes · Missing days are unknown, not zero · UK box −11.0,49.5 → 3.0,61.5"
+   },
+   "last": {
+    "state": "PARTIAL",
+    "stale": false,
+    "mode": "overview",
+    "period": "3m",
+    "drawn": 0,
+    "cluster": false,
+    "cap": 40000,
+    "cap_source": null,
+    "index_count": null,
+    "failures": 0,
+    "reasons": [
+     "tail unknown",
+     "head unknown",
+     "85 unscanned dates"
+    ]
+   },
+   "layer": "none",
+   "drawn": 0,
+   "points_btn_hidden": true,
+   "prev_disabled": false
+  },
+  {
+   "tag": "6m",
+   "label": "Lightning Flashes (Optical) [≥408 | 6m]",
+   "status": "PARTIAL · 408 ARCHIVED · SEARCHED 2%",
+   "dot": "#ffcc00",
+   "caps": {
+    "notice": "",
+    "window": "Window  2026-04-27 00:45 UTC → 2026-10-27 00:45 UTC (6 months, latest)",
+    "actual": "Actual  on the 184 overlapping UTC dates: first 2026-10-21 12:32:19 UTC · last 2026-10-25 11:15:58 UTC (day-level; may lie outside a midday window edge)",
+    "flashes": "Flashes 408 archived on 184 overlapping UTC dates · none drawn (summary mode; choose ≤31 days for points)",
+    "refresh": "Refresh archive 2026-10-27 00:40 UTC (0h 5min ago; expected every 1 h)",
+    "searched": "Searched EUMETSAT 2% of window · 18 successful runs · 2026-10-20 22:41 UTC → 2026-10-27 00:20 UTC",
+    "warning": "Not yet ingested: last 0h 25min of window (unknown, not zero) · Unknown: 2026-04-27 to 2026-10-20 precede archive start 2026-10-20 22:41 UTC (not zero) · Unknown: 176 of 184 UTC dates have no collection run",
+    "footer": "Times UTC · Optical flashes seen by MTG Lightning Imager (EUMETSAT L2-LFL), not confirmed ground strikes · Missing days are unknown, not zero · UK box −11.0,49.5 → 3.0,61.5"
+   },
+   "last": {
+    "state": "PARTIAL",
+    "stale": false,
+    "mode": "overview",
+    "period": "6m",
+    "drawn": 0,
+    "cluster": false,
+    "cap": 40000,
+    "cap_source": null,
+    "index_count": null,
+    "failures": 0,
+    "reasons": [
+     "tail unknown",
+     "head unknown",
+     "176 unscanned dates"
+    ]
+   },
+   "layer": "none",
+   "drawn": 0,
+   "points_btn_hidden": true,
+   "prev_disabled": false
+  },
+  {
+   "tag": "12m",
+   "label": "Lightning Flashes (Optical) [≥408 | 12m]",
+   "status": "PARTIAL · 408 ARCHIVED · SEARCHED 1%",
+   "dot": "#ffcc00",
+   "caps": {
+    "notice": "",
+    "window": "Window  2025-10-27 00:45 UTC → 2026-10-27 00:45 UTC (12 months, latest)",
+    "actual": "Actual  on the 366 overlapping UTC dates: first 2026-10-21 12:32:19 UTC · last 2026-10-25 11:15:58 UTC (day-level; may lie outside a midday window edge)",
+    "flashes": "Flashes 408 archived on 366 overlapping UTC dates · none drawn (summary mode; choose ≤31 days for points)",
+    "refresh": "Refresh archive 2026-10-27 00:40 UTC (0h 5min ago; expected every 1 h)",
+    "searched": "Searched EUMETSAT 1% of window · 18 successful runs · 2026-10-20 22:41 UTC → 2026-10-27 00:20 UTC",
+    "warning": "Not yet ingested: last 0h 25min of window (unknown, not zero) · Unknown: 2025-10-27 to 2026-10-20 precede archive start 2026-10-20 22:41 UTC (not zero) · Unknown: 358 of 366 UTC dates have no collection run",
+    "footer": "Times UTC · Optical flashes seen by MTG Lightning Imager (EUMETSAT L2-LFL), not confirmed ground strikes · Missing days are unknown, not zero · UK box −11.0,49.5 → 3.0,61.5"
+   },
+   "last": {
+    "state": "PARTIAL",
+    "stale": false,
+    "mode": "overview",
+    "period": "12m",
+    "drawn": 0,
+    "cluster": false,
+    "cap": 40000,
+    "cap_source": null,
+    "index_count": null,
+    "failures": 0,
+    "reasons": [
+     "tail unknown",
+     "head unknown",
+     "358 unscanned dates"
+    ]
+   },
+   "layer": "none",
+   "drawn": 0,
+   "points_btn_hidden": true,
+   "prev_disabled": false
+  },
+  {
+   "tag": "7d PREV",
+   "label": "Lightning Flashes (Optical) [UNKNOWN | 7d]",
+   "status": "UNKNOWN",
+   "dot": "#ff8800",
+   "caps": {
+    "notice": "",
+    "window": "Window  2026-10-13 00:45 UTC → 2026-10-20 00:45 UTC (7 days, end exclusive)",
+    "actual": "Actual  no archived flashes within this window",
+    "flashes": "Flashes 0 archived in window (unknown, not zero)",
+    "refresh": "Refresh archive 2026-10-27 00:40 UTC (0h 5min ago; expected every 1 h)",
+    "searched": "Searched EUMETSAT 0% of window — no collection run covers these dates",
+    "warning": "Unknown: 2026-10-13 to 2026-10-20 precede archive start 2026-10-20 22:41 UTC (not zero) · Unknown: 7 of 8 UTC dates have no collection run",
+    "footer": "Times UTC · Optical flashes seen by MTG Lightning Imager (EUMETSAT L2-LFL), not confirmed ground strikes · Missing days are unknown, not zero · UK box −11.0,49.5 → 3.0,61.5"
+   },
+   "last": {
+    "state": "UNKNOWN",
+    "stale": false,
+    "mode": "detail",
+    "period": "7d",
+    "drawn": 0,
+    "cluster": false,
+    "cap": 40000,
+    "cap_source": "index",
+    "index_count": 0,
+    "failures": 0,
+    "reasons": [
+     "0% searched"
+    ]
+   },
+   "layer": "none",
+   "drawn": 0,
+   "points_btn_hidden": true,
+   "prev_disabled": false
+  },
+  {
+   "tag": "custom 2026-10-21..25",
+   "label": "Lightning Flashes (Optical) [≥408 | custom]",
+   "status": "PARTIAL · 408 FLASHES DRAWN · SEARCHED 72%",
+   "dot": "#ffcc00",
+   "caps": {
+    "notice": "",
+    "window": "Window  UTC dates 2026-10-21 to 2026-10-25 inclusive = 2026-10-21 00:00 UTC → 2026-10-26 00:00 UTC",
+    "actual": "Actual  first 2026-10-21 12:32:19 UTC · last 2026-10-25 11:15:58 UTC",
+    "flashes": "Flashes 408 archived in window · 408 drawn as points (cap 40,000)",
+    "refresh": "Refresh archive 2026-10-27 00:40 UTC (0h 5min ago; expected every 1 h)",
+    "searched": "Searched EUMETSAT 72% of window · 15 successful runs · 2026-10-21 00:00 UTC → 2026-10-25 23:10 UTC",
+    "warning": "",
+    "footer": "Times UTC · Optical flashes seen by MTG Lightning Imager (EUMETSAT L2-LFL), not confirmed ground strikes · Missing days are unknown, not zero · UK box −11.0,49.5 → 3.0,61.5"
+   },
+   "last": {
+    "state": "PARTIAL",
+    "stale": false,
+    "mode": "detail",
+    "period": "custom",
+    "drawn": 408,
+    "cluster": false,
+    "cap": 40000,
+    "cap_source": "index",
+    "index_count": 408,
+    "failures": 0,
+    "reasons": [
+     "gaps in window"
+    ]
+   },
+   "layer": "visible",
+   "drawn": 408,
+   "points_btn_hidden": true,
+   "prev_disabled": true
+  },
+  {
+   "tag": "custom 2026-10-23 only",
+   "label": "Lightning Flashes (Optical) [≥189 | custom]",
+   "status": "PARTIAL · 189 FLASHES DRAWN · SEARCHED 49%",
+   "dot": "#ffcc00",
+   "caps": {
+    "notice": "",
+    "window": "Window  UTC dates 2026-10-23 to 2026-10-23 inclusive = 2026-10-23 00:00 UTC → 2026-10-24 00:00 UTC",
+    "actual": "Actual  first 2026-10-23 01:53:48 UTC · last 2026-10-23 19:50:08 UTC",
+    "flashes": "Flashes 189 archived in window · 189 drawn as points (cap 40,000)",
+    "refresh": "Refresh archive 2026-10-27 00:40 UTC (0h 5min ago; expected every 1 h)",
+    "searched": "Searched EUMETSAT 49% of window · 4 successful runs · 2026-10-23 01:52 UTC → 2026-10-23 21:26 UTC",
+    "warning": "",
+    "footer": "Times UTC · Optical flashes seen by MTG Lightning Imager (EUMETSAT L2-LFL), not confirmed ground strikes · Missing days are unknown, not zero · UK box −11.0,49.5 → 3.0,61.5"
+   },
+   "last": {
+    "state": "PARTIAL",
+    "stale": false,
+    "mode": "detail",
+    "period": "custom",
+    "drawn": 189,
+    "cluster": false,
+    "cap": 40000,
+    "cap_source": "index",
+    "index_count": 189,
+    "failures": 0,
+    "reasons": [
+     "gaps in window"
+    ]
+   },
+   "layer": "visible",
+   "drawn": 189,
+   "points_btn_hidden": true,
+   "prev_disabled": true
+  }
+ ],
+ "requests": {
+  "fetch": [
+   [
+    "history/days/2026/10/21.json",
+    200,
+    "default"
+   ],
+   [
+    "history/days/2026/10/22/00.json",
+    200,
+    "default"
+   ],
+   [
+    "history/days/2026/10/22/01.json",
+    200,
+    "default"
+   ],
+   [
+    "history/days/2026/10/22/02.json",
+    200,
+    "default"
+   ],
+   [
+    "history/days/2026/10/22/03.json",
+    200,
+    "default"
+   ],
+   [
+    "history/days/2026/10/22/05.json",
+    200,
+    "default"
+   ],
+   [
+    "history/days/2026/10/22/06.json",
+    200,
+    "default"
+   ],
+   [
+    "history/days/2026/10/22/07.json",
+    200,
+    "default"
+   ],
+   [
+    "history/days/2026/10/22/18.json",
+    200,
+    "default"
+   ],
+   [
+    "history/days/2026/10/22/19.json",
+    200,
+    "default"
+   ],
+   [
+    "history/days/2026/10/22/20.json",
+    200,
+    "default"
+   ],
+   [
+    "history/days/2026/10/22/22.json",
+    200,
+    "default"
+   ],
+   [
+    "history/days/2026/10/23/01.json",
+    200,
+    "default"
+   ],
+   [
+    "history/days/2026/10/23/02.json",
+    200,
+    "default"
+   ],
+   [
+    "history/days/2026/10/23/03.json",
+    200,
+    "default"
+   ],
+   [
+    "history/days/2026/10/23/14.json",
+    200,
+    "default"
+   ],
+   [
+    "history/days/2026/10/23/15.json",
+    200,
+    "default"
+   ],
+   [
+    "history/days/2026/10/23/16.json",
+    200,
+    "default"
+   ],
+   [
+    "history/days/2026/10/23/18.json",
+    200,
+    "default"
+   ],
+   [
+    "history/days/2026/10/23/19.json",
+    200,
+    "default"
+   ],
+   [
+    "history/days/2026/10/24/12.json",
+    200,
+    "default"
+   ],
+   [
+    "history/days/2026/10/24/13.json",
+    200,
+    "default"
+   ],
+   [
+    "history/days/2026/10/24/14.json",
+    200,
+    "default"
+   ],
+   [
+    "history/days/2026/10/24/18.json",
+    200,
+    "default"
+   ],
+   [
+    "history/days/2026/10/24/19.json",
+    200,
+    "default"
+   ],
+   [
+    "history/days/2026/10/24/20.json",
+    200,
+    "default"
+   ],
+   [
+    "history/days/2026/10/24/21.json",
+    200,
+    "default"
+   ],
+   [
+    "history/days/2026/10/24/22.json",
+    200,
+    "default"
+   ],
+   [
+    "history/days/2026/10/25.json",
+    200,
+    "no-cache"
+   ],
+   [
+    "history/index.json",
+    200,
+    "no-cache"
+   ],
+   [
+    "history/days/2026/10/25.json",
+    200,
+    "no-cache"
+   ],
+   [
+    "history/days/2026/10/21.json",
+    200,
+    "default"
+   ],
+   [
+    "history/days/2026/10/22/00.json",
+    200,
+    "default"
+   ],
+   [
+    "history/days/2026/10/22/01.json",
+    200,
+    "default"
+   ],
+   [
+    "history/days/2026/10/22/02.json",
+    200,
+    "default"
+   ],
+   [
+    "history/days/2026/10/22/03.json",
+    200,
+    "default"
+   ],
+   [
+    "history/days/2026/10/22/05.json",
+    200,
+    "default"
+   ],
+   [
+    "history/days/2026/10/22/06.json",
+    200,
+    "default"
+   ],
+   [
+    "history/days/2026/10/22/07.json",
+    200,
+    "default"
+   ],
+   [
+    "history/days/2026/10/22/18.json",
+    200,
+    "default"
+   ],
+   [
+    "history/days/2026/10/22/19.json",
+    200,
+    "default"
+   ],
+   [
+    "history/days/2026/10/22/20.json",
+    200,
+    "default"
+   ],
+   [
+    "history/days/2026/10/22/22.json",
+    200,
+    "default"
+   ],
+   [
+    "history/days/2026/10/23/01.json",
+    200,
+    "default"
+   ],
+   [
+    "history/days/2026/10/23/02.json",
+    200,
+    "default"
+   ],
+   [
+    "history/days/2026/10/23/03.json",
+    200,
+    "default"
+   ],
+   [
+    "history/days/2026/10/23/14.json",
+    200,
+    "default"
+   ],
+   [
+    "history/days/2026/10/23/15.json",
+    200,
+    "default"
+   ],
+   [
+    "history/days/2026/10/23/16.json",
+    200,
+    "default"
+   ],
+   [
+    "history/days/2026/10/23/18.json",
+    200,
+    "default"
+   ],
+   [
+    "history/days/2026/10/23/19.json",
+    200,
+    "default"
+   ],
+   [
+    "history/days/2026/10/24/12.json",
+    200,
+    "default"
+   ],
+   [
+    "history/days/2026/10/24/13.json",
+    200,
+    "default"
+   ],
+   [
+    "history/days/2026/10/24/14.json",
+    200,
+    "default"
+   ],
+   [
+    "history/days/2026/10/24/18.json",
+    200,
+    "default"
+   ],
+   [
+    "history/days/2026/10/24/19.json",
+    200,
+    "default"
+   ],
+   [
+    "history/days/2026/10/24/20.json",
+    200,
+    "default"
+   ],
+   [
+    "history/days/2026/10/24/21.json",
+    200,
+    "default"
+   ],
+   [
+    "history/days/2026/10/24/22.json",
+    200,
+    "default"
+   ],
+   [
+    "history/days/2026/10/25.json",
+    200,
+    "no-cache"
+   ],
+   [
+    "history/days/2026/10/21.json",
+    200,
+    "default"
+   ],
+   [
+    "history/days/2026/10/22/00.json",
+    200,
+    "default"
+   ],
+   [
+    "history/days/2026/10/22/01.json",
+    200,
+    "default"
+   ],
+   [
+    "history/days/2026/10/22/02.json",
+    200,
+    "default"
+   ],
+   [
+    "history/days/2026/10/22/03.json",
+    200,
+    "default"
+   ],
+   [
+    "history/days/2026/10/22/05.json",
+    200,
+    "default"
+   ],
+   [
+    "history/days/2026/10/22/06.json",
+    200,
+    "default"
+   ],
+   [
+    "history/days/2026/10/22/07.json",
+    200,
+    "default"
+   ],
+   [
+    "history/days/2026/10/22/18.json",
+    200,
+    "default"
+   ],
+   [
+    "history/days/2026/10/22/19.json",
+    200,
+    "default"
+   ],
+   [
+    "history/days/2026/10/22/20.json",
+    200,
+    "default"
+   ],
+   [
+    "history/days/2026/10/22/22.json",
+    200,
+    "default"
+   ],
+   [
+    "history/days/2026/10/23/01.json",
+    200,
+    "default"
+   ],
+   [
+    "history/days/2026/10/23/02.json",
+    200,
+    "default"
+   ],
+   [
+    "history/days/2026/10/23/03.json",
+    200,
+    "default"
+   ],
+   [
+    "history/days/2026/10/23/14.json",
+    200,
+    "default"
+   ],
+   [
+    "history/days/2026/10/23/15.json",
+    200,
+    "default"
+   ],
+   [
+    "history/days/2026/10/23/16.json",
+    200,
+    "default"
+   ],
+   [
+    "history/days/2026/10/23/18.json",
+    200,
+    "default"
+   ],
+   [
+    "history/days/2026/10/23/19.json",
+    200,
+    "default"
+   ],
+   [
+    "history/days/2026/10/24/12.json",
+    200,
+    "default"
+   ],
+   [
+    "history/days/2026/10/24/13.json",
+    200,
+    "default"
+   ],
+   [
+    "history/days/2026/10/24/14.json",
+    200,
+    "default"
+   ],
+   [
+    "history/days/2026/10/24/18.json",
+    200,
+    "default"
+   ],
+   [
+    "history/days/2026/10/24/19.json",
+    200,
+    "default"
+   ],
+   [
+    "history/days/2026/10/24/20.json",
+    200,
+    "default"
+   ],
+   [
+    "history/days/2026/10/24/21.json",
+    200,
+    "default"
+   ],
+   [
+    "history/days/2026/10/24/22.json",
+    200,
+    "default"
+   ],
+   [
+    "history/days/2026/10/25.json",
+    200,
+    "no-cache"
+   ],
+   [
+    "history/days/2026/10/21.json",
+    200,
+    "default"
+   ],
+   [
+    "history/days/2026/10/22/00.json",
+    200,
+    "default"
+   ],
+   [
+    "history/days/2026/10/22/01.json",
+    200,
+    "default"
+   ],
+   [
+    "history/days/2026/10/22/02.json",
+    200,
+    "default"
+   ],
+   [
+    "history/days/2026/10/22/03.json",
+    200,
+    "default"
+   ],
+   [
+    "history/days/2026/10/22/05.json",
+    200,
+    "default"
+   ],
+   [
+    "history/days/2026/10/22/06.json",
+    200,
+    "default"
+   ],
+   [
+    "history/days/2026/10/22/07.json",
+    200,
+    "default"
+   ],
+   [
+    "history/days/2026/10/22/18.json",
+    200,
+    "default"
+   ],
+   [
+    "history/days/2026/10/22/19.json",
+    200,
+    "default"
+   ],
+   [
+    "history/days/2026/10/22/20.json",
+    200,
+    "default"
+   ],
+   [
+    "history/days/2026/10/22/22.json",
+    200,
+    "default"
+   ],
+   [
+    "history/days/2026/10/23/01.json",
+    200,
+    "default"
+   ],
+   [
+    "history/days/2026/10/23/02.json",
+    200,
+    "default"
+   ],
+   [
+    "history/days/2026/10/23/03.json",
+    200,
+    "default"
+   ],
+   [
+    "history/days/2026/10/23/14.json",
+    200,
+    "default"
+   ],
+   [
+    "history/days/2026/10/23/15.json",
+    200,
+    "default"
+   ],
+   [
+    "history/days/2026/10/23/16.json",
+    200,
+    "default"
+   ],
+   [
+    "history/days/2026/10/23/18.json",
+    200,
+    "default"
+   ],
+   [
+    "history/days/2026/10/23/19.json",
+    200,
+    "default"
+   ],
+   [
+    "history/days/2026/10/24/12.json",
+    200,
+    "default"
+   ],
+   [
+    "history/days/2026/10/24/13.json",
+    200,
+    "default"
+   ],
+   [
+    "history/days/2026/10/24/14.json",
+    200,
+    "default"
+   ],
+   [
+    "history/days/2026/10/24/18.json",
+    200,
+    "default"
+   ],
+   [
+    "history/days/2026/10/24/19.json",
+    200,
+    "default"
+   ],
+   [
+    "history/days/2026/10/24/20.json",
+    200,
+    "default"
+   ],
+   [
+    "history/days/2026/10/24/21.json",
+    200,
+    "default"
+   ],
+   [
+    "history/days/2026/10/24/22.json",
+    200,
+    "default"
+   ],
+   [
+    "history/days/2026/10/25.json",
+    200,
+    "no-cache"
+   ],
+   [
+    "history/days/2026/10/21.json",
+    200,
+    "default"
+   ],
+   [
+    "history/days/2026/10/22/00.json",
+    200,
+    "default"
+   ],
+   [
+    "history/days/2026/10/22/01.json",
+    200,
+    "default"
+   ],
+   [
+    "history/days/2026/10/22/02.json",
+    200,
+    "default"
+   ],
+   [
+    "history/days/2026/10/22/03.json",
+    200,
+    "default"
+   ],
+   [
+    "history/days/2026/10/22/05.json",
+    200,
+    "default"
+   ],
+   [
+    "history/days/2026/10/22/06.json",
+    200,
+    "default"
+   ],
+   [
+    "history/days/2026/10/22/07.json",
+    200,
+    "default"
+   ],
+   [
+    "history/days/2026/10/22/18.json",
+    200,
+    "default"
+   ],
+   [
+    "history/days/2026/10/22/19.json",
+    200,
+    "default"
+   ],
+   [
+    "history/days/2026/10/22/20.json",
+    200,
+    "default"
+   ],
+   [
+    "history/days/2026/10/22/22.json",
+    200,
+    "default"
+   ],
+   [
+    "history/days/2026/10/23/01.json",
+    200,
+    "default"
+   ],
+   [
+    "history/days/2026/10/23/02.json",
+    200,
+    "default"
+   ],
+   [
+    "history/days/2026/10/23/03.json",
+    200,
+    "default"
+   ],
+   [
+    "history/days/2026/10/23/14.json",
+    200,
+    "default"
+   ],
+   [
+    "history/days/2026/10/23/15.json",
+    200,
+    "default"
+   ],
+   [
+    "history/days/2026/10/23/16.json",
+    200,
+    "default"
+   ],
+   [
+    "history/days/2026/10/23/18.json",
+    200,
+    "default"
+   ],
+   [
+    "history/days/2026/10/23/19.json",
+    200,
+    "default"
+   ],
+   [
+    "history/days/2026/10/24/12.json",
+    200,
+    "default"
+   ],
+   [
+    "history/days/2026/10/24/13.json",
+    200,
+    "default"
+   ],
+   [
+    "history/days/2026/10/24/14.json",
+    200,
+    "default"
+   ],
+   [
+    "history/days/2026/10/24/18.json",
+    200,
+    "default"
+   ],
+   [
+    "history/days/2026/10/24/19.json",
+    200,
+    "default"
+   ],
+   [
+    "history/days/2026/10/24/20.json",
+    200,
+    "default"
+   ],
+   [
+    "history/days/2026/10/24/21.json",
+    200,
+    "default"
+   ],
+   [
+    "history/days/2026/10/24/22.json",
+    200,
+    "default"
+   ],
+   [
+    "history/days/2026/10/25.json",
+    200,
+    "no-cache"
+   ],
+   [
+    "history/days/2026/10/23/01.json",
+    200,
+    "default"
+   ],
+   [
+    "history/days/2026/10/23/02.json",
+    200,
+    "default"
+   ],
+   [
+    "history/days/2026/10/23/03.json",
+    200,
+    "default"
+   ],
+   [
+    "history/days/2026/10/23/14.json",
+    200,
+    "default"
+   ],
+   [
+    "history/days/2026/10/23/15.json",
+    200,
+    "default"
+   ],
+   [
+    "history/days/2026/10/23/16.json",
+    200,
+    "default"
+   ],
+   [
+    "history/days/2026/10/23/18.json",
+    200,
+    "default"
+   ],
+   [
+    "history/days/2026/10/23/19.json",
+    200,
+    "default"
+   ]
+  ],
+  "xhr": [],
+  "status_json_requested": false
+ },
+ "handler_errors": [],
+ "module_errors": []
+}

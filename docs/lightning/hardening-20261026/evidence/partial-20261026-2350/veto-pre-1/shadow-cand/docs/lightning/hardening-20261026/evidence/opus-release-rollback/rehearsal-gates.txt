@@ -1,0 +1,27 @@
+## rehearsal gates | harness: self (node v22.23.4, no browser) | tree: fda6b10 + uncommitted release edits for GEN 202610261949 | 2026-10-26T22:33:37Z
+$ node tools/scope/loop.mjs lint
+scope-ledger=PASS active=none master=done
+exit=0
+$ node tools/scope/loop.mjs state --stdout | cmp - STATE.md
+STATE parity OK
+$ node tools/scope/verify-compose.mjs
+{"composition":"PASS","generation":"202610261949","release_id":"202608300453-atlas-v9","immutable_releases":8,"cartridges":["streaming-parquet-bridge","uk-gazetteer-flyto","substation-intelligence","sld-sandbox"]}
+$ node tools/proofs/run-current.mjs
+exit=0
+=== streaming-parquet-bridge 202609241251 ===
+=== uk-gazetteer-flyto 202609071213 ===
+    "FAILED"
+=== substation-intelligence 202609062358 ===
+=== sld-sandbox 202610261949 ===
+proofs run: 4
+every composed cartridge passed its generation-matched proof
+$ node tools/proofs/202610261949-sld-sandbox.proof.mjs
+SLD exact delta (202609241334 bytes + \n + 202610261949 uk-lightning-overlay module), SHA-256, byte budget, static negatives, static positives and syntax PASS; 
+$ node tools/proofs/202609040229-arrival-identity-corpus.proof.mjs
+
+Node.js v22.23.4
+exit=0
+$ cmp atlas/index.html atlas/v/202610261949/index.html
+loader copies identical
+$ node tools/proofs/202609241334-sld-sandbox.proof.mjs   (EXPECTED to fail once the pointer names GEN: it is generation-bound)
+exit=1

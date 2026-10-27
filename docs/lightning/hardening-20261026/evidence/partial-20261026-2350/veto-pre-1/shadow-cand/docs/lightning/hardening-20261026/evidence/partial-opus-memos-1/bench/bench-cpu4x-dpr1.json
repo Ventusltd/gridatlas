@@ -1,0 +1,216 @@
+{
+ "harness": "self-fixture; headless Chromium 153.0.8010.12 via Playwright; MapLibre 3.6.2 vendored; background-only style",
+ "cpu_throttle": 4,
+ "viewport": "393x852@1",
+ "data": "SYNTHETIC_BENCHMARK_NOT_OBSERVATIONS",
+ "file_sizes": {
+  "p10k.lfb": {
+   "raw": 80612,
+   "gzip": 62148
+  },
+  "p1m.lfb": {
+   "raw": 8000612,
+   "gzip": 5393717
+  }
+ },
+ "runs": [
+  {
+   "scenario": "A10k",
+   "init": {
+    "load_ms": 262,
+    "webgl2": true,
+    "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+    "dpr": 1,
+    "heapMB": 4
+   },
+   "loadavg_before": [
+    17.3,
+    16.1,
+    11.8
+   ],
+   "decode": {
+    "n": 10000,
+    "bytes": 80612,
+    "fetch_ms": 76.6,
+    "views_ms": 0,
+    "validate_ms": 3.3,
+    "offsets_ok": true,
+    "time_sorted": true,
+    "longTasks": {
+     "n": 0,
+     "total_ms": 0,
+     "max_ms": 0
+    },
+    "heapMB": 4.1
+   },
+   "add": {
+    "compile_ms": 8.3,
+    "interleave_ms": 6.6,
+    "upload_ms": 0.2,
+    "gpu_bytes": 40000,
+    "layer_first_draw_ms": 0.8,
+    "add_to_first_frame_ms": 37.5,
+    "longTasks": {
+     "n": 0,
+     "total_ms": 0,
+     "max_ms": 0
+    },
+    "heapMB": 4.5
+   },
+   "frames": {
+    "frames": 10,
+    "interval_median_ms": 61.8,
+    "interval_p90_ms": 115.9,
+    "layer_draw_median_ms": 0.6,
+    "layer_draw_p90_ms": 6.5,
+    "longTasks": {
+     "n": 6,
+     "total_ms": 595,
+     "max_ms": 227
+    }
+   },
+   "loadavg_after": [
+    17.3,
+    16.1,
+    11.8
+   ],
+   "cores": 2,
+   "wall_s": 1.1
+  },
+  {
+   "scenario": "C1m",
+   "init": {
+    "load_ms": 435,
+    "webgl2": true,
+    "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+    "dpr": 1,
+    "heapMB": 4
+   },
+   "loadavg_before": [
+    17.3,
+    16.1,
+    11.8
+   ],
+   "decode": {
+    "n": 1000000,
+    "bytes": 8000612,
+    "fetch_ms": 1163.2,
+    "views_ms": 0,
+    "validate_ms": 22.5,
+    "offsets_ok": true,
+    "time_sorted": true,
+    "longTasks": {
+     "n": 0,
+     "total_ms": 0,
+     "max_ms": 0
+    },
+    "heapMB": 11.6
+   },
+   "add": {
+    "compile_ms": 7.1,
+    "interleave_ms": 38.9,
+    "upload_ms": 25.6,
+    "gpu_bytes": 4000000,
+    "layer_first_draw_ms": 2.3,
+    "add_to_first_frame_ms": 89.6,
+    "longTasks": {
+     "n": 0,
+     "total_ms": 0,
+     "max_ms": 0
+    },
+    "heapMB": 15.8
+   },
+   "frames": {
+    "frames": 6,
+    "interval_median_ms": 4882.6,
+    "interval_p90_ms": 8300.6,
+    "layer_draw_median_ms": 0.5,
+    "layer_draw_p90_ms": 9,
+    "longTasks": {
+     "n": 5,
+     "total_ms": 26430,
+     "max_ms": 8287
+    }
+   },
+   "loadavg_after": [
+    20.7,
+    17.1,
+    12.3
+   ],
+   "cores": 2,
+   "wall_s": 32.5
+  },
+  {
+   "scenario": "E1mgrid",
+   "init": {
+    "load_ms": 3404,
+    "webgl2": true,
+    "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+    "dpr": 1,
+    "heapMB": 4
+   },
+   "loadavg_before": [
+    20.7,
+    17.2,
+    12.3
+   ],
+   "decode": {
+    "n": 1000000,
+    "bytes": 8000612,
+    "fetch_ms": 1962.5,
+    "views_ms": 0,
+    "validate_ms": 22.1,
+    "offsets_ok": true,
+    "time_sorted": true,
+    "longTasks": {
+     "n": 1,
+     "total_ms": 196,
+     "max_ms": 196
+    },
+    "heapMB": 11.7
+   },
+   "bin": {
+    "cells": 12596,
+    "nx": 94,
+    "ny": 134,
+    "bin_ms": 45,
+    "to_texture_ms": 12.9,
+    "raw_u16_bytes": 25192,
+    "longTasks": {
+     "n": 0,
+     "total_ms": 0,
+     "max_ms": 0
+    }
+   },
+   "add": {
+    "setup_ms": 13.7,
+    "first_draw_ms": 0,
+    "add_to_first_frame_ms": 33.8,
+    "longTasks": {
+     "n": 0,
+     "total_ms": 0,
+     "max_ms": 0
+    }
+   },
+   "frames": {
+    "frames": 10,
+    "interval_median_ms": 239.5,
+    "interval_p90_ms": 605.5,
+    "layer_draw_median_ms": 0.6,
+    "layer_draw_p90_ms": 2.4,
+    "longTasks": {
+     "n": 10,
+     "total_ms": 2469,
+     "max_ms": 384
+    }
+   },
+   "loadavg_after": [
+    21,
+    17.3,
+    12.4
+   ],
+   "cores": 2,
+   "wall_s": 5
+  }
+ ]
+}

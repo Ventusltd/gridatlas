@@ -1,0 +1,123 @@
+[
+ {
+  "id": "N31",
+  "title": "style reload with lightning ON: real basemap radio (Satellite/Dark); then a labelled programmatic map.setStyle(sameStyle) probe (no shell path calls setStyle)",
+  "acceptance_ids": [
+   "R10",
+   "D10",
+   "P09"
+  ],
+  "elapsedMs": 126314,
+  "harnessError": "page.evaluate: Target crashed \n    at snap (/tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/negative-matrix-D/after-202610262323/lib.mjs:106:15)\n    at B.step (/tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/negative-matrix-D/after-202610262323/matrix.mjs:437:60)\n    at Object.run (/tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/negative-matrix-D/after-202610262323/matrix.mjs:364:130)\n    at async file:///tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/negative-matrix-D/after-202610262323/matrix.mjs:441:70",
+  "pageErrors": [],
+  "steps": [
+   {
+    "step": "ON 7d",
+    "synthetic": false,
+    "label": {
+     "main": "Lightning flashes (optical) [408 | 7d]",
+     "fs": "Lightning flashes (optical) [408 | 7d]",
+     "menu": null
+    },
+    "toggles": {
+     "main": true,
+     "fs": true,
+     "menu": null
+    },
+    "stateLine": "PARTIAL · 408 FLASHES DRAWN · SEARCHED 56%",
+    "caption": [
+     "Window  2026-10-19 18:40 UTC → 2026-10-26 18:40 UTC (7 days, latest)",
+     "Actual  first 2026-10-21 12:32:19 UTC · last 2026-10-25 11:15:58 UTC",
+     "Flashes 408 archived in window · 408 drawn as points (index count 408 within the 40,000-point cap for this desktop)",
+     "Refresh archive 2026-10-26 18:37 UTC (0h 4min ago; expected every 1 h)",
+     "Searched EUMETSAT 56% of window · 17 successful runs · 2026-10-20 22:41 UTC → 2026-10-26 13:00 UTC",
+     "Not yet ingested: last 5h 41min of window (unknown, not zero) · Unknown: 2026-10-19 to 2026-10-20 precede archive start 2026-10-20 22:41 UTC (not zero) · Unknown: 1 of 8 UTC dates have no collection run",
+     "Times UTC · Optical flashes seen by MTG Lightning Imager (EUMETSAT L2-LFL), not confirmed ground strikes · Missing days are unknown, not zero · UK box −11.0,49.5 → 3.0,61.5"
+    ],
+    "features": 408,
+    "cluster": false,
+    "visibility": "visible",
+    "badCoords": 0,
+    "injected": null,
+    "markupNodes": 0,
+    "last": {
+     "state": "PARTIAL",
+     "stale": false,
+     "mode": "detail",
+     "period": "7d",
+     "drawn": 408,
+     "cluster": false,
+     "cap": 40000,
+     "cap_source": "index",
+     "index_count": 408,
+     "failures": 0,
+     "reasons": [
+      "tail not yet ingested",
+      "head before archive start",
+      "1 dates without a scan window"
+     ]
+    },
+    "origDiff": [],
+    "extra": {}
+   },
+   {
+    "step": "real basemap radio → Satellite",
+    "synthetic": false,
+    "label": {
+     "main": "Lightning flashes (optical) [408 | 7d]",
+     "fs": "Lightning flashes (optical) [408 | 7d]",
+     "menu": null
+    },
+    "toggles": {
+     "main": true,
+     "fs": true,
+     "menu": null
+    },
+    "stateLine": "PARTIAL · 408 FLASHES DRAWN · SEARCHED 56%",
+    "caption": [
+     "Window  2026-10-19 18:40 UTC → 2026-10-26 18:40 UTC (7 days, latest)",
+     "Actual  first 2026-10-21 12:32:19 UTC · last 2026-10-25 11:15:58 UTC",
+     "Flashes 408 archived in window · 408 drawn as points (index count 408 within the 40,000-point cap for this desktop)",
+     "Refresh archive 2026-10-26 18:37 UTC (0h 4min ago; expected every 1 h)",
+     "Searched EUMETSAT 56% of window · 17 successful runs · 2026-10-20 22:41 UTC → 2026-10-26 13:00 UTC",
+     "Not yet ingested: last 5h 41min of window (unknown, not zero) · Unknown: 2026-10-19 to 2026-10-20 precede archive start 2026-10-20 22:41 UTC (not zero) · Unknown: 1 of 8 UTC dates have no collection run",
+     "Times UTC · Optical flashes seen by MTG Lightning Imager (EUMETSAT L2-LFL), not confirmed ground strikes · Missing days are unknown, not zero · UK box −11.0,49.5 → 3.0,61.5"
+    ],
+    "features": 408,
+    "cluster": false,
+    "visibility": "visible",
+    "badCoords": 0,
+    "injected": null,
+    "markupNodes": 0,
+    "last": {
+     "state": "PARTIAL",
+     "stale": false,
+     "mode": "detail",
+     "period": "7d",
+     "drawn": 408,
+     "cluster": false,
+     "cap": 40000,
+     "cap_source": "index",
+     "index_count": 408,
+     "failures": 0,
+     "reasons": [
+      "tail not yet ingested",
+      "head before archive start",
+      "1 dates without a scan window"
+     ]
+    },
+    "origDiff": [],
+    "extra": {
+     "ignoreOrig": [
+      "bm"
+     ],
+     "tiles": {
+      "loaded": true,
+      "waitedMs": 6,
+      "rendered": 403
+     }
+    }
+   }
+  ]
+ }
+]

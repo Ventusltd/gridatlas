@@ -1,0 +1,50 @@
+## run 2b: module + 77-byte comment (24,050 B)
+$ default budget
+make-generation: FAIL module is 24050 bytes; the proof budget is 24000 (pass --proof-budget <=24781 to raise it in the new proof only)
+exit=1
+0
+$ --proof-budget 24781
+  "path": "atlas/modules/202612312357-uk-lightning-overlay.js",
+  "bytes": 24050,
+  "sha256": "23dafc8ce823ac50d7245f7a4ab1ced3bcdcf34716bda27e65f843b42a04442f",
+  "restamped": [
+   "generation 202610261949 -> generation 202612312357",
+   "GEN='202610261949' -> GEN='202612312357'"
+  ],
+  "proof_budget": 24781,
+  "headroom_to_proof_budget": 731,
+  "headroom_to_24781": 731
+ },
+exit=0
+$ diff proofs
+7c7
+< const GEN='202610261949';
+---
+> const GEN='202612312357';
+23c23
+< assert.ok(Buffer.byteLength(module,'utf8')<=24000,'module exceeds the 24,000-byte budget');
+---
+> assert.ok(Buffer.byteLength(module,'utf8')<=24781,'module exceeds the 24,781-byte budget');
+$ node tools/proofs/202612312357-sld-sandbox.proof.mjs
+SLD exact delta (202609241334 bytes + \n + 202612312357 uk-lightning-overlay module), SHA-256, byte budget, static negatives, static positives and syntax PASS; browser verification runs separately.
+exit=0
+$ node ../verify-candidate.mjs
+ "composition_version": "v9.159",
+   "bytes": 13589,
+   "bytes": 41120,
+   "bytes": 451935,
+   "bytes": 459269,
+ "result": "PASS",
+$ lint / state / run-current / verify-compose
+scope-ledger=PASS active=none master=done
+exit=0
+state cmp=0
+run-current exit=0
+verify-compose exit=0
+?? atlas/cartridges/202612312357-sld-sandbox-v9-8.js
+?? atlas/manifests/202612312357-composition.json
+?? atlas/modules/202612312357-uk-lightning-overlay.js
+?? atlas/v/202612312357/current.json
+?? atlas/v/202612312357/index.html
+?? tools/proofs/202612312357-sld-sandbox.proof.mjs
+tracked changes: 0

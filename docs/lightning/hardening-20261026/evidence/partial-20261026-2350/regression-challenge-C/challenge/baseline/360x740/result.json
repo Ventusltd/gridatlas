@@ -1,0 +1,3591 @@
+{
+  "route": "baseline",
+  "url": "http://127.0.0.1:8143/gridatlas/atlas/",
+  "generation": "202609241334",
+  "viewport": {
+    "width": 360,
+    "height": 740,
+    "mobile": true,
+    "touch": true,
+    "ua": "Android Chrome UA"
+  },
+  "harness": "lead-shim (installOfflineShim) + lightningDataDir /tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/lightning/fixtures/lightning-archive/data",
+  "startedAt": "2026-10-26T23:00:50.122Z",
+  "phases": {
+    "boot": {
+      "waits": {
+        "generation_ms": 278,
+        "boot_ms": 1096,
+        "idle_ms": 8464
+      },
+      "policy": "generation<=60s; map+60 proxies+menuBar<=90s; (candidate: ukLightning.installed<=30s); networkidle<=20s; fixed 3s",
+      "milestones_ms_from_nav": {
+        "map_object": 385,
+        "proxies_60": 1042,
+        "menuBar_installed": 1042
+      },
+      "longTasks": {
+        "count": 6,
+        "total_ms": 528,
+        "max_ms": 169,
+        "list": [
+          {
+            "start": 298,
+            "duration": 75
+          },
+          {
+            "start": 443,
+            "duration": 74
+          },
+          {
+            "start": 591,
+            "duration": 169
+          },
+          {
+            "start": 772,
+            "duration": 57
+          },
+          {
+            "start": 1090,
+            "duration": 71
+          },
+          {
+            "start": 1182,
+            "duration": 82
+          }
+        ]
+      },
+      "requests": {
+        "total": 29,
+        "responses": 27,
+        "failed": 3,
+        "bytes_total": 49090586,
+        "byHost": {
+          "127.0.0.1:8143": {
+            "n": 21,
+            "bytes": 11410792
+          },
+          "cdn.jsdelivr.net": {
+            "n": 5,
+            "bytes": 37679651
+          },
+          "basemaps.cartocdn.com": {
+            "n": 1,
+            "bytes": 143
+          }
+        },
+        "lightning_requests": [],
+        "resource_entries": 25,
+        "encoded_sum": 9935791
+      },
+      "shim": {
+        "served": {
+          "maplibre": 4,
+          "style": 2,
+          "duckdb": 4,
+          "data-gridatlas": 1
+        },
+        "aborted": [
+          "https://raw.githubusercontent.com/Ventusltd/data-grid-gb/1c9909d1138704b29235c27fd769436dda8a0b18/derived/connection-points.v3.json",
+          "https://ventusltd.github.io/ventus-grid-engine/genome/engine-graph.json"
+        ],
+        "missing": []
+      },
+      "nav": {
+        "domContentLoaded": 50,
+        "load": 50
+      },
+      "metrics_after_boot": {
+        "Timestamp": 395.89166,
+        "JSEventListeners": 193,
+        "Nodes": 2521,
+        "LayoutCount": 26,
+        "RecalcStyleCount": 51,
+        "ScriptDuration": 0.462139,
+        "TaskDuration": 1.648573,
+        "JSHeapUsedSize": 22063612,
+        "JSHeapTotalSize": 43839488
+      },
+      "consoleErrors": [
+        "Failed to load resource: net::ERR_BLOCKED_BY_CLIENT.Inspector",
+        "Failed to load resource: net::ERR_BLOCKED_BY_CLIENT.Inspector"
+      ],
+      "pageErrors": []
+    },
+    "inventory_off": {
+      "inspect": {
+        "engine": 60,
+        "pipeline": 3,
+        "total": 63,
+        "unique": 63,
+        "complete": true
+      },
+      "menuBar_state": {
+        "installed": true,
+        "layer_controls": 63,
+        "engine": 60,
+        "pipeline": 3,
+        "controls_moved": 20,
+        "failure": null,
+        "listeners": 2
+      },
+      "proxies": 63,
+      "proxy_keys_unique": 63,
+      "markers_data_gridatlas_layer_key": 63,
+      "gm_layer_labels_total": 65,
+      "gm_layer_boxes": 65,
+      "basemap_menu_radios_excluded": 2,
+      "basemap_native_radios_excluded": 2,
+      "basemap_fs_radios_excluded": 2,
+      "engine_inputs_native": 60,
+      "pn_inputs_native": 3,
+      "engine_inputs_fs": 60,
+      "pn_inputs_fs": 3,
+      "engine_inputs_anywhere": 120,
+      "pn_inputs_anywhere": 6,
+      "native_groups": [
+        "Topology (GeoJSON)",
+        "Assets (GeoJSON)",
+        "Supermarkets (GeoJSON)",
+        "Transit (GeoJSON)",
+        "Leisure & Sports (GeoJSON)",
+        "Global Data Backbone",
+        "Global Supply Chain & Chokepoints",
+        "Highway Infrastructure",
+        "EV (GeoJSON)",
+        "Heavy Industry",
+        "REPD (GeoJSON)",
+        "Basemap",
+        "PIPELINE NEWS (REPD)"
+      ],
+      "fs_groups": [
+        "Topology (GeoJSON)",
+        "Assets (GeoJSON)",
+        "Supermarkets (GeoJSON)",
+        "Transit (GeoJSON)",
+        "Leisure & Sports (GeoJSON)",
+        "Global Data Backbone",
+        "Global Supply Chain & Chokepoints",
+        "Highway Infrastructure",
+        "EV (GeoJSON)",
+        "Heavy Industry",
+        "REPD (GeoJSON)",
+        "Basemap",
+        "PIPELINE NEWS (REPD)"
+      ],
+      "gm_group_headings": [
+        "Export this view",
+        "Studies",
+        "Topology (GeoJSON)",
+        "Assets (GeoJSON)",
+        "Supermarkets (GeoJSON)",
+        "Transit (GeoJSON)",
+        "Leisure & Sports (GeoJSON)",
+        "Global Data Backbone",
+        "Global Supply Chain & Chokepoints",
+        "Highway Infrastructure",
+        "EV (GeoJSON)",
+        "Heavy Industry",
+        "REPD (GeoJSON)",
+        "PIPELINE NEWS (REPD)",
+        "Basemap",
+        "Estate"
+      ],
+      "lightning": {
+        "inputs": 0,
+        "checked": 0,
+        "groups": [],
+        "has_forbidden_attrs": 0,
+        "state": null
+      },
+      "menu_titles": [
+        "File",
+        "Edit",
+        "View",
+        "Scope",
+        "Grid",
+        "About"
+      ],
+      "style_tags": 9,
+      "style_ids": [
+        "(anon)",
+        "gridatlas-neon-css",
+        "gridatlas-gb-conditions-style",
+        "gridatlas-version-ledger-style",
+        "gridatlas-mobile-tray-style",
+        "gridatlas-sld-css",
+        "(anon)",
+        "(anon)",
+        "gridatlas-menu-bar-css"
+      ],
+      "scada_collapsed": "1",
+      "page_scroll": {
+        "scrollY": 0,
+        "scrollHeight": 740,
+        "innerHeight": 740,
+        "bodyScrollHeight": 740,
+        "overflowHtml": "hidden",
+        "overflowBody": "hidden"
+      }
+    },
+    "map_off": {
+      "sources": [
+        "gridatlas-neon-links",
+        "gridatlas-neon-nodes",
+        "gridatlas-sld",
+        "sat-s",
+        "src-11kv",
+        "src-132",
+        "src-220",
+        "src-275",
+        "src-400",
+        "src-66",
+        "src-air",
+        "src-aldi",
+        "src-asda",
+        "src-booths",
+        "src-coop",
+        "src-costco",
+        "src-dc",
+        "src-elizabeth",
+        "src-eurostar_route",
+        "src-eurostar_station",
+        "src-ev",
+        "src-gas",
+        "src-global_hydrocarbons",
+        "src-global_ports_major",
+        "src-global_ports_minor",
+        "src-hs2",
+        "src-ind",
+        "src-interconnectors",
+        "src-lidl",
+        "src-lu",
+        "src-mainline_rail",
+        "src-measure-fill",
+        "src-measure-line",
+        "src-measure-points",
+        "src-metros",
+        "src-morrisons",
+        "src-motorway_services",
+        "src-motorways",
+        "src-ms",
+        "src-naei_co2",
+        "src-nuc",
+        "src-primary_roads",
+        "src-radius-area",
+        "src-radius-circle",
+        "src-rail",
+        "src-repd",
+        "src-sainsburys",
+        "src-stadiums",
+        "src-subs",
+        "src-subsea_data_cables",
+        "src-tesco",
+        "src-trunk_roads",
+        "src-waitrose",
+        "src-zonedraw-fill",
+        "src-zonedraw-line",
+        "src-zonedraw-points"
+      ],
+      "layers": [
+        {
+          "id": "background",
+          "type": "background",
+          "source": null,
+          "visibility": "visible"
+        },
+        {
+          "id": "l-neon-glow",
+          "type": "line",
+          "source": "gridatlas-neon-links",
+          "visibility": "visible"
+        },
+        {
+          "id": "l-neon-core",
+          "type": "line",
+          "source": "gridatlas-neon-links",
+          "visibility": "visible"
+        },
+        {
+          "id": "l-neon-flow",
+          "type": "line",
+          "source": "gridatlas-neon-links",
+          "visibility": "visible"
+        },
+        {
+          "id": "l-neon-flow-b",
+          "type": "line",
+          "source": "gridatlas-neon-links",
+          "visibility": "visible"
+        },
+        {
+          "id": "l-neon-node-ring",
+          "type": "circle",
+          "source": "gridatlas-neon-nodes",
+          "visibility": "visible"
+        },
+        {
+          "id": "l-neon-node",
+          "type": "circle",
+          "source": "gridatlas-neon-nodes",
+          "visibility": "visible"
+        },
+        {
+          "id": "l-sld-boundary",
+          "type": "fill",
+          "source": "gridatlas-sld",
+          "visibility": "visible"
+        },
+        {
+          "id": "l-sld-boundary-line",
+          "type": "line",
+          "source": "gridatlas-sld",
+          "visibility": "visible"
+        },
+        {
+          "id": "l-sld-block",
+          "type": "fill",
+          "source": "gridatlas-sld",
+          "visibility": "visible"
+        },
+        {
+          "id": "l-sld-bess",
+          "type": "fill",
+          "source": "gridatlas-sld",
+          "visibility": "visible"
+        },
+        {
+          "id": "l-sld-radial",
+          "type": "line",
+          "source": "gridatlas-sld",
+          "visibility": "visible"
+        },
+        {
+          "id": "l-sld-radial-flow",
+          "type": "line",
+          "source": "gridatlas-sld",
+          "visibility": "visible"
+        },
+        {
+          "id": "l-sld-cable-glow",
+          "type": "line",
+          "source": "gridatlas-sld",
+          "visibility": "visible"
+        },
+        {
+          "id": "l-sld-cable",
+          "type": "line",
+          "source": "gridatlas-sld",
+          "visibility": "visible"
+        },
+        {
+          "id": "l-sld-cable-flow",
+          "type": "line",
+          "source": "gridatlas-sld",
+          "visibility": "visible"
+        },
+        {
+          "id": "l-sld-cable-flow-b",
+          "type": "line",
+          "source": "gridatlas-sld",
+          "visibility": "visible"
+        },
+        {
+          "id": "l-sld-node",
+          "type": "circle",
+          "source": "gridatlas-sld",
+          "visibility": "visible"
+        },
+        {
+          "id": "l-sld-pin",
+          "type": "circle",
+          "source": "gridatlas-sld",
+          "visibility": "visible"
+        },
+        {
+          "id": "l-sld-handle",
+          "type": "circle",
+          "source": "gridatlas-sld",
+          "visibility": "visible"
+        },
+        {
+          "id": "l-sat",
+          "type": "raster",
+          "source": "sat-s",
+          "visibility": "none"
+        },
+        {
+          "id": "l-radius-circle-fill",
+          "type": "fill",
+          "source": "src-radius-circle",
+          "visibility": "visible"
+        },
+        {
+          "id": "l-radius-circle-stroke",
+          "type": "line",
+          "source": "src-radius-circle",
+          "visibility": "visible"
+        },
+        {
+          "id": "l-radius-area-fill",
+          "type": "fill",
+          "source": "src-radius-area",
+          "visibility": "visible"
+        },
+        {
+          "id": "l-radius-area-stroke",
+          "type": "line",
+          "source": "src-radius-area",
+          "visibility": "visible"
+        },
+        {
+          "id": "l-measure-fill",
+          "type": "fill",
+          "source": "src-measure-fill",
+          "visibility": "visible"
+        },
+        {
+          "id": "l-measure-line",
+          "type": "line",
+          "source": "src-measure-line",
+          "visibility": "visible"
+        },
+        {
+          "id": "l-measure-points",
+          "type": "circle",
+          "source": "src-measure-points",
+          "visibility": "visible"
+        },
+        {
+          "id": "l-zonedraw-fill",
+          "type": "fill",
+          "source": "src-zonedraw-fill",
+          "visibility": "visible"
+        },
+        {
+          "id": "l-zonedraw-line",
+          "type": "line",
+          "source": "src-zonedraw-line",
+          "visibility": "visible"
+        },
+        {
+          "id": "l-zonedraw-points",
+          "type": "circle",
+          "source": "src-zonedraw-points",
+          "visibility": "visible"
+        },
+        {
+          "id": "l-400",
+          "type": "line",
+          "source": "src-400",
+          "visibility": "none"
+        },
+        {
+          "id": "l-275",
+          "type": "line",
+          "source": "src-275",
+          "visibility": "none"
+        },
+        {
+          "id": "l-220",
+          "type": "line",
+          "source": "src-220",
+          "visibility": "none"
+        },
+        {
+          "id": "l-132",
+          "type": "line",
+          "source": "src-132",
+          "visibility": "none"
+        },
+        {
+          "id": "l-66",
+          "type": "line",
+          "source": "src-66",
+          "visibility": "none"
+        },
+        {
+          "id": "l-11kv",
+          "type": "circle",
+          "source": "src-11kv",
+          "visibility": "none"
+        },
+        {
+          "id": "l-subs",
+          "type": "circle",
+          "source": "src-subs",
+          "visibility": "none"
+        },
+        {
+          "id": "l-nuc",
+          "type": "circle",
+          "source": "src-nuc",
+          "visibility": "none"
+        },
+        {
+          "id": "l-gas",
+          "type": "circle",
+          "source": "src-gas",
+          "visibility": "none"
+        },
+        {
+          "id": "l-ind",
+          "type": "circle",
+          "source": "src-ind",
+          "visibility": "none"
+        },
+        {
+          "id": "l-dc",
+          "type": "circle",
+          "source": "src-dc",
+          "visibility": "none"
+        },
+        {
+          "id": "l-air",
+          "type": "circle",
+          "source": "src-air",
+          "visibility": "none"
+        },
+        {
+          "id": "l-rail",
+          "type": "circle",
+          "source": "src-rail",
+          "visibility": "none"
+        },
+        {
+          "id": "l-tesco",
+          "type": "circle",
+          "source": "src-tesco",
+          "visibility": "none"
+        },
+        {
+          "id": "l-sainsburys",
+          "type": "circle",
+          "source": "src-sainsburys",
+          "visibility": "none"
+        },
+        {
+          "id": "l-asda",
+          "type": "circle",
+          "source": "src-asda",
+          "visibility": "none"
+        },
+        {
+          "id": "l-morrisons",
+          "type": "circle",
+          "source": "src-morrisons",
+          "visibility": "none"
+        },
+        {
+          "id": "l-aldi",
+          "type": "circle",
+          "source": "src-aldi",
+          "visibility": "none"
+        },
+        {
+          "id": "l-lidl",
+          "type": "circle",
+          "source": "src-lidl",
+          "visibility": "none"
+        },
+        {
+          "id": "l-waitrose",
+          "type": "circle",
+          "source": "src-waitrose",
+          "visibility": "none"
+        },
+        {
+          "id": "l-ms",
+          "type": "circle",
+          "source": "src-ms",
+          "visibility": "none"
+        },
+        {
+          "id": "l-coop",
+          "type": "circle",
+          "source": "src-coop",
+          "visibility": "none"
+        },
+        {
+          "id": "l-costco",
+          "type": "circle",
+          "source": "src-costco",
+          "visibility": "none"
+        },
+        {
+          "id": "l-booths",
+          "type": "circle",
+          "source": "src-booths",
+          "visibility": "none"
+        },
+        {
+          "id": "l-mainline_rail",
+          "type": "line",
+          "source": "src-mainline_rail",
+          "visibility": "none"
+        },
+        {
+          "id": "l-eurostar_route",
+          "type": "line",
+          "source": "src-eurostar_route",
+          "visibility": "none"
+        },
+        {
+          "id": "l-eurostar_station",
+          "type": "circle",
+          "source": "src-eurostar_station",
+          "visibility": "none"
+        },
+        {
+          "id": "l-stadiums",
+          "type": "circle",
+          "source": "src-stadiums",
+          "visibility": "none"
+        },
+        {
+          "id": "l-subsea_data_cables",
+          "type": "line",
+          "source": "src-subsea_data_cables",
+          "visibility": "none"
+        },
+        {
+          "id": "l-global_ports_major",
+          "type": "circle",
+          "source": "src-global_ports_major",
+          "visibility": "none"
+        },
+        {
+          "id": "l-global_ports_minor",
+          "type": "circle",
+          "source": "src-global_ports_minor",
+          "visibility": "none"
+        },
+        {
+          "id": "l-global_hydrocarbons",
+          "type": "circle",
+          "source": "src-global_hydrocarbons",
+          "visibility": "none"
+        },
+        {
+          "id": "l-motorways",
+          "type": "line",
+          "source": "src-motorways",
+          "visibility": "none"
+        },
+        {
+          "id": "l-trunk_roads",
+          "type": "line",
+          "source": "src-trunk_roads",
+          "visibility": "none"
+        },
+        {
+          "id": "l-primary_roads",
+          "type": "line",
+          "source": "src-primary_roads",
+          "visibility": "none"
+        },
+        {
+          "id": "l-motorway_services",
+          "type": "circle",
+          "source": "src-motorway_services",
+          "visibility": "none"
+        },
+        {
+          "id": "l-naei_co2-glow",
+          "type": "circle",
+          "source": "src-naei_co2",
+          "visibility": "none"
+        },
+        {
+          "id": "l-naei_co2",
+          "type": "circle",
+          "source": "src-naei_co2",
+          "visibility": "none"
+        },
+        {
+          "id": "l-elizabeth",
+          "type": "circle",
+          "source": "src-elizabeth",
+          "visibility": "none"
+        },
+        {
+          "id": "l-lu",
+          "type": "circle",
+          "source": "src-lu",
+          "visibility": "none"
+        },
+        {
+          "id": "l-dlr",
+          "type": "circle",
+          "source": "src-metros",
+          "visibility": "none"
+        },
+        {
+          "id": "l-metro",
+          "type": "circle",
+          "source": "src-metros",
+          "visibility": "none"
+        },
+        {
+          "id": "l-tram",
+          "type": "circle",
+          "source": "src-metros",
+          "visibility": "none"
+        },
+        {
+          "id": "l-hs2",
+          "type": "circle",
+          "source": "src-hs2",
+          "visibility": "none"
+        },
+        {
+          "id": "l-ev",
+          "type": "circle",
+          "source": "src-ev",
+          "visibility": "none"
+        },
+        {
+          "id": "l-solar-glow",
+          "type": "circle",
+          "source": "src-repd",
+          "visibility": "none"
+        },
+        {
+          "id": "l-solar",
+          "type": "circle",
+          "source": "src-repd",
+          "visibility": "none"
+        },
+        {
+          "id": "l-solar_operational-glow",
+          "type": "circle",
+          "source": "src-repd",
+          "visibility": "none"
+        },
+        {
+          "id": "l-solar_operational",
+          "type": "circle",
+          "source": "src-repd",
+          "visibility": "none"
+        },
+        {
+          "id": "l-solar_roof-glow",
+          "type": "circle",
+          "source": "src-repd",
+          "visibility": "none"
+        },
+        {
+          "id": "l-solar_roof",
+          "type": "circle",
+          "source": "src-repd",
+          "visibility": "none"
+        },
+        {
+          "id": "l-wind",
+          "type": "circle",
+          "source": "src-repd",
+          "visibility": "none"
+        },
+        {
+          "id": "l-wind_onshore_operational-glow",
+          "type": "circle",
+          "source": "src-repd",
+          "visibility": "none"
+        },
+        {
+          "id": "l-wind_onshore_operational",
+          "type": "circle",
+          "source": "src-repd",
+          "visibility": "none"
+        },
+        {
+          "id": "l-wind_offshore_operational-glow",
+          "type": "circle",
+          "source": "src-repd",
+          "visibility": "none"
+        },
+        {
+          "id": "l-wind_offshore_operational",
+          "type": "circle",
+          "source": "src-repd",
+          "visibility": "none"
+        },
+        {
+          "id": "l-bess",
+          "type": "circle",
+          "source": "src-repd",
+          "visibility": "none"
+        },
+        {
+          "id": "l-bess_operational-glow",
+          "type": "circle",
+          "source": "src-repd",
+          "visibility": "none"
+        },
+        {
+          "id": "l-bess_operational",
+          "type": "circle",
+          "source": "src-repd",
+          "visibility": "none"
+        },
+        {
+          "id": "l-biomass",
+          "type": "circle",
+          "source": "src-repd",
+          "visibility": "none"
+        },
+        {
+          "id": "l-tidal",
+          "type": "circle",
+          "source": "src-repd",
+          "visibility": "none"
+        },
+        {
+          "id": "l-hydrogen",
+          "type": "circle",
+          "source": "src-repd",
+          "visibility": "none"
+        },
+        {
+          "id": "l-hydro",
+          "type": "circle",
+          "source": "src-repd",
+          "visibility": "none"
+        },
+        {
+          "id": "l-flywheel",
+          "type": "circle",
+          "source": "src-repd",
+          "visibility": "none"
+        },
+        {
+          "id": "l-act",
+          "type": "circle",
+          "source": "src-repd",
+          "visibility": "none"
+        },
+        {
+          "id": "l-geothermal",
+          "type": "circle",
+          "source": "src-repd",
+          "visibility": "none"
+        },
+        {
+          "id": "l-caes",
+          "type": "circle",
+          "source": "src-repd",
+          "visibility": "none"
+        },
+        {
+          "id": "l-interconnectors",
+          "type": "line",
+          "source": "src-interconnectors",
+          "visibility": "none"
+        },
+        {
+          "id": "l-interconnector-nodes",
+          "type": "circle",
+          "source": "src-interconnectors",
+          "visibility": "none"
+        }
+      ],
+      "layerCount": 100,
+      "lightning": {
+        "source": false,
+        "layer": false
+      }
+    },
+    "listeners_boot": {
+      "cartridgeBlobs": {
+        "streaming-parquet-bridge": "blob:e5f22366-4ee3-4111-8ca7-6134d1d816ac",
+        "uk-gazetteer-flyto": "blob:fae37c87-25f0-4a97-aa8d-9c3192db25f4",
+        "substation-intelligence": "blob:08e32af6-3c0c-48e5-a0cb-e23748c4fe0e",
+        "sld-sandbox": "blob:6fb9317d-0422-452b-a7c6-bc81a20ff1e4"
+      },
+      "nodes": {
+        "window": [
+          {
+            "type": "mousemove",
+            "capture": true,
+            "passive": false,
+            "once": false,
+            "script": "?",
+            "line": 7995,
+            "col": 22
+          },
+          {
+            "type": "pointerdown",
+            "capture": true,
+            "passive": false,
+            "once": false,
+            "script": "?",
+            "line": 7995,
+            "col": 22
+          },
+          {
+            "type": "pointerup",
+            "capture": true,
+            "passive": false,
+            "once": false,
+            "script": "?",
+            "line": 7995,
+            "col": 22
+          },
+          {
+            "type": "touchstart",
+            "capture": true,
+            "passive": false,
+            "once": false,
+            "script": "?",
+            "line": 7995,
+            "col": 22
+          },
+          {
+            "type": "touchend",
+            "capture": true,
+            "passive": false,
+            "once": false,
+            "script": "?",
+            "line": 7995,
+            "col": 22
+          },
+          {
+            "type": "touchcancel",
+            "capture": true,
+            "passive": false,
+            "once": false,
+            "script": "?",
+            "line": 7995,
+            "col": 22
+          },
+          {
+            "type": "mousedown",
+            "capture": true,
+            "passive": false,
+            "once": false,
+            "script": "?",
+            "line": 7995,
+            "col": 22
+          },
+          {
+            "type": "mouseup",
+            "capture": true,
+            "passive": false,
+            "once": false,
+            "script": "?",
+            "line": 7995,
+            "col": 22
+          },
+          {
+            "type": "click",
+            "capture": true,
+            "passive": false,
+            "once": false,
+            "script": "?",
+            "line": 7995,
+            "col": 22
+          },
+          {
+            "type": "auxclick",
+            "capture": true,
+            "passive": false,
+            "once": false,
+            "script": "?",
+            "line": 7995,
+            "col": 22
+          },
+          {
+            "type": "dblclick",
+            "capture": true,
+            "passive": false,
+            "once": false,
+            "script": "?",
+            "line": 7995,
+            "col": 22
+          },
+          {
+            "type": "contextmenu",
+            "capture": true,
+            "passive": false,
+            "once": false,
+            "script": "?",
+            "line": 7995,
+            "col": 22
+          },
+          {
+            "type": "__playwright_global_listeners_check__",
+            "capture": false,
+            "passive": false,
+            "once": false,
+            "script": "?",
+            "line": 7979,
+            "col": 31
+          },
+          {
+            "type": "mouseup",
+            "capture": false,
+            "passive": false,
+            "once": false,
+            "script": "blob:08e32af6-3c0c-48e5-a0cb-e23748c4fe0e",
+            "line": 1611,
+            "col": 44
+          },
+          {
+            "type": "gridatlas:arrival-invalidated",
+            "capture": false,
+            "passive": false,
+            "once": false,
+            "script": "blob:fae37c87-25f0-4a97-aa8d-9c3192db25f4",
+            "line": 97,
+            "col": 60
+          },
+          {
+            "type": "popstate",
+            "capture": false,
+            "passive": false,
+            "once": false,
+            "script": "blob:6fb9317d-0422-452b-a7c6-bc81a20ff1e4",
+            "line": 3473,
+            "col": 39
+          },
+          {
+            "type": "hashchange",
+            "capture": false,
+            "passive": false,
+            "once": false,
+            "script": "blob:6fb9317d-0422-452b-a7c6-bc81a20ff1e4",
+            "line": 3474,
+            "col": 41
+          },
+          {
+            "type": "resize",
+            "capture": false,
+            "passive": false,
+            "once": false,
+            "script": "blob:6fb9317d-0422-452b-a7c6-bc81a20ff1e4",
+            "line": 8658,
+            "col": 20
+          },
+          {
+            "type": "resize",
+            "capture": false,
+            "passive": false,
+            "once": false,
+            "script": "blob:6fb9317d-0422-452b-a7c6-bc81a20ff1e4",
+            "line": 3902,
+            "col": 26
+          },
+          {
+            "type": "online",
+            "capture": false,
+            "passive": false,
+            "once": false,
+            "script": "https://cdn.jsdelivr.net/npm/maplibre-gl@3.6.2/dist/maplibre-gl.js",
+            "line": 35,
+            "col": 353720
+          },
+          {
+            "type": "blur",
+            "capture": false,
+            "passive": false,
+            "once": false,
+            "script": "https://cdn.jsdelivr.net/npm/maplibre-gl@3.6.2/dist/maplibre-gl.js",
+            "line": 35,
+            "col": 296657
+          }
+        ],
+        "document": [
+          {
+            "type": "mousemove",
+            "capture": true,
+            "passive": false,
+            "once": false,
+            "script": "https://cdn.jsdelivr.net/npm/maplibre-gl@3.6.2/dist/maplibre-gl.js",
+            "line": 35,
+            "col": 296596
+          },
+          {
+            "type": "click",
+            "capture": true,
+            "passive": false,
+            "once": false,
+            "script": "blob:08e32af6-3c0c-48e5-a0cb-e23748c4fe0e",
+            "line": 8256,
+            "col": 49
+          },
+          {
+            "type": "fullscreenchange",
+            "capture": false,
+            "passive": false,
+            "once": false,
+            "script": "blob:6fb9317d-0422-452b-a7c6-bc81a20ff1e4",
+            "line": 2591,
+            "col": 31
+          },
+          {
+            "type": "fullscreenchange",
+            "capture": false,
+            "passive": false,
+            "once": false,
+            "script": "blob:08e32af6-3c0c-48e5-a0cb-e23748c4fe0e",
+            "line": 478,
+            "col": 51
+          },
+          {
+            "type": "fullscreenchange",
+            "capture": false,
+            "passive": false,
+            "once": false,
+            "script": "blob:6fb9317d-0422-452b-a7c6-bc81a20ff1e4",
+            "line": 8125,
+            "col": 22
+          },
+          {
+            "type": "webkitfullscreenchange",
+            "capture": false,
+            "passive": false,
+            "once": false,
+            "script": "blob:6fb9317d-0422-452b-a7c6-bc81a20ff1e4",
+            "line": 2591,
+            "col": 31
+          },
+          {
+            "type": "webkitfullscreenchange",
+            "capture": false,
+            "passive": false,
+            "once": false,
+            "script": "blob:08e32af6-3c0c-48e5-a0cb-e23748c4fe0e",
+            "line": 479,
+            "col": 57
+          },
+          {
+            "type": "webkitfullscreenchange",
+            "capture": false,
+            "passive": false,
+            "once": false,
+            "script": "blob:6fb9317d-0422-452b-a7c6-bc81a20ff1e4",
+            "line": 8125,
+            "col": 22
+          },
+          {
+            "type": "mouseup",
+            "capture": false,
+            "passive": false,
+            "once": false,
+            "script": "https://cdn.jsdelivr.net/npm/maplibre-gl@3.6.2/dist/maplibre-gl.js",
+            "line": 35,
+            "col": 296596
+          },
+          {
+            "type": "visibilitychange",
+            "capture": false,
+            "passive": false,
+            "once": false,
+            "script": "blob:6fb9317d-0422-452b-a7c6-bc81a20ff1e4",
+            "line": 6958,
+            "col": 51
+          },
+          {
+            "type": "visibilitychange",
+            "capture": false,
+            "passive": false,
+            "once": false,
+            "script": "blob:6fb9317d-0422-452b-a7c6-bc81a20ff1e4",
+            "line": 6986,
+            "col": 51
+          },
+          {
+            "type": "keydown",
+            "capture": false,
+            "passive": false,
+            "once": false,
+            "script": "blob:6fb9317d-0422-452b-a7c6-bc81a20ff1e4",
+            "line": 6973,
+            "col": 42
+          },
+          {
+            "type": "keydown",
+            "capture": false,
+            "passive": false,
+            "once": false,
+            "script": "blob:6fb9317d-0422-452b-a7c6-bc81a20ff1e4",
+            "line": 2132,
+            "col": 42
+          },
+          {
+            "type": "change",
+            "capture": false,
+            "passive": false,
+            "once": false,
+            "script": "blob:6fb9317d-0422-452b-a7c6-bc81a20ff1e4",
+            "line": 5936,
+            "col": 41
+          },
+          {
+            "type": "change",
+            "capture": false,
+            "passive": false,
+            "once": false,
+            "script": "blob:08e32af6-3c0c-48e5-a0cb-e23748c4fe0e",
+            "line": 6077,
+            "col": 45
+          },
+          {
+            "type": "click",
+            "capture": false,
+            "passive": false,
+            "once": false,
+            "script": "blob:6fb9317d-0422-452b-a7c6-bc81a20ff1e4",
+            "line": 2127,
+            "col": 40
+          },
+          {
+            "type": "click",
+            "capture": false,
+            "passive": false,
+            "once": false,
+            "script": "blob:08e32af6-3c0c-48e5-a0cb-e23748c4fe0e",
+            "line": 6065,
+            "col": 44
+          }
+        ],
+        "html": [],
+        "body": [],
+        "#gridatlas-menu-bar": [
+          {
+            "type": "keydown",
+            "capture": false,
+            "passive": false,
+            "once": false,
+            "script": "blob:08e32af6-3c0c-48e5-a0cb-e23748c4fe0e",
+            "line": 4903,
+            "col": 46
+          }
+        ],
+        "Grid .gm-panel": [],
+        "Grid .gm-panel-body": [],
+        "#scada-ui-container": [
+          {
+            "type": "change",
+            "capture": false,
+            "passive": false,
+            "once": false,
+            "script": "blob:08e32af6-3c0c-48e5-a0cb-e23748c4fe0e",
+            "line": 1095,
+            "col": 46
+          },
+          {
+            "type": "change",
+            "capture": false,
+            "passive": false,
+            "once": false,
+            "script": "blob:08e32af6-3c0c-48e5-a0cb-e23748c4fe0e",
+            "line": 6629,
+            "col": 42
+          }
+        ],
+        ".scada-wrapper": [],
+        "#fs-curtain-keys": [
+          {
+            "type": "change",
+            "capture": false,
+            "passive": false,
+            "once": false,
+            "script": "blob:08e32af6-3c0c-48e5-a0cb-e23748c4fe0e",
+            "line": 1106,
+            "col": 48
+          },
+          {
+            "type": "change",
+            "capture": false,
+            "passive": false,
+            "once": false,
+            "script": "blob:08e32af6-3c0c-48e5-a0cb-e23748c4fe0e",
+            "line": 6629,
+            "col": 42
+          }
+        ],
+        "#fs-curtain": [],
+        ".map-container": [],
+        ".maplibregl-canvas": [
+          {
+            "type": "webglcontextlost",
+            "capture": false,
+            "passive": false,
+            "once": false,
+            "script": "https://cdn.jsdelivr.net/npm/maplibre-gl@3.6.2/dist/maplibre-gl.js",
+            "line": 35,
+            "col": 353305
+          },
+          {
+            "type": "webglcontextrestored",
+            "capture": false,
+            "passive": false,
+            "once": false,
+            "script": "https://cdn.jsdelivr.net/npm/maplibre-gl@3.6.2/dist/maplibre-gl.js",
+            "line": 35,
+            "col": 353462
+          },
+          {
+            "type": "webglcontextcreationerror",
+            "capture": false,
+            "passive": false,
+            "once": true,
+            "script": "https://cdn.jsdelivr.net/npm/maplibre-gl@3.6.2/dist/maplibre-gl.js",
+            "line": 35,
+            "col": 373704
+          },
+          {
+            "type": "pointercancel",
+            "capture": false,
+            "passive": false,
+            "once": false,
+            "script": "blob:6fb9317d-0422-452b-a7c6-bc81a20ff1e4",
+            "line": 7639,
+            "col": 21
+          },
+          {
+            "type": "touchstart",
+            "capture": false,
+            "passive": true,
+            "once": false,
+            "script": "blob:6fb9317d-0422-452b-a7c6-bc81a20ff1e4",
+            "line": 2194,
+            "col": 43
+          },
+          {
+            "type": "touchstart",
+            "capture": false,
+            "passive": false,
+            "once": false,
+            "script": "blob:08e32af6-3c0c-48e5-a0cb-e23748c4fe0e",
+            "line": 1538,
+            "col": 51
+          },
+          {
+            "type": "touchmove",
+            "capture": false,
+            "passive": true,
+            "once": false,
+            "script": "blob:6fb9317d-0422-452b-a7c6-bc81a20ff1e4",
+            "line": 2208,
+            "col": 42
+          },
+          {
+            "type": "touchmove",
+            "capture": false,
+            "passive": false,
+            "once": false,
+            "script": "blob:08e32af6-3c0c-48e5-a0cb-e23748c4fe0e",
+            "line": 1544,
+            "col": 50
+          },
+          {
+            "type": "touchend",
+            "capture": false,
+            "passive": true,
+            "once": false,
+            "script": "blob:6fb9317d-0422-452b-a7c6-bc81a20ff1e4",
+            "line": 2193,
+            "col": 20
+          },
+          {
+            "type": "touchend",
+            "capture": false,
+            "passive": false,
+            "once": false,
+            "script": "blob:08e32af6-3c0c-48e5-a0cb-e23748c4fe0e",
+            "line": 1550,
+            "col": 30
+          },
+          {
+            "type": "touchcancel",
+            "capture": false,
+            "passive": true,
+            "once": false,
+            "script": "blob:6fb9317d-0422-452b-a7c6-bc81a20ff1e4",
+            "line": 2193,
+            "col": 20
+          },
+          {
+            "type": "touchcancel",
+            "capture": false,
+            "passive": false,
+            "once": false,
+            "script": "blob:08e32af6-3c0c-48e5-a0cb-e23748c4fe0e",
+            "line": 1550,
+            "col": 30
+          },
+          {
+            "type": "mousedown",
+            "capture": false,
+            "passive": false,
+            "once": false,
+            "script": "blob:08e32af6-3c0c-48e5-a0cb-e23748c4fe0e",
+            "line": 1502,
+            "col": 55
+          }
+        ],
+        ".maplibregl-canvas-container": [
+          {
+            "type": "touchstart",
+            "capture": false,
+            "passive": true,
+            "once": false,
+            "script": "https://cdn.jsdelivr.net/npm/maplibre-gl@3.6.2/dist/maplibre-gl.js",
+            "line": 35,
+            "col": 296657
+          },
+          {
+            "type": "touchmove",
+            "capture": false,
+            "passive": false,
+            "once": false,
+            "script": "https://cdn.jsdelivr.net/npm/maplibre-gl@3.6.2/dist/maplibre-gl.js",
+            "line": 35,
+            "col": 296657
+          },
+          {
+            "type": "touchend",
+            "capture": false,
+            "passive": false,
+            "once": false,
+            "script": "https://cdn.jsdelivr.net/npm/maplibre-gl@3.6.2/dist/maplibre-gl.js",
+            "line": 35,
+            "col": 296657
+          },
+          {
+            "type": "touchcancel",
+            "capture": false,
+            "passive": false,
+            "once": false,
+            "script": "https://cdn.jsdelivr.net/npm/maplibre-gl@3.6.2/dist/maplibre-gl.js",
+            "line": 35,
+            "col": 296657
+          },
+          {
+            "type": "mousedown",
+            "capture": false,
+            "passive": false,
+            "once": false,
+            "script": "https://cdn.jsdelivr.net/npm/maplibre-gl@3.6.2/dist/maplibre-gl.js",
+            "line": 35,
+            "col": 296657
+          },
+          {
+            "type": "mousemove",
+            "capture": false,
+            "passive": false,
+            "once": false,
+            "script": "https://cdn.jsdelivr.net/npm/maplibre-gl@3.6.2/dist/maplibre-gl.js",
+            "line": 35,
+            "col": 296657
+          },
+          {
+            "type": "mouseup",
+            "capture": false,
+            "passive": false,
+            "once": false,
+            "script": "https://cdn.jsdelivr.net/npm/maplibre-gl@3.6.2/dist/maplibre-gl.js",
+            "line": 35,
+            "col": 296657
+          },
+          {
+            "type": "mouseover",
+            "capture": false,
+            "passive": false,
+            "once": false,
+            "script": "https://cdn.jsdelivr.net/npm/maplibre-gl@3.6.2/dist/maplibre-gl.js",
+            "line": 35,
+            "col": 296657
+          },
+          {
+            "type": "mouseout",
+            "capture": false,
+            "passive": false,
+            "once": false,
+            "script": "https://cdn.jsdelivr.net/npm/maplibre-gl@3.6.2/dist/maplibre-gl.js",
+            "line": 35,
+            "col": 296657
+          },
+          {
+            "type": "dblclick",
+            "capture": false,
+            "passive": false,
+            "once": false,
+            "script": "https://cdn.jsdelivr.net/npm/maplibre-gl@3.6.2/dist/maplibre-gl.js",
+            "line": 35,
+            "col": 296657
+          },
+          {
+            "type": "click",
+            "capture": false,
+            "passive": false,
+            "once": false,
+            "script": "https://cdn.jsdelivr.net/npm/maplibre-gl@3.6.2/dist/maplibre-gl.js",
+            "line": 35,
+            "col": 296657
+          },
+          {
+            "type": "keydown",
+            "capture": false,
+            "passive": false,
+            "once": false,
+            "script": "https://cdn.jsdelivr.net/npm/maplibre-gl@3.6.2/dist/maplibre-gl.js",
+            "line": 35,
+            "col": 296657
+          },
+          {
+            "type": "keyup",
+            "capture": false,
+            "passive": false,
+            "once": false,
+            "script": "https://cdn.jsdelivr.net/npm/maplibre-gl@3.6.2/dist/maplibre-gl.js",
+            "line": 35,
+            "col": 296657
+          },
+          {
+            "type": "wheel",
+            "capture": false,
+            "passive": false,
+            "once": false,
+            "script": "https://cdn.jsdelivr.net/npm/maplibre-gl@3.6.2/dist/maplibre-gl.js",
+            "line": 35,
+            "col": 296657
+          },
+          {
+            "type": "contextmenu",
+            "capture": false,
+            "passive": false,
+            "once": false,
+            "script": "https://cdn.jsdelivr.net/npm/maplibre-gl@3.6.2/dist/maplibre-gl.js",
+            "line": 35,
+            "col": 296657
+          }
+        ],
+        "#search-input": [
+          {
+            "type": "input",
+            "capture": true,
+            "passive": false,
+            "once": false,
+            "script": "blob:fae37c87-25f0-4a97-aa8d-9c3192db25f4",
+            "line": 878,
+            "col": 37
+          },
+          {
+            "type": "keydown",
+            "capture": true,
+            "passive": false,
+            "once": false,
+            "script": "blob:fae37c87-25f0-4a97-aa8d-9c3192db25f4",
+            "line": 885,
+            "col": 39
+          },
+          {
+            "type": "input",
+            "capture": false,
+            "passive": false,
+            "once": false,
+            "script": "blob:08e32af6-3c0c-48e5-a0cb-e23748c4fe0e",
+            "line": 1120,
+            "col": 41
+          },
+          {
+            "type": "keydown",
+            "capture": false,
+            "passive": false,
+            "once": false,
+            "script": "blob:08e32af6-3c0c-48e5-a0cb-e23748c4fe0e",
+            "line": 1121,
+            "col": 43
+          }
+        ],
+        "#gridatlas-dash-toggle": [
+          {
+            "type": "click",
+            "capture": false,
+            "passive": false,
+            "once": false,
+            "script": "blob:6fb9317d-0422-452b-a7c6-bc81a20ff1e4",
+            "line": 2582,
+            "col": 38
+          }
+        ],
+        "first engine input": [],
+        "first proxy": [
+          {
+            "type": "change",
+            "capture": false,
+            "passive": false,
+            "once": false,
+            "script": "blob:08e32af6-3c0c-48e5-a0cb-e23748c4fe0e",
+            "line": 5800,
+            "col": 49
+          }
+        ],
+        "lightning footer": null,
+        "lightning main group": null
+      },
+      "capture_phase": [
+        {
+          "node": "window",
+          "type": "mousemove",
+          "capture": true,
+          "passive": false,
+          "once": false,
+          "script": "?",
+          "line": 7995,
+          "col": 22,
+          "owner": "?"
+        },
+        {
+          "node": "window",
+          "type": "pointerdown",
+          "capture": true,
+          "passive": false,
+          "once": false,
+          "script": "?",
+          "line": 7995,
+          "col": 22,
+          "owner": "?"
+        },
+        {
+          "node": "window",
+          "type": "pointerup",
+          "capture": true,
+          "passive": false,
+          "once": false,
+          "script": "?",
+          "line": 7995,
+          "col": 22,
+          "owner": "?"
+        },
+        {
+          "node": "window",
+          "type": "touchstart",
+          "capture": true,
+          "passive": false,
+          "once": false,
+          "script": "?",
+          "line": 7995,
+          "col": 22,
+          "owner": "?"
+        },
+        {
+          "node": "window",
+          "type": "touchend",
+          "capture": true,
+          "passive": false,
+          "once": false,
+          "script": "?",
+          "line": 7995,
+          "col": 22,
+          "owner": "?"
+        },
+        {
+          "node": "window",
+          "type": "touchcancel",
+          "capture": true,
+          "passive": false,
+          "once": false,
+          "script": "?",
+          "line": 7995,
+          "col": 22,
+          "owner": "?"
+        },
+        {
+          "node": "window",
+          "type": "mousedown",
+          "capture": true,
+          "passive": false,
+          "once": false,
+          "script": "?",
+          "line": 7995,
+          "col": 22,
+          "owner": "?"
+        },
+        {
+          "node": "window",
+          "type": "mouseup",
+          "capture": true,
+          "passive": false,
+          "once": false,
+          "script": "?",
+          "line": 7995,
+          "col": 22,
+          "owner": "?"
+        },
+        {
+          "node": "window",
+          "type": "click",
+          "capture": true,
+          "passive": false,
+          "once": false,
+          "script": "?",
+          "line": 7995,
+          "col": 22,
+          "owner": "?"
+        },
+        {
+          "node": "window",
+          "type": "auxclick",
+          "capture": true,
+          "passive": false,
+          "once": false,
+          "script": "?",
+          "line": 7995,
+          "col": 22,
+          "owner": "?"
+        },
+        {
+          "node": "window",
+          "type": "dblclick",
+          "capture": true,
+          "passive": false,
+          "once": false,
+          "script": "?",
+          "line": 7995,
+          "col": 22,
+          "owner": "?"
+        },
+        {
+          "node": "window",
+          "type": "contextmenu",
+          "capture": true,
+          "passive": false,
+          "once": false,
+          "script": "?",
+          "line": 7995,
+          "col": 22,
+          "owner": "?"
+        },
+        {
+          "node": "document",
+          "type": "mousemove",
+          "capture": true,
+          "passive": false,
+          "once": false,
+          "script": "https://cdn.jsdelivr.net/npm/maplibre-gl@3.6.2/dist/maplibre-gl.js",
+          "line": 35,
+          "col": 296596,
+          "owner": "https://cdn.jsdelivr.net/npm/maplibre-gl@3.6.2/dist/maplibre-gl.js"
+        },
+        {
+          "node": "document",
+          "type": "click",
+          "capture": true,
+          "passive": false,
+          "once": false,
+          "script": "blob:08e32af6-3c0c-48e5-a0cb-e23748c4fe0e",
+          "line": 8256,
+          "col": 49,
+          "owner": "substation-intelligence"
+        },
+        {
+          "node": "#search-input",
+          "type": "input",
+          "capture": true,
+          "passive": false,
+          "once": false,
+          "script": "blob:fae37c87-25f0-4a97-aa8d-9c3192db25f4",
+          "line": 878,
+          "col": 37,
+          "owner": "uk-gazetteer-flyto"
+        },
+        {
+          "node": "#search-input",
+          "type": "keydown",
+          "capture": true,
+          "passive": false,
+          "once": false,
+          "script": "blob:fae37c87-25f0-4a97-aa8d-9c3192db25f4",
+          "line": 885,
+          "col": 39,
+          "owner": "uk-gazetteer-flyto"
+        }
+      ],
+      "lightning_module_listeners": [],
+      "total": 77
+    },
+    "first_interaction": {
+      "grid_pointerdown_to_panel_open_ms": 11.9,
+      "boot_to_menuBar_installed_ms": 1042,
+      "boot_to_proxies_60_ms": 1042
+    },
+    "p06": {
+      "six": [
+        {
+          "title": "File",
+          "afterOpen": [
+            "File"
+          ],
+          "expanded": "true",
+          "panel": {
+            "hidden": false,
+            "w": 342,
+            "h": 373,
+            "x": 9,
+            "y": 39,
+            "insideViewport": true
+          },
+          "afterClose": [],
+          "ok": true
+        },
+        {
+          "title": "Edit",
+          "afterOpen": [
+            "Edit"
+          ],
+          "expanded": "true",
+          "panel": {
+            "hidden": false,
+            "w": 342,
+            "h": 60,
+            "x": 9,
+            "y": 39,
+            "insideViewport": true
+          },
+          "afterClose": [],
+          "ok": true
+        },
+        {
+          "title": "View",
+          "afterOpen": [
+            "View"
+          ],
+          "expanded": "true",
+          "panel": {
+            "hidden": false,
+            "w": 342,
+            "h": 181,
+            "x": 9,
+            "y": 39,
+            "insideViewport": true
+          },
+          "afterClose": [],
+          "ok": true
+        },
+        {
+          "title": "Scope",
+          "afterOpen": [
+            "Scope"
+          ],
+          "expanded": "true",
+          "panel": {
+            "hidden": false,
+            "w": 342,
+            "h": 342,
+            "x": 9,
+            "y": 39,
+            "insideViewport": true
+          },
+          "afterClose": [],
+          "ok": true
+        },
+        {
+          "title": "Grid",
+          "afterOpen": [
+            "Grid"
+          ],
+          "expanded": "true",
+          "panel": {
+            "hidden": false,
+            "w": 342,
+            "h": 700,
+            "x": 9,
+            "y": 39,
+            "insideViewport": true
+          },
+          "afterClose": [],
+          "ok": true
+        },
+        {
+          "title": "About",
+          "afterOpen": [
+            "About"
+          ],
+          "expanded": "true",
+          "panel": {
+            "hidden": false,
+            "w": 342,
+            "h": 409.5,
+            "x": 9,
+            "y": 39,
+            "insideViewport": true
+          },
+          "afterClose": [],
+          "ok": true
+        }
+      ],
+      "bodyClick": {
+        "error": "page.evaluate: TypeError: Cannot destructure property 'x' of 'object null' as it is null.\n    at eval (eval at evaluate (:311:30), <anonymous>:1:4)\n    at UtilityScript.evaluate (<anonymous>:313:16)\n "
+      },
+      "gridArrowDown": {
+        "focusedBefore": {
+          "tag": "BUTTON",
+          "id": "gridatlas-menu-bar-title-4",
+          "text": "Grid",
+          "proxy": null,
+          "lightning": null,
+          "type": "button",
+          "name": null,
+          "role": null,
+          "ariaLabel": null,
+          "checked": null,
+          "inBar": true,
+          "inGridPanel": false
+        },
+        "open": [
+          "Grid"
+        ],
+        "focused": {
+          "tag": "INPUT",
+          "id": null,
+          "text": "",
+          "proxy": "engine:400",
+          "lightning": null,
+          "type": "checkbox",
+          "name": null,
+          "role": null,
+          "ariaLabel": "400kV [OK]",
+          "checked": false,
+          "inBar": true,
+          "inGridPanel": true
+        },
+        "firstFocusableInPanel": {
+          "tag": "INPUT",
+          "proxy": "engine:400",
+          "lightning": null,
+          "text": ""
+        },
+        "landsOnEngine400": true,
+        "escapeRestoresFocusToGrid": true,
+        "openAfterEscape": []
+      },
+      "layersToggle": {
+        "before": {
+          "collapsed": "1",
+          "rect": {
+            "x": 16,
+            "y": 736,
+            "w": 328,
+            "h": 5
+          },
+          "toggleText": "▴ LAYERS"
+        },
+        "afterFirst": {
+          "collapsed": null,
+          "rect": {
+            "x": 17,
+            "y": 441.8125,
+            "w": 326,
+            "h": 281.1875
+          },
+          "toggleText": "▾ HIDE LAYERS",
+          "firstGroupVisible": true
+        },
+        "afterSecond": {
+          "collapsed": "1",
+          "toggleText": "▴ LAYERS"
+        },
+        "toggles": true
+      },
+      "searchFocus": {
+        "focusedAfterClick": {
+          "tag": "INPUT",
+          "id": "search-input",
+          "text": "",
+          "proxy": null,
+          "lightning": null,
+          "type": "text",
+          "name": null,
+          "role": null,
+          "ariaLabel": "Search project, address, postcode or place",
+          "checked": false,
+          "inBar": false,
+          "inGridPanel": false
+        },
+        "valueTyped": "Leicester",
+        "focusedAfterTyping": {
+          "tag": "INPUT",
+          "id": "search-input",
+          "text": "",
+          "proxy": null,
+          "lightning": null,
+          "type": "text",
+          "name": null,
+          "role": null,
+          "ariaLabel": "Search project, address, postcode or place",
+          "checked": false,
+          "inBar": false,
+          "inGridPanel": false
+        },
+        "ok": true
+      },
+      "fullscreen": {
+        "entered": {
+          "fullscreenElement": "map-container",
+          "bodyClass": "fs-active",
+          "titles": [
+            "File",
+            "Edit",
+            "View",
+            "Scope",
+            "Grid",
+            "About"
+          ],
+          "tab": {
+            "x": 0,
+            "y": 0,
+            "w": 0,
+            "h": 0,
+            "visible": false,
+            "inBar": true,
+            "text": "⬇ Layers"
+          },
+          "curtain": {
+            "cls": "",
+            "x": 0,
+            "y": -518,
+            "w": 360,
+            "h": 518,
+            "display": "block",
+            "transform": "matrix(1, 0, 0, 1, 0, -518)"
+          }
+        },
+        "curtain": {
+          "tabBox": {
+            "x": 5,
+            "y": 680,
+            "w": 350,
+            "h": 44,
+            "inViewport": true
+          },
+          "tabHit": {
+            "tag": "DIV",
+            "id": "fs-curtain-tab",
+            "cls": "",
+            "text": "⬇ Layers"
+          },
+          "after": {
+            "cls": "curtain-open",
+            "x": 0,
+            "y": 0,
+            "w": 360,
+            "h": 518,
+            "display": "block",
+            "transform": "matrix(1, 0, 0, 1, 0, 0)",
+            "groups": [
+              "Topology (GeoJSON)",
+              "Assets (GeoJSON)",
+              "Supermarkets (GeoJSON)",
+              "Transit (GeoJSON)",
+              "Leisure & Sports (GeoJSON)",
+              "Global Data Backbone",
+              "Global Supply Chain & Chokepoints",
+              "Highway Infrastructure",
+              "EV (GeoJSON)",
+              "Heavy Industry",
+              "REPD (GeoJSON)",
+              "Basemap",
+              "PIPELINE NEWS (REPD)"
+            ],
+            "firstGroupRect": {
+              "x": 16,
+              "y": 48,
+              "w": 328,
+              "h": 206
+            },
+            "lastGroupRect": {
+              "x": 16,
+              "y": 2069,
+              "w": 328,
+              "h": 98,
+              "inViewport": false
+            },
+            "fsEngineInputs": 60
+          },
+          "toggleViaCurtain": {
+            "error": "locator.tap: Timeout 15000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('#fs-curtain-keys input[data-layer-id=\"400\"]')\u001b[22m\n\u001b[2m    - locator resolved to <"
+          }
+        },
+        "exited": true
+      },
+      "errors": []
+    },
+    "p07": {
+      "enterOpens": {
+        "open": [
+          "Grid"
+        ],
+        "focused": {
+          "tag": "BUTTON",
+          "id": "gridatlas-menu-bar-title-4",
+          "text": "Grid",
+          "proxy": null,
+          "lightning": null,
+          "type": "button",
+          "name": null,
+          "role": null,
+          "ariaLabel": null,
+          "checked": null,
+          "inBar": true,
+          "inGridPanel": false
+        }
+      },
+      "tabSequence": {
+        "count": 67,
+        "first6": [
+          {
+            "tag": "INPUT",
+            "id": null,
+            "text": "",
+            "proxy": "engine:400",
+            "lightning": null,
+            "type": "checkbox",
+            "name": null,
+            "role": null,
+            "ariaLabel": "400kV [OK]",
+            "checked": false,
+            "inBar": true,
+            "inGridPanel": true
+          },
+          {
+            "tag": "INPUT",
+            "id": null,
+            "text": "",
+            "proxy": "engine:275",
+            "lightning": null,
+            "type": "checkbox",
+            "name": null,
+            "role": null,
+            "ariaLabel": "275kV [OK]",
+            "checked": false,
+            "inBar": true,
+            "inGridPanel": true
+          },
+          {
+            "tag": "INPUT",
+            "id": null,
+            "text": "",
+            "proxy": "engine:220",
+            "lightning": null,
+            "type": "checkbox",
+            "name": null,
+            "role": null,
+            "ariaLabel": "220kV [OK]",
+            "checked": false,
+            "inBar": true,
+            "inGridPanel": true
+          },
+          {
+            "tag": "INPUT",
+            "id": null,
+            "text": "",
+            "proxy": "engine:132",
+            "lightning": null,
+            "type": "checkbox",
+            "name": null,
+            "role": null,
+            "ariaLabel": "132kV [OK]",
+            "checked": false,
+            "inBar": true,
+            "inGridPanel": true
+          },
+          {
+            "tag": "INPUT",
+            "id": null,
+            "text": "",
+            "proxy": "engine:66",
+            "lightning": null,
+            "type": "checkbox",
+            "name": null,
+            "role": null,
+            "ariaLabel": "66kV [OK]",
+            "checked": false,
+            "inBar": true,
+            "inGridPanel": true
+          },
+          {
+            "tag": "INPUT",
+            "id": null,
+            "text": "",
+            "proxy": "engine:11kv",
+            "lightning": null,
+            "type": "checkbox",
+            "name": null,
+            "role": null,
+            "ariaLabel": "11kV (UKPN) [WAIT]",
+            "checked": false,
+            "inBar": true,
+            "inGridPanel": true
+          }
+        ],
+        "tail8": [
+          {
+            "tag": "INPUT",
+            "id": null,
+            "text": "",
+            "proxy": "engine:caes",
+            "lightning": null,
+            "type": "checkbox",
+            "name": null,
+            "role": null,
+            "ariaLabel": "Compressed Air Storage [WAIT]",
+            "checked": false,
+            "inBar": true,
+            "inGridPanel": true
+          },
+          {
+            "tag": "INPUT",
+            "id": null,
+            "text": "",
+            "proxy": "pipeline:same",
+            "lightning": null,
+            "type": "checkbox",
+            "name": null,
+            "role": null,
+            "ariaLabel": "Same technology [SELECT A PROJECT]",
+            "checked": false,
+            "inBar": true,
+            "inGridPanel": true
+          },
+          {
+            "tag": "INPUT",
+            "id": null,
+            "text": "",
+            "proxy": "pipeline:wider",
+            "lightning": null,
+            "type": "checkbox",
+            "name": null,
+            "role": null,
+            "ariaLabel": "Wider fleet [SELECT A PROJECT]",
+            "checked": false,
+            "inBar": true,
+            "inGridPanel": true
+          },
+          {
+            "tag": "INPUT",
+            "id": null,
+            "text": "",
+            "proxy": "pipeline:all",
+            "lightning": null,
+            "type": "checkbox",
+            "name": null,
+            "role": null,
+            "ariaLabel": "All pipeline [SELECT A PROJECT]",
+            "checked": false,
+            "inBar": true,
+            "inGridPanel": true
+          },
+          {
+            "tag": "INPUT",
+            "id": null,
+            "text": "",
+            "proxy": null,
+            "lightning": null,
+            "type": "radio",
+            "name": "gridatlas-menu-basemap",
+            "role": null,
+            "ariaLabel": null,
+            "checked": true,
+            "inBar": true,
+            "inGridPanel": true
+          },
+          {
+            "tag": "DIV",
+            "id": "fs-curtain-tab",
+            "text": "⬇ Layers",
+            "proxy": null,
+            "lightning": null,
+            "type": null,
+            "name": null,
+            "role": "button",
+            "ariaLabel": "Open the fullscreen layer curtain",
+            "checked": null,
+            "inBar": true,
+            "inGridPanel": true
+          },
+          {
+            "tag": "BUTTON",
+            "id": "gridatlas-menu-bar-title-5",
+            "text": "About",
+            "proxy": null,
+            "lightning": null,
+            "type": "button",
+            "name": null,
+            "role": null,
+            "ariaLabel": null,
+            "checked": null,
+            "inBar": true,
+            "inGridPanel": false
+          },
+          {
+            "tag": "CANVAS",
+            "id": null,
+            "text": "",
+            "proxy": null,
+            "lightning": null,
+            "type": null,
+            "name": null,
+            "role": "region",
+            "ariaLabel": "Map",
+            "checked": null,
+            "inBar": false,
+            "inGridPanel": false
+          }
+        ],
+        "leftBarAt": 66,
+        "lightningStops": [],
+        "proxyStops": 63
+      },
+      "shiftTabBack": {
+        "tag": "BUTTON",
+        "id": "gridatlas-menu-bar-title-5",
+        "text": "About",
+        "proxy": null,
+        "lightning": null,
+        "type": "button",
+        "name": null,
+        "role": null,
+        "ariaLabel": null,
+        "checked": null,
+        "inBar": true,
+        "inGridPanel": false
+      },
+      "shiftTabBack2": {
+        "tag": "DIV",
+        "id": "fs-curtain-tab",
+        "text": "⬇ Layers",
+        "proxy": null,
+        "lightning": null,
+        "type": null,
+        "name": null,
+        "role": "button",
+        "ariaLabel": "Open the fullscreen layer curtain",
+        "checked": null,
+        "inBar": true,
+        "inGridPanel": true
+      },
+      "spaceOnProxy": {
+        "target": {
+          "tag": "INPUT",
+          "id": null,
+          "text": "",
+          "proxy": "engine:400",
+          "lightning": null,
+          "type": "checkbox",
+          "name": null,
+          "role": null,
+          "ariaLabel": "400kV [OK]",
+          "checked": false,
+          "inBar": true,
+          "inGridPanel": true
+        },
+        "before": {
+          "orig": false,
+          "proxy": false
+        },
+        "afterSpace": {
+          "orig": true,
+          "proxy": true,
+          "open": true,
+          "label": "400kV [OK]"
+        },
+        "afterSecondSpace": {
+          "orig": false,
+          "proxy": false,
+          "open": true
+        },
+        "ok": true
+      },
+      "escapeFromPanel": {
+        "focused": {
+          "tag": "BUTTON",
+          "id": "gridatlas-menu-bar-title-4",
+          "text": "Grid",
+          "proxy": null,
+          "lightning": null,
+          "type": "button",
+          "name": null,
+          "role": null,
+          "ariaLabel": null,
+          "checked": null,
+          "inBar": true,
+          "inGridPanel": false
+        },
+        "open": []
+      },
+      "arrowsBetweenTitles": {
+        "right": "About",
+        "leftLeft": "Scope",
+        "home": "File",
+        "end": "About",
+        "ok": true
+      }
+    },
+    "inventory_after_p06_p07": {
+      "inspect": {
+        "engine": 60,
+        "pipeline": 3,
+        "total": 63,
+        "unique": 63,
+        "complete": true
+      },
+      "menuBar_state": {
+        "installed": true,
+        "layer_controls": 63,
+        "engine": 60,
+        "pipeline": 3,
+        "controls_moved": 20,
+        "failure": null,
+        "listeners": 2
+      },
+      "proxies": 63,
+      "proxy_keys_unique": 63,
+      "markers_data_gridatlas_layer_key": 63,
+      "gm_layer_labels_total": 65,
+      "gm_layer_boxes": 65,
+      "basemap_menu_radios_excluded": 2,
+      "basemap_native_radios_excluded": 2,
+      "basemap_fs_radios_excluded": 2,
+      "engine_inputs_native": 60,
+      "pn_inputs_native": 3,
+      "engine_inputs_fs": 60,
+      "pn_inputs_fs": 3,
+      "engine_inputs_anywhere": 120,
+      "pn_inputs_anywhere": 6,
+      "native_groups": [
+        "Topology (GeoJSON)",
+        "Assets (GeoJSON)",
+        "Supermarkets (GeoJSON)",
+        "Transit (GeoJSON)",
+        "Leisure & Sports (GeoJSON)",
+        "Global Data Backbone",
+        "Global Supply Chain & Chokepoints",
+        "Highway Infrastructure",
+        "EV (GeoJSON)",
+        "Heavy Industry",
+        "REPD (GeoJSON)",
+        "Basemap",
+        "PIPELINE NEWS (REPD)"
+      ],
+      "fs_groups": [
+        "Topology (GeoJSON)",
+        "Assets (GeoJSON)",
+        "Supermarkets (GeoJSON)",
+        "Transit (GeoJSON)",
+        "Leisure & Sports (GeoJSON)",
+        "Global Data Backbone",
+        "Global Supply Chain & Chokepoints",
+        "Highway Infrastructure",
+        "EV (GeoJSON)",
+        "Heavy Industry",
+        "REPD (GeoJSON)",
+        "Basemap",
+        "PIPELINE NEWS (REPD)"
+      ],
+      "gm_group_headings": [
+        "Export this view",
+        "Studies",
+        "Topology (GeoJSON)",
+        "Assets (GeoJSON)",
+        "Supermarkets (GeoJSON)",
+        "Transit (GeoJSON)",
+        "Leisure & Sports (GeoJSON)",
+        "Global Data Backbone",
+        "Global Supply Chain & Chokepoints",
+        "Highway Infrastructure",
+        "EV (GeoJSON)",
+        "Heavy Industry",
+        "REPD (GeoJSON)",
+        "PIPELINE NEWS (REPD)",
+        "Basemap",
+        "Estate"
+      ],
+      "lightning": {
+        "inputs": 0,
+        "checked": 0,
+        "groups": [],
+        "has_forbidden_attrs": 0,
+        "state": null
+      },
+      "menu_titles": [
+        "File",
+        "Edit",
+        "View",
+        "Scope",
+        "Grid",
+        "About"
+      ],
+      "style_tags": 9,
+      "style_ids": [
+        "(anon)",
+        "gridatlas-neon-css",
+        "gridatlas-gb-conditions-style",
+        "gridatlas-version-ledger-style",
+        "gridatlas-mobile-tray-style",
+        "gridatlas-sld-css",
+        "(anon)",
+        "(anon)",
+        "gridatlas-menu-bar-css"
+      ],
+      "scada_collapsed": "1",
+      "page_scroll": {
+        "scrollY": 0,
+        "scrollHeight": 740,
+        "innerHeight": 740,
+        "bodyScrollHeight": 740,
+        "overflowHtml": "hidden",
+        "overflowBody": "hidden"
+      }
+    },
+    "p08": {
+      "targets": [
+        {
+          "name": "Grid title",
+          "box": {
+            "x": 280.2,
+            "y": 5,
+            "w": 34.6,
+            "h": 34,
+            "inViewport": true
+          },
+          "meets44": false,
+          "elementAtCentre": {
+            "tag": "BUTTON",
+            "id": "gridatlas-menu-bar-title-4",
+            "cls": "gm-title",
+            "text": "Grid"
+          },
+          "outcome": [
+            "Grid"
+          ]
+        },
+        {
+          "name": "first proxy engine:400 (in open Grid menu)",
+          "box": {
+            "x": -33.2,
+            "y": 125.4,
+            "w": 426.4,
+            "h": 57.2,
+            "inViewport": false
+          },
+          "meets44": true,
+          "elementAtCentre": {
+            "tag": "INPUT",
+            "id": null,
+            "cls": "",
+            "text": ""
+          },
+          "outcome": {
+            "orig": true,
+            "open": true
+          }
+        },
+        {
+          "name": "first proxy engine:400 again (off)",
+          "box": {
+            "x": -33.2,
+            "y": 125.4,
+            "w": 426.4,
+            "h": 57.2,
+            "inViewport": false
+          },
+          "meets44": true,
+          "elementAtCentre": {
+            "tag": "INPUT",
+            "id": null,
+            "cls": "",
+            "text": ""
+          },
+          "outcome": {
+            "orig": false
+          }
+        },
+        {
+          "name": "Grid title (close)",
+          "box": {
+            "x": 280.2,
+            "y": 5,
+            "w": 34.6,
+            "h": 34,
+            "inViewport": true
+          },
+          "meets44": false,
+          "elementAtCentre": {
+            "tag": "BUTTON",
+            "id": "gridatlas-menu-bar-title-4",
+            "cls": "gm-title",
+            "text": "Grid"
+          },
+          "outcome": []
+        },
+        {
+          "name": "#gridatlas-dash-toggle (open Layers panel)",
+          "box": {
+            "x": 256.5,
+            "y": 684,
+            "w": 91.5,
+            "h": 44,
+            "inViewport": true
+          },
+          "meets44": true,
+          "elementAtCentre": {
+            "tag": "BUTTON",
+            "id": "gridatlas-dash-toggle",
+            "cls": "",
+            "text": "▴ LAYERS"
+          },
+          "outcome": null
+        },
+        {
+          "name": "native engine input 400 (panel)",
+          "box": {
+            "x": 31,
+            "y": 459.9,
+            "w": 16.9,
+            "h": 16.9,
+            "inViewport": true
+          },
+          "meets44": false,
+          "elementAtCentre": {
+            "tag": "INPUT",
+            "id": null,
+            "cls": "",
+            "text": ""
+          },
+          "outcome": {
+            "orig": true
+          }
+        },
+        {
+          "name": "native engine input 400 (panel, off)",
+          "box": {
+            "x": 31,
+            "y": 459.9,
+            "w": 16.9,
+            "h": 16.9,
+            "inViewport": true
+          },
+          "meets44": false,
+          "elementAtCentre": {
+            "tag": "INPUT",
+            "id": null,
+            "cls": "",
+            "text": ""
+          },
+          "outcome": {
+            "orig": false
+          }
+        },
+        {
+          "name": "#gridatlas-dash-toggle (close Layers panel)",
+          "box": {
+            "x": 215.6,
+            "y": 684,
+            "w": 132.4,
+            "h": 44,
+            "inViewport": true
+          },
+          "meets44": true,
+          "elementAtCentre": {
+            "tag": "BUTTON",
+            "id": "gridatlas-dash-toggle",
+            "cls": "",
+            "text": "▾ HIDE LAYERS"
+          },
+          "outcome": "1"
+        }
+      ]
+    },
+    "p12_idle_off": {
+      "total": 2010,
+      "lightningOwned": 0,
+      "byType": {
+        "childList": 90,
+        "attributes": 1920
+      },
+      "outsideSamples": [
+        "childList SPAN#clock.hud-val",
+        "childList SPAN#date.",
+        "childList SPAN#days.hud-val",
+        "attributes BUTTON. @hidden",
+        "attributes INPUT. @aria-label",
+        "attributes INPUT. @aria-label",
+        "attributes INPUT. @aria-label",
+        "attributes INPUT. @aria-label",
+        "attributes INPUT. @aria-label",
+        "attributes INPUT. @aria-label",
+        "attributes INPUT. @aria-label",
+        "attributes INPUT. @aria-label"
+      ],
+      "insideSamples": [],
+      "attrNames": {
+        "hidden": 30,
+        "aria-label": 1890
+      },
+      "textChanges": 0,
+      "elapsed_ms": 30000,
+      "longTasksDuring": [],
+      "lightningState": null,
+      "requests_during": 0,
+      "lightning_requests_during": 0,
+      "cpu": {
+        "TaskDuration_s": 0.052,
+        "ScriptDuration_s": 0.025,
+        "LayoutCount": 0,
+        "RecalcStyleCount": 30,
+        "heap_delta_bytes": -2079924,
+        "heap_after": 43437888,
+        "nodes": 2664,
+        "listeners": 206
+      }
+    },
+    "p09_click_400kv": {
+      "label": "400kV [OK]",
+      "eligible": 4106,
+      "target": [
+        -1.0453368,
+        52.2441634
+      ],
+      "visibility": "visible",
+      "rendered": 6,
+      "hit": {
+        "x": 180.0000000000474,
+        "y": 214.5
+      },
+      "elementAtHit": "CANVAS.maplibregl-canvas",
+      "popups": 1,
+      "popupText": [
+        "National Grid East Claydon-Enderby | 400000National Grid×"
+      ],
+      "off": {
+        "checked": false,
+        "visibility": "none"
+      },
+      "pass": true
+    },
+    "final": {
+      "inventory": {
+        "inspect": {
+          "engine": 60,
+          "pipeline": 3,
+          "total": 63,
+          "unique": 63,
+          "complete": true
+        },
+        "menuBar_state": {
+          "installed": true,
+          "layer_controls": 63,
+          "engine": 60,
+          "pipeline": 3,
+          "controls_moved": 20,
+          "failure": null,
+          "listeners": 2
+        },
+        "proxies": 63,
+        "proxy_keys_unique": 63,
+        "markers_data_gridatlas_layer_key": 63,
+        "gm_layer_labels_total": 65,
+        "gm_layer_boxes": 65,
+        "basemap_menu_radios_excluded": 2,
+        "basemap_native_radios_excluded": 2,
+        "basemap_fs_radios_excluded": 2,
+        "engine_inputs_native": 60,
+        "pn_inputs_native": 3,
+        "engine_inputs_fs": 60,
+        "pn_inputs_fs": 3,
+        "engine_inputs_anywhere": 120,
+        "pn_inputs_anywhere": 6,
+        "native_groups": [
+          "Topology (GeoJSON)",
+          "Assets (GeoJSON)",
+          "Supermarkets (GeoJSON)",
+          "Transit (GeoJSON)",
+          "Leisure & Sports (GeoJSON)",
+          "Global Data Backbone",
+          "Global Supply Chain & Chokepoints",
+          "Highway Infrastructure",
+          "EV (GeoJSON)",
+          "Heavy Industry",
+          "REPD (GeoJSON)",
+          "Basemap",
+          "PIPELINE NEWS (REPD)"
+        ],
+        "fs_groups": [
+          "Topology (GeoJSON)",
+          "Assets (GeoJSON)",
+          "Supermarkets (GeoJSON)",
+          "Transit (GeoJSON)",
+          "Leisure & Sports (GeoJSON)",
+          "Global Data Backbone",
+          "Global Supply Chain & Chokepoints",
+          "Highway Infrastructure",
+          "EV (GeoJSON)",
+          "Heavy Industry",
+          "REPD (GeoJSON)",
+          "Basemap",
+          "PIPELINE NEWS (REPD)"
+        ],
+        "gm_group_headings": [
+          "Export this view",
+          "Studies",
+          "Topology (GeoJSON)",
+          "Assets (GeoJSON)",
+          "Supermarkets (GeoJSON)",
+          "Transit (GeoJSON)",
+          "Leisure & Sports (GeoJSON)",
+          "Global Data Backbone",
+          "Global Supply Chain & Chokepoints",
+          "Highway Infrastructure",
+          "EV (GeoJSON)",
+          "Heavy Industry",
+          "REPD (GeoJSON)",
+          "PIPELINE NEWS (REPD)",
+          "Basemap",
+          "Estate"
+        ],
+        "lightning": {
+          "inputs": 0,
+          "checked": 0,
+          "groups": [],
+          "has_forbidden_attrs": 0,
+          "state": null
+        },
+        "menu_titles": [
+          "File",
+          "Edit",
+          "View",
+          "Scope",
+          "Grid",
+          "About"
+        ],
+        "style_tags": 9,
+        "style_ids": [
+          "(anon)",
+          "gridatlas-neon-css",
+          "gridatlas-gb-conditions-style",
+          "gridatlas-version-ledger-style",
+          "gridatlas-mobile-tray-style",
+          "gridatlas-sld-css",
+          "(anon)",
+          "(anon)",
+          "gridatlas-menu-bar-css"
+        ],
+        "scada_collapsed": null,
+        "page_scroll": {
+          "scrollY": 0,
+          "scrollHeight": 740,
+          "innerHeight": 740,
+          "bodyScrollHeight": 740,
+          "overflowHtml": "hidden",
+          "overflowBody": "hidden"
+        }
+      },
+      "map": {
+        "sources": [
+          "gridatlas-neon-links",
+          "gridatlas-neon-nodes",
+          "gridatlas-sld",
+          "sat-s",
+          "src-11kv",
+          "src-132",
+          "src-220",
+          "src-275",
+          "src-400",
+          "src-66",
+          "src-air",
+          "src-aldi",
+          "src-asda",
+          "src-booths",
+          "src-coop",
+          "src-costco",
+          "src-dc",
+          "src-elizabeth",
+          "src-eurostar_route",
+          "src-eurostar_station",
+          "src-ev",
+          "src-gas",
+          "src-global_hydrocarbons",
+          "src-global_ports_major",
+          "src-global_ports_minor",
+          "src-hs2",
+          "src-ind",
+          "src-interconnectors",
+          "src-lidl",
+          "src-lu",
+          "src-mainline_rail",
+          "src-measure-fill",
+          "src-measure-line",
+          "src-measure-points",
+          "src-metros",
+          "src-morrisons",
+          "src-motorway_services",
+          "src-motorways",
+          "src-ms",
+          "src-naei_co2",
+          "src-nuc",
+          "src-primary_roads",
+          "src-radius-area",
+          "src-radius-circle",
+          "src-rail",
+          "src-repd",
+          "src-sainsburys",
+          "src-stadiums",
+          "src-subs",
+          "src-subsea_data_cables",
+          "src-tesco",
+          "src-trunk_roads",
+          "src-waitrose",
+          "src-zonedraw-fill",
+          "src-zonedraw-line",
+          "src-zonedraw-points"
+        ],
+        "layers": [
+          {
+            "id": "background",
+            "type": "background",
+            "source": null,
+            "visibility": "visible"
+          },
+          {
+            "id": "l-neon-glow",
+            "type": "line",
+            "source": "gridatlas-neon-links",
+            "visibility": "visible"
+          },
+          {
+            "id": "l-neon-core",
+            "type": "line",
+            "source": "gridatlas-neon-links",
+            "visibility": "visible"
+          },
+          {
+            "id": "l-neon-flow",
+            "type": "line",
+            "source": "gridatlas-neon-links",
+            "visibility": "visible"
+          },
+          {
+            "id": "l-neon-flow-b",
+            "type": "line",
+            "source": "gridatlas-neon-links",
+            "visibility": "visible"
+          },
+          {
+            "id": "l-neon-node-ring",
+            "type": "circle",
+            "source": "gridatlas-neon-nodes",
+            "visibility": "visible"
+          },
+          {
+            "id": "l-neon-node",
+            "type": "circle",
+            "source": "gridatlas-neon-nodes",
+            "visibility": "visible"
+          },
+          {
+            "id": "l-sld-boundary",
+            "type": "fill",
+            "source": "gridatlas-sld",
+            "visibility": "visible"
+          },
+          {
+            "id": "l-sld-boundary-line",
+            "type": "line",
+            "source": "gridatlas-sld",
+            "visibility": "visible"
+          },
+          {
+            "id": "l-sld-block",
+            "type": "fill",
+            "source": "gridatlas-sld",
+            "visibility": "visible"
+          },
+          {
+            "id": "l-sld-bess",
+            "type": "fill",
+            "source": "gridatlas-sld",
+            "visibility": "visible"
+          },
+          {
+            "id": "l-sld-radial",
+            "type": "line",
+            "source": "gridatlas-sld",
+            "visibility": "visible"
+          },
+          {
+            "id": "l-sld-radial-flow",
+            "type": "line",
+            "source": "gridatlas-sld",
+            "visibility": "visible"
+          },
+          {
+            "id": "l-sld-cable-glow",
+            "type": "line",
+            "source": "gridatlas-sld",
+            "visibility": "visible"
+          },
+          {
+            "id": "l-sld-cable",
+            "type": "line",
+            "source": "gridatlas-sld",
+            "visibility": "visible"
+          },
+          {
+            "id": "l-sld-cable-flow",
+            "type": "line",
+            "source": "gridatlas-sld",
+            "visibility": "visible"
+          },
+          {
+            "id": "l-sld-cable-flow-b",
+            "type": "line",
+            "source": "gridatlas-sld",
+            "visibility": "visible"
+          },
+          {
+            "id": "l-sld-node",
+            "type": "circle",
+            "source": "gridatlas-sld",
+            "visibility": "visible"
+          },
+          {
+            "id": "l-sld-pin",
+            "type": "circle",
+            "source": "gridatlas-sld",
+            "visibility": "visible"
+          },
+          {
+            "id": "l-sld-handle",
+            "type": "circle",
+            "source": "gridatlas-sld",
+            "visibility": "visible"
+          },
+          {
+            "id": "l-sat",
+            "type": "raster",
+            "source": "sat-s",
+            "visibility": "none"
+          },
+          {
+            "id": "l-radius-circle-fill",
+            "type": "fill",
+            "source": "src-radius-circle",
+            "visibility": "visible"
+          },
+          {
+            "id": "l-radius-circle-stroke",
+            "type": "line",
+            "source": "src-radius-circle",
+            "visibility": "visible"
+          },
+          {
+            "id": "l-radius-area-fill",
+            "type": "fill",
+            "source": "src-radius-area",
+            "visibility": "visible"
+          },
+          {
+            "id": "l-radius-area-stroke",
+            "type": "line",
+            "source": "src-radius-area",
+            "visibility": "visible"
+          },
+          {
+            "id": "l-measure-fill",
+            "type": "fill",
+            "source": "src-measure-fill",
+            "visibility": "visible"
+          },
+          {
+            "id": "l-measure-line",
+            "type": "line",
+            "source": "src-measure-line",
+            "visibility": "visible"
+          },
+          {
+            "id": "l-measure-points",
+            "type": "circle",
+            "source": "src-measure-points",
+            "visibility": "visible"
+          },
+          {
+            "id": "l-zonedraw-fill",
+            "type": "fill",
+            "source": "src-zonedraw-fill",
+            "visibility": "visible"
+          },
+          {
+            "id": "l-zonedraw-line",
+            "type": "line",
+            "source": "src-zonedraw-line",
+            "visibility": "visible"
+          },
+          {
+            "id": "l-zonedraw-points",
+            "type": "circle",
+            "source": "src-zonedraw-points",
+            "visibility": "visible"
+          },
+          {
+            "id": "l-400",
+            "type": "line",
+            "source": "src-400",
+            "visibility": "none"
+          },
+          {
+            "id": "l-275",
+            "type": "line",
+            "source": "src-275",
+            "visibility": "none"
+          },
+          {
+            "id": "l-220",
+            "type": "line",
+            "source": "src-220",
+            "visibility": "none"
+          },
+          {
+            "id": "l-132",
+            "type": "line",
+            "source": "src-132",
+            "visibility": "none"
+          },
+          {
+            "id": "l-66",
+            "type": "line",
+            "source": "src-66",
+            "visibility": "none"
+          },
+          {
+            "id": "l-11kv",
+            "type": "circle",
+            "source": "src-11kv",
+            "visibility": "none"
+          },
+          {
+            "id": "l-subs",
+            "type": "circle",
+            "source": "src-subs",
+            "visibility": "none"
+          },
+          {
+            "id": "l-nuc",
+            "type": "circle",
+            "source": "src-nuc",
+            "visibility": "none"
+          },
+          {
+            "id": "l-gas",
+            "type": "circle",
+            "source": "src-gas",
+            "visibility": "none"
+          },
+          {
+            "id": "l-ind",
+            "type": "circle",
+            "source": "src-ind",
+            "visibility": "none"
+          },
+          {
+            "id": "l-dc",
+            "type": "circle",
+            "source": "src-dc",
+            "visibility": "none"
+          },
+          {
+            "id": "l-air",
+            "type": "circle",
+            "source": "src-air",
+            "visibility": "none"
+          },
+          {
+            "id": "l-rail",
+            "type": "circle",
+            "source": "src-rail",
+            "visibility": "none"
+          },
+          {
+            "id": "l-tesco",
+            "type": "circle",
+            "source": "src-tesco",
+            "visibility": "none"
+          },
+          {
+            "id": "l-sainsburys",
+            "type": "circle",
+            "source": "src-sainsburys",
+            "visibility": "none"
+          },
+          {
+            "id": "l-asda",
+            "type": "circle",
+            "source": "src-asda",
+            "visibility": "none"
+          },
+          {
+            "id": "l-morrisons",
+            "type": "circle",
+            "source": "src-morrisons",
+            "visibility": "none"
+          },
+          {
+            "id": "l-aldi",
+            "type": "circle",
+            "source": "src-aldi",
+            "visibility": "none"
+          },
+          {
+            "id": "l-lidl",
+            "type": "circle",
+            "source": "src-lidl",
+            "visibility": "none"
+          },
+          {
+            "id": "l-waitrose",
+            "type": "circle",
+            "source": "src-waitrose",
+            "visibility": "none"
+          },
+          {
+            "id": "l-ms",
+            "type": "circle",
+            "source": "src-ms",
+            "visibility": "none"
+          },
+          {
+            "id": "l-coop",
+            "type": "circle",
+            "source": "src-coop",
+            "visibility": "none"
+          },
+          {
+            "id": "l-costco",
+            "type": "circle",
+            "source": "src-costco",
+            "visibility": "none"
+          },
+          {
+            "id": "l-booths",
+            "type": "circle",
+            "source": "src-booths",
+            "visibility": "none"
+          },
+          {
+            "id": "l-mainline_rail",
+            "type": "line",
+            "source": "src-mainline_rail",
+            "visibility": "none"
+          },
+          {
+            "id": "l-eurostar_route",
+            "type": "line",
+            "source": "src-eurostar_route",
+            "visibility": "none"
+          },
+          {
+            "id": "l-eurostar_station",
+            "type": "circle",
+            "source": "src-eurostar_station",
+            "visibility": "none"
+          },
+          {
+            "id": "l-stadiums",
+            "type": "circle",
+            "source": "src-stadiums",
+            "visibility": "none"
+          },
+          {
+            "id": "l-subsea_data_cables",
+            "type": "line",
+            "source": "src-subsea_data_cables",
+            "visibility": "none"
+          },
+          {
+            "id": "l-global_ports_major",
+            "type": "circle",
+            "source": "src-global_ports_major",
+            "visibility": "none"
+          },
+          {
+            "id": "l-global_ports_minor",
+            "type": "circle",
+            "source": "src-global_ports_minor",
+            "visibility": "none"
+          },
+          {
+            "id": "l-global_hydrocarbons",
+            "type": "circle",
+            "source": "src-global_hydrocarbons",
+            "visibility": "none"
+          },
+          {
+            "id": "l-motorways",
+            "type": "line",
+            "source": "src-motorways",
+            "visibility": "none"
+          },
+          {
+            "id": "l-trunk_roads",
+            "type": "line",
+            "source": "src-trunk_roads",
+            "visibility": "none"
+          },
+          {
+            "id": "l-primary_roads",
+            "type": "line",
+            "source": "src-primary_roads",
+            "visibility": "none"
+          },
+          {
+            "id": "l-motorway_services",
+            "type": "circle",
+            "source": "src-motorway_services",
+            "visibility": "none"
+          },
+          {
+            "id": "l-naei_co2-glow",
+            "type": "circle",
+            "source": "src-naei_co2",
+            "visibility": "none"
+          },
+          {
+            "id": "l-naei_co2",
+            "type": "circle",
+            "source": "src-naei_co2",
+            "visibility": "none"
+          },
+          {
+            "id": "l-elizabeth",
+            "type": "circle",
+            "source": "src-elizabeth",
+            "visibility": "none"
+          },
+          {
+            "id": "l-lu",
+            "type": "circle",
+            "source": "src-lu",
+            "visibility": "none"
+          },
+          {
+            "id": "l-dlr",
+            "type": "circle",
+            "source": "src-metros",
+            "visibility": "none"
+          },
+          {
+            "id": "l-metro",
+            "type": "circle",
+            "source": "src-metros",
+            "visibility": "none"
+          },
+          {
+            "id": "l-tram",
+            "type": "circle",
+            "source": "src-metros",
+            "visibility": "none"
+          },
+          {
+            "id": "l-hs2",
+            "type": "circle",
+            "source": "src-hs2",
+            "visibility": "none"
+          },
+          {
+            "id": "l-ev",
+            "type": "circle",
+            "source": "src-ev",
+            "visibility": "none"
+          },
+          {
+            "id": "l-solar-glow",
+            "type": "circle",
+            "source": "src-repd",
+            "visibility": "none"
+          },
+          {
+            "id": "l-solar",
+            "type": "circle",
+            "source": "src-repd",
+            "visibility": "none"
+          },
+          {
+            "id": "l-solar_operational-glow",
+            "type": "circle",
+            "source": "src-repd",
+            "visibility": "none"
+          },
+          {
+            "id": "l-solar_operational",
+            "type": "circle",
+            "source": "src-repd",
+            "visibility": "none"
+          },
+          {
+            "id": "l-solar_roof-glow",
+            "type": "circle",
+            "source": "src-repd",
+            "visibility": "none"
+          },
+          {
+            "id": "l-solar_roof",
+            "type": "circle",
+            "source": "src-repd",
+            "visibility": "none"
+          },
+          {
+            "id": "l-wind",
+            "type": "circle",
+            "source": "src-repd",
+            "visibility": "none"
+          },
+          {
+            "id": "l-wind_onshore_operational-glow",
+            "type": "circle",
+            "source": "src-repd",
+            "visibility": "none"
+          },
+          {
+            "id": "l-wind_onshore_operational",
+            "type": "circle",
+            "source": "src-repd",
+            "visibility": "none"
+          },
+          {
+            "id": "l-wind_offshore_operational-glow",
+            "type": "circle",
+            "source": "src-repd",
+            "visibility": "none"
+          },
+          {
+            "id": "l-wind_offshore_operational",
+            "type": "circle",
+            "source": "src-repd",
+            "visibility": "none"
+          },
+          {
+            "id": "l-bess",
+            "type": "circle",
+            "source": "src-repd",
+            "visibility": "none"
+          },
+          {
+            "id": "l-bess_operational-glow",
+            "type": "circle",
+            "source": "src-repd",
+            "visibility": "none"
+          },
+          {
+            "id": "l-bess_operational",
+            "type": "circle",
+            "source": "src-repd",
+            "visibility": "none"
+          },
+          {
+            "id": "l-biomass",
+            "type": "circle",
+            "source": "src-repd",
+            "visibility": "none"
+          },
+          {
+            "id": "l-tidal",
+            "type": "circle",
+            "source": "src-repd",
+            "visibility": "none"
+          },
+          {
+            "id": "l-hydrogen",
+            "type": "circle",
+            "source": "src-repd",
+            "visibility": "none"
+          },
+          {
+            "id": "l-hydro",
+            "type": "circle",
+            "source": "src-repd",
+            "visibility": "none"
+          },
+          {
+            "id": "l-flywheel",
+            "type": "circle",
+            "source": "src-repd",
+            "visibility": "none"
+          },
+          {
+            "id": "l-act",
+            "type": "circle",
+            "source": "src-repd",
+            "visibility": "none"
+          },
+          {
+            "id": "l-geothermal",
+            "type": "circle",
+            "source": "src-repd",
+            "visibility": "none"
+          },
+          {
+            "id": "l-caes",
+            "type": "circle",
+            "source": "src-repd",
+            "visibility": "none"
+          },
+          {
+            "id": "l-interconnectors",
+            "type": "line",
+            "source": "src-interconnectors",
+            "visibility": "none"
+          },
+          {
+            "id": "l-interconnector-nodes",
+            "type": "circle",
+            "source": "src-interconnectors",
+            "visibility": "none"
+          }
+        ],
+        "layerCount": 100,
+        "lightning": {
+          "source": false,
+          "layer": false
+        }
+      },
+      "consoleErrors": [
+        "Failed to load resource: net::ERR_BLOCKED_BY_CLIENT.Inspector",
+        "Failed to load resource: net::ERR_BLOCKED_BY_CLIENT.Inspector",
+        "Failed to load resource: net::ERR_BLOCKED_BY_CLIENT.Inspector",
+        "Failed to load resource: net::ERR_BLOCKED_BY_CLIENT.Inspector"
+      ],
+      "pageErrors": [],
+      "failedRequests": 5,
+      "lightningRequestsTotal": [],
+      "shim": {
+        "served": {
+          "maplibre": 4,
+          "style": 2,
+          "duckdb": 4,
+          "data-gridatlas": 1
+        },
+        "aborted": [
+          "https://raw.githubusercontent.com/Ventusltd/data-grid-gb/1c9909d1138704b29235c27fd769436dda8a0b18/derived/connection-points.v3.json",
+          "https://ventusltd.github.io/ventus-grid-engine/genome/engine-graph.json"
+        ],
+        "missing": []
+      },
+      "metrics": {
+        "Timestamp": 460.382748,
+        "JSEventListeners": 207,
+        "Nodes": 2587,
+        "LayoutCount": 98,
+        "RecalcStyleCount": 501,
+        "ScriptDuration": 1.077383,
+        "TaskDuration": 7.776476,
+        "JSHeapUsedSize": 47274628,
+        "JSHeapTotalSize": 57663488
+      }
+    }
+  },
+  "errors": [],
+  "endedAt": "2026-10-26T23:02:06.376Z"
+}

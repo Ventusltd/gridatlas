@@ -1,0 +1,638 @@
+{
+ "generated": "2026-10-26T23:40:05.879Z",
+ "repos": {
+  "gridatlas": {
+   "total": {
+    "commits": 105,
+    "files": 5137,
+    "added": 7348754,
+    "removed": 1108,
+    "computeAdded": 3071470,
+    "computeRemoved": 403
+   },
+   "stamped_versions": 40
+  }
+ },
+ "engine": {
+  "versions_examined": 101,
+  "forms": {
+   "atan2": 82,
+   "asin": 19
+  },
+  "canonical_form": "atan2",
+  "findings": [
+   {
+    "severity": "radius",
+    "sha": "22ceba8",
+    "where": "working tree",
+    "paths": [
+     "gridatlas:atlas/cartridges/202609070913-sld-sandbox-v9-8.js"
+    ],
+    "detail": "carries 6371.0088, 6371.008"
+   },
+   {
+    "severity": "radius",
+    "sha": "22ceba8",
+    "where": "working tree",
+    "paths": [
+     "gridatlas:atlas/cartridges/202609070913-sld-sandbox-v9-8.js"
+    ],
+    "detail": "does not carry the estate radius"
+   },
+   {
+    "severity": "radius",
+    "sha": "6ce6785",
+    "where": "working tree",
+    "paths": [
+     "gridatlas:atlas/cartridges/202609071005-sld-sandbox-v9-8.js"
+    ],
+    "detail": "carries 6371.0088, 6371.008"
+   },
+   {
+    "severity": "radius",
+    "sha": "6ce6785",
+    "where": "working tree",
+    "paths": [
+     "gridatlas:atlas/cartridges/202609071005-sld-sandbox-v9-8.js"
+    ],
+    "detail": "does not carry the estate radius"
+   },
+   {
+    "severity": "radius",
+    "sha": "eb9cd97",
+    "where": "working tree",
+    "paths": [
+     "gridatlas:atlas/cartridges/202609071232-sld-sandbox-v9-8.js"
+    ],
+    "detail": "carries 6371.0088, 6371.008"
+   },
+   {
+    "severity": "radius",
+    "sha": "eb9cd97",
+    "where": "working tree",
+    "paths": [
+     "gridatlas:atlas/cartridges/202609071232-sld-sandbox-v9-8.js"
+    ],
+    "detail": "does not carry the estate radius"
+   },
+   {
+    "severity": "radius",
+    "sha": "e0599ef",
+    "where": "working tree",
+    "paths": [
+     "gridatlas:atlas/cartridges/202609072329-sld-sandbox-v9-8.js"
+    ],
+    "detail": "carries 6371.0088, 6371.008"
+   },
+   {
+    "severity": "radius",
+    "sha": "e0599ef",
+    "where": "working tree",
+    "paths": [
+     "gridatlas:atlas/cartridges/202609072329-sld-sandbox-v9-8.js"
+    ],
+    "detail": "does not carry the estate radius"
+   },
+   {
+    "severity": "radius",
+    "sha": "a15b535",
+    "where": "working tree",
+    "paths": [
+     "gridatlas:atlas/cartridges/202609072337-sld-sandbox-v9-8.js"
+    ],
+    "detail": "carries 6371.0088, 6371.008"
+   },
+   {
+    "severity": "radius",
+    "sha": "a15b535",
+    "where": "working tree",
+    "paths": [
+     "gridatlas:atlas/cartridges/202609072337-sld-sandbox-v9-8.js"
+    ],
+    "detail": "does not carry the estate radius"
+   },
+   {
+    "severity": "radius",
+    "sha": "3fb9ec3",
+    "where": "working tree",
+    "paths": [
+     "gridatlas:atlas/cartridges/202609080000-sld-sandbox-v9-8.js"
+    ],
+    "detail": "carries 6371.0088, 6371.008"
+   },
+   {
+    "severity": "radius",
+    "sha": "3fb9ec3",
+    "where": "working tree",
+    "paths": [
+     "gridatlas:atlas/cartridges/202609080000-sld-sandbox-v9-8.js"
+    ],
+    "detail": "does not carry the estate radius"
+   },
+   {
+    "severity": "radius",
+    "sha": "4682bbd",
+    "where": "working tree",
+    "paths": [
+     "gridatlas:atlas/cartridges/202609080030-sld-sandbox-v9-8.js"
+    ],
+    "detail": "carries 6371.0088, 6371.008"
+   },
+   {
+    "severity": "radius",
+    "sha": "4682bbd",
+    "where": "working tree",
+    "paths": [
+     "gridatlas:atlas/cartridges/202609080030-sld-sandbox-v9-8.js"
+    ],
+    "detail": "does not carry the estate radius"
+   },
+   {
+    "severity": "radius",
+    "sha": "251662c",
+    "where": "working tree",
+    "paths": [
+     "gridatlas:atlas/cartridges/202609080430-sld-sandbox-v9-8.js"
+    ],
+    "detail": "carries 6371.0088, 6371.008"
+   },
+   {
+    "severity": "radius",
+    "sha": "251662c",
+    "where": "working tree",
+    "paths": [
+     "gridatlas:atlas/cartridges/202609080430-sld-sandbox-v9-8.js"
+    ],
+    "detail": "does not carry the estate radius"
+   },
+   {
+    "severity": "radius",
+    "sha": "96cff87",
+    "where": "working tree",
+    "paths": [
+     "gridatlas:atlas/cartridges/202609080837-sld-sandbox-v9-8.js"
+    ],
+    "detail": "carries 6371.0088, 6371.008"
+   },
+   {
+    "severity": "radius",
+    "sha": "96cff87",
+    "where": "working tree",
+    "paths": [
+     "gridatlas:atlas/cartridges/202609080837-sld-sandbox-v9-8.js"
+    ],
+    "detail": "does not carry the estate radius"
+   },
+   {
+    "severity": "radius",
+    "sha": "31be756",
+    "where": "working tree",
+    "paths": [
+     "gridatlas:atlas/cartridges/202609080846-sld-sandbox-v9-8.js"
+    ],
+    "detail": "carries 6371.0088, 6371.008"
+   },
+   {
+    "severity": "radius",
+    "sha": "31be756",
+    "where": "working tree",
+    "paths": [
+     "gridatlas:atlas/cartridges/202609080846-sld-sandbox-v9-8.js"
+    ],
+    "detail": "does not carry the estate radius"
+   },
+   {
+    "severity": "radius",
+    "sha": "e6a9fe6",
+    "where": "working tree",
+    "paths": [
+     "gridatlas:atlas/cartridges/202609080850-sld-sandbox-v9-8.js"
+    ],
+    "detail": "carries 6371.0088, 6371.008"
+   },
+   {
+    "severity": "radius",
+    "sha": "e6a9fe6",
+    "where": "working tree",
+    "paths": [
+     "gridatlas:atlas/cartridges/202609080850-sld-sandbox-v9-8.js"
+    ],
+    "detail": "does not carry the estate radius"
+   },
+   {
+    "severity": "radius",
+    "sha": "bad18a2",
+    "where": "working tree",
+    "paths": [
+     "gridatlas:atlas/cartridges/202609200022-sld-sandbox-v9-8.js"
+    ],
+    "detail": "carries 6371.0088, 6371.008"
+   },
+   {
+    "severity": "radius",
+    "sha": "bad18a2",
+    "where": "working tree",
+    "paths": [
+     "gridatlas:atlas/cartridges/202609200022-sld-sandbox-v9-8.js"
+    ],
+    "detail": "does not carry the estate radius"
+   },
+   {
+    "severity": "radius",
+    "sha": "029d4ba",
+    "where": "working tree",
+    "paths": [
+     "gridatlas:atlas/cartridges/202609241251-sld-sandbox-v9-8.js"
+    ],
+    "detail": "carries 6371.0088, 6371.008"
+   },
+   {
+    "severity": "radius",
+    "sha": "029d4ba",
+    "where": "working tree",
+    "paths": [
+     "gridatlas:atlas/cartridges/202609241251-sld-sandbox-v9-8.js"
+    ],
+    "detail": "does not carry the estate radius"
+   },
+   {
+    "severity": "radius",
+    "sha": "fe8b2b2",
+    "where": "working tree",
+    "paths": [
+     "gridatlas:atlas/cartridges/202609241334-sld-sandbox-v9-8.js"
+    ],
+    "detail": "carries 6371.0088, 6371.008"
+   },
+   {
+    "severity": "radius",
+    "sha": "fe8b2b2",
+    "where": "working tree",
+    "paths": [
+     "gridatlas:atlas/cartridges/202609241334-sld-sandbox-v9-8.js"
+    ],
+    "detail": "does not carry the estate radius"
+   },
+   {
+    "severity": "radius",
+    "sha": "9268a1c",
+    "where": "working tree",
+    "paths": [
+     "gridatlas:atlas/cartridges/202610221600-sld-sandbox-v9-8.js"
+    ],
+    "detail": "carries 6371.0088, 6371.008"
+   },
+   {
+    "severity": "radius",
+    "sha": "9268a1c",
+    "where": "working tree",
+    "paths": [
+     "gridatlas:atlas/cartridges/202610221600-sld-sandbox-v9-8.js"
+    ],
+    "detail": "does not carry the estate radius"
+   },
+   {
+    "severity": "radius",
+    "sha": "8ba3db2",
+    "where": "working tree",
+    "paths": [
+     "gridatlas:atlas/cartridges/202610261949-sld-sandbox-v9-8.js"
+    ],
+    "detail": "carries 6371.0088, 6371.008"
+   },
+   {
+    "severity": "radius",
+    "sha": "8ba3db2",
+    "where": "working tree",
+    "paths": [
+     "gridatlas:atlas/cartridges/202610261949-sld-sandbox-v9-8.js"
+    ],
+    "detail": "does not carry the estate radius"
+   },
+   {
+    "severity": "radius",
+    "sha": "1ac6b4e",
+    "where": "working tree",
+    "paths": [
+     "gridatlas:atlas/cartridges/202610262310-sld-sandbox-v9-8.js"
+    ],
+    "detail": "carries 6371.0088, 6371.008"
+   },
+   {
+    "severity": "radius",
+    "sha": "1ac6b4e",
+    "where": "working tree",
+    "paths": [
+     "gridatlas:atlas/cartridges/202610262310-sld-sandbox-v9-8.js"
+    ],
+    "detail": "does not carry the estate radius"
+   },
+   {
+    "severity": "radius",
+    "sha": "bdd3fcd",
+    "where": "working tree",
+    "paths": [
+     "gridatlas:atlas/cartridges/202610262318-sld-sandbox-v9-8.js"
+    ],
+    "detail": "carries 6371.0088, 6371.008"
+   },
+   {
+    "severity": "radius",
+    "sha": "bdd3fcd",
+    "where": "working tree",
+    "paths": [
+     "gridatlas:atlas/cartridges/202610262318-sld-sandbox-v9-8.js"
+    ],
+    "detail": "does not carry the estate radius"
+   },
+   {
+    "severity": "radius",
+    "sha": "d94ebca",
+    "where": "working tree",
+    "paths": [
+     "gridatlas:atlas/cartridges/202610262323-sld-sandbox-v9-8.js"
+    ],
+    "detail": "carries 6371.0088, 6371.008"
+   },
+   {
+    "severity": "radius",
+    "sha": "d94ebca",
+    "where": "working tree",
+    "paths": [
+     "gridatlas:atlas/cartridges/202610262323-sld-sandbox-v9-8.js"
+    ],
+    "detail": "does not carry the estate radius"
+   },
+   {
+    "severity": "haversine-form",
+    "sha": "22ceba8",
+    "where": "working tree",
+    "paths": [
+     "gridatlas:atlas/cartridges/202609070913-sld-sandbox-v9-8.js"
+    ],
+    "detail": "uses asin where the estate uses atan2 (algebraically equal, one unit in the last place apart)"
+   },
+   {
+    "severity": "haversine-form",
+    "sha": "6ce6785",
+    "where": "working tree",
+    "paths": [
+     "gridatlas:atlas/cartridges/202609071005-sld-sandbox-v9-8.js"
+    ],
+    "detail": "uses asin where the estate uses atan2 (algebraically equal, one unit in the last place apart)"
+   },
+   {
+    "severity": "haversine-form",
+    "sha": "eb9cd97",
+    "where": "working tree",
+    "paths": [
+     "gridatlas:atlas/cartridges/202609071232-sld-sandbox-v9-8.js"
+    ],
+    "detail": "uses asin where the estate uses atan2 (algebraically equal, one unit in the last place apart)"
+   },
+   {
+    "severity": "haversine-form",
+    "sha": "e0599ef",
+    "where": "working tree",
+    "paths": [
+     "gridatlas:atlas/cartridges/202609072329-sld-sandbox-v9-8.js"
+    ],
+    "detail": "uses asin where the estate uses atan2 (algebraically equal, one unit in the last place apart)"
+   },
+   {
+    "severity": "haversine-form",
+    "sha": "a15b535",
+    "where": "working tree",
+    "paths": [
+     "gridatlas:atlas/cartridges/202609072337-sld-sandbox-v9-8.js"
+    ],
+    "detail": "uses asin where the estate uses atan2 (algebraically equal, one unit in the last place apart)"
+   },
+   {
+    "severity": "haversine-form",
+    "sha": "3fb9ec3",
+    "where": "working tree",
+    "paths": [
+     "gridatlas:atlas/cartridges/202609080000-sld-sandbox-v9-8.js"
+    ],
+    "detail": "uses asin where the estate uses atan2 (algebraically equal, one unit in the last place apart)"
+   },
+   {
+    "severity": "haversine-form",
+    "sha": "4682bbd",
+    "where": "working tree",
+    "paths": [
+     "gridatlas:atlas/cartridges/202609080030-sld-sandbox-v9-8.js"
+    ],
+    "detail": "uses asin where the estate uses atan2 (algebraically equal, one unit in the last place apart)"
+   },
+   {
+    "severity": "haversine-form",
+    "sha": "251662c",
+    "where": "working tree",
+    "paths": [
+     "gridatlas:atlas/cartridges/202609080430-sld-sandbox-v9-8.js"
+    ],
+    "detail": "uses asin where the estate uses atan2 (algebraically equal, one unit in the last place apart)"
+   },
+   {
+    "severity": "haversine-form",
+    "sha": "96cff87",
+    "where": "working tree",
+    "paths": [
+     "gridatlas:atlas/cartridges/202609080837-sld-sandbox-v9-8.js"
+    ],
+    "detail": "uses asin where the estate uses atan2 (algebraically equal, one unit in the last place apart)"
+   },
+   {
+    "severity": "haversine-form",
+    "sha": "31be756",
+    "where": "working tree",
+    "paths": [
+     "gridatlas:atlas/cartridges/202609080846-sld-sandbox-v9-8.js"
+    ],
+    "detail": "uses asin where the estate uses atan2 (algebraically equal, one unit in the last place apart)"
+   },
+   {
+    "severity": "haversine-form",
+    "sha": "e6a9fe6",
+    "where": "working tree",
+    "paths": [
+     "gridatlas:atlas/cartridges/202609080850-sld-sandbox-v9-8.js"
+    ],
+    "detail": "uses asin where the estate uses atan2 (algebraically equal, one unit in the last place apart)"
+   },
+   {
+    "severity": "haversine-form",
+    "sha": "bad18a2",
+    "where": "working tree",
+    "paths": [
+     "gridatlas:atlas/cartridges/202609200022-sld-sandbox-v9-8.js"
+    ],
+    "detail": "uses asin where the estate uses atan2 (algebraically equal, one unit in the last place apart)"
+   },
+   {
+    "severity": "haversine-form",
+    "sha": "029d4ba",
+    "where": "working tree",
+    "paths": [
+     "gridatlas:atlas/cartridges/202609241251-sld-sandbox-v9-8.js"
+    ],
+    "detail": "uses asin where the estate uses atan2 (algebraically equal, one unit in the last place apart)"
+   },
+   {
+    "severity": "haversine-form",
+    "sha": "fe8b2b2",
+    "where": "working tree",
+    "paths": [
+     "gridatlas:atlas/cartridges/202609241334-sld-sandbox-v9-8.js"
+    ],
+    "detail": "uses asin where the estate uses atan2 (algebraically equal, one unit in the last place apart)"
+   },
+   {
+    "severity": "haversine-form",
+    "sha": "9268a1c",
+    "where": "working tree",
+    "paths": [
+     "gridatlas:atlas/cartridges/202610221600-sld-sandbox-v9-8.js"
+    ],
+    "detail": "uses asin where the estate uses atan2 (algebraically equal, one unit in the last place apart)"
+   },
+   {
+    "severity": "haversine-form",
+    "sha": "8ba3db2",
+    "where": "working tree",
+    "paths": [
+     "gridatlas:atlas/cartridges/202610261949-sld-sandbox-v9-8.js"
+    ],
+    "detail": "uses asin where the estate uses atan2 (algebraically equal, one unit in the last place apart)"
+   },
+   {
+    "severity": "haversine-form",
+    "sha": "1ac6b4e",
+    "where": "working tree",
+    "paths": [
+     "gridatlas:atlas/cartridges/202610262310-sld-sandbox-v9-8.js"
+    ],
+    "detail": "uses asin where the estate uses atan2 (algebraically equal, one unit in the last place apart)"
+   },
+   {
+    "severity": "haversine-form",
+    "sha": "bdd3fcd",
+    "where": "working tree",
+    "paths": [
+     "gridatlas:atlas/cartridges/202610262318-sld-sandbox-v9-8.js"
+    ],
+    "detail": "uses asin where the estate uses atan2 (algebraically equal, one unit in the last place apart)"
+   },
+   {
+    "severity": "haversine-form",
+    "sha": "d94ebca",
+    "where": "working tree",
+    "paths": [
+     "gridatlas:atlas/cartridges/202610262323-sld-sandbox-v9-8.js"
+    ],
+    "detail": "uses asin where the estate uses atan2 (algebraically equal, one unit in the last place apart)"
+   }
+  ]
+ },
+ "gates": {
+  "composition": {
+   "ok": true,
+   "summary": "PASS"
+  },
+  "scope ledger": {
+   "ok": true,
+   "summary": "PASS"
+  },
+  "composed cartridges": {
+   "ok": true,
+   "summary": "ok"
+  },
+  "parts integrity": {
+   "ok": true,
+   "summary": "231/231"
+  },
+  "all versions": {
+   "ok": false,
+   "summary": "failed"
+  },
+  "module parity": {
+   "ok": false,
+   "summary": "failed"
+  },
+  "grid scope": {
+   "ok": true,
+   "summary": "33/33"
+  },
+  "network topology": {
+   "ok": false,
+   "summary": "35/36"
+  },
+  "assembler": {
+   "ok": true,
+   "summary": "31/31"
+  },
+  "source registry": {
+   "ok": true,
+   "summary": "42/42"
+  },
+  "map-click network": {
+   "ok": true,
+   "summary": "13/13"
+  },
+  "declared connections": {
+   "ok": false,
+   "summary": "22/23"
+  },
+  "sizing arithmetic": {
+   "ok": true,
+   "summary": "ok"
+  },
+  "data-contract parity": {
+   "ok": false,
+   "summary": "6/11"
+  },
+  "electrical distance": {
+   "ok": false,
+   "summary": "failed"
+  },
+  "rating envelope": {
+   "ok": false,
+   "summary": "failed"
+  },
+  "injection response (powerflow)": {
+   "ok": false,
+   "summary": "failed"
+  },
+  "planned change": {
+   "ok": false,
+   "summary": "failed"
+  },
+  "owner boundary": {
+   "ok": false,
+   "summary": "failed"
+  }
+ },
+ "skips": {
+  "proofs_read": 96,
+  "skippers": []
+ },
+ "clock": {
+  "now_utc": "202610262342",
+  "repos": {
+   "gridatlas": {
+    "commits": 105,
+    "off_clock": 1,
+    "worst": {
+     "hash": "579b6b1",
+     "stamp": "202610262323",
+     "committed": "202610262359",
+     "drift": -36
+    },
+    "future_files": [],
+    "cvaa": null
+   }
+  }
+ }
+}

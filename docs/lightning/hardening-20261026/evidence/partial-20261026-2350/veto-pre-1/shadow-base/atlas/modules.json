@@ -1,0 +1,17 @@
+{
+  "schema": "gridatlas.modules.v1",
+  "generation": "202608301520",
+  "source_patterns_from": {
+    "repository": "Ventusltd/pipelinenews",
+    "tree": "83d9c430b283f8beaa8c0a05e42b14d4a4784623"
+  },
+  "modules": {
+    "composer": "./index.html",
+    "cartridges": "./cartridges/",
+    "manifests": "./manifests/",
+    "state": "./state/",
+    "immutable_releases": "./releases/",
+    "ui_source": "../ui/"
+  },
+  "timestamp_policy": "TIMESTAMPS_FOR_SCOPES_MANIFESTS_AND_OUTPUTS_NOT_STABLE_MODULE_NAMES"
+}

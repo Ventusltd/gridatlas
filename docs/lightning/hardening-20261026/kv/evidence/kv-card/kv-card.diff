@@ -1,0 +1,62 @@
+--- fixed-module-I.orig.js	2026-10-27 16:19:33.314814560 +0000
++++ fixed-module-I-card.js	2026-10-27 16:22:36.816392823 +0000
+@@ -127,9 +127,10 @@
+ sf=m=>{try{for(const l of m.getStyle().layers||[]){const f=l.type==='symbol'&&l.layout&&l.layout['text-font'];if(Array.isArray(f)&&f.length&&typeof f[0]==='string')return f}}catch(_){}return['Open Sans Regular']},
+ HIT=LAYER+'-hit',CNT=LAYER+'-count',pc=()=>{if(S.pp){S.pp.remove();S.pp=null}nc()},
+ el=(t,css,s)=>{const e=document.createElement(t);if(css)e.style.cssText=css;if(s!=null)e.textContent=s;return e},
+-// above the flash when it fits below the menu bar, else below it; clamped inside the map; scrolls when taller than the map
+-cpos=()=>{const c=S.pp,m=mh();if(!c||!m)return;const p=m.project(c.ll),k=m.getContainer().getBoundingClientRect(),b=Q('gridatlas-menu-bar'),t=Math.max(0,(b?b.getBoundingClientRect().bottom:0)-k.top)+8,w=c.offsetWidth||0,h=c.offsetHeight||0;
+-c.style.maxHeight=Math.max(120,k.height-t-8)+'px';c.style.left=Math.min(Math.max(p.x,w/2+8),Math.max(w/2+8,k.width-w/2-8))+'px';c.style.top=(p.y-h-14>=t?p.y-h-14:Math.max(t,Math.min(p.y+14,k.height-h-8)))+'px'},
++// card bar docked at the bottom of the map (like the original's), lifted clear of the original's bottom controls, never over the menu bar
++cpos=()=>{const c=S.pp,m=mh();if(!c||!m)return;const k=m.getContainer().getBoundingClientRect(),q=Q('gridatlas-menu-bar'),t=Math.max(0,(q?q.getBoundingClientRect().bottom:0)-k.top)+8,w=Math.min(480,k.width-16),L=k.left+(k.width-w)/2,h=c.offsetHeight||0;let b=8;
++for(const o of[Q('gridatlas-dash-toggle'),document.querySelector('.map-controls')]){const r=o&&o.getBoundingClientRect();if(r&&r.height&&r.right>L&&r.left<L+w&&r.top<k.bottom&&r.bottom>k.top)b=Math.max(b,k.bottom-r.top+8)}
++if(b+h>k.height-t)b=8;c.bb=b;c.style.bottom=b+'px';c.style.maxHeight=Math.max(44,k.height-t-b)+'px'},
+ cx=()=>{const m=mh();pc();if(m)try{for(const l of[CNT,HIT,LAYER])if(m.getLayer(l))m.removeLayer(l);if(m.getSource(SRC))m.removeSource(SRC)}catch(e){note(e)}S.mode=null},
+ dw=(fc,cl)=>{const m=mh(),K={'circle-stroke-width':1.5,'circle-stroke-color':'#1a1a1a'},Z=k=>['interpolate',['linear'],['zoom'],5,k(6),8,k(8),11,k(10)];if(!m)E('no map');const mode=cl?'cluster':'raw';if(S.mode&&S.mode!==mode)cx();
+ if(!m.getSource(SRC)){m.addSource(SRC,Object.assign({type:'geojson',data:FC()},cl?{cluster:true,clusterRadius:40,clusterMaxZoom:10}:{}));
+@@ -142,11 +143,19 @@
+ tap=e=>{const m=mh();if(!S.on||!m||!m.getLayer(HIT))return;const px=e.point.x??e.point[0],py=e.point.y??e.point[1];let f=null,dm=Infinity;
+ for(const q of m.queryRenderedFeatures(e.point,{layers:[HIT]})){const g=q.properties&&!q.properties.cluster&&S.res&&S.res.ev[q.properties.i],a=m.project((g||q).geometry.coordinates),d=(a.x-px)**2+(a.y-py)**2;if(d<dm){dm=d;f=q}}pc();if(!f)return;
+ const p=f.properties||{};if(p.cluster){const go=z=>m.easeTo({center:f.geometry.coordinates,zoom:z}),z=m.getSource(SRC).getClusterExpansionZoom(p.cluster_id,(err,z)=>err||go(z));if(z&&z.then)z.then(go,note);return}
+-const g=S.res&&S.res.ev[p.i];if(!g)return;const[x,y]=g.geometry.coordinates,c=el('div','position:absolute;z-index:5;max-width:280px;box-sizing:border-box;background:#000;color:#e8f4f5;border:1px solid #00ffff;border-radius:4px;padding:8px 48px 8px 10px;font:12px/1.45 monospace;overflow-wrap:anywhere;overflow:auto;transform:translateX(-50%)');
+-c.dataset.lightningCard='';c.ll=[x,y];const b=el('button','position:absolute;top:0;right:0;width:44px;height:44px;background:none;border:0;color:#e8f4f5;font:20px monospace;cursor:pointer','×');b.type='button';b.setAttribute('aria-label','Close');b.addEventListener('click',pc);c.appendChild(b);
+-for(const s of[Ts(tm(g)),'Flash ID '+(g.id==null?'(none)':g.id),`lat ${y.toFixed(3)}, lon ${x.toFixed(3)}`,'EUMETSAT MTG Lightning Imager · optical flash, not necessarily a ground strike'])c.appendChild(el('div','',s));
+-const n=el('button','margin-top:6px;min-height:44px;padding:0 10px;background:#001418;color:#00ffff;border:1px solid #00ffff;font:12px monospace;cursor:pointer','NEAREST SUBSTATIONS');n.type='button';n.dataset.lightningNearest='';n.addEventListener('click',()=>near(m,c,x,y));c.appendChild(n);
+-c.out=el('div','margin-top:6px');c.appendChild(c.out);m.getContainer().appendChild(c);S.pp=c;cpos()},
++const g=S.res&&S.res.ev[p.i];if(!g)return;const[x,y]=g.geometry.coordinates,id=g.id==null?'(none)':g.id+'',
++c=el('div','position:absolute;left:8px;right:8px;z-index:21;max-width:480px;margin:0 auto;box-sizing:border-box;background:#000;color:#e8f4f5;border:1px solid #2f6f75;border-radius:4px;box-shadow:0 0 14px rgba(95,189,194,.25);font:11px/1.45 monospace;overflow-x:hidden;overflow-y:auto;overscroll-behavior:contain'),
++bar=el('div','display:flex;align-items:center;gap:6px;padding-left:8px;background:#0a1a1d;border-bottom:1px solid #1d3238'),bd=el('div','padding:0 8px 6px'),d=el('details'),
++B=(t,a,f)=>{const e=el('button','flex:none;width:44px;height:44px;background:#050a0d;border:1px solid #2f6f75;border-radius:3px;color:#5fbdc2;font:14px/1 monospace;cursor:pointer',t);e.type='button';e.setAttribute('aria-label',a);e.addEventListener('click',f);bar.appendChild(e);return e};
++c.dataset.lightningCard='';c.setAttribute('role','dialog');c.setAttribute('aria-label','Lightning flash');
++bar.appendChild(el('span','flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:#5fbdc2;font-weight:bold','Flash '+Ts(tm(g))));
++const mn=B('−','Minimise',()=>{const o=bd.style.display=='none';bd.style.display=o?'':'none';mn.textContent=o?'−':'+';mn.setAttribute('aria-expanded',o);cpos()});mn.setAttribute('aria-expanded',true);B('×','Close',pc);
++d.appendChild(el('summary','padding:14px 0 13px;line-height:17px;cursor:pointer;color:#bfe9ee',`lat ${y.toFixed(3)}, lon ${x.toFixed(3)} · ID ${sid(id)}`));
++d.appendChild(el('div','color:#8b9aa1;font-size:10px;overflow-wrap:anywhere','Flash ID '+id));c.out=el('div','margin-top:4px;color:#9fb3ba');d.appendChild(c.out);bd.appendChild(d);
++bd.appendChild(el('div','color:#8b9aa1;font-size:10px','EUMETSAT optical flash, not a confirmed ground strike. Lines: nearest substations, straight-line; not evidence any asset was hit.'));
++c.appendChild(bar);c.appendChild(bd);S.pp=c;m.getContainer().appendChild(c);cpos();nf(m,c,x,y,15)},
++// short ID: product sensing window + flash index (W_XX-..._<start>_<end>_N__..._0000:<index>); full ID stays in the row
++sid=s=>{const r=/_\d{8}(\d\d)(\d\d)\d\d_\d{8}(\d\d)(\d\d)\d\d_N_.*:(\d+)$/.exec(s);return r?`${r[1]}:${r[2]}–${r[3]}:${r[4]} #${r[5]}`:s.length>24?s.slice(0,12)+'…'+s.slice(-8):s},
+ // nearest substations: no public draw entry exists (link.selectAt treats its origin as a project and needs the engine's popup),
+ // so the neon-links lane's PUBLIC list and distance function are reused; the lines are Lightning-owned, styled like the originals.
+ NEAR='gridatlas-lightning-nearest',NL=[NEAR+'-glow',NEAR+'-core',NEAR+'-node',NEAR+'-label'],
+@@ -160,7 +169,10 @@
+ m.addLayer({id:NL[0],type:'line',source:NEAR,filter:LS,paint:{'line-color':C,'line-width':['interpolate',['linear'],['zoom'],6,5,12,12],'line-opacity':0.1,'line-blur':['interpolate',['linear'],['zoom'],6,3,12,8]}});
+ m.addLayer({id:NL[1],type:'line',source:NEAR,filter:LS,paint:{'line-color':C,'line-width':['interpolate',['linear'],['zoom'],6,0.9,12,1.8],'line-opacity':['get','o']}});
+ m.addLayer({id:NL[2],type:'circle',source:NEAR,filter:PT,paint:{'circle-radius':['interpolate',['linear'],['zoom'],6,2.2,12,4],'circle-color':C,'circle-opacity':0.8}});
+-try{m.addLayer({id:NL[3],type:'symbol',source:NEAR,filter:PT,layout:{'text-field':['get','t'],'text-size':10,'text-offset':[0,-1.5],'text-anchor':'bottom','text-font':sf(m)},paint:{'text-color':'#a9c4c9','text-halo-color':'#000c10','text-halo-width':1.5}})}catch(e){note('nearest labels: '+msg(e))}},near=(m,c,x,y)=>{nr(m,c,x,y);cpos()},
++try{m.addLayer({id:NL[3],type:'symbol',source:NEAR,filter:PT,layout:{'text-field':['get','t'],'text-size':10,'text-offset':[0,-1.5],'text-anchor':'bottom','text-font':sf(m)},paint:{'text-color':'#a9c4c9','text-halo-color':'#000c10','text-halo-width':1.5}})}catch(e){note('nearest labels: '+msg(e))}return k},
++nf=(m,c,x,y,n)=>{if(S.pp!==c)return;const k=nr(m,c,x,y);if(Array.isArray(k))return nz(m,c,x,y,k);if(n&&/^Substation data/.test(c.out.textContent))setTimeout(()=>nf(m,c,x,y,n-1),2e3)},
++nz=(m,c,x,y,k)=>{if(!k.length||!m.getBounds||!m.fitBounds)return;const P=[[x,y],...k.map(a=>a.s.at)],v=m.getBounds();if(P.every(p=>v.contains(p)))return;let w=x,s=y,e=x,n=y;for(const[a,o]of P){w=Math.min(w,a);e=Math.max(e,a);s=Math.min(s,o);n=Math.max(n,o)}
++const r=m.getContainer().getBoundingClientRect(),q=Q('gridatlas-menu-bar');m.fitBounds([[w,s],[e,n]],{padding:{top:Math.max(0,(q?q.getBoundingClientRect().bottom:0)-r.top)+40,bottom:(c.bb||8)+(c.offsetHeight||0)+30,left:40,right:40},maxZoom:m.getZoom?m.getZoom():22,duration:600})},
+ // DOM: shell classes, inline styles on own nodes only
+ BTN=(a,t,x)=>`<button type="button" class="map-ctrl-btn" ${a}${x||''}>${t}</button>`,NAV=(k,t,x)=>BTN(`data-lightning-nav="${k}"`,t,x),ROW='style="display:flex;flex-wrap:wrap;gap:4px;margin:4px 0"',
+ DATE=k=>`<input type="date" class="search-input" data-lightning-date="${k}" aria-label="${k} date (UTC)" style="width:9.5em;color-scheme:dark">`,
+@@ -205,7 +217,7 @@
+ if(e){note(e);r={mode:'fail',fail:msg(e),w:wf(now),idx:S.idx,ie:S.ie,fl:[],ev:[]}}
+ S.res=r;try{dw(FC(r.ev.map((f,i)=>({type:'Feature',id:f.id,geometry:f.geometry,properties:{i}}))),!!r.cl)}catch(err){note('draw: '+err.message);r.fail=r.fail||'map layer: '+err.message}pt(false)})},
+ so=on=>{if(S.on===on)return;S.on=on;
+-if(on){S.end=null;S.consent=false;S.res=null;const m=mh();if(m&&!S.ck&&typeof m.on==='function'){S.ck=1;m.on('click',tap);m.on('move',cpos);m.on('moveend',()=>{if(S.on&&S.res&&!S.busy)pt(false)})}
++if(on){S.end=null;S.consent=false;S.res=null;const m=mh();if(m&&!S.ck&&typeof m.on==='function'){S.ck=1;m.on('click',tap);m.on('resize',cpos);m.on('moveend',()=>{if(S.on&&S.res&&!S.busy)pt(false)})}
+ ld(true);if(!S.timer)S.timer=setInterval(()=>{if(S.on&&S.res&&S.res.w.atLatest)ld(true)},6e5)}
+ else{S.serial++;S.res=null;cx();if(S.timer){clearInterval(S.timer);S.timer=null}pt(false)}},
+ bt=c=>c.addEventListener('change',ev=>{const t=ev.target;if(t&&t.dataset&&t.dataset.lightningControl==='toggle')so(!!t.checked)}),

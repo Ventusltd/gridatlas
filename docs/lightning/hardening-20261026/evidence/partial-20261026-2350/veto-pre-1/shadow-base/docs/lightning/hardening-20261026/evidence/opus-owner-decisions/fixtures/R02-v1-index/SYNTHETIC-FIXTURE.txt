@@ -1,0 +1,7 @@
+SYNTHETIC FIXTURE (opus-owner-decisions lane, 2026-10-26). Not published, never to be published.
+Source: scratchpad/lightning/fixtures/lightning-archive/data (the data-plane builder's fixture built from the genuine 408 flashes).
+Single change: data/history/index.json "schema" "uk-lightning-history-index.v2" -> "uk-lightning-history-index.v1".
+Purpose: issue #32 R02 - show what a viewer of candidate 202610261949 (fda6b10) sees if a v1 index is served.
+Fidelity: lightning PR #1 (feature/one-year-utc-lightning-history @ 22e5579) history.py:241-258 writes "days" as a list,
+so a genuine v1 index passes the overlay's Array.isArray(raw.days) check and fails at the same schema check
+(atlas/modules/202610261949-uk-lightning-overlay.js:37) as this fixture. Row-level v1/v2 differences are never reached.

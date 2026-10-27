@@ -1,0 +1,103 @@
+{
+  "label": "baseline-browser-shim",
+  "shim": {
+    "preload": "/tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/regression-challenge-C/runners/shim-preload.cjs",
+    "lightningDataDir": "(lead default)"
+  },
+  "generation": "202609241334",
+  "base": "http://127.0.0.1:8143/gridatlas/atlas/",
+  "live": "https://ventusltd.github.io/gridatlas/atlas/",
+  "repo": "/tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/regression-challenge-C/shadow-baseline",
+  "startedAt": "2026-10-26T23:33:28.471Z",
+  "routeBoots": true,
+  "liveReachable": null,
+  "routeProbe": {
+    "url": "http://127.0.0.1:8143/gridatlas/atlas/",
+    "viewport": {
+      "width": 1440,
+      "height": 1000
+    },
+    "elapsedMs": 7205,
+    "mapArrived": true,
+    "waitUsed": "waitForFunction(map && >=60 proxies, 60000 ms) then networkidle<=20 s then fixed 3 s",
+    "state": {
+      "title": "GlobalGrid2050 | UK Region v8 (Experimental)",
+      "generation": "202609241334",
+      "htmlGeneration": "202609241334",
+      "maplibregl": "function",
+      "map": true,
+      "menuBarInstalled": true,
+      "menuTitles": [
+        "File",
+        "Edit",
+        "View",
+        "Scope",
+        "Grid",
+        "About"
+      ],
+      "engineControls": 120,
+      "pipelineControls": 6,
+      "layerProxies": 63,
+      "scadaContainer": true,
+      "bodyText": "FILE EDIT VIEW SYSTEM TIME 23:32:25 26/10/2026 VENTUS CABLES & CONNECTIVITY® 2050 TARGET 8467 DAYS SCOPE GRID ABOUT GO TOPOLOGY (GEOJSON) 400kV [OK] 275kV [OK] 220kV [OK] 132kV [OK] 66kV [OK] 11kV (UKPN) [WAIT] Subs [OK] ASSETS (GEOJSON) Nuclear [OK] Gas [OK] Industry [OK] Data Ctrs [OK] Airports [OK] Railways [OK] SUPERMARKETS (GEOJSON) Tesco [WAIT] Sainsbury's [WAIT] Asda [WAIT] Morrisons [WAIT] Aldi [WAIT] Lidl [WAIT] Waitrose [WAIT] M&S Food [WAIT] Co-op [WAIT] Costco [WAIT] Booths [WAIT] TRANSIT (GEOJSON) Elizabeth Line [WAIT] London Underground [WAIT] DLR [WAIT] UK Metro [WAIT] Trams & L",
+      "scripts": [
+        "https://cdn.jsdelivr.net/npm/maplibre-gl@3.6.2/dist/maplibre-gl.js",
+        "blob:http://127.0.0.1:8143/f09e0aa0-f656-4fd4-9845-f98b5e910060",
+        "blob:http://127.0.0.1:8143/ab7a0218-9c48-4ee9-acfe-2e930b75350a",
+        "blob:http://127.0.0.1:8143/432e3126-bde4-4243-8ea8-7795e7a5fb82",
+        "blob:http://127.0.0.1:8143/6b4195d9-19af-4fa3-a8f9-1c3d994d963e"
+      ]
+    },
+    "failedHosts": {
+      "ventusltd.github.io": {
+        "count": 1,
+        "errors": [
+          "net::ERR_BLOCKED_BY_CLIENT.Inspector"
+        ],
+        "sample": "https://ventusltd.github.io/ventus-grid-engine/genome/engine-graph.json"
+      }
+    },
+    "requestHosts": [
+      "127.0.0.1:8143",
+      "cdn.jsdelivr.net",
+      "raw.githubusercontent.com",
+      "basemaps.cartocdn.com",
+      "ventusltd.github.io"
+    ],
+    "consoleErrors": [
+      "Failed to load resource: net::ERR_BLOCKED_BY_CLIENT.Inspector"
+    ],
+    "pageErrors": [],
+    "screenshot": "/tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/regression-challenge-C/baseline-browser-shim/probe-route/probe-1440x1000.png"
+  },
+  "liveProbe": null,
+  "tally": {
+    "PASS": 1
+  },
+  "playwright": "1.63.0",
+  "node": "v22.23.4",
+  "results": [
+    {
+      "id": "arrival-engine-sweep-202609072356",
+      "group": "browser",
+      "kind": "browser-self-served",
+      "tests": "arrival_engine sentinel answered/declined/silent per technology (bounded to 1 per tech, 20 s)",
+      "target": "self-served http://127.0.0.1:<random>/atlas/ (same bytes as http://127.0.0.1:8143/gridatlas/atlas/, route prefix differs)",
+      "deps": [
+        "chromium",
+        "cdn.jsdelivr.net (maplibre-gl 3.6.2)",
+        "ventusltd.github.io/data-gridatlas partitions"
+      ],
+      "invocation": "/opt/node22/bin/node tools/proofs/202609072356-arrival-engine-sweep.browser.mjs --per-tech 1 --timeout 20000 --json <out>/arrival-engine-sweep.json",
+      "env": {},
+      "exit": 0,
+      "signal": null,
+      "timedOut": false,
+      "durationMs": 61833,
+      "result": "PASS",
+      "note": "",
+      "firstError": "technology       cases  answered  declined  pending  silent  error  engines / reasons",
+      "log": "logs/arrival-engine-sweep-202609072356"
+    }
+  ]
+}

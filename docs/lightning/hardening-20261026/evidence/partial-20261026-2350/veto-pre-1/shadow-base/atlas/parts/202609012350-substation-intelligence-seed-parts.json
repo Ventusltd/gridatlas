@@ -1,0 +1,15 @@
+{
+ "schema": "gridatlas.cartridge-parts.v1",
+ "generation": "202609012045",
+ "note": "Written at 202609012350, recording how this cartridge was always composed: the shell engine carried verbatim, then the intelligence. It is not a new design - the assembler docstring uses this cartridge as its worked example - it simply was never written down, which is why the computation ended up in the sandbox instead.",
+ "assembled_from": [
+  {
+   "role": "carried_shell_script",
+   "path": "atlas/releases/202608300453-atlas-v9/ventus-corev8engine.js"
+  },
+  {
+   "role": "part",
+   "path": "atlas/parts/202609012350-substation-intelligence-body.js"
+  }
+ ]
+}

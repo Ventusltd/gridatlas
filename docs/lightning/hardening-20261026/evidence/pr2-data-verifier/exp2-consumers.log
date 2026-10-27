@@ -1,0 +1,12 @@
+[client] schemaVersion 2 rows 366 cutoffMs 2025-10-26T00:00:00.000Z lastScanEnd 2026-10-26T13:00:09.000Z coverageStart 2026-10-20T22:41:54.847Z
+[client] stale at generated+3h59? true  at generated+4h01? true
+[overlay] extracted vk lines: 3  ni lines: 9
+[overlay] ni(real v2 index) OK: rows 366 lastScan 2026-10-26T13:00:09.000Z covStart 2026-10-20T22:41:54.847Z nextDue 2026-10-26T16:05:58.649Z
+[overlay] ni(v1) throws: TypeError: unsupported index schema uk-lightning-history-index.v1
+[client] normaliseIndex(v1) OK: schemaVersion 1 rows 366 rows with flashes 5 2026-10-23 -> {"date":"2026-10-23","coverage":"partial","scanned_seconds":42472,"count":189,"bytes":null,"path":"days/2026/10/23.json","sealed":true,"first_observation_utc":"2026-10-23T01:53:48.251Z","last_observation_utc":"2026-10-23T19:50:08.639Z","sha256":null}
+[overlay] consequence per lw(): index error -> live-feed tier for windows starting >= now-7d with reason text; windows older than 7 d -> TypeError "<label> needs the archive (archive not yet published); the live feed keeps 7 days" -> FAIL state.
+[overlay] observation sentence changed -> index observation sentence missing
+[overlay] none-row given count 0 -> invalid index row 2025-10-26: count
+[overlay] count 0 with scanned 0 -> invalid index row 2026-10-20: count 0 unscanned
+[overlay] sealed missing -> invalid index row 2025-10-26: sealed
+[overlay] path .geojson -> invalid index row 2026-10-21: path

@@ -1,0 +1,128 @@
+
+[1mA — eras[0m
+  gridatlas       105 commits  2026-09-05 → 2026-10-26  11 active days  40 stamped
+      2026-09-05   16  ################
+      2026-09-06    2  ##
+      2026-09-07   16  ################
+      2026-09-08   14  ##############
+      2026-09-11    4  ####
+      2026-09-17    1  #
+      2026-09-20    1  #
+      2026-09-24    1  #
+      2026-09-29    1  #
+      2026-10-23    5  #####
+      2026-10-26   44  ############################################
+
+[1mB — lineage: what grew, and how fast[0m
+
+  [1mgridatlas[0m  288 code families, 272 versions measured
+     1690 →  8591 lines  × 61  atlas/cartridges/substation-intelligence
+       24 →  4022 lines  ×  9  tools/proofs/sld-sandbox.proof
+     5145 →  8858 lines  × 75  atlas/cartridges/sld-sandbox
+       17 →   705 lines  ×  5  tools/proofs/substation-intelligence.proof
+        2 →   502 lines  ×  4  atlas/releases/atlas-v9/assets/atlas-v9
+      345 →   760 lines  ×  2  tools/offshore/reconcile_offshore_coordinates
+      589 →   924 lines  ×  4  atlas/cartridges/place-global-search
+      953 →  1239 lines  × 10  atlas/modules/teleprint-controls
+     1557 →  1806 lines  ×  5  atlas/modules/menu-bar
+      242 →   421 lines  ×  4  atman/rendered-browser-audit
+
+[1mC — monoliths in the working tree, and their seams[0m
+  169 file(s) at or over 800 lines
+   lines   fns seams surf  file
+    8858   188    24   21  gridatlas:atlas/cartridges/202610262310-sld-sandbox-v9-8.js
+    8856   188    24   21  gridatlas:atlas/cartridges/202610262318-sld-sandbox-v9-8.js
+    8856   188    24   21  gridatlas:atlas/cartridges/202610262323-sld-sandbox-v9-8.js
+    8855   188    24   21  gridatlas:atlas/cartridges/202610261949-sld-sandbox-v9-8.js
+    8700   188    24   20  gridatlas:atlas/cartridges/202610221600-sld-sandbox-v9-8.js
+    8667   188    24   20  gridatlas:atlas/cartridges/202609241334-sld-sandbox-v9-8.js
+    8646   188    24   20  gridatlas:atlas/cartridges/202609241251-sld-sandbox-v9-8.js
+    8597   186    24   20  gridatlas:atlas/cartridges/202609200022-sld-sandbox-v9-8.js
+    8591   205     3   17  gridatlas:atlas/cartridges/202609062343-substation-intelligence-v9-63.js
+    8591   205     3   17  gridatlas:atlas/cartridges/202609062358-substation-intelligence-v9-63.js
+    8586   205     3   17  gridatlas:atlas/cartridges/202609062246-substation-intelligence-v9-63.js
+    8551   205     3   17  gridatlas:atlas/cartridges/202609060259-substation-intelligence-v9-63.js
+    8522   185    24   20  gridatlas:atlas/cartridges/202609080850-sld-sandbox-v9-8.js
+    8496   185    24   20  gridatlas:atlas/cartridges/202609080846-sld-sandbox-v9-8.js
+    8472   204     3   17  gridatlas:atlas/cartridges/202609051616-substation-intelligence-v9-63.js
+    8472   204     3   17  gridatlas:atlas/cartridges/202609051624-substation-intelligence-v9-63.js
+    8460   185    24   20  gridatlas:atlas/cartridges/202609080837-sld-sandbox-v9-8.js
+    8439   204     3   17  gridatlas:atlas/cartridges/202609051556-substation-intelligence-v9-63.js
+
+[1mD — public surfaces, ever registered and still alive[0m
+  35 distinct surfaces ever registered, 34 still registered today
+    [32mlive[0m  __ATMAN_400_WARM_START__             gridatlas:atman/layer-performance-comparator
+    [32mlive[0m  __ATMAN_INTERVAL_IDS__               gridatlas:atman/layer-performance-comparator
+    [32mlive[0m  __CODEX_GRID_LAB__                   gridatlas:atlas/codex/202609020010/assets/lab
+    [32mlive[0m  __GRIDATLAS_ARRIVAL_TIDY__           gridatlas:atlas/cartridges/substation-intelligence, gridatlas:atlas/modules/arrival-tidy
+    [32mlive[0m  __GRIDATLAS_ATLAS__                  gridatlas:atlas/index, gridatlas:atlas/preview/lightning/index
+    [32mlive[0m  __GRIDATLAS_CORRIDOR_SHEET__         gridatlas:atlas/cartridges/sld-sandbox, gridatlas:atlas/parts/sld-sandbox-body
+    [32mlive[0m  __GRIDATLAS_CURRENT__                gridatlas:tools/proofs/export-print-and-image-outcomes.browser
+    [32mlive[0m  __GRIDATLAS_DASH__                   gridatlas:atlas/cartridges/sld-sandbox, gridatlas:atlas/parts/sld-sandbox-body
+    [32mlive[0m  __GRIDATLAS_ELECTRICAL__             gridatlas:atlas/cartridges/sld-sandbox, gridatlas:atlas/parts/sld-sandbox-body
+    [32mlive[0m  __GRIDATLAS_GB_CONDITIONS__          gridatlas:atlas/cartridges/sld-sandbox, gridatlas:atlas/parts/sld-sandbox-body
+    [32mlive[0m  __GRIDATLAS_INTERCONNECTORS__        gridatlas:atlas/cartridges/sld-sandbox, gridatlas:tools/interconnectors/interconnector-module
+    [32mlive[0m  __GRIDATLAS_MAP_READY__              gridatlas:atlas/cartridges/streaming-parquet-bridge, gridatlas:atlas/releases/atlas-v9/map-ready-fetch-bridge
+    [32mlive[0m  __GRIDATLAS_MODULES__                gridatlas:atlas/cartridges/sld-sandbox, gridatlas:atlas/cartridges/substation-intelligence
+    [32mlive[0m  __GRIDATLAS_NEON_LINKS__             gridatlas:atlas/cartridges/neon-substation-links, gridatlas:atlas/cartridges/sld-sandbox
+    [32mlive[0m  __GRIDATLAS_NETWORK__                gridatlas:atlas/cartridges/substation-intelligence, gridatlas:atlas/parts/substation-intelligence-body
+    [32mlive[0m  __GRIDATLAS_OWNERSHIP__              gridatlas:atlas/cartridges/sld-sandbox, gridatlas:atlas/parts/sld-sandbox-body
+    [32mlive[0m  __GRIDATLAS_PIPELINE_LAYERS__        gridatlas:atlas/cartridges/sld-sandbox, gridatlas:atlas/cartridges/substation-intelligence
+    [32mlive[0m  __GRIDATLAS_PLACE_SEARCH__           gridatlas:atlas/cartridges/place-postcode-search, gridatlas:atlas/cartridges/place-global-search
+    [32mlive[0m  __GRIDATLAS_PLANNED__                gridatlas:atlas/cartridges/sld-sandbox, gridatlas:atlas/parts/sld-sandbox-body
+    [32mlive[0m  __GRIDATLAS_POINT_QUERY__            gridatlas:atlas/cartridges/sld-sandbox, gridatlas:atlas/parts/sld-sandbox-body
+    [32mlive[0m  __GRIDATLAS_POWERFLOW__              gridatlas:atlas/cartridges/sld-sandbox, gridatlas:atlas/parts/sld-sandbox-body
+    [32mlive[0m  __GRIDATLAS_PRE_SNAPPED_CONFIG__     gridatlas:atlas/cartridges/neon-substation-links, gridatlas:atlas/cartridges/sld-sandbox
+    [32mlive[0m  __GRIDATLAS_PROOF_MAP__              gridatlas:tools/proofs/transit-layer-availability.browser, gridatlas:tools/proofs/arrival-identity.browser
+    [32mlive[0m  __GRIDATLAS_RATINGS__                gridatlas:atlas/cartridges/sld-sandbox, gridatlas:atlas/parts/sld-sandbox-body
+    [32mlive[0m  __GRIDATLAS_SATELLITE_TEST__         gridatlas:atlas/testcode/202609110242/satellite, gridatlas:atlas/testcode/202609110849/dock-ui
+    [32mlive[0m  __GRIDATLAS_SATELLITE_TEST_MAP__     gridatlas:atlas/testcode/202609110242/satellite, gridatlas:atlas/testcode/202609110310/index
+    [32mlive[0m  __GRIDATLAS_SLD__                    gridatlas:atlas/cartridges/sld-sandbox, gridatlas:atlas/parts/sld-sandbox-body
+    [32mlive[0m  __GRIDATLAS_TOPOLOGY__               gridatlas:atlas/cartridges/sld-sandbox, gridatlas:atlas/parts/sld-sandbox-body
+    [32mlive[0m  __GRIDATLAS_V8_DEEP_LINK__           gridatlas:atlas/cartridges/substation-intelligence, gridatlas:atlas/parts/ventus-corev8engine-deep-link-receiver
+    [32mlive[0m  __GRIDATLAS_V9_BRIDGE__              gridatlas:atlas/releases/atlas-v9/v9-parquet-fetch-bridge
+    [32mlive[0m  __GRIDATLAS_V9_MAP__                 gridatlas:atlas/cartridges/place-postcode-search, gridatlas:atlas/cartridges/place-global-search
+    [32mlive[0m  __GRIDATLAS_V9_MAP_CAPTURE_INSTALLED__ gridatlas:atlas/cartridges/place-postcode-search, gridatlas:atlas/cartridges/place-global-search
+    [32mlive[0m  __GRIDATLAS_WEATHER_LIGHTNING__      gridatlas:atlas/preview/lightning/weather-module
+    [32mlive[0m  __PROBE__                            gridatlas:docs/lightning/hardening-20261026/evidence/gen-202610262310/test-fixes, gridatlas:docs/lightning/hardening-20261026/evidence/gen-202610262318/chatgpt-lightning-regression.test
+    [2mgone[0m  __MENU_CONTRACTS_INJECTED_AT__       gridatlas:docs/lightning/swarm-20261026/evidence/menu-contracts/menu-contracts.final
+
+[1mE — the same function, defined in more than one file today[0m
+  566 function name/arity pairs defined in more than one file
+    ×147  install(1)                   202608311910-neon-substation-links-v9-6.js, 202609012045-sld-sandbox-v9-8.js, 202609012110-sld-sandbox-v9-8.js
+    ×143  distanceKm(4)                202608311910-neon-substation-links-v9-6.js, 202609012045-sld-sandbox-v9-8.js, 202609012045-substation-intelligence-v9-63.js
+    ×142  voltagesKv(1)                202608311910-neon-substation-links-v9-6.js, 202609012045-sld-sandbox-v9-8.js, 202609012110-sld-sandbox-v9-8.js
+    ×142  representativePoint(1)       202608311910-neon-substation-links-v9-6.js, 202609012045-sld-sandbox-v9-8.js, 202609012110-sld-sandbox-v9-8.js
+    ×141  destinationPoint(4)          202609012045-sld-sandbox-v9-8.js, 202609012110-sld-sandbox-v9-8.js, 202609012130-sld-sandbox-v9-8.js
+    ×141  initialBearingDeg(4)         202609012045-sld-sandbox-v9-8.js, 202609012110-sld-sandbox-v9-8.js, 202609012130-sld-sandbox-v9-8.js
+    ×131  escapeHtml(1)                202608301136-place-postcode-search.js, 202608311910-neon-substation-links-v9-6.js, 202609011141-place-global-search-v9-5.js
+    ×120  setSourceData(3)             202609012045-sld-sandbox-v9-8.js, 202609012110-sld-sandbox-v9-8.js, 202609012130-sld-sandbox-v9-8.js
+    ×81  applyDevelopmentStageDefaults(2) 202609012045-sld-sandbox-v9-8.js, 202609012110-sld-sandbox-v9-8.js, 202609012130-sld-sandbox-v9-8.js
+    ×80  loadSubstations(1)           202608311910-neon-substation-links-v9-6.js, 202609012045-sld-sandbox-v9-8.js, 202609012110-sld-sandbox-v9-8.js
+    ×80  nearestSubstations(3)        202608311910-neon-substation-links-v9-6.js, 202609012045-sld-sandbox-v9-8.js, 202609012110-sld-sandbox-v9-8.js
+    ×80  nearestProjects(3)           202608311910-neon-substation-links-v9-6.js, 202609012045-sld-sandbox-v9-8.js, 202609012110-sld-sandbox-v9-8.js
+    ×80  installStyles(1)             202608311910-neon-substation-links-v9-6.js, 202609012045-sld-sandbox-v9-8.js, 202609012110-sld-sandbox-v9-8.js
+    ×80  caveatHtml(1)                202608311910-neon-substation-links-v9-6.js, 202609012045-sld-sandbox-v9-8.js, 202609012110-sld-sandbox-v9-8.js
+    ×80  removeCardBlock(1)           202608311910-neon-substation-links-v9-6.js, 202609012045-sld-sandbox-v9-8.js, 202609012110-sld-sandbox-v9-8.js
+
+[1mF — the deep link: produced by Pipeline News, read by GridAtlas[0m
+  produced by Pipeline News: (none found)
+  read by GridAtlas:         anchor, capacity_mw, interconnector, latitude, lightning, lightning_end, lightning_lat, lightning_lon, lightning_start, lightning_zoom, longitude, project, repd_ref, status, technology, zoom
+  [33mproduced and never read:   (none)[0m
+  [33mread and never produced:   anchor, capacity_mw, interconnector, latitude, lightning, lightning_end, lightning_lat, lightning_lon, lightning_start, lightning_zoom, longitude, project, repd_ref, status, technology, zoom[0m
+
+[1mG — click surfaces in the working tree[0m
+  210 file(s) handle a click; 160 handle a MAP click
+     24 click   4 map   gridatlas:atlas/cartridges/202609030234-sld-sandbox-v9-8.js
+     24 click   4 map   gridatlas:atlas/cartridges/202609031316-sld-sandbox-v9-8.js
+     24 click   4 map   gridatlas:atlas/cartridges/202609031751-sld-sandbox-v9-8.js
+     24 click   4 map   gridatlas:atlas/cartridges/202609031809-sld-sandbox-v9-8.js
+     24 click   4 map   gridatlas:atlas/cartridges/202609032012-sld-sandbox-v9-8.js
+     24 click   4 map   gridatlas:atlas/cartridges/202609032041-sld-sandbox-v9-8.js
+     24 click   4 map   gridatlas:atlas/cartridges/202609032213-sld-sandbox-v9-8.js
+     24 click   4 map   gridatlas:atlas/cartridges/202609032222-sld-sandbox-v9-8.js
+     24 click   4 map   gridatlas:atlas/cartridges/202609032246-sld-sandbox-v9-8.js
+     24 click   4 map   gridatlas:atlas/cartridges/202609032315-sld-sandbox-v9-8.js
+
+report: /tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/release-rehearsal/logs/1-released/deep-scan/202609012230-deep-scan.json
+elapsed: 172.4s

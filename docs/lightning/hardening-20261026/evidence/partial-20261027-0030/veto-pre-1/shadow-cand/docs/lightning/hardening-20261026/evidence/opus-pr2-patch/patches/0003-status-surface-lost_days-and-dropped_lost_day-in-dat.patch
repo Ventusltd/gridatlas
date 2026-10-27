@@ -1,0 +1,52 @@
+From f8c18b751257598a90b848372a7388931eb3b1cd Mon Sep 17 00:00:00 2001
+From: "opus-pr2-patch (Claude)" <noreply@anthropic.com>
+Date: Mon, 26 Oct 2026 23:03:54 +0000
+Subject: [PATCH 3/5] status: surface lost_days and dropped_lost_day in
+ data/status.json
+
+Companion to the D-1 fix: a shard lost from disk must be visible in the
+heartbeat, not only in the index row flag.
+
+Test: test_lost_days_reach_the_status_file (fails before).
+
+Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
+Claude-Session: https://claude.ai/code/session_01JcZ2nJ9f9fgHY3X3JTk4DF
+---
+ status.py            | 2 ++
+ tests/test_status.py | 7 +++++++
+ 2 files changed, 9 insertions(+)
+
+diff --git a/status.py b/status.py
+index 201050d..04574da 100644
+--- a/status.py
++++ b/status.py
+@@ -118,6 +118,8 @@ def build_status(
+             "files_changed": (archive_result or {}).get("files_changed"),
+             "dropped_before_cutoff": (archive_result or {}).get("dropped_before_cutoff"),
+             "split_days": (archive_result or {}).get("split_days"),
++            "lost_days": (archive_result or {}).get("lost_days"),
++            "dropped_lost_day": (archive_result or {}).get("dropped_lost_day"),
+             "index_generated_utc": (archive_result or {}).get("index_generated_utc"),
+         },
+         "thresholds_hours": {"warn": STALE_WARN_HOURS, "stale": STALE_HOURS, "stopped": STOPPED_HOURS},
+diff --git a/tests/test_status.py b/tests/test_status.py
+index 2956813..045f401 100644
+--- a/tests/test_status.py
++++ b/tests/test_status.py
+@@ -82,6 +82,13 @@ class StatusTests(unittest.TestCase):
+         self.assertIs(result["last_slots_parsed"], False)
+         self.assertEqual(result["consecutive_failures"], 0)  # the feed run itself succeeded
+ 
++    def test_lost_days_reach_the_status_file(self):
++        result = build_status(now=NOW, previous=None, record=RECORD, archive_result={
++            "outcome": "success", "lost_days": ["2026-10-24"], "dropped_lost_day": 1},
++            collect_outcome="success", archive_outcome="success")
++        self.assertEqual(result["archive"]["lost_days"], ["2026-10-24"])
++        self.assertEqual(result["archive"]["dropped_lost_day"], 1)
++
+     def test_health_thresholds(self):
+         self.assertEqual(health(NOW, None), "never")
+         self.assertEqual(health(NOW, NOW - timedelta(hours=5)), "ok")
+-- 
+2.43.0
+

@@ -1,0 +1,50 @@
+live top keys    schema,generation,previous_generation,architecture,live_route,release_id,release_route,shell,cartridge_order,cartridges,last_known_green,contracts,provenance,search_lanes,composition_manifest,scope_closure,composition_version,composition_id,transport,composition_note,superseded_generation,candidate_predecessor
+cand top keys    schema,generation,previous_generation,architecture,live_route,release_id,release_route,shell,cartridge_order,cartridges,last_known_green,contracts,provenance,search_lanes,composition_manifest,scope_closure,composition_version,composition_id,transport,composition_note,superseded_generation,candidate_predecessor
+live-not-in-cand -
+cand-not-in-live -
+
+candidate strings starting ../  :
+   $.shell.index = ../../releases/202608300453-atlas-v9/index.html
+   $.shell.base = ../../releases/202608300453-atlas-v9/
+   $.cartridges[0].path = ../../cartridges/202609241251-streaming-parquet-bridge-v9-5.js
+   $.cartridges[0].contract = ../../ui/cartridges/202609241251-streaming-parquet-bridge-v9-5.mjs
+   $.cartridges[1].path = ../../cartridges/202609071213-place-global-search-v9-5.js
+   $.cartridges[1].contract = ../../ui/cartridges/202609040337-global-gazetteer-flyto-v9-106.mjs
+   $.cartridges[1].assembled_from = ../../manifests/202609041945-place-global-search-v9-5-parts.json
+   $.cartridges[2].path = ../../cartridges/202610261949-sld-sandbox-v9-8.js
+   $.cartridges[2].derived_from = ../../cartridges/202609241334-sld-sandbox-v9-8.js
+   $.cartridges[2].uk_lightning.module = ../../modules/202610261949-uk-lightning-overlay.js
+   $.cartridges[3].path = ../../cartridges/202609062358-substation-intelligence-v9-63.js
+   $.cartridges[3].assembled_from = ../../manifests/202609051329-substation-intelligence-v9-63-parts.json
+   $.composition_manifest = ../../manifests/202610261949-composition.json
+
+live strings starting ../  :
+   $.cartridges[0].contract = ../ui/cartridges/202609241251-streaming-parquet-bridge-v9-5.mjs
+   $.cartridges[1].contract = ../ui/cartridges/202609040337-global-gazetteer-flyto-v9-106.mjs
+
+live -> proposed release pointer (candidate with ../../ -> ./):
+   $.generation: "202609241334"  ->  "202610261949"
+   $.previous_generation: "202609200022"  ->  "202609241334"
+   $.cartridges[id=streaming-parquet-bridge].contract: "../ui/cartridges/202609241251-streaming-parquet-bridge-v9-5.mjs"  ->  "./ui/cartridges/202609241251-streaming-parquet-bridge-v9-5.mjs"
+   $.cartridges[id=uk-gazetteer-flyto].contract: "../ui/cartridges/202609040337-global-gazetteer-flyto-v9-106.mjs"  ->  "./ui/cartridges/202609040337-global-gazetteer-flyto-v9-106.mjs"
+   $.cartridges[id=sld-sandbox].generation: "202609241334"  ->  "202610261949"
+   $.cartridges[id=sld-sandbox].version: "v9.156"  ->  "v9.158"
+   $.cartridges[id=sld-sandbox].path: "./cartridges/202609241334-sld-sandbox-v9-8.js"  ->  "./cartridges/202610261949-sld-sandbox-v9-8.js"
+   $.cartridges[id=sld-sandbox].sha256: "7812953671d8bb22a566de5e98fd3137da2d23411c5aecd526df5afa111ca4ca"  ->  "b7d4d6657b1d52624b51a90da477291dbd079fa83adf97b678f4610cd8725f85"
+   $.cartridges[id=sld-sandbox].capabilities: ["pre-snapped-config-adapter-carried-forward","project-or-substation-selection","nearest-substations-33kv-and-above","nearest-projects-from-  ->  ["pre-snapped-config-adapter-carried-forward","project-or-substation-selection","nearest-substations-33kv-and-above","nearest-projects-from-
+   $.cartridges[id=sld-sandbox].bytes: 435218  ->  459192
+   $.cartridges[id=sld-sandbox].derived_from: "./cartridges/202609200022-sld-sandbox-v9-8.js"  ->  "./cartridges/202609241334-sld-sandbox-v9-8.js"
+   $.cartridges[id=sld-sandbox].uk_lightning: undefined  ->  {"module":"./modules/202610261949-uk-lightning-overlay.js","module_bytes":23973,"delta":"live 202609241334 bytes + \"\\n\" + module; nothing
+   $.composition_manifest: "./manifests/202609241334-composition.json"  ->  "./manifests/202610261949-composition.json"
+   $.composition_version: "v9.156"  ->  "v9.158"
+   $.composition_id: "202609241334-gridatlas-v9.156"  ->  "202610261949-gridatlas-v9.158"
+   $.composition_note: "Restore DLR, UK Metro and Trams station controls by explicitly selecting the existing point station partition, validated against geometry,   ->  "v9.158: the EUMETSAT MTG Lightning Imager optical-flash overlay joins the original Atlas as one module appended to the sld-sandbox cartridg
+   $.superseded_generation: "202609200022"  ->  "202609241334"
+   $.candidate_predecessor: "202609241251"  ->  "202610221600"
+
+liveManifest.cartridges deep-equals live.cartridges: true
+candManifest.cartridges deep-equals rewrite(cand).cartridges: false
+candManifest minus manifest-only keys deep-equals rewrite(cand): false | key-order-insensitive: false
+candManifest keys not in cand: parent_generation,acceptance,version,cut_at_utc,note
+liveManifest keys not in live: parent_generation,acceptance
+live keys not in liveManifest: 

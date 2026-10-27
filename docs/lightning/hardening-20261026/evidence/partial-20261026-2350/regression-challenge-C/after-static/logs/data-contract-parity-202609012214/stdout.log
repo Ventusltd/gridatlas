@@ -1,0 +1,26 @@
+
+data-contract parity for 202610262323-gridatlas-v9.161 (4 cartridges)
+
+streaming-parquet-bridge 202609241251: bytes name 0 product(s), entry declares 0
+uk-gazetteer-flyto 202609071213: bytes name 0 product(s), entry declares 0
+sld-sandbox 202610262323: bytes name 2 product(s), entry declares 2
+  FAIL sld-sandbox: data/history/ fetched by the bytes is declared on the entry - declared: derived/gb-transmission-network.v1.json, derived/price-decade-rollup.json
+  FAIL sld-sandbox: data/uk_lightning.geojson fetched by the bytes is declared on the entry - declared: derived/gb-transmission-network.v1.json, derived/price-decade-rollup.json
+  FAIL sld-sandbox: declared source derived/gb-transmission-network.v1.json is named by the bytes
+  FAIL sld-sandbox: declared source derived/price-decade-rollup.json is named by the bytes
+substation-intelligence 202609062358: bytes name 0 product(s), entry declares 1
+  FAIL substation-intelligence: declared source derived/connection-points.v3.json is named by the bytes
+  PASS substation-intelligence: capability connection-points-v3-consumed agrees with a declared schema
+  PASS the composition manifest is the current generation
+  PASS streaming-parquet-bridge: the composition manifest declares the same sources as current.json
+  PASS uk-gazetteer-flyto: the composition manifest declares the same sources as current.json
+  PASS sld-sandbox: the composition manifest declares the same sources as current.json
+  PASS substation-intelligence: the composition manifest declares the same sources as current.json
+
+6/11 checks passed
+FAILURES
+  sld-sandbox: data/history/ fetched by the bytes is declared on the entry - declared: derived/gb-transmission-network.v1.json, derived/price-decade-rollup.json
+  sld-sandbox: data/uk_lightning.geojson fetched by the bytes is declared on the entry - declared: derived/gb-transmission-network.v1.json, derived/price-decade-rollup.json
+  sld-sandbox: declared source derived/gb-transmission-network.v1.json is named by the bytes
+  sld-sandbox: declared source derived/price-decade-rollup.json is named by the bytes
+  substation-intelligence: declared source derived/connection-points.v3.json is named by the bytes

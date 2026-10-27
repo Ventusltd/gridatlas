@@ -1,0 +1,48 @@
+{
+ "S9": {
+  "fixture": "/tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/security/fixtures/S9-giant-feed/data",
+  "ms": 94242,
+  "heapDeltaMB": 188,
+  "requests": 2,
+  "fetchCount": 2,
+  "xhr": 1,
+  "served": 1,
+  "bytesServed": 63620613,
+  "maxConcurrent": 1,
+  "offPath": [],
+  "offPathCount": 0,
+  "last": {
+   "state": "PARTIAL",
+   "stale": true,
+   "mode": "feed",
+   "period": "24h",
+   "drawn": 300000,
+   "cluster": true,
+   "cap": 40000,
+   "cap_source": "live feed",
+   "index_count": 300000,
+   "failures": 0,
+   "reasons": [
+    "feed coverage unknown"
+   ]
+  },
+  "errors": [],
+  "label": "Lightning flashes (optical) [300,000 | 24h STALE]",
+  "status": "PARTIAL · 300,000 FLASHES CLUSTERED · SEARCHED UNKNOWN · STALE",
+  "caps": {
+   "window": "Window  2026-10-25 18:40 UTC → 2026-10-26 18:40 UTC (24 hours, latest)",
+   "actual": "Actual  first 2026-10-26 06:00:00 UTC · last 2026-10-26 17:59:59 UTC",
+   "flashes": "Flashes 300,000 in window (live feed, 7-day retention) · 300,000 drawn as clusters (live feed count 300,000 exceeds the 40,000-point cap for this desktop)",
+   "refresh": "Refresh live feed 2026-10-26 13:05 UTC (last collection window 2026-10-26 10:05 UTC → 2026-10-26 13:05 UTC; latest detection 2026-10-25 11:15:58 UTC; 7-day retention; archive not yet published: HTTP 404; earlier hours unknown, not zero)",
+   "searched": "Searched EUMETSAT unknown (live feed records only its last collection window)",
+   "warning": "",
+   "footer": "Times UTC · Optical flashes seen by MTG Lightning Imager (EUMETSAT L2-LFL), not confirmed ground strikes · Missing days are unknown, not zero · UK box −11.0,49.5 → 3.0,61.5"
+  },
+  "drawn": 300000,
+  "htmlWritesWithData": 0,
+  "htmlWrites": 1,
+  "protoPolluted": null,
+  "protoKeysAdded": 0,
+  "listenerErrors": []
+ }
+}

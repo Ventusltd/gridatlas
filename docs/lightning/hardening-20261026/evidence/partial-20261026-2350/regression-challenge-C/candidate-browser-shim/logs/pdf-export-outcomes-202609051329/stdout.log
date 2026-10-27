@@ -1,0 +1,16 @@
+PASS  chromium 393x852 phone: the export menu is open before the PDF control is clicked  [open=true aria-expanded=true panel.hidden=false]
+PASS  chromium 393x852 phone: the browser received a download  [globalgrid2050-grid-atlas-202610262329.pdf 3931 bytes]
+PASS  chromium 393x852 phone: the file is a PDF, opened and closed  [head="%PDF-1.4" tail="\n%%EOF"]
+PASS  chromium 393x852 phone: the PDF carries a rasterised map, not an empty page  [383x838 /DCTDecode=true]
+PASS  chromium 393x852 phone: that stream really is a JPEG, start of image to end of image  [2669 bytes, ffd8..ffd9]
+PASS  chromium 393x852 phone: the page is the shape of the map, so the sheet has no white space and nothing is cropped  [page 383x838pt aspect 0.4570 vs image 383x838 aspect 0.4570]
+PASS  chromium 393x852 phone: the cross-reference table resolves  [startxref 3707 -> "xref"]
+PASS  chromium 393x852 phone: no page errors while writing the PDF
+PASS  chromium 1400x900 desktop: the export menu is open before the PDF control is clicked  [open=true aria-expanded=true panel.hidden=false]
+PASS  chromium 1400x900 desktop: the browser received a download  [globalgrid2050-grid-atlas-202610262330.pdf 6335 bytes]
+PASS  chromium 1400x900 desktop: the file is a PDF, opened and closed  [head="%PDF-1.4" tail="\n%%EOF"]
+PASS  chromium 1400x900 desktop: the PDF carries a rasterised map, not an empty page  [1390x518 /DCTDecode=true]
+PASS  chromium 1400x900 desktop: that stream really is a JPEG, start of image to end of image  [5067 bytes, ffd8..ffd9]
+PASS  chromium 1400x900 desktop: the page is the shape of the map, so the sheet has no white space and nothing is cropped  [page 1390x518pt aspect 2.6834 vs image 1390x518 aspect 2.6834]
+PASS  chromium 1400x900 desktop: the cross-reference table resolves  [startxref 6111 -> "xref"]
+PASS  chromium 1400x900 desktop: no page errors while writing the PDF

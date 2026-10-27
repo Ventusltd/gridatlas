@@ -1,0 +1,12 @@
+[runner] baseline-browser-shim: generation 202609241334, 4 of 81 catalogue entries, base http://127.0.0.1:8143/gridatlas/atlas/
+[runner] route probe: mapArrived=true failedHosts=["ventusltd.github.io","cdn.jsdelivr.net"] pageErrors=[]
+[runner] start grid-subs-chips-on-desktop (budget 360s)
+[runner] FAIL               grid-subs-chips-on-desktop                   8.8s  FAIL  1400x900 desktop  on the map: []
+[runner] start pdf-export-outcomes-202609051329 (budget 420s)
+[runner] BLOCKED_HARNESS    pdf-export-outcomes-202609051329             15.8s  name: 'Error'
+[runner] start screen-grab-print-outcomes (budget 360s)
+[runner] PASS               screen-grab-print-outcomes                   11.0s  18 passed, 0 failed, 18 checks
+[runner] start teleprint-evidence (budget 420s)
+[runner] PASS               teleprint-evidence                           21.4s  2 passed, 0 failed, 2 sessions (1 pdf, 1 source)
+
+[runner] done: {"FAIL":1,"BLOCKED_HARNESS":1,"PASS":2}  ->  /tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/regression-challenge-C/baseline-browser-shim/results-routeA.md

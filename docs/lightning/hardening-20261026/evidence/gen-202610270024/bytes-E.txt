@@ -1,0 +1,27 @@
+harness: self-fixture (node v22.23.4); base = fixed-module-D.js (23226 B, stamped 202610262310)
+   -77  TRIM drop three one-line comments added in variants B/D (budget)
+   101  CR1 LOAD POINTS: newest day alone over budget -> summary + "newest day alone exceeds", never EMPTY
+    46  CR2+CR4 index: failure clears S.idx; only the current request may set S.idx/S.ie
+    32  CR3 shard workers stop when the load is superseded (OFF or chip change)
+    25  CR5/S4 counts must be non-negative safe integers (no "03", no Infinity)
+   169  S5/S6 parts[]: at most 24, each an hourly days/YYYY/MM/DD/HH.json path with an integer count, else the index fails closed
+    -4  S8 scan_windows: no argument spread (huge arrays overflowed the stack)
+    32  S10 one bad coordinate rejects only that record (no spread)
+    48  S10b dedupe on id when present, else on time+lon+lat
+   255  SL shard_lost days: unknown coverage, never searched, never zero; integrity warning
+    13  T14 any unknown tail, head or lost day keeps PARTIAL; percentages round down
+    22  CR6 a budget-truncated detail load is PARTIAL, not READY/EMPTY
+    18  T11 a feed with no parsable query_end_utc is STALE
+     2  T12 sub-minute ages read "<1 min"
+    48  T13 zone-less time_utc is read as UTC in every browser timezone
+    14  T15 CUSTOM caption never inverts (empty day-so-far at 00:00:00.000)
+    28  T08 month periods step NEXT by calendar months
+    17  M05/H08 the generic coverage block never overwrites feed-mode captions
+     3  M04 caption 12 px #bbb, disclaimer 11 px, normal wrapping; status line #bbb
+   178  M03 "<k> of <n> outside the current view" (never auto-pan; FIT FLASHES dropped for budget); counted when drawn (no moveend recount: budget)
+   337  M01 group spans the shell grid; runtime spacer/right inset from the HIDE LAYERS rect (+16 px, 96 px fallback), on resize/orientationchange
+   214  COPY C06-C09 M02 via the shared F7 phrase (status line near the period chips; label count is a lower bound when PARTIAL)
+     2  COPY C01/C03/C10 12 months, midday, Title Case label (C02 "0 h 5 min", C04 runs, C05 MB dropped for the schema constants)
+    74  SCHEMA data-contract parity: IX_SCHEMA after AR, FEED_SCHEMA after FEED; the loaders enforce them
+   -43  TRIM2 three navigation comments (budget for SCHEMA)
+D 23226 -> E 24780 bytes (delta +1554); cap 24781: MET (1 spare)

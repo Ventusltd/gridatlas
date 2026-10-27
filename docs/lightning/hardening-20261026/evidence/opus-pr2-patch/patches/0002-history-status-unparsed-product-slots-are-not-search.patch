@@ -1,0 +1,111 @@
+From e54332cdd65d5f07c5ed0ebef6872d1e27f31774 Mon Sep 17 00:00:00 2001
+From: "opus-pr2-patch (Claude)" <noreply@anthropic.com>
+Date: Mon, 26 Oct 2026 23:03:44 +0000
+Subject: [PATCH 2/5] history/status: unparsed product slots are not searched
+ time (D-3)
+
+When no product name carries a sensing slot, collect.scanned_ranges returns
+the whole query window with slots_parsed false (collect.py:319-320).
+windows_from_run_record (history.py:557-562) ignored the flag and archived
+that window, unpublished tail included, as searched; status.py advanced
+last_successful_scan_end_utc to the query end, so the self-healing lookback
+also treated the tail as searched.
+
+windows_from_run_record now returns no window when slots_parsed is false,
+and status.py keeps the previous scan end in that case and records
+last_slots_parsed. The feed run itself still counts as a success.
+
+Tests: test_unparsed_slot_names_record_no_coverage,
+test_unparsed_slots_do_not_advance_the_scan_end (both fail before).
+
+Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
+Claude-Session: https://claude.ai/code/session_01JcZ2nJ9f9fgHY3X3JTk4DF
+---
+ history.py            |  4 ++++
+ status.py             |  3 ++-
+ tests/test_history.py | 10 ++++++++++
+ tests/test_status.py  | 11 +++++++++++
+ 4 files changed, 27 insertions(+), 1 deletion(-)
+
+diff --git a/history.py b/history.py
+index 2ee3acc..ef8cc81 100644
+--- a/history.py
++++ b/history.py
+@@ -578,6 +578,10 @@ def windows_from_run_record(record: dict) -> list[dict]:
+     """Scan windows (one per examined range) from a collect.py run record."""
+     if record.get("outcome") != "success" or int(record.get("products_examined") or 0) < 1:
+         return []
++    if record.get("slots_parsed") is False:
++        # No product name carried a sensing slot, so scanned_ranges is the whole
++        # requested window including the unpublished tail: coverage stays unknown.
++        return []
+     return [successful_scan(r["start_utc"], r["end_utc"], 1) for r in record.get("scanned_ranges", [])
+             if parse_utc(r["end_utc"]) > parse_utc(r["start_utc"])]
+ 
+diff --git a/status.py b/status.py
+index 7fbeef0..201050d 100644
+--- a/status.py
++++ b/status.py
+@@ -74,7 +74,7 @@ def build_status(
+     if collected:
+         last_success_run = record["run_utc"]
+         ranges = record.get("scanned_ranges") or []
+-        if ranges:
++        if ranges and record.get("slots_parsed") is not False:  # unparsed = requested window, not examined slots
+             end = max(parse_utc(r["end_utc"]) for r in ranges)
+             start = min(parse_utc(r["start_utc"]) for r in ranges)
+             if not last_success_end or end > parse_utc(last_success_end):
+@@ -100,6 +100,7 @@ def build_status(
+         "last_lookback_capped": (record or {}).get("lookback_capped"),
+         "last_products_examined": (record or {}).get("products_examined"),
+         "last_slots_examined": (record or {}).get("slots_examined"),
++        "last_slots_parsed": (record or {}).get("slots_parsed"),
+         "last_slots_examined_utc": (record or {}).get("slots_examined_utc") if collected else None,
+         "last_scanned_ranges": (record or {}).get("scanned_ranges") if collected else None,
+         "last_unscanned_ranges": (record or {}).get("unscanned_ranges") if collected else None,
+diff --git a/tests/test_history.py b/tests/test_history.py
+index e5d0ebe..8ccc3ca 100644
+--- a/tests/test_history.py
++++ b/tests/test_history.py
+@@ -391,6 +391,16 @@ class LightningHistoryTests(unittest.TestCase):
+         self.assertEqual((row["coverage"], row["count"], row.get("parts")), ("none", None, None))
+         self.assertEqual(result["lost_days"], ["2026-10-24"])
+ 
++    # --- D-3: unparsed product names are not examined slots ----------------------
++    def test_unparsed_slot_names_record_no_coverage(self):
++        record = {"outcome": "success", "products_examined": 2, "slots_parsed": False,
++                  "scanned_ranges": [{"start_utc": "2026-10-26T08:00:00.000Z", "end_utc": "2026-10-26T14:00:00.000Z"}]}
++        self.assertEqual(windows_from_run_record(record), [])
++        result = archive_observations(self.root, [], now=self.now, scanned_windows=windows_from_run_record(record))
++        today = {r["date"]: r for r in result["index"]["days"]}["2026-10-26"]
++        self.assertEqual((today["coverage"], today["scanned_seconds"], today["count"]), ("none", 0, None))
++        self.assertEqual(len(windows_from_run_record({**record, "slots_parsed": True})), 1)
++
+     # --- CLI --------------------------------------------------------------------
+     def test_cli_ingest_and_verify(self):
+         record_path = Path(self.temp.name) / "run.json"
+diff --git a/tests/test_status.py b/tests/test_status.py
+index 248d436..2956813 100644
+--- a/tests/test_status.py
++++ b/tests/test_status.py
+@@ -71,6 +71,17 @@ class StatusTests(unittest.TestCase):
+         self.assertIn("archive step failed", result["archive"]["error"])
+         self.assertEqual(result["feed"]["features"], 411)
+ 
++    def test_unparsed_slots_do_not_advance_the_scan_end(self):
++        previous = build_status(now=NOW - timedelta(hours=1), previous=None, record=RECORD, archive_result=None,
++                                collect_outcome="success", archive_outcome="success")
++        opaque = {**RECORD, "run_utc": "2026-10-26T15:17:00.000Z", "slots_parsed": False, "scanned_ranges": [
++            {"start_utc": "2026-10-26T09:17:00.000Z", "end_utc": "2026-10-26T15:17:00.000Z"}]}
++        result = build_status(now=NOW + timedelta(hours=1), previous=previous, record=opaque, archive_result=None,
++                              collect_outcome="success", archive_outcome="success")
++        self.assertEqual(result["last_successful_scan_end_utc"], "2026-10-26T14:10:09.000Z")  # not the query end
++        self.assertIs(result["last_slots_parsed"], False)
++        self.assertEqual(result["consecutive_failures"], 0)  # the feed run itself succeeded
++
+     def test_health_thresholds(self):
+         self.assertEqual(health(NOW, None), "never")
+         self.assertEqual(health(NOW, NOW - timedelta(hours=5)), "ok")
+-- 
+2.43.0
+

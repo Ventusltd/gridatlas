@@ -1,0 +1,52 @@
+
+## S01-off
+LABEL  Lightning flashes (optical) [WAIT]
+STATUS LOADING
+window: 
+actual: 
+flashes: 
+refresh: 
+searched: 
+warning: 
+footer: 
+
+## S02-good-24h
+LABEL  Lightning flashes (optical) [UNKNOWN | 24h]
+STATUS PARTIAL · 0 FLASHES DRAWN · SEARCHED 43%
+window: Window  2026-10-25 18:40 UTC → 2026-10-26 18:40 UTC (24 hours, latest)
+actual: Actual  no archived flashes within this window
+flashes: Flashes 0 archived in window
+refresh: Refresh archive 2026-10-26 18:37 UTC (0h 3min ago; expected every 1 h)
+searched: Searched EUMETSAT 43% of window · 4 successful runs · 2026-10-25 18:40 UTC → 2026-10-26 13:00 UTC
+warning: Not yet ingested: last 5h 40min of window (unknown, not zero)
+footer: Times UTC · Optical flashes seen by MTG Lightning Imager (EUMETSAT L2-LFL), not confirmed ground strikes · Missing days are unknown, not zero · UK box −11.0,49.5 → 3.0,61.5
+
+## S03-good-7d
+LABEL  Lightning flashes (optical) [408 | 7d]
+STATUS PARTIAL · 408 FLASHES DRAWN · SEARCHED 56%
+window: Window  2026-10-19 18:40 UTC → 2026-10-26 18:40 UTC (7 days, latest)
+actual: Actual  first 2026-10-21 12:32:19 UTC · last 2026-10-25 11:15:58 UTC
+flashes: Flashes 408 archived in window · 408 drawn as points (index count 408 within the 40,000-point cap for this desktop)
+refresh: Refresh archive 2026-10-26 18:37 UTC (0h 3min ago; expected every 1 h)
+searched: Searched EUMETSAT 56% of window · 17 successful runs · 2026-10-20 22:41 UTC → 2026-10-26 13:00 UTC
+warning: Not yet ingested: last 5h 40min of window (unknown, not zero) · Unknown: 2026-10-19 to 2026-10-20 precede archive start 2026-10-20 22:41 UTC (not zero) · Unknown: 1 of 8 UTC dates have no collection run
+footer: Times UTC · Optical flashes seen by MTG Lightning Imager (EUMETSAT L2-LFL), not confirmed ground strikes · Missing days are unknown, not zero · UK box −11.0,49.5 → 3.0,61.5
+## S04-good-30d ERROR TimeoutError: locator.scrollIntoViewIfNeeded: Timeout 30000ms exceeded.
+Call log:
+[2m  - waiting for locator('#scada-ui-container [data-lightning-period="30d"]')[22m
+[2m    - locator resolved to visible <button type="button" class="map-ctrl-btn" aria-pressed="false" data-lightning-period="30d">30D</button>[22m
+
+
+## S05-good-12m
+LABEL  Lightning flashes (optical) [408 | 12m]
+STATUS PARTIAL · 408 ARCHIVED · SEARCHED 1%
+window: Window  2025-10-26 18:41 UTC → 2026-10-26 18:41 UTC (1 year, latest)
+actual: Actual  on the 366 overlapping UTC dates: first 2026-10-21 12:32:19 UTC · last 2026-10-25 11:15:58 UTC (day-level; may lie outside a mid-day window edge)
+flashes: Flashes 408 archived on 366 overlapping UTC dates · none drawn (summary mode; choose ≤31 days for points)
+refresh: Refresh archive 2026-10-26 18:37 UTC (0h 4min ago; expected every 1 h)
+searched: Searched EUMETSAT 1% of window · 17 successful runs · 2026-10-20 22:41 UTC → 2026-10-26 13:00 UTC
+warning: Not yet ingested: last 5h 41min of window (unknown, not zero) · Unknown: 2025-10-26 to 2026-10-20 precede archive start 2026-10-20 22:41 UTC (not zero) · Unknown: 359 of 366 UTC dates have no collection run
+footer: Times UTC · Optical flashes seen by MTG Lightning Imager (EUMETSAT L2-LFL), not confirmed ground strikes · Missing days are unknown, not zero · UK box −11.0,49.5 → 3.0,61.5
+## S06-good-custom-23Oct ERROR TimeoutError: page.waitForFunction: Timeout 30000ms exceeded.
+## S07-good-custom-Sep1-3-unsearched ERROR Error: page.waitForFunction: Target crashed 
+## S08-good-custom-Jan-Mar-unsearched ERROR Error: page.evaluate: Target crashed 

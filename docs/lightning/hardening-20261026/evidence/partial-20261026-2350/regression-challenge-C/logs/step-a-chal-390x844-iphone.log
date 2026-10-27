@@ -1,0 +1,15 @@
+[C candidate 390x844] boot {"generation_ms":6369,"boot_ms":9521,"lightning_installed_ms":10360,"idle_ms":13225} requests 29 bytes 49115113
+[C candidate 390x844] listeners boot total 80 capture 16 lightning 3
+[C candidate 390x844] inventory OFF {"engine":60,"pipeline":3,"total":63,"unique":63,"complete":true} proxies 63 markers 63
+node:internal/process/promises:394
+    triggerUncaughtException(err, true /* fromPromise */);
+    ^
+
+page.evaluate: Target crashed 
+    at inPage (/tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/regression-challenge-C/challenge-c.mjs:65:32)
+    at /tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/regression-challenge-C/challenge-c.mjs:413:18 {
+  log: [],
+  name: 'Error'
+}
+
+Node.js v22.23.4

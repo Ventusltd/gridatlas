@@ -1,0 +1,16 @@
+202610262323-gridatlas-v9.161: release the UK lightning overlay (OFF by default) to the live route
+
+Promote the committed generation 202610262323 (composition v9.161), merged
+to main as a preview by #35, to the live pointer. atlas/current.json is
+written from atlas/manifests/202610262323-composition.json minus the
+manifest-only keys (parent_generation, version, cut_at_utc, note,
+acceptance); previous_generation and superseded_generation name
+202609241334 (v9.156). STATE.md is regenerated with
+`node tools/scope/loop.mjs state` in this same commit (AGENTS.md).
+
+No cartridge, manifest, shell or route is added or removed. Rollback target
+202609241334 stays on disk.
+Rollback: node tools/rollback.mjs --to 202609241334 --reason "<why>"
+(or, byte-exact, git revert of this commit).
+
+Authorised by: <OWNER: link the authorising comment on issue #32>

@@ -1,0 +1,46 @@
+===== H1: index lists a shard that is missing on disk =====
+run 1: {'coverage': 'full', 'count': 2, 'path': 'days/2026/10/23.json', 'sealed': True}
+run 2 (shard deleted, no incoming): {'coverage': 'full', 'count': 0, 'path': None, 'sealed': True}
+H1 verdict: FALSE ZERO REPRODUCED (count 2 -> 0 with coverage full)
+
+===== H2: ShardTooLarge on a later day leaves a partial write and a frozen archive =====
+raised: days/2026/10/24/03.json would be 24494 bytes > max_shard_bytes 20000; refusing to write (f
+files on disk after the raise: ['days/2026/10/22.json'] | index.json present: False
+second run (burst still inside the 7-day feed): raises again -> archive frozen until the burst hour ages out of the feed
+after the freeze: 2026-10-24 row -> {'coverage': 'none', 'count': None} | scan_windows: [('2026-11-03T00:00', '2026-11-03T06:00')]
+H2 verdict: partial write + unwritten index reproduced; windows of the frozen period are lost (under-claim, honest direction) and the burst flashes never reach the archive.
+
+===== H3: unparseable product names -> whole query window counted as searched =====
+record.slots_parsed: False | scanned_ranges: [{'start_utc': '2026-10-26T07:05:58.000Z', 'end_utc': '2026-10-26T13:05:58.000Z'}] | tail_unobserved_seconds: 0
+windows_from_run_record -> [{'start_utc': '2026-10-26T07:05:58.000Z', 'end_utc': '2026-10-26T13:05:58.000Z', 'successful_runs': 1}]
+2026-10-26 row: {'coverage': 'partial', 'scanned_seconds': 21600, 'count': 0} (6 h = 21600 s claimed searched incl. the unpublished tail)
+H3 verdict: REPRODUCED: slots_parsed=False is ignored by history.windows_from_run_record; the full query window (incl. the unobserved tail) becomes 'searched' coverage
+
+===== H4: D02 coordinate validation (feed path assemble() and archive path validate_feature()) =====
+  string coords          coords=['-2.1', '51.1']             feed keeps=1  archive keeps=True
+  three coords           coords=[-2.1, 51.1, 0.0]            feed keeps=0  archive keeps=True
+  nan lat                coords=[-2.1, nan]                  feed keeps=0  archive keeps=False
+  inf lon                coords=[inf, 51.1]                  feed keeps=0  archive keeps=False
+  swapped lon/lat        coords=[51.1, -2.1]                 feed keeps=0  archive keeps=False
+  west edge -11.0        coords=[-11.0, 55.0]                feed keeps=1  archive keeps=True
+  beyond west -11.0001   coords=[-11.0001, 55.0]             feed keeps=0  archive keeps=False
+  north edge 61.5        coords=[0.0, 61.5]                  feed keeps=1  archive keeps=True
+  beyond north 61.5001   coords=[0.0, 61.5001]               feed keeps=0  archive keeps=False
+  east edge 3.0          coords=[3.0, 52.0]                  feed keeps=1  archive keeps=True
+  south edge 49.5        coords=[-5.0, 49.5]                 feed keeps=1  archive keeps=True
+  null lon               coords=[None, 51.1]                 feed keeps=0  archive keeps=False
+  empty                  coords=[]                           feed keeps=0  archive keeps=False
+build_feature out of box -> None | build_feature('abc') -> ValueError: could not convert string to float: 'abc' (caught per-record in decode_body loop -> record dropped, not counted)
+H4 verdict: out-of-box/malformed are dropped (not quarantined/counted) in the feed path; archive path counts them only as dropped_invalid.
+
+===== H5: status heartbeat for skipped collect step / absent run record =====
+collect skipped: {'health': 'never', 'last_attempt_outcome': 'failure', 'last_error': 'collect step outcome=skipped; no run record', 'consecutive_failures': 1}
+H5 verdict: heartbeat written with an explicit error; limitation: no heartbeat if the job never starts (GitHub scheduler skip).
+
+===== H6: future flash / before-cutoff clamp-and-flag =====
+archived: 1 dropped_before_cutoff: 1 dropped_invalid (future): 1
+feed assemble() keeps a future-dated flash? False
+
+===== H7: dropped_invalid not surfaced to status.json =====
+status.archive keys: ['archived_observations', 'dropped_before_cutoff', 'error', 'files_changed', 'index_generated_utc', 'outcome', 'split_days'] | 'dropped_invalid' in status.archive: False
+OK experiment 4

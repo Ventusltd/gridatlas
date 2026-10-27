@@ -1,0 +1,105 @@
+{
+ "schema": "gridatlas.interconnector-layer.v1",
+ "generation": "202609071232",
+ "status": "RENDERED_AND_ARRIVAL_WIRED",
+ "honest_note": "Rendered by the sld-sandbox cartridge since v9.143 (202609071005): a dashed line converter to converter and a node mid-line. Arrival wired in v9.146 (202609071232): a MAP link carrying interconnector=<BMRS> hands over from the project lane, the span is framed, and each converter is measured within its own search budget. This config declares the layer; the cartridge draws it.",
+ "layer": {
+  "id": "l-interconnectors",
+  "control_label": "Interconnectors",
+  "menu": "Grid",
+  "source_id": "src-interconnectors",
+  "source": "./data/interconnectors.geojson",
+  "crs": "EPSG:4326",
+  "default_visibility": "none",
+  "minimum_zoom": 0
+ },
+ "reuse_offshore_rendering": {
+  "why": "An interconnector is shaped exactly like an offshore project as far as the Atlas is concerned: a name, a technology, a reference and a point. Reusing the offshore path means no new styling, no new card and no new MAP behaviour.",
+  "midpoint_carries": [
+   "name",
+   "technology",
+   "repd_ref",
+   "capacity_mw"
+  ],
+  "technology_value": "interconnector",
+  "reference_value": "the BMRS code, e.g. INTNED, standing in for a REPD ref",
+  "arrival_point": "SUPERSEDED: not the midpoint; see arrival_model",
+  "consequence": "SUPERSEDED: an interconnector has its own arrival branch; see arrival_model",
+  "status": "SUPERSEDED - see arrival_model"
+ },
+ "geometry_contract": {
+  "kind": "STRAIGHT_LINE_CONVERTER_TO_CONVERTER",
+  "must_be_labelled": "A straight line, never a cable route.",
+  "what_it_measures": "Separation between converter stations, not cable length.",
+  "measured_route_factor": {
+   "BritNed": {
+    "straight_line_km": 234.9,
+    "known_submarine_cable_km": 245,
+    "factor": 1.043,
+    "source": "BritNed Development Ltd v ABB AB [2018] EWHC 2616 (Ch)",
+    "reading": "The straight line is within 4.3 per cent of the surveyed submarine cable on this link. That is one observation and not a constant: measure each link before applying a factor to it."
+   }
+  },
+  "future": "Bend computation refines this same geometry; it does not replace it."
+ },
+ "both_sides_compute": {
+  "intent": "Fire the existing grid engine from each converter station in turn, so a link reports what it connects to at both ends rather than only the GB end.",
+  "gb_end": "Already in our own substation data for all ten links.",
+  "far_end": "From OpenStreetMap power=converter, fetched by tools/interconnectors/fetch_far_end_converters.py.",
+  "caution": "The per-end search budget is the radius box value (the engine's onshore limit, 10 km at boot on the measured run; 40 km when the box is empty). A converter sits inside a substation compound, so the GB end scores ~0 km; a far end has no payload and is reported as absent coverage.",
+  "status": "WIRED in v9.146"
+ },
+ "sources": {
+  "gb_ends": "gridatlas atlas/releases/<release>/data/grid_substations.geojson",
+  "far_ends": "OpenStreetMap Overpass, power=converter, bbox 48.0/-11.5 to 62.5/13.0",
+  "flow_data": "globalgrid2050 uk_energy_tracking_v6 — 70 rows, joined on bmrsCode (superseding the capacity-only reference csv)",
+  "existing_ui": "globalgrid2050 grid_engine/202609060305-interconnectors/index.html — the Interconnector Workbench, which names all ten links and currently carries no coordinates. This data is what it is missing."
+ },
+ "coverage": {
+  "links": 10,
+  "gb_ends_found": 10,
+  "far_ends_found": 2,
+  "drawable": 2,
+  "drawable_links": [
+   "BritNed",
+   "ElecLink"
+  ],
+  "why_the_rest_are_missing": "OpenStreetMap holds 596 power=converter elements in the bbox but only 43 carry a name, and the unnamed ones cannot be matched to a link. The remaining eight need either a named OSM element or a TSO navigational publication, which is the stronger source because a TSO is obliged to tell mariners where its assets are."
+ },
+ "electricity_data": {
+  "source": "globalgrid2050 uk_energy_tracking_v6/generation_history/interconnectors/generation_interconnector_index.json",
+  "live": "https://globalgrid2050.com/uk_energy_tracking_v6/",
+  "rows": 70,
+  "coverage": "10 links x 7 years, 2020-2026",
+  "join_key": "bmrsCode — the same code this layer keys on, so geometry and flows land in one artefact",
+  "label_contract": "country - interconnector name - BMRS code",
+  "sign_convention": "Imports are positive MWh. Exports are negative MWh. Carry this into any UI: a negative net is GB exporting, not missing data.",
+  "note": "v5 is price history and grid frequency; the interconnector series begins at v6. Per-link import/export MWh files sit beside the index, one pair per link.",
+  "net_position_2020_2026_twh": {
+   "continental_links_net_import": [
+    "IFA +37.29",
+    "North Sea Link +32.79",
+    "Nemo Link +17.97",
+    "IFA2 +16.37",
+    "ElecLink +15.16",
+    "BritNed +11.13",
+    "Viking Link +7.18"
+   ],
+   "island_links_net_export": [
+    "Moyle -8.33",
+    "East West -6.60",
+    "Greenlink -4.11"
+   ],
+   "reading": "Every continental link is a net import to GB across the period; all three Ireland and Northern Ireland links are net exports from GB. Stated as a measurement over 2020-2026, not as a claim about any single year."
+  }
+ },
+ "arrival_model": {
+  "superseded": "An earlier version of this file said the MAP button, the arrival and the grid engine would treat an interconnector exactly as a wind farm, arriving at the midpoint. That was wrong and was measured wrong: a BritNed midpoint is 59.2 km from the nearest substation and the far end resolves to Lowestoft at 165.9 km because the payload is GB only.",
+  "model": "-distance-interconnectors-distance+: the span is unbounded; each converter is searched within the ordinary onshore budget, which the radius box overrides. 40km <- Grain --[ BritNed 234.9 km ]-- Maasvlakte -> 40km",
+  "link_shape": "?interconnector=INTNED&technology=interconnector&anchor=midpoint|gb_converter&latitude=..&longitude=..&zoom=7|10 - never repd_ref",
+  "anchor": "the node drawn mid-line is a label anchor, not a location; measured, it is the planar mean of the converter coordinates, 1.44 km from the great-circle midpoint on BritNed",
+  "gb_end": "measured against the arrival lane's published qualifying substations once the payload has arrived; Grain at 0 km with 20 within 10 km, Bicker Fen at 0.001 km with 8 within 10 km (offline, 2026-09-07)",
+  "far_end": "no substation payload outside GB; reported as absent coverage, never as absence of connection",
+  "no_far_converter": "no line is drawn; the map flies to the GB converter, measures it, and states the other end is not located"
+ }
+}

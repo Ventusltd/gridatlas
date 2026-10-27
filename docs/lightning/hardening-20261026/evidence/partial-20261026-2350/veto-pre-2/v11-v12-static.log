@@ -1,0 +1,27 @@
+$ node tools/scope/loop.mjs lint
+scope-ledger=PASS active=none master=done
+exit=0
+$ node tools/scope/loop.mjs state --stdout
+| 1 | 202608301321 | done | 202608301321-01-move-atlas-into-atlas-folder.md |
+| 2 | 202608301518 | done | 202608301518-02-modularise-immutable-shell-and-cartridges.md |
+| 3 | 202608301520 | done | 202608301520-03-apply-pipelinenews-lessons.md |
+| 4 | 202608301521 | done | 202608301521-04-add-uk-location-search-cartridge.md |
+| 5 | 202608301522 | done | 202608301522-05-compile-and-attest-cartridge-composition.md |
+| 6 | 202608301524 | done | 202608301524-06-close-and-harden-cicd-loop.md |
+
+This file is generated deterministically by `node tools/scope/loop.mjs state`.
+exit=0
+$ node tools/proofs/202610262323-sld-sandbox.proof.mjs
+SLD exact delta (202609241334 bytes + \n + 202610262323 uk-lightning-overlay module), SHA-256, byte budget, static negatives, static positives and syntax PASS; browser verification runs separately.
+exit=0
+$ node tools/proofs/run-current.mjs
+=== substation-intelligence 202609062358 ===
+Published engine byte integrity and syntax PASS; browser coverage runs separately.
+
+=== sld-sandbox 202609241334 ===
+SLD exact delta, SHA-256 and syntax PASS; browser layout regression runs separately.
+
+proofs run: 4
+every composed cartridge passed its generation-matched proof
+exit=0
+STATE_IDENTICAL

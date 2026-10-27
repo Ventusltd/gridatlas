@@ -1,0 +1,809 @@
+{
+  "route": "candidate",
+  "url": "http://127.0.0.1:8144/wt/atlas/v/202610261949/",
+  "minutes": 11,
+  "harness": "lead-shim, Playwright page.clock fake timers (install before goto; fastForward 30 s steps), viewport 1440x900 desktop",
+  "phase": "off",
+  "stepMs": 30000,
+  "lightningDataDir": "/tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/lightning/fixtures/lightning-archive/data",
+  "startedAt": "2026-10-26T22:59:13.450Z",
+  "off": {
+    "virtual_minutes": 11,
+    "steps": 22,
+    "real_seconds": 11.2,
+    "virtual_seconds": 671,
+    "requests_total_during": 0,
+    "lightning_requests_during": [],
+    "lightning_undeclared": [],
+    "off_origin_requests_during": [],
+    "samples": [
+      {
+        "label": "OFF start",
+        "virtual_t_ms": 13842,
+        "moduleTimers": [
+          {
+            "kind": "interval",
+            "ms": 250,
+            "t": 590,
+            "cleared": true,
+            "line": 8851
+          }
+        ],
+        "moduleFetches": [],
+        "moduleXhrs": [],
+        "allIntervalsCreated": 9,
+        "allIntervalsActive": 2,
+        "state": {
+          "on": false,
+          "installed": true,
+          "requests": 0,
+          "timer": false,
+          "serial": 0,
+          "last": null,
+          "errors": 0
+        },
+        "map": {
+          "source": false,
+          "layer": false,
+          "sources": 56,
+          "layers": 100
+        }
+      },
+      {
+        "label": "OFF +30s (virtual)",
+        "virtual_t_ms": 44245,
+        "moduleTimers": [
+          {
+            "kind": "interval",
+            "ms": 250,
+            "t": 590,
+            "cleared": true,
+            "line": 8851
+          }
+        ],
+        "moduleFetches": [],
+        "moduleXhrs": [],
+        "allIntervalsCreated": 9,
+        "allIntervalsActive": 2,
+        "state": {
+          "on": false,
+          "installed": true,
+          "requests": 0,
+          "timer": false,
+          "serial": 0,
+          "last": null,
+          "errors": 0
+        },
+        "map": {
+          "source": false,
+          "layer": false,
+          "sources": 56,
+          "layers": 100
+        }
+      },
+      {
+        "label": "OFF +60s (virtual)",
+        "virtual_t_ms": 74648,
+        "moduleTimers": [
+          {
+            "kind": "interval",
+            "ms": 250,
+            "t": 590,
+            "cleared": true,
+            "line": 8851
+          }
+        ],
+        "moduleFetches": [],
+        "moduleXhrs": [],
+        "allIntervalsCreated": 9,
+        "allIntervalsActive": 2,
+        "state": {
+          "on": false,
+          "installed": true,
+          "requests": 0,
+          "timer": false,
+          "serial": 0,
+          "last": null,
+          "errors": 0
+        },
+        "map": {
+          "source": false,
+          "layer": false,
+          "sources": 56,
+          "layers": 100
+        }
+      },
+      {
+        "label": "OFF +90s (virtual)",
+        "virtual_t_ms": 105051,
+        "moduleTimers": [
+          {
+            "kind": "interval",
+            "ms": 250,
+            "t": 590,
+            "cleared": true,
+            "line": 8851
+          }
+        ],
+        "moduleFetches": [],
+        "moduleXhrs": [],
+        "allIntervalsCreated": 9,
+        "allIntervalsActive": 2,
+        "state": {
+          "on": false,
+          "installed": true,
+          "requests": 0,
+          "timer": false,
+          "serial": 0,
+          "last": null,
+          "errors": 0
+        },
+        "map": {
+          "source": false,
+          "layer": false,
+          "sources": 56,
+          "layers": 100
+        }
+      },
+      {
+        "label": "OFF +120s (virtual)",
+        "virtual_t_ms": 135457,
+        "moduleTimers": [
+          {
+            "kind": "interval",
+            "ms": 250,
+            "t": 590,
+            "cleared": true,
+            "line": 8851
+          }
+        ],
+        "moduleFetches": [],
+        "moduleXhrs": [],
+        "allIntervalsCreated": 9,
+        "allIntervalsActive": 2,
+        "state": {
+          "on": false,
+          "installed": true,
+          "requests": 0,
+          "timer": false,
+          "serial": 0,
+          "last": null,
+          "errors": 0
+        },
+        "map": {
+          "source": false,
+          "layer": false,
+          "sources": 56,
+          "layers": 100
+        }
+      },
+      {
+        "label": "OFF +150s (virtual)",
+        "virtual_t_ms": 165858,
+        "moduleTimers": [
+          {
+            "kind": "interval",
+            "ms": 250,
+            "t": 590,
+            "cleared": true,
+            "line": 8851
+          }
+        ],
+        "moduleFetches": [],
+        "moduleXhrs": [],
+        "allIntervalsCreated": 9,
+        "allIntervalsActive": 2,
+        "state": {
+          "on": false,
+          "installed": true,
+          "requests": 0,
+          "timer": false,
+          "serial": 0,
+          "last": null,
+          "errors": 0
+        },
+        "map": {
+          "source": false,
+          "layer": false,
+          "sources": 56,
+          "layers": 100
+        }
+      },
+      {
+        "label": "OFF +180s (virtual)",
+        "virtual_t_ms": 196263,
+        "moduleTimers": [
+          {
+            "kind": "interval",
+            "ms": 250,
+            "t": 590,
+            "cleared": true,
+            "line": 8851
+          }
+        ],
+        "moduleFetches": [],
+        "moduleXhrs": [],
+        "allIntervalsCreated": 9,
+        "allIntervalsActive": 2,
+        "state": {
+          "on": false,
+          "installed": true,
+          "requests": 0,
+          "timer": false,
+          "serial": 0,
+          "last": null,
+          "errors": 0
+        },
+        "map": {
+          "source": false,
+          "layer": false,
+          "sources": 56,
+          "layers": 100
+        }
+      },
+      {
+        "label": "OFF +210s (virtual)",
+        "virtual_t_ms": 226666,
+        "moduleTimers": [
+          {
+            "kind": "interval",
+            "ms": 250,
+            "t": 590,
+            "cleared": true,
+            "line": 8851
+          }
+        ],
+        "moduleFetches": [],
+        "moduleXhrs": [],
+        "allIntervalsCreated": 9,
+        "allIntervalsActive": 2,
+        "state": {
+          "on": false,
+          "installed": true,
+          "requests": 0,
+          "timer": false,
+          "serial": 0,
+          "last": null,
+          "errors": 0
+        },
+        "map": {
+          "source": false,
+          "layer": false,
+          "sources": 56,
+          "layers": 100
+        }
+      },
+      {
+        "label": "OFF +240s (virtual)",
+        "virtual_t_ms": 257078,
+        "moduleTimers": [
+          {
+            "kind": "interval",
+            "ms": 250,
+            "t": 590,
+            "cleared": true,
+            "line": 8851
+          }
+        ],
+        "moduleFetches": [],
+        "moduleXhrs": [],
+        "allIntervalsCreated": 9,
+        "allIntervalsActive": 2,
+        "state": {
+          "on": false,
+          "installed": true,
+          "requests": 0,
+          "timer": false,
+          "serial": 0,
+          "last": null,
+          "errors": 0
+        },
+        "map": {
+          "source": false,
+          "layer": false,
+          "sources": 56,
+          "layers": 100
+        }
+      },
+      {
+        "label": "OFF +270s (virtual)",
+        "virtual_t_ms": 287481,
+        "moduleTimers": [
+          {
+            "kind": "interval",
+            "ms": 250,
+            "t": 590,
+            "cleared": true,
+            "line": 8851
+          }
+        ],
+        "moduleFetches": [],
+        "moduleXhrs": [],
+        "allIntervalsCreated": 9,
+        "allIntervalsActive": 2,
+        "state": {
+          "on": false,
+          "installed": true,
+          "requests": 0,
+          "timer": false,
+          "serial": 0,
+          "last": null,
+          "errors": 0
+        },
+        "map": {
+          "source": false,
+          "layer": false,
+          "sources": 56,
+          "layers": 100
+        }
+      },
+      {
+        "label": "OFF +300s (virtual)",
+        "virtual_t_ms": 317890,
+        "moduleTimers": [
+          {
+            "kind": "interval",
+            "ms": 250,
+            "t": 590,
+            "cleared": true,
+            "line": 8851
+          }
+        ],
+        "moduleFetches": [],
+        "moduleXhrs": [],
+        "allIntervalsCreated": 9,
+        "allIntervalsActive": 2,
+        "state": {
+          "on": false,
+          "installed": true,
+          "requests": 0,
+          "timer": false,
+          "serial": 0,
+          "last": null,
+          "errors": 0
+        },
+        "map": {
+          "source": false,
+          "layer": false,
+          "sources": 56,
+          "layers": 100
+        }
+      },
+      {
+        "label": "OFF +330s (virtual)",
+        "virtual_t_ms": 348292,
+        "moduleTimers": [
+          {
+            "kind": "interval",
+            "ms": 250,
+            "t": 590,
+            "cleared": true,
+            "line": 8851
+          }
+        ],
+        "moduleFetches": [],
+        "moduleXhrs": [],
+        "allIntervalsCreated": 9,
+        "allIntervalsActive": 2,
+        "state": {
+          "on": false,
+          "installed": true,
+          "requests": 0,
+          "timer": false,
+          "serial": 0,
+          "last": null,
+          "errors": 0
+        },
+        "map": {
+          "source": false,
+          "layer": false,
+          "sources": 56,
+          "layers": 100
+        }
+      },
+      {
+        "label": "OFF +360s (virtual)",
+        "virtual_t_ms": 378698,
+        "moduleTimers": [
+          {
+            "kind": "interval",
+            "ms": 250,
+            "t": 590,
+            "cleared": true,
+            "line": 8851
+          }
+        ],
+        "moduleFetches": [],
+        "moduleXhrs": [],
+        "allIntervalsCreated": 9,
+        "allIntervalsActive": 2,
+        "state": {
+          "on": false,
+          "installed": true,
+          "requests": 0,
+          "timer": false,
+          "serial": 0,
+          "last": null,
+          "errors": 0
+        },
+        "map": {
+          "source": false,
+          "layer": false,
+          "sources": 56,
+          "layers": 100
+        }
+      },
+      {
+        "label": "OFF +390s (virtual)",
+        "virtual_t_ms": 409106,
+        "moduleTimers": [
+          {
+            "kind": "interval",
+            "ms": 250,
+            "t": 590,
+            "cleared": true,
+            "line": 8851
+          }
+        ],
+        "moduleFetches": [],
+        "moduleXhrs": [],
+        "allIntervalsCreated": 9,
+        "allIntervalsActive": 2,
+        "state": {
+          "on": false,
+          "installed": true,
+          "requests": 0,
+          "timer": false,
+          "serial": 0,
+          "last": null,
+          "errors": 0
+        },
+        "map": {
+          "source": false,
+          "layer": false,
+          "sources": 56,
+          "layers": 100
+        }
+      },
+      {
+        "label": "OFF +420s (virtual)",
+        "virtual_t_ms": 439508,
+        "moduleTimers": [
+          {
+            "kind": "interval",
+            "ms": 250,
+            "t": 590,
+            "cleared": true,
+            "line": 8851
+          }
+        ],
+        "moduleFetches": [],
+        "moduleXhrs": [],
+        "allIntervalsCreated": 9,
+        "allIntervalsActive": 2,
+        "state": {
+          "on": false,
+          "installed": true,
+          "requests": 0,
+          "timer": false,
+          "serial": 0,
+          "last": null,
+          "errors": 0
+        },
+        "map": {
+          "source": false,
+          "layer": false,
+          "sources": 56,
+          "layers": 100
+        }
+      },
+      {
+        "label": "OFF +450s (virtual)",
+        "virtual_t_ms": 469911,
+        "moduleTimers": [
+          {
+            "kind": "interval",
+            "ms": 250,
+            "t": 590,
+            "cleared": true,
+            "line": 8851
+          }
+        ],
+        "moduleFetches": [],
+        "moduleXhrs": [],
+        "allIntervalsCreated": 9,
+        "allIntervalsActive": 2,
+        "state": {
+          "on": false,
+          "installed": true,
+          "requests": 0,
+          "timer": false,
+          "serial": 0,
+          "last": null,
+          "errors": 0
+        },
+        "map": {
+          "source": false,
+          "layer": false,
+          "sources": 56,
+          "layers": 100
+        }
+      },
+      {
+        "label": "OFF +480s (virtual)",
+        "virtual_t_ms": 500315,
+        "moduleTimers": [
+          {
+            "kind": "interval",
+            "ms": 250,
+            "t": 590,
+            "cleared": true,
+            "line": 8851
+          }
+        ],
+        "moduleFetches": [],
+        "moduleXhrs": [],
+        "allIntervalsCreated": 9,
+        "allIntervalsActive": 2,
+        "state": {
+          "on": false,
+          "installed": true,
+          "requests": 0,
+          "timer": false,
+          "serial": 0,
+          "last": null,
+          "errors": 0
+        },
+        "map": {
+          "source": false,
+          "layer": false,
+          "sources": 56,
+          "layers": 100
+        }
+      },
+      {
+        "label": "OFF +510s (virtual)",
+        "virtual_t_ms": 530745,
+        "moduleTimers": [
+          {
+            "kind": "interval",
+            "ms": 250,
+            "t": 590,
+            "cleared": true,
+            "line": 8851
+          }
+        ],
+        "moduleFetches": [],
+        "moduleXhrs": [],
+        "allIntervalsCreated": 9,
+        "allIntervalsActive": 2,
+        "state": {
+          "on": false,
+          "installed": true,
+          "requests": 0,
+          "timer": false,
+          "serial": 0,
+          "last": null,
+          "errors": 0
+        },
+        "map": {
+          "source": false,
+          "layer": false,
+          "sources": 56,
+          "layers": 100
+        }
+      },
+      {
+        "label": "OFF +540s (virtual)",
+        "virtual_t_ms": 561150,
+        "moduleTimers": [
+          {
+            "kind": "interval",
+            "ms": 250,
+            "t": 590,
+            "cleared": true,
+            "line": 8851
+          }
+        ],
+        "moduleFetches": [],
+        "moduleXhrs": [],
+        "allIntervalsCreated": 9,
+        "allIntervalsActive": 2,
+        "state": {
+          "on": false,
+          "installed": true,
+          "requests": 0,
+          "timer": false,
+          "serial": 0,
+          "last": null,
+          "errors": 0
+        },
+        "map": {
+          "source": false,
+          "layer": false,
+          "sources": 56,
+          "layers": 100
+        }
+      },
+      {
+        "label": "OFF +570s (virtual)",
+        "virtual_t_ms": 591558,
+        "moduleTimers": [
+          {
+            "kind": "interval",
+            "ms": 250,
+            "t": 590,
+            "cleared": true,
+            "line": 8851
+          }
+        ],
+        "moduleFetches": [],
+        "moduleXhrs": [],
+        "allIntervalsCreated": 9,
+        "allIntervalsActive": 2,
+        "state": {
+          "on": false,
+          "installed": true,
+          "requests": 0,
+          "timer": false,
+          "serial": 0,
+          "last": null,
+          "errors": 0
+        },
+        "map": {
+          "source": false,
+          "layer": false,
+          "sources": 56,
+          "layers": 100
+        }
+      },
+      {
+        "label": "OFF +600s (virtual)",
+        "virtual_t_ms": 621963,
+        "moduleTimers": [
+          {
+            "kind": "interval",
+            "ms": 250,
+            "t": 590,
+            "cleared": true,
+            "line": 8851
+          }
+        ],
+        "moduleFetches": [],
+        "moduleXhrs": [],
+        "allIntervalsCreated": 9,
+        "allIntervalsActive": 2,
+        "state": {
+          "on": false,
+          "installed": true,
+          "requests": 0,
+          "timer": false,
+          "serial": 0,
+          "last": null,
+          "errors": 0
+        },
+        "map": {
+          "source": false,
+          "layer": false,
+          "sources": 56,
+          "layers": 100
+        }
+      },
+      {
+        "label": "OFF +630s (virtual)",
+        "virtual_t_ms": 652473,
+        "moduleTimers": [
+          {
+            "kind": "interval",
+            "ms": 250,
+            "t": 590,
+            "cleared": true,
+            "line": 8851
+          }
+        ],
+        "moduleFetches": [],
+        "moduleXhrs": [],
+        "allIntervalsCreated": 9,
+        "allIntervalsActive": 2,
+        "state": {
+          "on": false,
+          "installed": true,
+          "requests": 0,
+          "timer": false,
+          "serial": 0,
+          "last": null,
+          "errors": 0
+        },
+        "map": {
+          "source": false,
+          "layer": false,
+          "sources": 56,
+          "layers": 100
+        }
+      },
+      {
+        "label": "OFF +660s (virtual)",
+        "virtual_t_ms": 682882,
+        "moduleTimers": [
+          {
+            "kind": "interval",
+            "ms": 250,
+            "t": 590,
+            "cleared": true,
+            "line": 8851
+          }
+        ],
+        "moduleFetches": [],
+        "moduleXhrs": [],
+        "allIntervalsCreated": 9,
+        "allIntervalsActive": 2,
+        "state": {
+          "on": false,
+          "installed": true,
+          "requests": 0,
+          "timer": false,
+          "serial": 0,
+          "last": null,
+          "errors": 0
+        },
+        "map": {
+          "source": false,
+          "layer": false,
+          "sources": 56,
+          "layers": 100
+        }
+      }
+    ],
+    "pageErrors": []
+  },
+  "on": null,
+  "boot": {
+    "bootMs": 13863,
+    "lightningRequestsAtBoot": 0,
+    "sample": {
+      "label": "after boot",
+      "virtual_t_ms": 13835,
+      "moduleTimers": [
+        {
+          "kind": "interval",
+          "ms": 250,
+          "t": 590,
+          "cleared": true,
+          "line": 8851
+        }
+      ],
+      "moduleFetches": [],
+      "moduleXhrs": [],
+      "allIntervalsCreated": 9,
+      "allIntervalsActive": 2,
+      "state": {
+        "on": false,
+        "installed": true,
+        "requests": 0,
+        "timer": false,
+        "serial": 0,
+        "last": null,
+        "errors": 0
+      },
+      "map": {
+        "source": false,
+        "layer": false,
+        "sources": 56,
+        "layers": 100
+      }
+    }
+  },
+  "shim": {
+    "served": {
+      "maplibre": 2,
+      "style": 1,
+      "duckdb": 3
+    },
+    "aborted": [
+      "https://raw.githubusercontent.com/Ventusltd/data-grid-gb/1c9909d1138704b29235c27fd769436dda8a0b18/derived/connection-points.v3.json",
+      "https://ventusltd.github.io/ventus-grid-engine/genome/engine-graph.json"
+    ],
+    "missing": []
+  },
+  "endedAt": "2026-10-26T22:59:39.054Z"
+}

@@ -1,0 +1,39 @@
+--- a/atlas/modules/202610261949-uk-lightning-overlay.js
++++ b/atlas/modules/202610261949-uk-lightning-overlay.js
+@@ -42,7 +42,8 @@
+ cutoff=ds(raw.cutoff_date_utc),iv=Number(raw.collection_interval_hours)||3;
+ return{raw,days:raw.days,by:new Map(raw.days.map(r=>[r.date,r])),sw,gen,cutoff,iv,nextDue:Date.parse(raw.next_update_due_utc||'')||gen+(iv+1)*HOUR,lastScan:sw.length?Math.max(...sw.map(w=>w.e)):null,
+ covStart:Date.parse(raw.coverage_start_utc||'')||(sw.length?Math.min(...sw.map(w=>w.s)):cutoff),cutoffDate:raw.cutoff_date_utc}},
+-stale=(x,now)=>now-x.gen>4*HOUR||now>x.nextDue,
++// STALE (UX spec): > 4 h old, undated, or past next_update_due_utc
++stale=(x,now)=>!(now-x.gen<=4*HOUR)||now>x.nextDue,
+ li=()=>{if(!S.ip)S.ip=gj(AR+'index.json','no-cache').then(ni).then(m=>{for(const k of[...lru.keys()])if(!lru.get(k).sealed)lru.delete(k);S.idx=m;S.ie=null;return m}).catch(e=>{S.ip=null;S.ie=msg(e);throw e});return S.ip},
+ // coverage from scan_windows
+ cv=(x,ws,we)=>{const win=we-ws,u=[];let r=0,a=null,b=null,sd=0,d=0;
+@@ -68,7 +69,7 @@
+ if(w.s<now-7*DAY)E(`${w.label} needs the archive (${NA}); the live feed keeps 7 days`);
+ const f=await(S.fp||(S.fp=gx(FEED).catch(e=>{S.fp=null;throw e})));if(!f||f.type!=='FeatureCollection'||!Array.isArray(f.features))E('invalid live feed');
+ const m=f.metadata||{},ev=co([f.features],w.s,w.e),qs=Date.parse(m.query_start_utc||''),qe=Date.parse(m.scan_end_utc||m.query_end_utc||''),one=isFinite(qs)&&isFinite(qe)&&qe>qs;
+-return{mode:'feed',w,idx:null,ie:reason,meta:m,ev,fl:[],rq:1,cs:'live feed',ic:ev.length,cl:ev.length>cap(),ld:[],sk:[],cov:cv({sw:one?[{s:qs,e:qe,n:1}]:[],by:{get:()=>({coverage:'partial'})},lastScan:one?qe:null,covStart:-Infinity},w.s,w.e)}},
++return{mode:'feed',w,idx:null,ie:reason,meta:m,gen:Date.parse(m.query_end_utc),ev,fl:[],rq:1,cs:'live feed',ic:ev.length,cl:ev.length>cap(),ld:[],sk:[],cov:cv({sw:one?[{s:qs,e:qe,n:1}]:[],by:{get:()=>({coverage:'partial'})},lastScan:one?qe:null,covStart:-Infinity},w.s,w.e)}},
+ lw=async now=>{const w=wf(now);let x=null,ie=null;try{x=await li()}catch(e){ie=msg(e)}
+ if(!x)return ff(w,now,ie);
+ if(w.e<=x.cutoff)return{mode:'overview',w,idx:x,before:true,rows:[],cov:null,fl:[],ev:[],arch:0};
+@@ -89,7 +90,7 @@
+ else{const c=r.cov,f=c?c.f:0;if(!c||f<=0){st='UNKNOWN';rs.push('0% searched')}
+ else if(f<0.999){st='PARTIAL';if(c.ny>0)rs.push('tail not yet ingested');if(c.bf>0)rs.push('head before archive start');if(c.u.length)rs.push(`${c.u.length} dates without a scan window`);if(!rs.length)rs.push('gaps inside the window')}
+ else if(r.mode!=='overview')st=r.ev.length?'READY·DETAIL':'EMPTY-COVERED';else st=r.arch>0?'READY·SUMMARY':'EMPTY-COVERED'}
+-return{st,stale:!!(r.idx&&stale(r.idx,now)),colour:COLOUR(st),rs}},
++return{st,stale:r.idx?stale(r.idx,now):r.mode==='feed'&&stale(r,now),colour:COLOUR(st),rs}},
+ // the seven caption templates
+ cp=(r,now)=>{const w=r.w,x=r.idx,L={window:'',actual:'',flashes:'',refresh:'',searched:'',warning:'',footer:FOOTER};
+ L.window=w.custom?`Window  UTC dates ${ymd(w.s)} to ${ymd(w.e-1)} inclusive = ${T(w.s)} → ${T(w.e)}`:`Window  ${T(w.s)} → ${T(w.e)} (${w.label}${w.atLatest?', latest':', end exclusive'})`;
+@@ -99,7 +100,7 @@
+ const n=r.ev.length,dev=ph()?'phone':'desktop',first=n?`Actual  first ${Ts(tm(r.ev[0]))} · last ${Ts(tm(r.ev[n-1]))}`:'',
+ drawn=!n?'':` · ${N(n)} drawn as ${r.cl?'clusters':'points'} (${r.cs} count ${N(r.ic)} ${r.cl?'exceeds':'within'} the ${N(cap())}-point cap for this ${dev})`;
+ if(r.mode==='feed'){const m=r.meta,P=k=>m[k]?T(Date.parse(m[k])):'unknown';
+-L.refresh=`Refresh live feed ${P('query_end_utc')} (last collection window ${P('query_start_utc')} → ${P('query_end_utc')}; latest detection ${m.latest_detection_utc?Ts(Date.parse(m.latest_detection_utc)):'unknown'}; 7-day retention; ${NA}${r.ie?': '+r.ie:''}; earlier hours unknown, not zero)`;
++L.refresh=`Refresh live feed ${P('query_end_utc')} (last collection window ${P('query_start_utc')} → ${P('query_end_utc')}; latest detection ${m.latest_detection_utc?Ts(Date.parse(m.latest_detection_utc)):'unknown'}; 7-day retention; ${NA}${r.ie?': '+r.ie:''}; earlier hours unknown, not zero)${stale(r,now)?' · STALE':''}`;
+ L.actual=first||'Actual  no flashes in the live feed in this window';L.flashes=`Flashes ${N(n)} in window (live feed, 7-day retention)${drawn}`}
+ else if(r.mode==='detail'){L.actual=first||'Actual  no archived flashes within this window';
+ L.flashes=r.sk.length?`Flashes ${N(r.arch)} archived in window (index) · ${N(n)} downloaded from the newest ${r.ld.length} of ${r.ld.length+r.sk.length} days (budget ${N(BUDGET)}; ${r.sk.length} older days not loaded)${drawn}`:`Flashes ${r.fl.length?'at least ':''}${N(n)} archived in window${drawn}`}

@@ -1,0 +1,32 @@
+(node:7759) [UNDICI-EHPA] Warning: EnvHttpProxyAgent is experimental, expect them to change at any time.
+(Use `node --trace-warnings ...` to show where the warning was created)
+node:internal/deps/undici/undici:15456
+      Error.captureStackTrace(err);
+            ^
+
+TypeError: fetch failed
+    at node:internal/deps/undici/undici:15456:13
+    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)
+    at async publicBytes (file:///tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/regression-challenge-C/shadow-after/tools/proofs/202609040212-transit-layer-availability.proof.mjs:28:20)
+    at async file:///tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/regression-challenge-C/shadow-after/tools/proofs/202609040212-transit-layer-availability.proof.mjs:43:22 {
+  [cause]: DOMException [Error]: Request was cancelled.
+      at new DOMException (node:internal/per_context/domexception:76:18)
+      at makeAppropriateNetworkError (node:internal/deps/undici/undici:9789:182)
+      at httpNetworkFetch (node:internal/deps/undici/undici:11500:18)
+      at process.processTicksAndRejections (node:internal/process/task_queues:103:5)
+      at async httpNetworkOrCacheFetch (node:internal/deps/undici/undici:11375:33)
+      at async httpFetch (node:internal/deps/undici/undici:11208:37)
+      at async node:internal/deps/undici/undici:10970:20
+      at async mainFetch (node:internal/deps/undici/undici:10960:20) {
+    cause: RequestAbortedError [AbortError]: Proxy response (403) !== 200 when HTTP Tunneling
+        at Client.connect (node:internal/deps/undici/undici:8811:26)
+        at process.processTicksAndRejections (node:internal/process/task_queues:103:5) {
+      code: 'UND_ERR_ABORTED',
+      [Symbol(undici.error.UND_ERR)]: true,
+      [Symbol(undici.error.UND_ERR_ABORT)]: true,
+      [Symbol(undici.error.UND_ERR_ABORTED)]: true
+    }
+  }
+}
+
+Node.js v22.23.4

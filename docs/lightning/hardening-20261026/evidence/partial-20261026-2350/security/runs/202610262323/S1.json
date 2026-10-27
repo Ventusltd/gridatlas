@@ -1,0 +1,39 @@
+{
+ "fixture": "/tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/security/fixtures/S1-xss/data",
+ "harness": "lead-shim, Chromium 153.0.8010.12 headless, desktop 1440x900, SYNTHETIC fixture",
+ "composition": {
+  "engine": 120,
+  "pn": 6,
+  "scada": true,
+  "curtain": true,
+  "menuInstalled": true,
+  "map": true,
+  "waitedMs": 31833
+ },
+ "error": "page.waitForSelector: Target crashed ",
+ "pageErrors": [],
+ "dialogs": [],
+ "hosts": {
+  "127.0.0.1:8177": 21,
+  "cdn.jsdelivr.net": 2,
+  "raw.githubusercontent.com": 1,
+  "basemaps.cartocdn.com": 1,
+  "ventusltd.github.io": 1
+ },
+ "unexpected": [
+  "https://raw.githubusercontent.com/Ventusltd/data-grid-gb/1c9909d1138704b29235c27fd769436dda8a0b18/derived/connection-points.v3.json"
+ ],
+ "shim": {
+  "served": {
+   "maplibre": 2,
+   "style": 1
+  },
+  "aborted": [
+   "https://raw.githubusercontent.com/Ventusltd/data-grid-gb/1c9909d1138704b29235c27fd769436dda8a0b18/derived/connection-points.v3.json",
+   "https://ventusltd.github.io/ventus-grid-engine/genome/engine-graph.json"
+  ],
+  "missing": [],
+  "missingCount": 0
+ },
+ "wallMs": 37011
+}

@@ -1,0 +1,25 @@
+# 2026-10-26T23:50:39Z V12 prod lint/state (read-only)
+    at ModuleJob.run (node:internal/modules/esm/module_job:343:25)
+    at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:681:26)
+    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:117:5)
+exit=0
+    at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:681:26)
+    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:117:5)
+# V13 gh
+{"base":"candidate/202610261949-uk-lightning-additive","draft":true,"head_sha":"5929c5653f7444931015198fc9f27a46a262bd58","merged":false,"number":34,"state":"open","title":"[DRAFT] Claude independent hardening: candidate 202610262310 (v9.159) + challenger evidence — issue #32"}
+199ea45e9cb2cf3a24e49fd0a841f1e35ecf3b5f
+ "generation": "202609241334",
+a73cbbf0c4fc22b8967af997b51d9f2fbcdf4536
+a73cbbf0c4fc22b8967af997b51d9f2fbcdf4536
+PR file size guard	claude/lightning-independent-hardening-20261026	5929c56	pull_request		2026-10-26T23:47:37Z
+pages build and deployment	main	199ea45	dynamic	success	2026-10-26T23:45:52Z
+PR file size guard	preview/hardened-lightning-202610262323	4b23b70	pull_request	success	2026-10-26T23:39:45Z
+PR file size guard	claude/lightning-independent-hardening-20261026	68be91e	pull_request	success	2026-10-26T23:32:27Z
+PR file size guard	claude/lightning-independent-hardening-20261026	ed37526	pull_request	cancelled	2026-10-26T23:29:44Z
+PR file size guard	claude/lightning-independent-hardening-20261026	baf4e58	pull_request	cancelled	2026-10-26T23:28:39Z
+PR file size guard	claude/lightning-independent-hardening-20261026	c01002f	pull_request	success	2026-10-26T23:19:14Z
+PR file size guard	claude/lightning-independent-hardening-20261026	71919ca	pull_request	cancelled	2026-10-26T23:16:05Z
+{"state":"open","updated_at":"2026-10-26T19:24:46Z"}
+{"draft":true,"head_sha":"79f74cfc4a476bf1a79ce42a8eb4126b0617afea","merged":false,"state":"open","updated_at":"2026-10-26T19:24:26Z"}
+{"draft":true,"head_sha":"fda6b10f7d2672bf1bf74c4fbf6184cd36b1ec1d","merged":false,"state":"open"}
+5929c5653f7444931015198fc9f27a46a262bd58

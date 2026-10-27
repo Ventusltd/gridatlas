@@ -1,0 +1,108 @@
+$ diff proofs
+7c7
+< const GEN='202610261949';
+---
+> const GEN='202612312358';
+$ diff modules
+1c1
+< /* uk-lightning-overlay, generation 202610261949 (UTC). EUMETSAT MTG Lightning Imager (L2-LFL) optical flashes as an
+---
+> /* uk-lightning-overlay, generation 202612312358 (UTC). EUMETSAT MTG Lightning Imager (L2-LFL) optical flashes as an
+9c9
+< const GEN='202610261949',AR='https://raw.githubusercontent.com/Ventusltd/lightning/main/data/history/',
+---
+> const GEN='202612312358',AR='https://raw.githubusercontent.com/Ventusltd/lightning/main/data/history/',
+$ diff manifests
+3c3
+<  "generation": "202610261949",
+---
+>  "generation": "202612312358",
+80,81c80,81
+<    "generation": "202610261949",
+<    "version": "v9.158",
+---
+>    "generation": "202612312358",
+>    "version": "v9.159",
+85,86c85,86
+<    "path": "./cartridges/202610261949-sld-sandbox-v9-8.js",
+<    "sha256": "b7d4d6657b1d52624b51a90da477291dbd079fa83adf97b678f4610cd8725f85",
+---
+>    "path": "./cartridges/202612312358-sld-sandbox-v9-8.js",
+>    "sha256": "1c9519899c33f0c0244d901a0a9d52b19b07d318fdf3cbb170ae87f160fae91b",
+564c564
+<     "module": "./modules/202610261949-uk-lightning-overlay.js",
+---
+>     "module": "./modules/202612312358-uk-lightning-overlay.js",
+698c698
+<  "composition_manifest": "./manifests/202610261949-composition.json",
+---
+>  "composition_manifest": "./manifests/202612312358-composition.json",
+705,706c705,706
+<  "composition_version": "v9.158",
+<  "composition_id": "202610261949-gridatlas-v9.158",
+---
+>  "composition_version": "v9.159",
+>  "composition_id": "202612312358-gridatlas-v9.159",
+721c721
+<  "composition_note": "v9.158: the EUMETSAT MTG Lightning Imager optical-flash overlay joins the original Atlas as one module appended to the sld-sandbox cartr
+---
+>  "composition_note": "v9.159: the EUMETSAT MTG Lightning Imager optical-flash overlay joins the original Atlas as one module appended to the sld-sandbox cartr
+723c723
+<  "candidate_predecessor": "202610221600",
+---
+>  "candidate_predecessor": "202610261949",
+743c743
+<   "proof": "tools/proofs/202610261949-sld-sandbox.proof.mjs",
+---
+>   "proof": "tools/proofs/202612312358-sld-sandbox.proof.mjs",
+746,747c746,747
+<  "version": "v9.158",
+<  "cut_at_utc": "2026-10-26T19:49:33.906Z",
+---
+>  "version": "v9.159",
+>  "cut_at_utc": "2026-12-31T23:58:00.000Z",
+$ diff route current.json
+3c3
+<  "generation": "202610261949",
+---
+>  "generation": "202612312358",
+80,81c80,81
+<    "generation": "202610261949",
+<    "version": "v9.158",
+---
+>    "generation": "202612312358",
+>    "version": "v9.159",
+85,86c85,86
+<    "path": "../../cartridges/202610261949-sld-sandbox-v9-8.js",
+<    "sha256": "b7d4d6657b1d52624b51a90da477291dbd079fa83adf97b678f4610cd8725f85",
+---
+>    "path": "../../cartridges/202612312358-sld-sandbox-v9-8.js",
+>    "sha256": "1c9519899c33f0c0244d901a0a9d52b19b07d318fdf3cbb170ae87f160fae91b",
+564c564
+<     "module": "../../modules/202610261949-uk-lightning-overlay.js",
+---
+>     "module": "../../modules/202612312358-uk-lightning-overlay.js",
+698c698
+<  "composition_manifest": "../../manifests/202610261949-composition.json",
+---
+>  "composition_manifest": "../../manifests/202612312358-composition.json",
+705,706c705,706
+<  "composition_version": "v9.158",
+<  "composition_id": "202610261949-gridatlas-v9.158",
+---
+>  "composition_version": "v9.159",
+>  "composition_id": "202612312358-gridatlas-v9.159",
+721c721
+<  "composition_note": "v9.158: the EUMETSAT MTG Lightning Imager optical-flash overlay joins the original Atlas as one module appended to the sld-sandbox cartr
+---
+>  "composition_note": "v9.159: the EUMETSAT MTG Lightning Imager optical-flash overlay joins the original Atlas as one module appended to the sld-sandbox cartr
+723c723
+<  "candidate_predecessor": "202610221600"
+---
+>  "candidate_predecessor": "202610261949"
+$ cartridge = live + LF + module
+cmp=0
+$ sha256sum
+1c9519899c33f0c0244d901a0a9d52b19b07d318fdf3cbb170ae87f160fae91b  atlas/cartridges/202612312358-sld-sandbox-v9-8.js
+   "sha256": "1c9519899c33f0c0244d901a0a9d52b19b07d318fdf3cbb170ae87f160fae91b",
+   "sha256": "1c9519899c33f0c0244d901a0a9d52b19b07d318fdf3cbb170ae87f160fae91b",

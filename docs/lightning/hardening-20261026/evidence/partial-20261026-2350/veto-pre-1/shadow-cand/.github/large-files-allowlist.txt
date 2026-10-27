@@ -1,0 +1,6 @@
+# Files already tracked at over 5 MB when the PR file size guard was added (2026-09-29).
+# The guard (.github/workflows/pr-file-size-guard.yml) skips these paths. Exact paths or
+# shell globs, one per line. Add new entries only with a reason in the PR.
+
+# REPD browser registry snapshot (9 MB).
+data/repd_browser_registry_202608290716.json

@@ -1,0 +1,13 @@
+[
+ {
+  "id": "N11",
+  "title": "four simultaneous shard fetches: route-level in-flight counter; clean per-load fan-out (6 shards) and ON→7d→30d overlap (superseded loads not cancelled; LRU-8 evicts mid-load)",
+  "acceptance_ids": [
+   "D10"
+  ],
+  "elapsedMs": 131177,
+  "harnessError": "page.waitForTimeout: Target page, context or browser has been closed\n    at waitForComposition (/tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/lightning/harness/offline-shim.mjs:114:16)\n    at async Module.boot (/tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/negative-matrix-D/after-202610262323/conform/lib.mjs:108:16)\n    at async start (/tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/negative-matrix-D/after-202610262323/conform/matrix.mjs:435:9)\n    at async Object.run (/tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/negative-matrix-D/after-202610262323/conform/matrix.mjs:147:3)\n    at async file:///tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/negative-matrix-D/after-202610262323/conform/matrix.mjs:441:70",
+  "pageErrors": [],
+  "steps": []
+ }
+]

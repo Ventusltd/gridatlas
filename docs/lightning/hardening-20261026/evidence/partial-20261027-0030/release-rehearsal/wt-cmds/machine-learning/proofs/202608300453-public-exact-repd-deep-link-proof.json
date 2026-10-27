@@ -1,0 +1,64 @@
+{
+  "schema": "gridatlas.exact-repd-deep-link-browser-proof.v1",
+  "classification": "VERIFIED_PUBLIC_ATLAS_EXACT_REPD_DEEP_LINK",
+  "mode": "public",
+  "target_url": "https://ventusltd.github.io/gridatlas/202608300453-atlas-v9/?repd_ref=13599",
+  "expected_repd_ref": "13599",
+  "expected_project_name": "Beacon Fen Energy Park",
+  "checks": {
+    "query_preserved": true,
+    "receiver_resolved": true,
+    "exact_identity": true,
+    "project_name": true,
+    "mapped": true,
+    "rendered_identity": true,
+    "exact_result_present": true,
+    "no_receiver_failures": true,
+    "legacy_duplicate_engine_error_bounded": true,
+    "no_unexpected_console_errors": true,
+    "no_page_errors": true,
+    "no_critical_request_failures": true,
+    "no_critical_http_errors": true
+  },
+  "failed_checks": [],
+  "receiver": {
+    "status": "RESOLVED",
+    "repd_ref": "13599",
+    "resolved": true,
+    "mapped": true,
+    "name": "Beacon Fen Energy Park",
+    "postcode": "NG34 7SR",
+    "longitude": -0.409234,
+    "latitude": 52.998999
+  },
+  "last_selection": {
+    "repd_ref": "13599",
+    "name": "Beacon Fen Energy Park",
+    "postcode": "NG34 7SR",
+    "mapped": true,
+    "longitude": -0.409234,
+    "latitude": 52.998999
+  },
+  "search_query_count": 1,
+  "search_failures": [],
+  "popup_text": "Beacon Fen Energy Park\nsolar\n400 MW\nE/O Sleaford, Btw Heckington & Helpringham, Sleaford · NG34 7SR · Lincolnshire\nREPD 13599 · application submitted\n×",
+  "body_dataset": {
+    "gridatlasRepdRef": "13599",
+    "gridatlasRepdDeepLink": "resolved"
+  },
+  "known_legacy_duplicate_engine_errors": [
+    "[V9 DEEP LINK FAILED] Error: canonical project technology is invalid\n    at focusCanonicalProjectDeepLink (https://ventusltd.github.io/gridatlas/202608300453-atlas-v9/ventus-corev8engine.js:806:70)\n    at Ba.Map.<anonymous> (https://ventusltd.github.io/gridatlas/202608300453-atlas-v9/ventus-corev8engine.js:1434:9)\n    at Ba.Map.fire (https://cdn.jsdelivr.net/npm/maplibre-gl@3.6.2/dist/maplibre-gl.js:31:10251)\n    at Ba.Map._render (https://cdn.jsdelivr.net/npm/maplibre-gl@3.6.2/dist/maplibre-gl.js:35:376162)\n    at https://cdn.jsdelivr.net/npm/maplibre-gl@3.6.2/dist/maplibre-gl.js:35:377759"
+  ],
+  "unexpected_console_errors": [],
+  "console_errors": [
+    "[V9 DEEP LINK FAILED] Error: canonical project technology is invalid\n    at focusCanonicalProjectDeepLink (https://ventusltd.github.io/gridatlas/202608300453-atlas-v9/ventus-corev8engine.js:806:70)\n    at Ba.Map.<anonymous> (https://ventusltd.github.io/gridatlas/202608300453-atlas-v9/ventus-corev8engine.js:1434:9)\n    at Ba.Map.fire (https://cdn.jsdelivr.net/npm/maplibre-gl@3.6.2/dist/maplibre-gl.js:31:10251)\n    at Ba.Map._render (https://cdn.jsdelivr.net/npm/maplibre-gl@3.6.2/dist/maplibre-gl.js:35:376162)\n    at https://cdn.jsdelivr.net/npm/maplibre-gl@3.6.2/dist/maplibre-gl.js:35:377759"
+  ],
+  "page_errors": [],
+  "critical_request_failures": [],
+  "critical_http_errors": [],
+  "all_request_failures": [],
+  "all_http_errors": [],
+  "synthetic_receiver": false,
+  "route_interceptions": 0,
+  "privacy": "NO_PERSONAL_DATA"
+}

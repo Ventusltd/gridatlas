@@ -1,0 +1,95 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ventusltd.github.io/gridatlas/machine-learning/schemas/layer-performance-record-v1.schema.json",
+  "title": "GridAtlas layer performance promotion record",
+  "description": "A privacy-safe, machine-readable comparator observation used to learn which release architectures preserve product parity while improving layer latency.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "record_id",
+    "generation",
+    "stage",
+    "observed_at",
+    "task",
+    "label",
+    "privacy",
+    "provenance",
+    "architecture_features",
+    "measurements",
+    "local_evidence",
+    "gates"
+  ],
+  "properties": {
+    "schema": { "const": "gridatlas.ml.layer-performance-record.v1" },
+    "record_id": { "type": "string", "minLength": 1 },
+    "generation": { "type": "string", "pattern": "^[0-9]{12}$" },
+    "stage": { "enum": ["local", "public"] },
+    "observed_at": { "type": "string", "format": "date-time" },
+    "task": { "const": "binary_release_promotion" },
+    "label": { "enum": ["PROMOTE", "REJECT"] },
+    "privacy": { "const": "NO_PERSONAL_DATA" },
+    "provenance": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": [
+        "candidate_release_id",
+        "parent_release_id",
+        "candidate_url",
+        "oracle_repository",
+        "oracle_commit",
+        "oracle_url",
+        "data_repository",
+        "data_commit",
+        "data_release_id",
+        "data_manifest_sha256",
+        "contract_sha256"
+      ],
+      "properties": {
+        "candidate_release_id": { "type": "string", "pattern": "^[0-9]{12}-atlas-v9$" },
+        "parent_release_id": { "type": "string", "pattern": "^[0-9]{12}-atlas-v9$" },
+        "candidate_url": { "type": "string", "minLength": 1 },
+        "oracle_repository": { "type": "string", "minLength": 1 },
+        "oracle_commit": { "type": "string", "pattern": "^[a-f0-9]{40}$" },
+        "oracle_url": { "type": "string", "minLength": 1 },
+        "data_repository": { "type": "string", "minLength": 1 },
+        "data_commit": { "type": "string", "pattern": "^[a-f0-9]{40}$" },
+        "data_release_id": { "type": "string", "minLength": 1 },
+        "data_manifest_sha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+        "contract_sha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" }
+      }
+    },
+    "architecture_features": {
+      "type": "object",
+      "additionalProperties": true
+    },
+    "measurements": {
+      "type": ["object", "null"],
+      "additionalProperties": true
+    },
+    "local_evidence": {
+      "type": ["object", "null"],
+      "additionalProperties": true
+    },
+    "gates": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "passed", "observed", "threshold", "importance"],
+        "properties": {
+          "id": { "type": "string", "minLength": 1 },
+          "passed": { "type": "boolean" },
+          "observed": {},
+          "threshold": {},
+          "importance": { "type": "string", "minLength": 1 }
+        }
+      }
+    },
+    "errors": {
+      "type": "array",
+      "items": { "type": "string" }
+    }
+  }
+}

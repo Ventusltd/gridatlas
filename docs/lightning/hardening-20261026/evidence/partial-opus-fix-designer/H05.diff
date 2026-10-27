@@ -1,0 +1,11 @@
+--- a/atlas/modules/202610261949-uk-lightning-overlay.js
++++ b/atlas/modules/202610261949-uk-lightning-overlay.js
+@@ -102,7 +102,7 @@
+ L.refresh=`Refresh live feed ${P('query_end_utc')} (last collection window ${P('query_start_utc')} → ${P('query_end_utc')}; latest detection ${m.latest_detection_utc?Ts(Date.parse(m.latest_detection_utc)):'unknown'}; 7-day retention; ${NA}${r.ie?': '+r.ie:''}; earlier hours unknown, not zero)`;
+ L.actual=first||'Actual  no flashes in the live feed in this window';L.flashes=`Flashes ${N(n)} in window (live feed, 7-day retention)${drawn}`}
+ else if(r.mode==='detail'){L.actual=first||'Actual  no archived flashes within this window';
+-L.flashes=r.sk.length?`Flashes ${N(r.arch)} archived in window (index) · ${N(n)} downloaded from the newest ${r.ld.length} of ${r.ld.length+r.sk.length} days (budget ${N(BUDGET)}; ${r.sk.length} older days not loaded)${drawn}`:`Flashes ${r.fl.length?'at least ':''}${N(n)} archived in window${drawn}`}
++L.flashes=r.sk.length?`Flashes ${N(r.arch)} archived on the overlapping UTC dates (whole days; window is ${w.label}) · ${N(n)} downloaded from the newest ${r.ld.length} of ${r.ld.length+r.sk.length} days (budget ${N(BUDGET)}; ${r.sk.length} older days not loaded)${drawn}`:`Flashes ${r.fl.length?'at least ':''}${N(n)} archived in window${drawn}`}
+ else{const o=r.rows.filter(y=>y.first_observation_utc),k=r.rows.length;
+ L.actual=o.length?`Actual  on the ${k} overlapping UTC dates: first ${Ts(Date.parse(o[0].first_observation_utc))} · last ${Ts(Date.parse(o[o.length-1].last_observation_utc))} (day-level; may lie outside a mid-day window edge)`:`Actual  no archived flashes on the ${k} overlapping UTC dates`;
+ L.flashes=`Flashes ${N(r.arch)} archived on ${k} overlapping UTC dates · none drawn (summary mode; ${r.clp?`index sum ${r.budget} exceeds the budget; LOAD POINTS draws the newest ${N(BUDGET)}`:'choose ≤31 days for points'})`}

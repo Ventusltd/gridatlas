@@ -1,0 +1,296 @@
+2026-10-26T22:55:48Z
+git -C /tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/wt rev-parse HEAD:
+df3cb71d8a5f54bcb7c6501fe3302b8daa869122
+df3cb71 hardening: preserve partial lane work after a container restart (fix-designer diffs H01–H05, Step E scripts, memo work) and the 18 See Through memos to date
+ff1299c hardening: owner decision pack draft (R01 A preferred with desktop mirror optional, R02 explicit error with corrected wording, R03 keep ON and amend V10, R04/R05, D11) and probe evidence
+334b57e evidence: owner iPhone Safari observation of the live published candidate route (first real-device/real-network receipt) with three defects to reproduce
+ed518ae hardening: add the lane evidence files that an over-strict size filter had dropped (scripts, stdout logs, fixtures)
+fd779aa hardening: overlay line-by-line review — 6 reproduced defects (no release-blocker), fix set +21 B core
+1940487 hardening: release and rollback plan (documentation only, rehearsed in a private worktree; nothing released)
+4fad8e7 design-only: See Through memos to date incl. roadmap, proofs-and-testing and A/B/C recommendation (option C staged; owner-endorsed standalone page path, not approved for build)
+0fb30a8 hardening: TEST-MATRIX V1–V15 rows parsed correctly; P01/V1/V12 PASS from Step A
+1f226c9 hardening: V1–V15 evidence map and three-way decision table skeleton; fix TEST-MATRIX V-row parsing (V1 was mislabelled)
+3bdb751 hardening: PR #2 read-only data verification report (D01–D18 subset, R02, R06)
+18842df hardening: Claude lane pickup record for issue #32 — Step A baseline freeze, ChatGPT suite execution log, test-matrix skeleton (no application change)
+diff --stat fda6b10 HEAD -- atlas tools .github:
+(end; empty above = identical)
+full diff --stat fda6b10 HEAD:
+ .../hardening-20261026/HARDENING-BRIEF.md          |   19 +
+ .../hardening-20261026/ISSUE-32-WORK-ORDER.md      |  213 +
+ .../hardening-20261026/OWNER-REVIEW.draft.md       |  200 +
+ docs/lightning/hardening-20261026/README.md        |   17 +
+ docs/lightning/hardening-20261026/TEST-MATRIX.json |  564 +++
+ .../evidence/chatgpt-suite-run/run-20261026.log    |  189 +
+ .../evidence/opus-decision-table/spot-checks.txt   |   32 +
+ .../evidence/opus-decision-table/veto-pr31.md      |   89 +
+ .../fixtures/R02-v1-index/SYNTHETIC-FIXTURE.txt    |    7 +
+ .../R02-v1-index/data/history/days/2026/10/21.json |    1 +
+ .../R02-v1-index/data/history/days/2026/10/22.json |    1 +
+ .../R02-v1-index/data/history/days/2026/10/23.json |    1 +
+ .../R02-v1-index/data/history/days/2026/10/24.json |    1 +
+ .../R02-v1-index/data/history/days/2026/10/25.json |    1 +
+ .../fixtures/R02-v1-index/data/history/index.json  | 4507 +++++++++++++++++++
+ .../fixtures/R02-v1-index/data/status.json         |   49 +
+ .../R02-v1-index/data/uk_lightning.geojson         |    1 +
+ .../evidence/opus-owner-decisions/http-8197-E5.log |   43 +
+ .../evidence/opus-owner-decisions/http-8197.log    |  148 +
+ .../evidence/opus-owner-decisions/http-8198.log    |    5 +
+ .../opus-owner-decisions/owner-probe-E5.json       |  103 +
+ .../opus-owner-decisions/owner-probe-E5.run.log    |    4 +
+ .../evidence/opus-owner-decisions/owner-probe.json | 1082 +++++
+ .../evidence/opus-owner-decisions/owner-probe.mjs  |  230 +
+ .../opus-owner-decisions/owner-probe.run.log       |    8 +
+ .../shots/E1-candidate-1280x720-1-grid-open.png    |  Bin 0 -> 108846 bytes
+ .../E1-candidate-1280x720-2-target-focused.png     |  Bin 0 -> 91886 bytes
+ .../shots/E1-candidate-1280x720-3-after-space.png  |  Bin 0 -> 93438 bytes
+ .../shots/E1-candidate-1280x720-4-after-escape.png |  Bin 0 -> 66095 bytes
+ .../shots/E1-candidate-1440x900-1-grid-open.png    |  Bin 0 -> 138606 bytes
+ .../E1-candidate-1440x900-2-target-focused.png     |  Bin 0 -> 125608 bytes
+ .../shots/E1-candidate-1440x900-3-after-space.png  |  Bin 0 -> 127148 bytes
+ .../shots/E1-candidate-1440x900-4-after-escape.png |  Bin 0 -> 80419 bytes
+ .../shots/E1-original-1280x720-1-grid-open.png     |  Bin 0 -> 108831 bytes
+ .../E1-original-1280x720-2-target-focused.png      |  Bin 0 -> 95496 bytes
+ .../shots/E1-original-1280x720-4-after-escape.png  |  Bin 0 -> 65925 bytes
+ .../shots/E1-original-1440x900-1-grid-open.png     |  Bin 0 -> 138581 bytes
+ .../E1-original-1440x900-2-target-focused.png      |  Bin 0 -> 128830 bytes
+ .../shots/E1-original-1440x900-4-after-escape.png  |  Bin 0 -> 80423 bytes
+ .../shots/E2-v1-index-1440x900-7d-group.png        |  Bin 0 -> 49693 bytes
+ .../shots/E2-v1-index-1440x900-7d-viewport.png     |  Bin 0 -> 119307 bytes
+ ...2-v1-index-1440x900-custom-2026-10-12-group.png |  Bin 0 -> 37278 bytes
+ .../shots/E3-lan-http-origin-1440x900.png          |  Bin 0 -> 33751 bytes
+ .../shots/E4-3m-overview-group.png                 |  Bin 0 -> 51958 bytes
+ .../shots/E4-custom-2026-10-23-applied-group.png   |  Bin 0 -> 45728 bytes
+ .../shots/E4-custom-before-apply-group.png         |  Bin 0 -> 56156 bytes
+ ...5-candidate-1280x720-fullscreen-after-click.png |  Bin 0 -> 87937 bytes
+ .../E5-candidate-1280x720-fullscreen-grid-open.png |  Bin 0 -> 86440 bytes
+ ...5-candidate-1440x900-fullscreen-after-click.png |  Bin 0 -> 108690 bytes
+ .../E5-candidate-1440x900-fullscreen-grid-open.png |  Bin 0 -> 107201 bytes
+ .../apply-release-pointers.mjs                     |   26 +
+ .../opus-release-rollback/compare-pointers.mjs     |   51 +
+ .../opus-release-rollback/compare-pointers.out.txt |   50 +
+ .../derive-release-pointer.mjs                     |   29 +
+ .../evidence/opus-release-rollback/derive.err.txt  |    4 +
+ .../live-current.c08f3a6.json                      |  700 +++
+ .../proposed-release-current.202610261949.json     |  724 ++++
+ .../opus-release-rollback/rehearsal-corpus.log     |   18 +
+ .../opus-release-rollback/rehearsal-gates.txt      |   27 +
+ .../opus-release-rollback/rehearsal-release.patch  |  191 +
+ .../rehearsal-released-current.json                |  724 ++++
+ .../rehearsal-rollback-dryrun.txt                  |   18 +
+ .../opus-release-rollback/rehearsal-rollback.txt   |   30 +
+ .../rehearsal-rolledback-current.json              |  700 +++
+ .../rehearsal-run-current.log                      |   43 +
+ .../browser-out/A1-custom-during-loading.png       |  Bin 0 -> 19129 bytes
+ .../A2-24h-caption-under-custom-chip.png           |  Bin 0 -> 44330 bytes
+ .../overlay-code-review/browser-out/B1-feed-7d.png |  Bin 0 -> 48209 bytes
+ .../browser-out/B2-feed-after-20min.png            |  Bin 0 -> 47978 bytes
+ .../browser-out/B3-feed-48h-prev3.png              |  Bin 0 -> 30612 bytes
+ .../browser-out/C1-12m-hostile-first-obs.png       |  Bin 0 -> 37906 bytes
+ .../browser-out/C1-12m-paint-crash.png             |  Bin 0 -> 50661 bytes
+ .../browser-out/C2-after-7d-click.png              |  Bin 0 -> 38087 bytes
+ .../browser-out/D1-feed-hostile-query-end.png      |  Bin 0 -> 14761 bytes
+ .../browser-out/browser-repro-c.json               |  349 ++
+ .../browser-out/browser-repro.json                 | 1105 +++++
+ .../overlay-code-review/browser-repro-c.mjs        |   84 +
+ .../overlay-code-review/browser-repro-c.stdout.txt |  131 +
+ .../evidence/overlay-code-review/browser-repro.mjs |  157 +
+ .../overlay-code-review/browser-repro.stdout.txt   |  619 +++
+ .../evidence/overlay-code-review/extract-pure.mjs  |   17 +
+ .../overlay-code-review/fixtures/README.md         |    5 +
+ .../uk_lightning.geojson                           |    1 +
+ .../history/days/2026/10/21.json                   |    1 +
+ .../history/days/2026/10/22.json                   |    1 +
+ .../history/days/2026/10/23.json                   |    1 +
+ .../history/days/2026/10/24.json                   |    1 +
+ .../history/days/2026/10/25.json                   |    1 +
+ .../history/index.json                             | 4509 ++++++++++++++++++++
+ .../SYNTHETIC-hostile-index-first-obs/status.json  |   49 +
+ .../uk_lightning.geojson                           |    1 +
+ .../evidence/overlay-code-review/http-8146.log     |  149 +
+ .../evidence/overlay-code-review/probe-arith.mjs   |   61 +
+ .../overlay-code-review/probe-arith.out.txt        |   34 +
+ .../evidence/overlay-code-review/probe-vk2.mjs     |   20 +
+ .../evidence/overlay-code-review/probe-vk2.out.txt |    7 +
+ .../evidence/owner-device-20261026/README.md       |    9 +
+ ...-safari-live-pages-v202610261949-7d-ON-2244.png |  Bin 0 -> 622414 bytes
+ .../H01-05-combined-nosavings.diff                 |  115 +
+ .../partial-opus-fix-designer/H01-05-combined.diff |  134 +
+ .../evidence/partial-opus-fix-designer/H01.diff    |   18 +
+ .../evidence/partial-opus-fix-designer/H02.diff    |   39 +
+ .../evidence/partial-opus-fix-designer/H03.diff    |   40 +
+ .../evidence/partial-opus-fix-designer/H04.diff    |   32 +
+ .../evidence/partial-opus-fix-designer/H05.diff    |   11 +
+ .../evidence/partial-opus-fix-designer/compare.mjs |   11 +
+ .../partial-opus-fix-designer/feasibility.mjs      |    9 +
+ .../partial-opus-fix-designer/make-fixes.mjs       |   92 +
+ .../modules/202610261949-uk-lightning-overlay.js   |  187 +
+ .../evidence/partial-opus-fix-designer/probe.mjs   |  368 ++
+ .../results-H01-05-combined.log                    |   41 +
+ .../partial-opus-fix-designer/results-H01.log      |   31 +
+ .../partial-opus-fix-designer/results-H02.log      |   31 +
+ .../partial-opus-fix-designer/results-H03.log      |   31 +
+ .../partial-opus-fix-designer/results-H04.log      |   31 +
+ .../partial-opus-fix-designer/results-H05.log      |   31 +
+ .../results-unmodified.log                         |   31 +
+ .../results/H01-05-combined.json                   |  438 ++
+ .../partial-opus-fix-designer/results/H01.json     |  470 ++
+ .../partial-opus-fix-designer/results/H02.json     |  466 ++
+ .../partial-opus-fix-designer/results/H03.json     |  434 ++
+ .../partial-opus-fix-designer/results/H04.json     |  466 ++
+ .../partial-opus-fix-designer/results/H05.json     |  466 ++
+ .../results/draft-H01.json                         |  141 +
+ .../results/draft-H02.json                         |  176 +
+ .../results/draft-H03.json                         |  114 +
+ .../results/draft-H04.json                         |  188 +
+ .../results/draft-H05.json                         |   99 +
+ .../results/unmodified-fda6b10.json                |  466 ++
+ .../evidence/partial-opus-fix-designer/savings.mjs |   18 +
+ .../bench/bench-cpu1x-dpr3.json                    |   92 +
+ .../bench/bench-cpu4x-dpr1.json                    |  216 +
+ .../bench/bench-cpu4x-dpr3.json                    |  444 ++
+ .../evidence/partial-opus-memos-1/bench/bench.html |  156 +
+ .../partial-opus-memos-1/bench/cpu-costs.json      |   74 +
+ .../partial-opus-memos-1/bench/cpu-costs.mjs       |   40 +
+ .../partial-opus-memos-1/bench/run-4x-dpr1.log     |    4 +
+ .../partial-opus-memos-1/bench/run-4x-dpr3.log     |    7 +
+ .../partial-opus-memos-1/bench/run-bench.mjs       |   96 +
+ .../partial-opus-memos-1/grid-colocation.out.json  |  229 +
+ .../partial-opus-memos-1/grid-colocation.py        |  121 +
+ .../partial-opus-memos-1/kuiper-lightning-keys.mjs |  181 +
+ .../kuiper-lightning-keys.out.json                 |  569 +++
+ .../partial-opus-memos-2/atlas-emitter.snippet.js  |    8 +
+ .../partial-opus-memos-2/atlas-receiver.snippet.js |    9 +
+ .../partial-opus-memos-2/lightning-link.proof.mjs  |  177 +
+ .../lightning-link.proof.out.txt                   |   51 +
+ .../partial-opus-memos-2/lightning-link.v1.mjs     |  140 +
+ .../partial-opus-step-e-procedure/PROVENANCE.txt   |   14 +
+ .../curl/basemaps-cartocdn-style.headers           |    6 +
+ .../curl/basemaps-cartocdn-style.txt               |   20 +
+ .../curl/cdn-jsdelivr-maplibre.headers             |    6 +
+ .../curl/cdn-jsdelivr-maplibre.txt                 |   20 +
+ .../curl/extensions-duckdb-org-parquet.headers     |    6 +
+ .../curl/extensions-duckdb-org-parquet.txt         |   20 +
+ .../curl/proxy-status-relay-failures.txt           |    6 +
+ .../curl/raw-githubusercontent-index.body          |    1 +
+ .../curl/raw-githubusercontent-index.headers       |   26 +
+ .../curl/raw-githubusercontent-index.txt           |   38 +
+ .../curl/tiles-basemaps-cartocdn-glyphs.headers    |    6 +
+ .../curl/tiles-basemaps-cartocdn-glyphs.txt        |   20 +
+ .../curl/ventusltd-github-io-data-manifest.headers |    6 +
+ .../curl/ventusltd-github-io-data-manifest.txt     |   20 +
+ .../scripts/reachability-curls.sh                  |   35 +
+ .../scripts/secure-context-check.mjs               |   16 +
+ .../scripts/step-e-console-snippet.js              |   42 +
+ .../scripts/validate-snippet.mjs                   |   77 +
+ .../secure-context-check.log                       |    2 +
+ .../secure-context-server.log                      |   13 +
+ .../snippet-validation-run.out                     |   38 +
+ .../snippet-validation-run3.out                    |   38 +
+ .../snippet-validation-run3/baseline-1-rest.json   |   44 +
+ .../candidate-fixture-archive-1-rest.json          |   89 +
+ .../candidate-fixture-archive-2-on.json            |  128 +
+ .../candidate-fixture-archive-3-off.json           |  105 +
+ .../candidate-fixture-archive-4-reload.json        |   89 +
+ .../candidate-noarchive-1-rest.json                |   89 +
+ .../candidate-noarchive-2-on.json                  |  125 +
+ .../candidate-noarchive-3-off.json                 |  102 +
+ .../candidate-noarchive-4-reload.json              |   89 +
+ .../snippet-validation-run3/validate-snippet.log   |   38 +
+ .../snippet-validation-server-run3.log             |  106 +
+ .../snippet-validation-server.log                  |  106 +
+ .../snippet-validation/baseline-1-rest.json        |   44 +
+ .../candidate-fixture-archive-1-rest.json          |   89 +
+ .../candidate-fixture-archive-2-on.json            |  128 +
+ .../candidate-fixture-archive-3-off.json           |  105 +
+ .../candidate-fixture-archive-4-reload.json        |   89 +
+ .../candidate-noarchive-1-rest.json                |   89 +
+ .../candidate-noarchive-2-on.json                  |  125 +
+ .../candidate-noarchive-3-off.json                 |  102 +
+ .../candidate-noarchive-4-reload.json              |   89 +
+ .../snippet-validation/validate-snippet.log        |   38 +
+ .../pr2-data-verifier/d4-git-add-probe.txt         |    4 +
+ .../pr2-data-verifier/diff-main-vs-pr2.patch       | 3567 ++++++++++++++++
+ .../pr2-data-verifier/diff-main-vs-pr2.stat.txt    |   16 +
+ .../pr2-data-verifier/diff-pr1-vs-pr2.patch        | 4011 +++++++++++++++++
+ .../pr2-data-verifier/diff-pr1-vs-pr2.stat.txt     |   15 +
+ .../evidence/pr2-data-verifier/exp1-real-feed.log  |   23 +
+ .../exp1-real-feed/archive-result.json             |   12 +
+ .../exp1-real-feed/archive/days/2026/10/21.json    |    1 +
+ .../exp1-real-feed/archive/days/2026/10/22.json    |    1 +
+ .../exp1-real-feed/archive/days/2026/10/23.json    |    1 +
+ .../exp1-real-feed/archive/days/2026/10/24.json    |    1 +
+ .../exp1-real-feed/archive/days/2026/10/25.json    |    1 +
+ .../exp1-real-feed/archive/index.json              |    1 +
+ .../exp1-real-feed/index.copy.json                 | 4507 +++++++++++++++++++
+ .../exp1-real-feed/run-record.constructed.json     |    1 +
+ .../pr2-data-verifier/exp1_real_feed_ingest.py     |  116 +
+ .../evidence/pr2-data-verifier/exp2-consumers.log  |   12 +
+ .../evidence/pr2-data-verifier/exp2_consumers.mjs  |   59 +
+ .../evidence/pr2-data-verifier/exp3-storm.log      |   13 +
+ .../pr2-data-verifier/exp3-storm/SYNTHETIC.txt     |    3 +
+ .../exp3-storm/caseA-100k-uniform/index.json       |    1 +
+ .../evidence/pr2-data-verifier/exp3_storm_split.py |   88 +
+ .../evidence/pr2-data-verifier/exp4-defects.log    |   46 +
+ .../pr2-data-verifier/exp4-defects/SYNTHETIC.txt   |    1 +
+ .../exp4-defects/h1-missing-shard/index.json       |    1 +
+ .../h2-partial-write/days/2026/10/22.json          |    1 +
+ .../exp4-defects/h2-partial-write/index.json       |    1 +
+ .../exp4-defects/h3-unparsed/index.json            |    1 +
+ .../exp4-defects/h6-cutoff/days/2026/10/26.json    |    1 +
+ .../exp4-defects/h6-cutoff/index.json              |    1 +
+ .../pr2-data-verifier/exp4_defect_hypotheses.py    |  124 +
+ .../evidence/pr2-data-verifier/exp5-client.log     |   45 +
+ .../pr2-data-verifier/exp5_client_d06_d07.mjs      |   78 +
+ .../evidence/pr2-data-verifier/live-checks.txt     |    9 +
+ .../pr2-data-verifier/live-feed-main.geojson       |    1 +
+ .../evidence/pr2-data-verifier/node-test.txt       |  160 +
+ .../pr2-data-verifier/proposed-fix-h1-h3.patch     |   34 +
+ .../evidence/pr2-data-verifier/python-unittest.txt |   65 +
+ .../pr2-data-verifier/scratch-fix/README.txt       |    1 +
+ .../pr2-data-verifier/scratch-fix/collect.py       |  481 +++
+ .../scratch-fix/data/seed_scan_windows.json        |  160 +
+ .../scratch-fix/data/uk_lightning.geojson          |    1 +
+ .../pr2-data-verifier/scratch-fix/history.py       |  641 +++
+ .../pr2-data-verifier/scratch-fix/status.py        |  159 +
+ .../scratch-fix/tests/test_collect.py              |  218 +
+ .../scratch-fix/tests/test_history.py              |  384 ++
+ .../scratch-fix/tests/test_history_window.mjs      |  484 +++
+ .../scratch-fix/tests/test_status.py               |  101 +
+ .../evidence/step-a/P01-baseline-hashes.txt        |   31 +
+ .../evidence/step-a/baseline-sha256-manifest.txt   |   31 +
+ .../evidence/step-a/gridatlas-state.txt            |   21 +
+ .../reports/RELEASE-AND-ROLLBACK-PLAN.md           |  194 +
+ .../reports/opus-decision-table.md                 |   97 +
+ .../reports/opus-owner-decisions.md                |  200 +
+ .../reports/overlay-code-review.md                 |   80 +
+ .../reports/pr2-data-verifier.md                   |   68 +
+ .../SEE-THROUGH-ABC-RECOMMENDATION.md              |   50 +
+ .../see-through-memos/THINK-BRIEF.md               |   55 +
+ .../see-through-memos/cvaa-governance.md           |   49 +
+ .../see-through-memos/data-product-rollups.md      |   45 +
+ .../see-through-memos/descent-ux-grammar.md        |   49 +
+ .../see-through-memos/devils-advocate.md           |   46 +
+ .../see-through-memos/electricity-precedent.md     |   46 +
+ .../see-through-memos/honesty-and-labelling.md     |   41 +
+ .../see-through-memos/kuiper-law-for-lightning.md  |   58 +
+ .../see-through-memos/licensing-and-legal.md       |   52 +
+ .../see-through-memos/product-vision.md            |   47 +
+ .../see-through-memos/proofs-and-testing.md        |   46 +
+ .../see-through-memos/public-value.md              |   51 +
+ .../see-through-memos/roadmap.md                   |   44 +
+ .../see-through-memos/see-through-reuse.md         |   48 +
+ .../separate-product-architecture.md               |   60 +
+ .../see-through-memos/source-science-and-terms.md  |   50 +
+ .../see-through-memos/storage-economics.md         |   52 +
+ .../see-through-memos/time-and-replay.md           |   38 +
+ 268 files changed, 45787 insertions(+)
+status:
+production:
+c08f3a6178752d9ccc77ce76451107f28375a8b2
+{
+ "schema": "gridatlas.current.v2",
+ "generation": "202609241334",
+ "previous_generation": "202609200022",
+ "architecture": "IMMUTABLE_SHELL_PLUS_HASHED_CARTRIDGES",
+servers restarted 2026-10-26T22:56:02Z
+2026-10-26 resume: p14-p15.mjs and hide-layers-occlusion.mjs patched: page.evaluate(STRING, arg) returned undefined in Playwright (function-valued strings are not invoked); replaced by ev() helper. The earlier p14-p15 run therefore produced no output.

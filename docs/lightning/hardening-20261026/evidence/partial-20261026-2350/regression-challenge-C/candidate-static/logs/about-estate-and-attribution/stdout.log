@@ -1,0 +1,46 @@
+ok    composition names a substation-intelligence cartridge  -- ./cartridges/202609062358-substation-intelligence-v9-63.js
+ok    composed cartridge is readable  -- ./cartridges/202609062358-substation-intelligence-v9-63.js 445853 bytes
+ok    composed bytes move .custom-map-attrib into the About panel  -- the node is adopted into About, not cloned or rewritten
+ok    composed bytes style the attribution once inside a panel  -- panel-scoped rule present
+ok    the attribution is appended AFTER the estate links, so it sits at the bottom  -- estate links at 317967, attribution at 319405
+ok    a later adoption pass only re-appends when the node is not already last  -- lastElementChild guard closes the MutationObserver feedback loop
+ok    the engine fetch is guarded synchronously, not by the DOM it has yet to write  -- one request, not one per mutation
+ok    it is small print  -- 10px in the panel-scoped rule
+ok    composed bytes carry the engine graph link  -- https://ventusltd.github.io/ventus-grid-engine/?graph=engine-graph
+ok    composed bytes carry the federation map link  -- https://ventusltd.github.io/data-federation-map-for-globalgrid2050-all-repos/dashboard/sandbox/spider_full_po_test.html
+ok    composed bytes carry the spider printer link  -- https://ventusltd.github.io/spiders/spider_printer_v1/
+ok    estate links are marked so they are appended once  -- data-gm-estate
+ok    estate links sit under an Estate group heading  -- appendGroup(panel, 'Estate')
+ok    estate links are anchors carrying the panel button role  -- role="button" so they inherit the panel look
+ok    composed bytes fetch the engine graph rather than restating its modules  -- ENGINE_GRAPH_URL
+ok    each module links into the graph focused on itself  -- uses the ?focus= contract published 202609050305
+ok    every kind of node is listed, not only the canonical ones  -- canonical first, then extract, reference, fragment, then anything new
+ok    a kind the graph adds later still appears rather than being dropped  -- unknown kinds are appended, not filtered out
+ok    the menu hands over a command that can actually be run  -- clone, then run the engine's own fail-closed gate
+ok    the command claims no install step, because none is needed  --  'git clone https://github.com/Ventusltd/ventus-grid-engine' + ' && cd ventus-grid-engine && node verify.mjs'
+ok    it is copied, never executed, and says so by doing nothing else  -- the person who pastes it is the one who approves it
+ok    a browser with no clipboard permission shows the command instead of failing silently  -- the control reveals its own payload
+ok    the engine rows are marked so they are appended once  -- data-gm-engine
+ok    the modules are listed alphabetically, as every non-version group here is  -- en-GB localeCompare
+ok    an unreachable engine leaves the menu exactly as it was  -- the fetch failure path adds no group and throws nothing
+ok    the engine group goes in File, not About  -- appendEngineModules(panels.File)
+ok    the GB price and constraint study is carried  -- globalgrid2050.com/data/grid_studies_public/
+ok    it is in View, beside the price control, not in About  -- appendStudies(panels.View)
+ok    the studies group is appended once  -- data-gm-study guard
+ok    the File panel offers print and image export  -- appendExport(panels.File, doc)
+ok    the image is captured inside a render frame, not after compositing  -- the canvas has no preserveDrawingBuffer, so the frame is where the pixels are
+ok    a blank capture is refused rather than downloaded  -- sampled for non-transparent pixels before it is offered
+ok    a tainted canvas is not mistaken for a blank one  -- the catch returns false, so the reader is not sent to print for no reason
+ok    the exported artefact carries the attribution the screen moved into About  -- credit travels with the thing that leaves the building
+ok    the print slide carries the generation and a UTC stamp  -- an exported slide says which build and when
+FAIL  the print takes whatever page the reader chose, rather than forcing one  -- size:auto, so portrait or landscape and any paper both fit
+FAIL  the map sizes to the printable area instead of a fixed height  -- min-height:0 or the flex child refuses to shrink and pushes the footer off the sheet
+ok    a slide is one page, never two  -- nothing spills onto a second sheet
+ok    printing hides the interface  -- the bar is interface, not content
+ok    the print furniture is removed afterwards, and does not rely on afterprint alone  -- some mobile browsers never fire afterprint
+ok    the six menu titles survive  -- MENUS unchanged
+ok    the Scope tools survive  -- zoneButton still routed to Scope
+ok    the v8 layer controls survive  -- buildLayerControls still called
+ok    the module part and the composed cartridge agree on the estate links  -- part and composed bytes both carry it, or neither do
+
+42/44 checks passed

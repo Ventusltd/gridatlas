@@ -1,0 +1,58 @@
+
+it fails closed on a shape it does not know
+
+  [PASS] the module loaded and froze its surface
+  [PASS] it names the one product it reads
+  [PASS] an unrecognised schema yields no index at all
+  [PASS] a v2 of the same product is still refused until it is read for
+  [PASS] null and undefined are refused, not defaulted
+  [PASS] the refusal to assess is on the module itself
+  [PASS] the impedance basis says what it is and is not
+
+it never decodes a voltage, and never mixes two
+
+  [PASS] a known schema yields an index
+  [PASS] the site resolves by its code
+  [PASS] and by its exact published name
+  [PASS] a name that is not published resolves to nothing
+  [PASS] answers are grouped by voltage, never pooled
+  [PASS] the highest voltage is first and the undeclared band is last
+  [PASS] a node whose voltage its site does not declare is undeclared, not decoded
+  [PASS] nothing in the result carries a site-wide range
+
+asking for one voltage returns only that voltage
+
+  [PASS] one band comes back
+  [PASS] the request is recorded in the answer
+  [PASS] no 132 kV circuit appears anywhere in it
+  [PASS] and the unrestricted answer records that it restricted nothing
+
+what is a neighbour, and what is not
+
+  [PASS] a circuit to another site makes it a neighbour
+  [PASS] a node with an undeclared voltage still reaches the site it reaches
+  [PASS] a circuit with both ends at this site is not a neighbour
+  [PASS] an internal circuit is still reported, flagged as internal
+  [PASS] a transformer is not a neighbour either
+  [PASS] a PLANNED change is not a neighbour: it is not built
+  [PASS] a planned change keeps its year and status
+
+it publishes parameters and computes nothing from them
+
+  [PASS] R, X and B travel as published percentages
+  [PASS] seasonal ratings travel per season, never as one number
+  [PASS] a circuit with no published parameters says so rather than guessing
+  [PASS] a transformer carries its own rating, not a seasonal set
+  [PASS] the module contains no impedance arithmetic at all
+  [PASS] the module never measures a distance
+
+the refusal travels inside the answer
+
+  [PASS] every answer carries what it cannot tell you
+  [PASS] every answer carries the impedance basis
+  [PASS] no grading language anywhere in the module
+  [FAIL] the published product this module reads is available — not found at /tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/data-grid-gb/derived/gb-transmission-network.v1.json - clone Ventusltd/data-grid-gb beside this repository, or set GRIDATLAS_ALLOW_MISSING_PRODUCT=1 to accept an unverified run
+
+  [concession] running without the published product by explicit opt-in; the real-payload assertions did NOT run and this result does not attest them
+
+35/36 checks passed

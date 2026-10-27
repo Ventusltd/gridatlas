@@ -1,0 +1,83 @@
+{
+  "route": "http://127.0.0.1:8179/wt/atlas/v/202610262323/",
+  "gen": "202610262323",
+  "harness": "lead-shim (offline-shim.mjs); Chromium 153.0.8010.12 headless; phones = Chromium emulation, not WebKit",
+  "node": "v22.23.4",
+  "startedAt": "2026-10-26T23:52:19.716Z",
+  "fakeClockDefault": "2026-10-26T18:40:00Z",
+  "cases": {
+    "T8b-p393": {
+      "profile": "p393",
+      "fixture": "/tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/lightning/fixtures/lightning-archive/data",
+      "clock": "2026-10-26T18:40:00Z",
+      "composition": {
+        "engine": 120,
+        "pn": 6,
+        "scada": true,
+        "curtain": true,
+        "menuInstalled": true,
+        "map": true,
+        "waitedMs": 14098
+      },
+      "layersOpened": true,
+      "steps": [],
+      "pageErrors": [],
+      "lightningRequests": [
+        "history/index.json",
+        "history/days/2026/10/25.json"
+      ],
+      "shim": {
+        "served": {
+          "maplibre": 2,
+          "style": 1,
+          "duckdb": 3,
+          "lightning-data": 2
+        },
+        "aborted": [
+          "https://raw.githubusercontent.com/Ventusltd/data-grid-gb/1c9909d1138704b29235c27fd769436dda8a0b18/derived/connection-points.v3.json",
+          "https://ventusltd.github.io/ventus-grid-engine/genome/engine-graph.json"
+        ],
+        "missing": []
+      },
+      "invariants": {
+        "case": "T8b-p393",
+        "profile": "p393",
+        "before": {
+          "inspect": {
+            "engine": 60,
+            "pipeline": 3,
+            "total": 63,
+            "unique": 63,
+            "complete": true
+          },
+          "proxies": 63,
+          "markers": 63,
+          "ok": true,
+          "lightningRequestsSoFar": 0,
+          "when": "before"
+        },
+        "after": {
+          "error": "Error: page.evaluate: Target crashed ",
+          "ok": false,
+          "lightningRequestsSoFar": 2,
+          "when": "after"
+        },
+        "requestsBeforeFirstOn": 0,
+        "offGesture": {
+          "ok": false,
+          "error": "locator.tap: Timeout 8000ms exceeded."
+        },
+        "error": "Error: clock.runFor: Target crashed ",
+        "ok": false
+      }
+    }
+  },
+  "tests": {
+    "T8b": {
+      "result": "ERROR",
+      "error": "locator.tap: Timeout 5000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('#scada-ui-container [data-lightning-group=\"main\"] button[data-lightning-period=\"7d\"]').first()\u001b[22m\n\n    at gesture (/tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/t8-amendment/t8b.browser.mjs:86:24)\n    at /tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/t8-amendment/t8b.browser.mjs:240:42\n    at async runTest (/tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/t8-amendment/t8b.browser.mjs:154:9)\n    at async file:///tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/t8-amendment/t8b.browser.mjs:235:1",
+      "seconds": 107
+    }
+  },
+  "finishedAt": "2026-10-26T23:54:06.943Z"
+}

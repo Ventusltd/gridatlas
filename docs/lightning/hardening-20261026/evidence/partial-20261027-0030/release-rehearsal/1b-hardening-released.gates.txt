@@ -1,0 +1,9 @@
+== 1b-hardening-released  HEAD=0d482ff live=202610262323
+lint                         rc=0  scope-ledger=PASS active=none master=done
+state-parity                 rc=0  STATE_PARITY_OK
+verify-compose               rc=0  {"composition":"PASS","generation":"202610262323","release_id":"202608300453-atlas-v9","immutable_releases":8,"cartridges":["streaming-parquet-bridge","uk-gazetteer-flyto","substation-intelligence","sld-sandbox"]}
+run-current                  rc=0  every composed cartridge passed its generation-matched proof
+202609241334-sld-sandbox     rc=1  Node.js v22.23.4
+202610262323-sld-sandbox     rc=0  SLD exact delta (202609241334 bytes + \n + 202610262323 uk-lightning-overlay module), SHA-256, byte budget, static negatives, static positives and syntax PASS; browser verification runs separately.
+index-loader-cmp             rc=0  LOADER_IDENTICAL
+cartridge-digests            rc=0  DIGESTS_OK 4

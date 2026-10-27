@@ -1,0 +1,21 @@
+node:internal/modules/run_main:123
+    triggerUncaughtException(
+    ^
+
+AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
++ actual - expected
+
++ '202609071213'
+- '202609011141'
+          ^
+
+    at file:///tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/release-rehearsal/wt/tools/proofs/202609011141-uk-gazetteer-flyto.proof.mjs:22:8 {
+  generatedMessage: true,
+  code: 'ERR_ASSERTION',
+  actual: '202609071213',
+  expected: '202609011141',
+  operator: 'strictEqual',
+  diff: 'simple'
+}
+
+Node.js v22.23.4

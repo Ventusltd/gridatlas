@@ -1,0 +1,472 @@
+{
+  "url": "http://127.0.0.1:8144/wt/atlas/v/202610261949/",
+  "width": 393,
+  "results": [
+    {
+      "id": "ms",
+      "errors": [],
+      "generation": "202610261949",
+      "initialLabel": "M&S Food [WAIT]",
+      "label": "M&S Food [FAIL]",
+      "checked": true,
+      "disabled": false,
+      "layer": {
+        "id": "l-ms",
+        "type": "circle",
+        "source": "src-ms",
+        "layout": {
+          "visibility": "visible"
+        },
+        "paint": {
+          "circle-color": "#009b77",
+          "circle-radius": 4.5,
+          "circle-stroke-width": 1,
+          "circle-stroke-color": "#000"
+        }
+      },
+      "featureCount": 0,
+      "eligible": 0,
+      "target": null,
+      "sample": null,
+      "pass": false
+    },
+    {
+      "id": "coop",
+      "errors": [],
+      "generation": "202610261949",
+      "initialLabel": "Co-op [WAIT]",
+      "label": "Co-op [FAIL]",
+      "checked": true,
+      "disabled": false,
+      "layer": {
+        "id": "l-coop",
+        "type": "circle",
+        "source": "src-coop",
+        "layout": {
+          "visibility": "visible"
+        },
+        "paint": {
+          "circle-color": "#00b1a9",
+          "circle-radius": 4.5,
+          "circle-stroke-width": 1,
+          "circle-stroke-color": "#000"
+        }
+      },
+      "featureCount": 0,
+      "eligible": 0,
+      "target": null,
+      "sample": null,
+      "pass": false
+    },
+    {
+      "id": "costco",
+      "errors": [],
+      "generation": "202610261949",
+      "initialLabel": "Costco [WAIT]",
+      "label": "Costco [FAIL]",
+      "checked": true,
+      "disabled": false,
+      "layer": {
+        "id": "l-costco",
+        "type": "circle",
+        "source": "src-costco",
+        "layout": {
+          "visibility": "visible"
+        },
+        "paint": {
+          "circle-color": "#005daa",
+          "circle-radius": 4.5,
+          "circle-stroke-width": 1,
+          "circle-stroke-color": "#000"
+        }
+      },
+      "featureCount": 0,
+      "eligible": 0,
+      "target": null,
+      "sample": null,
+      "pass": false
+    },
+    {
+      "id": "booths",
+      "errors": [],
+      "generation": "202610261949",
+      "initialLabel": "Booths [WAIT]",
+      "label": "Booths [FAIL]",
+      "checked": true,
+      "disabled": false,
+      "layer": {
+        "id": "l-booths",
+        "type": "circle",
+        "source": "src-booths",
+        "layout": {
+          "visibility": "visible"
+        },
+        "paint": {
+          "circle-color": "#6d2077",
+          "circle-radius": 4.5,
+          "circle-stroke-width": 1,
+          "circle-stroke-color": "#000"
+        }
+      },
+      "featureCount": 0,
+      "eligible": 0,
+      "target": null,
+      "sample": null,
+      "pass": false
+    },
+    {
+      "id": "elizabeth",
+      "errors": [],
+      "generation": "202610261949",
+      "initialLabel": "Elizabeth Line [WAIT]",
+      "label": "Elizabeth Line [FAIL]",
+      "checked": true,
+      "disabled": false,
+      "layer": {
+        "id": "l-elizabeth",
+        "type": "circle",
+        "source": "src-elizabeth",
+        "layout": {
+          "visibility": "visible"
+        },
+        "paint": {
+          "circle-color": "#60399E",
+          "circle-radius": 5,
+          "circle-stroke-width": 1,
+          "circle-stroke-color": "#000",
+          "circle-opacity": 0.9
+        }
+      },
+      "featureCount": 0,
+      "eligible": 0,
+      "target": null,
+      "sample": null,
+      "pass": false
+    },
+    {
+      "id": "lu",
+      "errors": [],
+      "generation": "202610261949",
+      "initialLabel": "London Underground [WAIT]",
+      "label": "London Underground [FAIL]",
+      "checked": true,
+      "disabled": false,
+      "layer": {
+        "id": "l-lu",
+        "type": "circle",
+        "source": "src-lu",
+        "layout": {
+          "visibility": "visible"
+        },
+        "paint": {
+          "circle-color": "#e32017",
+          "circle-radius": 5,
+          "circle-stroke-width": 1,
+          "circle-stroke-color": "#000",
+          "circle-opacity": 0.9
+        }
+      },
+      "featureCount": 0,
+      "eligible": 0,
+      "target": null,
+      "sample": null,
+      "pass": false
+    },
+    {
+      "id": "dlr",
+      "errors": [],
+      "generation": "202610261949",
+      "initialLabel": "DLR [WAIT]",
+      "error": "Error: page.waitForFunction: Target crashed ",
+      "pass": false
+    },
+    {
+      "id": "metro",
+      "errors": [],
+      "generation": "202610261949",
+      "initialLabel": "UK Metro [WAIT]",
+      "error": "Error: page.waitForFunction: Target crashed ",
+      "pass": false
+    },
+    {
+      "id": "tram",
+      "errors": [],
+      "generation": "202610261949",
+      "initialLabel": "Trams & Light Rail [WAIT]",
+      "error": "Error: page.waitForFunction: Target crashed ",
+      "pass": false
+    },
+    {
+      "id": "mainline_rail",
+      "errors": [],
+      "generation": "202610261949",
+      "initialLabel": "UK Mainline Railways [WAIT]",
+      "label": "UK Mainline Railways [FAIL]",
+      "checked": true,
+      "disabled": false,
+      "layer": {
+        "id": "l-mainline_rail",
+        "type": "line",
+        "source": "src-mainline_rail",
+        "layout": {
+          "visibility": "visible"
+        },
+        "paint": {
+          "line-color": "#ff8800",
+          "line-width": 1.5
+        }
+      },
+      "featureCount": 0,
+      "eligible": 0,
+      "target": null,
+      "sample": null,
+      "pass": false
+    },
+    {
+      "id": "hs2",
+      "errors": [],
+      "generation": "202610261949",
+      "initialLabel": "HS2 [WAIT]",
+      "label": "HS2 [FAIL]",
+      "checked": true,
+      "disabled": false,
+      "layer": {
+        "id": "l-hs2",
+        "type": "circle",
+        "source": "src-hs2",
+        "layout": {
+          "visibility": "visible"
+        },
+        "paint": {
+          "circle-color": "#2c6fad",
+          "circle-radius": 4,
+          "circle-stroke-width": 1,
+          "circle-stroke-color": "#000",
+          "circle-opacity": 0.9
+        }
+      },
+      "featureCount": 0,
+      "eligible": 0,
+      "target": null,
+      "sample": null,
+      "pass": false
+    },
+    {
+      "id": "eurostar_route",
+      "errors": [],
+      "generation": "202610261949",
+      "initialLabel": "Eurostar (HS1) UK & Europe [WAIT]",
+      "label": "Eurostar (HS1) UK & Europe [FAIL]",
+      "checked": true,
+      "disabled": false,
+      "layer": {
+        "id": "l-eurostar_route",
+        "type": "line",
+        "source": "src-eurostar_route",
+        "filter": [
+          "==",
+          [
+            "get",
+            "type"
+          ],
+          "route"
+        ],
+        "layout": {
+          "visibility": "visible"
+        },
+        "paint": {
+          "line-color": "#001489",
+          "line-width": 2.5
+        }
+      },
+      "featureCount": 0,
+      "eligible": 0,
+      "target": null,
+      "sample": null,
+      "pass": false
+    },
+    {
+      "id": "eurostar_station",
+      "errors": [],
+      "generation": "202610261949",
+      "initialLabel": "Eurostar Stations UK & Europe [WAIT]",
+      "label": "Eurostar Stations UK & Europe [FAIL]",
+      "checked": true,
+      "disabled": false,
+      "layer": {
+        "id": "l-eurostar_station",
+        "type": "circle",
+        "source": "src-eurostar_station",
+        "filter": [
+          "==",
+          [
+            "get",
+            "type"
+          ],
+          "eurostar_station"
+        ],
+        "layout": {
+          "visibility": "visible"
+        },
+        "paint": {
+          "circle-color": "#ffd700",
+          "circle-radius": 5.5,
+          "circle-stroke-width": 1,
+          "circle-stroke-color": "#000"
+        }
+      },
+      "featureCount": 0,
+      "eligible": 0,
+      "target": null,
+      "sample": null,
+      "pass": false
+    },
+    {
+      "id": "stadiums",
+      "errors": [],
+      "generation": "202610261949",
+      "initialLabel": "Major Stadiums [WAIT]",
+      "label": "Major Stadiums [FAIL]",
+      "checked": true,
+      "disabled": false,
+      "layer": {
+        "id": "l-stadiums",
+        "type": "circle",
+        "source": "src-stadiums",
+        "layout": {
+          "visibility": "visible"
+        },
+        "paint": {
+          "circle-color": "#e5ff00",
+          "circle-radius": 5.5,
+          "circle-stroke-width": 1,
+          "circle-stroke-color": "#000"
+        }
+      },
+      "featureCount": 0,
+      "eligible": 0,
+      "target": null,
+      "sample": null,
+      "pass": false
+    },
+    {
+      "id": "subsea_data_cables",
+      "errors": [],
+      "generation": "202610261949",
+      "initialLabel": "Subsea Data Cables (Fibre) (not all connections available yet) [WAIT]",
+      "label": "Subsea Data Cables (Fibre) (not all connections available yet) [FAIL]",
+      "checked": true,
+      "disabled": false,
+      "layer": {
+        "id": "l-subsea_data_cables",
+        "type": "line",
+        "source": "src-subsea_data_cables",
+        "layout": {
+          "visibility": "visible"
+        },
+        "paint": {
+          "line-color": "#00e5ff",
+          "line-width": 1.5
+        }
+      },
+      "featureCount": 0,
+      "eligible": 0,
+      "target": null,
+      "sample": null,
+      "pass": false
+    },
+    {
+      "id": "global_ports_major",
+      "errors": [],
+      "generation": "202610261949",
+      "initialLabel": "Major Ports (Deep Water/Ferry) [WAIT]",
+      "error": "Error: page.waitForFunction: Target crashed ",
+      "pass": false
+    },
+    {
+      "id": "global_ports_minor",
+      "errors": [],
+      "generation": "202610261949",
+      "initialLabel": "Inland / Minor Harbours [WAIT]",
+      "error": "Error: page.waitForFunction: Target crashed ",
+      "pass": false
+    },
+    {
+      "id": "global_hydrocarbons",
+      "errors": [],
+      "generation": "202610261949",
+      "initialLabel": "Global Hydrocarbons (Oil, Gas, LNG) [WAIT]",
+      "label": "Global Hydrocarbons (Oil, Gas, LNG) [FAIL]",
+      "checked": true,
+      "disabled": false,
+      "layer": {
+        "id": "l-global_hydrocarbons",
+        "type": "circle",
+        "source": "src-global_hydrocarbons",
+        "layout": {
+          "visibility": "visible"
+        },
+        "paint": {
+          "circle-color": "#ff3300",
+          "circle-radius": [
+            "interpolate",
+            [
+              "linear"
+            ],
+            [
+              "get",
+              "area_ha"
+            ],
+            0,
+            4,
+            100,
+            8,
+            1000,
+            15
+          ],
+          "circle-stroke-width": 1,
+          "circle-stroke-color": "#000"
+        }
+      },
+      "featureCount": 0,
+      "eligible": 0,
+      "target": null,
+      "sample": null,
+      "pass": false
+    },
+    {
+      "id": "motorways",
+      "errors": [],
+      "generation": "202610261949",
+      "initialLabel": "Motorways [WAIT]",
+      "error": "Error: page.waitForFunction: Target crashed ",
+      "pass": false
+    },
+    {
+      "id": "trunk_roads",
+      "errors": [],
+      "generation": "202610261949",
+      "initialLabel": "Major A-Roads (Trunk) [WAIT]",
+      "label": "Major A-Roads (Trunk) [FAIL]",
+      "checked": true,
+      "disabled": false,
+      "layer": {
+        "id": "l-trunk_roads",
+        "type": "line",
+        "source": "src-trunk_roads",
+        "layout": {
+          "visibility": "visible"
+        },
+        "paint": {
+          "line-color": "#00cc00",
+          "line-width": 1.8
+        }
+      },
+      "featureCount": 0,
+      "eligible": 0,
+      "target": null,
+      "sample": null,
+      "pass": false
+    }
+  ]
+}

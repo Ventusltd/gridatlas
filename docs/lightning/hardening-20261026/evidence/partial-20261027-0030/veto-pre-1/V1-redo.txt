@@ -1,0 +1,41 @@
+# 2026-10-26T23:48:38Z V1 redo: sha256sum -c against atlas-merge-veto baseline manifest, in WT (5929c5653f7444931015198fc9f27a46a262bd58) and PROD (c08f3a6178752d9ccc77ce76451107f28375a8b2); cmp WT vs PROD per file
+manifest copy DIFFERS from original
+## WT
+0
+31
+## PROD
+31
+## cmp
+SAME atlas/index.html
+SAME atlas/current.json
+SAME STATE.md
+SAME atlas/manifests/202609241334-composition.json
+SAME atlas/cartridges/202609241251-streaming-parquet-bridge-v9-5.js
+SAME atlas/cartridges/202609071213-place-global-search-v9-5.js
+SAME atlas/cartridges/202609062358-substation-intelligence-v9-63.js
+SAME atlas/cartridges/202609241334-sld-sandbox-v9-8.js
+SAME atlas/releases/202608300453-atlas-v9/202608291818-place-postcode-search.js
+SAME atlas/releases/202608300453-atlas-v9/202608292126-map-ready-fetch-bridge.js
+SAME atlas/releases/202608300453-atlas-v9/202608292126-pre-snapped-config-adapter.js
+SAME atlas/releases/202608300453-atlas-v9/202608292311-maplibre-worker-bridge.js
+SAME atlas/releases/202608300453-atlas-v9/build-manifest.json
+SAME atlas/releases/202608300453-atlas-v9/data/airports.geojson
+SAME atlas/releases/202608300453-atlas-v9/data/datacentres.geojson
+SAME atlas/releases/202608300453-atlas-v9/data/grid_132kv.geojson
+SAME atlas/releases/202608300453-atlas-v9/data/grid_220kv.geojson
+SAME atlas/releases/202608300453-atlas-v9/data/grid_275kv.geojson
+SAME atlas/releases/202608300453-atlas-v9/data/grid_400kv.geojson
+SAME atlas/releases/202608300453-atlas-v9/data/grid_66kv.geojson
+SAME atlas/releases/202608300453-atlas-v9/data/grid_substations.geojson
+SAME atlas/releases/202608300453-atlas-v9/data/industrial_offtakers.geojson
+SAME atlas/releases/202608300453-atlas-v9/data/power_plants.geojson
+SAME atlas/releases/202608300453-atlas-v9/data/railways.geojson
+SAME atlas/releases/202608300453-atlas-v9/deep-link-receiver-manifest.json
+SAME atlas/releases/202608300453-atlas-v9/index.html
+SAME atlas/releases/202608300453-atlas-v9/map-ready-manifest.json
+SAME atlas/releases/202608300453-atlas-v9/release-manifest.json
+SAME atlas/releases/202608300453-atlas-v9/sha256sums.txt
+SAME atlas/releases/202608300453-atlas-v9/ventus-corev8engine.js
+SAME atlas/releases/202608300453-atlas-v9/ventusv8.css
+## releases tree
+atlas/releases identical
