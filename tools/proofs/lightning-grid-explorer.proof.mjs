@@ -24,6 +24,9 @@ check(html.includes('min-height:44px'),'Mobile touch-size declared on controls')
 check(html.includes('not</strong> necessarily a ground strike'),'Observation disclaimer in initial static HTML');
 check(js.includes('ventus-grid-engine@69b4e88c8464f0310bd67e47ec83ee8afa9e1921'),'Use immutable shared source, not a duplicate nearest engine');
 check(js.includes('createLightningContextEngine'),'Import existing nearest engine');
+check(js.includes("from './feed-contract.mjs'"),'Use separately testable optical feed provenance contract');
+check(js.includes('describeOpticalFeedEvidence(parsed.evidence)'),'Expose latest query and UNKNOWN coverage to user');
+check(js.includes("state.ctx=null;\n  el('scenario').disabled=true;\n  clear('substations')"),'Refresh clears stale proximity and disables stale scenarios');
 check(js.includes('lightningElectricalScenario'),'Import existing scenario adapter');
 check(js.includes('postEventDiligence'),'Reuse pure diligence contract from existing engine');
 check(html.includes('id="safety-boundary"'),'Mandatory three-part evidence boundary visible without interaction');
