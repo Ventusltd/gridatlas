@@ -5,6 +5,7 @@ on:
       - 'atlas/labs/lightning-grid/**'
       - 'tools/proofs/lightning-grid-explorer.proof.mjs'
       - 'tools/proofs/lightning-grid-real-sources.proof.mjs'
+      - 'tools/proofs/lightning-grid-feed-contract.test.mjs'
       - '.github/workflows/lightning-grid-lab-proof.yml'
   workflow_dispatch:
 permissions:
@@ -22,6 +23,8 @@ jobs:
           node-version: '22'
       - name: Static source and boundary proof (not browser or numerical solver)
         run: node tools/proofs/lightning-grid-explorer.proof.mjs
+      - name: Synthetic feed provenance and fail-closed tests
+        run: node --test tools/proofs/lightning-grid-feed-contract.test.mjs
       - name: Explicit limits of this proof
         run: |
           echo 'No browser, iPhone, CDN/CORS, live EUMETSAT, historical archive or electrical solver was executed.'
