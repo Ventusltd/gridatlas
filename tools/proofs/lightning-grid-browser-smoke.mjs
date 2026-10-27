@@ -104,6 +104,35 @@ try{
     'IT fault study checklist must be present');
   await page.screenshot({path:output+'/iphone-sized-click-to-grid.png',fullPage:true});
   console.log('PASS — real Chromium viewport 390x844: flash dot tapped, grid context populated, original MAP link, IT/DC scenarios NOT RUN.');
+
+  // FAIL-FIRST arrival integrity: an H-successor may link an authentic ID
+  // which has since rolled out of the seven-day feed. Never substitute the
+  // first unrelated flash, location or nearby infrastructure silently.
+  await page.goto(base+'?flash_id=missing-from-seven-day-feed',
+    {waitUntil:'domcontentloaded',timeout:45000});
+  await page.waitForFunction(
+    ()=>document.querySelector('#flash')?.disabled===false,
+    null,{timeout:45000});
+  assert.equal(await page.locator('#flash').inputValue(),'',
+    'Absent flash_id MUST NOT silently select a different optical observation');
+  assert.equal(await page.locator('#inspect').isDisabled(),true,
+    'Unknown requested flash must not allow a substitute proximity search');
+  assert.equal(await page.locator('#scenario').isDisabled(),true,
+    'Unknown requested flash must not enable a hypothetical scenario');
+  assert.match(await page.locator('#status').textContent(),
+    /not present.*seven-day feed|unavailable.*current.*feed/i,
+    'Stale/unknown arrival must have an explicit UNKNOWN-coverage warning');
+  await page.locator('#flash').selectOption('browser-source-centre');
+  assert.equal(await page.locator('#inspect').isEnabled(),true,
+    'Manual selection of an actual current-feed flash must recover');
+  await page.locator('#inspect').click();
+  await page.waitForFunction(
+    ()=>document.querySelector('#status')?.textContent?.includes('Ready ·'),
+    null,{timeout:35000});
+  assert.equal(await page.locator('#scenario').isEnabled(),true,
+    'Scenario can run only after manual valid selection and new proximity search');
+  await page.screenshot({path:output+'/missing-arrival-recovered.png',fullPage:true});
+  console.log('PASS — absent flash_id does not substitute another event; explicit manual recovery works.');
   console.log('Fixture counts: optical='+FEED.features.length+' substation='+SUBS.features.length+' solar='+SOLAR.features.length);
   if(errors.length)console.log('Nonfatal browser console notes: '+JSON.stringify(errors.slice(0,10)));
 }catch(error){
