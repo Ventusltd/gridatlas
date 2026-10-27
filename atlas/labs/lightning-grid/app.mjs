@@ -78,8 +78,13 @@ async function getAssets(){
     state.engine=createLightningContextEngine({substations:subs,solarProjects:solar});
     return state.files;
   })();
-  try{return await state.loadingAssets}
-  catch(e){state.loadingAssets=null;throw e}
+  try{
+    const result=await state.loadingAssets;
+    // A partial source load is not a permanently cached zero. Let the
+    // next explicit Inspect attempt retry unavailable source partitions.
+    if(result.issues.length)state.loadingAssets=null;
+    return result;
+  }catch(e){state.loadingAssets=null;throw e}
 }
 function currentFlash(){
   const id=el('flash').value;
@@ -194,15 +199,26 @@ async function inspect(){
       ' Earlier than the seven-day feed remains UNKNOWN.');
   }catch(e){
     if(serial===state.serial)fail('Unable to compute or load context: '+e.message+'. No results have been inferred.');
-  }finally{if(serial===state.serial)el('inspect').disabled=false}
+  }finally{
+    // Changing flash or filters while a request is in flight invalidates
+    // that request, but must NEVER strand the Inspect button disabled.
+    el('inspect').disabled=false;
+  }
 }
 el('flash').addEventListener('change',()=>{
   state.serial++;setObservation(currentFlash());el('scenario').disabled=true;
   clear('substations').textContent='Awaiting proximity search.';
   clear('solar').textContent='Awaiting proximity search.';
+  el('provenance').textContent='New observation selected; previous results cleared.';
+  status('Observation changed. Run a new proximity search; earlier results are not retained.');
 });
 el('inspect').addEventListener('click',inspect);
 el('scenario').addEventListener('click',scenario);
+for(const k of ['ac','dc','inverter','project','overhead','weather']){
+  el(k).addEventListener('change',()=>{
+    el('scenario-output').textContent='Assumptions changed; prepare the scenario again. No electrical solver has run.';
+  });
+}
 for(const k of ['radius','kv'])el(k).addEventListener('change',()=>{
   state.serial++;state.ctx=null;el('scenario').disabled=true;
   clear('substations').textContent='Parameters changed. Run proximity search again.';
