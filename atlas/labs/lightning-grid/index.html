@@ -42,7 +42,8 @@
  <div class="small">Experimental, read-only | Existing Ventus Grid Engine + Pipeline News MAP contract | No production changes</div>
 </header>
 <main>
- <p class="intro">Select a <strong>genuine EUMETSAT optical lightning flash</strong>, inspect nearby mapped substations and REPD solar farms, then prepare a clearly hypothetical inverter/earthing scenario. An optical flash is <strong>not</strong> a confirmed cloud-to-ground strike or evidence of asset damage.</p>
+ <p class="intro">Select a <strong>genuine EUMETSAT optical lightning flash</strong>, inspect nearby mapped substations and REPD solar farms, then prepare a clearly hypothetical inverter/earthing scenario. An optical flash is <strong>not</strong> necessarily a ground strike and is <strong>not evidence that any asset was hit</strong>.</p>
+ <p class="status" id="safety-boundary"><strong>Evidence boundary:</strong> fault currents, surges and insulation damage can also arise from grid switching transients, equipment failure, insulation degradation, moisture ingress or a second IT-network fault. This map attributes <strong>no fault</strong> to lightning. <strong>Post-event inspection is a diligence recommendation, not a diagnosis.</strong></p>
  <div class="status" id="status" role="status" aria-live="polite">Loading the genuine seven-day lightning feed…</div>
  <div class="grid">
   <section>
@@ -74,13 +75,17 @@
    <select id="inverter"><option value="unspecified">Not known</option><option value="transformerless">Transformerless</option><option value="isolated">Galvanically isolated</option></select>
    <label for="project">Scenario site</label>
    <select id="project"><option value="">No project selected</option></select>
-   <button id="scenario" disabled>Prepare scenario assumptions</button>
+   <label for="overhead">Overhead lines / pylons nearby (user-provided)</label>
+   <select id="overhead"><option value="unknown">Unknown / not assessed</option><option value="nearby">Yes, verified nearby</option><option value="not_reported_nearby">Not reported nearby</option></select>
+   <label for="weather">Weather / moisture (user-provided)</label>
+   <select id="weather"><option value="unknown">Unknown / not assessed</option><option value="wet">Wet, verified</option><option value="dry">Dry, verified</option></select>
+   <button id="scenario" disabled>Prepare scenario &amp; inspection checklist</button>
    <div id="scenario-output" class="scenario" aria-live="polite">Select an observation and find actual nearby infrastructure first.</div>
   </section>
  </div>
  <p class="status">Coverage: the current feed retains up to seven days. Earlier dates and unsearched hours are <strong>UNKNOWN, not zero</strong>. The one-year history is not yet published. Source: EUMETSAT MTG Lightning Imager L2-LFL. No optical observation is interpreted as a ground attachment.</p>
 </main>
-<footer>Ventus Ltd · GlobalGrid2050 · Experimental next-generation preview branch, not a safety study, forensic diagnosis or connection assessment. Code: Apache 2.0 where declared; EUMETSAT, NESO and OSM datasets retain their own source terms. <a href="https://ventusltd.github.io/gridatlas/atlas/">Original GridAtlas</a> · <a href="https://github.com/Ventusltd/gridatlas/issues/36">Engineering scope</a></footer>
+<footer>Ventus Ltd · GlobalGrid2050 · Experimental next-generation preview branch, not a safety study, forensic diagnosis or connection assessment. Code: Apache 2.0 where declared; EUMETSAT, NESO and OSM datasets retain their own source terms. Technical background: <a href="https://www.dehn-international.com/sites/default/files/media/files/string-inverters-wpx051-en.pdf">DEHN WPX051: AC-side surge protection on string-inverter plants</a> (manufacturer guidance, not proof of an incident). <a href="https://ventusltd.github.io/gridatlas/atlas/">Original GridAtlas</a> · <a href="https://github.com/Ventusltd/gridatlas/issues/36">Engineering scope</a></footer>
 <script type="module" src="./app.mjs"></script>
 </body>
 </html>
