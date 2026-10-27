@@ -1,0 +1,27 @@
+name: Lightning Grid Lab independent proof
+on:
+  pull_request:
+    paths:
+      - 'atlas/labs/lightning-grid/**'
+      - 'tools/proofs/lightning-grid-explorer.proof.mjs'
+      - '.github/workflows/lightning-grid-lab-proof.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  lab-proof:
+    runs-on: ubuntu-latest
+    timeout-minutes: 6
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Static source and boundary proof (not browser or numerical solver)
+        run: node tools/proofs/lightning-grid-explorer.proof.mjs
+      - name: Explicit limits of this proof
+        run: |
+          echo 'No browser, iPhone, CDN/CORS, live EUMETSAT, historical archive or electrical solver was executed.'
+          echo 'Build E and the original production pointer are outside this proof.'
