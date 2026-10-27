@@ -12,6 +12,7 @@ import {
   postEventDiligence,
   caveat
 } from 'https://cdn.jsdelivr.net/gh/Ventusltd/ventus-grid-engine@69b4e88c8464f0310bd67e47ec83ee8afa9e1921/engine/lightning-click-context.js';
+import {parseOpticalFeed,describeOpticalFeedEvidence} from './feed-contract.mjs';
 
 const FEED='https://raw.githubusercontent.com/Ventusltd/lightning/main/data/uk_lightning.geojson';
 const SUBSTATIONS='https://raw.githubusercontent.com/Ventusltd/gridatlas/main/atlas/releases/202608300453-atlas-v9/data/grid_substations.geojson';
@@ -48,16 +49,6 @@ function features(data){
   if(data?.type==='FeatureCollection' && Array.isArray(data.features))return data.features;
   if(Array.isArray(data?.features))return data.features;
   throw Error('Not a GeoJSON feature collection');
-}
-function observationList(geo){
-  return features(geo).filter(f=>
-    f?.id && f.properties?.observation_kind==='optical_lightning_flash'
-    && f.geometry?.type==='Point'
-    && Array.isArray(f.geometry.coordinates)
-    && f.geometry.coordinates.length>=2
-    && Number.isFinite(Date.parse(f.properties.time_utc))
-    && f.geometry.coordinates.slice(0,2).every(Number.isFinite)
-  ).sort((a,b)=>Date.parse(b.properties.time_utc)-Date.parse(a.properties.time_utc));
 }
 async function getAssets(){
   if(state.loadingAssets)return state.loadingAssets;
@@ -181,6 +172,15 @@ function scenario(){
 async function inspect(){
   const f=currentFlash();if(!f)return;
   const serial=++state.serial;
+  // Explicit refresh cannot leave a previous result looking like the current
+  // answer while the genuine source is still being fetched or has failed.
+  state.ctx=null;
+  el('scenario').disabled=true;
+  clear('substations').textContent='Refreshing genuine source records; previous results cleared.';
+  clear('solar').textContent='Refreshing genuine source records; previous results cleared.';
+  el('provenance').textContent='Loading source provenance; no current proximity result.';
+  el('project').replaceChildren(node('option','No project selected'));
+  el('scenario-output').textContent='Source refresh in progress. No electrical solver has run.';
   el('inspect').disabled=true;
   status('Loading genuine substation and solar source records. No changes to the original Atlas…');
   try{
@@ -231,23 +231,22 @@ for(const k of ['radius','kv'])el(k).addEventListener('change',()=>{
 async function start(){
   try{
     const source=await downloadJSON(FEED);
-    state.observations=observationList(source);
-    if(!state.observations.length)throw Error('The feed contains no valid identified optical flashes');
-    const seen=new Set(),distinct=[];
-    for(const f of state.observations)if(!seen.has(String(f.id))){seen.add(String(f.id));distinct.push(f)}
-    state.observations=distinct;
+    const parsed=parseOpticalFeed(source);
+    state.observations=parsed.observations;
+    if(!state.observations.length)
+      throw Error('No valid optical observations in available source; coverage UNKNOWN');
     const selector=el('flash');
     selector.replaceChildren();
-    distinct.forEach((f,i)=>{
+    state.observations.forEach((f,i)=>{
       const name=date(f.properties.time_utc)+' · '+f.geometry.coordinates.map(x=>Number(x).toFixed(3)).join(', ')+' · #'+(i+1);
       const item=node('option',name);item.value=String(f.id);selector.appendChild(item);
     });
     const requested=new URL(location.href).searchParams.get('flash_id');
-    if(requested && distinct.some(f=>String(f.id)===requested))selector.value=requested;
+    if(requested && state.observations.some(f=>String(f.id)===requested))selector.value=requested;
     selector.disabled=el('inspect').disabled=false;
     setObservation(currentFlash());
-    status('Loaded '+pretty(distinct.length)+' distinct authentic optical observations in the available seven-day feed. '+caveat+
-      ' No historical coverage is assumed; select one, then run the genuine nearest search.');
+    status(describeOpticalFeedEvidence(parsed.evidence)+' '+caveat+
+      ' Select an observation, then run the genuine nearest search.');
   }catch(e){fail('Feed unavailable: '+e.message+'. No flash or infrastructure result is inferred.')}
 }
 start();
