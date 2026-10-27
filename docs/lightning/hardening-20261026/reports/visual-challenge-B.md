@@ -133,53 +133,43 @@ Script: `E/r01/r01-grid-footer.mjs`. Output: `r01-geometry.json`. Log: `logs/r01
    - `probe-on-reflow-and-curtain.v1-wrong-wheel-point.json` is kept and labelled.
 - `full-matrix-OFF-run1-superseded-classification/` is the first run, before the additive-host classification. It is kept and not used for verdicts.
 
-## Commands (run from `E/parity` unless stated; B = baseline URL, C = candidate URL)
+## Commands (BEFORE)
 
-1. `node parity-harness.mjs --baseline B --candidate C --additive '[data-lightning-group]' --out runs/full-matrix-OFF`. Log: `logs/full-matrix-OFF.stdout.log`.
-2. `… --viewports desktop-1920x1080 --out runs/resume-1920x1080`. Log: `logs/resume-1920x1080.log`.
-3. `… --viewports desktop-1440x900,desktop-1280x720 --states deeplink --out runs/deeplink-repeat-{1,2}`, and `… --viewports desktop-1440x900 --states deeplink --out runs/deeplink-repeat-3`.
-4. Self-check: `--baseline B --candidate B --viewports desktop-1440x900 --states deeplink --out runs/selfcheck-baseline-deeplink-{1,2,3}`.
-5. `cd E/p14-p15 && VPS=desktop-1440x900,desktop-1280x720,desktop-1920x1080 OUTNAME=p14-p15-desktop.json node p14-p15.mjs`, and the phone equivalent with `OUTNAME=p14-p15-phone.json`.
-6. `node E/r01/r01-grid-footer.mjs`
-7. `node E/p14-p15/probe-on-reflow-and-curtain.mjs`, `node E/p14-p15/probe-phone-both-routes.mjs`, `node E/p14-p15/probe-curtain-what.mjs`
-8. `node E/owner-defect/hide-layers-occlusion.mjs`
+All runs are from `E/parity`.
+- `parity-harness.mjs --baseline B --candidate C --additive '[data-lightning-group]'` with `--viewports`, `--states` and `--out` as in the logs (`logs/*.log`, `runs/*/harness.log`).
+- Self-checks pass B as both baseline and candidate.
+- The other scripts run as `node <script>`: `r01/r01-grid-footer.mjs`, `p14-p15/*.mjs` and `owner-defect/hide-layers-occlusion.mjs`.
+- Not tested: real devices (BLOCKED_HARNESS); tiles and REPD/DuckDB (BLOCKED_DEPENDENCY).
 
-Not tested here: real iPhone Safari or Android devices (BLOCKED_HARNESS, apart from the owner's own receipt); basemap tiles and glyphs, and REPD/DuckDB (BLOCKED_DEPENDENCY: masked or blocked by the shim).
+## AFTER runs: E = 202610270024 and F = 202610270047 (updated 01:05 UTC 27 Oct)
 
-## AFTER runs (updated 01:05 UTC 27 Oct, E matrix complete)
+- **Provenance:**
+  - E: overlay sha256 2976cae7…, worktree 0424d45.
+  - F: overlay sha256 421f3d7e…, 24,773 B, worktree 9e9d655.
+  - Both loaders are byte-identical to atlas/index.html. Production c08f3a6 unchanged.
+- **Setup:** ports 8191 (E) and 8193 (F); one browser and one context at a time.
+- **Harness:** the parity harness unchanged; lead-shim plus the lightning-archive fixture for ON. Phones are Chromium emulation, NOT WebKit.
+- **Evidence:** `evidence/visual-challenge-B/after-2026102700{24,47}/`.
+- **202610262323:** its partial run before the restarts is in `after-202610262323/` (P02 FAIL at 1440: PIPELINE NEWS group +10 px).
 
-**202610262323** (superseded): partial only; container restarts and memory-cgroup kills (evidence `after-202610262323/`). Measured:
-- P02 at 1440x900: FAIL in all 6 states. PIPELINE NEWS `div.key-group` grows 98→108 px because the 64 px `paddingBottom` stretches the shared grid row.
-- P11 at 1440x900: 0.000 %.
+| ID | BEFORE 261949 | E 270024 | F 270047 | evidence (F) | command (F folder) |
+|---|---|---|---|---|---|
+| P14 / M01, main panel **mid-scroll** (393x659, 390x664, 375x548, 430x739, 393x852) | FAIL | **FAIL**: 3–8 covered scroll positions per viewport | **PASS**: 0 covered positions in all 5 viewports, 45–48 steps each | `m01/m01-sweep-202610270047.json` | `GEN=202610270047 INSETS=0 ./with-servers.sh node m01-sweep.mjs` |
+| P14 / M01, main panel at the end | FAIL | PASS | PASS (atEnd 0) | same | same |
+| P14 / M01, curtain mid-scroll (iPhone-UA CSS fullscreen; 393x659, 375x548, 393x852) | not measured | 0 covered (control) | 0 covered; paddingRight 144 px | `m01/m01-sweep-202610270047-curtain.json` | `… CURTAIN=1 VPS=393x659,375x548,393x852 …` |
+| P02 / P10, 36 cells | FAIL (Grid body −78 px) | PASS, 0 moved | **PASS**: 0 moved original elements in all 36 cells, Grid-open included; 0 original surface diffs | `parity/<viewport>/SUMMARY.md` | `./run-parity-per-viewport.sh <viewport>` |
+| P11 | PASS | PASS, 0.000 % | **PASS**: 0.000 % in all 36 cells (after one 1920 rerun) | same | same |
+| M04 / P15 | FAIL (`#555`, 9 px, 2.73:1) | captions 12 px `#bbb` 10.6:1; **footer 11 px** | not re-measured (F changes dots and insets only) | — | — |
 
-**E = 202610270024** (variant E): overlay sha256 2976cae7…f890bf, 24,780 B; worktree 0424d45; loader identical to atlas/index.html; production c08f3a6 unchanged. Port 8191, ONE browser and ONE context at a time. All browsers are Chromium; phones are emulated (iPhone UA, NOT WebKit).
-
-| ID | BEFORE 202610261949 | E 202610270024 | evidence (under `evidence/visual-challenge-B/after-202610270024/`) | command |
-|---|---|---|---|---|
-| **P14 / M01**, mid-scroll | FAIL | **FAIL** (see M01 below) | `m01/m01-sweep-*.json`, `m01/side-by-side-393x852-midscroll-262323-vs-E.png`, `m01/*-worst.png` | `GEN=<gen> INSETS=0 ./with-servers.sh node m01-sweep.mjs` |
-| P14 / M01, scrolled to the end, main panel | FAIL (3 footer lines covered) | PASS at 393x852, 360x740 and 390x844. 0 lines covered. Every visible caption line is hit-testable at 3 points. Last text ends 44–45 px above the button. | `hide-layers-occlusion.json`, `logs/occlusion-E.log` | `./with-servers.sh node occlusion-E.mjs` |
-| P14 / M01, scrolled to the end, fullscreen curtain | not measured | iPhone UA (CSS-only fullscreen path): PASS, 32 lines visible, 0 covered, all hit-testable. Android profiles: curtain not hit-testable anywhere on BOTH routes (pre-existing, BLOCKED_HARNESS / original behaviour). | same | same |
-| P02 / P10 | FAIL (Grid panel body −78 px) | **PASS**: all 36 cells (6 viewports × 6 states), **0 moved original elements**, Grid-open included. Styles equal, 0 hit-target regressions, 0 original surface diffs. | `parity/<viewport>/SUMMARY.md` | `./run-parity-per-viewport.sh <viewport>` |
-| P11 | PASS | **PASS**: 0.000 % changed pixels in all 36 cells. Masks are clock, map canvas and `[data-lightning-group]` only. 3 deep-link cells (1440, 393, 390) record styleΔ 2 = `#lbl-solar`/`#fs-lbl-solar` opacity 1 vs 0.5. This is the solar-layer loading flake, reproduced baseline-vs-baseline earlier, so it is not a regression. | same | same |
-| M04 / P15 | FAIL (`#555`, 9 px, 2.73:1) | Captions 12 px `#bbb` = 10.62:1. Warning 12 px `#ffcc00` = 13.48:1. **Footer 11 px** `#bbb` = 10.62:1. Contrast PASS everywhere. The footer is 11 px, not 12 px: OWNER_DECISION if M04 requires 12 px on every caption line. | `hide-layers-occlusion.json` (per-line fontSize/colour) | — |
-
-### M01 calibration (coordinator's order: load with Layers CLOSED → tap LAYERS → lightning ON → scroll)
-
-The sweep scrolls in 60 px real-wheel steps and hit-tests every caption line against "▾ HIDE LAYERS" at every step.
-
-**202610262323: the owner's overlap reproduces in Chromium.**
-- In every viewport (393x659, 390x664, 375x548, 430x739, 393x852), 4–6 mid-scroll positions have caption text under the button: the warning and footer lines.
-- 0 lines are covered at the end, which explains why end-only tests (T8b, my occlusion check) pass.
-- The owner's screenshot shows exactly this mid-scroll state.
-
-**E: still FAIL, with a smaller overlap.**
-- 3–8 mid-scroll positions per viewport. The footer, plus at 375x548 the group title and label, sit under the button, by 7–253 px² per line.
-- **Root cause, measured:** `fit()` runs at install, while the toggle still reads "▴ LAYERS" (91 px wide). So `paddingRight` = **103.484 px**, where the expanded "▾ HIDE LAYERS" (132.4 px) needs **143.406 px**. The bottom padding is 72 px.
-- **Diagnostic:** one real window resize after opening Layers re-runs `fit()`. This gives `paddingRight` 143.406 px and **0 covered positions** at 393x659, 393x852 and 375x548 (`m01/m01-sweep-202610270024-refit-after-open.json`).
-- **Minimal fix (overlay line 181, after `addEventListener(e,fit)`):** also re-run fit when the toggle changes size. For example, `new ResizeObserver(fit).observe(Q('gridatlas-dash-toggle'))` (with a guard when absent), or a `click` listener on the toggle calling `requestAnimationFrame(fit)`. Neither touches original CSS.
-
-**Bottom-inset variant (34 px):**
-- `atlas/index.html` has no `viewport-fit=cover`, so `env(safe-area-inset-bottom)` is 0 on a real iPhone as well, and no original rule reacts to it. Only the corridor sheet and the menu-bar panel use `env()`.
-- The emulation (one test-only fixed 34 px div; style count 9→10; matches no original element) covered the toggle itself, so Layers could not be opened (tap timeout). I treat it as non-representative: in-app chrome lies outside the web view and is modelled by the shorter viewports. Evidence: `m01/m01-sweep-202610262323.inset-run.json`.
-
-**Real-device status:** M01 on a real iPhone remains an owner check (BLOCKED_HARNESS here). The mid-scroll mechanism above is the reproduced explanation.
+**Notes**
+- **M01 reproduction.** Order: load with Layers closed, tap LAYERS, lightning ON, then 60 px real-wheel sweep. This reproduces the owner's overlap on 202610262323 at every tested viewport, in mid-scroll only.
+- **E's cause.** `fit()` measured the 91 px "▴ LAYERS" button, giving `paddingRight` 103.5 px where 143.4 px is needed. A forced re-fit cleared it.
+- **F's fix.** F gets 143.406 px from its ResizeObserver, and the overlap is gone.
+- **Curtain control is weak.** The curtain sweep did not separate E from F (E had 0 covered with `paddingRight` 0). At 393x852 the curtain ends at y≈596, above the button (y 796). Read that row as "no overlap observed", not as proof that the fix works there. Android profiles cannot reach the curtain on either route (pre-existing).
+- **34 px bottom inset.** `env(safe-area-inset-bottom)` is 0 without `viewport-fit=cover`, which atlas/index.html lacks. The overlay emulation covered the toggle itself, so it was not used. Evidence: `after-202610270024/m01/*inset-run.json`.
+- **Real iPhone.** Still an owner check (BLOCKED_HARNESS).
+- **Deep-link flake on F** (harness timing, not a regression):
+  - Three cells (393, 1280; E also had 1440 and 390) record styleΔ 2, the `#lbl-solar` opacity loading flake, reproduced baseline-vs-baseline.
+  - The first 1920 deep-link run (`parity-desktop-1920x1080-run1-popup-flake/`) placed the original deep-link card docked (x 17) instead of anchored (x 790), giving 20 % pixels. The rerun passed 6/6. The same placement flake appeared once on BEFORE (repeat-1) and is map-timing.
+- **Not covered by parity.** F's dot radius change is on the map canvas, which is masked, so parity says nothing about the dots. ON states grow `#scada-ui-container` scrollHeight by up to +128 px (additive-host, after all original groups).
+- **OWNER_DECISION:** footer caption at 11 px versus the M04 12 px target.
