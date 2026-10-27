@@ -13,6 +13,7 @@ import {
   caveat
 } from 'https://cdn.jsdelivr.net/gh/Ventusltd/ventus-grid-engine@69b4e88c8464f0310bd67e47ec83ee8afa9e1921/engine/lightning-click-context.js';
 import {parseOpticalFeed,describeOpticalFeedEvidence} from './feed-contract.mjs';
+import {initLightningMap} from './map-view.mjs';
 
 const FEED='https://raw.githubusercontent.com/Ventusltd/lightning/main/data/uk_lightning.geojson';
 const SUBSTATIONS='https://raw.githubusercontent.com/Ventusltd/gridatlas/main/atlas/releases/202608300453-atlas-v9/data/grid_substations.geojson';
@@ -23,6 +24,8 @@ const el=id=>document.getElementById(id);
 const pretty=n=>Number(n).toLocaleString('en-GB',{maximumFractionDigits:2});
 const date=t=>new Date(t).toISOString().replace('T',' ').replace('Z',' UTC');
 const state={observations:[],files:null,engine:null,ctx:null,serial:0,loadingAssets:null};
+let mapView=null;
+function mapStatus(msg){el('map-status').textContent=msg}
 function node(tag,value,cls=''){
   const e=document.createElement(tag);
   if(value!=null)e.textContent=String(value);
@@ -83,6 +86,8 @@ function currentFlash(){
 }
 function setObservation(f){
   state.ctx=null;
+  mapView?.selectFlash(f);
+  el('fit-selection').disabled=!f||!mapView;
   el('scenario').disabled=true;
   el('project').replaceChildren(node('option','No project selected'));
   el('scenario-output').textContent='Select a genuine optical observation and run the proximity search first.';
@@ -106,6 +111,7 @@ function display(ctx,assets){
     '; '+pretty(d.scanned_repd_solar_projects)+' located, identified solar projects of '+pretty(n.total_solar_records)+
     ' source rows. Distances are straight-line, not electrical paths.'+
     (assets.issues.length?' PARTIAL SOURCE FAILURE: '+assets.issues.join('; '):'');
+  mapView?.setContext(ctx);
   const subs=clear('substations');
   if(!ctx.substations.length)line(subs,'No eligible located substation found in the loaded records. Not evidence that none exists.');
   for(const p of ctx.substations){
@@ -175,6 +181,7 @@ async function inspect(){
   // Explicit refresh cannot leave a previous result looking like the current
   // answer while the genuine source is still being fetched or has failed.
   state.ctx=null;
+  mapView?.clearContext();
   el('scenario').disabled=true;
   clear('substations').textContent='Refreshing genuine source records; previous results cleared.';
   clear('solar').textContent='Refreshing genuine source records; previous results cleared.';
@@ -220,7 +227,7 @@ for(const k of ['ac','dc','inverter','project','overhead','weather']){
   });
 }
 for(const k of ['radius','kv'])el(k).addEventListener('change',()=>{
-  state.serial++;state.ctx=null;el('scenario').disabled=true;
+  state.serial++;state.ctx=null;mapView?.clearContext();el('scenario').disabled=true;
   clear('substations').textContent='Parameters changed. Run proximity search again.';
   clear('solar').textContent='Parameters changed. Run proximity search again.';
   el('provenance').textContent='Prior proximity results cleared; no new search yet.';
@@ -233,6 +240,8 @@ async function start(){
     const source=await downloadJSON(FEED);
     const parsed=parseOpticalFeed(source);
     state.observations=parsed.observations;
+    const mapped=mapView?.setObservations(state.observations);
+    el('fit-flashes').disabled=!mapView||!mapped;
     if(!state.observations.length)
       throw Error('No valid optical observations in available source; coverage UNKNOWN');
     const selector=el('flash');
@@ -249,4 +258,20 @@ async function start(){
       ' Select an observation, then run the genuine nearest search.');
   }catch(e){fail('Feed unavailable: '+e.message+'. No flash or infrastructure result is inferred.')}
 }
+try{
+  mapView=initLightningMap({
+    onPick:id=>{
+      const actual=state.observations.find(f=>String(f.id)===String(id));
+      if(!actual)return;
+      el('flash').value=String(actual.id);
+      state.serial++;
+      setObservation(actual);
+      void inspect(); // actual optical marker selection immediately opens grid context
+    },
+    onStatus:mapStatus,
+    onError:message=>mapStatus('Map rendering warning: '+message+'; the UTC dropdown remains available.')
+  });
+}catch(e){mapStatus('Map could not start: '+e.message+'. UTC dropdown selection remains available.')}
+el('fit-flashes').addEventListener('click',()=>mapView?.fitFlashes());
+el('fit-selection').addEventListener('click',()=>mapView?.fitSelection());
 start();
