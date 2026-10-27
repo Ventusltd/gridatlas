@@ -107,6 +107,21 @@ try{
   assert.match(await page.locator('#scenario-output').textContent(),/IT AC first and second earth fault/i,
     'IT fault study checklist must be present');
   await page.screenshot({path:output+'/iphone-sized-click-to-grid.png',fullPage:true});
+  // OVERLAP FAIL-FIRST: once the nearest substation and solar symbols are
+  // painted within the 44px optical hit target, another tap on the SAME
+  // genuine optical centroid must not also open an unrelated asset popup.
+  // Source optical coordinate (-3.5,54.5); synthetic solar (-3.49,54.51)
+  // and substation (-3.48,54.49) are intentionally within the tap radius.
+  // This is a real MapLibre delegated-event priority test, not a claim of
+  // actual asset exposure, a strike or a native Build H defect.
+  await page.waitForTimeout(500); // let loaded asset GeoJSON paint
+  await canvas.click({position:{x:box.width/2,y:box.height/2},timeout:10000});
+  await page.waitForTimeout(500);
+  const overlappingPopupCount=await page.locator('.maplibregl-popup').count();
+  assert.equal(overlappingPopupCount,0,
+    'OVERLAP FAIL-FIRST: tapping the optical flash must not simultaneously open a nearby solar/substation popup');
+  console.log('PASS — optical marker has exclusive selection precedence over overlapping asset tap layers.');
+
   console.log('PASS — real Chromium viewport 390x844: flash dot tapped, grid context populated, original MAP link, IT/DC scenarios NOT RUN.');
 
   // FAIL-FIRST arrival integrity: an H-successor may link an authentic ID
