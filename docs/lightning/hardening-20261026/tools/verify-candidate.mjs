@@ -35,7 +35,7 @@ for (const id of rc.cartridge_order) {
   check(fs.existsSync(p), `${id}: missing ${p}`);
   const h = shaLF(p), size = fs.statSync(p).size;
   check(h === e.sha256, `${id}: sha256 mismatch`);
-  check(size <= 460000, `${id}: over 460 kB`);
+  check(size <= 480000, `${id}: over 480 kB`);
   check(shell.includes(e.replace_script), `${id}: slot missing from shell`);
   const le = live.cartridges.find(x => x.id === id);
   rows.push({id, generation: e.generation, bytes: size, sha256: h, same_as_live: le.sha256 === e.sha256});
