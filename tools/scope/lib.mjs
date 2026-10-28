@@ -60,7 +60,10 @@ export const ACTIVE_WORKFLOWS = Object.freeze([
   /* Added 2026-09-29. Fails a pull request that adds a file over 5 MB unless
      the path is in .github/large-files-allowlist.txt. Runs on pull_request
      only, so nothing that pushes to main is affected. Perpetual, so it carries
-     no 12-digit prefix, like rollback-composition.yml. */
+     no 12-digit prefix, like rollback-composition.yml.
+     28 Oct 2026: it also carries the cartridge-gate job (tools/ci/pr-gate.mjs,
+     docs/CI.md). Extended rather than added because it is the only entry here
+     still enabled in the repository settings, so the budget stays at nine. */
   'pr-file-size-guard.yml'
 ]);
 

@@ -1,6 +1,12 @@
-name: PR file size guard
+name: PR file size guard and cartridge gate
 
-# Fails a pull request that adds or grows a file beyond MAX_MB, unless the path
+# Two jobs, one workflow file, because the active-workflow budget in
+# tools/scope/lib.mjs (ACTIVE_WORKFLOWS) is exact and every other entry on it is
+# disabled in the repository settings, 202608312212-cartridge-proof.yml
+# included. This is the one workflow that runs on every pull request, so the
+# gate lives here rather than as a tenth file. See docs/CI.md.
+#
+# size-guard: fails a pull request that adds or grows a file beyond MAX_MB, unless the path
 # is listed in .github/large-files-allowlist.txt (exact paths or shell globs,
 # one per line, '#' comments). Runs on pull requests only: pushes to main are
 # deliberately not checked so the existing bots that commit generated data to
@@ -104,3 +110,43 @@ jobs:
             exit 1
           fi
           echo "All files within budget."
+
+  # The checks that were run by hand before every cut, run on every PR:
+  # loop.mjs lint and STATE.md parity, the proof of every generation the PR
+  # touches and of the one atlas/current.json points to, run-current,
+  # verify-compose, loader byte identity for atlas/v/<gen>/index.html, and the
+  # vendored lightning overlay node suite. Node built-ins only: no npm install,
+  # no browser, no network, no secrets. The browser proofs stay in
+  # 202608312212-cartridge-proof.yml.
+  cartridge-gate:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    env:
+      # Pinned exactly: the version every local gate run of 28 Oct 2026 used.
+      NODE_VERSION: '22.23.4'
+    steps:
+      - name: Checkout the PR merge commit
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          fetch-depth: 1
+          persist-credentials: false
+
+      - name: Fetch the base commit the PR is diffed against
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+        run: git fetch --no-tags --depth=1 origin "$BASE_SHA"
+
+      - name: Node (exact pin)
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: The runner is on the pinned Node
+        run: |
+          test "$(node --version)" = "v${NODE_VERSION}" || { echo "node $(node --version) is not the pinned v${NODE_VERSION}"; exit 1; }
+          node --version
+
+      - name: Cartridge gate
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+        run: node tools/ci/pr-gate.mjs --base "$BASE_SHA"
