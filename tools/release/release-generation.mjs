@@ -258,9 +258,18 @@ const releaseParent = git('rev-parse', 'HEAD');
 step(`write atlas/current.json from ${manifestRel} and regenerate STATE.md`);
 fs.writeFileSync(path.join(ROOT, 'atlas/current.json'), derived);
 const state = run('node', ['tools/scope/loop.mjs', 'state'], { allowFail: true });
-const restore = () => run('git', ['checkout', '--', ...POINTER_FILES], { allowFail: true });
-if (state.status !== 0) { restore(); die(`loop.mjs state failed:\n${state.out}`); }
-ok(state.out.trim());
+/* On any failure from here on: put the pointer back, and if no preparatory
+   commit was made, leave HEAD where it started and drop the empty branch. */
+const restore = () => {
+  run('git', ['checkout', '--', ...POINTER_FILES], { allowFail: true });
+  if (!prepCommits.length) {
+    run('git', ['switch', '-q', '--detach', baseSha], { allowFail: true });
+    run('git', ['branch', '-D', branch], { allowFail: true });
+  }
+};
+const HINT = 'If lint fails on the cartridge ceiling or the workflow budget, add the owner-approved preparatory commit (--prep-gate-kb N --prep-gate-reason "..." or --prep-commit <sha>) and run again.';
+if (state.status !== 0) { restore(); die(`loop.mjs state failed with ${G}'s pointer in place; the pointer was restored.\n${HINT}\n${state.out}`); }
+ok(state.out.trim().replace(/\n/g, '; '));
 const changed = changedPaths();
 if (JSON.stringify(changed) !== JSON.stringify([...POINTER_FILES].sort())) {
   restore(); die(`the release must change exactly ${POINTER_FILES.join(' and ')}; it changed: ${changed.join(', ')}`);
@@ -277,7 +286,7 @@ report.parity_after = gates.parityRows;
 if (JSON.stringify(changedPaths()) !== JSON.stringify([...POINTER_FILES].sort())) { restore(); die('a gate wrote outside the pointer files'); }
 if (!gates.rows.every(r => r.ok)) {
   restore();
-  console.error(`\n${TOOL}: gates FAILED; the pointer was restored. Branch ${branch} holds ${prepCommits.length} prep commit(s) only.`);
+  console.error(`\n${TOOL}: gates FAILED; the pointer was restored. ${prepCommits.length ? `Branch ${branch} holds ${prepCommits.length} prep commit(s) only.` : 'No branch kept.'}\n${HINT}`);
   finish(1);
 }
 
@@ -303,7 +312,7 @@ if (report.release_commit) {
   console.log(`  release commit       ${report.release_commit}`);
   console.log(`  release tree         ${report.release_tree}`);
   console.log(`  parent of release    ${releaseParent}`);
-  console.log(`\n${git('diff', '--stat', `${baseSha}..HEAD`)}`);
+  console.log(`\n${run('git', ['diff', '--stat', `${baseSha}..HEAD`]).stdout.trimEnd()}`);
   console.log(`\nRELEASE READY on branch ${branch} (not pushed). Next, by a person:
   git push -u origin ${branch}
   gh pr create --draft --base main --head ${branch}   # Rebase and merge, never squash: the release commit must stay separately revertable
