@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// @gate-min-generation 202610282100
+// @gate-min-generation 202610282215
 // Vendored from the hardening lanes' test-engine.mjs (Build M2, 202610282100: 176 tests, a superset of
 // test-fixes.mjs), so the PR gate (tools/ci/pr-gate.mjs, docs/CI.md) runs the lightning engine, cell and REPD
 // tests on every overlay module from 202610282100 on. Changes from the source, all mechanical:
@@ -9,6 +9,10 @@
 //   - a CI-additions section at the end (CI1, CI2) closes a gap a mutation run found.
 //   - the six LIGHTNING_DATA tests still skip unless LIGHTNING_DATA points at a Ventusltd/lightning data/history
 //     checkout (the gate has no network).
+// M3 (202610282215): the expectations that M3 changes on purpose (the folded M2 review findings: wording, grouping within
+//   about 10 m, unknown capacity never 0 MW, …) are updated in place, each tagged with its finding, and the M3 tests (REPD
+//   layer auto-activation with an engine stand-in) and the review-fix tests are appended after CI1/CI2. The minimum
+//   generation is therefore 202610282215: the suite is RED on 202610282100 by design (M2 wording).
 // The tests below were written fail-first against earlier builds; do not relax an expectation to make a module pass.
 // A new build that changes behaviour on purpose updates the affected test here, in the same PR, with the reason.
 //   LIGHTNING_MODULE=atlas/modules/<gen>-uk-lightning-overlay.js node --test tools/ci/lightning/overlay-engine.test.mjs
@@ -940,7 +944,7 @@ test('I1b: with overlapping hit circles, the tap opens the flash nearest the tap
 // ---------------------------------------------------------------- variant J (fail-first against fixed-module-I.js)
 test('J1: a tap flies to zoom 12 over 1200 ms like the original arrival, and fitBounds (top 150, bottom clear of the card; LR-layout) only when a link end is off screen', async () => {
   let inView = true; const x = boot({ feedFn: () => feed([flash(Date.now() - H, 'z', [-1.5, 52])]) }); installNeon(x, SUBS);
-  x.map.getBounds = () => ({ contains: () => inView });
+  x.mapEl.clientHeight = 659; x.mapEl.clientWidth = 393; x.setProj(() => inView ? { x: 200, y: 200 } : { x: 200, y: 600 });
   x.toggle(true); await drain(); tapFlash(x);
   assert.equal(JSON.stringify(x.camera.map(c => c[0])), '["flyTo"]'); const fo = x.camera[0][1][0];
   assert.equal(fo.zoom, 12); assert.equal(fo.duration, 1200); assert.equal(JSON.stringify(fo.center), '[-1.5,52]');
@@ -1635,18 +1639,19 @@ const NEWARK = [-0.81, 53.07];
 const cf = v => String(v).replace(/\p{Cf}/gu, '').slice(0, 200);
 const siteName = p => ({ solar: 'Solar', solar_roof: 'Rooftop solar' })[p.tech] || cf(p.raw_tech);
 const bruteSites = (repd, lon, lat, keep = () => true) => {
-  const seen = new Set(), m = new Map();
+  const seen = new Set(), m = new Map(), rows = [];
   for (const f of repd.features) {
     const a = repPoint(f.geometry), p = f.properties || {}; if (!a || !PTECH.has(p.tech) || !keep(p)) continue;
     const km = hav(lon, lat, a[0], a[1]); if (km > 40) continue;
     const k = a + JSON.stringify(p); if (seen.has(k)) continue; seen.add(k);
-    const key = a.join(); if (!m.has(key)) m.set(key, { a, km, parts: [] }); m.get(key).parts.push(p);
+    rows.push({ a, km, p });
   }
+  for (const r of rows.sort((x, y) => x.km - y.km)) { let g = [...m.values()].find(g => Math.abs(g.a[0] - r.a[0]) < 2e-4 && Math.abs(g.a[1] - r.a[1]) < 1e-4); if (!g) m.set(r.a.join(), g = { a: r.a, km: r.km, parts: [] }); g.parts.push(r.p); }
   const s = [...m.values()].sort((x, y) => x.km - y.km); return s.filter((g, i) => i < 10 || g.km === s[9].km);
 };
-const siteMW = g => g.parts.reduce((t, p) => t + (p.capacity > 0 ? +p.capacity : 0), 0);
+const siteMW = g => [...new Set(g.parts.map(p => p.name + '|' + p.raw_tech + '|' + (p.capacity > 0 ? +p.capacity : 0)))].reduce((t, k) => t + +k.split('|').pop(), 0);
 const siteLabel = g => `${g.km.toFixed(2)} km · ${[...new Set(g.parts.map(siteName))].sort().join(' + ')}${siteMW(g) > 0 ? ' ' + siteMW(g).toLocaleString('en-GB') + ' MW' : ''}`;
-const siteRow = g => `${siteLabel(g)} · ${g.parts.length > 1 ? g.parts.length + ' co-located · ' : ''}${[...new Set(g.parts.map(p => cf(p.status)))].join(' / ')} · ${[...new Set(g.parts.map(p => cf(p.name)))].join(' / ')}`;
+const siteRow = g => `${siteLabel(g)}${siteMW(g) > 0 ? '' : ' · capacity not stated'} · ${g.parts.length > 1 ? g.parts.length + ' projects at this point:' : cf(g.parts[0].status) + ' · ' + cf(g.parts[0].name)}`;
 
 test('REPD1 (real REPD, engine source; M2 grouping): a flash near Newark lists the 10 nearest REPD sites of the full register, ascending, as the brute force over all 10,784 rows', { skip: !REPD_REAL }, async () => {
   const x = boot({ feedFn: () => feed([flash(Date.now() - H, 'z', NEWARK)]) }); installRepd(x, SUBS.map(q => ({ ...q, at: [q.at[0] + 0.69, q.at[1] + 1.07] })), REPD_REAL);
@@ -1655,8 +1660,8 @@ test('REPD1 (real REPD, engine source; M2 grouping): a flash near Newark lists t
   assert.equal(REPD_REAL.features.length, 10784); assert.equal(want.length, 10); assert.deepEqual(rows, want.map(siteRow));
   assert.ok(want.some(g => g.parts.length > 1), 'Newark has a co-located site (the M2 grouping case)');
   assert.equal(x.distCalls, 10784, 'every register row measured with the original distanceKm');
-  assert.match(c.textContent, /10 nearest REPD sites \(\d+ projects; co-located parts grouped\) within 40 km of this optical flash \(straight-line; all technologies and statuses\)\. Not evidence any project was struck or affected\./);
-  assert.match(c.children[0].children[0].textContent + c.textContent, / · 5 nearest substations · 10 nearest projects/);
+  assert.match(c.textContent, /10 nearest REPD sites \(\d+ projects; those at one point grouped\) within 40 km of this optical flash, straight-line\. Not evidence any project was struck\./);
+  assert.match(c.children[0].children[0].textContent + c.textContent, / · 5 nearest substations · 10 nearest REPD sites/);
   const ln = x.sources.get('gridatlas-lightning-neon-plinks').data.features, nd = x.sources.get('gridatlas-lightning-neon-pnodes').data.features;
   assert.equal(ln.length, 10); assert.equal(nd.length, 10); for (const f of ln) assert.deepEqual([...f.geometry.coordinates[0]], NEWARK);
   assert.deepEqual(Array.from(nd, f => f.properties.label), want.map(siteLabel)); assert.deepEqual(Array.from(nd, f => f.properties.mw), want.map(siteMW));
@@ -1674,8 +1679,8 @@ test('REPD2: labels read "2.14 km · Solar 49.9 MW"; unknown capacity shows no M
   const x = boot({ feedFn: () => feed([flash(Date.now() - H, 'z', [-1.5, 52])]) }); installRepd(x, SUBS, repd, 'fetch');
   x.toggle(true); await drain(); tapFlash(x); await settle();
   const rows = [...prows(card(x))].map(r => r.textContent);
-  assert.deepEqual(rows, ['2.14 km · Solar 49.9 MW · operational · Sun A', '3.34 km · Battery · application submitted · Bat B', '4.45 km · Wind Onshore 1,200 MW · awaiting construction · Wind C', '5.57 km · Rooftop solar 10 MW · under construction · Roof D', '6.68 km · Anaerobic Digestion 2.5 MW · operational · AD E']);
-  assert.match(card(x).textContent, /5 nearest REPD projects within 40 km/);
+  assert.deepEqual(rows, ['2.14 km · Solar 49.9 MW · operational · Sun A', '3.34 km · Battery · capacity not stated · application submitted · Bat B', '4.45 km · Wind Onshore 1,200 MW · awaiting construction · Wind C', '5.57 km · Rooftop solar 10 MW · under construction · Roof D', '6.68 km · Anaerobic Digestion 2.5 MW · operational · AD E']);
+  assert.match(card(x).textContent, /5 nearest REPD sites within 40 km/);
   const a = prows(card(x))[0], q = new URLSearchParams(a.href.split('?')[1]); assert.ok(a.href.startsWith('/gridatlas/atlas/?'), 'the row opens the page route, not the shell base: ' + a.href);
   assert.deepEqual(Object.fromEntries(q), { longitude: '-1.5', latitude: '52.0192', technology: 'solar', project: 'Sun A', capacity_mw: '49.9', status: 'operational' });
   for (const r of prows(card(x))) assert.doesNotMatch(r.href, /repd_ref/);
@@ -1694,14 +1699,14 @@ test('REPD3: the register is fetched once per page (engine URL through the bridg
   const y = boot({ feedFn: () => feed([flash(Date.now() - H, 'z', [-1.5, 52])]) }); installRepd(y, SUBS, null, 'fetch', async () => new Response('x', { status: 503 }));
   y.toggle(true); await drain(); tapFlash(y); await settle(); assert.match(card(y).textContent, /REPD projects unavailable: HTTP 503/);
   const z = boot({ feedFn: () => feed([flash(Date.now() - H, 'z', [-1.5, 52])]) }); installRepd(z, SUBS, { type: 'FeatureCollection', features: [] }, 'fetch');
-  z.toggle(true); await drain(); tapFlash(z); await settle(); assert.match(card(z).textContent, /REPD projects unavailable: register empty/); assert.doesNotMatch(card(z).textContent, /No REPD project/);
+  z.toggle(true); await drain(); tapFlash(z); await settle(); assert.match(card(z).textContent, /REPD projects unavailable: register empty/); assert.doesNotMatch(card(z).textContent, /No REPD site/);
 });
 
 test('REPD4: none within 40 km is stated; no project lines; the substation answer is unchanged', async () => {
   const x = boot({ feedFn: () => feed([flash(Date.now() - H, 'z', [-1.5, 52])]) }); installRepd(x, SUBS, { type: 'FeatureCollection', features: [pf(-1.5, 53, { name: 'Far' })] });
   x.toggle(true); await drain(); tapFlash(x); await settle();
-  assert.match(card(x).textContent, /No REPD project within 40 km of this optical flash \(straight-line; all technologies and statuses\)/); assert.equal(prows(card(x)).length, 0);
-  assert.doesNotMatch(card(x).textContent, /nearest projects/); assert.equal(x.sources.get('gridatlas-lightning-neon-plinks').data.features.length, 0);
+  assert.match(card(x).textContent, /No REPD site within 40 km of this optical flash, straight-line\. Not evidence any project was struck\./); assert.equal(prows(card(x)).length, 0);
+  assert.match(card(x).textContent, / · no REPD site within 40 km/); assert.doesNotMatch(card(x).textContent, /Within 10 km/); assert.equal(x.sources.get('gridatlas-lightning-neon-plinks').data.features.length, 0);
 });
 
 test('REPD5: close, period switch, LATEST and OFF remove the project lines, nodes and labels; a register arriving after close draws nothing', async () => {
@@ -1731,7 +1736,7 @@ test('REPD6: a cell tap measures projects from the cell centre; the camera frame
     installRepd(x, SUBS, repd); x.mapEl._rect = { top: 0, left: 0, right: 393, bottom: 659, width: 393, height: 659 }; x.map.getBounds = () => ({ contains: () => false });
     cellHit(x, f); await settle();
     assert.deepEqual(x.neonCalls.at(-1).slice(0, 2), [lon, lat]); assert.equal(prows(card(x)).length, 2);
-    assert.match(card(x).textContent, /2 nearest REPD projects within 40 km of this cell centre/);
+    assert.match(card(x).textContent, /2 nearest REPD sites within 40 km of this cell centre/);
     const fb = x.camera.filter(k => k[0] === 'fitBounds').at(-1); assert.ok(fb); const [[w, s], [e, n]] = fb[1][0], pad = fb[1][1].padding;
     for (const [a, b] of [[lon, lat], [lon + 0.3, lat], [lon, lat - 0.2]]) assert.ok(a >= w && a <= e && b >= s && b <= n, 'bbox misses ' + a + ',' + b);
     assert.equal(pad.top, 150); assert.equal(pad.bottom, card(x).bb + 143 + 24); assert.equal(fb[1][1].maxZoom, 12);
@@ -1741,7 +1746,7 @@ test('REPD6: a cell tap measures projects from the cell centre; the camera frame
 test('REPD7: honest wording: never "affected" as a claim, never a strike on a site; the module never writes the URL', async () => {
   const x = boot({ feedFn: () => feed([flash(Date.now() - H, 'z', [-1.5, 52])]) }); installRepd(x, SUBS, { type: 'FeatureCollection', features: [pf(-1.5, 52.01)] });
   x.toggle(true); await drain(); tapFlash(x); await settle(); const t = card(x).textContent;
-  assert.match(t, /Not evidence any project was struck or affected\./); assert.doesNotMatch(t, /(were|was|are|is) affected|strike on|struck the|hit the/i);
+  assert.match(t, /Not evidence any project was struck\./); assert.doesNotMatch(t, /(were|was|are|is) affected|strike on|struck the|hit the/i);
   assert.doesNotMatch(SRC, /repd_ref|location\.(href|search|hash|assign|replace)|history\.(push|replace)State|pushState/);
 });
 
@@ -1778,24 +1783,25 @@ test('M2-MR1b: a redirected register response is refused like every other module
 test('M2-MR1c (bridge keeps a failed start): the first failure says "tap again"; a repeated failure adds the switch-on-a-REPD-layer / reload advice', async () => {
   const x = flash0(); installRepd(x, SUBS, null, 'fetch', async () => Promise.reject(new Error('DuckDB start failed')));
   x.toggle(true); await drain(); tapFlash(x); await settle();
-  assert.match(card(x).textContent, /REPD projects unavailable: DuckDB start failed\. Tap again to retry\./); assert.doesNotMatch(card(x).textContent, /reload/);
-  tapFlash(x); await settle(); assert.match(card(x).textContent, /keeps failing, switch on a REPD layer or reload the page \(the map's REPD loader keeps a failed start until the page is reloaded\)/);
+  assert.match(card(x).textContent, /REPD projects unavailable: DuckDB start failed\. Tap the flash again to retry\./); assert.doesNotMatch(card(x).textContent, /reload/);
+  assert.match(card(x).querySelector('summary').textContent, / · REPD unavailable$/, 'M2R-a11y: the collapsed card says so');
+  tapFlash(x); await settle(); assert.match(card(x).textContent, /REPD projects unavailable: DuckDB start failed\. Switch on a REPD layer or reload the page, then tap again\./);
   assert.equal(x.repdFetch.length, 2);
 });
 test('M2-MR2: exact duplicate register rows are listed once (Kelvin Energy Recovery Facility, real register); same point with other properties is one grouped site', async () => {
   const x = await flashAt([-1.99, 52.51]), t = card(x).textContent; assert.equal(t.split('Kelvin Energy Recovery Facility').length - 1, 1, 'listed once');
   const d = pf(-1.5, 52.01, { name: 'Dup' }), y = await flashAt([-1.5, 52], FCx([d, structuredClone(d)]));
-  assert.equal(rowsOf(y).length, 1); assert.doesNotMatch(rowsOf(y)[0], /co-located/); assert.match(card(y).textContent, /1 nearest REPD project within/);
+  assert.equal(rowsOf(y).length, 1); assert.doesNotMatch(rowsOf(y)[0], /co-located/); assert.match(card(y).textContent, /1 nearest REPD site within/);
   const z = await flashAt([-1.5, 52], FCx([d, structuredClone(d), pf(-1.5, 52.01, { name: 'Dup', tech: 'bess', raw_tech: 'Battery' })]));
-  assert.equal(rowsOf(z).length, 1); assert.match(rowsOf(z)[0], / · Battery \+ Solar 20 MW · 2 co-located · operational · Dup$/);
+  assert.equal(rowsOf(z).length, 1); assert.match(rowsOf(z)[0], / · Battery \+ Solar 20 MW · 2 projects at this point:$/);
 });
 test('M2-MR3: Steeple Renewables solar and its co-located BESS are one site; a different site tied with the 10th is kept; an 11th farther site is not', async () => {
-  const x = await flashAt([-0.75, 53.35]), r = rowsOf(x).filter(s => /Steeple Renewables Project/.test(s));
-  assert.equal(r.length, 1); assert.match(r[0], /Battery \+ Solar 1,100 MW · 3 co-located/); assert.equal(card(x).textContent.split('Steeple Renewables Project').length - 1, 3, 'one row + its two listed parts (solar and BESS)');
+  const x = await flashAt([-0.75, 53.35]), r = rowsOf(x).filter(s => /^4\.92 km · /.test(s));
+  assert.equal(r.length, 1); assert.match(r[0], /Battery \+ Solar 1,100 MW · 3 projects at this point:$/); assert.equal(card(x).textContent.split('Steeple Renewables Project').length - 1, 2, 'its two listed parts (solar and BESS), named beneath the row');
   const f = [...Array(9)].map((_, i) => pf(-1.5, 52 + 0.01 * (i + 1), { name: 'R' + i })); f.push(pf(-1.34, 52, { name: 'TieE' }), pf(-1.66, 52, { name: 'TieW' }), pf(-1.5, 52.2, { name: 'Far' }));
   const y = await flashAt([-1.5, 52], FCx(f)), yr = rowsOf(y);
   assert.equal(yr.length, 11); assert.ok(yr.some(s => /TieE$/.test(s)) && yr.some(s => /TieW$/.test(s))); assert.ok(!yr.some(s => /Far$/.test(s)));
-  assert.match(card(y).textContent, /11 nearest REPD projects within 40 km/); assert.equal(y.sources.get('gridatlas-lightning-neon-pnodes').data.features.length, 11);
+  assert.match(card(y).textContent, /11 nearest REPD sites within 40 km/); assert.equal(y.sources.get('gridatlas-lightning-neon-pnodes').data.features.length, 11);
 });
 test('M2-MR4: a register landing while the map is still moving is framed when that move ends', async () => {
   let release; const repd = FCx([pf(-1.5, 52.3, { name: 'FarNorth' })]), x = flash0();
@@ -1820,9 +1826,9 @@ test('M2-MR4b: the moveend wait is harmless after close (no reframe, no throw)',
 test('M2-C1 co-located: solar + battery at one point are one link, one node and one label ("2.64 km · Battery + Solar 69.9 MW"), with every part listed in the card', async () => {
   const lat = 52 + 2.64 / 111.32, x = await flashAt([-1.5, 52], FCx([pf(-1.5, lat, { name: 'Sun Farm', capacity: 49.9 }), pf(-1.5, lat, { name: 'Sun Farm BESS', tech: 'bess', raw_tech: 'Battery', capacity: 20, status: 'awaiting construction' }), pf(-1.5, 52.1, { name: 'Other' })]));
   const km = hav(-1.5, 52, -1.5, lat).toFixed(2); assert.equal(km, '2.64');
-  assert.deepEqual(rowsOf(x), [`2.64 km · Battery + Solar 69.9 MW · 2 co-located · operational / awaiting construction · Sun Farm / Sun Farm BESS`, rowsOf(x)[1]]);
+  assert.deepEqual(rowsOf(x), ['2.64 km · Battery + Solar 69.9 MW · 2 projects at this point:', rowsOf(x)[1]]);
   const t = card(x).textContent; assert.match(t, /Solar 49\.9 MW · operational · Sun Farm/); assert.match(t, /Battery 20 MW · awaiting construction · Sun Farm BESS/);
-  assert.match(t, /2 nearest REPD sites \(3 projects; co-located parts grouped\) within 40 km/);
+  assert.match(t, /2 nearest REPD sites \(3 projects; those at one point grouped\) within 40 km/);
   const nd = x.sources.get('gridatlas-lightning-neon-pnodes').data.features, ln = x.sources.get('gridatlas-lightning-neon-plinks').data.features;
   assert.equal(nd.length, 2); assert.equal(ln.length, 2); assert.equal(nd[0].properties.label, '2.64 km · Battery + Solar 69.9 MW'); assert.equal(nd[0].properties.mw, 69.9);
 });
@@ -1832,32 +1838,33 @@ test('M2-C2 filters: All / Operational / Consented & construction / Planning and
     pf(-1.5, 52.33, { name: 'Plan Hydro', tech: 'hydro', raw_tech: 'Small Hydro', status: 'application submitted' }));
   const x = await flashAt([-1.5, 52], FCx(f)), lines = () => x.sources.get('gridatlas-lightning-neon-plinks').data.features.length;
   for (const k of ['st:all', 'st:op', 'st:cc', 'st:pl', 'te:all', 'te:solar', 'te:wind', 'te:bess', 'te:other']) assert.ok(chip(x, k), k);
-  assert.deepEqual(['Operational', 'Consented & construction', 'Planning', 'Solar', 'Wind', 'BESS', 'Other'].map(t => card(x).querySelectorAll('button').some(b => b.textContent === t)), Array(7).fill(true));
+  assert.deepEqual(['Operational', 'Consented', 'Planning', 'Solar', 'Wind', 'BESS', 'Other'].map(t => card(x).querySelectorAll('button').some(b => b.textContent === t)), Array(7).fill(true));
   assert.equal(chip(x, 'st:all').getAttribute('aria-pressed'), 'true'); assert.equal(chip(x, 'te:all').getAttribute('aria-pressed'), 'true');
   assert.equal(rowsOf(x).length, 10); assert.ok(rowsOf(x).every(r => /Await/.test(r)));
   press(x, 'st:op'); assert.deepEqual(rowsOf(x).map(r => r.split(' · ').pop()), ['OpSolar', 'OpBess']); assert.equal(lines(), 2);
   assert.equal(chip(x, 'st:op').getAttribute('aria-pressed'), 'true'); assert.equal(chip(x, 'st:all').getAttribute('aria-pressed'), 'false');
-  assert.match(card(x).textContent, /2 nearest REPD projects within 40 km of this optical flash \(straight-line; filter: Operational\)\. Not evidence any project was struck or affected\./);
-  press(x, 'te:bess'); assert.deepEqual(rowsOf(x).map(r => r.split(' · ').pop()), ['OpBess']); assert.match(card(x).textContent, /filter: Operational · BESS/);
+  assert.match(card(x).textContent, /2 nearest REPD sites within 40 km of this optical flash, straight-line \(Operational\)\. Not evidence any project was struck\./);
+  press(x, 'te:bess'); assert.deepEqual(rowsOf(x).map(r => r.split(' · ').pop()), ['OpBess']); assert.match(card(x).textContent, /straight-line \(Operational · BESS\)/); assert.match(card(x).querySelector('summary').textContent, / · 1 nearest REPD site \(Operational · BESS\)$/);
   press(x, 'st:cc'); press(x, 'te:all'); assert.equal(rowsOf(x).length, 10); assert.ok(rowsOf(x).every(r => /Await/.test(r)));
   press(x, 'te:wind'); assert.deepEqual(rowsOf(x).map(r => r.split(' · ').pop()), ['UC Wind']);
   press(x, 'st:pl'); press(x, 'te:other'); assert.deepEqual(rowsOf(x).map(r => r.split(' · ').pop()), ['Plan Hydro']);
-  press(x, 'te:solar'); assert.match(card(x).textContent, /No REPD project within 40 km of this optical flash \(straight-line; filter: Planning · Solar\)/); assert.equal(lines(), 0);
+  press(x, 'te:solar'); assert.match(card(x).textContent, /No REPD site within 40 km of this optical flash, straight-line \(Planning · Solar\)/); assert.equal(lines(), 0);
   press(x, 'st:all'); press(x, 'te:all'); assert.equal(rowsOf(x).length, 10); assert.equal(lines(), 10);
   press(x, 'st:op'); tapFlash(x); await settle(); assert.equal(chip(x, 'st:op').getAttribute('aria-pressed'), 'true', 'the filter is kept for the next tap'); assert.equal(rowsOf(x).length, 2);
   assert.deepEqual(x.log.errors.map(String), []);
 });
 test('M2-C3 summary: "N REPD projects within 10 km · M within 40 km · total X MW within 10 km", follows the filter, and states uncounted capacity honestly', async () => {
   const x = await flashAt([-1.5, 52], FCx([pf(-1.5, 52.018, { capacity: 10, name: 'A' }), pf(-1.5, 52.045, { capacity: 0, name: 'B', status: 'application submitted' }), pf(-1.5, 52.18, { capacity: 100, name: 'C' }), pf(-1.5, 52.5, { name: 'Out' })]));
-  assert.match(card(x).textContent, /2 REPD projects within 10 km · 3 within 40 km · total 10 MW within 10 km \(1 without a stated capacity not counted\); registered capacity, straight-line distance only, not a measure of impact/);
-  press(x, 'st:op'); assert.match(card(x).textContent, /1 REPD project within 10 km · 2 within 40 km · total 10 MW within 10 km; registered/);
-  const y = await flashAt([-1.5, 52], FCx([pf(-1.5, 52.5)])); assert.match(card(y).textContent, /0 REPD projects within 10 km · 0 within 40 km · total 0 MW within 10 km/);
+  assert.match(card(x).textContent, /Within 10 km: 2 projects · 10 MW stated \(all statuses\), 1 not stated · within 40 km: 3 projects · straight-line distance only, not impact · REPD: DESNZ, April 2026, OGL v3\.0/);
+  press(x, 'st:op'); assert.match(card(x).textContent, /Within 10 km: 1 project · 10 MW stated \(Operational\) · within 40 km: 2 projects · /);
+  const y = await flashAt([-1.5, 52], FCx([pf(-1.5, 52.5)])); assert.doesNotMatch(card(y).textContent, /Within 10 km|0 MW/);
+  const z = await flashAt([-1.5, 52], FCx([pf(-1.5, 52.01, { capacity: 0 }), pf(-1.5, 52.3, { capacity: 5 })])); assert.match(card(z).textContent, /Within 10 km: 1 project · capacity not stated · within 40 km: 2 projects/); assert.doesNotMatch(card(z).textContent, / 0 MW/);
 });
 test('M2-C4 fewer than 10: stated, with the radius kept at 40 km; not stated when 10 exist', async () => {
   const x = await flashAt([-1.5, 52], FCx([pf(-1.5, 52.01), pf(-1.5, 52.02), pf(-1.5, 52.03), pf(-1.5, 52.6)]));
-  assert.match(card(x).textContent, /Only 3 sites within 40 km; the radius stays 40 km, so fewer than 10 are listed\./);
-  const y = await flashAt([-1.5, 52], FCx([...Array(12)].map((_, i) => pf(-1.5, 52 + 0.01 * (i + 1))))); assert.doesNotMatch(card(y).textContent, /fewer than 10/);
-  press(y, 'st:op'); assert.doesNotMatch(card(y).textContent, /fewer than 10/);
+  assert.match(card(x).textContent, /Only 3 sites within the 40 km search radius\./);
+  const y = await flashAt([-1.5, 52], FCx([...Array(12)].map((_, i) => pf(-1.5, 52 + 0.01 * (i + 1))))); assert.doesNotMatch(card(y).textContent, /Only \d+ site/);
+  press(y, 'st:op'); assert.doesNotMatch(card(y).textContent, /Only \d+ site/);
 });
 test('M2-C5 row tap stays in the page: no navigation; flies to the project and draws its nearest-substation links; "◀ back to lightning flash" restores the card, links and list', async () => {
   const x = flash0(); installRepd(x, SUBS, FCx([pf(-1.45, 52.02, { name: 'Sun A', capacity: 49.9 }), pf(-1.45, 52.02, { name: 'Bat A', tech: 'bess', raw_tech: 'Battery', capacity: 20 }), pf(-1.5, 52.1, { name: 'B' })]), 'fetch');
@@ -1869,10 +1876,10 @@ test('M2-C5 row tap stays in the page: no navigation; flies to the project and d
   const fly = x.camera.find(k => k[0] === 'flyTo'); assert.deepEqual([...fly[1][0].center], [-1.45, 52.02]); assert.equal(fly[1][0].zoom, 12);
   assert.equal(x.sources.get('gridatlas-lightning-neon-links').data.features.length, 5, 'the 5 substation links from the project');
   assert.equal(x.sources.get('gridatlas-lightning-neon-plinks'), undefined, 'no project list in the project view');
-  assert.match(c.textContent, /REPD · Battery \+ Solar 69\.9 MW/); assert.match(c.textContent, /2 co-located projects · Sun A \/ Bat A/);
+  assert.match(c.textContent, /REPD · Battery \+ Solar 69\.9 MW/); assert.match(c.textContent, /2 projects at this point · Sun A \/ Bat A/);
   assert.match(c.textContent, /Solar 49\.9 MW · operational · Sun A; Battery 20 MW · operational · Bat A/);
   assert.match(c.textContent, /Nearest substations to this project \(straight-line km; not its declared grid connection\)\./);
-  assert.match(c.textContent, /not evidence the project was struck or affected/); assert.doesNotMatch(c.textContent, /(were|was|are|is) affected|strike on|struck the|hit the/i);
+  assert.match(c.textContent, /4\.09 km from the optical flash \(straight-line\)/); assert.match(c.textContent, /REPD register \(DESNZ, April 2026 · OGL v3\.0\) as loaded by the map · lightning = optical flashes, not necessarily ground strikes; not evidence the project was struck\./); assert.doesNotMatch(c.textContent, /(were|was|are|is) affected|strike on|struck the|hit the/i);
   const back = c.querySelector('[data-lightning-back]'); assert.equal(back.textContent, '◀ back to lightning flash'); assert.equal(c.querySelectorAll('button')[1].getAttribute('aria-label'), 'Close');
   dispatch(back, 'click', x.log.errors); await settle();
   const d = card(x); assert.equal(d.getAttribute('aria-label'), 'Lightning flash'); assert.deepEqual(x.neonCalls.at(-1).slice(0, 2), [-1.5, 52]);
@@ -1884,7 +1891,7 @@ test('M2-C6 row tap from a cell: "◀ back to lightning cell"; close, period swi
   const f0 = cellsSrc(x).data.features.find(q => q.properties.cell === LC1), lon = f0.properties.lon, lat = f0.properties.lat; installRepd(x, SUBS, FCx([pf(lon + 0.05, lat, { name: 'Near' })]));
   const open = async () => { cellHit(x, cellsSrc(x).data.features.find(q => q.properties.cell === LC1)); await settle(); tapRow(x, 0); await settle(); assert.equal(card(x).getAttribute('aria-label'), 'REPD project'); };
   await open(); const back = card(x).querySelector('[data-lightning-back]'); assert.equal(back.textContent, '◀ back to lightning cell');
-  dispatch(back, 'click', x.log.errors); await settle(); assert.equal(card(x).getAttribute('aria-label'), 'Lightning cell'); assert.match(card(x).textContent, /1 nearest REPD project within 40 km of this cell centre/);
+  dispatch(back, 'click', x.log.errors); await settle(); assert.equal(card(x).getAttribute('aria-label'), 'Lightning cell'); assert.match(card(x).textContent, /1 nearest REPD site within 40 km of this cell centre/);
   const gone = () => { assert.equal(x.S.pp, null); for (const s of ['links', 'nodes', 'pin', 'plinks', 'pnodes']) assert.equal(x.sources.get('gridatlas-lightning-neon-' + s), undefined, s); };
   await open(); dispatch(card(x).querySelectorAll('button')[1], 'click', x.log.errors); gone();
   await open(); x.click(x.chip('6m')); gone(); await drain();
@@ -1907,7 +1914,7 @@ test('M2-MR1d: a stalled register body whose stream errors with a non-Abort erro
   x.sandbox.fetch = async (u, o) => { if (!String(u).endsWith('/dist/repd_master.json')) return of(u, o); x.repdFetch.push(u);
     return new Response(new ReadableStream({ start(c) { o.signal.addEventListener('abort', () => c.error(new TypeError('Failed to fetch'))); } }), { status: 200 }); };
   x.toggle(true); await drain(); tapFlash(x); await settle(); await new Promise(r => setTimeout(r, 15500)); await settle();
-  assert.match(card(x).textContent, /REPD projects unavailable: timeout after 15 s\. Tap again to retry\./);
+  assert.match(card(x).textContent, /REPD projects unavailable: timeout after 15 s\. Tap the flash again to retry\./);
 });
 
 // ---------------------------------------------------------------- CI additions (tools/ci/pr-gate.mjs): mutants that the M2 suite let through
@@ -1937,3 +1944,172 @@ test('CI2: OFF after 12M cells and a cell card leaves no lightning layer or sour
   assert.deepEqual(lightningLeft(x), [], 'left behind after OFF'); assert.deepEqual(x.log.errors.map(String), []);
 });
 
+
+// ---------------------------------------------------------------- M3-build: auto-activate the REPD layers of the listed projects
+// Engine stand-in (original substation-intelligence cartridge, buildDOM/handleLayerToggle :1060-1190 and menuBar :4386-6080):
+// the REPD group of #scada-ui-container (input[data-layer-id] + span#lbl-<id>[data-base-label]), its fullscreen-curtain copy,
+// the container's delegated change listener (syncs the curtain copy, then handleLayerToggle -> layer visibility), and the
+// menu bar's document-level change listener that syncs its proxy. Nothing here calls module code.
+El.prototype.dispatchEvent = function (ev) { dispatch(this, ev.type, this.__errs || []); return true; };
+const REPD_LAYERS = [['solar', 'Solar PV'], ['solar_operational', 'Solar PV (Operational Only)'], ['solar_roof', 'Solar Roof'], ['wind', 'Wind'], ['wind_onshore_operational', 'Onshore Wind (Operational Only)'], ['bess', 'Battery Storage'], ['biomass', 'Biomass & EfW'], ['tidal', 'Tidal & Wave'], ['hydrogen', 'Hydrogen'], ['hydro', 'Hydro & Pumped Storage'], ['flywheel', 'Flywheel'], ['act', 'Advanced Conversion'], ['geothermal', 'Geothermal'], ['caes', 'Compressed Air Storage']];
+const installLayers = (x, { userOn = [], disabled = [] } = {}) => {
+  x.sandbox.Event = class { constructor(t, o) { this.type = t; this.bubbles = !!(o && o.bubbles); } };
+  const doc = x.doc, curtain = doc.getElementById('fs-curtain-keys'), E = { toggles: [], main: {}, fs: {}, proxy: {} };
+  const group = (host, pre) => { const g = doc.createElement('div'); g.className = 'key-group'; const t = doc.createElement('div'); t.className = 'key-title'; t.textContent = 'REPD (GeoJSON)'; g.appendChild(t);
+    for (const [id, lab] of REPD_LAYERS) { const l = doc.createElement('label'); l.className = 'key-item'; const i = doc.createElement('input'); i.type = 'checkbox'; i.setAttribute('data-layer-id', id);
+      const s = doc.createElement('span'); s.id = pre + id; s.setAttribute('data-base-label', lab); s.textContent = lab + ' [WAIT]'; l.appendChild(i); l.appendChild(s); g.appendChild(l); (pre === 'lbl-' ? E.main : E.fs)[id] = i; }
+    host.insertBefore(g, host.children[1] || null); };
+  group(x.host, 'lbl-'); group(curtain, 'fs-lbl-');
+  for (const [id] of REPD_LAYERS) { x.layers.set('l-' + id, { id: 'l-' + id, source: 'src-repd', layout: { visibility: 'none' } }); E.proxy[id] = { checked: false }; }
+  const handleLayerToggle = (id, on) => { E.toggles.push([id, on]); x.map.setLayoutProperty('l-' + id, 'visibility', on ? 'visible' : 'none'); };
+  x.host.addEventListener('change', e => { const id = e.target.getAttribute && e.target.getAttribute('data-layer-id'); if (!id) return; E.fs[id].checked = e.target.checked; handleLayerToggle(id, e.target.checked); });
+  curtain.addEventListener('change', e => { const id = e.target.getAttribute && e.target.getAttribute('data-layer-id'); if (!id) return; E.main[id].checked = e.target.checked; handleLayerToggle(id, e.target.checked); });
+  doc.documentElement.addEventListener('change', e => { const id = e.target.getAttribute && e.target.getAttribute('data-layer-id'); if (id) E.proxy[id].checked = !!E.main[id].checked; });
+  x.map.getStyle = () => ({ layers: [...x.layers.values()].map(l => ({ id: l.id, type: l.type, source: l.source })) }); x.map.getLayoutProperty = (id, k) => ((x.layers.get(id) || {}).layout || {})[k];
+  for (const id of disabled) E.main[id].disabled = true;
+  for (const id of userOn) userTick(x, E, id, true);
+  E.toggles.length = 0; x.E = E; return E;
+};
+// a reader's tap on the original checkbox (main panel or curtain): the browser flips `checked`, then "change" bubbles
+const userTick = (x, E, id, on, where = 'main') => { const i = E[where][id]; i.checked = on; dispatch(i, 'change', x.log.errors); };
+const onIds = E => REPD_LAYERS.map(r => r[0]).filter(id => E.main[id].checked);
+const inSync = E => { for (const [id] of REPD_LAYERS) { const v = !!E.main[id].checked; assert.equal(!!E.fs[id].checked, v, 'curtain ' + id); assert.equal(E.proxy[id].checked, v, 'menu proxy ' + id); } };
+const visible = x => REPD_LAYERS.map(r => r[0]).filter(id => x.layers.get('l-' + id).layout.visibility === 'visible');
+const inspect = x => { const n = x.host.querySelectorAll('input[data-layer-id]').length; return n; };
+const closeCard = x => dispatch(card(x).querySelectorAll('button')[1], 'click', x.log.errors);
+const techsOf = sites => [...new Set(sites.flatMap(g => g.parts.map(p => p.tech)))].filter(t => REPD_LAYERS.some(r => r[0] === t)).sort();
+const S3 = SUBS.map(q => ({ ...q, at: [q.at[0] + 0.45, q.at[1] + 1.45] })); // substations moved near Doncaster
+const DONC = [-1.05, 53.45];
+// two flashes (index 0 older, index 1 newer) so a second tap can land elsewhere on the same result
+const boot3 = async (ll0, ll1, repd, opts = {}) => { const x = boot({ feedFn: () => feed([flash(Date.now() - 2 * H, 'a', ll0), flash(Date.now() - H, 'b', ll1 || ll0)]) });
+  installRepd(x, S3, repd, opts.via || 'source', opts.fetchImpl || null); const E = installLayers(x, opts); x.toggle(true); await drain(); return { x, E }; };
+const SYN = FCx([pf(-1.5, 52.01, { name: 'S1' }), pf(-1.5, 52.02, { name: 'B1', tech: 'bess', raw_tech: 'Battery' }), pf(-1.5, 52.03, { name: 'W1', tech: 'wind', raw_tech: 'Wind Onshore' }),
+  pf(-3.0, 55.01, { name: 'H1', tech: 'hydro', raw_tech: 'Small Hydro' }), pf(-3.0, 55.02, { name: 'R1', tech: 'solar_roof' }), pf(-3.0, 55.03, { name: 'O1', tech: 'other', raw_tech: 'Unknown' })]);
+
+test('M3-1: a tap switches on exactly the REPD layers of the listed technologies, through the original checkbox path; close switches them off again', async () => {
+  const { x, E } = await boot3([-1.5, 52], null, SYN), n0 = inspect(x);
+  assert.equal(E.toggles.length, 0, 'nothing switched before a tap'); assert.equal(x.S.ly, undefined);
+  tapFlash(x, 0); await settle();
+  assert.deepEqual(onIds(E), ['bess', 'solar', 'wind'].sort((a, b) => REPD_LAYERS.findIndex(r => r[0] === a) - REPD_LAYERS.findIndex(r => r[0] === b)));
+  assert.deepEqual([...x.S.ly].sort(), ['bess', 'solar', 'wind']); assert.deepEqual(E.toggles.map(t => t.join()).sort(), ['bess,true', 'solar,true', 'wind,true']);
+  assert.deepEqual(visible(x).sort(), ['bess', 'solar', 'wind']); inSync(E); assert.equal(inspect(x), n0, 'no control added or removed');
+  assert.match(card(x).textContent, /REPD map layers on for this list: Solar PV, Battery Storage, Wind \(those switched on here go off when this card closes\)/);
+  E.toggles.length = 0; closeCard(x);
+  assert.equal(card(x), null); assert.deepEqual(onIds(E), []); assert.deepEqual(visible(x), []); assert.equal(x.S.ly.size, 0); inSync(E);
+  assert.deepEqual(E.toggles.map(t => t.join()).sort(), ['bess,false', 'solar,false', 'wind,false']); assert.equal(x.log.errors.length, 0);
+});
+test('M3-2: a layer the user had on already is never switched (on or off) by M3 and survives close; the rest of the user state is restored exactly', async () => {
+  const { x, E } = await boot3([-1.5, 52], null, SYN, { userOn: ['solar', 'hydro', 'solar_operational'] });
+  const before = onIds(E); tapFlash(x, 0); await settle();
+  assert.deepEqual([...x.S.ly].sort(), ['bess', 'wind']); assert.ok(!E.toggles.some(t => t[0] === 'solar'), 'solar untouched');
+  assert.match(card(x).textContent, /REPD map layers on for this list: Solar PV, Battery Storage, Wind \(those/);
+  closeCard(x); assert.deepEqual(onIds(E), before); inSync(E); assert.deepEqual(visible(x).sort(), ['hydro', 'solar', 'solar_operational']);
+});
+test('M3-3: a new tap whose list needs other technologies switches off only what M3 switched on and is no longer needed; the same list toggles nothing', async () => {
+  const { x, E } = await boot3([-1.5, 52], [-3.0, 55], SYN, { userOn: ['hydro'] });
+  tapFlash(x, 0); await settle(); assert.deepEqual([...x.S.ly].sort(), ['bess', 'solar', 'wind']);
+  E.toggles.length = 0; tapFlash(x, 1); await settle();
+  assert.deepEqual([...x.S.ly].sort(), ['solar_roof'], 'hydro was the user\'s; other has no layer');
+  assert.deepEqual(E.toggles.map(t => t.join()).sort(), ['bess,false', 'solar,false', 'solar_roof,true', 'wind,false']);
+  assert.deepEqual(onIds(E).sort(), ['hydro', 'solar_roof']); inSync(E);
+  E.toggles.length = 0; tapFlash(x, 1); await settle(); assert.deepEqual(E.toggles, [], 'same list: no toggles');
+  closeCard(x); assert.deepEqual(onIds(E), ['hydro']);
+});
+test('M3-4: the layers follow the card filter (Tech: Solar drops Battery and Wind; All brings them back)', async () => {
+  const { x, E } = await boot3([-1.5, 52], null, SYN); tapFlash(x, 0); await settle();
+  press(x, 'te:solar'); assert.deepEqual([...x.S.ly], ['solar']); assert.deepEqual(onIds(E), ['solar']); inSync(E);
+  press(x, 'te:all'); assert.deepEqual([...x.S.ly].sort(), ['bess', 'solar', 'wind']);
+  press(x, 'st:pl'); assert.deepEqual(onIds(E), [], 'no planning project: no layer'); assert.doesNotMatch(card(x).textContent, /REPD map layers on/);
+  press(x, 'st:all'); closeCard(x); assert.deepEqual(onIds(E), []);
+});
+test('M3-5: a row tap keeps the layers (the project\'s own dot stays drawn), back keeps them, close from the project view switches them off', async () => {
+  const { x, E } = await boot3([-1.5, 52], null, SYN); tapFlash(x, 0); await settle(); E.toggles.length = 0;
+  assert.equal(tapRow(x, 1), true); await settle(); assert.equal(card(x).getAttribute('aria-label'), 'REPD project');
+  assert.deepEqual(E.toggles, []); assert.ok(visible(x).includes('bess'), 'Battery row: its own layer is drawn');
+  dispatch(card(x).querySelector('[data-lightning-back]'), 'click', x.log.errors); await settle();
+  assert.equal(card(x).getAttribute('aria-label'), 'Lightning flash'); assert.deepEqual(E.toggles, []); assert.deepEqual([...x.S.ly].sort(), ['bess', 'solar', 'wind']);
+  tapRow(x, 0); await settle(); closeCard(x); assert.deepEqual(onIds(E), []); assert.equal(x.S.ly.size, 0); inSync(E);
+});
+test('M3-6: lightning OFF, a period change, LATEST, prev and a tap on empty map each restore the user state; a tap on a drawn REPD dot keeps it', async () => {
+  const run = async act => { const { x, E } = await boot3([-1.5, 52], null, SYN, { userOn: ['wind'] }); tapFlash(x, 0); await settle(); assert.deepEqual([...x.S.ly].sort(), ['bess', 'solar']); await act(x); await drain(); return { x, E }; };
+  for (const [nm, act] of [['off', x => x.toggle(false)], ['period', x => x.click(x.chip('7d'))], ['empty map', x => x.tapMap([50, 50], {})], ['prev', x => x.click(x.nav('prev'))], ['latest', x => x.click(x.nav('latest'))], ['custom apply', x => { x.click(x.chip('custom')); }]]) {
+    const { x, E } = await run(act); assert.deepEqual(onIds(E), ['wind'], nm); assert.equal(x.S.ly.size, 0, nm); inSync(E); }
+  { const { x, E } = await run(x => x.tapMap([50, 50], { 'l-solar': [{ properties: { name: 'S1' } }] })); assert.deepEqual([...x.S.ly].sort(), ['bess', 'solar'], 'the engine owns this tap'); assert.equal(card(x), null);
+    x.toggle(false); assert.deepEqual(onIds(E), ['wind']); }
+});
+test('M3-7: a layer M3 holds becomes the user\'s once the user unticks or re-ticks it (main panel or fullscreen curtain), and then survives close', async () => {
+  const { x, E } = await boot3([-1.5, 52], null, SYN); tapFlash(x, 0); await settle();
+  userTick(x, E, 'bess', false); userTick(x, E, 'bess', true); userTick(x, E, 'wind', false, 'fs');
+  assert.deepEqual([...x.S.ly], ['solar']); closeCard(x); assert.deepEqual(onIds(E), ['bess']); inSync(E);
+  tapFlash(x, 0); await settle(); assert.deepEqual([...x.S.ly].sort(), ['solar', 'wind']); closeCard(x); assert.deepEqual(onIds(E), ['bess']);
+});
+test('M3-8: nothing is switched with lightning OFF or before a tap; a disabled control and a technology with no layer are skipped; a register failure on a new tap releases the held layers', async () => {
+  { const x = boot({ feedFn: () => feed([]) }); installRepd(x, S3, SYN); const E = installLayers(x); await drain(); assert.deepEqual(E.toggles, []); x.toggle(true); await drain(); x.toggle(false); await drain();
+    assert.deepEqual(E.toggles, []); assert.ok(!(x.S.ly && x.S.ly.size), 'OFF before any tap switches nothing'); }
+  { const { x, E } = await boot3([-1.5, 52], null, SYN, { disabled: ['bess'] }); tapFlash(x, 0); await settle(); assert.deepEqual([...x.S.ly].sort(), ['solar', 'wind']); assert.equal(E.main.bess.checked, false); }
+  { let fail = false; const { x, E } = await boot3([-1.5, 52], null, null, { via: 'fetch', fetchImpl: async () => fail ? Promise.reject(new Error('network error')) : new Response(JSON.stringify(SYN), { status: 200 }) });
+    tapFlash(x, 0); await settle(); assert.equal(x.S.ly.size, 3); x.S.rg = null; fail = true; tapFlash(x, 0); await settle();
+    assert.match(card(x).textContent, /REPD projects unavailable: network error/); assert.equal(x.S.ly.size, 0); assert.deepEqual(onIds(E), []); }
+});
+test('M3-9 (real register, the owner\'s Doncaster-area cell 53.45, -1.05): the layers switched on equal the technologies of the independent brute-force 10 nearest sites, and close restores all off', async () => {
+  const { x, E } = await boot3(DONC, null, REPD_IND); tapFlash(x, 0); await settle();
+  const want = techsOf(bruteSites(REPD_IND, ...DONC)); assert.ok(want.length >= 2, want.join());
+  assert.deepEqual(onIds(E).sort(), want); assert.deepEqual([...x.S.ly].sort(), want); inSync(E);
+  for (const [k, keep] of [['te:solar', p => /^solar/.test(p.tech)], ['st:op', p => p.status === 'operational']]) {
+    press(x, k); assert.deepEqual(onIds(E).sort(), techsOf(bruteSites(REPD_IND, ...DONC, k === 'te:solar' ? keep : (p => /^solar/.test(p.tech) && keep(p)))), k); }
+  closeCard(x); assert.deepEqual(onIds(E), []); inSync(E); assert.equal(x.log.errors.length, 0);
+});
+
+// ---------------------------------------------------------------- M3-build: the M2 review fixes folded into M3 (each fails on M2)
+El.prototype.focus = function () { this.ownerDocument.activeElement = this; };
+const live = x => card(x).children.find(e => e.getAttribute && e.getAttribute('role') === 'status');
+const later = () => new Promise(r => setTimeout(r, 150));
+test('M3R-a11y (M2R-a11y MAJOR-1..3, MINOR-1): a polite status outside the <details> announces loading, the list and a failure; focus follows chip, row and back; back is named without the glyph', async () => {
+  const x = await flashAt([-1.5, 52], FCx([pf(-1.5, 52.01, { name: 'A' }), pf(-1.5, 52.02, { name: 'B', tech: 'bess', raw_tech: 'Battery' })]));
+  const lv = live(x); assert.ok(lv, 'status region'); assert.ok(!card(x).querySelector('details').contains(lv), 'outside the closed details'); await later();
+  assert.match(lv.textContent, /^2 nearest REPD sites within 40 km of this optical flash, straight-line\. Not evidence any project was struck\. Only 2 sites within the 40 km search radius\.$/);
+  press(x, 'te:bess'); assert.equal(x.doc.activeElement, chip(x, 'te:bess'), 'focus stays on the pressed chip'); await later(); assert.match(lv.textContent, /^1 nearest REPD site .*\(BESS\)/);
+  press(x, 'te:all'); tapRow(x, 0); await settle(); const back = card(x).querySelector('[data-lightning-back]');
+  assert.equal(x.doc.activeElement, back); assert.equal(back.getAttribute('aria-label'), 'back to lightning flash');
+  dispatch(back, 'click', x.log.errors); await settle(); assert.equal(x.doc.activeElement, card(x).querySelector('summary'));
+  const y = flash0(); installRepd(y, SUBS, null, 'fetch', async () => Promise.reject(new Error('network error'))); y.toggle(true); await drain(); tapFlash(y); await settle(); await later();
+  assert.match(live(y).textContent, /^REPD projects unavailable: network error\. Tap the flash again to retry\.$/); assert.match(card(y).querySelector('summary').textContent, / · REPD unavailable$/);
+});
+test('M3R-bugs (M2R-bugs M2RB1, M2RB2): a Ctrl/Cmd/Shift click keeps the browser default (new tab); a map error while drawing the project lines is noted, not shown as a register failure, and the next render rebuilds them', async () => {
+  const x = await flashAt([-1.5, 52], FCx([pf(-1.5, 52.01, { name: 'A' })]));
+  for (const k of ['ctrlKey', 'metaKey', 'shiftKey']) { const a = prows(card(x))[0]; let prevented = false; for (const f of a.listeners.click) f({ type: 'click', [k]: true, button: 0, target: a, preventDefault: () => { prevented = true; } }); assert.equal(prevented, false, k); assert.equal(card(x).getAttribute('aria-label'), 'Lightning flash', k); }
+  const y = flash0(); installRepd(y, SUBS, FCx([pf(-1.5, 52.01, { name: 'A' }), pf(-1.5, 52.02, { name: 'B', tech: 'bess', raw_tech: 'Battery' })]), 'fetch'); y.toggle(true); await drain();
+  const add = y.map.addLayer; let boom = true; y.map.addLayer = l => { if (boom && /neon-p-node$/.test(l.id)) throw new Error('Style is not done loading'); return add(l); };
+  tapFlash(y); await settle(); assert.doesNotMatch(card(y).textContent, /unavailable/); assert.equal(prows(card(y)).length, 2); assert.ok(y.S.errors.some(e => /project lines: Style is not done loading/.test(e)));
+  boom = false; press(y, 'te:bess'); assert.ok(y.layers.get('gridatlas-lightning-neon-p-node'), 'rebuilt'); assert.equal(y.sources.get('gridatlas-lightning-neon-pnodes').data.features.length, 1);
+});
+test('M3R-security (M2R-security SEC-M2-1/2, M2R-data D5): a malformed or string-coordinate row is skipped, never the whole register; the Scilly placeholder is dropped', async () => {
+  const bad = [null, { type: 'Feature', geometry: { type: 'Point', coordinates: null }, properties: { tech: 'solar' } }, pf('-1.5', '52.02', { name: 'Str' }), pf(-7.55716, 49.766807, { name: 'Scilly' })];
+  const x = await flashAt([-1.5, 52], FCx([...bad, pf(-1.5, 52.01, { name: 'Good' })]));
+  assert.deepEqual(rowsOf(x).map(r => r.split(' · ').pop()), ['Good']); tapRow(x, 0); await settle(); assert.equal(card(x).getAttribute('aria-label'), 'REPD project');
+  const y = await flashAt([-7.5, 49.8], FCx([pf(-7.55716, 49.766807, { name: 'Scilly' }), pf(-1.5, 52)])); assert.match(card(y).textContent, /No REPD site within 40 km/);
+});
+test('M3R-repd (M2R-repd R1, R3; M2R-data D1, D2): rows within about 10 m are one site; statuses outside the 4 register classes are in no class; repeated records of one scheme count their MW once', async () => {
+  const x = await flashAt([-1.5, 52], FCx([pf(-1.5, 52.01, { name: 'Roosecote', capacity: 49 }), pf(-1.500014, 52.01, { name: 'Roosecote 2', capacity: 50, tech: 'bess', raw_tech: 'Battery' }), pf(-1.5, 52.02, { name: 'Next' })]));
+  assert.deepEqual(rowsOf(x), ['1.11 km · Battery + Solar 99 MW · 2 projects at this point:', '2.23 km · Solar 10 MW · operational · Next']);
+  const y = await flashAt([-1.5, 52], FCx([pf(-1.5, 52.01, { name: 'Refused', status: 'Application Refused' }), pf(-1.5, 52.02, { name: 'Granted', status: 'Planning Permission Granted' })]));
+  for (const k of ['st:op', 'st:cc', 'st:pl']) { press(y, k); assert.deepEqual(rowsOf(y), [], k); }
+  const fv = { name: 'Feldon Vale Solar Farm', capacity: 49.9 }, z = await flashAt([-1.5, 52], FCx([pf(-1.5, 52.05, { ...fv, status: 'awaiting construction' }), pf(-1.5, 52.05, { ...fv, operator: 'X' })]));
+  assert.equal(rowsOf(z)[0], '5.57 km · Solar 49.9 MW · 2 projects at this point:'); assert.match(card(z).textContent, /Within 10 km: 2 projects · 49\.9 MW stated \(all statuses\)/);
+  assert.equal(z.sources.get('gridatlas-lightning-neon-pnodes').data.features[0].properties.mw, 49.9);
+});
+test('M3R-diff (M2R-diff MD1): on a short map where L3 could frame clear of a collapsed card, the bottom padding is L3 padding; it is capped only when that fit is impossible', async () => {
+  const od = Object.getOwnPropertyDescriptor(El.prototype, 'offsetHeight'); let h = 143; Object.defineProperty(El.prototype, 'offsetHeight', { configurable: true, get() { return h; } });
+  try { for (const [H, hh, want] of [[340, 143, null], [659, 521, 389]]) { h = hh; const x = flash0(); installRepd(x, SUBS, FCx([pf(-1.5, 52.3)])); x.mapEl.clientHeight = H; x.map.getBounds = () => ({ contains: () => false }); x.toggle(true); await drain(); tapFlash(x); await settle();
+    const fb = x.camera.filter(k => k[0] === 'fitBounds').at(-1); assert.equal(fb[1][1].padding.bottom, want ?? card(x).bb + hh + 24, 'H=' + H); } }
+  finally { if (od) Object.defineProperty(El.prototype, 'offsetHeight', od); else delete El.prototype.offsetHeight; }
+});
+test('M3R-layout (M2R-layout F1-F3): an open card stays below container top + 320 px; a point hidden under the card (though on the map) is reframed; expanding or collapsing the card reframes', async () => {
+  const x = flash0(); installRepd(x, SUBS, FCx([pf(-1.5, 52.3)])); x.mapEl._rect = { top: 0, left: 0, right: 393, bottom: 659, width: 393, height: 659 }; x.mapEl.clientHeight = 659; x.mapEl.clientWidth = 393;
+  x.map.getBounds = () => ({ contains: () => true }); x.setProj(() => ({ x: 200, y: 600 })); // every end on the map, but under the card
+  x.toggle(true); await drain(); tapFlash(x); await settle();
+  assert.equal(card(x).style.maxHeight, '331px', 'MX(240, 659 - 8 - 320)');
+  assert.ok(x.camera.some(k => k[0] === 'fitBounds'), 'an end under the card is reframed');
+  x.setProj(() => ({ x: 200, y: 200 })); x.camera.length = 0; dispatch(card(x).querySelector('details'), 'toggle', x.log.errors);
+  assert.equal(x.camera.filter(k => k[0] === 'fitBounds').length, 1, 'the details toggle forces a reframe');
+});
