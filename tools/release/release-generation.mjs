@@ -87,8 +87,6 @@ const G = args.generation;
 if (!G || !/^\d{12}$/.test(G)) die('--generation must be a 12-digit generation');
 if (args['prep-gate-kb'] && !/^\d{3}$/.test(args['prep-gate-kb'])) die('--prep-gate-kb must be a 3-digit kB figure');
 if (args['prep-gate-kb'] && !args['prep-gate-reason']) die('--prep-gate-kb needs --prep-gate-reason (the owner decision it records)');
-const writes = !args.check;
-if (writes && !args['no-commit'] && !args['authorised-by']) die('--authorised-by is required to commit a release');
 
 const report = { tool: TOOL, generation: G, root: ROOT, started_utc: new Date().toISOString() };
 const finish = (code) => {
@@ -142,6 +140,7 @@ if (noop) {
   if (live.generation !== expected) die(`live is ${live.generation}, expected predecessor ${expected}`);
   if (manifest.previous_generation !== live.generation) die(`${G}'s previous_generation is ${manifest.previous_generation} but live is ${live.generation}; the manifest was cut against a different predecessor`);
   ok(`live = expected predecessor = ${live.generation} = ${G}.previous_generation`);
+  if (!args.check && !args['no-commit'] && !args['authorised-by']) die('--authorised-by is required to commit a release');
 }
 report.predecessor = predecessor;
 
