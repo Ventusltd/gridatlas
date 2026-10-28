@@ -50,6 +50,8 @@ const results = [];
 function record(name, ok, detail = '') {
   results.push({ name, ok, detail });
   console.log(`${ok ? 'PASS' : 'FAIL'} ${name}${detail ? `  ${detail}` : ''}`);
+  // An annotation shows on the PR itself, without opening the log.
+  if (!ok && process.env.GITHUB_ACTIONS) console.log(`::error title=PR gate: ${name}::${String(detail).replace(/\r?\n/g, ' ')}`);
 }
 
 function run(argv, opts = {}) {
@@ -231,6 +233,10 @@ const lines = [
 ];
 if (process.env.GITHUB_STEP_SUMMARY) fs.appendFileSync(process.env.GITHUB_STEP_SUMMARY, lines.join('\n') + '\n');
 console.log(`\n${results.length - failed.length}/${results.length} checks passed`);
+if (process.env.GITHUB_ACTIONS) {
+  console.log(`::notice title=PR gate::${results.length - failed.length}/${results.length} passed; generations ${[...generations].sort().join(', ')}; ` +
+    results.map(r => `${r.ok ? 'PASS' : 'FAIL'} ${r.name}`).join('; '));
+}
 if (failed.length) {
   for (const f of failed) console.error(`  FAIL ${f.name}`);
   process.exitCode = 1;
