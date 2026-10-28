@@ -20,8 +20,11 @@
  *   loader-identity   every atlas/v/<gen>/index.html is byte-identical to
  *                     atlas/index.html
  *   lightning-suites  tools/ci/lightning/*.test.mjs against the live overlay
- *                     module, every overlay module the PR adds or edits, and
- *                     the overlay of every pinned generation the PR adds
+ *                     module, every overlay module the PR adds or edits, the
+ *                     overlay of every pinned generation the PR adds, and,
+ *                     when the PR changes a suite or this gate, the newest
+ *                     pinned overlay; a suite marked
+ *                     `@gate-min-generation <stamp>` skips older modules
  *
  * A generation is "touched" when a changed path under atlas/ or tools/proofs/
  * carries its twelve-digit stamp as a path segment or a filename prefix.
@@ -32,8 +35,9 @@
  */
 
 import fs from 'node:fs';
+import os from 'node:os';
 import path from 'node:path';
-import { spawnSync } from 'node:child_process';
+import { spawn, spawnSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
 // The same served-bytes digest every other verifier in this repository uses.
 import { sha256PublishedFile as sha256Published } from '../scope/lib.mjs';
@@ -189,38 +193,90 @@ group('loader-identity', () => {
 });
 
 // ---------------------------------------------------------------- 7
-group('lightning-suites', () => {
-  const suiteDir = path.join(ROOT, 'tools', 'ci', 'lightning');
-  const suites = fs.existsSync(suiteDir) ? fs.readdirSync(suiteDir).filter(f => f.endsWith('.test.mjs')).sort() : [];
-  const sld = (current.cartridges || []).find(c => c.id === 'sld-sandbox');
-  // The live overlay, every overlay module the PR adds or edits, and the
-  // overlay of any pinned generation the PR adds. Not every touched
-  // generation: the suite was written RED against the first candidates
-  // (202610261949, 202610262323), so a PR that only edits an old proof must
-  // not be failed for a module it did not change.
-  const gens = new Set();
-  if (sld) gens.add(String(sld.generation));
-  for (const file of changed) {
-    const m = file.match(/^atlas\/modules\/(\d{12})-uk-lightning-overlay\.js$/)
-      || file.match(/^atlas\/v\/(\d{12})\/current\.json$/);
-    if (m && (file.startsWith('atlas/modules/') || !baseHas(file))) gens.add(m[1]);
-  }
-  const modules = [...gens].sort()
-    .map(g => ({ g, file: path.join('atlas', 'modules', `${g}-uk-lightning-overlay.js`) }))
-    .filter(m => fs.existsSync(path.join(ROOT, m.file)));
-  if (!modules.length) { console.log('note  no lightning overlay module in the live or touched generations'); return; }
-  if (!suites.length) { record('lightning-suites', false, 'tools/ci/lightning/*.test.mjs missing'); return; }
+// Each suite may declare, in its first lines, `// @gate-min-generation <stamp>`:
+// the first overlay generation it describes. It is run only against modules of
+// that generation or later, because a suite that tests a newer feature (the
+// REPD card of 202610282100) is RED by design on the modules before it.
+const SUITE_TIMEOUT_MS = 240_000;
+function runAsync(argv, opts = {}) {
+  return new Promise(resolve => {
+    const child = spawn(argv[0], argv.slice(1), { cwd: ROOT, ...opts });
+    let stdout = '', stderr = '', timedOut = false;
+    child.stdout.on('data', d => { stdout += d; });
+    child.stderr.on('data', d => { stderr += d; });
+    const t = setTimeout(() => { timedOut = true; child.kill('SIGKILL'); }, SUITE_TIMEOUT_MS);
+    child.on('close', (code, signal) => { clearTimeout(t); resolve({ code: timedOut ? 124 : code ?? (signal ? 1 : 0), stdout, stderr, timedOut }); });
+  });
+}
+
+const suiteDir = path.join(ROOT, 'tools', 'ci', 'lightning');
+const suites = (fs.existsSync(suiteDir) ? fs.readdirSync(suiteDir).filter(f => f.endsWith('.test.mjs')).sort() : [])
+  .map(name => {
+    const head = fs.readFileSync(path.join(suiteDir, name), 'utf8').slice(0, 2048);
+    const min = (head.match(/@gate-min-generation\s+(\d{12})\b/) || [])[1] || null;
+    return { name, min };
+  });
+const sld = (current.cartridges || []).find(c => c.id === 'sld-sandbox');
+const overlayFile = g => path.join('atlas', 'modules', `${g}-uk-lightning-overlay.js`);
+// The live overlay, every overlay module the PR adds or edits, and the
+// overlay of any pinned generation the PR adds. Not every touched
+// generation: the suites were written RED against earlier candidates, so a
+// PR that only edits an old proof must not be failed for a module it did
+// not change. A PR that changes a suite, this gate or its workflow is also
+// run against the newest pinned overlay (the candidate), so a suite edit is
+// proven on the module it guards.
+const gens = new Set();
+if (sld) gens.add(String(sld.generation));
+for (const file of changed) {
+  const m = file.match(/^atlas\/modules\/(\d{12})-uk-lightning-overlay\.js$/)
+    || file.match(/^atlas\/v\/(\d{12})\/current\.json$/);
+  if (m && (file.startsWith('atlas/modules/') || !baseHas(file))) gens.add(m[1]);
+}
+const gateChanged = changed.some(f => f.startsWith('tools/ci/lightning/') || f === 'tools/ci/pr-gate.mjs'
+  || f === '.github/workflows/pr-file-size-guard.yml');
+if (gateChanged) {
+  const vDir = path.join(ROOT, 'atlas', 'v');
+  const pinned = (fs.existsSync(vDir) ? fs.readdirSync(vDir) : [])
+    .filter(d => STAMP.test(d) && fs.existsSync(path.join(vDir, d, 'current.json')) && fs.existsSync(path.join(ROOT, overlayFile(d))))
+    .sort();
+  if (pinned.length) gens.add(pinned[pinned.length - 1]);
+}
+const modules = [...gens].sort().map(g => ({ g, file: overlayFile(g) })).filter(m => fs.existsSync(path.join(ROOT, m.file)));
+
+if (!modules.length) console.log('note  no lightning overlay module in the live or touched generations');
+else if (!suites.length) record('lightning-suites', false, 'tools/ci/lightning/*.test.mjs missing');
+else {
+  const jobs = [];
   for (const { g, file } of modules) {
     for (const suite of suites) {
-      const r = run(['node', '--test', '--test-reporter=tap', path.join('tools', 'ci', 'lightning', suite)], {
-        env: { ...process.env, LIGHTNING_MODULE: file, LIGHTNING_TEST_GEN: g }
-      });
-      const counts = (r.stdout.match(/^# (pass|fail) \d+$/gm) || []).join(' ').replace(/# /g, '');
-      if (r.code !== 0) process.stdout.write(r.stdout);
-      record(`lightning ${g} ${suite}`, r.code === 0, counts + (r.code === 0 ? '' : `  exit ${r.code}`));
+      if (suite.min && g < suite.min) { console.log(`note  ${suite.name} starts at ${suite.min}; not run on ${g}`); continue; }
+      jobs.push({ g, file, suite: suite.name });
     }
   }
-});
+  if (!jobs.length) record('lightning-suites', false, `no suite applies to ${modules.map(m => m.g).join(', ')}`);
+  // The suites spend most of their time waiting on real timers (the 15 s
+  // register timeout), not on the CPU, so they run side by side.
+  const width = Math.max(2, Math.min(4, os.availableParallelism ? os.availableParallelism() : 2));
+  const out = new Array(jobs.length);
+  let next = 0;
+  await Promise.all(Array.from({ length: Math.min(width, jobs.length) }, async () => {
+    while (next < jobs.length) {
+      const i = next++, { g, file, suite } = jobs[i], t0 = Date.now();
+      const r = await runAsync(['node', '--test', '--test-reporter=tap', path.join('tools', 'ci', 'lightning', suite)], {
+        env: { ...process.env, LIGHTNING_MODULE: file, LIGHTNING_TEST_GEN: g }
+      });
+      out[i] = { ...r, seconds: ((Date.now() - t0) / 1000).toFixed(1) };
+    }
+  }));
+  jobs.forEach(({ g, suite }, i) => group(`lightning ${g} ${suite}`, () => {
+    const r = out[i];
+    const counts = (r.stdout.match(/^# (pass|fail|skipped) \d+$/gm) || []).join(' ').replace(/# /g, '');
+    if (r.code !== 0) { process.stdout.write(r.stdout); process.stderr.write(r.stderr); }
+    else console.log(`${suite} on ${g}: ${counts} in ${r.seconds} s`);
+    record(`lightning ${g} ${suite}`, r.code === 0,
+      `${counts} ${r.seconds} s` + (r.code === 0 ? '' : r.timedOut ? `  timed out after ${SUITE_TIMEOUT_MS / 1000} s` : `  exit ${r.code}`));
+  }));
+}
 
 // ---------------------------------------------------------------- summary
 const failed = results.filter(r => !r.ok);
