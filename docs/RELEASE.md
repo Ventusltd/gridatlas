@@ -6,9 +6,8 @@ published under `atlas/v/<G>/` and tested there. Nothing else changes: the
 cartridges, manifest, proof and preview loader are already on main from the
 preview PR.
 
-Until 28 Oct 2026 this was done by hand from
-`docs/lightning/hardening-20261026/evidence/release-rehearsal-E/RELEASE-COMMANDS.md`
-(rehearsal E, then the Build L3 release in PR #49). The two scripts below are
+Until 28 Oct 2026 this was done by hand from rehearsal E's RELEASE-COMMANDS.md
+(kept on the hardening branch, not on main), then the Build L3 release in PR #49. The two scripts below are
 that procedure, checked end to end. They never push, never open a PR, never
 touch `atlas/releases/**` and never decide that something should ship: the
 owner's authorisation is a required argument and is written into the commit.
@@ -28,13 +27,13 @@ cd ~/gridatlas && git fetch origin
 git worktree add --detach ../gridatlas-release origin/main && cd ../gridatlas-release
 
 # 1. dry check: preconditions only, writes nothing
-node tools/release/release-generation.mjs --generation 202610281950 --check
+node tools/release/release-generation.mjs --generation <G> --check
 
 # 2. the release commit, on release/<G>-gridatlas-<version>
-node tools/release/release-generation.mjs --generation 202610281950 \
+node tools/release/release-generation.mjs --generation <G> \
   --authorised-by "owner (Vikram), <link to the approving comment>" \
-  --title "release Lightning Build M (OFF by default) to the live route" \
-  --report ../release-202610281950.json --log ../release-202610281950.gates.log
+  --title "release Lightning Build <name> (OFF by default) to the live route" \
+  --report ../release-<G>.json --log ../release-<G>.gates.log
 ```
 
 ### What it checks before writing anything (all against committed bytes)
@@ -95,7 +94,7 @@ Sometimes main cannot pass lint with G live until something else lands first:
 These go in **their own commits before** the release commit, never inside it:
 
 ```bash
-  --prep-gate-kb 500 --prep-gate-reason "owner decision, 28 Oct 2026 HH:MM UTC, <link>"
+  --prep-gate-kb <N> --prep-gate-reason "owner decision, <date> HH:MM UTC, <link>"   # N above the current ceiling (500 kB since 28 Oct 2026); --check validates it
   --prep-commit <sha>          # cherry-picked as is; repeatable
 ```
 
@@ -127,9 +126,14 @@ gh pr create --draft --base main --head release/<G>-gridatlas-<version>
 
 Merge with **Rebase and merge**, never squash. Squashing would fold any
 preparatory commit into the release commit, and the revert would then undo the
-gate raise too. After Pages deploys, run
-`GRIDATLAS_BASE_URL=https://ventusltd.github.io/gridatlas/ node tools/scope/verify-live.mjs`,
-then do the browser checks listed in RELEASE-COMMANDS.md §7.
+gate raise too. After Pages deploys, run the dependency-free byte check
+`node tools/scope/verify-live-bytes.mjs --base https://ventusltd.github.io/gridatlas/`
+(it retries while the CDN catches up; `tools/scope/verify-live.mjs` additionally
+needs Playwright). Then, in a browser console on the live route with lightning OFF:
+
+- `document.documentElement.dataset.gridatlasGeneration` returns `"<G>"`;
+- `__GRIDATLAS_MODULES__.menuBar.inspect()` returns `{engine:60,pipeline:3,total:63,unique:63,complete:true}`;
+- the network panel shows zero requests to `raw.githubusercontent.com/Ventusltd/lightning`.
 
 ### No-op mode
 
