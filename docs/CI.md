@@ -9,7 +9,8 @@ Every pull request runs two jobs from `.github/workflows/pr-file-size-guard.yml`
 
 `cartridge-gate` runs the checks that used to be run by hand before a cut.
 It uses only Node built-ins: no `npm ci`, no browser, no network and no
-secrets. It takes about 3 seconds after checkout.
+secrets. It takes about 3 seconds after checkout when no overlay suite from
+202610282100 on applies, and about 65 seconds when one does (see 7).
 
 ## What the gate checks
 
@@ -18,7 +19,7 @@ everything that is wrong. The job summary shows a table of the results.
 
 1. **lint**: `node tools/scope/loop.mjs lint`. This covers the scope ledger,
    the exact workflow budget, immutable release checksums, cartridge hashes and
-   the 480 kB ceiling.
+   the 500 kB ceiling.
 2. **state-parity**: `node tools/scope/loop.mjs state --stdout` must match
    `STATE.md` byte for byte.
 3. **generations**: this runs for every generation the PR touches, and for the
@@ -39,19 +40,90 @@ everything that is wrong. The job summary shows a table of the results.
    byte-identical to `atlas/index.html`. A pinned route with a `current.json`
    but no `index.html` also fails. If you change the loader, you must update
    every pinned copy in the same PR.
-7. **lightning-suites**: `node --test tools/ci/lightning/*.test.mjs` runs
-   against three sets of overlay modules:
+7. **lightning-suites**: every `tools/ci/lightning/*.test.mjs` runs with
+   `node --test` against these overlay modules:
    - the live overlay module, `atlas/modules/<live sld-sandbox gen>-uk-lightning-overlay.js`;
    - every overlay module the PR adds or edits;
-   - the overlay module of every pinned generation the PR adds.
+   - the overlay module of every pinned generation the PR adds;
+   - the newest pinned overlay module (the candidate), when the PR changes
+     `tools/ci/lightning/`, `tools/ci/pr-gate.mjs` or this workflow, so a suite
+     edit is proven on the module it guards.
 
-   The suite is vendored from the hardening lane's `chatgpt-latest.test.mjs`.
-   That file is a superset of `chatgpt-lightning-regression.test.mjs`. Neither
-   suite was in the repository before this gate. It has 8 tests, uses Node
-   built-ins and runs the module in `node:vm` with a stub map and stub XHR.
-   It was written to fail on the first candidates, so it is RED on
-   `202610261949` and `202610262323`. That is why the gate does not run it
-   against every touched generation.
+   A suite whose first lines say `// @gate-min-generation <stamp>` runs only
+   on modules of that generation or later; the gate prints a note for the
+   modules it skips. The suite/module pairs run side by side (up to 4), because
+   the time is spent waiting on real timers, not on the CPU.
+
+## The lightning suites
+
+| suite | tests | modules | time | what it guards |
+| --- | --- | --- | --- | --- |
+| `overlay-latest.test.mjs` | 8 | all | about 1 s | the first ChatGPT findings: OFF at rest, feed revalidation, STALE, coordinate checks, shard integrity, honest 12M and coverage captions |
+| `overlay-engine.test.mjs` | 178 (6 need real data) | 202610282100 on | about 60 s | everything below |
+
+`overlay-engine.test.mjs` is the hardening lanes' `test-engine.mjs` as it stood
+at Build M2 (202610282100). It is a superset of their `test-fixes.mjs`. The
+only changes are mechanical: the module comes from `LIGHTNING_MODULE`, fixtures
+come from `tools/ci/lightning/fixtures/`, and two tests were added at the end
+(CI1 and CI2, see below). It covers:
+- the archive index, shards, parts and grid integrity;
+- captions and wording: an optical flash is not a strike, unknown is not zero;
+- dots, clusters and ≈10 km cells, and taps on them firing the original
+  `nearestSubstations` from the right point;
+- the docked card, the camera and layout padding;
+- the REPD card: the 10 nearest sites from the real 10,784-row register, with
+  co-located parts grouped, duplicates once and ties with the 10th kept;
+  the Status and Tech filters; the 10/40 km summary; a row tap that stays in
+  the page, with "◀ back"; the 15 s register timeout;
+- cleanup on close, period change, LATEST and OFF.
+
+The six `LIGHTNING_DATA` tests need a checkout of `Ventusltd/lightning`
+`data/history`. The gate has no network, so they are reported as skipped. Run
+them locally with
+`LIGHTNING_DATA=<lightning>/data/history LIGHTNING_MODULE=<module> node --test tools/ci/lightning/overlay-engine.test.mjs`.
+
+The suite is RED by design on Build M (202610281950) and earlier, which do not
+have the M2 REPD card. That is why it carries `@gate-min-generation 202610282100`.
+When a new build changes a behaviour on purpose, update the affected test in
+the same PR and give the reason in the commit. Do not relax an expectation
+just to pass.
+
+### Fixtures
+
+| file | SHA-256 | source |
+| --- | --- | --- |
+| `fixtures/repd-master-v8-oracle.json.gz` | `02d8b135…4aa8` (gzip), `15cc89a7…f61c` (JSON, checked by the suite) | the export of the pinned `repd_master_v8_oracle.parquet` (`a737d00d…416c`) that the browser loads through the parquet bridge as `/dist/repd_master.json`: 10,784 rows. MR's independent DuckDB export has identical geometry and properties, row for row, so one file serves both |
+| `fixtures/reference-module-F.js` | `9e81e967…536b` | the build F overlay, the reference for the REST rest-state DOM test |
+| `fixtures/mask-30km.txt` | `bf00e721…d7b2` | the 16,800-cell 30 km REPD mask, checked against the module's private copy |
+| `minidom.mjs` | `94dc9bc3…df2c` | just enough DOM for the overlay under `node:vm` |
+
+### Mutation run (28 Oct 2026)
+
+Eighteen single-point bugs were applied to the 202610282100 module, one at a
+time. They included: the cell tap disabled; "optical flash" captions changed to
+"strike"; the dots layer or the neon project layers left behind on OFF; the REPD ranking
+reversed; a 30 km radius; a row tap that navigates; a dead "◀ back"; no co-location
+grouping; no de-duplication; ties dropped; the 10 km summary counting 40 km;
+a broken status filter; cell lon/lat swapped; ON at arrival; no 15 s timeout;
+and no cell index guard.
+
+| suite | mutants caught |
+| --- | --- |
+| `overlay-latest.test.mjs` alone (the gate before this change) | 1 of 18 (only "ON at arrival") |
+| `test-engine.mjs` as vendored, before CI1 and CI2 | 16 of 18 |
+| `overlay-engine.test.mjs` with CI1 and CI2 | 17 of 18 |
+
+The two that got through the M2 suite were:
+- "OFF leaves the dots layer behind". The stub map let a source be removed
+  while a layer still used it; MapLibre throws. CI1 and CI2 now enforce
+  MapLibre's rule and require zero lightning layers and sources after OFF.
+- "the tap-time cell index guard (`c<16800`) is gone". It still gets through.
+  The grid parser already refuses such cells, so only a forged rendered
+  feature reaches that guard. A test that taps one sends the mutant into a
+  runaway allocation that kills the whole suite process, so no test was added.
+
+The mutants and the per-mutant results are in the hardening lane's evidence
+(M2R-ci), not in this repository.
 
 ## Running it locally
 
