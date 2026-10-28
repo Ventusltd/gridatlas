@@ -1,27 +1,92 @@
 name: 202608301321 Build, deploy and verify modular GridAtlas v9.5
 
+# Two jobs share this workflow so the active-workflow budget in
+# tools/scope/loop.mjs (ACTIVE_WORKFLOWS) and STATE.md stay unchanged:
+#
+#   build-deploy-verify  compiles, commits and publishes a streaming-road
+#                        cartridge. It runs only when a push to main touches
+#                        its source paths, or when dispatched with
+#                        mode=build-deploy-verify. It is never the default.
+#   live-bytes           after every push to main (and on dispatch, the
+#                        default mode) waits for GitHub Pages and proves the
+#                        public site serves byte-identical copies of
+#                        atlas/current.json, atlas/index.html, every file that
+#                        current.json references (each cartridge path first)
+#                        and every atlas/v/<gen>/ preview file. It retries for
+#                        Pages/CDN lag and fails with a per-path report.
+
 on:
   workflow_dispatch:
+    inputs:
+      mode:
+        description: 'live-bytes = read-only public byte check; build-deploy-verify = compile, push to main and publish a streaming-road cartridge'
+        type: choice
+        options:
+          - live-bytes
+          - build-deploy-verify
+        default: live-bytes
+      compare_ref:
+        description: 'live-bytes only: the committed ref whose bytes the public site must equal'
+        type: string
+        default: main
   push:
     branches: [main]
-    paths:
-      - 'state/streaming-road-fix.json'
-      - 'tools/v9_5/build_streaming_bridge.py'
-      - 'tools/v9_5/release_stream_payload_cache.py'
-      - 'atman/verify_streaming_roads.mjs'
-      - '.github/workflows/202608301321-verify-live.yml'
 
 permissions:
   actions: read
   contents: write
   pages: write
 
-concurrency:
-  group: gridatlas-v9-5-modular-promotion
-  cancel-in-progress: false
-
 jobs:
+  changes:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    permissions:
+      contents: read
+    outputs:
+      build: ${{ steps.decide.outputs.build }}
+    steps:
+      - name: Checkout history without blobs
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          fetch-depth: 0
+          filter: blob:none
+          persist-credentials: false
+
+      - name: Decide whether the streaming-road builder must run
+        id: decide
+        env:
+          EVENT: ${{ github.event_name }}
+          MODE: ${{ inputs.mode }}
+          BEFORE: ${{ github.event.before }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          build=false
+          if [ "$EVENT" = workflow_dispatch ]; then
+            [ "$MODE" = build-deploy-verify ] && build=true
+          elif [ "$EVENT" = push ]; then
+            # The former push.paths filter, applied per job so live-bytes can
+            # run on every push while the builder keeps its narrow trigger.
+            if [ -z "$BEFORE" ] || ! git cat-file -e "$BEFORE^{commit}" 2>/dev/null; then
+              changed="$(git show --name-only --format= "$GITHUB_SHA")"
+            else
+              changed="$(git diff --name-only "$BEFORE" "$GITHUB_SHA")"
+            fi
+            if printf '%s\n' "$changed" | grep -Exq 'state/streaming-road-fix\.json|tools/v9_5/build_streaming_bridge\.py|tools/v9_5/release_stream_payload_cache\.py|atman/verify_streaming_roads\.mjs'; then
+              build=true
+            fi
+          fi
+          echo "build=$build" | tee -a "$GITHUB_OUTPUT"
+
   build-deploy-verify:
+    needs: changes
+    if: needs.changes.outputs.build == 'true'
+    concurrency:
+      group: gridatlas-v9-5-modular-promotion
+      cancel-in-progress: false
+    outputs:
+      commit_sha: ${{ steps.candidate.outputs.commit_sha }}
     runs-on: ubuntu-24.04
     timeout-minutes: 45
     env:
@@ -225,3 +290,95 @@ jobs:
           if-no-files-found: warn
           retention-days: 90
           compression-level: 6
+
+  live-bytes:
+    needs: [changes, build-deploy-verify]
+    # Runs after the builder when it ran, and on its own otherwise. Skipped only
+    # for a dispatch that asked for the builder (which verifies its own deploy).
+    if: >-
+      always()
+      && needs.changes.result == 'success'
+      && needs.build-deploy-verify.result != 'failure'
+      && needs.build-deploy-verify.result != 'cancelled'
+      && !(github.event_name == 'workflow_dispatch' && inputs.mode == 'build-deploy-verify')
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    permissions:
+      contents: read
+    concurrency:
+      group: gridatlas-live-bytes-${{ github.ref }}
+      cancel-in-progress: false
+    env:
+      GRIDATLAS_BASE_URL: https://ventusltd.github.io/gridatlas/
+      LIVE_BYTES_TIMEOUT_S: '1200'
+      LIVE_BYTES_INTERVAL_S: '20'
+    steps:
+      - name: Checkout the verifier and full history
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Configure exact Node
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v4.4.0
+        with:
+          node-version: '22.18.0'
+
+      - name: Resolve the committed tree the public site must equal
+        id: target
+        env:
+          EVENT: ${{ github.event_name }}
+          COMPARE_REF: ${{ inputs.compare_ref }}
+          BUILT_SHA: ${{ needs.build-deploy-verify.outputs.commit_sha }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch --no-tags origin '+refs/heads/*:refs/remotes/origin/*'
+          if [ "$EVENT" = workflow_dispatch ]; then
+            ref="${COMPARE_REF:-main}"
+            sha="$(git rev-parse --verify "origin/$ref^{commit}" 2>/dev/null || git rev-parse --verify "$ref^{commit}")"
+          elif [ -n "$BUILT_SHA" ]; then
+            sha="$BUILT_SHA"
+          else
+            sha="$GITHUB_SHA"
+          fi
+          git worktree add --detach work/compare "$sha"
+          echo "sha=$sha" | tee -a "$GITHUB_OUTPUT"
+          echo "generation=$(jq -r .generation work/compare/atlas/current.json)" | tee -a "$GITHUB_OUTPUT"
+
+      - name: Prove the public site serves the committed bytes
+        env:
+          EVENT: ${{ github.event_name }}
+          TARGET_SHA: ${{ steps.target.outputs.sha }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          # Pages publishes main within about two minutes and its CDN may serve
+          # stale copies for up to ten more; the verifier retries with
+          # cache-busting queries for LIVE_BYTES_TIMEOUT_S before failing.
+          status=0
+          node tools/scope/verify-live-bytes.mjs --root work/compare --report work/live-bytes.json || status=$?
+          if [ "$status" -ne 0 ] && [ "$EVENT" = push ]; then
+            head="$(git ls-remote origin refs/heads/main | cut -f1)"
+            if [ -n "$head" ] && [ "$head" != "$TARGET_SHA" ]; then
+              echo "::warning title=live-bytes superseded::main moved from $TARGET_SHA to $head during verification; the run for $head is authoritative."
+              exit 0
+            fi
+          fi
+          exit "$status"
+
+      - name: Summarise
+        if: always()
+        shell: bash
+        run: |
+          test -f work/live-bytes.json || exit 0
+          jq -r '"### Live bytes: \(.status)\n\n\(.paths_matched)/\(.paths_checked) paths byte-identical at \(.base_url) for commit `\(.commit)` (generation \(.generation)) after \(.attempts) attempt(s).\n" , (.problems[] | "- problem: \(.)"), (.mismatches[] | "- MISMATCH `\(.path)` (\(.why)): HTTP \(.http), committed \(.expected.bytes) B, live \(.live.bytes // "none") B")' work/live-bytes.json >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Retain live byte evidence
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v4.4.3
+        with:
+          name: gridatlas-live-bytes-${{ github.run_id }}
+          path: work/live-bytes.json
+          if-no-files-found: warn
+          retention-days: 90
