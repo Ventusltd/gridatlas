@@ -178,6 +178,17 @@ ok(`LOADER_IDENTICAL atlas/index.html == ${previewLoaderRel} (sha256 ${sha256(lo
 const before = Object.fromEntries(POINTER_FILES.map(f => [f, sha256File(f)]));
 report.before = before;
 
+/* --prep-gate-kb is validated with the preconditions (so --check runs it too) and before any branch exists:
+   a redundant or malformed ceiling must not leave a stray branch with HEAD on it. */
+if (args['prep-gate-kb']) {
+  const text = readText('tools/scope/loop.mjs');
+  const sizes = [...text.matchAll(/fs\.statSync\(cartridgePath\)\.size <= (\d{3})_000/g)];
+  if (sizes.length !== 1) die(`tools/scope/loop.mjs: expected exactly one cartridge ceiling, found ${sizes.length}`);
+  if (Number(args['prep-gate-kb']) <= Number(sizes[0][1])) die(`--prep-gate-kb ${args['prep-gate-kb']} does not raise the current ${sizes[0][1]} kB ceiling`);
+  if ([...text.matchAll(/exceeds the \d{3} kB recorded ceiling \([^)`]*\)/g)].length !== 1) die('tools/scope/loop.mjs: ceiling message not found exactly once');
+  ok(`--prep-gate-kb ${args['prep-gate-kb']} raises the current ${sizes[0][1]} kB ceiling`);
+}
+
 if (args.check) {
   console.log(`\nCHECK PASS: ${G} is releasable on ${baseSha.slice(0, 7)} (live ${live.generation}). Nothing written.`);
   finish(0);
@@ -228,7 +239,12 @@ const checkPrep = (label) => {
 
 for (const sha of args['prep-commit']) {
   const r = run('git', ['cherry-pick', '-x', sha], { allowFail: true });
-  if (r.status !== 0) { run('git', ['cherry-pick', '--abort'], { allowFail: true }); die(`cherry-pick ${sha} failed:\n${r.out}`); }
+  if (r.status !== 0) {
+    run('git', ['cherry-pick', '--abort'], { allowFail: true });
+    /* nothing is released on a failed preparation: leave no stray branch and put HEAD back where it was */
+    run('git', ['switch', '-q', '--detach', baseSha], { allowFail: true }); run('git', ['branch', '-D', branch], { allowFail: true });
+    die(`cherry-pick ${sha} failed (branch ${branch} removed; HEAD back at ${baseSha.slice(0, 7)}):\n${r.out}`);
+  }
   checkPrep(`prep cherry-pick ${sha.slice(0, 7)}`);
 }
 
