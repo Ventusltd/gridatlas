@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// @gate-min-generation 202610282215
+// @gate-min-generation 202610290045
 // Vendored from the hardening lanes' test-engine.mjs (Build M2, 202610282100: 176 tests, a superset of
 // test-fixes.mjs), so the PR gate (tools/ci/pr-gate.mjs, docs/CI.md) runs the lightning engine, cell and REPD
 // tests on every overlay module from 202610282100 on. Changes from the source, all mechanical:
@@ -13,6 +13,10 @@
 //   about 10 m, unknown capacity never 0 MW, …) are updated in place, each tagged with its finding, and the M3 tests (REPD
 //   layer auto-activation with an engine stand-in) and the review-fix tests are appended after CI1/CI2. The minimum
 //   generation is therefore 202610282215: the suite is RED on 202610282100 by design (M2 wording).
+// M4 (202610290045) and M4b: the camera race fix (M2R-taps T1: the framing queued for the end of a flight runs after the stop that
+//   fired moveend, so J1 and LAY1 yield one microtask before reading it) and M2R-camera fix C; the M4 tests (a MapLibre-like
+//   stop() that fires moveend synchronously), the fix-C test and the M4b tests (run on M4b modules only, where the M3 layer
+//   tests are skipped) are appended at the end. The minimum generation is therefore 202610290045: the suite is RED on M3 by design.
 // The tests below were written fail-first against earlier builds; do not relax an expectation to make a module pass.
 // A new build that changes behaviour on purpose updates the affected test here, in the same PR, with the reason.
 //   LIGHTNING_MODULE=atlas/modules/<gen>-uk-lightning-overlay.js node --test tools/ci/lightning/overlay-engine.test.mjs
@@ -32,6 +36,7 @@ import { El, makeDocument, dispatch } from './minidom.mjs';
 const MODULE = process.env.LIGHTNING_MODULE || process.env.MODULE;
 if (!MODULE) throw new Error('set LIGHTNING_MODULE=<overlay path>');
 const SRC = readFileSync(MODULE, 'utf8');
+const M4B = SRC.includes('/* M4b:'); // M4b (owner option) draws the listed sites itself and switches no Layers control: the M3 layer tests run on M3/M4 only
 const SEAM = 'NS.ukLightning=Object.freeze(';
 assert.equal(SRC.split(SEAM).length, 2, 'seam');
 const PROBED = SRC.replace(SEAM, 'window.__PROBE__={ok,cf,cp,sh,S};' + SEAM);
@@ -945,10 +950,10 @@ test('I1b: with overlapping hit circles, the tap opens the flash nearest the tap
 test('J1: a tap flies to zoom 12 over 1200 ms like the original arrival, and fitBounds (top 150, bottom clear of the card; LR-layout) only when a link end is off screen', async () => {
   let inView = true; const x = boot({ feedFn: () => feed([flash(Date.now() - H, 'z', [-1.5, 52])]) }); installNeon(x, SUBS);
   x.mapEl.clientHeight = 659; x.mapEl.clientWidth = 393; x.setProj(() => inView ? { x: 200, y: 200 } : { x: 200, y: 600 });
-  x.toggle(true); await drain(); tapFlash(x);
+  x.toggle(true); await drain(); tapFlash(x); await Promise.resolve(); // M4: the in-view check also runs after the stop
   assert.equal(JSON.stringify(x.camera.map(c => c[0])), '["flyTo"]'); const fo = x.camera[0][1][0];
   assert.equal(fo.zoom, 12); assert.equal(fo.duration, 1200); assert.equal(JSON.stringify(fo.center), '[-1.5,52]');
-  inView = false; x.camera.length = 0; tapFlash(x);
+  inView = false; x.camera.length = 0; tapFlash(x); await Promise.resolve(); // M4 (M2R-taps T1): the framing runs after the stop that fired moveend
   assert.equal(JSON.stringify(x.camera.map(c => c[0])), '["flyTo","fitBounds"]');
   { const c0 = x.mapEl.querySelector('[data-lightning-card]'); assert.equal(JSON.stringify(x.camera[1][1][1].padding), JSON.stringify({ top: 150, left: 40, right: 40, bottom: (c0.bb + c0.offsetHeight || 196) + 24 })); } // L3: LR-layout
 });
@@ -1547,7 +1552,7 @@ test('LAY1 (LR-layout MAJOR): fitBounds keeps the origin and endpoints clear: to
   try {
     const x = boot({ feedFn: () => feed([flash(Date.now() - H, 'z', [-1.5, 52])]) }); installNeon(x, SUBS);
     x.mapEl._rect = { top: 0, left: 0, right: 393, bottom: 659, width: 393, height: 659 }; x.map.getBounds = () => ({ contains: () => false });
-    x.toggle(true); await drain(); tapFlash(x);
+    x.toggle(true); await drain(); tapFlash(x); await Promise.resolve(); // M4 (M2R-taps T1): deferred framing
     const c = card(x), fb = x.camera.find(k => k[0] === 'fitBounds'); assert.ok(fb, 'fitBounds'); const pad = fb[1][1].padding;
     assert.equal(pad.top, 150); assert.equal(typeof c.bb, 'number'); assert.equal(pad.bottom, c.bb + 143 + 24); assert.ok(pad.bottom >= 175);
   } finally { if (od) Object.defineProperty(El.prototype, 'offsetHeight', od); else delete El.prototype.offsetHeight; }
@@ -1986,7 +1991,7 @@ const boot3 = async (ll0, ll1, repd, opts = {}) => { const x = boot({ feedFn: ()
 const SYN = FCx([pf(-1.5, 52.01, { name: 'S1' }), pf(-1.5, 52.02, { name: 'B1', tech: 'bess', raw_tech: 'Battery' }), pf(-1.5, 52.03, { name: 'W1', tech: 'wind', raw_tech: 'Wind Onshore' }),
   pf(-3.0, 55.01, { name: 'H1', tech: 'hydro', raw_tech: 'Small Hydro' }), pf(-3.0, 55.02, { name: 'R1', tech: 'solar_roof' }), pf(-3.0, 55.03, { name: 'O1', tech: 'other', raw_tech: 'Unknown' })]);
 
-test('M3-1: a tap switches on exactly the REPD layers of the listed technologies, through the original checkbox path; close switches them off again', async () => {
+(M4B ? test.skip : test)('M3-1: a tap switches on exactly the REPD layers of the listed technologies, through the original checkbox path; close switches them off again', async () => {
   const { x, E } = await boot3([-1.5, 52], null, SYN), n0 = inspect(x);
   assert.equal(E.toggles.length, 0, 'nothing switched before a tap'); assert.equal(x.S.ly, undefined);
   tapFlash(x, 0); await settle();
@@ -1998,14 +2003,14 @@ test('M3-1: a tap switches on exactly the REPD layers of the listed technologies
   assert.equal(card(x), null); assert.deepEqual(onIds(E), []); assert.deepEqual(visible(x), []); assert.equal(x.S.ly.size, 0); inSync(E);
   assert.deepEqual(E.toggles.map(t => t.join()).sort(), ['bess,false', 'solar,false', 'wind,false']); assert.equal(x.log.errors.length, 0);
 });
-test('M3-2: a layer the user had on already is never switched (on or off) by M3 and survives close; the rest of the user state is restored exactly', async () => {
+(M4B ? test.skip : test)('M3-2: a layer the user had on already is never switched (on or off) by M3 and survives close; the rest of the user state is restored exactly', async () => {
   const { x, E } = await boot3([-1.5, 52], null, SYN, { userOn: ['solar', 'hydro', 'solar_operational'] });
   const before = onIds(E); tapFlash(x, 0); await settle();
   assert.deepEqual([...x.S.ly].sort(), ['bess', 'wind']); assert.ok(!E.toggles.some(t => t[0] === 'solar'), 'solar untouched');
   assert.match(card(x).textContent, /REPD map layers on for this list: Solar PV, Battery Storage, Wind \(those/);
   closeCard(x); assert.deepEqual(onIds(E), before); inSync(E); assert.deepEqual(visible(x).sort(), ['hydro', 'solar', 'solar_operational']);
 });
-test('M3-3: a new tap whose list needs other technologies switches off only what M3 switched on and is no longer needed; the same list toggles nothing', async () => {
+(M4B ? test.skip : test)('M3-3: a new tap whose list needs other technologies switches off only what M3 switched on and is no longer needed; the same list toggles nothing', async () => {
   const { x, E } = await boot3([-1.5, 52], [-3.0, 55], SYN, { userOn: ['hydro'] });
   tapFlash(x, 0); await settle(); assert.deepEqual([...x.S.ly].sort(), ['bess', 'solar', 'wind']);
   E.toggles.length = 0; tapFlash(x, 1); await settle();
@@ -2015,14 +2020,14 @@ test('M3-3: a new tap whose list needs other technologies switches off only what
   E.toggles.length = 0; tapFlash(x, 1); await settle(); assert.deepEqual(E.toggles, [], 'same list: no toggles');
   closeCard(x); assert.deepEqual(onIds(E), ['hydro']);
 });
-test('M3-4: the layers follow the card filter (Tech: Solar drops Battery and Wind; All brings them back)', async () => {
+(M4B ? test.skip : test)('M3-4: the layers follow the card filter (Tech: Solar drops Battery and Wind; All brings them back)', async () => {
   const { x, E } = await boot3([-1.5, 52], null, SYN); tapFlash(x, 0); await settle();
   press(x, 'te:solar'); assert.deepEqual([...x.S.ly], ['solar']); assert.deepEqual(onIds(E), ['solar']); inSync(E);
   press(x, 'te:all'); assert.deepEqual([...x.S.ly].sort(), ['bess', 'solar', 'wind']);
   press(x, 'st:pl'); assert.deepEqual(onIds(E), [], 'no planning project: no layer'); assert.doesNotMatch(card(x).textContent, /REPD map layers on/);
   press(x, 'st:all'); closeCard(x); assert.deepEqual(onIds(E), []);
 });
-test('M3-5: a row tap keeps the layers (the project\'s own dot stays drawn), back keeps them, close from the project view switches them off', async () => {
+(M4B ? test.skip : test)('M3-5: a row tap keeps the layers (the project\'s own dot stays drawn), back keeps them, close from the project view switches them off', async () => {
   const { x, E } = await boot3([-1.5, 52], null, SYN); tapFlash(x, 0); await settle(); E.toggles.length = 0;
   assert.equal(tapRow(x, 1), true); await settle(); assert.equal(card(x).getAttribute('aria-label'), 'REPD project');
   assert.deepEqual(E.toggles, []); assert.ok(visible(x).includes('bess'), 'Battery row: its own layer is drawn');
@@ -2030,20 +2035,20 @@ test('M3-5: a row tap keeps the layers (the project\'s own dot stays drawn), bac
   assert.equal(card(x).getAttribute('aria-label'), 'Lightning flash'); assert.deepEqual(E.toggles, []); assert.deepEqual([...x.S.ly].sort(), ['bess', 'solar', 'wind']);
   tapRow(x, 0); await settle(); closeCard(x); assert.deepEqual(onIds(E), []); assert.equal(x.S.ly.size, 0); inSync(E);
 });
-test('M3-6: lightning OFF, a period change, LATEST, prev and a tap on empty map each restore the user state; a tap on a drawn REPD dot keeps it', async () => {
+(M4B ? test.skip : test)('M3-6: lightning OFF, a period change, LATEST, prev and a tap on empty map each restore the user state; a tap on a drawn REPD dot keeps it', async () => {
   const run = async act => { const { x, E } = await boot3([-1.5, 52], null, SYN, { userOn: ['wind'] }); tapFlash(x, 0); await settle(); assert.deepEqual([...x.S.ly].sort(), ['bess', 'solar']); await act(x); await drain(); return { x, E }; };
   for (const [nm, act] of [['off', x => x.toggle(false)], ['period', x => x.click(x.chip('7d'))], ['empty map', x => x.tapMap([50, 50], {})], ['prev', x => x.click(x.nav('prev'))], ['latest', x => x.click(x.nav('latest'))], ['custom apply', x => { x.click(x.chip('custom')); }]]) {
     const { x, E } = await run(act); assert.deepEqual(onIds(E), ['wind'], nm); assert.equal(x.S.ly.size, 0, nm); inSync(E); }
-  { const { x, E } = await run(x => x.tapMap([50, 50], { 'l-solar': [{ properties: { name: 'S1' } }] })); assert.deepEqual([...x.S.ly].sort(), ['bess', 'solar'], 'the engine owns this tap'); assert.equal(card(x), null);
-    x.toggle(false); assert.deepEqual(onIds(E), ['wind']); }
+  { const { x, E } = await run(x => x.tapMap([50, 50], { 'l-solar': [{ properties: { name: 'S1', tech: 'solar' } }] })); assert.deepEqual([...x.S.ly], [], 'the engine owns this tap; M4 holds nothing after it (M2R-l3regress M3-L1)'); assert.equal(card(x), null);
+    assert.deepEqual(onIds(E), ['solar', 'wind'], 'the tapped dot stays: Solar is now the reader\'s; Battery released'); inSync(E); x.toggle(false); assert.deepEqual(onIds(E), ['solar', 'wind']); }
 });
-test('M3-7: a layer M3 holds becomes the user\'s once the user unticks or re-ticks it (main panel or fullscreen curtain), and then survives close', async () => {
+(M4B ? test.skip : test)('M3-7: a layer M3 holds becomes the user\'s once the user unticks or re-ticks it (main panel or fullscreen curtain), and then survives close', async () => {
   const { x, E } = await boot3([-1.5, 52], null, SYN); tapFlash(x, 0); await settle();
   userTick(x, E, 'bess', false); userTick(x, E, 'bess', true); userTick(x, E, 'wind', false, 'fs');
   assert.deepEqual([...x.S.ly], ['solar']); closeCard(x); assert.deepEqual(onIds(E), ['bess']); inSync(E);
   tapFlash(x, 0); await settle(); assert.deepEqual([...x.S.ly].sort(), ['solar', 'wind']); closeCard(x); assert.deepEqual(onIds(E), ['bess']);
 });
-test('M3-8: nothing is switched with lightning OFF or before a tap; a disabled control and a technology with no layer are skipped; a register failure on a new tap releases the held layers', async () => {
+(M4B ? test.skip : test)('M3-8: nothing is switched with lightning OFF or before a tap; a disabled control and a technology with no layer are skipped; a register failure on a new tap releases the held layers', async () => {
   { const x = boot({ feedFn: () => feed([]) }); installRepd(x, S3, SYN); const E = installLayers(x); await drain(); assert.deepEqual(E.toggles, []); x.toggle(true); await drain(); x.toggle(false); await drain();
     assert.deepEqual(E.toggles, []); assert.ok(!(x.S.ly && x.S.ly.size), 'OFF before any tap switches nothing'); }
   { const { x, E } = await boot3([-1.5, 52], null, SYN, { disabled: ['bess'] }); tapFlash(x, 0); await settle(); assert.deepEqual([...x.S.ly].sort(), ['solar', 'wind']); assert.equal(E.main.bess.checked, false); }
@@ -2051,7 +2056,7 @@ test('M3-8: nothing is switched with lightning OFF or before a tap; a disabled c
     tapFlash(x, 0); await settle(); assert.equal(x.S.ly.size, 3); x.S.rg = null; fail = true; tapFlash(x, 0); await settle();
     assert.match(card(x).textContent, /REPD projects unavailable: network error/); assert.equal(x.S.ly.size, 0); assert.deepEqual(onIds(E), []); }
 });
-test('M3-9 (real register, the owner\'s Doncaster-area cell 53.45, -1.05): the layers switched on equal the technologies of the independent brute-force 10 nearest sites, and close restores all off', async () => {
+(M4B ? test.skip : test)('M3-9 (real register, the owner\'s Doncaster-area cell 53.45, -1.05): the layers switched on equal the technologies of the independent brute-force 10 nearest sites, and close restores all off', async () => {
   const { x, E } = await boot3(DONC, null, REPD_IND); tapFlash(x, 0); await settle();
   const want = techsOf(bruteSites(REPD_IND, ...DONC)); assert.ok(want.length >= 2, want.join());
   assert.deepEqual(onIds(E).sort(), want); assert.deepEqual([...x.S.ly].sort(), want); inSync(E);
@@ -2112,4 +2117,145 @@ test('M3R-layout (M2R-layout F1-F3): an open card stays below container top + 32
   assert.ok(x.camera.some(k => k[0] === 'fitBounds'), 'an end under the card is reframed');
   x.setProj(() => ({ x: 200, y: 200 })); x.camera.length = 0; dispatch(card(x).querySelector('details'), 'toggle', x.log.errors);
   assert.equal(x.camera.filter(k => k[0] === 'fitBounds').length, 1, 'the details toggle forces a reframe');
+});
+// ---------------------------------------------------------------- M4-build: no camera move nested inside another (M2R-taps MAJOR M2R-T1)
+// MapLibre 3.6.2 camera stand-in: a move stays in flight until finish(); every camera call first stop()s the move in flight,
+// and stop() fires `moveend` SYNCHRONOUSLY (Camera._stop -> _onEaseEnd -> _afterEase -> fire), as a natural end does.
+// A camera call made while that moveend is being dispatched is NESTED: in the browser it leaves an orphan render frame
+// ("this._onEaseFrame is not a function", then "Attempting to run(), but is already running") and the map stops drawing.
+// off() removes a once() listener, as MapLibre's Evented.off does for _oneTimeListeners.
+const mlCam = x => {
+  const once = [], st = { moving: false, inStop: 0, nested: [], moves: 0 };
+  const emit = () => { const f = once.splice(0); for (const g of f) g({ type: 'moveend' }); for (const h of x.handlers.filter(h => h.t === 'moveend')) h.f({ type: 'moveend' }); };
+  const stop = () => { if (!st.moving) return; st.moving = false; st.inStop++; try { emit(); } finally { st.inStop--; } };
+  for (const k of ['fitBounds', 'flyTo', 'easeTo', 'jumpTo']) x.map[k] = (...a) => { if (st.inStop) st.nested.push(k); stop(); x.camera.push([k, a]); st.moves++; if (k === 'jumpTo') emit(); else st.moving = true; };
+  x.map.stop = stop; x.map.isMoving = () => st.moving;
+  x.map.once = (t, f) => { if (t === 'moveend' && !once.includes(f)) once.push(f); };
+  x.map.off = (t, f) => { const i = t === 'moveend' ? once.indexOf(f) : -1; if (i >= 0) once.splice(i, 1); };
+  st.pending = () => once.length;
+  // a natural end (the last ease frame): moveend fires and no outer move follows, so a framing started there is not nested
+  st.finish = async () => { if (st.moving) { st.moving = false; emit(); } await settle(); };
+  return st;
+};
+const backBtn = x => card(x).querySelector('[data-lightning-back]');
+
+test('M4-1 (M2R-taps MAJOR): 8 fast row -> "◀ back" cycles (each before the previous flight ends) never start a camera move inside moveend', async () => {
+  const x = await flashAt([-1.5, 52]), cam = mlCam(x); assert.ok(prows(card(x)).length > 1, 'rows');
+  // the tap's own flight is in flight again (the stand-in replaced the camera after the tap)
+  x.map.flyTo({ center: [-1.5, 52], zoom: 12 }); x.map.once('moveend', () => {});
+  for (let i = 0; i < 8; i++) {
+    tapRow(x, i % 3); await settle(); assert.ok(backBtn(x), 'project view ' + i);
+    dispatch(backBtn(x), 'click', x.log.errors); await settle(); assert.ok(prows(card(x)).length > 1, 'lightning card ' + i);
+  }
+  assert.deepEqual(cam.nested, [], 'no camera call inside a moveend dispatched by stop()');
+  assert.ok(cam.pending() <= 1, 'at most one framing pending, got ' + cam.pending());
+  // the last flight ends: the pending framing runs once, outside the stop
+  const n0 = x.camera.length; await cam.finish(); await cam.finish();
+  assert.deepEqual(cam.nested, []); assert.ok(x.camera.length >= n0, 'framing ran'); assert.deepEqual(x.log.errors.map(String), []);
+});
+
+test('M4-2: the suggested regression: a stub stop() that fires moveend synchronously sees no fitBounds inside it (row tap, back, re-tap, details toggle, fit, cluster)', async () => {
+  const x = await flashAt([-1.5, 52]), cam = mlCam(x);
+  const fly = () => { x.map.flyTo({ center: [-1.5, 52], zoom: 12 }); };
+  // a framing is pending on every path below while a flight is in flight; then each path starts a new camera move
+  const paths = {
+    row: () => tapRow(x, 0),
+    back: () => dispatch(backBtn(x), 'click', x.log.errors),
+    retap: () => tapFlash(x),
+    toggle: () => { const d = card(x).querySelector('details'); d.open = !d.open; dispatch(d, 'toggle', x.log.errors); },
+    fit: () => x.click(x.nav('fit')),
+    cluster: () => { x.sources.get('gridatlas-lightning').getClusterExpansionZoom = (id, cb) => cb(null, 9);
+      x.tapMap([10, 10], { 'gridatlas-lightning-hit': [{ properties: { cluster: true, cluster_id: 7, point_count: 50 }, geometry: { coordinates: [-1.5, 52] } }] }); }
+  };
+  for (const [k, f] of Object.entries(paths)) {
+    if (k === 'back' && !backBtn(x)) { tapRow(x, 0); await settle(); }
+    if (k === 'fit' || k === 'cluster') { tapFlash(x); await settle(); assert.equal(cam.pending(), 1, k + ': the tap armed its framing'); } else { fly(); x.map.once('moveend', () => {}); await settle(); }
+    // re-arm the module's own framing: a register/back render while moving queues it (RpR) and nz queues one per flight
+    const before = cam.nested.length, m0 = cam.moves; f(); await settle();
+    assert.equal(cam.nested.length, before, k + ': nested ' + cam.nested.slice(before).join());
+    if (k !== 'toggle') assert.ok(cam.moves > m0 || cam.pending() >= 1, k + ': a camera move was made or a framing queued');
+  }
+  assert.deepEqual(cam.nested, []); assert.deepEqual(x.log.errors.map(String), []);
+});
+
+test('M4-3: a framing pending when someone else moves the camera (engine popup, search, a gesture stop) runs after that stop, never inside it, and not while the map moves', async () => {
+  const x = await flashAt([-1.5, 52]), cam = mlCam(x);
+  tapRow(x, 0); await settle(); assert.ok(cam.moving && cam.pending() >= 1, 'flight in flight, framing pending');
+  // a foreign flyTo (not the module): its stop() fires the module's pending moveend synchronously
+  const n0 = x.camera.length; x.map.flyTo({ center: [0, 51], zoom: 9 }); await settle();
+  assert.deepEqual(cam.nested, [], 'no module camera call inside the foreign stop');
+  assert.equal(x.camera.length, n0 + 1, 'the foreign move is not overridden while it runs');
+  await cam.finish(); assert.deepEqual(cam.nested, []); assert.deepEqual(x.log.errors.map(String), []);
+});
+// ---------------------------------------------------------------- M4-build: M2R-camera fix C (landscape / short map dock)
+test('M4R-camera (M2R-camera MAJOR-2, fix C): an 852x393 map docks the card right and frames the area to its left; portrait and desktop keep the centred card', async () => {
+  const od = Object.getOwnPropertyDescriptor(El.prototype, 'offsetWidth');
+  Object.defineProperty(El.prototype, 'offsetWidth', { configurable: true, get() { return 480; } });
+  try {
+    for (const [w, h, dock] of [[852, 393, true], [393, 659, false], [1280, 800, false]]) {
+      let at = { x: 5, y: 5 }; const x = boot({ feedFn: () => feed([flash(Date.now() - H, 'z', [-1.5, 52])]) }); installNeon(x, SUBS);
+      x.mapEl._rect = { top: 0, left: 0, right: w, bottom: h, width: w, height: h }; x.mapEl.clientWidth = w; x.mapEl.clientHeight = h; x.setProj(() => at);
+      x.toggle(true); await drain(); tapFlash(x); await Promise.resolve();
+      const c = card(x); assert.equal(!!c.sd, dock, w + 'x' + h); assert.equal(c.style.marginRight, dock ? '0' : 'auto');
+      const fb = x.camera.filter(k => k[0] === 'fitBounds').at(-1); assert.ok(fb, 'an end outside the free area is framed'); const p = fb[1][1].padding;
+      if (dock) assert.deepEqual([p.top, p.right, p.bottom, p.left], [60, 512, 100, 40]); else assert.deepEqual([p.top, p.right, p.left], [150, 40, 40]);
+      if (dock) {
+        // an end in the free area left of the docked card needs no fit; an end under the docked card (x > W - 512 + 20) does
+        at = { x: 200, y: 200 }; x.camera.length = 0; tapFlash(x); await Promise.resolve(); assert.equal(x.camera.filter(k => k[0] === 'fitBounds').length, 0, 'free area');
+        at = { x: w - 300, y: 200 }; x.camera.length = 0; tapFlash(x); await Promise.resolve(); assert.equal(x.camera.filter(k => k[0] === 'fitBounds').length, 1, 'under the docked card');
+      }
+      assert.deepEqual(x.log.errors.map(String), []);
+    }
+  } finally { if (od) Object.defineProperty(El.prototype, 'offsetWidth', od); else delete El.prototype.offsetWidth; }
+});
+// ---------------------------------------------------------------- M4b (owner option): only the listed sites, as REPD-styled dots
+// M4b draws the card's listed sites with the engine's glow + core paint (ventus-corev8engine.js:1305-1337) in its own
+// gridatlas-lightning-neon-p-glow / -p-dot layers (source -pdots) and never touches a Layers control. These run on M4b
+// modules only (the M3 layer tests above run on M3/M4 modules only).
+const dots = x => [...(x.sources.get('gridatlas-lightning-neon-pdots') || { data: { features: [] } }).data.features];
+const dotKey = f => f.geometry.coordinates.join() + '|' + f.properties.t + '|' + f.properties.c;
+const wantDots = sites => sites.flatMap(g => g.parts.map(p => g.a.join() + '|' + p.tech + '|' + (+p.capacity > 0 ? +p.capacity : 0))).sort();
+const B4 = M4B ? test : test.skip;
+
+B4('M4b-1 (real register, Doncaster 53.45, -1.05): exactly the parts of the independent brute-force 10 nearest sites are drawn, in the engine REPD style; no Layers control changes', async () => {
+  const { x, E } = await boot3(DONC, null, REPD_IND, { userOn: ['wind'] }); E.toggles.length = 0; tapFlash(x, 0); await settle();
+  assert.deepEqual(dots(x).map(dotKey).sort(), wantDots(bruteSites(REPD_IND, ...DONC)));
+  assert.deepEqual(E.toggles, [], 'no layer switched'); assert.deepEqual(onIds(E), ['wind'], 'the reader layer untouched'); inSync(E);
+  const g = x.layers.get('gridatlas-lightning-neon-p-glow'), d = x.layers.get('gridatlas-lightning-neon-p-dot');
+  assert.ok(g && d, 'glow + core'); assert.ok(!/^l-/.test(g.id) && !/^l-/.test(d.id), 'not engine-interactive ids');
+  // engine paint: solar core ramp, solar glow ramp, blur 1, black 1.5 px stroke, the engine REPD order as sort key
+  assert.ok(JSON.stringify(d.paint['circle-color']).includes('"solar",["interpolate",["linear"],["get","c"],0,"#ffff00",20,"#ffcc00",50,"#ffaa00",200,"#ff6600",500,"#ff2200"]'));
+  assert.ok(JSON.stringify(g.paint['circle-radius']).includes('4,22,20,32,50,44,200,60,500,80')); assert.equal(g.paint['circle-blur'], 1);
+  assert.equal(d.paint['circle-stroke-color'], '#000'); assert.equal(JSON.stringify(d.layout['circle-sort-key']), '["get","o"]');
+  // the Tech filter redraws the dots for the filtered list
+  press(x, 'te:solar'); assert.deepEqual(dots(x).map(dotKey).sort(), wantDots(bruteSites(REPD_IND, ...DONC, p => /^solar/.test(p.tech))));
+  assert.match(card(x).textContent, /only these sites are drawn, in the REPD layer style/); assert.doesNotMatch(card(x).textContent, /REPD map layers on/);
+  assert.deepEqual(E.toggles, []); assert.equal(x.log.errors.length, 0);
+});
+
+B4('M4b-2: a row tap draws only that site in the project view; back restores the list dots; close, OFF and a period change remove every dot layer and source', async () => {
+  for (const end of ['close', 'off', 'period']) {
+    const { x, E } = await boot3([-1.5, 52], null, SYN); tapFlash(x, 0); await settle(); const n = dots(x).length; assert.ok(n >= 3, 'list dots ' + n);
+    tapRow(x, 1); await settle(); assert.equal(card(x).getAttribute('aria-label'), 'REPD project');
+    assert.equal(dots(x).length, 1, 'the project view draws its own site'); assert.equal(dots(x)[0].properties.t, 'bess');
+    dispatch(card(x).querySelector('[data-lightning-back]'), 'click', x.log.errors); await settle(); assert.equal(dots(x).length, n, 'back');
+    if (end === 'close') closeCard(x); else if (end === 'off') x.toggle(false); else x.click(x.chip('7d')); await drain();
+    for (const id of ['p-glow', 'p-dot']) assert.equal(x.layers.get('gridatlas-lightning-neon-' + id), undefined, end + ' ' + id);
+    assert.equal(x.sources.get('gridatlas-lightning-neon-pdots'), undefined, end); assert.deepEqual(E.toggles, []); assert.deepEqual(x.log.errors.map(String), []);
+  }
+});
+
+B4('M4b-3: a tap on a drawn site dot opens that site\'s project view (as its row); a tap elsewhere is the lightning tap as before', async () => {
+  const { x } = await boot3([-1.5, 52], null, SYN); tapFlash(x, 0); await settle();
+  const f = dots(x).find(q => q.properties.t === 'wind'); assert.ok(f);
+  x.tapMap([5, 5], { 'gridatlas-lightning-neon-p-dot': [{ properties: { ...f.properties } }] }); await settle();
+  assert.equal(card(x).getAttribute('aria-label'), 'REPD project'); assert.match(card(x).textContent, /W1/); assert.ok(card(x).querySelector('[data-lightning-back]'));
+  dispatch(card(x).querySelector('[data-lightning-back]'), 'click', x.log.errors); await settle();
+  tapFlash(x, 0); await settle(); assert.equal(card(x).getAttribute('aria-label'), 'Lightning flash'); assert.deepEqual(x.log.errors.map(String), []);
+});
+
+B4('M4b-4: the module names no Layers control (the proof\'s original static negative holds) and nothing is drawn before a tap', async () => {
+  assert.equal(/data-layer-id|lbl-/.test(SRC), false);
+  const x = boot({ feedFn: () => feed([]) }); installRepd(x, S3, SYN); const E = installLayers(x); x.toggle(true); await drain(); x.toggle(false); await drain();
+  assert.deepEqual(E.toggles, []); assert.equal(dots(x).length, 0);
 });
