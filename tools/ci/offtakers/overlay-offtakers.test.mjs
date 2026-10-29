@@ -392,6 +392,13 @@ test('DC1: data centres: the pinned pipeline file once, every site that passes t
   // operators (Digital Realty LHR26 / Global Technical Realty; evidence/DC-B1/out/cross-operator.txt), reported to the lead
   for (const d of dc) { assert.ok(d.p.operator == null || typeof d.p.operator === 'string', d.p.id);
     const ops = new Set((d.p.sources || []).map(s => (s.operator || '').toLowerCase()).filter(Boolean)); if (ops.size > 1) assert.ok((d.p.operator_alternatives || []).length || (d.p.conflicts || []).some(c => c.kind === 'operator_disagreement'), 'cross-operator merge not flagged: ' + d.p.id); }
+  // #73: source refs for different Slough operators must never share one map origin.
+  const byRef = id => dc.find(d => (d.p.sources || []).some(s => s.record_ref === 'gg2050-dc-' + id));
+  for (const [a,b] of [[133,237],[193,231],[56,196],[56,57]]) {
+    const x=byRef(a),y=byRef(b);
+    assert.ok(x&&y,'Slough records '+a+'/'+b+' present');
+    assert.notEqual(x.p.id,y.p.id,'cross-operator source merge '+a+'/'+b);
+  }
   const sl = dc.filter(d => hav(...SL, ...d.a) <= 3); assert.ok(sl.length >= 16, 'Slough origins ' + sl.length); assert.ok(new Set(sl.map(d => d.a + '')).size >= 16, 'distinct points');
   assert.match(text(x.host.querySelector('[data-offtakers-status]')), new RegExp(`data centres: ${dc.length} from the open pipeline \\(operational ${dc.filter(d => d.t === 'op').length}`));
   assert.ok(x.host.querySelector('[data-offtakers-dc]').querySelector('[data-offtakers-class="c"]'), 'own chip row'); assert.match(text(x.host.querySelector('[data-offtakers-foot]')), /Data centres \(violet\)/);
