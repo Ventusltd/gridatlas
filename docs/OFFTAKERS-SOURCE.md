@@ -8,7 +8,8 @@ files in name order, `///` source-only lines dropped, `///` continuations joined
     node tools/offtakers/build.mjs --check                     # PR gate "offtakers-source"
 
 Every generation listed in `tools/offtakers/generations.json` must rebuild byte for byte, and the newest
-`*-uk-offtakers-overlay.js` must be listed.
+`*-uk-offtakers-overlay.js` must be listed. An older generation stays in the registry as a record, marked
+`"historical": "<commit that cut it>"`: its source is that commit, and `--check` and its proof do not rebuild it.
 
 ## What it is
 A Layers group "Potential offtakers", OFF by default and never persisted. Switched on, it reads one file,

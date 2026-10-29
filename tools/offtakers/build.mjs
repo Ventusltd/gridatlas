@@ -9,7 +9,9 @@
  *   node tools/offtakers/build.mjs --check                       # the CI check (tools/ci/pr-gate.mjs, "offtakers-source")
  *
  * --check: the newest atlas/modules/*-uk-offtakers-overlay.js must be listed in tools/offtakers/generations.json, and every
- * listed generation must rebuild from src/ byte for byte. With no offtakers module and an empty list it passes.
+ * listed generation must rebuild from src/ byte for byte, except one marked {"historical": "<commit that cut it>"}: its source
+ * is that commit (it is kept in the registry as a record, and its module must still exist). With no offtakers module and an
+ * empty list it passes.
  */
 import fs from 'node:fs';
 import path from 'node:path';
@@ -30,10 +32,12 @@ export function check() {
   const lines = [], bad = [];
   const reg = JSON.parse(fs.readFileSync(GENERATIONS, 'utf8')), listed = Object.keys(reg.generations || {}).sort();
   const gens = fs.readdirSync(path.join(ROOT, 'atlas', 'modules')).map(n => (MODULE_RE.exec(n) || [])[1]).filter(Boolean).sort(), newest = gens.at(-1);
+  if (newest && reg.generations?.[newest]?.historical) bad.push(`the newest offtakers generation ${newest} is marked historical; it must rebuild from the current source`);
   if (newest && !listed.includes(newest)) bad.push(`the newest offtakers generation ${newest} is not listed in tools/offtakers/generations.json`);
   for (const g of listed) {
     const file = modulePath(g);
     if (!fs.existsSync(file)) { bad.push(`${g}: ${path.relative(ROOT, file)} missing`); continue; }
+    if (reg.generations[g].historical) { lines.push(`hist ${g}: historical, built from ${reg.generations[g].historical}; not rebuilt from the current source`); continue; }
     const want = fs.readFileSync(file); let got;
     try { got = Buffer.from(build(g), 'utf8'); } catch (e) { bad.push(`${g}: source does not assemble: ${e.message}`); continue; }
     if (got.equals(want)) lines.push(`ok   ${g}: ${want.length} B sha256 ${sha256(want)} rebuilt byte for byte`);
