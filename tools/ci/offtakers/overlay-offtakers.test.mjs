@@ -3,7 +3,7 @@
 // change is the paths: the data file the module pins (data/offtakers_filtered_*.geojson), the REPD register from
 // ../lightning/fixtures/, the record twin and substations from the repository.
 // Potential-offtakers overlay: node tests (node:vm + minidom, no network, no browser). Spec: evidence/PW-design/OFFTAKERS-OVERLAY-SPEC.md §8.
-//   OFFTAKERS_MODULE=<module.js> LIGHTNING_MODULE=<M4 lightning module> M5_MODULE=<built M5 module> node --test offtakers.test.mjs
+//   OFFTAKERS_MODULE=<module.js> LIGHTNING_MODULE=<the composition's lightning module; default M4 0045> M5_MODULE=<built M5 module> node --test offtakers.test.mjs
 // Fixtures: the three pinned globalgrid2050 files (sha256 checked here against the module's pins), the repo's REPD register fixture
 // (tools/ci/lightning/fixtures/repd-master-v8-oracle.json.gz, 10,784 rows), the repo's REPD record twin
 // (data/repd_browser_registry_202608290716.json, served for the parquet query) and the release's grid_substations.geojson.
