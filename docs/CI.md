@@ -59,7 +59,7 @@ everything that is wrong. The job summary shows a table of the results.
 | suite | tests | modules | time | what it guards |
 | --- | --- | --- | --- | --- |
 | `overlay-latest.test.mjs` | 8 | all | about 1 s | the first ChatGPT findings: OFF at rest, feed revalidation, STALE, coordinate checks, shard integrity, honest 12M and coverage captions |
-| `overlay-engine.test.mjs` | 178 (6 need real data) | 202610282100 on | about 60 s | everything below |
+| `overlay-engine.test.mjs` | 201 (6 need real data; 9 M3 layer tests or 4 M4b tests skip by module) | 202610290045 on | about 60 s | everything below |
 
 `overlay-engine.test.mjs` is the hardening lanes' `test-engine.mjs` as it stood
 at Build M2 (202610282100). It is a superset of their `test-fixes.mjs`. The
@@ -82,8 +82,14 @@ The six `LIGHTNING_DATA` tests need a checkout of `Ventusltd/lightning`
 them locally with
 `LIGHTNING_DATA=<lightning>/data/history LIGHTNING_MODULE=<module> node --test tools/ci/lightning/overlay-engine.test.mjs`.
 
-The suite is RED by design on Build M (202610281950) and earlier, which do not
-have the M2 REPD card. That is why it carries `@gate-min-generation 202610282100`.
+The suite was RED by design on Build M (202610281950) and earlier, which do not
+have the M2 REPD card. Since Build M3 it also carries the M3 layer tests and the
+M2 review-fix tests (minimum 202610282215), and since Build M4 the camera tests: a
+MapLibre-like `stop()` that fires `moveend` synchronously must never see a camera
+call inside it (M2R-taps T1), plus the landscape dock (M2R-camera fix C) and the
+M4b dot tests. M3 fails them, so it carries `@gate-min-generation 202610290045`.
+The M3 layer tests run on modules that switch layers (M4); the M4b tests run on
+M4b modules (`/* M4b:` in the source), where the M3 layer tests skip.
 When a new build changes a behaviour on purpose, update the affected test in
 the same PR and give the reason in the commit. Do not relax an expectation
 just to pass.
