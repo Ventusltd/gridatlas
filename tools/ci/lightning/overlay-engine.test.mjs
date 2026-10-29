@@ -21,6 +21,7 @@
 //   reads), the Area summary, the V-tiers wording (F2, R1-R4) and the V-geometry cell wording; those expectations are updated
 //   in place (I3, LE2-4, L1, L3, L8, LRB1, WORDS, L11, LAY2, REPD1, REPD4, REPD7, C2, C3, C5, a11y) and the M5 tests are appended.
 //   The minimum generation is therefore 202610290246: the suite is RED on M4 by design (wording).
+// 202610290935 (M6 + the R-otsec ORS8 connect() timeout): test ORS8 is appended; it skips older modules.
 // The tests below were written fail-first against earlier builds; do not relax an expectation to make a module pass.
 // A new build that changes behaviour on purpose updates the affected test here, in the same PR, with the reason.
 //   LIGHTNING_MODULE=atlas/modules/<gen>-uk-lightning-overlay.js node --test tools/ci/lightning/overlay-engine.test.mjs
@@ -2285,7 +2286,7 @@ const installRecords = (x, recs = RECS, o = {}) => {
     assert.equal(sql.replace(/\(abs\(longitude-\((-?[\d.]+)\)\)<=([\d.]+) AND abs\(latitude-\((-?[\d.]+)\)\)<=([\d.]+)\)( OR )?/g, '').length, `SELECT * FROM read_parquet('${PQ_URL}') WHERE `.length, 'nothing but point clauses');
     return recs.filter(r => pts.some(([a, b, t]) => Math.abs(r.longitude - a) <= t && Math.abs(r.latitude - b) <= t)).map(r => ({ toJSON: () => ({ ...r }) }));
   };
-  if (!o.noRuntime) x.W.__GRIDATLAS_DUCKDB_RUNTIME__ = { module_url: 'stand-in', promise: Promise.resolve({ database: { connect: async () => ({ query: async sql => { if (o.hang) return new Promise(() => {}); const r = run(sql); return { toArray: () => r }; }, close: async () => {} }) } }) };
+  if (!o.noRuntime) x.W.__GRIDATLAS_DUCKDB_RUNTIME__ = { module_url: 'stand-in', promise: Promise.resolve({ database: { connect: () => o.hangConnect ? new Promise(() => {}) : Promise.resolve({ query: async sql => { if (o.hang) return new Promise(() => {}); const r = run(sql); return { toArray: () => r }; }, close: async () => {} }) } }) };
   const of = x.sandbox.fetch;
   x.sandbox.fetch = async (u, op) => { if (String(u) === MAN_URL) { x.manFetch++; return new Response(o.badManifest ? Buffer.concat([MAN_RAW, Buffer.from(' ')]) : MAN_RAW, { status: 200 }); } return of(u, op); };
 };
@@ -2465,4 +2466,19 @@ test('M6-3: rows render from the map register even when the REPD record fetch fa
   installRecords(y, RECS); dispatch(recBlocks(y)[0], 'click', y.log.errors); await settle(); await drain();
   assert.ok(!card(y).textContent.includes('unavailable'), 'the retry fills every slot'); assert.ok(recBlocks(y).some(b => /Record · REPD \d+/.test(b.textContent))); assert.equal(y.sql.length, 1);
   assert.equal(y.log.errors.length, 0);
+});
+
+// R-otsec ORS8 (from 202610290935, M6 + this fix): RpQ's R() keeps its own timer. With one shared timer,
+// R(R(runtime).then(connect)) cleared the outer timer when the runtime resolved, so the exported records() never
+// settled on a hung connect() (the card was saved only by its own outer deadline). Older modules skip this test.
+const MODULE_GEN = (SRC.match(/GEN='(\d{12})'/) || [])[1] || '0';
+test('ORS8: repdRecords.records() rejects with the timeout when connect() hangs (the card says so too)', { skip: MODULE_GEN < '202610290935' && `module ${MODULE_GEN} predates the fix` }, async () => {
+  globalThis.__SRC_OVERRIDE = SRC.replace('TMO=15000', 'TMO=40');
+  try {
+    const x = await recTap(DONC, S3, { hangConnect: true }); await new Promise(r => setTimeout(r, 150)); await drain();
+    assert.match(recBlocks(x)[0].textContent, /REPD record unavailable — tap to retry \(timeout after 15 s\)/);
+    const api = x.W.__GRIDATLAS_MODULES__.repdRecords;
+    const out = await Promise.race([api.records([[-1.25, 53.5]]).then(() => 'resolved', e => 'rejected: ' + e.message), new Promise(r => setTimeout(() => r('still pending'), 400))]);
+    assert.equal(out, 'rejected: timeout after 15 s', 'a hung connect() must time out inside records() itself');
+  } finally { delete globalThis.__SRC_OVERRIDE; }
 });
