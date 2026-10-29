@@ -1020,7 +1020,7 @@ test('J3: STALE is the search frontier (not nextDue or a backfill-bumped generat
   const now = Date.now(), cutoff = Date.parse(ymd(now) + 'T00:00:00Z') - 365 * D;
   const idx = mkIndex({}, { generated_utc: iso(now - 600e3), next_update_due_utc: iso(now + H), scan_windows: [{ start_utc: iso(cutoff), end_utc: iso(now - 6 * H), successful_runs: 9 }] });
   const x = boot({ index: idx }); x.toggle(true); x.click(x.chip('7d')); await drain();
-  assert.equal(x.S.last.stale, true, 'backfill-bumped generated_utc hid a 6 h old frontier'); assert.match(x.status(), /COLLECTOR LAST RAN \d\d:\d\d UTC, SEARCHED TO \d\d:\d\d UTC · STALE$/);
+  assert.equal(x.S.last.stale, true, 'backfill-bumped generated_utc hid a 6 h old frontier'); assert.match(x.status(), /COLLECTOR LAST RAN \d\d:\d\d UTC, SEARCHED TO (\d\d? [A-Z]{3} )?\d\d:\d\d UTC · STALE$/); // M4: the date is named when the frontier is on an earlier UTC day
   x.click(x.nav('prev')); await drain(); assert.equal(x.S.last.stale, false, 'STALE printed on an earlier page');
   const y = boot({ index: mkIndex({}, { generated_utc: iso(now - 600e3), next_update_due_utc: iso(now - 60e3) }) }); y.toggle(true); await drain();
   assert.equal(y.S.last.stale, false, 'nextDue alone made it STALE');
