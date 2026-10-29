@@ -2,13 +2,15 @@
 /// the class chips and, for power stations, the status chips; a ring (closed, closing or converted) is hollow
 fl=()=>['all',['in',['get','k'],['literal',CK.filter(k=>S.cls[k])]],['any',['!=',['get','k'],'b'],['in',['get','t'],['literal',BK.filter(k=>S.bst[k])]]]],
 MT=(i,d)=>['match',['get','k'],...CK.flatMap(k=>[k,CLS[k][i]]),d],RING=['in',['get','t'],['literal',['cl','cc']]],
+/// a data centre: the status ring (DST colours) and, with no MW stated (u), a faint fill
+IC=['==',['get','k'],'c'],DRC=['match',['get','t'],...DK.flatMap(k=>[k,DST[k][1]]),DST.un[1]],
 CORE=SRC+'-centre',LY=[GLOW,LAYER,CORE,HIT],
-dw=()=>{let m=mh();if(!m||!S.data)return;let fc=FC(S.data.dots.map(r=>({type:'Feature',id:r.i,properties:{k:r.k,t:r.t,z:r.z,i:r.i},geometry:{type:'Point',coordinates:r.a}}))),Z=(a,b)=>['interpolate',['linear'],['zoom'],6,['*',['get','z'],a],12,['*',['get','z'],b]],F=fl();
+dw=()=>{let m=mh();if(!m||!S.data)return;let fc=FC(S.data.dots.map(r=>({type:'Feature',id:r.i,properties:{k:r.k,t:r.t,z:r.z,i:r.i,u:r.k=='c'&&(w=>w.it??w.gc)(DMW(r.p))==null?1:0},geometry:{type:'Point',coordinates:r.a}}))),Z=(a,b)=>['interpolate',['linear'],['zoom'],6,['*',['get','z'],a],12,['*',['get','z'],b]],F=fl();
  if(!m.getSource(SRC)){m.addSource(SRC,{type:'geojson',data:fc});
   m.addLayer({id:GLOW,type:'circle',source:SRC,filter:F,paint:{'circle-radius':Z(['*',2.4,MT(3,3)],['*',2.4,MT(4,6)]),'circle-color':MT(1,'#e07b39'),'circle-opacity':['case',RING,0,['match',['get','k'],'d',.12,'s',0,.2]],'circle-blur':1}});
-  m.addLayer({id:LAYER,type:'circle',source:SRC,filter:F,layout:{'circle-sort-key':['+',['match',['get','k'],'s',0,'e',1,'d',2,'c',3,'a',4,5],['get','z']]},paint:{'circle-radius':Z(MT(3,3),MT(4,6)),
-   'circle-color':['case',RING,'rgba(0,0,0,0)',MT(1,'#e07b39')],'circle-opacity':['match',['get','k'],'d',.8,'s',.8,.95],
-   'circle-stroke-color':['case',RING,CLS.b[1],MT(2,'#3a1d0a')],'circle-stroke-width':['case',RING,2,['match',['get','k'],'d',0,'s',0,1]]}});
+  m.addLayer({id:LAYER,type:'circle',source:SRC,filter:F,layout:{'circle-sort-key':['+',['match',['get','k'],'s',0,'e',1,'d',2,'a',4,'c',7,5],['get','z']]},paint:{'circle-radius':Z(MT(3,3),MT(4,6)),
+   'circle-color':['case',RING,'rgba(0,0,0,0)',MT(1,'#e07b39')],'circle-opacity':['match',['get','k'],'d',.8,'s',.8,'c',['case',['==',['get','u'],1],.45,.95],.95],
+   'circle-stroke-color':['case',RING,CLS.b[1],IC,DRC,MT(2,'#3a1d0a')],'circle-stroke-width':['case',RING,2,IC,2.5,['match',['get','k'],'d',0,'s',0,1]]}});
   m.addLayer({id:CORE,type:'circle',source:SRC,filter:['all',F,['==',['get','k'],'b'],['!',RING]],paint:{'circle-radius':Z(1,2),'circle-color':'#3a1d0a'}});
   m.addLayer({id:HIT,type:'circle',source:SRC,filter:F,paint:{'circle-radius':12,'circle-opacity':0}})}
  else{m.getSource(SRC).setData(fc);rf()}},
@@ -16,7 +18,9 @@ rf=()=>{let m=mh(),F=fl();if(m)for(let l of LY)try{m.getLayer(l)&&m.setFilter(l,
 top=()=>{let m=mh();if(m&&m.moveLayer)for(let l of[...LY,...NI])try{m.getLayer(l)&&m.moveLayer(l)}catch(_){}},
 cx=()=>{let m=mh();pc();if(m)try{for(let l of[...LY].reverse())m.getLayer(l)&&m.removeLayer(l);m.getSource(SRC)&&m.removeSource(SRC)}catch(e){note(e)}},
 /// ---- neon links (own ids) ----
-NP='gridatlas-offtakers-neon',NI=[NP+'-glow',NP+'-core',NP+'-flow',NP+'-node',NP+'-label',NP+'-pin-halo',NP+'-pin',NP+'-p-glow',LINKS,NP+'-p-node',NP+'-p-label'],NSR=[NP+'-subs',NP+'-snodes',NP+'-pin',NP+'-plinks',NP+'-pnodes'],
+NP='gridatlas-offtakers-neon',/// DI/DS: the data-centre 30/30/30 links (one line source for all three sets, one node source)
+DI=['ring','glow','core-s','core-r','core-v','node','label','ring-label'].map(s=>NP+'-dc-'+s),DS=[NP+'-dc-l',NP+'-dc-n',NP+'-dc-rings'],
+NI=[NP+'-glow',NP+'-core',NP+'-flow',NP+'-node',NP+'-label',NP+'-pin-halo',NP+'-pin',NP+'-p-glow',LINKS,NP+'-p-node',NP+'-p-label',...DI],NSR=[NP+'-subs',NP+'-snodes',NP+'-pin',NP+'-plinks',NP+'-pnodes',...DS],
 nc=()=>{let m=mh();if(S.raf){cancelAnimationFrame(S.raf);S.raf=null}if(m)try{for(let l of[...NI].reverse())m.getLayer(l)&&m.removeLayer(l);for(let s of NSR)m.getSource(s)&&m.removeSource(s)}catch(e){note(e)}},
 SC={op:'#00ff88',cc:'#ffcc00',pl:'#ff8a3d','?':'#ff4444'},
 /// draw: substation links from o (k = nearestSubstations result), the azure pin at o, and REPD site links (P = sites) when given

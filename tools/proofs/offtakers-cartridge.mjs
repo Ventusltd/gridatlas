@@ -18,7 +18,7 @@ import vm from 'node:vm';
 import { createHash } from 'node:crypto';
 import { compose, ROOT } from './loader-composition.mjs';
 
-export const OFFTAKERS_ID = 'uk-offtakers-overlay', ANCHOR = 'uk-lightning-overlay', BUDGET = 40000;
+export const OFFTAKERS_ID = 'uk-offtakers-overlay', ANCHOR = 'uk-lightning-overlay', BUDGET = 72000; // 40,000 until 202610291044; 72,000 proposed with #73 steps 7-8 (tools/scope/lib.mjs)
 const sha = b => createHash('sha256').update(b).digest('hex');
 const readJson = rel => JSON.parse(fs.readFileSync(path.join(ROOT, rel), 'utf8'));
 const BANNED = /\b(viable|feasible|opportunity|offtake agreement|PPA|private wire|supply|capacity available|demand of|consumes|MWh|large user|best|recommended|suitable)\b/i;
@@ -77,7 +77,10 @@ export async function proveOfftakersCartridge(G) {
   const du = text.match(/DATA='https:\/\/ventusltd\.github\.io\/gridatlas\/(data\/offtakers_filtered_\d{12}\.geojson)',DSHA='([0-9a-f]{64})'/);
   assert.ok(du, 'one pinned data URL under https://ventusltd.github.io/gridatlas/data/ with its SHA-256');
   assert.equal(sha(fs.readFileSync(path.join(ROOT, du[1]))), du[2], du[1] + ' is committed and matches the pin');
-  assert.equal((text.match(/https:\/\//g) || []).length, 3, 'three URLs only: the data file and the two REPD record files of the M5 join');
+  // the URLs in the bytes: the data file and the two REPD record files of the M5 join, plus (from #73 steps 7-8) only
+  // same-site data files declared in site_data_sources with a SHA-256 pinned in the bytes (checked above)
+  const pinned = new Set((e.site_data_sources || []).filter(d => d.sha256).map(d => d.url)), urls = text.match(/https:\/\/[^'"`\s)]+/g) || [];
+  assert.equal(urls.filter(u => !pinned.has(u) || u === 'https://ventusltd.github.io/gridatlas/' + du[1]).length, 3, 'three URLs besides pinned same-site data files: the data file and the two REPD record files of the M5 join');
 
   const loader = registeredLoader(path.join(ROOT, route, 'index.html'));
   assert.ok(loader, `${route}index.html is not a registered loader`);

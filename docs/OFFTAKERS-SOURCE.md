@@ -28,10 +28,33 @@ records, sources and licences), each listed project's full REPD record (`src/04-
 join copied unchanged), a 5 km area summary and a CSV vicinity sheet. A listing is not electricity demand; distances
 are straight lines; vicinity screening only.
 
+## Data centres and the Grid Engine 30/30/30 (issue #73 steps 7-8, from 202610292044)
+Data centres are their own class: violet, a status ring (operational, under construction, consented, in planning,
+connection request, announced, refused/withdrawn, not stated), sized by the stated IT load, else the stated grid connection
+(faint when neither is stated; an unlabelled MW is quoted with its label and never sizes a dot or adds to either), with their
+own chip row and legend. They come from a second pinned file, `data/uk_datacentre_pipeline_<stamp>.geojson` (the open UK
+data-centre pipeline, hardening DC-A7, `dc_pipeline.schema.json`; committed verbatim), read after the other sites are drawn;
+if it fails, the offtakers file's data centres are drawn and the status line says why.
+
+A data-centre tap opens a half-height card with four tabs, Area · Substations · REPD · Conventional (hardening DC-B2's
+spec), and draws the nearest 10 of each set (Show all / Draw all for the rest), labels for the open tab only (at most 6):
+- **substations:** the engine's own Grid Finding Scope (`__GRIDATLAS_MODULES__.gridScope.scope`, sld-sandbox :45-186) within
+  40 km. The original `link.measure.nearestSubstations` is fixed at 5 (`LINK_COUNT`, a closure constant), so it is called
+  as well and must equal the first 5 (else a note in `state.errors`); voltage chips re-rank within a band;
+- **REPD:** the same register and grouping as the 15 (`RG`, `near`, `sites`), 30 within 40 km, ties kept, status chips;
+  the full record is joined on a row tap and for the CSV;
+- **conventional:** `data/conventional_power_uk_<stamp>.geojson` (hardening DC-A6, verbatim; read on the first data-centre
+  tap; else the power-station class): always the nearest 30, at any distance; lines only up to 100 km.
+
+Other classes keep 15 REPD + 5 substations. Every URL the module reads is a file of this site's `data/` folder (`AL`), pinned
+by SHA-256 and capped in bytes and features; records failing the schema checks (id, point, fully open licence: never NC/ND)
+are skipped and counted. The module grew to about 71 kB: the budget below is 72,000 B from 202610292044 (proposed in the
+preview PR; 40,000 B before).
+
 ## Cartridge
 It ships as its own cartridge (docs/LIGHTNING-CARTRIDGE.md, loader v2): `uk-offtakers-overlay`, slot `after-cartridge`,
-`after: uk-lightning-overlay`, last in `cartridge_order`, path = the module file, budget 40,000 B
-(`CARTRIDGE_BYTE_BUDGETS`). Each generation has `tools/proofs/<G>-uk-offtakers-overlay.proof.mjs`, which calls
+`after: uk-lightning-overlay`, last in `cartridge_order`, path = the module file, budget 72,000 B (40,000 B until 202610291044;
+`CARTRIDGE_BYTE_BUDGETS`). Each generation has `tools/proofs/<G>-uk-offtakers-overlay.proof.mjs`, which calls
 `tools/proofs/offtakers-cartridge.mjs` (identity, anchor, hashes, budget, source rebuild, one strict IIFE, static
 negatives and positives, and a v2 composition in node:vm with every other cartridge unchanged). The lightning proof
 (`tools/proofs/lightning-cartridge.mjs`) takes further chained after-cartridges out of its arrival-parity comparison.

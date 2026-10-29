@@ -24,9 +24,11 @@ const V2 = fs.readFileSync(path.join(ROOT, ATLAS_LOADERS.v2.payload));
 // so these tests keep their coverage whatever is live (R-cifix MINOR).
 const L3 = '202610281340';
 const LIVE = deriveCurrent(fs.readFileSync(path.join(ROOT, `atlas/manifests/${L3}-composition.json`), 'utf8'));
-// A modular generation's pointer (after-cartridge slots), derived as release-generation.mjs writes it.
+// A modular generation's pointer (after-cartridge slots), derived as release-generation.mjs writes it: the newest one cut
+// against L3, so the sandbox's L3 live pointer is its predecessor (a later modular cut against a later live, e.g.
+// 202610292014 against 202610291044, would otherwise become the fixture and fail the predecessor check)
 const MODULAR = fs.readdirSync(path.join(ROOT, 'atlas/manifests')).filter(f => /^\d{12}-composition\.json$/.test(f)).sort().reverse()
-  .map(f => fs.readFileSync(path.join(ROOT, 'atlas/manifests', f), 'utf8')).find(t => /"slot": "after-cartridge"/.test(t) && !/REJECTED/.test(t));
+  .map(f => fs.readFileSync(path.join(ROOT, 'atlas/manifests', f), 'utf8')).find(t => /"slot": "after-cartridge"/.test(t) && !/REJECTED/.test(t) && JSON.parse(t).previous_generation === L3);
 const MODULAR_POINTER = deriveCurrent(MODULAR);
 
 test('v1 -> v2 is a proven loader-only change for a replace-script live pointer', async () => {

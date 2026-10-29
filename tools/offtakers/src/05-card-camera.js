@@ -2,7 +2,8 @@
 pc=()=>{if(S.pp){S.pp.remove();S.pp=null}nc()},
 cpos=()=>{let c=S.pp,m=mh();if(!c||!m)return;let k=gr(m.getContainer()),q=Q('gridatlas-menu-bar'),t=MX(0,(q?gr(q).bottom:0)-k.top)+8,w=MN(480,k.width-16),sd=c.sd=k.height<500&&k.width-w>=300,L=sd?k.right-8-w:k.left+(k.width-w)/2,h=c.offsetHeight||0;c.style.marginRight=sd?'0':'auto';let b=8;
  for(let o of[Q('gridatlas-dash-toggle'),document.querySelector('.map-controls')]){let r=o&&gr(o);if(r&&r.height&&r.right>L&&r.left<L+w&&r.top<k.bottom&&r.bottom>k.top)b=MX(b,k.bottom-r.top+8)}
- if(b+h>k.height-t)b=8;c.bb=b;c.style.bottom=b+'px';c.style.maxHeight=MX(44,MN(k.height-t-b,MX(240,k.height-b-320)))+'px'},
+ if(b+h>k.height-t)b=8;c.bb=b;c.style.bottom=b+'px';/// a data-centre card (o.hh) opens as M6's half-height panel: at most 45 % of the map, scrolling inside
+ c.style.maxHeight=MX(44,MN(k.height-t-b,c.o&&c.o.hh?MX(200,k.height*.45|0):MX(240,k.height-b-320)))+'px'},
 cd=(m,lb,ti,o={})=>{pc();let c=el('div','position:absolute;left:8px;right:8px;z-index:21;max-width:480px;margin:0 auto;box-sizing:border-box;background:#000;color:#e8eef9;border:1px solid #2f5fa8;border-radius:4px;box-shadow:0 0 14px rgba(61,123,255,.28);font:11px/1.45 monospace;overflow-x:hidden;overflow-y:auto;overscroll-behavior:contain'),
  bar=el('div','display:flex;align-items:center;gap:6px;padding-left:8px;background:#08142b;border-bottom:1px solid #1d2f52'),bd=el('div','padding:0 8px 6px'),d=el('details'),rf=()=>{cpos();if(S.pp===c)ck(1)},
  B=(t,a,f)=>{let e=el('button','flex:none;width:44px;height:44px;background:#050a12;border:1px solid #2f5fa8;border-radius:3px;color:#8fb4ff;font:14px/1 monospace;cursor:pointer',t);e.type='button';e.setAttribute('aria-label',a);e.addEventListener('click',f);ap(bar,e);return e};
