@@ -127,6 +127,12 @@ node tools/release/release-generation.mjs --generation <G> \
   docs/LIGHTNING-CARTRIDGE.md). In that case the release commit also writes
   `atlas/index.html := atlas/v/<G>/index.html`, so reverting it restores the
   v1 loader byte for byte.
+  **Refused by default when the live loader cannot compose G** (v1 live, a
+  modular G): that one-step release opens the HTML cache window. Release the
+  loader first (`loader-swap.mjs`, "Loader first, then the pointer" below);
+  `--allow-loader-follows` overrides it, as an explicit owner decision. A
+  loader that moves to one the live loader can stand in for (v2 live, a v1
+  generation) is allowed.
 
 ### What it writes
 

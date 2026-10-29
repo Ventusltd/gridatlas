@@ -58,6 +58,8 @@
  *   --prep-gate-reason TEXT required with --prep-gate-kb (who decided, when)
  *   --trailer TEXT          appended to every commit message (repeatable)
  *   --check                 preconditions only; write nothing
+ *   --allow-loader-follows  allow the loader to move in the release commit to one the live loader could not
+ *                           stand in for (v1 -> v2): opens the HTML cache window; refused by default
  *   --no-commit             leave the release staged-but-uncommitted for inspection
  *   --report FILE           write a JSON report (hashes, gates) to FILE
  *   --log FILE              write the full gate output to FILE
@@ -82,7 +84,7 @@ try {
     generation: {}, 'authorised-by': {}, 'expect-live': {}, base: { default: 'origin/main' },
     branch: {}, title: {}, 'prep-commit': { multi: true }, 'prep-gate-kb': {}, 'prep-gate-reason': {},
     trailer: { multi: true }, check: { bool: true }, 'no-commit': { bool: true },
-    report: {}, log: {}
+    'allow-loader-follows': { bool: true }, report: {}, log: {}
   });
 } catch (error) { die(error.message); }
 
@@ -184,6 +186,18 @@ const loaderMoves = Buffer.compare(loader, previewLoader) !== 0;
 const RELEASE_FILES = loaderMoves ? [...POINTER_FILES, LOADER_FILE] : [...POINTER_FILES];
 report.loader = { live: registeredLoaderOf(loader)?.name || null, preview: previewRegistered.name, moves: loaderMoves };
 if (loaderMoves && noop) die(`live is ${G} but ${LOADER_FILE} is not ${previewLoaderRel}`);
+// A loader that moves WITH the pointer to one the live loader could not compose (v1 -> v2 for a modular G) opens the HTML
+// cache window (docs/RELEASE.md "Loader first, then the pointer"): a browser holding the cached old loader reads the new
+// pointer and fails closed for up to ~10 minutes. Ship the loader first (tools/release/loader-swap.mjs release), wait,
+// then release the pointer; a one-step release needs --allow-loader-follows (an explicit owner decision).
+const liveRegistered = registeredLoaderOf(loader);
+const liveMissing = liveRegistered ? pointerSlots(manifest).filter(slot => !liveRegistered.slots.includes(slot)) : pointerSlots(manifest);
+report.loader.live_missing_slots = liveMissing;
+if (loaderMoves && liveMissing.length && !args['allow-loader-follows']) {
+  die(`the live loader (${report.loader.live || 'unregistered'}) cannot compose slot(s) ${liveMissing.join(', ')} that ${G} uses: release the loader first ` +
+    `(node tools/release/loader-swap.mjs release --to ${previewRegistered.name} …), wait for check-served plus 10 minutes, then release ${G}; ` +
+    'or pass --allow-loader-follows to accept the cache window (docs/RELEASE.md)');
+}
 if (loaderMoves) ok(`LOADER_FOLLOWS ${LOADER_FILE} (${report.loader.live}) -> ${previewLoaderRel} (${previewRegistered.name}, sha256 ${sha256(previewLoader).slice(0, 16)}…) in the release commit`);
 else ok(`LOADER_IDENTICAL ${LOADER_FILE} == ${previewLoaderRel} (${previewRegistered.name}, sha256 ${sha256(loader).slice(0, 16)}…)`);
 

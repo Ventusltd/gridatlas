@@ -20,15 +20,16 @@ import { proveLoaderSwap } from './loader-swap.mjs';
 
 const V1 = fs.readFileSync(path.join(ROOT, ATLAS_LOADERS.v1.payload));
 const V2 = fs.readFileSync(path.join(ROOT, ATLAS_LOADERS.v2.payload));
-const LIVE = fs.readFileSync(path.join(ROOT, 'atlas/current.json'), 'utf8');
+// The replace-script fixture is pinned to L3 (202610281340), derived exactly as its release wrote atlas/current.json,
+// so these tests keep their coverage whatever is live (R-cifix MINOR).
+const L3 = '202610281340';
+const LIVE = deriveCurrent(fs.readFileSync(path.join(ROOT, `atlas/manifests/${L3}-composition.json`), 'utf8'));
 // A modular generation's pointer (after-cartridge slots), derived as release-generation.mjs writes it.
 const MODULAR = fs.readdirSync(path.join(ROOT, 'atlas/manifests')).filter(f => /^\d{12}-composition\.json$/.test(f)).sort().reverse()
   .map(f => fs.readFileSync(path.join(ROOT, 'atlas/manifests', f), 'utf8')).find(t => /"slot": "after-cartridge"/.test(t) && !/REJECTED/.test(t));
 const MODULAR_POINTER = deriveCurrent(MODULAR);
-const live = JSON.parse(LIVE);
-const liveIsModular = /"slot": "after-cartridge"/.test(LIVE);
 
-test('v1 -> v2 is a proven loader-only change for a replace-script live pointer', { skip: liveIsModular && 'live is modular' }, async () => {
+test('v1 -> v2 is a proven loader-only change for a replace-script live pointer', async () => {
   const r = await proveLoaderSwap({ fromLoader: V1, toLoader: V2, pointerText: LIVE });
   assert.equal(r.ok, true, r.reasons.join('; '));
   assert.equal(r.from.name, 'v1');
@@ -36,7 +37,7 @@ test('v1 -> v2 is a proven loader-only change for a replace-script live pointer'
   assert.match(r.detail, /identical/);
 });
 
-test('v2 -> v1 (loader rollback) is allowed while a replace-script pointer is live', { skip: liveIsModular && 'live is modular' }, async () => {
+test('v2 -> v1 (loader rollback) is allowed while a replace-script pointer is live', async () => {
   const r = await proveLoaderSwap({ fromLoader: V2, toLoader: V1, pointerText: LIVE });
   assert.equal(r.ok, true, r.reasons.join('; '));
 });
@@ -79,11 +80,11 @@ function sandbox() {
   return { wt, g, commit, node, cleanup };
 }
 
-test('gate CLI: loader-only v1 -> v2 passes; v2 -> v1 under a modular live pointer fails', { skip: liveIsModular && 'live is modular' }, () => {
+test('gate CLI: loader-only v1 -> v2 passes; v2 -> v1 under a modular live pointer fails', () => {
   const s = sandbox();
   try {
-    fs.writeFileSync(path.join(s.wt, 'atlas/index.html'), V1);
-    const base = s.commit('base: v1 live loader');
+    fs.writeFileSync(path.join(s.wt, 'atlas/index.html'), V1); fs.writeFileSync(path.join(s.wt, 'atlas/current.json'), LIVE);
+    const base = s.commit('base: v1 live loader, L3 live');
     fs.writeFileSync(path.join(s.wt, 'atlas/index.html'), V2);
     let r = s.node(['tools/release/loader-swap.mjs', 'check', '--base', base]);
     assert.equal(r.status, 0, r.stdout + r.stderr);
@@ -104,11 +105,11 @@ test('gate CLI: loader-only v1 -> v2 passes; v2 -> v1 under a modular live point
   } finally { s.cleanup(); }
 });
 
-test('rollback-generation refuses a loader-only revert while a generation needing the newer loader is live', { skip: liveIsModular && 'live is modular' }, () => {
+test('rollback-generation refuses a loader-only revert while a generation needing the newer loader is live', () => {
   const s = sandbox();
   try {
-    fs.writeFileSync(path.join(s.wt, 'atlas/index.html'), V1);
-    s.commit('base: v1 live loader');
+    fs.writeFileSync(path.join(s.wt, 'atlas/index.html'), V1); fs.writeFileSync(path.join(s.wt, 'atlas/current.json'), LIVE);
+    s.commit('base: v1 live loader, L3 live');
     fs.writeFileSync(path.join(s.wt, 'atlas/index.html'), V2);
     const step1 = s.commit('step 1: loader v2 alone');
     fs.writeFileSync(path.join(s.wt, 'atlas/current.json'), MODULAR_POINTER);
@@ -121,10 +122,10 @@ test('rollback-generation refuses a loader-only revert while a generation needin
   } finally { s.cleanup(); }
 });
 
-test('rollback-generation refuses a loader-only revert when the loader has moved since', { skip: liveIsModular && 'live is modular' }, () => {
+test('rollback-generation refuses a loader-only revert when the loader has moved since', () => {
   const s = sandbox();
   try {
-    fs.writeFileSync(path.join(s.wt, 'atlas/index.html'), V1);
+    fs.writeFileSync(path.join(s.wt, 'atlas/index.html'), V1); fs.writeFileSync(path.join(s.wt, 'atlas/current.json'), LIVE);
     s.commit('base');
     fs.writeFileSync(path.join(s.wt, 'atlas/index.html'), V2);
     const step1 = s.commit('step 1');
@@ -133,5 +134,23 @@ test('rollback-generation refuses a loader-only revert when the loader has moved
     const r = s.node(['tools/release/rollback-generation.mjs', '--release-commit', step1, '--reason', 'test', '--base', head, '--no-commit']);
     assert.equal(r.status, 1);
     assert.match(r.stderr, /has moved since/);
+  } finally { s.cleanup(); }
+});
+
+test('release-generation refuses a one-step v1 -> v2 release of a modular generation unless --allow-loader-follows (R-cifix MAJOR)', () => {
+  const G = JSON.parse(MODULAR).generation, s = sandbox();
+  try {
+    fs.writeFileSync(path.join(s.wt, 'atlas/index.html'), V1); fs.writeFileSync(path.join(s.wt, 'atlas/current.json'), LIVE);
+    const head = s.commit('base: v1 live loader, L3 live');
+    let r = s.node(['tools/release/release-generation.mjs', '--generation', G, '--base', head, '--expect-live', L3, '--check']);
+    assert.equal(r.status, 1, r.stdout + r.stderr);
+    assert.match(r.stderr, /the live loader \(v1\) cannot compose slot\(s\) after-cartridge .*release the loader first/);
+    r = s.node(['tools/release/release-generation.mjs', '--generation', G, '--base', head, '--expect-live', L3, '--check', '--allow-loader-follows']);
+    assert.doesNotMatch(r.stderr, /cannot compose slot/, 'the explicit override passes this precondition');
+    assert.match(r.stdout, /LOADER_FOLLOWS/);
+    // loader first: with v2 live, the same release is LOADER_IDENTICAL and needs no override
+    fs.writeFileSync(path.join(s.wt, 'atlas/index.html'), V2); const head2 = s.commit('step 1: loader v2');
+    r = s.node(['tools/release/release-generation.mjs', '--generation', G, '--base', head2, '--expect-live', L3, '--check']);
+    assert.match(r.stdout, /LOADER_IDENTICAL/, r.stdout + r.stderr); assert.doesNotMatch(r.stderr, /cannot compose slot/);
   } finally { s.cleanup(); }
 });
