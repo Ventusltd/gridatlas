@@ -17,6 +17,8 @@ cd=(m,lb,ti,o={})=>{pc();let c=el('div','position:absolute;left:8px;right:8px;z-
  try{W.dispatchEvent(new CustomEvent('gridatlas:card-open',{detail:{owner:'offtakers'}}))}catch(_){}return c},
 L=(p,s,css,t)=>tier(ap(p,el('div',css||'',s)),t||'screening'),
 Ra=(c,s)=>setTimeout(()=>{if(c.lv)c.lv.textContent=s},99),
+/// a REPD failure on the collapsed card: the summary carries it (s; '' clears it) and the live region announces a
+Ru=(c,s,a)=>{let t=c.sm.textContent.replace(/ · REPD[^·]* unavailable/,'');c.sm.textContent=s?t.replace(/ · details$/,` · ${s} · details`):t;a&&Ra(c,a)},
 /// ---- camera: M4's fixes (no camera move starts inside another) ----
 cw=()=>Promise.resolve().then(()=>{let m=mh();m&&!(m.isMoving&&m.isMoving())&&ck()}),cm=m=>m.off&&m.off('moveend',cw),
 nz=(m,x,y)=>{try{cm(m);m.flyTo({center:[x,y],zoom:12,duration:1200,essential:true});typeof m.once=='function'?m.once('moveend',cw):ck()}catch(e){note('camera: '+msg(e))}},
