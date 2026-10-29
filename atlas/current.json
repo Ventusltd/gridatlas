@@ -1,7 +1,7 @@
 {
  "schema": "gridatlas.current.v2",
- "generation": "202610281340",
- "previous_generation": "202609241334",
+ "generation": "202610291044",
+ "previous_generation": "202610281340",
  "architecture": "IMMUTABLE_SHELL_PLUS_HASHED_CARTRIDGES",
  "live_route": "/gridatlas/atlas/",
  "release_id": "202608300453-atlas-v9",
@@ -15,7 +15,9 @@
   "streaming-parquet-bridge",
   "uk-gazetteer-flyto",
   "substation-intelligence",
-  "sld-sandbox"
+  "sld-sandbox",
+  "uk-lightning-overlay",
+  "uk-offtakers-overlay"
  ],
  "cartridges": [
   {
@@ -77,13 +79,13 @@
   },
   {
    "id": "sld-sandbox",
-   "generation": "202610281340",
-   "version": "v9.172",
+   "generation": "202609241334",
+   "version": "v9.156",
    "type": "script",
    "slot": "replace-script",
    "replace_script": "202608292126-pre-snapped-config-adapter.js",
-   "path": "./cartridges/202610281340-sld-sandbox-v9-8.js",
-   "sha256": "8f85d0a054f6d84495f95213b52b59828747b89bfbf7ad82a14245e800f992b4",
+   "path": "./cartridges/202609241334-sld-sandbox-v9-8.js",
+   "sha256": "7812953671d8bb22a566de5e98fd3137da2d23411c5aecd526df5afa111ca4ca",
    "capabilities": [
     "pre-snapped-config-adapter-carried-forward",
     "project-or-substation-selection",
@@ -219,8 +221,7 @@
     "status-box-places-itself-clear-of-the-top-furniture",
     "card-top-and-side-bounds-with-effective-scroll-height",
     "ordinary-feature-card-close-clear-of-mobile-search",
-    "ordinary-card-styles-returned-when-project-controls-arrive",
-    "uk-lightning-optical-flash-overlay-off-by-default"
+    "ordinary-card-styles-returned-when-project-controls-arrive"
    ],
    "immutable_shell_modified": false,
    "supersedes_shell_script": {
@@ -556,47 +557,10 @@
      "schema_required": "data-gb-electricity.price-decade-rollup.v2",
      "fetched": "when a project card opens its GB conditions panel; revalidated with no-cache every open",
      "upstream": "Elexon settlement prices as the owner repository publishes them"
-    },
-    {
-     "repository": "Ventusltd/lightning",
-     "product": "data/uk_lightning.geojson",
-     "schema_required": "FeatureCollection/optical_lightning_flash",
-     "fetched": "only after the lightning layer is switched ON; revalidated on each refresh and OFF->ON",
-     "upstream": "EUMETSAT MTG Lightning Imager L2-LFL (EO:EUM:DAT:0691), NoConditions data policy; optical flashes, not confirmed ground strikes"
-    },
-    {
-     "repository": "Ventusltd/lightning",
-     "product": "data/history/",
-     "schema_required": "uk-lightning-history-index.v2",
-     "fetched": "only after the lightning layer is switched ON: index.json, then day shards and hourly parts named by the index, validated by count, bytes and sha256",
-     "upstream": "EUMETSAT MTG Lightning Imager L2-LFL archive built by Ventusltd/lightning; unsearched or lost time is unknown, not zero"
     }
    ],
-   "bytes": 479919,
-   "derived_from": "./cartridges/202609241334-sld-sandbox-v9-8.js",
-   "uk_lightning": {
-    "module": "./modules/202610281340-uk-lightning-overlay.js",
-    "module_bytes": 44700,
-    "delta": "live 202609241334 bytes + \"\\n\" + module; nothing replaced",
-    "default": "OFF, never persisted; no request, source or layer until the first switch-on",
-    "surfaces": [
-     "#scada-ui-container (appended last)",
-     "#fs-curtain-keys (appended last)",
-     "Grid dropdown footer after .gm-panel-body (toggle only)"
-    ],
-    "contract": "no data-layer-id, data-pn-layer, data-gridatlas-layer-proxy, data-gridatlas-layer-key, lbl-* id or name=bm; menuBar.inspect() stays {60,3,63,63,true}",
-    "transport": "fetch of .json index and day files (passes the untouched bridge); XMLHttpRequest for the live uk_lightning feed while the archive is unpublished",
-    "caps": {
-     "phone_points": 10000,
-     "desktop_points": 40000,
-     "above_cap": "cluster:true (radius 40, maxZoom 10), circles sized by point_count, no symbol layer",
-     "download_budget": {
-      "count": 40000,
-      "bytes": 32000000
-     }
-    },
-    "observation": "EUMETSAT MTG LI L2-LFL optical flashes, not confirmed ground strikes; missing days are unknown, never zero"
-   }
+   "bytes": 435218,
+   "derived_from": "./cartridges/202609200022-sld-sandbox-v9-8.js"
   },
   {
    "id": "substation-intelligence",
@@ -665,6 +629,162 @@
    },
    "assembled_from": "./manifests/202609051329-substation-intelligence-v9-63-parts.json",
    "bytes": 451935
+  },
+  {
+   "id": "uk-lightning-overlay",
+   "generation": "202610291044",
+   "version": "v9.186",
+   "type": "script",
+   "slot": "after-cartridge",
+   "after": "sld-sandbox",
+   "path": "./modules/202610291043-uk-lightning-overlay.js",
+   "sha256": "15ff1e37890770efc42b75651fac2fcc98a16c71a694481c79778ae0a6d818db",
+   "bytes": 63707,
+   "byte_budget": 64781,
+   "module_generation": "202610291043",
+   "parity_reference": "202610291043",
+   "immutable_shell_modified": false,
+   "capabilities": [
+    "uk-lightning-optical-flash-overlay-off-by-default"
+   ],
+   "reads_at_runtime": {
+    "window.__GRIDATLAS_MODULES__.menuBar": "substation-intelligence; polled (MutationObserver + 250 ms) until installed",
+    "window.__GRIDATLAS_PIPELINE_LAYERS__": "substation-intelligence; polled until installed",
+    "the MapLibre map": "polled until present",
+    "#scada-ui-container .key-group, #fs-curtain-keys": "the immutable shell and engine; polled until present",
+    "input[data-layer-id] (REPD layers)": "the engine; read and ticked through its own change path on a tap"
+   },
+   "writes": [
+    "window.__GRIDATLAS_MODULES__.ukLightning"
+   ],
+   "isolation": "its own script element: a parse or top-level error in the overlay no longer stops sld-sandbox, and an sld-sandbox top-level throw no longer stops the overlay",
+   "data_sources": [
+    {
+     "repository": "Ventusltd/lightning",
+     "product": "data/uk_lightning.geojson",
+     "schema_required": "FeatureCollection/optical_lightning_flash",
+     "fetched": "only after the lightning layer is switched ON; revalidated on each refresh and OFF->ON",
+     "upstream": "EUMETSAT MTG Lightning Imager L2-LFL (EO:EUM:DAT:0691), NoConditions data policy; optical flashes, not confirmed ground strikes"
+    },
+    {
+     "repository": "Ventusltd/lightning",
+     "product": "data/history/",
+     "schema_required": "uk-lightning-history-index.v2",
+     "fetched": "only after the lightning layer is switched ON: index.json, then day shards and hourly parts named by the index, validated by count, bytes and sha256",
+     "upstream": "EUMETSAT MTG Lightning Imager L2-LFL archive built by Ventusltd/lightning; unsearched or lost time is unknown, not zero"
+    }
+   ],
+   "uk_lightning": {
+    "module": "./modules/202610291043-uk-lightning-overlay.js",
+    "module_bytes": 63707,
+    "delta": "its own cartridge (after-cartridge, after sld-sandbox), the module file itself; sld-sandbox is the original 202609241334 bytes",
+    "default": "OFF, never persisted; no request, source or layer until the first switch-on",
+    "surfaces": [
+     "#scada-ui-container (appended last)",
+     "#fs-curtain-keys (appended last)",
+     "Grid dropdown footer after .gm-panel-body (toggle only)"
+    ],
+    "contract": "creates no data-layer-id, data-pn-layer, data-gridatlas-layer-proxy or data-gridatlas-layer-key control, lbl-* id or name=bm; reads and ticks the original REPD layer checkboxes (input[data-layer-id]) through the engine's own change path only while a REPD list is shown (repd_layers); menuBar.inspect() stays {60,3,63,63,true}",
+    "transport": "fetch of .json index and day files (passes the untouched bridge); XMLHttpRequest for the live uk_lightning feed while the archive is unpublished; on a tap, the REPD register the map already uses: the engine src-repd data when a REPD layer has loaded it, else the engine URL /dist/repd_master.json through the untouched streaming-parquet bridge (pinned repd_master_v8_oracle partition), once per page (same 15 s timeout, redirect refusal and HTTP check as every module fetch; a failure is shown and the next tap retries; a repeated failure advises switching on a REPD layer or reloading, because the bridge keeps a failed start for the page lifetime)",
+    "caps": {
+     "phone_points": 10000,
+     "desktop_points": 40000,
+     "above_cap": "cluster:true (radius 40, maxZoom 10), circles sized by point_count, no symbol layer",
+     "download_budget": {
+      "count": 40000,
+      "bytes": 32000000
+     }
+    },
+    "observation": "EUMETSAT MTG LI L2-LFL optical flashes, not confirmed ground strikes; missing days are unknown, never zero",
+    "repd_projects": "on a flash or cell tap, besides the 5 nearest substations: the 10 nearest REPD project sites within 40 km by straight-line distance (the original link.measure.distanceKm), a site being the projects at one registered point (rows within about 10 m of a nearer row join its site; e.g. solar + battery share one link, one label \"<km> km · Battery + Solar <MW> MW\" and one card row \"<n> projects at this point:\" with every project listed beneath), plus any site at exactly the 10th site's distance, re-ranked within the card's status filter (All / Operational / Consented / Planning; an explicit table of the register's four statuses) and technology filter (All / Solar / Wind / BESS / Other), with a summary line (projects within 10 km with their stated MW and how many have no stated capacity, never shown as 0 MW; projects within 40 km; repeated records of one scheme counted once) and an explicit statement when fewer than 10 sites lie within the fixed 40 km search radius, over every distinct, well-formed row of the register the map already holds (10,784 rows, of which 12 are exact duplicates counted once; all 13 technologies; operational, under construction, awaiting construction and application submitted), drawn as dashed orange-to-red links coloured by capacity (the engine REPD glow ramp), labelled \"<km> km · <technology> <MW> MW\", listed on the card; a row tap stays in the page (a Ctrl, Cmd or Shift click keeps the browser default): the map flies to the project (zoom 12) and draws the 5 nearest substations from it with the original link.measure.nearestSubstations (straight-line; not the declared connection), and ◀ back restores the lightning card, its links and the filter; the row href keeps the original coordinate deep link (longitude, latitude, technology, project, capacity_mw, status) for opening in a new tab; each card carries one polite status region that announces loading, the list and any failure, and focus follows chip, row and back. The register carries no repd_ref, so none is sent. Nearest by distance only: not affected, not struck.",
+    "repd_layers": "while a REPD list is shown, the original REPD layer of each technology in that list (within the card filter; the register tech is the layer id: solar, solar_roof, wind, bess, biomass, tidal, hydrogen, hydro, flywheel, act, geothermal, caes) is switched on exactly as a reader tap would: the #scada-ui-container checkbox is ticked and a bubbling change is dispatched, so the engine's own listener syncs the fullscreen-curtain copy and runs handleLayerToggle, and the menu bar syncs its proxy; menuBar.inspect() is unchanged. Only layers the overlay switched on are recorded, and only those are switched off again on close, a tap on empty map, lightning OFF, a period or page change, LATEST, or a new list that no longer needs them; a layer the reader already had on is never touched, and one the reader ticks or unticks meanwhile becomes the reader's. Nothing is switched before a tap.",
+    "repd_source": {
+     "register": "Renewable Energy Planning Database (REPD), April 2026 (Q1 2026) quarterly extract",
+     "publisher": "Department for Energy Security and Net Zero (DESNZ), compiled by Barbour ABI",
+     "published": "2026-05-06 (gov.uk update history: January 2026 files replaced with April 2026, Q1)",
+     "upstream_file": "REPD_publication_Q1_2026.csv",
+     "licence": "Open Government Licence v3.0; contains public sector information licensed under the Open Government Licence v3.0",
+     "served_as": "partitions/repd_master_v8_oracle.parquet (sha256 a737d00d54dbee0ccb46be07f18277cb1c5c111acefbfda43f3d34ce3d53416c, 10,784 rows) in data-gridatlas manifest 3246dbda, from globalgrid2050 dist/repd_master.json (synced 2026-06-01; operational, under construction, awaiting construction, application submitted only)",
+     "currency": "a snapshot: DESNZ has since published July 2026 (Q2, 3 Aug 2026); rows are not refreshed by this module"
+    },
+    "camera": "a module camera move (tap, row, back, card toggle, cluster zoom, fit) first drops the module's pending framing, and the framing queued for the end of a flight runs after the stop that fired moveend and only when the map is not moving, so no camera move ever starts inside another (MapLibre 3.6.2 fires moveend synchronously from stop(); a nested fitBounds left an orphan render frame that froze map redraws after fast row/back cycles, M2R-taps T1); framing tests each end's screen pixel against the free area below the search bar and above the card; on a map under 500 px tall with at least 300 px beside the card, the card docks to the right edge and the camera frames the area to its left (M2R-camera fix C)",
+    "repd_records": "on a flash or cell tap, each listed REPD project (grouped sites expanded to their parts) shows its full REPD record in the original engine card pattern (place-global-search 202609071213 :413-416: \"<address> · <postcode> · <county>\", \"REPD <ref> · <status>\"), plus region, operator (only where the record is REPD_AS_PUBLISHED; otherwise \"not shown\"), planning authority and reference and the record-updated date; the source is the one the engine's project search reads: https://ventusltd.github.io/gridatlas/data/repd_projects_202608290716.parquet (REPD July 2026 / Q2 extract, DESNZ, published 2026-08-03, OGL v3.0; 11,069 rows, one per REPD ref), queried through the page's shared DuckDB runtime (window.__GRIDATLAS_DUCKDB_RUNTIME__) only for the listed points, only after the pinned manifest https://ventusltd.github.io/gridatlas/data/repd_v9_manifest_202608290716.json matches SHA-256 8850567f... and names parquet SHA-256 174040c3..., with the module's 15 s timeout, cached per point for the page; the map register (April 2026) carries no ref, so a part is shown with a record only when exactly one record has the same point (within 1e-6 degrees), the same name (whitespace, NFC and cp1252 repairs only), the same MW (or both unstated) and the same REPD technology (10,503 of 10,784 register rows; never one record for two rows); otherwise \"address not in register\", and no ref or address is ever inferred; the join and the block are exported read-only as window.__GRIDATLAS_MODULES__.repdRecords {source, manifest, records, join, block} for reuse.",
+    "card": "M6 (owner, iPhone 29 Oct 03:05 UTC: the list was rendered but inside the collapsed details): a flash or cell tap opens the card by default as a half-height panel (at most 45 % of the map height, at least 200 px) that scrolls inside, so the camera keeps the origin and the links in view above it; the listed sites come first (distance, technology, MW, status, name from the map register, then each part's REPD record block), then the nearest substations, the 10 km line, the Area summary and the filter chips; a '▾ Hide list' / '▸ Show N sites' toggle with aria-expanded replaces '−' and reflects the real state, and × closes; a record block says 'loading REPD record…', then the record or, within one 15 s deadline over manifest, runtime and query, 'REPD record unavailable — tap to retry (<reason>)', and a tap on it retries; the rows never wait for the records and the list is never empty; nothing opens before a tap.",
+    "wording": "V-tiers (docs/EVIDENCE-TIERS.md, draft PR #58): distances, counts and sums are labelled Screening, REPD fields Record (with source, extract date and OGL v3.0); nothing claims capacity, connection feasibility or exposure. V-geometry: cells are 0.1° (E-W 11.156·cos(lat) km × 11.1 km N-S, given per tap) and are drawn only within 30 km of REPD sites, not a national density map."
+   }
+  },
+  {
+   "id": "uk-offtakers-overlay",
+   "generation": "202610291044",
+   "version": "v9.186",
+   "type": "script",
+   "slot": "after-cartridge",
+   "after": "uk-lightning-overlay",
+   "path": "./modules/202610291044-uk-offtakers-overlay.js",
+   "sha256": "2f455e7a93791e8f9f3b463ad2857019b98d648f217dea71e13e465d0597b242",
+   "bytes": 39633,
+   "byte_budget": 40000,
+   "module_generation": "202610291044",
+   "source": "tools/offtakers/src (node tools/offtakers/build.mjs --gen 202610291044; byte-exact, checked by the PR gate)",
+   "immutable_shell_modified": false,
+   "capabilities": [
+    "uk-potential-offtakers-overlay-off-by-default",
+    "vicinity-15-nearest-repd-sites-and-5-substations",
+    "full-repd-record-exact-join-m5"
+   ],
+   "reads_at_runtime": {
+    "window.__GRIDATLAS_MODULES__.menuBar": "substation-intelligence; polled until installed",
+    "window.__GRIDATLAS_PIPELINE_LAYERS__": "polled until installed",
+    "the MapLibre map": "polled until present",
+    "#scada-ui-container .key-group, #fs-curtain-keys": "polled until present; the group is inserted before the lightning group when present",
+    "window.__GRIDATLAS_NEON_LINKS__": "sld-sandbox: substations, measure.nearestSubstations / distanceKm / representativePoint / isProjectTech, read on a tap; \"not loaded yet\" if absent",
+    "src-repd": "the engine's own REPD register, serialized on a tap when it holds rows (else /dist/repd_master.json)",
+    "window.__GRIDATLAS_DUCKDB_RUNTIME__": "the page DuckDB runtime, on a tap, for the REPD record rows at the listed points (M5 join)"
+   },
+   "writes": [
+    "window.__GRIDATLAS_MODULES__.ukOfftakers",
+    "window event 'gridatlas:card-open' {owner:'offtakers'}"
+   ],
+   "isolation": "its own script element: a parse or top-level error in it cannot stop the lightning overlay or sld-sandbox; with both overlays on, a tap on an offtaker dot closes the lightning card through its own Close button (one card at a time)",
+   "site_data_sources": [
+    {
+     "id": "offtakers_filtered",
+     "url": "https://ventusltd.github.io/gridatlas/data/offtakers_filtered_202610290945.geojson",
+     "sha256": "6fc20e04fdcaadc55d723354848bcf77d3871e9d088a29cbf7ea3a76890b6730",
+     "features": 1568,
+     "built_by": "tools/offtakers/filter/ot_filter.py (hardening lanes OT-filter and R-otdata, 29 Oct 2026; deterministic; inputs by sha256 in the file header; 8 status dates corrected with citations, deeside/oldbury/grain pattern fixes, works merged into one site each with provenance kept)",
+     "inputs": [
+      "NAEI 2023 point sources (heavy_emitters_uk.json, OGL v3.0, verified on the NAEI site)",
+      "WRI Global Power Plant Database v1.3.0, GBR thermal (CC BY 4.0)",
+      "OpenStreetMap industry, data centres, power=plant (ODbL 1.0: Contains OpenStreetMap data © OpenStreetMap contributors; the file is an ODbL derivative database)",
+      "status_curated.csv (curated rows with public URLs; dates re-checked by R-otdata)"
+     ],
+     "shown": "name, operator, subclass, NAEI emission band (never a figure), GPPD installed MW, status with its source, on-site combustion indicator, merged records, sources and licences"
+    },
+    {
+     "id": "repd_records",
+     "url": "https://ventusltd.github.io/gridatlas/data/repd_projects_202608290716.parquet",
+     "manifest_sha256": "8850567ff9f1d2b6996b4e0d9707320030f3466a0b821cdcfc5325322b8be8c8",
+     "upstream": "REPD (DESNZ) Jul 2026 extract, OGL v3.0",
+     "join": "M5-build exact join: point 1e-6 deg, normalised name, MW, REPD technology; exactly one record, else \"address not in register\""
+    }
+   ],
+   "uk_offtakers": {
+    "classes": "A industry 813, B power stations 358, C data centres 164, D water large 8 + listed small 168 (chip off), E campus/CHP sites (other large users) 57 (chip off); 1,343 dots by default, 1,568 in all",
+    "ids": {
+     "source": "gridatlas-offtakers",
+     "layers": [
+      "gridatlas-offtakers-glow",
+      "l-gridatlas-offtakers",
+      "gridatlas-offtakers-hit",
+      "l-gridatlas-offtakers-links",
+      "gridatlas-offtakers-neon-*"
+     ]
+    },
+    "palette": "copper-to-teal: industry #e07b39, power #f2c14e (dark centre dot; hollow ring if closed, closing or converted), data centres #2ec4b6 (white stroke), water #4f86c6, other #a26769",
+    "wording": "Record / Screening / Discovery tiers; never demand, electricity use, contracts, consent, connection or viability",
+    "spec": "hardening PW-design OFFTAKERS-OVERLAY-SPEC.md and OT-filter OFFTAKERS-FILTER.md (29 Oct 2026)"
+   }
   }
  ],
  "last_known_green": {
@@ -709,15 +829,15 @@
    "result_class": "LOCATION_ONLY"
   }
  },
- "composition_manifest": "./manifests/202610281340-composition.json",
+ "composition_manifest": "./manifests/202610291044-composition.json",
  "scope_closure": {
   "generation": "202609010726",
   "status": "DONE",
   "scope": "GridAtlas v9.42 the price panel revalidates",
   "schedule_retired": true
  },
- "composition_version": "v9.172",
- "composition_id": "202610281340-gridatlas-v9.172",
+ "composition_version": "v9.186",
+ "composition_id": "202610291044-gridatlas-v9.186",
  "transport": {
   "response_contract": "HEADERS_BEFORE_PARQUET_BODY",
   "engine_timeout_seconds": 15,
@@ -732,7 +852,8 @@
   "fidelity_workflow": ".github/workflows/202608301931-layer-fidelity.yml",
   "payload_cache": "RELEASE_AFTER_SERIALISATION"
  },
- "composition_note": "v9.172: the EUMETSAT MTG Lightning Imager optical-flash overlay joins the original Atlas as one module appended to the sld-sandbox cartridge, OFF by default, last in the Layers panel and the fullscreen curtain (no Grid-menu row, so the original Grid panel keeps its full height), with UTC windows, searched-days captions, integrity-checked archive reads, tappable flashes that draw the original engine's nearest-substation links (>=33 kV, <=40 km), and device caps; above the cap, long windows draw tappable graduated circles per 0.1-degree cell (about 10 km) of observed optical flashes from the archive's month grids, small and faint for low counts with a glow only for the top 5%, clipped for drawing to cells within 30 km of an onshore REPD site, each firing the same nearest-substation links from the cell centre, with unsearched or stale days unknown, not zero. Everything the original composition serves is byte-identical.",
- "superseded_generation": "202609241334",
- "candidate_predecessor": "202610271740"
+ "composition_note": "v9.186: 202610291043 recomposed, behaviour unchanged. The lightning overlay is its own cartridge (slot after-cartridge, its own script tag directly after sld-sandbox, where the appended module ran), and sld-sandbox is the original 202609241334 cartridge again (435218 bytes). Served by loader v2. Plus the potential-offtakers overlay (uk-offtakers-overlay, its own cartridge after the lightning overlay, OFF by default, never persisted): sites from one pinned, SHA-256-checked file of open registers (OT-filter and R-otdata: NAEI 2023 point sources, GPPD v1.3.0, OpenStreetMap, ODbL attribution in the footer) in five classes (energy-intensive industry; power stations including closed and closing ones, drawn as hollow rings, as are converted ones; data centres; large water works, small listed works behind a chip; campus/CHP sites, the other large users), sized by NAEI emission band or GPPD installed MW; a tap draws neon links to the 15 nearest REPD project sites (40 km, status and technology chips, ties kept) and the 5 nearest substations (the original link.measure.nearestSubstations), and docks a card with the site record, each listed project's full REPD record (M5-build's exact join to the pinned parquet), a 5 km area summary and a CSV vicinity sheet. A listing is not electricity demand; distances are straight lines; vicinity screening only.",
+ "superseded_generation": "202610281340",
+ "candidate_predecessor": "202610291043",
+ "loader": "v2"
 }
