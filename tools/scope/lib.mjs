@@ -110,7 +110,9 @@ export function slotsUsed(current) {
    <gen>-sld-sandbox proof already enforces. Changing a figure is an owner
    decision, recorded in the commit. */
 export const CARTRIDGE_BYTE_BUDGETS = Object.freeze({
-  'uk-lightning-overlay': 64_781
+  'uk-lightning-overlay': 64_781,
+  // the potential-offtakers overlay (docs/OFFTAKERS-SOURCE.md): PW-design spec, module <= 40,000 B
+  'uk-offtakers-overlay': 40_000
 });
 
 export function invariant(condition, message) {

@@ -30,12 +30,17 @@
  *                     tools/lightning/generations.json, and every listed
  *                     generation rebuilds from tools/lightning/src byte for
  *                     byte (docs/LIGHTNING-SOURCE.md)
+ *   offtakers-source  node tools/offtakers/build.mjs --check (the same, for the
+ *                     potential-offtakers overlay; docs/OFFTAKERS-SOURCE.md)
  *   lightning-suites  tools/ci/lightning/*.test.mjs against the live overlay
  *                     module, every overlay module the PR adds or edits, the
  *                     overlay of every pinned generation the PR adds, and,
  *                     when the PR changes a suite or this gate, the newest
  *                     pinned overlay; a suite marked
  *                     `@gate-min-generation <stamp>` skips older modules
+ *   offtakers-suites  tools/ci/offtakers/*.test.mjs against the live, added or
+ *                     edited potential-offtakers module (and the newest one when
+ *                     the PR changes a suite, the source or this gate)
  *
  * A generation is "touched" when a changed path under atlas/ or tools/proofs/
  * carries its twelve-digit stamp as a path segment or a filename prefix.
@@ -229,6 +234,8 @@ step('loader-equivalence', ['node', 'tools/proofs/loader-equivalence.proof.mjs']
 // source byte for byte, so the source in the repository is the source of
 // the bytes that ship.
 step('lightning-source', ['node', 'tools/lightning/build.mjs', '--check']);
+// The same for the potential-offtakers overlay (tools/offtakers/src, docs/OFFTAKERS-SOURCE.md).
+step('offtakers-source', ['node', 'tools/offtakers/build.mjs', '--check']);
 
 // ---------------------------------------------------------------- 7
 // Each suite may declare, in its first lines, `// @gate-min-generation <stamp>`:
@@ -331,6 +338,33 @@ else {
     record(`lightning ${g} ${suite}`, r.code === 0,
       `${counts} ${r.seconds} s` + (r.code === 0 ? '' : r.timedOut ? `  timed out after ${SUITE_TIMEOUT_MS / 1000} s` : `  exit ${r.code}`));
   }));
+}
+
+// ---------------------------------------------------------------- 8
+// tools/ci/offtakers/*.test.mjs against the offtakers module of the live composition, every offtakers module the PR adds or
+// edits, the one composed by every pinned generation the PR adds, and, when the PR changes a suite or this gate, the newest.
+{
+  const dir = path.join(ROOT, 'tools', 'ci', 'offtakers'), file = g => path.join('atlas', 'modules', `${g}-uk-offtakers-overlay.js`);
+  const ofOf = p => { const e = (p.cartridges || []).find(c => c.id === 'uk-offtakers-overlay'); const m = e && String(e.path).match(/(\d{12})-uk-offtakers-overlay\.js$/); return m ? m[1] : null; };
+  const og = new Set(); const lo = ofOf(current); if (lo) og.add(lo);
+  for (const f of changed) {
+    const m = f.match(/^atlas\/modules\/(\d{12})-uk-offtakers-overlay\.js$/); if (m) og.add(m[1]);
+    const v = f.match(/^atlas\/v\/(\d{12})\/current\.json$/);
+    if (v && !baseHas(f)) try { const g = ofOf(JSON.parse(fs.readFileSync(path.join(ROOT, f), 'utf8'))); if (g) og.add(g); } catch { /* reported above */ }
+  }
+  if (changed.some(f => f.startsWith('tools/ci/offtakers/') || f.startsWith('tools/offtakers/') || f === 'tools/ci/pr-gate.mjs')) {
+    const all = fs.readdirSync(path.join(ROOT, 'atlas', 'modules')).map(n => (n.match(/^(\d{12})-uk-offtakers-overlay\.js$/) || [])[1]).filter(Boolean).sort();
+    if (all.length) og.add(all.at(-1));
+  }
+  const osuites = fs.existsSync(dir) ? fs.readdirSync(dir).filter(f => f.endsWith('.test.mjs')).sort() : [];
+  if (!og.size) console.log('note  no offtakers overlay module in the live or touched generations');
+  else if (!osuites.length) record('offtakers-suites', false, 'tools/ci/offtakers/*.test.mjs missing');
+  else for (const g of [...og].sort()) for (const suite of osuites) group(`offtakers ${g} ${suite}`, () => {
+    const t0 = Date.now(), r = run(['node', '--test', '--test-reporter=tap', path.join('tools', 'ci', 'offtakers', suite)], { env: { ...process.env, OFFTAKERS_MODULE: file(g) }, timeout: SUITE_TIMEOUT_MS });
+    const counts = (r.stdout.match(/^# (pass|fail|skipped) \d+$/gm) || []).join(' ').replace(/# /g, ''), sec = ((Date.now() - t0) / 1000).toFixed(1);
+    if (r.code !== 0) { process.stdout.write(r.stdout); process.stderr.write(r.stderr); } else console.log(`${suite} on ${g}: ${counts} in ${sec} s`);
+    record(`offtakers ${g} ${suite}`, r.code === 0, `${counts} ${sec} s` + (r.code === 0 ? '' : `  exit ${r.code}`));
+  });
 }
 
 // ---------------------------------------------------------------- summary

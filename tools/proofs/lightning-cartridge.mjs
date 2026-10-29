@@ -119,10 +119,16 @@ export async function proveLightningCartridge(G) {
   const refLoader = registeredLoader(path.join(ROOT, refRoute, 'index.html'));
   assert.ok(refLoader, `${refRoute}index.html is not a registered loader`);
   const read = (p) => fs.readFileSync(path.join(ROOT, p), 'utf8');
-  const [g, r] = await Promise.all([
+  const [g0, r] = await Promise.all([
     compose({ loaderHtml: read(path.join(route, 'index.html')), route }),
     compose({ loaderHtml: read(path.join(refRoute, 'index.html')), route: refRoute })
   ]);
+  // Further after-cartridge overlays chained after this one (e.g. uk-offtakers-overlay, after uk-lightning-overlay) carry
+  // their own proofs; they are taken out here, tag and script, so this parity is about the lightning overlay alone.
+  const extra = current.cartridges.filter(c => c.slot === 'after-cartridge' && c.id !== OVERLAY_ID).map(c => c.id);
+  const g = { ...g0, scripts: g0.scripts.filter(s => !extra.includes(s.id)),
+    html: extra.reduce((h, id) => h.replace(new RegExp(`\\n<script data-gridatlas-cartridge="${id}" src="blob:gridatlas\\/\\d+"><\\/script>`), ''), g0.html) };
+  for (const id of extra) assert.equal(g0.scripts.filter(s => s.id === id).length, 1, `${id}: one tag`);
   assert.equal(g.failed, false, `${route}: ${g.message} ${g.errors.join(' ')}`);
   assert.equal(r.failed, false, `${refRoute}: ${r.message} ${r.errors.join(' ')}`);
   const gIds = g.scripts.map(s => s.id), rIds = r.scripts.map(s => s.id);

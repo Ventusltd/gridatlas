@@ -56,6 +56,8 @@ everything that is wrong. The job summary shows a table of the results.
    The newest `atlas/modules/*-uk-lightning-overlay.js` must be listed in
    `tools/lightning/generations.json`, and every listed generation must rebuild
    from `tools/lightning/src/` byte for byte. See `docs/LIGHTNING-SOURCE.md`.
+   **offtakers-source**: `node tools/offtakers/build.mjs --check`, the same for the
+   potential-offtakers overlay (`tools/offtakers/src/`, `docs/OFFTAKERS-SOURCE.md`).
 7. **lightning-suites**: every `tools/ci/lightning/*.test.mjs` runs with
    `node --test` against these overlay modules:
    - the live overlay module: the file the live `uk-lightning-overlay`
@@ -188,3 +190,10 @@ ledger are unchanged. The decision is written down beside that entry in
   `atlas/cartridges/202610281950-sld-sandbox-v9-8.js` and ran red on
   `composition 202610281950` (SHA-256 mismatch) and on
   `proof 202610281950-sld-sandbox.proof.mjs`. That PR was then closed unmerged.
+
+**offtakers-suites** (after lightning-suites): every `tools/ci/offtakers/*.test.mjs` runs with `node --test` and
+`OFFTAKERS_MODULE` set to the live potential-offtakers module, every one the PR adds or edits, the one each pinned
+generation the PR adds composes, and the newest one when the PR changes `tools/ci/offtakers/`, `tools/offtakers/` or the gate.
+Fixtures: `tools/ci/offtakers/fixtures/` (the three pinned globalgrid2050 files, gzip -9 -n; test P0 checks them against the
+module's SHA-256 pins), the lightning REPD register fixture, `data/repd_browser_registry_202608290716.json` and the release's
+`grid_substations.geojson`.
