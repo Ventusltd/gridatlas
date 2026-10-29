@@ -25,7 +25,7 @@ sb=(m,c,x,y,n)=>{if(S.pp!==c)return;let Lk=W.__GRIDATLAS_NEON_LINKS__||{},M=Lk.m
  for(let a of k)L(c.sub,`${k2(a.km)} km · ${KV(a)} kV · ${cs(a.name||'unnamed substation')}`,'color:#c9d6da');
  S.fk=[[x,y],...k.map(a=>a.at)];nl(m,[x,y],k);cpos();nz(m,x,y);
  if(typeof M.distanceKm!='function'||typeof M.isProjectTech!='function'){c.pd.textContent='REPD projects unavailable: the map measure is not loaded yet. Tap the site again.';return}
- RG(m,M).then(G=>{if(S.pp!==c)return;c.all=near(G,M,x,y);c.fk0=S.fk.slice();rr(m,c)}).catch(e=>{if(S.pp!==c)return;c.pd.textContent=`REPD projects unavailable: ${msg(e)}. Tap the site again to retry.`;Ra(c,c.pd.textContent)})},
+ RG(m,M).then(G=>{if(S.pp!==c)return;c.all=near(G,M,x,y);c.fk0=S.fk.slice();rr(m,c)}).catch(e=>{if(S.pp!==c)return;c.pd.textContent=`REPD projects unavailable: ${msg(e)}. Tap the site again to retry.`;Ru(c,'REPD unavailable',c.pd.textContent)})},
 /// area summary within a fixed 5 km: REPD by status group (stated MW; not stated counted, never 0), other listed sites by class, nearest substation
 ar=c=>{let A=c.area,r=c.r,f=c.all.filter(q=>q.km<=5),t=[],z=0;A.textContent='';
  for(let[v,n]of RpF.st)if(v!='all'){let q=f.filter(o=>RpS(o.p.status)==v),w=RpW(q.map(o=>o.p)),u=q.filter(o=>!(o.p.capacity>0)).length;z+=u;if(q.length)t.push(`${n} ${q.length}${w>0?' · '+N(w)+' MW stated':''}${u?` (${u} not stated)`:''}`)}
@@ -44,7 +44,7 @@ rr=(m,c)=>{let f=S.rf,{sel,P}=sites(c.all,f),box=c.box,all=f.st==='all'&&f.te===
  c.pd=L(box,P.length?`Screening · ${pl(P.length,'nearest REPD site')}${parts>P.length?` (${N(parts)} projects; those at one point grouped)`:''}, all within ${k1(reach)} km, straight line (${fa}):`:`Screening · no REPD site within ${R40} km, straight line (${fa}).`,'margin-top:6px;color:#ffc48a');
  if(P.length&&P.length<NR)L(box,`Only ${pl(P.length,'REPD site')} within ${R40} km${all?'':' for this filter'}.`,'color:#ffc48a');
  let sl=[];P.forEach((g,i)=>{let p=g.parts[0],one=g.parts.length===1,b=tier(ap(box,el('a','display:block;padding:12px 0 6px;border-top:1px solid #1d2f52;color:#ffb27a;text-decoration:none',`${i+1}. ${RpG(g)}${RpC(g.parts)} · ${one?cs(p.status)+' · '+cs(p.name):g.parts.length+' projects at this point:'} ▸`)),'screening');
-  b.href='#';b.setAttribute('role','button');b.addEventListener('click',e=>{if(e.preventDefault)e.preventDefault();pv(m,c,g)});
+  b.href='#';b.addEventListener('click',e=>{if(e.preventDefault)e.preventDefault();pv(m,c,g)});
   for(let q of g.parts){one||ap(box,tier(el('div','padding:0 0 2px 12px;color:#c9a27e;font-size:11px',`${RpN(q)}${RpMW(+q.capacity)}${RpC([q])} · ${cs(q.status)} · ${cs(q.name)}`),'record'));sl.push([ap(box,el('div')),q])}});
  L(box,'Record · REPD (DESNZ, OGL v3.0): list from the Apr 2026 extract; address, ref, operator and planning fields from the Jul 2026 extract, only on an exact point, name, MW and type match. Status as registered, not as built.','margin-top:6px;color:#8b9aa1','record');
  RpH(c,sl);cv(c);
@@ -52,7 +52,8 @@ rr=(m,c)=>{let f=S.rf,{sel,P}=sites(c.all,f),box=c.box,all=f.st==='all'&&f.te===
  try{nl(m,c.fk0[0],c.k,P)}catch(e){note('links: '+msg(e))}top();
  cpos();S.fk=[...c.fk0,...P.map(g=>g.a)];m.isMoving&&m.isMoving()?(cm(m),m.once('moveend',cw)):ck()},
 /// record slots [[div, props]]: filled from the cache now and again when the rows at their points arrive (M5's RpQ/RpB)
-RpH=(c,sl)=>{let F=(C,e)=>{if(S.pp==c)for(let[s,q]of sl){s.textContent='';ap(s,RpB(q,RpP.get(q),C,e))}};F(S.rc);RpQ(sl.map(v=>RpP.get(v[1]))).then(F,e=>F(0,e))},
+RpH=(c,sl)=>{let r=()=>{RpH(c,sl);c.sm.focus?.()},F=(C,e)=>{if(S.pp==c){for(let[s,q]of sl){s.textContent='';let b=ap(s,RpB(q,RpP.get(q),C,e));if(e){b.setAttribute('role','button');b.setAttribute('tabindex','0');b.style.cursor='pointer';b.addEventListener('click',r);b.addEventListener('keydown',k=>{if(k.key=='Enter'||k.key==' '){k.preventDefault?.();r()}})}}
+  if(sl.length)Ru(c,e?'REPD records unavailable':'',e&&`REPD records unavailable: ${msg(e)}. Tap a record line to retry.`)}};F(S.rc);RpQ(sl.map(v=>RpP.get(v[1]))).then(F,e=>F(0,e))},
 /// CSV vicinity sheet: one row per listed REPD project and per substation, generated in the page
 /// a cell: Cf stripped; a text starting = + - @ TAB or CR gets a leading apostrophe (no formula), numbers stay numbers; quoted on " , CR LF # (R-otsec ORS5)
 cq=v=>{let s=v==null?'':String(v).replace(/\p{Cf}/gu,'');if(typeof v!='number'&&/^[=+\-@\t\r]/.test(s))s="'"+s;return/[",\r\n#]/.test(s)?'"'+s.replace(/"/g,'""')+'"':s},

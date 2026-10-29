@@ -1,8 +1,9 @@
 /// ---- REPD register (the map's own, as M2+) ----
-RG=(m,M)=>S.rg||(S.rg=(async()=>{let f;try{f=m.getSource('src-repd').serialize().data.features}catch(_){}
+/// the lightning overlay's index when it has one (the same register, the same measure): one register fetch and one index per page
+RG=(m,M)=>S.rg||(S.rg=(((NS.ukLightning||{}).state||{}).rg||(async()=>{let f;try{f=m.getSource('src-repd').serialize().data.features}catch(_){}
  if(!(f&&f.length))f=(await gj('/dist/repd_master.json')).features;
  let o=f.map(x=>{try{let a=M.representativePoint(x.geometry);if(a[0]===+a[0]&&a[1]===+a[1]&&!(a[0]==-7.55716&&a[1]==49.766807))return[a,x.properties||{}]}catch(_){}return[]}).filter(([a,p])=>a&&M.isProjectTech(p.tech));
- return o.length?o:E('register empty')})().catch(e=>{S.rg=null;throw e})),
+ return o.length?o:E('register empty')})()).catch(e=>{S.rg=null;throw e})),
 RpF={st:[['all','All'],['op','Operational'],['cc','Consented'],['pl','Planning']],te:[['all','All'],['solar','Solar'],['wind','Wind'],['bess','BESS'],['other','Other']]},
 RpS=s=>{let o={operational:'op','under construction':'cc','awaiting construction':'cc','application submitted':'pl'},k=String(s||'').toLowerCase();return Object.hasOwn(o,k)?o[k]:'?'},
 RpT=t=>/^solar/.test(t)?'solar':/^wind/.test(t)?'wind':/^bess/.test(t)?'bess':'other',
