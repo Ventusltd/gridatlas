@@ -33,11 +33,11 @@ nr=(m,c,x,y)=>{///
     c.out.textContent='';///
     nc();
 if(!AI(subs)||!subs.length||typeof M.nearestSubstations!=='function')return say('Substation data not loaded yet; trying again.'),0;
-let k=M.nearestSubstations(x,y,subs),o=[x,y],TC='#d8c96a',TL='#5fbdc2',FL='#bfe9ee',Z=(a,///
+let k=c.k=M.nearestSubstations(x,y,subs),o=[x,y],TC='#d8c96a',TL='#5fbdc2',FL='#bfe9ee',Z=(a,///
       b,h=12)=>['interpolate',['linear'],['zoom'],6,a,h,b],RJ={'line-cap':'round','line-join':'round'},
 A=(i,type,source,paint,layout)=>m.addLayer(Object.assign({id:NI[i],type,source,paint},layout?{layout}:{}));///
     S.fk=[o,...k.map(a=>a.at)];///
-    say(c.o.np?'Nearest substations to this project (straight-line km; not its declared grid connection).':`Nearest substations to this ${c.wh} (straight-line km). Not evidence any asset was struck; faults can have other causes.`);
+    say(c.o.np?'Screening · nearest substations, straight line. Not its declared connection or capacity.':`Screening · nearest substations to this ${c.wh}, straight line. Proximity, not exposure or a current path; not evidence any asset was struck.`);
 if(!k.length){///
       let b=k.beyondRadiusNearest;///
       say(`No substation within ${k.radiusKm||40} km`+(b?` (nearest: ${cs(b.name||'unnamed substation')}, ${(+b.km).toFixed(2)} km)`:''))///
