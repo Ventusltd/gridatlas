@@ -51,9 +51,9 @@ async function run(width,height){
   assert.equal(init.installed.complete,true);
   await page.waitForSelector('[data-offtakers-control="toggle"]',{state:'attached',timeout:45000});
   await page.evaluate(()=>{const el=[...document.querySelectorAll('[data-offtakers-control="toggle"]')].find(x=>x.closest('#scada-ui-container'))||document.querySelector('[data-offtakers-control="toggle"]');el.checked=true;el.dispatchEvent(new Event('change',{bubbles:true}));});
-  await page.waitForFunction(()=>window.__GRIDATLAS_MODULES__.ukOfftakers?.state?.data?.dots?.filter(d=>d.k==='c').length>=227,{timeout:60000});
+  await page.waitForFunction(()=>window.__GRIDATLAS_MODULES__.ukOfftakers?.state?.data?.dots?.filter(d=>d.k==='c').length>=225,{timeout:60000});
   const n=await page.evaluate(()=>window.__GRIDATLAS_MODULES__.ukOfftakers.state.data.dots.filter(d=>d.k==='c').length);
-  assert.equal(n,227,'full pinned 227-site data required');
+  assert.equal(n,225,'227 source records, of which two planning sites have unknown coordinates and must not be mapped');
   await page.evaluate(()=>{const S=window.__GRIDATLAS_MODULES__.ukOfftakers.state,m=window.__GRIDATLAS_V9_MAP__;
     const d=S.data.dots.find(x=>x.k==='c'&&/Digital Realty LHR26/.test(x.n))||S.data.dots.find(x=>x.k==='c'&&/Slough/.test(x.n));
     if(!d)throw Error('No Slough data centre');window.__DC_SMOKE_SITE__=d;m.jumpTo({center:d.a,zoom:15});});
