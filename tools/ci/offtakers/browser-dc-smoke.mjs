@@ -101,6 +101,7 @@ async function run(width,height){
   assert.ok(bounds&&bounds.x>=-5&&bounds.x+bounds.width<=width+5,'card horizontal viewport containment');
   const controls=await page.locator('[data-offtakers-card] [role="tab"]').evaluateAll(a=>a.map(x=>({width:x.getBoundingClientRect().width,height:x.getBoundingClientRect().height})));
   assert.ok(controls.every(x=>x.height>=44&&x.width>=44),'four tab touch targets >=44px');
+  await page.locator('[data-offtakers-tab="s"]').click();
   await page.locator('[data-offtakers-tab="s"]').focus();
   await page.keyboard.press('ArrowRight');
   assert.equal(await page.locator('[data-offtakers-tab="r"]').getAttribute('aria-selected'),'true','keyboard arrow advances tab');
