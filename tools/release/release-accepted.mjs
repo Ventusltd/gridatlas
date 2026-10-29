@@ -74,6 +74,7 @@ if (args.rehearsal) {
   ok(`accepted: ${authorisedBy}`);
 }
 
+const startSha = git('rev-parse', 'HEAD');
 console.log('\n== tools/release/release-generation.mjs');
 const branch = args.branch || (args.rehearsal ? `rehearsal/release-${G}` : undefined);
 const argv = ['tools/release/release-generation.mjs', '--generation', G, '--authorised-by', authorisedBy];
@@ -88,7 +89,7 @@ if (r.status !== 0) die(`release-generation.mjs exit ${r.status}`);
 
 const head = git('rev-parse', 'HEAD');
 const current = run('git', ['symbolic-ref', '--quiet', '--short', 'HEAD'], { allowFail: true }).stdout.trim();
-if (!current || git('rev-parse', args.base || 'origin/main') === head) { console.log('nothing committed (no-op release)'); process.exit(0); }
+if (!current || startSha === head) { console.log('nothing committed (no-op release)'); process.exit(0); }
 if (!args.push) {
   console.log(`\n== not pushed. To publish:\n  git push -u origin ${current}\n` +
     `  gh api -X POST repos/${GRIDATLAS}/pulls -f head=${current} -f base=main -F draft=true -f title='...' -F body=@<body.md>\n` +

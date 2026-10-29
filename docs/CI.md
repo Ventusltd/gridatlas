@@ -57,6 +57,11 @@ everything that is wrong. The job summary shows a table of the results.
    on modules of that generation or later; the gate prints a note for the
    modules it skips. The suite/module pairs run side by side (up to 4), because
    the time is spent waiting on real timers, not on the CPU.
+8. **release-tools**: `node --check` of every `tools/release/*.mjs`, and
+   `node --test tools/release/*.test.mjs`, the offline tests of the delivery
+   flow's acceptance and PR-classification rules (docs/RELEASE.md). A broken
+   release script therefore fails the PR that broke it, not the release that
+   needs it.
 
 ## The lightning suites
 

@@ -18,6 +18,90 @@ owner's authorisation is a required argument and is written into the commit.
 | `tools/release/rollback-generation.mjs` | `git revert` of the release commit (route C) → byte-exact restore check → every gate → revert commit on a branch |
 | `tools/release/lib.mjs` | shared derivation, git and gate helpers |
 
+They are steps 4 and 8 of the delivery flow below, which scripts the whole
+path from a cut to the served homepage.
+
+## The delivery flow, end to end
+
+Eight steps, each one script in `tools/release/` (or one `gh api` command),
+each with pre-conditions it checks itself. Every script reads GitHub only
+through repository-scoped `gh api` REST calls. GraphQL (`gh pr create`,
+`gh pr list`) and the search API are not used, because some agent sandboxes
+refuse them.
+
+```bash
+node tools/release/release-status.mjs            # where every candidate is, and its next step
+```
+
+| # | step | command | pre-conditions (checked) | done when |
+|---|---|---|---|---|
+| 1 | cut | `cut-generation.mjs --gen G --version v9.N --module M.js [--from P] [--edits E.json] [--proof F] [--progress F --progress-name NAME]` | P is a published lightning-line candidate whose cartridge is base + `\n` + its module; G is a later real UTC minute; the version is unused and higher than every recorded one; G's files do not exist; the cartridge fits the ceiling in `loop.mjs` | 6 files (+ optional progress note) written; preview route = the pointer the release will write; protected files unchanged |
+| 2 | preview PR | `publish-preview.mjs --generation G [--generation G2] [--allow PATH] --push` | change set against main is additive only (6 files per G, one progress note, anything else named with `--allow`, never the pointer, `STATE.md`, the loader or `atlas/releases/**`); G cut against the current live; the local `pr-gate.mjs` passes | draft PR open; CI (`pr-file-size-guard.yml`: size-guard + cartridge-gate) green; rebase-merged, so `atlas/v/G/` is on Pages |
+| 3 | owner acceptance | the owner comments `ACCEPT G` (first line) on the preview PR, or adds the label `accepted:G`; `acceptance.mjs --generation G` reads it | by an owner login, not through a GitHub App, no agent signature, after G's `cut_at_utc`; a later `REJECT G` or removing the label withdraws it | `acceptance.mjs` exits 0 |
+| 4 | release | `release-accepted.mjs --generation G --push` (runs `release-generation.mjs`, below) | step 3; the preview PR is merged and its CI green; clean worktree at `origin/main`; then every precondition and gate of `release-generation.mjs` | draft release PR with CI green; the owner merges it with **rebase**: `gh api -X PUT repos/Ventusltd/gridatlas/pulls/<N>/merge -f merge_method=rebase` |
+| 5 | live bytes | `check-live.mjs --generation G --wait` | main's `atlas/current.json` names G | the `live-bytes` job of `202608301321-verify-live.yml` (runs on every push to main) passed for main's head |
+| 6 | homepage | `homepage-bump.mjs label --homepage DIR --push`, merge; `homepage-bump.mjs pin --homepage DIR --domain DIR --push` + restore point, merge; `homepage-bump.mjs deploy [--dispatch]` | label: G live, live-bytes passed, G accepted, homepage clone clean at origin/main and not yet recording G. pin: homepage main makes G operative; the 7 bundle files re-read from GitHub match the pin; the domain clone is **sparse** (`/catalogue/`, non-cone) | homepage label PR merged; domain pin PR merged; `deploy-pages.yml` succeeded for globalgrid2050 main |
+| 7 | served | `check-served.mjs` locally, or in CI: `gh api -X POST repos/Ventusltd/gridatlas/actions/workflows/202608301321-verify-live.yml/dispatches -f ref=main -f 'inputs[mode]=served-homepage'` | step 6 deployed | the served `homepage-shell/data/homepage.json`, CSS and JS match the pin byte for byte, and `/` shows the GridAtlas row with G's label, linking the live route |
+| 8 | rollback | GridAtlas: `rollback-generation.mjs --release-commit <sha>` (route C, below), published like a release. Homepage: `python scripts/releases.py promote gridatlas <previous id> --reason "..."` in the homepage repo, then pin (6) and served (7) again | see "Rollback (route C)"; the homepage keeps every release, so the previous one is promoted back | live-bytes and the served check pass for the restored generation |
+
+### Rules the scripts enforce
+
+- **Agents never record acceptance.** Agents work with the owner's GitHub
+  token, so a comment's login alone cannot prove it came from the owner. No
+  script writes an `ACCEPT` line or the label. `acceptance.mjs --record`
+  refuses to run under Claude Code, Codex or CI. `acceptance.mjs --how --pr N`
+  prints the owner's one-line command.
+- **Only the owner merges a release.** Every PR the flow opens is a draft. The
+  release PR is merged with rebase, never squash (see below).
+- **One budget.** No new workflow. Step 7's CI path is a third `mode` of the
+  existing `202608301321-verify-live.yml`: dispatch-only and read-only. It
+  leaves `ACTIVE_WORKFLOWS` and `STATE.md` unchanged.
+- **globalgrid2050 is never checked out in full.** For a pin, use a worktree
+  with only the catalogue:
+
+  ```bash
+  git -C ~/globalgrid2050 worktree add --no-checkout --detach ../gg-pin origin/main
+  cd ../gg-pin && git sparse-checkout set --no-cone /catalogue/ && git checkout --detach origin/main
+  ```
+
+  Cone mode also materialises every root file (about 257 MB), so use
+  `--no-cone`.
+- **Rehearsals stay local.** `release-accepted.mjs --rehearsal` and
+  `homepage-bump.mjs label|pin --rehearsal` do everything except read
+  acceptance and live state. They write `rehearsal/...` branches and refuse
+  `--push`.
+
+### --edits for a cut
+
+`--edits` is the only per-build input besides the module. It describes what
+the build adds to the composition record:
+
+```json
+{ "sld_sandbox": { "uk_lightning": { "camera": "…", "repd_layers": null } },
+  "composition_note_replace": [["old exact text", "new text"]],
+  "acceptance_scope_append": "M4 (202610290045): …" }
+```
+
+`sld_sandbox` is an RFC 7396 merge patch on the sld-sandbox entry: a `null`
+deletes a key, and a new key is appended at the end. Identity fields (`id`,
+`generation`, `version`, `path`, `sha256`, `bytes` and `derived_from`) are
+refused. Pass `--proof` when the build changes its proof beyond `const GEN=`,
+as M4b's restored negative did.
+
+### Rehearsed for M4 (29 Oct 2026, CD-pipeline lane; nothing pushed to main, nothing released)
+
+| step | result |
+|---|---|
+| 1 cut | at `39c62b4`, re-cut M4 (`202610290045`) and M4b (`202610290050`) from M3 with their modules and `--edits` (M4b also `--proof`): **all 12 files byte-identical** to `a80b760` / `dfcf29c` on main; a chained cut from M4 passed its proof |
+| 2 preview | `publish-preview.mjs` committed both on a local branch; the local `pr-gate` gave 16/16 PASS (M4 191 pass / 10 skip, M4b 186 / 15); the tree equals main `73c0e76` |
+| 3 acceptance | M4 and M4b: none yet (exit 3); `--record` refused under an agent |
+| 4 release | the real path stops: `202610290045 is not accepted (none)`. `--rehearsal`: 7/7 gates, `atlas/current.json` `e3eca669…` → `b1b0f98b…`, `STATE.md` `5867656…` → `22e5718a…`; `pr-gate` on the release commit 10/10 PASS |
+| 5 live bytes | `check-live.mjs` reads PASS for main `73c0e76` (L3); `--local` cannot reach `*.github.io` from the sandbox |
+| 6 homepage | `label --rehearsal`: the homepage tool wrote "V9.176 - 29 October 2026"; the homepage checks passed and the fallback is idempotent. `pin --rehearsal` in a sparse catalogue-only worktree: `cb741ca` → the local label commit. `deploy`: `deploy-pages.yml` success for main |
+| 7 served | the sandbox is blocked (CONNECT 403); the CI mode is the path |
+| 8 rollback | route C of the rehearsal release: byte-exact `e3eca669…` / `5867656…`, 5/5 gates, tree identical to before the release |
+
+
 ## Release
 
 Always from a fresh worktree of main, never your working clone:
@@ -119,14 +203,18 @@ The script prints:
 
 ### Publishing (a person does this)
 
+`release-accepted.mjs --push` does this. By hand (REST, because `gh pr create`
+needs GraphQL):
+
 ```bash
 git push -u origin release/<G>-gridatlas-<version>
-gh pr create --draft --base main --head release/<G>-gridatlas-<version>
+gh api -X POST repos/Ventusltd/gridatlas/pulls -f head=release/<G>-gridatlas-<version> -f base=main -F draft=true -f title='…' -F body=@body.md
 ```
 
 Merge with **Rebase and merge**, never squash. Squashing would fold any
 preparatory commit into the release commit, and the revert would then undo the
-gate raise too. After Pages deploys, run the dependency-free byte check
+gate raise too. After Pages deploys, `check-live.mjs --generation <G> --wait`
+reads the CI live-bytes job; locally, run the dependency-free byte check
 `node tools/scope/verify-live-bytes.mjs --base https://ventusltd.github.io/gridatlas/`
 (it retries while the CDN catches up; `tools/scope/verify-live.mjs` additionally
 needs Playwright). Then, in a browser console on the live route with lightning OFF:
@@ -196,6 +284,8 @@ would also give a workflow that today does exactly one thing a second job that
 moves the pointer forward, with `contents: write`.
 
 So releases stay script-only, run by a person, with the PR as the review gate.
+The delivery flow above keeps to the same budget: its only CI addition is the
+read-only, dispatch-only `served-homepage` mode of `202608301321-verify-live.yml`.
 If the owner wants a dispatch path later:
 - add one `release-generation.yml` that runs `--check` and then the release
   onto a branch and opens a draft PR (never pushing main);
