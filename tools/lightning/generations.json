@@ -1,0 +1,17 @@
+{
+ "_": "The generations tools/lightning/src rebuilds byte for byte (node tools/lightning/build.mjs --check). The newest lightning generation in atlas/modules/ must be listed. When the source changes for a new generation, the generations it no longer rebuilds are removed here (their source is the commit that cut them). docs/LIGHTNING-SOURCE.md",
+ "variants": [
+  "layers",
+  "dots"
+ ],
+ "generations": {
+  "202610290045": {
+   "variant": "layers",
+   "label": "M4"
+  },
+  "202610290050": {
+   "variant": "dots",
+   "label": "M4b"
+  }
+ }
+}
