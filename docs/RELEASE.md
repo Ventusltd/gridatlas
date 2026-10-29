@@ -227,6 +227,53 @@ agree:
 node tools/release/release-generation.mjs --generation "$(node -p 'require("./atlas/current.json").generation')"
 ```
 
+## Loader first, then the pointer (a generation served by a different loader)
+
+When the generation going live is served by a different registered loader than
+the live one (loader v2 for a modular generation such as 202610290915,
+docs/LIGHTNING-CARTRIDGE.md), the release is **two** commits, each its own PR,
+each revertable on its own:
+
+| step | command | changes | proven |
+|---|---|---|---|
+| 1 loader | `node tools/release/loader-swap.mjs release --to v2 --authorised-by "…"` | `atlas/index.html` only, on `release/loader-v2-<live gen>` | the new loader is registered, supports every slot of the unchanged live pointer, and (run verbatim in `node:vm`) writes byte-for-byte the HTML and cartridge blobs the old loader writes for it; then every release gate plus `loader-equivalence` |
+| wait | `check-live.mjs`, `check-served.mjs` (or its CI mode) | nothing | step 1 is served, **and at least 10 minutes have passed since it deployed** |
+| 2 pointer | `release-generation.mjs --generation G …` (or `release-accepted.mjs`) | `atlas/current.json` + `STATE.md` (`LOADER_IDENTICAL`: the live loader is already G's) | the usual release gates |
+
+**Why the wait.** GitHub Pages serves HTML with a short `max-age` (documented
+as 10 minutes), and `current.json` is fetched `no-store`. If the loader and the
+pointer moved in one deploy, a browser holding the cached v1 `atlas/index.html`
+would read the modular pointer and fail closed ("unsupported cartridge slot")
+until its cache expired. Step 1 changes nothing visible: v2 composes the live
+pointer exactly as v1 does. So wait for `check-served` to pass on step 1, and
+then **at least 10 more minutes** (the cache window), before merging step 2.
+
+**The gate.** `tools/ci/pr-gate.mjs` (`loader-registry`) accepts a PR that
+changes `atlas/index.html` without `atlas/current.json` only when
+`node tools/release/loader-swap.mjs check --base <base>` passes for it: a
+registered loader, every live slot supported, byte-identical composition of the
+unchanged live pointer. With the pointer, the loader may still only become the
+loader of the generation going live (`LOADER_FOLLOWS`, unchanged).
+
+**Rollback is in the reverse order: pointer first, then the loader.**
+
+- B (pointer): `rollback-generation.mjs --release-commit <step 2 sha>`; the
+  route-C revert of a two-file release; the loader stays v2, which composes the
+  restored replace-script pointer exactly as v1 does.
+- A (loader): `rollback-generation.mjs --release-commit <step 1 sha>`. A
+  loader-only commit is reverted only under the same proof, from v2 back to v1
+  for the pointer that is live then. While a generation that needs v2 is live,
+  it is **refused** ("roll the pointer back first, then the loader"). It
+  restores `atlas/index.html` byte-exact and leaves `atlas/current.json` and
+  `STATE.md` untouched.
+
+Rolling back the loader is optional: v2 is equivalent for every
+replace-script-only composition (`loader-equivalence`, 46 today).
+
+`publish-preview.mjs` accepts any registered loader that supports the preview's
+slots, so monolithic previews (v1) still publish once the live loader is v2;
+`release-generation.mjs` moves the loader with the pointer when they differ.
+
 ## Rollback (route C)
 
 ```bash

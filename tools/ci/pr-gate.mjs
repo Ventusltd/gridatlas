@@ -22,8 +22,11 @@
  *                     (tools/scope/lib.mjs ATLAS_LOADERS) that supports every
  *                     slot its own current.json uses; a loader that exists at
  *                     the base is never rewritten, and atlas/index.html
- *                     changes only with atlas/current.json, to the loader of
- *                     the generation going live (docs/LIGHTNING-CARTRIDGE.md)
+ *                     changes with atlas/current.json, to the loader of
+ *                     the generation going live (docs/LIGHTNING-CARTRIDGE.md),
+ *                     or alone, to a registered loader proven to compose the
+ *                     unchanged live pointer byte for byte as the base's
+ *                     loader does (tools/release/loader-swap.mjs check)
  *   loader-equivalence  tools/proofs/loader-equivalence.proof.mjs
  *   lightning-source  node tools/lightning/build.mjs --check: the newest
  *                     lightning overlay generation is listed in
@@ -217,11 +220,17 @@ group('loader-registry', () => {
   for (const file of changed) {
     if (/^atlas\/v\/\d{12}\/index\.html$/.test(file) && baseHas(file)) bad.push(`${file} existed at the base and was changed or removed`);
   }
-  // The live loader moves only with the pointer, to the loader of the generation going live.
+  // The live loader moves either with the pointer, to the loader of the generation going live, or ON ITS OWN
+  // (step 1 of a two-step release, docs/RELEASE.md): then it must be a registered loader that composes the
+  // unchanged live pointer byte for byte as the base's loader does (tools/release/loader-swap.mjs check).
   if (changed.includes('atlas/index.html')) {
     const liveIndex = path.join(ROOT, 'atlas', 'v', String(current.generation), 'index.html');
-    if (!changed.includes('atlas/current.json')) bad.push('atlas/index.html changed without atlas/current.json');
-    else if (!fs.existsSync(liveIndex) || !fs.readFileSync(liveIndex).equals(fs.readFileSync(path.join(ROOT, 'atlas', 'index.html')))) {
+    if (!changed.includes('atlas/current.json')) {
+      const swap = run(['node', 'tools/release/loader-swap.mjs', 'check', '--base', BASE]);
+      process.stdout.write(swap.stdout);
+      process.stderr.write(swap.stderr);
+      if (swap.code !== 0) bad.push(`atlas/index.html changed without atlas/current.json and is not a proven loader-only change: ${tail(swap.stdout || swap.stderr, 2)}`);
+    } else if (!fs.existsSync(liveIndex) || !fs.readFileSync(liveIndex).equals(fs.readFileSync(path.join(ROOT, 'atlas', 'index.html')))) {
       bad.push(`atlas/index.html changed but is not atlas/v/${current.generation}/index.html`);
     }
   }
