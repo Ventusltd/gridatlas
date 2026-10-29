@@ -150,3 +150,36 @@ jobs:
         env:
           BASE_SHA: ${{ github.event.pull_request.base.sha }}
         run: node tools/ci/pr-gate.mjs --base "$BASE_SHA"
+
+  # Issue #73: one-off real Chromium check on the draft preview. This does
+  # not deploy, change the live pointer or use secrets. Remove the job after
+  # its browser report has been reviewed; keep the reusable script.
+  dc-browser-smoke:
+    if: github.event.pull_request.number == 75
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - name: Checkout candidate with real preview files
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          fetch-depth: 1
+          persist-credentials: false
+      - name: Node 22
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v4
+        with:
+          node-version: '22.23.4'
+      - name: Install headless Chromium for actual phone/desktop map taps
+        run: |
+          npm install --no-save --ignore-scripts playwright@1.56.1
+          npx playwright install --with-deps chromium
+      - name: Test Slough tap, four tabs, link reveal and CSV in Chromium
+        env:
+          DC_SMOKE_GENERATION: '202610292044'
+        run: node tools/ci/offtakers/browser-dc-smoke.mjs
+      - name: Preserve screenshots for review
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: dc-browser-smoke-${{ github.run_id }}
+          path: ${{ runner.temp }}/gridatlas-dc-browser/
+          if-no-files-found: ignore
