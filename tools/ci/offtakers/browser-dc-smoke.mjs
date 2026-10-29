@@ -96,6 +96,26 @@ async function run(width,height){
   assert.ok(rows.length<=256000+500,'CSV is capped');
   info.csv_bytes=rows.length;
   await page.screenshot({path:path.join(OUT,`dc-${width}x${height}.png`),fullPage:false});
+  // Tap two further locations, including a consented project, on both screen sizes.
+  info.additional_taps=[];
+  for(const wanted of ['Court Lane Industrial Estate','Cobalt Park Data Centres']){
+    await page.locator('[data-offtakers-card] button[aria-label="Close"]').click();
+    const other=await page.evaluate(label=>{
+      const m=window.__GRIDATLAS_V9_MAP__,S=window.__GRIDATLAS_MODULES__.ukOfftakers.state;
+      const d=S.data.dots.find(x=>x.k==='c'&&x.n?.includes(label));
+      if(!d)throw Error('missing second screening origin: '+label);
+      m.jumpTo({center:d.a,zoom:15});
+      return {name:d.n,point:d.a};
+    },wanted);
+    await page.waitForTimeout(600);
+    const pos=await page.evaluate(ll=>{const m=window.__GRIDATLAS_V9_MAP__,p=m.project(ll),r=m.getContainer().getBoundingClientRect();return [r.left+p.x,r.top+p.y]},other.point);
+    await page.mouse.click(...pos);
+    await page.waitForSelector('[data-offtakers-card][aria-label="Data centre"]',{timeout:15000});
+    const body=await page.locator('[data-offtakers-card]').innerText();
+    assert.ok(body.includes(wanted),'the intended data centre was tapped: '+wanted);
+    assert.equal(await page.locator('[data-offtakers-card] [role="tab"]').count(),4);
+    info.additional_taps.push({name:other.name,tab_count:4,has_unknown_statement:body.includes('not stated')});
+  }
   observations.push(info);
   await ctx.close();
 }
