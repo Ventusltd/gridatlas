@@ -78,6 +78,8 @@ Counts per class and nation (NAEI nation field; "(approx)" rows for OSM/GPPD use
 
 Default-on dots (A + B + C + D-large) = 1,420; 1,645 with E and D-small on. All under the 10,000 phone cap.
 
+**Default chips (resolved by R-otdata, 29 Oct 2026):** E "Other large users" is **off by default**, as the §6 table and this count line say; the OT-build module had it on (`src/01-data.js` CLS e flag 1). After the R-otdata corrections (§7) the counts are A 813, B 358, C 164, D-large 8, D-small 168, E 57: **1,343 default-on dots**, 1,568 with every chip on.
+
 The 20 largest per class are in `out/top20_per_class.md`. Sanity reading: A is led by British Sugar Wissington and Bury, Winnington soda ash, Wilton, Tunstead cement, Stanlow and the gas terminals; B by Pembroke 2,180 MW, then the closed coal sites West Burton A, Cottam, Ratcliffe, Eggborough and Aberthaw, Drax (biomass), Staythorpe, Didcot B, Grain, the CHPs at Immingham and Saltend and the AGR fleet; C by Amazon Hemel Hempstead; D by Middlesbrough and Beckton; E by Port of Liverpool CHP and hospital CHPs.
 
 **Known limits.** GPPD duplicates where its coordinate is >2.5 km off (Kilroot ×2); 92 power producers with non-specific names fall in `thermal_unspecified`; nation is approximate for non-NAEI rows; status table unverified; no 2024 NAEI refresh.
@@ -97,3 +99,12 @@ Palette: a **copper-to-teal family**, away from lightning violet, REPD `#ffcc00�
 Chips: `[All] [Industry] [Power] [Data centres] [Water] [Other]`; second row for B `[Operating] [Closing] [Closed/converted] [Unknown]`. Legend footer: "Dot size: emission band (NAEI 2023) or installed MW (GPPD). Hollow ring: closed or closing station."
 
 Card header: **"Potential offtaker (screening): not a confirmed demand, contract or connection."** Record line: "<name> · operator (<source>) <operator> · <subclass>". Size line: "Emission band 25–100 kt CO2e-approx, NAEI 2023 (band only; method under check)" or "2,000 MW installed (GPPD, DUKES-derived), closed 2024-09-30 (source linked)". Combustion line as §3. Footer: "Not shown here: electricity use, connection terms, TEC, consent, viability." The overlay spec's banned-word lint applies.
+
+## 7. R-otdata corrections (29 Oct 2026)
+
+Evidence: `hardening/evidence/R-otdata/` (STATUS-VERIFY.md, DIFF-SUMMARY.md, ODBL.md, qa_points_*.json, diff.json). Output 1,568 features (was 1,645), sha256 `6fc20e04fdcaadc5…`, deterministic.
+
+- **Status table re-verified**: every one of the 35 rows was checked against a fetched public page; `verified_in_session` is now yes/partial. Eight dates were wrong (Heysham 1 and Hartlepool now March 2028; Eggborough 2018-03-23; Drax coal units 2023-03; Uskmouth 2017-04; Baglan Bay 2020-07; Deeside 2018-03; Roosecote 2012; Teesside 2011-04). Three regexes hit the wrong plant (`deeside` hit the Parc Adfer EfW; `oldbury` hit the Oldbury, West Midlands standby plant and drew it as a closed nuclear station; `grain` hit GPPD "Grain GT"). Hinkley Point C's NAEI row is a construction site, not a generator.
+- **Site-level merge (class A)**: NAEI points of one works join when the operator is the same (alias Corus → Tata Steel), they share a site-name token that is not a process word, and a record lies within 1,500 m of a record of the other (single linkage). Port Talbot (9 NAEI points, spread 2.65 km) and Scunthorpe (10 points, 3.5 km) are one dot each; 38 further two- or three-point works merge (sugar factories, refineries, plasterboard, Llanwern, Shotton). Every NAEI row stays in `records[]` with its own coordinates and band; `site_merge` states the rule and spread.
+- **Wrong or duplicate points**: GPPD Bowmore (North Sea off Fife) folded into NAEI Bowmore (Islay); NAEI Kilroot point (3.5 km off, Belfast Lough shore) replaced by the GPPD point; GPPD duplicates 2.5–5 km off (Kilroot, Spalding, Burghfield, Chickerell, Slough, Baglan Bay OCGT) merged when unambiguous; the OSM Heysham point is corroboration; 12 OSM cable landing stations dropped from data centres; Queens Medical Centre listed in A and E merged.
+- **Licence**: OSM data and NAEI/GPPD data are mixed within the same feature types, so the shipped file is an ODbL Derivative Database (see ODBL.md). The file states `licence: ODbL-1.0` with the OGL and CC BY attributions; the overlay footer carries "Contains OpenStreetMap data © OpenStreetMap contributors, ODbL 1.0".

@@ -4,10 +4,11 @@ input industrial_offtakers.geojson c4b3fff1c1da07cf
 input datacentres.geojson a686a2e00253bbf3
 input power_plants.geojson dde3380a79a9e8d2
 input gppd/gppd.csv 4b1f93e0fd93664f
-input status_curated.csv 47667e206eeca5ca
+input status_curated.csv 04c8f83acd5f8e14
 rows naei 2458 osm_ind 5878 osm_dc 240 osm_pp 178 gppd GBR thermal 89 dukes 0 tec 0
 naei kept 1494 excluded 964
 naei sites after 100 m grouping 1413
-B sites after GPPD+OSM 366
-features 1645 {'A': 870, 'B': 366, 'C': 176, 'D': 176, 'E': 57}
-output sha256 b31a369e51040aa86f5ca699a003c0fc8a7f43e71e9d74868c77e1db783121cb
+R-otdata site-level merges (class A) 55 -> naei sites 1358
+B sites after GPPD+OSM 358
+features 1568 {'A': 813, 'B': 358, 'C': 164, 'D': 176, 'E': 57}
+output sha256 6fc20e04fdcaadc55d723354848bcf77d3871e9d088a29cbf7ea3a76890b6730
