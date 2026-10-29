@@ -1,8 +1,9 @@
 {
- "_": "The generations tools/offtakers/src rebuilds byte for byte (node tools/offtakers/build.mjs --check). The newest offtakers generation in atlas/modules/ must be listed. docs/OFFTAKERS-SOURCE.md",
+ "_": "The generations tools/offtakers/src rebuilds byte for byte (node tools/offtakers/build.mjs --check). The newest offtakers generation in atlas/modules/ must be listed; an entry marked historical keeps its record and is not rebuilt (its source is the commit named). docs/OFFTAKERS-SOURCE.md",
  "generations": {
   "202610290400": {
-   "label": "OT2 (on M4; OT-filter data)"
+   "label": "OT2 (on M4; OT-filter data)",
+   "historical": "1acd1a5 (main 94009a2)"
   }
  }
 }

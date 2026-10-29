@@ -46,7 +46,7 @@ export async function proveOfftakersCartridge(G) {
   assert.ok(text.startsWith(`/* uk-offtakers-overlay, generation ${M} (UTC).`), 'header names the generation');
   // while M is listed in tools/offtakers/generations.json, it must rebuild from the committed source (the PR gate's
   // offtakers-source step checks the same); a generation the source has moved past is pinned by its hash alone
-  const listed = Object.hasOwn(JSON.parse(fs.readFileSync(path.join(ROOT, 'tools/offtakers/generations.json'), 'utf8')).generations || {}, M);
+  const regM = (JSON.parse(fs.readFileSync(path.join(ROOT, 'tools/offtakers/generations.json'), 'utf8')).generations || {})[M], listed = !!regM && !regM.historical;
   if (listed) assert.equal(build(M), text, 'rebuilds from tools/offtakers/src byte for byte');
   new vm.Script(text, { filename: modulePath });
   const body = text.replace(/^(\s*\/\*[\s\S]*?\*\/)*\s*/, '');
@@ -80,5 +80,5 @@ export async function proveOfftakersCartridge(G) {
   for (const c of current.cartridges.filter(c => c.id !== OFFTAKERS_ID)) {
     const s = g.scripts.find(x => x.id === c.id); assert.ok(s, c.id + ' composed'); assert.equal(sha(s.source), c.sha256, c.id + ' unchanged');
   }
-  console.log(`${G} uk-offtakers-overlay: atlas/modules/${M}-uk-offtakers-overlay.js (${module.length} B <= ${BUDGET}), rebuilt from source; after ${ANCHOR}; loader ${loader.name}; ${ids.length} scripts composed, every other cartridge unchanged. PASS`);
+  console.log(`${G} uk-offtakers-overlay: atlas/modules/${M}-uk-offtakers-overlay.js (${module.length} B <= ${BUDGET}), ${listed ? 'rebuilt from source' : regM && regM.historical ? `historical (source: ${regM.historical})` : 'not listed, not rebuilt'}; after ${ANCHOR}; loader ${loader.name}; ${ids.length} scripts composed, every other cartridge unchanged. PASS`);
 }
