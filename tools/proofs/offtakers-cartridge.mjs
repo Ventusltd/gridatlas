@@ -4,7 +4,7 @@
  * tools/proofs/<G>-uk-offtakers-overlay.proof.mjs that calls this with G.
  *
  *   identity  G, the slot, the anchor (directly after uk-lightning-overlay, last in cartridge_order), every hash;
- *   module    the cartridge IS atlas/modules/<M>-uk-offtakers-overlay.js (no copy), within its 40,000-byte budget, names
+ *   module    the cartridge IS atlas/modules/<M>-uk-offtakers-overlay.js (no copy), within its owner-approved 80,000-byte budget, names
  *             generation M, rebuilds from tools/offtakers/src byte for byte while listed in generations.json, parses, one strict IIFE that is one expression;
  *   contract  static negatives (no engine, menu, layer-control, storage, lightning or place-search contract; no emission
  *             figure; the banned vicinity words) and positives (OFF by default, the pinned SHA-256s, the original measure);
@@ -18,7 +18,7 @@ import vm from 'node:vm';
 import { createHash } from 'node:crypto';
 import { compose, ROOT } from './loader-composition.mjs';
 
-export const OFFTAKERS_ID = 'uk-offtakers-overlay', ANCHOR = 'uk-lightning-overlay', BUDGET = 72000; // 40,000 until 202610291044; 72,000 proposed with #73 steps 7-8 (tools/scope/lib.mjs)
+export const OFFTAKERS_ID = 'uk-offtakers-overlay', ANCHOR = 'uk-lightning-overlay', BUDGET = 80000; // Owner-approved 80,000 bytes, 29 Oct 2026, issue #73 (tools/scope/lib.mjs)
 const sha = b => createHash('sha256').update(b).digest('hex');
 const readJson = rel => JSON.parse(fs.readFileSync(path.join(ROOT, rel), 'utf8'));
 const BANNED = /\b(viable|feasible|opportunity|offtake agreement|PPA|private wire|supply|capacity available|demand of|consumes|MWh|large user|best|recommended|suitable)\b/i;
