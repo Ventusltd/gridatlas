@@ -33,7 +33,7 @@ Data centres are their own class: violet, a status ring (operational, under cons
 connection request, announced, refused/withdrawn, not stated), sized by the stated IT load, else the stated grid connection
 (faint when neither is stated; an unlabelled MW is quoted with its label and never sizes a dot or adds to either), with their
 own chip row and legend. They come from a second pinned file, `data/uk_datacentre_pipeline_<stamp>.geojson` (the open UK
-data-centre pipeline, hardening DC-A7, `dc_pipeline.schema.json`; committed verbatim), read after the other sites are drawn;
+data-centre pipeline, data-grid-gb PR #3 (corrected 227 sites, operator-separated), `dc_pipeline.schema.json`; committed verbatim), read after the other sites are drawn;
 if it fails, the offtakers file's data centres are drawn and the status line says why.
 
 A data-centre tap opens a half-height card with four tabs, Area · Substations · REPD · Conventional (hardening DC-B2's
@@ -48,12 +48,12 @@ spec), and draws the nearest 10 of each set (Show all / Draw all for the rest), 
 
 Other classes keep 15 REPD + 5 substations. Every URL the module reads is a file of this site's `data/` folder (`AL`), pinned
 by SHA-256 and capped in bytes and features; records failing the schema checks (id, point, fully open licence: never NC/ND)
-are skipped and counted. The module grew to about 71 kB: the budget below is 72,000 B from 202610292044 (proposed in the
-preview PR; 40,000 B before).
+are skipped and counted. The module grew to about 71 kB: the owner approved an 80,000 B ceiling on 29 Oct 2026 (issue #73;
+40,000 B before).
 
 ## Cartridge
 It ships as its own cartridge (docs/LIGHTNING-CARTRIDGE.md, loader v2): `uk-offtakers-overlay`, slot `after-cartridge`,
-`after: uk-lightning-overlay`, last in `cartridge_order`, path = the module file, budget 72,000 B (40,000 B until 202610291044;
+`after: uk-lightning-overlay`, last in `cartridge_order`, path = the module file, budget 80,000 B (owner-approved 29 Oct 2026; 40,000 B until 202610291044;
 `CARTRIDGE_BYTE_BUDGETS`). Each generation has `tools/proofs/<G>-uk-offtakers-overlay.proof.mjs`, which calls
 `tools/proofs/offtakers-cartridge.mjs` (identity, anchor, hashes, budget, source rebuild, one strict IIFE, static
 negatives and positives, and a v2 composition in node:vm with every other cartridge unchanged). The lightning proof
