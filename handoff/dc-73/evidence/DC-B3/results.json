@@ -1,0 +1,420 @@
+{
+ "inputs": {
+  "sld_cartridge": {
+   "path": "/home/claude/gridatlas/atlas/cartridges/202609241334-sld-sandbox-v9-8.js",
+   "sha256": "7812953671d8bb22a566de5e98fd3137da2d23411c5aecd526df5afa111ca4ca"
+  },
+  "si_cartridge": {
+   "path": "/home/claude/gridatlas/atlas/cartridges/202609062358-substation-intelligence-v9-63.js",
+   "sha256": "d94b0de50deddac77643325b10fbe490ce44b8c406dbc6c67e6e7cadbdaa8ec6"
+  },
+  "grid_substations": {
+   "path": "/home/claude/gridatlas/atlas/releases/202608300453-atlas-v9/data/grid_substations.geojson",
+   "sha256": "87976435766a58ddf19c99540b58cd7f18a224148af42ba55075d8851f9e6251",
+   "features": 5800,
+   "qualifying_33kv": 5800
+  },
+  "repd_master": {
+   "path": "data/repd_master.json",
+   "sha256": "ca5da437ddb832f7e4e8d84bba1f2f6d40df6285089a43156452fdda7eebe0fe",
+   "features": 10784,
+   "usable_points": 10784,
+   "sites_4dp": 9636
+  },
+  "offtakers": {
+   "path": "/home/claude/gridatlas/data/offtakers_filtered_202610290945.geojson",
+   "sha256": "6fc20e04fdcaadc55d723354848bcf77d3871e9d088a29cbf7ea3a76890b6730",
+   "classB": 358,
+   "classB_not_closed_or_converted": 344,
+   "classC": 164
+  },
+  "power_plants": {
+   "path": "/home/claude/gridatlas/atlas/releases/202608300453-atlas-v9/data/power_plants.geojson",
+   "sha256": "c7478e14724602fc378afc6257ef2cadb7c540ac1e60ce87717f0ffeab072bdf",
+   "features": 178
+  },
+  "dc_a4": {
+   "path": "/tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/DC-B3/../DC-A4/out/dc_operational.geojson",
+   "sha256": "614e69318c3ef53f3331962e98e20cbd525e525b781dc492b43ba8f9243da7ed",
+   "features": 190,
+   "data_centres_excl_cls": 178
+  }
+ },
+ "q1_nearestSubstations_max_length_over_dc_origins": 5,
+ "parity_gridScope_vs_nearestSubstations": {
+  "origins": 2499,
+  "identical_first5": 2499,
+  "mismatches": []
+ },
+ "independent_haversine_same_30_in_order": "178/178 data-centre origins",
+ "distribution": {
+  "substations_vs_dc": {
+   "label": "substations >=33 kV, DC-A4 data centres",
+   "set_size": 5800,
+   "km_to_30th": {
+    "n": 178,
+    "min": 3.12,
+    "p10": 5.03,
+    "p50": 11.74,
+    "p90": 20.2,
+    "max": 40.31
+   },
+   "count_within_40km": {
+    "n": 178,
+    "min": 29,
+    "p10": 95,
+    "p50": 268,
+    "p90": 578,
+    "max": 589
+   },
+   "count_within_25km": {
+    "n": 178,
+    "min": 11,
+    "p10": 43,
+    "p50": 112,
+    "p90": 363,
+    "max": 378
+   },
+   "count_within_10km": {
+    "n": 178,
+    "min": 3,
+    "p10": 8,
+    "p50": 23,
+    "p90": 101,
+    "max": 129
+   },
+   "share_with_30_within_40km": 0.994,
+   "share_with_fewer_than_5_within_40km": 0
+  },
+  "substations_vs_rural": {
+   "label": "substations >=33 kV, rural proxy (every 5th REPD point)",
+   "set_size": 5800,
+   "km_to_30th": {
+    "n": 2157,
+    "min": 3.26,
+    "p10": 9.07,
+    "p50": 17.99,
+    "p90": 32.77,
+    "max": 236.71
+   },
+   "count_within_40km": {
+    "n": 2157,
+    "min": 0,
+    "p10": 44,
+    "p50": 126,
+    "p90": 311,
+    "max": 595
+   },
+   "count_within_25km": {
+    "n": 2157,
+    "min": 0,
+    "p10": 17,
+    "p50": 54,
+    "p90": 136,
+    "max": 376
+   },
+   "count_within_10km": {
+    "n": 2157,
+    "min": 0,
+    "p10": 3,
+    "p50": 10,
+    "p90": 34,
+    "max": 133
+   },
+   "share_with_30_within_40km": 0.941,
+   "share_with_fewer_than_5_within_40km": 0.005
+  },
+  "substations132_vs_rural": {
+   "label": "substations >=132 kV, rural proxy",
+   "set_size": 1668,
+   "km_to_30th": {
+    "n": 2157,
+    "min": 5.17,
+    "p10": 17.9,
+    "p50": 35.43,
+    "p90": 69.01,
+    "max": 321.39
+   },
+   "count_within_40km": {
+    "n": 2157,
+    "min": 0,
+    "p10": 10,
+    "p50": 36,
+    "p90": 102,
+    "max": 197
+   },
+   "count_within_25km": {
+    "n": 2157,
+    "min": 0,
+    "p10": 4,
+    "p50": 15,
+    "p90": 50,
+    "max": 139
+   },
+   "count_within_10km": {
+    "n": 2157,
+    "min": 0,
+    "p10": 0,
+    "p50": 3,
+    "p90": 13,
+    "max": 65
+   },
+   "share_with_30_within_40km": 0.614,
+   "share_with_fewer_than_5_within_40km": 0.045
+  },
+  "repd_sites_vs_dc": {
+   "label": "REPD sites, DC-A4 data centres",
+   "set_size": 9636,
+   "km_to_30th": {
+    "n": 178,
+    "min": 3,
+    "p10": 5.39,
+    "p50": 8.97,
+    "p90": 13.47,
+    "max": 39.6
+   },
+   "count_within_40km": {
+    "n": 178,
+    "min": 31,
+    "p10": 220,
+    "p50": 408,
+    "p90": 509,
+    "max": 528
+   },
+   "count_within_25km": {
+    "n": 178,
+    "min": 13,
+    "p10": 86,
+    "p50": 166,
+    "p90": 277,
+    "max": 297
+   },
+   "count_within_10km": {
+    "n": 178,
+    "min": 1,
+    "p10": 16,
+    "p50": 33,
+    "p90": 72,
+    "max": 105
+   },
+   "share_with_30_within_40km": 1,
+   "share_with_fewer_than_5_within_40km": 0
+  },
+  "repd_sites_vs_rural": {
+   "label": "REPD sites, rural proxy",
+   "set_size": 9636,
+   "km_to_30th": {
+    "n": 2157,
+    "min": 3.21,
+    "p10": 6.64,
+    "p50": 11.76,
+    "p90": 22.62,
+    "max": 210.2
+   },
+   "count_within_40km": {
+    "n": 2157,
+    "min": 1,
+    "p10": 78,
+    "p50": 248,
+    "p90": 439,
+    "max": 573
+   },
+   "count_within_25km": {
+    "n": 2157,
+    "min": 1,
+    "p10": 35,
+    "p50": 104,
+    "p90": 215,
+    "max": 298
+   },
+   "count_within_10km": {
+    "n": 2157,
+    "min": 1,
+    "p10": 7,
+    "p50": 22,
+    "p90": 53,
+    "max": 112
+   },
+   "share_with_30_within_40km": 0.982,
+   "share_with_fewer_than_5_within_40km": 0.002
+  },
+  "convB_vs_dc": {
+   "label": "conventional (offtakers class B, not closed/converted), DC-A4 data centres",
+   "set_size": 344,
+   "km_to_30th": {
+    "n": 178,
+    "min": 28.81,
+    "p10": 37.42,
+    "p50": 49.63,
+    "p90": 121.17,
+    "max": 277.61
+   },
+   "count_within_40km": {
+    "n": 178,
+    "min": 0,
+    "p10": 5,
+    "p50": 21,
+    "p90": 32,
+    "max": 41
+   },
+   "count_within_25km": {
+    "n": 178,
+    "min": 0,
+    "p10": 1,
+    "p50": 8,
+    "p90": 19,
+    "max": 24
+   },
+   "count_within_10km": {
+    "n": 178,
+    "min": 0,
+    "p10": 0,
+    "p50": 2,
+    "p90": 6,
+    "max": 9
+   },
+   "share_with_30_within_40km": 0.152,
+   "share_with_fewer_than_5_within_40km": 0.079
+  },
+  "convB_vs_rural": {
+   "label": "conventional class B, rural proxy",
+   "set_size": 344,
+   "km_to_30th": {
+    "n": 2157,
+    "min": 27.4,
+    "p10": 44.09,
+    "p50": 75.09,
+    "p90": 208.58,
+    "max": 533.39
+   },
+   "count_within_40km": {
+    "n": 2157,
+    "min": 0,
+    "p10": 1,
+    "p50": 8,
+    "p90": 26,
+    "max": 42
+   },
+   "count_within_25km": {
+    "n": 2157,
+    "min": 0,
+    "p10": 0,
+    "p50": 3,
+    "p90": 14,
+    "max": 26
+   },
+   "count_within_10km": {
+    "n": 2157,
+    "min": 0,
+    "p10": 0,
+    "p50": 0,
+    "p90": 4,
+    "max": 9
+   },
+   "share_with_30_within_40km": 0.058,
+   "share_with_fewer_than_5_within_40km": 0.327
+  },
+  "pp_vs_dc": {
+   "label": "atlas power_plants (gas/nuclear only), DC-A4 data centres",
+   "set_size": 178,
+   "km_to_30th": {
+    "n": 178,
+    "min": 54.72,
+    "p10": 72.03,
+    "p50": 79,
+    "p90": 147.9,
+    "max": 399.29
+   },
+   "count_within_40km": {
+    "n": 178,
+    "min": 0,
+    "p10": 2,
+    "p50": 9,
+    "p90": 17,
+    "max": 23
+   },
+   "count_within_25km": {
+    "n": 178,
+    "min": 0,
+    "p10": 0,
+    "p50": 3,
+    "p90": 12,
+    "max": 16
+   },
+   "count_within_10km": {
+    "n": 178,
+    "min": 0,
+    "p10": 0,
+    "p50": 0,
+    "p90": 4,
+    "max": 6
+   },
+   "share_with_30_within_40km": 0,
+   "share_with_fewer_than_5_within_40km": 0.236
+  }
+ },
+ "timing_ms_per_tap": {
+  "original_nearestSubstations_5": 4.203,
+  "gridScope_scope_30_bands_2_5_10_25_40": 6.054,
+  "repd_sites_30_full_sort": 9.476,
+  "conventional_30_full_sort": 0.313,
+  "all_three": 16.508
+ },
+ "timing_note": "node v22.23.4, warm, mean of 400 taps; a mid-range phone is typically 4-8x slower",
+ "geojson_90": {
+  "origin": "NTT Slough",
+  "features": 180,
+  "bytes": 25125,
+  "stringify_ms": 0.095,
+  "farthest_km": {
+   "s": 11.2,
+   "r": 9.02,
+   "c": 49.06
+  }
+ },
+ "slough_cluster_3km": {
+  "dc_a4_sites": 16,
+  "distinct_points": 16,
+  "operators": {
+   "kao data": 1,
+   "digital realty": 1,
+   "cyrusone": 3,
+   "ntt": 1,
+   "(unknown:DC-OW-0080)": 1,
+   "rackspace": 1,
+   "equinix": 4,
+   "virtus": 1,
+   "lumen technologies": 1,
+   "telefonica": 1,
+   "iron mountain": 1
+  },
+  "offtakers_classC_sites": 5,
+  "offtakers_merged_records": [
+   {
+    "id": "OT-C-1220",
+    "name": "Iron Mountain Slough Data Centre",
+    "records": 1
+   },
+   {
+    "id": "OT-C-1223",
+    "name": "LD11 Data Centre",
+    "records": 1
+   },
+   {
+    "id": "OT-C-1228",
+    "name": "London 9 Data Centre",
+    "records": 1
+   },
+   {
+    "id": "OT-C-1264",
+    "name": "Slough LON2 Datacentre",
+    "records": 1
+   },
+   {
+    "id": "OT-C-1319",
+    "name": "CryrusOne LON4",
+    "records": 2
+   }
+  ]
+ }
+}
