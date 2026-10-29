@@ -90,7 +90,7 @@ async function run(width,height){
       if(!ok)throw Error('independent haversine ranking failure '+JSON.stringify(km.slice(0,5)));
       return {count:km.length,nearest_km:km[0],farthest_km:km.at(-1),monotonic:ok};
     }
-    return {substations:check(c.k,x=>x.at,40),repd:check(c.P,x=>x.parts?.[0]?.at||x.at,40),
+    return {substations:check(c.k,x=>x.at,40),repd:check(c.P,x=>x.a,40),
       conventional:check(c.cv,x=>x.q.a,null),
       lines_within_100:c.cv.filter(x=>x.km<=100).length};
   });
