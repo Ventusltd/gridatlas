@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 // Vendored for the PR gate (tools/ci/pr-gate.mjs, "offtakers-suites") from the OT-build lane's tests/offtakers.test.mjs; the only
-// changes are the paths: fixtures from ./fixtures/ (the three pinned globalgrid2050 files, gzip -9 -n; their sha256 must equal the
-// module pins, test P0), the REPD register from ../lightning/fixtures/, the record twin and substations from the repository.
+// change is the paths: the data file the module pins (data/offtakers_filtered_*.geojson), the REPD register from
+// ../lightning/fixtures/, the record twin and substations from the repository.
 // Potential-offtakers overlay: node tests (node:vm + minidom, no network, no browser). Spec: evidence/PW-design/OFFTAKERS-OVERLAY-SPEC.md §8.
 //   OFFTAKERS_MODULE=<module.js> LIGHTNING_MODULE=<M4 lightning module> M5_MODULE=<built M5 module> node --test offtakers.test.mjs
 // Fixtures: the three pinned globalgrid2050 files (sha256 checked here against the module's pins), the repo's REPD register fixture
@@ -21,12 +21,12 @@ if (!MODULE) throw new Error('set OFFTAKERS_MODULE');
 const SRC = fs.readFileSync(MODULE, 'utf8'), LSRC = fs.readFileSync(LMOD, 'utf8');
 const SEAM = 'NS.ukOfftakers=Object.freeze(';
 assert.equal(SRC.split(SEAM).length, 2, 'seam');
-const PROBED = SRC.replace(SEAM, 'window.__OT__={S,nm,sites,near,csv,RpJ,hv,grp};' + SEAM);
-const GG = 'https://raw.githubusercontent.com/Ventusltd/globalgrid2050/b8973334303709067ef1408b6ff971d323a876ef/';
+const PROBED = SRC.replace(SEAM, 'window.__OT__={S,nm,sites,near,csv,RpJ,hv};' + SEAM);
+
 const sha = b => createHash('sha256').update(b).digest('hex');
-const FILE = { naei: 'heavy_emitters_uk.json', ind: 'industrial_offtakers.geojson', dc: 'datacentres.geojson' };
-const RAW = Object.fromEntries(Object.entries(FILE).map(([k, f]) => [f, gunzipSync(fs.readFileSync(HERE + 'fixtures/' + f + '.gz'))]));
-const JS = Object.fromEntries(Object.entries(FILE).map(([k, f]) => [k, JSON.parse(RAW[f])]));
+const DREL = (SRC.match(/DATA='https:\/\/ventusltd\.github\.io\/gridatlas\/(data\/offtakers_filtered_\d{12}\.geojson)'/) || [])[1];
+if (!DREL) throw new Error('module names no data file');
+const DURL = 'https://ventusltd.github.io/gridatlas/' + DREL, RAWD = fs.readFileSync(REPO + DREL), DATA = JSON.parse(RAWD);
 const REG = JSON.parse(gunzipSync(fs.readFileSync(REPO + 'tools/ci/lightning/fixtures/repd-master-v8-oracle.json.gz')));
 const RECS = JSON.parse(fs.readFileSync(REPO + 'data/repd_browser_registry_202608290716.json', 'utf8')).records;
 const MANI = fs.readFileSync(REPO + 'data/repd_v9_manifest_202608290716.json');
@@ -49,7 +49,7 @@ const PTECH = new Set(['solar', 'solar_roof', 'wind', 'bess', 'biomass', 'tidal'
 const unhandled = []; process.on('unhandledRejection', e => unhandled.push(e));
 const drain = async (n = 60) => { for (let k = 0; k < n; k++) { await new Promise(r => setImmediate(r)); await new Promise(r => setTimeout(r, 1)); } };
 
-function boot({ preload = { ind: true, dc: true }, tamper = null, lightning = false, neon = true, register = REG.features, duck = true, offtakers = true, srcOverride = null } = {}) {
+function boot({ tamper = false, lightning = false, neon = true, register = REG.features, duck = true, offtakers = true, srcOverride = null } = {}) {
   const doc = makeDocument(), html = doc.documentElement, body = doc.createElement('body'); html.appendChild(body); const errs = globalThis.__ERR = [];
   const host = doc.createElement('div'); host.id = 'scada-ui-container'; body.appendChild(host);
   const orig = doc.createElement('div'); orig.className = 'key-group'; host.appendChild(orig);
@@ -70,13 +70,10 @@ function boot({ preload = { ind: true, dc: true }, tamper = null, lightning = fa
   let qrf = () => []; map.queryRenderedFeatures = (pt, o) => (o && o.layers || []).flatMap(l => qrf(l, pt));
   const tapMap = (pt, hits = {}) => { qrf = l => hits[l] || []; const e = { point: pt, lngLat: { lng: 0, lat: 0 }, originalEvent: { target: mapEl } }; for (const h of handlers.filter(h => h.t === 'click')) h.f(e); };
   if (register) sources.set('src-repd', src('src-repd', { type: 'geojson', data: { type: 'FeatureCollection', features: register } }));
-  if (preload.ind) sources.set('src-ind', src('src-ind', { type: 'geojson', data: JS.ind }));
-  if (preload.dc) sources.set('src-dc', src('src-dc', { type: 'geojson', data: JS.dc }));
   const log = { xhr: [], fetch: [], winAdd: [], sql: [] }, winL = {};
   const feed = { type: 'FeatureCollection', features: [], metadata: { query_start_utc: new Date(Date.now() - 4 * 36e5).toISOString(), query_end_utc: new Date(Date.now() - 36e5).toISOString() } };
   class XHR { open(m, u) { this.url = u; } send() { log.xhr.push(this.url); setTimeout(() => {
-    const f = this.url.startsWith(GG) && this.url.slice(GG.length);
-    if (f && RAW[f]) { let b = RAW[f]; if (tamper === f) { b = Buffer.from(b); b[10] ^= 1; } this.status = 200; this.responseURL = this.url; this.response = b.buffer.slice(b.byteOffset, b.byteOffset + b.length); this.onload(); return; }
+    if (this.url === DURL) { let b = RAWD; if (tamper) { b = Buffer.from(b); b[10] ^= 1; } this.status = 200; this.responseURL = this.url; this.response = b.buffer.slice(b.byteOffset, b.byteOffset + b.length); this.onload(); return; }
     if (/uk_lightning\.geojson$/.test(this.url)) { this.status = 200; this.responseURL = this.url; this.responseText = JSON.stringify(W.__FEED__ || feed); this.onload(); return; }
     this.status = 404; this.onload(); }, 0); } }
   const fetch = async (u, o) => { log.fetch.push(String(u)); await null;
@@ -114,20 +111,19 @@ const deq = (a, b, m) => assert.deepEqual(JSON.parse(JSON.stringify(a ?? null)),
 const OTIDS = id => /offtakers/.test(id);
 
 // ---------------------------------------------------------------- data and pins
-test('P0: the fixtures are the pinned bytes (sha256 equals the module pins)', () => {
-  for (const f of Object.values(FILE)) assert.ok(SRC.includes(`'${f}','${sha(RAW[f])}'`), f + ' pin');
-  assert.ok(SRC.includes("GG='" + GG + "'"), 'pinned commit');
+test('P0: the module pins the committed OT-filter file (sha256)', () => {
+  assert.ok(SRC.includes(`DSHA='${sha(RAWD)}'`), 'data pin'); assert.equal(DATA.type, 'FeatureCollection');
 });
 
-test('T3/T4: normalisation counts on the pinned files; power producers and Offshore never drawn', () => {
-  const x = boot(); const r = x.P.nm(JS.naei.features, JS.ind.features, JS.dc.features);
-  deq({ ...r.counts.rows }, { n: 2037, o: 178, w: 5695, d: 240 });
-  deq({ ...r.counts.dots }, { n: 1957, o: 178, d: 179, w: 5695 });
-  assert.equal(r.dots.filter(d => d.k !== 'w').length, 2314, 'default dots');
-  assert.equal(r.dots.length, 8009, 'with water');
-  const bad = r.dots.flatMap(d => d.ms).filter(m => m.k === 'n' && (/power producers/.test(m.sub) || m.cty === 'Offshore'));
-  assert.equal(bad.length, 0);
+test('T3/T4: classes on the pinned OT-filter file; power stations kept (incl. closed); no small water by default; Offshore never', () => {
+  const x = boot(); const r = x.P.nm(DATA.features);
+  deq({ ...r.counts }, { a: 870, b: 366, c: 176, d: 8, s: 168, e: 57 }); assert.equal(r.bad, 0);
+  assert.equal(r.dots.filter(d => d.k !== 's').length, 1477, 'default dots'); assert.equal(r.dots.length, 1645, 'with the small water tier');
+  const b = r.dots.filter(d => d.k === 'b'); deq(Object.fromEntries(['op', 'cl', 'cc', 'un'].map(t => [t, b.filter(d => d.t === t).length])), { op: 269, cl: 4, cc: 18, un: 75 });
+  assert.ok(b.some(d => /Ratcliffe/.test(d.n) && d.t === 'cc'), 'closed coal kept');
+  assert.equal(r.dots.filter(d => (d.p.records || []).some(q => /offshore/i.test(q.sector || ''))).length, 0);
   for (const d of r.dots) assert.ok(d.a[0] >= -11 && d.a[0] <= 3 && d.a[1] >= 49.5 && d.a[1] <= 61.5);
+  for (const d of r.dots.filter(d => d.k === 'd' || d.k === 's')) assert.ok(d.p.records.some(q => q.source === 'NAEI'), 'water only NAEI-listed');
 });
 
 // ---------------------------------------------------------------- arrival
@@ -142,31 +138,32 @@ test('T1: arrival identity: OFF adds no request, source, layer or listener; the 
 });
 
 // ---------------------------------------------------------------- switch-on
-test('T2a: switch-on reuses src-ind and src-dc (0 requests for them) and fetches only the pinned NAEI URL; layers azure, water off', async () => {
+test('T2a: switch-on fetches exactly the pinned data file once; copper-to-teal palette; small water off; legend', async () => {
   const x = boot(); x.O.install(); x.toggle(true); await drain();
-  deq(x.log.xhr, [GG + 'heavy_emitters_uk.json']); assert.equal(x.S.from.ind, 'src-ind'); assert.equal(x.S.from.dc, 'src-dc');
-  assert.ok(x.layers.get('l-gridatlas-offtakers') && x.sources.get('gridatlas-offtakers'));
-  assert.equal(x.sources.get('gridatlas-offtakers').data.features.length, 8009);
-  const f = x.layers.get('l-gridatlas-offtakers').filter; deq(f[2][1], ['n', 'o', 'd'], 'water off by default');
-  assert.match(JSON.stringify(x.layers.get('l-gridatlas-offtakers').paint), /#3d7bff.*#8fb4ff.*#1fb6ff.*#7d8fb3/);
-  assert.match(text(x.host.querySelector('[data-offtakers-label]')), /\[2,314 sites\]/);
-  assert.match(text(x.host.querySelector('[data-offtakers-foot]')), /A listing is not electricity demand\. Distances are straight lines\. Vicinity screening only\./);
+  deq(x.log.xhr, [DURL]); x.toggle(false); x.toggle(true); await drain(); deq(x.log.xhr, [DURL], 'cached for the page');
+  assert.equal(x.sources.get('gridatlas-offtakers').data.features.length, 1645);
+  const f = x.layers.get('l-gridatlas-offtakers').filter; deq(f[1][2][1], ['a', 'b', 'c', 'd', 'e'], 'small water off by default');
+  assert.match(JSON.stringify(x.layers.get('l-gridatlas-offtakers').paint), /#e07b39.*#f2c14e.*#2ec4b6.*#4f86c6.*#a26769/);
+  assert.match(text(x.host.querySelector('[data-offtakers-label]')), /\[1,477 sites\]/);
+  assert.match(text(x.host.querySelector('[data-offtakers-foot]')), /Dot size: emission band \(NAEI 2023\) or installed MW \(GPPD\)\. Hollow ring: closed or closing station\..*A listing is not electricity demand\. Distances are straight lines\. Vicinity screening only\./);
 });
 
-test('T2b: without preloads it fetches exactly the three pinned URLs; a SHA-256 mismatch shows "data check failed" and draws nothing', async () => {
-  const x = boot({ preload: {} }); x.O.install(); x.toggle(true); await drain();
-  deq([...x.log.xhr].sort(), Object.values(FILE).map(f => GG + f).sort());
-  const y = boot({ preload: {}, tamper: 'datacentres.geojson' }); y.O.install(); y.toggle(true); await drain();
+test('T2b: a SHA-256 mismatch shows "data check failed" and draws nothing', async () => {
+  const y = boot({ tamper: true }); y.O.install(); y.toggle(true); await drain();
   assert.match(text(y.host.querySelector('[data-offtakers-status]')), /data check failed/); assert.match(text(y.host.querySelector('[data-offtakers-label]')), /\[FAIL\]/);
   assert.equal([...y.sources.keys()].filter(OTIDS).length + [...y.layers.keys()].filter(OTIDS).length, 0, 'nothing drawn');
 });
 
-test('T2c: class chips filter the drawn and tappable layers', async () => {
-  const x = boot(); x.O.install(); x.toggle(true); await drain();
-  x.host.querySelector('[data-offtakers-class="w"]').click();
-  deq(x.layers.get('gridatlas-offtakers-hit').filter[2][1], ['n', 'o', 'd', 'w']); assert.match(text(x.host.querySelector('[data-offtakers-label]')), /\[8,009 sites\]/);
-  x.host.querySelector('[data-offtakers-class="n"]').click(); deq(x.layers.get('l-gridatlas-offtakers').filter[2][1], ['o', 'd', 'w']);
-  const n = x.dot(r => r.k === 'n'); await x.tapDot(n); assert.equal(x.card(), null, 'a hidden class is not tappable');
+test('T2c: class and power-status chips filter the drawn and tappable layers; All resets; hollow ring for closed', async () => {
+  const x = boot(); x.O.install(); x.toggle(true); await drain(); const lab = () => text(x.host.querySelector('[data-offtakers-label]'));
+  x.host.querySelector('[data-offtakers-class="s"]').click(); deq(x.layers.get('gridatlas-offtakers-hit').filter[1][2][1], ['a', 'b', 'c', 'd', 's', 'e']); assert.match(lab(), /\[1,645 sites\]/);
+  x.host.querySelector('[data-offtakers-class="a"]').click(); assert.match(lab(), /\[775 sites\]/);
+  const a = x.dot(r => r.k === 'a'); await x.tapDot(a); assert.equal(x.card(), null, 'a hidden class is not tappable');
+  x.host.querySelector('[data-offtakers-bst="cc"]').click(); deq(x.layers.get('gridatlas-offtakers-hit').filter[2][2][2][1], ['op', 'cl', 'un']);
+  const rat = x.dot(r => /Ratcliffe/.test(r.n)); await x.tapDot(rat); assert.equal(x.card(), null, 'a hidden status is not tappable');
+  x.host.querySelector('[data-offtakers-all]').click(); assert.match(lab(), /\[1,477 sites\]/);
+  const paint = JSON.stringify(x.layers.get('l-gridatlas-offtakers').paint); assert.match(paint, /"case",\["in",\["get","t"\],\["literal",\["cl","cc"\]\]\],"rgba\(0,0,0,0\)"/);
+  assert.ok(x.layers.get('gridatlas-offtakers-centre'), 'operating power stations get a dark centre dot');
 });
 
 // ---------------------------------------------------------------- the tap
@@ -181,7 +178,7 @@ const indep = (r, f = { st: 'all', te: 'all' }) => { // independent of the modul
   return gs.filter((g, i, a) => i < 15 || g.km === a[14].km);
 };
 const rowsOf = c => [...c.querySelectorAll('a')].map(a => text(a));
-const bigSites = x => ({ refinery: x.dot(r => r.k === 'o' && /refinery/i.test(r.n)), steel: x.dot(r => r.k === 'o' && /steel/i.test(r.sub + ' ' + r.n)), naei: x.dot(r => r.k === 'n' && /iron & steel/i.test(r.sub)), dc: x.dot(r => r.k === 'd' && !/^unknown/i.test(r.n)) });
+const bigSites = x => ({ refinery: x.dot(r => r.k === 'a' && /refinery/.test(r.sub)), steel: x.dot(r => r.k === 'a' && r.sub === 'steel' && /Port Talbot Blast Furnaces/.test(r.n)), naei: x.dot(r => /Ratcliffe/.test(r.n)), dc: x.dot(r => r.k === 'c' && !/^unknown/i.test(r.n)) });
 
 test('T6a: a tap lists the 15 nearest REPD sites (≤40 km, ties kept), equal to an independent haversine reference, and draws 15 REPD links + 5 substation links', async () => {
   const x = boot(); x.O.install(); x.toggle(true); await drain();
@@ -203,7 +200,7 @@ test('T6a: a tap lists the 15 nearest REPD sites (≤40 km, ties kept), equal to
 test('T6b: ties at the 15th site distance are kept; "Only n REPD sites within 40 km" for a sparse point; chips re-rank; MW not stated is never 0', async () => {
   const at = [-1.0, 54.0], mk = (dx, p) => ({ type: 'Feature', geometry: { type: 'Point', coordinates: [at[0] + dx, at[1]] }, properties: { name: 'P' + dx, tech: 'solar', raw_tech: 'Solar Photovoltaics', status: 'operational', capacity: 5, ...p } });
   const reg = [...Array.from({ length: 14 }, (_, i) => mk(0.01 * (i + 1))), mk(0.25, { name: 'tieA' }), mk(-0.25, { name: 'tieB', status: 'application submitted', capacity: null, tech: 'wind', raw_tech: 'Wind Onshore' }), mk(0.3, { name: 'far' })];
-  const x = boot({ register: reg }); x.O.install(); x.toggle(true); await drain(); const r = x.dot(r => r.k === 'n'); r.a = at; // a synthetic site
+  const x = boot({ register: reg }); x.O.install(); x.toggle(true); await drain(); const r = x.dot(r => r.k === 'a'); r.a = at; // a synthetic site
   await x.tapDot(r); let rows = rowsOf(x.card()); assert.equal(rows.length, 16, 'ties kept'); assert.ok(rows.some(t => /tieA/.test(t)) && rows.some(t => /tieB/.test(t)) && !rows.some(t => /far/.test(t)));
   assert.match(rows.find(t => /tieB/.test(t)), /MW not stated/); assert.equal(rows.some(t => / 0 MW/.test(t)), false);
   x.card().querySelector('[data-offtakers-repd-filter="st:pl"]').click(); rows = rowsOf(x.card()); assert.equal(rows.length, 1); assert.match(rows[0], /tieB/);
@@ -219,7 +216,7 @@ test('T7: substations are exactly the 5 from nearestSubstations; beyondRadiusNea
   const ns = origNearest(r.a[0], r.a[1], SUBS), lines = text(x.card()).match(/\d+\.\d\d km · \d+ kV · [^·]*?(?=\d+\.\d\d km|Download|$)/g) || [];
   for (const s of ns) assert.ok(text(x.card()).includes(`${s.km.toFixed(2)} km · ${Math.max(...s.kv)} kV`), 'substation ' + s.km);
   const y = boot({ neon: true }); y.W.__GRIDATLAS_NEON_LINKS__.substations = [{ at: [-4, 58.5], kv: [132], name: 'Far North' }]; y.O.install(); y.toggle(true); await drain();
-  const q = y.dot(r => r.k === 'o' && r.a[1] < 51); await y.tapDot(q);
+  const q = y.dot(r => r.k === 'a' && r.a[1] < 51); await y.tapDot(q);
   assert.match(text(y.card()), /No substation within 40 km \(nearest: Far North, 132 kV, \d+\.\d\d km\)/);
 });
 
@@ -233,18 +230,21 @@ test('T8: full REPD record (M5 join, copied unchanged): joined rows show ref, ad
   for (const g of indep(r)) for (const p of g.parts) { const m = RECS.filter(o => o.longitude != null && Math.abs(o.longitude - g.a[0]) <= 1.000001e-6 && Math.abs(o.latitude - g.a[1]) <= 1.000001e-6 && nz(o.name) === nz(p.name) && Math.abs((o.capacity_mw > 0 ? +o.capacity_mw : 0) - (p.capacity > 0 ? +p.capacity : 0)) < 1e-6 && o.repd_technology === p.raw_tech);
     if (m.length === 1) { assert.ok(recs.includes(`Record · REPD ${m[0].repd_ref} · `), 'ref ' + m[0].repd_ref); if (m[0].repd_postcode) assert.ok(recs.includes(m[0].repd_postcode)); } }
   const y = boot({ register: [{ type: 'Feature', geometry: { type: 'Point', coordinates: [-1.3, 50.8] }, properties: { name: 'No Such Farm', tech: 'solar', raw_tech: 'Solar Photovoltaics', status: 'operational', capacity: 3 } }] }); y.O.install(); y.toggle(true); await drain();
-  const q = y.dot(d => d.k === 'o'); q.a = [-1.31, 50.8]; await y.tapDot(q); await drain(); assert.match(text(y.card()), /Record · address not in register/);
+  const q = y.dot(d => d.k === 'a'); q.a = [-1.31, 50.8]; await y.tapDot(q); await drain(); assert.match(text(y.card()), /Record · address not in register/);
 });
 
 test('T9: wording lint: banned words, no tCO2e and no "%" in the card; every text block tiered; no distance tiered Record; first line ≤ 90 chars; Unknown never a name', async () => {
-  const x = boot(); x.O.install(); x.toggle(true); await drain(); x.host.querySelector('[data-offtakers-class="w"]').click();
-  const lits = SRC.match(/'[^'\n]*'|`[^`\n]*`/g).join('\n').replace("'Not shown here: electricity use, connection terms, consent, viability.'", '');
+  const x = boot(); x.O.install(); x.toggle(true); await drain(); x.host.querySelector('[data-offtakers-class="s"]').click();
+  const lits = SRC.match(/'[^'\n]*'|`[^`\n]*`/g).join('\n').replace("'Not shown here: electricity use, connection terms, TEC, consent, viability.'", '');
   const BAN = /\b(viable|feasible|opportunity|offtake agreement|PPA|private wire|supply|capacity available|demand of|consumes|MWh|large user|best|recommended|suitable)\b/i;
   assert.equal(BAN.test(lits), false, 'banned word in a module literal: ' + (lits.match(BAN) || [])[0]);
-  const unknownN = x.dot(r => r.k === 'd' && /^unknown/i.test(r.n)), unknownOp = x.dot(r => r.k === 'o' && /^unknown/i.test(r.op));
-  for (const r of [...Object.values(bigSites(x)), unknownN, unknownOp, x.dot(r => r.k === 'w'), x.dot(r => r.k === 'n' && r.ms.length > 1)].filter(Boolean)) {
+  const unknownN = x.dot(r => r.k === 'c' && (!r.n || /^unknown/i.test(r.n))), unknownOp = x.dot(r => /^unknown/i.test(r.op || 'Unknown'));
+  const picks = [...Object.values(bigSites(x)), unknownN, unknownOp, x.dot(r => r.k === 's'), x.dot(r => r.k === 'd'), x.dot(r => r.k === 'e'), x.dot(r => r.k === 'b' && r.t === 'un'), x.dot(r => r.p.records.length > 2)];
+  assert.equal(picks.filter(Boolean).length, picks.length, 'every pick exists: ' + picks.map((p, i) => p ? '' : i).join(''));
+  for (const r of picks) {
     await x.tapDot(r); await drain(); const c = x.card(), t = text(c);
-    assert.equal(/\b(viable|feasible|opportunity|PPA|MWh|recommended|suitable)\b/.test(t.replace(/Not shown here: [^.]*\./, '')), false, 'banned in card: ' + t.slice(0, 80)); assert.equal(/tCO2e|emission|%/i.test(t), false, 'no tCO2e/%');
+    assert.equal(/\b(viable|feasible|opportunity|PPA|MWh|recommended|suitable)\b/.test(t.replace(/Not shown here: [^.]*\./, '')), false, 'banned in card: ' + t.slice(0, 80)); const tn = t.replace(/source https?:\/\/\S+/g, ''); assert.equal(/tCO2e|tonnes|%/i.test(tn), false, 'no emission figure or %: ' + (tn.match(/.{30}(tCO2e|tonnes|%).{10}/i) || [])[0]);
+    for (const m of tn.matchAll(/Emission band ([^ ]+ kt|[^ ]+) CO2e/g)) assert.ok(['<1 kt', '1-10 kt', '10-25 kt', '25-100 kt', '>=100 kt'].includes(m[1]), 'band only: ' + m[1]);
     assert.equal(/Unknown/.test(t.split('Substations')[0]), false, 'Unknown… never rendered as a name or operator');
     const title = c.children[0].children[0]; assert.ok(text(title).length <= 90);
     for (const e of c.walk()) { if (!['DIV', 'A'].includes(e.tagName) || !e.children.some(k => !(k instanceof El) && k.data.trim())) continue;
@@ -253,7 +253,7 @@ test('T9: wording lint: banned words, no tCO2e and no "%" in the card; every tex
       if (p.dataset.tier === 'record') assert.equal(/\d km\b/.test(text(e)), false, 'distance tiered Record: ' + text(e)); }
   }
   assert.match(text(x.card() || x.host), /./);
-  const u = unknownN; await x.tapDot(u); assert.match(text(x.card().children[0]), /^name not listed · /);
+  const u = unknownN; await x.tapDot(u); assert.match(text(x.card()), /name not listed · /); assert.match(text(x.card().children[0]), /^Potential offtaker \(screening\): not a confirmed demand, contract or connection\./);
 });
 
 test('T10: CSV vicinity sheet: header with generation and caveat; one row per listed project and substation; licence filled', async () => {
@@ -315,6 +315,16 @@ test('T14: a row flies to the REPD site with its own substations; ◀ back resto
   x.card().listeners.keydown[0]({ key: 'Escape' }); assert.equal(x.card(), null);
   await x.tapDot(r); [...x.card().querySelectorAll('button')].find(b => b.getAttribute('aria-label') === 'Close').click(); assert.equal(x.card(), null);
   assert.equal([...x.sources.keys()].some(s => /offtakers-neon/.test(s)), false);
+});
+
+test('T15: power station card: closed coal (Ratcliffe) shows MW, the curated status with its source, the merged records and the combustion indicator', async () => {
+  const x = boot(); x.O.install(); x.toggle(true); await drain(); const r = x.dot(r => /Ratcliffe on Soar/.test(r.n)); await x.tapDot(r); await drain(); const t = text(x.card());
+  assert.match(t, /Ratcliffe on Soar Power Station · operator \(NAEI\) Uniper UK Ltd · coal/); assert.match(t, /2,000 MW installed \(GPPD, DUKES-derived; installed, not connection capacity\)/);
+  assert.match(t, /Status: closed 2024-09-30 · source https:\/\/www\.uniper\.energy\/\S+ \(curated; not re-verified in session\)/);
+  assert.match(t, /3 records merged: Ratcliffe on Soar Power Station \(NAEI\); Ratcliffe \(GPPD, 2,000 MW\); Ratcliffe GT \(GPPD, 34 MW\)/);
+  assert.match(t, /On-site combustion: generator site \(listed as power producer\)\. Source NAEI 2023\. Not a measure of generation capacity\./);
+  assert.match(t, /Record · NAEI \(OGL v3\.0\) · GPPD \(CC BY 4\.0\)/); assert.equal(r.t, 'cc'); assert.equal(r.z, 1.5);
+  assert.match(t, /Not shown here: electricity use, connection terms, TEC, consent, viability\./);
 });
 
 test('Z: no unhandled rejections', async () => { await drain(); deq(unhandled.map(String), []); });

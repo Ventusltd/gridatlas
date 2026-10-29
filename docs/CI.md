@@ -209,6 +209,5 @@ ledger are unchanged. The decision is written down beside that entry in
 **offtakers-suites** (after lightning-suites): every `tools/ci/offtakers/*.test.mjs` runs with `node --test` and
 `OFFTAKERS_MODULE` set to the live potential-offtakers module, every one the PR adds or edits, the one each pinned
 generation the PR adds composes, and the newest one when the PR changes `tools/ci/offtakers/`, `tools/offtakers/` or the gate.
-Fixtures: `tools/ci/offtakers/fixtures/` (the three pinned globalgrid2050 files, gzip -9 -n; test P0 checks them against the
-module's SHA-256 pins), the lightning REPD register fixture, `data/repd_browser_registry_202608290716.json` and the release's
-`grid_substations.geojson`.
+Fixtures: the data file the module pins (`data/offtakers_filtered_*.geojson`; test P0 checks its SHA-256), the lightning
+REPD register fixture, `data/repd_browser_registry_202608290716.json` and the release's `grid_substations.geojson`.

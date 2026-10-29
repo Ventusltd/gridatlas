@@ -1,10 +1,16 @@
 /// ---- a tap on a site ----
-oc=(m,r,n=15)=>{let[x,y]=r.a,c=cd(m,'Potential offtaker',`${NM(r)} · ${OP(r)}`);c.r=r;c.re=()=>oc(m,r,0);S.fk=[r.a];
- L(c.head,REC(r),'color:#9fb3ba;margin-top:6px','record');
- c.smb=`${CLS[r.k][0]} · ${SUBL(r)}${r.ms.length>1?` · ${r.ms.length} records at this point`:''}`;c.sm.textContent=c.smb+' · details';
- let dv=c.det;if(r.ms.length>1)L(dv,`${r.ms.length} records at this point: `+r.ms.map(q=>NM(q)+(unk(q.op)?'':' ('+cs(q.op)+')')).join('; '),'color:#9fb3ba','record');
- let ds=S.data.dots.filter(q=>q.k!=r.k&&!(r.k=='o'&&q.k=='w'||r.k=='w'&&q.k=='o')&&hv(r.a,q.a)<=.3).sort((a,b)=>hv(r.a,a.a)-hv(r.a,b.a)).slice(0,3);
- if(ds.length){L(dv,'Also listed within 300 m: '+ds.map(q=>`${NM(q)} (${CLS[q.k][6]}, ${SUBL(q)})`).join('; '),'color:#c9d6f2;margin-top:4px','discovery');L(dv,'Discovery · nearby listing, not checked to be the same site','color:#8b9aa1','discovery')}
+oc=(m,r,n=15)=>{let[x,y]=r.a,p=r.p,c=cd(m,'Potential offtaker',HEAD),h=c.head,w=MW(p),bd=p.emission_band_naei_2023,rc=p.records||[],naei=rc.some(q=>q.source==='NAEI');c.r=r;c.re=()=>oc(m,r,0);S.fk=[r.a];
+ L(h,`${NM(r)} · ${OP(r)} · ${SUBL(r)}`,'color:#f3e6da;font-weight:bold;margin-top:6px','record');
+ L(h,(w?`${N(w)} MW installed (GPPD, DUKES-derived; installed, not connection capacity)`+(bd?' · ':''):'')+(bd?`Emission band ${cs(bd)} CO2e-approx, NAEI 2023 (band only; method under check)`:w?'':'No NAEI 2023 emission band'),'color:#9fb3ba','record');
+ if(p.class==='B'||p.status_date)L(h,`Status: ${cs(p.status)}${p.status_date?' '+cs(p.status_date):''}${p.status_source?' · source '+cs(p.status_source):''}`,'color:#9fb3ba','record');
+ c.smb=`${CLS[r.k][0]} · ${SUBL(r)}${rc.length>1?` · ${rc.length} records merged`:''}`;c.sm.textContent=c.smb+' · details';
+ let dv=c.det;L(dv,`On-site combustion: ${cs(p.onsite_combustion_indicator||'unknown')}.${naei?' Source NAEI 2023.':''} Not a measure of generation capacity.`,'color:#c9d6da;margin-top:4px','record');
+ if(rc.length>1)L(dv,`${rc.length} records merged: `+rc.map(q=>`${unk(q.name)?'name not listed':cs(q.name)} (${cs(q.source)}${q.mw?', '+N(q.mw)+' MW':''})`).join('; '),'color:#9fb3ba','record');
+ L(dv,'Record · '+LIC(r),'color:#8b9aa1','record');
+ let oc_=p.osm_corroboration||[],ds=S.data.dots.filter(q=>q!==r&&q.k!=r.k&&hv(r.a,q.a)<=.3).sort((a,b)=>hv(r.a,a.a)-hv(r.a,b.a)).slice(0,3);
+ if(oc_.length)L(dv,'Also mapped in OpenStreetMap nearby: '+oc_.slice(0,4).map(q=>unk(q.name)?'name not listed':cs(q.name)).join('; '),'color:#c9d6f2;margin-top:4px','discovery');
+ if(ds.length)L(dv,'Also listed within 300 m: '+ds.map(q=>`${NM(q)} (${CLS[q.k][0]}, ${SUBL(q)})`).join('; '),'color:#c9d6f2;margin-top:4px','discovery');
+ if(oc_.length||ds.length)L(dv,'Discovery · nearby listing, not checked to be the same site','color:#8b9aa1','discovery');
  L(dv,'Discovery · listed site, not a confirmed electricity user','color:#8b9aa1','discovery');
  c.area=ap(dv,el('div'));L(dv,SCR,'color:#8b9aa1;margin-top:4px');c.box=ap(dv,el('div'));c.sub=ap(dv,el('div','margin-top:6px'));c.csv=ap(dv,el('div'));
  c.pd=L(c.box,'REPD projects: loading…','margin-top:4px');Ra(c,c.sm.textContent);
@@ -65,7 +71,7 @@ pv=(m,c,g)=>{let back=c.re,[x,y]=g.a,ps=g.parts;pc();
 /// map tap: decided after every click handler of this tap has run, so an offtaker hit wins over a lightning card opened by the same tap
 tap=e=>{if(!S.on)return;setTimeout(()=>{try{tq(e)}catch(x){note('tap: '+msg(x))}},0)},
 tq=e=>{let m=mh();if(!S.on||!m||!m.getLayer(HIT)||!S.data)return;let px=e.point.x??e.point[0],py=e.point.y??e.point[1],f=null,dm=1/0;
- for(let q of m.queryRenderedFeatures(e.point,{layers:[HIT]})){let r=S.data.dots[q.properties&&q.properties.i];if(!r||!S.cls[r.k])continue;let a=m.project(r.a),d=(a.x-px)**2+(a.y-py)**2;if(d<dm){dm=d;f=r}}
+ for(let q of m.queryRenderedFeatures(e.point,{layers:[HIT]})){let r=S.data.dots[q.properties&&q.properties.i];if(!r||!S.cls[r.k]||r.k=='b'&&!S.bst[r.t])continue;let a=m.project(r.a),d=(a.x-px)**2+(a.y-py)**2;if(d<dm){dm=d;f=r}}
  if(!f){if(S.pp&&!S.pp.contains(e.originalEvent&&e.originalEvent.target))pc();return}
  oc(m,f);let lc=document.querySelector('[data-lightning-card]'),x=lc&&[...lc.querySelectorAll('button')].find(b=>b.getAttribute('aria-label')==='Close');x&&x.click()},
 co=e=>{if(e&&e.detail&&e.detail.owner!=='offtakers')pc()},

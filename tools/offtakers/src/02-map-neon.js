@@ -1,15 +1,20 @@
 /// ---- map layers (added on the first switch-on only) ----
-fl=()=>['in',['get','k'],['literal',CK.filter(k=>S.cls[k])]],
-MT=(i,d)=>['match',['get','k'],...CK.flatMap(k=>[k,CLS[k][i]]),d],
-dw=()=>{let m=mh();if(!m||!S.data)return;let fc=FC(S.data.dots.map(r=>({type:'Feature',id:r.i,properties:{k:r.k,i:r.i},geometry:{type:'Point',coordinates:r.a}}))),Z=(a,b)=>['interpolate',['linear'],['zoom'],6,a,12,b],F=fl();
+/// the class chips and, for power stations, the status chips; a ring (closed, closing or converted) is hollow
+fl=()=>['all',['in',['get','k'],['literal',CK.filter(k=>S.cls[k])]],['any',['!=',['get','k'],'b'],['in',['get','t'],['literal',BK.filter(k=>S.bst[k])]]]],
+MT=(i,d)=>['match',['get','k'],...CK.flatMap(k=>[k,CLS[k][i]]),d],RING=['in',['get','t'],['literal',['cl','cc']]],
+CORE=SRC+'-centre',LY=[GLOW,LAYER,CORE,HIT],
+dw=()=>{let m=mh();if(!m||!S.data)return;let fc=FC(S.data.dots.map(r=>({type:'Feature',id:r.i,properties:{k:r.k,t:r.t,z:r.z,i:r.i},geometry:{type:'Point',coordinates:r.a}}))),Z=(a,b)=>['interpolate',['linear'],['zoom'],6,['*',['get','z'],a],12,['*',['get','z'],b]],F=fl();
  if(!m.getSource(SRC)){m.addSource(SRC,{type:'geojson',data:fc});
-  m.addLayer({id:GLOW,type:'circle',source:SRC,filter:F,paint:{'circle-radius':Z(['*',2.4,MT(3,3)],['*',2.4,MT(4,6)]),'circle-color':MT(1,'#3d7bff'),'circle-opacity':['match',['get','k'],'w',0,.22],'circle-blur':1}});
-  m.addLayer({id:LAYER,type:'circle',source:SRC,filter:F,layout:{'circle-sort-key':['match',['get','k'],'w',0,'o',1,'d',2,3]},paint:{'circle-radius':Z(MT(3,3),MT(4,6)),'circle-color':MT(1,'#3d7bff'),'circle-opacity':['match',['get','k'],'w',.7,.95],'circle-stroke-color':MT(2,'#0b1f4d'),'circle-stroke-width':['match',['get','k'],'w',0,1]}});
+  m.addLayer({id:GLOW,type:'circle',source:SRC,filter:F,paint:{'circle-radius':Z(['*',2.4,MT(3,3)],['*',2.4,MT(4,6)]),'circle-color':MT(1,'#e07b39'),'circle-opacity':['case',RING,0,['match',['get','k'],'d',.12,'s',0,.2]],'circle-blur':1}});
+  m.addLayer({id:LAYER,type:'circle',source:SRC,filter:F,layout:{'circle-sort-key':['+',['match',['get','k'],'s',0,'e',1,'d',2,'c',3,'a',4,5],['get','z']]},paint:{'circle-radius':Z(MT(3,3),MT(4,6)),
+   'circle-color':['case',RING,'rgba(0,0,0,0)',MT(1,'#e07b39')],'circle-opacity':['match',['get','k'],'d',.8,'s',.8,.95],
+   'circle-stroke-color':['case',RING,CLS.b[1],MT(2,'#3a1d0a')],'circle-stroke-width':['case',RING,2,['match',['get','k'],'d',0,'s',0,1]]}});
+  m.addLayer({id:CORE,type:'circle',source:SRC,filter:['all',F,['==',['get','k'],'b'],['!',RING]],paint:{'circle-radius':Z(1,2),'circle-color':'#3a1d0a'}});
   m.addLayer({id:HIT,type:'circle',source:SRC,filter:F,paint:{'circle-radius':12,'circle-opacity':0}})}
- else{m.getSource(SRC).setData(fc);for(let l of[GLOW,LAYER,HIT])m.getLayer(l)&&m.setFilter(l,F)}},
-rf=()=>{let m=mh();if(m)for(let l of[GLOW,LAYER,HIT])try{m.getLayer(l)&&m.setFilter(l,fl())}catch(e){note(e)}},
-top=()=>{let m=mh();if(m&&m.moveLayer)for(let l of[GLOW,LAYER,HIT,...NI])try{m.getLayer(l)&&m.moveLayer(l)}catch(_){}},
-cx=()=>{let m=mh();pc();if(m)try{for(let l of[HIT,LAYER,GLOW])m.getLayer(l)&&m.removeLayer(l);m.getSource(SRC)&&m.removeSource(SRC)}catch(e){note(e)}},
+ else{m.getSource(SRC).setData(fc);rf()}},
+rf=()=>{let m=mh(),F=fl();if(m)for(let l of LY)try{m.getLayer(l)&&m.setFilter(l,l===CORE?['all',F,['==',['get','k'],'b'],['!',RING]]:F)}catch(e){note(e)}},
+top=()=>{let m=mh();if(m&&m.moveLayer)for(let l of[...LY,...NI])try{m.getLayer(l)&&m.moveLayer(l)}catch(_){}},
+cx=()=>{let m=mh();pc();if(m)try{for(let l of[...LY].reverse())m.getLayer(l)&&m.removeLayer(l);m.getSource(SRC)&&m.removeSource(SRC)}catch(e){note(e)}},
 /// ---- neon links (own ids) ----
 NP='gridatlas-offtakers-neon',NI=[NP+'-glow',NP+'-core',NP+'-flow',NP+'-node',NP+'-label',NP+'-pin-halo',NP+'-pin',NP+'-p-glow',LINKS,NP+'-p-node',NP+'-p-label'],NSR=[NP+'-subs',NP+'-snodes',NP+'-pin',NP+'-plinks',NP+'-pnodes'],
 nc=()=>{let m=mh();if(S.raf){cancelAnimationFrame(S.raf);S.raf=null}if(m)try{for(let l of[...NI].reverse())m.getLayer(l)&&m.removeLayer(l);for(let s of NSR)m.getSource(s)&&m.removeSource(s)}catch(e){note(e)}},

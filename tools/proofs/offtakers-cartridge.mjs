@@ -5,7 +5,7 @@
  *
  *   identity  G, the slot, the anchor (directly after uk-lightning-overlay, last in cartridge_order), every hash;
  *   module    the cartridge IS atlas/modules/<M>-uk-offtakers-overlay.js (no copy), within its 40,000-byte budget, names
- *             generation M, rebuilds from tools/offtakers/src byte for byte, parses, one strict IIFE that is one expression;
+ *             generation M, rebuilds from tools/offtakers/src byte for byte while listed in generations.json, parses, one strict IIFE that is one expression;
  *   contract  static negatives (no engine, menu, layer-control, storage, lightning or place-search contract; no emission
  *             figure; the banned vicinity words) and positives (OFF by default, the pinned SHA-256s, the original measure);
  *   loader    the route's loader is registered and supports the slots, and composes it: the offtakers tag directly after
@@ -44,7 +44,10 @@ export async function proveOfftakersCartridge(G) {
   assert.equal(sha(module), e.sha256); assert.equal(module.length, e.bytes);
   assert.ok(module.length <= BUDGET && module.length <= CARTRIDGE_BYTE_BUDGETS[OFFTAKERS_ID], `${module.length} B over the ${BUDGET}-byte budget`);
   assert.ok(text.startsWith(`/* uk-offtakers-overlay, generation ${M} (UTC).`), 'header names the generation');
-  assert.equal(build(M), text, 'rebuilds from tools/offtakers/src byte for byte');
+  // while M is listed in tools/offtakers/generations.json, it must rebuild from the committed source (the PR gate's
+  // offtakers-source step checks the same); a generation the source has moved past is pinned by its hash alone
+  const listed = Object.hasOwn(JSON.parse(fs.readFileSync(path.join(ROOT, 'tools/offtakers/generations.json'), 'utf8')).generations || {}, M);
+  if (listed) assert.equal(build(M), text, 'rebuilds from tools/offtakers/src byte for byte');
   new vm.Script(text, { filename: modulePath });
   const body = text.replace(/^(\s*\/\*[\s\S]*?\*\/)*\s*/, '');
   assert.ok(body.startsWith("(()=>{'use strict';") && /\}\)\(\);\s*$/.test(body), 'one strict arrow IIFE');
@@ -55,9 +58,13 @@ export async function proveOfftakersCartridge(G) {
   assert.equal(/tCO2e|emission_tco2e/.test(text), false, 'no emission figure (method unverified)');
   assert.equal(BANNED.test(text.replace("'Not shown here: electricity use, connection terms, consent, viability.'", '')), false, 'banned wording: ' + (text.match(BANNED) || [])[0]);
   for (const needle of ['data-offtakers-control="toggle"', 'scada-ui-container', 'fs-curtain-keys', 'NS.ukOfftakers=Object.freeze(', "on:false", 'nearestSubstations', 'XMLHttpRequest', 'SHA-256',
-    'b8973334303709067ef1408b6ff971d323a876ef', '9d603ac9a7dd5b831b94c01b1e25b4f0a434e299489a680d9b4461ce5f1a63f3', 'c4b3fff1c1da07cf1638e3f1d619ac70ec36be9093a9ca1512329a78ec713919',
-    'a686a2e00253bbf30c9f5262439bc2332524e8d5cb34481529c6a711c73acab4', 'A listing is not electricity demand', 'Vicinity only', 'not a cable route', 'address not in register'])
+    'A listing is not electricity demand', 'Vicinity only', 'not a cable route', 'address not in register', 'not a confirmed demand, contract or connection'])
     assert.ok(text.includes(needle), 'module must contain ' + JSON.stringify(needle));
+  /* data: the module's one data URL is a file in this repository, and its pinned SHA-256 matches the committed bytes */
+  const du = text.match(/DATA='https:\/\/ventusltd\.github\.io\/gridatlas\/(data\/offtakers_filtered_\d{12}\.geojson)',DSHA='([0-9a-f]{64})'/);
+  assert.ok(du, 'one pinned data URL under https://ventusltd.github.io/gridatlas/data/ with its SHA-256');
+  assert.equal(sha(fs.readFileSync(path.join(ROOT, du[1]))), du[2], du[1] + ' is committed and matches the pin');
+  assert.equal((text.match(/https:\/\//g) || []).length, 3, 'three URLs only: the data file and the two REPD record files of the M5 join');
 
   const loader = registeredLoader(path.join(ROOT, route, 'index.html'));
   assert.ok(loader, `${route}index.html is not a registered loader`);

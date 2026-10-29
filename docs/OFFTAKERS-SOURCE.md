@@ -11,14 +11,21 @@ Every generation listed in `tools/offtakers/generations.json` must rebuild byte 
 `*-uk-offtakers-overlay.js` must be listed.
 
 ## What it is
-A Layers group "Potential offtakers", OFF by default and never persisted. Switched on, it draws sites listed in open
-registers (NAEI 2023 point sources less power producers and offshore; OpenStreetMap industry, data centres and, behind a
-chip, water works), read from the shell's own preloaded layers when they hold rows, else from the pinned, SHA-256-checked
-globalgrid2050 files. A tap draws neon links to the 15 nearest REPD project sites (40 km; status and technology chips as in
-the lightning card; ties at the 15th kept) and the 5 nearest substations (the original `link.measure.nearestSubstations`),
-and docks a card with each listed project's full REPD record (`src/04-repd-record-m5.js`, M5-build's exact join copied
-unchanged), a 5 km area summary and a CSV vicinity sheet. A listing is not electricity demand; distances are straight
-lines; vicinity screening only. Design: the hardening lane PW-design's OFFTAKERS-OVERLAY-SPEC.md (29 Oct 2026).
+A Layers group "Potential offtakers", OFF by default and never persisted. Switched on, it reads one file,
+`data/offtakers_filtered_<stamp>.geojson`, checked against its SHA-256 pin before anything is drawn. The file is the
+output of the hardening lane OT-filter (`tools/offtakers/filter/ot_filter.py`, `OFFTAKERS-FILTER.md`, `licences.md`),
+built from open registers only under the owner's rules of 29 Oct 2026: energy-intensive industry (NAEI 2023 point
+sources), power stations including closed and closing ones (NAEI, GPPD v1.3.0 CC BY 4.0, OSM), data centres, large water
+works (small NAEI-listed works behind a sub-chip; the 5,602 OSM water rows dropped) and other large users. Classes have
+chips, power stations also have status chips; dot size is the NAEI emission band or the GPPD installed MW; closed or
+closing stations are hollow rings. No emission figure is shown, only the band.
+
+A tap draws neon links to the 15 nearest REPD project sites (40 km; status and technology chips as in the lightning card;
+ties at the 15th kept) and the 5 nearest substations (the original `link.measure.nearestSubstations`), and docks a card
+with the site's record (operator, band or MW, curated status with its source, on-site combustion indicator, merged
+records, sources and licences), each listed project's full REPD record (`src/04-repd-record-m5.js`, M5-build's exact
+join copied unchanged), a 5 km area summary and a CSV vicinity sheet. A listing is not electricity demand; distances
+are straight lines; vicinity screening only.
 
 ## Cartridge
 It ships as its own cartridge (docs/LIGHTNING-CARTRIDGE.md, loader v2): `uk-offtakers-overlay`, slot `after-cartridge`,
