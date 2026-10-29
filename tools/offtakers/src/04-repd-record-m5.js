@@ -21,8 +21,9 @@ RpB=(q,a,C,e)=>{let o=e?0:RpJ(q,a,C),b=el('div','padding:2px 0 10px 12px;font-si
     L('Operator: '+(o.applicant_publication_state=='REPD_AS_PUBLISHED'&&o.repd_operator_or_applicant||'not shown (may name a person) or not stated'));
     L([o.planning_authority||'planning authority not stated',o.planning_application_reference,o.source_record_updated&&'record updated '+o.source_record_updated].filter(Boolean).join(' · '))}
   return b},
-/// sites: register rows within 40 km (exact duplicate rows once), filtered by the chips, grouped within about 10 m; the 15 nearest, ties at the 15th kept
-sites=(all,f)=>{let sel=all.filter(r=>(f.st==='all'||RpS(r.p.status)===f.st)&&(f.te==='all'||RpT(r.p.tech)===f.te)),gs=[];
+/// sites: register rows within 40 km (exact duplicate rows once), filtered by the chips, grouped within about 10 m; the n nearest
+/// (15; 30 for a data centre), ties at the n-th kept
+sites=(all,f,n=NR)=>{let sel=all.filter(r=>(f.st==='all'||RpS(r.p.status)===f.st)&&(f.te==='all'||RpT(r.p.tech)===f.te)),gs=[];
  for(let r of[...sel].sort((a,b)=>a.km-b.km)){let g=gs.find(g=>Math.abs(g.a[0]-r.a[0])<2e-4&&Math.abs(g.a[1]-r.a[1])<1e-4);if(!g)gs.push(g={a:r.a,km:r.km,parts:[]});g.parts.push(r.p)}
- return{sel,P:gs.filter((g,i,a)=>i<NR||g.km==a[NR-1].km)}},
+ return{sel,P:gs.filter((g,i,a)=>i<n||g.km==a[n-1].km)}},
 near=(G,M,x,y)=>{let all=[],seen=new Set;for(let[a,p]of G){let km=M.distanceKm(x,y,...a);if(km<=R40){let k=a+JSON.stringify(p);if(!seen.has(k)){seen.add(k);RpP.set(p,a);all.push({a,p,km})}}}return all},
