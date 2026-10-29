@@ -5,6 +5,8 @@ GEN='@@GEN@@',TMO=15000,TOE='timeout after 15 s',R40=40,NR=15,
 /// the filtered, classified open-data file (hardening lane OT-filter, ot_filter.py; owner's rules of 29 Oct 2026 02:57 UTC), served
 /// from this repository and checked against its SHA-256 before anything is drawn
 DATA='https://ventusltd.github.io/gridatlas/data/offtakers_filtered_202610290317.geojson',DSHA='b31a369e51040aa86f5ca699a003c0fc8a7f43e71e9d74868c77e1db783121cb',
+/// byte cap of the pinned data (about twice the 2,290,565 B file): the read is aborted past it and nothing is hashed or parsed (R-otsec ORS2)
+DCAP=5e6,
 SRC='gridatlas-offtakers',LAYER='l-gridatlas-offtakers',GLOW=SRC+'-glow',HIT=SRC+'-hit',LINKS='l-gridatlas-offtakers-links',
 /// class: [chip label, fill, stroke, radius z6, radius z12, on by default]; s = the NAEI-listed small water works (a sub-chip)
 CLS={a:['Industry','#e07b39','#3a1d0a',3,6,1],b:['Power stations','#f2c14e','#3a1d0a',3.5,7,1],c:['Data centres','#2ec4b6','#ffffff',3,6,1],d:['Water (large)','#4f86c6','rgba(0,0,0,0)',3,5,1],s:['Water (listed, small)','#4f86c6','rgba(0,0,0,0)',3,5,0],e:['Campus/CHP sites','#a26769','#3a1d0a',3,5,1]},
@@ -34,20 +36,22 @@ hex=b=>[...new Uint8Array(b)].map(x=>(x|256).toString(16).slice(1)).join(''),
 /// the pinned open data: XMLHttpRequest (the original bridge does not hook it), same timeout and redirect rules, then SHA-256 against the pin
 gx=(u,h)=>new Promise((res,rej)=>{S.requests++;let x=new XMLHttpRequest();x.open('GET',u);x.responseType='arraybuffer';x.timeout=TMO;
  x.onload=()=>x.status>=200&&x.status<300?x.responseURL&&!x.responseURL.startsWith(u)?rej(new Error('redirected')):res(x.response):rej(new Error('HTTP '+x.status));
- x.onerror=()=>rej(new Error('network error'));x.ontimeout=()=>rej(new Error(TOE));x.send()})
- .then(async b=>{let s=W.crypto&&W.crypto.subtle;if(!s)E('data check failed (no WebCrypto)');if(hex(await s.digest('SHA-256',b))!==h)E('data check failed (SHA-256 differs from the pin)');return JSON.parse(new TextDecoder().decode(b))}),
+ x.onerror=()=>rej(new Error('network error'));x.ontimeout=()=>rej(new Error(TOE));x.onprogress=e=>{if(e.loaded>DCAP){x.abort();rej(new Error('data check failed (size)'))}};x.send()})
+ .then(async b=>{let s=W.crypto&&W.crypto.subtle;if(!(b.byteLength<=DCAP))E('data check failed (size)');if(!s)E('data check failed (no WebCrypto)');if(hex(await s.digest('SHA-256',b))!==h)E('data check failed (SHA-256 differs from the pin)');return JSON.parse(new TextDecoder().decode(b))}),
 /// the data file, once per page (pinned and hashed); a failed read is retried on the next switch-on
 rd=()=>S.cache.f||(S.cache.f=gx(DATA,DSHA).then(o=>(o&&o.type==='FeatureCollection'&&AI(o.features)||E('data check failed (not a feature collection)'),o)).catch(e=>{S.cache.f=null;throw new Error('offtakers data: '+msg(e))})),
 okPt=c=>AI(c)&&c[0]===+c[0]&&c[1]===+c[1]&&c[0]>=-11&&c[0]<=3&&c[1]>=49.5&&c[1]<=61.5,
 hv=(a,b)=>{let r=Math.PI/180,p1=a[1]*r,p2=b[1]*r,h=Math.sin((p2-p1)/2)**2+Math.cos(p1)*Math.cos(p2)*Math.sin((b[0]-a[0])*r/2)**2;return 2*6371.0088*Math.asin(Math.sqrt(h))},
 /// class, power-station status group and size step of one feature (pure; the tests call it on the pinned file).
 /// z: ×1 / 1.25 / 1.5 by installed MW (<100, 100–1000, ≥1000; power stations with a GPPD figure) or by NAEI band (<10, 10–100, ≥100 kt)
-KL=p=>({A:'a',B:'b',C:'c',E:'e'})[p.class]||(p.class==='D'?p.subclass==='water_wastewater_large'?'d':'s':null),
+KL=p=>{let o={A:'a',B:'b',C:'c',E:'e',D:p.subclass==='water_wastewater_large'?'d':'s'};return Object.hasOwn(o,p.class)?o[p.class]:null},
+/// list fields are absent or arrays of objects; subclass absent or a string (R-otsec ORS3)
+ao=v=>v==null||AI(v)&&v.every(o=>o&&typeof o=='object'),okP=p=>ao(p.records)&&ao(p.sources)&&ao(p.osm_corroboration)&&(p.subclass==null||typeof p.subclass=='string'),
 STG=p=>p.class!=='B'?'':/^operat/i.test(p.status)?'op':/^closing/i.test(p.status)?'cl':/^(closed|converted)/i.test(p.status)?'cc':'un',
 MW=p=>{let m=p.size_metric||{};return/^MW/.test(m.unit||'')&&m.value>0?+m.value:0},
 ZS=p=>{let w=MW(p),b=p.emission_band_naei_2023||'';return p.class==='B'&&w?w>=1e3?1.5:w>=100?1.25:1:/^>=100/.test(b)?1.5:/^(10-25|25-100)/.test(b)?1.25:1},
 nm=fs=>{let dots=[],bad=0;for(let f of fs){let p=f&&f.properties,k=p&&KL(p),c=f&&f.geometry&&f.geometry.coordinates;
-  if(!k||!f.geometry||f.geometry.type!=='Point'||!okPt(c)){bad++;continue}
+  if(!k||!okP(p)||!f.geometry||f.geometry.type!=='Point'||!okPt(c)){bad++;continue}
   dots.push({i:dots.length,k,t:STG(p),z:ZS(p),n:p.name,op:p.operator,sub:(p.subclass||'').replace(/_/g,' '),a:c.slice(0,2),p})}
  return{dots,bad,counts:Object.fromEntries(CK.map(k=>[k,dots.filter(r=>r.k==k).length]))}},
 NM=r=>unk(r.n)?'name not listed':cs(r.n),

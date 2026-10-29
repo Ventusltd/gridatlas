@@ -1,9 +1,10 @@
 /// 04 the full REPD record of a listed project: M5-build's exact join (RU..RpB), copied byte for byte from the built M5 module
 /// (evidence/M5-build/tools/build-M5.mjs; tests/offtakers.test.mjs T8 compares it with M5_MODULE). Do not edit it here: re-copy it.
+/// One deliberate difference (R-otsec ORS8): R() keeps its own timer; the same fix is due in tools/lightning/src/11b-repd-records.js.
 /// ---- M5-build's exact REPD record join, copied unchanged (evidence/M5-build/tools/build-M5.mjs) ----
 RU='https://ventusltd.github.io/gridatlas/data/repd_projects_202608290716.parquet',RM='https://ventusltd.github.io/gridatlas/data/repd_v9_manifest_202608290716.json',RpE=1.000001e-6,RpP=new WeakMap,
-RpQ=async pts=>{let C=S.rc||(S.rc=new Map),ks=RpU(pts.filter(a=>a&&a[0]===+a[0]&&a[1]===+a[1]&&!C.has(a+'')),a=>a+''),t,k;
-  if(ks.length){let w=window.__GRIDATLAS_DUCKDB_RUNTIME__,R=p=>Promise.race([p,new Promise((_,j)=>t=setTimeout(()=>j(new Error(TOE)),TMO))]).finally(()=>clearTimeout(t));
+RpQ=async pts=>{let C=S.rc||(S.rc=new Map),ks=RpU(pts.filter(a=>a&&a[0]===+a[0]&&a[1]===+a[1]&&!C.has(a+'')),a=>a+''),k;
+  if(ks.length){let w=window.__GRIDATLAS_DUCKDB_RUNTIME__,R=p=>{let t;return Promise.race([p,new Promise((_,j)=>t=setTimeout(()=>j(new Error(TOE)),TMO))]).finally(()=>clearTimeout(t))};
     if(!w)E('the map search runtime has not started; reload the page');
     await R(S.rv||(S.rv=gj(RM,'no-store',1).then(async b=>{let o,h=[...new Uint8Array(await window.crypto.subtle.digest('SHA-256',b))].map(x=>(x|256).toString(16).slice(1)).join('');
       if(h!='8850567ff9f1d2b6996b4e0d9707320030f3466a0b821cdcfc5325322b8be8c8'||(o=JSON.parse(new TextDecoder().decode(b))).parquet.sha256!='174040c37f3d63742d6fdd7af722a8cfdf3fb53de3ff85ff1142d22fdac4866b')E('REPD manifest is not the pinned one')}).catch(e=>{S.rv=0;throw e})));

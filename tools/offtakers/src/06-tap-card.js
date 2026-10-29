@@ -54,11 +54,12 @@ rr=(m,c)=>{let f=S.rf,{sel,P}=sites(c.all,f),box=c.box,all=f.st==='all'&&f.te===
 /// record slots [[div, props]]: filled from the cache now and again when the rows at their points arrive (M5's RpQ/RpB)
 RpH=(c,sl)=>{let F=(C,e)=>{if(S.pp==c)for(let[s,q]of sl){s.textContent='';ap(s,RpB(q,RpP.get(q),C,e))}};F(S.rc);RpQ(sl.map(v=>RpP.get(v[1]))).then(F,e=>F(0,e))},
 /// CSV vicinity sheet: one row per listed REPD project and per substation, generated in the page
-cq=v=>{let s=v==null?'':String(v);return/[",\n#]/.test(s)?'"'+s.replace(/"/g,'""')+'"':s},
+/// a cell: Cf stripped; a text starting = + - @ TAB or CR gets a leading apostrophe (no formula), numbers stay numbers; quoted on " , CR LF # (R-otsec ORS5)
+cq=v=>{let s=v==null?'':String(v).replace(/\p{Cf}/gu,'');if(typeof v!='number'&&/^[=+\-@\t\r]/.test(s))s="'"+s;return/[",\r\n#]/.test(s)?'"'+s.replace(/"/g,'""')+'"':s},
 csv=c=>{let[x,y]=c.r.a,J=q=>{let o=S.rc&&RpJ(q,RpP.get(q),S.rc);return o||null},rows=[['kind','name','ref','technology','status','MW','km','lon','lat','source','licence','data date']];
  for(let g of c.P||[])for(let q of g.parts){let o=J(q),a=RpP.get(q)||g.a;rows.push(['REPD project',q.name,o?o.repd_ref:'',q.raw_tech||q.tech,q.status,q.capacity>0?+q.capacity:'not stated',k2(g.km),a[0],a[1],o?'REPD (DESNZ) Jul 2026 extract, exact match':'REPD (DESNZ) Apr 2026 map register','OGL v3.0',o?(o.source_record_updated||'record date not stated'):'Apr 2026 extract'])}
  for(let a of c.k||[])rows.push(['substation',a.name||'unnamed substation','','',KV(a)+' kV','',k2(a.km),a.at[0],a.at[1],'OpenStreetMap as loaded by the map','ODbL 1.0','not carried']);
- return[`# GridAtlas potential offtakers vicinity sheet · generation ${GEN} · tap point ${x},${y} (${NM(c.r)}) · ${new Date().toISOString()}`,'# '+SCR+' A listing is not electricity demand. '+NOTSHOWN,...rows.map(r=>r.map(cq).join(','))].join('\n')+'\n'},
+ return[`# GridAtlas potential offtakers vicinity sheet · generation ${GEN} · tap point ${x},${y} (${NM(c.r).replace(/[\r\n]/g,' ')}) · ${new Date().toISOString()}`,'# '+SCR+' A listing is not electricity demand. '+NOTSHOWN,...rows.map(r=>r.map(cq).join(','))].join('\n')+'\n'},
 cv=c=>{c.csv.textContent='';let b=ap(c.csv,el('button','display:block;width:100%;min-height:44px;margin:8px 0 2px;background:#050a12;border:1px solid #2f5fa8;border-radius:3px;color:#8fb4ff;font:12px/1 monospace;text-align:left;padding:0 10px;cursor:pointer','Download vicinity sheet (CSV)'));b.type='button';b.dataset.offtakersCsv='';
  b.addEventListener('click',()=>{try{let u=URL.createObjectURL(new Blob([csv(c)],{type:'text/csv'})),a=el('a');a.href=u;a.download=`offtaker-vicinity-${GEN}.csv`;ap(document.body,a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(u),4e3)}catch(e){note('csv: '+msg(e))}})},
 /// a row: fly to the REPD site and draw its own 5 nearest substations; "◀ back" restores the offtaker card
