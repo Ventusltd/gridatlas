@@ -117,9 +117,9 @@ test('P0: the module pins the committed OT-filter file (sha256)', () => {
 
 test('T3/T4: classes on the pinned OT-filter file; power stations kept (incl. closed); no small water by default; Offshore never', () => {
   const x = boot(); const r = x.P.nm(DATA.features);
-  deq({ ...r.counts }, { a: 870, b: 366, c: 176, d: 8, s: 168, e: 57 }); assert.equal(r.bad, 0);
-  assert.equal(r.dots.filter(d => d.k !== 's').length, 1477, 'default dots'); assert.equal(r.dots.length, 1645, 'with the small water tier');
-  const b = r.dots.filter(d => d.k === 'b'); deq(Object.fromEntries(['op', 'cl', 'cc', 'un'].map(t => [t, b.filter(d => d.t === t).length])), { op: 269, cl: 4, cc: 18, un: 75 });
+  deq({ ...r.counts }, { a: 813, b: 358, c: 164, d: 8, s: 168, e: 57 }); assert.equal(r.bad, 0);
+  assert.equal(r.dots.filter(d => d.k !== 's' && d.k !== 'e').length, 1343, 'default dots'); assert.equal(r.dots.length, 1568, 'with the small water and other-large-users tiers');
+  const b = r.dots.filter(d => d.k === 'b'); deq(Object.fromEntries(['op', 'cl', 'cc', 'un'].map(t => [t, b.filter(d => d.t === t).length])), { op: 269, cl: 4, cc: 14, un: 71 });
   assert.ok(b.some(d => /Ratcliffe/.test(d.n) && d.t === 'cc'), 'closed coal kept');
   assert.equal(r.dots.filter(d => (d.p.records || []).some(q => /offshore/i.test(q.sector || ''))).length, 0);
   for (const d of r.dots) assert.ok(d.a[0] >= -11 && d.a[0] <= 3 && d.a[1] >= 49.5 && d.a[1] <= 61.5);
@@ -141,11 +141,11 @@ test('T1: arrival identity: OFF adds no request, source, layer or listener; the 
 test('T2a: switch-on fetches exactly the pinned data file once; copper-to-teal palette; small water off; legend', async () => {
   const x = boot(); x.O.install(); x.toggle(true); await drain();
   deq(x.log.xhr, [DURL]); x.toggle(false); x.toggle(true); await drain(); deq(x.log.xhr, [DURL], 'cached for the page');
-  assert.equal(x.sources.get('gridatlas-offtakers').data.features.length, 1645);
-  const f = x.layers.get('l-gridatlas-offtakers').filter; deq(f[1][2][1], ['a', 'b', 'c', 'd', 'e'], 'small water off by default');
+  assert.equal(x.sources.get('gridatlas-offtakers').data.features.length, 1568);
+  const f = x.layers.get('l-gridatlas-offtakers').filter; deq(f[1][2][1], ['a', 'b', 'c', 'd'], 'small water and other large users off by default');
   assert.match(JSON.stringify(x.layers.get('l-gridatlas-offtakers').paint), /#e07b39.*#f2c14e.*#2ec4b6.*#4f86c6.*#a26769/);
-  assert.match(text(x.host.querySelector('[data-offtakers-label]')), /\[1,477 sites\]/);
-  assert.match(text(x.host.querySelector('[data-offtakers-foot]')), /Dot size: emission band \(NAEI 2023\) or installed MW \(GPPD\)\. Hollow ring: closed, closing or converted station\..*A listing is not electricity demand\. Distances are straight lines\. Vicinity screening only\./);
+  assert.match(text(x.host.querySelector('[data-offtakers-label]')), /\[1,343 sites\]/);
+  assert.match(text(x.host.querySelector('[data-offtakers-foot]')), /Dot size: emission band \(NAEI 2023\) or installed MW \(GPPD\)\. Hollow ring: closed, closing or converted station\..*A listing is not electricity demand\. Distances are straight lines\. Vicinity screening only\. Contains OpenStreetMap data © OpenStreetMap contributors, ODbL 1\.0/);
 });
 
 test('T2b: a SHA-256 mismatch shows "data check failed" and draws nothing', async () => {
@@ -156,12 +156,12 @@ test('T2b: a SHA-256 mismatch shows "data check failed" and draws nothing', asyn
 
 test('T2c: class and power-status chips filter the drawn and tappable layers; All resets; hollow ring for closed', async () => {
   const x = boot(); x.O.install(); x.toggle(true); await drain(); const lab = () => text(x.host.querySelector('[data-offtakers-label]'));
-  x.host.querySelector('[data-offtakers-class="s"]').click(); deq(x.layers.get('gridatlas-offtakers-hit').filter[1][2][1], ['a', 'b', 'c', 'd', 's', 'e']); assert.match(lab(), /\[1,645 sites\]/);
-  x.host.querySelector('[data-offtakers-class="a"]').click(); assert.match(lab(), /\[775 sites\]/);
+  x.host.querySelector('[data-offtakers-class="s"]').click(); deq(x.layers.get('gridatlas-offtakers-hit').filter[1][2][1], ['a', 'b', 'c', 'd', 's']); assert.match(lab(), /\[1,511 sites\]/);
+  x.host.querySelector('[data-offtakers-class="a"]').click(); assert.match(lab(), /\[698 sites\]/);
   const a = x.dot(r => r.k === 'a'); await x.tapDot(a); assert.equal(x.card(), null, 'a hidden class is not tappable');
   x.host.querySelector('[data-offtakers-bst="cc"]').click(); deq(x.layers.get('gridatlas-offtakers-hit').filter[2][2][2][1], ['op', 'cl', 'un']);
   const rat = x.dot(r => /Ratcliffe/.test(r.n)); await x.tapDot(rat); assert.equal(x.card(), null, 'a hidden status is not tappable');
-  x.host.querySelector('[data-offtakers-all]').click(); assert.match(lab(), /\[1,477 sites\]/);
+  x.host.querySelector('[data-offtakers-all]').click(); assert.match(lab(), /\[1,343 sites\]/);
   const paint = JSON.stringify(x.layers.get('l-gridatlas-offtakers').paint); assert.match(paint, /"case",\["in",\["get","t"\],\["literal",\["cl","cc"\]\]\],"rgba\(0,0,0,0\)"/);
   assert.ok(x.layers.get('gridatlas-offtakers-centre'), 'operating power stations get a dark centre dot');
 });
@@ -178,7 +178,7 @@ const indep = (r, f = { st: 'all', te: 'all' }) => { // independent of the modul
   return gs.filter((g, i, a) => i < 15 || g.km === a[14].km);
 };
 const rowsOf = c => [...c.querySelectorAll('a')].map(a => text(a));
-const bigSites = x => ({ refinery: x.dot(r => r.k === 'a' && /refinery/.test(r.sub)), steel: x.dot(r => r.k === 'a' && r.sub === 'steel' && /Port Talbot Blast Furnaces/.test(r.n)), naei: x.dot(r => /Ratcliffe/.test(r.n)), dc: x.dot(r => r.k === 'c' && !/^unknown/i.test(r.n)) });
+const bigSites = x => ({ refinery: x.dot(r => r.k === 'a' && /refinery/.test(r.sub)), steel: x.dot(r => r.k === 'a' && r.sub === 'steel' && /^Port Talbot \(site: \d+ NAEI points\)/.test(r.n)), naei: x.dot(r => /Ratcliffe/.test(r.n)), dc: x.dot(r => r.k === 'c' && !/^unknown/i.test(r.n)) });
 
 test('T6a: a tap lists the 15 nearest REPD sites (≤40 km, ties kept), equal to an independent haversine reference, and draws 15 REPD links + 5 substation links', async () => {
   const x = boot(); x.O.install(); x.toggle(true); await drain();
@@ -234,7 +234,7 @@ test('T8: full REPD record (M5 join, copied unchanged): joined rows show ref, ad
 });
 
 test('T9: wording lint: banned words, no tCO2e and no "%" in the card; every text block tiered; no distance tiered Record; first line ≤ 90 chars; Unknown never a name', async () => {
-  const x = boot(); x.O.install(); x.toggle(true); await drain(); x.host.querySelector('[data-offtakers-class="s"]').click();
+  const x = boot(); x.O.install(); x.toggle(true); await drain(); x.host.querySelector('[data-offtakers-class="s"]').click(); x.host.querySelector('[data-offtakers-class="e"]').click();
   const lits = SRC.match(/'[^'\n]*'|`[^`\n]*`/g).join('\n').replace("'Not shown here: electricity use, connection terms, TEC, consent, viability.'", '');
   const BAN = /\b(viable|feasible|opportunity|offtake agreement|PPA|private wire|supply|capacity available|demand of|consumes|MWh|large user|best|recommended|suitable)\b/i;
   assert.equal(BAN.test(lits), false, 'banned word in a module literal: ' + (lits.match(BAN) || [])[0]);
@@ -320,7 +320,7 @@ test('T14: a row flies to the REPD site with its own substations; ◀ back resto
 test('T15: power station card: closed coal (Ratcliffe) shows MW, the curated status with its source, the merged records and the combustion indicator', async () => {
   const x = boot(); x.O.install(); x.toggle(true); await drain(); const r = x.dot(r => /Ratcliffe on Soar/.test(r.n)); await x.tapDot(r); await drain(); const t = text(x.card());
   assert.match(t, /Ratcliffe on Soar Power Station · operator \(NAEI\) Uniper UK Ltd · coal/); assert.match(t, /2,000 MW installed \(GPPD, DUKES-derived; installed, not connection capacity\)/);
-  assert.match(t, /Status: closed 2024-09-30 · source https:\/\/www\.uniper\.energy\/\S+ \(curated; not re-verified in session\)/);
+  assert.match(t, /Status: closed 2024-09-30 · source https:\/\/en\.wikipedia\.org\/wiki\/Ratcliffe-on-Soar_Power_Station/);
   assert.match(t, /3 records merged: Ratcliffe on Soar Power Station \(NAEI\); Ratcliffe \(GPPD, 2,000 MW\); Ratcliffe GT \(GPPD, 34 MW\)/);
   assert.match(t, /Listed as a power producer \(NAEI 2023\)\. Not a measure of its electricity use\./); assert.match(t, /Closed station: no grid connection, TEC or connection rights are implied\./);
   assert.match(t, /Record · NAEI \(OGL v3\.0\) · GPPD \(CC BY 4\.0\)/); assert.equal(r.t, 'cc'); assert.equal(r.z, 1.5);

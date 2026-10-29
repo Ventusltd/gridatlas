@@ -4,17 +4,17 @@ let MX=Math.max,MN=Math.min,AI=Array.isArray,ap=(p,c)=>p.appendChild(c),gr=e=>e.
 GEN='@@GEN@@',TMO=15000,TOE='timeout after 15 s',R40=40,NR=15,
 /// the filtered, classified open-data file (hardening lane OT-filter, ot_filter.py; owner's rules of 29 Oct 2026 02:57 UTC), served
 /// from this repository and checked against its SHA-256 before anything is drawn
-DATA='https://ventusltd.github.io/gridatlas/data/offtakers_filtered_202610290317.geojson',DSHA='b31a369e51040aa86f5ca699a003c0fc8a7f43e71e9d74868c77e1db783121cb',
-/// byte cap of the pinned data (about twice the 2,290,565 B file): the read is aborted past it and nothing is hashed or parsed (R-otsec ORS2)
+DATA='https://ventusltd.github.io/gridatlas/data/offtakers_filtered_202610290945.geojson',DSHA='6fc20e04fdcaadc55d723354848bcf77d3871e9d088a29cbf7ea3a76890b6730',
+/// byte cap of the pinned data (about twice the 2,288,733 B file): the read is aborted past it and nothing is hashed or parsed (R-otsec ORS2)
 DCAP=5e6,
 SRC='gridatlas-offtakers',LAYER='l-gridatlas-offtakers',GLOW=SRC+'-glow',HIT=SRC+'-hit',LINKS='l-gridatlas-offtakers-links',
 /// class: [chip label, fill, stroke, radius z6, radius z12, on by default]; s = the NAEI-listed small water works (a sub-chip)
-CLS={a:['Industry','#e07b39','#3a1d0a',3,6,1],b:['Power stations','#f2c14e','#3a1d0a',3.5,7,1],c:['Data centres','#2ec4b6','#ffffff',3,6,1],d:['Water (large)','#4f86c6','rgba(0,0,0,0)',3,5,1],s:['Water (listed, small)','#4f86c6','rgba(0,0,0,0)',3,5,0],e:['Campus/CHP sites','#a26769','#3a1d0a',3,5,1]},
+CLS={a:['Industry','#e07b39','#3a1d0a',3,6,1],b:['Power stations','#f2c14e','#3a1d0a',3.5,7,1],c:['Data centres','#2ec4b6','#ffffff',3,6,1],d:['Water (large)','#4f86c6','rgba(0,0,0,0)',3,5,1],s:['Water (listed, small)','#4f86c6','rgba(0,0,0,0)',3,5,0],e:['Campus/CHP sites','#a26769','#3a1d0a',3,5,0]},
 CK='abcdse'.split(''),
 /// power-station status groups (chips): operating, closing, closed or converted (a hollow ring), unknown
 BST={op:'Operating (2023)',cl:'Closing',cc:'Closed/converted',un:'Unknown'},BK=Object.keys(BST),
 TITLE='Potential offtakers',BASE='Potential offtakers (open registers)',
-FOOT='Sites listed in open registers (NAEI, GPPD) and OpenStreetMap. A listing is not electricity demand. Distances are straight lines. Vicinity screening only.',
+FOOT='Sites listed in open registers (NAEI, GPPD) and OpenStreetMap. A listing is not electricity demand. Distances are straight lines. Vicinity screening only. Contains OpenStreetMap data © OpenStreetMap contributors, ODbL 1.0 (openstreetmap.org/copyright).',
 LEG='Dot size: emission band (NAEI 2023) or installed MW (GPPD). Hollow ring: closed, closing or converted station.',
 HEAD='Potential offtaker (screening): not a confirmed demand, contract or connection.',
 SCR='Screening · straight-line distance, not a cable route. Vicinity only.',

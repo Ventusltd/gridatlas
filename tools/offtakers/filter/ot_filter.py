@@ -21,7 +21,7 @@ Outputs (out/): offtakers_filtered.geojson, excluded_counts.json, top20_per_clas
 import argparse, csv, hashlib, json, math, os, re, sys
 from collections import Counter, defaultdict, OrderedDict
 
-GENERATION = "OT-filter-2026-10-29"
+GENERATION = "OT-filter-2026-10-29+R-otdata"
 NAEI_URL = "https://naei.energysecurity.gov.uk/data/maps/emissions-point-sources"
 NAEI_LIC = "OGL v3.0 (NAEI site: 'published by Defra, DESNZ and the Devolved Governments under the Open Government Licence')"
 OSM_LIC = "ODbL 1.0, (c) OpenStreetMap contributors (open, attribution + share-alike; not in the owner's OGL/CC-BY/CC0 list: owner to confirm)"
@@ -116,13 +116,14 @@ CAMPUS_KW = r"airport|naval base|port of|dockyard|university|hospital|infirmary|
 
 def power_subclass(name, operator, t):
     s = f"{name} {operator}".lower()
-    if re.search(r"nuclear|hinkley|heysham|hartlepool|torness|sizewell|dungeness|hunterston|wylfa|oldbury|british energy|nnb generation|edf energy nuclear", s):
+    if re.search(r"nuclear|hinkley|heysham|hartlepool|torness|sizewell|dungeness|hunterston|wylfa|oldbury-on-severn|british energy|nnb generation|edf energy nuclear", s) \
+            and not re.search(r"\bchp\b|standby|\bstor\b", s):  # R-otdata: Fellside CHP (Sellafield) and Oldbury (W. Midlands) standby are not nuclear
         return "nuclear"
     if re.search(r"biomass|renewable energy plant|steven's croft|markinch|lynemouth|drax|wood|pellet", s):
         return "biomass"
     if re.search(r"landfill|biogas|anaerobic|sewage gas", s):
         return "landfill_biogas"
-    if re.search(r"efw|energy from waste|energy recovery|\berf\b|incinerat|waste", s):
+    if re.search(r"efw|energy from waste|energy recovery|\berf\b|incinerat|waste|multifuel|\bmf[12]\b|\bmfe\b", s):  # R-otdata: Ferrybridge MF1/MF2 are multifuel EfW
         return "energy_from_waste"
     if re.search(r"\bchp\b|cogeneration|energy centre|heat (&|and) power|district|heat network|hospital|university|infirmary", s):
         return "chp_energy_centre"
@@ -176,7 +177,7 @@ def load_status(path):
             if line.startswith("#") or not line.strip(): continue
             rows.append(line)
     rd = csv.DictReader(rows)
-    return [dict(rx=re.compile(r["match_regex"], re.I), status=r["status"], date=r["status_date"],
+    return [dict(rx=re.compile(r["match_regex"], re.I), status=r["status"], date=r["status_date"] or None,
                  note=r["fuel_note"], url=r["source_url"], verified=r["verified_in_session"]) for r in rd]
 
 def load_dukes(path):
@@ -300,7 +301,7 @@ def main():
 
     def status_of(name):
         for st in status_rows:
-            if st["rx"].search(name): return st["status"] + st["date"]
+            if st["rx"].search(name): return st["status"] + (st["date"] or "")
         return None
 
     excluded = Counter(); reasons = defaultdict(Counter)
@@ -324,15 +325,70 @@ def main():
                 if cls == "B" and status_of(s["name"]) != status_of(r["name"]): continue
                 merged = s; break
         if merged:
-            merged["records"].append(dict(source="NAEI", id=r["id"], name=r["name"], operator=r["operator"], sector=r["sector"]))
+            merged["records"].append(dict(source="NAEI", id=r["id"], name=r["name"], operator=r["operator"], sector=r["sector"],
+                                          lon=round(r["lon"], 6), lat=round(r["lat"], 6), band=band(r["t"])))
             merged["t"] = (merged["t"] or 0) + r["t"]
             if BAND_RANK[band(r["t"])] > BAND_RANK[band(merged["_t_lead"])]: merged["_t_lead"] = r["t"]
             continue
         sites.append(dict(_primary="naei", class_=None, **{"class": cls}, subclass=sub, name=r["name"], operator=r["operator"],
                           lon=r["lon"], lat=r["lat"], country=r["country"], t=r["t"], _t_lead=r["t"], mw=None, fuel=None,
-                          records=[dict(source="NAEI", id=r["id"], name=r["name"], operator=r["operator"], sector=r["sector"])],
+                          records=[dict(source="NAEI", id=r["id"], name=r["name"], operator=r["operator"], sector=r["sector"],
+                                        lon=round(r["lon"], 6), lat=round(r["lat"], 6), band=band(r["t"]))],
                           sources={"naei"}, why=why, osm_corroboration=[]))
     L("naei sites after 100 m grouping", len(sites))
+
+    # 1b. R-otdata site-level merge (class A only). Integrated works are reported to NAEI as one point per process unit
+    #     (Port Talbot: blast furnaces, sinter, coke ovens, BOS, rolling mills, power station, flaring). Rule: two class-A NAEI
+    #     sites join when (i) same normalised operator after OPERATOR_ALIASES, (ii) they share a site-name token that is not
+    #     a process/generic word, and (iii) some record of one lies within SITE_LINK_M of some record of the other (single
+    #     linkage). Same subclass is not required inside one operator's works, but class must match. Every NAEI record is
+    #     kept in records[] with its own coordinates and band; the point is the record with the largest NAEI figure.
+    SITE_LINK_M = 1500
+    PROCESS_WORDS = {"blast", "furnaces", "furnace", "sinter", "coke", "ovens", "oxygen", "rolling", "mill", "flaring", "bfg", "cog",
+                     "integrated", "iron", "steel", "steelworks", "morfa", "appleby", "boiler", "house", "road", "park", "industrial",
+                     "estate", "lane", "north", "south", "east", "west", "new", "old", "unit", "units", "terminal", "terminals", "refinery", "complex",
+                     "brickworks", "factory", "quarry", "manufacturing", "processes", "sections", "package", "boilers", "pharmaceutical",
+                     "cement", "oil", "gas", "sodium", "carbonate", "lime", "kiln", "kilns", "glassworks", "papermill", "mills"}
+    OPERATOR_ALIASES = {"corus": "tata steel"}  # Tata Steel acquired Corus in 2007; NAEI still carries one Port Talbot row as Corus UK Ltd
+    def opkey(o): k = norm(o); return OPERATOR_ALIASES.get(k, k)
+    def sitetok(n): return tokens(n) - PROCESS_WORDS
+    for s in sites:
+        s["_pts"] = [(s["lon"], s["lat"])]
+    merged_any = True; n_site_merges = 0
+    while merged_any:
+        merged_any = False
+        A = [s for s in sites if s["class"] == "A" and s["_primary"] == "naei" and not unknown(s["operator"])]
+        for i, sa in enumerate(A):
+            for sb in A[i + 1:]:
+                if opkey(sa["operator"]) != opkey(sb["operator"]): continue
+                if not (set().union(*(sitetok(r["name"]) for r in sa["records"])) & set().union(*(sitetok(r["name"]) for r in sb["records"]))): continue
+                if min(hav_km(p, q) for p in sa["_pts"] for q in sb["_pts"]) * 1000 > SITE_LINK_M: continue
+                keep, drop = (sa, sb) if (sa["_t_lead"] or 0) >= (sb["_t_lead"] or 0) else (sb, sa)
+                keep["records"].extend(drop["records"]); keep["_pts"].extend(drop["_pts"])
+                keep["t"] = (keep["t"] or 0) + (drop["t"] or 0)
+                keep["osm_corroboration"].extend(drop["osm_corroboration"])
+                keep.setdefault("_merged_names", [keep["name"]]).extend(drop.get("_merged_names", [drop["name"]]))
+                sites.remove(drop); merged_any = True; n_site_merges += 1
+                break
+            if merged_any: break
+    for s in sites:
+        if len(s.get("_merged_names", [])) > 1:
+            # site name: the record names if they are all the same, else their longest common leading words (e.g. "Port
+            # Talbot"), else the anchor's name; then "(site: N NAEI points)" so the card says it is a merge
+            nms = [r["name"] for r in s["records"]]
+            if len(set(nms)) == 1: s["name"] = nms[0]
+            else:
+                ws = [n.replace(",", " ").split() for n in nms]; pre = []
+                for col in zip(*ws):
+                    if len({w.lower() for w in col}) == 1: pre.append(col[0])
+                    else: break
+                s["name"] = f"{' '.join(pre) if pre else s['name']} (site: {len(nms)} NAEI points)"
+            s["operator"] = next((r["operator"] for r in s["records"] if opkey(r["operator"]) == opkey(s["operator"]) and norm(r["operator"]) not in OPERATOR_ALIASES), s["operator"])
+            s["site_merge"] = dict(rule=f"R-otdata site merge: same operator (aliases {OPERATOR_ALIASES}), shared site-name token, "
+                                        f"records linked within {SITE_LINK_M} m; point = record with the largest NAEI figure",
+                                   n_records=len(s["records"]),
+                                   max_spread_m=round(max(hav_km(p, q) for p in s["_pts"] for q in s["_pts"]) * 1000))
+    L("R-otdata site-level merges (class A)", n_site_merges, "-> naei sites", len(sites))
 
     # 2. Power stations from GPPD (CC BY) and OSM power=plant (ODbL): merge into NAEI B sites within 1 km with a shared name token,
     #    otherwise add as new B sites.
@@ -349,8 +405,30 @@ def main():
             if status_of(s["name"]) != status_of(rec["name"]): continue
             score = (len(shared), -d)
             if best is None or score > best[0]: best = (score, s)
+        GENERIC = {"landfill", "road", "park", "industrial", "estate", "farm", "lane", "street", "stor", "reserve", "standby", "gas",
+                   "biogas", "solar", "wind", "battery", "storage", "north", "south", "east", "west", "new", "ocgt", "peaking"}
+        if not best and rec["src"] == "gppd" and not unknown(rec["name"]):
+            # R-otdata: GPPD coordinates (GEODB/CARMA) can be 2.5-5 km off (Kilroot, Spalding, Burghfield, Chickerell, Slough,
+            # Baglan Bay OCGT). Accept a farther match only when it is unambiguous: exactly one B site within OFFSET_KM shares a
+            # name token, and the curated status agrees. The record keeps its own coordinates in records[].
+            OFFSET_KM = 5.0
+            cand = [s for s in sites if s["class"] == "B" and (tokens(s["name"]) & tokens(rec["name"])) - GENERIC
+                    and hav_km((s["lon"], s["lat"]), (rec["lon"], rec["lat"])) <= OFFSET_KM]
+            if len(cand) == 1 and status_of(cand[0]["name"]) == status_of(rec["name"]):
+                best = ((0, 0), cand[0]); rec = dict(rec, merge_note=f"R-otdata offset merge, {hav_km((cand[0]['lon'], cand[0]['lat']), (rec['lon'], rec['lat'])):.2f} km")
+        if not best and rec["src"] == "osm_pp" and status_of(rec["name"]) is None:
+            # R-otdata: an OSM power=plant point with no curated status of its own (e.g. "Heysham Nuclear Power Station", which
+            # covers Heysham 1 and 2) next to a curated site is corroboration, not a new site with "status unknown".
+            near = [s for s in sites if s["class"] == "B" and (tokens(s["name"]) & tokens(rec["name"])) - GENERIC
+                    and status_of(s["name"]) is not None and hav_km((s["lon"], s["lat"]), (rec["lon"], rec["lat"])) <= 0.5]
+            if near:
+                s = min(near, key=lambda s: hav_km((s["lon"], s["lat"]), (rec["lon"], rec["lat"])))
+                s["osm_corroboration"].append(dict(source="OSM power=plant", id=rec["id"], name=rec["name"], operator=rec["operator"],
+                                                   note="R-otdata: corroboration only; no curated status of its own"))
+                s["sources"].add("osm_pp"); return True
         if best:
-            s = best[1]; s["records"].append(dict(source=src_label, **{k: rec.get(k) for k in ("id", "name", "operator", "fuel", "mw", "year")}))
+            s = best[1]; s["records"].append(dict(source=src_label, **{k: rec.get(k) for k in ("id", "name", "operator", "fuel", "mw", "year")},
+                                                  lon=round(rec["lon"], 6), lat=round(rec["lat"], 6), **({"merge_note": rec["merge_note"]} if rec.get("merge_note") else {})))
             s["sources"].add(rec["src"])
             if rec.get("mw") and not s["mw"]: s["mw"] = rec["mw"]; s["fuel"] = rec.get("fuel")
             fuel_sub = {"Coal": "coal", "Nuclear": "nuclear", "Oil": "oil"}.get(rec.get("fuel"))
@@ -358,6 +436,23 @@ def main():
             return True
         return False
 
+    # R-otdata: GPPD rows whose coordinates are wrong beyond any distance rule. Each is folded, as a record, into the named
+    # NAEI site; the reason is kept in the record. Found by evidence/R-otdata/qa_points.py (Natural Earth 10 m land test).
+    GPPD_RECORD_FIX = {
+        "GBR1000412": ("Bowmore", "GPPD point 56.1833,-2.5667 lies 7 km out in the North Sea off Fife; Bowmore (Islay) is the NAEI site"),
+    }
+    for g in list(gppd):
+        fx = GPPD_RECORD_FIX.get(g["id"])
+        if not fx: continue
+        tgt = [s for s in sites if s["class"] == "B" and norm(s["name"]) == norm(fx[0]) and "naei" in s["sources"]]
+        if len(tgt) == 1:
+            tgt[0]["records"].append(dict(source="GPPD", id=g["id"], name=g["name"], operator=g["operator"], fuel=g["fuel"], mw=g["mw"],
+                                          year=g["year"], lon=g["lon"], lat=g["lat"], merge_note="R-otdata: " + fx[1]))
+            tgt[0]["sources"].add("gppd")
+            if g["mw"] and not tgt[0]["mw"]: tgt[0]["mw"] = g["mw"]; tgt[0]["fuel"] = g["fuel"]
+            fuel_sub = {"Coal": "coal", "Nuclear": "nuclear", "Oil": "oil"}.get(g["fuel"])
+            if fuel_sub and tgt[0]["subclass"] in ("thermal_unspecified", "gas_ccgt_large", "gas_other"): tgt[0]["subclass"] = fuel_sub
+            gppd.remove(g); excluded["gppd:bad_coordinates_folded_into_naei"] += 1
     for g in sorted(gppd, key=lambda g: g["id"]):
         if merge_into_B(g, "GPPD"): continue
         sub = {"Nuclear": "nuclear", "Coal": "coal", "Oil": "oil", "Cogeneration": "chp_energy_centre"}.get(g["fuel"])
@@ -366,6 +461,20 @@ def main():
                           country=None, t=None, _t_lead=None, mw=g["mw"], fuel=g["fuel"],
                           records=[dict(source="GPPD", id=g["id"], name=g["name"], operator=g["operator"], fuel=g["fuel"], mw=g["mw"], year=g["year"], gppd_source=g["gppd_source"])],
                           sources={"gppd"}, why="GPPD GBR thermal plant (DUKES-derived), not in NAEI 2023", osm_corroboration=[]))
+    # 2b. R-otdata: point corrections (before OSM power=plant matching, so OSM points meet the corrected point) where the NAEI coordinate is demonstrably off and an open (CC BY) coordinate of the same
+    #     plant is in records[]. The original point stays in records[] (lon/lat) for provenance.
+    POINT_FROM_RECORD = {
+        "8981": ("GBR1000002", "NAEI Kilroot point is 3.5 km SW of the plant, at the shore of Belfast Lough; GPPD GBR1000002 "
+                               "(54.7255,-5.7653) agrees with OSM and the published station location to about 0.1 km"),
+    }
+    for s in sites:
+        ids = {str(r.get("id")) for r in s["records"]}
+        for naei_id, (rec_id, why_pt) in POINT_FROM_RECORD.items():
+            if naei_id in ids and rec_id in ids:
+                r = next(r for r in s["records"] if r.get("id") == rec_id)
+                s["point_note"] = f"R-otdata: point taken from {r['source']} {rec_id}; {why_pt}"
+                s["lon"], s["lat"] = r["lon"], r["lat"]
+
     for o in sorted(osm_pp, key=lambda o: o["id"]):
         if merge_into_B(o, "OSM power=plant"): continue
         if unknown(o["name"]):
@@ -390,7 +499,11 @@ def main():
         for s in sites:
             if s["_primary"] != "naei": continue
             if (s["class"] == "D") != is_water: continue
-            if hav_km((s["lon"], s["lat"]), (o["lon"], o["lat"])) <= 0.5: near = s; break
+            pts = s.get("_pts") or [(s["lon"], s["lat"])]
+            dmin = min(hav_km(p, (o["lon"], o["lat"])) for p in pts)
+            # R-otdata: a strong-keyword OSM works polygon point inside a merged NAEI works (site_merge) corroborates it up to 2 km
+            if dmin <= 0.5 or (s.get("site_merge") and dmin <= 2.0 and re.search(STRONG, f"{o['name']} {o['type']}".lower())
+                               and tokens(o["name"]) & set().union(*(tokens(r["name"]) for r in s["records"]))): near = s; break
         if near:
             near["osm_corroboration"].append(dict(source="OSM", id=o["id"], name=o["name"], type=o["type"], operator=o["operator"]))
             near["sources"].add("osm_ind"); excluded[f"osm_ind:{'water' if is_water else 'industrial'}_merged_into_naei"] += 1; continue
@@ -412,6 +525,9 @@ def main():
     # 4. OSM data centres: group within 250 m; corroborate NAEI C sites within 500 m.
     dc_groups = []
     for o in sorted(osm_dc, key=lambda o: o["id"]):
+        if re.search(r"cable landing|landing station", o["name"], re.I):
+            # R-otdata: submarine-cable landing stations are tagged telecom=data_center in OSM but are small repeater buildings
+            excluded["osm_dc:cable_landing_station"] += 1; continue
         near = None
         for s in sites:
             if s["class"] == "C" and s["_primary"] == "naei" and hav_km((s["lon"], s["lat"]), (o["lon"], o["lat"])) <= 0.5: near = s; break
@@ -435,16 +551,39 @@ def main():
         g["subclass"] = "data_centre_campus" if len(g["records"]) >= 2 else "data_centre"
     sites.extend(dc_groups)
 
-    # 5. Status for class B
+    # 4b. R-otdata: one site listed twice under two classes (identical coordinates, same normalised operator), e.g. Queens
+    #     Medical Centre CHP (NAEI "Processing & distribution of natural gas" <1 kt and "Public administration" 10-25 kt).
+    #     The row with the larger NAEI figure keeps its class; the other becomes a record of it.
+    by_pt = defaultdict(list)
+    for s in sites: by_pt[(round(s["lon"], 6), round(s["lat"], 6))].append(s)
+    for grp in by_pt.values():
+        for sa in list(grp):
+            for sb in list(grp):
+                if sa is sb or sa not in sites or sb not in sites or sa["class"] == sb["class"]: continue
+                if unknown(sa["operator"]) or norm(sa["operator"]) != norm(sb["operator"]): continue
+                keep, drop = (sa, sb) if (sa["_t_lead"] or 0) >= (sb["_t_lead"] or 0) else (sb, sa)
+                for r in drop["records"]: keep["records"].append(dict(r, merge_note=f"R-otdata: same site listed as class {drop['class']} ({drop['subclass']})"))
+                keep["t"] = (keep["t"] or 0) + (drop["t"] or 0); keep["sources"] |= drop["sources"]
+                sites.remove(drop); excluded[f"site:cross_class_duplicate_{drop['class']}_into_{keep['class']}"] += 1
+
+    # 5. Status for class B (and R-otdata: a few verified industrial-site notes; NAEI 2023 predates them)
+    A_STATUS = [
+        (r"^port talbot \(site.*tata steel", "listed site (NAEI 2023); blast furnaces closed 2024 (last on 30 Sep 2024); electric arc furnace planned by Tata",
+         "2024-09-30", "https://itv.com/news/wales/2024-09-30/steelmaking-in-wales-ends-for-now-as-port-talbot-plant-closes-final-furnace"),
+    ]
     for s in sites:
         if s["class"] != "B":
-            s["status"] = "listed site (status not tracked)"; s["status_date"] = None; s["status_source"] = None; continue
+            s["status"] = "listed site (status not tracked)"; s["status_date"] = None; s["status_source"] = None
+            for rx, st_txt, st_date, st_url in A_STATUS:
+                if re.search(rx, f"{s['name']} {s['operator']}", re.I):
+                    s["status"] = st_txt; s["status_date"] = st_date; s["status_source"] = st_url; break
+            continue
         nm = s["name"]; hit = None
         for st in status_rows:
             if st["rx"].search(nm): hit = st; break
         if hit:
             s["status"] = hit["status"]; s["status_date"] = hit["date"]
-            s["status_source"] = hit["url"] + (" (curated; not re-verified in session)" if hit["verified"] == "no" else "")
+            s["status_source"] = hit["url"] + {"no": " (curated; not re-verified in session)", "partial": " (curated; date only to the precision shown)"}.get(hit["verified"], "")
         elif "naei" in s["sources"]:
             s["status"] = "operating 2023 (reported emissions to NAEI 2023)"; s["status_date"] = "2023"; s["status_source"] = NAEI_URL
         else:
@@ -500,7 +639,7 @@ def main():
             ("sources", [dict(name=n, url=u, licence=l) for n, u, l in lic]),
             ("screening_note", "potential offtaker (screening): not a confirmed demand, contract or connection"),
         ])
-        for k in ("dukes_5_11", "tec_register"):
+        for k in ("dukes_5_11", "tec_register", "site_merge", "point_note"):
             if k in s: props[k] = s[k]
         feat = OrderedDict([("type", "Feature"), ("geometry", {"type": "Point", "coordinates": [round(s["lon"], 6), round(s["lat"], 6)]}), ("properties", props)])
         rank_values.append((s["mw"] or 0, s["_t_lead"] or 0))
@@ -511,6 +650,7 @@ def main():
                       ("inputs_sha256", inputs),
                       ("naei_manifest", manifest),
                       ("caveat", "Sites listed in open registers. A listing is not electricity demand, a contract or a grid connection. Vicinity screening only."),
+                      ("licence", "ODbL-1.0 (Open Database License) for this database as a whole: it contains and is derived from OpenStreetMap data, (c) OpenStreetMap contributors, https://www.openstreetmap.org/copyright. NAEI point sources: OGL v3.0, (c) Crown copyright, Defra/DESNZ. WRI Global Power Plant Database v1.3.0: CC BY 4.0. Per-feature sources[] give each record's licence."),
                       ("features", features)])
     with open(os.path.join(a.out, "offtakers_filtered.geojson"), "w", encoding="utf-8") as fh:
         json.dump(fc, fh, ensure_ascii=False, separators=(",", ":"), sort_keys=False)
