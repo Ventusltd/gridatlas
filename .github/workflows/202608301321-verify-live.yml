@@ -305,6 +305,7 @@ jobs:
     timeout-minutes: 30
     permissions:
       contents: read
+      issues: write   # the "live-bytes" issue only (tools/ci/live-bytes-issue.mjs)
     concurrency:
       group: gridatlas-live-bytes-${{ github.ref }}
       cancel-in-progress: false
@@ -347,6 +348,7 @@ jobs:
           echo "generation=$(jq -r .generation work/compare/atlas/current.json)" | tee -a "$GITHUB_OUTPUT"
 
       - name: Prove the public site serves the committed bytes
+        id: prove
         env:
           EVENT: ${{ github.event_name }}
           TARGET_SHA: ${{ steps.target.outputs.sha }}
@@ -362,6 +364,7 @@ jobs:
             head="$(git ls-remote origin refs/heads/main | cut -f1)"
             if [ -n "$head" ] && [ "$head" != "$TARGET_SHA" ]; then
               echo "::warning title=live-bytes superseded::main moved from $TARGET_SHA to $head during verification; the run for $head is authoritative."
+              echo "superseded=true" >> "$GITHUB_OUTPUT"
               exit 0
             fi
           fi
@@ -373,6 +376,22 @@ jobs:
         run: |
           test -f work/live-bytes.json || exit 0
           jq -r '"### Live bytes: \(.status)\n\n\(.paths_matched)/\(.paths_checked) paths byte-identical at \(.base_url) for commit `\(.commit)` (generation \(.generation)) after \(.attempts) attempt(s).\n" , (.problems[] | "- problem: \(.)"), (.mismatches[] | "- MISMATCH `\(.path)` (\(.why)): HTTP \(.http), committed \(.expected.bytes) B, live \(.live.bytes // "none") B")' work/live-bytes.json >> "$GITHUB_STEP_SUMMARY"
+
+      # One open issue labelled "live-bytes" while the public site does not
+      # serve main's bytes; closed by the next passing check (docs/OPERATIONS.md).
+      # Only for main: a dispatch that compares another ref is an ad-hoc check.
+      # A superseded run (main moved) leaves the issue to the newer run.
+      - name: Open, refresh or close the live-bytes issue
+        if: >-
+          always()
+          && (github.event_name == 'push' || inputs.compare_ref == 'main' || inputs.compare_ref == '')
+        continue-on-error: true
+        env:
+          GH_TOKEN: ${{ github.token }}
+          OUTCOME: ${{ steps.prove.outputs.superseded == 'true' && 'superseded' || steps.prove.outcome }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        shell: bash
+        run: node tools/ci/live-bytes-issue.mjs --report work/live-bytes.json --outcome "$OUTCOME" --run-url "$RUN_URL"
 
       - name: Retain live byte evidence
         if: always()

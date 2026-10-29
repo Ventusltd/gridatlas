@@ -25,6 +25,11 @@
  *                     changes only with atlas/current.json, to the loader of
  *                     the generation going live (docs/LIGHTNING-CARTRIDGE.md)
  *   loader-equivalence  tools/proofs/loader-equivalence.proof.mjs
+ *   lightning-source  node tools/lightning/build.mjs --check: the newest
+ *                     lightning overlay generation is listed in
+ *                     tools/lightning/generations.json, and every listed
+ *                     generation rebuilds from tools/lightning/src byte for
+ *                     byte (docs/LIGHTNING-SOURCE.md)
  *   lightning-suites  tools/ci/lightning/*.test.mjs against the live overlay
  *                     module, every overlay module the PR adds or edits, the
  *                     overlay of every pinned generation the PR adds, and,
@@ -217,6 +222,13 @@ group('loader-registry', () => {
     : `${1 + dirs.length} served loader(s) registered (${Object.entries(count).map(([k, v]) => `${k} ${v}`).join(', ')}); each supports its own composition`);
 });
 step('loader-equivalence', ['node', 'tools/proofs/loader-equivalence.proof.mjs']);
+
+// ---------------------------------------------------------------- 6b
+// The overlay modules are built from tools/lightning/src, not edited in
+// atlas/modules/: the newest generation must rebuild from the committed
+// source byte for byte, so the source in the repository is the source of
+// the bytes that ship.
+step('lightning-source', ['node', 'tools/lightning/build.mjs', '--check']);
 
 // ---------------------------------------------------------------- 7
 // Each suite may declare, in its first lines, `// @gate-min-generation <stamp>`:

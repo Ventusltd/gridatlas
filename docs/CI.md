@@ -52,6 +52,10 @@ everything that is wrong. The job summary shows a table of the results.
      `node:vm` over every route: v2 writes byte-for-byte what v1 writes for
      every `replace-script`-only composition, v1 refuses a modular one, and v2
      fails closed on a bad `after-cartridge` entry.
+   **lightning-source** (run after loader-equivalence): `node tools/lightning/build.mjs --check`.
+   The newest `atlas/modules/*-uk-lightning-overlay.js` must be listed in
+   `tools/lightning/generations.json`, and every listed generation must rebuild
+   from `tools/lightning/src/` byte for byte. See `docs/LIGHTNING-SOURCE.md`.
 7. **lightning-suites**: every `tools/ci/lightning/*.test.mjs` runs with
    `node --test` against these overlay modules:
    - the live overlay module: the file the live `uk-lightning-overlay`
