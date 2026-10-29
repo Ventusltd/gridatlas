@@ -27,9 +27,10 @@ let g=r.idx?r.idx.gen:r.meta?DP(r.meta.query_end_utc):NaN,f=r.idx&&r.idx.lastSca
     }///
   },
 /// DN: the cell caption (LR-words W1 with LRB3's reason): what the map shows, what is counted but not drawn.
+/// M5 (V-geometry G2): cells are 0.1° and drawn only near REPD sites, so the caption says it is not a national density map.
 DN=r=>{///
     let g=r.gd;///
-    return`map shows ${N(g.k)} in ${pl(g.fc.features.length,'≈10 km cell')} within 30 km of a REPD site; ${N(g.n-g.k)} further out counted, not drawn${g.st?` · ${pl(g.st,'day')} not yet mapped (unknown${g.e?'; '+g.e:''})`:''} · tap a cell for nearest substations`///
+    return`map limited to ≤30 km of REPD sites, not a national density map: ${N(g.k)} in ${pl(g.fc.features.length,'0.1° cell')}; ${N(g.n-g.k)} counted, not drawn${g.st?` · ${pl(g.st,'day')} not yet mapped (unknown${g.e?'; '+g.e:''})`:''} · tap a cell for nearest substations`///
   },
 /// cp: the caption lines window, days, actual, flashes, refresh, searched, warning and footer. Every number is either
 /// measured or named unknown; a day never searched is never zero (complexity 82: see reports/V-maintain.md).

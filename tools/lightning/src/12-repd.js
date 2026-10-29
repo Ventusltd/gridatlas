@@ -39,7 +39,8 @@ RpG=g=>`${g.km.toFixed(2)} km · ${RpU(g.parts,RpN).sort().join(' + ')}${RpMW(Rp
 Ra=(c,s)=>setTimeout(()=>{if(c.lv)c.lv.textContent=s},99),
 /// Rp: the REPD list of a lightning card: every register row is measured once (all 10,784 rows), then RpR renders it.
 Rp=(m,c,x,y,M)=>{
-  let pd=ap(c.out,el('div','','REPD projects: loading…')),box=ap(c.out,el('div'));Ra(c,pd.textContent);
+  /// M6: the sites come first in the open card (above the substations); the Area summary and the chips go below (c.b2).
+  let pd=el('div','','REPD projects: loading…'),box=el('div'),o=c.out;o.insertBefore(box,o.insertBefore(pd,o.children[0]).nextSibling);c.b2=ap(o,el('div'));Ra(c,pd.textContent);
   RG(m,M).then(G=>{
     if(S.pp!==c||!c.out.contains(pd))return;
     // every register row is measured once; exact duplicate rows (same point, same properties) count once
@@ -48,7 +49,7 @@ Rp=(m,c,x,y,M)=>{
           let km=M.distanceKm(x,y,...a);///
           if(km<=40){///
             let k=a+JSON.stringify(p);///
-            if(!seen.has(k)){seen.add(k);///
+            if(!seen.has(k)){seen.add(k);RpP.set(p,a);///
               all.push({a,p,km})}///
           }///
         }
@@ -79,13 +80,14 @@ RpR=(m,c,pd,box)=>{
     nm=v=>(RpF.st.find(q=>q[0]===v)||RpF.te.find(q=>q[0]===v))[1],all=f.st==='all'&&f.te==='all',
     fa=all?'all statuses':[f.st,f.te].filter(v=>v!=='all').map(nm).join(' · '),
     n10=sel.filter(r=>r.km<=10),nc10=n10.filter(r=>!(r.p.capacity>0)).length,W=[...groups.values()].reduce((s,g)=>s+(g.km<=10?RpW(g.parts):0),0);
-  pd.textContent=`${P.length?pl(P.length,'nearest REPD site')+(parts>P.length?` (${N(parts)} projects; those at one point grouped)`:''):'No REPD site'} within 40 km of this ${c.wh}, straight-line${all?'':` (${fa})`}. Not evidence any project was struck.`;
-  box.textContent='';
-  // unknown is not zero: a project without a stated capacity is never summed as 0 MW
-  if(sel.length)ap(box,el('div','margin-top:4px;color:#ffc48a',`Within 10 km: ${pl(n10.length,'project')}${n10.length?' · '+(W>0?`${N(W)} MW stated (${fa})`+(nc10?`, ${N(nc10)} not stated`:''):'capacity not stated'):''} · within 40 km: ${pl(sel.length,'project')} · straight-line distance only, not impact · REPD: DESNZ, April 2026, OGL v3.0`));
+  pd.textContent=`Screening · ${P.length?pl(P.length,'nearest REPD site')+(parts>P.length?` (${N(parts)} projects; those at one point grouped)`:''):'No REPD site'} within 40 km of this ${c.wh}, straight line${all?'':` (${fa})`}. Proximity only, not impact; not evidence any project was struck.`;
+  /// M6: box holds the rows (first, right under the heading), b2 the 10 km line, the Area summary and the chips.
+  let b2=c.b2;box.textContent=b2.textContent='';
   let ol=P.length&&P.length<10?ap(box,el('div','',`Only ${pl(P.length,'site')} within the 40 km search radius${all?'':' for this filter'}.`)).textContent:'';
+  // unknown is not zero: a project without a stated capacity is never summed as 0 MW
+  if(sel.length)ap(b2,el('div','margin-top:8px;color:#ffc48a',`Within 10 km: ${pl(n10.length,'project')}${n10.length?' · '+(W>0?`${N(W)} MW stated, ${all?'mixed statuses':fa}`+(nc10?`, ${N(nc10)} not stated`:''):'capacity not stated'):''} · within 40 km: ${pl(sel.length,'project')}`));RpY(c,b2);
   for(let[k,defs,lb]of[['st',RpF.st,'Status'],['te',RpF.te,'Tech']]){
-    let row=ap(box,el('div','display:flex;flex-wrap:wrap;align-items:center;gap:4px;margin:6px 0 2px'));///
+    let row=ap(b2,el('div','display:flex;flex-wrap:wrap;align-items:center;gap:4px;margin:6px 0 2px'));///
       row.setAttribute('role','group');///
       row.setAttribute('aria-label','REPD '+lb.toLowerCase()+' filter');
     ap(row,el('span','color:#8b9aa1;font-size:11px;min-width:40px',lb));
@@ -99,11 +101,12 @@ RpR=(m,c,pd,box)=>{
             if(f[k]!==v&&S.pp===c){///
               f[k]=v;///
               RpR(m,c,pd,box);///
-              box.querySelector(`[data-lightning-repd-filter="${k}:${v}"]`)?.focus?.()///
+              b2.querySelector(`[data-lightning-repd-filter="${k}:${v}"]`)?.focus?.()///
             }///
           })///
       }}
-  for(let g of P){
+  /// M5: sl collects one record slot per listed project (grouped sites expanded), filled by RpH below.
+  let sl=[];for(let g of P){
     let p=g.parts[0],one=g.parts.length===1,
       b=ap(box,el('a','display:block;padding:14px 0 13px;border-top:1px solid #1d3238;color:#ffb27a',`${RpG(g)}${RpC(g.parts)} · ${one?cs(p.status)+' · '+cs(p.name):g.parts.length+' projects at this point:'}`));
     // the href keeps the original coordinate deep link (open in a new tab); a plain tap stays in this page
@@ -115,8 +118,10 @@ RpR=(m,c,pd,box)=>{
           if(e.preventDefault)e.preventDefault();///
           RpV(m,c,g)///
         });
-    if(!one)for(let q of g.parts)ap(box,el('div','padding:0 0 8px 12px;color:#c9a27e;font-size:11px',`${RpN(q)}${RpMW(+q.capacity)}${RpC([q])} · ${cs(q.status)} · ${cs(q.name)}`))}
-  c.sm.textContent=c.smb+' · '+(P.length?pl(P.length,'nearest REPD site'):'no REPD site within 40 km')+(all?'':` (${fa})`);///
+    for(let q of g.parts){one||ap(box,el('div','padding:0 0 2px 12px;color:#c9a27e;font-size:11px',`${RpN(q)}${RpMW(+q.capacity)}${RpC([q])} · ${cs(q.status)} · ${cs(q.name)}`));sl.push([ap(box,el('div')),q])}}
+  /// M5: the Record source line (V-tiers R3 with the two extracts named), then fill the record slots.
+  ap(box,el('div','margin-top:6px;color:#8b9aa1;font-size:11px','Record · REPD (DESNZ, OGL v3.0): the map register is the Apr 2026 extract; address, ref, operator and planning fields are from the Jul 2026 extract the map\'s project search reads, shown only on an exact point, name, MW and type match. Status as registered, not as built.')).dataset.tier='record';RpH(c,sl);
+  c.n=P.length;c.u();c.sm.textContent=c.smb+' · '+(P.length?pl(P.length,'nearest REPD site'):'no REPD site within 40 km')+(all?'':` (${fa})`);///
     Ra(c,pd.textContent+' '+ol);
 ///#if dots
   /// dots (M4b): keep the drawn list for dot taps and say what the map shows.
@@ -198,6 +203,7 @@ RpV=(m,c,g)=>{
         g,///
 ///#else
 ///#endif
-        foot:'REPD register (DESNZ, April 2026 · OGL v3.0) as loaded by the map · lightning = optical flashes, not necessarily ground strikes; not evidence the project was struck.',
+        foot:'Record · REPD (DESNZ, Apr 2026, OGL v3.0). Status as registered, not as built. Lightning: optical flashes, not ground strikes; not evidence the project was struck.',
       back:['◀ back to lightning '+src,()=>{pc();back();S.pp&&S.pp.sm.focus?.()}]});
-  S.pp.querySelector('[data-lightning-back]')?.focus?.()},
+  /// M5: the project view shows each part's record above the substation list (from the cache, or when it arrives).
+  let o=S.pp.out;RpH(S.pp,ps.map(q=>[o.parentNode.insertBefore(el('div'),o),q]));S.pp.querySelector('[data-lightning-back]')?.focus?.()},

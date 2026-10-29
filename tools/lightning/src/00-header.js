@@ -22,6 +22,7 @@
 ///#else
 /* M3: the original REPD map layers of the listed technologies are switched on through their own Layers checkboxes, and only those M3 switched on are switched off again on close, lightning OFF, a period change, LATEST or a new list. */
 ///#endif
+/* M5: every listed REPD project shows its full REPD record (address, postcode, county, region, ref, operator, planning) from the pinned parquet the map's project search reads, joined only on an exact point, name, MW and type match; plus an Area summary. */
 (()=>{'use strict';
 /// Aliases (build-M A3): Math.max/min, Array.isArray, Date.parse (static, no this), appendChild and getBoundingClientRect
 /// helpers, and U, the phrase every unknown count carries. NS is the shared window.__GRIDATLAS_MODULES__ namespace, the only

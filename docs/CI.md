@@ -75,13 +75,18 @@ everything that is wrong. The job summary shows a table of the results.
    on modules of that generation or later; the gate prints a note for the
    modules it skips. The suite/module pairs run side by side (up to 4), because
    the time is spent waiting on real timers, not on the CPU.
+8. **release-tools**: `node --check` of every `tools/release/*.mjs`, and
+   `node --test tools/release/*.test.mjs`, the offline tests of the delivery
+   flow's acceptance and PR-classification rules (docs/RELEASE.md). A broken
+   release script therefore fails the PR that broke it, not the release that
+   needs it.
 
 ## The lightning suites
 
 | suite | tests | modules | time | what it guards |
 | --- | --- | --- | --- | --- |
 | `overlay-latest.test.mjs` | 8 | all | about 1 s | the first ChatGPT findings: OFF at rest, feed revalidation, STALE, coordinate checks, shard integrity, honest 12M and coverage captions |
-| `overlay-engine.test.mjs` | 201 (6 need real data; 9 M3 layer tests or 4 M4b tests skip by module) | 202610290045 on | about 60 s | everything below |
+| `overlay-engine.test.mjs` | 212 (6 need real data; 9 M3 layer tests or 4 M4b tests skip by module) | 202610290246 on | about 75 s | everything below |
 
 `overlay-engine.test.mjs` is the hardening lanes' `test-engine.mjs` as it stood
 at Build M2 (202610282100). It is a superset of their `test-fixes.mjs`. The
@@ -112,6 +117,16 @@ call inside it (M2R-taps T1), plus the landscape dock (M2R-camera fix C) and the
 M4b dot tests. M3 fails them, so it carries `@gate-min-generation 202610290045`.
 The M3 layer tests run on modules that switch layers (M4); the M4b tests run on
 M4b modules (`/* M4b:` in the source), where the M3 layer tests skip.
+Since Build M5 (202610290246; M5b 202610290247) it also carries the M5 tests: the full REPD record of
+each listed project, joined exactly from the pinned `repd_projects_202608290716.parquet` the project
+search reads. A DuckDB stand-in answers the module's SQL from the repository's JSON twin of that parquet,
+`data/repd_browser_registry_202608290716.json` (SHA-256 c8a5c59b…, pinned by the manifest; no new fixture).
+M5 also changes wording on purpose (V-tiers Screening/Record, V-geometry 0.1° cells), so M4 fails the
+edited expectations and the suite carries `@gate-min-generation 202610290246`.
+Build M6 (202610290314; M6b 202610290315) opens the card by default with the 10-site list first, replaces
+the "−" minimise with a "▾ Hide list / ▸ Show 10 sites" toggle and makes record failures a tap-to-retry line
+(tests M6-1..M6-3 and 9 intended expectation edits), so M5 fails them and the suite carries
+`@gate-min-generation 202610290314`.
 When a new build changes a behaviour on purpose, update the affected test in
 the same PR and give the reason in the commit. Do not relax an expectation
 just to pass.

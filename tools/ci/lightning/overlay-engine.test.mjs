@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// @gate-min-generation 202610290045
+// @gate-min-generation 202610290314
 // Vendored from the hardening lanes' test-engine.mjs (Build M2, 202610282100: 176 tests, a superset of
 // test-fixes.mjs), so the PR gate (tools/ci/pr-gate.mjs, docs/CI.md) runs the lightning engine, cell and REPD
 // tests on every overlay module from 202610282100 on. Changes from the source, all mechanical:
@@ -17,6 +17,10 @@
 //   fired moveend, so J1 and LAY1 yield one microtask before reading it) and M2R-camera fix C; the M4 tests (a MapLibre-like
 //   stop() that fires moveend synchronously), the fix-C test and the M4b tests (run on M4b modules only, where the M3 layer
 //   tests are skipped) are appended at the end. The minimum generation is therefore 202610290045: the suite is RED on M3 by design.
+// M5 (202610290246) and M5b: the full REPD record of each listed project (exact join to the pinned parquet the engine's project search
+//   reads), the Area summary, the V-tiers wording (F2, R1-R4) and the V-geometry cell wording; those expectations are updated
+//   in place (I3, LE2-4, L1, L3, L8, LRB1, WORDS, L11, LAY2, REPD1, REPD4, REPD7, C2, C3, C5, a11y) and the M5 tests are appended.
+//   The minimum generation is therefore 202610290246: the suite is RED on M4 by design (wording).
 // The tests below were written fail-first against earlier builds; do not relax an expectation to make a module pass.
 // A new build that changes behaviour on purpose updates the affected test here, in the same PR, with the reason.
 //   LIGHTNING_MODULE=atlas/modules/<gen>-uk-lightning-overlay.js node --test tools/ci/lightning/overlay-engine.test.mjs
@@ -895,8 +899,8 @@ test('I1/J2: the card is docked at the bottom (bar 44 px − and ×), explicit i
   tapFlash(x); const card = x.mapEl.querySelector('[data-lightning-card]'); assert.ok(card);
   const st = card.style.cssText; assert.match(st, /position:absolute/); assert.match(st, /background:#000/); assert.match(st, /color:#e8f4f5/); assert.match(st, /border:1px solid #2f6f75/);
   assert.equal(card.style.bottom, '8px'); assert.equal(card.style.top, undefined);
-  const [mn, close] = card.querySelectorAll('button'); assert.equal(mn.getAttribute('aria-label'), 'Minimise'); assert.match(close.style.cssText, /width:44px;height:44px/); assert.equal(close.getAttribute('aria-label'), 'Close');
-  dispatch(mn, 'click', x.log.errors); assert.equal(card.children[1].style.display, 'none'); assert.equal(mn.getAttribute('aria-expanded'), 'false');
+  const [mn, close] = card.querySelectorAll('button'); assert.equal(mn.getAttribute('aria-label'), 'Hide list'); assert.equal(mn.textContent, '▾ Hide list'); /* M6: a toggle that says what it does (was '−' Minimise) */ assert.match(close.style.cssText, /width:44px;height:44px/); assert.equal(close.getAttribute('aria-label'), 'Close');
+  dispatch(mn, 'click', x.log.errors); assert.equal(card.querySelector('details').open, false); assert.notEqual(card.children[1].style.display, 'none', 'M6: the bar, summary and footer stay'); assert.equal(mn.getAttribute('aria-expanded'), 'false'); assert.match(mn.textContent, /^▸ Show (\d+ sites?|list)$/);
   assert.ok(x.handlers.some(h => h.t === 'resize'), 'no resize listener'); assert.ok(!x.handlers.some(h => h.t === 'move'), 'card still follows move');
   dispatch(close, 'click', x.log.errors); assert.equal(x.mapEl.querySelector('[data-lightning-card]'), null);
 });
@@ -928,7 +932,7 @@ test('I3/J1: tapping a flash fires the original nearestSubstations (>=33 kV, <=4
   const src = x.sources.get('gridatlas-lightning-neon-links'); assert.ok(src, 'no neon links source');
   assert.equal(src.data.features.length, 5); assert.equal(src.data.features[0].properties.colour, '#d8c96a');
   assert.match(card.textContent, /0\.\d\d km · 33 kV · Tiny 33kV/); assert.doesNotMatch(card.textContent.split('REPD projects')[0], /Far 400|project/i); // M: projects follow the substation rows
-  assert.match(card.textContent, /Nearest substations to this optical flash \(straight-line km\)\. Not evidence any asset was struck; faults can have other causes\./);
+  assert.match(card.textContent, /Screening · nearest substations to this optical flash, straight line\. Proximity, not exposure or a current path; not evidence any asset was struck\./);
   dispatch(card.querySelectorAll('button')[1], 'click', x.log.errors);
   assert.equal(x.sources.get('gridatlas-lightning-neon-links'), undefined); assert.equal(x.layers.get('gridatlas-lightning-neon-core'), undefined);
   tapFlash(x); assert.ok(x.sources.get('gridatlas-lightning-neon-links'));
@@ -936,7 +940,7 @@ test('I3/J1: tapping a flash fires the original nearestSubstations (>=33 kV, <=4
 });
 
 test('I3: the module never invents a repd_ref, never touches the URL', () => {
-  assert.doesNotMatch(SRC, /repd_ref|location\.(href|search|hash|assign|replace)|history\.(push|replace)State/);
+  assert.doesNotMatch(SRC.replace(/\bo\.repd_ref\b/g, ''), /repd_ref|location\.(href|search|hash|assign|replace)|history\.(push|replace)State/); // M5: a shown record's own ref only
 });
 
 test('I1b: with overlapping hit circles, the tap opens the flash nearest the tap point', async () => {
@@ -1105,14 +1109,14 @@ test('LE1: tapping a cell fires the original nearestSubstations from the cell ce
   assert.equal(x.popups.length, 0);
 });
 
-test('LE2: the cell card: title "N optical flashes in this ≈10 km cell", window dates, cell bounds, no flash ID or time, honesty kept', async () => {
+test('LE2: the cell card: title "N optical flashes in this 0.1° cell", window dates, cell bounds, no flash ID or time, honesty kept', async () => {
   const x = await bootCell(); x.tapMap([-15.5, 520.5], { [CELL]: [cellF(C1)] });
   const c = card(x); assert.ok(c, 'no card'); const t = c.textContent, w = x.S.res.w;
   assert.equal(c.getAttribute('aria-label'), 'Lightning cell'); assert.equal(c.getAttribute('role'), 'dialog');
-  assert.equal(c.children[0].children[0].textContent, '1,234 optical flashes in this ≈10 km cell');
+  assert.equal(c.children[0].children[0].textContent, '1,234 optical flashes in this 0.1° cell');
   assert.ok(t.includes(`${ymd(w.s)} to ${ymd(w.e - 1)} UTC · centre lat 52.050, lon -1.550 · 5 nearest substations`), 'summary row');
-  assert.ok(t.includes('Cell lat 52.00–52.10, lon -1.60–-1.50 (0.1°) · searched UTC days only; unsearched days unknown, not zero'), 'bounds row');
-  assert.ok(t.includes('Nearest substations to this cell centre (straight-line km). Not evidence any asset was struck; faults can have other causes.'), 'engine honesty line');
+  assert.ok(t.includes('Cell lat 52.00–52.10, lon -1.60–-1.50: 0.1°, ≈6.9 km E–W × 11.1 km N–S, ≈76 km² here; the centre is not a flash location · searched UTC days only; unsearched days unknown, not zero'), 'bounds row');
+  assert.ok(t.includes('Screening · nearest substations to this cell centre, straight line. Proximity, not exposure or a current path; not evidence any asset was struck.'), 'engine honesty line');
   assert.ok(t.includes('EUMETSAT MTG Lightning Imager · optical flash, not necessarily a ground strike.'), 'footer');
   assert.doesNotMatch(t, /Flash ID|· ID |Flash \d|\d\d:\d\d|\(none\)|undefined|NaN|unknown UTC|strike[sd]? (at|on)|affected/i);
   const [, close] = c.querySelectorAll('button'); dispatch(close, 'click', x.log.errors);
@@ -1124,7 +1128,7 @@ test('LE3: when a flash and a cell are both under the tap, the flash wins (even 
   x.tapMap([-15.5, 520.5], { 'gridatlas-lightning-hit': [{ properties: { i: 0 }, geometry: { coordinates: [-1.5, 52] } }], [CELL]: [cellF(C1)] });
   assert.deepEqual(x.neonCalls.map(a => [a[0], a[1]]), [[-1.5, 52]]);
   assert.match(card(x).textContent, /^Flash \d{4}-\d\d-\d\d \d\d:\d\d:\d\d UTC/); assert.equal(card(x).getAttribute('aria-label'), 'Lightning flash');
-  assert.match(card(x).textContent, /Nearest substations to this optical flash \(straight-line km\)/);
+  assert.match(card(x).textContent, /Screening · nearest substations to this optical flash, straight line/);
   // a cluster also wins over a cell
   x.camera.length = 0; x.neonCalls.length = 0; x.map.getSource('gridatlas-lightning').getClusterExpansionZoom = (id, cb) => cb(null, 9);
   x.tapMap([-15.5, 520.5], { 'gridatlas-lightning-hit': [{ properties: { cluster: true, cluster_id: 3 }, geometry: { coordinates: [-1.5, 52] } }], [CELL]: [cellF(C1)] });
@@ -1135,7 +1139,7 @@ test('LE4: overlapping cell circles open the cell whose centre is nearest the ta
   const x = await bootCell(), C2 = { n: 1, cell: 25 * 140 + 95, lon: -1.45, lat: 52.05 };
   x.tapMap([-14.6, 520.5], { [CELL]: [cellF(C1), cellF(C2)] });
   assert.deepEqual(x.neonCalls.map(a => [a[0], a[1]]), [[-1.45, 52.05]]);
-  assert.equal(card(x).children[0].children[0].textContent, '1 optical flash in this ≈10 km cell');
+  assert.equal(card(x).children[0].children[0].textContent, '1 optical flash in this 0.1° cell');
 });
 
 test('LE5: malformed, inconsistent or stale cells open nothing and never throw; an empty tap still closes the card', async () => {
@@ -1197,7 +1201,7 @@ test('L1: 12M above the cap draws tappable graduated cells (glow + core + 22 px 
   const hit = x.layers.get(CELL).paint; assert.equal(hit['circle-radius'], 22); assert.equal(hit['circle-opacity'], 0);
   const core = x.layers.get(CLS[1]); assert.deepEqual([...core.layout['circle-sort-key']], ['get', 'n']); assert.equal(x.layers.get(CLS[0]).filter[2], 45000, 'glow floor = max(30, p95 of drawn cells)');
   assert.equal(x.sources.get('gridatlas-lightning').data.features.length, 0, 'points drawn without consent');
-  assert.match(x.cap('flashes'), /^Flashes 50,000 archived on \d+ overlapping UTC dates · map shows 49,000 in 2 ≈10 km cells within 30 km of a REPD site; 1,000 further out counted, not drawn · tap a cell for nearest substations · LOAD POINTS adds the newest 40,000 flashes$/);
+  assert.match(x.cap('flashes'), /^Flashes 50,000 archived on \d+ overlapping UTC dates · map limited to ≤30 km of REPD sites, not a national density map: 49,000 in 2 0.1° cells; 1,000 counted, not drawn · tap a cell for nearest substations · LOAD POINTS adds the newest 40,000 flashes$/);
   assert.equal(x.nav('points').hidden, false); assert.match(x.label(), /\[50,000 \| /);
 });
 
@@ -1212,7 +1216,7 @@ test('L3: tapping a cell fires the original nearestSubstations from the cell cen
   const f = cellsSrc(x).data.features.find(q => q.properties.n === 45000); x.camera.length = 0; cellHit(x, f);
   assert.equal(x.neonCalls.length, 1); assert.ok(Math.abs(x.neonCalls[0][0] - -1.45) < 1e-9 && Math.abs(x.neonCalls[0][1] - 52.05) < 1e-9);
   assert.equal(x.sources.get('gridatlas-lightning-neon-links').data.features.length, 5);
-  const c = card(x); assert.equal(c.getAttribute('aria-label'), 'Lightning cell'); assert.equal(c.children[0].children[0].textContent, '45,000 optical flashes in this ≈10 km cell');
+  const c = card(x); assert.equal(c.getAttribute('aria-label'), 'Lightning cell'); assert.equal(c.children[0].children[0].textContent, '45,000 optical flashes in this 0.1° cell');
   assert.match(c.textContent, /searched UTC days only; unsearched days unknown, not zero/); assert.ok(x.camera.find(k => k[0] === 'flyTo'));
 });
 
@@ -1270,10 +1274,10 @@ test('L8: phone over its 10,000 cap: cells by default; LOAD POINTS keeps them be
   const x = boot({ phone: true, index: mkIndex(rows), files: { ...mkGrids(g), [s1.row.path]: s1.b, [s2.row.path]: s2.b } }); installNeon(x, SUBS); x.map.setPaintProperty = () => {};
   x.toggle(true); x.click(x.chip('12m')); await drain();
   assert.equal(x.S.last.cells, 1); assert.equal(x.S.last.drawn, 0); const f = cellsSrc(x).data.features[0]; assert.equal(f.properties.n, 12000);
-  cellHit(x, f); assert.equal(x.neonCalls.length, 1); assert.match(card(x).textContent, /^12,000 optical flashes in this ≈10 km cell/);
+  cellHit(x, f); assert.equal(x.neonCalls.length, 1); assert.match(card(x).textContent, /^12,000 optical flashes in this 0.1° cell/);
   x.click(x.nav('points')); await drain();
   assert.equal(x.S.res.mode, 'detail'); assert.equal(x.sources.get('gridatlas-lightning').data.features.length, 12000); assert.ok(cellsSrc(x), 'cells removed after LOAD POINTS');
-  assert.match(x.cap('flashes'), /· map shows 12,000 in 1 ≈10 km cell within 30 km of a REPD site/);
+  assert.match(x.cap('flashes'), /· map limited to ≤30 km of REPD sites, not a national density map: 12,000 in 1 0.1° cell;/);
   x.neonCalls.length = 0; tapFlash(x); assert.deepEqual(x.neonCalls.map(a => [a[0], a[1]]), [[-1.5, 52]]); assert.equal(card(x).getAttribute('aria-label'), 'Lightning flash');
   const g2 = cellsSrc(x).data.features[0]; x.neonCalls.length = 0; cellHit(x, g2); assert.equal(x.neonCalls.length, 1, 'cell under LOAD POINTS'); assert.equal(card(x).getAttribute('aria-label'), 'Lightning cell');
 });
@@ -1318,7 +1322,7 @@ test('LRB1 (MAJOR): the land mask draws open-Atlantic cells ~100 km SW of Scilly
   const g = [{ date: KD[0], row: KROWS[KD[0]], cells: { [LC1]: 24000, [SW]: 600, [FAR]: 400 } }, { date: KD[1], row: KROWS[KD[1]], cells: { [LC1]: 25000 } }];
   const x = boot({ index: mkIndex(KROWS), files: mkGrids(g) }); x.toggle(true); x.click(x.chip('12m')); await drain();
   const sea = cellsSrc(x).data.features.filter(f => f.properties.lon < -6.6 && f.properties.lat < 50.3);
-  assert.match(x.cap('flashes'), /within 30 km of a REPD site/); // L3 wording
+  assert.match(x.cap('flashes'), /limited to ≤30 km of REPD sites, not a national density map/); // V-geometry wording
   assert.equal(sea.length, 0, 'open-sea cells drawn under a "sea not drawn" caption: ' + JSON.stringify(sea.map(f => [f.properties.lon, f.properties.lat, f.properties.n])));
 });
 
@@ -1526,7 +1530,7 @@ test('WORDS dump (real data)', { skip: !process.env.LIGHTNING_DATA }, async () =
   assert.doesNotMatch(all, /affected|Not yet ingested|\d+h \d+min|0 archived in window \(unknown, not zero\)|day-level|as tappable points|UK land|sea and abroad/i);
   for (const m of all.matchAll(/CAP\.flashes  (Flashes .*map shows.*)/g)) assert.ok(m[1].length <= 380, 'flashes line ' + m[1].length + ' chars: ' + m[1]);
   for (const m of all.matchAll(/--- CARD .*\n.*\n.*\n.*\n  · (.*)/g)) assert.ok(m[1].length <= 42, 'card title ' + m[1]);
-  assert.match(all, /optical flashes in this ≈10 km cell/); assert.match(all, /Not evidence any asset was struck/);
+  assert.match(all, /optical flashes in this 0.1° cell/); assert.match(all, /[Nn]ot evidence any asset was struck/); // M5: F2 wording
 });
 
 
@@ -1541,7 +1545,7 @@ test('LRN (real data): whenever cells draw, the caption\'s "N archived" equals t
       const g = r.gd, fs = cellsSrc(x).data.features;
       console.log(`# LRN ${new Date(now).toISOString()} ${p}: arch ${r.arch} grid n ${g.n} drawn ${g.k} in ${fs.length} cells (stale ${g.st})`);
       if (!g.st) assert.equal(g.n, r.arch, p + ' two totals in one caption');
-      assert.equal(fs.reduce((a, f) => a + f.properties.n, 0), g.k); assert.match(x.cap('flashes'), new RegExp('archived on .* map shows ' + g.k.toLocaleString('en-GB') + ' in .* ' + (g.n - g.k).toLocaleString('en-GB') + ' further out counted, not drawn'));
+      assert.equal(fs.reduce((a, f) => a + f.properties.n, 0), g.k); assert.match(x.cap('flashes'), new RegExp('archived on .* not a national density map: ' + g.k.toLocaleString('en-GB') + ' in .* ' + (g.n - g.k).toLocaleString('en-GB') + ' counted, not drawn'));
     }
   }
 });
@@ -1562,7 +1566,7 @@ test('LAY2 (LR-layout MINOR): the card title wraps instead of ellipsising; LR-wo
   const x = boot({ index: mkIndex(KROWS), files: mkGrids(KGRID) }); installNeon(x, SUBS); x.toggle(true); x.click(x.chip('12m')); await drain();
   cellHit(x, cellsSrc(x).data.features[0]); const t = card(x).children[0].children[0];
   assert.doesNotMatch(t.style.cssText, /nowrap|ellipsis|overflow:hidden/); assert.equal(pl9999(), true);
-  function pl9999() { return '9,999 optical flashes in this ≈10 km cell'.length <= 41; }
+  function pl9999() { return '9,999 optical flashes in this 0.1° cell'.length <= 41; }
 });
 
 test('m1 (LR-regress): a cell layer failure does not turn a good load into FAIL "map layer"; it is noted', async () => {
@@ -1665,7 +1669,7 @@ test('REPD1 (real REPD, engine source; M2 grouping): a flash near Newark lists t
   assert.equal(REPD_REAL.features.length, 10784); assert.equal(want.length, 10); assert.deepEqual(rows, want.map(siteRow));
   assert.ok(want.some(g => g.parts.length > 1), 'Newark has a co-located site (the M2 grouping case)');
   assert.equal(x.distCalls, 10784, 'every register row measured with the original distanceKm');
-  assert.match(c.textContent, /10 nearest REPD sites \(\d+ projects; those at one point grouped\) within 40 km of this optical flash, straight-line\. Not evidence any project was struck\./);
+  assert.match(c.textContent, /Screening · 10 nearest REPD sites \(\d+ projects; those at one point grouped\) within 40 km of this optical flash, straight line\. Proximity only, not impact; not evidence any project was struck\./);
   assert.match(c.children[0].children[0].textContent + c.textContent, / · 5 nearest substations · 10 nearest REPD sites/);
   const ln = x.sources.get('gridatlas-lightning-neon-plinks').data.features, nd = x.sources.get('gridatlas-lightning-neon-pnodes').data.features;
   assert.equal(ln.length, 10); assert.equal(nd.length, 10); for (const f of ln) assert.deepEqual([...f.geometry.coordinates[0]], NEWARK);
@@ -1710,7 +1714,7 @@ test('REPD3: the register is fetched once per page (engine URL through the bridg
 test('REPD4: none within 40 km is stated; no project lines; the substation answer is unchanged', async () => {
   const x = boot({ feedFn: () => feed([flash(Date.now() - H, 'z', [-1.5, 52])]) }); installRepd(x, SUBS, { type: 'FeatureCollection', features: [pf(-1.5, 53, { name: 'Far' })] });
   x.toggle(true); await drain(); tapFlash(x); await settle();
-  assert.match(card(x).textContent, /No REPD site within 40 km of this optical flash, straight-line\. Not evidence any project was struck\./); assert.equal(prows(card(x)).length, 0);
+  assert.match(card(x).textContent, /Screening · No REPD site within 40 km of this optical flash, straight line\. Proximity only, not impact; not evidence any project was struck\./); assert.equal(prows(card(x)).length, 0);
   assert.match(card(x).textContent, / · no REPD site within 40 km/); assert.doesNotMatch(card(x).textContent, /Within 10 km/); assert.equal(x.sources.get('gridatlas-lightning-neon-plinks').data.features.length, 0);
 });
 
@@ -1751,8 +1755,8 @@ test('REPD6: a cell tap measures projects from the cell centre; the camera frame
 test('REPD7: honest wording: never "affected" as a claim, never a strike on a site; the module never writes the URL', async () => {
   const x = boot({ feedFn: () => feed([flash(Date.now() - H, 'z', [-1.5, 52])]) }); installRepd(x, SUBS, { type: 'FeatureCollection', features: [pf(-1.5, 52.01)] });
   x.toggle(true); await drain(); tapFlash(x); await settle(); const t = card(x).textContent;
-  assert.match(t, /Not evidence any project was struck\./); assert.doesNotMatch(t, /(were|was|are|is) affected|strike on|struck the|hit the/i);
-  assert.doesNotMatch(SRC, /repd_ref|location\.(href|search|hash|assign|replace)|history\.(push|replace)State|pushState/);
+  assert.match(t, /[Nn]ot evidence any project was struck\./); assert.doesNotMatch(t, /(were|was|are|is) affected|strike on|struck the|hit the/i);
+  assert.doesNotMatch(SRC.replace(/\bo\.repd_ref\b/g, ''), /repd_ref|location\.(href|search|hash|assign|replace)|history\.(push|replace)State|pushState/); // M5: a shown record's own ref only
 });
 
 // ---------------------------------------------------------------- M2-build: MR1-MR4 + the comprehensive REPD feature; each fails on Build M
@@ -1848,20 +1852,20 @@ test('M2-C2 filters: All / Operational / Consented & construction / Planning and
   assert.equal(rowsOf(x).length, 10); assert.ok(rowsOf(x).every(r => /Await/.test(r)));
   press(x, 'st:op'); assert.deepEqual(rowsOf(x).map(r => r.split(' · ').pop()), ['OpSolar', 'OpBess']); assert.equal(lines(), 2);
   assert.equal(chip(x, 'st:op').getAttribute('aria-pressed'), 'true'); assert.equal(chip(x, 'st:all').getAttribute('aria-pressed'), 'false');
-  assert.match(card(x).textContent, /2 nearest REPD sites within 40 km of this optical flash, straight-line \(Operational\)\. Not evidence any project was struck\./);
-  press(x, 'te:bess'); assert.deepEqual(rowsOf(x).map(r => r.split(' · ').pop()), ['OpBess']); assert.match(card(x).textContent, /straight-line \(Operational · BESS\)/); assert.match(card(x).querySelector('summary').textContent, / · 1 nearest REPD site \(Operational · BESS\)$/);
+  assert.match(card(x).textContent, /2 nearest REPD sites within 40 km of this optical flash, straight line \(Operational\)\. Proximity only, not impact; not evidence any project was struck\./);
+  press(x, 'te:bess'); assert.deepEqual(rowsOf(x).map(r => r.split(' · ').pop()), ['OpBess']); assert.match(card(x).textContent, /straight line \(Operational · BESS\)/); assert.match(card(x).querySelector('summary').textContent, / · 1 nearest REPD site \(Operational · BESS\)$/);
   press(x, 'st:cc'); press(x, 'te:all'); assert.equal(rowsOf(x).length, 10); assert.ok(rowsOf(x).every(r => /Await/.test(r)));
   press(x, 'te:wind'); assert.deepEqual(rowsOf(x).map(r => r.split(' · ').pop()), ['UC Wind']);
   press(x, 'st:pl'); press(x, 'te:other'); assert.deepEqual(rowsOf(x).map(r => r.split(' · ').pop()), ['Plan Hydro']);
-  press(x, 'te:solar'); assert.match(card(x).textContent, /No REPD site within 40 km of this optical flash, straight-line \(Planning · Solar\)/); assert.equal(lines(), 0);
+  press(x, 'te:solar'); assert.match(card(x).textContent, /No REPD site within 40 km of this optical flash, straight line \(Planning · Solar\)/); assert.equal(lines(), 0);
   press(x, 'st:all'); press(x, 'te:all'); assert.equal(rowsOf(x).length, 10); assert.equal(lines(), 10);
   press(x, 'st:op'); tapFlash(x); await settle(); assert.equal(chip(x, 'st:op').getAttribute('aria-pressed'), 'true', 'the filter is kept for the next tap'); assert.equal(rowsOf(x).length, 2);
   assert.deepEqual(x.log.errors.map(String), []);
 });
 test('M2-C3 summary: "N REPD projects within 10 km · M within 40 km · total X MW within 10 km", follows the filter, and states uncounted capacity honestly', async () => {
   const x = await flashAt([-1.5, 52], FCx([pf(-1.5, 52.018, { capacity: 10, name: 'A' }), pf(-1.5, 52.045, { capacity: 0, name: 'B', status: 'application submitted' }), pf(-1.5, 52.18, { capacity: 100, name: 'C' }), pf(-1.5, 52.5, { name: 'Out' })]));
-  assert.match(card(x).textContent, /Within 10 km: 2 projects · 10 MW stated \(all statuses\), 1 not stated · within 40 km: 3 projects · straight-line distance only, not impact · REPD: DESNZ, April 2026, OGL v3\.0/);
-  press(x, 'st:op'); assert.match(card(x).textContent, /Within 10 km: 1 project · 10 MW stated \(Operational\) · within 40 km: 2 projects · /);
+  assert.match(card(x).textContent, /Within 10 km: 2 projects · 10 MW stated, mixed statuses, 1 not stated · within 40 km: 3 projects/);
+  press(x, 'st:op'); assert.match(card(x).textContent, /Within 10 km: 1 project · 10 MW stated, Operational · within 40 km: 2 projects/);
   const y = await flashAt([-1.5, 52], FCx([pf(-1.5, 52.5)])); assert.doesNotMatch(card(y).textContent, /Within 10 km|0 MW/);
   const z = await flashAt([-1.5, 52], FCx([pf(-1.5, 52.01, { capacity: 0 }), pf(-1.5, 52.3, { capacity: 5 })])); assert.match(card(z).textContent, /Within 10 km: 1 project · capacity not stated · within 40 km: 2 projects/); assert.doesNotMatch(card(z).textContent, / 0 MW/);
 });
@@ -1883,12 +1887,12 @@ test('M2-C5 row tap stays in the page: no navigation; flies to the project and d
   assert.equal(x.sources.get('gridatlas-lightning-neon-plinks'), undefined, 'no project list in the project view');
   assert.match(c.textContent, /REPD · Battery \+ Solar 69\.9 MW/); assert.match(c.textContent, /2 projects at this point · Sun A \/ Bat A/);
   assert.match(c.textContent, /Solar 49\.9 MW · operational · Sun A; Battery 20 MW · operational · Bat A/);
-  assert.match(c.textContent, /Nearest substations to this project \(straight-line km; not its declared grid connection\)\./);
-  assert.match(c.textContent, /4\.09 km from the optical flash \(straight-line\)/); assert.match(c.textContent, /REPD register \(DESNZ, April 2026 · OGL v3\.0\) as loaded by the map · lightning = optical flashes, not necessarily ground strikes; not evidence the project was struck\./); assert.doesNotMatch(c.textContent, /(were|was|are|is) affected|strike on|struck the|hit the/i);
+  assert.match(c.textContent, /Screening · nearest substations, straight line\. Not its declared connection or capacity\./);
+  assert.match(c.textContent, /4\.09 km from the optical flash \(straight-line\)/); assert.match(c.textContent, /Record · REPD \(DESNZ, Apr 2026, OGL v3\.0\)\. Status as registered, not as built\. Lightning: optical flashes, not ground strikes; not evidence the project was struck\./); assert.doesNotMatch(c.textContent, /(were|was|are|is) affected|strike on|struck the|hit the/i);
   const back = c.querySelector('[data-lightning-back]'); assert.equal(back.textContent, '◀ back to lightning flash'); assert.equal(c.querySelectorAll('button')[1].getAttribute('aria-label'), 'Close');
   dispatch(back, 'click', x.log.errors); await settle();
   const d = card(x); assert.equal(d.getAttribute('aria-label'), 'Lightning flash'); assert.deepEqual(x.neonCalls.at(-1).slice(0, 2), [-1.5, 52]);
-  assert.equal(rowsOf(x).length, 2); assert.equal(x.sources.get('gridatlas-lightning-neon-plinks').data.features.length, 2); assert.notEqual(d.querySelector('details').open, true, 'restored as at the tap (collapsed) so the camera frames the links');
+  assert.equal(rowsOf(x).length, 2); assert.equal(x.sources.get('gridatlas-lightning-neon-plinks').data.features.length, 2); assert.equal(d.querySelector('details').open, true, 'M6: restored as at the tap (open by default; the card is at most 45 % of the map, so the camera frames the links above it)');
   assert.equal(x.repdFetch.length, 1, 'the register is reused'); assert.deepEqual(x.log.errors.map(String), []);
 });
 test('M2-C6 row tap from a cell: "◀ back to lightning cell"; close, period switch and OFF clean the project view', async () => {
@@ -2072,8 +2076,8 @@ const later = () => new Promise(r => setTimeout(r, 150));
 test('M3R-a11y (M2R-a11y MAJOR-1..3, MINOR-1): a polite status outside the <details> announces loading, the list and a failure; focus follows chip, row and back; back is named without the glyph', async () => {
   const x = await flashAt([-1.5, 52], FCx([pf(-1.5, 52.01, { name: 'A' }), pf(-1.5, 52.02, { name: 'B', tech: 'bess', raw_tech: 'Battery' })]));
   const lv = live(x); assert.ok(lv, 'status region'); assert.ok(!card(x).querySelector('details').contains(lv), 'outside the closed details'); await later();
-  assert.match(lv.textContent, /^2 nearest REPD sites within 40 km of this optical flash, straight-line\. Not evidence any project was struck\. Only 2 sites within the 40 km search radius\.$/);
-  press(x, 'te:bess'); assert.equal(x.doc.activeElement, chip(x, 'te:bess'), 'focus stays on the pressed chip'); await later(); assert.match(lv.textContent, /^1 nearest REPD site .*\(BESS\)/);
+  assert.match(lv.textContent, /^Screening · 2 nearest REPD sites within 40 km of this optical flash, straight line\. Proximity only, not impact; not evidence any project was struck\. Only 2 sites within the 40 km search radius\.$/);
+  press(x, 'te:bess'); assert.equal(x.doc.activeElement, chip(x, 'te:bess'), 'focus stays on the pressed chip'); await later(); assert.match(lv.textContent, /^Screening · 1 nearest REPD site .*\(BESS\)/);
   press(x, 'te:all'); tapRow(x, 0); await settle(); const back = card(x).querySelector('[data-lightning-back]');
   assert.equal(x.doc.activeElement, back); assert.equal(back.getAttribute('aria-label'), 'back to lightning flash');
   dispatch(back, 'click', x.log.errors); await settle(); assert.equal(x.doc.activeElement, card(x).querySelector('summary'));
@@ -2085,7 +2089,7 @@ test('M3R-bugs (M2R-bugs M2RB1, M2RB2): a Ctrl/Cmd/Shift click keeps the browser
   for (const k of ['ctrlKey', 'metaKey', 'shiftKey']) { const a = prows(card(x))[0]; let prevented = false; for (const f of a.listeners.click) f({ type: 'click', [k]: true, button: 0, target: a, preventDefault: () => { prevented = true; } }); assert.equal(prevented, false, k); assert.equal(card(x).getAttribute('aria-label'), 'Lightning flash', k); }
   const y = flash0(); installRepd(y, SUBS, FCx([pf(-1.5, 52.01, { name: 'A' }), pf(-1.5, 52.02, { name: 'B', tech: 'bess', raw_tech: 'Battery' })]), 'fetch'); y.toggle(true); await drain();
   const add = y.map.addLayer; let boom = true; y.map.addLayer = l => { if (boom && /neon-p-node$/.test(l.id)) throw new Error('Style is not done loading'); return add(l); };
-  tapFlash(y); await settle(); assert.doesNotMatch(card(y).textContent, /unavailable/); assert.equal(prows(card(y)).length, 2); assert.ok(y.S.errors.some(e => /project lines: Style is not done loading/.test(e)));
+  tapFlash(y); await settle(); assert.doesNotMatch(card(y).textContent, /REPD projects unavailable|REPD unavailable/); // M5: a record block without a search runtime says so on its own assert.equal(prows(card(y)).length, 2); assert.ok(y.S.errors.some(e => /project lines: Style is not done loading/.test(e)));
   boom = false; press(y, 'te:bess'); assert.ok(y.layers.get('gridatlas-lightning-neon-p-node'), 'rebuilt'); assert.equal(y.sources.get('gridatlas-lightning-neon-pnodes').data.features.length, 1);
 });
 test('M3R-security (M2R-security SEC-M2-1/2, M2R-data D5): a malformed or string-coordinate row is skipped, never the whole register; the Scilly placeholder is dropped', async () => {
@@ -2100,7 +2104,7 @@ test('M3R-repd (M2R-repd R1, R3; M2R-data D1, D2): rows within about 10 m are on
   const y = await flashAt([-1.5, 52], FCx([pf(-1.5, 52.01, { name: 'Refused', status: 'Application Refused' }), pf(-1.5, 52.02, { name: 'Granted', status: 'Planning Permission Granted' })]));
   for (const k of ['st:op', 'st:cc', 'st:pl']) { press(y, k); assert.deepEqual(rowsOf(y), [], k); }
   const fv = { name: 'Feldon Vale Solar Farm', capacity: 49.9 }, z = await flashAt([-1.5, 52], FCx([pf(-1.5, 52.05, { ...fv, status: 'awaiting construction' }), pf(-1.5, 52.05, { ...fv, operator: 'X' })]));
-  assert.equal(rowsOf(z)[0], '5.57 km · Solar 49.9 MW · 2 projects at this point:'); assert.match(card(z).textContent, /Within 10 km: 2 projects · 49\.9 MW stated \(all statuses\)/);
+  assert.equal(rowsOf(z)[0], '5.57 km · Solar 49.9 MW · 2 projects at this point:'); assert.match(card(z).textContent, /Within 10 km: 2 projects · 49\.9 MW stated, mixed statuses/);
   assert.equal(z.sources.get('gridatlas-lightning-neon-pnodes').data.features[0].properties.mw, 49.9);
 });
 test('M3R-diff (M2R-diff MD1): on a short map where L3 could frame clear of a collapsed card, the bottom padding is L3 padding; it is capped only when that fit is impossible', async () => {
@@ -2113,9 +2117,9 @@ test('M3R-layout (M2R-layout F1-F3): an open card stays below container top + 32
   const x = flash0(); installRepd(x, SUBS, FCx([pf(-1.5, 52.3)])); x.mapEl._rect = { top: 0, left: 0, right: 393, bottom: 659, width: 393, height: 659 }; x.mapEl.clientHeight = 659; x.mapEl.clientWidth = 393;
   x.map.getBounds = () => ({ contains: () => true }); x.setProj(() => ({ x: 200, y: 600 })); // every end on the map, but under the card
   x.toggle(true); await drain(); tapFlash(x); await settle();
-  assert.equal(card(x).style.maxHeight, '331px', 'MX(240, 659 - 8 - 320)');
+  assert.equal(card(x).style.maxHeight, '296px', 'M6: MX(200, 45 % of 659)');
   assert.ok(x.camera.some(k => k[0] === 'fitBounds'), 'an end under the card is reframed');
-  x.setProj(() => ({ x: 200, y: 200 })); x.camera.length = 0; dispatch(card(x).querySelector('details'), 'toggle', x.log.errors);
+  x.setProj(() => ({ x: 200, y: 200 })); x.camera.length = 0; { const dd = card(x).querySelector('details'); dd.open = !dd.open; dispatch(dd, 'toggle', x.log.errors); } /* M6: a real open/close change reframes; the default open does not */
   assert.equal(x.camera.filter(k => k[0] === 'fitBounds').length, 1, 'the details toggle forces a reframe');
 });
 // ---------------------------------------------------------------- M4-build: no camera move nested inside another (M2R-taps MAJOR M2R-T1)
@@ -2258,4 +2262,207 @@ B4('M4b-4: the module names no Layers control (the proof\'s original static nega
   assert.equal(/data-layer-id|lbl-/.test(SRC), false);
   const x = boot({ feedFn: () => feed([]) }); installRepd(x, S3, SYN); const E = installLayers(x); x.toggle(true); await drain(); x.toggle(false); await drain();
   assert.deepEqual(E.toggles, []); assert.equal(dots(x).length, 0);
+});
+
+// ---------------------------------------------------------------- M5 / M5b: the full REPD record of each listed project
+// Owner, 29 Oct 2026 02:21 UTC: list all 10 sites with names, distances and full REPD addresses, in the grid engine's card
+// pattern (place-global-search 202609071213 :413-416: name, technology, MW, "address · postcode · county", "REPD <ref> · <status>").
+// The records come from the SAME pinned file the engine's project search reads (repd_projects_202608290716.parquet, via
+// the page's shared DuckDB runtime). Here a DuckDB stand-in answers the module's SQL from the repository's JSON twin of
+// that parquet (data/repd_browser_registry_202608290716.json: same generation and manifest, 11,069 rows; checked
+// row-for-row equal to the parquet with DuckDB in the M5-build lane). The register the list is built from carries no ref,
+// so a record is shown only on an exact single match; otherwise "address not in register". A ref is never inferred.
+const REC_RAW = readFileSync(new URL('../../../data/repd_browser_registry_202608290716.json', import.meta.url));
+assert.equal(createHash('sha256').update(REC_RAW).digest('hex'), 'c8a5c59be878c52014a272eb0e4d09af06a0d301d10a8d6b5d0b116b5d1bb6bc', 'the manifest-pinned browser registry');
+const RECS = JSON.parse(REC_RAW.toString('utf8')).records;
+const MAN_RAW = readFileSync(new URL('../../../data/repd_v9_manifest_202608290716.json', import.meta.url));
+const PQ_URL = 'https://ventusltd.github.io/gridatlas/data/repd_projects_202608290716.parquet', MAN_URL = 'https://ventusltd.github.io/gridatlas/data/repd_v9_manifest_202608290716.json';
+const installRecords = (x, recs = RECS, o = {}) => {
+  x.sql = []; x.manFetch = 0;
+  const run = sql => {
+    x.sql.push(sql); assert.ok(sql.startsWith(`SELECT * FROM read_parquet('${PQ_URL}') WHERE (abs(longitude-(`), 'the pinned parquet only, filtered by point');
+    const pts = [...sql.matchAll(/\(abs\(longitude-\((-?[\d.]+)\)\)<=([\d.]+) AND abs\(latitude-\((-?[\d.]+)\)\)<=([\d.]+)\)/g)].map(m => [+m[1], +m[3], +m[2]]);
+    assert.equal(sql.replace(/\(abs\(longitude-\((-?[\d.]+)\)\)<=([\d.]+) AND abs\(latitude-\((-?[\d.]+)\)\)<=([\d.]+)\)( OR )?/g, '').length, `SELECT * FROM read_parquet('${PQ_URL}') WHERE `.length, 'nothing but point clauses');
+    return recs.filter(r => pts.some(([a, b, t]) => Math.abs(r.longitude - a) <= t && Math.abs(r.latitude - b) <= t)).map(r => ({ toJSON: () => ({ ...r }) }));
+  };
+  if (!o.noRuntime) x.W.__GRIDATLAS_DUCKDB_RUNTIME__ = { module_url: 'stand-in', promise: Promise.resolve({ database: { connect: async () => ({ query: async sql => { if (o.hang) return new Promise(() => {}); const r = run(sql); return { toArray: () => r }; }, close: async () => {} }) } }) };
+  const of = x.sandbox.fetch;
+  x.sandbox.fetch = async (u, op) => { if (String(u) === MAN_URL) { x.manFetch++; return new Response(o.badManifest ? Buffer.concat([MAN_RAW, Buffer.from(' ')]) : MAN_RAW, { status: 200 }); } return of(u, op); };
+};
+// the test's own exact-join rule (written independently of the module): same point within 1e-6°, same name after cp1252
+// C1 repair + NFC + whitespace collapse, same MW (0/absent = not stated), same REPD technology; exactly one record
+const w1252 = new TextDecoder('windows-1252');
+const nname = s => [...String(s ?? '')].map(c => { const k = c.codePointAt(0); return k >= 0x80 && k <= 0x9f ? w1252.decode(Buffer.from([k])) : c; }).join('').normalize('NFC').trim().split(/\s+/).filter(Boolean).join(' ');
+const mwOf = v => (v > 0 ? Number(v) : 0);
+const RGRID = new Map(); for (const r of RECS) if (r.longitude != null) { const k = Math.round(r.longitude * 1e3) + ':' + Math.round(r.latitude * 1e3); (RGRID.get(k) || RGRID.set(k, []).get(k)).push(r); }
+const recsAt = (lon, lat) => { const out = []; for (let i = -1; i <= 1; i++) for (let j = -1; j <= 1; j++) for (const r of RGRID.get((Math.round(lon * 1e3) + i) + ':' + (Math.round(lat * 1e3) + j)) || []) if (Math.abs(r.longitude - lon) <= 1.000001e-6 && Math.abs(r.latitude - lat) <= 1.000001e-6) out.push(r); return out; };
+const wantRec = (p, a) => { const c = recsAt(a[0], a[1]).filter(r => nname(r.name) === nname(p.name) && Math.abs(mwOf(r.capacity_mw) - mwOf(p.capacity)) < 1e-6 && r.repd_technology === p.raw_tech); return c.length === 1 ? c[0] : null; };
+const recBlocks = x => card(x).querySelectorAll('[data-tier="record"]').filter(b => b.style.cssText.includes('padding:2px 0 10px 12px'));
+const recLines = r => [[r.repd_address_display || 'address not stated', r.repd_postcode || 'no postcode', r.county, r.region].filter(Boolean).join(' · '), `Record · REPD ${r.repd_ref} · ${r.status}`];
+// the parts in card order with their own points, from the independent brute force
+const partsOf = (repd, ll, keep) => { const pt = new Map(); for (const f of repd.features) pt.set(f.properties, repPoint(f.geometry)); return bruteSites(repd, ...ll, keep).flatMap(g => g.parts.map(p => [p, pt.get(p)])); };
+const recTap = async (ll, subs, o = {}) => { const x = boot({ feedFn: () => feed([flash(Date.now() - H, 'z', ll)]) }); installRepd(x, subs, REPD_IND); installRecords(x, RECS, o); x.toggle(true); await drain(); tapFlash(x); await settle(); await drain(); return x; };
+const NEWARK_SUBS = SUBS.map(q => ({ ...q, at: [q.at[0] + 0.69, q.at[1] + 1.07] }));
+
+test('M5-1 (real register + real records, Doncaster and Newark): every listed project carries its exact REPD record, or "address not in register"; refs only from an exact single match', async () => {
+  for (const [ll, subs] of [[DONC, S3], [NEWARK, NEWARK_SUBS]]) {
+    const x = await recTap(ll, subs), parts = partsOf(REPD_IND, ll), bl = recBlocks(x);
+    assert.equal(x.manFetch, 1, 'the pinned manifest is checked once'); assert.equal(x.sql.length, 1, 'one query for the listed points');
+    assert.equal(bl.length, parts.length, 'one record block per listed project (grouped sites expanded)');
+    let joined = 0;
+    parts.forEach(([p, a], i) => {
+      const r = wantRec(p, a), t = bl[i].children.map(c => c.textContent);
+      if (r) { joined++; assert.deepEqual(t.slice(0, 2).map((s, k) => k ? s.replace(/ \(map register: .*\)$/, '') : s), recLines(r), p.name); if (r.status !== p.status) assert.match(t[1], /\(map register: /); }
+      else assert.deepEqual(t, ['Record · address not in register (no exact REPD match; no ref shown)'], p.name);
+    });
+    assert.ok(joined >= parts.length - 2, 'nearly all listed projects join exactly (' + joined + '/' + parts.length + ')');
+    const refs = [...card(x).textContent.matchAll(/REPD (\d+) · /g)].map(m => m[1]);
+    assert.deepEqual(refs.sort(), parts.map(([p, a]) => wantRec(p, a)).filter(Boolean).map(r => r.repd_ref).sort(), 'no ref beyond the exact matches');
+    for (const a of prows(card(x))) assert.doesNotMatch(a.href, /repd_ref/);
+    assert.equal(x.log.errors.length, 0);
+  }
+});
+
+test('M5-2 (the owner\'s example): a flash at REPD 15149 shows the engine card\'s address line and "REPD 15149 · application submitted"', async () => {
+  const x = await recTap([-0.813464, 53.138419], NEWARK_SUBS), t = card(x).textContent;
+  assert.ok(t.includes('north west of Newark on Trent, west of A1 and north of A617, Newark · NG23 6HT · Nottinghamshire · East Midlands'));
+  assert.ok(t.includes('Record · REPD 15149 · application submitted'));
+  assert.ok(t.includes('The Planning Inspectorate - National Infrastructure · EN010162 · record updated 13/10/2025'));
+  assert.ok(t.includes('Operator: not shown (may name a person) or not stated'), 'a withheld operator stays withheld');
+});
+
+test('M5-3 (whole register): the module\'s exported join pairs 10,503 of the 10,784 register rows with exactly one record and never one record with two rows', () => {
+  const x = boot({ feedFn: () => feed([]) }), api = x.W.__GRIDATLAS_MODULES__.repdRecords;
+  assert.equal(api.source, PQ_URL); assert.equal(api.manifest, MAN_URL); assert.equal(Object.isFrozen(api), true);
+  const C = new Map(), hits = new Map(); let joined = 0;
+  for (const f of REPD_IND.features) { const a = repPoint(f.geometry); C.set(a + '', recsAt(...a)); }
+  for (const f of REPD_IND.features) {
+    const a = repPoint(f.geometry), r = api.join(f.properties, a, C), w = wantRec(f.properties, a);
+    assert.equal(r ? r.repd_ref : null, w ? w.repd_ref : null, f.id);
+    if (r) { joined++; hits.set(r.repd_ref, (hits.get(r.repd_ref) || 0) + 1); }
+  }
+  assert.equal(joined, 10503); assert.equal([...hits.values()].filter(v => v > 1).length, 0);
+  assert.equal(api.join({ name: 'x' }, [0, 0], new Map()), undefined, 'not loaded is not "no match"');
+});
+
+test('M5-4: no invented refs: no record at the point, a changed MW, a different name, two identical records: each says "address not in register" and shows no ref', async () => {
+  const P = (n, extra) => ({ repd_ref: String(n), name: 'Test Farm', repd_address_display: 'Somewhere', repd_postcode: 'AB1 2CD', county: 'Shire', region: 'East', planning_authority: 'Council', planning_application_reference: 'P/1', repd_operator_or_applicant: 'Op Ltd', applicant_publication_state: 'REPD_AS_PUBLISHED', repd_technology: 'Solar Photovoltaics', status: 'operational', capacity_mw: 10, longitude: -1.5, latitude: 52.01, source_record_updated: '01/01/2026', ...extra });
+  const repd = FCx([pf(-1.5, 52.01, { name: 'Test Farm' }), pf(-1.5, 52.02, { name: 'MW Farm' }), pf(-1.5, 52.03, { name: 'Name Farm' }), pf(-1.5, 52.04, { name: 'Twin Farm' }), pf(-1.5, 52.05, { name: 'Lonely Farm' })]);
+  const recs = [P(1), P(2, { name: 'MW Farm', latitude: 52.02, capacity_mw: 12 }), P(3, { name: 'Name Farm Extension', latitude: 52.03 }), P(4, { name: 'Twin Farm', latitude: 52.04 }), P(5, { name: 'Twin Farm', latitude: 52.04 })];
+  const x = boot({ feedFn: () => feed([flash(Date.now() - H, 'z', [-1.5, 52])]) }); installRepd(x, SUBS, repd); installRecords(x, recs); x.toggle(true); await drain(); tapFlash(x); await settle(); await drain();
+  const t = recBlocks(x).map(b => b.textContent);
+  assert.equal(t.length, 5); assert.match(t[0], /Record · REPD 1 · operational/);
+  for (const s of t.slice(1)) assert.equal(s, 'Record · address not in register (no exact REPD match; no ref shown)');
+  assert.deepEqual([...card(x).textContent.matchAll(/REPD (\d+)/g)].map(m => m[1]), ['1']);
+});
+
+test('M5-5: missing fields are said, never filled: no address, no postcode, no planning fields, no update date; a withheld operator is not shown; a newer record status is shown beside the register status', async () => {
+  const repd = FCx([pf(-1.5, 52.01, { name: 'Bare', status: 'application submitted' }), pf(-1.5, 52.02, { name: 'Full' })]);
+  const recs = [{ repd_ref: '7', name: 'Bare', repd_address_display: null, repd_postcode: null, county: null, region: 'Wales', planning_authority: null, planning_application_reference: null, repd_operator_or_applicant: 'WITHHELD — POSSIBLE INDIVIDUAL', applicant_publication_state: 'WITHHELD_POSSIBLE_INDIVIDUAL', repd_technology: 'Solar Photovoltaics', status: 'awaiting construction', capacity_mw: 10, longitude: -1.5, latitude: 52.01, source_record_updated: null },
+    { repd_ref: '8', name: 'Full', repd_address_display: 'Lane <b>&', repd_postcode: 'ZZ9 9ZZ', county: 'C', region: 'R', planning_authority: 'PA', planning_application_reference: 'X/1', repd_operator_or_applicant: 'Op Ltd', applicant_publication_state: 'REPD_AS_PUBLISHED', repd_technology: 'Solar Photovoltaics', status: 'operational', capacity_mw: 10, longitude: -1.5, latitude: 52.02, source_record_updated: '02/02/2026' }];
+  const x = boot({ feedFn: () => feed([flash(Date.now() - H, 'z', [-1.5, 52])]) }); installRepd(x, SUBS, repd); installRecords(x, recs); x.toggle(true); await drain(); tapFlash(x); await settle(); await drain();
+  const [a, b] = recBlocks(x).map(q => q.children.map(c => c.textContent));
+  assert.deepEqual(a, ['address not stated · no postcode · Wales', 'Record · REPD 7 · awaiting construction (map register: application submitted)', 'Operator: not shown (may name a person) or not stated', 'planning authority not stated']);
+  assert.deepEqual(b, ['Lane <b>& · ZZ9 9ZZ · C · R', 'Record · REPD 8 · operational', 'Operator: Op Ltd', 'PA · X/1 · record updated 02/02/2026']);
+  assert.equal(recBlocks(x)[1].children[0].children.length, 1, 'text, never markup');
+});
+
+test('M5-6: rows per point are cached for the page: no point is ever queried twice (filter presses query only sites new to the list); a second tap at the same place sends no query', async () => {
+  const x = await recTap(DONC, S3); assert.equal(x.sql.length, 1);
+  const pts = () => x.sql.flatMap(q => [...q.matchAll(/longitude-\((-?[\d.]+)\)\)<=[\d.]+ AND abs\(latitude-\((-?[\d.]+)\)/g)].map(m => m[1] + ',' + m[2]));
+  for (const k of ['te:solar', 'st:op', 'te:all', 'st:all']) { press(x, k); await settle(); await drain(); }
+  const n = x.sql.length; tapFlash(x); await settle(); await drain(); assert.equal(x.sql.length, n, 'same tap: cached'); assert.equal(x.manFetch, 1);
+  assert.equal(new Set(pts()).size, pts().length, 'no point queried twice');
+  assert.ok(recBlocks(x).length >= 10); assert.ok(!card(x).textContent.includes('loading…'));
+});
+
+test('M5-7: failures are said and retried: no search runtime, a manifest that is not the pinned one, a query that never answers (timeout)', async () => {
+  let x = await recTap(DONC, S3, { noRuntime: true });
+  assert.match(recBlocks(x)[0].textContent, /^REPD record unavailable — tap to retry \(the map search runtime has not started; reload the page\)$/);
+  assert.ok(prows(card(x)).length >= 10, 'the list itself stands');
+  x = await recTap(DONC, S3, { badManifest: true }); assert.match(recBlocks(x)[0].textContent, /REPD record unavailable — tap to retry \(REPD manifest is not the pinned one\)/); assert.equal(x.sql.length, 0, 'no query without the pinned manifest');
+  globalThis.__SRC_OVERRIDE = SRC.replace('TMO=15000', 'TMO=40');
+  try { x = await recTap(DONC, S3, { hang: true }); await new Promise(r => setTimeout(r, 120)); await drain(); assert.match(recBlocks(x)[0].textContent, /REPD record unavailable — tap to retry \(timeout after 15 s\)/); }
+  finally { delete globalThis.__SRC_OVERRIDE; }
+  assert.ok(SRC.includes('TMO=15000'), 'the shipped timeout is 15 s');
+});
+
+test('M5-8 Area summary (Screening): counts and stated MW by technology and by status within 10 and 40 km equal the brute force; the nearest substation per voltage comes from the card\'s own 5', async () => {
+  const x = await recTap(DONC, S3), c = card(x), g = c.querySelectorAll('[data-tier="screening"]').find(e => e.style.cssText.includes('grid'));
+  assert.ok(g, 'summary grid'); const cells = g.children.map(e => e.textContent), rows = [];
+  for (let i = 3; i < cells.length; i += 3) rows.push(cells.slice(i, i + 3));
+  const seen = new Set(), all = [];
+  for (const f of REPD_IND.features) { const a = repPoint(f.geometry), p = f.properties; if (!a || !PTECH.has(p.tech)) continue; const km = hav(...DONC, ...a); const k = a + JSON.stringify(p); if (km <= 40 && !seen.has(k)) { seen.add(k); all.push({ p, km }); } }
+  const T = t => /^solar/.test(t) ? 'Solar' : /^wind/.test(t) ? 'Wind' : /^bess/.test(t) ? 'BESS' : 'Other', St = s => ({ operational: 'Operational', 'under construction': 'Consented', 'awaiting construction': 'Consented', 'application submitted': 'Planning' })[s];
+  const cell = (lab, d) => { const r = all.filter(q => q.km <= d && (T(q.p.tech) === lab || St(q.p.status) === lab)), w = [...new Set(r.map(q => q.p.name + '|' + q.p.raw_tech + '|' + mwOf(q.p.capacity)))].reduce((s, k) => s + +k.split('|').pop(), 0); return r.length + (w > 0 ? ' · ' + w.toLocaleString('en-GB') + ' MW' : '') + (r.some(q => !(q.p.capacity > 0)) ? '*' : ''); };
+  const want = ['Solar', 'Wind', 'BESS', 'Other', 'Operational', 'Consented', 'Planning'].filter(l => cell(l, 40) !== '0').map(l => [l, cell(l, 10), cell(l, 40)]);
+  assert.deepEqual(rows, want);
+  const k = origNearest(...DONC, S3), V = new Map(); for (const s of k) if (!V.has(s.kv[0])) V.set(s.kv[0], s);
+  assert.ok(c.textContent.includes('Nearest per voltage, of the substations above: ' + [...V].sort((a, b) => b[0] - a[0]).map(([v, s]) => `${v} kV ${(+s.km).toFixed(2)} km`).join(' · ')));
+  assert.ok(c.textContent.includes('Counts and distances only: not capacity, connection feasibility or exposure.'));
+});
+
+test('M5-9 tiers: record blocks are data-tier="record", the summary "screening"; no distance, count or sum is marked record; the banned words appear only negated', async () => {
+  const x = await recTap(DONC, S3), c = card(x);
+  for (const b of c.querySelectorAll('[data-tier="record"]')) assert.doesNotMatch(b.textContent, /\d km\b|within \d+ km/, 'a record block carries no distance');
+  const scr = c.querySelectorAll('[data-tier="screening"]').map(e => e.textContent).join(' ') + ' ' + c.textContent.split('Record ·')[0];
+  const bad = scr.replace(/not capacity, connection feasibility or exposure|Proximity, not exposure or a current path|Proximity only, not impact|not evidence any (asset|project) was struck|capacity not stated|some capacities not stated|MW not stated|Not its declared connection or capacity/g, '');
+  assert.doesNotMatch(bad, /\brisk|exposure|exposed|struck|\bhit\b|impact|damage|\bsafe\b|capacity available|headroom|feasib|can connect|\broute\b/i);
+  assert.match(c.textContent, /Screening · 10 nearest REPD sites \(\d+ projects; those at one point grouped\) within 40 km of this optical flash, straight line\. Proximity only, not impact/);
+  assert.match(c.textContent, /Record · REPD \(DESNZ, OGL v3\.0\): the map register is the Apr 2026 extract; address, ref, operator and planning fields are from the Jul 2026 extract/);
+});
+
+test('M5-10 project view (row tap): the site\'s records are shown in the engine pattern; back restores the list with its records from the cache', async () => {
+  const x = await recTap(NEWARK, NEWARK_SUBS), sites = bruteSites(REPD_IND, ...NEWARK), pt = new Map(REPD_IND.features.map(f => [f.properties, repPoint(f.geometry)]));
+  const i = sites.findIndex(g => g.parts.length > 1); assert.ok(i >= 0); tapRow(x, i); await settle(); await drain();
+  const c = card(x); assert.equal(c.getAttribute('aria-label'), 'REPD project');
+  const bl = c.querySelectorAll('[data-tier="record"]'); assert.equal(bl.length, sites[i].parts.length);
+  sites[i].parts.forEach((p, k) => { const r = wantRec(p, pt.get(p)); assert.ok(bl[k].textContent.includes(r ? `Record · REPD ${r.repd_ref}` : 'address not in register')); });
+  assert.match(c.textContent, /Record · REPD \(DESNZ, Apr 2026, OGL v3\.0\)\. Status as registered, not as built\./);
+  assert.equal(x.sql.length, 1, 'the project view reads the cache');
+  dispatch(c.querySelector('[data-lightning-back]'), 'click', x.log.errors); await settle(); await drain();
+  assert.equal(recBlocks(x).length, partsOf(REPD_IND, NEWARK).length); assert.equal(x.sql.length, 1); assert.equal(x.log.errors.length, 0);
+});
+
+test('M5-11 phone (393 px): record and summary blocks wrap (no fixed width, no nowrap); every line is short enough for two lines at 11 px monospace except addresses, which wrap anywhere', async () => {
+  const x = await recTap(DONC, S3), c = card(x);
+  for (const b of [...recBlocks(x), ...c.querySelectorAll('[data-tier="screening"]')]) {
+    assert.doesNotMatch(b.style.cssText, /(^|;)\s*(min-)?width:|nowrap|position:absolute/); }
+  for (const b of recBlocks(x)) { assert.match(b.style.cssText, /overflow-wrap:anywhere/); assert.match(b.style.cssText, /font-size:11px/); }
+  const g = c.querySelectorAll('[data-tier="screening"]').find(e => e.style.cssText.includes('grid'));
+  assert.match(g.style.cssText, /grid-template-columns:auto auto auto/); for (const e of g.children) assert.ok(e.textContent.length <= 22, e.textContent);
+  assert.ok(c.querySelector('details').open, 'M6: the card opens by default (the list is visible)');
+});
+
+// ---------------------------------------------------------------- M6-build: the 10-site list is visible by default (owner, iPhone 03:05 UTC)
+test('M6-1: the card opens by default as a half-height panel: the sites come first (above the substations), the Area summary after them; "▾ Hide list" / "▸ Show 10 sites" reflects the real state; × closes', async () => {
+  const x = await recTap(DONC, S3); x.mapEl._rect = { top: 0, left: 0, right: 393, bottom: 852, width: 393, height: 852 }; const c = card(x), d = c.querySelector('details');
+  assert.equal(d.open, true, 'open by default');
+  const [tg, close] = c.querySelectorAll('button'); assert.equal(tg.textContent, '▾ Hide list'); assert.equal(tg.getAttribute('aria-label'), 'Hide list'); assert.equal(tg.getAttribute('aria-expanded'), 'true'); assert.equal(close.getAttribute('aria-label'), 'Close');
+  assert.equal(prows(c).length, 10); assert.ok(prows(c).every(a => d.contains(a)));
+  const t = c.textContent, r = rowsOf(x); assert.ok(t.indexOf(r[0]) < t.indexOf('Screening · nearest substations'), 'sites first'); assert.ok(t.indexOf('Area summary') > t.indexOf(r[9]), 'Area summary after the sites');
+  assert.ok(t.indexOf(r[9]) < t.indexOf('Cell lat') || !t.includes('Cell lat'));
+  dispatch(tg, 'click', x.log.errors); assert.equal(d.open, false); assert.equal(tg.textContent, '▸ Show 10 sites'); assert.equal(tg.getAttribute('aria-label'), 'Show 10 sites'); assert.equal(tg.getAttribute('aria-expanded'), 'false');
+  d.open = true; dispatch(d, 'toggle', x.log.errors); assert.equal(tg.textContent, '▾ Hide list', 'the summary tap updates the toggle too');
+  dispatch(close, 'click', x.log.errors); assert.equal(card(x), null); assert.equal(x.log.errors.length, 0);
+});
+test('M6-2: the panel is at most 45 % of the map (393x852: 383 px) and scrolls inside', async () => {
+  const x = flash0(); installRepd(x, SUBS, FCx([pf(-1.5, 52.3)])); x.mapEl._rect = { top: 0, left: 0, right: 393, bottom: 852, width: 393, height: 852 }; x.mapEl.clientHeight = 852; x.mapEl.clientWidth = 393;
+  x.toggle(true); await drain(); tapFlash(x); await settle();
+  assert.equal(card(x).style.maxHeight, '383px'); assert.match(card(x).style.cssText, /overflow-y:auto/); assert.equal(card(x).querySelector('details').open, true);
+});
+test('M6-3: rows render from the map register even when the REPD record fetch fails or hangs: "loading REPD record…" at once, then "REPD record unavailable — tap to retry" within the 15 s budget; a tap on it retries; never an empty list', async () => {
+  globalThis.__SRC_OVERRIDE = SRC.replace('TMO=15000', 'TMO=40');
+  try {
+    const x = await recTap(DONC, S3, { hang: true }); const c = card(x);
+    assert.equal(prows(c).length, 10, 'the 10 rows stand'); for (const a of prows(c)) assert.match(a.textContent, /^\d+\.\d\d km · .+ · .+/);
+    assert.ok(recBlocks(x).length >= 10); const api = x.W.__GRIDATLAS_MODULES__.repdRecords; assert.equal(api.block({ name: 'A' }, [1, 2], new Map).textContent, 'loading REPD record…', 'not loaded yet: loading'); assert.match(api.block({ name: 'A' }, [1, 2], new Map, new Error('x')).textContent, /^REPD record unavailable — tap to retry \(x\)$/);
+    await new Promise(r => setTimeout(r, 120)); await drain();
+    assert.ok(recBlocks(x).every(b => /^REPD record unavailable — tap to retry \(timeout after 15 s\)$/.test(b.textContent)));
+    assert.equal(prows(c).length, 10, 'still 10 rows'); assert.equal(recBlocks(x)[0].getAttribute('role'), 'button');
+  } finally { delete globalThis.__SRC_OVERRIDE; }
+  const y = await recTap(DONC, S3, { noRuntime: true }); assert.equal(prows(card(y)).length, 10); assert.ok(recBlocks(y).every(b => b.textContent.startsWith('REPD record unavailable — tap to retry')));
+  installRecords(y, RECS); dispatch(recBlocks(y)[0], 'click', y.log.errors); await settle(); await drain();
+  assert.ok(!card(y).textContent.includes('unavailable'), 'the retry fills every slot'); assert.ok(recBlocks(y).some(b => /Record · REPD \d+/.test(b.textContent))); assert.equal(y.sql.length, 1);
+  assert.equal(y.log.errors.length, 0);
 });
