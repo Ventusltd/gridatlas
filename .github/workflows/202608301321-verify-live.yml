@@ -19,10 +19,11 @@ on:
   workflow_dispatch:
     inputs:
       mode:
-        description: 'live-bytes = read-only public byte check; build-deploy-verify = compile, push to main and publish a streaming-road cartridge'
+        description: 'live-bytes = read-only public byte check; served-homepage = read-only www.globalgrid2050.com check; build-deploy-verify = compile, push to main and publish a streaming-road cartridge'
         type: choice
         options:
           - live-bytes
+          - served-homepage
           - build-deploy-verify
         default: live-bytes
       compare_ref:
@@ -301,6 +302,7 @@ jobs:
       && needs.build-deploy-verify.result != 'failure'
       && needs.build-deploy-verify.result != 'cancelled'
       && !(github.event_name == 'workflow_dispatch' && inputs.mode == 'build-deploy-verify')
+      && !(github.event_name == 'workflow_dispatch' && inputs.mode == 'served-homepage')
     runs-on: ubuntu-24.04
     timeout-minutes: 30
     permissions:
@@ -399,5 +401,45 @@ jobs:
         with:
           name: gridatlas-live-bytes-${{ github.run_id }}
           path: work/live-bytes.json
+          if-no-files-found: warn
+          retention-days: 90
+
+  served-homepage:
+    if: github.event_name == 'workflow_dispatch' && inputs.mode == 'served-homepage'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    permissions:
+      contents: read
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - name: Checkout the checker
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          fetch-depth: 1
+          sparse-checkout: tools
+          persist-credentials: false
+
+      - name: Configure exact Node
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v4.4.0
+        with:
+          node-version: '22.18.0'
+
+      - name: Prove www.globalgrid2050.com serves the pinned homepage with the live GridAtlas label
+        run: node tools/release/check-served.mjs --timeout-s 600 --report work/served-homepage.json
+
+      - name: Summarise
+        if: always()
+        shell: bash
+        run: |
+          test -f work/served-homepage.json || exit 0
+          jq -r '"### Served homepage: \(.status)\n\nGridAtlas \(.generation) \"\(.label)\" (pin \(.pin))\n", (.checks[] | "- \(if .ok then "OK" else "DIFF" end) `\(.path)` HTTP \(.http)"), (.problems[] | "- problem: \(.)")' work/served-homepage.json >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Retain served-homepage evidence
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v4.4.3
+        with:
+          name: gridatlas-served-homepage-${{ github.run_id }}
+          path: work/served-homepage.json
           if-no-files-found: warn
           retention-days: 90
