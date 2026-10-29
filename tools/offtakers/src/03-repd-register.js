@@ -9,5 +9,5 @@ RpT=t=>/^solar/.test(t)?'solar':/^wind/.test(t)?'wind':/^bess/.test(t)?'bess':'o
 RpN=p=>({solar:'Solar',solar_roof:'Rooftop solar'})[p.tech]||cs(p.raw_tech),
 RpU=(ps,f)=>[...new Set(ps.map(f))],
 RpW=ps=>RpU(ps,p=>p.name+'|'+p.raw_tech+'|'+(p.capacity>0?+p.capacity:0)).reduce((s,k)=>s+ +k.split('|').pop(),0),
-RpMW=v=>v>0?` ${N(v)} MW`:'',RpC=ps=>RpW(ps)>0?'':' · MW not stated',
+RpMW=v=>v>0?` ${N(v)} MW`:'',RpC=ps=>RpW(ps)>0?'':' · capacity not stated',
 RpG=g=>`${k2(g.km)} km · ${RpU(g.parts,RpN).sort().join(' + ')}${RpMW(RpW(g.parts))}`,
