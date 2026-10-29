@@ -72,9 +72,16 @@ pv=(m,c,g)=>{let back=c.re,[x,y]=g.a,ps=g.parts;pc();
  L(v.det,'Screening · nearest substations to this project, straight line. Not its declared connection or capacity.','color:#5fbdc2;margin-top:6px');for(let a of k)L(v.det,`${k2(a.km)} km · ${KV(a)} kV · ${cs(a.name||'unnamed substation')}`,'color:#c9d6da');
  v.k=k;S.fk=[[x,y],...k.map(a=>a.at)];try{nl(m,[x,y],k)}catch(e){note('links: '+msg(e))}cpos();nz(m,x,y);v.querySelector('[data-offtakers-back]')?.focus?.()},
 /// map tap: decided after every click handler of this tap has run, so an offtaker hit wins over a lightning card opened by the same tap
-tap=e=>{if(!S.on)return;setTimeout(()=>{try{tq(e)}catch(x){note('tap: '+msg(x))}},0)},
-tq=e=>{let m=mh();if(!S.on||!m||!m.getLayer(HIT)||!S.data)return;let px=e.point.x??e.point[0],py=e.point.y??e.point[1],f=null,dm=1/0;
+/// the hit is decided at once and the tap claimed (e.gridatlasClaim), so the lightning overlay leaves it alone (R-taps MAJOR);
+/// the card is drawn after every click handler of this tap has run
+tap=e=>{if(!S.on)return;let f=th(e);if(f)try{e.gridatlasClaim='offtakers'}catch(_){}setTimeout(()=>{try{tq(e,f)}catch(x){note('tap: '+msg(x))}},0)},
+th=e=>{let m=mh();if(!S.on||!m||!m.getLayer(HIT)||!S.data)return null;let px=e.point.x??e.point[0],py=e.point.y??e.point[1],f=null,dm=1/0;
  for(let q of m.queryRenderedFeatures(e.point,{layers:[HIT]})){let r=S.data.dots[q.properties&&q.properties.i];if(!r||!S.cls[r.k]||r.k=='b'&&!S.bst[r.t])continue;let a=m.project(r.a),d=(a.x-px)**2+(a.y-py)**2;if(d<dm){dm=d;f=r}}
+ return f},
+/// an offtaker hit wins: the lightning card and a map popup opened by the same tap (a REPD dot under the site) close through
+/// their own Close buttons
+tq=(e,f)=>{let m=mh();if(!S.on||!m)return;
  if(!f){if(S.pp&&!S.pp.contains(e.originalEvent&&e.originalEvent.target))pc();return}
- oc(m,f);let lc=document.querySelector('[data-lightning-card]'),x=lc&&[...lc.querySelectorAll('button')].find(b=>b.getAttribute('aria-label')==='Close');x&&x.click()},
+ oc(m,f);let lc=document.querySelector('[data-lightning-card]'),x=lc&&[...lc.querySelectorAll('button')].find(b=>b.getAttribute('aria-label')==='Close');x&&x.click();
+ for(let b of (m.getContainer?.()||document).querySelectorAll('.maplibregl-popup-close-button'))b.click()},
 co=e=>{if(e&&e.detail&&e.detail.owner!=='offtakers')pc()},

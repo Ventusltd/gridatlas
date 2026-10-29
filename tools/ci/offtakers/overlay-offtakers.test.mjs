@@ -47,7 +47,10 @@ const SUBS = SUBF.map((f, i) => ({ at: f.geometry.coordinates, kv: kvOf(f.proper
 const PTECH = new Set(['solar', 'solar_roof', 'wind', 'bess', 'biomass', 'tidal', 'hydrogen', 'hydro', 'flywheel', 'act', 'geothermal', 'caes', 'other']);
 
 const unhandled = []; process.on('unhandledRejection', e => unhandled.push(e));
-const drain = async (n = 60) => { for (let k = 0; k < n; k++) { await new Promise(r => setImmediate(r)); await new Promise(r => setTimeout(r, 1)); } };
+// fixed ticks, then (R-cifix MINOR: the async SHA-256 and parse raced the fixed count under load) more ticks while the module
+// is still loading its data, up to 5 s, and a few after it settles
+const tick = async () => { await new Promise(r => setImmediate(r)); await new Promise(r => setTimeout(r, 1)); };
+const drain = async (n = 60) => { for (let k = 0; k < n; k++) await tick(); const t0 = Date.now(); let b = false; while (globalThis.__OTBUSY?.() && Date.now() - t0 < 5000) { b = true; await tick(); } if (b) for (let k = 0; k < 20; k++) await tick(); };
 
 function boot({ tamper = false, lightning = false, neon = true, register = REG.features, duck = true, offtakers = true, srcOverride = null } = {}) {
   const doc = makeDocument(), html = doc.documentElement, body = doc.createElement('body'); html.appendChild(body); const errs = globalThis.__ERR = [];
@@ -97,7 +100,7 @@ function boot({ tamper = false, lightning = false, neon = true, register = REG.f
   let L = null, O = null;
   if (lightning) { vm.runInContext(LSRC.replace('NS.ukLightning=Object.freeze(', 'window.__LP__={S};NS.ukLightning=Object.freeze('), ctx, { filename: 'lightning.js', timeout: 5000 }); L = W.__GRIDATLAS_MODULES__.ukLightning; assert.equal(L.install(), true); }
   if (offtakers) { try { vm.runInContext(srcOverride ? srcOverride : PROBED, ctx, { filename: MODULE, timeout: 5000 }); } catch (e) { if (!srcOverride) throw e; log.top = e; } O = W.__GRIDATLAS_MODULES__.ukOfftakers; }
-  const P = W.__OT__;
+  const P = W.__OT__; globalThis.__OTBUSY = () => !!(P && P.S && P.S.busy);
   const group = () => host.querySelector('[data-offtakers-group]');
   const toggle = on => { const t = group().querySelector('[data-offtakers-control]'); t.checked = on; dispatch(t, 'change', errs); };
   const ltoggle = on => { const t = host.querySelector('[data-lightning-control]'); t.checked = on; dispatch(t, 'change', errs); };
@@ -328,3 +331,23 @@ test('T15: power station card: closed coal (Ratcliffe) shows MW, the curated sta
 });
 
 test('Z: no unhandled rejections', async () => { await drain(); deq(unhandled.map(String), []); });
+
+// R-taps MAJOR: an offtaker hit claims the tap at once (e.gridatlasClaim = 'offtakers'), whichever overlay registered its click
+// handler first; the lightning overlay then leaves the tap alone, and a map popup opened by the same tap (the engine's REPD dot
+// under the site, e.g. Drax over a battery) is closed through its own Close button, so only the offtakers card stays.
+const OT_GEN = (SRC.match(/GEN='(\d{12})'/) || [])[1] || '0';
+test('T13b: both ON, in either handler order: the offtaker hit claims the tap, lightning ignores it, the same-tap map popup closes', { skip: OT_GEN < '202610291044' && `module ${OT_GEN} predates the fix` }, async () => {
+  for (const first of ['offtakers', 'lightning']) {
+    const x = boot({ lightning: true }); x.O.install(); x.W.__FEED__ = { type: 'FeatureCollection', features: [], metadata: { query_start_utc: new Date(Date.now() - 4 * 36e5).toISOString(), query_end_utc: new Date(Date.now() - 36e5).toISOString() } };
+    if (first === 'offtakers') { x.toggle(true); await drain(); x.ltoggle(true); await drain(); } else { x.ltoggle(true); await drain(); x.toggle(true); await drain(); }
+    let seen = null; x.handlers.push({ t: 'click', layer: null, f: e => { seen = e.gridatlasClaim; } });
+    const lt = x.W.__LP__.S, lstate = () => JSON.stringify([!!lt.pp, lt.ly ? [...lt.ly] : null]), l0 = lstate();
+    const pop = x.doc.createElement('div'); pop.className = 'maplibregl-popup'; const close = x.doc.createElement('button'); close.className = 'maplibregl-popup-close-button';
+    let closed = 0; close.addEventListener('click', () => { closed++; pop.remove(); }); pop.appendChild(close); x.mapEl.appendChild(pop);
+    const r = bigSites(x).refinery; x.W.__GRIDATLAS_NEON_LINKS__.substations = SUBS;
+    x.tapMap([0, 0], { 'gridatlas-offtakers-hit': [{ properties: { i: r.i }, geometry: { type: 'Point', coordinates: r.a } }], 'gridatlas-lightning-cell': [{ properties: { lon: r.a[0], lat: r.a[1] } }] });
+    assert.equal(seen, 'offtakers', `${first} first: claimed synchronously`); assert.equal(lstate(), l0, `${first} first: lightning did nothing with the tap`);
+    await drain(); assert.ok(x.card(), 'offtakers card'); assert.equal(x.lcard(), null, 'no lightning card'); assert.equal(closed, 1, 'the same-tap popup closed through its own button');
+    x.tapMap([0, 0], {}); seen = 'none'; x.tapMap([0, 0], {}); assert.equal(seen, undefined, 'a tap off the dots is not claimed');
+  }
+});
