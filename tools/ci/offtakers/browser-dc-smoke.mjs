@@ -74,7 +74,39 @@ async function run(width,height){
   await page.waitForSelector('[data-offtakers-card][aria-label="Data centre"]',{timeout:30000});
   const tabs=await page.locator('[data-offtakers-card] [role="tab"]').count();
   assert.equal(tabs,4);
-  const info={viewport:[width,height],site:(await page.locator('[data-offtakers-card]').innerText()).slice(0,400),tabs,
+  // Independent numerical oracle, not the engine's distance helper.
+  await page.waitForFunction(()=>{const c=window.__GRIDATLAS_MODULES__?.ukOfftakers?.state?.pp;return c?.k?.length===30&&c?.P?.length===30&&c?.cv?.length===30},{timeout:45000});
+  const oracle=await page.evaluate(()=>{
+    const c=window.__GRIDATLAS_MODULES__.ukOfftakers.state.pp;
+    const [lon,lat]=c.r.a;
+    const hav=(o)=>{
+      const [x,y]=o,r=Math.PI/180,dlat=(y-lat)*r,dlon=(x-lon)*r,
+        a=Math.sin(dlat/2)**2+Math.cos(lat*r)*Math.cos(y*r)*Math.sin(dlon/2)**2;
+      return 2*6378.137*Math.asin(Math.sqrt(a));
+    };
+    function check(set, coords, cutoff){
+      const km=set.map(v=>hav(coords(v)));
+      const ok=km.every((x,i)=>Math.abs(x-set[i].km)<0.02 && (!i||x>=km[i-1]-0.0001) && (!cutoff||x<=cutoff+0.0001));
+      if(!ok)throw Error('independent haversine ranking failure '+JSON.stringify(km.slice(0,5)));
+      return {count:km.length,nearest_km:km[0],farthest_km:km.at(-1),monotonic:ok};
+    }
+    return {substations:check(c.k,x=>x.at,40),repd:check(c.P,x=>x.a,40),
+      conventional:check(c.cv,x=>x.q.a,null),
+      lines_within_100:c.cv.filter(x=>x.km<=100).length};
+  });
+  assert.equal(oracle.substations.count,30);
+  assert.equal(oracle.repd.count,30);
+  assert.equal(oracle.conventional.count,30);
+  const bounds=await page.locator('[data-offtakers-card]').boundingBox();
+  assert.ok(bounds&&bounds.x>=-5&&bounds.x+bounds.width<=width+5,'card horizontal viewport containment');
+  const controls=await page.locator('[data-offtakers-card] [role="tab"]').evaluateAll(a=>a.map(x=>({width:x.getBoundingClientRect().width,height:x.getBoundingClientRect().height})));
+  assert.ok(controls.every(x=>x.height>=44&&x.width>=44),'four tab touch targets >=44px');
+  await page.locator('[data-offtakers-tab="s"]').click();
+  await page.locator('[data-offtakers-tab="s"]').focus();
+  await page.keyboard.press('ArrowRight');
+  assert.equal(await page.locator('[data-offtakers-tab="r"]').getAttribute('aria-selected'),'true','keyboard arrow advances tab');
+  await page.locator('[data-offtakers-tab="a"]').click();
+  const info={viewport:[width,height],oracle,site:(await page.locator('[data-offtakers-card]').innerText()).slice(0,400),tabs,
     initial:await page.evaluate(()=>{const S=window.__GRIDATLAS_MODULES__.ukOfftakers.state;return {links:S.perf?.links,search_ms:S.perf?.search_ms,errors:S.errors.slice(-8)}})};
   for(const value of ['s','r','v','a']){
     const t=page.locator(`[data-offtakers-card] [data-offtakers-tab="${value}"]`);
@@ -95,10 +127,32 @@ async function run(width,height){
   assert.ok(rows.includes('grid connection'),'IT/connection distinction');
   assert.ok(rows.length<=256000+500,'CSV is capped');
   info.csv_bytes=rows.length;
+  // Separate Agent B CSV red-team: mutate only this isolated browser context,
+  // not committed source data or the user's live map.
+  const orig=await page.evaluate(()=>{
+    const k=window.__GRIDATLAS_MODULES__.ukOfftakers.state.pp.k;
+    const old=k.slice(0,9).map(x=>x.name);
+    const attacks=['=SUM(1,2)','+SUM(1,2)','-SUM(1,2)','@SUM(1,2)',
+      '\t=SUM(1,2)','\r=SUM(1,2)','<img src=x onerror=alert(1)>,"quote"\nnext',
+      'L'.repeat(8192),'normal'];
+    for(let i=0;i<attacks.length;i++)k[i].name=attacks[i];
+    return old;
+  });
+  const [second]=await Promise.all([page.waitForEvent('download',{timeout:45000}),csv.click()]);
+  const redteam=fs.readFileSync(await second.path(),'utf8');
+  for(const prefix of ['=SUM(1,2)','+SUM(1,2)','-SUM(1,2)','@SUM(1,2)'])
+    assert.ok(redteam.includes("'"+prefix),'CSV formula prefix neutralised '+prefix);
+  assert.ok(redteam.includes("'\t=SUM(1,2)"),'leading tab neutralised');
+  assert.ok(redteam.includes("'\r=SUM(1,2)"),'leading CR neutralised');
+  assert.ok(redteam.includes('""quote""'),'CSV embedded quote is doubled');
+  assert.ok(redteam.includes('<img src=x onerror=alert(1)>'),'HTML payload kept as CSV text only');
+  assert.ok(redteam.length<256500,'CSV 256 kB cap');
+  info.csv_redteam={bytes:redteam.length,formula_prefixes:6,embedded_quote:true,long_cell:8192,repeated_download:true};
+  await page.evaluate(old=>{const k=window.__GRIDATLAS_MODULES__.ukOfftakers.state.pp.k;for(let i=0;i<old.length;i++)k[i].name=old[i]},orig);
   await page.screenshot({path:path.join(OUT,`dc-${width}x${height}.png`),fullPage:false});
   // Tap two further locations, including a consented project, on both screen sizes.
   info.additional_taps=[];
-  for(const wanted of ['Court Lane Industrial Estate','Cobalt Park Data Centres']){
+  for(const wanted of ['Global Technical Realty London GB One','Court Lane Industrial Estate','SDC M40 Campus (Wapseys Wood)','Data Centre Campus, Ampthill Road, Bedford','Cobalt Park Data Centres','Culham AI Growth Zone (Culham Campus)']){
     await page.locator('[data-offtakers-card] button[aria-label="Close"]').click();
     const other=await page.evaluate(label=>{
       const m=window.__GRIDATLAS_V9_MAP__,S=window.__GRIDATLAS_MODULES__.ukOfftakers.state;
@@ -114,13 +168,27 @@ async function run(width,height){
     const body=await page.locator('[data-offtakers-card]').innerText();
     assert.ok(body.includes(wanted),'the intended data centre was tapped: '+wanted);
     assert.equal(await page.locator('[data-offtakers-card] [role="tab"]').count(),4);
-    info.additional_taps.push({name:other.name,tab_count:4,has_unknown_statement:body.includes('not stated')});
+    if(wanted.startsWith('Global Technical Realty')) {
+      assert.match(body,/Global Technical Realty/,'GTR remains distinct from Digital Realty');
+      assert.doesNotMatch(body,/Digital Realty LHR26/,'no Slough operator over-merge');
+    }
+    if(wanted.startsWith('SDC M40')) assert.match(body,/300 MW/,'planned M40 site has the separately stated IT load');
+    if(wanted.startsWith('Data Centre Campus, Ampthill')) {
+      assert.match(body,/720 MW/,'Ampthill IT load retained');
+      assert.match(body,/200 MW/,'Ampthill grid connection separate from IT load');
+    }
+    if(wanted.startsWith('Court Lane')) assert.match(body,/140 MW/,'Court Lane grid connection retained without inventing IT load');
+    if(wanted.startsWith('Culham AI')) {
+      assert.match(body,/100 MW/,'Culham announced unclassified MW retained');
+      assert.match(body,/not said to be IT load or grid connection/,'unknown MW basis is not reclassified');
+    }
+    info.additional_taps.push({name:other.name,tab_count:4,has_unknown_statement:body.includes('not stated'),details:body.slice(0,300)});
   }
   observations.push(info);
   await ctx.close();
 }
 try{
-  for(const vp of [[393,852],[1280,800]])await run(...vp);
+  for(const vp of [[375,667],[390,844],[768,1024],[1280,800]])await run(...vp);
   assert.deepEqual(errors,[],'uncaught UI errors');
   console.log('BROWSER DC SMOKE PASS '+JSON.stringify({observations,errors}));
 }catch(e){

@@ -155,7 +155,7 @@ jobs:
   # not deploy, change the live pointer or use secrets. Remove the job after
   # its browser report has been reviewed; keep the reusable script.
   dc-browser-smoke:
-    if: github.event.pull_request.number == 75
+    if: github.event.pull_request.number == 75 || startsWith(github.event.pull_request.head.ref, 'dc-73-agent-b/browser-qa-')
     runs-on: ubuntu-24.04
     timeout-minutes: 15
     steps:
