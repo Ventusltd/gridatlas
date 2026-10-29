@@ -7,7 +7,7 @@ and the PR gate proves that the shipped bytes are built from them.
 
 | path | what it is |
 |---|---|
-| `tools/lightning/src/*.js` | the readable source: 16 files, concatenated in name order |
+| `tools/lightning/src/*.js` | the readable source: 17 files, concatenated in name order (M5 added `11b-repd-records.js`: the full REPD record of a listed project and its reusable export `window.__GRIDATLAS_MODULES__.repdRecords`) |
 | `tools/lightning/build.mjs` | source → module bytes; `--check` is the CI check |
 | `tools/lightning/generations.json` | the variants, and the generations the current source rebuilds |
 | `tools/lightning/make-generation.mjs` | the scaffolder: cuts a new candidate generation from the source |
@@ -34,9 +34,9 @@ Nothing else changes. Ordinary `//` and `/* */` comments ship as they are, and t
 For explanations, use `///`.
 
 **Variants.**
-- `layers` is M4 (202610290045). The listed technologies' own REPD layers are switched on through their Layers
+- `layers` is M5 (202610290246; M4 202610290045 before it). The listed technologies' own REPD layers are switched on through their Layers
   checkboxes.
-- `dots` is M4b (202610290050), the owner option. Only the listed sites are drawn, as REPD-styled dots, and no
+- `dots` is M5b (202610290247; M4b 202610290050 before it), the owner option. Only the listed sites are drawn, as REPD-styled dots, and no
   Layers control is touched.
 
 Both build from the same files. They differ in 21 `///#if dots` blocks. The largest is the whole of

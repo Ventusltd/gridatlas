@@ -63,16 +63,18 @@ ap(c,bar);///
     nf(m,c,x,y,15)///
   },
 /// cb: a cell's south-west corner, only for a well-formed cell of the drawn result (LR-security S2: safe-integer n).
-/// cc: the cell card (LR-words W3: "N optical flashes in this ≈10 km cell").
+/// cc: the cell card (LR-words W3; M5 V-geometry G3-G4b: "N optical flashes in this 0.1° cell", and the real cell size at
+/// this latitude: E–W = 11.156·cos(lat) km (WGS84, max error 2.3 m over the UK rows), N–S ≈ 11.1 km).
 cb=p=>{///
     let c=p.cell,w=-11+c%140/10,s=49.5+(c-c%140)/1400;///
     return c>>>0===c&&c<16800&&Number.isSafeInteger(p.n)&&p.n>0&&p.lon>w&&p.lon<w+.1&&p.lat>s&&p.lat<s+.1&&S.res&&(p.s==null||p.s===S.res.s)?[w,s]:null///
   },
 cc=(m,p)=>{///
-    let[w,s]=cb(p),W=S.res.w,r=a=>a.toFixed(2)+'–'+(a+.1).toFixed(2);///
-    cd(m,p.lon,p.lat,'Lightning cell',pl(p.n,'optical flash','es')+' in this ≈10 km cell',///
+    let[w,s]=cb(p),W=S.res.w,r=a=>a.toFixed(2)+'–'+(a+.1).toFixed(2),///
+      x=11.156*Math.cos(p.lat*Math.PI/180);///
+    cd(m,p.lon,p.lat,'Lightning cell',pl(p.n,'optical flash','es')+' in this 0.1° cell',///
       `${ymd(W.s)} to ${ymd(MX(W.s,W.e-1))} UTC · centre lat ${p.lat.toFixed(3)}, lon ${p.lon.toFixed(3)}`,///
-      `Cell lat ${r(s)}, lon ${r(w)} (0.1°) · searched UTC days only; unsearched days ${U}`,'cell centre')///
+      `Cell lat ${r(s)}, lon ${r(w)}: 0.1°, ≈${x.toFixed(1)} km E–W × 11.1 km N–S, ≈${x*11.13+.5|0} km² here; the centre is not a flash location · searched UTC days only; unsearched days ${U}`,'cell centre')///
   },
 /// sid: short ID = product sensing window + flash index (W_XX-..._<start>_<end>_N__..._0000:<index>); the full ID stays
 /// in the detail line.
