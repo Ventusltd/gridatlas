@@ -151,7 +151,7 @@ async function run(width,height){
   await page.screenshot({path:path.join(OUT,`dc-${width}x${height}.png`),fullPage:false});
   // Tap two further locations, including a consented project, on both screen sizes.
   info.additional_taps=[];
-  for(const wanted of ['Global Technical Realty London GB One','Court Lane Industrial Estate','SDC M40 Campus (Wapseys Wood)','Data Centre Campus, Ampthill Road, Bedford','Cobalt Park Data Centres']){
+  for(const wanted of ['Global Technical Realty London GB One','Court Lane Industrial Estate','SDC M40 Campus (Wapseys Wood)','Data Centre Campus, Ampthill Road, Bedford','Cobalt Park Data Centres','Culham AI Growth Zone (Culham Campus)']){
     await page.locator('[data-offtakers-card] button[aria-label="Close"]').click();
     const other=await page.evaluate(label=>{
       const m=window.__GRIDATLAS_V9_MAP__,S=window.__GRIDATLAS_MODULES__.ukOfftakers.state;
@@ -177,6 +177,10 @@ async function run(width,height){
       assert.match(body,/200 MW/,'Ampthill grid connection separate from IT load');
     }
     if(wanted.startsWith('Court Lane')) assert.match(body,/140 MW/,'Court Lane grid connection retained without inventing IT load');
+    if(wanted.startsWith('Culham AI')) {
+      assert.match(body,/100 MW/,'Culham announced unclassified MW retained');
+      assert.match(body,/not said to be IT load or grid connection/,'unknown MW basis is not reclassified');
+    }
     info.additional_taps.push({name:other.name,tab_count:4,has_unknown_statement:body.includes('not stated'),details:body.slice(0,300)});
   }
   observations.push(info);
