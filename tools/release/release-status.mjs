@@ -114,7 +114,7 @@ for (const G of gens) {
     domain: pinnedHome.operative_release_id === G ? `pinned ${pin.commit.slice(0, 7)}, deploy ${deploy ? (deploy.conclusion || deploy.status) : 'not run for head'}` : 'no'
   };
   row.next = !onMain && local ? `publish-preview.mjs --generation ${G}`
-    : !onMain ? `cut-generation.mjs --gen ${G}`
+    : !onMain ? `tools/lightning/make-generation.mjs --gen ${G} ...`
     : preview && !preview.merged_at ? `CI green, then rebase-merge preview #${preview.number}`
     : supersededBy && !isLive && !release && acc.state !== 'accepted' ? `superseded by ${supersededBy} (nothing to do)`
     : acc.state !== 'accepted' && !isLive && !release?.merged_at ? `owner: ACCEPT ${G} (acceptance.mjs --how --pr ${preview?.number ?? 'N'})`

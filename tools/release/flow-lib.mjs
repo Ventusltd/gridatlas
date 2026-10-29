@@ -30,7 +30,7 @@ export const OWNER_LOGINS = (process.env.GRIDATLAS_OWNER_LOGINS || 'Ventusltd')
 
 export const STAMP = /^\d{12}$/;
 
-/** The six files a cut writes for generation G (the lightning line). */
+/** The six files tools/lightning/make-generation.mjs writes for generation G. */
 export function generationFiles(G) {
   return {
     module: `atlas/modules/${G}-uk-lightning-overlay.js`,

@@ -7,9 +7,6 @@
 
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import path from 'node:path';
-import { spawnSync } from 'node:child_process';
-import { fileURLToPath } from 'node:url';
 import {
   parseVerdict, trustedActor, decideAcceptance, classifyPr, generationFiles, PROGRESS_DOC_RE, acceptLabel, OWNER_LOGINS
 } from './flow-lib.mjs';
@@ -84,20 +81,11 @@ test('the seven preview files', () => {
   assert.ok(!PROGRESS_DOC_RE.test(`docs/lightning/CANDIDATE-${G}.md`));
 });
 
-test('the preview route is the release pointer re-rooted (the cut post-condition)', () => {
+test('the preview route is the release pointer re-rooted (checked by publish-preview)', () => {
   const manifest = JSON.stringify({ generation: G, composition_manifest: `./manifests/${G}-composition.json`, version: 'v9.176', cut_at_utc: 'x',
     cartridges: [{ id: 'a', path: './cartridges/a.js', contract: '../ui/a.mjs' }] }, null, 1) + '\n';
   const route = rerootForPreview(deriveCurrent(manifest));
   assert.match(route, /"path": "\.\.\/\.\.\/cartridges\/a\.js"/);
   assert.match(route, /"contract": "\.\.\/\.\.\/ui\/a\.mjs"/);
   assert.doesNotMatch(route, /cut_at_utc|"version"/);
-});
-
-test('cut-generation refuses bad input before writing anything', () => {
-  const here = path.dirname(fileURLToPath(import.meta.url));
-  const cut = (...a) => spawnSync('node', [path.join(here, 'cut-generation.mjs'), ...a], { encoding: 'utf8' });
-  assert.match(cut('--gen', '202610291260', '--version', 'v9.999', '--module', 'x').stderr, /not a real UTC minute/);
-  assert.match(cut('--gen', '20261029', '--version', 'v9.999', '--module', 'x').stderr, /YYYYMMDDHHMM/);
-  assert.match(cut('--gen', '202612312359', '--version', '9.999', '--module', 'x').stderr, /v9\.N/);
-  assert.match(cut('--gen', '202612312359', '--version', 'v9.999').stderr, /--module is required/);
 });

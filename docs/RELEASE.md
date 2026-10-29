@@ -35,8 +35,8 @@ node tools/release/release-status.mjs            # where every candidate is, and
 
 | # | step | command | pre-conditions (checked) | done when |
 |---|---|---|---|---|
-| 1 | cut | `cut-generation.mjs --gen G --version v9.N --module M.js [--from P] [--edits E.json] [--proof F] [--progress F --progress-name NAME]` | P is a published lightning-line candidate whose cartridge is base + `\n` + its module; G is a later real UTC minute; the version is unused and higher than every recorded one; G's files do not exist; the cartridge fits the ceiling in `loop.mjs` | 6 files (+ optional progress note) written; preview route = the pointer the release will write; protected files unchanged |
-| 2 | preview PR | `publish-preview.mjs --generation G [--generation G2] [--allow PATH] --push` | change set against main is additive only (6 files per G, one progress note, anything else named with `--allow`, never the pointer, `STATE.md`, the loader or `atlas/releases/**`); G cut against the current live; the local `pr-gate.mjs` passes | draft PR open; CI (`pr-file-size-guard.yml`: size-guard + cartridge-gate) green; rebase-merged, so `atlas/v/G/` is on Pages |
+| 1 | cut | `tools/lightning/make-generation.mjs --gen G --version v9.N --variant layers\|dots --label NAME --scope "…"` (from `tools/lightning/src/`; see `docs/LIGHTNING-SOURCE.md`) | the source rebuilds; G is a real, later UTC minute; the version is unused and higher than every recorded one; G's files do not exist; module and cartridge within budget | the 6 files written, `generations.json` updated; protected files unchanged |
+| 2 | preview PR | `publish-preview.mjs --generation G [--generation G2] [--allow PATH] --push` | change set against main is additive (6 files per G, one optional progress note, the `tools/lightning/src/` + `generations.json` edit; anything else named with `--allow`; never the pointer, `STATE.md`, the loader or `atlas/releases/**`); G cut against the current live; preview route = the pointer the release will write; the local `pr-gate.mjs` passes | draft PR open; CI (`pr-file-size-guard.yml`: size-guard + cartridge-gate) green; rebase-merged, so `atlas/v/G/` is on Pages |
 | 3 | owner acceptance | the owner comments `ACCEPT G` (first line) on the preview PR, or adds the label `accepted:G`; `acceptance.mjs --generation G` reads it | by an owner login, not through a GitHub App, no agent signature, after G's `cut_at_utc`; a later `REJECT G` or removing the label withdraws it | `acceptance.mjs` exits 0 |
 | 4 | release | `release-accepted.mjs --generation G --push` (runs `release-generation.mjs`, below) | step 3; the preview PR is merged and its CI green; clean worktree at `origin/main`; then every precondition and gate of `release-generation.mjs` | draft release PR with CI green; the owner merges it with **rebase**: `gh api -X PUT repos/Ventusltd/gridatlas/pulls/<N>/merge -f merge_method=rebase` |
 | 5 | live bytes | `check-live.mjs --generation G --wait` | main's `atlas/current.json` names G | the `live-bytes` job of `202608301321-verify-live.yml` (runs on every push to main) passed for main's head |
@@ -71,29 +71,12 @@ node tools/release/release-status.mjs            # where every candidate is, and
   acceptance and live state. They write `rehearsal/...` branches and refuse
   `--push`.
 
-### --edits for a cut
-
-`--edits` is the only per-build input besides the module. It describes what
-the build adds to the composition record:
-
-```json
-{ "sld_sandbox": { "uk_lightning": { "camera": "…", "repd_layers": null } },
-  "composition_note_replace": [["old exact text", "new text"]],
-  "acceptance_scope_append": "M4 (202610290045): …" }
-```
-
-`sld_sandbox` is an RFC 7396 merge patch on the sld-sandbox entry: a `null`
-deletes a key, and a new key is appended at the end. Identity fields (`id`,
-`generation`, `version`, `path`, `sha256`, `bytes` and `derived_from`) are
-refused. Pass `--proof` when the build changes its proof beyond `const GEN=`,
-as M4b's restored negative did.
-
 ### Rehearsed for M4 (29 Oct 2026, CD-pipeline lane; nothing pushed to main, nothing released)
 
 | step | result |
 |---|---|
-| 1 cut | at `39c62b4`, re-cut M4 (`202610290045`) and M4b (`202610290050`) from M3 with their modules and `--edits` (M4b also `--proof`): **all 12 files byte-identical** to `a80b760` / `dfcf29c` on main; a chained cut from M4 passed its proof |
-| 2 preview | `publish-preview.mjs` committed both on a local branch; the local `pr-gate` gave 16/16 PASS (M4 191 pass / 10 skip, M4b 186 / 15); the tree equals main `73c0e76` |
+| 1 cut | at `3ec1e6b` + this tooling, `tools/lightning/make-generation.mjs` cut a throwaway `layers` (M4-variant) generation `REPLACE_GEN`; its proof passed. Earlier, at `39c62b4`, a prebuilt-module cutter (lane evidence, not committed: the source-based scaffolder landed in #63 meanwhile) re-cut M4 and M4b from M3 **byte-identical** to `a80b760` / `dfcf29c` |
+| 2 preview | `publish-preview.mjs` committed M4 + M4b (at `39c62b4`) and the throwaway cut (at `3ec1e6b`) on local branches; the local `pr-gate` gave 16/16 PASS for M4 + M4b (M4 191 pass / 10 skip, M4b 186 / 15) and REPLACE_GATE for the throwaway cut |
 | 3 acceptance | M4 and M4b: none yet (exit 3); `--record` refused under an agent |
 | 4 release | the real path stops: `202610290045 is not accepted (none)`. `--rehearsal`: 7/7 gates, `atlas/current.json` `e3eca669…` → `b1b0f98b…`, `STATE.md` `5867656…` → `22e5718a…`; `pr-gate` on the release commit 10/10 PASS |
 | 5 live bytes | `check-live.mjs` reads PASS for main `73c0e76` (L3); `--local` cannot reach `*.github.io` from the sandbox |

@@ -1,8 +1,11 @@
 #!/usr/bin/env node
 /**
- * Step 2 of the delivery flow: publish one or more cut generations as a
- * preview PR. A preview is ADDITIVE: it adds each generation's six files
- * (and optionally its progress note) and changes nothing that is live.
+ * Step 2 of the delivery flow: publish one or more generations cut by
+ * tools/lightning/make-generation.mjs (step 1) as a preview PR. A preview is
+ * ADDITIVE: it adds each generation's six files (and optionally its progress
+ * note), carries the lightning source it was built from
+ * (tools/lightning/src/*.js, tools/lightning/generations.json), and changes
+ * nothing that is live.
  *
  *   node tools/release/publish-preview.mjs --generation G [--generation G2 ...]
  *        [--base origin/main] [--branch NAME] [--allow PATH ...] [--subject G=TEXT ...]
@@ -11,7 +14,8 @@
  * PRE-CONDITIONS (all checked; nothing is committed if one fails)
  *   - HEAD is --base (cut files still uncommitted) or a branch descending from it;
  *   - against --base, the change set is exactly, per G, the six generation files
- *     ADDED, plus at most one docs/lightning/CANDIDATE-G-*-progress.md ADDED;
+ *     ADDED, plus at most one docs/lightning/CANDIDATE-G-*-progress.md ADDED,
+ *     plus the lightning source edit (tools/lightning/src/*.js, generations.json);
  *     any other path must be named with --allow (e.g. the vendored suite) and
  *     may never be atlas/current.json, STATE.md, atlas/index.html or atlas/releases/**;
  *   - none of G's files exist on --base;
@@ -24,7 +28,9 @@
  * WHAT IT DOES
  *   1. If the cut files are uncommitted, creates --branch (default
  *      preview/<G>-<version>) and makes one commit per generation, subject
- *      "<G> candidate (<version>): <--subject or the manifest's scope tail>".
+ *      "<G> candidate (<version>): <--subject or the manifest's scope tail>";
+ *      the source edit goes into the newest generation's commit (the commit
+ *      that cut it is its source, docs/LIGHTNING-SOURCE.md).
  *   2. Runs the pre-conditions and the PR gate on the branch.
  *   3. --push: pushes the branch and opens a DRAFT PR through the REST API.
  *      Without --push it prints the exact commands instead.
@@ -55,6 +61,7 @@ const GENS = [...new Set(args.generation)].sort();
 if (!GENS.length || GENS.some(g => !/^\d{12}$/.test(g))) die('--generation G (12 digits) is required, repeatable');
 const subjects = Object.fromEntries(args.subject.map(s => { const i = s.indexOf('='); return [s.slice(0, i), s.slice(i + 1)]; }));
 const FORBIDDEN = /^(atlas\/current\.json|STATE\.md|atlas\/index\.html|atlas\/releases\/)/;
+const SOURCE = /^tools\/lightning\/(src\/[^/]+\.js|generations\.json)$/;
 for (const a of args.allow) if (FORBIDDEN.test(a)) die(`--allow ${a}: a preview may never change ${a}`);
 
 if (!gitOk('rev-parse', '--verify', '--quiet', `${args.base}^{commit}`)) die(`--base ${args.base} does not resolve (git fetch origin)`);
@@ -82,10 +89,12 @@ const expected = new Map();
 for (const G of GENS) for (const p of Object.values(generationFiles(G))) expected.set(p, G);
 const problems = [];
 const progressFor = {};
+const sources = [];
 for (const c of all) {
   if (expected.has(c.path)) { if (c.status !== 'A') problems.push(`${c.path} is ${c.status}, must be added`); continue; }
   const pm = PROGRESS_DOC_RE.exec(c.path);
   if (pm && GENS.includes(pm[1]) && c.status === 'A' && !progressFor[pm[1]]) { progressFor[pm[1]] = c.path; continue; }
+  if (SOURCE.test(c.path) && (c.status !== 'D' || c.path.includes('/src/'))) { sources.push(c.path); continue; }
   if (args.allow.includes(c.path) && !FORBIDDEN.test(c.path) && c.status !== 'D') continue;
   problems.push(`${c.status} ${c.path} is not part of a preview of ${GENS.join(', ')} (name it with --allow if intended)`);
 }
@@ -119,7 +128,8 @@ if (pending.length) {
     run('git', ['switch', '-q', '-c', branch]);
   }
   for (const G of GENS) {
-    const paths = [...Object.values(generationFiles(G)), ...(progressFor[G] ? [progressFor[G]] : [])].filter(p => pending.some(x => x.path === p || p.startsWith(x.path)));
+    const own = [...Object.values(generationFiles(G)), ...(progressFor[G] ? [progressFor[G]] : []), ...(G === GENS[GENS.length - 1] ? sources : [])];
+    const paths = own.filter(p => pending.some(x => x.path === p || p.startsWith(x.path)));
     if (!paths.length) continue;
     run('git', ['add', '--', ...paths]);
     const scopeTail = (meta[G].acceptance?.scope || '').split(` ${G}): `).pop().split(';')[0].slice(0, 120);
