@@ -36,15 +36,31 @@ everything that is wrong. The job summary shows a table of the results.
      only gets a note.
 4. **run-current**: `node tools/proofs/run-current.mjs`.
 5. **verify-compose**: `node tools/scope/verify-compose.mjs`.
-6. **loader-identity**: every `atlas/v/<gen>/index.html` must be
-   byte-identical to `atlas/index.html`. A pinned route with a `current.json`
-   but no `index.html` also fails. If you change the loader, you must update
-   every pinned copy in the same PR.
+6. **loader-registry** and **loader-equivalence** (docs/LIGHTNING-CARTRIDGE.md):
+   - `atlas/index.html` and every `atlas/v/<gen>/index.html` must be
+     byte-identical to a registered loader (`ATLAS_LOADERS` in
+     `tools/scope/lib.mjs`: v1, the composer of every generation up to
+     202610290050, and v2, which adds the `after-cartridge` slot) that supports
+     every slot type its own `current.json` uses. A pinned route with a
+     `current.json` but no `index.html` also fails.
+   - A pinned `index.html` that exists at the base may not be changed or
+     removed: a generation keeps the loader bytes it was cut with.
+   - `atlas/index.html` may change only together with `atlas/current.json`,
+     and only to `atlas/v/<live gen>/index.html` (the release of a v2
+     generation moves the loader in its release commit).
+   - `tools/proofs/loader-equivalence.proof.mjs` runs both loaders in
+     `node:vm` over every route: v2 writes byte-for-byte what v1 writes for
+     every `replace-script`-only composition, v1 refuses a modular one, and v2
+     fails closed on a bad `after-cartridge` entry.
 7. **lightning-suites**: every `tools/ci/lightning/*.test.mjs` runs with
    `node --test` against these overlay modules:
-   - the live overlay module, `atlas/modules/<live sld-sandbox gen>-uk-lightning-overlay.js`;
+   - the live overlay module: the file the live `uk-lightning-overlay`
+     cartridge points at, or, for a monolithic generation,
+     `atlas/modules/<live sld-sandbox gen>-uk-lightning-overlay.js`;
    - every overlay module the PR adds or edits;
-   - the overlay module of every pinned generation the PR adds;
+   - the overlay module of every pinned generation the PR adds (for a
+     modular generation, the module its `uk-lightning-overlay` cartridge
+     points at);
    - the newest pinned overlay module (the candidate), when the PR changes
      `tools/ci/lightning/`, `tools/ci/pr-gate.mjs` or this workflow, so a suite
      edit is proven on the module it guards.

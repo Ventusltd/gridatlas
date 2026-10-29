@@ -23,7 +23,10 @@
  *      - atlas/v/G/current.json is the derived pointer re-rooted to ../../,
  *        i.e. the preview people tested is the composition that will go live;
  *      - G's proofs pass;
- *      - the loader is identical: atlas/index.html == atlas/v/G/index.html.
+ *      - the loader: atlas/index.html == atlas/v/G/index.html, or G's own
+ *        loader is a different REGISTERED loader that supports every slot G
+ *        uses (loader v2 for a modular lightning generation); then the release
+ *        commit also writes atlas/index.html := atlas/v/G/index.html.
  *   2. On a new branch, optional preparatory commits: --prep-commit <sha>
  *      (cherry-picked, e.g. retiring a workflow) and --prep-gate-kb <N> (raise
  *      the recorded cartridge ceiling in tools/scope/loop.mjs). Each must
@@ -63,7 +66,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import {
-  ROOT, POINTER_FILES, die as dieWith, parseArgs, run, git, gitOk, gitBlob, sha256, sha256File,
+  ROOT, POINTER_FILES, LOADER_FILE, registeredLoaderOf, pointerSlots, die as dieWith, parseArgs, run, git, gitOk, gitBlob, sha256, sha256File,
   readText, exists, deriveCurrent, rerootForPreview, cleanTree, changedPaths, isTracked,
   runGates, printGates, parityFailRows, commitWithMessage, trailerBlock
 } from './lib.mjs';
@@ -170,12 +173,21 @@ for (const proof of proofs) {
   ok(`${proof} passes (preview route)`);
 }
 
-const loader = gitBlob('HEAD', 'atlas/index.html');
+const loader = gitBlob('HEAD', LOADER_FILE);
 const previewLoader = gitBlob('HEAD', previewLoaderRel);
-if (!loader || !previewLoader || Buffer.compare(loader, previewLoader) !== 0) die(`${previewLoaderRel} is not byte-identical to atlas/index.html (LOADER differs)`);
-ok(`LOADER_IDENTICAL atlas/index.html == ${previewLoaderRel} (sha256 ${sha256(loader).slice(0, 16)}…)`);
+if (!loader || !previewLoader) die(`${LOADER_FILE} or ${previewLoaderRel} is not committed`);
+const previewRegistered = registeredLoaderOf(previewLoader);
+if (!previewRegistered) die(`${previewLoaderRel} is not a registered loader (tools/scope/lib.mjs ATLAS_LOADERS)`);
+const missingSlots = pointerSlots(manifest).filter(slot => !previewRegistered.slots.includes(slot));
+if (missingSlots.length) die(`${previewLoaderRel} (loader ${previewRegistered.name}) cannot compose slot(s) ${missingSlots.join(', ')} that ${G} uses`);
+const loaderMoves = Buffer.compare(loader, previewLoader) !== 0;
+const RELEASE_FILES = loaderMoves ? [...POINTER_FILES, LOADER_FILE] : [...POINTER_FILES];
+report.loader = { live: registeredLoaderOf(loader)?.name || null, preview: previewRegistered.name, moves: loaderMoves };
+if (loaderMoves && noop) die(`live is ${G} but ${LOADER_FILE} is not ${previewLoaderRel}`);
+if (loaderMoves) ok(`LOADER_FOLLOWS ${LOADER_FILE} (${report.loader.live}) -> ${previewLoaderRel} (${previewRegistered.name}, sha256 ${sha256(previewLoader).slice(0, 16)}…) in the release commit`);
+else ok(`LOADER_IDENTICAL ${LOADER_FILE} == ${previewLoaderRel} (${previewRegistered.name}, sha256 ${sha256(loader).slice(0, 16)}…)`);
 
-const before = Object.fromEntries(POINTER_FILES.map(f => [f, sha256File(f)]));
+const before = Object.fromEntries(RELEASE_FILES.map(f => [f, sha256File(f)]));
 report.before = before;
 
 /* --prep-gate-kb is validated with the preconditions (so --check runs it too) and before any branch exists:
@@ -271,13 +283,14 @@ report.prep_commits = prepCommits;
 const releaseParent = git('rev-parse', 'HEAD');
 
 /* ------------------------------------------- 3. pointer and STATE.md only */
-step(`write atlas/current.json from ${manifestRel} and regenerate STATE.md`);
+step(`write atlas/current.json from ${manifestRel}${loaderMoves ? `, ${LOADER_FILE} from ${previewLoaderRel}` : ''} and regenerate STATE.md`);
 fs.writeFileSync(path.join(ROOT, 'atlas/current.json'), derived);
+if (loaderMoves) fs.writeFileSync(path.join(ROOT, LOADER_FILE), previewLoader);
 const state = run('node', ['tools/scope/loop.mjs', 'state'], { allowFail: true });
 /* On any failure from here on: put the pointer back, and if no preparatory
    commit was made, leave HEAD where it started and drop the empty branch. */
 const restore = () => {
-  run('git', ['checkout', '--', ...POINTER_FILES], { allowFail: true });
+  run('git', ['checkout', '--', ...RELEASE_FILES], { allowFail: true });
   if (!prepCommits.length) {
     run('git', ['switch', '-q', '--detach', baseSha], { allowFail: true });
     run('git', ['branch', '-D', branch], { allowFail: true });
@@ -287,8 +300,8 @@ const HINT = 'If lint fails on the cartridge ceiling or the workflow budget, add
 if (state.status !== 0) { restore(); die(`loop.mjs state failed with ${G}'s pointer in place; the pointer was restored.\n${HINT}\n${state.out}`); }
 ok(state.out.trim().replace(/\n/g, '; '));
 const changed = changedPaths();
-if (JSON.stringify(changed) !== JSON.stringify([...POINTER_FILES].sort())) {
-  restore(); die(`the release must change exactly ${POINTER_FILES.join(' and ')}; it changed: ${changed.join(', ')}`);
+if (JSON.stringify(changed) !== JSON.stringify([...RELEASE_FILES].sort())) {
+  restore(); die(`the release must change exactly ${RELEASE_FILES.join(', ')}; it changed: ${changed.join(', ')}`);
 }
 ok(`changed: ${changed.join(', ')}`);
 
@@ -299,30 +312,30 @@ printGates(gates.rows);
 if (args.log) fs.writeFileSync(path.resolve(args.log), gates.log);
 report.gates = gates.rows;
 report.parity_after = gates.parityRows;
-if (JSON.stringify(changedPaths()) !== JSON.stringify([...POINTER_FILES].sort())) { restore(); die('a gate wrote outside the pointer files'); }
+if (JSON.stringify(changedPaths()) !== JSON.stringify([...RELEASE_FILES].sort())) { restore(); die('a gate wrote outside the release files'); }
 if (!gates.rows.every(r => r.ok)) {
   restore();
   console.error(`\n${TOOL}: gates FAILED; the pointer was restored. ${prepCommits.length ? `Branch ${branch} holds ${prepCommits.length} prep commit(s) only.` : 'No branch kept.'}\n${HINT}`);
   finish(1);
 }
 
-const after = Object.fromEntries(POINTER_FILES.map(f => [f, sha256File(f)]));
+const after = Object.fromEntries(RELEASE_FILES.map(f => [f, sha256File(f)]));
 report.after = after;
 
 /* ---------------------------------------------------------- 5. the commit */
 if (!args['no-commit']) {
-  run('git', ['add', '--', ...POINTER_FILES]);
+  run('git', ['add', '--', ...RELEASE_FILES]);
   const subject = `${G}-gridatlas-${manifest.composition_version}: ${args.title || `release composition ${G} to the live route`}`;
-  const body = `Moves atlas/current.json and STATE.md from ${live.generation} to ${G}, written from ${manifestRel} by tools/release/release-generation.mjs. Nothing else changes.\nRollback: git revert this commit (tools/release/rollback-generation.mjs).\n\nAuthorised by: ${args['authorised-by']}`;
+  const body = `Moves atlas/current.json and STATE.md${loaderMoves ? ` and the loader (${LOADER_FILE} := ${previewLoaderRel}, ${report.loader.live} -> ${previewRegistered.name})` : ''} from ${live.generation} to ${G}, written from ${manifestRel} by tools/release/release-generation.mjs. Nothing else changes.\nRollback: git revert this commit (tools/release/rollback-generation.mjs).\n\nAuthorised by: ${args['authorised-by']}`;
   const sha = commitWithMessage(`${subject}\n\n${body}${trailers}\n`);
   const touched = git('diff', '--name-only', 'HEAD^', 'HEAD').split('\n').filter(Boolean).sort();
-  if (JSON.stringify(touched) !== JSON.stringify([...POINTER_FILES].sort())) die(`release commit touched ${touched.join(', ')}`);
+  if (JSON.stringify(touched) !== JSON.stringify([...RELEASE_FILES].sort())) die(`release commit touched ${touched.join(', ')}`);
   report.release_commit = sha;
   report.release_tree = git('rev-parse', 'HEAD^{tree}');
 }
 
 step('hashes');
-for (const f of POINTER_FILES) console.log(`  ${f.padEnd(20)} before ${before[f]}\n  ${''.padEnd(20)} after  ${after[f]}`);
+for (const f of RELEASE_FILES) console.log(`  ${f.padEnd(20)} before ${before[f]}\n  ${''.padEnd(20)} after  ${after[f]}`);
 for (const p of prepCommits) console.log(`  prep commit          ${p.sha}  ${p.label}`);
 if (report.release_commit) {
   console.log(`  release commit       ${report.release_commit}`);

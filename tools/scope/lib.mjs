@@ -67,6 +67,52 @@ export const ACTIVE_WORKFLOWS = Object.freeze([
   'pr-file-size-guard.yml'
 ]);
 
+/* The registered composers (docs/LIGHTNING-CARTRIDGE.md). A served loader --
+   atlas/index.html or any atlas/v/<gen>/index.html -- must be byte-identical
+   to exactly one of these payloads, and must support every slot type its
+   current.json uses.
+     v1  the composer every generation up to 202610290050 is served by; the
+         live atlas/index.html. It knows only 'replace-script'.
+     v2  v1 plus 'after-cartridge': a verified cartridge as its own script tag
+         straight after a cartridge composed before it. For every composition
+         that uses only 'replace-script' it writes byte-for-byte what v1 writes
+         (tools/proofs/loader-equivalence.proof.mjs).
+   Existing loaders are never rewritten: a generation keeps the loader bytes it
+   was cut with, and the live atlas/index.html changes only in the release
+   commit of a generation whose own loader is v2 (tools/release). */
+export const ATLAS_LOADERS = Object.freeze({
+  v1: Object.freeze({ payload: 'tools/scope/payloads/atlas-loader.html', slots: Object.freeze(['replace-script']) }),
+  v2: Object.freeze({ payload: 'tools/scope/payloads/atlas-loader-v2.html', slots: Object.freeze(['replace-script', 'after-cartridge']) })
+});
+
+/** The registered loader whose payload is byte-identical (served LF bytes)
+    to the file at filePath, as { name, payload, slots }, or null. */
+export function registeredLoader(filePath) {
+  const digest = sha256PublishedFile(filePath);
+  for (const [name, loader] of Object.entries(ATLAS_LOADERS)) {
+    if (sha256PublishedFile(path.join(ROOT, loader.payload)) === digest) return { name, ...loader };
+  }
+  return null;
+}
+
+/** The slot types the ordered cartridges of a current.json use. */
+export function slotsUsed(current) {
+  const byId = new Map((current.cartridges || []).map(c => [c.id, c]));
+  return [...new Set((current.cartridge_order || []).map(id => byId.get(id)?.slot))].filter(Boolean).sort();
+}
+
+/* Per-cartridge byte budgets, checked by `loop.mjs lint` IN ADDITION to the
+   single recorded ceiling there (the one --prep-gate-kb edits). The lightning
+   overlay is its own cartridge from the modular generations on, so it gets
+   the room the owner gave it inside sld-sandbox, and no more:
+   500,000 (ceiling, 28 Oct 2026) - 435,218 (sld-sandbox 202609241334) - 1
+   (the joining newline) = 64,781 bytes, the module budget every
+   <gen>-sld-sandbox proof already enforces. Changing a figure is an owner
+   decision, recorded in the commit. */
+export const CARTRIDGE_BYTE_BUDGETS = Object.freeze({
+  'uk-lightning-overlay': 64_781
+});
+
 export function invariant(condition, message) {
   if (!condition) throw new Error(message);
 }

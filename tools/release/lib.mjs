@@ -14,6 +14,7 @@ import path from 'node:path';
 import { spawnSync } from 'node:child_process';
 import { createHash } from 'node:crypto';
 import { fileURLToPath } from 'node:url';
+import { ATLAS_LOADERS } from '../scope/lib.mjs';
 
 export const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..');
 
@@ -25,8 +26,33 @@ export const MANIFEST_ONLY_KEYS = Object.freeze([
   'parent_generation', 'version', 'cut_at_utc', 'note', 'acceptance', 'candidate_status'
 ]);
 
-/* The only two files a release (or its revert) may change. */
+/* The only two files a release (or its revert) may change... */
 export const POINTER_FILES = Object.freeze(['atlas/current.json', 'STATE.md']);
+
+/* ...plus the live loader, when and only when the generation going live is
+   served by a different registered loader than the live one (loader v2 for
+   the modular lightning generations, docs/LIGHTNING-CARTRIDGE.md). The
+   loader then moves in the release commit itself, so reverting that one
+   commit restores all three files byte for byte. */
+export const LOADER_FILE = 'atlas/index.html';
+
+/** The name of the registered loader (tools/scope/lib.mjs ATLAS_LOADERS)
+    whose payload is byte-identical to buffer, and the slots it supports. */
+export function registeredLoaderOf(buffer) {
+  if (!buffer) return null;
+  const digest = sha256(Buffer.from(buffer.toString('binary').replace(/\r\n/g, '\n'), 'binary'));
+  for (const [name, loader] of Object.entries(ATLAS_LOADERS)) {
+    const payload = fs.readFileSync(path.join(ROOT, loader.payload));
+    if (sha256(Buffer.from(payload.toString('binary').replace(/\r\n/g, '\n'), 'binary')) === digest) return { name, slots: loader.slots };
+  }
+  return null;
+}
+
+/** The slot types the ordered cartridges of a pointer use. */
+export function pointerSlots(pointer) {
+  const byId = new Map((pointer.cartridges || []).map(c => [c.id, c]));
+  return [...new Set((pointer.cartridge_order || []).map(id => byId.get(id)?.slot))].filter(Boolean).sort();
+}
 
 /* The rows of 202609012214-data-contract-parity that fail on every commit
    since before Lightning. They are reported, never hidden: the gate is that a
