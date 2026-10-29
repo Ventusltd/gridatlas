@@ -41,9 +41,14 @@
  *                     when the PR changes a suite or this gate, the newest
  *                     pinned overlay; a suite marked
  *                     `@gate-min-generation <stamp>` skips older modules
- *   offtakers-suites  tools/ci/offtakers/*.test.mjs against the live, added or
- *                     edited potential-offtakers module (and the newest one when
- *                     the PR changes a suite, the source or this gate)
+ *   offtakers-suites  tools/ci/offtakers/*.test.mjs once per (offtakers module,
+ *                     lightning module) pair composed by the live pointer, by a
+ *                     pinned composition the PR adds or edits, or by one that
+ *                     composes an overlay module the PR adds or edits (and the
+ *                     newest such composition when the PR changes a suite, the
+ *                     source or this gate), each with that composition's OWN
+ *                     lightning module; an uncomposed module runs against
+ *                     the suite's default lightning module
  *   release-tools     node --check of every tools/release/*.mjs and
  *                     node --test tools/release/*.test.mjs (offline)
  *
@@ -352,30 +357,63 @@ else {
 }
 
 // ---------------------------------------------------------------- 8
-// tools/ci/offtakers/*.test.mjs against the offtakers module of the live composition, every offtakers module the PR adds or
-// edits, the one composed by every pinned generation the PR adds, and, when the PR changes a suite or this gate, the newest.
+// tools/ci/offtakers/*.test.mjs, run once per (offtakers module, lightning module) PAIR that a composition actually ships:
+// the suite boots both overlays side by side (T1, T11, T13), so it must boot the lightning module the composition pairs
+// with the offtakers module, not a fixed reference. The compositions under test: the live one; every pinned composition
+// (atlas/v/<gen>/current.json) the PR adds or edits; every pinned composition that composes an offtakers or lightning
+// module the PR adds or edits; and, when the PR changes a suite, the offtakers source or this gate, the newest pinned
+// composition that composes an offtakers module (older ones, e.g. 202610290400, are historical: the suite has moved on
+// with the data and the class defaults, as the lightning suites skip modules below @gate-min-generation). An offtakers module the PR adds that no composition composes yet (and,
+// on a suite/source/gate change, the newest module if it is uncomposed) runs against the suite's default lightning module
+// (LIGHTNING_MODULE unset), and the check name says so. A composition with an offtakers cartridge but no
+// uk-lightning-overlay cartridge also runs against the default, named as such.
 {
-  const dir = path.join(ROOT, 'tools', 'ci', 'offtakers'), file = g => path.join('atlas', 'modules', `${g}-uk-offtakers-overlay.js`);
-  const ofOf = p => { const e = (p.cartridges || []).find(c => c.id === 'uk-offtakers-overlay'); const m = e && String(e.path).match(/(\d{12})-uk-offtakers-overlay\.js$/); return m ? m[1] : null; };
-  const og = new Set(); const lo = ofOf(current); if (lo) og.add(lo);
+  const dir = path.join(ROOT, 'tools', 'ci', 'offtakers'), vDir = path.join(ROOT, 'atlas', 'v');
+  const OFF = /(\d{12})-uk-offtakers-overlay\.js$/, LIG = /(\d{12})-uk-lightning-overlay\.js$/;
+  const offFile = g => path.join('atlas', 'modules', `${g}-uk-offtakers-overlay.js`), ligFile = g => path.join('atlas', 'modules', `${g}-uk-lightning-overlay.js`);
+  const modOf = (p, id, re) => { const e = (p.cartridges || []).find(c => c.id === id); const m = e && String(e.path).match(re); return m ? m[1] : null; };
+  // every composition on disk that ships an offtakers cartridge, with the lightning module it pairs it with
+  const comps = [{ name: 'atlas/current.json', p: current }];
+  for (const d of (fs.existsSync(vDir) ? fs.readdirSync(vDir) : []).filter(d => STAMP.test(d)).sort()) {
+    const f = path.join('atlas', 'v', d, 'current.json');
+    if (fs.existsSync(path.join(ROOT, f))) try { comps.push({ name: f, p: JSON.parse(fs.readFileSync(path.join(ROOT, f), 'utf8')) }); } catch { /* reported above */ }
+  }
+  const composed = comps.map(c => ({ name: c.name, o: modOf(c.p, 'uk-offtakers-overlay', OFF), l: modOf(c.p, 'uk-lightning-overlay', LIG) })).filter(c => c.o);
+  const newest = composed.filter(c => c.name !== 'atlas/current.json').map(c => c.name).sort().at(-1);
+  const offChanged = new Set(), ligChanged = new Set(), compChanged = new Set();
   for (const f of changed) {
-    const m = f.match(/^atlas\/modules\/(\d{12})-uk-offtakers-overlay\.js$/); if (m) og.add(m[1]);
-    const v = f.match(/^atlas\/v\/(\d{12})\/current\.json$/);
-    if (v && !baseHas(f)) try { const g = ofOf(JSON.parse(fs.readFileSync(path.join(ROOT, f), 'utf8'))); if (g) og.add(g); } catch { /* reported above */ }
+    let m = f.match(/^atlas\/modules\/(\d{12})-uk-offtakers-overlay\.js$/); if (m) offChanged.add(m[1]);
+    m = f.match(/^atlas\/modules\/(\d{12})-uk-lightning-overlay\.js$/); if (m) ligChanged.add(m[1]);
+    if (/^atlas\/v\/\d{12}\/current\.json$/.test(f)) compChanged.add(f);
   }
-  if (changed.some(f => f.startsWith('tools/ci/offtakers/') || f.startsWith('tools/offtakers/') || f === 'tools/ci/pr-gate.mjs')) {
+  const wide = changed.some(f => f.startsWith('tools/ci/offtakers/') || f.startsWith('tools/offtakers/') || f === 'tools/ci/pr-gate.mjs');
+  const pairs = new Map(); // "o|l" -> { o, l, why: [composition names] }
+  const add = (o, l, why) => { const k = `${o}|${l || ''}`; if (!pairs.has(k)) pairs.set(k, { o, l, why: [] }); if (!pairs.get(k).why.includes(why)) pairs.get(k).why.push(why); };
+  for (const c of composed) {
+    if (c.name === 'atlas/current.json' || compChanged.has(c.name) || offChanged.has(c.o) || (c.l && ligChanged.has(c.l)) || (wide && c.name === newest)) add(c.o, c.l, c.name);
+  }
+  const uncomposed = new Set([...offChanged].filter(o => !composed.some(c => c.o === o)));
+  if (wide) {
     const all = fs.readdirSync(path.join(ROOT, 'atlas', 'modules')).map(n => (n.match(/^(\d{12})-uk-offtakers-overlay\.js$/) || [])[1]).filter(Boolean).sort();
-    if (all.length) og.add(all.at(-1));
+    if (all.length && !composed.some(c => c.o === all.at(-1))) uncomposed.add(all.at(-1));
   }
+  for (const o of uncomposed) add(o, null, 'no composition yet');
   const osuites = fs.existsSync(dir) ? fs.readdirSync(dir).filter(f => f.endsWith('.test.mjs')).sort() : [];
-  if (!og.size) console.log('note  no offtakers overlay module in the live or touched generations');
+  if (!pairs.size) console.log('note  no offtakers overlay module in the live or touched compositions');
   else if (!osuites.length) record('offtakers-suites', false, 'tools/ci/offtakers/*.test.mjs missing');
-  else for (const g of [...og].sort()) for (const suite of osuites) group(`offtakers ${g} ${suite}`, () => {
-    const t0 = Date.now(), r = run(['node', '--test', '--test-reporter=tap', path.join('tools', 'ci', 'offtakers', suite)], { env: { ...process.env, OFFTAKERS_MODULE: file(g) }, timeout: SUITE_TIMEOUT_MS });
-    const counts = (r.stdout.match(/^# (pass|fail|skipped) \d+$/gm) || []).join(' ').replace(/# /g, ''), sec = ((Date.now() - t0) / 1000).toFixed(1);
-    if (r.code !== 0) { process.stdout.write(r.stdout); process.stderr.write(r.stderr); } else console.log(`${suite} on ${g}: ${counts} in ${sec} s`);
-    record(`offtakers ${g} ${suite}`, r.code === 0, `${counts} ${sec} s` + (r.code === 0 ? '' : `  exit ${r.code}`));
-  });
+  else for (const { o, l, why } of [...pairs.values()].sort((a, b) => (a.o + (a.l || '')).localeCompare(b.o + (b.l || '')))) for (const suite of osuites) {
+    const name = `offtakers ${o} + ${l ? `lightning ${l}` : 'default lightning'} ${suite}`;
+    group(name, () => {
+      if (!fs.existsSync(path.join(ROOT, offFile(o)))) return record(name, false, `${offFile(o)} missing (${why.join(', ')})`);
+      if (l && !fs.existsSync(path.join(ROOT, ligFile(l)))) return record(name, false, `${ligFile(l)} missing (${why.join(', ')})`);
+      const env = { ...process.env, OFFTAKERS_MODULE: offFile(o) };
+      if (l) env.LIGHTNING_MODULE = path.join(ROOT, ligFile(l)); else delete env.LIGHTNING_MODULE;
+      const t0 = Date.now(), r = run(['node', '--test', '--test-reporter=tap', path.join('tools', 'ci', 'offtakers', suite)], { env, timeout: SUITE_TIMEOUT_MS });
+      const counts = (r.stdout.match(/^# (pass|fail|skipped) \d+$/gm) || []).join(' ').replace(/# /g, ''), sec = ((Date.now() - t0) / 1000).toFixed(1);
+      if (r.code !== 0) { process.stdout.write(r.stdout); process.stderr.write(r.stderr); } else console.log(`${suite} on ${o} + ${l || 'default lightning'}: ${counts} in ${sec} s`);
+      record(name, r.code === 0, `${counts} ${sec} s; ${why.join(', ')}` + (r.code === 0 ? '' : `  exit ${r.code}`));
+    });
+  }
 }
 // The delivery-flow tooling (docs/RELEASE.md): its offline unit tests, and a
 // syntax check of every script, so a broken release script fails the PR that
