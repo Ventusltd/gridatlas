@@ -30,6 +30,8 @@
  *                     when the PR changes a suite or this gate, the newest
  *                     pinned overlay; a suite marked
  *                     `@gate-min-generation <stamp>` skips older modules
+ *   release-tools     node --check of every tools/release/*.mjs and
+ *                     node --test tools/release/*.test.mjs (offline)
  *
  * A generation is "touched" when a changed path under atlas/ or tools/proofs/
  * carries its twelve-digit stamp as a path segment or a filename prefix.
@@ -289,6 +291,23 @@ else {
       `${counts} ${r.seconds} s` + (r.code === 0 ? '' : r.timedOut ? `  timed out after ${SUITE_TIMEOUT_MS / 1000} s` : `  exit ${r.code}`));
   }));
 }
+
+// ---------------------------------------------------------------- 8
+// The delivery-flow tooling (docs/RELEASE.md): its offline unit tests, and a
+// syntax check of every script, so a broken release script fails the PR that
+// broke it rather than the release that needs it.
+group('release-tools', () => {
+  const dir = path.join(ROOT, 'tools', 'release');
+  if (!fs.existsSync(dir)) return;
+  const scripts = fs.readdirSync(dir).filter(f => f.endsWith('.mjs')).sort();
+  const bad = scripts.filter(f => run(['node', '--check', path.join('tools', 'release', f)]).code !== 0);
+  const tests = scripts.filter(f => f.endsWith('.test.mjs')).map(f => path.join('tools', 'release', f));
+  const t = tests.length ? run(['node', '--test', '--test-reporter=tap', ...tests]) : { code: 0, stdout: '' };
+  const counts = (t.stdout.match(/^# (pass|fail) \d+$/gm) || []).join(' ').replace(/# /g, '');
+  if (t.code !== 0) { process.stdout.write(t.stdout); process.stderr.write(t.stderr || ''); }
+  record('release-tools', bad.length === 0 && t.code === 0,
+    `${scripts.length} script(s) parse${bad.length ? `; SYNTAX ERROR in ${bad.join(', ')}` : ''}; ${tests.length} test file(s): ${counts || 'none'}`);
+});
 
 // ---------------------------------------------------------------- summary
 const failed = results.filter(r => !r.ok);
