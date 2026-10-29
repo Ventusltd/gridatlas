@@ -113,10 +113,9 @@ export function slotsUsed(current) {
    decision, recorded in the commit. */
 export const CARTRIDGE_BYTE_BUDGETS = Object.freeze({
   'uk-lightning-overlay': 64_781,
-  // the potential-offtakers overlay (docs/OFFTAKERS-SOURCE.md): PW-design spec, module <= 40,000 B until 202610291044;
-  // 72,000 B from the data-centre category and Grid Engine 30/30/30 (issue #73 steps 7-8, DC-B1): PROPOSED in the
-  // draft preview PR, an owner decision before any release
-  'uk-offtakers-overlay': 72_000
+  // Owner approval, 29 Oct 2026, issue #73: raise the potential-offtakers
+  // module budget to 80,000 B for the data-centre 30/30/30 engine.
+  'uk-offtakers-overlay': 80_000
 });
 
 export function invariant(condition, message) {
