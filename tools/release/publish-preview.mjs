@@ -100,7 +100,7 @@ for (const c of all) {
 }
 for (const p of expected.keys()) if (!all.some(c => c.path === p)) problems.push(`${p} is missing`);
 check('additive change set', problems.length === 0, problems.length ? problems.join('; ') : `${all.length} path(s): ${GENS.length}×6 generation files` +
-  `${Object.keys(progressFor).length ? ` + ${Object.keys(progressFor).length} progress note(s)` : ''}${args.allow.length ? ` + allowed ${args.allow.join(', ')}` : ''}`);
+  `${Object.keys(progressFor).length ? ` + ${Object.keys(progressFor).length} progress note(s)` : ''}${sources.length ? ` + lightning source (${sources.join(', ')})` : ''}${args.allow.length ? ` + allowed ${args.allow.join(', ')}` : ''}`);
 for (const p of expected.keys()) if (show(baseSha, p) !== null) die(`${p} already exists on ${args.base}`);
 
 /* ------------------------------------------------------- per generation */

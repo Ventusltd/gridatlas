@@ -75,8 +75,8 @@ node tools/release/release-status.mjs            # where every candidate is, and
 
 | step | result |
 |---|---|
-| 1 cut | at `3ec1e6b` + this tooling, `tools/lightning/make-generation.mjs` cut a throwaway `layers` (M4-variant) generation `REPLACE_GEN`; its proof passed. Earlier, at `39c62b4`, a prebuilt-module cutter (lane evidence, not committed: the source-based scaffolder landed in #63 meanwhile) re-cut M4 and M4b from M3 **byte-identical** to `a80b760` / `dfcf29c` |
-| 2 preview | `publish-preview.mjs` committed M4 + M4b (at `39c62b4`) and the throwaway cut (at `3ec1e6b`) on local branches; the local `pr-gate` gave 16/16 PASS for M4 + M4b (M4 191 pass / 10 skip, M4b 186 / 15) and REPLACE_GATE for the throwaway cut |
+| 1 cut | at `3ec1e6b` + this tooling, `tools/lightning/make-generation.mjs` cut a throwaway `layers` (M4-variant) generation `202610290400` (v9.199, never published); its proof passed. Earlier, at `39c62b4`, a prebuilt-module cutter (lane evidence, not committed: the source-based scaffolder landed in #63 meanwhile) re-cut M4 and M4b from M3 **byte-identical** to `a80b760` / `dfcf29c` |
+| 2 preview | `publish-preview.mjs` committed M4 + M4b (at `39c62b4`) and the throwaway cut (at `3ec1e6b`) on local branches; the local `pr-gate` gave 16/16 PASS for M4 + M4b (M4 191 pass / 10 skip, M4b 186 / 15) and 14/14 PASS (lightning-source included) for the throwaway cut |
 | 3 acceptance | M4 and M4b: none yet (exit 3); `--record` refused under an agent |
 | 4 release | the real path stops: `202610290045 is not accepted (none)`. `--rehearsal`: 7/7 gates, `atlas/current.json` `e3eca669…` → `b1b0f98b…`, `STATE.md` `5867656…` → `22e5718a…`; `pr-gate` on the release commit 10/10 PASS |
 | 5 live bytes | `check-live.mjs` reads PASS for main `73c0e76` (L3); `--local` cannot reach `*.github.io` from the sandbox |
