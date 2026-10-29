@@ -1,7 +1,7 @@
 {
  "schema": "gridatlas.current.v2",
- "generation": "202610291044",
- "previous_generation": "202610281340",
+ "generation": "202610292044",
+ "previous_generation": "202610291044",
  "architecture": "IMMUTABLE_SHELL_PLUS_HASHED_CARTRIDGES",
  "live_route": "/gridatlas/atlas/",
  "release_id": "202608300453-atlas-v9",
@@ -632,8 +632,8 @@
   },
   {
    "id": "uk-lightning-overlay",
-   "generation": "202610291044",
-   "version": "v9.186",
+   "generation": "202610292044",
+   "version": "v9.187",
    "type": "script",
    "slot": "after-cartridge",
    "after": "sld-sandbox",
@@ -715,22 +715,24 @@
   },
   {
    "id": "uk-offtakers-overlay",
-   "generation": "202610291044",
-   "version": "v9.186",
+   "generation": "202610292044",
+   "version": "v9.187",
    "type": "script",
    "slot": "after-cartridge",
    "after": "uk-lightning-overlay",
-   "path": "./modules/202610291044-uk-offtakers-overlay.js",
-   "sha256": "2f455e7a93791e8f9f3b463ad2857019b98d648f217dea71e13e465d0597b242",
-   "bytes": 39633,
-   "byte_budget": 40000,
-   "module_generation": "202610291044",
-   "source": "tools/offtakers/src (node tools/offtakers/build.mjs --gen 202610291044; byte-exact, checked by the PR gate)",
+   "path": "./modules/202610292044-uk-offtakers-overlay.js",
+   "sha256": "e4d3fb288ef0ac3782f50f53dae9ebeb8564ca65e220d7b24f755179be7fb30a",
+   "bytes": 71191,
+   "byte_budget": 80000,
+   "module_generation": "202610292044",
+   "source": "tools/offtakers/src (node tools/offtakers/build.mjs --gen 202610292044; byte-exact, checked by the PR gate)",
    "immutable_shell_modified": false,
    "capabilities": [
     "uk-potential-offtakers-overlay-off-by-default",
     "vicinity-15-nearest-repd-sites-and-5-substations",
-    "full-repd-record-exact-join-m5"
+    "full-repd-record-exact-join-m5",
+    "datacentre-category-status-ring-mw-size",
+    "datacentre-grid-engine-30-substations-30-repd-30-conventional"
    ],
    "reads_at_runtime": {
     "window.__GRIDATLAS_MODULES__.menuBar": "substation-intelligence; polled until installed",
@@ -739,7 +741,8 @@
     "#scada-ui-container .key-group, #fs-curtain-keys": "polled until present; the group is inserted before the lightning group when present",
     "window.__GRIDATLAS_NEON_LINKS__": "sld-sandbox: substations, measure.nearestSubstations / distanceKm / representativePoint / isProjectTech, read on a tap; \"not loaded yet\" if absent",
     "src-repd": "the engine's own REPD register, serialized on a tap when it holds rows (else /dist/repd_master.json)",
-    "window.__GRIDATLAS_DUCKDB_RUNTIME__": "the page DuckDB runtime, on a tap, for the REPD record rows at the listed points (M5 join)"
+    "window.__GRIDATLAS_DUCKDB_RUNTIME__": "the page DuckDB runtime, on a tap, for the REPD record rows at the listed points (M5 join)",
+    "window.__GRIDATLAS_MODULES__.gridScope": "sld-sandbox Grid Finding Scope (scope(), count and 40 km radius as parameters), on a data-centre tap; \"not loaded yet\" if absent"
    },
    "writes": [
     "window.__GRIDATLAS_MODULES__.ukOfftakers",
@@ -749,10 +752,10 @@
    "site_data_sources": [
     {
      "id": "offtakers_filtered",
-     "url": "https://ventusltd.github.io/gridatlas/data/offtakers_filtered_202610290945.geojson",
-     "sha256": "6fc20e04fdcaadc55d723354848bcf77d3871e9d088a29cbf7ea3a76890b6730",
+     "url": "https://ventusltd.github.io/gridatlas/data/offtakers_filtered_202610292000.geojson",
+     "sha256": "16dca56003e7a222e7a74025b9b61db3c1929ac7e34adc38daeb343074e68139",
      "features": 1568,
-     "built_by": "tools/offtakers/filter/ot_filter.py (hardening lanes OT-filter and R-otdata, 29 Oct 2026; deterministic; inputs by sha256 in the file header; 8 status dates corrected with citations, deeside/oldbury/grain pattern fixes, works merged into one site each with provenance kept)",
+     "built_by": "tools/offtakers/filter/ot_filter.py (hardening lanes OT-filter and R-otdata, 29 Oct 2026; deterministic; inputs by sha256 in the file header; 8 status dates corrected with citations, deeside/oldbury/grain pattern fixes, works merged into one site each with provenance kept); then one correction by hardening lane DC-B1 (OT-B-0823 Marchwood subclass biomass -> gas_ccgt_large, from its own GPPD record GBR1000311, DC-A6 reconciliation; byte-level, recorded in the file's \"corrections\")",
      "inputs": [
       "NAEI 2023 point sources (heavy_emitters_uk.json, OGL v3.0, verified on the NAEI site)",
       "WRI Global Power Plant Database v1.3.0, GBR thermal (CC BY 4.0)",
@@ -760,6 +763,26 @@
       "status_curated.csv (curated rows with public URLs; dates re-checked by R-otdata)"
      ],
      "shown": "name, operator, subclass, NAEI emission band (never a figure), GPPD installed MW, status with its source, on-site combustion indicator, merged records, sources and licences"
+    },
+    {
+     "id": "uk_datacentre_pipeline",
+     "url": "https://ventusltd.github.io/gridatlas/data/uk_datacentre_pipeline_202610292136.geojson",
+     "sha256": "176c1b2e894943618c1dd866b3a96c9f3e00bcded8c6e88a5263b0048ae22d89",
+     "features": 227,
+     "drawn": 225,
+     "built_by": "Ventusltd/data-grid-gb PR #3, pinned open-data baseline rebuilt 29 Oct 2026 (DC-A4 / DC-A7): 227 sites; cluster-wide operator separation, provenance and conflicts; each source's licence status retained",
+     "shown": "name, operator, status and its source, IT load / grid connection / an unlabelled MW kept apart (never summed; the unlabelled MW quoted with its label and never used for size), dates, planning and connection refs, conflicts, sources and licences",
+     "excluded": "cable landing stations; records failing the schema checks (counted)"
+    },
+    {
+     "id": "conventional_power_uk",
+     "url": "https://ventusltd.github.io/gridatlas/data/conventional_power_uk_202610292000.geojson",
+     "sha256": "44b577a12d714d934ce90ce39b44951fb2a641f32ccc20d45a5e2461b145ec98",
+     "features": 301,
+     "listed": 290,
+     "built_by": "hardening lane DC-A6 (29 Oct 2026, generation DC-A6-202610292000; NAEI 2023 OGL v3.0, GPPD v1.3.0 CC BY 4.0, OpenStreetMap ODbL 1.0; renewable-scope sites in REPD excluded to avoid double counting); committed verbatim",
+     "read": "on the first data-centre tap",
+     "shown": "name, operator, fuel or \"fuel not stated\", technology, installed MW as stated (else not stated), status and basis, sources and licences"
     },
     {
      "id": "repd_records",
@@ -770,7 +793,7 @@
     }
    ],
    "uk_offtakers": {
-    "classes": "A industry 813, B power stations 358, C data centres 164, D water large 8 + listed small 168 (chip off), E campus/CHP sites (other large users) 57 (chip off); 1,343 dots by default, 1,568 in all",
+    "classes": "A industry 813, B power stations 358, C data centres 225 (227 records, two unplaced) (the DC-A7 pipeline; the offtakers file's 164 come back if that file fails), D water large 8 + listed small 168 (chip off), E campus/CHP sites 57 (chip off); 1404 dots by default",
     "ids": {
      "source": "gridatlas-offtakers",
      "layers": [
@@ -781,9 +804,17 @@
       "gridatlas-offtakers-neon-*"
      ]
     },
-    "palette": "copper-to-teal: industry #e07b39, power #f2c14e (dark centre dot; hollow ring if closed, closing or converted), data centres #2ec4b6 (white stroke), water #4f86c6, other #a26769",
+    "palette": "copper-to-teal: industry #e07b39, power #f2c14e (dark centre dot; hollow ring if closed, closing or converted), data centres #b07cff violet with a status ring (operational #39d98a, under construction #ffc400, consented #40c4ff, in planning #ff8a3d, connection request #ff4fd8, announced #e6e6e6, refused/withdrawn #a05252, not stated #6b7a8f); 30/30/30 links: substations #ffccee solid, REPD #88aa00 dashed, conventional #999988 dotted, water #4f86c6, other #a26769",
     "wording": "Record / Screening / Discovery tiers; never demand, electricity use, contracts, consent, connection or viability",
-    "spec": "hardening PW-design OFFTAKERS-OVERLAY-SPEC.md and OT-filter OFFTAKERS-FILTER.md (29 Oct 2026)"
+    "spec": "hardening PW-design OFFTAKERS-OVERLAY-SPEC.md and OT-filter OFFTAKERS-FILTER.md (29 Oct 2026)",
+    "grid_engine_30": {
+     "substations": "gridScope.scope(origin, link.substations, {bandsKm:[40], nearestCount}) first 30 (voltage chips re-rank within a band); head 5 == nearestSubstations (checked on every tap)",
+     "repd": "RG/near/sites, 30 within 40 km, ties kept, status chips",
+     "conventional": "nearest 30 at any distance; lines only <= 100 km",
+     "drawn": "nearest 10 per set, Show all / Draw all",
+     "labels": "<= 6, the open tab only",
+     "spec": "hardening DC-B2 CARD-SPEC.md, DC-B3 ENGINE.md"
+    }
    }
   }
  ],
@@ -829,15 +860,15 @@
    "result_class": "LOCATION_ONLY"
   }
  },
- "composition_manifest": "./manifests/202610291044-composition.json",
+ "composition_manifest": "./manifests/202610292044-composition.json",
  "scope_closure": {
   "generation": "202609010726",
   "status": "DONE",
   "scope": "GridAtlas v9.42 the price panel revalidates",
   "schedule_retired": true
  },
- "composition_version": "v9.186",
- "composition_id": "202610291044-gridatlas-v9.186",
+ "composition_version": "v9.187",
+ "composition_id": "202610292044-gridatlas-v9.187",
  "transport": {
   "response_contract": "HEADERS_BEFORE_PARQUET_BODY",
   "engine_timeout_seconds": 15,
@@ -852,8 +883,8 @@
   "fidelity_workflow": ".github/workflows/202608301931-layer-fidelity.yml",
   "payload_cache": "RELEASE_AFTER_SERIALISATION"
  },
- "composition_note": "v9.186: 202610291043 recomposed, behaviour unchanged. The lightning overlay is its own cartridge (slot after-cartridge, its own script tag directly after sld-sandbox, where the appended module ran), and sld-sandbox is the original 202609241334 cartridge again (435218 bytes). Served by loader v2. Plus the potential-offtakers overlay (uk-offtakers-overlay, its own cartridge after the lightning overlay, OFF by default, never persisted): sites from one pinned, SHA-256-checked file of open registers (OT-filter and R-otdata: NAEI 2023 point sources, GPPD v1.3.0, OpenStreetMap, ODbL attribution in the footer) in five classes (energy-intensive industry; power stations including closed and closing ones, drawn as hollow rings, as are converted ones; data centres; large water works, small listed works behind a chip; campus/CHP sites, the other large users), sized by NAEI emission band or GPPD installed MW; a tap draws neon links to the 15 nearest REPD project sites (40 km, status and technology chips, ties kept) and the 5 nearest substations (the original link.measure.nearestSubstations), and docks a card with the site record, each listed project's full REPD record (M5-build's exact join to the pinned parquet), a 5 km area summary and a CSV vicinity sheet. A listing is not electricity demand; distances are straight lines; vicinity screening only.",
- "superseded_generation": "202610281340",
+ "composition_note": "v9.187: 202610291043 recomposed, behaviour unchanged. The lightning overlay is its own cartridge (slot after-cartridge, its own script tag directly after sld-sandbox, where the appended module ran), and sld-sandbox is the original 202609241334 cartridge again (435218 bytes). Served by loader v2. Plus the potential-offtakers overlay with the data-centre category and the Grid Engine 30/30/30 (#73 steps 7-8, lane DC-B1; card DC-B2, engine DC-B3): data centres are their own class (violet, a status ring, sized by stated IT load else grid connection; 203 sites from the open UK data-centre pipeline, DC-A7's pinned snapshot), and a data-centre tap lists the 30 nearest substations (the engine's gridScope.scope within 40 km; the original nearestSubstations for the first 5), the 30 nearest REPD sites (40 km) and the 30 nearest conventional power sites (DC-A6's pinned file; any distance, lines only up to 100 km), in tabs Area · Substations · REPD · Conventional, nearest 10 drawn then Show all, with a CSV of all rows. Other offtakers keep 15 REPD + 5 substations. One data correction: Marchwood (OT-B-0823) is a gas CCGT, not biomass. IT load and grid connection are never conflated; a pipeline entry is not a commitment; proximity is not connection, capacity or feasibility.",
+ "superseded_generation": "202610291044",
  "candidate_predecessor": "202610291043",
  "loader": "v2"
 }
