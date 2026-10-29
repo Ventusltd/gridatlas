@@ -19,6 +19,11 @@
  *   verify-compose    node tools/scope/verify-compose.mjs
  *   loader-identity   every atlas/v/<gen>/index.html is byte-identical to
  *                     atlas/index.html
+ *   lightning-source  node tools/lightning/build.mjs --check: the newest
+ *                     lightning overlay generation is listed in
+ *                     tools/lightning/generations.json, and every listed
+ *                     generation rebuilds from tools/lightning/src byte for
+ *                     byte (docs/LIGHTNING-SOURCE.md)
  *   lightning-suites  tools/ci/lightning/*.test.mjs against the live overlay
  *                     module, every overlay module the PR adds or edits, the
  *                     overlay of every pinned generation the PR adds, and,
@@ -191,6 +196,13 @@ group('loader-identity', () => {
   record('loader-identity', bad.length === 0,
     bad.length ? `not byte-identical to atlas/index.html: ${bad.join(', ')}` : `${checked} pinned loader(s) identical to atlas/index.html`);
 });
+
+// ---------------------------------------------------------------- 6b
+// The overlay modules are built from tools/lightning/src, not edited in
+// atlas/modules/: the newest generation must rebuild from the committed
+// source byte for byte, so the source in the repository is the source of
+// the bytes that ship.
+step('lightning-source', ['node', 'tools/lightning/build.mjs', '--check']);
 
 // ---------------------------------------------------------------- 7
 // Each suite may declare, in its first lines, `// @gate-min-generation <stamp>`:

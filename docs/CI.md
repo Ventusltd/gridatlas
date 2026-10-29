@@ -40,6 +40,10 @@ everything that is wrong. The job summary shows a table of the results.
    byte-identical to `atlas/index.html`. A pinned route with a `current.json`
    but no `index.html` also fails. If you change the loader, you must update
    every pinned copy in the same PR.
+   **lightning-source** (run after loader-identity): `node tools/lightning/build.mjs --check`.
+   The newest `atlas/modules/*-uk-lightning-overlay.js` must be listed in
+   `tools/lightning/generations.json`, and every listed generation must rebuild
+   from `tools/lightning/src/` byte for byte. See `docs/LIGHTNING-SOURCE.md`.
 7. **lightning-suites**: every `tools/ci/lightning/*.test.mjs` runs with
    `node --test` against these overlay modules:
    - the live overlay module, `atlas/modules/<live sld-sandbox gen>-uk-lightning-overlay.js`;
