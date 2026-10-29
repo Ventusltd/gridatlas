@@ -22,6 +22,7 @@ cs=v=>(v+'').replace(/\p{Cf}/gu,'').slice(0,200),///
   },
 /// cpos: dock the card at the bottom of the map like the original's (kv-card), lifted clear of the original's bottom
 /// controls, never over the menu bar. M2R-layout F1 (MAJOR-1): an open card never rises above the container top + 320 px.
+/// M6: at most 45 % of the map height (at least 200 px), so the origin and the links stay in view above the open card.
 /// M2R-camera fix C (fixes-m4): on a map under 500 px tall with at least 300 px beside the card, the card docks right (c.sd).
 cpos=()=>{///
     let c=S.pp,m=mh();///
@@ -37,7 +38,7 @@ for(let o of[Q('gridatlas-dash-toggle'),document.querySelector('.map-controls')]
 if(b+h>k.height-t)b=8;///
     c.bb=b;///
     c.style.bottom=b+'px';///
-    c.style.maxHeight=MX(44,MN(k.height-t-b,MX(240,k.height-b-320)))+'px'///
+    c.style.maxHeight=MX(44,MN(k.height-t-b,MX(200,k.height*.45|0)))+'px'///
   },
 /// cx: remove every Lightning source and layer.
 cx=()=>{///

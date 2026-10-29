@@ -37,8 +37,9 @@ RpZ=s=>((s||'')+'').replace(/[\x80-\x9f]/g,c=>new TextDecoder('windows-1252').de
 RpJ=(p,a,C)=>{let c=a&&C&&C.get&&C.get(a+''),n=v=>v>0?+v:0;if(!c)return;c=c.filter(o=>RpZ(o.name)==RpZ(p.name)&&Math.abs(n(o.capacity_mw)-n(p.capacity))<1e-6&&o.repd_technology===p.raw_tech);return c.length==1?c[0]:null},
 /// RpB: one project's record block in the engine card pattern; missing fields are said, never filled; an operator the
 /// record marks as possibly a person (applicant_publication_state != REPD_AS_PUBLISHED) is not shown.
-RpB=(q,a,C,e)=>{let o=e?0:RpJ(q,a,C),b=el('div','padding:2px 0 10px 12px;font-size:11px;color:#9fb3ba;overflow-wrap:anywhere'),L=(s,c)=>ap(b,el('div',c,cs(s)));b.dataset.tier='record';
-  if(e)L('REPD record unavailable: '+msg(e)+'. Tap again to retry.');else if(o===void 0)L('REPD record: loading…');else if(!o)L('Record · address not in register (no exact REPD match; no ref shown)');
+/// M6: a record already cached shows even when a later fetch fails; the failure line is a retry button (RpH).
+RpB=(q,a,C,e)=>{let o=RpJ(q,a,C),b=el('div','padding:2px 0 10px 12px;font-size:11px;color:#9fb3ba;overflow-wrap:anywhere'),L=(s,c)=>ap(b,el('div',c,cs(s)));b.dataset.tier='record';
+  if(o===void 0)L(e?`REPD record unavailable — tap to retry (${msg(e)})`:'loading REPD record…');else if(!o)L('Record · address not in register (no exact REPD match; no ref shown)');
   else{L([o.repd_address_display||'address not stated',o.repd_postcode||'no postcode',o.county,o.region].filter(Boolean).join(' · '),'color:#c9d6da');
     L(`Record · REPD ${o.repd_ref} · ${o.status}`+(o.status!=q.status?` (map register: ${q.status})`:''));
     L('Operator: '+(o.applicant_publication_state=='REPD_AS_PUBLISHED'&&o.repd_operator_or_applicant||'not shown (may name a person) or not stated'));
@@ -47,7 +48,16 @@ RpB=(q,a,C,e)=>{let o=e?0:RpJ(q,a,C),b=el('div','padding:2px 0 10px 12px;font-si
 /// RpX: export once, frozen.
 RpX=NS.repdRecords||(NS.repdRecords=Object.freeze({source:RU,manifest:RM,records:RpQ,join:RpJ,block:RpB})),
 // fill record slots [[div, props]] now from the cache, then again when the rows at their points have arrived
-RpH=(c,sl)=>{let F=(C,e)=>{if(S.pp==c)for(let[s,q]of sl){s.textContent='';ap(s,RpB(q,RpP.get(q),C,e))}};F(S.rc);RpQ(sl.map(v=>RpP.get(v[1]))).then(F,e=>F(0,e))},
+/// M6: the rows never wait: each slot shows "loading REPD record…" at once, then the record, or within 15 s in all
+/// (one deadline over manifest, runtime, connect and query) "REPD record unavailable — tap to retry"; a tap retries.
+RpH=(c,sl)=>{let t,F=(C,e)=>{clearTimeout(t);///
+      if(S.pp==c)for(let[s,q]of sl){s.textContent='';///
+        let b=ap(s,RpB(q,RpP.get(q),C,e));///
+        if(/^REPD record u/.test(b.textContent)){b.style.cursor='pointer';///
+          b.setAttribute('role','button');///
+          b.addEventListener('click',()=>RpH(c,sl))}}///
+    };F(S.rc);///
+    Promise.race([RpQ(sl.map(v=>RpP.get(v[1]))),new Promise((_,j)=>t=setTimeout(()=>j(Error(TOE)),TMO))]).then(F,e=>F(S.rc,e))},
 // Area summary (Screening): every row within 40 km, all statuses and technologies, by technology and by status class
 /// RpY: the Area summary (V-tiers Screening): every register row within 40 km (all statuses and technologies; the
 /// list's filters do not apply), counted and its stated MW summed per technology class and per status class at 10 and
