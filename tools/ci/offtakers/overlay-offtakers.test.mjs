@@ -33,7 +33,8 @@ const DURL = 'https://ventusltd.github.io/gridatlas/' + DREL, RAWD = fs.readFile
 const DCREL = (SRC.match(/DCF='https:\/\/ventusltd\.github\.io\/gridatlas\/(data\/[\w.-]+)'/) || [])[1], CVREL = (SRC.match(/CVF='https:\/\/ventusltd\.github\.io\/gridatlas\/(data\/[\w.-]+)'/) || [])[1];
 const DCURL = DCREL && 'https://ventusltd.github.io/gridatlas/' + DCREL, DCD = DCREL && JSON.parse(fs.readFileSync(REPO + DCREL, 'utf8')), CVD = CVREL && JSON.parse(fs.readFileSync(REPO + CVREL, 'utf8'));
 // the data centres drawn: the DC file's sites without cable landing stations replace the offtakers file's 164
-const DCD_DELTA = DCB ? DCD.features.filter(f => f.properties.site_kind !== 'cable_landing_station').length - 164 : 0;
+const DCD_MAPPABLE = DCB ? DCD.features.filter(f => f.properties.site_kind !== 'cable_landing_station' && f.geometry?.type === 'Point' && Array.isArray(f.geometry.coordinates)) : [];
+const DCD_DELTA = DCB ? DCD_MAPPABLE.length - 164 : 0;
 const REG = JSON.parse(gunzipSync(fs.readFileSync(REPO + 'tools/ci/lightning/fixtures/repd-master-v8-oracle.json.gz')));
 const RECS = JSON.parse(fs.readFileSync(REPO + 'data/repd_browser_registry_202608290716.json', 'utf8')).records;
 const MANI = fs.readFileSync(REPO + 'data/repd_v9_manifest_202608290716.json');
@@ -385,7 +386,7 @@ const sloughDC = x => x.S.data.dots.filter(d => d.k === 'c').sort((a, b) => hav(
 test('DC1: data centres: the pinned pipeline file once, every site that passes the schema checks, one operator per origin; Slough ≥16 origins within 3 km', { skip: DSKIP }, async () => {
   const x = await dcBoot(); const dc = x.S.data.dots.filter(d => d.k === 'c');
   assert.equal(x.log.xhr.filter(u => u === DCURL).length, 1); assert.ok(SRC.includes(`DCFSHA='${sha(fs.readFileSync(REPO + DCREL))}'`), 'DC file pin');
-  assert.equal(dc.length, DCD.features.filter(f => f.properties.site_kind !== 'cable_landing_station').length); assert.ok(dc.length >= 178, 'at least the operational OSM sites');
+  assert.equal(dc.length, DCD_MAPPABLE.length); assert.equal(DCD.features.length - DCD_MAPPABLE.length, 2, 'two unplaced planning records (SDC M40 and Ebbsfleet) remain in the source, never drawn'); assert.ok(dc.length >= 178, 'at least the operational OSM sites');
   assert.ok(dc.every(d => d.dc && d.p.site_kind !== 'cable_landing_station'));
   // one operator per origin: a single operator string (or none); a source naming another operator must be flagged by the file
   // (operator_alternatives, or an operator_disagreement conflict). The pipeline's members trace to DC-A4, where one origin merges two
@@ -505,10 +506,10 @@ test('DC10: schema checks and the URL allow-list: bad records are skipped and co
 });
 
 test('DC11: MW wording: IT load and grid connection apart, never derived or added; an unlabelled MW is quoted with its own label and never sizes the dot', { skip: DSKIP }, async () => {
-  const x = await dcBoot(), D = n => x.S.data.dots.find(d => d.k === 'c' && d.p.it_load_mw && new RegExp(n).test(d.p.name || ''));
+  const x = await dcBoot(), D = n => x.S.data.dots.find(d => d.k === 'c' && new RegExp(n).test([d.p.name,...(d.p.aliases||[])].join(' ')));
   const q = D('QuestPit'), c = D('Court Lane'), mf = D('Manor Farm');
   assert.ok(q && c && mf, 'the pinned pipeline has the DC-A3 sites QuestPit, Court Lane (Iver) and Manor Farm (Slough)');
-  await x.tapDot(q); await drain(); assert.match(text(x.card()), /IT load 720 MW · grid connection not stated/); assert.equal(q.z, 2);
+  await x.tapDot(q); await drain(); assert.match(text(x.card()), /IT load 720 MW · grid connection 200 MW/); assert.equal(q.z, 2);
   await x.tapDot(c); await drain(); assert.match(text(x.card()), /Grid connection 140 MW · IT load not stated/);
   await x.tapDot(mf); await drain(); const t = text(x.card()); assert.match(t, /IT load 72 MW · grid connection not stated/); assert.match(t, /Also stated: 100 MW, not said to be IT load or grid connection \(battery energy storage capacity \(BESS\); not data-centre load\); not added to either\./);
   assert.equal(mf.z, 1.6, 'sized by the 72 MW IT load, not the 100 MW battery');
