@@ -1,0 +1,108 @@
+{
+ "inputs": {
+  "gg2050_datacentres.geojson": "a686a2e00253bbf30c9f5262439bc2332524e8d5cb34481529c6a711c73acab4",
+  "offtakers_filtered_202610290945.geojson": "6fc20e04fdcaadc55d723354848bcf77d3871e9d088a29cbf7ea3a76890b6730"
+ },
+ "mode": "legacy globalgrid2050 snapshot (Overpass and Wikidata unreachable from this session)",
+ "source_objects": {
+  "osm": 240,
+  "wikidata_items": 0,
+  "wikidata_without_coords": 0
+ },
+ "sites_total": 190,
+ "sites_by_kind": {
+  "cable_landing_station": 12,
+  "data_centre": 149,
+  "data_centre_campus": 29
+ },
+ "operational_data_centre_sites_excl_cable_landing": 178,
+ "duplicates_merged": 50,
+ "sites_multi_source": 0,
+ "sites_with_conflicts": 15,
+ "sites_with_name": 159,
+ "sites_with_operator": 145,
+ "sites_with_it_load_mw": 0,
+ "sites_with_grid_connection_mw": 0,
+ "sites_with_unclassified_mw": 0,
+ "reconciliation": {
+  "offtakers_file": "offtakers_filtered_202610290945.geojson",
+  "offtakers_sha256": "6fc20e04fdcaadc55d723354848bcf77d3871e9d088a29cbf7ea3a76890b6730",
+  "offtakers_class_c": 164,
+  "class_c_osm_primary": 133,
+  "class_c_naei_primary": 31,
+  "class_c_matched": 156,
+  "class_c_unmatched": [
+   {
+    "offtakers_id": "OT-C-1209",
+    "name": "Hemel Hempstead Data Centre",
+    "primary": "NAEI",
+    "has_osm": false
+   },
+   {
+    "offtakers_id": "OT-C-1222",
+    "name": "LCY10 Datacentre",
+    "primary": "NAEI",
+    "has_osm": false
+   },
+   {
+    "offtakers_id": "OT-C-1255",
+    "name": "Riverdale Data Centre",
+    "primary": "NAEI",
+    "has_osm": false
+   },
+   {
+    "offtakers_id": "OT-C-1270",
+    "name": "Stevenage Data Centre",
+    "primary": "NAEI",
+    "has_osm": false
+   },
+   {
+    "offtakers_id": "OT-C-1271",
+    "name": "Stone Data Centre",
+    "primary": "NAEI",
+    "has_osm": false
+   },
+   {
+    "offtakers_id": "OT-C-1273",
+    "name": "Swindon Data Centre",
+    "primary": "NAEI",
+    "has_osm": false
+   },
+   {
+    "offtakers_id": "OT-C-1274",
+    "name": "Swindon Datacentre",
+    "primary": "NAEI",
+    "has_osm": false
+   },
+   {
+    "offtakers_id": "OT-C-1312",
+    "name": "Virtus Data Centres Stockley Park campus Prologis Park,Horton Road Greater London",
+    "primary": "NAEI",
+    "has_osm": false
+   }
+  ],
+  "class_c_split_across_sites": {
+   "OT-C-1287": 2,
+   "OT-C-1183": 2,
+   "OT-C-1184": 2,
+   "OT-C-1265": 2,
+   "OT-C-1207": 2,
+   "OT-C-1224": 3,
+   "OT-C-1227": 2,
+   "OT-C-1228": 6,
+   "OT-C-1264": 5,
+   "OT-C-1220": 5,
+   "OT-C-1240": 2,
+   "OT-C-1211": 2,
+   "OT-C-1256": 3
+  }
+ },
+ "params": {
+  "site_radius_m": 250,
+  "cross_source_radius_m": 500
+ },
+ "outputs": {
+  "dc_operational.json": "863d73c2004956aa5955e494bf5799dbd42e9a0be86c8f07a6144ab4fad8cdd6",
+  "dc_operational.geojson": "614e69318c3ef53f3331962e98e20cbd525e525b781dc492b43ba8f9243da7ed"
+ }
+}

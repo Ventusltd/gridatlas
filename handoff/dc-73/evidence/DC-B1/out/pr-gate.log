@@ -1,0 +1,92 @@
+base origin/main; 23 changed path(s)
+generations under test: 202610291044, 202610292044 (touched: 202610292044; live: 202610291044)
+scope-ledger=PASS active=none master=done
+PASS lint
+PASS state-parity
+PASS composition 202610291044
+202610291044 uk-lightning-overlay: sld-sandbox is the original 202609241334 (435218 B); overlay = atlas/modules/202610291043-uk-lightning-overlay.js (63707 B <= 64781); loader v2; arrival parity with 202610291043: 5 scripts, sld+'\n'+overlay == 202610291043 sld-sandbox, document identical but for the overlay tag. PASS
+PASS proof 202610291044-uk-lightning-overlay.proof.mjs
+202610291044 uk-offtakers-overlay: atlas/modules/202610291044-uk-offtakers-overlay.js (39633 B <= 72000), historical (source: 6bd84eb (main f0f449b, PR #70)); after uk-lightning-overlay; loader v2; 6 scripts composed, every other cartridge unchanged. PASS
+PASS proof 202610291044-uk-offtakers-overlay.proof.mjs
+PASS composition 202610292044
+202610292044 uk-lightning-overlay: sld-sandbox is the original 202609241334 (435218 B); overlay = atlas/modules/202610291043-uk-lightning-overlay.js (63707 B <= 64781); loader v2; arrival parity with 202610291043: 5 scripts, sld+'\n'+overlay == 202610291043 sld-sandbox, document identical but for the overlay tag. PASS
+PASS proof 202610292044-uk-lightning-overlay.proof.mjs
+202610292044 uk-offtakers-overlay: atlas/modules/202610292044-uk-offtakers-overlay.js (71191 B <= 72000), rebuilt from source; after uk-lightning-overlay; loader v2; 6 scripts composed, every other cartridge unchanged. PASS
+PASS proof 202610292044-uk-offtakers-overlay.proof.mjs
+
+=== streaming-parquet-bridge 202609241251 ===
+{
+  "status": "PASS",
+  "generation": "202609241251",
+  "composed_sha256": "60be8215ba873ac2886786bf6e3fd51e5764e7c5e26684fde71ebe9974a329a2",
+  "response_establishment_ms": 2.302,
+  "map_ready_requests": 1,
+  "streamed_responses": 1,
+  "duckdb_started_before_body": false,
+  "metro_partition": "partitions/uk_metros_trams_local_unwired.parquet",
+  "metro_rows_reconstructed": 1
+}
+
+=== uk-gazetteer-flyto 202609071213 ===
+{
+  "status": "PASS",
+  "generation": "202609071213",
+  "composed_sha256": "15f324e5c279050882f7e3ce83a915c070b6ed19095efcac4ae20af4ef19fdfa",
+  "resolved_identity": {
+    "repd_ref": "12588",
+    "technology": "solar",
+    "capacity_mw": 840,
+    "longitude": -1.3489728,
+    "latitude": 51.8132088
+  },
+  "terminal_states": [
+    "RESOLVED",
+    "NOT_IN_ACTIVE_REGISTER",
+    "ABSENT",
+    "FAILED"
+  ],
+  "mismatched_identity": "NOT_IN_ACTIVE_REGISTER"
+}
+
+=== substation-intelligence 202609062358 ===
+Published engine byte integrity and syntax PASS; browser coverage runs separately.
+
+=== sld-sandbox 202609241334 ===
+SLD exact delta, SHA-256 and syntax PASS; browser layout regression runs separately.
+
+=== uk-lightning-overlay 202610291044 ===
+202610291044 uk-lightning-overlay: sld-sandbox is the original 202609241334 (435218 B); overlay = atlas/modules/202610291043-uk-lightning-overlay.js (63707 B <= 64781); loader v2; arrival parity with 202610291043: 5 scripts, sld+'\n'+overlay == 202610291043 sld-sandbox, document identical but for the overlay tag. PASS
+
+=== uk-offtakers-overlay 202610291044 ===
+202610291044 uk-offtakers-overlay: atlas/modules/202610291044-uk-offtakers-overlay.js (39633 B <= 72000), historical (source: 6bd84eb (main f0f449b, PR #70)); after uk-lightning-overlay; loader v2; 6 scripts composed, every other cartridge unchanged. PASS
+
+proofs run: 6
+every composed cartridge passed its generation-matched proof
+PASS run-current
+{"composition":"PASS","generation":"202610291044","release_id":"202608300453-atlas-v9","immutable_releases":8,"cartridges":["streaming-parquet-bridge","uk-gazetteer-flyto","substation-intelligence","sld-sandbox","uk-lightning-overlay","uk-offtakers-overlay"]}
+PASS verify-compose
+PASS loader-registry  52 served loader(s) registered (v2 5, v1 47); each supports its own composition
+served loaders: 52 route(s), v1 47, v2 5; each supports the slots of its own current.json
+equivalence: 47 replace-script-only composition(s) compose byte-identically under v1 and v2; 5 modular composition(s) refused by v1, as designed
+after-cartridge: order kept; v1 refuses it; 5 malformed compositions fail closed under v2 with nothing written
+loader registry, equivalence and fail-closed PASS
+PASS loader-equivalence
+ok   202610291043 layers: 63707 B sha256 15ff1e37890770efc42b75651fac2fcc98a16c71a694481c79778ae0a6d818db rebuilt byte for byte
+PASS lightning-source
+hist 202610290400: historical, built from 1acd1a5 (main 94009a2); not rebuilt from the current source
+hist 202610290949: historical, built from 1fb2122 (main, PR #68); not rebuilt from the current source
+hist 202610291044: historical, built from 6bd84eb (main f0f449b, PR #70); not rebuilt from the current source
+ok   202610292044: 71191 B sha256 5a7018f11cccde19722bedc1ee67f0c17c7023f0145a5d4fd4f31e637c9fa006 rebuilt byte for byte
+PASS offtakers-source
+overlay-engine.test.mjs on 202610291043: pass 207 fail 0 skipped 10 in 55.5 s
+PASS lightning 202610291043 overlay-engine.test.mjs  pass 207 fail 0 skipped 10 55.5 s
+overlay-latest.test.mjs on 202610291043: pass 8 fail 0 skipped 0 in 0.4 s
+PASS lightning 202610291043 overlay-latest.test.mjs  pass 8 fail 0 skipped 0 0.4 s
+overlay-offtakers.test.mjs on 202610291044 + 202610291043: pass 19 fail 0 skipped 11 in 14.5 s
+PASS offtakers 202610291044 + lightning 202610291043 overlay-offtakers.test.mjs  pass 19 fail 0 skipped 11 14.5 s; atlas/current.json
+overlay-offtakers.test.mjs on 202610292044 + 202610291043: pass 30 fail 0 skipped 0 in 42.9 s
+PASS offtakers 202610292044 + lightning 202610291043 overlay-offtakers.test.mjs  pass 30 fail 0 skipped 0 42.9 s; atlas/v/202610292044/current.json
+PASS release-tools  15 script(s) parse; 2 test file(s): pass 16 fail 0
+
+19/19 checks passed
+EXIT 0
