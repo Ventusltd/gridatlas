@@ -44,6 +44,19 @@ export async function proveOfftakersCartridge(G) {
   assert.equal(sha(module), e.sha256); assert.equal(module.length, e.bytes);
   assert.ok(module.length <= BUDGET && module.length <= CARTRIDGE_BYTE_BUDGETS[OFFTAKERS_ID], `${module.length} B over the ${BUDGET}-byte budget`);
   assert.ok(text.startsWith(`/* uk-offtakers-overlay, generation ${M} (UTC).`), 'header names the generation');
+  // Files this site serves itself (data/...) are declared in site_data_sources: data_sources is read by the data-contract
+  // parity proof (202609012214) as Ventusltd product repositories, and a same-site entry there crashed it once G was live.
+  // Each one is named by the bytes; a declared SHA-256 is pinned in the bytes and is the hash of the file in this tree.
+  if (G > '202610290400') assert.ok(Array.isArray(e.site_data_sources) && e.site_data_sources.length, 'site_data_sources declared');
+  for (const d of e.data_sources || []) if (e.site_data_sources) assert.ok(d.repository && d.product, 'data_sources lists Ventusltd product repositories only; same-site files go in site_data_sources');
+  for (const d of e.site_data_sources || []) {
+    assert.match(d.url, /^https:\/\/ventusltd\.github\.io\/gridatlas\/data\//, 'a same-site data file');
+    assert.ok(text.includes(d.url), `the bytes name ${d.url}`);
+    if (d.sha256) {
+      assert.ok(text.includes(d.sha256), `the bytes pin ${d.id || d.url} by its SHA-256`);
+      assert.equal(sha(fs.readFileSync(path.join(ROOT, new URL(d.url).pathname.replace(/^\/gridatlas\//, '')))), d.sha256, `${d.url} in this tree hashes to the pin`);
+    }
+  }
   // while M is listed in tools/offtakers/generations.json, it must rebuild from the committed source (the PR gate's
   // offtakers-source step checks the same); a generation the source has moved past is pinned by its hash alone
   const regM = (JSON.parse(fs.readFileSync(path.join(ROOT, 'tools/offtakers/generations.json'), 'utf8')).generations || {})[M], listed = !!regM && !regM.historical;
