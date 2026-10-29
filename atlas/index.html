@@ -54,13 +54,24 @@
       const byId = new Map(current.cartridges.map(item => [item.id, item]));
       const loaded = [];
       const scriptTagPattern = new RegExp('<script\\b[^>]*\\bsrc=(["\\\'])([^"\\\']+)\\1[^>]*>\\s*<\\/script>', 'gi');
+      // Two slot types. 'replace-script' swaps one of the immutable shell's
+      // script tags for a verified cartridge. 'after-cartridge' adds a verified
+      // cartridge as its own script tag immediately after a cartridge composed
+      // earlier in cartridge_order (after the last one already chained to it),
+      // so it executes at exactly the point an appended module used to.
+      const SLOTS = ['replace-script', 'after-cartridge'];
+      const tailTag = new Map();
 
       for (const id of current.cartridge_order) {
         const cartridge = byId.get(id);
         invariant(cartridge, `missing cartridge ${id}`);
         invariant(cartridge.type === 'script', `${id}: unsupported cartridge type`);
-        invariant(cartridge.slot === 'replace-script', `${id}: unsupported cartridge slot`);
-        invariant(typeof cartridge.replace_script === 'string' && cartridge.replace_script, `${id}: replace_script missing`);
+        invariant(SLOTS.includes(cartridge.slot), `${id}: unsupported cartridge slot`);
+        if (cartridge.slot === 'replace-script') {
+          invariant(typeof cartridge.replace_script === 'string' && cartridge.replace_script, `${id}: replace_script missing`);
+        } else {
+          invariant(typeof cartridge.after === 'string' && tailTag.has(cartridge.after), `${id}: after-cartridge anchor ${cartridge.after} is not composed before it`);
+        }
         invariant(/^[a-f0-9]{64}$/.test(cartridge.sha256 || ''), `${id}: invalid SHA-256`);
 
         const cartridgeUrl = new URL(cartridge.path, window.location.href);
@@ -69,14 +80,24 @@
         const bytes = await response.arrayBuffer();
         invariant(await sha256Hex(bytes) === cartridge.sha256, `${id}: SHA-256 mismatch`);
         const blobUrl = URL.createObjectURL(new Blob([bytes], { type: 'text/javascript' }));
+        const tag = `<script data-gridatlas-cartridge="${escapeAttribute(id)}" src="${escapeAttribute(blobUrl)}">${SCRIPT_CLOSE}`;
 
-        let replaced = false;
-        html = html.replace(scriptTagPattern, (full, quote, src) => {
-          if (replaced || String(src).split('/').pop() !== cartridge.replace_script) return full;
-          replaced = true;
-          return `<script data-gridatlas-cartridge="${escapeAttribute(id)}" src="${escapeAttribute(blobUrl)}">${SCRIPT_CLOSE}`;
-        });
-        invariant(replaced, `${id}: shell slot ${cartridge.replace_script} not found`);
+        if (cartridge.slot === 'replace-script') {
+          let replaced = false;
+          html = html.replace(scriptTagPattern, (full, quote, src) => {
+            if (replaced || String(src).split('/').pop() !== cartridge.replace_script) return full;
+            replaced = true;
+            return tag;
+          });
+          invariant(replaced, `${id}: shell slot ${cartridge.replace_script} not found`);
+        } else {
+          const anchor = tailTag.get(cartridge.after);
+          const at = html.indexOf(anchor);
+          invariant(at >= 0 && html.indexOf(anchor, at + 1) < 0, `${id}: anchor tag of ${cartridge.after} not found exactly once`);
+          html = html.slice(0, at + anchor.length) + '\n' + tag + html.slice(at + anchor.length);
+          tailTag.set(cartridge.after, tag);
+        }
+        tailTag.set(id, tag);
         loaded.push({ id, sha256: cartridge.sha256, blob_url: blobUrl });
       }
 
