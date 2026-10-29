@@ -12,7 +12,7 @@ sf=m=>{///
   },
 /// pc: close the card and its neon layers. cs: strip format characters (bidi) and cap at 200 (LR-security). el: element
 /// with inline style and text (DOM: shell classes, inline styles on own nodes only).
-HIT=SRC+'-hit',CEL=SRC+'-cell',CNT=LAYER+'-count',pc=()=>{if(S.pp){S.pp.remove();S.pp=null}nc()},
+HIT=SRC+'-hit',OTH='gridatlas-offtakers-hit',CEL=SRC+'-cell',CNT=LAYER+'-count',pc=()=>{if(S.pp){S.pp.remove();S.pp=null}nc()},
 cs=v=>(v+'').replace(/\p{Cf}/gu,'').slice(0,200),///
   el=(t,css,s)=>{///
     let e=document.createElement(t);///
@@ -118,6 +118,10 @@ m.getSource(SRC).setData(fc);///
 tap=e=>{///
     let m=mh();///
     if(!S.on||S.busy||!m||!(m.getLayer(HIT)||m.getLayer(CEL)))return;///
+    /// a tap another overlay owns (a potential-offtakers dot under it, or a tap it has claimed) is not this module's: no card
+    /// change, no cell tap and no REPD layer hand-over, so a layer this module switched on is never given to the reader by a tap
+    /// it did not handle (R-taps MAJOR: Drax with both overlays on left bess ticked after both were OFF).
+    if(e.gridatlasClaim||m.getLayer(OTH)&&m.queryRenderedFeatures(e.point,{layers:[OTH]}).length)return;///
 ///#if dots
     /// dots: a tap on a drawn listed site opens that site's project view, as its row does.
     let rq=S.pp&&S.pp.ps&&m.getLayer(NI[13])&&m.queryRenderedFeatures(e.point,{layers:[NI[13]]})[0],rg=rq&&S.pp.ps[rq.properties.k];///

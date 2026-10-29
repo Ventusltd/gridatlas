@@ -22,6 +22,7 @@
 //   in place (I3, LE2-4, L1, L3, L8, LRB1, WORDS, L11, LAY2, REPD1, REPD4, REPD7, C2, C3, C5, a11y) and the M5 tests are appended.
 //   The minimum generation is therefore 202610290246: the suite is RED on M4 by design (wording).
 // 202610290935 (M6 + the R-otsec ORS8 connect() timeout): test ORS8 is appended; it skips older modules.
+// 202610291043 (M6t + the R-taps fix: a tap on a potential-offtakers dot or a claimed tap is not lightning's): TAPS1, skips older modules.
 // The tests below were written fail-first against earlier builds; do not relax an expectation to make a module pass.
 // A new build that changes behaviour on purpose updates the affected test here, in the same PR, with the reason.
 //   LIGHTNING_MODULE=atlas/modules/<gen>-uk-lightning-overlay.js node --test tools/ci/lightning/overlay-engine.test.mjs
@@ -2374,7 +2375,10 @@ test('M5-6: rows per point are cached for the page: no point is ever queried twi
   for (const k of ['te:solar', 'st:op', 'te:all', 'st:all']) { press(x, k); await settle(); await drain(); }
   const n = x.sql.length; tapFlash(x); await settle(); await drain(); assert.equal(x.sql.length, n, 'same tap: cached'); assert.equal(x.manFetch, 1);
   assert.equal(new Set(pts()).size, pts().length, 'no point queried twice');
-  assert.ok(recBlocks(x).length >= 10); assert.ok(!card(x).textContent.includes('loading…'));
+  // R-cifix MINOR: under load the record join (WebCrypto digest of the manifest, then the query) can outlast drain(); wait for it,
+  // up to 3 s, instead of a fixed tick count. The expectation is unchanged: every block ends loaded.
+  assert.ok(recBlocks(x).length >= 10); const t0 = Date.now(); while (card(x).textContent.includes('loading…') && Date.now() - t0 < 3000) await new Promise(r => setTimeout(r, 5));
+  assert.ok(!card(x).textContent.includes('loading…'));
 });
 
 test('M5-7: failures are said and retried: no search runtime, a manifest that is not the pinned one, a query that never answers (timeout)', async () => {
@@ -2481,4 +2485,19 @@ test('ORS8: repdRecords.records() rejects with the timeout when connect() hangs 
     const out = await Promise.race([api.records([[-1.25, 53.5]]).then(() => 'resolved', e => 'rejected: ' + e.message), new Promise(r => setTimeout(() => r('still pending'), 400))]);
     assert.equal(out, 'rejected: timeout after 15 s', 'a hung connect() must time out inside records() itself');
   } finally { delete globalThis.__SRC_OVERRIDE; }
+});
+
+// R-taps MAJOR (from 202610291043 on): a tap that lands on a potential-offtakers dot, or that another overlay has claimed
+// (e.gridatlasClaim), is not lightning's: the card stays, no cell or REPD-dot path runs, and no layer this module switched
+// on is handed to the reader, so closing the card still releases it (Drax with both overlays on left bess ticked).
+(M4B ? test.skip : test)('TAPS1: an offtakers dot or a claimed tap is not lightning\'s: no hand-over, no close, the layers are still released on close', { skip: MODULE_GEN < '202610291043' && `module ${MODULE_GEN} predates the fix` }, async () => {
+  for (const how of ['offtakers dot', 'claimed']) {
+    const { x, E } = await boot3([-1.5, 52], null, SYN, { userOn: ['wind'] }); tapFlash(x, 0); await settle(); assert.deepEqual([...x.S.ly].sort(), ['bess', 'solar'], how);
+    const c0 = card(x); assert.ok(c0, 'card open');
+    if (how === 'offtakers dot') { x.layers.set('gridatlas-offtakers-hit', { id: 'gridatlas-offtakers-hit' }); x.tapMap([50, 50], { 'gridatlas-offtakers-hit': [{ properties: { i: 0 } }], 'l-bess': [{ properties: { name: 'B1', tech: 'bess' } }], 'gridatlas-lightning-cell': [{ properties: {} }] }); }
+    else { const e = { point: [50, 50], lngLat: { lng: 0, lat: 0 }, gridatlasClaim: 'offtakers' }; for (const h of x.handlers.filter(h => h.t === 'click' && !h.layer)) h.f(e); }
+    await drain();
+    assert.deepEqual([...x.S.ly].sort(), ['bess', 'solar'], `${how}: nothing handed to the reader`); assert.equal(card(x), c0, `${how}: lightning's card untouched by a tap it does not own`);
+    closeCard(x); assert.deepEqual(onIds(E), ['wind'], `${how}: closing releases every layer the module switched on`); assert.equal(x.S.ly.size, 0); inSync(E);
+  }
 });
