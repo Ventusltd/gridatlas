@@ -1,10 +1,11 @@
 /// ---- a tap on a site ----
 oc=(m,r,n=15)=>{let[x,y]=r.a,p=r.p,c=cd(m,'Potential offtaker',HEAD),h=c.head,w=MW(p),bd=p.emission_band_naei_2023,rc=p.records||[],naei=rc.some(q=>q.source==='NAEI');c.r=r;c.re=()=>oc(m,r,0);S.fk=[r.a];
  L(h,`${NM(r)} · ${OP(r)} · ${SUBL(r)}`,'color:#f3e6da;font-weight:bold;margin-top:6px','record');
- L(h,(w?`${N(w)} MW installed (GPPD, DUKES-derived; installed, not connection capacity)`+(bd?' · ':''):'')+(bd?`Emission band ${cs(bd)} CO2e-approx, NAEI 2023 (band only; method under check)`:w?'':'No NAEI 2023 emission band'),'color:#9fb3ba','record');
- if(p.class==='B'||p.status_date)L(h,`Status: ${cs(p.status)}${p.status_date?' '+cs(p.status_date):''}${p.status_source?' · source '+cs(p.status_source):''}`,'color:#9fb3ba','record');
+ L(h,(w?`${N(w)} MW installed (GPPD, DUKES-derived; installed, not connection capacity)`+(bd?' · ':''):'')+(bd?`Emission band ${cs(bd)} CO2e a year, NAEI 2023 (band only, approximate)`:w?'':'No NAEI 2023 emission band'),'color:#9fb3ba','record');
+ if(p.class==='B'||p.status_date){let st=cs(p.status).replace(/^status /,''),sd=cs(p.status_date||'');L(h,`Status: ${st}${sd&&!st.includes(sd)?' '+sd:''}${p.status_source?' · source '+cs(p.status_source):''}`,'color:#9fb3ba','record')}
+ if(r.t==='cl'||r.t==='cc')L(h,(r.t==='cl'?'Closing station':/^converted/i.test(p.status)?'Converted station (it may still generate on another fuel)':'Closed station')+': no grid connection, TEC or connection rights are implied.','color:#9fb3ba');
  c.smb=`${CLS[r.k][0]} · ${SUBL(r)}${rc.length>1?` · ${rc.length} records merged`:''}`;c.sm.textContent=c.smb+' · details';
- let dv=c.det;L(dv,`On-site combustion: ${cs(p.onsite_combustion_indicator||'unknown')}.${naei?' Source NAEI 2023.':''} Not a measure of generation capacity.`,'color:#c9d6da;margin-top:4px','record');
+ let dv=c.det;L(dv,p.class==='B'?`Listed as a power producer${naei?' (NAEI 2023)':''}. Not a measure of its electricity use.`:`On-site combustion: ${cs(p.onsite_combustion_indicator||'unknown')}.${naei?' Source NAEI 2023.':''} Not on-site generation capacity.`,'color:#c9d6da;margin-top:4px','record');
  if(rc.length>1)L(dv,`${rc.length} records merged: `+rc.map(q=>`${unk(q.name)?'name not listed':cs(q.name)} (${cs(q.source)}${q.mw?', '+N(q.mw)+' MW':''})`).join('; '),'color:#9fb3ba','record');
  L(dv,'Record · '+LIC(r),'color:#8b9aa1','record');
  let oc_=p.osm_corroboration||[],ds=S.data.dots.filter(q=>q!==r&&q.k!=r.k&&hv(r.a,q.a)<=.3).sort((a,b)=>hv(r.a,a.a)-hv(r.a,b.a)).slice(0,3);
@@ -19,7 +20,7 @@ oc=(m,r,n=15)=>{let[x,y]=r.a,p=r.p,c=cd(m,'Potential offtaker',HEAD),h=c.head,w=
 sb=(m,c,x,y,n)=>{if(S.pp!==c)return;let Lk=W.__GRIDATLAS_NEON_LINKS__||{},M=Lk.measure||{},subs=Object.hasOwn(Lk,'substations')?Lk.substations:null;c.sub.textContent='';
  if(!AI(subs)||!subs.length||typeof M.nearestSubstations!=='function'){L(c.sub,'Substation data not loaded yet; trying again.');nl(m,[x,y]);return n?setTimeout(()=>sb(m,c,x,y,n-1),2e3):0}
  let k;try{k=c.k=M.nearestSubstations(x,y,subs)}catch(e){note('nearest: '+msg(e));L(c.sub,'Substation data unavailable.');k=c.k=[]}
- L(c.sub,`Substations (${k.length} nearest, straight line; not a connection):`,'color:#5fbdc2');
+ L(c.sub,`Screening · ${k.length} nearest substations, straight line. Not capacity or connection feasibility.`,'color:#5fbdc2');
  if(!k.length){let b=k.beyondRadiusNearest;L(c.sub,`No substation within ${k.radiusKm||40} km`+(b?` (nearest: ${cs(b.name||'unnamed substation')}, ${KV(b)} kV, ${k2(b.km)} km)`:''))}
  for(let a of k)L(c.sub,`${k2(a.km)} km · ${KV(a)} kV · ${cs(a.name||'unnamed substation')}`,'color:#c9d6da');
  S.fk=[[x,y],...k.map(a=>a.at)];nl(m,[x,y],k);cpos();nz(m,x,y);
@@ -31,7 +32,7 @@ ar=c=>{let A=c.area,r=c.r,f=c.all.filter(q=>q.km<=5),t=[],z=0;A.textContent='';
  let o=CK.map(k=>[k,S.data.dots.filter(q=>q!==r&&q.k==k&&hv(r.a,q.a)<=5).length]).filter(v=>v[1]).map(([k,v])=>`${CLS[k][0]} ${v}`),s=c.k&&c.k[0];
  L(A,`Within 5 km: ${pl(f.length,'REPD project')}${t.length?' · '+t.join(' · '):''}`,'margin-top:6px;color:#cfe0ff');
  L(A,`Other listed sites within 5 km: ${o.length?o.join(' · '):'none'}${s?` · nearest substation ${KV(s)} kV, ${k1(s.km)} km`:''}`,'color:#c9d6da');
- if(z)L(A,'MW not stated is unknown, not zero.','color:#8b9aa1')},
+ if(z)L(A,'Capacity not stated: unknown, not zero.','color:#8b9aa1')},
 /// the list: chips, the 15 nearest sites with each project's full REPD record, the REPD links
 rr=(m,c)=>{let f=S.rf,{sel,P}=sites(c.all,f),box=c.box,all=f.st==='all'&&f.te==='all',nmv=v=>(RpF.st.find(q=>q[0]===v)||RpF.te.find(q=>q[0]===v))[1],fa=all?'all statuses and technologies':[f.st,f.te].filter(v=>v!=='all').map(nmv).join(' · ');
  ar(c);box.textContent='';c.P=P;
@@ -40,12 +41,12 @@ rr=(m,c)=>{let f=S.rf,{sel,P}=sites(c.all,f),box=c.box,all=f.st==='all'&&f.te===
   for(let[v,t]of defs){let on=f[k]===v,b=ap(row,el('button',`min-height:44px;padding:0 10px;background:${on?'#2f5fa8':'#050a12'};border:1px solid #2f5fa8;border-radius:3px;color:${on?'#e8eef9':'#8fb4ff'};font:11px/1 monospace;cursor:pointer`,t));
    b.type='button';b.dataset.offtakersRepdFilter=k+':'+v;b.setAttribute('aria-pressed',on);b.addEventListener('click',()=>{if(f[k]!==v&&S.pp===c){f[k]=v;rr(m,c);box.querySelector(`[data-offtakers-repd-filter="${k}:${v}"]`)?.focus?.()}})}}
  let parts=P.reduce((s,g)=>s+g.parts.length,0),reach=P.length?P[P.length-1].km:0;
- c.pd=L(box,P.length?`${pl(P.length,'nearest REPD site')} (reach ${k1(reach)} km${parts>P.length?`; ${N(parts)} projects, those at one point grouped`:''}; ${fa}):`:`No REPD site within ${R40} km (${fa}).`,'margin-top:6px;color:#ffc48a');
+ c.pd=L(box,P.length?`Screening · ${pl(P.length,'nearest REPD site')}${parts>P.length?` (${N(parts)} projects; those at one point grouped)`:''}, all within ${k1(reach)} km, straight line (${fa}):`:`Screening · no REPD site within ${R40} km, straight line (${fa}).`,'margin-top:6px;color:#ffc48a');
  if(P.length&&P.length<NR)L(box,`Only ${pl(P.length,'REPD site')} within ${R40} km${all?'':' for this filter'}.`,'color:#ffc48a');
  let sl=[];P.forEach((g,i)=>{let p=g.parts[0],one=g.parts.length===1,b=tier(ap(box,el('a','display:block;padding:12px 0 6px;border-top:1px solid #1d2f52;color:#ffb27a;text-decoration:none',`${i+1}. ${RpG(g)}${RpC(g.parts)} · ${one?cs(p.status)+' · '+cs(p.name):g.parts.length+' projects at this point:'} ▸`)),'screening');
   b.href='#';b.setAttribute('role','button');b.addEventListener('click',e=>{if(e.preventDefault)e.preventDefault();pv(m,c,g)});
   for(let q of g.parts){one||ap(box,tier(el('div','padding:0 0 2px 12px;color:#c9a27e;font-size:11px',`${RpN(q)}${RpMW(+q.capacity)}${RpC([q])} · ${cs(q.status)} · ${cs(q.name)}`),'record'));sl.push([ap(box,el('div')),q])}});
- L(box,'Record · REPD (DESNZ, OGL v3.0). Status as registered, not as built. Address, ref, operator and planning fields only on an exact point, name, MW and type match.','margin-top:6px;color:#8b9aa1','record');
+ L(box,'Record · REPD (DESNZ, OGL v3.0): list from the Apr 2026 extract; address, ref, operator and planning fields from the Jul 2026 extract, only on an exact point, name, MW and type match. Status as registered, not as built.','margin-top:6px;color:#8b9aa1','record');
  RpH(c,sl);cv(c);
  c.sm.textContent=`${c.smb} · ${P.length?pl(P.length,'nearest REPD site'):'no REPD site'} · details`;Ra(c,c.pd.textContent);
  try{nl(m,c.fk0[0],c.k,P)}catch(e){note('links: '+msg(e))}top();
@@ -62,11 +63,11 @@ cv=c=>{c.csv.textContent='';let b=ap(c.csv,el('button','display:block;width:100%
  b.addEventListener('click',()=>{try{let u=URL.createObjectURL(new Blob([csv(c)],{type:'text/csv'})),a=el('a');a.href=u;a.download=`offtaker-vicinity-${GEN}.csv`;ap(document.body,a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(u),4e3)}catch(e){note('csv: '+msg(e))}})},
 /// a row: fly to the REPD site and draw its own 5 nearest substations; "◀ back" restores the offtaker card
 pv=(m,c,g)=>{let back=c.re,[x,y]=g.a,ps=g.parts;pc();
- let v=cd(m,'REPD project',`REPD · ${RpU(ps,RpN).sort().join(' + ')}${RpMW(RpW(ps))}`,{foot:'Record · REPD (DESNZ, OGL v3.0). Status as registered, not as built. '+NOTSHOWN,open:1,back:['◀ back to offtaker',()=>{pc();back();S.pp&&S.pp.sm.focus?.()}]});
+ let v=cd(m,'REPD project',`REPD · ${RpU(ps,RpN).sort().join(' + ')}${RpMW(RpW(ps))}`,{foot:'Record · REPD (DESNZ, Apr 2026, OGL v3.0). Status as registered, not as built. '+NOTSHOWN,open:1,back:['◀ back to offtaker',()=>{pc();back();S.pp&&S.pp.sm.focus?.()}]});
  v.sm.textContent=`${k2(g.km)} km from ${NM(c.r)} (straight line) · details`;
  let sl=ps.map(q=>(L(v.det,`${RpN(q)}${RpMW(+q.capacity)}${RpC([q])} · ${cs(q.status)} · ${cs(q.name)}`,'color:#ffb27a;margin-top:6px'),[ap(v.det,el('div')),q]));RpH(v,sl);
  let Lk=W.__GRIDATLAS_NEON_LINKS__||{},M=Lk.measure||{},k=[];try{k=AI(Lk.substations)&&Lk.substations.length?M.nearestSubstations(x,y,Lk.substations):[]}catch(e){note('nearest: '+msg(e))}
- L(v.det,'Screening · nearest substations to this project, straight line. Not its declared connection.','color:#5fbdc2;margin-top:6px');for(let a of k)L(v.det,`${k2(a.km)} km · ${KV(a)} kV · ${cs(a.name||'unnamed substation')}`,'color:#c9d6da');
+ L(v.det,'Screening · nearest substations to this project, straight line. Not its declared connection or capacity.','color:#5fbdc2;margin-top:6px');for(let a of k)L(v.det,`${k2(a.km)} km · ${KV(a)} kV · ${cs(a.name||'unnamed substation')}`,'color:#c9d6da');
  v.k=k;S.fk=[[x,y],...k.map(a=>a.at)];try{nl(m,[x,y],k)}catch(e){note('links: '+msg(e))}cpos();nz(m,x,y);v.querySelector('[data-offtakers-back]')?.focus?.()},
 /// map tap: decided after every click handler of this tap has run, so an offtaker hit wins over a lightning card opened by the same tap
 tap=e=>{if(!S.on)return;setTimeout(()=>{try{tq(e)}catch(x){note('tap: '+msg(x))}},0)},

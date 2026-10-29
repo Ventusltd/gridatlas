@@ -145,7 +145,7 @@ test('T2a: switch-on fetches exactly the pinned data file once; copper-to-teal p
   const f = x.layers.get('l-gridatlas-offtakers').filter; deq(f[1][2][1], ['a', 'b', 'c', 'd', 'e'], 'small water off by default');
   assert.match(JSON.stringify(x.layers.get('l-gridatlas-offtakers').paint), /#e07b39.*#f2c14e.*#2ec4b6.*#4f86c6.*#a26769/);
   assert.match(text(x.host.querySelector('[data-offtakers-label]')), /\[1,477 sites\]/);
-  assert.match(text(x.host.querySelector('[data-offtakers-foot]')), /Dot size: emission band \(NAEI 2023\) or installed MW \(GPPD\)\. Hollow ring: closed or closing station\..*A listing is not electricity demand\. Distances are straight lines\. Vicinity screening only\./);
+  assert.match(text(x.host.querySelector('[data-offtakers-foot]')), /Dot size: emission band \(NAEI 2023\) or installed MW \(GPPD\)\. Hollow ring: closed, closing or converted station\..*A listing is not electricity demand\. Distances are straight lines\. Vicinity screening only\./);
 });
 
 test('T2b: a SHA-256 mismatch shows "data check failed" and draws nothing', async () => {
@@ -192,7 +192,7 @@ test('T6a: a tap lists the 15 nearest REPD sites (≤40 km, ties kept), equal to
     assert.equal(pl.length, exp.length); deq(pl.map(f => f.geometry.coordinates[1]), exp.map(g => g.a));
     const ns = origNearest(r.a[0], r.a[1], SUBS); assert.equal(sl.length, 5); deq(sl.map(f => f.geometry.coordinates[1]), ns.map(s => s.at));
     deq(x.W.__NS__.at(-1), r.a, 'nearestSubstations called at the site');
-    assert.match(text(c), /Substations \(5 nearest, straight line; not a connection\)/);
+    assert.match(text(c), /Screening · 5 nearest substations, straight line\. Not capacity or connection feasibility\./);
     assert.ok(x.layers.get('l-gridatlas-offtakers-links'), 'links layer id');
   }
 });
@@ -202,7 +202,7 @@ test('T6b: ties at the 15th site distance are kept; "Only n REPD sites within 40
   const reg = [...Array.from({ length: 14 }, (_, i) => mk(0.01 * (i + 1))), mk(0.25, { name: 'tieA' }), mk(-0.25, { name: 'tieB', status: 'application submitted', capacity: null, tech: 'wind', raw_tech: 'Wind Onshore' }), mk(0.3, { name: 'far' })];
   const x = boot({ register: reg }); x.O.install(); x.toggle(true); await drain(); const r = x.dot(r => r.k === 'a'); r.a = at; // a synthetic site
   await x.tapDot(r); let rows = rowsOf(x.card()); assert.equal(rows.length, 16, 'ties kept'); assert.ok(rows.some(t => /tieA/.test(t)) && rows.some(t => /tieB/.test(t)) && !rows.some(t => /far/.test(t)));
-  assert.match(rows.find(t => /tieB/.test(t)), /MW not stated/); assert.equal(rows.some(t => / 0 MW/.test(t)), false);
+  assert.match(rows.find(t => /tieB/.test(t)), /capacity not stated/); assert.equal(rows.some(t => / 0 MW/.test(t)), false);
   x.card().querySelector('[data-offtakers-repd-filter="st:pl"]').click(); rows = rowsOf(x.card()); assert.equal(rows.length, 1); assert.match(rows[0], /tieB/);
   assert.match(text(x.card()), /Only 1 REPD site within 40 km for this filter/);
   assert.equal(x.sources.get('gridatlas-offtakers-neon-plinks').data.features.length, 1, 'links follow the chips');
@@ -322,7 +322,7 @@ test('T15: power station card: closed coal (Ratcliffe) shows MW, the curated sta
   assert.match(t, /Ratcliffe on Soar Power Station · operator \(NAEI\) Uniper UK Ltd · coal/); assert.match(t, /2,000 MW installed \(GPPD, DUKES-derived; installed, not connection capacity\)/);
   assert.match(t, /Status: closed 2024-09-30 · source https:\/\/www\.uniper\.energy\/\S+ \(curated; not re-verified in session\)/);
   assert.match(t, /3 records merged: Ratcliffe on Soar Power Station \(NAEI\); Ratcliffe \(GPPD, 2,000 MW\); Ratcliffe GT \(GPPD, 34 MW\)/);
-  assert.match(t, /On-site combustion: generator site \(listed as power producer\)\. Source NAEI 2023\. Not a measure of generation capacity\./);
+  assert.match(t, /Listed as a power producer \(NAEI 2023\)\. Not a measure of its electricity use\./); assert.match(t, /Closed station: no grid connection, TEC or connection rights are implied\./);
   assert.match(t, /Record · NAEI \(OGL v3\.0\) · GPPD \(CC BY 4\.0\)/); assert.equal(r.t, 'cc'); assert.equal(r.z, 1.5);
   assert.match(t, /Not shown here: electricity use, connection terms, TEC, consent, viability\./);
 });
