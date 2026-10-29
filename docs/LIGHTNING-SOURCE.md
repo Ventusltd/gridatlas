@@ -45,7 +45,7 @@ Both build from the same files. They differ in 21 `///#if dots` blocks. The larg
 
 **Budget.** The module must be at most 64,781 B, and base + "\n" + module at most 500,000 B. The cartridge base is
 the original 202609241334 sld-sandbox, 435,218 B. The scaffolder refuses to go over either limit, and so does the
-generation proof. M4 is 57,562 B and M4b is 57,867 B.
+generation proof. M4 is 57,562 B and M4b is 57,867 B. M6 is 63,564 B and M6b is 63,869 B.
 
 ## Changing the source and cutting a generation
 

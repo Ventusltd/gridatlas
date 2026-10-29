@@ -105,6 +105,10 @@ search reads. A DuckDB stand-in answers the module's SQL from the repository's J
 `data/repd_browser_registry_202608290716.json` (SHA-256 c8a5c59b…, pinned by the manifest; no new fixture).
 M5 also changes wording on purpose (V-tiers Screening/Record, V-geometry 0.1° cells), so M4 fails the
 edited expectations and the suite carries `@gate-min-generation 202610290246`.
+Build M6 (202610290314; M6b 202610290315) opens the card by default with the 10-site list first, replaces
+the "−" minimise with a "▾ Hide list / ▸ Show 10 sites" toggle and makes record failures a tap-to-retry line
+(tests M6-1..M6-3 and 9 intended expectation edits), so M5 fails them and the suite carries
+`@gate-min-generation 202610290314`.
 When a new build changes a behaviour on purpose, update the affected test in
 the same PR and give the reason in the commit. Do not relax an expectation
 just to pass.

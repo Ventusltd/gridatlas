@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// @gate-min-generation 202610290246
+// @gate-min-generation 202610290314
 // Vendored from the hardening lanes' test-engine.mjs (Build M2, 202610282100: 176 tests, a superset of
 // test-fixes.mjs), so the PR gate (tools/ci/pr-gate.mjs, docs/CI.md) runs the lightning engine, cell and REPD
 // tests on every overlay module from 202610282100 on. Changes from the source, all mechanical:
@@ -899,8 +899,8 @@ test('I1/J2: the card is docked at the bottom (bar 44 px − and ×), explicit i
   tapFlash(x); const card = x.mapEl.querySelector('[data-lightning-card]'); assert.ok(card);
   const st = card.style.cssText; assert.match(st, /position:absolute/); assert.match(st, /background:#000/); assert.match(st, /color:#e8f4f5/); assert.match(st, /border:1px solid #2f6f75/);
   assert.equal(card.style.bottom, '8px'); assert.equal(card.style.top, undefined);
-  const [mn, close] = card.querySelectorAll('button'); assert.equal(mn.getAttribute('aria-label'), 'Minimise'); assert.match(close.style.cssText, /width:44px;height:44px/); assert.equal(close.getAttribute('aria-label'), 'Close');
-  dispatch(mn, 'click', x.log.errors); assert.equal(card.children[1].style.display, 'none'); assert.equal(mn.getAttribute('aria-expanded'), 'false');
+  const [mn, close] = card.querySelectorAll('button'); assert.equal(mn.getAttribute('aria-label'), 'Hide list'); assert.equal(mn.textContent, '▾ Hide list'); /* M6: a toggle that says what it does (was '−' Minimise) */ assert.match(close.style.cssText, /width:44px;height:44px/); assert.equal(close.getAttribute('aria-label'), 'Close');
+  dispatch(mn, 'click', x.log.errors); assert.equal(card.querySelector('details').open, false); assert.notEqual(card.children[1].style.display, 'none', 'M6: the bar, summary and footer stay'); assert.equal(mn.getAttribute('aria-expanded'), 'false'); assert.match(mn.textContent, /^▸ Show (\d+ sites?|list)$/);
   assert.ok(x.handlers.some(h => h.t === 'resize'), 'no resize listener'); assert.ok(!x.handlers.some(h => h.t === 'move'), 'card still follows move');
   dispatch(close, 'click', x.log.errors); assert.equal(x.mapEl.querySelector('[data-lightning-card]'), null);
 });
@@ -1892,7 +1892,7 @@ test('M2-C5 row tap stays in the page: no navigation; flies to the project and d
   const back = c.querySelector('[data-lightning-back]'); assert.equal(back.textContent, '◀ back to lightning flash'); assert.equal(c.querySelectorAll('button')[1].getAttribute('aria-label'), 'Close');
   dispatch(back, 'click', x.log.errors); await settle();
   const d = card(x); assert.equal(d.getAttribute('aria-label'), 'Lightning flash'); assert.deepEqual(x.neonCalls.at(-1).slice(0, 2), [-1.5, 52]);
-  assert.equal(rowsOf(x).length, 2); assert.equal(x.sources.get('gridatlas-lightning-neon-plinks').data.features.length, 2); assert.notEqual(d.querySelector('details').open, true, 'restored as at the tap (collapsed) so the camera frames the links');
+  assert.equal(rowsOf(x).length, 2); assert.equal(x.sources.get('gridatlas-lightning-neon-plinks').data.features.length, 2); assert.equal(d.querySelector('details').open, true, 'M6: restored as at the tap (open by default; the card is at most 45 % of the map, so the camera frames the links above it)');
   assert.equal(x.repdFetch.length, 1, 'the register is reused'); assert.deepEqual(x.log.errors.map(String), []);
 });
 test('M2-C6 row tap from a cell: "◀ back to lightning cell"; close, period switch and OFF clean the project view', async () => {
@@ -2117,9 +2117,9 @@ test('M3R-layout (M2R-layout F1-F3): an open card stays below container top + 32
   const x = flash0(); installRepd(x, SUBS, FCx([pf(-1.5, 52.3)])); x.mapEl._rect = { top: 0, left: 0, right: 393, bottom: 659, width: 393, height: 659 }; x.mapEl.clientHeight = 659; x.mapEl.clientWidth = 393;
   x.map.getBounds = () => ({ contains: () => true }); x.setProj(() => ({ x: 200, y: 600 })); // every end on the map, but under the card
   x.toggle(true); await drain(); tapFlash(x); await settle();
-  assert.equal(card(x).style.maxHeight, '331px', 'MX(240, 659 - 8 - 320)');
+  assert.equal(card(x).style.maxHeight, '296px', 'M6: MX(200, 45 % of 659)');
   assert.ok(x.camera.some(k => k[0] === 'fitBounds'), 'an end under the card is reframed');
-  x.setProj(() => ({ x: 200, y: 200 })); x.camera.length = 0; dispatch(card(x).querySelector('details'), 'toggle', x.log.errors);
+  x.setProj(() => ({ x: 200, y: 200 })); x.camera.length = 0; { const dd = card(x).querySelector('details'); dd.open = !dd.open; dispatch(dd, 'toggle', x.log.errors); } /* M6: a real open/close change reframes; the default open does not */
   assert.equal(x.camera.filter(k => k[0] === 'fitBounds').length, 1, 'the details toggle forces a reframe');
 });
 // ---------------------------------------------------------------- M4-build: no camera move nested inside another (M2R-taps MAJOR M2R-T1)
@@ -2378,11 +2378,11 @@ test('M5-6: rows per point are cached for the page: no point is ever queried twi
 
 test('M5-7: failures are said and retried: no search runtime, a manifest that is not the pinned one, a query that never answers (timeout)', async () => {
   let x = await recTap(DONC, S3, { noRuntime: true });
-  assert.match(recBlocks(x)[0].textContent, /^REPD record unavailable: the map search runtime has not started; reload the page\. Tap again to retry\.$/);
+  assert.match(recBlocks(x)[0].textContent, /^REPD record unavailable — tap to retry \(the map search runtime has not started; reload the page\)$/);
   assert.ok(prows(card(x)).length >= 10, 'the list itself stands');
-  x = await recTap(DONC, S3, { badManifest: true }); assert.match(recBlocks(x)[0].textContent, /REPD record unavailable: REPD manifest is not the pinned one/); assert.equal(x.sql.length, 0, 'no query without the pinned manifest');
+  x = await recTap(DONC, S3, { badManifest: true }); assert.match(recBlocks(x)[0].textContent, /REPD record unavailable — tap to retry \(REPD manifest is not the pinned one\)/); assert.equal(x.sql.length, 0, 'no query without the pinned manifest');
   globalThis.__SRC_OVERRIDE = SRC.replace('TMO=15000', 'TMO=40');
-  try { x = await recTap(DONC, S3, { hang: true }); await new Promise(r => setTimeout(r, 120)); await drain(); assert.match(recBlocks(x)[0].textContent, /REPD record unavailable: timeout after 15 s/); }
+  try { x = await recTap(DONC, S3, { hang: true }); await new Promise(r => setTimeout(r, 120)); await drain(); assert.match(recBlocks(x)[0].textContent, /REPD record unavailable — tap to retry \(timeout after 15 s\)/); }
   finally { delete globalThis.__SRC_OVERRIDE; }
   assert.ok(SRC.includes('TMO=15000'), 'the shipped timeout is 15 s');
 });
@@ -2431,5 +2431,38 @@ test('M5-11 phone (393 px): record and summary blocks wrap (no fixed width, no n
   for (const b of recBlocks(x)) { assert.match(b.style.cssText, /overflow-wrap:anywhere/); assert.match(b.style.cssText, /font-size:11px/); }
   const g = c.querySelectorAll('[data-tier="screening"]').find(e => e.style.cssText.includes('grid'));
   assert.match(g.style.cssText, /grid-template-columns:auto auto auto/); for (const e of g.children) assert.ok(e.textContent.length <= 22, e.textContent);
-  assert.ok(!c.querySelector('details').open, 'the card stays collapsed by default');
+  assert.ok(c.querySelector('details').open, 'M6: the card opens by default (the list is visible)');
+});
+
+// ---------------------------------------------------------------- M6-build: the 10-site list is visible by default (owner, iPhone 03:05 UTC)
+test('M6-1: the card opens by default as a half-height panel: the sites come first (above the substations), the Area summary after them; "▾ Hide list" / "▸ Show 10 sites" reflects the real state; × closes', async () => {
+  const x = await recTap(DONC, S3); x.mapEl._rect = { top: 0, left: 0, right: 393, bottom: 852, width: 393, height: 852 }; const c = card(x), d = c.querySelector('details');
+  assert.equal(d.open, true, 'open by default');
+  const [tg, close] = c.querySelectorAll('button'); assert.equal(tg.textContent, '▾ Hide list'); assert.equal(tg.getAttribute('aria-label'), 'Hide list'); assert.equal(tg.getAttribute('aria-expanded'), 'true'); assert.equal(close.getAttribute('aria-label'), 'Close');
+  assert.equal(prows(c).length, 10); assert.ok(prows(c).every(a => d.contains(a)));
+  const t = c.textContent, r = rowsOf(x); assert.ok(t.indexOf(r[0]) < t.indexOf('Screening · nearest substations'), 'sites first'); assert.ok(t.indexOf('Area summary') > t.indexOf(r[9]), 'Area summary after the sites');
+  assert.ok(t.indexOf(r[9]) < t.indexOf('Cell lat') || !t.includes('Cell lat'));
+  dispatch(tg, 'click', x.log.errors); assert.equal(d.open, false); assert.equal(tg.textContent, '▸ Show 10 sites'); assert.equal(tg.getAttribute('aria-label'), 'Show 10 sites'); assert.equal(tg.getAttribute('aria-expanded'), 'false');
+  d.open = true; dispatch(d, 'toggle', x.log.errors); assert.equal(tg.textContent, '▾ Hide list', 'the summary tap updates the toggle too');
+  dispatch(close, 'click', x.log.errors); assert.equal(card(x), null); assert.equal(x.log.errors.length, 0);
+});
+test('M6-2: the panel is at most 45 % of the map (393x852: 383 px) and scrolls inside', async () => {
+  const x = flash0(); installRepd(x, SUBS, FCx([pf(-1.5, 52.3)])); x.mapEl._rect = { top: 0, left: 0, right: 393, bottom: 852, width: 393, height: 852 }; x.mapEl.clientHeight = 852; x.mapEl.clientWidth = 393;
+  x.toggle(true); await drain(); tapFlash(x); await settle();
+  assert.equal(card(x).style.maxHeight, '383px'); assert.match(card(x).style.cssText, /overflow-y:auto/); assert.equal(card(x).querySelector('details').open, true);
+});
+test('M6-3: rows render from the map register even when the REPD record fetch fails or hangs: "loading REPD record…" at once, then "REPD record unavailable — tap to retry" within the 15 s budget; a tap on it retries; never an empty list', async () => {
+  globalThis.__SRC_OVERRIDE = SRC.replace('TMO=15000', 'TMO=40');
+  try {
+    const x = await recTap(DONC, S3, { hang: true }); const c = card(x);
+    assert.equal(prows(c).length, 10, 'the 10 rows stand'); for (const a of prows(c)) assert.match(a.textContent, /^\d+\.\d\d km · .+ · .+/);
+    assert.ok(recBlocks(x).length >= 10); const api = x.W.__GRIDATLAS_MODULES__.repdRecords; assert.equal(api.block({ name: 'A' }, [1, 2], new Map).textContent, 'loading REPD record…', 'not loaded yet: loading'); assert.match(api.block({ name: 'A' }, [1, 2], new Map, new Error('x')).textContent, /^REPD record unavailable — tap to retry \(x\)$/);
+    await new Promise(r => setTimeout(r, 120)); await drain();
+    assert.ok(recBlocks(x).every(b => /^REPD record unavailable — tap to retry \(timeout after 15 s\)$/.test(b.textContent)));
+    assert.equal(prows(c).length, 10, 'still 10 rows'); assert.equal(recBlocks(x)[0].getAttribute('role'), 'button');
+  } finally { delete globalThis.__SRC_OVERRIDE; }
+  const y = await recTap(DONC, S3, { noRuntime: true }); assert.equal(prows(card(y)).length, 10); assert.ok(recBlocks(y).every(b => b.textContent.startsWith('REPD record unavailable — tap to retry')));
+  installRecords(y, RECS); dispatch(recBlocks(y)[0], 'click', y.log.errors); await settle(); await drain();
+  assert.ok(!card(y).textContent.includes('unavailable'), 'the retry fills every slot'); assert.ok(recBlocks(y).some(b => /Record · REPD \d+/.test(b.textContent))); assert.equal(y.sql.length, 1);
+  assert.equal(y.log.errors.length, 0);
 });
