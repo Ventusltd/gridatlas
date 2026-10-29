@@ -51,7 +51,18 @@ async function run(width,height){
   assert.equal(init.installed.complete,true);
   await page.waitForSelector('[data-offtakers-control="toggle"]',{state:'attached',timeout:45000});
   await page.evaluate(()=>{const el=[...document.querySelectorAll('[data-offtakers-control="toggle"]')].find(x=>x.closest('#scada-ui-container'))||document.querySelector('[data-offtakers-control="toggle"]');el.checked=true;el.dispatchEvent(new Event('change',{bubbles:true}));});
-  await page.waitForFunction(()=>window.__GRIDATLAS_MODULES__.ukOfftakers?.state?.data?.dots?.filter(d=>d.k==='c').length>=225,{timeout:60000});
+  try {
+    await page.waitForFunction(()=>window.__GRIDATLAS_MODULES__.ukOfftakers?.state?.data?.dots?.filter(d=>d.k==='c').length>=225,{timeout:45000});
+  } catch(error) {
+    const diagnosis=await page.evaluate(()=>{
+      const x=window.__GRIDATLAS_MODULES__.ukOfftakers,S=x?.state;
+      return {gen:x?.generation,on:S?.on,serial:S?.serial,busy:S?.busy,err:S?.err,pe:S?.pe,
+        waiting_for:x?.state?.waiting_for,counts:S?.data?.counts,pl:S?.data?.pl&&{count:S.data.pl.o.length,bad:S.data.pl.bad},
+        dots:S?.data?.dots?.length,c:S?.data?.dots?.filter(d=>d.k==='c').length,
+        waiting:document.querySelectorAll('[data-offtakers-control="toggle"]').length};
+    });
+    throw new Error(String(error)+'; DC state '+JSON.stringify(diagnosis));
+  }
   const n=await page.evaluate(()=>window.__GRIDATLAS_MODULES__.ukOfftakers.state.data.dots.filter(d=>d.k==='c').length);
   assert.equal(n,225,'227 source records, of which two planning sites have unknown coordinates and must not be mapped');
   await page.evaluate(()=>{const S=window.__GRIDATLAS_MODULES__.ukOfftakers.state,m=window.__GRIDATLAS_V9_MAP__;
