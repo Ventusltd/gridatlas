@@ -45,6 +45,7 @@ async function run(width,height){
   const route=`http://127.0.0.1:${port}/gridatlas/atlas/v/${G}/`;
   await page.goto(route,{waitUntil:'domcontentloaded',timeout:90000});
   await page.waitForFunction(g=>document.documentElement.dataset.gridatlasGeneration===g&&window.__GRIDATLAS_MODULES__?.ukOfftakers&&window.__GRIDATLAS_V9_MAP__,G,{timeout:90000});
+  await page.waitForFunction(()=>window.__GRIDATLAS_MODULES__?.menuBar?.inspect?.().complete===true,null,{timeout:90000});
   const init=await page.evaluate(()=>({gen:document.documentElement.dataset.gridatlasGeneration,lightning:window.__GRIDATLAS_MODULES__.ukLightning?.generation,installed:window.__GRIDATLAS_MODULES__.menuBar.inspect()}));
   assert.equal(init.gen,G);assert.equal(init.lightning,'202610291043');
   assert.equal(init.installed.complete,true);
