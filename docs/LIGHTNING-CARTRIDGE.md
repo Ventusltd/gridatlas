@@ -315,8 +315,10 @@ node tools/release/split-lightning-cartridge.mjs --from <M> --generation <G> --v
   2. wait out the cache;
   3. release the pointer.
 - That needs the `loader-registry` rule relaxed to "`atlas/index.html` may
-  change to any registered loader that composes the live pointer". It is an
-  owner decision and is not implemented here.
+  change to any registered loader that composes the live pointer". Since
+  29 Oct 2026 it is (`tools/release/loader-swap.mjs`; docs/RELEASE.md "Loader
+  first, then the pointer"): the combined lightning M6 + offtakers generation
+  is released in those two steps.
 
 ## Prototype (evidence, not in this PR)
 

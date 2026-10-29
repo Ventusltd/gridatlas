@@ -21,7 +21,8 @@
  *   - none of G's files exist on --base;
  *   - per G: the manifest names G, its previous_generation is live on --base,
  *     atlas/v/G/current.json is the derived pointer re-rooted to ../../ (what
- *     release-generation.mjs will require), and the loader is byte-identical;
+ *     release-generation.mjs will require), and its loader is a registered
+ *     loader that supports the slots it uses (it need not equal the live one);
  *   - the PR gate passes locally: node tools/ci/pr-gate.mjs --base <base sha>
  *     (the same script CI runs on the PR).
  *
@@ -43,7 +44,7 @@
 
 import fs from 'node:fs';
 import path from 'node:path';
-import { ROOT, parseArgs, run, git, gitOk, cleanTree, deriveCurrent, rerootForPreview } from './lib.mjs';
+import { ROOT, parseArgs, run, git, gitOk, cleanTree, deriveCurrent, rerootForPreview, registeredLoaderOf, pointerSlots } from './lib.mjs';
 import { generationFiles, PROGRESS_DOC_RE, GRIDATLAS, openDraftPr, writeJson } from './flow-lib.mjs';
 
 const TOOL = 'publish-preview';
@@ -114,7 +115,13 @@ for (const G of GENS) {
   check(`${G} was cut against live ${baseLive}`, String(m.previous_generation) === String(baseLive),
     `previous_generation ${m.previous_generation}${String(m.previous_generation) !== String(baseLive) ? ' (re-cut against the current live)' : ''}`);
   check(`${G} preview route = derived pointer`, fs.readFileSync(path.join(ROOT, F.routeCurrent), 'utf8') === rerootForPreview(deriveCurrent(manifestText)));
-  check(`${G} loader identical`, fs.readFileSync(path.join(ROOT, F.routeIndex)).equals(fs.readFileSync(path.join(ROOT, 'atlas/index.html'))));
+  // Any REGISTERED loader that supports the preview's slots: after a loader-only step 1 (loader-swap.mjs) the live
+  // loader is v2 while monolithic previews keep v1; release-generation.mjs moves the loader with the pointer if it differs.
+  const routeLoader = registeredLoaderOf(fs.readFileSync(path.join(ROOT, F.routeIndex)));
+  const missing = routeLoader ? pointerSlots(JSON.parse(fs.readFileSync(path.join(ROOT, F.routeCurrent), 'utf8'))).filter(s => !routeLoader.slots.includes(s)) : [];
+  check(`${G} loader registered`, !!routeLoader && !missing.length, !routeLoader ? `${F.routeIndex} is not a registered loader (tools/scope/lib.mjs ATLAS_LOADERS)`
+    : missing.length ? `${F.routeIndex} (loader ${routeLoader.name}) cannot compose slot(s) ${missing.join(', ')}`
+    : `${routeLoader.name}${fs.readFileSync(path.join(ROOT, F.routeIndex)).equals(fs.readFileSync(path.join(ROOT, 'atlas/index.html'))) ? ' (= live loader)' : ' (differs from the live loader; it moves with the pointer at release)'}`);
 }
 
 /* ------------------------------------------------------------- commits */

@@ -15,7 +15,12 @@
  *   - clean tree, HEAD exactly --base (default origin/main);
  *   - SHA is a single-parent ancestor of HEAD that changed exactly
  *     atlas/current.json and STATE.md, or those and atlas/index.html (a
- *     release that moved the loader with the pointer, docs/LIGHTNING-CARTRIDGE.md);
+ *     release that moved the loader with the pointer, docs/LIGHTNING-CARTRIDGE.md),
+ *     or atlas/index.html alone (step 1 of a two-step release,
+ *     tools/release/loader-swap.mjs): that revert is refused unless the live
+ *     pointer composes under the restored loader byte for byte as under the
+ *     current one, so while a generation needing the newer loader is live the
+ *     pointer must be rolled back first, then the loader;
  *   - the pointer has not moved since: HEAD:atlas/current.json is SHA's bytes
  *     (and HEAD:atlas/index.html too, when SHA moved it).
  * Then, on a new branch: `git revert --no-commit SHA`, and
@@ -42,6 +47,7 @@ import {
   ROOT, POINTER_FILES, LOADER_FILE, die as dieWith, parseArgs, run, git, gitOk, gitBlob, sha256, sha256File,
   cleanTree, changedPaths, runGates, printGates, parityFailRows, commitWithMessage, trailerBlock
 } from './lib.mjs';
+import { proveLoaderSwap } from './loader-swap.mjs';
 
 const TOOL = 'rollback-generation';
 const die = (m) => dieWith(TOOL, m);
@@ -79,6 +85,7 @@ if (!gitOk('merge-base', '--is-ancestor', R, 'HEAD')) die(`${R} is not an ancest
 const parents = git('rev-list', '--parents', '-n', '1', R).split(' ').slice(1);
 if (parents.length !== 1) die(`${R} has ${parents.length} parents; revert a single release commit, not a merge`);
 const touched = git('diff', '--name-only', `${R}^`, R).split('\n').filter(Boolean).sort();
+if (touched.length === 1 && touched[0] === LOADER_FILE) await rollbackLoaderOnly(R);
 const loaderMoved = touched.includes(LOADER_FILE);
 const RELEASE_FILES = loaderMoved ? [...POINTER_FILES, LOADER_FILE] : [...POINTER_FILES];
 if (JSON.stringify(touched) !== JSON.stringify([...RELEASE_FILES].sort())) die(`${R} changed ${touched.join(', ')}; a release commit changes exactly ${POINTER_FILES.join(' and ')} (and ${LOADER_FILE} when the loader moved)`);
@@ -141,3 +148,57 @@ for (const f of RELEASE_FILES) console.log(`  ${f.padEnd(20)} released ${report.
 if (report.revert_commit) console.log(`  revert commit        ${report.revert_commit}\n  revert tree          ${report.revert_tree}`);
 console.log(`\nROLLBACK READY on branch ${branch} (not pushed): live would return to ${P}.`);
 finish(0);
+
+/* A loader-only commit: step 1 of a two-step release (tools/release/loader-swap.mjs release). It is
+   reverted only while the live pointer composes under the loader being restored, byte for byte as under
+   the current one; while a generation that needs the newer loader (an after-cartridge slot under v2) is
+   live, it is refused: roll the pointer back first, then the loader. */
+async function rollbackLoaderOnly(R) {
+  ok(`${R.slice(0, 7)} is a single-parent loader-only commit (${LOADER_FILE})`);
+  const released = gitBlob(R, LOADER_FILE);
+  const restored = gitBlob(`${R}^`, LOADER_FILE);
+  if (Buffer.compare(gitBlob('HEAD', LOADER_FILE), released) !== 0) die(`${LOADER_FILE} has moved since ${R.slice(0, 7)}; reverting would not restore a known state`);
+  const pointerText = gitBlob('HEAD', 'atlas/current.json').toString('utf8');
+  const proof = await proveLoaderSwap({ fromLoader: released, toLoader: restored, pointerText });
+  const from = proof.from?.name || 'unregistered', to = proof.to?.name || 'unregistered';
+  if (!proof.ok) die(`refusing the loader rollback ${from} -> ${to}: ${proof.reasons.join('; ')}`);
+  ok(`${from} -> ${to} composes the live ${proof.generation} byte for byte (${proof.detail})`);
+  Object.assign(report, { release_commit: R, mode: 'loader-only', from, to, live: proof.generation, base: baseSha,
+    expected: { [LOADER_FILE]: sha256(restored) }, before: { [LOADER_FILE]: sha256File(LOADER_FILE) },
+    pointer_unchanged: { 'atlas/current.json': sha256File('atlas/current.json'), 'STATE.md': sha256File('STATE.md') } });
+
+  const parityBaseline = parityFailRows().rows;
+  const branch = args.branch || `rollback/loader-${from}-to-${to}`;
+  if (gitOk('rev-parse', '--verify', '--quiet', `refs/heads/${branch}`)) die(`branch ${branch} already exists`);
+  run('git', ['switch', '-q', '-c', branch]);
+  step(`branch ${branch}: git revert --no-commit ${R.slice(0, 7)}`);
+  const revert = run('git', ['revert', '--no-commit', R], { allowFail: true });
+  const abort = () => { run('git', ['revert', '--abort'], { allowFail: true }); run('git', ['switch', '-q', '--detach', baseSha]); run('git', ['branch', '-D', branch], { allowFail: true }); };
+  if (revert.status !== 0) { abort(); die(`git revert did not apply cleanly:\n${revert.out}`); }
+  report.after = { [LOADER_FILE]: sha256File(LOADER_FILE) };
+  if (report.after[LOADER_FILE] !== report.expected[LOADER_FILE]) { abort(); die(`${LOADER_FILE} is NOT byte-exact to ${R.slice(0, 7)}^`); }
+  for (const f of POINTER_FILES) if (sha256File(f) !== report.pointer_unchanged[f]) { abort(); die(`${f} changed in a loader-only revert`); }
+  ok(`${LOADER_FILE} byte-exact to ${R.slice(0, 7)}^ (${report.after[LOADER_FILE]}); atlas/current.json and STATE.md unchanged`);
+  report.byte_exact = { [LOADER_FILE]: true };
+
+  step('gates');
+  const gates = runGates({ expectGeneration: String(proof.generation), parityBaseline });
+  const eq = run('node', ['tools/proofs/loader-equivalence.proof.mjs'], { allowFail: true });
+  gates.rows.push({ gate: 'loader-equivalence', ok: eq.status === 0, detail: eq.out.trim().split('\n').pop() });
+  printGates(gates.rows);
+  if (args.log) fs.writeFileSync(path.resolve(args.log), `${gates.log}\n### loader-equivalence\n${eq.out}`);
+  report.gates = gates.rows;
+  if (!gates.rows.every(r => r.ok)) { abort(); console.error(`\n${TOOL}: gates FAILED; nothing kept.`); finish(1); }
+
+  if (!args['no-commit']) {
+    const subject = git('log', '-1', '--format=%s', R);
+    const msg = `Revert "${subject}"\n\nThis reverts commit ${R}.\n\nRestores the live loader ${from} -> ${to} (${LOADER_FILE} byte-identical to ${R.slice(0, 7)}^); the pointer stays ${proof.generation}.\nReason: ${args.reason}${trailerBlock(args.trailer)}\n`;
+    report.revert_commit = commitWithMessage(msg);
+    report.revert_tree = git('rev-parse', 'HEAD^{tree}');
+  }
+  step('hashes');
+  console.log(`  ${LOADER_FILE.padEnd(20)} released ${report.before[LOADER_FILE]}\n  ${''.padEnd(20)} restored ${report.after[LOADER_FILE]}  (byte-exact)`);
+  if (report.revert_commit) console.log(`  revert commit        ${report.revert_commit}\n  revert tree          ${report.revert_tree}`);
+  console.log(`\nLOADER ROLLBACK READY on branch ${branch} (not pushed): the live loader would return to ${to}; live stays ${proof.generation}.`);
+  finish(0);
+}

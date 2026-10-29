@@ -78,8 +78,10 @@ export const ACTIVE_WORKFLOWS = Object.freeze([
          that uses only 'replace-script' it writes byte-for-byte what v1 writes
          (tools/proofs/loader-equivalence.proof.mjs).
    Existing loaders are never rewritten: a generation keeps the loader bytes it
-   was cut with, and the live atlas/index.html changes only in the release
-   commit of a generation whose own loader is v2 (tools/release). */
+   was cut with, and the live atlas/index.html changes either in the release
+   commit of a generation whose own loader differs (LOADER_FOLLOWS), or alone,
+   to a registered loader proven to compose the unchanged live pointer byte for
+   byte as the old one does (tools/release/loader-swap.mjs; docs/RELEASE.md). */
 export const ATLAS_LOADERS = Object.freeze({
   v1: Object.freeze({ payload: 'tools/scope/payloads/atlas-loader.html', slots: Object.freeze(['replace-script']) }),
   v2: Object.freeze({ payload: 'tools/scope/payloads/atlas-loader-v2.html', slots: Object.freeze(['replace-script', 'after-cartridge']) })
