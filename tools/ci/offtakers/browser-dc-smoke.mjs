@@ -49,8 +49,8 @@ async function run(width,height){
   const init=await page.evaluate(()=>({gen:document.documentElement.dataset.gridatlasGeneration,lightning:window.__GRIDATLAS_MODULES__.ukLightning?.generation,installed:window.__GRIDATLAS_MODULES__.menuBar.inspect()}));
   assert.equal(init.gen,G);assert.equal(init.lightning,'202610291043');
   assert.equal(init.installed.complete,true);
-  await page.waitForSelector('[data-offtakers-control="toggle"]',{timeout:45000});
-  await page.evaluate(()=>{const el=document.querySelector('[data-offtakers-control="toggle"]');el.checked=true;el.dispatchEvent(new Event('change',{bubbles:true}));});
+  await page.waitForSelector('[data-offtakers-control="toggle"]',{state:'attached',timeout:45000});
+  await page.evaluate(()=>{const el=[...document.querySelectorAll('[data-offtakers-control="toggle"]')].find(x=>x.closest('#scada-ui-container'))||document.querySelector('[data-offtakers-control="toggle"]');el.checked=true;el.dispatchEvent(new Event('change',{bubbles:true}));});
   await page.waitForFunction(()=>window.__GRIDATLAS_MODULES__.ukOfftakers?.state?.data?.dots?.filter(d=>d.k==='c').length>=227,{timeout:60000});
   const n=await page.evaluate(()=>window.__GRIDATLAS_MODULES__.ukOfftakers.state.data.dots.filter(d=>d.k==='c').length);
   assert.equal(n,227,'full pinned 227-site data required');
