@@ -17,19 +17,30 @@
  *                     tools/proofs/<gen>-*.proof.mjs
  *   run-current       node tools/proofs/run-current.mjs
  *   verify-compose    node tools/scope/verify-compose.mjs
- *   loader-identity   every atlas/v/<gen>/index.html is byte-identical to
- *                     atlas/index.html
+ *   loader-registry   atlas/index.html and every atlas/v/<gen>/index.html is
+ *                     byte-identical to a registered loader
+ *                     (tools/scope/lib.mjs ATLAS_LOADERS) that supports every
+ *                     slot its own current.json uses; a loader that exists at
+ *                     the base is never rewritten, and atlas/index.html
+ *                     changes only with atlas/current.json, to the loader of
+ *                     the generation going live (docs/LIGHTNING-CARTRIDGE.md)
+ *   loader-equivalence  tools/proofs/loader-equivalence.proof.mjs
  *   lightning-source  node tools/lightning/build.mjs --check: the newest
  *                     lightning overlay generation is listed in
  *                     tools/lightning/generations.json, and every listed
  *                     generation rebuilds from tools/lightning/src byte for
  *                     byte (docs/LIGHTNING-SOURCE.md)
+ *   offtakers-source  node tools/offtakers/build.mjs --check (the same, for the
+ *                     potential-offtakers overlay; docs/OFFTAKERS-SOURCE.md)
  *   lightning-suites  tools/ci/lightning/*.test.mjs against the live overlay
  *                     module, every overlay module the PR adds or edits, the
  *                     overlay of every pinned generation the PR adds, and,
  *                     when the PR changes a suite or this gate, the newest
  *                     pinned overlay; a suite marked
  *                     `@gate-min-generation <stamp>` skips older modules
+ *   offtakers-suites  tools/ci/offtakers/*.test.mjs against the live, added or
+ *                     edited potential-offtakers module (and the newest one when
+ *                     the PR changes a suite, the source or this gate)
  *   release-tools     node --check of every tools/release/*.mjs and
  *                     node --test tools/release/*.test.mjs (offline)
  *
@@ -47,7 +58,7 @@ import path from 'node:path';
 import { spawn, spawnSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
 // The same served-bytes digest every other verifier in this repository uses.
-import { sha256PublishedFile as sha256Published } from '../scope/lib.mjs';
+import { sha256PublishedFile as sha256Published, registeredLoader, slotsUsed } from '../scope/lib.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..');
 const STAMP = /^\d{12}$/;
@@ -180,24 +191,44 @@ step('run-current', ['node', 'tools/proofs/run-current.mjs']);
 step('verify-compose', ['node', 'tools/scope/verify-compose.mjs']);
 
 // ---------------------------------------------------------------- 6
-group('loader-identity', () => {
-  const loader = fs.readFileSync(path.join(ROOT, 'atlas', 'index.html'));
+group('loader-registry', () => {
   const vDir = path.join(ROOT, 'atlas', 'v');
   const dirs = fs.existsSync(vDir) ? fs.readdirSync(vDir).filter(d => STAMP.test(d)).sort() : [];
   const bad = [];
-  let checked = 0;
+  const count = {};
+  const check = (indexRel, currentRel) => {
+    const loader = registeredLoader(path.join(ROOT, indexRel));
+    if (!loader) { bad.push(`${indexRel} is not a registered loader`); return; }
+    count[loader.name] = (count[loader.name] || 0) + 1;
+    let pointer;
+    try { pointer = JSON.parse(fs.readFileSync(path.join(ROOT, currentRel), 'utf8')); } catch { return; }
+    for (const slot of slotsUsed(pointer)) if (!loader.slots.includes(slot)) bad.push(`${indexRel} (loader ${loader.name}) cannot compose slot ${slot} of ${currentRel}`);
+  };
+  check('atlas/index.html', 'atlas/current.json');
   for (const d of dirs) {
-    const file = path.join(vDir, d, 'index.html');
-    if (!fs.existsSync(file)) {
-      if (fs.existsSync(path.join(vDir, d, 'current.json'))) bad.push(`atlas/v/${d}/index.html missing beside its current.json`);
+    const rel = `atlas/v/${d}/index.html`;
+    if (!fs.existsSync(path.join(ROOT, rel))) {
+      if (fs.existsSync(path.join(vDir, d, 'current.json'))) bad.push(`${rel} missing beside its current.json`);
       continue;
     }
-    checked += 1;
-    if (!loader.equals(fs.readFileSync(file))) bad.push(`atlas/v/${d}/index.html`);
+    check(rel, `atlas/v/${d}/current.json`);
   }
-  record('loader-identity', bad.length === 0,
-    bad.length ? `not byte-identical to atlas/index.html: ${bad.join(', ')}` : `${checked} pinned loader(s) identical to atlas/index.html`);
+  // Existing generations keep the loader bytes they were cut with.
+  for (const file of changed) {
+    if (/^atlas\/v\/\d{12}\/index\.html$/.test(file) && baseHas(file)) bad.push(`${file} existed at the base and was changed or removed`);
+  }
+  // The live loader moves only with the pointer, to the loader of the generation going live.
+  if (changed.includes('atlas/index.html')) {
+    const liveIndex = path.join(ROOT, 'atlas', 'v', String(current.generation), 'index.html');
+    if (!changed.includes('atlas/current.json')) bad.push('atlas/index.html changed without atlas/current.json');
+    else if (!fs.existsSync(liveIndex) || !fs.readFileSync(liveIndex).equals(fs.readFileSync(path.join(ROOT, 'atlas', 'index.html')))) {
+      bad.push(`atlas/index.html changed but is not atlas/v/${current.generation}/index.html`);
+    }
+  }
+  record('loader-registry', bad.length === 0, bad.length ? bad.join('; ')
+    : `${1 + dirs.length} served loader(s) registered (${Object.entries(count).map(([k, v]) => `${k} ${v}`).join(', ')}); each supports its own composition`);
 });
+step('loader-equivalence', ['node', 'tools/proofs/loader-equivalence.proof.mjs']);
 
 // ---------------------------------------------------------------- 6b
 // The overlay modules are built from tools/lightning/src, not edited in
@@ -205,6 +236,8 @@ group('loader-identity', () => {
 // source byte for byte, so the source in the repository is the source of
 // the bytes that ship.
 step('lightning-source', ['node', 'tools/lightning/build.mjs', '--check']);
+// The same for the potential-offtakers overlay (tools/offtakers/src, docs/OFFTAKERS-SOURCE.md).
+step('offtakers-source', ['node', 'tools/offtakers/build.mjs', '--check']);
 
 // ---------------------------------------------------------------- 7
 // Each suite may declare, in its first lines, `// @gate-min-generation <stamp>`:
@@ -230,8 +263,17 @@ const suites = (fs.existsSync(suiteDir) ? fs.readdirSync(suiteDir).filter(f => f
     const min = (head.match(/@gate-min-generation\s+(\d{12})\b/) || [])[1] || null;
     return { name, min };
   });
-const sld = (current.cartridges || []).find(c => c.id === 'sld-sandbox');
 const overlayFile = g => path.join('atlas', 'modules', `${g}-uk-lightning-overlay.js`);
+/* The overlay module a composition serves: its own 'uk-lightning-overlay'
+   cartridge (the module file itself, docs/LIGHTNING-CARTRIDGE.md), else the
+   module appended to its sld-sandbox, named by the sld-sandbox generation. */
+function overlayGenerationOf(pointer) {
+  const own = (pointer.cartridges || []).find(c => c.id === 'uk-lightning-overlay');
+  const m = own && String(own.path).match(/(\d{12})-uk-lightning-overlay\.js$/);
+  if (m) return m[1];
+  const sldEntry = (pointer.cartridges || []).find(c => c.id === 'sld-sandbox');
+  return sldEntry ? String(sldEntry.generation) : null;
+}
 // The live overlay, every overlay module the PR adds or edits, and the
 // overlay of any pinned generation the PR adds. Not every touched
 // generation: the suites were written RED against earlier candidates, so a
@@ -240,11 +282,19 @@ const overlayFile = g => path.join('atlas', 'modules', `${g}-uk-lightning-overla
 // run against the newest pinned overlay (the candidate), so a suite edit is
 // proven on the module it guards.
 const gens = new Set();
-if (sld) gens.add(String(sld.generation));
+const liveOverlay = overlayGenerationOf(current);
+if (liveOverlay) gens.add(liveOverlay);
 for (const file of changed) {
-  const m = file.match(/^atlas\/modules\/(\d{12})-uk-lightning-overlay\.js$/)
-    || file.match(/^atlas\/v\/(\d{12})\/current\.json$/);
-  if (m && (file.startsWith('atlas/modules/') || !baseHas(file))) gens.add(m[1]);
+  const m = file.match(/^atlas\/modules\/(\d{12})-uk-lightning-overlay\.js$/);
+  if (m) { gens.add(m[1]); continue; }
+  const v = file.match(/^atlas\/v\/(\d{12})\/current\.json$/);
+  if (v && !baseHas(file)) {
+    gens.add(v[1]);
+    try {
+      const g = overlayGenerationOf(JSON.parse(fs.readFileSync(path.join(ROOT, file), 'utf8')));
+      if (g) gens.add(g);
+    } catch { /* the composition check above reports an unreadable pointer */ }
+  }
 }
 const gateChanged = changed.some(f => f.startsWith('tools/ci/lightning/') || f === 'tools/ci/pr-gate.mjs'
   || f === '.github/workflows/pr-file-size-guard.yml');
@@ -293,6 +343,31 @@ else {
 }
 
 // ---------------------------------------------------------------- 8
+// tools/ci/offtakers/*.test.mjs against the offtakers module of the live composition, every offtakers module the PR adds or
+// edits, the one composed by every pinned generation the PR adds, and, when the PR changes a suite or this gate, the newest.
+{
+  const dir = path.join(ROOT, 'tools', 'ci', 'offtakers'), file = g => path.join('atlas', 'modules', `${g}-uk-offtakers-overlay.js`);
+  const ofOf = p => { const e = (p.cartridges || []).find(c => c.id === 'uk-offtakers-overlay'); const m = e && String(e.path).match(/(\d{12})-uk-offtakers-overlay\.js$/); return m ? m[1] : null; };
+  const og = new Set(); const lo = ofOf(current); if (lo) og.add(lo);
+  for (const f of changed) {
+    const m = f.match(/^atlas\/modules\/(\d{12})-uk-offtakers-overlay\.js$/); if (m) og.add(m[1]);
+    const v = f.match(/^atlas\/v\/(\d{12})\/current\.json$/);
+    if (v && !baseHas(f)) try { const g = ofOf(JSON.parse(fs.readFileSync(path.join(ROOT, f), 'utf8'))); if (g) og.add(g); } catch { /* reported above */ }
+  }
+  if (changed.some(f => f.startsWith('tools/ci/offtakers/') || f.startsWith('tools/offtakers/') || f === 'tools/ci/pr-gate.mjs')) {
+    const all = fs.readdirSync(path.join(ROOT, 'atlas', 'modules')).map(n => (n.match(/^(\d{12})-uk-offtakers-overlay\.js$/) || [])[1]).filter(Boolean).sort();
+    if (all.length) og.add(all.at(-1));
+  }
+  const osuites = fs.existsSync(dir) ? fs.readdirSync(dir).filter(f => f.endsWith('.test.mjs')).sort() : [];
+  if (!og.size) console.log('note  no offtakers overlay module in the live or touched generations');
+  else if (!osuites.length) record('offtakers-suites', false, 'tools/ci/offtakers/*.test.mjs missing');
+  else for (const g of [...og].sort()) for (const suite of osuites) group(`offtakers ${g} ${suite}`, () => {
+    const t0 = Date.now(), r = run(['node', '--test', '--test-reporter=tap', path.join('tools', 'ci', 'offtakers', suite)], { env: { ...process.env, OFFTAKERS_MODULE: file(g) }, timeout: SUITE_TIMEOUT_MS });
+    const counts = (r.stdout.match(/^# (pass|fail|skipped) \d+$/gm) || []).join(' ').replace(/# /g, ''), sec = ((Date.now() - t0) / 1000).toFixed(1);
+    if (r.code !== 0) { process.stdout.write(r.stdout); process.stderr.write(r.stderr); } else console.log(`${suite} on ${g}: ${counts} in ${sec} s`);
+    record(`offtakers ${g} ${suite}`, r.code === 0, `${counts} ${sec} s` + (r.code === 0 ? '' : `  exit ${r.code}`));
+  });
+}
 // The delivery-flow tooling (docs/RELEASE.md): its offline unit tests, and a
 // syntax check of every script, so a broken release script fails the PR that
 // broke it rather than the release that needs it.

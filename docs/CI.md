@@ -36,19 +36,37 @@ everything that is wrong. The job summary shows a table of the results.
      only gets a note.
 4. **run-current**: `node tools/proofs/run-current.mjs`.
 5. **verify-compose**: `node tools/scope/verify-compose.mjs`.
-6. **loader-identity**: every `atlas/v/<gen>/index.html` must be
-   byte-identical to `atlas/index.html`. A pinned route with a `current.json`
-   but no `index.html` also fails. If you change the loader, you must update
-   every pinned copy in the same PR.
-   **lightning-source** (run after loader-identity): `node tools/lightning/build.mjs --check`.
+6. **loader-registry** and **loader-equivalence** (docs/LIGHTNING-CARTRIDGE.md):
+   - `atlas/index.html` and every `atlas/v/<gen>/index.html` must be
+     byte-identical to a registered loader (`ATLAS_LOADERS` in
+     `tools/scope/lib.mjs`: v1, the composer of every generation up to
+     202610290050, and v2, which adds the `after-cartridge` slot) that supports
+     every slot type its own `current.json` uses. A pinned route with a
+     `current.json` but no `index.html` also fails.
+   - A pinned `index.html` that exists at the base may not be changed or
+     removed: a generation keeps the loader bytes it was cut with.
+   - `atlas/index.html` may change only together with `atlas/current.json`,
+     and only to `atlas/v/<live gen>/index.html` (the release of a v2
+     generation moves the loader in its release commit).
+   - `tools/proofs/loader-equivalence.proof.mjs` runs both loaders in
+     `node:vm` over every route: v2 writes byte-for-byte what v1 writes for
+     every `replace-script`-only composition, v1 refuses a modular one, and v2
+     fails closed on a bad `after-cartridge` entry.
+   **lightning-source** (run after loader-equivalence): `node tools/lightning/build.mjs --check`.
    The newest `atlas/modules/*-uk-lightning-overlay.js` must be listed in
    `tools/lightning/generations.json`, and every listed generation must rebuild
    from `tools/lightning/src/` byte for byte. See `docs/LIGHTNING-SOURCE.md`.
+   **offtakers-source**: `node tools/offtakers/build.mjs --check`, the same for the
+   potential-offtakers overlay (`tools/offtakers/src/`, `docs/OFFTAKERS-SOURCE.md`).
 7. **lightning-suites**: every `tools/ci/lightning/*.test.mjs` runs with
    `node --test` against these overlay modules:
-   - the live overlay module, `atlas/modules/<live sld-sandbox gen>-uk-lightning-overlay.js`;
+   - the live overlay module: the file the live `uk-lightning-overlay`
+     cartridge points at, or, for a monolithic generation,
+     `atlas/modules/<live sld-sandbox gen>-uk-lightning-overlay.js`;
    - every overlay module the PR adds or edits;
-   - the overlay module of every pinned generation the PR adds;
+   - the overlay module of every pinned generation the PR adds (for a
+     modular generation, the module its `uk-lightning-overlay` cartridge
+     points at);
    - the newest pinned overlay module (the candidate), when the PR changes
      `tools/ci/lightning/`, `tools/ci/pr-gate.mjs` or this workflow, so a suite
      edit is proven on the module it guards.
@@ -187,3 +205,9 @@ ledger are unchanged. The decision is written down beside that entry in
   `atlas/cartridges/202610281950-sld-sandbox-v9-8.js` and ran red on
   `composition 202610281950` (SHA-256 mismatch) and on
   `proof 202610281950-sld-sandbox.proof.mjs`. That PR was then closed unmerged.
+
+**offtakers-suites** (after lightning-suites): every `tools/ci/offtakers/*.test.mjs` runs with `node --test` and
+`OFFTAKERS_MODULE` set to the live potential-offtakers module, every one the PR adds or edits, the one each pinned
+generation the PR adds composes, and the newest one when the PR changes `tools/ci/offtakers/`, `tools/offtakers/` or the gate.
+Fixtures: the data file the module pins (`data/offtakers_filtered_*.geojson`; test P0 checks its SHA-256), the lightning
+REPD register fixture, `data/repd_browser_registry_202608290716.json` and the release's `grid_substations.geojson`.

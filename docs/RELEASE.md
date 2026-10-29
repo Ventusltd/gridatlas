@@ -120,8 +120,13 @@ node tools/release/release-generation.mjs --generation <G> \
   the pointer about to be written, with its relative references re-rooted to
   `../../`. If anyone edited one and not the other, it stops.
 - **The proof passes** on the preview route.
-- **The loader is identical:** `atlas/index.html` and `atlas/v/<G>/index.html`
-  are byte-identical.
+- **The loader:** `atlas/index.html` and `atlas/v/<G>/index.html` are
+  byte-identical (`LOADER_IDENTICAL`), or `atlas/v/<G>/index.html` is a
+  different *registered* loader that supports every slot G uses
+  (`LOADER_FOLLOWS`: loader v2 for a modular lightning generation, see
+  docs/LIGHTNING-CARTRIDGE.md). In that case the release commit also writes
+  `atlas/index.html := atlas/v/<G>/index.html`, so reverting it restores the
+  v1 loader byte for byte.
 
 ### What it writes
 
@@ -133,8 +138,11 @@ did it:
 2. write `JSON.stringify(manifest, null, 1) + "\n"`;
 3. run `node tools/scope/loop.mjs state`.
 
-Only those two files may change, and only they are in the release commit.
-That is what keeps the release separately revertable, byte for byte.
+Only those two files may change (three when the loader follows, above), and
+only they are in the release commit. That is what keeps the release
+separately revertable, byte for byte. `rollback-generation.mjs` accepts a
+release commit of exactly those two or three files and proves each one is
+restored byte-exact.
 
 ### Gates (the hand list, in order)
 

@@ -2,7 +2,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import {
   ROOT, CURRENT_RELEASE, EXPECTED_RELEASES, SHARED_400KV_CARTRIDGE,
-  invariant, readJson, sha256PublishedFile, relativePosix
+  invariant, readJson, sha256PublishedFile, relativePosix, registeredLoader, slotsUsed
 } from './lib.mjs';
 
 function releaseDirectories(directory) {
@@ -35,6 +35,9 @@ try {
   for (const marker of ['crypto.subtle.digest', 'cartridge_order', 'replace-script', 'document.write']) {
     invariant(atlasIndex.includes(marker), `atlas composer missing ${marker}`);
   }
+  const loader = registeredLoader(path.join(ROOT, 'atlas', 'index.html'));
+  invariant(loader, 'atlas/index.html is not a registered loader (tools/scope/lib.mjs ATLAS_LOADERS)');
+  for (const slot of slotsUsed(current)) invariant(loader.slots.includes(slot), `atlas composer (loader ${loader.name}) does not support slot ${slot}`);
 
   const shellIndexPath = path.resolve(path.join(ROOT, 'atlas'), current.shell.index);
   invariant(fs.existsSync(shellIndexPath), `shell index missing: ${relativePosix(shellIndexPath)}`);
@@ -42,6 +45,8 @@ try {
   const shell = fs.readFileSync(shellIndexPath, 'utf8');
   const byId = new Map(current.cartridges.map(item => [item.id, item]));
   invariant(byId.size === current.cartridges.length, 'duplicate cartridge id');
+  const composed = new Set();
+  const usedSlots = new Set();
   for (const id of current.cartridge_order) {
     const cartridge = byId.get(id);
     invariant(cartridge, `missing ordered cartridge ${id}`);
@@ -49,7 +54,17 @@ try {
     invariant(filePath.startsWith(`${path.join(ROOT, 'atlas')}${path.sep}`), `${id}: cartridge escaped atlas`);
     invariant(fs.existsSync(filePath), `${id}: cartridge file missing`);
     invariant(sha256PublishedFile(filePath) === cartridge.sha256, `${id}: cartridge hash mismatch`);
-    invariant(shell.includes(cartridge.replace_script), `${id}: replacement slot missing from immutable shell`);
+    if (cartridge.slot === 'after-cartridge') {
+      /* A cartridge of its own, executed straight after a cartridge already
+         composed: it claims no shell script, so the shell needs no slot. */
+      invariant(typeof cartridge.after === 'string' && composed.has(cartridge.after), `${id}: after-cartridge anchor ${cartridge.after} is not composed before it`);
+    } else {
+      invariant(cartridge.slot === 'replace-script', `${id}: unsupported slot ${cartridge.slot}`);
+      invariant(shell.includes(cartridge.replace_script), `${id}: replacement slot missing from immutable shell`);
+      invariant(!usedSlots.has(cartridge.replace_script), `${id}: shell slot ${cartridge.replace_script} already claimed`);
+      usedSlots.add(cartridge.replace_script);
+    }
+    composed.add(id);
   }
 
   const sharedPath = path.join(ROOT, 'atlas', 'releases', 'cartridges', SHARED_400KV_CARTRIDGE, 'grid_400kv.geojson');
