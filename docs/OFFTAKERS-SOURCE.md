@@ -33,7 +33,7 @@ Data centres are their own class: violet, a status ring (operational, under cons
 connection request, announced, refused/withdrawn, not stated), sized by the stated IT load, else the stated grid connection
 (faint when neither is stated; an unlabelled MW is quoted with its label and never sizes a dot or adds to either), with their
 own chip row and legend. They come from a second pinned file, `data/uk_datacentre_pipeline_<stamp>.geojson` (the open UK
-data-centre pipeline, data-grid-gb PR #3 (corrected 227 sites, operator-separated), `dc_pipeline.schema.json`; committed verbatim), read after the other sites are drawn;
+data-centre pipeline, data-grid-gb PR #3 (operator-separated); from 202610312138 the file at data-grid-gb `01a4491`, 226 sites (225 mappable), Wapseys Wood one site, `dc_pipeline.schema.json`; committed verbatim), read after the other sites are drawn;
 if it fails, the offtakers file's data centres are drawn and the status line says why.
 
 A data-centre tap opens a half-height card with four tabs, Area · Substations · REPD · Conventional (hardening DC-B2's
