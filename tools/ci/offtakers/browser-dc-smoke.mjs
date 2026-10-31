@@ -13,7 +13,7 @@ import { chromium } from 'playwright';
 import { gunzipSync } from 'node:zlib';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../../..');
-const G = process.env.DC_SMOKE_GENERATION || '202610292044';
+const G = process.env.DC_SMOKE_GENERATION || '202610312138';
 const OUT = path.join(process.env.RUNNER_TEMP || '/tmp', 'gridatlas-dc-browser');
 fs.mkdirSync(OUT, { recursive: true });
 const FIXTURE = JSON.parse(gunzipSync(fs.readFileSync(path.join(ROOT, 'tools/ci/lightning/fixtures/repd-master-v8-oracle.json.gz'))));
@@ -64,7 +64,7 @@ async function run(width,height){
     throw new Error(String(error)+'; DC state '+JSON.stringify(diagnosis));
   }
   const n=await page.evaluate(()=>window.__GRIDATLAS_MODULES__.ukOfftakers.state.data.dots.filter(d=>d.k==='c').length);
-  assert.equal(n,225,'227 source records, of which two planning sites have unknown coordinates and must not be mapped');
+  assert.equal(n,225,'226 source records, of which one planning site (Ebbsfleet) has unknown coordinates and must not be mapped');
   await page.evaluate(()=>{const S=window.__GRIDATLAS_MODULES__.ukOfftakers.state,m=window.__GRIDATLAS_V9_MAP__;
     const d=S.data.dots.find(x=>x.k==='c'&&/Digital Realty LHR26/.test(x.n))||S.data.dots.find(x=>x.k==='c'&&/Slough/.test(x.n));
     if(!d)throw Error('No Slough data centre');window.__DC_SMOKE_SITE__=d;m.jumpTo({center:d.a,zoom:15});});

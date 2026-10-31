@@ -386,7 +386,7 @@ const sloughDC = x => x.S.data.dots.filter(d => d.k === 'c').sort((a, b) => hav(
 test('DC1: data centres: the pinned pipeline file once, every site that passes the schema checks, one operator per origin; Slough ≥16 origins within 3 km', { skip: DSKIP }, async () => {
   const x = await dcBoot(); const dc = x.S.data.dots.filter(d => d.k === 'c');
   assert.equal(x.log.xhr.filter(u => u === DCURL).length, 1); assert.ok(SRC.includes(`DCFSHA='${sha(fs.readFileSync(REPO + DCREL))}'`), 'DC file pin');
-  assert.equal(dc.length, DCD_MAPPABLE.length); assert.equal(DCD.features.length - DCD_MAPPABLE.length, 2, 'two unplaced planning records (SDC M40 and Ebbsfleet) remain in the source, never drawn'); assert.ok(dc.length >= 178, 'at least the operational OSM sites');
+  assert.equal(dc.length, DCD_MAPPABLE.length); assert.equal(DCD.features.length - DCD_MAPPABLE.length, 1, 'one unplaced planning record (Ebbsfleet) remains in the source, never drawn'); assert.ok(dc.length >= 178, 'at least the operational OSM sites');
   assert.ok(dc.every(d => d.dc && d.p.site_kind !== 'cable_landing_station'));
   // one operator per origin: a single operator string (or none); a source naming another operator must be flagged by the file
   // (operator_alternatives, or an operator_disagreement conflict). The pipeline's members trace to DC-A4, where one origin merges two
