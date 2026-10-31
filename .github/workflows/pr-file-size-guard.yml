@@ -151,11 +151,11 @@ jobs:
           BASE_SHA: ${{ github.event.pull_request.base.sha }}
         run: node tools/ci/pr-gate.mjs --base "$BASE_SHA"
 
-  # Issue #73: one-off real Chromium check on the draft preview. This does
-  # not deploy, change the live pointer or use secrets. Remove the job after
-  # its browser report has been reviewed; keep the reusable script.
+  # Real Chromium check on every preview/ PR (NL-007), for the generation
+  # named in DC_SMOKE_GENERATION at line 177. This does not deploy, change
+  # the live pointer or use secrets; keep the reusable script.
   dc-browser-smoke:
-    if: github.event.pull_request.number == 75
+    if: startsWith(github.event.pull_request.head.ref, 'preview/')
     runs-on: ubuntu-24.04
     timeout-minutes: 15
     steps:
@@ -174,11 +174,11 @@ jobs:
           npx playwright install --with-deps chromium
       - name: Test Slough tap, four tabs, link reveal and CSV in Chromium
         env:
-          DC_SMOKE_GENERATION: '202610292044'
+          DC_SMOKE_GENERATION: '202610312138'
         run: node tools/ci/offtakers/browser-dc-smoke.mjs
       - name: Preserve screenshots for review
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02  # v4.6.2
         with:
           name: dc-browser-smoke-${{ github.run_id }}
           path: ${{ runner.temp }}/gridatlas-dc-browser/
