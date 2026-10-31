@@ -16,7 +16,7 @@ DCAP=5e6,
 /// unlabelled MW kept apart), read after the other sites are drawn; it replaces the offtakers file's data centres, which
 /// come back if it fails. The conventional power sites (#73 step 5, DC-A6) are read on the first data-centre tap.
 /// Both are committed verbatim, pinned by SHA-256 and capped (PCAP bytes, PMAX features).
-DCF='https://ventusltd.github.io/gridatlas/data/uk_datacentre_pipeline_202610292136.geojson',DCFSHA='176c1b2e894943618c1dd866b3a96c9f3e00bcded8c6e88a5263b0048ae22d89',
+DCF='https://ventusltd.github.io/gridatlas/data/uk_datacentre_pipeline_202610312133.geojson',DCFSHA='87337db5d3bf7959f7f605d3abd029dd4196ab24a79107ceb95210c5b7751654',
 CVF='https://ventusltd.github.io/gridatlas/data/conventional_power_uk_202610292000.geojson',CVFSHA='44b577a12d714d934ce90ce39b44951fb2a641f32ccc20d45a5e2461b145ec98',PCAP=4e6,PMAX=5e3,
 /// the only URLs this module reads: files of this site's data/ folder (and /dist/repd_master.json, the engine's register)
 AL=u=>/^https:\/\/ventusltd\.github\.io\/gridatlas\/data\/[\w.-]+\.(geo)?json$/.test(u)||E('URL not allow-listed'),
