@@ -386,7 +386,15 @@ const sloughDC = x => x.S.data.dots.filter(d => d.k === 'c').sort((a, b) => hav(
 test('DC1: data centres: the pinned pipeline file once, every site that passes the schema checks, one operator per origin; Slough ≥16 origins within 3 km', { skip: DSKIP }, async () => {
   const x = await dcBoot(); const dc = x.S.data.dots.filter(d => d.k === 'c');
   assert.equal(x.log.xhr.filter(u => u === DCURL).length, 1); assert.ok(SRC.includes(`DCFSHA='${sha(fs.readFileSync(REPO + DCREL))}'`), 'DC file pin');
-  assert.equal(dc.length, DCD_MAPPABLE.length); assert.equal(DCD.features.length - DCD_MAPPABLE.length, 1, 'one unplaced planning record (Ebbsfleet) remains in the source, never drawn'); assert.ok(dc.length >= 178, 'at least the operational OSM sites');
+  assert.equal(dc.length, DCD_MAPPABLE.length);
+  // NL-007 P7b: the unplaced records (null geometry) are counted in the file whose sha256 equals the module's DCFSHA, not written as
+  // a literal, so the test holds for every pin (the live 202610292044 pins a file with two, 202610312138 one); Ebbsfleet is one of them
+  const PINNED = SRC.match(/DCFSHA='([0-9a-f]{64})'/)[1], PFILE = fs.readdirSync(REPO + 'data').filter(n => /\.geojson$/.test(n)).find(n => sha(fs.readFileSync(REPO + 'data/' + n)) === PINNED);
+  assert.ok(PFILE, 'a file under data/ matches DCFSHA ' + PINNED); const UNPLACED = JSON.parse(fs.readFileSync(REPO + 'data/' + PFILE, 'utf8')).features.filter(f => f.geometry == null);
+  assert.ok(UNPLACED.length > 0, 'the pinned file keeps its unplaced planning records'); assert.equal(x.S.data.pl.bad, UNPLACED.length, 'the module skips exactly the unplaced records of ' + PFILE);
+  assert.equal(DCD.features.length - DCD_MAPPABLE.length, UNPLACED.length, 'every unplaced record remains in the source, never drawn');
+  assert.ok(UNPLACED.some(f => /Ebbsfleet/.test(f.properties.name)), 'Ebbsfleet is among the unplaced'); assert.ok(!dc.some(d => UNPLACED.some(f => f.properties.id === d.p.id)), 'no unplaced record is drawn');
+  assert.ok(dc.length >= 178, 'at least the operational OSM sites');
   assert.ok(dc.every(d => d.dc && d.p.site_kind !== 'cable_landing_station'));
   // one operator per origin: a single operator string (or none); a source naming another operator must be flagged by the file
   // (operator_alternatives, or an operator_disagreement conflict). The pipeline's members trace to DC-A4, where one origin merges two
