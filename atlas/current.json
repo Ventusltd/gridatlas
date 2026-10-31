@@ -1,7 +1,7 @@
 {
  "schema": "gridatlas.current.v2",
- "generation": "202610292044",
- "previous_generation": "202610291044",
+ "generation": "202610312138",
+ "previous_generation": "202610292044",
  "architecture": "IMMUTABLE_SHELL_PLUS_HASHED_CARTRIDGES",
  "live_route": "/gridatlas/atlas/",
  "release_id": "202608300453-atlas-v9",
@@ -632,8 +632,8 @@
   },
   {
    "id": "uk-lightning-overlay",
-   "generation": "202610292044",
-   "version": "v9.187",
+   "generation": "202610312138",
+   "version": "v9.188",
    "type": "script",
    "slot": "after-cartridge",
    "after": "sld-sandbox",
@@ -715,17 +715,17 @@
   },
   {
    "id": "uk-offtakers-overlay",
-   "generation": "202610292044",
-   "version": "v9.187",
+   "generation": "202610312138",
+   "version": "v9.188",
    "type": "script",
    "slot": "after-cartridge",
    "after": "uk-lightning-overlay",
-   "path": "./modules/202610292044-uk-offtakers-overlay.js",
-   "sha256": "e4d3fb288ef0ac3782f50f53dae9ebeb8564ca65e220d7b24f755179be7fb30a",
+   "path": "./modules/202610312138-uk-offtakers-overlay.js",
+   "sha256": "1be368f53b04f4f451c0559ca6c534d3f8301ad9df158cc6dd94308517c5cf46",
    "bytes": 71191,
    "byte_budget": 80000,
-   "module_generation": "202610292044",
-   "source": "tools/offtakers/src (node tools/offtakers/build.mjs --gen 202610292044; byte-exact, checked by the PR gate)",
+   "module_generation": "202610312138",
+   "source": "tools/offtakers/src (node tools/offtakers/build.mjs --gen 202610312138; byte-exact, checked by the PR gate)",
    "immutable_shell_modified": false,
    "capabilities": [
     "uk-potential-offtakers-overlay-off-by-default",
@@ -766,11 +766,11 @@
     },
     {
      "id": "uk_datacentre_pipeline",
-     "url": "https://ventusltd.github.io/gridatlas/data/uk_datacentre_pipeline_202610292136.geojson",
-     "sha256": "176c1b2e894943618c1dd866b3a96c9f3e00bcded8c6e88a5263b0048ae22d89",
-     "features": 227,
+     "url": "https://ventusltd.github.io/gridatlas/data/uk_datacentre_pipeline_202610312133.geojson",
+     "sha256": "87337db5d3bf7959f7f605d3abd029dd4196ab24a79107ceb95210c5b7751654",
+     "features": 226,
      "drawn": 225,
-     "built_by": "Ventusltd/data-grid-gb PR #3, pinned open-data baseline rebuilt 29 Oct 2026 (DC-A4 / DC-A7): 227 sites; cluster-wide operator separation, provenance and conflicts; each source's licence status retained",
+     "built_by": "Ventusltd/data-grid-gb PR #3, pinned open-data baseline rebuilt 29 Oct 2026 (DC-A4 / DC-A7), re-pinned at data-grid-gb 01a4491 (NL-007): 226 sites (Wapseys Wood one site); cluster-wide operator separation, provenance and conflicts; each source's licence status retained",
      "shown": "name, operator, status and its source, IT load / grid connection / an unlabelled MW kept apart (never summed; the unlabelled MW quoted with its label and never used for size), dates, planning and connection refs, conflicts, sources and licences",
      "excluded": "cable landing stations; records failing the schema checks (counted)"
     },
@@ -793,7 +793,7 @@
     }
    ],
    "uk_offtakers": {
-    "classes": "A industry 813, B power stations 358, C data centres 225 (227 records, two unplaced) (the DC-A7 pipeline; the offtakers file's 164 come back if that file fails), D water large 8 + listed small 168 (chip off), E campus/CHP sites 57 (chip off); 1404 dots by default",
+    "classes": "A industry 813, B power stations 358, C data centres 225 (226 records, one unplaced) (the DC-A7 pipeline; the offtakers file's 164 come back if that file fails), D water large 8 + listed small 168 (chip off), E campus/CHP sites 57 (chip off); 1404 dots by default",
     "ids": {
      "source": "gridatlas-offtakers",
      "layers": [
@@ -860,15 +860,15 @@
    "result_class": "LOCATION_ONLY"
   }
  },
- "composition_manifest": "./manifests/202610292044-composition.json",
+ "composition_manifest": "./manifests/202610312138-composition.json",
  "scope_closure": {
   "generation": "202609010726",
   "status": "DONE",
   "scope": "GridAtlas v9.42 the price panel revalidates",
   "schedule_retired": true
  },
- "composition_version": "v9.187",
- "composition_id": "202610292044-gridatlas-v9.187",
+ "composition_version": "v9.188",
+ "composition_id": "202610312138-gridatlas-v9.188",
  "transport": {
   "response_contract": "HEADERS_BEFORE_PARQUET_BODY",
   "engine_timeout_seconds": 15,
@@ -883,8 +883,8 @@
   "fidelity_workflow": ".github/workflows/202608301931-layer-fidelity.yml",
   "payload_cache": "RELEASE_AFTER_SERIALISATION"
  },
- "composition_note": "v9.187: 202610291043 recomposed, behaviour unchanged. The lightning overlay is its own cartridge (slot after-cartridge, its own script tag directly after sld-sandbox, where the appended module ran), and sld-sandbox is the original 202609241334 cartridge again (435218 bytes). Served by loader v2. Plus the potential-offtakers overlay with the data-centre category and the Grid Engine 30/30/30 (#73 steps 7-8, lane DC-B1; card DC-B2, engine DC-B3): data centres are their own class (violet, a status ring, sized by stated IT load else grid connection; 203 sites from the open UK data-centre pipeline, DC-A7's pinned snapshot), and a data-centre tap lists the 30 nearest substations (the engine's gridScope.scope within 40 km; the original nearestSubstations for the first 5), the 30 nearest REPD sites (40 km) and the 30 nearest conventional power sites (DC-A6's pinned file; any distance, lines only up to 100 km), in tabs Area · Substations · REPD · Conventional, nearest 10 drawn then Show all, with a CSV of all rows. Other offtakers keep 15 REPD + 5 substations. One data correction: Marchwood (OT-B-0823) is a gas CCGT, not biomass. IT load and grid connection are never conflated; a pipeline entry is not a commitment; proximity is not connection, capacity or feasibility.",
- "superseded_generation": "202610291044",
- "candidate_predecessor": "202610291043",
+ "composition_note": "v9.188: 202610292044 re-pinned to the 226-record pipeline file, otherwise unchanged; 202610291043 recomposed, behaviour unchanged. The lightning overlay is its own cartridge (slot after-cartridge, its own script tag directly after sld-sandbox, where the appended module ran), and sld-sandbox is the original 202609241334 cartridge again (435218 bytes). Served by loader v2. Plus the potential-offtakers overlay with the data-centre category and the Grid Engine 30/30/30 (#73 steps 7-8, lane DC-B1; card DC-B2, engine DC-B3): data centres are their own class (violet, a status ring, sized by stated IT load else grid connection; 226 records from the open UK data-centre pipeline (DC-A7's pinned snapshot at data-grid-gb 01a4491, Wapseys Wood one site), 225 drawn, one (Ebbsfleet) without coordinates and never drawn), and a data-centre tap lists the 30 nearest substations (the engine's gridScope.scope within 40 km; the original nearestSubstations for the first 5), the 30 nearest REPD sites (40 km) and the 30 nearest conventional power sites (DC-A6's pinned file; any distance, lines only up to 100 km), in tabs Area · Substations · REPD · Conventional, nearest 10 drawn then Show all, with a CSV of all rows. Other offtakers keep 15 REPD + 5 substations. One data correction: Marchwood (OT-B-0823) is a gas CCGT, not biomass. IT load and grid connection are never conflated; a pipeline entry is not a commitment; proximity is not connection, capacity or feasibility.",
+ "superseded_generation": "202610292044",
+ "candidate_predecessor": "202610292044",
  "loader": "v2"
 }
