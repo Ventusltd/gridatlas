@@ -1,7 +1,7 @@
 {
  "schema": "gridatlas.current.v2",
- "generation": "202610312138",
- "previous_generation": "202610292044",
+ "generation": "202611132345",
+ "previous_generation": "202610312138",
  "architecture": "IMMUTABLE_SHELL_PLUS_HASHED_CARTRIDGES",
  "live_route": "/gridatlas/atlas/",
  "release_id": "202608300453-atlas-v9",
@@ -56,13 +56,13 @@
   },
   {
    "id": "uk-gazetteer-flyto",
-   "generation": "202609071213",
-   "version": "v9.145",
+   "generation": "202611132345",
+   "version": "v9.189",
    "type": "script",
    "slot": "replace-script",
    "replace_script": "202608291818-place-postcode-search.js",
-   "path": "./cartridges/202609071213-place-global-search-v9-5.js",
-   "sha256": "15f324e5c279050882f7e3ce83a915c070b6ed19095efcac4ae20af4ef19fdfa",
+   "path": "./cartridges/202611132345-place-global-search-v9-5.js",
+   "sha256": "a27a11c45d4d02c4dbecf09e8ba2acc38215a77fc87bd23b1024f349f8dea619",
    "contract": "../ui/cartridges/202609040337-global-gazetteer-flyto-v9-106.mjs",
    "capabilities": [
     "exact-repd-first",
@@ -74,8 +74,8 @@
    ],
    "result_class": "LOCATION_ONLY",
    "sets_deep_link": false,
-   "assembled_from": "./manifests/202609041945-place-global-search-v9-5-parts.json",
-   "bytes": 41120
+   "assembled_from": "./manifests/202611132345-place-global-search-v9-5-parts.json",
+   "bytes": 41115
   },
   {
    "id": "sld-sandbox",
@@ -715,17 +715,17 @@
   },
   {
    "id": "uk-offtakers-overlay",
-   "generation": "202610312138",
-   "version": "v9.188",
+   "generation": "202611132345",
+   "version": "v9.189",
    "type": "script",
    "slot": "after-cartridge",
    "after": "uk-lightning-overlay",
-   "path": "./modules/202610312138-uk-offtakers-overlay.js",
-   "sha256": "1be368f53b04f4f451c0559ca6c534d3f8301ad9df158cc6dd94308517c5cf46",
+   "path": "./modules/202611132345-uk-offtakers-overlay.js",
+   "sha256": "eee30014b3c2549455753651ddc9719f179c9cd59db4ae616c08c3a9708bfdb6",
    "bytes": 71191,
    "byte_budget": 80000,
-   "module_generation": "202610312138",
-   "source": "tools/offtakers/src (node tools/offtakers/build.mjs --gen 202610312138; byte-exact, checked by the PR gate)",
+   "module_generation": "202611132345",
+   "source": "tools/offtakers/src (node tools/offtakers/build.mjs --gen 202611132345; byte-exact, checked by the PR gate)",
    "immutable_shell_modified": false,
    "capabilities": [
     "uk-potential-offtakers-overlay-off-by-default",
@@ -786,9 +786,9 @@
     },
     {
      "id": "repd_records",
-     "url": "https://ventusltd.github.io/gridatlas/data/repd_projects_202608290716.parquet",
-     "manifest_sha256": "8850567ff9f1d2b6996b4e0d9707320030f3466a0b821cdcfc5325322b8be8c8",
-     "upstream": "REPD (DESNZ) Jul 2026 extract, OGL v3.0",
+     "url": "https://ventusltd.github.io/gridatlas/data/repd_projects_202611132345.parquet",
+     "manifest_sha256": "b90bda5acaa2ff2a3bddd0267a6814ea599c915f0284920f4d354c8c5447f3fb",
+     "upstream": "REPD (DESNZ) Oct 2026 extract (cleaned), OGL v3.0",
      "join": "M5-build exact join: point 1e-6 deg, normalised name, MW, REPD technology; exactly one record, else \"address not in register\""
     }
    ],
@@ -860,15 +860,15 @@
    "result_class": "LOCATION_ONLY"
   }
  },
- "composition_manifest": "./manifests/202610312138-composition.json",
+ "composition_manifest": "./manifests/202611132345-composition.json",
  "scope_closure": {
   "generation": "202609010726",
   "status": "DONE",
   "scope": "GridAtlas v9.42 the price panel revalidates",
   "schedule_retired": true
  },
- "composition_version": "v9.188",
- "composition_id": "202610312138-gridatlas-v9.188",
+ "composition_version": "v9.189",
+ "composition_id": "202611132345-gridatlas-v9.189",
  "transport": {
   "response_contract": "HEADERS_BEFORE_PARQUET_BODY",
   "engine_timeout_seconds": 15,
@@ -883,8 +883,8 @@
   "fidelity_workflow": ".github/workflows/202608301931-layer-fidelity.yml",
   "payload_cache": "RELEASE_AFTER_SERIALISATION"
  },
- "composition_note": "v9.188: 202610292044 re-pinned to the 226-record pipeline file, otherwise unchanged; 202610291043 recomposed, behaviour unchanged. The lightning overlay is its own cartridge (slot after-cartridge, its own script tag directly after sld-sandbox, where the appended module ran), and sld-sandbox is the original 202609241334 cartridge again (435218 bytes). Served by loader v2. Plus the potential-offtakers overlay with the data-centre category and the Grid Engine 30/30/30 (#73 steps 7-8, lane DC-B1; card DC-B2, engine DC-B3): data centres are their own class (violet, a status ring, sized by stated IT load else grid connection; 226 records from the open UK data-centre pipeline (DC-A7's pinned snapshot at data-grid-gb 01a4491, Wapseys Wood one site), 225 drawn, one (Ebbsfleet) without coordinates and never drawn), and a data-centre tap lists the 30 nearest substations (the engine's gridScope.scope within 40 km; the original nearestSubstations for the first 5), the 30 nearest REPD sites (40 km) and the 30 nearest conventional power sites (DC-A6's pinned file; any distance, lines only up to 100 km), in tabs Area · Substations · REPD · Conventional, nearest 10 drawn then Show all, with a CSV of all rows. Other offtakers keep 15 REPD + 5 substations. One data correction: Marchwood (OT-B-0823) is a gas CCGT, not biomass. IT load and grid connection are never conflated; a pipeline entry is not a commitment; proximity is not connection, capacity or feasibility.",
- "superseded_generation": "202610292044",
- "candidate_predecessor": "202610292044",
+ "composition_note": "v9.189: REPD search and record snapshot re-pinned from 202608290716 (Q2, 11069 rows) to 202611132345 (REPD_2026Q3_cleaned.csv, October 2026 / Q3, 11329 rows, sha256 b90bda5acaa2); uk-gazetteer-flyto and uk-offtakers-overlay re-cut for the new URL, hashes and closure counts only; uk-lightning-overlay unchanged from 202610312138 (module 202610291043, its REPD record lookup stays on 202608290716 until a separate lightning cut); every other cartridge, the drawn REPD layer (data-gridatlas Q1 oracle) and the loader unchanged. Carried from v9.188: 202610292044 re-pinned to the 226-record pipeline file, otherwise unchanged; 202610291043 recomposed, behaviour unchanged. The lightning overlay is its own cartridge (slot after-cartridge, its own script tag directly after sld-sandbox, where the appended module ran), and sld-sandbox is the original 202609241334 cartridge again (435218 bytes). Served by loader v2. Plus the potential-offtakers overlay with the data-centre category and the Grid Engine 30/30/30 (#73 steps 7-8, lane DC-B1; card DC-B2, engine DC-B3): data centres are their own class (violet, a status ring, sized by stated IT load else grid connection; 226 records from the open UK data-centre pipeline (DC-A7's pinned snapshot at data-grid-gb 01a4491, Wapseys Wood one site), 225 drawn, one (Ebbsfleet) without coordinates and never drawn), and a data-centre tap lists the 30 nearest substations (the engine's gridScope.scope within 40 km; the original nearestSubstations for the first 5), the 30 nearest REPD sites (40 km) and the 30 nearest conventional power sites (DC-A6's pinned file; any distance, lines only up to 100 km), in tabs Area · Substations · REPD · Conventional, nearest 10 drawn then Show all, with a CSV of all rows. Other offtakers keep 15 REPD + 5 substations. One data correction: Marchwood (OT-B-0823) is a gas CCGT, not biomass. IT load and grid connection are never conflated; a pipeline entry is not a commitment; proximity is not connection, capacity or feasibility.",
+ "superseded_generation": "202610312138",
+ "candidate_predecessor": "202610312138",
  "loader": "v2"
 }
