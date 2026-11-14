@@ -51,6 +51,20 @@
  *                     the suite's default lightning module
  *   release-tools     node --check of every tools/release/*.mjs and
  *                     node --test tools/release/*.test.mjs (offline)
+ *   twin              when the PR touches atlas/, data/, compiler/ or tools/
+ *                     (docs/CI.md, "Twin, preservation and keys"), offline:
+ *                     preservation  tools/twin/preserve.mjs --base: every
+ *                                   published generation, shell and data file
+ *                                   keeps its recorded sha256, the previous
+ *                                   live generation still composes, nothing
+ *                                   published at the base is edited or removed
+ *                     twin-offline  tools/twin/replicate-generation.mjs
+ *                                   --offline: the live generation's pins agree
+ *                                   and the cartridges it cut rebuild byte for
+ *                                   byte (the data rebuild needs the source and
+ *                                   Python: the workflow's twin job, after this)
+ *                     keys          tools/twin/keys.mjs --check: every claim in
+ *                                   the newest register of keys still holds
  *
  * A generation is "touched" when a changed path under atlas/ or tools/proofs/
  * carries its twelve-digit stamp as a path segment or a filename prefix.
@@ -430,6 +444,15 @@ group('release-tools', () => {
   record('release-tools', bad.length === 0 && t.code === 0,
     `${scripts.length} script(s) parse${bad.length ? `; SYNTAX ERROR in ${bad.join(', ')}` : ''}; ${tests.length} test file(s): ${counts || 'none'}`);
 });
+
+// ---------------------------------------------------------------- 9
+// The twin, preservation and the register of keys (tools/twin/, docs/CI.md). Offline here; the data rebuild from the
+// pinned source runs in the workflow's twin job, which needs this gate first (offline first, then network).
+if (changed.some(f => /^(atlas|data|compiler|tools)\//.test(f))) {
+  step('preservation', ['node', 'tools/twin/preserve.mjs', '--base', BASE]);
+  step('twin-offline', ['node', 'tools/twin/replicate-generation.mjs', '--offline']);
+  step('keys', ['node', 'tools/twin/keys.mjs', '--check']);
+} else console.log('note  twin, preservation, keys: the PR touches none of atlas/, data/, compiler/, tools/; not run');
 
 // ---------------------------------------------------------------- summary
 const failed = results.filter(r => !r.ok);

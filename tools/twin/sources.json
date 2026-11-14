@@ -1,0 +1,31 @@
+{
+ "_": "Pinned inputs of each generation the twin rebuilds (node tools/twin/replicate-generation.mjs). A URL names a commit, never a branch, and nothing fetched is used until its sha256 and byte count equal the pin. The pins must agree with the generation's own compiler and data manifest, or the twin fails before building. docs/CI.md, 'Twin, preservation and keys'.",
+ "generations": {
+  "202611132345": {
+   "label": "v9.189, REPD October 2026 (Q3) records",
+   "previous_generation": "202610312138",
+   "previous_records": "202608290716",
+   "compiler": "compiler/202611132345-compile-atlas-v9.py",
+   "data_manifest": "data/repd_v9_manifest_202611132345.json",
+   "source": {
+    "name": "repd-2026q3.csv",
+    "url": "https://raw.githubusercontent.com/Ventusltd/globalgrid2050/07b6d51702a12aa3d69833d91e43f84d8901ba78/repd-2026q3.csv",
+    "sha256": "d937ae16ad07f43caaaa25b4cee56399e1e9b9bb2ae5ecb7bc88cf9bc092e4b9",
+    "bytes": 5201029
+   },
+   "oracle": {
+    "name": "repd_master.json",
+    "url": "https://raw.githubusercontent.com/Ventusltd/globalgrid2050/f2f343a92ee972cc74ed23b4b99d8a22896791ad/dist/repd_master.json",
+    "sha256": "ca5da437ddb832f7e4e8d84bba1f2f6d40df6285089a43156452fdda7eebe0fe",
+    "bytes": 4256963
+   },
+   "pipeline_news": {
+    "release": "202611140058",
+    "refs": "tools/twin/keys/202611132345-pipeline-news-refs.tsv",
+    "base_url": "https://raw.githubusercontent.com/Ventusltd/globalgrid2050/9f2d94cfbc4a9c2e4806ac93dc973ce07e578a7d/uk_renewables_pipeline/202611140058/",
+    "manifest": "data/v9.1/build_manifest.json",
+    "manifest_sha256": "eb59fee0ab9bd4bf304cf7957755e69647038ad2360eabe680848d14e636c304"
+   }
+  }
+ }
+}

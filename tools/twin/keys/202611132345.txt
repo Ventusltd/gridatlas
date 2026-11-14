@@ -1,0 +1,65 @@
+Keys of GridAtlas generation 202611132345
+Written by node tools/twin/keys.mjs --write; checked in CI by --check. Do not edit.
+
+K01  HOLDS  The records of 202611132345 are compiled from repd-2026q3.csv, sha256 d937ae16ad07f43caaaa25b4cee56399e1e9b9bb2ae5ecb7bc88cf9bc092e4b9, 5,201,029 bytes, and from no other register.
+      key  tools/twin/sources.json:13
+      key  compiler/202611132345-compile-atlas-v9.py:24
+      key  data/repd_v9_manifest_202611132345.json:176
+      key  $ curl -fsSL https://raw.githubusercontent.com/Ventusltd/globalgrid2050/07b6d51702a12aa3d69833d91e43f84d8901ba78/repd-2026q3.csv | sha256sum
+
+K02  HOLDS  The record snapshot holds 11,329 rows, one per REPD ref.
+      key  data/repd_v9_manifest_202611132345.json:11
+      key  data/repd_v9_manifest_202611132345.json:18
+      key  $ node -e "console.log(require('./data/repd_browser_registry_202611132345.json').records.length)"
+
+K03  HOLDS  The three data files hash to the values the manifest records, and 2 cartridge(s) cut at 202611132345 refuse any other manifest or parquet.
+      key  data/repd_v9_manifest_202611132345.json:151
+      key  data/repd_v9_manifest_202611132345.json:5
+      key  atlas/cartridges/202611132345-place-global-search-v9-5.js:17
+      key  atlas/cartridges/202611132345-place-global-search-v9-5.js:15
+      key  atlas/modules/202611132345-uk-offtakers-overlay.js:133
+      key  atlas/modules/202611132345-uk-offtakers-overlay.js:133
+      key  $ sha256sum data/repd_projects_202611132345.parquet data/repd_browser_registry_202611132345.json data/repd_v9_manifest_202611132345.json
+
+K04  HOLDS  The 6 cartridges of 202611132345 are in the repository with the sha256 its pointer records.
+      key  atlas/v/202611132345/current.json:31
+      key  atlas/v/202611132345/current.json:65
+      key  atlas/v/202611132345/current.json:573
+      key  atlas/v/202611132345/current.json:88
+      key  atlas/v/202611132345/current.json:641
+      key  atlas/v/202611132345/current.json:724
+      key  $ node tools/twin/preserve.mjs
+
+K05  HOLDS  202611132345 composes through its own committed loader: every cartridge is fetched, hash-verified and handed to the shell.
+      key  atlas/v/202611132345/current.json:3
+      key  $ node tools/twin/keys.mjs --check   # compose() of tools/proofs/loader-composition.mjs on atlas/v/202611132345/
+
+K06  HOLDS  The previous live generation 202610312138 is still published under atlas/v/202610312138/ with the bytes recorded here, and still composes through its own loader.
+      key  atlas/v/202611132345/current.json:4
+      key  $ sha256sum atlas/v/202610312138/current.json atlas/v/202610312138/index.html
+      key  $ node tools/twin/preserve.mjs
+
+K07  HOLDS  The grid engine did not change: 4 cartridges (streaming-parquet-bridge, substation-intelligence, sld-sandbox, uk-lightning-overlay) are the same files with the same sha256 in 202610312138 and 202611132345, and the substation payload is the released file. Only uk-gazetteer-flyto and uk-offtakers-overlay were re-cut.
+      key  atlas/v/202611132345/current.json:31
+      key  atlas/v/202610312138/current.json:31
+      key  atlas/v/202611132345/current.json:573
+      key  atlas/v/202610312138/current.json:573
+      key  atlas/v/202611132345/current.json:88
+      key  atlas/v/202610312138/current.json:88
+      key  atlas/v/202611132345/current.json:641
+      key  atlas/v/202610312138/current.json:641
+      key  atlas/releases/202608300453-atlas-v9/sha256sums.txt:13
+
+K08  HOLDS  Nearest substation for retained REPD refs: of 11,001 refs in both 202608290716 and 202611132345, 10,982 have the identical coordinate, so the unchanged engine (K07) returns the identical answer; 19 were moved by the source register, and 19 of those now measure to a different nearest substation (listed).
+      key  atlas/cartridges/202609241334-sld-sandbox-v9-8.js:1663
+      key  atlas/cartridges/202609241334-sld-sandbox-v9-8.js:3338
+      key  atlas/releases/202608300453-atlas-v9/sha256sums.txt:13
+      key  $ node tools/twin/keys.mjs --check   # K08 recomputes every moved ref with the shipped geodesy and sld-sandbox functions
+
+K09  HOLDS  Pipeline News 202611140058 lists 7,775 REPD refs. 5,331 resolve to a record of 202611132345 by exact ref. 2,444 do not, because the snapshot keeps the four active statuses only; 3 of those have an active status in Pipeline News and still have no record (2484, 6483, 20218).
+      key  tools/twin/keys/202611132345-pipeline-news-refs.tsv:1
+      key  tools/twin/sources.json:27
+      key  $ node tools/twin/keys.mjs --check --pipeline-refs-network   # rebuilds the list from https://raw.githubusercontent.com/Ventusltd/globalgrid2050/9f2d94cfbc4a9c2e4806ac93dc973ce07e578a7d/uk_renewables_pipeline/202611140058/data/v9.1/build_manifest.json
+
+K10  HOLDS  202611132345 is reproducible: its three data files and the cartridges it cut rebuild byte for byte from the pinned source with the repository's own compiler and cut tools.
+      key  $ node tools/twin/replicate-generation.mjs --generation 202611132345 --network
