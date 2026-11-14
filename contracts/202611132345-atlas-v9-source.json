@@ -1,0 +1,42 @@
+{
+  "schema": "gridatlas.source-contract.v1",
+  "generation": "202611132345",
+  "title": "Atlas V9 REPD address and fly-to snapshot, October 2026 preview (cleaned input)",
+  "source": {
+    "publisher": "Department for Energy Security and Net Zero",
+    "dataset": "Renewable Energy Planning Database Q3 2026 (October 2026 extract)",
+    "official_url": "https://assets.publishing.service.gov.uk/media/6af42ff0a4004bdbe54e54a5/REPD_Publication_Q3_2026.csv",
+    "official_sha256": "48e76c49f33a1090e78108d1ea9bfe689b35963ea3be1bb4f6516d038a5ff862",
+    "compiled_from": "REPD_2026Q3_cleaned.csv (automation/repd/clean.py output: ref 7679 de-duplicated, control whitespace trimmed, dates normalised, CSV capacity kept)",
+    "bytes": 5201029,
+    "sha256": "d937ae16ad07f43caaaa25b4cee56399e1e9b9bb2ae5ecb7bc88cf9bc092e4b9",
+    "encoding": "utf-8-sig",
+    "published": "UNVERIFIED"
+  },
+  "v8_oracle": {
+    "repository": "Ventusltd/globalgrid2050",
+    "commit": "f2f343a92ee972cc74ed23b4b99d8a22896791ad",
+    "path": "dist/repd_master.json",
+    "bytes": 4256963,
+    "sha256": "ca5da437ddb832f7e4e8d84bba1f2f6d40df6285089a43156452fdda7eebe0fe",
+    "feature_count": 10784,
+    "role": "immutable parity oracle only; never modified or copied as V9 truth"
+  },
+  "runtime": {
+    "python": "3.12",
+    "duckdb": "1.3.2",
+    "pyproj": "3.7.2",
+    "parquet_compression": "ZSTD"
+  },
+  "publication": {
+    "route": "/gridatlas/",
+    "candidate_only": true,
+    "v8_untouched": true
+  },
+  "truth": {
+    "address": "official REPD Address, whitespace-normalised only",
+    "postcode": "official REPD Post Code, canonicalised only when valid",
+    "relationship": "REPD operator or applicant as published; never relabelled owner",
+    "proximity": "never establishes project identity or involvement"
+  }
+}

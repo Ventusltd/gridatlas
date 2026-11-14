@@ -2,12 +2,12 @@
 /// (evidence/M5-build/tools/build-M5.mjs; tests/offtakers.test.mjs T8 compares it with M5_MODULE). Do not edit it here: re-copy it.
 /// One deliberate difference (R-otsec ORS8): R() keeps its own timer; the same fix is due in tools/lightning/src/11b-repd-records.js.
 /// ---- M5-build's exact REPD record join, copied unchanged (evidence/M5-build/tools/build-M5.mjs) ----
-RU='https://ventusltd.github.io/gridatlas/data/repd_projects_202608290716.parquet',RM='https://ventusltd.github.io/gridatlas/data/repd_v9_manifest_202608290716.json',RpE=1.000001e-6,RpP=new WeakMap,
+RU='https://ventusltd.github.io/gridatlas/data/repd_projects_202611132345.parquet',RM='https://ventusltd.github.io/gridatlas/data/repd_v9_manifest_202611132345.json',RpE=1.000001e-6,RpP=new WeakMap,
 RpQ=async pts=>{let C=S.rc||(S.rc=new Map),ks=RpU(pts.filter(a=>a&&a[0]===+a[0]&&a[1]===+a[1]&&!C.has(a+'')),a=>a+''),k;
   if(ks.length){let w=window.__GRIDATLAS_DUCKDB_RUNTIME__,R=p=>{let t;return Promise.race([p,new Promise((_,j)=>t=setTimeout(()=>j(new Error(TOE)),TMO))]).finally(()=>clearTimeout(t))};
     if(!w)E('the map search runtime has not started; reload the page');
     await R(S.rv||(S.rv=gj(RM,'no-store',1).then(async b=>{let o,h=[...new Uint8Array(await window.crypto.subtle.digest('SHA-256',b))].map(x=>(x|256).toString(16).slice(1)).join('');
-      if(h!='8850567ff9f1d2b6996b4e0d9707320030f3466a0b821cdcfc5325322b8be8c8'||(o=JSON.parse(new TextDecoder().decode(b))).parquet.sha256!='174040c37f3d63742d6fdd7af722a8cfdf3fb53de3ff85ff1142d22fdac4866b')E('REPD manifest is not the pinned one')}).catch(e=>{S.rv=0;throw e})));
+      if(h!='b90bda5acaa2ff2a3bddd0267a6814ea599c915f0284920f4d354c8c5447f3fb'||(o=JSON.parse(new TextDecoder().decode(b))).parquet.sha256!='cc9b7f046fe24497114c9cc356d7d0e54830890722af90a83c397eab1056d789')E('REPD manifest is not the pinned one')}).catch(e=>{S.rv=0;throw e})));
     k=await R(R(w.promise).then(d=>d.database.connect()));
     try{let r=(await R(k.query(`SELECT * FROM read_parquet('${RU}') WHERE ${ks.map(a=>a.split(',')).map(([x,y])=>`(abs(longitude-(${x}))<=${RpE} AND abs(latitude-(${y}))<=${RpE})`).join(' OR ')}`))).toArray().map(o=>o.toJSON?o.toJSON():o);
       for(let a of ks){let[x,y]=a.split(',');C.set(a,r.filter(o=>Math.abs(o.longitude-x)<=RpE&&Math.abs(o.latitude-y)<=RpE))}}finally{try{k.close()?.catch?.(()=>0)}catch(_){}}}

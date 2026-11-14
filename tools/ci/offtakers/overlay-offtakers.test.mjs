@@ -36,8 +36,10 @@ const DCURL = DCREL && 'https://ventusltd.github.io/gridatlas/' + DCREL, DCD = D
 const DCD_MAPPABLE = DCB ? DCD.features.filter(f => f.properties.site_kind !== 'cable_landing_station' && f.geometry?.type === 'Point' && Array.isArray(f.geometry.coordinates)) : [];
 const DCD_DELTA = DCB ? DCD_MAPPABLE.length - 164 : 0;
 const REG = JSON.parse(gunzipSync(fs.readFileSync(REPO + 'tools/ci/lightning/fixtures/repd-master-v8-oracle.json.gz')));
-const RECS = JSON.parse(fs.readFileSync(REPO + 'data/repd_browser_registry_202608290716.json', 'utf8')).records;
-const MANI = fs.readFileSync(REPO + 'data/repd_v9_manifest_202608290716.json');
+// the REPD snapshot the module under test pins (202608290716 live; a re-pinned module names its own)
+const RGEN = (SRC.match(/repd_projects_(\d{12})\.parquet/) || [])[1] || '202608290716';
+const RECS = JSON.parse(fs.readFileSync(REPO + `data/repd_browser_registry_${RGEN}.json`, 'utf8')).records;
+const MANI = fs.readFileSync(REPO + `data/repd_v9_manifest_${RGEN}.json`);
 const SUBF = JSON.parse(fs.readFileSync(REPO + 'atlas/releases/202608300453-atlas-v9/data/grid_substations.geojson', 'utf8')).features;
 
 // El additions the module uses in a browser (minidom lacks them)
@@ -94,7 +96,7 @@ function boot({ tamper = false, lightning = false, neon = true, register = REG.f
     if (/uk_lightning\.geojson$/.test(this.url)) { this.status = 200; this.responseURL = this.url; this.responseText = JSON.stringify(W.__FEED__ || feed); this.onload(); return; }
     this.status = 404; this.onload(); }, 0); } }
   const fetch = async (u, o) => { log.fetch.push(String(u)); await null;
-    if (String(u).endsWith('repd_v9_manifest_202608290716.json')) return new Response(MANI, { status: 200 });
+    if (String(u).endsWith(`repd_v9_manifest_${RGEN}.json`)) return new Response(MANI, { status: 200 });
     return new Response('nope', { status: 404 }); };
   const W = { __GRIDATLAS_V9_MAP__: map, innerWidth: 393, innerHeight: 852, crypto: { subtle: webcrypto.subtle }, __GRIDATLAS_MODULES__: { menuBar: { installed: true, inspect: () => ({ n: 60 }) } }, __GRIDATLAS_PIPELINE_LAYERS__: { installed: true } };
   W.addEventListener = (t, f) => { log.winAdd.push(t); (winL[t] = winL[t] || []).push(f); }; W.removeEventListener = (t, f) => { const a = winL[t] || []; const i = a.indexOf(f); if (i >= 0) a.splice(i, 1); };
@@ -243,7 +245,7 @@ test('T8: full REPD record (M5 join, copied unchanged): joined rows show ref, ad
   const m5p = process.env.M5_MODULE; if (m5p) { const m5 = fs.readFileSync(m5p, 'utf8'), a = m5.indexOf("RU='https://ventusltd.github.io/gridatlas/data/repd_projects_"), b = m5.indexOf('RpX='); assert.ok(SRC.includes(m5.slice(a, b).replace(/\n$/, '')), 'M5 join text byte-identical'); }
   const x = boot(); x.O.install(); x.toggle(true); await drain(); const r = bigSites(x).refinery; await x.tapDot(r); await drain(); const c = x.card();
   const recs = [...c.querySelectorAll('[data-tier="record"]')].map(text).join('\n');
-  assert.match(recs, /Record · REPD \d+ · /); assert.ok(x.log.sql.length >= 1 && /read_parquet\('https:\/\/ventusltd\.github\.io\/gridatlas\/data\/repd_projects_202608290716\.parquet'\)/.test(x.log.sql[0]));
+  assert.match(recs, /Record · REPD \d+ · /); assert.ok(x.log.sql.length >= 1 && x.log.sql[0].includes(`read_parquet('https://ventusltd.github.io/gridatlas/data/repd_projects_${RGEN}.parquet')`));
   // every listed project: an exact single record ⇒ its ref; otherwise "address not in register" (independent join)
   const nz = s => ((s || '') + '').normalize('NFC').split(/\s+/).filter(Boolean).join(' ');
   for (const g of indep(r)) for (const p of g.parts) { const m = RECS.filter(o => o.longitude != null && Math.abs(o.longitude - g.a[0]) <= 1.000001e-6 && Math.abs(o.latitude - g.a[1]) <= 1.000001e-6 && nz(o.name) === nz(p.name) && Math.abs((o.capacity_mw > 0 ? +o.capacity_mw : 0) - (p.capacity > 0 ? +p.capacity : 0)) < 1e-6 && o.repd_technology === p.raw_tech);

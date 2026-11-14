@@ -827,13 +827,15 @@ test('H2: above the phone cap clusters get count labels and a tap on a cluster z
 });
 
 test('H3/I1/J2: tapping a flash opens a Lightning-owned docked card (not maplibregl.Popup): bar "Flash <UTC>", lat/lon + short ID row, full ID, honesty line', async () => {
-  const t = Date.parse('2026-10-25T11:15:58.149Z'), f = flash(t, 'abc-123', [-4.4874, 55.1637]);
+  // The flash must sit inside the 7D window whenever the suite runs: a fixed date (it was 2026-10-25) rots after 7 days.
+  const t = Math.floor((Date.now() - 2 * H) / 1000) * 1000 + 149, f = flash(t, 'abc-123', [-4.4874, 55.1637]);
+  const stamp = new Date(t).toISOString().slice(0, 19).replace('T', ' ');
   const x = boot({ feedFn: () => feed([f]) }); x.toggle(true); x.click(x.chip('7d')); await drain();
   x.tapMap([5, 5], { 'gridatlas-lightning-hit': [{ properties: { i: 0 }, geometry: { coordinates: [-4.49, 55.16] } }] });
   assert.equal(x.popups.length, 0, 'maplibregl.Popup used');
   const card = x.mapEl.querySelector('[data-lightning-card]'); assert.ok(card, 'no card in the map container');
   const txt = card.textContent;
-  for (const s of ['Flash 2026-10-25 11:15:58 UTC', 'lat 55.164, lon -4.487 · ID abc-123', 'Flash ID abc-123', 'EUMETSAT MTG Lightning Imager · optical flash, not necessarily a ground strike.']) assert.ok(txt.includes(s), s);
+  for (const s of [`Flash ${stamp} UTC`, 'lat 55.164, lon -4.487 · ID abc-123', 'Flash ID abc-123', 'EUMETSAT MTG Lightning Imager · optical flash, not necessarily a ground strike.']) assert.ok(txt.includes(s), s);
   x.tapMap([200, 200], {}); assert.equal(x.mapEl.querySelector('[data-lightning-card]'), null, 'card not closed on an empty tap');
   x.tapMap([5, 5], { 'gridatlas-lightning-hit': [{ properties: { i: 0 }, geometry: { coordinates: [0, 0] } }] });
   x.toggle(false); assert.equal(x.mapEl.querySelector('[data-lightning-card]'), null, 'card not closed on OFF');
@@ -1026,7 +1028,7 @@ test('J3: STALE is the search frontier (not nextDue or a backfill-bumped generat
   const now = Date.now(), cutoff = Date.parse(ymd(now) + 'T00:00:00Z') - 365 * D;
   const idx = mkIndex({}, { generated_utc: iso(now - 600e3), next_update_due_utc: iso(now + H), scan_windows: [{ start_utc: iso(cutoff), end_utc: iso(now - 6 * H), successful_runs: 9 }] });
   const x = boot({ index: idx }); x.toggle(true); x.click(x.chip('7d')); await drain();
-  assert.equal(x.S.last.stale, true, 'backfill-bumped generated_utc hid a 6 h old frontier'); assert.match(x.status(), /COLLECTOR LAST RAN \d\d:\d\d UTC, SEARCHED TO (\d\d? [A-Z]{3} )?\d\d:\d\d UTC · STALE$/); // M4: the date is named when the frontier is on an earlier UTC day
+  assert.equal(x.S.last.stale, true, 'backfill-bumped generated_utc hid a 6 h old frontier'); assert.match(x.status(), /COLLECTOR LAST RAN (\d\d? [A-Z]{3} )?\d\d:\d\d UTC, SEARCHED TO (\d\d? [A-Z]{3} )?\d\d:\d\d UTC · STALE$/); // M4: the date is named when the frontier (or, in the first 10 min after 00:00 UTC, the collector run) is on an earlier UTC day
   x.click(x.nav('prev')); await drain(); assert.equal(x.S.last.stale, false, 'STALE printed on an earlier page');
   const y = boot({ index: mkIndex({}, { generated_utc: iso(now - 600e3), next_update_due_utc: iso(now - 60e3) }) }); y.toggle(true); await drain();
   assert.equal(y.S.last.stale, false, 'nextDue alone made it STALE');
