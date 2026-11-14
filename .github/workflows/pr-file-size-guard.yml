@@ -151,6 +151,48 @@ jobs:
           BASE_SHA: ${{ github.event.pull_request.base.sha }}
         run: node tools/ci/pr-gate.mjs --base "$BASE_SHA"
 
+  # The twin (docs/CI.md, "Twin, preservation and keys"): the live generation's
+  # data files rebuilt from the commit-pinned source register with the pinned
+  # Python libraries, and compared byte for byte with the committed files.
+  # `needs: cartridge-gate` is the ordering rule: the offline gate (which
+  # already ran preservation, the offline twin and the keys) is green before
+  # this job opens a socket. Read-only: it fetches two pinned files and pip
+  # packages, writes nothing to the repository and uses no secret.
+  twin:
+    needs: cartridge-gate
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - name: Checkout the PR merge commit
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          fetch-depth: 1
+          persist-credentials: false
+      - name: Fetch the base commit the PR is diffed against
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+        run: git fetch --no-tags --depth=1 origin "$BASE_SHA"
+      - name: Node (exact pin)
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v4
+        with:
+          node-version: '22.23.4'
+      - name: Rebuild the live generation from its pinned source and compare every byte
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          if ! git diff --name-only --no-renames "$BASE_SHA" HEAD | grep -Eq '^(atlas|data|compiler|tools)/'; then
+            echo "The PR touches none of atlas/, data/, compiler/, tools/: twin not run." | tee -a "$GITHUB_STEP_SUMMARY"
+            exit 0
+          fi
+          python3 -m venv "$RUNNER_TEMP/twin-venv"
+          "$RUNNER_TEMP/twin-venv/bin/pip" install --quiet --require-virtualenv -r requirements.lock
+          status=0
+          node tools/twin/replicate-generation.mjs --network --python "$RUNNER_TEMP/twin-venv/bin/python" 2>&1 | tee "$RUNNER_TEMP/twin.log" || status=$?
+          { echo '## Twin'; echo; echo '```'; cat "$RUNNER_TEMP/twin.log"; echo '```'; } >> "$GITHUB_STEP_SUMMARY"
+          exit "$status"
+
   # Real Chromium check on every preview/ PR (NL-007), for the generation
   # named in DC_SMOKE_GENERATION at line 177. This does not deploy, change
   # the live pointer or use secrets; keep the reusable script.

@@ -14,16 +14,22 @@ name: 202608301321 Build, deploy and verify modular GridAtlas v9.5
 #                        current.json references (each cartridge path first)
 #                        and every atlas/v/<gen>/ preview file. It retries for
 #                        Pages/CDN lag and fails with a per-path report.
+#   twin                 dispatch only (mode=twin), read-only: preservation,
+#                        the register of keys, then the live generation rebuilt
+#                        from its commit-pinned source and compared byte for
+#                        byte (tools/twin/, docs/CI.md). The same checks run on
+#                        pull requests in pr-file-size-guard.yml.
 
 on:
   workflow_dispatch:
     inputs:
       mode:
-        description: 'live-bytes = read-only public byte check; served-homepage = read-only www.globalgrid2050.com check; build-deploy-verify = compile, push to main and publish a streaming-road cartridge'
+        description: 'live-bytes = read-only public byte check; served-homepage = read-only www.globalgrid2050.com check; twin = read-only rebuild of the live generation from its pinned source, with preservation and keys; build-deploy-verify = compile, push to main and publish a streaming-road cartridge'
         type: choice
         options:
           - live-bytes
           - served-homepage
+          - twin
           - build-deploy-verify
         default: live-bytes
       compare_ref:
@@ -303,6 +309,7 @@ jobs:
       && needs.build-deploy-verify.result != 'cancelled'
       && !(github.event_name == 'workflow_dispatch' && inputs.mode == 'build-deploy-verify')
       && !(github.event_name == 'workflow_dispatch' && inputs.mode == 'served-homepage')
+      && !(github.event_name == 'workflow_dispatch' && inputs.mode == 'twin')
     runs-on: ubuntu-24.04
     timeout-minutes: 30
     permissions:
@@ -403,6 +410,44 @@ jobs:
           path: work/live-bytes.json
           if-no-files-found: warn
           retention-days: 90
+
+  # Offline first, then network (Ventusltd/testcode README): preservation and the
+  # keys need no socket and run first; a red offline step stops the job before
+  # anything is fetched. Read-only: contents: read, no push, no Pages, no pointer.
+  twin:
+    if: github.event_name == 'workflow_dispatch' && inputs.mode == 'twin'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout the ref the workflow was dispatched on
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          fetch-depth: 2
+          persist-credentials: false
+      - name: Configure exact Node
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v4.4.0
+        with:
+          node-version: '22.23.4'
+      - name: Offline - every earlier generation is preserved, and the previous live one still composes
+        run: node tools/twin/preserve.mjs --base HEAD~1 | tee -a "$GITHUB_STEP_SUMMARY"
+        shell: bash -eo pipefail {0}
+      - name: Offline - the cartridges the live generation cut rebuild byte for byte
+        run: node tools/twin/replicate-generation.mjs --offline | tee -a "$GITHUB_STEP_SUMMARY"
+        shell: bash -eo pipefail {0}
+      - name: Offline - every claim in the register of keys still holds
+        run: node tools/twin/keys.mjs --check | tee -a "$GITHUB_STEP_SUMMARY"
+        shell: bash -eo pipefail {0}
+      - name: Network - the Pipeline News ref list equals the pinned release
+        run: node tools/twin/keys.mjs --check --pipeline-refs-network | tail -3 | tee -a "$GITHUB_STEP_SUMMARY"
+        shell: bash -eo pipefail {0}
+      - name: Network - rebuild the data files from the pinned source register and compare every byte
+        shell: bash -eo pipefail {0}
+        run: |
+          python3 -m venv "$RUNNER_TEMP/twin-venv"
+          "$RUNNER_TEMP/twin-venv/bin/pip" install --quiet --require-virtualenv -r requirements.lock
+          node tools/twin/replicate-generation.mjs --network --python "$RUNNER_TEMP/twin-venv/bin/python" | tee -a "$GITHUB_STEP_SUMMARY"
 
   served-homepage:
     if: github.event_name == 'workflow_dispatch' && inputs.mode == 'served-homepage'

@@ -1,0 +1,718 @@
+{
+ "schema": "gridatlas.keys.v1",
+ "generation": "202611132345",
+ "law": "no claim without a key: every claim is measured by tools/twin/keys.mjs and names the file and line, or the command, that proves it",
+ "claims": [
+  {
+   "id": "K01",
+   "claim": "The records of 202611132345 are compiled from repd-2026q3.csv, sha256 d937ae16ad07f43caaaa25b4cee56399e1e9b9bb2ae5ecb7bc88cf9bc092e4b9, 5,201,029 bytes, and from no other register.",
+   "holds": true,
+   "measured": {
+    "sha256": "d937ae16ad07f43caaaa25b4cee56399e1e9b9bb2ae5ecb7bc88cf9bc092e4b9",
+    "bytes": 5201029
+   },
+   "keys": [
+    {
+     "file": "tools/twin/sources.json",
+     "line": 13
+    },
+    {
+     "file": "compiler/202611132345-compile-atlas-v9.py",
+     "line": 24
+    },
+    {
+     "file": "data/repd_v9_manifest_202611132345.json",
+     "line": 176
+    },
+    {
+     "command": "curl -fsSL https://raw.githubusercontent.com/Ventusltd/globalgrid2050/07b6d51702a12aa3d69833d91e43f84d8901ba78/repd-2026q3.csv | sha256sum"
+    }
+   ]
+  },
+  {
+   "id": "K02",
+   "claim": "The record snapshot holds 11,329 rows, one per REPD ref.",
+   "holds": true,
+   "measured": {
+    "manifest_rows": 11329,
+    "registry_records": 11329,
+    "distinct_refs": 11329,
+    "status_counts": {
+     "application submitted": 1456,
+     "awaiting construction": 6241,
+     "operational": 3162,
+     "under construction": 470
+    }
+   },
+   "keys": [
+    {
+     "file": "data/repd_v9_manifest_202611132345.json",
+     "line": 11
+    },
+    {
+     "file": "data/repd_v9_manifest_202611132345.json",
+     "line": 18
+    },
+    {
+     "command": "node -e \"console.log(require('./data/repd_browser_registry_202611132345.json').records.length)\""
+    }
+   ]
+  },
+  {
+   "id": "K03",
+   "claim": "The three data files hash to the values the manifest records, and 2 cartridge(s) cut at 202611132345 refuse any other manifest or parquet.",
+   "holds": true,
+   "measured": {
+    "parquet": {
+     "file": "data/repd_projects_202611132345.parquet",
+     "sha256": "cc9b7f046fe24497114c9cc356d7d0e54830890722af90a83c397eab1056d789",
+     "bytes": 1488420
+    },
+    "browser_registry": {
+     "file": "data/repd_browser_registry_202611132345.json",
+     "sha256": "fdda9b6e4fd14cb234cdc7baaac9a6c0f45c5594179c2eaa4b58e874ac6d8f58",
+     "bytes": 9551352
+    },
+    "manifest": {
+     "file": "data/repd_v9_manifest_202611132345.json",
+     "sha256": "b90bda5acaa2ff2a3bddd0267a6814ea599c915f0284920f4d354c8c5447f3fb",
+     "bytes": 4572
+    },
+    "carried_by": [
+     "uk-gazetteer-flyto",
+     "uk-offtakers-overlay"
+    ]
+   },
+   "keys": [
+    {
+     "file": "data/repd_v9_manifest_202611132345.json",
+     "line": 151
+    },
+    {
+     "file": "data/repd_v9_manifest_202611132345.json",
+     "line": 5
+    },
+    {
+     "file": "atlas/cartridges/202611132345-place-global-search-v9-5.js",
+     "line": 17
+    },
+    {
+     "file": "atlas/cartridges/202611132345-place-global-search-v9-5.js",
+     "line": 15
+    },
+    {
+     "file": "atlas/modules/202611132345-uk-offtakers-overlay.js",
+     "line": 133
+    },
+    {
+     "file": "atlas/modules/202611132345-uk-offtakers-overlay.js",
+     "line": 133
+    },
+    {
+     "command": "sha256sum data/repd_projects_202611132345.parquet data/repd_browser_registry_202611132345.json data/repd_v9_manifest_202611132345.json"
+    }
+   ]
+  },
+  {
+   "id": "K04",
+   "claim": "The 6 cartridges of 202611132345 are in the repository with the sha256 its pointer records.",
+   "holds": true,
+   "measured": {
+    "cartridges": [
+     {
+      "id": "streaming-parquet-bridge",
+      "generation": "202609241251",
+      "file": "atlas/cartridges/202609241251-streaming-parquet-bridge-v9-5.js",
+      "sha256": "60be8215ba873ac2886786bf6e3fd51e5764e7c5e26684fde71ebe9974a329a2"
+     },
+     {
+      "id": "uk-gazetteer-flyto",
+      "generation": "202611132345",
+      "file": "atlas/cartridges/202611132345-place-global-search-v9-5.js",
+      "sha256": "a27a11c45d4d02c4dbecf09e8ba2acc38215a77fc87bd23b1024f349f8dea619"
+     },
+     {
+      "id": "substation-intelligence",
+      "generation": "202609062358",
+      "file": "atlas/cartridges/202609062358-substation-intelligence-v9-63.js",
+      "sha256": "d94b0de50deddac77643325b10fbe490ce44b8c406dbc6c67e6e7cadbdaa8ec6"
+     },
+     {
+      "id": "sld-sandbox",
+      "generation": "202609241334",
+      "file": "atlas/cartridges/202609241334-sld-sandbox-v9-8.js",
+      "sha256": "7812953671d8bb22a566de5e98fd3137da2d23411c5aecd526df5afa111ca4ca"
+     },
+     {
+      "id": "uk-lightning-overlay",
+      "generation": "202610312138",
+      "file": "atlas/modules/202610291043-uk-lightning-overlay.js",
+      "sha256": "15ff1e37890770efc42b75651fac2fcc98a16c71a694481c79778ae0a6d818db"
+     },
+     {
+      "id": "uk-offtakers-overlay",
+      "generation": "202611132345",
+      "file": "atlas/modules/202611132345-uk-offtakers-overlay.js",
+      "sha256": "eee30014b3c2549455753651ddc9719f179c9cd59db4ae616c08c3a9708bfdb6"
+     }
+    ]
+   },
+   "keys": [
+    {
+     "file": "atlas/v/202611132345/current.json",
+     "line": 31
+    },
+    {
+     "file": "atlas/v/202611132345/current.json",
+     "line": 65
+    },
+    {
+     "file": "atlas/v/202611132345/current.json",
+     "line": 573
+    },
+    {
+     "file": "atlas/v/202611132345/current.json",
+     "line": 88
+    },
+    {
+     "file": "atlas/v/202611132345/current.json",
+     "line": 641
+    },
+    {
+     "file": "atlas/v/202611132345/current.json",
+     "line": 724
+    },
+    {
+     "command": "node tools/twin/preserve.mjs"
+    }
+   ]
+  },
+  {
+   "id": "K05",
+   "claim": "202611132345 composes through its own committed loader: every cartridge is fetched, hash-verified and handed to the shell.",
+   "holds": true,
+   "measured": {
+    "cartridges_composed": 6,
+    "html_bytes": 22802,
+    "html_sha256": "e0121960a65a950ca205596648920c5562e9a2b164b36ba02828f9a99591b488"
+   },
+   "keys": [
+    {
+     "file": "atlas/v/202611132345/current.json",
+     "line": 3
+    },
+    {
+     "command": "node tools/twin/keys.mjs --check   # compose() of tools/proofs/loader-composition.mjs on atlas/v/202611132345/"
+    }
+   ]
+  },
+  {
+   "id": "K06",
+   "claim": "The previous live generation 202610312138 is still published under atlas/v/202610312138/ with the bytes recorded here, and still composes through its own loader.",
+   "holds": true,
+   "measured": {
+    "files": [
+     {
+      "file": "atlas/v/202610312138/current.json",
+      "sha256": "f44c088344cd0a400f2c24720e5668ca8efe9beaedb5695964312919edd55a8e",
+      "bytes": 69714
+     },
+     {
+      "file": "atlas/v/202610312138/index.html",
+      "sha256": "d162f66ae44da79afe92edffdc9f31ea15a85ecf1f7632ce4cb7d1c6ca207b50",
+      "bytes": 6469
+     }
+    ],
+    "cartridges_composed": 6,
+    "html_sha256": "98b065df7cd1bca2cadeee0e4ea756413762fafe1e8005f7a35ad8f031396d29"
+   },
+   "keys": [
+    {
+     "file": "atlas/v/202611132345/current.json",
+     "line": 4
+    },
+    {
+     "command": "sha256sum atlas/v/202610312138/current.json atlas/v/202610312138/index.html"
+    },
+    {
+     "command": "node tools/twin/preserve.mjs"
+    }
+   ]
+  },
+  {
+   "id": "K07",
+   "claim": "The grid engine did not change: 4 cartridges (streaming-parquet-bridge, substation-intelligence, sld-sandbox, uk-lightning-overlay) are the same files with the same sha256 in 202610312138 and 202611132345, and the substation payload is the released file. Only uk-gazetteer-flyto and uk-offtakers-overlay were re-cut.",
+   "holds": true,
+   "measured": {
+    "carried": [
+     {
+      "id": "streaming-parquet-bridge",
+      "file": "atlas/cartridges/202609241251-streaming-parquet-bridge-v9-5.js",
+      "sha256": "60be8215ba873ac2886786bf6e3fd51e5764e7c5e26684fde71ebe9974a329a2",
+      "same_as_previous": true
+     },
+     {
+      "id": "substation-intelligence",
+      "file": "atlas/cartridges/202609062358-substation-intelligence-v9-63.js",
+      "sha256": "d94b0de50deddac77643325b10fbe490ce44b8c406dbc6c67e6e7cadbdaa8ec6",
+      "same_as_previous": true
+     },
+     {
+      "id": "sld-sandbox",
+      "file": "atlas/cartridges/202609241334-sld-sandbox-v9-8.js",
+      "sha256": "7812953671d8bb22a566de5e98fd3137da2d23411c5aecd526df5afa111ca4ca",
+      "same_as_previous": true
+     },
+     {
+      "id": "uk-lightning-overlay",
+      "file": "atlas/modules/202610291043-uk-lightning-overlay.js",
+      "sha256": "15ff1e37890770efc42b75651fac2fcc98a16c71a694481c79778ae0a6d818db",
+      "same_as_previous": true
+     }
+    ],
+    "recut": [
+     "uk-gazetteer-flyto",
+     "uk-offtakers-overlay"
+    ],
+    "substations": {
+     "file": "atlas/releases/202608300453-atlas-v9/data/grid_substations.geojson",
+     "sha256": "87976435766a58ddf19c99540b58cd7f18a224148af42ba55075d8851f9e6251"
+    }
+   },
+   "keys": [
+    {
+     "file": "atlas/v/202611132345/current.json",
+     "line": 31
+    },
+    {
+     "file": "atlas/v/202610312138/current.json",
+     "line": 31
+    },
+    {
+     "file": "atlas/v/202611132345/current.json",
+     "line": 573
+    },
+    {
+     "file": "atlas/v/202610312138/current.json",
+     "line": 573
+    },
+    {
+     "file": "atlas/v/202611132345/current.json",
+     "line": 88
+    },
+    {
+     "file": "atlas/v/202610312138/current.json",
+     "line": 88
+    },
+    {
+     "file": "atlas/v/202611132345/current.json",
+     "line": 641
+    },
+    {
+     "file": "atlas/v/202610312138/current.json",
+     "line": 641
+    },
+    {
+     "file": "atlas/releases/202608300453-atlas-v9/sha256sums.txt",
+     "line": 13
+    }
+   ]
+  },
+  {
+   "id": "K08",
+   "claim": "Nearest substation for retained REPD refs: of 11,001 refs in both 202608290716 and 202611132345, 10,982 have the identical coordinate, so the unchanged engine (K07) returns the identical answer; 19 were moved by the source register, and 19 of those now measure to a different nearest substation (listed).",
+   "holds": true,
+   "measured": {
+    "retained": 11001,
+    "added": 328,
+    "dropped": 68,
+    "identical_coordinate": 10982,
+    "moved": 19,
+    "moved_nearest_changed": 19,
+    "substations_qualifying": 5800,
+    "min_kv": 33,
+    "golden": {
+     "repd_ref": "16135",
+     "nearest": {
+      "name": "Brogborough Substation",
+      "kv": 33,
+      "km": 1.043
+     }
+    },
+    "moved_refs": [
+     {
+      "repd_ref": "7871",
+      "moved_km": 103.811,
+      "before": {
+       "name": "Erskine Substation",
+       "kv": 132,
+       "km": 1.995
+      },
+      "after": {
+       "name": "Kilgallioch Wind Farm Substation",
+       "kv": 275,
+       "km": 9.179
+      },
+      "same_substation": false
+     },
+     {
+      "repd_ref": "8842",
+      "moved_km": 0.264,
+      "before": {
+       "name": "Park Primary Substation",
+       "kv": 33,
+       "km": 3.81
+      },
+      "after": {
+       "name": "Park Primary Substation",
+       "kv": 33,
+       "km": 3.621
+      },
+      "same_substation": false
+     },
+     {
+      "repd_ref": "8912",
+      "moved_km": 581.288,
+      "before": {
+       "name": "Lowestoft Grid Substation",
+       "kv": 132,
+       "km": 41.117
+      },
+      "after": {
+       "name": "Stirling",
+       "kv": 132,
+       "km": 1.543
+      },
+      "same_substation": false
+     },
+     {
+      "repd_ref": "10222",
+      "moved_km": 59.461,
+      "before": {
+       "name": "Queen's Lane North Primary Substation",
+       "kv": 33,
+       "km": 0.66
+      },
+      "after": {
+       "name": "Fraserburgh",
+       "kv": 132,
+       "km": 1.66
+      },
+      "same_substation": false
+     },
+     {
+      "repd_ref": "10467",
+      "moved_km": 0.476,
+      "before": {
+       "name": "Torryburn Primary Substation",
+       "kv": 33,
+       "km": 1.474
+      },
+      "after": {
+       "name": "Torryburn Primary Substation",
+       "kv": 33,
+       "km": 1.379
+      },
+      "same_substation": false
+     },
+     {
+      "repd_ref": "10638",
+      "moved_km": 1.697,
+      "before": {
+       "name": "Rothienorman Substation",
+       "kv": 400,
+       "km": 3.039
+      },
+      "after": {
+       "name": "Rothienorman Substation",
+       "kv": 400,
+       "km": 1.883
+      },
+      "same_substation": false
+     },
+     {
+      "repd_ref": "10701",
+      "moved_km": 0.365,
+      "before": {
+       "name": "Torryburn Primary Substation",
+       "kv": 33,
+       "km": 1.766
+      },
+      "after": {
+       "name": "Torryburn Primary Substation",
+       "kv": 33,
+       "km": 1.624
+      },
+      "same_substation": false
+     },
+     {
+      "repd_ref": "12711",
+      "moved_km": 8.708,
+      "before": {
+       "name": "Strichen Substation",
+       "kv": 132,
+       "km": 3.34
+      },
+      "after": {
+       "name": "Fraserburgh",
+       "kv": 132,
+       "km": 1.66
+      },
+      "same_substation": false
+     },
+     {
+      "repd_ref": "13290",
+      "moved_km": 222.675,
+      "before": {
+       "name": "Unnamed substation",
+       "kv": 33,
+       "km": 7.093
+      },
+      "after": {
+       "name": "Berry Burn",
+       "kv": 275,
+       "km": 2.466
+      },
+      "same_substation": false
+     },
+     {
+      "repd_ref": "14535",
+      "moved_km": 9.459,
+      "before": {
+       "name": "Glenfarclas",
+       "kv": 132,
+       "km": 11.122
+      },
+      "after": {
+       "name": "Dorenell Wind Farm Substation",
+       "kv": 132,
+       "km": 7.845
+      },
+      "same_substation": false
+     },
+     {
+      "repd_ref": "14536",
+      "moved_km": 9.459,
+      "before": {
+       "name": "Glenfarclas",
+       "kv": 132,
+       "km": 11.122
+      },
+      "after": {
+       "name": "Dorenell Wind Farm Substation",
+       "kv": 132,
+       "km": 7.845
+      },
+      "same_substation": false
+     },
+     {
+      "repd_ref": "14926",
+      "moved_km": 3.833,
+      "before": {
+       "name": "Torryburn Primary Substation",
+       "kv": 33,
+       "km": 0.66
+      },
+      "after": {
+       "name": "Unnamed substation",
+       "kv": 275,
+       "km": 0.458
+      },
+      "same_substation": false
+     },
+     {
+      "repd_ref": "16884",
+      "moved_km": 10.109,
+      "before": {
+       "name": "Fraserburgh",
+       "kv": 132,
+       "km": 0.714
+      },
+      "after": {
+       "name": "Strichen Substation",
+       "kv": 132,
+       "km": 1.684
+      },
+      "same_substation": false
+     },
+     {
+      "repd_ref": "17760",
+      "moved_km": 0.064,
+      "before": {
+       "name": "Unnamed substation",
+       "kv": 33,
+       "km": 5.234
+      },
+      "after": {
+       "name": "Unnamed substation",
+       "kv": 33,
+       "km": 5.172
+      },
+      "same_substation": false
+     },
+     {
+      "repd_ref": "18504",
+      "moved_km": 7.957,
+      "before": {
+       "name": "Fyvie Primary Substation",
+       "kv": 33,
+       "km": 6.266
+      },
+      "after": {
+       "name": "Rothienorman Substation",
+       "kv": 400,
+       "km": 0.278
+      },
+      "same_substation": false
+     },
+     {
+      "repd_ref": "18563",
+      "moved_km": 364.451,
+      "before": {
+       "name": "Unnamed substation",
+       "kv": 33,
+       "km": 3.367
+      },
+      "after": {
+       "name": "Hawthorn Pit Grid",
+       "kv": 66,
+       "km": 3.124
+      },
+      "same_substation": false
+     },
+     {
+      "repd_ref": "18572",
+      "moved_km": 0.968,
+      "before": {
+       "name": "Rothienorman Substation",
+       "kv": 400,
+       "km": 0.79
+      },
+      "after": {
+       "name": "Rothienorman Substation",
+       "kv": 400,
+       "km": 0.258
+      },
+      "same_substation": false
+     },
+     {
+      "repd_ref": "21008",
+      "moved_km": 243.992,
+      "before": {
+       "name": "Wrexham Substation",
+       "kv": 132,
+       "km": 2.466
+      },
+      "after": {
+       "name": "Dromara Central Substation",
+       "kv": 33,
+       "km": 3.759
+      },
+      "same_substation": false
+     },
+     {
+      "repd_ref": "21026",
+      "moved_km": 195.666,
+      "before": {
+       "name": "Sheriff Hutton 1064",
+       "kv": 132,
+       "km": 4.559
+      },
+      "after": {
+       "name": "Patford Bridge Substation",
+       "kv": 400,
+       "km": 2.157
+      },
+      "same_substation": false
+     }
+    ]
+   },
+   "keys": [
+    {
+     "file": "atlas/cartridges/202609241334-sld-sandbox-v9-8.js",
+     "line": 1663
+    },
+    {
+     "file": "atlas/cartridges/202609241334-sld-sandbox-v9-8.js",
+     "line": 3338
+    },
+    {
+     "file": "atlas/releases/202608300453-atlas-v9/sha256sums.txt",
+     "line": 13
+    },
+    {
+     "command": "node tools/twin/keys.mjs --check   # K08 recomputes every moved ref with the shipped geodesy and sld-sandbox functions"
+    }
+   ]
+  },
+  {
+   "id": "K09",
+   "claim": "Pipeline News 202611140058 lists 7,775 REPD refs. 5,331 resolve to a record of 202611132345 by exact ref. 2,444 do not, because the snapshot keeps the four active statuses only; 3 of those have an active status in Pipeline News and still have no record (2484, 6483, 20218).",
+   "holds": true,
+   "measured": {
+    "release": "202611140058",
+    "refs": 7775,
+    "resolved": 5331,
+    "not_in_snapshot": 2444,
+    "not_in_snapshot_by_status": {
+     "Abandoned": 219,
+     "Appeal Lodged": 6,
+     "Appeal Refused": 296,
+     "Appeal Withdrawn": 39,
+     "Application Refused": 686,
+     "Application Withdrawn": 426,
+     "Awaiting Construction": 2,
+     "Decommissioned": 9,
+     "No Application Required": 2,
+     "Planning Permission Expired": 225,
+     "Revised": 533,
+     "Under Construction": 1
+    },
+    "active_without_record": [
+     {
+      "repd_ref": "2484",
+      "status": "Awaiting Construction"
+     },
+     {
+      "repd_ref": "6483",
+      "status": "Under Construction"
+     },
+     {
+      "repd_ref": "20218",
+      "status": "Awaiting Construction"
+     }
+    ],
+    "list": {
+     "file": "tools/twin/keys/202611132345-pipeline-news-refs.tsv",
+     "sha256": "1e16ea73a89b59fc27f5da072ef03112b8dfb795a54851638e5762468ffab7f9"
+    }
+   },
+   "keys": [
+    {
+     "file": "tools/twin/keys/202611132345-pipeline-news-refs.tsv",
+     "line": 1
+    },
+    {
+     "file": "tools/twin/sources.json",
+     "line": 27
+    },
+    {
+     "command": "node tools/twin/keys.mjs --check --pipeline-refs-network   # rebuilds the list from https://raw.githubusercontent.com/Ventusltd/globalgrid2050/9f2d94cfbc4a9c2e4806ac93dc973ce07e578a7d/uk_renewables_pipeline/202611140058/data/v9.1/build_manifest.json"
+    }
+   ]
+  },
+  {
+   "id": "K10",
+   "claim": "202611132345 is reproducible: its three data files and the cartridges it cut rebuild byte for byte from the pinned source with the repository's own compiler and cut tools.",
+   "holds": true,
+   "measured": {
+    "proved_by": "the twin job, not by this register: a claim whose only key is a command holds when that command exits 0"
+   },
+   "keys": [
+    {
+     "command": "node tools/twin/replicate-generation.mjs --generation 202611132345 --network"
+    }
+   ]
+  }
+ ]
+}

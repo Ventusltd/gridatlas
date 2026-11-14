@@ -190,12 +190,50 @@ exit code is 0 only when every check passes.
 - **`tools/rollback.mjs --dry-run`** checks rollback readiness, not the PR's
   content.
 
+## Twin, preservation and keys
+
+Three tools in `tools/twin/`, added with the October 2026 REPD generation
+(202611132345, NL-016). They change nothing: no pointer, no loader, no
+cartridge, no data file.
+
+| tool | what it proves | needs |
+|---|---|---|
+| `replicate-generation.mjs` | the twin: a generation rebuilds from its pinned source, in an empty temporary directory, with the repository's own compiler (`compiler/<G>-compile-atlas-v9.py`), `tools/build-cartridge.mjs` and the overlay `build.mjs`, and every rebuilt file equals the committed one byte for byte. A difference fails naming the file and the byte. | `--offline`: Node only. `--source`/`--oracle` or `--network`: Python with `requirements.lock` |
+| `preserve.mjs` | every `atlas/v/<G>/` cartridge pin, every release `sha256sums.txt`, every data manifest and every assembled cartridge still holds; the previous live generation is still published and composes through its own loader; with `--base`, nothing published at the base was edited or removed | Node only |
+| `keys.mjs` | the register of keys `tools/twin/keys/<G>.json` and `.txt`: each claim about the generation is measured again and names the file and line, or the command, that proves it. `--check` fails on a claim that no longer holds and on a register that differs from the committed one | Node only (`--pipeline-refs-network` to re-derive the Pipeline News list) |
+
+Pins live in `tools/twin/sources.json`: commit-pinned URLs with sha256 and byte
+count. Nothing fetched is used until it matches, and the pins must agree with
+the compiler's constants and the committed data manifest.
+
+Order, as in Ventusltd/testcode ("offline first, then network, then publish";
+nothing here publishes): `pr-gate.mjs` runs `preservation`, `twin-offline` and
+`keys` with no socket when a PR touches `atlas/`, `data/`, `compiler/` or
+`tools/`. The `twin` job of `pr-file-size-guard.yml` `needs: cartridge-gate`,
+then installs `requirements.lock`, fetches the pinned register and rebuilds the
+data files. By hand: dispatch `202608301321-verify-live.yml` with `mode=twin`.
+
+```
+node tools/twin/preserve.mjs --base origin/main
+node tools/twin/keys.mjs --check
+node tools/twin/replicate-generation.mjs --offline
+node tools/twin/replicate-generation.mjs --source repd-2026q3.csv --oracle repd_master.json
+node tools/twin/replicate-generation.mjs --network
+```
+
+A new data generation adds its entry to `sources.json` and its register with
+`node tools/twin/keys.mjs --write --generation <G>`. Exit codes keep the three
+outcome classes of `docs/CI-CD-PLAN.md` apart: 1 the generation is wrong, 2
+refused (nothing would have been examined), 3 this rig cannot build, 4 a pinned
+URL did not answer.
+
 ## Workflow budget
 
 `tools/scope/lib.mjs` `ACTIVE_WORKFLOWS` fixes the exact set of workflow files
 at nine, and `STATE.md` records that count. The gate was added as a second job
 in the one entry that is still enabled, so the budget, `STATE.md` and the
-ledger are unchanged. The decision is written down beside that entry in
+ledger are unchanged. The twin is a third job there and a fourth
+`mode` of `202608301321-verify-live.yml`, for the same reason. The decision is written down beside that entry in
 `lib.mjs`.
 
 ## Proof that the gate works
