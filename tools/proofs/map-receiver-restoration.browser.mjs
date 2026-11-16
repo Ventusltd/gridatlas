@@ -2,7 +2,8 @@
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import assert from 'node:assert/strict';
-const ROOT=process.cwd(), GEN='202611161645';
+const ROOT=process.cwd(), GEN=process.env.MAP_RECEIVER_GENERATION||'202611161645';
+assert.match(GEN,/^\d{12}$/);
 const widths=process.env.WIDTHS?.split(',').map(Number)||[390,393,1440];
 const refs=process.env.REFS?.split(',')||['12588','14535','2470'];
 const channel=process.env.BROWSER_CHANNEL||null;
