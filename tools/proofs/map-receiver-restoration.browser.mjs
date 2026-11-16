@@ -12,7 +12,7 @@ await fs.mkdir('work',{recursive:true});
 try{
  for(const width of widths)for(const ref of refs){
   const context=await browser.newContext({viewport:{width,height:900},hasTouch:width<700,isMobile:width<700});
-  await context.route('https://ventusltd.github.io/gridatlas/**',async route=>{
+  if (!process.env.MAP_RECEIVER_PUBLIC) await context.route('https://ventusltd.github.io/gridatlas/**',async route=>{
    const pathname=new URL(route.request().url()).pathname.replace(/^\/gridatlas\//,'');
    if(process.env.NESO_TIMEOUT==='1' && pathname.endsWith('neso-connection-sites.lean.json')){await new Promise(resolve=>setTimeout(resolve,6500));await route.abort().catch(()=>{});return;}
    const rel=pathname==='atlas/current.json'?`atlas/manifests/${GEN}-composition.json`:pathname.endsWith('/')?pathname+'index.html':pathname;
@@ -30,7 +30,7 @@ try{
   await receiver.locator('.neon-km').first().scrollIntoViewIfNeeded();
   assert.ok(await receiver.locator('.neon-km').first().isVisible());
   const r=await receiver.evaluate(()=>{const l=window.__GRIDATLAS_NEON_LINKS__,p=document.querySelector('.maplibregl-popup'),block=p?.querySelector('.gridatlas-neon-block')||p;return {generation:document.documentElement.dataset.gridatlasGeneration,url:location.href,compute:l.compute_receipt,neso:l.neso_lookup,identity:l.identity_verification,arrival:l.arrival_engine,selection:l.last_selection,links:l.links_drawn,failures:l.failures,technology:l.technology_layer,cardClass:p?.className,cardText:p?.innerText,rect:block?.getBoundingClientRect().toJSON()};});
-  r.width=width;r.ref=ref;r.errors=errors;r.browser=browserIdentity;
+  r.width=width;r.ref=ref;r.errors=errors;r.browser=browserIdentity;r.receiver_mode=process.env.MAP_RECEIVER_PUBLIC?'public':'local-candidate-interception';
   assert.equal(r.generation,GEN);assert.equal(new URL(r.url).searchParams.get('repd_ref'),ref);
   assert.equal(r.identity.repd_ref,ref);assert.equal(r.arrival.answered,true);assert.ok(Number.isFinite(r.selection.nearest_km));assert.ok(r.selection.nearest_name);
   assert.ok(!r.cardClass.includes('gridatlas-min'),'reader restore must persist');assert.match(r.cardText,/km/);assert.ok(r.rect.height>100);assert.deepEqual(errors,[]);

@@ -64,10 +64,7 @@ export const ACTIVE_WORKFLOWS = Object.freeze([
      28 Oct 2026: it also carries the cartridge-gate job (tools/ci/pr-gate.mjs,
      docs/CI.md). Extended rather than added because it is the only entry here
      still enabled in the repository settings, so the budget stays at nine. */
-  'pr-file-size-guard.yml',
-  // Candidate-only actual MAP clicks and visible owner computation receipts.
-  // Read-only PR/manual workflow; does not schedule collection or publish.
-  'map-receiver-candidate.yml'
+  'pr-file-size-guard.yml'
 ]);
 
 /* The registered composers (docs/LIGHTNING-CARTRIDGE.md). A served loader --

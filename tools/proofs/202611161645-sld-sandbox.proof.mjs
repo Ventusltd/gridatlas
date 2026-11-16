@@ -7,13 +7,14 @@ import {deriveCurrent,rerootForPreview} from '../release/lib.mjs';
 const root=new URL('../../',import.meta.url),G='202611161645';
 const read=p=>fs.readFileSync(new URL(p,root),'utf8').replace(/\r\n/g,'\n');
 const manifest=read(`atlas/manifests/${G}-composition.json`),candidate=JSON.parse(manifest),live=JSON.parse(read('atlas/current.json'));
-assert.equal(live.generation,'202611132345','production pointer must remain unchanged');
-assert.equal(candidate.previous_generation,live.generation);
+const parent=JSON.parse(read('atlas/manifests/202611132345-composition.json'));
+assert.ok([parent.generation,G].includes(live.generation),'live composition must be the declared parent or promoted candidate');
+assert.equal(candidate.previous_generation,parent.generation);
 assert.equal(read(`atlas/v/${G}/current.json`),rerootForPreview(deriveCurrent(manifest)));
 assert.equal(read(`atlas/v/${G}/index.html`),read('atlas/index.html'));
 for(const c of candidate.cartridges){
  const source=read('atlas/'+c.path);assert.equal(createHash('sha256').update(source).digest('hex'),c.sha256);
- if(c.id!=='sld-sandbox')assert.deepEqual(c,live.cartridges.find(x=>x.id===c.id));
+ if(c.id!=='sld-sandbox')assert.deepEqual(c,parent.cartridges.find(x=>x.id===c.id));
  else { assert.equal(Buffer.byteLength(source),c.bytes); new vm.Script(source); }
 }
 const bundle=read(`atlas/modules/${G}-ventus-compute-observer.js`);
@@ -30,4 +31,4 @@ const ctx={link:{},document:{baseURI:'https://ventusltd.github.io/gridatlas/atla
 vm.runInNewContext(cartridge.slice(start,end)+';globalThis.load=loadNesoSites',ctx);
 const pending=ctx.load();assert.equal(xhr.timeout,4000);xhr.ontimeout();await pending;
 assert.equal(ctx.link.neso_lookup.status,'failed');assert.equal(ctx.link.neso_lookup.reason,'TIMEOUT');
-console.log('Candidate hashes, unchanged production pointer, owner distance bundle and bounded lookup PASS; browser proof required separately.');
+console.log('Candidate hashes, immutable parent, owner distance bundle and bounded lookup PASS; browser proof required separately.');
