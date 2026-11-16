@@ -10,6 +10,8 @@ const manifest=read(`atlas/manifests/${G}-composition.json`),candidate=JSON.pars
 const parent=JSON.parse(read('atlas/manifests/202611132345-composition.json'));
 assert.ok([parent.generation,G].includes(live.generation),'live composition must be the declared parent or promoted candidate');
 assert.equal(candidate.previous_generation,parent.generation);
+assert.equal(candidate.superseded_generation,parent.generation);
+assert.equal(candidate.candidate_predecessor,parent.generation);
 assert.equal(read(`atlas/v/${G}/current.json`),rerootForPreview(deriveCurrent(manifest)));
 assert.equal(read(`atlas/v/${G}/index.html`),read('atlas/index.html'));
 for(const c of candidate.cartridges){
