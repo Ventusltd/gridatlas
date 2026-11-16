@@ -40,6 +40,9 @@ try{
   await receiver.screenshot({path:`work/map-${channel||'chromium'}-${width}-${ref}${process.env.NESO_TIMEOUT==='1'?'-timeout':''}.png`});
   await receiver.locator('.gridatlas-compute-state').scrollIntoViewIfNeeded();
   assert.ok(await receiver.locator('.gridatlas-compute-state').isVisible());
+  await receiver.evaluate(()=>new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve))));
+  const stateBounds=await receiver.locator('.gridatlas-compute-state').boundingBox();
+  assert.ok(stateBounds.x>=0 && stateBounds.x+stateBounds.width<=width,'owner state must fit the viewport horizontally');
   await receiver.screenshot({path:`work/engine-${channel||'chromium'}-${width}-${ref}${process.env.NESO_TIMEOUT==='1'?'-timeout':''}.png`});
   receipts.push(r);console.log('PASS',width,ref,r.identity.status,r.selection.nearest_name,r.selection.nearest_km);
   await context.close();
