@@ -13,9 +13,10 @@ import vm from 'node:vm';
 import fs from 'node:fs';
 import { gunzipSync } from 'node:zlib';
 import { createHash, webcrypto } from 'node:crypto';
+import { fileURLToPath } from 'node:url';
 import { El, makeDocument, dispatch } from '../lightning/minidom.mjs';
 
-const HERE = new URL('./', import.meta.url).pathname, REPO = HERE + '../../../';
+const HERE = fileURLToPath(new URL('./', import.meta.url)), REPO = HERE + '../../../';
 const MODULE = process.env.OFFTAKERS_MODULE, LMOD = process.env.LIGHTNING_MODULE || REPO + 'atlas/modules/202610290045-uk-lightning-overlay.js';
 if (!MODULE) throw new Error('set OFFTAKERS_MODULE');
 const SRC = fs.readFileSync(MODULE, 'utf8'), LSRC = fs.readFileSync(LMOD, 'utf8');
