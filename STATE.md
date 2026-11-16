@@ -5,7 +5,7 @@
 - Composition: `202611132345 · 202608300453-atlas-v9 · streaming-parquet-bridge → uk-gazetteer-flyto → substation-intelligence → sld-sandbox → uk-lightning-overlay → uk-offtakers-overlay`
 - Top-level full release copies: `0`
 - Immutable releases under atlas/releases: `8`
-- Active workflows: `10`
+- Active workflows: `9`
 - Historical workflows archived: `21`
 - Last-known-green shell: `202608300453-atlas-v9`
 

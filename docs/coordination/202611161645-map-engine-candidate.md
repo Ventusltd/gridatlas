@@ -2,8 +2,8 @@
 
 Candidate composition `202611161645` / V9.190 derives from live `202611132345`.
 The live pointer and historical shells/cartridges remain unchanged.
-The new read-only browser CI workflow is registered in the workflow budget;
-`STATE.md` is regenerated only to record its count (10).
+The actual browser job extends the existing PR workflow, preserving the
+repository workflow budget and STATE.md.
 
 The real V9.24 MAP click for REPD 12588 at 390px reproduced issue #87: the
 engine measured five nearby substations, but the reader's restored card
@@ -47,6 +47,8 @@ Default sample: refs 12588 (solar), 14535 (onshore wind), 2470 (offshore wind)
 at 390, 393 and 1440px. It checks actual numeric results, owner computation
 receipts, exact identity, visible kilometre text and persistence after restore.
 Set `NESO_TIMEOUT=1 WIDTHS=390 REFS=12588` to test a stalled optional lookup.
+After promotion, set `MAP_RECEIVER_PUBLIC=1` to disable local interception and
+run exactly the same assertions against the real public receiver.
 JSON receipts go into ignored `work/`; no machine paths or credentials belong
 in public artifacts. This sample does not prove all 7,775 projects or physical
 iPhone behavior, and does not classify nearshore versus distant offshore.
