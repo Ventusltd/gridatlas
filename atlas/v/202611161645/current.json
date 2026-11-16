@@ -236,8 +236,8 @@
    "measurement": {
     "formula": "haversine",
     "radius_km": 6378.137,
-    "implementation": "Ventusltd/grid-distance-maths src/geodesy.mjs",
-    "parity": "every distance checked equal to the canonical module in tools/proofs/202608311910-neon-substation-links.proof.mjs",
+    "implementation": "Ventusltd/ventus-grid-engine engine/v9-geodesy.js at 487ec7bd38dfa5aecb1c75da53b4a866ab2101cb; GridAtlas ranks and renders",
+    "parity": "Owner observer independently checks every returned node distance against the owned distanceKm; sampled real-browser receipts, not fleet-wide acceptance",
     "minimum_kv": 33,
     "scope_note": "11 kV is excluded: rare for utility-scale export and often a private network behind the meter"
    },
@@ -562,7 +562,7 @@
      "upstream": "Elexon settlement prices as the owner repository publishes them"
     }
    ],
-   "bytes": 435218,
+   "bytes": 452309,
    "derived_from": "../../cartridges/202609200022-sld-sandbox-v9-8.js"
   },
   {
