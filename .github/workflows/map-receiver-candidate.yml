@@ -41,5 +41,7 @@ jobs:
         if: always()
         with:
           name: map-receiver-${{ github.event.pull_request.head.sha || github.sha }}
-          path: work/map-*
+          path: |
+            work/map-*
+            work/engine-*
           retention-days: 14
