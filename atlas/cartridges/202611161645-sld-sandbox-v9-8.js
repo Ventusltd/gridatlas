@@ -4404,7 +4404,7 @@ globalThis.VentusGridCompute = Object.freeze({ schema, distanceKm, createCompute
     node.dataset.status = presentation.status;
     node.dataset.entityId = link.compute_receipt.entity.id;
     node.setAttribute('aria-live', 'polite');
-    node.textContent = 'Ventus Grid Engine distance calculation ? ' + presentation.text
+    node.textContent = 'Ventus Grid Engine distance calculation: ' + presentation.text
       + (presentation.reason ? ': ' + presentation.reason : '') + '. ' + presentation.scope;
   }
 
