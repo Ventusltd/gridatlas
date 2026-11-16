@@ -38,6 +38,9 @@ try{
   if(process.env.NESO_TIMEOUT==='1'){assert.equal(r.neso.status,'failed');assert.equal(r.neso.reason,'TIMEOUT');assert.match(r.cardText,/Declared connection lookup unavailable/);}
   assert.equal(r.technology.enabled,true);assert.deepEqual(r.failures,[]);
   await receiver.screenshot({path:`work/map-${channel||'chromium'}-${width}-${ref}${process.env.NESO_TIMEOUT==='1'?'-timeout':''}.png`});
+  await receiver.locator('.gridatlas-compute-state').scrollIntoViewIfNeeded();
+  assert.ok(await receiver.locator('.gridatlas-compute-state').isVisible());
+  await receiver.screenshot({path:`work/engine-${channel||'chromium'}-${width}-${ref}${process.env.NESO_TIMEOUT==='1'?'-timeout':''}.png`});
   receipts.push(r);console.log('PASS',width,ref,r.identity.status,r.selection.nearest_name,r.selection.nearest_km);
   await context.close();
  }
