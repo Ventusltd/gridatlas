@@ -227,20 +227,30 @@ jobs:
           if-no-files-found: ignore
 
   map-receiver-browser:
-    if: github.event_name == 'pull_request' && github.event.pull_request.head.ref == 'fix/v925-map-receiver'
+    if: github.event_name == 'pull_request' && (github.event.pull_request.head.ref == 'fix/v925-map-receiver' || github.event.pull_request.head.ref == 'fix/v9191-release-contract')
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 30
+    env:
+      MAP_RECEIVER_GENERATION: ${{ github.event.pull_request.head.ref == 'fix/v9191-release-contract' && '202611161720' || '202611161645' }}
     steps:
       - uses: actions/checkout@v4
         with:
           ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          fetch-depth: 0
+          persist-credentials: false
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
           cache: npm
       - run: npm ci
       - run: npx playwright install --with-deps chromium
-      - run: node tools/proofs/202611161645-sld-sandbox.proof.mjs
+      - run: node tools/proofs/${MAP_RECEIVER_GENERATION}-sld-sandbox.proof.mjs
+      - name: Real release and byte-exact route-C rollback rehearsal
+        if: github.event.pull_request.head.ref == 'fix/v9191-release-contract'
+        run: |
+          git config user.name "GridAtlas rehearsal"
+          git config user.email "rehearsal@users.noreply.github.com"
+          node tools/release/map-promotion-rehearsal.mjs
       - name: Real MAP clicks and visible calculation results
         run: node tools/proofs/map-receiver-restoration.browser.mjs
       - name: Stalled declared-connection lookup remains explicit
