@@ -1,7 +1,7 @@
 {
  "schema": "gridatlas.current.v2",
- "generation": "202611132345",
- "previous_generation": "202610312138",
+ "generation": "202611161720",
+ "previous_generation": "202611132345",
  "architecture": "IMMUTABLE_SHELL_PLUS_HASHED_CARTRIDGES",
  "live_route": "/gridatlas/atlas/",
  "release_id": "202608300453-atlas-v9",
@@ -79,13 +79,13 @@
   },
   {
    "id": "sld-sandbox",
-   "generation": "202609241334",
-   "version": "v9.156",
+   "generation": "202611161720",
+   "version": "v9.191",
    "type": "script",
    "slot": "replace-script",
    "replace_script": "202608292126-pre-snapped-config-adapter.js",
-   "path": "./cartridges/202609241334-sld-sandbox-v9-8.js",
-   "sha256": "7812953671d8bb22a566de5e98fd3137da2d23411c5aecd526df5afa111ca4ca",
+   "path": "./cartridges/202611161720-sld-sandbox-v9-8.js",
+   "sha256": "b1daa991ca738027a34c465e84d48355cf5d0902e76e7db5b318b6342c55df6d",
    "capabilities": [
     "pre-snapped-config-adapter-carried-forward",
     "project-or-substation-selection",
@@ -221,7 +221,10 @@
     "status-box-places-itself-clear-of-the-top-furniture",
     "card-top-and-side-bounds-with-effective-scroll-height",
     "ordinary-feature-card-close-clear-of-mobile-search",
-    "ordinary-card-styles-returned-when-project-controls-arrive"
+    "ordinary-card-styles-returned-when-project-controls-arrive",
+    "reader-restore-survives-identity-reconciliation",
+    "optional-neso-lookup-bounded-and-explicit",
+    "ventus-owner-observer-at-actual-nearest-calculation"
    ],
    "immutable_shell_modified": false,
    "supersedes_shell_script": {
@@ -233,8 +236,8 @@
    "measurement": {
     "formula": "haversine",
     "radius_km": 6378.137,
-    "implementation": "Ventusltd/grid-distance-maths src/geodesy.mjs",
-    "parity": "every distance checked equal to the canonical module in tools/proofs/202608311910-neon-substation-links.proof.mjs",
+    "implementation": "Ventusltd/ventus-grid-engine engine/v9-geodesy.js at 487ec7bd38dfa5aecb1c75da53b4a866ab2101cb; GridAtlas ranks and renders",
+    "parity": "Owner observer independently checks every returned node distance against the owned distanceKm; sampled real-browser receipts, not fleet-wide acceptance",
     "minimum_kv": 33,
     "scope_note": "11 kV is excluded: rare for utility-scale export and often a private network behind the meter"
    },
@@ -559,7 +562,7 @@
      "upstream": "Elexon settlement prices as the owner repository publishes them"
     }
    ],
-   "bytes": 435218,
+   "bytes": 452309,
    "derived_from": "./cartridges/202609200022-sld-sandbox-v9-8.js"
   },
   {
@@ -834,7 +837,14 @@
   "cvaa_guide": "https://github.com/Ventusltd/cvaa/blob/main/202608301321-gridatlas-amnesia-vaccine.txt",
   "sandbox_source": "https://github.com/Ventusltd/globalgrid2050/blob/main/solar-bess-topology-v7/gis-sld-financial-sandbox/gis-sld-v5-ui.js",
   "cvaa_commit": "d2ebc01f6eab41f2a84b0c53c4cfae0d2625ec5e",
-  "v8_oracle_commit": "f2f343a92ee972cc74ed23b4b99d8a22896791ad"
+  "v8_oracle_commit": "f2f343a92ee972cc74ed23b4b99d8a22896791ad",
+  "compute_observer": {
+   "repository": "https://github.com/Ventusltd/ventus-grid-engine",
+   "commit": "487ec7bd38dfa5aecb1c75da53b4a866ab2101cb",
+   "file": "./modules/202611161645-ventus-compute-observer.js",
+   "sha256": "46ec65f3e50f12061c86aad729b76aae01c55e444162d1bcc3309d769c36aefa",
+   "scope": "Owned distanceKm executes for every candidate substation; GridAtlas ranks and renders; owner observer validates exact origin/entity and km receipts."
+  }
  },
  "search_lanes": {
   "repd": {
@@ -860,15 +870,15 @@
    "result_class": "LOCATION_ONLY"
   }
  },
- "composition_manifest": "./manifests/202611132345-composition.json",
+ "composition_manifest": "./manifests/202611161720-composition.json",
  "scope_closure": {
   "generation": "202609010726",
   "status": "DONE",
   "scope": "GridAtlas v9.42 the price panel revalidates",
   "schedule_retired": true
  },
- "composition_version": "v9.189",
- "composition_id": "202611132345-gridatlas-v9.189",
+ "composition_version": "v9.191",
+ "composition_id": "202611161720-gridatlas-v9.191",
  "transport": {
   "response_contract": "HEADERS_BEFORE_PARQUET_BODY",
   "engine_timeout_seconds": 15,
@@ -883,8 +893,8 @@
   "fidelity_workflow": ".github/workflows/202608301931-layer-fidelity.yml",
   "payload_cache": "RELEASE_AFTER_SERIALISATION"
  },
- "composition_note": "v9.189: REPD search and record snapshot re-pinned from 202608290716 (Q2, 11069 rows) to 202611132345 (REPD_2026Q3_cleaned.csv, October 2026 / Q3, 11329 rows, sha256 b90bda5acaa2); uk-gazetteer-flyto and uk-offtakers-overlay re-cut for the new URL, hashes and closure counts only; uk-lightning-overlay unchanged from 202610312138 (module 202610291043, its REPD record lookup stays on 202608290716 until a separate lightning cut); every other cartridge, the drawn REPD layer (data-gridatlas Q1 oracle) and the loader unchanged. Carried from v9.188: 202610292044 re-pinned to the 226-record pipeline file, otherwise unchanged; 202610291043 recomposed, behaviour unchanged. The lightning overlay is its own cartridge (slot after-cartridge, its own script tag directly after sld-sandbox, where the appended module ran), and sld-sandbox is the original 202609241334 cartridge again (435218 bytes). Served by loader v2. Plus the potential-offtakers overlay with the data-centre category and the Grid Engine 30/30/30 (#73 steps 7-8, lane DC-B1; card DC-B2, engine DC-B3): data centres are their own class (violet, a status ring, sized by stated IT load else grid connection; 226 records from the open UK data-centre pipeline (DC-A7's pinned snapshot at data-grid-gb 01a4491, Wapseys Wood one site), 225 drawn, one (Ebbsfleet) without coordinates and never drawn), and a data-centre tap lists the 30 nearest substations (the engine's gridScope.scope within 40 km; the original nearestSubstations for the first 5), the 30 nearest REPD sites (40 km) and the 30 nearest conventional power sites (DC-A6's pinned file; any distance, lines only up to 100 km), in tabs Area · Substations · REPD · Conventional, nearest 10 drawn then Show all, with a CSV of all rows. Other offtakers keep 15 REPD + 5 substations. One data correction: Marchwood (OT-B-0823) is a gas CCGT, not biomass. IT load and grid connection are never conflated; a pipeline entry is not a commitment; proximity is not connection, capacity or feasibility.",
- "superseded_generation": "202610312138",
- "candidate_predecessor": "202610312138",
+ "composition_note": "Repair release contract: evidence-backed no-full-copy attestation and exact parent lineage; accepted MAP and owned distance calculation bytes unchanged.",
+ "superseded_generation": "202611132345",
+ "candidate_predecessor": "202611132345",
  "loader": "v2"
 }
