@@ -167,6 +167,18 @@ for (const c of own) {
     if (r.code !== 0 || !fs.existsSync(out)) { R.fail(name, `tools/${kind}/build.mjs exit ${r.code}: ${(r.stderr || r.stdout).trim().slice(0, 200)}`); continue; }
     same(name, out, c.file);
     if (sha256(fs.readFileSync(out)) !== c.sha256) R.fail(`${name} pin`, `rebuilt ${c.file} is not the sha256 atlas/v/${G}/current.json pins`);
+  } else if (c.id === 'sld-sandbox' && exists('tools/sld/generations.json') && readJson('tools/sld/generations.json').generations[G]) {
+    // Only pinned source inputs enter this empty tree. The expected final cartridge is absent.
+    const entry = readJson('tools/sld/generations.json').generations[G];
+    const tree = path.join(work, 'sld-source');
+    for (const rel of ['tools/sld/build.mjs', 'tools/sld/generations.json', entry.base.path, entry.owner.path, entry.edits]) {
+      const to = path.join(tree, rel); fs.mkdirSync(path.dirname(to), { recursive: true }); fs.copyFileSync(abs(rel), to);
+    }
+    const out = path.join(work, path.basename(c.file));
+    const r = run(['node', path.join(tree, 'tools/sld/build.mjs'), '--gen', G, '--out', out]);
+    if (r.code !== 0 || !fs.existsSync(out)) { R.fail(name, 'SLD source rebuild failed: ' + (r.stderr || r.stdout).trim().slice(0, 200)); continue; }
+    same(name, out, c.file);
+    if (sha256(fs.readFileSync(out)) !== c.sha256) R.fail(name + ' pin', 'rebuilt SLD differs from the composition pin');
   } else {
     R.fail(name, `${c.file} was cut at ${G} but no builder is known for it (not assembled_from, not an overlay module); the twin cannot rebuild it`);
   }
