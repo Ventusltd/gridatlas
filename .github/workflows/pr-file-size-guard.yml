@@ -134,7 +134,10 @@ jobs:
       - name: Fetch the base commit the PR is diffed against
         env:
           BASE_SHA: ${{ github.event.pull_request.base.sha }}
-        run: git fetch --no-tags --depth=1 origin "$BASE_SHA"
+        run: |
+          git fetch --no-tags --depth=1 origin "$BASE_SHA"
+          # Immutable proof anchor for the V9.191 no-copy assertion. Keep the checkout shallow.
+          git fetch --no-tags --depth=1 origin 76653e40cf883e39497a0859d2532eb8b05930b1
 
       - name: Node (exact pin)
         uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v4
@@ -171,7 +174,10 @@ jobs:
       - name: Fetch the base commit the PR is diffed against
         env:
           BASE_SHA: ${{ github.event.pull_request.base.sha }}
-        run: git fetch --no-tags --depth=1 origin "$BASE_SHA"
+        run: |
+          git fetch --no-tags --depth=1 origin "$BASE_SHA"
+          # Immutable proof anchor for the V9.191 no-copy assertion. Keep the checkout shallow.
+          git fetch --no-tags --depth=1 origin 76653e40cf883e39497a0859d2532eb8b05930b1
       - name: Node (exact pin)
         uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v4
         with:
@@ -227,17 +233,21 @@ jobs:
           if-no-files-found: ignore
 
   map-receiver-browser:
-    if: github.event_name == 'pull_request' && (github.event.pull_request.head.ref == 'fix/v925-map-receiver' || github.event.pull_request.head.ref == 'fix/v9191-release-contract')
+    if: github.event_name == 'pull_request' && (github.event.pull_request.head.ref == 'fix/v925-map-receiver' || github.event.pull_request.head.ref == 'fix/v9191-release-contract' || github.event.pull_request.head.ref == 'fix/v9191-promoted-gate')
     runs-on: ubuntu-latest
     timeout-minutes: 30
     env:
-      MAP_RECEIVER_GENERATION: ${{ github.event.pull_request.head.ref == 'fix/v9191-release-contract' && '202611161720' || '202611161645' }}
+      MAP_RECEIVER_GENERATION: ${{ github.event.pull_request.head.ref == 'fix/v925-map-receiver' && '202611161645' || '202611161720' }}
     steps:
       - uses: actions/checkout@v4
         with:
           ref: ${{ github.event.pull_request.head.sha || github.sha }}
-          fetch-depth: 0
+          fetch-depth: 1
           persist-credentials: false
+      - name: Prepare shallow proof history
+        run: |
+          test "$(git rev-parse --is-shallow-repository)" = true
+          git fetch --no-tags --depth=1 origin 76653e40cf883e39497a0859d2532eb8b05930b1
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
@@ -246,7 +256,7 @@ jobs:
       - run: npx playwright install --with-deps chromium
       - run: node tools/proofs/${MAP_RECEIVER_GENERATION}-sld-sandbox.proof.mjs
       - name: Real release and byte-exact route-C rollback rehearsal
-        if: github.event.pull_request.head.ref == 'fix/v9191-release-contract'
+        if: github.event.pull_request.head.ref == 'fix/v9191-release-contract' || github.event.pull_request.head.ref == 'fix/v9191-promoted-gate'
         run: |
           git config user.name "GridAtlas rehearsal"
           git config user.email "rehearsal@users.noreply.github.com"

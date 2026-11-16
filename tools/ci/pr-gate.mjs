@@ -445,6 +445,8 @@ group('release-tools', () => {
     `${scripts.length} script(s) parse${bad.length ? `; SYNTAX ERROR in ${bad.join(', ')}` : ''}; ${tests.length} test file(s): ${counts || 'none'}`);
 });
 
+step('sld-source', ['node', '--test', 'tools/sld/build.test.mjs']);
+
 // ---------------------------------------------------------------- 9
 // The twin, preservation and the register of keys (tools/twin/, docs/CI.md). Offline here; the data rebuild from the
 // pinned source runs in the workflow's twin job, which needs this gate first (offline first, then network).

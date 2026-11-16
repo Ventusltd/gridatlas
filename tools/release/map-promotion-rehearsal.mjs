@@ -56,6 +56,13 @@ try {
   summary.after={gates:released.gates,release_commit:released.release_commit,before:released.before,after:released.after};
   console.log('AFTER PASS: actual release committed only pointer/STATE; every promotion gate passed.');
 
+  // The preview gate sees the predecessor; exercise the full PR gate with the actual promoted composition.
+  const promotedGate=invoke('tools/ci/pr-gate.mjs',['--base',originalHead]);
+  fs.writeFileSync(path.join(checkout,'work/promoted-pr-gate.log'),promotedGate.output);
+  assert.equal(promotedGate.status,0,promotedGate.output);
+  summary.promoted_pr_gate={passed:true,summary:promotedGate.output.match(/\d+\/\d+ checks passed/)?.[0]};
+  console.log('PROMOTED PR GATE PASS: '+summary.promoted_pr_gate.summary);
+
   const reverted=invoke('tools/release/rollback-generation.mjs',[
     '--release-commit',released.release_commit,'--base',released.release_commit,
     '--branch',branch('rollback'),'--reason','Local route-C regression rehearsal only; never publish',
