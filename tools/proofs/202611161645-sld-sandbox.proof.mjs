@@ -14,7 +14,7 @@ assert.equal(read(`atlas/v/${G}/index.html`),read('atlas/index.html'));
 for(const c of candidate.cartridges){
  const source=read('atlas/'+c.path);assert.equal(createHash('sha256').update(source).digest('hex'),c.sha256);
  if(c.id!=='sld-sandbox')assert.deepEqual(c,live.cartridges.find(x=>x.id===c.id));
- else new vm.Script(source);
+ else { assert.equal(Buffer.byteLength(source),c.bytes); new vm.Script(source); }
 }
 const bundle=read(`atlas/modules/${G}-ventus-compute-observer.js`);
 assert.equal(createHash('sha256').update(bundle).digest('hex'),candidate.provenance.compute_observer.sha256);
