@@ -2,6 +2,8 @@
 
 Candidate composition `202611161645` / V9.190 derives from live `202611132345`.
 The live pointer and historical shells/cartridges remain unchanged.
+The new read-only browser CI workflow is registered in the workflow budget;
+`STATE.md` is regenerated only to record its count (10).
 
 The real V9.24 MAP click for REPD 12588 at 390px reproduced issue #87: the
 engine measured five nearby substations, but the reader's restored card
