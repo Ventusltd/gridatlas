@@ -100,9 +100,9 @@ acceptance is separately performed by the parent reviewer.
 Only narrow government-authored facts are used under the stated GOV.UK OGL v3
 footer, with independent exact-fact review references supplied by Agent A and
 Agent B. Images, logos, linked submissions, unreviewed document bodies and
-third-party material are excluded. The licence endpoint returned HTTP403 in
-the source review; that access limitation does not become blanket reuse
-approval. Visible document/event dates retain DAY precision; retrieval remains
+third-party material are excluded. Review evidence is the actual source-page
+footer and the recorded narrow fact review; no independent licence-endpoint
+retrieval is asserted here. Visible document/event dates retain DAY precision; retrieval remains
 an explicit UTC instant and source update time remains unknown unless supplied.
 
 One documentary planning example does not complete the original GJ-04 regional
