@@ -31,7 +31,7 @@ try {
   const native = await page.evaluate(() => {const m=window.__GRIDATLAS_V9_MAP__; return {constructor:m.constructor.name,version:window.maplibregl?.version,canvas:!!m.getCanvas().getContext('webgl2') || !!m.getCanvas().getContext('webgl'),container:m.getContainer().id,existingLayers:m.getStyle().layers.length,existingLayerIds:m.getStyle().layers.map(l=>l.id)};});
   assert.equal(native.version, '3.6.2'); assert.ok(native.canvas); assert.ok(native.existingLayers > 0);
   await page.locator('.gj-launch').click();
-  await assert.equal(await page.locator('.gj-status').textContent().then(t=>t.startsWith('WITHHELD')),true);
+  await assert.match(await page.locator('.gj-status').textContent(),/Explore the physical grid/);
   assert.equal(await page.evaluate(()=>!!window.__GRIDATLAS_V9_MAP__.getSource('gridatlas-gj03-route')), false);
   await page.getByRole('button',{name:'Load SYNTHETIC demonstration',exact:true}).click();
   assert.equal(await page.evaluate(()=>!!window.__GRIDATLAS_V9_MAP__.getSource('gridatlas-gj03-route')), false);
@@ -81,7 +81,7 @@ try {
   await page.waitForFunction(()=>!!window.__GRIDATLAS_V9_MAP__.getLayer('gridatlas-gj03-schematic'));
   await page.evaluate(()=>window.dispatchEvent(new CustomEvent('gridatlas:card-open',{detail:{owner:'offtakers'}})));
   assert.equal(await page.evaluate(()=>!!window.__GRIDATLAS_V9_MAP__.getSource('gridatlas-gj03-route')),false);
-  assert.match(await page.locator('.gj-status').textContent(),/WITHHELD/);
+  assert.match(await page.locator('.gj-status').textContent(),/surrounding grid/);
   const foreign = {type:'FeatureCollection',features:[{type:'Feature',properties:{owner:'external-preserve'},geometry:{type:'Point',coordinates:[0,50]}}]};
   await page.evaluate(data=>window.__GRIDATLAS_V9_MAP__.addSource('gridatlas-gj03-cursor',{type:'geojson',data}),foreign);
   await page.getByRole('button',{name:'Load SYNTHETIC demonstration',exact:true}).click();
