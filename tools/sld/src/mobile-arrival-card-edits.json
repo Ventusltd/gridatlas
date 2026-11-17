@@ -1,0 +1,18 @@
+[
+  {
+    "before": "  function addCardBar(content) {\n",
+    "after": "  function syncArrivalDetailsButton(popup) {\n    const button = popup?.querySelector('.gridatlas-card-bar .min');\n    if (!button) return;\n    const minimised = popup.classList.contains('gridatlas-min');\n    button.textContent = minimised ? 'Details' : 'Map';\n    button.title = minimised ? 'Show project details' : 'Minimise project details';\n    button.setAttribute('aria-label', button.title);\n    button.setAttribute('aria-expanded', String(!minimised));\n    button.style.minHeight = '44px';\n    button.style.minWidth = '62px';\n  }\n\n  function renderArrivalCardSummary(content, links, direction) {\n    const popup = content?.closest?.('.maplibregl-popup');\n    const label = content?.querySelector('.gridatlas-card-bar .label');\n    if (!popup || !label) return;\n    syncArrivalDetailsButton(popup);\n    let summary = label.querySelector('.gridatlas-arrival-summary');\n    if (!summary) {\n      summary = document.createElement('span');\n      summary.className = 'gridatlas-arrival-summary';\n      summary.setAttribute('role', 'status');\n      summary.setAttribute('aria-live', 'polite');\n      summary.style.cssText = 'display:block;white-space:normal;font-size:11px;line-height:1.3;font-weight:normal';\n      label.appendChild(summary);\n    }\n    label.style.whiteSpace = 'normal';\n    label.style.minWidth = '0';\n    const nearest = links[0] || links.beyondRadiusNearest;\n    const kind = direction === 'from-substation' ? 'project' : 'substation';\n    summary.textContent = nearest && Number.isFinite(nearest.km)\n      ? 'Nearest mapped ' + kind + ': ' + (nearest.name || 'name not supplied')\n        + ' | ' + nearest.km.toFixed(1) + ' km straight-line. Screening only; connection unverified.'\n      : 'No mapped ' + kind + ' distance available. Connection unverified.';\n  }\n\n  function addCardBar(content) {\n"
+  },
+  {
+    "before": "      bar.querySelector('.min').innerHTML = popup.classList.contains('gridatlas-min')\n        ? '&plus;' : '&minus;';",
+    "after": "      syncArrivalDetailsButton(popup);"
+  },
+  {
+    "before": "    if (toggle) toggle.innerHTML = arriveMinimised ? '&plus;' : '&minus;';",
+    "after": "    if (toggle) syncArrivalDetailsButton(popup);"
+  },
+  {
+    "before": "    resetCardGeometry(content, links.length);\n    addCardBar(content);",
+    "after": "    resetCardGeometry(content, links.length);\n    addCardBar(content);\n    renderArrivalCardSummary(content, links, direction);"
+  }
+]
