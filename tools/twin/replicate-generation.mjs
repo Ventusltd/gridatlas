@@ -179,6 +179,18 @@ for (const c of own) {
     if (r.code !== 0 || !fs.existsSync(out)) { R.fail(name, 'SLD source rebuild failed: ' + (r.stderr || r.stdout).trim().slice(0, 200)); continue; }
     same(name, out, c.file);
     if (sha256(fs.readFileSync(out)) !== c.sha256) R.fail(name + ' pin', 'rebuilt SLD differs from the composition pin');
+  } else if (['grid-journey-preview', 'grid-vicinity'].includes(c.id)) {
+    // Rebuild source-owned explorer modules in an empty tree. No expected output enters it.
+    const kind = c.id === 'grid-journey-preview' ? 'journey' : 'vicinity';
+    const tree = path.join(work, `${kind}-source`), rel = `tools/${kind}`;
+    fs.mkdirSync(path.join(tree, 'tools'), {recursive: true});
+    fs.cpSync(abs(rel), path.join(tree, rel), {recursive: true});
+    const out = path.join(work, path.basename(c.file));
+    const entry = kind === 'journey' ? 'build-module.mjs' : 'build.mjs';
+    const r = run(['node', path.join(tree, rel, entry), '--generation', G, '--out', out]);
+    if (r.code !== 0 || !fs.existsSync(out)) { R.fail(name, `${kind} source rebuild failed: ${(r.stderr || r.stdout).trim().slice(0, 200)}`); continue; }
+    same(name, out, c.file);
+    if (sha256(fs.readFileSync(out)) !== c.sha256) R.fail(`${name} pin`, 'Rebuilt explorer module differs from the composition pin');
   } else {
     R.fail(name, `${c.file} was cut at ${G} but no builder is known for it (not assembled_from, not an overlay module); the twin cannot rebuild it`);
   }
