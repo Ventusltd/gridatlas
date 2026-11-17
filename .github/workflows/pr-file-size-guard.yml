@@ -138,6 +138,8 @@ jobs:
           git fetch --no-tags --depth=1 origin "$BASE_SHA"
           # Immutable proof anchor for the V9.191 no-copy assertion. Keep the checkout shallow.
           git fetch --no-tags --depth=1 origin 76653e40cf883e39497a0859d2532eb8b05930b1
+          # GJ-03 proves the operative pointer/loader/state stay byte-identical to this audited base.
+          if [ -f tools/journey/build.mjs ]; then git fetch --no-tags --depth=1 origin 1de35f9eca360a5d80d81542230fef546917f5c5; fi
 
       - name: Node (exact pin)
         uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v4
@@ -231,6 +233,41 @@ jobs:
           name: dc-browser-smoke-${{ github.run_id }}
           path: ${{ runner.temp }}/gridatlas-dc-browser/
           if-no-files-found: ignore
+
+  journey-preview-browser:
+    if: github.event_name == 'pull_request' && github.event.pull_request.head.ref == 'agent-b/gj03-native-preview-20261117'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    env:
+      JOURNEY_BROWSER_OUTPUT: work/journey-browser
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 1
+          persist-credentials: false
+      - name: Fetch immutable protected-file proof anchor
+        run: git fetch --no-tags --depth=1 origin 1de35f9eca360a5d80d81542230fef546917f5c5
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020
+        with:
+          node-version: '24.15.0'
+          cache: npm
+      - run: npm ci
+      - run: npx playwright install --with-deps chromium
+      - name: Deterministic preview and evidence refusals
+        run: |
+          node tools/journey/build.mjs --check
+          node tools/proofs/202611171525-grid-journey-preview.proof.mjs
+          node tools/journey/contract.test.mjs
+          node --test tools/journey/controller.test.mjs
+      - name: Actual native composer, mobile and lifecycle acceptance
+        run: node tools/journey/browser.test.mjs
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: journey-preview-${{ github.event.pull_request.head.sha }}
+          path: work/journey-browser
+          retention-days: 14
 
   map-receiver-browser:
     if: github.event_name == 'pull_request' && (github.event.pull_request.head.ref == 'fix/v925-map-receiver' || github.event.pull_request.head.ref == 'fix/v9191-release-contract' || github.event.pull_request.head.ref == 'fix/v9191-promoted-gate')
