@@ -657,8 +657,8 @@ function createJourneyController({map, document: D, window: W, planner, fixture,
   el('strong', 'GRID JOURNEYS', heading);
   const close = el('button', 'Close', heading, {type: 'button', 'aria-label': 'Close Grid Journey'});
   const caption = el('p', caveat, panel, {class: 'gj-caveat'});
-  const state = el('p', 'WITHHELD: no reviewed real node/route or dataset-specific rights supplied. Nearby assets and shared coordinates do not establish a connection.', panel, {role: 'status', 'aria-live': 'polite', class: 'gj-status'});
-  const context = el('p', 'Select an asset on the map for spatial context. Real circuit journeys remain withheld.', panel, {class: 'gj-origin'});
+  const state = el('p', 'Explore the physical grid on the map, or choose a learning demonstration below.', panel, {role: 'status', 'aria-live': 'polite', class: 'gj-status'});
+  const context = el('p', 'Select an asset on the map to explore its surroundings.', panel, {class: 'gj-origin'});
   const realGrid = el('button', 'Explore real grid nearby', panel, {type: 'button'});
   const demoButton = el('button', 'Load SYNTHETIC demonstration', panel, {type: 'button'});
   const label = el('label', 'Explicit starting node ', panel, {class: 'gj-node'});
@@ -671,6 +671,7 @@ function createJourneyController({map, document: D, window: W, planner, fixture,
   const reset = el('button', 'Reset', controls, {type: 'button', disabled: ''});
   const evidence = el('details', null, panel, {class: 'gj-evidence'});
   el('summary', 'Input evidence and limits', evidence);
+  evidence.appendChild(caption);
   const receipt = el('pre', 'Real routes: 0 accepted. No measured or modelled MW inputs. Synthetic data loads only on explicit request.', evidence);
   const media = W.matchMedia?.('(prefers-reduced-motion: reduce)');
   function isReduced() { return media?.matches === true; }
@@ -775,18 +776,26 @@ function createJourneyController({map, document: D, window: W, planner, fixture,
       const id = typeof origin.id === 'string' || typeof origin.id === 'number' ? String(origin.id).slice(0, 80) : '';
       if (name || id) { originContext = {name, id}; if (Array.isArray(origin.at) && origin.at.length === 2 && origin.at.every(Number.isFinite) && Math.abs(origin.at[0]) <= 180 && Math.abs(origin.at[1]) <= 90 && (origin.at[0] !== 0 || origin.at[1] !== 0)) originContext.at = [...origin.at]; if (['repd', 'datacentre', 'substation'].includes(origin.type)) originContext.type = origin.type; }
     }
-    context.textContent = originContext ? 'Selected asset: ' + [originContext.name, originContext.id].filter(Boolean).join(' ? ') + '. Spatial context only; no electrical connection inferred.' : 'Selected asset has no reviewed circuit identity. Real circuit journeys remain withheld.';
-    realSelection();
+    context.textContent = originContext ? 'Selected asset: ' + [originContext.name, originContext.id].filter(Boolean).join(' ? ') + '. Nearby assets are map context; connections need source evidence.' : 'Select an asset on the map to explore its surroundings.';
+    realSelection(false);
   }
   function shut() { ++epoch; pauseMotion(); opened = false; panel.hidden = true; opener.setAttribute('aria-expanded', 'false'); removeMap(); if (initialPadding) map.setPadding(initialPadding); for (const b of layerLaunchers) b.setAttribute('aria-expanded', 'false'); (returnFocus?.isConnected === false ? opener : returnFocus || opener).focus(); }
   function open(options) { if (!alive) return; if (options?.origin) setOrigin(options.origin); opened = true; panel.hidden = false; opener.setAttribute('aria-expanded', 'true'); for (const b of layerLaunchers) b.setAttribute('aria-expanded', 'true'); installMap(); frameRoute(); close.focus(); }
-  function realSelection() { ++epoch; pauseMotion(); plan = null; demo = false; select.value = ''; select.disabled = true; removeMap(); controlsState(); report('WITHHELD: this asset selection supplies no reviewed circuit identity. Proximity is spatial only. Load the explicit synthetic demonstration separately.'); }
+  function realSelection(clearContext = true) { if (clearContext) { originContext = null; context.textContent = 'Selected asset has no reviewed circuit identity. Real circuit journeys remain withheld.'; } ++epoch; pauseMotion(); plan = null; demo = false; select.value = ''; select.disabled = true; removeMap(); controlsState(); report('Explore this asset and the surrounding grid. Nearby assets do not establish a connection.'); }
   listen(opener, 'click', () => {returnFocus = opener; opened ? shut() : open();}); listen(close, 'click', shut);
   listen(panel, 'keydown', e => { if (e.key === 'Escape') { e.preventDefault(); shut(); } });
   listen(demoButton, 'click', () => { ++epoch; pauseMotion(); plan = null; removeMap(); demo = true; select.disabled = false; select.replaceChildren(); el('option', 'Choose a reviewed synthetic node…', select, {value: ''}); for (const n of fixture.ledger.nodes) el('option', 'SYNTHETIC ' + n.nodeId, select, {value: n.nodeId}); report('SYNTHETIC DEMONSTRATION LOADED. These are invented assets; choose a starting node explicitly.'); controlsState(); });
   listen(realGrid, 'click', () => {
     const vicinity = W.__GRIDATLAS_MODULES__?.gridVicinity;
-    if (!vicinity?.open) { report('Real grid vicinity is not available in this composition. No route has been inferred.'); return; }
+    if (!vicinity?.open) {
+      const grid = D.getElementById('gridatlas-menu-bar-title-4');
+      if (!grid?.click) { report('Grid layers are loading. Try Explore grid again when the map controls appear.'); return; }
+      if (originContext?.at) map.flyTo?.({center: [...originContext.at], duration: 0});
+      shut();
+      if (grid.getAttribute?.('aria-expanded') !== 'true') grid.click();
+      grid.focus();
+      return;
+    }
     pauseMotion(); vicinity.open({origin: originContext?.at ? {...originContext, at: [...originContext.at]} : undefined, radiusKm: 10}); shut();
   });
   listen(select, 'change', choose); listen(next, 'click', advance); listen(reset, 'click', resetPlan);
