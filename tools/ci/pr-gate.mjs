@@ -272,6 +272,10 @@ if (changed.some(p => p.startsWith('tools/journey/') || p.includes('202611171525
   step('journey-contract', ['node', 'tools/journey/contract.test.mjs']);
   step('journey-controller', ['node', '--test', 'tools/journey/controller.test.mjs']);
 }
+if (changed.some(p => p.startsWith('tools/journey-context/') || p.includes('202611171600-grid-journey-official-context') || p === 'atlas/v/202611171600/current.json')) {
+  step('journey-context-source', ['node', 'tools/journey-context/build.mjs', '--check']);
+  step('journey-context-contract', ['node', '--test', 'tools/journey-context/producer.test.mjs', 'tools/journey-context/context.test.mjs']);
+}
 
 // ---------------------------------------------------------------- 7
 // Each suite may declare, in its first lines, `// @gate-min-generation <stamp>`:

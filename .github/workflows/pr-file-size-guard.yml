@@ -140,6 +140,7 @@ jobs:
           git fetch --no-tags --depth=1 origin 76653e40cf883e39497a0859d2532eb8b05930b1
           # GJ-03 proves the operative pointer/loader/state stay byte-identical to this audited base.
           if [ -f tools/journey/build.mjs ]; then git fetch --no-tags --depth=1 origin 1de35f9eca360a5d80d81542230fef546917f5c5; fi
+          if [ -f tools/journey-context/build.mjs ]; then git fetch --no-tags --depth=1 origin 0cf8680d421f2cb659aa9924291c211466394490; fi
 
       - name: Node (exact pin)
         uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v4
@@ -235,11 +236,12 @@ jobs:
           if-no-files-found: ignore
 
   journey-preview-browser:
-    if: github.event_name == 'pull_request' && github.event.pull_request.head.ref == 'agent-b/gj03-native-preview-20261117'
+    if: github.event_name == 'pull_request' && (github.event.pull_request.head.ref == 'agent-b/gj03-native-preview-20261117' || github.event.pull_request.head.ref == 'agent-b/gj04-official-context-20261117')
     runs-on: ubuntu-24.04
     timeout-minutes: 15
     env:
       JOURNEY_BROWSER_OUTPUT: work/journey-browser
+      JOURNEY_CONTEXT_BROWSER_OUTPUT: work/journey-context-browser
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
@@ -247,7 +249,9 @@ jobs:
           fetch-depth: 1
           persist-credentials: false
       - name: Fetch immutable protected-file proof anchor
-        run: git fetch --no-tags --depth=1 origin 1de35f9eca360a5d80d81542230fef546917f5c5
+        run: |
+          git fetch --no-tags --depth=1 origin 1de35f9eca360a5d80d81542230fef546917f5c5
+          if [ -f tools/journey-context/build.mjs ]; then git fetch --no-tags --depth=1 origin 0cf8680d421f2cb659aa9924291c211466394490; fi
       - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020
         with:
           node-version: '24.15.0'
@@ -262,11 +266,20 @@ jobs:
           node --test tools/journey/controller.test.mjs
       - name: Actual native composer, mobile and lifecycle acceptance
         run: node tools/journey/browser.test.mjs
+      - name: Pinned official planning context and native coexistence
+        if: github.event.pull_request.head.ref == 'agent-b/gj04-official-context-20261117'
+        run: |
+          node tools/journey-context/build.mjs --check
+          node tools/proofs/202611171600-grid-journey-official-context.proof.mjs
+          node --test tools/journey-context/producer.test.mjs tools/journey-context/context.test.mjs
+          node tools/journey-context/browser.test.mjs
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
           name: journey-preview-${{ github.event.pull_request.head.sha }}
-          path: work/journey-browser
+          path: |
+            work/journey-browser
+            work/journey-context-browser
           retention-days: 14
 
   map-receiver-browser:
