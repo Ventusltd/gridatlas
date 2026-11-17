@@ -852,8 +852,8 @@
    "slot": "after-cartridge",
    "after": "grid-journey-preview",
    "path": "./modules/202611171600-grid-journey-official-context.js",
-   "sha256": "7be65ce9221a9270203c22c3993dfc9611791b574b45069d8360c63498e7cb65",
-   "bytes": 14863,
+   "sha256": "7a5203280cc2feefddad0a71ac596f861cd72ddca8672ae543641dc708480064",
+   "bytes": 14926,
    "byte_budget": 16000,
    "budget_status": "PROPOSED_PREVIEW_ONLY_NOT_OWNER_RELEASE_APPROVAL",
    "preview_only": true,
@@ -865,7 +865,7 @@
     "bytes": 5300,
     "byte_budget": 8000
    },
-   "combined_preview_bytes": 20163,
+   "combined_preview_bytes": 20226,
    "combined_preview_byte_budget": 24000
   }
  ],
@@ -959,7 +959,7 @@
   "producer_pin": {
    "schema": "gridatlas.journey.official-context.producer-pin.v1",
    "repository": "Ventusltd/globalgrid2050",
-   "commit": "1333203183eb181a749a11a1e67298d909caddb8",
+   "commit": "07bff3a6d1cdc4d845062cafa1cf49161b135c96",
    "producerState": "SOURCE_PR164_STACKED_UNMERGED_AT_PIN",
    "model": {
     "bytes": 2841,
@@ -979,7 +979,8 @@
     "https://github.com/Ventusltd/neural-link-between-agents/issues/42#issuecomment-6953350836",
     "https://github.com/Ventusltd/neural-link-between-agents/issues/42#issuecomment-6953404444"
    ],
-   "scope": "government_html_facts_only_no_images_or_third_party_material"
+   "scope": "government_html_facts_only_no_images_or_third_party_material",
+   "firstImportedFrom": "1333203183eb181a749a11a1e67298d909caddb8"
   }
  }
 }

@@ -16,7 +16,12 @@ identity and actual approval references must be reviewed independently; a hash
 does not authenticate a reviewer or itself grant rights.
 
 Pinned producer: GlobalGrid2050 commit
-`1333203183eb181a749a11a1e67298d909caddb8`, source PR164 stacked/unmerged at pin.
+`07bff3a6d1cdc4d845062cafa1cf49161b135c96`, source PR164 stacked/unmerged at pin.
+Both exact Git blobs were independently checked against this final producer
+commit and are byte-identical to the first import from
+`1333203183eb181a749a11a1e67298d909caddb8`; the original import directory stays
+unchanged. The final producer restores the donor files and isolates its
+additive government extension.
 The shared `automation/grid_notice_ui/20261117-v938/model.mjs` is 2,841 bytes,
 SHA256 `a2ea9cae62e74dc1381482e7f2741bc34d04241103ade3d1232459af57987130`;
 its `notice.json` is 5,300 bytes, SHA256
@@ -86,6 +91,9 @@ and lifecycle negatives; they do not confer real-source approval. Every run
 uses a new output directory and records errors/request failures separately.
 Local receipts are kept under `receipts/`. Physical device acceptance and
 hosted exact-head CI remain separate states.
+The original native receipt records the first-import build. The metadata-only
+producer repin has its own focused validation receipt; final-build native
+acceptance is separately performed by the parent reviewer.
 
 ## Rights, coverage and remaining gates
 
