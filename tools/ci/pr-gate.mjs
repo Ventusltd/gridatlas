@@ -266,6 +266,12 @@ step('loader-equivalence', ['node', 'tools/proofs/loader-equivalence.proof.mjs']
 step('lightning-source', ['node', 'tools/lightning/build.mjs', '--check']);
 // The same for the potential-offtakers overlay (tools/offtakers/src, docs/OFFTAKERS-SOURCE.md).
 step('offtakers-source', ['node', 'tools/offtakers/build.mjs', '--check']);
+// New Journey preview is built from byte-pinned canonical engine sources.
+if (changed.some(p => p.startsWith('tools/journey/') || p.includes('202611171525-grid-journey') || p === 'atlas/v/202611171525/current.json')) {
+  step('journey-source', ['node', 'tools/journey/build.mjs', '--check']);
+  step('journey-contract', ['node', 'tools/journey/contract.test.mjs']);
+  step('journey-controller', ['node', '--test', 'tools/journey/controller.test.mjs']);
+}
 
 // ---------------------------------------------------------------- 7
 // Each suite may declare, in its first lines, `// @gate-min-generation <stamp>`:

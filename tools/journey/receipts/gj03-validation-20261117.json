@@ -1,0 +1,58 @@
+{
+  "schema": "gridatlas.journey.local-validation.v1",
+  "status": "PREVIEW_ONLY_PARTIAL_GJ03",
+  "generation": "202611171525",
+  "cartridgeSha256": "f81cfac2c6876a2e0a505b7200d3f536de2f3f67406c449125588ac3311b6876",
+  "cartridgeBytes": 63439,
+  "proposedPreviewBudgetBytes": 64000,
+  "base": "1de35f9eca360a5d80d81542230fef546917f5c5",
+  "repositoryGate": {
+    "command": "node tools/ci/pr-gate.mjs --base 1de35f9eca360a5d80d81542230fef546917f5c5",
+    "result": "PASS",
+    "checks": 23,
+    "historicalLightningPass": 215,
+    "historicalOfftakerPass": 30,
+    "releaseToolPass": 16
+  },
+  "finalJourneyFocused": {
+    "controllerTests": 14,
+    "controllerResult": "PASS",
+    "inputContract": "PASS",
+    "deterministicBuildAndGenerationProof": "PASS",
+    "nativeReceipt": "gj03-native-20261117.json",
+    "actualRenderedLocatedSyntheticEdges": 3,
+    "viewports": [
+      {
+        "width": 390,
+        "height": 844
+      },
+      {
+        "width": 393,
+        "height": 852
+      },
+      {
+        "width": 1440,
+        "height": 1000
+      },
+      {
+        "width": 844,
+        "height": 390
+      }
+    ],
+    "pageErrors": 0
+  },
+  "protected": {
+    "operativeGeneration": "202611161720",
+    "livePointerChanged": false,
+    "liveLoaderChanged": false,
+    "stateChanged": false,
+    "immutableShellsChanged": false,
+    "existingCartridgesChanged": false
+  },
+  "acceptedRealRoutes": 0,
+  "physicalHandset": "UNKNOWN",
+  "physicalAssistiveTechnology": "UNKNOWN",
+  "ownerReleaseBudgetAcceptance": "NOT_RECORDED",
+  "publication": "NOT_PUSHED_NOT_PUBLISHED_BY_IMPLEMENTATION_WORKER",
+  "validatedAtUTC": "2026-11-17T15:53:41.547Z"
+}

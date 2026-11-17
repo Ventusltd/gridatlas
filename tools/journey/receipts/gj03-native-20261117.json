@@ -1,0 +1,716 @@
+{
+  "result": "PASS",
+  "runStartedUTC": "2026-11-17T15:52:55.851Z",
+  "runCompletedUTC": "2026-11-17T15:53:41.547Z",
+  "generation": "202611171525",
+  "cartridgeSha256": "f81cfac2c6876a2e0a505b7200d3f536de2f3f67406c449125588ac3311b6876",
+  "transport": "local read-only HTTP; LF published text bytes; actual existing composer and native MapLibre",
+  "assets": [
+    {
+      "url": "https://cdn.jsdelivr.net/npm/maplibre-gl@3.6.2/dist/maplibre-gl.js",
+      "status": 200,
+      "bytes": 762783,
+      "sha256": "c46084df69bbaa995b301a515274a86ec53905c78459b80dccbc27a0c0b8d13b"
+    }
+  ],
+  "native": {
+    "constructor": "",
+    "version": "3.6.2",
+    "canvas": true,
+    "container": "map",
+    "existingLayers": 116,
+    "existingLayerIds": [
+      "background",
+      "landcover",
+      "park_national_park",
+      "park_nature_reserve",
+      "landuse_residential",
+      "landuse",
+      "waterway",
+      "boundary_county",
+      "boundary_state",
+      "water",
+      "water_shadow",
+      "aeroway-runway",
+      "aeroway-taxiway",
+      "tunnel_service_case",
+      "tunnel_minor_case",
+      "tunnel_sec_case",
+      "tunnel_pri_case",
+      "tunnel_trunk_case",
+      "tunnel_mot_case",
+      "tunnel_path",
+      "tunnel_service_fill",
+      "tunnel_minor_fill",
+      "tunnel_sec_fill",
+      "tunnel_pri_fill",
+      "tunnel_trunk_fill",
+      "tunnel_mot_fill",
+      "tunnel_rail",
+      "tunnel_rail_dash",
+      "road_service_case",
+      "road_minor_case",
+      "road_pri_case_ramp",
+      "road_trunk_case_ramp",
+      "road_mot_case_ramp",
+      "road_sec_case_noramp",
+      "road_pri_case_noramp",
+      "road_trunk_case_noramp",
+      "road_mot_case_noramp",
+      "road_path",
+      "road_path_areas",
+      "road_service_fill",
+      "road_minor_fill",
+      "road_pri_fill_ramp",
+      "road_trunk_fill_ramp",
+      "road_mot_fill_ramp",
+      "road_sec_fill_noramp",
+      "road_pri_fill_noramp",
+      "road_trunk_fill_noramp",
+      "road_mot_fill_noramp",
+      "rail",
+      "rail_dash",
+      "bridge_service_case",
+      "bridge_minor_case",
+      "bridge_sec_case",
+      "bridge_pri_case",
+      "bridge_trunk_case",
+      "bridge_mot_case",
+      "bridge_path",
+      "bridge_service_fill",
+      "bridge_minor_fill",
+      "bridge_sec_fill",
+      "bridge_pri_fill",
+      "bridge_trunk_fill",
+      "bridge_mot_fill",
+      "building",
+      "building-top",
+      "boundary_country_outline",
+      "boundary_country_inner",
+      "waterway_label",
+      "watername_ocean",
+      "watername_sea",
+      "watername_lake",
+      "watername_lake_pois",
+      "watername_lake_line",
+      "place_hamlet",
+      "place_suburbs",
+      "place_villages",
+      "place_town",
+      "place_country_2",
+      "place_country_1",
+      "place_state",
+      "place_continent",
+      "place_city_r6",
+      "place_city_r5",
+      "place_city_dot_r7",
+      "place_city_dot_r4",
+      "place_city_dot_r2",
+      "place_city_dot_z7",
+      "place_capital_dot_z7",
+      "poi_stadium",
+      "poi_park",
+      "roadname_minor",
+      "roadname_sec",
+      "roadname_pri",
+      "roadname_major",
+      "housenumber",
+      "l-neon-glow",
+      "l-neon-core",
+      "l-neon-flow",
+      "l-neon-flow-b",
+      "l-neon-node-ring",
+      "l-neon-node",
+      "l-sld-boundary",
+      "l-sld-boundary-line",
+      "l-sld-block",
+      "l-sld-bess",
+      "l-sld-radial",
+      "l-sld-radial-flow",
+      "l-sld-cable-glow",
+      "l-sld-cable",
+      "l-sld-cable-flow",
+      "l-sld-cable-flow-b",
+      "l-sld-node",
+      "l-sld-pin",
+      "l-sld-handle",
+      "l-neon-label",
+      "l-sld-label"
+    ]
+  },
+  "receipts": [
+    {
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "layout": {
+        "panel": {
+          "x": 13,
+          "y": 175,
+          "width": 364,
+          "height": 438.375
+        },
+        "points": [
+          {
+            "x": 121.95483225834178,
+            "y": 705.3683847266448
+          },
+          {
+            "x": 158.4774161291649,
+            "y": 685.4041206916472
+          },
+          {
+            "x": 194.99999999998803,
+            "y": 705.3683847266448
+          },
+          {
+            "x": 194.99999999998803,
+            "y": 705.3683847266448
+          },
+          {
+            "x": 268.04516774164625,
+            "y": 625.374999999994
+          },
+          {
+            "x": 194.99999999998803,
+            "y": 705.3683847266448
+          },
+          {
+            "x": 268.04516774164625,
+            "y": 785
+          }
+        ],
+        "padding": {
+          "top": 0,
+          "bottom": 0,
+          "left": 0,
+          "right": 0
+        },
+        "controls": [
+          {
+            "text": "Journey · preview",
+            "h": 44
+          },
+          {
+            "text": "Close",
+            "h": 44
+          },
+          {
+            "text": "Load SYNTHETIC demonstration",
+            "h": 44
+          },
+          {
+            "text": "Choose a reviewed synthetic node…SYNTHETIC A1SYNTHETIC B1SYNTHETIC C1SYNTHETIC D1SYNTHETIC U1",
+            "h": 44
+          },
+          {
+            "text": "Start",
+            "h": 44
+          },
+          {
+            "text": "Pause",
+            "h": 44
+          },
+          {
+            "text": "Next",
+            "h": 44
+          },
+          {
+            "text": "Reset",
+            "h": 44
+          }
+        ],
+        "overflow": false
+      },
+      "renderedEdges": [
+        "b288e90cb106567c9e6373ed2409e4bc65e495d4f790d1ea44b4a47497b87afe:circuit:1",
+        "b288e90cb106567c9e6373ed2409e4bc65e495d4f790d1ea44b4a47497b87afe:circuit:2",
+        "b288e90cb106567c9e6373ed2409e4bc65e495d4f790d1ea44b4a47497b87afe:circuit:0"
+      ],
+      "result": "PASS"
+    },
+    {
+      "viewport": {
+        "width": 393,
+        "height": 852
+      },
+      "layout": {
+        "panel": {
+          "x": 13,
+          "y": 175,
+          "width": 367,
+          "height": 438.375
+        },
+        "points": [
+          {
+            "x": 119.79399378106959,
+            "y": 709.3774502102045
+          },
+          {
+            "x": 158.14699689053478,
+            "y": 688.4126279150256
+          },
+          {
+            "x": 196.49999999998815,
+            "y": 709.3774502102045
+          },
+          {
+            "x": 196.49999999998815,
+            "y": 709.3774502102045
+          },
+          {
+            "x": 273.20600621890674,
+            "y": 625.3749999999941
+          },
+          {
+            "x": 196.49999999998815,
+            "y": 709.3774502102045
+          },
+          {
+            "x": 273.20600621890674,
+            "y": 792.9999999999941
+          }
+        ],
+        "padding": {
+          "top": 0,
+          "bottom": 0,
+          "left": 0,
+          "right": 0
+        },
+        "controls": [
+          {
+            "text": "Journey · preview",
+            "h": 44
+          },
+          {
+            "text": "Close",
+            "h": 44
+          },
+          {
+            "text": "Load SYNTHETIC demonstration",
+            "h": 44
+          },
+          {
+            "text": "Choose a reviewed synthetic node…SYNTHETIC A1SYNTHETIC B1SYNTHETIC C1SYNTHETIC D1SYNTHETIC U1",
+            "h": 44
+          },
+          {
+            "text": "Start",
+            "h": 44
+          },
+          {
+            "text": "Pause",
+            "h": 44
+          },
+          {
+            "text": "Next",
+            "h": 44
+          },
+          {
+            "text": "Reset",
+            "h": 44
+          }
+        ],
+        "overflow": false
+      },
+      "renderedEdges": [
+        "b288e90cb106567c9e6373ed2409e4bc65e495d4f790d1ea44b4a47497b87afe:circuit:1",
+        "b288e90cb106567c9e6373ed2409e4bc65e495d4f790d1ea44b4a47497b87afe:circuit:2",
+        "b288e90cb106567c9e6373ed2409e4bc65e495d4f790d1ea44b4a47497b87afe:circuit:0"
+      ],
+      "result": "PASS"
+    },
+    {
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "layout": {
+        "panel": {
+          "x": 1017,
+          "y": 175,
+          "width": 410,
+          "height": 421.578125
+        },
+        "points": [
+          {
+            "x": 306.5466666666538,
+            "y": 498.540964894838
+          },
+          {
+            "x": 415.7733333333269,
+            "y": 438.834619344117
+          },
+          {
+            "x": 524.9999999999799,
+            "y": 498.540964894838
+          },
+          {
+            "x": 524.9999999999799,
+            "y": 498.540964894838
+          },
+          {
+            "x": 743.453333333306,
+            "y": 259.3078701067426
+          },
+          {
+            "x": 524.9999999999799,
+            "y": 498.540964894838
+          },
+          {
+            "x": 743.453333333306,
+            "y": 736.6921298932674
+          }
+        ],
+        "padding": {
+          "top": 0,
+          "bottom": 0,
+          "left": 0,
+          "right": 0
+        },
+        "controls": [
+          {
+            "text": "Journey · preview",
+            "h": 44
+          },
+          {
+            "text": "Close",
+            "h": 44
+          },
+          {
+            "text": "Load SYNTHETIC demonstration",
+            "h": 44
+          },
+          {
+            "text": "Choose a reviewed synthetic node…SYNTHETIC A1SYNTHETIC B1SYNTHETIC C1SYNTHETIC D1SYNTHETIC U1",
+            "h": 44
+          },
+          {
+            "text": "Start",
+            "h": 44
+          },
+          {
+            "text": "Pause",
+            "h": 44
+          },
+          {
+            "text": "Next",
+            "h": 44
+          },
+          {
+            "text": "Reset",
+            "h": 44
+          }
+        ],
+        "overflow": false
+      },
+      "renderedEdges": [
+        "b288e90cb106567c9e6373ed2409e4bc65e495d4f790d1ea44b4a47497b87afe:circuit:1",
+        "b288e90cb106567c9e6373ed2409e4bc65e495d4f790d1ea44b4a47497b87afe:circuit:2",
+        "b288e90cb106567c9e6373ed2409e4bc65e495d4f790d1ea44b4a47497b87afe:circuit:0"
+      ],
+      "result": "PASS"
+    },
+    {
+      "viewport": {
+        "width": 844,
+        "height": 390
+      },
+      "layout": {
+        "panel": {
+          "x": 423,
+          "y": 53,
+          "width": 410,
+          "height": 322
+        },
+        "points": [
+          {
+            "x": 105.27712063099,
+            "y": 193.30142732832502
+          },
+          {
+            "x": 166.1385603155016,
+            "y": 160.0328651775956
+          },
+          {
+            "x": 227.00000000001322,
+            "y": 193.30142732832502
+          },
+          {
+            "x": 227.00000000001322,
+            "y": 193.30142732832502
+          },
+          {
+            "x": 348.72287936903643,
+            "y": 59.99999999998018
+          },
+          {
+            "x": 227.00000000001322,
+            "y": 193.30142732832502
+          },
+          {
+            "x": 348.72287936903643,
+            "y": 325.99999999998016
+          }
+        ],
+        "padding": {
+          "top": 0,
+          "bottom": 0,
+          "left": 0,
+          "right": 0
+        },
+        "controls": [
+          {
+            "text": "Journey · preview",
+            "h": 44
+          },
+          {
+            "text": "Close",
+            "h": 44
+          },
+          {
+            "text": "Load SYNTHETIC demonstration",
+            "h": 44
+          },
+          {
+            "text": "Choose a reviewed synthetic node…SYNTHETIC A1SYNTHETIC B1SYNTHETIC C1SYNTHETIC D1SYNTHETIC U1",
+            "h": 44
+          },
+          {
+            "text": "Start",
+            "h": 44
+          },
+          {
+            "text": "Pause",
+            "h": 44
+          },
+          {
+            "text": "Next",
+            "h": 44
+          },
+          {
+            "text": "Reset",
+            "h": 44
+          }
+        ],
+        "overflow": false
+      },
+      "renderedEdges": [
+        "b288e90cb106567c9e6373ed2409e4bc65e495d4f790d1ea44b4a47497b87afe:circuit:1",
+        "b288e90cb106567c9e6373ed2409e4bc65e495d4f790d1ea44b4a47497b87afe:circuit:2",
+        "b288e90cb106567c9e6373ed2409e4bc65e495d4f790d1ea44b4a47497b87afe:circuit:0"
+      ],
+      "result": "PASS"
+    }
+  ],
+  "reducedMotion": "manual one step; no automatic progress after1200ms",
+  "keyboard": "Tab/ShiftTab and Enter operate controls; Escape/Close restores opener; orientation retains step; Close center hit-tested and clicked at every viewport",
+  "lifecycle": "close removes sources; card-open refuses; source/layer collisions preserve external data; style reload exactly3ownedlayers; pause stops cursor; three destroy/mount cycles; actual native map.remove destroys active Journey",
+  "physicalPhone": "UNKNOWN; Chromium software emulation; physical VoiceOver/AT unknown",
+  "errors": [],
+  "failed": [],
+  "finalMap": {
+    "version": "3.6.2",
+    "canvasCount": 1,
+    "layers": 196,
+    "layerIds": [
+      "background",
+      "landcover",
+      "park_national_park",
+      "park_nature_reserve",
+      "landuse_residential",
+      "landuse",
+      "waterway",
+      "boundary_county",
+      "boundary_state",
+      "water",
+      "water_shadow",
+      "aeroway-runway",
+      "aeroway-taxiway",
+      "tunnel_service_case",
+      "tunnel_minor_case",
+      "tunnel_sec_case",
+      "tunnel_pri_case",
+      "tunnel_trunk_case",
+      "tunnel_mot_case",
+      "tunnel_path",
+      "tunnel_service_fill",
+      "tunnel_minor_fill",
+      "tunnel_sec_fill",
+      "tunnel_pri_fill",
+      "tunnel_trunk_fill",
+      "tunnel_mot_fill",
+      "tunnel_rail",
+      "tunnel_rail_dash",
+      "road_service_case",
+      "road_minor_case",
+      "road_pri_case_ramp",
+      "road_trunk_case_ramp",
+      "road_mot_case_ramp",
+      "road_sec_case_noramp",
+      "road_pri_case_noramp",
+      "road_trunk_case_noramp",
+      "road_mot_case_noramp",
+      "road_path",
+      "road_path_areas",
+      "road_service_fill",
+      "road_minor_fill",
+      "road_pri_fill_ramp",
+      "road_trunk_fill_ramp",
+      "road_mot_fill_ramp",
+      "road_sec_fill_noramp",
+      "road_pri_fill_noramp",
+      "road_trunk_fill_noramp",
+      "road_mot_fill_noramp",
+      "rail",
+      "rail_dash",
+      "bridge_service_case",
+      "bridge_minor_case",
+      "bridge_sec_case",
+      "bridge_pri_case",
+      "bridge_trunk_case",
+      "bridge_mot_case",
+      "bridge_path",
+      "bridge_service_fill",
+      "bridge_minor_fill",
+      "bridge_sec_fill",
+      "bridge_pri_fill",
+      "bridge_trunk_fill",
+      "bridge_mot_fill",
+      "building",
+      "building-top",
+      "boundary_country_outline",
+      "boundary_country_inner",
+      "waterway_label",
+      "watername_ocean",
+      "watername_sea",
+      "watername_lake",
+      "watername_lake_pois",
+      "watername_lake_line",
+      "place_hamlet",
+      "place_suburbs",
+      "place_villages",
+      "place_town",
+      "place_country_2",
+      "place_country_1",
+      "place_state",
+      "place_continent",
+      "place_city_r6",
+      "place_city_r5",
+      "place_city_dot_r7",
+      "place_city_dot_r4",
+      "place_city_dot_r2",
+      "place_city_dot_z7",
+      "place_capital_dot_z7",
+      "poi_stadium",
+      "poi_park",
+      "roadname_minor",
+      "roadname_sec",
+      "roadname_pri",
+      "roadname_major",
+      "housenumber",
+      "l-neon-glow",
+      "l-neon-core",
+      "l-neon-flow",
+      "l-neon-flow-b",
+      "l-neon-node-ring",
+      "l-neon-node",
+      "l-sld-boundary",
+      "l-sld-boundary-line",
+      "l-sld-block",
+      "l-sld-bess",
+      "l-sld-radial",
+      "l-sld-radial-flow",
+      "l-sld-cable-glow",
+      "l-sld-cable",
+      "l-sld-cable-flow",
+      "l-sld-cable-flow-b",
+      "l-sld-node",
+      "l-sld-pin",
+      "l-sld-handle",
+      "l-neon-label",
+      "l-sld-label",
+      "l-sat",
+      "l-radius-circle-fill",
+      "l-radius-circle-stroke",
+      "l-radius-area-fill",
+      "l-radius-area-stroke",
+      "l-measure-fill",
+      "l-measure-line",
+      "l-measure-points",
+      "l-zonedraw-fill",
+      "l-zonedraw-line",
+      "l-zonedraw-points",
+      "l-400",
+      "l-275",
+      "l-220",
+      "l-132",
+      "l-66",
+      "l-11kv",
+      "l-subs",
+      "l-nuc",
+      "l-gas",
+      "l-ind",
+      "l-dc",
+      "l-air",
+      "l-rail",
+      "l-tesco",
+      "l-sainsburys",
+      "l-asda",
+      "l-morrisons",
+      "l-aldi",
+      "l-lidl",
+      "l-waitrose",
+      "l-ms",
+      "l-coop",
+      "l-costco",
+      "l-booths",
+      "l-mainline_rail",
+      "l-eurostar_route",
+      "l-eurostar_station",
+      "l-stadiums",
+      "l-subsea_data_cables",
+      "l-global_ports_major",
+      "l-global_ports_minor",
+      "l-global_hydrocarbons",
+      "l-motorways",
+      "l-trunk_roads",
+      "l-primary_roads",
+      "l-motorway_services",
+      "l-naei_co2-glow",
+      "l-naei_co2",
+      "l-elizabeth",
+      "l-lu",
+      "l-dlr",
+      "l-metro",
+      "l-tram",
+      "l-hs2",
+      "l-ev",
+      "l-solar-glow",
+      "l-solar",
+      "l-solar_operational-glow",
+      "l-solar_operational",
+      "l-solar_roof-glow",
+      "l-solar_roof",
+      "l-wind",
+      "l-wind_onshore_operational-glow",
+      "l-wind_onshore_operational",
+      "l-wind_offshore_operational-glow",
+      "l-wind_offshore_operational",
+      "l-bess",
+      "l-bess_operational-glow",
+      "l-bess_operational",
+      "l-biomass",
+      "l-tidal",
+      "l-hydrogen",
+      "l-hydro",
+      "l-flywheel",
+      "l-act",
+      "l-geothermal",
+      "l-caes",
+      "l-interconnectors",
+      "l-interconnector-nodes"
+    ]
+  }
+}

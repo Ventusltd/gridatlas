@@ -1,0 +1,32 @@
+{
+  "schema": "gridatlas.journey.vendor-pin.v1",
+  "repository": "Ventusltd/ventus-grid-engine",
+  "commit": "65d48a851fc2ac74b13f939a0184e11298e7e5bd",
+  "algorithmCommit": "e385fe9fc52220c6f96cc0def200839a0d566f97",
+  "files": [
+    {
+      "path": "engine/network-topology.js",
+      "vendorPath": "vendor/65d48a851fc2ac74b13f939a0184e11298e7e5bd/network-topology.js",
+      "bytes": 12661,
+      "sha256": "cf04c754e550e594ddd09096ec2b2c04c0082058126897c6e7afdeee92f7561c"
+    },
+    {
+      "path": "engine/journey-evidence.js",
+      "vendorPath": "vendor/65d48a851fc2ac74b13f939a0184e11298e7e5bd/journey-evidence.js",
+      "bytes": 12094,
+      "sha256": "68fabb380f9917deab0d761b6519974298b5c351cb684ac3293c801789195c50"
+    },
+    {
+      "path": "engine/edge-cover-journey.js",
+      "vendorPath": "vendor/65d48a851fc2ac74b13f939a0184e11298e7e5bd/edge-cover-journey.js",
+      "bytes": 9017,
+      "sha256": "6b872446157ba48cf6afa60ca8d2515177ea97be2071d4fbf6f875cb01633daf"
+    }
+  ],
+  "sharedFixture": {
+    "repository": "Ventusltd/data-grid-gb",
+    "commit": "d090de5fbe08bb268f66f7250389c000099a1b99",
+    "path": "journey/fixtures/reviewed-pair.v1.json",
+    "sha256": "174ac6824c5a8fa5d161d6529840211d7d94472e2b2a172abdc25643b0230087"
+  }
+}
