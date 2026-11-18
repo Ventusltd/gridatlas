@@ -92,7 +92,7 @@ export function createTrainRide({map, geodesy, palette = {}, onState = () => {},
   function paintCursor() {
     if (!alive || !plan || !sources.has(prefix + 'cursor') || map.getSource(prefix + 'cursor') !== sources.get(prefix + 'cursor')) return;
     const at = position(); sources.get(prefix + 'cursor').setData(collection(at ? [point(at, {meaning: 'User journey heading; electrical flow unknown'})] : []));
-    if (cameraFollow && at) map.easeTo?.({center: at, duration: 0});
+    if (cameraFollow && playing && at) map.easeTo?.({center: at, duration: 0});
   }
   function tick(time) {
     handle = null; if (!alive || !playing) return;
@@ -157,7 +157,7 @@ export function createTrainRide({map, geodesy, palette = {}, onState = () => {},
     if (!alive) return false;
     if (!Array.isArray(stops) || stops.length>90 || stops.some(stop=>!Array.isArray(stop.at)||stop.at.length!==2
       ||!stop.at.every(Number.isFinite)||Math.abs(stop.at[0])>180||Math.abs(stop.at[1])>90)) throw Error('Invalid selected station pins.');
-    cancelRetry();pause();plan=null;measures=[];prefixStop=0;legIndex=0;fraction=0;
+    cameraFollow=false;cancelRetry();pause();plan=null;measures=[];prefixStop=0;legIndex=0;fraction=0;
     pinStops=JSON.parse(JSON.stringify(stops.filter(stop=>!stop.invalid)));
     if(ensure()) for(const [suffix,data]of [['routes',collection([])],['cursor',collection([])],['stops',stopData(pinStops)]]) {
       const id=prefix+suffix;if(map.getSource(id)===sources.get(id))sources.get(id).setData(data);
