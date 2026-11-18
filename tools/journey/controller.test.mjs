@@ -14,7 +14,7 @@ class Target {
   emit(t,e={}){for(const f of [...(this.events.get(t)||[])])f({type:t,preventDefault(){},...e});}
   listeners(){return [...this.events.values()].reduce((n,s)=>n+s.size,0);}
 }
-function harness({planner=planJourney,input=fixture,reduced=false,ready=true,layerHosts=false}={}) {
+function harness({planner=planJourney,input=fixture,reduced=false,ready=true,layerHosts=false,layerReady=true}={}) {
   const D={activeElement:null}, W=new Target(), media=new Target(); media.matches=reduced;
   let nextRaf=0;const rafs=new Map();W.matchMedia=()=>media;W.requestAnimationFrame=f=>{rafs.set(++nextRaf,f);return nextRaf;};W.cancelAnimationFrame=id=>rafs.delete(id);
   class E extends Target {
@@ -26,7 +26,7 @@ function harness({planner=planJourney,input=fixture,reduced=false,ready=true,lay
     focus(){D.activeElement=this;}
   }
   const container=new E('div');container.attrs.id='map-container';
-  if(layerHosts)for(const id of ['scada-ui-container','fs-curtain-keys']){const h=new E('div');h.attrs.id=id;container.appendChild(h);}
+  if(layerHosts)for(const id of ['scada-ui-container','fs-curtain-keys']){const h=new E('div');h.attrs.id=id;h.querySelector=selector=>selector==='input[data-layer-id]'&&layerReady?{focus(){}}:null;container.appendChild(h);}
   const all=(e=container)=>[e,...e.children.flatMap(c=>all(c))];
   D.createElement=t=>new E(t);D.getElementById=id=>all().find(e=>e.attrs.id===id)||null;
   const map=new Target(), sources=new Map(),layers=new Map();map.on=map.addEventListener;map.off=map.removeEventListener;
@@ -67,3 +67,5 @@ test('a real card event without explicit context clears the prior origin',()=>{c
 test('without vicinity the primary action opens real native Grid controls and preserves selected coordinates',()=>{const h=harness();const grid=h.D.createElement('button');grid.attrs.id='gridatlas-menu-bar-title-4';grid.getAttribute=k=>grid.attrs[k];let clicks=0,center;grid.click=()=>{clicks++;grid.attrs['aria-expanded']='true';};h.map.getContainer().appendChild(grid);h.map.flyTo=o=>{center=o.center;};h.c.open({origin:{id:'REPD2470',at:[-0.5,52]}});h.button('Explore real grid nearby').emit('click');assert.equal(clicks,1);assert.deepEqual(center,[-0.5,52]);assert.equal(h.c.snapshot().opened,false);assert.equal(h.D.activeElement,grid);assert.equal(h.sources.size,0);h.c.destroy();});
 
 test('before native menu readiness primary action reveals original real layer controls',()=>{const h=harness({layerHosts:true});const host=h.D.getElementById('scada-ui-container');let scrolled=false;host.scrollIntoView=()=>{scrolled=true;};h.c.open();h.button('Explore real grid nearby').emit('click');assert.equal(scrolled,true);assert.equal(h.c.snapshot().opened,false);assert.equal(h.sources.size,0);h.c.destroy();});
+
+test('empty native hosts are not falsely marked engine-ready by a Journey key-group',()=>{const h=harness({layerHosts:true,layerReady:false});assert.equal(h.c.snapshot().layerControls,0);assert.equal(h.all().some(e=>e.attrs['data-journey-group']),false);h.c.destroy();});

@@ -127,6 +127,9 @@ export function createJourneyController({map, document: D, window: W, planner, f
     hosts.push(['native-grid-menu', D.querySelector?.('#gridatlas-menu-bar-panel-4 .gm-panel-body')]);
     for (const [id, host] of hosts) {
       if (!host || layerGroups.some(g => g.parentNode === host || g.parent === host)) continue;
+      // Other native modules use .key-group as the engine-dashboard ready marker.
+      // Never create that marker before the engine's original controls exist.
+      if (id !== 'native-grid-menu' && !host.querySelector?.('input[data-layer-id]')) continue;
       const group = el('div', null, host, {class: 'key-group', 'data-journey-group': id});
       const title = el('div', 'Grid Journeys', group, {class: 'key-title'});
       const button = el('button', 'Open Grid Journey', group, {type: 'button', class: 'map-ctrl-btn', 'aria-controls': NS + '-panel', 'aria-expanded': String(opened)});
