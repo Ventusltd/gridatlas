@@ -854,16 +854,19 @@
    "slot": "after-cartridge",
    "after": "grid-journey-preview",
    "path": "./modules/202611180026-grid-vicinity.js",
-   "sha256": "82c212f6d05a1494c49227f93c3235b8513c67ec598d72c22c7246190a790baa",
-   "bytes": 30273,
-   "byte_budget": 48000,
+   "sha256": "8a68ec60e2587af5201b9b47b077843b3e11e51bd8d5e0e048a0a63c730712ca",
+   "bytes": 51268,
+   "byte_budget": 64000,
    "immutable_shell_modified": false,
    "capabilities": [
     "spatial-radius-1-50km",
     "source-voltage-context",
     "native-layers-launcher",
     "validated-origin-intent",
-    "local-user-model"
+    "local-user-model",
+    "typed-generation-storage-demand-context",
+    "exact-existing-declaration-context",
+    "unassociated-official-notices"
    ]
   }
  ],

@@ -133,6 +133,162 @@ function vicinityGeoJSON(result, geodesy) {
   ]};
 }
 
+const collectAssetContext = (() => {
+/** Read-only context from existing Atlas source owners. No fetching or electrical inference. */
+const ASSET_CONTEXT_CATEGORIES = Object.freeze([
+ ['generation','REPD generation context'],['storage','REPD storage context'],['datacentre','Data-centre listings'],
+ ['conventional','Listed conventional power context'],['demand-context','Other potential demand context']
+]);
+const assetCoordinate = at => Array.isArray(at)&&at.length>=2&&at.slice(0,2).every(v=>typeof v==='number'&&Number.isFinite(v))&&Math.abs(at[0])<=180&&Math.abs(at[1])<=90&&(at[0]!==0||at[1]!==0);
+const statedMw = value => {const v=value&&typeof value==='object'?value.value:value;if(typeof v!=='number'&&typeof v!=='string')return null;if(typeof v==='string'&&!/^\d+(?:\.\d+)?$/.test(v.trim()))return null;const n=Number(v);return Number.isFinite(n)&&n>0?n:null;};
+const assetId = value => (typeof value==='string'||typeof value==='number')&&String(value).trim()&&String(value).length<=256?String(value).trim():null;
+function assetPrecision(p){for(const [field,value]of[['location.precision',p.location?.precision],['coordinate_precision',p.coordinate_precision],['location_precision',p.location_precision]])if(typeof value==='string'&&value.trim())return{precision:value,precisionField:field,approximateLocation:/approx|centroid|postcode|settlement|area/i.test(value)};return{precision:null,precisionField:null,approximateLocation:false};}
+function collectAssetContext({map,registry={},origin,radiusKm,geodesy,limit=200}={}){
+ const at=origin?.at;
+ if(!assetCoordinate(at)||!Number.isInteger(radiusKm)||radiusKm<1||radiusKm>50)throw Error('Located origin and integer radius 1-50 km are required.');
+ if(!geodesy?.distanceKm||!geodesy?.representativePoint)throw Error('Canonical Atlas geodesy is required.');
+ if(!Number.isInteger(limit)||limit<1||limit>200)throw Error('Asset result limit must be 1-200.');
+ const categories=ASSET_CONTEXT_CATEGORIES.map(([id,label])=>({id,label,availability:'NOT_LOADED',source:null,count:0,loadedRecords:0,truncated:false,rows:[]}));
+ const get=id=>categories.find(c=>c.id===id),seen=new Map(categories.map(c=>[c.id,new Set()]));
+ function add(category,row){
+  const c=get(category);c.loadedRecords++;
+  if(!assetCoordinate(row.at))return;
+  // Source IDs deduplicate records; coincident coordinates alone never merge facilities.
+  const key=row.id===null?null:row.source+'|'+row.id;
+  if(key!==null){if(seen.get(category).has(key))return;seen.get(category).add(key);}
+  const km=geodesy.distanceKm(at[0],at[1],row.at[0],row.at[1]);
+  if(!Number.isFinite(km)||km<0||km>radiusKm)return;
+  c.rows.push({...row,at:row.at.slice(0,2),km,demandMw:null,facilityVerified:null,connection:null});
+ }
+ let features=null;
+ try{const data=map?.getSource?.('src-repd')?.serialize?.().data;if(data?.type==='FeatureCollection'&&Array.isArray(data.features)&&data.features.length)features=data.features;}catch{/* Explicit NOT_LOADED below; no replacement fetch. */}
+ if(features){
+  for(const id of ['generation','storage'])Object.assign(get(id),{availability:'LOADED',source:'Existing loaded src-repd GeoJSON'});
+  features.forEach((f,i)=>{
+   const p=f?.properties||{},point=geodesy.representativePoint(f?.geometry),tech=String(p.tech||p.technology||p.technology_type||'Not stated');
+   const category=/^(?:bess(?:[_ -].*)?|battery(?:[_ -].*)?|storage|flywheel|caes)$/i.test(tech)?'storage':'generation';
+   const ref=assetId(p.repd_ref??p.ref_id),id=ref??assetId(p.id??f?.id);
+   add(category,{id,originId:ref&&/^\d+$/.test(ref)?'repd:'+ref:null,name:String(p.name||'Unnamed REPD record'),at:point,kind:category,status:String(p.status||'Not stated'),technology:tech,
+    capacityMw:statedMw(p.capacity_mw??p.capacity),capacityBasis:typeof p.capacity_basis==='string'?p.capacity_basis:'REGISTER_STATED_POWER_BASIS_NOT_DECLARED',
+    metrics:{itLoadMw:null,gridConnectionMw:null,unclassifiedMw:null},...assetPrecision(p),source:'src-repd',sourceRow:i});
+  });
+ }
+ const owner=registry.ukOfftakers?.state, data=owner?.data, dots=Array.isArray(data?.dots)?data.dots:null;
+ if(dots){
+  for(const id of ['datacentre','conventional','demand-context'])Object.assign(get(id),{availability:'LOADED',source:id==='conventional'?'Loaded potential-offtaker power-station listing; not the full conventional dataset':'Existing loaded off-taker owner records'});
+  dots.forEach((r,i)=>{
+   const p=r?.p||{},category=r?.k==='c'?'datacentre':r?.k==='b'?'conventional':['a','d','s','e'].includes(r?.k)?'demand-context':null;if(!category)return;
+   const id=assetId(p.id??r.id),size=p.size_metric;
+   const capacity=category==='conventional'?(typeof size?.unit==='string'&&/^MW(?:\b|_)/.test(size.unit)?statedMw(size.value):statedMw(p.mw)):null;
+   add(category,{id,originId:id,name:String(r.n||p.name||'Unnamed listed site'),at:r.a,kind:category,status:String(p.status||'Not stated'),technology:String(p.technology||p.fuel||r.sub||'Not stated'),
+    capacityMw:capacity,capacityBasis:capacity===null?null:'SOURCE_STATED_POWER_NOT_CURRENT_OUTPUT',metrics:category==='datacentre'?{itLoadMw:statedMw(p.it_load_mw),gridConnectionMw:statedMw(p.grid_connection_mw),unclassifiedMw:statedMw(p.unclassified_mw)}:{itLoadMw:null,gridConnectionMw:null,unclassifiedMw:null},
+    ...assetPrecision(p),source:category==='datacentre'&&r.dc?'ukOfftakers.data-centre-pipeline':'ukOfftakers.loaded-listing',sourceRow:i});
+  });
+ }
+ for(const c of categories){c.rows.sort((a,b)=>a.km-b.km||a.name.localeCompare(b.name,'en')||String(a.id).localeCompare(String(b.id),'en'));c.count=c.rows.length;c.truncated=c.count>limit;c.rows=c.rows.slice(0,limit);}
+ return{categories,radiusKm,connectionsInferred:0,limitations:['Loaded source records only; NOT_LOADED is not zero nearby assets.','Register power, IT load and connection figures remain separate; demand and present output are unknown.','A supplied location and source ID do not verify a facility or its connections; source precision is retained.']};
+}
+
+return collectAssetContext;
+})();
+const documentContextFor = (() => {
+/** Existing documentary context only. No fetch, name matching or spatial joins. */
+function freezeDocumentContext(value) {
+  if (value && typeof value === 'object') { for (const child of Object.values(value)) freezeDocumentContext(child); Object.freeze(value); }
+  return value;
+}
+
+const DOCUMENT_CONTEXT_PROVENANCE = freezeDocumentContext({
+  declaredModule: {
+    repository: 'Ventusltd/gridatlas', commit: 'b52693aaf513e63240acd8ab99a698df5b738cc6',
+    path: 'atlas/modules/202609012128-declared-connections.js', bytes: 15461,
+    sha256: 'a44520ebd644e725f644e7f3aea76839982c82d577022ac04583c5bc3346a371',
+    sourceUrl: 'https://github.com/Ventusltd/gridatlas/blob/b52693aaf513e63240acd8ab99a698df5b738cc6/atlas/modules/202609012128-declared-connections.js'
+  },
+  noticeProducer: {
+    repository: 'Ventusltd/globalgrid2050', commit: '07bff3a6d1cdc4d845062cafa1cf49161b135c96',
+    path: 'automation/grid_notice_ui/20261117-v938/notice.json', bytes: 5300,
+    sha256: 'bef90e1a64e4f1921c62f85ee61d636d1fe02fcebd30ea1570a7b3bfd49f5148',
+    factsSha256: 'f9802c96444c21e84b328d612475353861c8053cde31f55196d1ea5862918afb',
+    sourceUrl: 'https://github.com/Ventusltd/globalgrid2050/blob/07bff3a6d1cdc4d845062cafa1cf49161b135c96/automation/grid_notice_ui/20261117-v938/notice.json',
+    reviewReferences: ['https://github.com/Ventusltd/neural-link-between-agents/issues/42#issuecomment-6953350836', 'https://github.com/Ventusltd/neural-link-between-agents/issues/42#issuecomment-6953404444']
+  }
+});
+
+const DOCUMENT_CONTEXT_NOTICES = freezeDocumentContext([{
+  id: 'government:EN020026:consented:2026-10-30', title: 'Sea Link development consent',
+  applicationRef: 'EN020026', status: 'NARROW_FACTS_REVIEWED_NO_ASSET_ASSOCIATION',
+  sourceUrl: 'https://www.gov.uk/government/publications/sea-link-development-consent-order-planning-act-2008',
+  sourceTitle: 'Department for Energy Security and Net Zero: Sea Link development consent order',
+  date: {value: '2026-10-30', precision: 'DAY'},
+  statement: 'Government decision records development consent for the Suffolk–Kent transmission proposal. Its planned transmission upper bound is 2,000 MW; current capacity, commissioning and available headroom are unknown.',
+  scope: 'Standalone official planning context. No association with the selected asset or its vicinity has been established.',
+  plannedMetric: {value: 2000, unit: 'MW', kind: 'planned_transmission_upper_bound'},
+  currentCapacityMw: null, commissioned: null, connection: null, repdRef: null, coordinates: null,
+  verifiedAssetJoins: 0,
+  rightsScope: 'government_html_facts_only_no_images_or_third_party_material',
+  licenceUrl: 'https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/',
+  sources: [
+    {title: 'Planning Inspectorate: Sea Link development consent decision announced', url: 'https://www.gov.uk/government/news/sea-link-development-consent-decision-announced',
+      publishedDate: {value: '2026-10-30', precision: 'DAY'}, sourceUpdatedAt: null,
+      archivedReceipt: {retrievedAt: '2026-11-17T15:48:11Z', bytes: 68432, sha256: 'b9ba26b90820292e0b181da7993d2d3a2180fc2de0ac53cc6239adeb4cccfaeb'},
+      currentObservation: {retrievedAt: '2026-11-18T00:35:01.291330Z', bytes: 68432, sha256: 'b404ca2c91a4b84def5c521ceccab617c4b3bda860d40d2da32fd3e9298f599a', scope: 'Decision day and stated OGL footer reconfirmed; current HTML differs from archived receipt.'}},
+    {title: 'Department for Energy Security and Net Zero: Sea Link development consent order', url: 'https://www.gov.uk/government/publications/sea-link-development-consent-order-planning-act-2008',
+      publishedDate: {value: '2026-10-30', precision: 'DAY'}, sourceUpdatedAt: null,
+      archivedReceipt: {retrievedAt: '2026-11-17T15:48:11Z', bytes: 69536, sha256: 'c26f93aa307740f8b4ec8ad150b152fb6d30e77f201e5bc31a6da52bba16e0d0'},
+      currentObservation: {retrievedAt: '2026-11-18T00:35:01.437596Z', bytes: 69536, sha256: 'f15b12f35fa4fd1364894d550d3f053dfa680550ad7d83a56fa5b794624e4084', scope: 'Decision day and stated OGL footer reconfirmed; current HTML differs from archived receipt.'}}
+  ]
+}]);
+
+function documentOrigin(origin) {
+  if (!origin || !['repd', 'datacentre', 'substation'].includes(origin.type) || typeof origin.id !== 'string'
+      || !origin.id || origin.id.length > 256 || /[\s\u0000-\u001f\u007f]/.test(origin.id)) return null;
+  return {type: origin.type, id: origin.id};
+}
+
+function documentContextFor(origin, {declaredConnections} = {}) {
+  const identity = documentOrigin(origin), matchedRecords = [];
+  const limitations = [
+    'No independently verified asset-to-upgrade or asset-to-notice crosswalk is supplied by this adapter.',
+    'A published declaration or planning consent does not establish construction, energisation, a surveyed route, electrical connection, power flow or available capacity.',
+    'The standalone Sea Link notice is not linked to the selected asset, nearby substations or a distance radius.'
+  ];
+  // Read the canonical already-published owner table; do not fork its records or
+  // attach works to a nearby/name-matching substation. Its status stays verbatim.
+  const ref = identity?.type === 'repd' && /^repd:[1-9]\d*$/.test(identity.id) ? identity.id.slice(5) : null;
+  const canonical = declaredConnections?.schema === 'gridatlas.module.declared-connections.v1' ? declaredConnections.records : null;
+  const declaration = ref && canonical && Object.hasOwn(canonical, ref) ? canonical[ref] : null;
+  if (declaration && typeof declaration.source === 'string') {
+    const statement = [declaration.works, declaration.poc_works, declaration.via].filter(v => typeof v === 'string' && v).join('; ');
+    if (statement) matchedRecords.push({
+      id: 'existing-atlas-declaration:' + ref, originId: identity.id,
+      title: 'Existing published declaration for REPD ' + ref,
+      sourceUrl: DOCUMENT_CONTEXT_PROVENANCE.declaredModule.sourceUrl, sourceTitle: declaration.source,
+      statement, status: 'EXISTING_PUBLISHED_DECLARATION_UNREVALIDATED',
+      scope: 'Existing published declaration; source citation not revalidated here. Exact REPD key only; not an independently verified asset-to-document association.',
+      matchBasis: 'EXACT_REPD_KEY_IN_CANONICAL_OWNER_MODULE', verifiedAssetAssociation: false,
+      date: null, datePrecision: 'UNKNOWN',
+      declaredStatus: declaration.poc_status ?? null,
+      // Preserve the original owner's fields and classification separately from
+      // this adapter's review status. Never infer an absent status or date.
+      declaration: Object.fromEntries(['works', 'poc_works', 'substation', 'circuit', 'via', 'source', 'poc_status', 'poc_status_note', 'poc_kind', 'kv']
+        .filter(k => Object.hasOwn(declaration, k)).map(k => [k, declaration[k]]))
+    });
+  }
+  if (!identity) limitations.unshift('No supported stable source identity was supplied; names and coordinates were not used to create a match.');
+  else if (!matchedRecords.length) limitations.unshift('No exact existing documentary declaration is available for this source identity.');
+  return freezeDocumentContext({
+    schema: 'gridatlas.vicinity.document-context.v1', origin: identity,
+    status: matchedRecords.length ? 'EXISTING_DECLARATION_ONLY' : 'NO_EXACT_ASSET_DOCUMENT_CONTEXT',
+    matchedRecords, unassociatedNotices: DOCUMENT_CONTEXT_NOTICES,
+    verifiedAssetJoins: 0, realConnectionsInferred: 0,
+    counts: {existingDeclarations: matchedRecords.length, unassociatedNotices: 1, governmentDocuments: 2, verifiedAssetJoins: 0},
+    limitations, provenance: DOCUMENT_CONTEXT_PROVENANCE
+  });
+}
+
+return documentContextFor;
+})();
 const W = window, D = document, NS = W.__GRIDATLAS_MODULES__ = W.__GRIDATLAS_MODULES__ || {};
 if (!NS.gridVicinity) {
   let controller = null, timer = null, stopped = false, pendingIntent = null, intentError = null;
@@ -143,7 +299,7 @@ if (!NS.gridVicinity) {
     const host = map.getContainer(), prior = D.getElementById('gridatlas-vicinity');
     if (prior) throw new Error('Vicinity UI already mounted.');
     let alive = true, opened = false, origin = null, radius = 10, picking = false, result = null, records = [], contextSource = 'No loaded substation data', error = null;
-    let source = null, sourceUnavailable = false, selectionEpoch = 0, refreshTimer = null, returning = null, newsBase = null, newsTopic = null;
+    let source = null, sourceUnavailable = false, selectionEpoch = 0, refreshTimer = null, returning = null, newsBase = null, newsTopic = null, assetContext = null, documentContext = null;
     const itinerary = [], bands = new Set(VOLTAGE_BANDS.map(b => b[0])), listeners = [], groups = [], controls = [], ownedLayers = new Map();
     const SOURCE = 'gridatlas-vicinity-context', LAYERS = ['gridatlas-vicinity-radius', 'gridatlas-vicinity-points', 'gridatlas-vicinity-model'];
     const root = D.createElement('div'); root.id = 'gridatlas-vicinity'; host.appendChild(root);
@@ -155,6 +311,7 @@ if (!NS.gridVicinity) {
     const heading = el('div', null, panel, {class: 'vic-head'}); el('h2', 'Explore the nearby grid', heading);
     const close = el('button', 'Close', heading, {type: 'button', 'aria-label': 'Close vicinity explorer'});
     const originLabel = el('p', '', panel, {class: 'vic-origin'});
+    const originPrecision = el('p', 'Source-provided location; coordinate precision not supplied.', panel, {class: 'vic-origin-precision'});
     el('p', 'Spatial vicinity, connectivity unknown. Mapped points and voltage tags are context, not capacity or an electrical path.', panel, {class: 'vic-caption'});
     const actions = el('div', null, panel, {class: 'vic-actions'});
     const centre = el('button', 'Use map centre', actions, {type: 'button'});
@@ -177,13 +334,73 @@ if (!NS.gridVicinity) {
     const status = el('p', '', panel, {class: 'vic-status', role: 'status', 'aria-live': 'polite'});
     const failure = el('p', '', panel, {class: 'vic-error', role: 'alert'}); failure.hidden = true;
     const modelBox = el('fieldset', null, panel); el('legend', 'Your local grid model', modelBox);
-    el('p', 'Add mapped stations in your chosen order. Dashed pink joins are your assumed scenario, not source-confirmed cables or power flow.', modelBox);
+    el('p', 'Add mapped assets in your chosen order. Dashed pink joins are your assumed scenario, not source-confirmed cables or power flow.', modelBox);
     const modelStatus = el('p', 'No stations added.', modelBox, {class: 'vic-model-status'});
     const modelActions = el('div', null, modelBox, {class: 'vic-actions'});
     const undo = el('button', 'Undo last station', modelActions, {type: 'button'}), clear = el('button', 'Clear model', modelActions, {type: 'button'});
     el('p', 'Nearby mapped substations · straight-line distance', panel);
     const list = el('ol', null, panel, {class: 'vic-results'});
     el('p', 'Existing Atlas substation layer; source tags and coverage may be incomplete. Reuses the map’s existing data loader.', panel, {class: 'vic-source'});
+    const energy = el('fieldset', null, panel, {class: 'vic-energy-context'}); el('legend', 'Nearby generation and demand context', energy);
+    el('p', 'Counts describe loaded source records. Nameplates, IT load, grid requests and actual electricity demand are different quantities.', energy);
+    const loadAssets = el('button', 'Load existing asset layers', energy, {type: 'button'});
+    const energyRows = el('div', null, energy, {class: 'vic-energy-categories'});
+    const documents = el('details', null, panel, {class: 'vic-document-context'}); el('summary', 'Documented works and official notices', documents);
+    const documentRows = el('div', null, documents);
+
+    function sourceAnchor(parent, title, href) {
+      try { const url = new URL(href); if (url.protocol !== 'https:' || url.username || url.password) return; el('a', title, parent, {href: url.href, target: '_blank', rel: 'noopener noreferrer'}); } catch (_) {}
+    }
+    function rowOrigin(row) {
+      return {at: row.at, name: row.name, id: row.originId || row.id, type: row.kind === 'datacentre' ? 'datacentre' : ['generation','storage'].includes(row.kind) ? 'repd' : 'context-asset'};
+    }
+    function renderAssetContext() {
+      assetContext = collectAssetContext({map, registry: NS, origin, radiusKm: radius, geodesy, limit: 40});
+      energyRows.replaceChildren();
+      for (const category of assetContext.categories) {
+        const section = el('details', null, energyRows, {'data-vicinity-category': category.id});
+        el('summary', category.availability === 'LOADED' ? `${category.label}: ${category.count} within ${radius} km · ${category.loadedRecords} loaded records` : `${category.label}: not loaded; nearby count unknown`, section);
+        el('p', `${category.source || 'Existing Atlas layer'}${category.truncated ? ' · showing nearest 40; narrow the radius for more detail.' : ''}`, section);
+        if (category.availability !== 'LOADED') el('p', 'Use Load existing asset layers to request the map’s existing data.', section);
+        const rows = el('ol', null, section);
+        for (const row of category.rows) {
+          const item = el('li', row.name, rows, {'data-vicinity-asset-id': row.originId || row.id || ''});
+          const facts = [`${row.km.toFixed(2)} km straight-line`, row.status, row.technology].filter(Boolean);
+          const basis = row.capacityBasis === 'REGISTER_STATED_POWER_BASIS_NOT_DECLARED' ? 'register power; basis not supplied' : row.capacityBasis === 'SOURCE_STATED_POWER_NOT_CURRENT_OUTPUT' ? 'source-stated power, not current output' : row.capacityBasis || 'source-stated basis not supplied';
+          if (row.capacityMw != null) facts.push(`${row.capacityMw} MW (${basis})`);
+          if (row.metrics?.itLoadMw != null) facts.push(`${row.metrics.itLoadMw} MW IT load`);
+          if (row.metrics?.gridConnectionMw != null) facts.push(`${row.metrics.gridConnectionMw} MW grid-connection statement`);
+          if (row.metrics?.unclassifiedMw != null) facts.push(`${row.metrics.unclassifiedMw} MW (basis unclassified)`);
+          if (row.kind === 'datacentre' || row.kind === 'demand-context') facts.push('Actual electricity demand unknown');
+          if (row.kind === 'storage') facts.push('Storage energy (MWh) unknown');
+          if (row.approximateLocation) facts.push('Approximate source location' + (row.precision ? ': ' + row.precision.replace(/_/g,' ').toLowerCase() : ''));
+          else facts.push(row.precision ? 'Source location tag: ' + row.precision.replace(/_/g,' ').toLowerCase() : 'Coordinate precision not supplied');
+          el('span', facts.join(' · '), item, {class: 'vic-row-meta'});
+          const buttons = el('div', null, item, {class: 'vic-actions'});
+          const recenter = el('button', 'Use as origin', buttons, {type: 'button', 'aria-label': 'Use ' + row.name + ' as origin'});
+          const add = el('button', 'Add to my model', buttons, {type: 'button', 'aria-label': 'Add ' + row.name + ' to my model'});
+          recenter.addEventListener('click', () => setOrigin(rowOrigin(row))); add.addEventListener('click', () => addStation(row));
+        }
+      }
+      const originRow = assetContext.categories.flatMap(category => category.rows).find(row => (row.originId || row.id) === origin.id && row.at.every((v,i) => v === origin.at[i]));
+      originPrecision.textContent = ['map-centre','map-point'].includes(origin.type) ? 'User-chosen map point; no facility identity was inferred.'
+        : originRow?.approximateLocation ? 'Source-provided location is approximate' + (originRow.precision ? ': ' + originRow.precision.replace(/_/g,' ').toLowerCase() : '') + '.'
+        : originRow?.precision ? 'Source location tag: ' + originRow.precision.replace(/_/g,' ').toLowerCase() + '. Facility position has not been independently verified.'
+        : 'Source-provided location; coordinate precision not supplied. A stable ID and coordinates alone do not verify a facility location.';
+    }
+    function renderDocumentContext() {
+      documentContext = documentContextFor(origin, {declaredConnections: NS.declaredConnections}); documentRows.replaceChildren();
+      el('p', documentContext.matchedRecords?.length ? 'Existing published works context; source citations have not been revalidated in this release.' : 'No exact documentary works context is available for this asset.', documentRows);
+      for (const row of (documentContext.matchedRecords || []).slice(0,10)) {
+        const box = el('div', null, documentRows); el('strong', row.title || 'Existing source declaration', box);
+        el('p', row.statement || '', box); el('p', 'Existing published declaration; not independently revalidated.', box); sourceAnchor(box, 'Source record', row.sourceUrl);
+      }
+      for (const row of (documentContext.unassociatedNotices || []).slice(0,5)) {
+        const box = el('div', null, documentRows); el('strong', row.title || 'Unassociated official notice', box);
+        el('p', row.statement || 'No verified association to the selected asset.', box); sourceAnchor(box, 'Official notice context', row.sourceUrl);
+      }
+      for (const text of documentContext.limitations || []) el('p', String(text), documentRows);
+    }
 
     function readRecords() {
       let features = [];
@@ -237,10 +454,10 @@ if (!NS.gridVicinity) {
       source = null; ownedLayers.clear();
     }
     function showError(message) { error = message; failure.textContent = message; failure.hidden = !message; }
-    function updateModel() { modelStatus.textContent = itinerary.length ? `${itinerary.length} selected stations: ${itinerary.map(row => row.name).join(' → ')}. User-assumed joins.` : 'No stations added.'; undo.disabled = clear.disabled = !itinerary.length; }
+    function updateModel() { modelStatus.textContent = itinerary.length ? `${itinerary.length} selected assets: ${itinerary.map(row => row.name).join(' → ')}. User-assumed joins.` : 'No assets added.'; undo.disabled = clear.disabled = !itinerary.length; }
     function addStation(row) {
-      if (itinerary.length >= 20) { showError('This local model holds up to 20 stations. Undo or clear to make another choice.'); return; }
-      if (itinerary.at(-1)?.at.every((n,i) => n === row.at[i])) { showError('That station is already the last choice.'); return; }
+      if (itinerary.length >= 20) { showError('This local model holds up to 20 assets. Undo or clear to make another choice.'); return; }
+      if (itinerary.at(-1) === row || row.id && itinerary.at(-1)?.id === row.id && itinerary.at(-1)?.kind === row.kind) { showError('That asset is already the last choice.'); return; }
       itinerary.push({...row, at: row.at.slice()}); showError(null); updateModel(); draw();
     }
     function refresh() {
@@ -260,7 +477,7 @@ if (!NS.gridVicinity) {
           recenter.addEventListener('click', () => setOrigin({at: row.at, name: row.name, id: row.id, type: 'substation'}));
           add.addEventListener('click', () => addStation(row));
         }
-        draw(); updateModel();
+        renderAssetContext(); renderDocumentContext(); draw(); updateModel();
       } catch (e) { showError(e.message); }
     }
     function setOrigin(next) {
@@ -304,6 +521,13 @@ if (!NS.gridVicinity) {
     }
     listen(launch, 'click', () => { opened ? shut() : open(); }); listen(close, 'click', shut);
     listen(centre, 'click', () => setOrigin(mapCentre())); listen(fit, 'click', fitRadius);
+    listen(loadAssets, 'click', event => {
+      event.stopPropagation();
+      const ids = ['solar','solar_operational','solar_roof','wind','wind_onshore_operational','wind_offshore_operational','bess','bess_operational','biomass','tidal','hydrogen','hydro','flywheel','act','geothermal','caes'];
+      const boxes = ids.map(id => D.querySelector(`#scada-ui-container input[data-layer-id="${id}"]`)).filter(Boolean);
+      for (const box of boxes) if (!box.checked) box.click();
+      NS.ukOfftakers?.setOn?.(true); refresh();
+    });
     listen(physical, 'click', event => {
       event.stopPropagation();
       const boxes = ['400','275','220','132','66','subs'].map(id => D.querySelector(`#scada-ui-container input[data-layer-id="${id}"]`)).filter(Boolean);
@@ -318,7 +542,7 @@ if (!NS.gridVicinity) {
     listen(panel, 'keydown', event => { if (event.key === 'Escape') { event.preventDefault(); shut(); } });
     for (const type of ['click','dblclick','pointerdown','touchstart']) listen(panel, type, event => event.stopPropagation());
     const clicked = event => { if (opened && picking && event.lngLat) setOrigin({at: [event.lngLat.lng,event.lngLat.lat], name: 'Chosen map point', type: 'map-point', id: null}); };
-    const sourced = event => { if (opened && (!event || event.sourceId === 'src-subs')) { clearTimeout(refreshTimer); refreshTimer = setTimeout(refresh, 100); } };
+    const sourced = event => { if (opened && (!event || ['src-subs','src-repd','gridatlas-offtakers'].includes(event.sourceId))) { clearTimeout(refreshTimer); refreshTimer = setTimeout(refresh, 100); } };
     const styled = () => { if (!map.getSource(SOURCE)) source = null; if (opened) refresh(); };
     const removed = () => destroy(true);
     map.on('click', clicked); map.on('sourcedata', sourced); map.on('style.load', styled); map.on('remove', removed);
@@ -333,6 +557,8 @@ if (!NS.gridVicinity) {
     return Object.freeze({open, close: shut, setOrigin, refresh, destroy, snapshot: () => ({alive, opened, generation: VICINITY_GENERATION, radiusKm: radius,
       origin: origin ? {...origin,at: origin.at.slice()} : null, matching: result?.matching ?? null, shown: result?.shown.length ?? 0, loadedRecords: records.length,
       newsContextUrl: newsBase, newsHref: newsBase && origin ? newsContextHref(newsBase, origin, newsTopic) : null,
+      assetContext: assetContext ? {...assetContext, categories: assetContext.categories.map(category => ({...category, rows: category.rows.map(({sourceRow, ...row}) => row)}))} : null,
+      documentContext,
       selectedBands: [...bands], contextSource, sourceUnavailable, modelStations: itinerary.map(row => ({name: row.name, id: row.id, at: row.at.slice()})),
       modelEvidence: 'USER_ASSUMED_LOCAL_MODEL', realConnectionsInferred: 0, error, selectionEpoch})});
   }
