@@ -6,9 +6,9 @@ export function createPlaceBridge({resolve,index,geodesy}={}) {
   function invalidate(){epoch++;current=null;offered.clear();}
   return Object.freeze({invalidate,
     async lookup(label,{radiusKm=10,limit}={}) {
-      if(typeof label!=='string'||!label.trim())throw new Error('Type a place or postcode.');
+      invalidate();if(typeof label!=='string'||!label.trim())throw new Error('Type a place or postcode.');
       if(!Number.isInteger(radiusKm)||radiusKm<1||radiusKm>50)throw new Error('Choose a whole radius from 1 to 50 km.');
-      invalidate();const request=epoch;current={label,status:'RESOLVING',epoch:request};
+      const request=epoch;current={label,status:'RESOLVING',epoch:request};
       let raw;try{raw=await resolve(label);}catch(error){if(request!==epoch)return{stale:true,epoch:request};current={label,status:'FAILED',epoch:request,error:String(error?.message||error)};throw error;}
       if(request!==epoch)return{stale:true,epoch:request};
       const places=[];
@@ -29,4 +29,5 @@ export function createPlaceBridge({resolve,index,geodesy}={}) {
     },snapshot(){return current?{...current}:{status:'IDLE',epoch};}
   });
 }
+
 
