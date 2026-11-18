@@ -76,5 +76,7 @@ test('news return links accept only supplied dated exact-host bases and build bo
   assert.equal(url.searchParams.get('news_origin_id'),'repd:2470');assert.equal(url.searchParams.get('news_topic'),'wind');assert.equal(url.hash,'#headlinesHeading');
   assert.deepEqual([...url.searchParams.keys()],['news_origin_type','news_origin_id','news_topic']);
   const intent=parseVicinityIntent(link+'&news_context_url='+encodeURIComponent(base)+'&news_topic=wind');assert.equal(intent.newsContextUrl,base);assert.equal(intent.newsTopic,'wind');
-  assert.throws(()=>parseVicinityIntent(link+'&news_context_url='+encodeURIComponent(base)+'&news_topic=bad'));
+  for(const optional of ['&news_context_url='+encodeURIComponent(base)+'&news_topic=bad','&news_context_url=https%3A%2F%2Fevil.test%2F','&news_context_url='+encodeURIComponent(base)+'&news_context_url='+encodeURIComponent(base)]) {
+    const degraded=parseVicinityIntent(link+optional);assert.equal(degraded.origin.id,'repd:2470');assert.equal(degraded.radiusKm,10);assert.match(degraded.newsContextError,/not applied/);assert.equal(degraded.newsContextUrl,undefined);
+  }
 });
