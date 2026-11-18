@@ -54,6 +54,7 @@ if (!NS.gridVicinity) {
     const documentRows = el('div', null, documents);
     panel.insertBefore(energy, list); panel.insertBefore(documents, list);
     const train = createGreatGridJourney({map,registry:NS,geodesy,parent:panel,readFeatures:()=>{
+      if(!map.getStyle?.())return null;
       const data=map.getSource('src-subs')?.serialize?.().data;
       return data&&typeof data==='object'&&Array.isArray(data.features)?data.features:null;
     }});

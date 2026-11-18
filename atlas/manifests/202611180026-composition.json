@@ -58,13 +58,13 @@
   },
   {
    "id": "uk-gazetteer-flyto",
-   "generation": "202611132345",
-   "version": "v9.189",
+   "generation": "202611180026",
+   "version": "v9.193",
    "type": "script",
    "slot": "replace-script",
    "replace_script": "202608291818-place-postcode-search.js",
-   "path": "./cartridges/202611132345-place-global-search-v9-5.js",
-   "sha256": "a27a11c45d4d02c4dbecf09e8ba2acc38215a77fc87bd23b1024f349f8dea619",
+   "path": "./cartridges/202611180026-place-global-search-v9-5.js",
+   "sha256": "575721ea584187c2b9b857408a3e6136879d7f6876f1e6d7a0b925051124a49c",
    "contract": "../ui/cartridges/202609040337-global-gazetteer-flyto-v9-106.mjs",
    "capabilities": [
     "exact-repd-first",
@@ -72,12 +72,14 @@
     "uk-place",
     "global-address",
     "global-place",
-    "deep-link-publishes-resolved-technology-and-capacity"
+    "deep-link-publishes-resolved-technology-and-capacity",
+    "lookup-only-place-resolver-without-selection-side-effects"
    ],
    "result_class": "LOCATION_ONLY",
    "sets_deep_link": false,
    "assembled_from": "./manifests/202611132345-place-global-search-v9-5-parts.json",
-   "bytes": 41115
+   "bytes": 41675,
+   "source_recipe": "tools/train/gazetteer/generations.json"
   },
   {
    "id": "sld-sandbox",
@@ -855,9 +857,9 @@
    "slot": "after-cartridge",
    "after": "grid-journey-preview",
    "path": "./modules/202611180026-grid-vicinity.js",
-   "sha256": "1d288a72d1ca10ca85b5d47955faaeda9751f941dbbdcc4ed3f4ca5d46cfc594",
-   "bytes": 55674,
-   "byte_budget": 64000,
+   "sha256": "026d5ca37cfd50d9ddb64fc34b586b8582a4df1b61865f5d95298868f9397bc3",
+   "bytes": 103901,
+   "byte_budget": 140000,
    "immutable_shell_modified": false,
    "capabilities": [
     "spatial-radius-1-50km",
@@ -867,7 +869,13 @@
     "local-user-model",
     "typed-generation-storage-demand-context",
     "exact-existing-declaration-context",
-    "unassociated-official-notices"
+    "unassociated-official-notices",
+    "great-grid-journeys",
+    "full-source-station-search",
+    "canonical-station-only-itinerary-10-90",
+    "declarative-per-edge-journey-law",
+    "explicit-user-simulated-fallback",
+    "native-learning-cursor"
    ]
   }
  ],
@@ -943,7 +951,7 @@
   "fidelity_workflow": ".github/workflows/202608301931-layer-fidelity.yml",
   "payload_cache": "RELEASE_AFTER_SERIALISATION"
  },
- "composition_note": "Vicinity spatial explorer: 1–50 km, voltage context, local user model; source connections are never inferred.",
+ "composition_note": "Great Grid Journeys and vicinity: canonical full-inventory station search, explicit place binding, ordered 10/90-stop itinerary, per-edge voltage/evidence law and user-activated learning cursor; hypothetical legs are explicit and never factual grid connections.",
  "superseded_generation": "202611172355",
  "candidate_predecessor": "202611172355",
  "loader": "v2",
@@ -951,7 +959,7 @@
  "version": "v9.193",
  "cut_at_utc": "2026-11-18T00:26:00.000Z",
  "candidate_status": "REVIEW_AND_PUBLIC_ACCEPTANCE_PENDING",
- "note": "Vicinity spatial explorer: 1–50 km, voltage context, local user model; source connections are never inferred.",
+ "note": "Great Grid Journeys and vicinity: canonical full-inventory station search, explicit place binding, ordered 10/90-stop itinerary, per-edge voltage/evidence law and user-activated learning cursor; hypothetical legs are explicit and never factual grid connections.",
  "acceptance": {
   "full_application_copies_created": 0,
   "immutable_shell_modified": false,

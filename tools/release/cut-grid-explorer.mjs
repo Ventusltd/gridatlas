@@ -30,6 +30,14 @@ Object.assign(composition, {generation: G, previous_generation: P, superseded_ge
   composition_version: version, composition_id: `${G}-gridatlas-${version}`, composition_manifest: `./manifests/${G}-composition.json`,
   composition_note: stage === 'native' ? 'Mobile arrival summary and native Journey/Layers. Synthetic learning journeys labelled; existing real assets retain factual identity.' : 'Vicinity spatial explorer: 1–50 km, voltage context, local user model; source connections are never inferred.'});
 const own = [];
+if(process.argv.includes('--train-gazetteer')){
+  const {buildGazetteer}=await import('../train/gazetteer/build.mjs');
+  const bytes=buildGazetteer(G),c=composition.cartridges.find(c=>c.id==='uk-gazetteer-flyto');
+  assert.ok(c,'Gazetteer predecessor required');delete c.assembled_from;
+  Object.assign(c,{generation:G,version,path:`./cartridges/${G}-place-global-search-v9-5.js`,sha256:hash(bytes),bytes:bytes.length,source_recipe:'tools/train/gazetteer/generations.json'});
+  c.capabilities=[...c.capabilities,'lookup-only-place-resolver-without-selection-side-effects'];
+  write('atlas/'+c.path,bytes);own.push(c.id);
+}
 if (process.argv.includes('--pipeline-lifecycle')) {
   const {buildSubstation} = await import('../pipeline-lifecycle/build.mjs');
   const bytes = buildSubstation(G), c = composition.cartridges.find(c => c.id === 'substation-intelligence');

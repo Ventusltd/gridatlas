@@ -53,6 +53,7 @@ jobs:
           node tools/twin/replicate-generation.mjs --generation "$EXPLORER_GENERATION" --offline
           if test -f tools/sld/map-removal-cleanup.test.mjs; then node --test tools/sld/map-removal-cleanup.test.mjs; fi
           if test -d tools/pipeline-lifecycle; then node --test tools/pipeline-lifecycle/*.test.mjs; fi
+          if test -d tools/train; then node --test tools/train/*.test.mjs tools/train/gazetteer/*.test.mjs; fi
           if test -f tools/vicinity/model.test.mjs; then node --test tools/vicinity/model.test.mjs tools/vicinity/asset-context.test.mjs tools/vicinity/document-context.test.mjs; fi
       - name: Native vicinity and user-model acceptance
         env:
