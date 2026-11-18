@@ -65,6 +65,11 @@ try{
  for(const id of ['generation','storage','datacentre','conventional','demand-context']){const category=assetContext.categories.find(c=>c.id===id);assert.equal(category.availability,'LOADED',id);assert.ok(category.count>0,id+' actual nearby positive count at50km');assert.ok(category.rows.every(r=>r.km<=50&&r.demandMw===null&&r.facilityVerified===null));assert.ok(category.rows.every(r=>r.capacityMw===null||r.capacityMw>0));}
  const dcContext=panel.locator('[data-vicinity-category=\"datacentre\"]');await visibleTap(dcContext.locator('summary'));
  assert.match(await dcContext.innerText(),/Actual electricity demand unknown/);
+ // Lifecycle regression: unchanged owner data must not replace an open category's controls.
+ const assetBeforeRefresh=JSON.stringify((await snapshot()).assetContext);
+ await dcContext.evaluate(e=>{window.__vicinityCategory=e;window.__vicinityAssetButton=e.querySelector('button');window.__GRIDATLAS_V9_MAP__.fire('sourcedata',{sourceId:'src-repd'});});
+ await page.waitForTimeout(180);assert.equal(JSON.stringify((await snapshot()).assetContext),assetBeforeRefresh);
+ assert.equal(await dcContext.evaluate(e=>e===window.__vicinityCategory&&e.open&&e.querySelector('button')===window.__vicinityAssetButton),true,'unchanged source refresh preserves open controls');
  const assetRow=assetContext.categories.find(c=>c.id==='datacentre').rows[0];
  await visibleTap(dcContext.getByRole('button',{name:/^Add .+ to my model$/}).first());assert.deepEqual((await snapshot()).modelStations.at(-1).at,assetRow.at);
  await visibleTap(page.getByRole('button',{name:'Clear model',exact:true}));
