@@ -628,7 +628,8 @@ function validLine(line) {
 /** Native MapLibre learning cursor. Travel direction is never electrical flow. */
 function createTrainRide({map, geodesy, palette = {}, onState = () => {}, reducedMotion = false, readPlanEpoch = null,
   requestFrame = globalThis.requestAnimationFrame?.bind(globalThis),
-  cancelFrame = globalThis.cancelAnimationFrame?.bind(globalThis)} = {}) {
+  cancelFrame = globalThis.cancelAnimationFrame?.bind(globalThis),
+  setTimer = globalThis.setTimeout?.bind(globalThis), clearTimer = globalThis.clearTimeout?.bind(globalThis)} = {}) {
   if (!map || typeof geodesy?.distanceKm !== 'function') throw Error('Map and canonical geodesy required.');
   const prefix = 'gridatlas-train-', sources = new Map(), layers = new Map();
   const colour = palette.SUBSTATION_COLOUR || palette.substation || '#5fbdc2'; // Existing SLD substation colour.
@@ -640,6 +641,7 @@ function createTrainRide({map, geodesy, palette = {}, onState = () => {}, reduce
   let lastDashIndex = -1;
   let alive = true, plan = null, pinStops = [], playing = false, handle = null, legIndex = 0, fraction = 0, epoch = 0, measures = [], prefixStop = 0;
   let lastTime = null, lastPaint = -Infinity, cameraFollow = false, durationMs = 2400, unavailable = null;
+  let retryHandle = null, retryCount = 0;
   const state = () => ({schema: 'gridatlas.train.motion.v1', alive, playing, legIndex, fraction,
     stopIndex: fraction === 1 ? legIndex + 1 : legIndex, reducedMotion: !!reducedMotion,
     cameraFollow, unavailable, approvedThroughStop: prefixStop, evidence: plan?.legs[legIndex]?.evidence || null,
@@ -650,8 +652,16 @@ function createTrainRide({map, geodesy, palette = {}, onState = () => {}, reduce
   function cancel() { epoch++; if (handle !== null) cancelFrame?.(handle); handle = null; lastTime = null; }
   function schedule() { const token = epoch; handle = requestFrame(time => { if (token === epoch) tick(time); }); }
   function pause() { playing = false; cancel(); notify(); return state(); }
+  function cancelRetry() { if(retryHandle!==null)clearTimer?.(retryHandle);retryHandle=null;retryCount=0; }
+  function waitForStyle() {
+    unavailable = retryCount < 12 ? 'Map style is loading; drawing will retry briefly.' : 'Map style is not ready. Retry Draw when the map is ready.';
+    if(retryHandle===null && retryCount<12 && typeof setTimer==='function') {
+      retryCount++;retryHandle=setTimer(()=>{retryHandle=null;if(alive)paint();},250);
+    }
+    notify();return false;
+  }
   function ensure() {
-    if (!alive || !plan && !pinStops.length || map.isStyleLoaded?.() === false) return false;
+    if (!alive || !plan && !pinStops.length) return false;
     const sourceIds = ['routes', 'stops', 'cursor'].map(id => prefix + id);
     const layerIds = ['route-gis', 'route-topology', 'route-simulated', 'flow', 'stops', 'proposals', 'cursor'].map(id => prefix + id);
     for (const id of sourceIds) {
@@ -662,6 +672,10 @@ function createTrainRide({map, geodesy, palette = {}, onState = () => {}, reduce
       const existing = map.getLayer(id);
       if (existing && existing !== layers.get(id)) { unavailable = 'Layer ID belongs to another module'; pause(); return false; }
     }
+    // Existing verified sources remain writable while their own setData is
+    // pending. Global isStyleLoaded also includes that work; it is not a
+    // readiness test for an owned source or for each animation frame.
+    if(sourceIds.some(id=>!map.getSource(id)) && map.isStyleLoaded?.()===false) return waitForStyle();
     for (const id of sourceIds) if (!map.getSource(id)) {
       map.addSource(id, {type: 'geojson', data: collection([])}); sources.set(id, map.getSource(id));
     }
@@ -682,7 +696,7 @@ function createTrainRide({map, geodesy, palette = {}, onState = () => {}, reduce
       'circle-color':customerColour,'circle-radius':5,'circle-stroke-color':'#000c10','circle-stroke-width':1.5,'circle-opacity':0.9}});
     add({id: prefix + 'cursor', type: 'circle', source: prefix + 'cursor', paint: {
       'circle-color': colour, 'circle-radius': 5, 'circle-stroke-color': '#000c10', 'circle-stroke-width': 1.5}});
-    unavailable = null; return true;
+    cancelRetry();unavailable = null; return true;
   }
   function position() {
     const line = plan?.legs[legIndex]?.coordinates;
@@ -695,6 +709,7 @@ function createTrainRide({map, geodesy, palette = {}, onState = () => {}, reduce
     return [line[i][0] + (line[lo][0] - line[i][0]) * t, line[i][1] + (line[lo][1] - line[i][1]) * t];
   }
   function paint() {
+    if(plan && readPlanEpoch && readPlanEpoch()!==plan.planEpoch){clearPlan();return;}
     if (!ensure()) return;
     sources.get(prefix + 'routes').setData(collection((plan?.legs||[]).slice(0,prefixStop).filter(l => l.coordinates).map(l => ({type: 'Feature',
       properties: {evidence: l.evidence, label: l.label}, geometry: {type: 'LineString', coordinates: l.coordinates}}))));
@@ -709,7 +724,7 @@ function createTrainRide({map, geodesy, palette = {}, onState = () => {}, reduce
   function tick(time) {
     handle = null; if (!alive || !playing) return;
     if (readPlanEpoch && readPlanEpoch() !== plan.planEpoch) { clearPlan(); return; }
-    if (map.isStyleLoaded?.() === false) { pause(); return; }
+    if(!sources.has(prefix+'cursor') || map.getSource(prefix+'cursor')!==sources.get(prefix+'cursor')) {pause();return;}
     if (lastTime === null) lastTime = time;
     fraction += Math.max(0, Math.min(250, time - lastTime)) / durationMs; lastTime = time;
     if (fraction >= 1) {
@@ -729,6 +744,8 @@ function createTrainRide({map, geodesy, palette = {}, onState = () => {}, reduce
   }
   function setPlan(next) {
     if (!alive) throw Error('Train ride is destroyed.');
+    // Reject stale asynchronous results before clearing or painting any current ride.
+    if(readPlanEpoch && next?.planEpoch!==readPlanEpoch())throw Error('Stale journey plan epoch.');
     clearPlan({stops:pinStops});
     if (next?.schema !== 'gridatlas.train.route-plan.v1' || !Array.isArray(next.legs) || !next.legs.length
       || !Array.isArray(next.stops) || next.stops.length !== next.legs.length + 1
@@ -767,7 +784,7 @@ function createTrainRide({map, geodesy, palette = {}, onState = () => {}, reduce
     if (!alive) return false;
     if (!Array.isArray(stops) || stops.length>90 || stops.some(stop=>!Array.isArray(stop.at)||stop.at.length!==2
       ||!stop.at.every(Number.isFinite)||Math.abs(stop.at[0])>180||Math.abs(stop.at[1])>90)) throw Error('Invalid selected station pins.');
-    pause();plan=null;measures=[];prefixStop=0;legIndex=0;fraction=0;
+    cancelRetry();pause();plan=null;measures=[];prefixStop=0;legIndex=0;fraction=0;
     pinStops=JSON.parse(JSON.stringify(stops.filter(stop=>!stop.invalid)));
     if(ensure()) for(const [suffix,data]of [['routes',collection([])],['cursor',collection([])],['stops',stopData(pinStops)]]) {
       const id=prefix+suffix;if(map.getSource(id)===sources.get(id))sources.get(id).setData(data);
@@ -777,10 +794,10 @@ function createTrainRide({map, geodesy, palette = {}, onState = () => {}, reduce
       if(sources.has(id)&&map.getSource(id)===sources.get(id))sources.get(id).setData(collection([]));}
     notify();return true;
   }
-  function styleReload() { if (!alive) return; pause(); paint(); }
-  function removed() { if (!alive) return; alive = false; playing = false; cancel(); sources.clear(); layers.clear(); map.off('style.load', styleReload); notify(); }
+  function styleReload() { if (!alive) return; cancelRetry();pause(); paint(); }
+  function removed() { if (!alive) return; alive = false; playing = false; cancelRetry();cancel(); sources.clear(); layers.clear(); map.off('style.load', styleReload); notify(); }
   function destroy() {
-    if (!alive) return; pause();
+    if (!alive) return; cancelRetry();pause();
     for (const [id, layer] of [...layers].reverse()) if (map.getLayer(id) === layer) map.removeLayer(id);
     for (const [id, source] of sources) if (map.getSource(id) === source) map.removeSource(id);
     sources.clear(); layers.clear(); alive = false;
@@ -809,7 +826,7 @@ function trainLearningFixture(kind = 'local') {
 return {buildStationIndex,createScenarioStationStore,createItinerary,createPlaceBridge,normaliseJourneyLaw,buildRoutePlan,createTrainRide,trainLearningFixture};
 })();
 /** Shared native journey UI; all network evidence stays in the route planner. */
-function createGreatGridJourney({map, registry, geodesy, parent, readFeatures,onProposedPick=()=>{},onMapView=()=>{},onRideState=()=>{}}) {
+function createGreatGridJourney({map, registry, geodesy, parent, readFeatures,onProposedPick=()=>{},onMapView=()=>{},onRideState=()=>{},onStatus=()=>{}}) {
   let index = null, indexedFeatures = null, bridge = null, bridgeResolver = null, plan = null, searchEpoch = 0, destroyed = false;
   const D = document, cleanups = [], stationIndex={get:id=>index?.get(id)||null}, scenarioStore=TrainCore.createScenarioStationStore(), selected = TrainCore.createItinerary({mode:'journey',stationIndex,scenarioStore});
   let demo=null;
@@ -864,7 +881,7 @@ function createGreatGridJourney({map, registry, geodesy, parent, readFeatures,on
     if(progress.textContent!==caption)progress.textContent=caption;
     pause.disabled=!s.playing;play.setAttribute('aria-pressed',String(s.playing));
   }});
-  function say(message){feedback.textContent=message;}
+  function say(message){if(feedback.textContent!==message)feedback.textContent=message;onStatus(message);}
   function fullIndex(){const features=readFeatures();if(!Array.isArray(features)||!features.length){const hadIndex=!!index;index=null;indexedFeatures=null;if(hadIndex)invalidate();bridge?.invalidate();bridge=null;say('Full substation inventory is not loaded. Use Show physical grid, then search again.');return null;}if(features!==indexedFeatures){const changed=!!indexedFeatures;index=TrainCore.buildStationIndex(features,{geodesy,datasetPin:TRAIN_STATION_SOURCE_PIN});indexedFeatures=features;if(changed)invalidate();bridge?.invalidate();bridge=null;}const s=index.snapshot();inventory.textContent=`${s.sourceRecords} original source features · ${s.indexedRecords} selectable stable station IDs · ${s.invalidRecords} unlocated / missing-ID records · ${s.conflictingIds.length} conflicting IDs. Search is not capped by the nearby list.`;return index;}
   function invalidate(){const state=selected.snapshot();ride.clearPlan({stops:state.stops.filter(stop=>!stop.invalid)});drawnEpoch=null;plan=null;legs.replaceChildren();progress.textContent='Selections or law changed. Draw again to apply them.';}
   function setMode(mode){try{selected.setMode(mode);journeyMode.setAttribute('aria-pressed',String(mode==='journey'));vicinityMode.setAttribute('aria-pressed',String(mode==='vicinity'));invalidate();renderStops();return true;}catch(e){say(e.message+' Your selected stops were kept.');return false;}}
@@ -897,11 +914,11 @@ function createGreatGridJourney({map, registry, geodesy, parent, readFeatures,on
   function proposedClick(event){if(!proposedPicking||!event.lngLat)return;cancelProposedPick();try{if(!fallback.checked)throw Error('Explicit SIMULATED fallback is required for a proposed station.');selected.setLaw(law());const count=selected.snapshot();if(role.value==='waypoint'&&count.selectedCount>=count.limit)throw Error('Remove a selected visit before adding another proposed stop.');const row=scenarioStore.create({name:proposedName.value,at:[event.lngLat.lng,event.lngLat.lat],kv:[Number(proposedVoltage.value)]});invalidate();renderProposed();paintProposed();add(row);}catch(e){say(e.message);}}
   const proposedRemoved=()=>{mapRemoved=true;cancelProposedPick();};
   map.on('click',proposedClick);map.on('remove',proposedRemoved);map.on('style.load',paintProposed);
-  on(propose,'click',()=>{if(!fallback.checked){say('Enable SIMULATED fallback in the journey law before pinning a proposed FEED concept.');return;}proposedPicking=!proposedPicking;propose.setAttribute('aria-pressed',String(proposedPicking));if(proposedPicking){onProposedPick();say('Tap one point on the map for your proposed customer substation. It remains a session-only screening concept.');}});
-  function drawPlan(){ride.clearPlan({stops:selected.snapshot().stops.filter(stop=>!stop.invalid)});drawnEpoch=null;plan=null;try{if(!fullIndex()&&!demo)throw Error('The current full station inventory is unavailable.');const currentLaw=law();if(!demo)selected.setLaw(currentLaw);const state=selected.snapshot();if(!demo&&!state.valid)throw Error('A selected proposed or source station is unavailable. Remove or repair its visit explicitly.');drawnEpoch=state.planEpoch;const stops=state.stops.map(s=>({...s,selectedVoltageKv:chosenVoltage.get(s.stopId)||null}));plan=TrainCore.buildRoutePlan({...demo,stops:demo?.stops||stops,stationIndex:demo?null:stationIndex,scenarioStore,planEpoch:drawnEpoch,geodesy,law:currentLaw,network:demo?null:registry.gridTrainEvidence||null});ride.setPlan(plan);legs.replaceChildren();for(const leg of plan.legs)el('li',`${leg.index+1}. ${leg.label}${leg.km==null?'':' · '+leg.km.toFixed(2)+' km diagram distance'}`,legs);say(plan.playable?(plan.simulated?'SIMULATED user itinerary drawn. These joins are not source cables or measured power flow.':'Reviewed evidence itinerary drawn.'):'Some legs have no reviewed route. Edit stops or voltages, or explicitly allow simulated fallback. Unknown and mixed-voltage gaps remain unexplained rather than inventing transformers.');return plan.playable;}catch(e){say(e.message);return false;}}
+  on(propose,'click',()=>{if(!fallback.checked){say('Enable SIMULATED fallback in the journey law before pinning a proposed FEED concept.');return;}proposedPicking=!proposedPicking;propose.setAttribute('aria-pressed',String(proposedPicking));if(proposedPicking){onProposedPick();onMapView();say('Tap one point on the map for your proposed customer substation. It remains a session-only screening concept.');}});
+  function drawPlan(){ride.clearPlan({stops:selected.snapshot().stops.filter(stop=>!stop.invalid)});drawnEpoch=null;plan=null;try{if(!fullIndex()&&!demo)throw Error('The current full station inventory is unavailable.');const currentLaw=law();if(!demo)selected.setLaw(currentLaw);const state=selected.snapshot();if(!demo&&!state.valid)throw Error('A selected proposed or source station is unavailable. Remove or repair its visit explicitly.');drawnEpoch=state.planEpoch;const stops=state.stops.map(s=>({...s,selectedVoltageKv:chosenVoltage.get(s.stopId)||null}));plan=TrainCore.buildRoutePlan({...demo,stops:demo?.stops||stops,stationIndex:demo?null:stationIndex,scenarioStore,planEpoch:drawnEpoch,geodesy,law:currentLaw,network:demo?null:registry.gridTrainEvidence||null});ride.setPlan(plan);legs.replaceChildren();for(const leg of plan.legs)el('li',`${leg.index+1}. ${leg.label}${leg.km==null?'':' · '+leg.km.toFixed(2)+' km diagram distance'}`,legs);say(plan.playable?(plan.simulated?'SIMULATED user itinerary drawn. These joins are not source cables or measured power flow.':'Reviewed evidence itinerary drawn.'):'Some legs have no reviewed route. Edit stops or voltages, or explicitly allow simulated fallback. Unknown and mixed-voltage gaps remain unexplained rather than inventing transformers.');return plan.playable;}catch(e){plan=null;drawnEpoch=null;ride.clearPlan({stops:selected.snapshot().stops.filter(stop=>!stop.invalid)});say(e.message);return false;}}
   function planIsCurrent(){const state=selected.snapshot();if(!demo&&(!state.valid||state.planEpoch!==drawnEpoch)){invalidate();say('The station scenario or law changed. Draw a new valid itinerary before moving the cursor.');return false;}return !!plan;}
   function loadDemo(kind){demo=TrainCore.trainLearningFixture(kind==='interchange'?'local':kind);invalidate();legs.replaceChildren();for(const stop of demo.stops)el('li',stop.name,legs);say(demo.title+'. Fictional demonstration loaded separately; your real selected stops are preserved. Explicitly allow SIMULATED fallback, then draw. No physical route is asserted.');}
-  on(searchForm,'submit',e=>{e.preventDefault();searchStations();});on(placeSearch,'click',searchPlaces);on(query,'input',()=>{searchEpoch++;bridge?.invalidate();});on(journeyMode,'click',()=>setMode('journey'));on(vicinityMode,'click',()=>setMode('vicinity'));on(reset,'click',()=>{selected.clear();demo=null;chosenVoltage.clear();invalidate();renderStops();});on(fallback,'change',applyLawChange);on(transformers,'change',applyLawChange);on(draw,'click',drawPlan);on(play,'click',()=>{if(!plan&&!drawPlan())return;if(!plan.playable||!planIsCurrent()){say('Edit the missing or changed legs before playing.');return;}ride.play({cameraFollow:camera.checked,durationMs:Number(speed.value)*1000});onMapView();});on(pause,'click',()=>ride.pause());on(step,'click',()=>{if(!plan&&!drawPlan())return;if(!plan.playable||!planIsCurrent()){say('Step is unavailable across a missing or disallowed leg. Edit and draw the itinerary first.');return;}ride.step();});on(previous,'click',()=>{if(!plan?.playable||!planIsCurrent()){say('Draw a valid itinerary before moving to another stop.');return;}ride.seekStop(Math.max(0,ride.snapshot().stopIndex-1));});
+  on(searchForm,'submit',e=>{e.preventDefault();searchStations();});on(placeSearch,'click',searchPlaces);on(query,'input',()=>{searchEpoch++;bridge?.invalidate();});on(journeyMode,'click',()=>setMode('journey'));on(vicinityMode,'click',()=>setMode('vicinity'));on(reset,'click',()=>{selected.clear();demo=null;chosenVoltage.clear();invalidate();renderStops();});on(fallback,'change',applyLawChange);on(transformers,'change',applyLawChange);on(draw,'click',drawPlan);on(play,'click',()=>{if(!plan&&!drawPlan())return;if(!plan.playable||!planIsCurrent()){say('Edit the missing or changed legs before playing.');return;}ride.play({cameraFollow:camera.checked,durationMs:Number(speed.value)*1000});onMapView();});on(pause,'click',()=>ride.pause());on(step,'click',()=>{if(!plan)drawPlan();if(!plan||!planIsCurrent())return;const state=ride.snapshot();if(state.stopIndex>=state.approvedThroughStop){say('The next leg is missing or disallowed. Edit the stops or law before moving across this gap.');return;}ride.step();});on(previous,'click',()=>{if(!plan||!planIsCurrent()){say('Draw a current itinerary before moving to another stop.');return;}ride.seekStop(Math.max(0,ride.snapshot().stopIndex-1));});
   on(fitJourney,'click',()=>{const stops=demo?.stops||selected.snapshot().stops.filter(stop=>!stop.invalid);if(!stops.length){say('Choose located stops first.');return;}const xs=stops.map(stop=>stop.at[0]),ys=stops.map(stop=>stop.at[1]);onMapView();map.fitBounds([[Math.min(...xs),Math.min(...ys)],[Math.max(...xs),Math.max(...ys)]],{padding:{top:140,bottom:120,left:30,right:30},duration:0,maxZoom:13});});
   selected.setLaw(law());fullIndex();renderStops();
   return Object.freeze({element:box,setMode,nextStop:()=>step.click(),previousStop:()=>previous.click(),refreshInventory:fullIndex,pause:()=>{ride.pause();cancelProposedPick();},cancelProposedPick,addSourceStation(row){const idx=fullIndex(),station=idx?.get(String(row.id));if(!station){say('Choose a station with a stable ID from the full inventory.');return false;}add(station);return true;},nearContext(row){demo=null;searchEpoch++;bridge?.invalidate();invalidate();const idx=fullIndex();if(idx)showChoices(idx.near(row.at,{radiusKm:50,limit:30}));query.value=row.name||'';box.scrollIntoView({block:'start'});},snapshot:()=>{let currentLaw;try{currentLaw=law();}catch(e){currentLaw={error:e.message};}return{itinerary:selected.snapshot(),law:currentLaw,index:index?.snapshot()||null,plan,ride:ride.snapshot(),demo:demo?.title||null,proposals:scenarioStore.snapshot(),proposedPicking};},destroy(){if(destroyed)return;destroyed=true;searchEpoch++;bridge?.invalidate();ride.destroy();map.off('click',proposedClick);map.off('remove',proposedRemoved);map.off('style.load',paintProposed);for(const marker of proposedMarkers.values())marker.remove();proposedMarkers.clear();if(!mapRemoved&&map.getStyle?.()){for(const[id,layer]of proposedLayers)if(map.getLayer(id)===layer)map.removeLayer(id);if(map.getSource(proposedSourceId)===proposedSource&&!(map.getStyle().layers||[]).some(layer=>layer.source===proposedSourceId))map.removeSource(proposedSourceId);}cleanups.forEach(fn=>fn());box.remove();}});
@@ -967,7 +984,7 @@ if (!NS.gridVicinity) {
     const documents = el('details', null, panel, {class: 'vic-document-context'}); el('summary', 'Documented works and official notices', documents);
     const documentRows = el('div', null, documents);
     panel.insertBefore(energy, list); panel.insertBefore(documents, list);
-    const train = createGreatGridJourney({map,registry:NS,geodesy,parent:panel,onMapView:()=>{panel.hidden=true;compact.hidden=false;},onRideState:state=>{const message=`${state.playing?'Playing':'Paused'} · ${state.evidence||'no route'} · electrical flow unknown`;if(compactStatus.textContent!==message)compactStatus.textContent=message;mapLegend.hidden=!state.evidence;},onProposedPick:()=>{picking=false;pick.setAttribute('aria-pressed','false');pick.textContent='Pick origin on map';},readFeatures:()=>{
+    const train = createGreatGridJourney({map,registry:NS,geodesy,parent:panel,onMapView:()=>{panel.hidden=true;compact.hidden=false;},onStatus:message=>{if(!compact.hidden&&compactStatus.textContent!==message)compactStatus.textContent=message;},onRideState:state=>{const message=`${state.playing?'Playing':'Paused'} · ${state.evidence||'no route'} · electrical flow unknown`;if(compactStatus.textContent!==message)compactStatus.textContent=message;mapLegend.hidden=!state.evidence;},onProposedPick:()=>{picking=false;pick.setAttribute('aria-pressed','false');pick.textContent='Pick origin on map';},readFeatures:()=>{
       if(!map.getStyle?.())return null;
       const data=map.getSource('src-subs')?.serialize?.().data;
       return data&&typeof data==='object'&&Array.isArray(data.features)?data.features:null;
@@ -1211,7 +1228,7 @@ if (!NS.gridVicinity) {
     const removed = () => destroy(true);
     map.on('click', clicked); map.on('sourcedata', sourced); map.on('style.load', styled); map.on('remove', removed);
     const onIntent = event => open(event.detail || {}); listen(W, 'gridatlas:vicinity-open', onIntent);
-    const onCard = event => { if (event.detail?.origin && opened) setOrigin(event.detail.origin); }; listen(W, 'gridatlas:card-open', onCard);
+    const onCard = event => { if (event.detail?.origin && opened && !train.snapshot().proposedPicking) setOrigin(event.detail.origin); }; listen(W, 'gridatlas:card-open', onCard);
     const observer = new MutationObserver(installControls); observer.observe(D.documentElement, {childList: true, subtree: true}); installControls();
     function destroy(mapRemoved = false) {
       if (!alive) return; alive = false; clearTimeout(refreshTimer); observer.disconnect(); listeners.forEach(off => off());

@@ -37,6 +37,11 @@ export async function proveExplorerGeneration(G, id) {
   } else if (id === 'grid-vicinity') {
     const {assemble} = await import('../vicinity/build.mjs');
     assert.equal(assemble({generation: G}).body, source); assert.ok(Buffer.byteLength(source) <= cartridge.byte_budget);
+    if(fs.existsSync(path.join(root,'tools/train/station-source.json'))){
+      const pin=JSON.parse(read('tools/train/station-source.json')),raw=fs.readFileSync(path.join(root,pin.path));
+      assert.equal(hash(raw),pin.sha256,'Expected station loader input pin');assert.equal(raw.length,pin.bytes);
+      assert.equal(JSON.parse(raw).features.length,pin.features);
+    }
   } else if (id === 'substation-intelligence') {
     const {buildSubstation} = await import('../pipeline-lifecycle/build.mjs');
     assert.equal(buildSubstation(G).toString('utf8'), source);
