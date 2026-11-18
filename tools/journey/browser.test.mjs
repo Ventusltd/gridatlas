@@ -30,6 +30,15 @@ try {
   await page.waitForFunction(() => window.__GRIDATLAS_V9_MAP__?.getStyle()?.layers?.length > 0, {timeout:90000});
   const native = await page.evaluate(() => {const m=window.__GRIDATLAS_V9_MAP__; return {constructor:m.constructor.name,version:window.maplibregl?.version,canvas:!!m.getCanvas().getContext('webgl2') || !!m.getCanvas().getContext('webgl'),container:m.getContainer().id,existingLayers:m.getStyle().layers.length,existingLayerIds:m.getStyle().layers.map(l=>l.id)};});
   assert.equal(native.version, '3.6.2'); assert.ok(native.canvas); assert.ok(native.existingLayers > 0);
+  const nativeGrid = page.locator('#gridatlas-menu-bar-title-4');
+  await nativeGrid.click();
+  const nativeJourney = page.locator('[data-journey-group="native-grid-menu"] button');
+  await nativeJourney.click();
+  assert.equal(await page.evaluate(()=>window.__GRIDATLAS_MODULES__.gridJourneyPreview.snapshot().opened),true);
+  await page.getByRole('button',{name:'Explore real grid nearby',exact:true}).click();
+  assert.equal(await nativeGrid.getAttribute('aria-expanded'),'true');
+  assert.equal(await page.evaluate(()=>window.__GRIDATLAS_MODULES__.gridJourneyPreview.snapshot().opened),false);
+  await nativeGrid.click();
   await page.locator('.gj-launch').click();
   await assert.match(await page.locator('.gj-status').textContent(),/Explore the physical grid/);
   assert.equal(await page.evaluate(()=>!!window.__GRIDATLAS_V9_MAP__.getSource('gridatlas-gj03-route')), false);
