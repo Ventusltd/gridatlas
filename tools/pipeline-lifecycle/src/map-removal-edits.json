@@ -1,0 +1,42 @@
+[
+  {
+    "before": "  let register = null;         // the engine's rows, read once and kept",
+    "after": "  const removedMaps = new WeakSet();\n  let installedMap = null;\n  let register = null;         // the engine's rows, read once and kept"
+  },
+  {
+    "before": "  async function loadRegister(map) {\n    if (register) return register;",
+    "after": "  async function loadRegister(map) {\n    if (removedMaps.has(map)) return [];\n    if (register) return register;"
+  },
+  {
+    "before": "      await new Promise((resolve) => setTimeout(resolve, 250));\n      register = readRegisterSource(map);",
+    "after": "      await new Promise((resolve) => setTimeout(resolve, 250));\n      if (removedMaps.has(map)) return [];\n      register = readRegisterSource(map);"
+  },
+  {
+    "before": "  async function refresh(map, control) {\n    const selection = state.selection;",
+    "after": "  async function refresh(map, control) {\n    if (removedMaps.has(map)) return;\n    const selection = state.selection;"
+  },
+  {
+    "before": "    const rows = await loadRegister(map);\n    const found = near(",
+    "after": "    const rows = await loadRegister(map);\n    if (removedMaps.has(map)) return;\n    const found = near("
+  },
+  {
+    "before": "    container.addEventListener('change', (event) => {\n      const target = event.target;",
+    "after": "    container.addEventListener('change', (event) => {\n      if (removedMaps.has(map)) return;\n      const target = event.target;"
+  },
+  {
+    "before": "    if (!map || typeof map.addSource !== 'function') return false;",
+    "after": "    if (!map || typeof map.addSource !== 'function' || removedMaps.has(map)) return false;"
+  },
+  {
+    "before": "    setInterval(() => {\n      const selection = readSelection(map);",
+    "after": "    const selectionPoll = setInterval(() => {\n      if (removedMaps.has(map)) return;\n      const selection = readSelection(map);"
+  },
+  {
+    "before": "    }, 1000);\n\n    state.installed = true;",
+    "after": "    }, 1000);\n    map.on('remove', () => {\n      removedMaps.add(map);\n      clearInterval(selectionPoll);\n      if (installedMap !== map) return;\n      installedMap = null;\n      state.installed = false;\n      state.selection = null;\n      state.counts = {};\n      state.active = [];\n    });\n\n    state.installed = true;"
+  },
+  {
+    "before": "    buildGroup(container, false);\n    bind(map, container);",
+    "after": "    installedMap = map;\n    buildGroup(container, false);\n    bind(map, container);"
+  }
+]
