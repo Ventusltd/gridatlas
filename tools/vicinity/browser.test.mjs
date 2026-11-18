@@ -6,6 +6,7 @@ import assert from 'node:assert/strict';
 import {createHash} from 'node:crypto';
 import {pathToFileURL} from 'node:url';
 import {ROOT, assemble} from './build.mjs';
+import {parseVicinityIntent} from './src/model.mjs';
 const atlasRoot=process.env.VICINITY_ATLAS_ROOT||ROOT;
 const generation=process.env.VICINITY_BROWSER_GENERATION||'202611172355';
 const injecting=process.env.VICINITY_BROWSER_INJECT==='1';
@@ -125,7 +126,7 @@ try{
  const goodNews=new URL((await snapshot()).newsHref);assert.equal(goodNews.searchParams.get('news_origin_id'),dc.id);assert.equal(goodNews.hash,'#headlinesHeading');
  await page.evaluate(o=>window.__GRIDATLAS_MODULES__.gridVicinity.open(o),{origin:dc,radiusKm:10,newsContextUrl:'https://evil.example/not-allowed/',newsTopic:'grid'});
  assert.equal((await snapshot()).origin.id,dc.id);assert.equal((await snapshot()).phase,'READY');assert.equal((await snapshot()).newsHref,null);assert.ok((await snapshot()).matching>0);
- await page.evaluate(()=>window.__GRIDATLAS_MODULES__.gridVicinity.open({radiusKm:10}));assert.equal((await snapshot()).phase,'CHOOSE_ORIGIN');assert.equal((await snapshot()).origin,null);assert.equal(await ownData(),undefined);
+ await page.evaluate(options=>window.__GRIDATLAS_MODULES__.gridVicinity.open(options),parseVicinityIntent('?journey=vicinity&radius_km=10'));assert.equal((await snapshot()).phase,'CHOOSE_ORIGIN');assert.equal((await snapshot()).origin,null);assert.equal(await ownData(),undefined);
  await visibleTap(page.getByRole('button',{name:'Use map centre',exact:true}));assert.equal((await snapshot()).phase,'READY');assert.equal((await snapshot()).origin.type,'map-centre');
  // The same controller handles explicit events; opaque IDs are retained, never interpreted as topology.
  await page.evaluate(()=>window.dispatchEvent(new CustomEvent('gridatlas:vicinity-open',{detail:{origin:{at:[-0.1,51.5],type:'datacentre',id:'DC-WD-Q',name:'Opaque producer contract fixture'},radiusKm:10}})));assert.equal((await snapshot()).origin.id,'DC-WD-Q');
