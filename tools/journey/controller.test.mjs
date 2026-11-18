@@ -71,3 +71,5 @@ test('before native menu readiness primary action reveals original real layer co
 test('empty native hosts are not falsely marked engine-ready by a Journey key-group',()=>{const h=harness({layerHosts:true,layerReady:false});assert.equal(h.c.snapshot().layerControls,0);assert.equal(h.all().some(e=>e.attrs['data-journey-group']),false);h.c.destroy();});
 
 test('Close restores visible Grid title when the native menu launcher is hidden',()=>{const h=harness({layerHosts:true});const grid=h.D.createElement('button');grid.attrs.id='gridatlas-menu-bar-title-4';h.map.getContainer().appendChild(grid);const button=h.all().find(e=>e.textContent==='Open Grid Journey');button.getClientRects=()=>[];button.emit('click');h.c.close();assert.equal(h.D.activeElement,grid);h.c.destroy();});
+
+test('real-grid action stops its original event from closing the native menu it opens',()=>{const h=harness({layerHosts:true});const host=h.D.getElementById('scada-ui-container');host.scrollIntoView=()=>{};let stopped=false;h.c.open();h.button('Explore real grid nearby').emit('click',{stopPropagation(){stopped=true;}});assert.equal(stopped,true);h.c.destroy();});

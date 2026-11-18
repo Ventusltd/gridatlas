@@ -155,7 +155,8 @@ export function createJourneyController({map, document: D, window: W, planner, f
   listen(opener, 'click', () => {returnFocus = opener; opened ? shut() : open();}); listen(close, 'click', shut);
   listen(panel, 'keydown', e => { if (e.key === 'Escape') { e.preventDefault(); shut(); } });
   listen(demoButton, 'click', () => { ++epoch; pauseMotion(); plan = null; removeMap(); demo = true; select.disabled = false; select.replaceChildren(); el('option', 'Choose a reviewed synthetic node…', select, {value: ''}); for (const n of fixture.ledger.nodes) el('option', 'SYNTHETIC ' + n.nodeId, select, {value: n.nodeId}); report('SYNTHETIC DEMONSTRATION LOADED. These are invented assets; choose a starting node explicitly.'); controlsState(); });
-  listen(realGrid, 'click', () => {
+  listen(realGrid, 'click', event => {
+    event.stopPropagation?.();
     const vicinity = W.__GRIDATLAS_MODULES__?.gridVicinity;
     if (!vicinity?.open) {
       const grid = D.getElementById('gridatlas-menu-bar-title-4');
