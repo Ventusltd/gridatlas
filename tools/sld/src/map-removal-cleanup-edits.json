@@ -1,0 +1,6 @@
+[
+  {
+    "before": "    // Registered after the engine's own click handler, so the engine's popup\n",
+    "after": "    // MapLibre fires remove after its style has already gone. Drop this\n    // map reference before shared cleanup, so cleanup still cancels work and\n    // clears selection state without reading a destroyed style.\n    function cleanupRemovedMap() {\n      popupWatcher.disconnect();\n      if (capturedMap !== map) return;\n      capturedMap = null;\n      clearLinks();\n      clearScope();\n    }\n    map.on('remove', cleanupRemovedMap);\n\n    // Registered after the engine's own click handler, so the engine's popup\n"
+  }
+]
