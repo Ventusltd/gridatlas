@@ -25,12 +25,12 @@ export function collectAssetContext({map,registry={},origin,radiusKm,geodesy,lim
   c.rows.push({...row,at:row.at.slice(0,2),km,demandMw:null,facilityVerified:null,connection:null});
  }
  let features=null;
- try{const data=map?.getSource?.('src-repd')?.serialize?.().data;if(data?.type==='FeatureCollection'&&Array.isArray(data.features))features=data.features;}catch{/* Explicit NOT_LOADED below; no replacement fetch. */}
+ try{const data=map?.getSource?.('src-repd')?.serialize?.().data;if(data?.type==='FeatureCollection'&&Array.isArray(data.features)&&data.features.length)features=data.features;}catch{/* Explicit NOT_LOADED below; no replacement fetch. */}
  if(features){
   for(const id of ['generation','storage'])Object.assign(get(id),{availability:'LOADED',source:'Existing loaded src-repd GeoJSON'});
   features.forEach((f,i)=>{
    const p=f?.properties||{},point=geodesy.representativePoint(f?.geometry),tech=String(p.tech||p.technology||p.technology_type||'Not stated');
-   const category=/^(?:bess|battery(?: storage)?|storage|flywheel|caes)$/i.test(tech)?'storage':'generation';
+   const category=/^(?:bess(?:[_ -].*)?|battery(?:[_ -].*)?|storage|flywheel|caes)$/i.test(tech)?'storage':'generation';
    const ref=assetId(p.repd_ref??p.ref_id),id=ref??assetId(p.id??f?.id);
    add(category,{id,originId:ref&&/^\d+$/.test(ref)?'repd:'+ref:null,name:String(p.name||'Unnamed REPD record'),at:point,kind:category,status:String(p.status||'Not stated'),technology:tech,
     capacityMw:statedMw(p.capacity_mw??p.capacity),capacityBasis:typeof p.capacity_basis==='string'?p.capacity_basis:'REGISTER_STATED_POWER_BASIS_NOT_DECLARED',
