@@ -37,6 +37,9 @@ export async function proveExplorerGeneration(G, id) {
   } else if (id === 'grid-vicinity') {
     const {assemble} = await import('../vicinity/build.mjs');
     assert.equal(assemble({generation: G}).body, source); assert.ok(Buffer.byteLength(source) <= cartridge.byte_budget);
+  } else if (id === 'substation-intelligence') {
+    const {buildSubstation} = await import('../pipeline-lifecycle/build.mjs');
+    assert.equal(buildSubstation(G).toString('utf8'), source);
   } else throw new Error('Unknown explorer source builder ' + id);
   console.log(`Explorer ${G} ${id}: source rebuild, parent lineage, preview derivation, immutable releases and budget PASS`);
 }
