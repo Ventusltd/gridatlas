@@ -84,8 +84,18 @@ try{
  for(const [width,height]of[[393,852],[852,393]]){
   await page.setViewportSize({width,height});await page.evaluate(()=>window.__GRIDATLAS_V9_MAP__.resize());
   const layout=await panel.evaluate(e=>{const p=e.getBoundingClientRect();return{x:p.x,y:p.y,width:p.width,height:p.height,overflow:document.documentElement.scrollWidth>innerWidth};});
-  assert.ok(layout.x>=0&&layout.y>=0&&layout.x+layout.width<=width+1&&layout.y+layout.height<=height+1,JSON.stringify(layout));assert.equal(layout.overflow,false);await visibleTap(close);await page.locator('.vic-launch').tap();assert.equal((await snapshot()).opened,true);
-  await page.screenshot({path:path.join(output,'vicinity-'+width+'x'+height+'.png')});layouts.push({width,height,layout});
+  assert.ok(layout.x>=0&&layout.y>=0&&layout.x+layout.width<=width+1&&layout.y+layout.height<=height+1,JSON.stringify(layout));assert.equal(layout.overflow,false);
+  const chrome=await page.evaluate(()=>({menu:document.getElementById('gridatlas-menu-bar')?.getBoundingClientRect().bottom||0,layers:document.getElementById('gridatlas-dash-toggle')?.getBoundingClientRect().top||innerHeight}));
+  const closeBounds=await close.boundingBox();assert.ok(closeBounds.y>=chrome.menu,'the entire Close touch target clears the native menu');assert.ok(layout.y+layout.height<=chrome.layers,'vicinity panel clears native Layers including its docked-card lift');
+  await visibleTap(close);await page.locator('.vic-launch').tap();assert.equal((await snapshot()).opened,true);
+  await page.screenshot({path:path.join(output,'vicinity-'+width+'x'+height+'.png')});layouts.push({width,height,layout,chrome,closeBounds});
+  if(height<480){
+   await visibleTap(close);await page.evaluate(()=>window.__GRIDATLAS_MODULES__.gridJourneyPreview.open());
+   const journey=page.locator('#gridatlas-gj03');await visibleTap(journey.getByRole('button',{name:'Load SYNTHETIC demonstration',exact:true}));await journey.getByRole('combobox',{name:'Explicit starting node'}).selectOption('A1');
+   await page.waitForFunction(()=>window.__GRIDATLAS_MODULES__.gridJourneyPreview.snapshot().steps===8,null,{timeout:30000});
+   await visibleTap(journey.getByRole('button',{name:'Next',exact:true}));await visibleTap(journey.getByRole('button',{name:'Reset',exact:true}));assert.equal(await page.evaluate(()=>window.__GRIDATLAS_MODULES__.gridJourneyPreview.snapshot().step),0);
+   await visibleTap(journey.getByRole('button',{name:'Close Grid Journey',exact:true}));await open(dc,10);
+  }
  }
  // Malformed input is explicit, then a native map-centre action recovers without invented identity.
  await page.evaluate(()=>window.__GRIDATLAS_MODULES__.gridVicinity.open({origin:{at:[0,0],id:'bad',type:'repd'},radiusKm:10}));assert.equal((await snapshot()).origin,null);assert.equal((await snapshot()).matching,null);assert.equal(await ownData(),undefined);assert.match(await page.locator('.vic-error').innerText(),/valid located origin/);
