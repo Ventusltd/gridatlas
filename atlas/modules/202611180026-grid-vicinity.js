@@ -719,7 +719,7 @@ function createTrainRide({map, geodesy, palette = {}, onState = () => {}, reduce
   function paintCursor() {
     if (!alive || !plan || !sources.has(prefix + 'cursor') || map.getSource(prefix + 'cursor') !== sources.get(prefix + 'cursor')) return;
     const at = position(); sources.get(prefix + 'cursor').setData(collection(at ? [point(at, {meaning: 'User journey heading; electrical flow unknown'})] : []));
-    if (cameraFollow && at) map.easeTo?.({center: at, duration: 0});
+    if (cameraFollow && playing && at) map.easeTo?.({center: at, duration: 0});
   }
   function tick(time) {
     handle = null; if (!alive || !playing) return;
@@ -784,7 +784,7 @@ function createTrainRide({map, geodesy, palette = {}, onState = () => {}, reduce
     if (!alive) return false;
     if (!Array.isArray(stops) || stops.length>90 || stops.some(stop=>!Array.isArray(stop.at)||stop.at.length!==2
       ||!stop.at.every(Number.isFinite)||Math.abs(stop.at[0])>180||Math.abs(stop.at[1])>90)) throw Error('Invalid selected station pins.');
-    cancelRetry();pause();plan=null;measures=[];prefixStop=0;legIndex=0;fraction=0;
+    cameraFollow=false;cancelRetry();pause();plan=null;measures=[];prefixStop=0;legIndex=0;fraction=0;
     pinStops=JSON.parse(JSON.stringify(stops.filter(stop=>!stop.invalid)));
     if(ensure()) for(const [suffix,data]of [['routes',collection([])],['cursor',collection([])],['stops',stopData(pinStops)]]) {
       const id=prefix+suffix;if(map.getSource(id)===sources.get(id))sources.get(id).setData(data);
@@ -883,7 +883,7 @@ function createGreatGridJourney({map, registry, geodesy, parent, readFeatures,on
     pause.disabled=!s.playing;play.setAttribute('aria-pressed',String(s.playing));
   }});
   function say(message){if(feedback.textContent!==message)feedback.textContent=message;onStatus(message);}
-  function fullIndex(){const features=readFeatures();if(!Array.isArray(features)||!features.length){const hadIndex=!!index;index=null;indexedFeatures=null;if(hadIndex)invalidate();bridge?.invalidate();bridge=null;inventoryWaiting=true;say('Full substation inventory is not loaded. Use Show physical grid, then search again.');return null;}if(features!==indexedFeatures){const changed=!!indexedFeatures;index=TrainCore.buildStationIndex(features,{geodesy,datasetPin:TRAIN_STATION_SOURCE_PIN});indexedFeatures=features;if(changed)invalidate();bridge?.invalidate();bridge=null;}const s=index.snapshot();if(inventoryWaiting){inventoryWaiting=false;say(s.indexedRecords+' source stations are ready. Search by name or source ID, or resolve a place explicitly.');}inventory.textContent=`${s.sourceRecords} original source features · ${s.indexedRecords} selectable stable station IDs · ${s.invalidRecords} unlocated / missing-ID records · ${s.conflictingIds.length} conflicting IDs. Search is not capped by the nearby list.`;return index;}
+  function fullIndex(){const features=readFeatures();if(!Array.isArray(features)||!features.length){const hadIndex=!!index;index=null;indexedFeatures=null;if(hadIndex)invalidate();bridge?.invalidate();bridge=null;inventoryWaiting=true;say('Full substation inventory is not loaded. Use Show physical grid, then search again.');return null;}if(features!==indexedFeatures){const changed=!!indexedFeatures;index=TrainCore.buildStationIndex(features,{geodesy,datasetPin:TRAIN_STATION_SOURCE_PIN});indexedFeatures=features;if(changed)invalidate();bridge?.invalidate();bridge=null;}const s=index.snapshot();if(inventoryWaiting){inventoryWaiting=false;if(feedback.textContent==='Full substation inventory is not loaded. Use Show physical grid, then search again.')say(s.indexedRecords+' source stations are ready. Search by name or source ID, or resolve a place explicitly.');}inventory.textContent=`${s.sourceRecords} original source features · ${s.indexedRecords} selectable stable station IDs · ${s.invalidRecords} unlocated / missing-ID records · ${s.conflictingIds.length} conflicting IDs. Search is not capped by the nearby list.`;return index;}
   function invalidate(){const state=selected.snapshot();ride.clearPlan({stops:visible&&overlayArmed?state.stops.filter(stop=>!stop.invalid):[]});drawnEpoch=null;plan=null;legs.replaceChildren();progress.textContent='Selections or law changed. Draw again to apply them.';}
   function setMode(mode){try{selected.setMode(mode);journeyMode.setAttribute('aria-pressed',String(mode==='journey'));vicinityMode.setAttribute('aria-pressed',String(mode==='vicinity'));invalidate();renderStops();return true;}catch(e){say(e.message+' Your selected stops were kept.');return false;}}
   function add(row){try{const choice=role.value;if(choice==='start')selected.setStart(row);else if(choice==='finish')selected.setFinish(row);else{const count=selected.snapshot().selectedCount;selected.add(row,{index:count>1?count-1:count});}demo=null;overlayArmed=true;role.value=selected.snapshot().selectedCount===1?'finish':'waypoint';invalidate();renderStops();say('Station bound explicitly. The place label, if supplied, stays attached to this choice.');}catch(e){say(e.message);}}
@@ -986,7 +986,7 @@ if (!NS.gridVicinity) {
     const documents = el('details', null, panel, {class: 'vic-document-context'}); el('summary', 'Documented works and official notices', documents);
     const documentRows = el('div', null, documents);
     panel.insertBefore(energy, list); panel.insertBefore(documents, list);
-    const train = createGreatGridJourney({map,registry:NS,geodesy,parent:panel,onMapView:()=>{panel.hidden=true;compact.hidden=false;},onStatus:message=>{if(!compact.hidden&&compactStatus.textContent!==message)compactStatus.textContent=message;},onRideState:state=>{const message=`${state.playing?'Playing':'Paused'} · ${state.evidence||'no route'} · electrical flow unknown`;if(compactStatus.textContent!==message)compactStatus.textContent=message;mapLegend.hidden=!state.evidence;},onProposedPick:()=>{picking=false;pick.setAttribute('aria-pressed','false');pick.textContent='Pick origin on map';},readFeatures:()=>{
+    const train = createGreatGridJourney({map,registry:NS,geodesy,parent:panel,onMapView:()=>{panel.hidden=true;compact.hidden=false;const target=train.snapshot().proposedPicking?map.getCanvas():compactEdit;target.focus({preventScroll:true});},onStatus:message=>{if(!compact.hidden&&compactStatus.textContent!==message)compactStatus.textContent=message;},onRideState:state=>{const message=`${state.playing?'Playing':'Paused'} · ${state.evidence||'no route'} · electrical flow unknown`;if(compactStatus.textContent!==message)compactStatus.textContent=message;mapLegend.hidden=!state.evidence;},onProposedPick:()=>{picking=false;pick.setAttribute('aria-pressed','false');pick.textContent='Pick origin on map';},readFeatures:()=>{
       if(!map.getStyle?.())return null;
       const data=map.getSource('src-subs')?.serialize?.().data;
       return data&&typeof data==='object'&&Array.isArray(data.features)?data.features:null;
@@ -994,6 +994,7 @@ if (!NS.gridVicinity) {
     panel.insertBefore(train.element,originLabel);
     listen(compactPause,'click',()=>train.pause());listen(compactPrevious,'click',()=>train.previousStop());listen(compactNext,'click',()=>train.nextStop());listen(compactEdit,'click',()=>{train.pause();compact.hidden=true;panel.hidden=false;close.focus();});
     for(const type of ['click','dblclick','pointerdown','touchstart'])listen(compact,type,event=>event.stopPropagation());
+    listen(compact,'keydown',event=>{if(event.key==='Escape'){event.preventDefault();shut();}});
     // Keep the fixed Close row outside the scrolling content so native scroll-to-focus cannot hide a control behind it.
     const scroller=el('div',null,null,{class:'vic-panel-body'});
     for(const child of [...panel.children])if(child!==heading)scroller.appendChild(child);

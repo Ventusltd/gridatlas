@@ -58,7 +58,7 @@ if (!NS.gridVicinity) {
     const documents = el('details', null, panel, {class: 'vic-document-context'}); el('summary', 'Documented works and official notices', documents);
     const documentRows = el('div', null, documents);
     panel.insertBefore(energy, list); panel.insertBefore(documents, list);
-    const train = createGreatGridJourney({map,registry:NS,geodesy,parent:panel,onMapView:()=>{panel.hidden=true;compact.hidden=false;},onStatus:message=>{if(!compact.hidden&&compactStatus.textContent!==message)compactStatus.textContent=message;},onRideState:state=>{const message=`${state.playing?'Playing':'Paused'} · ${state.evidence||'no route'} · electrical flow unknown`;if(compactStatus.textContent!==message)compactStatus.textContent=message;mapLegend.hidden=!state.evidence;},onProposedPick:()=>{picking=false;pick.setAttribute('aria-pressed','false');pick.textContent='Pick origin on map';},readFeatures:()=>{
+    const train = createGreatGridJourney({map,registry:NS,geodesy,parent:panel,onMapView:()=>{panel.hidden=true;compact.hidden=false;const target=train.snapshot().proposedPicking?map.getCanvas():compactEdit;target.focus({preventScroll:true});},onStatus:message=>{if(!compact.hidden&&compactStatus.textContent!==message)compactStatus.textContent=message;},onRideState:state=>{const message=`${state.playing?'Playing':'Paused'} · ${state.evidence||'no route'} · electrical flow unknown`;if(compactStatus.textContent!==message)compactStatus.textContent=message;mapLegend.hidden=!state.evidence;},onProposedPick:()=>{picking=false;pick.setAttribute('aria-pressed','false');pick.textContent='Pick origin on map';},readFeatures:()=>{
       if(!map.getStyle?.())return null;
       const data=map.getSource('src-subs')?.serialize?.().data;
       return data&&typeof data==='object'&&Array.isArray(data.features)?data.features:null;
@@ -66,6 +66,7 @@ if (!NS.gridVicinity) {
     panel.insertBefore(train.element,originLabel);
     listen(compactPause,'click',()=>train.pause());listen(compactPrevious,'click',()=>train.previousStop());listen(compactNext,'click',()=>train.nextStop());listen(compactEdit,'click',()=>{train.pause();compact.hidden=true;panel.hidden=false;close.focus();});
     for(const type of ['click','dblclick','pointerdown','touchstart'])listen(compact,type,event=>event.stopPropagation());
+    listen(compact,'keydown',event=>{if(event.key==='Escape'){event.preventDefault();shut();}});
     // Keep the fixed Close row outside the scrolling content so native scroll-to-focus cannot hide a control behind it.
     const scroller=el('div',null,null,{class:'vic-panel-body'});
     for(const child of [...panel.children])if(child!==heading)scroller.appendChild(child);
