@@ -13,7 +13,7 @@ const feature = (id, at, voltage, extra = {}) => ({type:'Feature',id,geometry:{t
 
 test('radius accepts whole km only, including both boundaries; invalid values do not become defaults', () => {
   assert.equal(radiusKm(1),1); assert.equal(radiusKm('50'),50);
-  for (const v of [0,51,1.5,'1.5',null,'',undefined,Infinity,NaN]) assert.throws(() => radiusKm(v));
+  for (const v of [0,51,1.5,'1.5',null,'',undefined,Infinity,NaN,true,false,[2],{},1n]) assert.throws(() => radiusKm(v));
 });
 test('origin coordinates do not accept nulls, strings, null-island or out-of-range positions', () => {
   for (const at of [[null,51],['-1',51],[0,0],[181,51],[-1,91],[NaN,51]]) assert.equal(validCoordinate(at),false);

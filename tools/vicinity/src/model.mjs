@@ -13,6 +13,7 @@ export function validCoordinate(at) {
 }
 
 export function radiusKm(value) {
+  if (typeof value !== 'number' && typeof value !== 'string') throw new Error('Choose a whole-kilometre radius from 1 to 50 km.');
   if (typeof value === 'string' && !value.trim()) throw new Error('Choose a radius from 1 to 50 km.');
   const n = Number(value);
   if (!Number.isInteger(n) || n < 1 || n > 50) throw new Error('Choose a whole-kilometre radius from 1 to 50 km.');
