@@ -156,7 +156,14 @@ export function createJourneyController({map, document: D, window: W, planner, f
     const vicinity = W.__GRIDATLAS_MODULES__?.gridVicinity;
     if (!vicinity?.open) {
       const grid = D.getElementById('gridatlas-menu-bar-title-4');
-      if (!grid?.click) { report('Grid layers are loading. Try Explore grid again when the map controls appear.'); return; }
+      if (!grid?.click) {
+        const layers = D.getElementById('scada-ui-container');
+        if (!layers?.scrollIntoView) { report('Grid layers are loading. Try Explore grid again when the map controls appear.'); return; }
+        if (originContext?.at) map.flyTo?.({center: [...originContext.at], duration: 0});
+        shut(); layers.scrollIntoView({block: 'start', behavior: 'instant'});
+        layers.querySelector?.('input[data-layer-id]')?.focus();
+        return;
+      }
       if (originContext?.at) map.flyTo?.({center: [...originContext.at], duration: 0});
       shut();
       if (grid.getAttribute?.('aria-expanded') !== 'true') grid.click();
