@@ -761,6 +761,9 @@ function createJourneyController({map, document: D, window: W, planner, fixture,
     hosts.push(['native-grid-menu', D.querySelector?.('#gridatlas-menu-bar-panel-4 .gm-panel-body')]);
     for (const [id, host] of hosts) {
       if (!host || layerGroups.some(g => g.parentNode === host || g.parent === host)) continue;
+      // Other native modules use .key-group as the engine-dashboard ready marker.
+      // Never create that marker before the engine's original controls exist.
+      if (id !== 'native-grid-menu' && !host.querySelector?.('input[data-layer-id]')) continue;
       const group = el('div', null, host, {class: 'key-group', 'data-journey-group': id});
       const title = el('div', 'Grid Journeys', group, {class: 'key-title'});
       const button = el('button', 'Open Grid Journey', group, {type: 'button', class: 'map-ctrl-btn', 'aria-controls': NS + '-panel', 'aria-expanded': String(opened)});
@@ -780,7 +783,7 @@ function createJourneyController({map, document: D, window: W, planner, fixture,
     context.textContent = originContext ? 'Selected asset: ' + [originContext.name, originContext.id].filter(Boolean).join(' ? ') + '. Nearby assets are map context; connections need source evidence.' : 'Select an asset on the map to explore its surroundings.';
     realSelection(false);
   }
-  function shut() { ++epoch; pauseMotion(); opened = false; panel.hidden = true; opener.setAttribute('aria-expanded', 'false'); removeMap(); if (initialPadding) map.setPadding(initialPadding); for (const b of layerLaunchers) b.setAttribute('aria-expanded', 'false'); (returnFocus?.isConnected === false ? opener : returnFocus || opener).focus(); }
+  function shut() { ++epoch; pauseMotion(); opened = false; panel.hidden = true; opener.setAttribute('aria-expanded', 'false'); removeMap(); if (initialPadding) map.setPadding(initialPadding); for (const b of layerLaunchers) b.setAttribute('aria-expanded', 'false'); const target = returnFocus?.isConnected === false || (returnFocus?.getClientRects && !returnFocus.getClientRects().length) ? D.getElementById('gridatlas-menu-bar-title-4') || opener : returnFocus || opener; target.focus(); }
   function open(options) { if (!alive) return; if (options?.origin) setOrigin(options.origin); opened = true; panel.hidden = false; opener.setAttribute('aria-expanded', 'true'); for (const b of layerLaunchers) b.setAttribute('aria-expanded', 'true'); installMap(); frameRoute(); close.focus(); }
   function realSelection(clearContext = true) { if (clearContext) { originContext = null; context.textContent = 'Selected asset has no reviewed circuit identity. Real circuit journeys remain withheld.'; } ++epoch; pauseMotion(); plan = null; demo = false; select.value = ''; select.disabled = true; removeMap(); controlsState(); report('Explore this asset and the surrounding grid. Nearby assets do not establish a connection.'); }
   listen(opener, 'click', () => {returnFocus = opener; opened ? shut() : open();}); listen(close, 'click', shut);
