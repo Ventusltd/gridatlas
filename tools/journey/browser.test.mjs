@@ -21,7 +21,7 @@ let browser;
 const receipts = [], errors = [], failed = [], assets = [], assetReads=[];
 try {
   browser = await pw.chromium.launch({headless:true,args:['--use-gl=angle','--use-angle=swiftshader','--enable-webgl','--ignore-gpu-blocklist']});
-  const context = await browser.newContext({viewport:{width:390,height:844}});
+  const context = await browser.newContext({...pw.devices['Pixel 7'], viewport:{width:390,height:844}});
   const page = await context.newPage();
   page.on('pageerror', e => errors.push(e.message));
   page.on('requestfailed', r => failed.push({url:r.url(),error:r.failure()?.errorText}));
@@ -36,11 +36,11 @@ try {
   assert.equal(menuState.installed,true,JSON.stringify(menuState));
   assert.equal(menuState.layer_controls,63);
   const nativeGrid = page.locator('#gridatlas-menu-bar-title-4');
-  await nativeGrid.click();
+  await nativeGrid.tap();
   const nativeJourney = page.locator('[data-journey-group="native-grid-menu"] button');
-  await nativeJourney.click();
+  await nativeJourney.tap();
   assert.equal(await page.evaluate(()=>window.__GRIDATLAS_MODULES__.gridJourneyPreview.snapshot().opened),true);
-  await page.getByRole('button',{name:'Explore real grid nearby',exact:true}).click();
+  await page.getByRole('button',{name:'Explore real grid nearby',exact:true}).tap();
   assert.equal(await nativeGrid.getAttribute('aria-expanded'),'true');
   assert.equal(await page.evaluate(()=>window.__GRIDATLAS_MODULES__.gridJourneyPreview.snapshot().opened),false);
   await nativeGrid.click();
