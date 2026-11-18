@@ -1,6 +1,33 @@
 /** Native new-UI acceptance helper. No route graph/provider interception or scripted selection. */
 import assert from 'node:assert/strict';
-export async function runTrainUiAcceptance({page,panel,snapshot,visibleTap,output,pageErrors=[]}) {
+// Read painted feature geometry, not the newer serialized source point or its hit halo.
+export function sampleRenderedTrainCursor(){
+ const m=window.__GRIDATLAS_V9_MAP__,ride=window.__GRIDATLAS_MODULES__.gridVicinity.snapshot().train.ride,r=m.getContainer().getBoundingClientRect(),center=m.getCenter(),id='gridatlas-train-cursor';
+ const rendered=(m.getLayer(id)?m.queryRenderedFeatures(undefined,{layers:[id]}):[]).filter(f=>f.geometry?.type==='Point').map(f=>{const at=f.geometry.coordinates.slice(0,2),p=m.project(at),screen=[r.left+p.x,r.top+p.y],hit=document.elementFromPoint(...screen);return{at,screen,uncovered:screen[0]>0&&screen[1]>0&&screen[0]<innerWidth&&screen[1]<innerHeight&&hit?.tagName==='CANVAS',hit:hit?.tagName||null};});
+ return{timestamp:performance.now(),visibility:document.visibilityState,ride,rendered,serialized:m.getSource(id)?.serialize().data.features[0]?.geometry.coordinates||null,camera:[center.lng,center.lat,m.getZoom(),m.getBearing(),m.getPitch()],viewport:{width:innerWidth,height:innerHeight,canvas:[r.left,r.top,r.width,r.height]},sourceLoaded:m.isSourceLoaded?.(id)??null,styleLoaded:m.isStyleLoaded?.()??null};
+}
+export async function waitForPaintedCursorProgress({page,diagnostics,timeoutMs=15000,intervalMs=100,minimumPixels=2,now=Date.now}){
+ const start=now(),samples=[];let baseline=null;
+ diagnostics.paintObservation={minimumPixels,timeoutMs,samples};
+ while(now()-start<timeoutMs){
+  const sample=await page.evaluate(sampleRenderedTrainCursor);if(samples.length<200)samples.push(sample);
+  const point=sample.rendered.find(p=>p.uncovered),valid=point&&sample.visibility==='visible'&&sample.ride.playing===true&&sample.ride.cameraFollow===false;
+  if(valid){
+   const value={...point,timestamp:sample.timestamp,fraction:sample.ride.fraction,camera:sample.camera,viewport:sample.viewport};
+   if(!baseline){baseline=value;diagnostics.paintObservation.baseline=value;}
+   else{
+    const fixed=sample.camera.every((n,i)=>Math.abs(n-baseline.camera[i])<1e-7)&&sample.viewport.canvas.every((n,i)=>Math.abs(n-baseline.viewport.canvas[i])<0.5);
+    assert.ok(fixed,'Follow is OFF: rendered cursor comparison requires the same fitted camera and viewport');
+    const pixels=Math.hypot(value.screen[0]-baseline.screen[0],value.screen[1]-baseline.screen[1]);
+    if(pixels>=minimumPixels&&value.fraction>baseline.fraction&&value.at.some((n,i)=>n!==baseline.at[i])){diagnostics.paintObservation.accepted={...value,pixels};return{firstRendered:baseline,secondRendered:value,pixels};}
+   }
+  }
+  await page.waitForTimeout(intervalMs);
+ }
+ assert.fail('No two actual painted, uncovered cursor positions advanced at least '+minimumPixels+' CSS pixels with active Play and advancing fraction; diagnostic samples preserved.');
+}
+
+export async function runTrainUiAcceptance({page,panel,snapshot,visibleTap,output,pageErrors=[],diagnostics={}}) {
  const train=panel.locator('.train-panel'),query=train.locator('#gridatlas-train-query'),role=train.getByRole('combobox',{name:'Use search choice as',exact:true}),results=train.locator('.train-search-results');
  const readings={scope:'LOCAL_NATIVE_UI_REAL_STATION_SOURCE',caps:[],places:[],motion:{}};
  const state=async()=>(await snapshot()).train;
@@ -21,13 +48,11 @@ export async function runTrainUiAcceptance({page,panel,snapshot,visibleTap,outpu
  const cursor=()=>page.evaluate(()=>window.__GRIDATLAS_V9_MAP__.getSource('gridatlas-train-cursor')?.serialize().data.features[0]?.geometry.coordinates);
  await visibleTap(train.getByRole('button',{name:'Fit itinerary on map',exact:true}));
  const mapControls=page.getByRole('region',{name:'Journey map controls',exact:true});await visibleTap(mapControls.getByRole('button',{name:'Edit journey',exact:true}));
- const before=await cursor();const speed=train.getByRole('slider',{name:'Seconds per leg',exact:true});await speed.focus();await page.keyboard.press('End');
+ const before=await cursor();const speed=train.getByRole('slider',{name:'Seconds per leg',exact:true});await speed.focus();await page.keyboard.press('End');const actualSpeed=Number(await speed.inputValue());assert.equal(actualSpeed,20,'native range End selects 20 seconds per leg');diagnostics.actualSpeedSeconds=actualSpeed;
  await visibleTap(train.getByRole('button',{name:'Play',exact:true}));const compact=page.getByRole('region',{name:'Journey map controls',exact:true});assert.equal(await compact.isVisible(),true);
- await page.waitForFunction(at=>{const m=window.__GRIDATLAS_V9_MAP__,p=m.getSource('gridatlas-train-cursor')?.serialize().data.features[0]?.geometry.coordinates;if(!p||!p.some((v,i)=>Math.abs(v-at[i])>1e-9))return false;const projected=m.project(p),rect=m.getContainer().getBoundingClientRect(),x=rect.left+projected.x,y=rect.top+projected.y;return x>0&&y>0&&x<innerWidth&&y<innerHeight&&document.elementFromPoint(x,y)?.tagName==='CANVAS'&&m.queryRenderedFeatures(projected,{layers:['gridatlas-train-cursor']}).length>0;},before,{timeout:15000});
- const renderedCursor=()=>page.evaluate(()=>{const m=window.__GRIDATLAS_V9_MAP__,at=m.getSource('gridatlas-train-cursor').serialize().data.features[0].geometry.coordinates,p=m.project(at),r=m.getContainer().getBoundingClientRect(),screen=[r.left+p.x,r.top+p.y];return{at,screen,rendered:m.queryRenderedFeatures(p,{layers:['gridatlas-train-cursor']}).length,uncovered:document.elementFromPoint(...screen)?.tagName==='CANVAS'};});
- const firstRendered=await renderedCursor();await page.waitForTimeout(180);const secondRendered=await renderedCursor();assert.ok(firstRendered.rendered>0&&secondRendered.rendered>0);assert.equal(firstRendered.uncovered,true);assert.equal(secondRendered.uncovered,true);assert.notDeepEqual(secondRendered.screen,firstRendered.screen,'the actually painted cursor moves across the exposed map');
+ const {firstRendered,secondRendered}=await waitForPaintedCursorProgress({page,diagnostics});
  const moving=await cursor();await page.screenshot({path:output+'/train-native-playing.png'});await visibleTap(compact.getByRole('button',{name:'Pause journey',exact:true}));assert.equal((await state()).ride.playing,false);const paused=await cursor();await page.waitForTimeout(150);assert.deepEqual(await cursor(),paused);
- await visibleTap(compact.getByRole('button',{name:'Next journey stop',exact:true}));assert.equal((await state()).ride.stopIndex,1);await visibleTap(compact.getByRole('button',{name:'Edit journey',exact:true}));readings.motion={firstRendered,secondRendered,before,moving,paused,afterStep:await cursor(),ride:(await state()).ride};
+ await visibleTap(compact.getByRole('button',{name:'Next journey stop',exact:true}));assert.equal((await state()).ride.stopIndex,1);await visibleTap(compact.getByRole('button',{name:'Edit journey',exact:true}));readings.motion={actualSpeed,paintObservation:diagnostics.paintObservation,firstRendered,secondRendered,before,moving,paused,afterStep:await cursor(),ride:(await state()).ride};
  await page.screenshot({path:output+'/train-native-drawn.png'});
  // Close an active ride through the focused compact Escape control, spanning deferred work.
  const visitsBeforeClose=(await state()).itinerary.stops.map(stop=>stop.stopId);await visibleTap(train.getByRole('button',{name:'Play',exact:true}));assert.equal((await state()).ride.playing,true);await page.keyboard.press('Escape');assert.equal((await snapshot()).opened,false);
