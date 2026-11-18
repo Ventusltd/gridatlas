@@ -4,17 +4,17 @@ import {buildRoutePlan} from './src/route-plan.mjs';
 import {createTrainRide} from './src/train-motion.mjs';
 const geodesy={distanceKm:(a,b,c,d)=>Math.hypot(c-a,d-b)*100};
 const makePlan=()=>buildRoutePlan({synthetic:true,stops:[{source:'SYNTHETIC_TEST',id:'a',at:[0,51],kv:400},{source:'SYNTHETIC_TEST',id:'b',at:[1,51],kv:400},{source:'SYNTHETIC_TEST',id:'c',at:[2,51],kv:400}],geodesy,allowSimulated:true});
-function fixture(reducedMotion=false,extras={}){
- const sources=new Map(),layers=new Map(),listeners=new Map(),frames=new Map(),history=[],cameras=[];let serial=0,removed=false;
+function fixture(reducedMotion=false,extras={},busyAfterSetData=false){
+ const sources=new Map(),layers=new Map(),listeners=new Map(),frames=new Map(),history=[],cameras=[];let serial=0,removed=false,styleReady=true;
  const access=()=>{if(removed)throw Error('destroyed style');};
- const map={isStyleLoaded:()=>true,on(n,fn){listeners.set(n,fn);},off(n,fn){if(listeners.get(n)===fn)listeners.delete(n);},
+ const map={isStyleLoaded:()=>styleReady,on(n,fn){listeners.set(n,fn);},off(n,fn){if(listeners.get(n)===fn)listeners.delete(n);},
   getSource(id){access();return sources.get(id);},getLayer(id){access();return layers.get(id);},
-  addSource(id,s){access();sources.set(id,{...s,setData(data){access();this.data=data;history.push(id);}});},addLayer(layer){access();layers.set(layer.id,layer);},
+  addSource(id,s){access();sources.set(id,{...s,setData(data){access();this.data=data;history.push(id);if(busyAfterSetData)styleReady=false;}});},addLayer(layer){access();layers.set(layer.id,layer);},
   removeSource(id){access();sources.delete(id);},removeLayer(id){access();layers.delete(id);},
   setPaintProperty(id,k,v){access();layers.get(id).paint[k]=v;},easeTo(o){cameras.push(o);}};
  const ride=createTrainRide({map,geodesy,reducedMotion,requestFrame:fn=>{frames.set(++serial,fn);return serial;},cancelFrame:id=>frames.delete(id),...extras});
  const run=time=>{const [id,fn]=frames.entries().next().value;frames.delete(id);fn(time);};
- return{ride,map,sources,layers,frames,history,cameras,run,listeners,
+ return{ride,map,sources,layers,frames,history,cameras,run,listeners,setStyleReady(value){styleReady=value;},
   remove(){removed=true;listeners.get('remove')();},styleReload(){sources.clear();layers.clear();listeners.get('style.load')();}};
 }
 test('explicit play owns one cursor/one bounded loop and leaves native layers intact',()=>{
@@ -84,4 +84,29 @@ test('rejected replacement clears old route, cursor and queued animation before 
  assert.throws(()=>f.ride.setPlan({schema:'invalid'}),/Invalid/);stale(10000);
  assert.equal(f.frames.size,0);assert.equal(f.ride.play(),false);assert.equal(f.ride.seekStop(1),false);
  assert.equal(f.sources.get('gridatlas-train-routes').data.features.length,0);assert.equal(f.sources.get('gridatlas-train-cursor').data.features.length,0);
+});
+test('stale epoch is rejected before first paint or any mutation of a current valid ride',()=>{
+ const f=fixture(false,{readPlanEpoch:()=>2}),stale=makePlan();stale.planEpoch=1;
+ assert.throws(()=>f.ride.setPlan(stale),/Stale/);assert.equal(f.sources.size,0);assert.equal(f.layers.size,0);assert.equal(f.history.length,0);
+ const current=makePlan();current.planEpoch=2;f.ride.setPlan(current);f.ride.play();const writes=f.history.length;
+ const cursor=structuredClone(f.sources.get('gridatlas-train-cursor').data);
+ assert.throws(()=>f.ride.setPlan(stale),/Stale/);assert.equal(f.history.length,writes);assert.equal(f.frames.size,1);assert.equal(f.ride.snapshot().playing,true);
+ assert.deepEqual(f.sources.get('gridatlas-train-cursor').data,cursor);
+});
+test('owned pending GeoJSON work cannot blank a second Draw or pause its own animation',()=>{
+ const f=fixture(false,{},true);f.ride.setPlan(makePlan());assert.equal(f.map.isStyleLoaded(),false);
+ assert.equal(f.sources.get('gridatlas-train-routes').data.features.length,2);assert.equal(f.sources.get('gridatlas-train-cursor').data.features.length,1);
+ f.ride.clearPlan({stops:makePlan().stops});f.ride.setPlan(makePlan());
+ assert.equal(f.sources.get('gridatlas-train-routes').data.features.length,2);assert.equal(f.sources.get('gridatlas-train-cursor').data.features.length,1);
+ assert.equal(f.ride.play(),true);f.run(0);f.run(200);assert.equal(f.map.isStyleLoaded(),false);
+ assert.equal(f.ride.snapshot().playing,true);assert.ok(f.ride.snapshot().fraction>0);assert.equal(f.frames.size,1);f.ride.destroy();
+});
+test('only absent sources wait on public readiness; retry is bounded and style-load/destroy clean it up',()=>{
+ const timers=new Map();let serial=0;const f=fixture(false,{setTimer:fn=>{timers.set(++serial,fn);return serial;},clearTimer:id=>timers.delete(id)});
+ f.setStyleReady(false);f.ride.setPlan(makePlan());assert.equal(f.sources.size,0);assert.equal(timers.size,1);
+ for(let i=0;i<12;i++){const next=timers.entries().next().value;if(!next)break;timers.delete(next[0]);next[1]();}
+ assert.equal(timers.size,0);assert.equal(f.sources.size,0);assert.match(f.ride.snapshot().unavailable,/Retry Draw/);
+ f.setStyleReady(true);f.listeners.get('style.load')();assert.equal(f.sources.size,3);assert.equal(timers.size,0);assert.equal(f.ride.snapshot().unavailable,null);
+ f.sources.clear();f.layers.clear();f.setStyleReady(false);f.ride.setPlan(makePlan());assert.equal(timers.size,1);
+ f.ride.destroy();assert.equal(timers.size,0);
 });

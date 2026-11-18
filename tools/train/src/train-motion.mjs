@@ -1,7 +1,8 @@
 /** Native MapLibre learning cursor. Travel direction is never electrical flow. */
 export function createTrainRide({map, geodesy, palette = {}, onState = () => {}, reducedMotion = false, readPlanEpoch = null,
   requestFrame = globalThis.requestAnimationFrame?.bind(globalThis),
-  cancelFrame = globalThis.cancelAnimationFrame?.bind(globalThis)} = {}) {
+  cancelFrame = globalThis.cancelAnimationFrame?.bind(globalThis),
+  setTimer = globalThis.setTimeout?.bind(globalThis), clearTimer = globalThis.clearTimeout?.bind(globalThis)} = {}) {
   if (!map || typeof geodesy?.distanceKm !== 'function') throw Error('Map and canonical geodesy required.');
   const prefix = 'gridatlas-train-', sources = new Map(), layers = new Map();
   const colour = palette.SUBSTATION_COLOUR || palette.substation || '#5fbdc2'; // Existing SLD substation colour.
@@ -13,6 +14,7 @@ export function createTrainRide({map, geodesy, palette = {}, onState = () => {},
   let lastDashIndex = -1;
   let alive = true, plan = null, pinStops = [], playing = false, handle = null, legIndex = 0, fraction = 0, epoch = 0, measures = [], prefixStop = 0;
   let lastTime = null, lastPaint = -Infinity, cameraFollow = false, durationMs = 2400, unavailable = null;
+  let retryHandle = null, retryCount = 0;
   const state = () => ({schema: 'gridatlas.train.motion.v1', alive, playing, legIndex, fraction,
     stopIndex: fraction === 1 ? legIndex + 1 : legIndex, reducedMotion: !!reducedMotion,
     cameraFollow, unavailable, approvedThroughStop: prefixStop, evidence: plan?.legs[legIndex]?.evidence || null,
@@ -23,8 +25,16 @@ export function createTrainRide({map, geodesy, palette = {}, onState = () => {},
   function cancel() { epoch++; if (handle !== null) cancelFrame?.(handle); handle = null; lastTime = null; }
   function schedule() { const token = epoch; handle = requestFrame(time => { if (token === epoch) tick(time); }); }
   function pause() { playing = false; cancel(); notify(); return state(); }
+  function cancelRetry() { if(retryHandle!==null)clearTimer?.(retryHandle);retryHandle=null;retryCount=0; }
+  function waitForStyle() {
+    unavailable = retryCount < 12 ? 'Map style is loading; drawing will retry briefly.' : 'Map style is not ready. Retry Draw when the map is ready.';
+    if(retryHandle===null && retryCount<12 && typeof setTimer==='function') {
+      retryCount++;retryHandle=setTimer(()=>{retryHandle=null;if(alive)paint();},250);
+    }
+    notify();return false;
+  }
   function ensure() {
-    if (!alive || !plan && !pinStops.length || map.isStyleLoaded?.() === false) return false;
+    if (!alive || !plan && !pinStops.length) return false;
     const sourceIds = ['routes', 'stops', 'cursor'].map(id => prefix + id);
     const layerIds = ['route-gis', 'route-topology', 'route-simulated', 'flow', 'stops', 'proposals', 'cursor'].map(id => prefix + id);
     for (const id of sourceIds) {
@@ -35,6 +45,10 @@ export function createTrainRide({map, geodesy, palette = {}, onState = () => {},
       const existing = map.getLayer(id);
       if (existing && existing !== layers.get(id)) { unavailable = 'Layer ID belongs to another module'; pause(); return false; }
     }
+    // Existing verified sources remain writable while their own setData is
+    // pending. Global isStyleLoaded also includes that work; it is not a
+    // readiness test for an owned source or for each animation frame.
+    if(sourceIds.some(id=>!map.getSource(id)) && map.isStyleLoaded?.()===false) return waitForStyle();
     for (const id of sourceIds) if (!map.getSource(id)) {
       map.addSource(id, {type: 'geojson', data: collection([])}); sources.set(id, map.getSource(id));
     }
@@ -55,7 +69,7 @@ export function createTrainRide({map, geodesy, palette = {}, onState = () => {},
       'circle-color':customerColour,'circle-radius':5,'circle-stroke-color':'#000c10','circle-stroke-width':1.5,'circle-opacity':0.9}});
     add({id: prefix + 'cursor', type: 'circle', source: prefix + 'cursor', paint: {
       'circle-color': colour, 'circle-radius': 5, 'circle-stroke-color': '#000c10', 'circle-stroke-width': 1.5}});
-    unavailable = null; return true;
+    cancelRetry();unavailable = null; return true;
   }
   function position() {
     const line = plan?.legs[legIndex]?.coordinates;
@@ -68,6 +82,7 @@ export function createTrainRide({map, geodesy, palette = {}, onState = () => {},
     return [line[i][0] + (line[lo][0] - line[i][0]) * t, line[i][1] + (line[lo][1] - line[i][1]) * t];
   }
   function paint() {
+    if(plan && readPlanEpoch && readPlanEpoch()!==plan.planEpoch){clearPlan();return;}
     if (!ensure()) return;
     sources.get(prefix + 'routes').setData(collection((plan?.legs||[]).slice(0,prefixStop).filter(l => l.coordinates).map(l => ({type: 'Feature',
       properties: {evidence: l.evidence, label: l.label}, geometry: {type: 'LineString', coordinates: l.coordinates}}))));
@@ -82,7 +97,7 @@ export function createTrainRide({map, geodesy, palette = {}, onState = () => {},
   function tick(time) {
     handle = null; if (!alive || !playing) return;
     if (readPlanEpoch && readPlanEpoch() !== plan.planEpoch) { clearPlan(); return; }
-    if (map.isStyleLoaded?.() === false) { pause(); return; }
+    if(!sources.has(prefix+'cursor') || map.getSource(prefix+'cursor')!==sources.get(prefix+'cursor')) {pause();return;}
     if (lastTime === null) lastTime = time;
     fraction += Math.max(0, Math.min(250, time - lastTime)) / durationMs; lastTime = time;
     if (fraction >= 1) {
@@ -102,6 +117,8 @@ export function createTrainRide({map, geodesy, palette = {}, onState = () => {},
   }
   function setPlan(next) {
     if (!alive) throw Error('Train ride is destroyed.');
+    // Reject stale asynchronous results before clearing or painting any current ride.
+    if(readPlanEpoch && next?.planEpoch!==readPlanEpoch())throw Error('Stale journey plan epoch.');
     clearPlan({stops:pinStops});
     if (next?.schema !== 'gridatlas.train.route-plan.v1' || !Array.isArray(next.legs) || !next.legs.length
       || !Array.isArray(next.stops) || next.stops.length !== next.legs.length + 1
@@ -140,7 +157,7 @@ export function createTrainRide({map, geodesy, palette = {}, onState = () => {},
     if (!alive) return false;
     if (!Array.isArray(stops) || stops.length>90 || stops.some(stop=>!Array.isArray(stop.at)||stop.at.length!==2
       ||!stop.at.every(Number.isFinite)||Math.abs(stop.at[0])>180||Math.abs(stop.at[1])>90)) throw Error('Invalid selected station pins.');
-    pause();plan=null;measures=[];prefixStop=0;legIndex=0;fraction=0;
+    cancelRetry();pause();plan=null;measures=[];prefixStop=0;legIndex=0;fraction=0;
     pinStops=JSON.parse(JSON.stringify(stops.filter(stop=>!stop.invalid)));
     if(ensure()) for(const [suffix,data]of [['routes',collection([])],['cursor',collection([])],['stops',stopData(pinStops)]]) {
       const id=prefix+suffix;if(map.getSource(id)===sources.get(id))sources.get(id).setData(data);
@@ -150,10 +167,10 @@ export function createTrainRide({map, geodesy, palette = {}, onState = () => {},
       if(sources.has(id)&&map.getSource(id)===sources.get(id))sources.get(id).setData(collection([]));}
     notify();return true;
   }
-  function styleReload() { if (!alive) return; pause(); paint(); }
-  function removed() { if (!alive) return; alive = false; playing = false; cancel(); sources.clear(); layers.clear(); map.off('style.load', styleReload); notify(); }
+  function styleReload() { if (!alive) return; cancelRetry();pause(); paint(); }
+  function removed() { if (!alive) return; alive = false; playing = false; cancelRetry();cancel(); sources.clear(); layers.clear(); map.off('style.load', styleReload); notify(); }
   function destroy() {
-    if (!alive) return; pause();
+    if (!alive) return; cancelRetry();pause();
     for (const [id, layer] of [...layers].reverse()) if (map.getLayer(id) === layer) map.removeLayer(id);
     for (const [id, source] of sources) if (map.getSource(id) === source) map.removeSource(id);
     sources.clear(); layers.clear(); alive = false;
