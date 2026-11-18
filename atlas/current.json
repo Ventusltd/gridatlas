@@ -1,7 +1,7 @@
 {
  "schema": "gridatlas.current.v2",
- "generation": "202611161720",
- "previous_generation": "202611132345",
+ "generation": "202611172355",
+ "previous_generation": "202611161720",
  "architecture": "IMMUTABLE_SHELL_PLUS_HASHED_CARTRIDGES",
  "live_route": "/gridatlas/atlas/",
  "release_id": "202608300453-atlas-v9",
@@ -17,7 +17,8 @@
   "substation-intelligence",
   "sld-sandbox",
   "uk-lightning-overlay",
-  "uk-offtakers-overlay"
+  "uk-offtakers-overlay",
+  "grid-journey-preview"
  ],
  "cartridges": [
   {
@@ -79,13 +80,13 @@
   },
   {
    "id": "sld-sandbox",
-   "generation": "202611161720",
-   "version": "v9.191",
+   "generation": "202611172355",
+   "version": "v9.192",
    "type": "script",
    "slot": "replace-script",
    "replace_script": "202608292126-pre-snapped-config-adapter.js",
-   "path": "./cartridges/202611161720-sld-sandbox-v9-8.js",
-   "sha256": "b1daa991ca738027a34c465e84d48355cf5d0902e76e7db5b318b6342c55df6d",
+   "path": "./cartridges/202611172355-sld-sandbox-v9-8.js",
+   "sha256": "150eaabdae8a262fd660b2634856821e270ee9e7880e308557a0eb7357f9d7c2",
    "capabilities": [
     "pre-snapped-config-adapter-carried-forward",
     "project-or-substation-selection",
@@ -224,7 +225,9 @@
     "ordinary-card-styles-returned-when-project-controls-arrive",
     "reader-restore-survives-identity-reconciliation",
     "optional-neso-lookup-bounded-and-explicit",
-    "ventus-owner-observer-at-actual-nearest-calculation"
+    "ventus-owner-observer-at-actual-nearest-calculation",
+    "mobile-nearest-summary-before-details",
+    "44px-labelled-details-map-controls"
    ],
    "immutable_shell_modified": false,
    "supersedes_shell_script": {
@@ -562,7 +565,7 @@
      "upstream": "Elexon settlement prices as the owner repository publishes them"
     }
    ],
-   "bytes": 452309,
+   "bytes": 454046,
    "derived_from": "./cartridges/202609200022-sld-sandbox-v9-8.js"
   },
   {
@@ -819,6 +822,27 @@
      "spec": "hardening DC-B2 CARD-SPEC.md, DC-B3 ENGINE.md"
     }
    }
+  },
+  {
+   "id": "grid-journey-preview",
+   "generation": "202611172355",
+   "version": "v9.192",
+   "type": "script",
+   "slot": "after-cartridge",
+   "after": "uk-offtakers-overlay",
+   "path": "./modules/202611172355-grid-journey-preview.js",
+   "sha256": "d376c008706faa4a2163778d0757ce7988e95056c06ea3b585735bbff79975f6",
+   "bytes": 68456,
+   "byte_budget": 72000,
+   "immutable_shell_modified": false,
+   "real_routes_accepted": 0,
+   "capabilities": [
+    "native-maplibre",
+    "native-layers-launcher",
+    "explicit-synthetic-learning-cursor",
+    "manual-reduced-motion",
+    "removable-lifecycle"
+   ]
   }
  ],
  "last_known_green": {
@@ -870,15 +894,15 @@
    "result_class": "LOCATION_ONLY"
   }
  },
- "composition_manifest": "./manifests/202611161720-composition.json",
+ "composition_manifest": "./manifests/202611172355-composition.json",
  "scope_closure": {
   "generation": "202609010726",
   "status": "DONE",
   "scope": "GridAtlas v9.42 the price panel revalidates",
   "schedule_retired": true
  },
- "composition_version": "v9.191",
- "composition_id": "202611161720-gridatlas-v9.191",
+ "composition_version": "v9.192",
+ "composition_id": "202611172355-gridatlas-v9.192",
  "transport": {
   "response_contract": "HEADERS_BEFORE_PARQUET_BODY",
   "engine_timeout_seconds": 15,
@@ -893,8 +917,8 @@
   "fidelity_workflow": ".github/workflows/202608301931-layer-fidelity.yml",
   "payload_cache": "RELEASE_AFTER_SERIALISATION"
  },
- "composition_note": "Repair release contract: evidence-backed no-full-copy attestation and exact parent lineage; accepted MAP and owned distance calculation bytes unchanged.",
- "superseded_generation": "202611132345",
- "candidate_predecessor": "202611132345",
+ "composition_note": "Mobile arrival summary and native Journey/Layers. Synthetic learning journeys labelled; existing real assets retain factual identity.",
+ "superseded_generation": "202611161720",
+ "candidate_predecessor": "202611161720",
  "loader": "v2"
 }
