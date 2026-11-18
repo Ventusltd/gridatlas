@@ -110,3 +110,13 @@ test('only absent sources wait on public readiness; retry is bounded and style-l
  f.sources.clear();f.layers.clear();f.setStyleReady(false);f.ride.setPlan(makePlan());assert.equal(timers.size,1);
  f.ride.destroy();assert.equal(timers.size,0);
 });
+test('camera follows only active opted-in Play; Pause, invalidation, OFF Draw and Step never move it',()=>{
+ const f=fixture();f.ride.setPlan(makePlan());f.ride.play({cameraFollow:true});f.run(0);f.run(200);
+ assert.ok(f.cameras.length>0);f.ride.pause();const before=f.cameras.length;
+ f.ride.step();assert.equal(f.cameras.length,before,'manual step never inherits last Play follow');
+ f.ride.clearPlan({stops:makePlan().stops});assert.equal(f.ride.snapshot().cameraFollow,false);
+ f.ride.setPlan(makePlan());f.ride.step();assert.equal(f.cameras.length,before,'redraw/step after invalidation do not follow');
+ f.ride.play({cameraFollow:false});f.run(300);f.run(500);assert.equal(f.cameras.length,before);
+ f.ride.pause();f.ride.play({cameraFollow:true});f.run(600);f.run(800);assert.ok(f.cameras.length>before,'next explicit opted-in Play can follow again');
+ f.ride.destroy();
+});
