@@ -25,7 +25,7 @@ const errors=[],failed=[],layouts=[],origins=[],radiusChecks=[],renderChecks=[];
 const startedUTC=new Date().toISOString();let browser,page,baselineLayers=[],baselineSource=null;
 function intent(origin,radius=10){const q=new URLSearchParams({journey:'vicinity',origin_type:origin.type,origin_id:origin.id,latitude:String(origin.at[1]),longitude:String(origin.at[0]),radius_km:String(radius),name:origin.name});return q.toString();}
 async function snapshot(){return page.evaluate(()=>window.__GRIDATLAS_MODULES__.gridVicinity.snapshot());}
-async function visibleTap(locator){await locator.scrollIntoViewIfNeeded();assert.equal(await locator.evaluate(e=>{const r=e.getBoundingClientRect(),hit=document.elementFromPoint(r.x+r.width/2,r.y+r.height/2);return e===hit||e.contains(hit);}),true,'control centre is hit-testable');await locator.tap();}
+async function visibleTap(locator){await locator.scrollIntoViewIfNeeded();const target=await locator.evaluate(e=>{const r=e.getBoundingClientRect(),points=[[r.left+2,r.top+2],[r.right-2,r.top+2],[r.left+2,r.bottom-2],[r.right-2,r.bottom-2],[r.left+r.width/2,r.top+r.height/2]];return{button:e.tagName==='BUTTON'&&!!e.closest('#gridatlas-vicinity,#gridatlas-gj03'),height:r.height,text:e.textContent,uncovered:points.every(([x,y])=>{const hit=document.elementFromPoint(x,y);return e===hit||e.contains(hit);})};});assert.equal(target.uncovered,true,'whole touch target is uncovered: '+target.text);if(target.button)assert.ok(target.height>=44,'primary touch target is at least44px');await locator.tap();}
 async function open(origin,radius=10){await page.evaluate(o=>window.__GRIDATLAS_MODULES__.gridVicinity.open(o),{origin,radiusKm:radius});}
 async function ownData(){return page.evaluate(()=>window.__GRIDATLAS_V9_MAP__.getSource('gridatlas-vicinity-context')?.serialize().data);}
 async function assertOwnPoints(radius){const data=await ownData();assert.ok(data);const points=data.features.filter(f=>f.properties.kind==='substation');assert.ok(points.every(f=>Number.isFinite(f.properties.km)&&f.properties.km>=0&&f.properties.km<=radius));return points;}
@@ -52,15 +52,16 @@ try{
  assert.ok(physicalControls.filter(c=>c.present).length>0);assert.ok(physicalControls.every(c=>!c.present||c.checked));
  await page.screenshot({path:path.join(output,'physical-grid-origin.png')});
  baselineSource=await sourceFingerprint();
+ const sourceCoverage=await page.evaluate(()=>{const m=window.__GRIDATLAS_V9_MAP__;return{fullSubstationFeatures:m.getSource('src-subs')?.serialize().data?.features?.length??null,visibleTileFeatures:m.querySourceFeatures('src-subs').length};});
  const slider=page.getByRole('slider',{name:'Vicinity radius in kilometres'});
  radiusChecks.push({radius:10,matching:initial.matching,shown:(await assertOwnPoints(10)).length});
- await slider.focus();await page.keyboard.press('Home');assert.equal((await snapshot()).radiusKm,1);radiusChecks.push({radius:1,matching:(await snapshot()).matching,shown:(await assertOwnPoints(1)).length});
- await page.keyboard.press('End');assert.equal((await snapshot()).radiusKm,50);radiusChecks.push({radius:50,matching:(await snapshot()).matching,shown:(await assertOwnPoints(50)).length});
+ const radiusOneStarted=performance.now();await slider.focus();await page.keyboard.press('Home');assert.equal((await snapshot()).radiusKm,1);radiusChecks.push({radius:1,durationMs:performance.now()-radiusOneStarted,matching:(await snapshot()).matching,shown:(await assertOwnPoints(1)).length});
+ const radiusFiftyStarted=performance.now();await page.keyboard.press('End');assert.equal((await snapshot()).radiusKm,50);radiusChecks.push({radius:50,durationMs:performance.now()-radiusFiftyStarted,matching:(await snapshot()).matching,shown:(await assertOwnPoints(50)).length});
  // Native Android taps operate voltage labels; no script-driven state changes.
  for(const name of ['400 kV','275 kV','132 kV','66 kV','11 kV','Other stated voltage','Voltage not stated']){const box=page.getByRole('checkbox',{name,exact:true});if(await box.isChecked())await visibleTap(box);}
  assert.deepEqual((await snapshot()).selectedBands,['33']);
  const filtered=await assertOwnPoints(50);assert.ok(filtered.length>1);assert.ok(filtered.every(f=>f.properties.voltage.split(' / ').some(v=>/^33(?: kV)?$/.test(v))));
- const added=panel.getByRole('button',{name:/^Add .+ to my model$/});await visibleTap(added.nth(0));await visibleTap(added.nth(1));
+ const added=panel.locator('.vic-results').getByRole('button',{name:/^Add .+ to my model$/});await visibleTap(added.nth(0));await visibleTap(added.nth(1));
  const scenario=await snapshot(),scenarioData=await ownData(),line=scenarioData.features.find(f=>f.properties.kind==='user-model');assert.equal(scenario.modelStations.length,2);assert.equal(line.properties.evidence,'USER_ASSUMED_LOCAL_MODEL');assert.deepEqual(line.geometry.coordinates,scenario.modelStations.map(s=>s.at));assert.equal(scenarioData.features.filter(f=>f.geometry.type==='LineString').length,2);
  await visibleTap(page.getByRole('button',{name:'Undo last station',exact:true}));assert.equal((await snapshot()).modelStations.length,1);
  await visibleTap(page.getByRole('button',{name:'Clear model',exact:true}));assert.equal((await snapshot()).modelStations.length,0);assert.equal((await ownData()).features.some(f=>f.properties.kind==='user-model'),false);
@@ -74,7 +75,7 @@ try{
  const station=(await ownData()).features.find(f=>f.properties.kind==='substation');assert.ok(station);
  await open({at:station.geometry.coordinates,id:'grid_substations:0',name:station.properties.name,type:'substation'},10);assert.equal((await snapshot()).origin.id,'grid_substations:0');origins.push({type:'substation',id:'grid_substations:0',at:station.geometry.coordinates,matching:(await snapshot()).matching});
  // Native result control supplies the actual station's coordinates, without a nearest-identity guess.
- const recenter=panel.getByRole('button',{name:/^Use .+ as origin$/}).first();await visibleTap(recenter);assert.equal((await snapshot()).origin.type,'substation');
+ const recenter=panel.locator('.vic-results').getByRole('button',{name:/^Use .+ as origin$/}).first();await visibleTap(recenter);assert.equal((await snapshot()).origin.type,'substation');
  await visibleTap(close);assert.equal(await page.evaluate(()=>!!window.__GRIDATLAS_V9_MAP__.getSource('gridatlas-vicinity-context')),false);
  const grid=page.locator('#gridatlas-menu-bar-title-4');await grid.tap();const nativeLaunch=page.locator('#gridatlas-menu-bar-panel-4 [data-vicinity-group] button');await visibleTap(nativeLaunch);assert.equal((await snapshot()).opened,true);await visibleTap(close);assert.equal(await grid.evaluate(e=>e===document.activeElement&&e.getClientRects().length>0),true);
  await open(dc,10);
@@ -112,7 +113,7 @@ try{
  await page.evaluate(()=>window.__GRIDATLAS_MODULES__.gridVicinity.mount().open({origin:{at:[-0.1,51.5],type:'map-centre',id:null},radiusKm:1}));assert.equal((await snapshot()).opened,true);await page.evaluate(()=>window.__GRIDATLAS_V9_MAP__.remove());assert.equal((await snapshot()).alive,false);assert.equal(await page.locator('#gridatlas-vicinity').count(),0);
  assert.deepEqual(errors,[]);
  const actualModule=injecting?compiled.body:fs.readFileSync(path.join(atlasRoot,'atlas/modules/'+generation+'-grid-vicinity.js'),'utf8').replace(/\r\n/g,'\n');
- const receipt={result:'PASS',startedUTC,finishedUTC:new Date().toISOString(),mode:injecting?'CANDIDATE_MODULE_INJECTION_NOT_PUBLIC_ACCEPTANCE':'LOCAL_FULL_COMPOSITION',browser:browserName,device:browserName==='webkit'?'iPhone 13 software regression':'Pixel 7 Android touch emulation',generation,moduleBytes:Buffer.byteLength(actualModule),moduleSha256:createHash('sha256').update(actualModule).digest('hex'),initial,physicalControls,radiusChecks,origins,scenario,layouts,exitedFullscreen,baselineLayers:baselineLayers.length,finalLayers:finalLayers.length,errors,failed,physicalPhone:'UNKNOWN',webKitBinaryAvailable:fs.existsSync(pw.webkit.executablePath())};
+ const receipt={result:'PASS',startedUTC,finishedUTC:new Date().toISOString(),mode:injecting?'CANDIDATE_MODULE_INJECTION_NOT_PUBLIC_ACCEPTANCE':'LOCAL_FULL_COMPOSITION',browser:browserName,device:browserName==='webkit'?'iPhone 13 software regression':'Pixel 7 Android touch emulation',generation,moduleBytes:Buffer.byteLength(actualModule),moduleSha256:createHash('sha256').update(actualModule).digest('hex'),initial,physicalControls,sourceCoverage,radiusChecks,origins,scenario,layouts,exitedFullscreen,baselineLayers:baselineLayers.length,finalLayers:finalLayers.length,errors,failed,physicalPhone:'UNKNOWN',webKitBinaryAvailable:fs.existsSync(pw.webkit.executablePath())};
  fs.writeFileSync(path.join(output,'receipt.json'),JSON.stringify(receipt,null,2)+'\n');console.log(JSON.stringify({result:'PASS',output,generation,matching:initial.matching,loaded:initial.loadedRecords}));
 }catch(e){if(page)await page.screenshot({path:path.join(output,'failure.png')}).catch(()=>{});fs.writeFileSync(path.join(output,'failure.json'),JSON.stringify({error:e.message,stack:e.stack,errors,failed,snapshot:page?await snapshot().catch(()=>null):null},null,2));throw e;}
 finally{await browser?.close();await new Promise(resolve=>server.close(resolve));}
