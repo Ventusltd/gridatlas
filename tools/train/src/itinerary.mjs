@@ -18,3 +18,13 @@ export function createItinerary({mode = 'journey'} = {}) {
   function replace(value,stop){const index=position(value),row=normaliseTrainStop(stop);stops[index]={...row,stopId:stops[index].stopId};revision++;return snapshot();}
   return Object.freeze({snapshot,add(stop,{index}={}){return insert(stop,index);},remove(value){stops.splice(position(value),1);revision++;return snapshot();},move(value,index){const from=position(value);if(!Number.isInteger(index)||index<0||index>=stops.length)throw new Error('Invalid selected stop position.');const [row]=stops.splice(from,1);stops.splice(index,0,row);revision++;return snapshot();},replace,setStart(stop){return stops.length?replace(0,stop):insert(stop);},setFinish(stop){return stops.length>1?replace(stops.length-1,stop):insert(stop);},setMode(next){if(!Object.hasOwn(caps,next))throw new Error('Choose journey or vicinity mode.');if(stops.length>caps[next])throw new Error('Remove selected stops explicitly before reducing the limit.');mode=next;revision++;return snapshot();},clear(){stops=[];revision++;return snapshot();}});
 }
+/** Declarative user constraints only; execution and electrical enforcement belong to the planner. */
+export function normaliseJourneyLaw(value = {}) {
+  if (!value || typeof value !== 'object' || Array.isArray(value) || Object.keys(value).some(key => !['mustVisitStationIds','allowedVoltageBands','fallback','allowTransformers'].includes(key))) throw new Error('Journey law must use the supported declarative fields only.');
+  const ids=value.mustVisitStationIds ?? [],bands=value.allowedVoltageBands ?? [],fallback=value.fallback ?? 'documented-only',allowTransformers=value.allowTransformers ?? true;
+  if(!Array.isArray(ids)||ids.length>90||ids.some(id=>typeof id!=='string'||!id.trim()||/[\u0000-\u001f\u007f]/.test(id)))throw new Error('Ordered must-visit entries require stable station IDs.');
+  const supported=new Set(['400','275','220','132','66','33','11','other','unknown']);
+  if(!Array.isArray(bands)||bands.some(b=>typeof b!=='string'||!supported.has(b)))throw new Error('Choose supported source voltage bands.');
+  if(!['documented-only','user-opted-hypothetical'].includes(fallback)||typeof allowTransformers!=='boolean')throw new Error('Choose documented-only or explicit user hypothetical fallback and a boolean transformer gate.');
+  return {schema:'gridatlas.journey-law.v1',mustVisitStationIds:ids.slice(),allowedVoltageBands:[...new Set(bands)],fallback,allowTransformers};
+}
