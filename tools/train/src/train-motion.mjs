@@ -6,6 +6,7 @@ export function createTrainRide({map, geodesy, palette = {}, onState = () => {},
   const prefix = 'gridatlas-train-', sources = new Map(), layers = new Map();
   const colour = palette.SUBSTATION_COLOUR || palette.substation || '#5fbdc2'; // Existing SLD substation colour.
   const flowColour = palette.FLOW_COLOUR || '#bfe9ee';
+  const customerColour = palette.CUSTOMER_SUBSTATION_COLOUR || '#e0b050'; // Existing SLD_COLOUR.node customer_substation glyph.
   // Same 24 cached dash patterns as the existing SLD neon renderer; no atlas growth per frame.
   const flowPatterns = Array.from({length: 24}, (_, i) => Object.freeze([0.001,
     Math.max(0.001, i / 24 * 1.5), 0.42, Math.max(0.001, 1.5 - i / 24 * 1.5)]));
@@ -51,7 +52,7 @@ export function createTrainRide({map, geodesy, palette = {}, onState = () => {},
     add({id: prefix + 'stops', type: 'circle', source: prefix + 'stops', filter:['!=',['get','proposed'],true],paint: {
       'circle-color': colour, 'circle-radius': 3, 'circle-opacity': 0.8}});
     add({id:prefix+'proposals',type:'circle',source:prefix+'stops',filter:['==',['get','proposed'],true],paint:{
-      'circle-color':'#000c10','circle-radius':5,'circle-stroke-color':colour,'circle-stroke-width':1.5,'circle-opacity':0.9}});
+      'circle-color':customerColour,'circle-radius':5,'circle-stroke-color':'#000c10','circle-stroke-width':1.5,'circle-opacity':0.9}});
     add({id: prefix + 'cursor', type: 'circle', source: prefix + 'cursor', paint: {
       'circle-color': colour, 'circle-radius': 5, 'circle-stroke-color': '#000c10', 'circle-stroke-width': 1.5}});
     unavailable = null; return true;
