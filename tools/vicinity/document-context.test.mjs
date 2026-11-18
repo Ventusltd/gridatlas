@@ -89,3 +89,15 @@ test('output and source metadata are immutable and contain no generated route ge
   assert.throws(() => { result.matchedRecords[0].declaration.source = 'changed'; });
   assert.equal(Object.hasOwn(result, 'geometry'), false);
 });
+test('every pinned owner declaration retains its exact source fields, including circuit and unbuilt cases', () => {
+  const refs = Object.keys(canonical.records);
+  assert.equal(refs.length, 19, 'Source records, not unique schemes or physical upgrades');
+  for (const ref of refs) {
+    const result = documentContextFor({type: 'repd', id: 'repd:' + ref}, {declaredConnections: canonical});
+    assert.equal(result.matchedRecords.length, 1, ref);
+    const record = result.matchedRecords[0], raw = canonical.records[ref];
+    for (const key of Object.keys(raw)) assert.equal(record.declaration[key], raw[key], ref + ':' + key);
+    assert.equal(record.declaredStatus, raw.poc_status ?? null);
+    assert.equal(result.counts.verifiedAssetJoins, 0);
+  }
+});
