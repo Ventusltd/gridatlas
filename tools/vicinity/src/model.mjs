@@ -38,7 +38,41 @@ export function parseVicinityIntent(search) {
   const numberText = value => typeof value === 'string' && /^[+-]?(?:\d+(?:\.\d*)?|\.\d+)$/.test(value.trim());
   if (!numberText(latitude) || !numberText(longitude)) throw new Error('Journey link has invalid coordinates.');
   const origin = normaliseOrigin({at: [Number(longitude), Number(latitude)], type: q.get('origin_type'), id: q.get('origin_id'), name: q.get('name')}, {requireIdentity: true});
-  return {origin, radiusKm: radiusKm(q.get('radius_km'))};
+  const intent = {origin, radiusKm: radiusKm(q.get('radius_km'))};
+  if (q.has('news_context_url')) {
+    if (q.getAll('news_context_url').length !== 1 || q.getAll('news_topic').length > 1) throw new Error('Journey link has duplicate news context fields.');
+    intent.newsContextUrl = validateNewsContextBase(q.get('news_context_url'));
+    intent.newsTopic = normaliseNewsTopic(q.get('news_topic'), origin);
+  }
+  return intent;
+}
+
+export function validateNewsContextBase(value) {
+  if (typeof value !== 'string' || value.length > 200 || !/^https:\/\/globalgrid2050\.com\//.test(value)) throw new Error('News context must use a dated GlobalGrid2050 edition.');
+  const url = new URL(value);
+  if (url.origin !== 'https://globalgrid2050.com' || url.username || url.password || url.port || url.search || url.hash
+    || !/^\/uk_renewables_pipeline\/\d{12}\/(?:index\.html)?$/.test(url.pathname)) throw new Error('News context must use a dated GlobalGrid2050 edition without extra URL fields.');
+  return url.href;
+}
+
+export function normaliseNewsTopic(value, origin) {
+  const allowed = ['datacentre','grid','renewables','storage','solar','wind'];
+  if (value != null && value !== '') {
+    if (!allowed.includes(value)) throw new Error('News topic is not supported.');
+    return value;
+  }
+  return origin?.type === 'datacentre' ? 'datacentre' : origin?.type === 'substation' ? 'grid' : 'renewables';
+}
+
+export function newsContextHref(base, origin, topic) {
+  const url = new URL(validateNewsContextBase(base));
+  if (['repd','datacentre','substation'].includes(origin?.type) && origin?.id) {
+    url.searchParams.set('news_origin_type', origin.type);
+    url.searchParams.set('news_origin_id', String(origin.id).slice(0,256));
+  }
+  url.searchParams.set('news_topic', normaliseNewsTopic(topic, origin));
+  url.hash = 'headlinesHeading';
+  return url.href;
 }
 
 export function voltageBands(kv) {
