@@ -24,7 +24,7 @@ const compiled=assemble({generation});
 console.log(JSON.stringify({startedUTC:new Date().toISOString(),output,generation,browser:browserName,candidateSha:compiled.sha256,injecting}));
 const dc={at:[-0.404504,51.496403],type:'datacentre',id:'dcuk-04bb759f3d52d660',name:'Source-listed London data centre'};
 const repd={at:[2.1708996,52.1374391],type:'repd',id:'repd:2470',name:'East Anglia 3 (EA 3)'};
-const errors=[],failed=[],layouts=[],origins=[],radiusChecks=[],renderChecks=[];
+const errors=[],failed=[],layouts=[],origins=[],radiusChecks=[],renderChecks=[],trainDiagnostics={};
 const startedUTC=new Date().toISOString(),coldStarted=performance.now(),runtimeResponses=[],responseReads=[];
 const sourceHead=execFileSync('git',['rev-parse','HEAD'],{cwd:atlasRoot,encoding:'utf8'}).trim();
 let browser,page,baselineLayers=[],baselineSource=null;
@@ -94,7 +94,7 @@ try{
  const scenario=await snapshot();assert.equal(scenario.modelStations.length,2);assert.ok(scenario.train.itinerary.stops.every(row=>row.stationId.startsWith('grid_substations:')));
  await visibleTap(panel.locator('.train-stops').getByRole('button',{name:/^Remove /}).first());assert.equal((await snapshot()).modelStations.length,1);
  await visibleTap(page.getByRole('button',{name:'Clear selected stops',exact:true}));assert.equal((await snapshot()).modelStations.length,0);
- const trainAcceptance=await runTrainUiAcceptance({page,panel,snapshot,visibleTap,output,pageErrors:errors});
+ const trainAcceptance=await runTrainUiAcceptance({page,panel,snapshot,visibleTap,output,pageErrors:errors,diagnostics:trainDiagnostics});
  assert.equal(await sourceFingerprint(),baselineSource,'native source geometry is never rewritten by a local model');
  await visibleTap(sourceVoltage.getByRole('checkbox',{name:'33 kV',exact:true}));assert.deepEqual((await snapshot()).selectedBands,[]);assert.equal((await snapshot()).matching,0);assert.equal((await assertOwnPoints(50)).length,0);
  await visibleTap(sourceVoltage.getByRole('checkbox',{name:'Voltage not stated',exact:true}));assert.deepEqual((await snapshot()).selectedBands,['unknown']);assert.ok((await assertOwnPoints(50)).every(f=>f.properties.voltage==='Not stated'));
@@ -155,7 +155,7 @@ try{
  assert.deepEqual(errors,[]);await Promise.all(responseReads);
  if(!injecting){const served=runtimeResponses.find(r=>r.url.endsWith('/atlas/modules/'+generation+'-grid-vicinity.js'));assert.ok(served,'browser actually received candidate module');assert.equal(served.sha256,compiled.sha256);assert.equal(served.bytes,compiled.bytes);}
  const actualModule=injecting?compiled.body:fs.readFileSync(path.join(atlasRoot,'atlas/modules/'+generation+'-grid-vicinity.js'),'utf8').replace(/\r\n/g,'\n');
- const receipt={result:'PASS',postMapRemovalObservationMs:1200,sourceHead,coldReadyMs,runtimeResponses,trainAcceptance,startedUTC,finishedUTC:new Date().toISOString(),mode:injecting?'CANDIDATE_MODULE_INJECTION_NOT_PUBLIC_ACCEPTANCE':'LOCAL_FULL_COMPOSITION',browser:browserName,device:browserName==='webkit'?'iPhone 13 software regression':'Pixel 7 Android touch emulation',generation,moduleBytes:Buffer.byteLength(actualModule),moduleSha256:createHash('sha256').update(actualModule).digest('hex'),initial,physicalControls,sourceCoverage,assetsBefore,assetContext,assetRefreshMs,radiusChecks,origins,scenario,layouts,exitedFullscreen,baselineLayers:baselineLayers.length,finalLayers:finalLayers.length,errors,failed,physicalPhone:'UNKNOWN',webKitBinaryAvailable:fs.existsSync(pw.webkit.executablePath())};
+ const receipt={result:'PASS',postMapRemovalObservationMs:1200,sourceHead,coldReadyMs,runtimeResponses,trainDiagnostics,trainAcceptance,startedUTC,finishedUTC:new Date().toISOString(),mode:injecting?'CANDIDATE_MODULE_INJECTION_NOT_PUBLIC_ACCEPTANCE':'LOCAL_FULL_COMPOSITION',browser:browserName,device:browserName==='webkit'?'iPhone 13 software regression':'Pixel 7 Android touch emulation',generation,moduleBytes:Buffer.byteLength(actualModule),moduleSha256:createHash('sha256').update(actualModule).digest('hex'),initial,physicalControls,sourceCoverage,assetsBefore,assetContext,assetRefreshMs,radiusChecks,origins,scenario,layouts,exitedFullscreen,baselineLayers:baselineLayers.length,finalLayers:finalLayers.length,errors,failed,physicalPhone:'UNKNOWN',webKitBinaryAvailable:fs.existsSync(pw.webkit.executablePath())};
  fs.writeFileSync(path.join(output,'receipt.json'),JSON.stringify(receipt,null,2)+'\n');console.log(JSON.stringify({result:'PASS',output,generation,matching:initial.matching,loaded:initial.loadedRecords}));
-}catch(e){if(page)await page.screenshot({path:path.join(output,'failure.png')}).catch(()=>{});fs.writeFileSync(path.join(output,'failure.json'),JSON.stringify({error:e.message,stack:e.stack,errors,failed,snapshot:page?await snapshot().catch(()=>null):null},null,2));throw e;}
+}catch(e){if(page)await page.screenshot({path:path.join(output,'failure.png')}).catch(()=>{});fs.writeFileSync(path.join(output,'failure.json'),JSON.stringify({sourceHead,generation,candidateSha:compiled.sha256,trainDiagnostics,runtimeResponses,error:e.message,stack:e.stack,errors,failed,snapshot:page?await snapshot().catch(()=>null):null},null,2));throw e;}
 finally{await browser?.close();await new Promise(resolve=>server.close(resolve));}
