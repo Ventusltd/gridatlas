@@ -6,6 +6,7 @@ export function buildRoutePlan({stops, stationIndex = null, synthetic = false, g
   const selected = stops.map(stop => {
     const id = stop.stationId || stop.id;
     if (typeof id !== 'string' || !id) throw Error('Each stop needs a stable station identity.');
+    if (stop.id != null && stop.id !== id) throw Error('Conflicting station identity.');
     const canonical = stationIndex?.get(id);
     if (!synthetic && (!canonical || !same(canonical.at, stop.at))) throw Error('Choose an existing canonical station from the station index.');
     if (synthetic && !String(stop.source).startsWith('SYNTHETIC')) throw Error('Fictional stops need an explicit synthetic source.');

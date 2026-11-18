@@ -56,3 +56,18 @@ test('ordered required visits/revisits and all original teaching presets use the
  for(const kind of ['local','express','branch']){const f=trainLearningFixture(kind);assert.equal(buildRoutePlan({synthetic:true,...f,geodesy}).playable,false);assert.equal(buildRoutePlan({synthetic:true,...f,geodesy,allowSimulated:true}).playable,true);}
  assert.throws(()=>buildRoutePlan({synthetic:true,stops:[stop('A'),stop('B')],geodesy,law:{allowedVoltageBands:['400'],mustVisitStationIds:['B','A'],fallback:'documented-only'}}),/declared order/);
 });
+test('production stations require canonical membership and points; selected voltage must be source-declared',()=>{
+ const a={id:'source-a',stationId:'source-a',at:[-1,51],kv:[400,132]},b={id:'source-b',stationId:'source-b',at:[0,51],kv:[132]};
+ const index={get:id=>id===a.id?a:id===b.id?b:null},opts={stops:[a,b],stationIndex:index,geodesy,allowSimulated:true};
+ const p=buildRoutePlan(opts);assert.equal(p.legs[0].simulationVoltageKv,132);assert.equal(p.legs[0].accessStatus,'UNKNOWN');assert.equal(p.legs[0].surveyConstructability,'UNKNOWN');
+ assert.equal(buildRoutePlan({...opts,stops:[{...a,selectedVoltageKv:400},b]}).playable,false);
+ assert.throws(()=>buildRoutePlan({...opts,stops:[{...a,selectedVoltageKv:275},b]}),/canonical station/);
+ assert.throws(()=>buildRoutePlan({...opts,stops:[{...a,at:[3,51]},b]}),/canonical station/);
+ assert.throws(()=>buildRoutePlan({...opts,stops:[{...a,id:'repd:2470',stationId:'repd:2470'},b]}),/canonical station/);
+});
+test('crossed source-looking line geometry cannot establish topology or land rights without reviewed edges',()=>{
+ const n=network();n.isReviewedEdge=()=>false;
+ n.geometryByCircuit={crossing:{reviewed:true,source:'SOURCE_GIS',circuitId:'crossing',geometry:{type:'LineString',coordinates:[[0,50],[2,52]]}}};
+ const p=buildRoutePlan({synthetic:true,stops:[stop('A'),stop('B')],geodesy,network:n});
+ assert.equal(p.legs[0].evidence,'MISSING');assert.equal(p.legs[0].geometry,'UNKNOWN');assert.equal(p.legs[0].electricalTopology,'UNKNOWN');assert.equal(p.legs[0].accessStatus,'UNKNOWN');
+});
