@@ -572,13 +572,13 @@
   },
   {
    "id": "substation-intelligence",
-   "generation": "202609062358",
-   "version": "v9.140",
+   "generation": "202611180026",
+   "version": "v9.193",
    "type": "script",
    "slot": "replace-script",
    "replace_script": "ventus-corev8engine.js",
-   "path": "../../cartridges/202609062358-substation-intelligence-v9-63.js",
-   "sha256": "d94b0de50deddac77643325b10fbe490ce44b8c406dbc6c67e6e7cadbdaa8ec6",
+   "path": "../../cartridges/202611180026-substation-intelligence-v9-63.js",
+   "sha256": "88c538b97bf426776cda436151741f17500a2136867d28362407550d72f9038f",
    "capabilities": [
     "immutable-v8-shell-preserved-with-reviewed-receiver-successor",
     "canonical-deep-link-technology-vocabulary",
@@ -599,7 +599,8 @@
     "scada-panel-restored-branded-head-real-nodes-moved-not-cloned",
     "layer-controls-44px-min-hit-target-via-full-size-invisible-input",
     "panel-anchored-to-its-own-side-group-plus-js-viewport-clamp",
-    "attribution-outranks-every-open-panel-by-z-index"
+    "attribution-outranks-every-open-panel-by-z-index",
+    "pipeline-selection-poll-map-removal-cleanup"
    ],
    "immutable_shell_modified": false,
    "supersedes_shell_script": {
@@ -635,8 +636,8 @@
     "closed_by": "the owner product's per-voltage split, quoted at the connection voltage",
     "still_site_wide": "circuit winter ratings are not split by voltage in the product and are now labelled site-wide (Blackhillock publishes 23-1,995 MVA)"
    },
-   "assembled_from": "../../manifests/202609051329-substation-intelligence-v9-63-parts.json",
-   "bytes": 451935
+   "bytes": 452588,
+   "source_recipe": "tools/pipeline-lifecycle/generations.json"
   },
   {
    "id": "uk-lightning-overlay",
