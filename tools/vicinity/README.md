@@ -32,6 +32,10 @@ An optional `news_context_url` may supply an HTTPS exact-host `globalgrid2050.co
 
 This additive module also styles the inherited Journey select dark in WebKit and reserves space for native Layers in short landscape viewports. The original Journey source and its historical rebuild remain unchanged.
 
+The module budget is 64,000 bytes, including the owner-requested generation/storage/demand context and documentary adapters. This replaces the unpublished stations-only prototype's 48,000-byte proposal; the repository's cartridge ceiling remains unchanged. All available categories share the same radius. The context adapter keeps register power, IT load, grid-connection statements and unknown actual demand separate; it retains source precision without treating an opaque ID and point as facility verification. The user can add any located context row to the same local assumed model.
+
+Documented works match only an exact existing REPD declaration key. Those legacy published declarations are explicitly not freshly revalidated; the pinned source and review status remain visible. Official Sea Link notices remain unassociated context with no coordinates or asset join. Planned bounds are not installed capacity or measured power flow.
+
 ## Verification
 
 ```text
