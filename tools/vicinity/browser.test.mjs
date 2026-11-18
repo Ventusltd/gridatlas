@@ -37,7 +37,7 @@ try{
  await page.goto(base+'/atlas/v/'+generation+'/?'+intent(dc),{waitUntil:'domcontentloaded',timeout:90000});
  await page.waitForFunction(()=>window.__GRIDATLAS_V9_MAP__&&window.__GRIDATLAS_MODULES__?.geodesy,null,{timeout:90000});
  await page.waitForFunction(()=>window.__GRIDATLAS_V9_MAP__?.getStyle()?.layers?.length>0,null,{timeout:90000});
- baselineLayers=await page.evaluate(()=>window.__GRIDATLAS_V9_MAP__.getStyle().layers.map(l=>l.id));
+ baselineLayers=await page.evaluate(()=>window.__GRIDATLAS_V9_MAP__.getStyle().layers.filter(l=>!l.id.startsWith('gridatlas-vicinity-')).map(l=>l.id));
  if(injecting)await page.addScriptTag({content:compiled.body});
  await page.waitForFunction(()=>window.__GRIDATLAS_MODULES__?.gridVicinity?.snapshot().opened,null,{timeout:90000});
  await page.waitForFunction(()=>window.__GRIDATLAS_MODULES__.gridVicinity.snapshot().matching>1,null,{timeout:90000});
