@@ -40,6 +40,9 @@ export async function proveExplorerGeneration(G, id) {
   } else if (id === 'substation-intelligence') {
     const {buildSubstation} = await import('../pipeline-lifecycle/build.mjs');
     assert.equal(buildSubstation(G).toString('utf8'), source);
+  } else if (id === 'uk-gazetteer-flyto') {
+    const {buildGazetteer} = await import('../train/gazetteer/build.mjs');
+    assert.equal(buildGazetteer(G).toString('utf8'),source);
   } else throw new Error('Unknown explorer source builder ' + id);
   console.log(`Explorer ${G} ${id}: source rebuild, parent lineage, preview derivation, immutable releases and budget PASS`);
 }
