@@ -4,6 +4,8 @@ import fs from 'node:fs';
 import vm from 'node:vm';
 import {buildRoutePlan} from './src/route-plan.mjs';
 import {trainLearningFixture} from './fixtures/learning-networks.mjs';
+import {createScenarioStationStore} from './src/scenario-stations.mjs';
+import {createItinerary} from './src/itinerary.mjs';
 const geodesy = {distanceKm: (a,b,c,d) => Math.hypot(c-a,d-b)*100};
 const stop = (id,kv=400) => ({source:'SYNTHETIC_TEST',stationId:id,at:[id.charCodeAt(0)/100,51],kv});
 const context = {window:{}}; vm.createContext(context);
@@ -120,4 +122,38 @@ test('untouched null voltage law means all known bands, explicit empty means non
  const opts={synthetic:true,stops:[stop('A'),stop('B')],geodesy,law:{allowedVoltageBands:null,mustVisitStationIds:[],fallback:'user-opted-hypothetical',allowTransformers:true}};
  assert.equal(buildRoutePlan(opts).playable,true);
  const none=buildRoutePlan({...opts,law:{...opts.law,allowedVoltageBands:[]}});assert.equal(none.playable,false);assert.equal(none.legs[0].evidence,'MISSING');
+});
+test('session-owned proposed11→source11/33→proposed33 cannot convert voltage at the middle station',()=>{
+ const a={id:'scenario:owned:1',stationId:'scenario:owned:1',at:[-1,51],kv:[11],source:'SESSION_ONLY_USER_PROPOSED',proposed:true};
+ const c={...a,id:'scenario:owned:2',stationId:'scenario:owned:2',at:[1,51],kv:[33]};
+ const b={id:'grid_substations:1',stationId:'grid_substations:1',at:[0,51],kv:[11,33],source:'EXISTING_SOURCE'};
+ const owned=new Map([[a.id,a],[c.id,c]]),scenarioStore={get:id=>owned.get(id)},stationIndex={get:id=>id===b.id?b:null};
+ const opts={stops:[a,b,c],scenarioStore,stationIndex,geodesy,law:{allowedVoltageBands:null,fallback:'user-opted-hypothetical',allowTransformers:true}};
+ const plan=buildRoutePlan(opts);assert.equal(plan.legs[0].evidence,'SIMULATED');assert.equal(plan.legs[1].evidence,'MISSING');assert.equal(plan.playable,false);
+ assert.throws(()=>buildRoutePlan({...opts,law:{...opts.law,fallback:'documented-only'}}),/canonical station/);
+ assert.throws(()=>buildRoutePlan({...opts,scenarioStore:{get:()=>null}}),/canonical station/);
+ owned.delete(c.id);assert.throws(()=>buildRoutePlan(opts),/canonical station/);
+});
+test('current owned proposal remains hypothetical and stale pin edits are refused',()=>{
+ const a={id:'scenario:owned:1',stationId:'scenario:owned:1',at:[-1,51],kv:[33],source:'SESSION_ONLY_USER_PROPOSED',proposed:true};
+ const b={id:'grid_substations:1',stationId:'grid_substations:1',at:[0,51],kv:[33]};let current=a;
+ const opts={stops:[a,b],scenarioStore:{get:id=>id===a.id?current:null},stationIndex:{get:id=>id===b.id?b:null},geodesy,law:{allowedVoltageBands:null,fallback:'user-opted-hypothetical'}};
+ assert.equal(buildRoutePlan(opts).legs[0].electricalTopology,'UNKNOWN');
+ current={...a,at:[-2,51]};assert.throws(()=>buildRoutePlan(opts),/canonical station/);
+ assert.equal(buildRoutePlan({...opts,stops:[current,b]}).playable,true);
+});
+test('explicit Other permits only source-known nonstandard bands; Unknown never creates voltage',()=>{
+ const opts={synthetic:true,stops:[stop('A',6.6),stop('B',6.6)],geodesy,law:{allowedVoltageBands:['other'],fallback:'user-opted-hypothetical'}};
+ assert.equal(buildRoutePlan(opts).playable,true);
+ assert.equal(buildRoutePlan({...opts,law:{...opts.law,allowedVoltageBands:['unknown']}}).playable,false);
+ assert.equal(buildRoutePlan({...opts,stops:[stop('A',[]),stop('B',[])],law:{...opts.law,allowedVoltageBands:null}}).playable,false);
+});
+test('real session store and itinerary enforce the11→11/33→33 no-transformer rule and current owned pins',()=>{
+ const store=createScenarioStationStore({sessionId:'native-law'}),a=store.create({name:'User A',at:[-1,51],kv:[11]}),c=store.create({name:'User C',at:[1,51],kv:[33]});
+ const b={id:'grid_substations:1',stationId:'grid_substations:1',at:[0,51],kv:[11,33]},stationIndex={get:id=>id===b.id?b:null};
+ const itinerary=createItinerary({stationIndex,scenarioStore:store,law:{fallback:'user-opted-hypothetical'}});itinerary.add(a);itinerary.add(b);itinerary.add(c);
+ const selected=itinerary.snapshot(),opts={...selected,stationIndex,scenarioStore:store,geodesy};
+ const plan=buildRoutePlan(opts);assert.equal(plan.legs[0].evidence,'SIMULATED');assert.equal(plan.legs[1].evidence,'MISSING');assert.equal(plan.playable,false);assert.equal(plan.planEpoch,selected.planEpoch);
+ store.edit(a.id,{at:[-2,51]});assert.throws(()=>buildRoutePlan(opts),/canonical station/);
+ assert.doesNotThrow(()=>buildRoutePlan({...itinerary.snapshot(),stationIndex,scenarioStore:store,geodesy}));
 });
