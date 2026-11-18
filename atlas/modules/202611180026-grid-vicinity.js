@@ -2,7 +2,7 @@
 (() => {
 'use strict';
 const VICINITY_GENERATION="202611180026";
-const VICINITY_CSS="#gridatlas-vicinity{position:absolute;inset:0;pointer-events:none;z-index:32;font:12px/1.4 monospace;color:#bfe9ee}#gridatlas-vicinity *{box-sizing:border-box}#gridatlas-vicinity button,#gridatlas-vicinity input{font:inherit;pointer-events:auto}#gridatlas-vicinity button{min-height:44px;padding:7px 10px;color:#0ff;background:#061216;border:1px solid #367078;cursor:pointer}#gridatlas-vicinity :focus-visible{outline:3px solid #ffd84d;outline-offset:2px}#gridatlas-vicinity [hidden]{display:none!important}#gridatlas-vicinity .vic-launch{position:absolute;left:8px;top:170px;max-width:180px}#gridatlas-vicinity .vic-panel{position:absolute;pointer-events:auto;right:8px;top:58px;width:min(400px,calc(100% - 16px));max-height:calc(100% - var(--gridatlas-sheet-h,0px) - 130px);overflow:auto;overscroll-behavior:contain;background:#020809;border:1px solid #0ff;padding:10px}#gridatlas-vicinity .vic-head{display:flex;gap:8px;align-items:center;justify-content:space-between;position:sticky;top:-10px;background:#020809;padding:6px 0;z-index:1}#gridatlas-vicinity h2{font:700 14px/1.3 monospace;margin:0;color:#0ff}#gridatlas-vicinity p{margin:8px 0}#gridatlas-vicinity .vic-caption{color:#ffd84d}#gridatlas-vicinity fieldset{margin:8px 0;border:1px solid #315057;padding:6px}#gridatlas-vicinity .vic-bands{display:flex;flex-wrap:wrap;gap:2px 8px}#gridatlas-vicinity .vic-bands label{display:flex;gap:6px;align-items:center;min-height:44px}#gridatlas-vicinity input[type=checkbox]{width:20px;height:20px;accent-color:#0ff}#gridatlas-vicinity input[type=range]{display:block;width:100%;height:44px;accent-color:#0ff}#gridatlas-vicinity .vic-actions{display:flex;flex-wrap:wrap;gap:5px}#gridatlas-vicinity ol{margin:8px 0;padding-left:22px}#gridatlas-vicinity li{padding:7px 0;border-bottom:1px solid #18333a;overflow-wrap:anywhere}#gridatlas-vicinity li button{display:block;margin-top:4px}#gridatlas-vicinity .vic-error{color:#ff8585}#gridatlas-vicinity .vic-row-meta{display:block;color:#9ab8be}@media(max-height:440px){#gridatlas-vicinity .vic-panel{top:8px;max-height:calc(100% - 16px)}#gridatlas-vicinity .vic-launch{top:100px}}@media(prefers-reduced-motion:reduce){#gridatlas-vicinity *{animation:none!important;transition:none!important}}\n#gridatlas-gj03 select{appearance:none;-webkit-appearance:none;color-scheme:dark;background:#071013!important;color:#bfe9ee!important;border-radius:0}#gridatlas-gj03 select option{background:#071013;color:#bfe9ee}@media(max-height:480px){#gridatlas-vicinity .vic-panel{top:52px;max-height:calc(100% - var(--gridatlas-sheet-h,0px) - 124px)}body #gridatlas-gj03 .gj-panel{max-height:calc(100% - var(--gridatlas-sheet-h,0px) - 124px)}}\n#gridatlas-vicinity summary{min-height:44px;padding:8px 0;cursor:pointer}\n#gridatlas-vicinity .train-panel input[type=search],#gridatlas-vicinity .train-panel select{display:block;width:100%;min-height:44px;margin:5px 0;padding:8px;background:#071013;color:#bfe9ee;border:1px solid #367078;font:inherit;color-scheme:dark;appearance:none;-webkit-appearance:none}#gridatlas-vicinity .train-panel select option{background:#071013;color:#bfe9ee}#gridatlas-vicinity .train-check{display:flex;align-items:center;gap:8px;min-height:44px}#gridatlas-vicinity .train-check input{flex:none}#gridatlas-vicinity .train-search-results{max-height:260px;overflow:auto}#gridatlas-vicinity .train-panel button[aria-pressed=true]{border-color:#0ff;background:#103039}#gridatlas-vicinity .train-panel button:disabled{opacity:.5;cursor:default}#gridatlas-vicinity .train-panel li{padding:8px 0}#gridatlas-vicinity .train-place-binding{color:#bfe9ee;overflow-wrap:anywhere}#gridatlas-vicinity .train-progress{color:#0ff}#gridatlas-vicinity .train-panel .vic-actions button{flex:1 1 100px}\n";
+const VICINITY_CSS="#gridatlas-vicinity{position:absolute;inset:0;pointer-events:none;z-index:32;font:12px/1.4 monospace;color:#bfe9ee}#gridatlas-vicinity *{box-sizing:border-box}#gridatlas-vicinity button,#gridatlas-vicinity input{font:inherit;pointer-events:auto}#gridatlas-vicinity button{min-height:44px;padding:7px 10px;color:#0ff;background:#061216;border:1px solid #367078;cursor:pointer}#gridatlas-vicinity :focus-visible{outline:3px solid #ffd84d;outline-offset:2px}#gridatlas-vicinity [hidden]{display:none!important}#gridatlas-vicinity .vic-launch{position:absolute;left:8px;top:170px;max-width:180px}#gridatlas-vicinity .vic-panel{position:absolute;pointer-events:auto;right:8px;top:58px;width:min(400px,calc(100% - 16px));max-height:calc(100% - var(--gridatlas-sheet-h,0px) - 130px);overflow:auto;overscroll-behavior:contain;background:#020809;border:1px solid #0ff;padding:10px}#gridatlas-vicinity .vic-head{display:flex;gap:8px;align-items:center;justify-content:space-between;position:sticky;top:-10px;background:#020809;padding:6px 0;z-index:1}#gridatlas-vicinity h2{font:700 14px/1.3 monospace;margin:0;color:#0ff}#gridatlas-vicinity p{margin:8px 0}#gridatlas-vicinity .vic-caption{color:#ffd84d}#gridatlas-vicinity fieldset{margin:8px 0;border:1px solid #315057;padding:6px}#gridatlas-vicinity .vic-bands{display:flex;flex-wrap:wrap;gap:2px 8px}#gridatlas-vicinity .vic-bands label{display:flex;gap:6px;align-items:center;min-height:44px}#gridatlas-vicinity input[type=checkbox]{width:20px;height:20px;accent-color:#0ff}#gridatlas-vicinity input[type=range]{display:block;width:100%;height:44px;accent-color:#0ff}#gridatlas-vicinity .vic-actions{display:flex;flex-wrap:wrap;gap:5px}#gridatlas-vicinity ol{margin:8px 0;padding-left:22px}#gridatlas-vicinity li{padding:7px 0;border-bottom:1px solid #18333a;overflow-wrap:anywhere}#gridatlas-vicinity li button{display:block;margin-top:4px}#gridatlas-vicinity .vic-error{color:#ff8585}#gridatlas-vicinity .vic-row-meta{display:block;color:#9ab8be}@media(max-height:440px){#gridatlas-vicinity .vic-panel{top:8px;max-height:calc(100% - 16px)}#gridatlas-vicinity .vic-launch{top:100px}}@media(prefers-reduced-motion:reduce){#gridatlas-vicinity *{animation:none!important;transition:none!important}}\n#gridatlas-gj03 select{appearance:none;-webkit-appearance:none;color-scheme:dark;background:#071013!important;color:#bfe9ee!important;border-radius:0}#gridatlas-gj03 select option{background:#071013;color:#bfe9ee}@media(max-height:480px){#gridatlas-vicinity .vic-panel{top:52px;max-height:calc(100% - var(--gridatlas-sheet-h,0px) - 124px)}body #gridatlas-gj03 .gj-panel{max-height:calc(100% - var(--gridatlas-sheet-h,0px) - 124px)}}\n#gridatlas-vicinity summary{min-height:44px;padding:8px 0;cursor:pointer}\n#gridatlas-vicinity .train-panel input[type=text],#gridatlas-vicinity .train-panel input[type=search],#gridatlas-vicinity .train-panel select{display:block;width:100%;min-height:44px;margin:5px 0;padding:8px;background:#071013;color:#bfe9ee;border:1px solid #367078;font:inherit;color-scheme:dark;appearance:none;-webkit-appearance:none}#gridatlas-vicinity .train-panel select option{background:#071013;color:#bfe9ee}#gridatlas-vicinity .train-check{display:flex;align-items:center;gap:8px;min-height:44px}#gridatlas-vicinity .train-check input{flex:none}#gridatlas-vicinity .train-search-results{max-height:260px;overflow:auto}#gridatlas-vicinity .train-panel button[aria-pressed=true]{border-color:#0ff;background:#103039}#gridatlas-vicinity .train-panel button:disabled{opacity:.5;cursor:default}#gridatlas-vicinity .train-panel li{padding:8px 0}#gridatlas-vicinity .train-place-binding{color:#bfe9ee;overflow-wrap:anywhere}#gridatlas-vicinity .train-progress{color:#0ff}#gridatlas-vicinity .train-panel .vic-actions button{flex:1 1 100px}\n#gridatlas-vicinity .vic-train-compact{position:absolute;pointer-events:auto;left:8px;top:52px;width:min(380px,calc(100% - 16px));padding:5px;background:#020809;border:1px solid #367078}#gridatlas-vicinity .vic-train-compact button{flex:1;min-width:55px;padding:5px}#gridatlas-vicinity .vic-train-compact p{margin:3px 0;font-size:10px}#gridatlas-vicinity .vic-train-map-legend{position:absolute;pointer-events:none;left:8px;bottom:calc(var(--gridatlas-sheet-h,0px) + 76px);max-width:min(270px,calc(100% - 100px));margin:0;padding:4px;background:#020809;border:1px solid #367078;font-size:10px;color:#bfe9ee}\n";
 /** Spatial exploration only. Canonical Atlas geodesy is injected, never forked. */
 const VOLTAGE_BANDS = Object.freeze([
   ['400', '400 kV', '#ff5555'], ['275', '275 kV', '#ff8a3d'],
@@ -300,6 +300,7 @@ function documentContextFor(origin, {declaredConnections} = {}) {
 
 return documentContextFor;
 })();
+const TRAIN_STATION_SOURCE_PIN={"path":"atlas/releases/202608300453-atlas-v9/data/grid_substations.geojson","bytes":1192748,"sha256":"87976435766a58ddf19c99540b58cd7f18a224148af42ba55075d8851f9e6251","features":5800,"basis":"Expected immutable loader input; not a runtime payload revalidation"};
 const TrainCore=(()=>{
 /** Full source inventory. Display limits never change inventory or itinerary limits. */
 function trainCoordinate(at) {
@@ -360,20 +361,42 @@ function buildStationIndex(features, {geodesy, datasetPin = null} = {}) {
 
 
 
+/** Session-owned drawing input. Never an official station, inventory or connection. */
+function createScenarioStationStore({sessionId=globalThis.crypto?.randomUUID?.()}={}) {
+ if(typeof sessionId!=='string'||!/^[A-Za-z0-9_-]{1,80}$/.test(sessionId))throw new Error('A valid unique session ID is required.');
+ let revision=0,serial=0;const rows=new Map(),prefix='scenario:'+sessionId+':';
+ const clone=row=>({...normaliseTrainStop(row),proposed:true,sessionId,scenarioRevision:row.scenarioRevision,evidence:'SESSION_ONLY_USER_PROPOSED_NOT_OFFICIAL'});
+ function record(id,value){if(typeof value.name!=='string'||!value.name.trim()||!trainCoordinate(value.at)||!Array.isArray(value.kv)||value.kv.length!==1||![11,33].includes(value.kv[0]))throw new Error('Name, pin point and explicit11 or33kV choice are required.');return{stationId:id,id,name:value.name.trim(),at:value.at.slice(),kv:value.kv.slice(),operator:'',source:'SESSION_ONLY_USER_PROPOSED',proposed:true,sessionId,scenarioRevision:revision+1};}
+ return Object.freeze({create(value){if(value?.stationId!=null||value?.id!=null)throw new Error('Proposed IDs are assigned by the current session.');const id=prefix+(serial+1),row=record(id,value);serial++;revision++;rows.set(id,row);return clone(row);},edit(id,patch){const old=rows.get(id);if(!old)throw new Error('No proposed station owned by this session.');if(patch?.id!=null||patch?.stationId!=null)throw new Error('Proposed station identity cannot be edited.');const row=record(id,{...old,...patch});revision++;rows.set(id,row);return clone(row);},remove(id){if(!rows.has(id))throw new Error('No proposed station owned by this session.');rows.delete(id);revision++;return{revision};},get(id){const row=rows.get(id);return row?clone(row):null;},snapshot(){return{schema:'gridatlas.session-proposed-stations.v1',sessionId,revision,count:rows.size,stations:[...rows.values()].map(clone),official:false,verifiedConnections:0};}});
+}
+
+
 /** Selected stops, including endpoints. Intermediate traversal nodes are not stored here. */
-function createItinerary({mode = 'journey', stationIndex} = {}) {
+function createItinerary({mode = 'journey', stationIndex, scenarioStore = null, law: initialLaw = {}} = {}) {
   if (typeof stationIndex?.get !== 'function') throw new Error('The full canonical station index is required.');
+  let law=normaliseJourneyLaw(initialLaw);
+  const copyStation=row=>({...normaliseTrainStop(row),...(row.proposed?{proposed:true,sessionId:row.sessionId,scenarioRevision:row.scenarioRevision,evidence:'SESSION_ONLY_USER_PROPOSED_NOT_OFFICIAL'}:{})});
   function selectedStation(stop) {
-    const id=stop?.stationId ?? stop?.id, canonical=stationIndex.get(id);
+    const id=stop?.stationId ?? stop?.id, canonical=stationIndex.get(id) || (law.fallback === 'user-opted-hypothetical' ? scenarioStore?.get(id) : null);
     if(!canonical)throw new Error('Selected stops must exist by stable ID in the station inventory.');
     if(stop.at && (!Array.isArray(stop.at)||stop.at.length!==2||stop.at.some((v,i)=>v!==canonical.at[i])))throw new Error('Selected station point differs from its canonical source point.');
     if(stop.id != null && stop.id !== id)throw new Error('Conflicting station identity.');
-    return normaliseTrainStop({...canonical,...(stop.place?{place:stop.place}:{})});
+    return copyStation({...canonical,...(stop.place?{place:stop.place}:{})});
   }
   const caps = {journey:10,vicinity:90};
   if (!Object.hasOwn(caps,mode)) throw new Error('Choose journey or vicinity mode.');
   let stops = [], revision = 0, serial = 0;
-  const snapshot = () => ({schema:'gridatlas.user-itinerary.v1',mode,limit:caps[mode],selectedCount:stops.length,revision,evidence:'USER_SELECTED_ITINERARY_NOT_CONFIRMED_CONNECTION',stops:stops.map(s=>({...normaliseTrainStop(s),stopId:s.stopId})),start:stops[0]?.stopId || null,finish:stops.at(-1)?.stopId || null});
+  const snapshot = () => {
+    const invalidStopIds=[];
+    const selected=stops.map(s=>{
+      const current=s.proposed?scenarioStore?.get(s.stationId):stationIndex.get(s.stationId);
+      const valid=!!current && (!s.proposed || law.fallback==='user-opted-hypothetical');
+      if(!valid)invalidStopIds.push(s.stopId);
+      return {...copyStation(current?{...current,...(s.place?{place:s.place}:{})}:s),stopId:s.stopId,...(!valid?{invalid:true}:{})};
+    });
+    return {schema:'gridatlas.user-itinerary.v1',mode,limit:caps[mode],selectedCount:stops.length,revision,planEpoch:revision+(scenarioStore?.snapshot().revision||0),law:normaliseJourneyLaw(law),valid:invalidStopIds.length===0,invalidStopIds,evidence:'USER_SELECTED_ITINERARY_NOT_CONFIRMED_CONNECTION',stops:selected,start:stops[0]?.stopId||null,finish:stops.at(-1)?.stopId||null};
+  };
+  function setLaw(value){const next=normaliseJourneyLaw(value);if(next.fallback!=='user-opted-hypothetical'&&stops.some(s=>s.proposed))throw new Error('Remove proposed stops explicitly before choosing documented-only.');law=next;revision++;return snapshot();}
   function position(value) {
     if (Number.isInteger(value) && value >= 0 && value < stops.length) return value;
     if (typeof value === 'string') { const exact = stops.findIndex(s=>s.stopId===value); if (exact>=0) return exact; const found=stops.map((s,i)=>s.stationId===value?i:-1).filter(i=>i>=0); if(found.length===1)return found[0]; }
@@ -385,19 +408,20 @@ function createItinerary({mode = 'journey', stationIndex} = {}) {
     const row=selectedStation(stop);stops.splice(index,0,{...row,stopId:'selected-stop-'+(++serial)});revision++;return snapshot();
   }
   function replace(value,stop){const index=position(value),row=selectedStation(stop);stops[index]={...row,stopId:stops[index].stopId};revision++;return snapshot();}
-  return Object.freeze({snapshot,add(stop,{index}={}){return insert(stop,index);},remove(value){stops.splice(position(value),1);revision++;return snapshot();},move(value,index){const from=position(value);if(!Number.isInteger(index)||index<0||index>=stops.length)throw new Error('Invalid selected stop position.');const [row]=stops.splice(from,1);stops.splice(index,0,row);revision++;return snapshot();},replace,setStart(stop){return stops.length?replace(0,stop):insert(stop);},setFinish(stop){return stops.length>1?replace(stops.length-1,stop):insert(stop);},setMode(next){if(!Object.hasOwn(caps,next))throw new Error('Choose journey or vicinity mode.');if(stops.length>caps[next])throw new Error('Remove selected stops explicitly before reducing the limit.');mode=next;revision++;return snapshot();},clear(){stops=[];revision++;return snapshot();}});
+  return Object.freeze({snapshot,setLaw,add(stop,{index}={}){return insert(stop,index);},remove(value){stops.splice(position(value),1);revision++;return snapshot();},move(value,index){const from=position(value);if(!Number.isInteger(index)||index<0||index>=stops.length)throw new Error('Invalid selected stop position.');const [row]=stops.splice(from,1);stops.splice(index,0,row);revision++;return snapshot();},replace,setStart(stop){return stops.length?replace(0,stop):insert(stop);},setFinish(stop){return stops.length>1?replace(stops.length-1,stop):insert(stop);},setMode(next){if(!Object.hasOwn(caps,next))throw new Error('Choose journey or vicinity mode.');if(stops.length>caps[next])throw new Error('Remove selected stops explicitly before reducing the limit.');mode=next;revision++;return snapshot();},clear(){stops=[];revision++;return snapshot();}});
 }
 /** Declarative user constraints only; execution and electrical enforcement belong to the planner. */
 function normaliseJourneyLaw(value = {}) {
   if (!value || typeof value !== 'object' || Array.isArray(value) || Object.keys(value).some(key => !['schema','mustVisitStationIds','allowedVoltageBands','fallback','allowTransformers'].includes(key))) throw new Error('Journey law must use the supported declarative fields only.');
   if(value.schema != null && value.schema !== 'gridatlas.journey-law.v1') throw new Error('Unknown journey law schema.');
-  const ids=value.mustVisitStationIds ?? [],bands=value.allowedVoltageBands ?? [],fallback=value.fallback ?? 'documented-only',allowTransformers=value.allowTransformers ?? true;
+  const ids=value.mustVisitStationIds ?? [],bands=value.allowedVoltageBands ?? null,fallback=value.fallback ?? 'documented-only',allowTransformers=value.allowTransformers ?? true;
   if(!Array.isArray(ids)||ids.length>90||ids.some(id=>typeof id!=='string'||!id.trim()||/[\u0000-\u001f\u007f]/.test(id)))throw new Error('Ordered must-visit entries require stable station IDs.');
   const supported=new Set(['400','275','220','132','66','33','11','other','unknown']);
-  if(!Array.isArray(bands)||bands.some(b=>typeof b!=='string'||!supported.has(b)))throw new Error('Choose supported source voltage bands.');
+  if(bands!==null&&(!Array.isArray(bands)||bands.some(b=>typeof b!=='string'||!supported.has(b))))throw new Error('Choose supported source voltage bands.');
   if(!['documented-only','user-opted-hypothetical'].includes(fallback)||typeof allowTransformers!=='boolean')throw new Error('Choose documented-only or explicit user hypothetical fallback and a boolean transformer gate.');
-  return {schema:'gridatlas.journey-law.v1',mustVisitStationIds:ids.slice(),allowedVoltageBands:[...new Set(bands)],fallback,allowTransformers};
+  return {schema:'gridatlas.journey-law.v1',mustVisitStationIds:ids.slice(),allowedVoltageBands:bands===null?null:[...new Set(bands)],fallback,allowTransformers};
 }
+
 
 
 
@@ -436,7 +460,7 @@ function createPlaceBridge({resolve,index,geodesy}={}) {
 
 
 /** Ordered user itinerary; proximity never establishes electrical connectivity. */
-function buildRoutePlan({stops, stationIndex = null, synthetic = false, geodesy, allowSimulated = false, network = null, rules = {}, law = null} = {}) {
+function buildRoutePlan({stops, stationIndex = null, scenarioStore = null, planEpoch = null, synthetic = false, geodesy, allowSimulated = false, network = null, rules = {}, law = null} = {}) {
   if (!Array.isArray(stops) || stops.length < 2 || stops.length > 90) throw Error('Choose 2–90 station stops.');
   if (typeof geodesy?.distanceKm !== 'function') throw Error('Canonical geodesy is required.');
   const ids = new Set();
@@ -445,21 +469,26 @@ function buildRoutePlan({stops, stationIndex = null, synthetic = false, geodesy,
     if (typeof id !== 'string' || !id) throw Error('Each stop needs a stable station identity.');
     if (stop.id != null && stop.id !== id) throw Error('Conflicting station identity.');
     const canonical = stationIndex?.get(id);
-    if (!synthetic && (!canonical || !same(canonical.at, stop.at))) throw Error('Choose an existing canonical station from the station index.');
+    const proposed = !canonical && law?.fallback === 'user-opted-hypothetical' ? scenarioStore?.get(id) : null;
+    if (proposed && (proposed.proposed !== true || proposed.source !== 'SESSION_ONLY_USER_PROPOSED'
+      || !id.startsWith('scenario:') || proposed.kv.length !== 1 || ![11,33].includes(proposed.kv[0]))) throw Error('Invalid session-owned proposal.');
+    const owned = canonical || proposed;
+    if (stop.invalid || !synthetic && (!owned || !same(owned.at, stop.at))) throw Error('Choose an existing canonical station from the station index or an opted-in current session proposal.');
     if (synthetic && !String(stop.source).startsWith('SYNTHETIC')) throw Error('Fictional stops need an explicit synthetic source.');
     const stopId = stop.stopId || 'visit-' + ids.size;
     if (ids.has(stopId)) throw Error('Each visit needs a distinct stop identity.');
     ids.add(stopId);
     if (!Array.isArray(stop.at) || stop.at.length !== 2 || !stop.at.every(Number.isFinite)
       || Math.abs(stop.at[0]) > 180 || Math.abs(stop.at[1]) > 90) throw Error('A station stop is unlocated.');
-    const trusted = canonical || stop;
+    const trusted = owned || stop;
     const kv = (Array.isArray(trusted.kv) ? trusted.kv : [trusted.kv]).filter(kv => Number.isFinite(kv) && kv > 0);
     if (stop.selectedVoltageKv != null && !kv.includes(stop.selectedVoltageKv)) throw Error('Selected journey voltage must belong to the canonical station.');
     return {...trusted, ...(stop.place ? {place: stop.place} : {}), id, stationId: id, stopId, at: [...trusted.at],
       kv, ...(stop.selectedVoltageKv != null ? {selectedVoltageKv: stop.selectedVoltageKv} : {})};
   });
   if (law) {
-    rules = {...rules, allowedVoltages: law.allowedVoltageBands.filter(v => /^\d+$/.test(String(v))).map(Number), allowTransformers: law.allowTransformers !== false};
+    rules = {...rules, allowedVoltages: law.allowedVoltageBands == null ? null : law.allowedVoltageBands.filter(v => /^\d+$/.test(String(v))).map(Number),
+      allowOtherVoltage: law.allowedVoltageBands?.includes('other') === true, allowTransformers: law.allowTransformers !== false};
     allowSimulated = law.fallback === 'user-opted-hypothetical';
     let at = 0;
     for (const id of law.mustVisitStationIds || []) {
@@ -468,65 +497,34 @@ function buildRoutePlan({stops, stationIndex = null, synthetic = false, geodesy,
       at++;
     }
   }
-  const allowedVoltages = rules.allowedVoltages || [...new Set(selected.flatMap(stop => stop.kv))];
-  if (!Array.isArray(allowedVoltages) || !allowedVoltages.length || allowedVoltages.some(kv => !Number.isFinite(kv) || kv <= 0)) throw Error('Choose allowed voltage levels.');
+  const allowedVoltages = rules.allowedVoltages === undefined ? null : rules.allowedVoltages;
+  if (allowedVoltages !== null && (!Array.isArray(allowedVoltages) || allowedVoltages.some(kv => !Number.isFinite(kv) || kv <= 0))) throw Error('Choose valid voltage levels.');
   const eligible = network?.index && createEligibleTrainIndex(network.index,
-    {allowedVoltages, allowTransformers: rules.allowTransformers === true}, network.isReviewedEdge);
+    {allowedVoltages, allowOtherVoltage:rules.allowOtherVoltage===true, allowTransformers: rules.allowTransformers === true}, network.isReviewedEdge);
+  const sequence = planTrainBuses(selected, eligible, network, allowedVoltages, allowSimulated,rules.allowOtherVoltage===true);
   const legs = selected.slice(1).map((to, i) => {
     const from = selected[i];
-    const fromKv = from.selectedVoltageKv == null ? from.kv : [from.selectedVoltageKv];
-    const toKv = to.selectedVoltageKv == null ? to.kv : [to.selectedVoltageKv];
-    let evidence = 'MISSING', coordinates = null, topology = null, source = null;
-    // Explicit reviewed identity bindings only; never match station names or coordinates.
-    const a = network?.stationBindings?.[from.id], b = network?.stationBindings?.[to.id];
-    if (a?.stationId === from.id && b?.stationId === to.id && a.reviewed === true && b.reviewed === true
-      && a.source && b.source && typeof a.siteCode === 'string' && typeof b.siteCode === 'string'
-      && typeof network?.electricalDistance?.between === 'function') {
-      const graph = eligible.graph();
-      const perLegGraph = {...graph, nodesOfSite: code => graph.nodesOfSite(code).filter(node =>
-        (code !== a.siteCode || fromKv.includes(graph.nodeVoltageKv(node)))
-        && (code !== b.siteCode || toKv.includes(graph.nodeVoltageKv(node))))};
-      const perLegIndex = {site: key => eligible.site(key), graph: () => perLegGraph};
-      const result = network.electricalDistance.between(perLegIndex, a.siteCode, b.siteCode,
-        {maxHops: Number.isInteger(network.maxHops) && network.maxHops > 0 ? Math.min(10000, network.maxHops) : 10000,
-          ...(fromKv.some(kv => allowedVoltages.includes(kv)) ? {voltageKv: fromKv.find(kv => allowedVoltages.includes(kv))} : {})});
-      if (result?.schema === 'gridatlas.module.electrical-distance.v1' && result.reached === true
-        && result.from?.code === a.siteCode && result.to?.code === b.siteCode && Array.isArray(result.path)
-        && eligible && (result.path.length ? perLegGraph.nodesOfSite(a.siteCode).includes(result.path[0].from_node)
-          && perLegGraph.nodesOfSite(b.siteCode).includes(result.path.at(-1).to_node) : a.siteCode === b.siteCode && perLegGraph.nodesOfSite(a.siteCode).length > 0)
-        && result.path.every((hop, n) => eligible.graph().has(hop.from_node)
-          && eligible.graph().has(hop.to_node) && (!n || result.path[n - 1].to_node === hop.from_node)
-          && eligible.graph().edgesAt(hop.from_node).some(edge => edge.kind === hop.kind && edge.row[edge.far] === hop.to_node))) {
-        const path = result.path.map(hop => {
-          const matches = eligible.graph().edgesAt(hop.from_node).filter(edge => edge.kind === hop.kind && edge.row[edge.far] === hop.to_node);
-          return {...hop, circuit_id: matches.length === 1 ? matches[0].row.circuit_id || matches[0].row.id || null : null};
-        });
-        topology = {...result, path}; source = {from: a.source, to: b.source}; evidence = 'TOPOLOGY_ONLY';
-        // A topology path contains no GIS route by itself. Each hop must carry an
-        // exact circuit ID and a reviewed geometry join for that same identity.
-        const joined = topology.path.map(hop => {
-          const id = hop.circuit_id;
-          const join = id && network.geometryByCircuit?.[id];
-          return join?.reviewed === true && join.source && join.circuitId === id
-            && join.fromNode === hop.from_node && join.toNode === hop.to_node
-            && join.geometry?.type === 'LineString' && validLine(join.geometry.coordinates)
-            ? join.geometry.coordinates.map(at => [...at]) : null;
-        });
-        if (joined.length && joined.every(Boolean) && joined.every((line, n) => !n || same(line[0], joined[n - 1].at(-1)))) {
-          evidence = 'GIS_REVIEWED'; coordinates = joined.flatMap((line, n) => n ? line.slice(1) : line);
-        }
+    const choice = sequence[i];
+    let evidence = choice?.topology ? 'TOPOLOGY_ONLY' : choice?.simulated ? 'SIMULATED' : 'MISSING';
+    let coordinates = choice ? [[...from.at], [...to.at]] : null;
+    const topology = choice?.topology || null, source = choice?.source || null;
+    if (topology) {
+      const joined = topology.path.map(hop => {
+        const id = hop.circuit_id, join = id && network.geometryByCircuit?.[id];
+        return join?.reviewed === true && join.source && join.circuitId === id
+          && join.fromNode === hop.from_node && join.toNode === hop.to_node
+          && join.geometry?.type === 'LineString' && validLine(join.geometry.coordinates)
+          ? join.geometry.coordinates.map(at => [...at]) : null;
+      });
+      if (joined.length && joined.every(Boolean) && joined.every((line, n) => !n || same(line[0], joined[n - 1].at(-1)))) {
+        evidence = 'GIS_REVIEWED'; coordinates = joined.flatMap((line, n) => n ? line.slice(1) : line);
       }
-    }
-    if (!coordinates && evidence === 'TOPOLOGY_ONLY') coordinates = [[...from.at], [...to.at]];
-    const sharedVoltage = fromKv.find(kv => toKv.includes(kv) && allowedVoltages.includes(kv));
-    if (evidence === 'MISSING' && allowSimulated === true && sharedVoltage !== undefined) {
-      evidence = 'SIMULATED'; coordinates = [[...from.at], [...to.at]];
     }
     const km = coordinates ? coordinates.slice(1).reduce((sum, at, n) => sum
       + geodesy.distanceKm(...coordinates[n], ...at), 0) : null;
     if (km !== null && (!Number.isFinite(km) || km < 0)) throw Error('Invalid route distance.');
     return {id: 'leg-' + i, index: i, fromId: from.id, toId: to.id, evidence, coordinates, km,
-      topology, source, simulationVoltageKv: evidence === 'SIMULATED' ? sharedVoltage : null,
+      topology, source, simulationVoltageKv: choice?.simulated ? choice.kv : null, fromBus: choice?.fromBus || null, toBus: choice?.toBus || null,
       electricalTopology: topology ? 'PUBLISHED_REVIEWED_PATH' : 'UNKNOWN',
       geometry: evidence === 'GIS_REVIEWED' ? 'REVIEWED_SOURCE_GIS' : coordinates ? 'SCHEMATIC' : 'UNKNOWN',
       surveyConstructability: 'UNKNOWN', accessStatus: 'UNKNOWN', direction: 'USER_JOURNEY_HEADING_ONLY', electricalFlow: 'UNKNOWN',
@@ -535,15 +533,81 @@ function buildRoutePlan({stops, stationIndex = null, synthetic = false, geodesy,
         : evidence === 'GIS_REVIEWED' ? 'Reviewed circuit identity and source GIS geometry'
         : 'No reviewed route for this leg'};
   });
-  return {schema: 'gridatlas.train.route-plan.v1', rules: {allowedVoltages: [...allowedVoltages], allowTransformers: rules.allowTransformers === true}, stops: selected, legs,
+  return {schema: 'gridatlas.train.route-plan.v1', planEpoch, rules: {allowedVoltages: allowedVoltages === null ? null : [...allowedVoltages], allowOtherVoltage:rules.allowOtherVoltage===true, allowTransformers: rules.allowTransformers === true}, stops: selected, legs,
     totalKm: legs.every(leg => leg.km !== null) ? legs.reduce((sum, leg) => sum + leg.km, 0) : null,
     synthetic: !!synthetic, playable: legs.every(leg => leg.coordinates !== null), simulated: legs.some(leg => leg.evidence === 'SIMULATED')};
 }
+function trainVoltageAllowed(kv, allowed,other=false) { return Number.isFinite(kv) && kv > 0 && (allowed === null || allowed.includes(kv)
+  ||other&&![400,275,220,132,66,33,11].includes(kv)); }
+/** Keep every reachable arrival bus, not just the cheapest arrival at a station. */
+function planTrainBuses(stops, eligible, network, allowed, simulate,other) {
+  const graph = eligible?.graph();
+  const binding = stop => {
+    if (stop.proposed) return null;
+    const row = network?.stationBindings?.[stop.id];
+    return row?.stationId === stop.id && row.reviewed === true && row.source && typeof row.siteCode === 'string'
+      && eligible?.site(row.siteCode)?.code === row.siteCode ? row : null;
+  };
+  const voltages = stop => (stop.selectedVoltageKv == null ? stop.kv : [stop.selectedVoltageKv])
+    .filter(kv => trainVoltageAllowed(kv, allowed,other)).sort((a,b) => a-b);
+  const statesAt = stop => {
+    const bind = binding(stop), kv = voltages(stop);
+    const buses = bind ? graph.nodesOfSite(bind.siteCode).filter(bus => kv.includes(graph.nodeVoltageKv(bus))).sort() : [];
+    return buses.length ? buses.map(bus => ({bus, kv: graph.nodeVoltageKv(bus), binding: bind}))
+      : kv.map(voltage => ({bus: null, kv: voltage, binding: null}));
+  };
+  const order = (a,b) => a.cost-b.cost || a.key.localeCompare(b.key,'en');
+  let states = statesAt(stops[0]).map(s => ({...s,cost:0,key:s.bus || 'virtual:'+s.kv,choices:[]}));
+  for (let i=0;i<stops.length-1;i++) {
+    const targets = statesAt(stops[i+1]), candidates = new Map();
+    for (const previous of states) for (const target of targets) {
+      let choice = null;
+      if (previous.bus && target.bus && typeof network?.electricalDistance?.between === 'function') {
+        const topology = trainExactBusPath(eligible, network, previous, target);
+        if (topology) choice = {topology,source:{from:previous.binding.source,to:target.binding.source},fromBus:previous.bus,toBus:target.bus};
+      }
+      if (!choice && simulate === true && previous.kv === target.kv) choice = {
+        simulated:true,kv:previous.kv,fromBus:previous.bus,toBus:target.bus};
+      if (!choice) continue;
+      const fingerprint = choice.topology?.path.map(h=>h.from_node+'>'+h.to_node+':'+h.kind).join('|') || 'hypothetical';
+      const candidate = {...target,cost:previous.cost+(choice.simulated?1000000:choice.topology.path.length),
+        key:previous.key+'|'+(target.bus || 'virtual:'+target.kv)+'|'+fingerprint,choices:[...previous.choices,choice]};
+      const key = target.bus || 'virtual:'+target.kv;
+      if (!candidates.has(key) || order(candidate,candidates.get(key))<0) candidates.set(key,candidate);
+    }
+    if (!candidates.size) {
+      const prefix = states.sort(order)[0]?.choices || [];
+      return [...prefix,...Array(stops.length-1-prefix.length).fill(null)];
+    }
+    states = [...candidates.values()];
+  }
+  return states.sort(order)[0]?.choices || Array(stops.length-1).fill(null);
+}
+function trainExactBusPath(eligible, network, from, to) {
+  const graph = eligible.graph(), START='@train-exact-start', END='@train-exact-end';
+  // Query aliases avoid electrical-distance's same-SITE zero-hop shortcut.
+  // They are not source nodes or graph edges: exact source bus IDs remain unchanged.
+  const queryGraph = {...graph,nodesOfSite:code => code===START?[from.bus]:code===END?[to.bus]:graph.nodesOfSite(code)};
+  const index = {graph:()=>queryGraph,site:key=>key===START?{code:START,name:from.binding.siteCode}
+    :key===END?{code:END,name:to.binding.siteCode}:null};
+  const result = network.electricalDistance.between(index,START,END,{voltageKv:from.kv,
+    maxHops:Number.isInteger(network.maxHops)&&network.maxHops>0?Math.min(10000,network.maxHops):10000});
+  if (result?.schema!=='gridatlas.module.electrical-distance.v1'||result.reached!==true
+    ||result.from?.code!==START||result.to?.code!==END||!Array.isArray(result.path)) return null;
+  const path=result.path;
+  if (path.length ? path[0].from_node!==from.bus||path.at(-1).to_node!==to.bus : from.bus!==to.bus) return null;
+  if (!path.every((hop,n)=>graph.has(hop.from_node)&&graph.has(hop.to_node)
+    &&(!n||path[n-1].to_node===hop.from_node)
+    &&graph.edgesAt(hop.from_node).some(edge=>edge.kind===hop.kind&&edge.row[edge.far]===hop.to_node))) return null;
+  return {...result,from:{code:from.binding.siteCode},to:{code:to.binding.siteCode},arrival_node:to.bus,
+    path:path.map(hop=>{const rows=graph.edgesAt(hop.from_node).filter(edge=>edge.kind===hop.kind&&edge.row[edge.far]===hop.to_node);
+      return {...hop,circuit_id:rows.length===1?rows[0].row.circuit_id||rows[0].row.id||null:null};})};
+}
 /** A view over the existing graph, never a new graph or a mutation of it. */
-function createEligibleTrainIndex(index, {allowedVoltages, allowTransformers}, isReviewedEdge) {
+function createEligibleTrainIndex(index, {allowedVoltages, allowOtherVoltage=false, allowTransformers}, isReviewedEdge) {
   const graph = index.graph();
   if (graph?.schema !== 'gridatlas.module.network-topology.graph.v1') throw Error('Unsupported network graph.');
-  const permitted = node => graph.has(node) && allowedVoltages.includes(graph.nodeVoltageKv(node));
+  const permitted = node => graph.has(node) && trainVoltageAllowed(graph.nodeVoltageKv(node), allowedVoltages,allowOtherVoltage);
   const view = {...graph,
     has: permitted,
     nodesOfSite: code => graph.nodesOfSite(code).filter(permitted),
@@ -562,23 +626,24 @@ function validLine(line) {
 }
 
 /** Native MapLibre learning cursor. Travel direction is never electrical flow. */
-function createTrainRide({map, geodesy, palette = {}, onState = () => {}, reducedMotion = false,
+function createTrainRide({map, geodesy, palette = {}, onState = () => {}, reducedMotion = false, readPlanEpoch = null,
   requestFrame = globalThis.requestAnimationFrame?.bind(globalThis),
   cancelFrame = globalThis.cancelAnimationFrame?.bind(globalThis)} = {}) {
   if (!map || typeof geodesy?.distanceKm !== 'function') throw Error('Map and canonical geodesy required.');
   const prefix = 'gridatlas-train-', sources = new Map(), layers = new Map();
   const colour = palette.SUBSTATION_COLOUR || palette.substation || '#5fbdc2'; // Existing SLD substation colour.
   const flowColour = palette.FLOW_COLOUR || '#bfe9ee';
+  const customerColour = palette.CUSTOMER_SUBSTATION_COLOUR || '#e0b050'; // Existing SLD_COLOUR.node customer_substation glyph.
   // Same 24 cached dash patterns as the existing SLD neon renderer; no atlas growth per frame.
   const flowPatterns = Array.from({length: 24}, (_, i) => Object.freeze([0.001,
     Math.max(0.001, i / 24 * 1.5), 0.42, Math.max(0.001, 1.5 - i / 24 * 1.5)]));
   let lastDashIndex = -1;
-  let alive = true, plan = null, playing = false, handle = null, legIndex = 0, fraction = 0, epoch = 0, measures = [];
+  let alive = true, plan = null, pinStops = [], playing = false, handle = null, legIndex = 0, fraction = 0, epoch = 0, measures = [], prefixStop = 0;
   let lastTime = null, lastPaint = -Infinity, cameraFollow = false, durationMs = 2400, unavailable = null;
   const state = () => ({schema: 'gridatlas.train.motion.v1', alive, playing, legIndex, fraction,
     stopIndex: fraction === 1 ? legIndex + 1 : legIndex, reducedMotion: !!reducedMotion,
-    cameraFollow, unavailable, evidence: plan?.legs[legIndex]?.evidence || null,
-    electricalFlow: 'UNKNOWN', simulated: !!plan?.simulated, stops: plan?.stops.length || 0});
+    cameraFollow, unavailable, approvedThroughStop: prefixStop, evidence: plan?.legs[legIndex]?.evidence || null,
+    electricalFlow: 'UNKNOWN', simulated: !!plan?.simulated, stops: plan?.stops.length || pinStops.length});
   const notify = () => onState(state());
   const collection = features => ({type: 'FeatureCollection', features});
   const point = (at, properties = {}) => ({type: 'Feature', properties, geometry: {type: 'Point', coordinates: at}});
@@ -586,9 +651,9 @@ function createTrainRide({map, geodesy, palette = {}, onState = () => {}, reduce
   function schedule() { const token = epoch; handle = requestFrame(time => { if (token === epoch) tick(time); }); }
   function pause() { playing = false; cancel(); notify(); return state(); }
   function ensure() {
-    if (!alive || !plan || map.isStyleLoaded?.() === false) return false;
+    if (!alive || !plan && !pinStops.length || map.isStyleLoaded?.() === false) return false;
     const sourceIds = ['routes', 'stops', 'cursor'].map(id => prefix + id);
-    const layerIds = ['route-gis', 'route-schematic', 'flow', 'stops', 'cursor'].map(id => prefix + id);
+    const layerIds = ['route-gis', 'route-topology', 'route-simulated', 'flow', 'stops', 'proposals', 'cursor'].map(id => prefix + id);
     for (const id of sourceIds) {
       const existing = map.getSource(id);
       if (existing && existing !== sources.get(id)) { unavailable = 'Source ID belongs to another module'; pause(); return false; }
@@ -604,13 +669,17 @@ function createTrainRide({map, geodesy, palette = {}, onState = () => {}, reduce
     const line = {type: 'line', source: prefix + 'routes', layout: {'line-cap': 'round', 'line-join': 'round'}};
     add({...line, id: prefix + 'route-gis', filter: ['==', ['get', 'evidence'], 'GIS_REVIEWED'],
       paint: {'line-color': colour, 'line-width': 1.8, 'line-opacity': 0.8}});
-    add({...line, id: prefix + 'route-schematic', filter: ['!=', ['get', 'evidence'], 'GIS_REVIEWED'],
-      paint: {'line-color': colour, 'line-width': 1.4, 'line-opacity': 0.65, 'line-dasharray': [2, 3]}});
+    add({...line, id: prefix + 'route-topology', filter: ['==', ['get', 'evidence'], 'TOPOLOGY_ONLY'],
+      paint: {'line-color': colour, 'line-width': 1.4, 'line-opacity': 0.65, 'line-dasharray': [5, 2]}});
+    add({...line, id: prefix + 'route-simulated', filter: ['==', ['get', 'evidence'], 'SIMULATED'],
+      paint: {'line-color': colour, 'line-width': 1.4, 'line-opacity': 0.65, 'line-dasharray': [1, 3]}});
     // Existing l-neon-flow rhythm, confined to our own overlay.
-    add({...line, id: prefix + 'flow', paint: {'line-color': flowColour, 'line-width': 1.2,
+    add({...line, id: prefix + 'flow',filter:['==',['get','evidence'],'GIS_REVIEWED'], paint: {'line-color': flowColour, 'line-width': 1.2,
       'line-opacity': reducedMotion ? 0 : 0.45, 'line-dasharray': [0.2, 3.2]}});
-    add({id: prefix + 'stops', type: 'circle', source: prefix + 'stops', paint: {
+    add({id: prefix + 'stops', type: 'circle', source: prefix + 'stops', filter:['!=',['get','proposed'],true],paint: {
       'circle-color': colour, 'circle-radius': 3, 'circle-opacity': 0.8}});
+    add({id:prefix+'proposals',type:'circle',source:prefix+'stops',filter:['==',['get','proposed'],true],paint:{
+      'circle-color':customerColour,'circle-radius':5,'circle-stroke-color':'#000c10','circle-stroke-width':1.5,'circle-opacity':0.9}});
     add({id: prefix + 'cursor', type: 'circle', source: prefix + 'cursor', paint: {
       'circle-color': colour, 'circle-radius': 5, 'circle-stroke-color': '#000c10', 'circle-stroke-width': 1.5}});
     unavailable = null; return true;
@@ -627,9 +696,9 @@ function createTrainRide({map, geodesy, palette = {}, onState = () => {}, reduce
   }
   function paint() {
     if (!ensure()) return;
-    sources.get(prefix + 'routes').setData(collection(plan.legs.filter(l => l.coordinates).map(l => ({type: 'Feature',
+    sources.get(prefix + 'routes').setData(collection((plan?.legs||[]).slice(0,prefixStop).filter(l => l.coordinates).map(l => ({type: 'Feature',
       properties: {evidence: l.evidence, label: l.label}, geometry: {type: 'LineString', coordinates: l.coordinates}}))));
-    sources.get(prefix + 'stops').setData(collection(plan.stops.map((stop, i) => point(stop.at, {stationId: stop.id, stopIndex: i}))));
+    sources.get(prefix + 'stops').setData(stopData(plan?.stops||pinStops));
     paintCursor();
   }
   function paintCursor() {
@@ -639,6 +708,7 @@ function createTrainRide({map, geodesy, palette = {}, onState = () => {}, reduce
   }
   function tick(time) {
     handle = null; if (!alive || !playing) return;
+    if (readPlanEpoch && readPlanEpoch() !== plan.planEpoch) { clearPlan(); return; }
     if (map.isStyleLoaded?.() === false) { pause(); return; }
     if (lastTime === null) lastTime = time;
     fraction += Math.max(0, Math.min(250, time - lastTime)) / durationMs; lastTime = time;
@@ -659,18 +729,22 @@ function createTrainRide({map, geodesy, palette = {}, onState = () => {}, reduce
   }
   function setPlan(next) {
     if (!alive) throw Error('Train ride is destroyed.');
+    clearPlan({stops:pinStops});
     if (next?.schema !== 'gridatlas.train.route-plan.v1' || !Array.isArray(next.legs) || !next.legs.length
       || !Array.isArray(next.stops) || next.stops.length !== next.legs.length + 1
       || next.legs.reduce((n, leg) => n + (leg.coordinates?.length || 0), 0) > 20000) throw Error('Invalid or oversized journey plan.');
     // Snapshot input so later UI edits cannot mutate an active ride.
-    const copy = JSON.parse(JSON.stringify(next)); pause(); plan = copy;
+    const copy = JSON.parse(JSON.stringify(next)); plan = copy; pinStops = copy.stops;
+    const gap = plan.legs.findIndex(leg => !leg.coordinates || leg.evidence === 'MISSING');
+    prefixStop = gap < 0 ? plan.legs.length : gap;
     measures = plan.legs.map(leg => { const cumulative = [0];
       for (let i = 1; i < (leg.coordinates?.length || 0); i++) cumulative.push(cumulative.at(-1) + geodesy.distanceKm(...leg.coordinates[i - 1], ...leg.coordinates[i]));
       return cumulative; });
     legIndex = 0; fraction = 0; paint(); notify(); return state();
   }
   function play(options = {}) {
-    if (!alive || !plan?.playable || unavailable) return false;
+    if (readPlanEpoch && plan && readPlanEpoch() !== plan.planEpoch) { clearPlan(); return false; }
+    if (!alive || !plan?.playable || prefixStop !== plan.legs.length || unavailable) return false;
     cameraFollow = options.cameraFollow === true;
     if (Number.isFinite(options.durationMs)) durationMs = Math.max(500, Math.min(30000, options.durationMs));
     if (reducedMotion) { step(); return false; }
@@ -680,11 +754,29 @@ function createTrainRide({map, geodesy, palette = {}, onState = () => {}, reduce
     playing = true; lastTime = null; schedule(); notify(); return true;
   }
   function seekStop(index) {
-    if (!alive || !plan || !Number.isInteger(index) || index < 0 || index >= plan.stops.length) return false;
-    pause(); legIndex = Math.min(index, plan.legs.length - 1); fraction = index === plan.stops.length - 1 ? 1 : 0;
+    if (readPlanEpoch && plan && readPlanEpoch() !== plan.planEpoch) { clearPlan(); return false; }
+    if (!alive || !plan || !Number.isInteger(index) || index < 0 || index > prefixStop || index >= plan.stops.length) return false;
+    pause(); legIndex = index === prefixStop && index > 0 ? index - 1 : index;
+    fraction = index === prefixStop && index > 0 ? 1 : 0;
     paintCursor(); notify(); return true;
   }
-  function step() { return seekStop(Math.min(plan?.stops.length - 1 || 0, legIndex + 1)); }
+  function step() { const next = state().stopIndex + 1; return next <= prefixStop && seekStop(next); }
+  function stopData(stops) { return collection(stops.map((stop,i)=>point(stop.at,{stationId:stop.id||stop.stationId,stopIndex:i,
+    proposed:stop.proposed===true,kind:stop.proposed?'customer_substation':'source_substation',label:stop.proposed?'PROPOSED SESSION ONLY':stop.name||''}))); }
+  function clearPlan({stops=[]}={}) {
+    if (!alive) return false;
+    if (!Array.isArray(stops) || stops.length>90 || stops.some(stop=>!Array.isArray(stop.at)||stop.at.length!==2
+      ||!stop.at.every(Number.isFinite)||Math.abs(stop.at[0])>180||Math.abs(stop.at[1])>90)) throw Error('Invalid selected station pins.');
+    pause();plan=null;measures=[];prefixStop=0;legIndex=0;fraction=0;
+    pinStops=JSON.parse(JSON.stringify(stops.filter(stop=>!stop.invalid)));
+    if(ensure()) for(const [suffix,data]of [['routes',collection([])],['cursor',collection([])],['stops',stopData(pinStops)]]) {
+      const id=prefix+suffix;if(map.getSource(id)===sources.get(id))sources.get(id).setData(data);
+    }
+    // Empty selections still clear existing owned layers/sources without adding any.
+    if(!pinStops.length)for(const suffix of ['routes','cursor','stops']){const id=prefix+suffix;
+      if(sources.has(id)&&map.getSource(id)===sources.get(id))sources.get(id).setData(collection([]));}
+    notify();return true;
+  }
   function styleReload() { if (!alive) return; pause(); paint(); }
   function removed() { if (!alive) return; alive = false; playing = false; cancel(); sources.clear(); layers.clear(); map.off('style.load', styleReload); notify(); }
   function destroy() {
@@ -695,7 +787,7 @@ function createTrainRide({map, geodesy, palette = {}, onState = () => {}, reduce
     map.off('style.load', styleReload); map.off('remove', removed); notify();
   }
   map.on('style.load', styleReload); map.on('remove', removed);
-  return Object.freeze({setPlan, play, pause, step, seekStop, destroy, snapshot: state});
+  return Object.freeze({setPlan, clearPlan, play, pause, step, seekStop, destroy, snapshot: state});
 }
 
 /** Original fictional teaching networks; no railway geography, names or artwork. */
@@ -714,13 +806,16 @@ function trainLearningFixture(kind = 'local') {
     note: 'Original invented example. Lines require the same explicit simulated-journey action; no real electrical or railway connection is asserted.'};
 }
 
-return {buildStationIndex,createItinerary,createPlaceBridge,normaliseJourneyLaw,buildRoutePlan,createTrainRide,trainLearningFixture};
+return {buildStationIndex,createScenarioStationStore,createItinerary,createPlaceBridge,normaliseJourneyLaw,buildRoutePlan,createTrainRide,trainLearningFixture};
 })();
 /** Shared native journey UI; all network evidence stays in the route planner. */
-function createGreatGridJourney({map, registry, geodesy, parent, readFeatures}) {
+function createGreatGridJourney({map, registry, geodesy, parent, readFeatures,onProposedPick=()=>{},onMapView=()=>{},onRideState=()=>{}}) {
   let index = null, indexedFeatures = null, bridge = null, bridgeResolver = null, plan = null, searchEpoch = 0, destroyed = false;
-  const D = document, cleanups = [], stationIndex={get:id=>index?.get(id)||null}, selected = TrainCore.createItinerary({mode:'journey',stationIndex});
+  const D = document, cleanups = [], stationIndex={get:id=>index?.get(id)||null}, scenarioStore=TrainCore.createScenarioStationStore(), selected = TrainCore.createItinerary({mode:'journey',stationIndex,scenarioStore});
   let demo=null;
+  let proposedPicking=false,proposedSource=null,mapRemoved=false,drawnEpoch=null;
+  const proposedLayers=new Map(),proposedSourceId='gridatlas-train-proposed-stations';
+  const proposedMarkers=new Map();
   const chosenVoltage = new Map();
   const el = (tag,text,host,attrs={}) => {const e=D.createElement(tag);if(text!=null)e.textContent=text;for(const[k,v]of Object.entries(attrs))e.setAttribute(k,v);host?.appendChild(e);return e;};
   const on = (node,type,fn) => {node.addEventListener(type,fn);if(!node.closest('.train-search-results,.train-stops'))cleanups.push(()=>node.removeEventListener(type,fn));};
@@ -741,14 +836,22 @@ function createGreatGridJourney({map, registry, geodesy, parent, readFeatures}) 
   const ordered=el('ol',null,box,{class:'train-stops','aria-label':'Ordered selected stops'});
   const selectedStatus=el('p','0 / 10 selected stops, including START and FINISH.',box);
   const reset=el('button','Clear selected stops',box,{type:'button'});
+  const proposedBox=el('details',null,box,{class:'train-proposed'});el('summary','Proposed customer substation · screening',proposedBox);
+  el('p','Session-only FEED concept, not an official station, approved connection, transformer or land right. Golden customer-substation symbol plus Proposed label distinguishes the scenario.',proposedBox);
+  const proposedName=el('input',null,proposedBox,{type:'text',value:'Proposed customer substation',maxlength:'80','aria-label':'Proposed customer substation label'});
+  const proposedVoltage=el('select',null,proposedBox,{'aria-label':'Proposed customer substation voltage'});el('option','11 kV',proposedVoltage,{value:'11'});el('option','33 kV',proposedVoltage,{value:'33'});
+  const propose=el('button','Pin proposed FEED concept',proposedBox,{type:'button','aria-pressed':'false'});
+  const proposedList=el('ol',null,proposedBox,{'aria-label':'Session proposed substations'});
   const lawBox=el('details',null,box,{class:'train-law'});lawBox.open=true;el('summary','Journey law',lawBox);
   el('p','The ordered selected stops are required visits. Voltage and evidence rules apply to every traversed edge, not just the endpoints.',lawBox);
   const lawBands=el('div',null,lawBox,{class:'vic-bands'}), voltageInputs=[];
-  for(const band of ['400','275','220','132','66','33','11','other','unknown']){const label=el('label',null,lawBands),input=el('input',null,label,{type:'checkbox',value:band});input.checked=true;el('span',band==='other'||band==='unknown'?band:band+' kV',label);voltageInputs.push(input);on(input,'change',invalidate);}
+  for(const band of ['11','33','66','132','220','275','400','other','unknown']){const label=el('label',null,lawBands),input=el('input',null,label,{type:'checkbox',value:band});input.checked=true;el('span',band==='other'||band==='unknown'?band:band+' kV',label);voltageInputs.push(input);on(input,'change',applyLawChange);}
   const fallbackLabel=el('label',null,lawBox,{class:'train-check'}),fallback=el('input',null,fallbackLabel,{type:'checkbox'});el('span','Allow my SIMULATED straight-line legs where a reviewed route is missing',fallbackLabel);
   const transformerLabel=el('label',null,lawBox,{class:'train-check'}),transformers=el('input',null,transformerLabel,{type:'checkbox'});el('span','Allow documented, reviewed transformers between allowed voltage levels',transformerLabel);
   const controls=el('div',null,box,{class:'vic-actions train-controls'});
   const draw=el('button','Draw itinerary',controls,{type:'button'}),play=el('button','Play',controls,{type:'button'}),pause=el('button','Pause',controls,{type:'button'}),previous=el('button','Previous stop',controls,{type:'button'}),step=el('button','Step / next stop',controls,{type:'button'});
+  const fitJourney=el('button','Fit itinerary on map',controls,{type:'button'});
+  el('p','Solid: reviewed GIS route. Long dash: documented topology, schematic. Dotted: SIMULATED user leg. The cursor is a learning heading; electrical flow is unknown.',box,{class:'train-route-legend'});
   const cameraLabel=el('label',null,box,{class:'train-check'}),camera=el('input',null,cameraLabel,{type:'checkbox'});el('span','Follow the learning cursor with the camera',cameraLabel);
   const speedLabel=el('label','Seconds per leg',box),speed=el('input',null,speedLabel,{type:'range',min:'1',max:'20',step:'1',value:'4','aria-label':'Seconds per leg'});
   const progress=el('p','No itinerary drawn.',box,{class:'train-progress',role:'status'}),legs=el('ol',null,box,{class:'train-legs'});
@@ -756,30 +859,51 @@ function createGreatGridJourney({map, registry, geodesy, parent, readFeatures}) 
   el('p','Original interchange, long-leg and branch patterns. Fictional grid-learning diagrams, with no railway dataset, map or logo. Load a pattern, edit its law, and explicitly allow simulation to draw it.',demos);
   for(const[kind,label]of [['interchange','Load interchange demo'],['express','Load express / long-leg demo'],['branch','Load branch demo']]){const b=el('button',label,demos,{type:'button'});on(b,'click',()=>loadDemo(kind));}
   const reduced=globalThis.matchMedia?.('(prefers-reduced-motion: reduce)')?.matches===true;
-  const ride=TrainCore.createTrainRide({map,geodesy,palette:{SUBSTATION_COLOUR:'#5fbdc2'},reducedMotion:reduced,onState:s=>{
-    if(destroyed)return;progress.textContent=s.unavailable||`${s.playing?'Playing':reduced?'Static reduced-motion view':'Paused'} · stop ${Math.min(s.stops,s.stopIndex+1)} / ${s.stops} · ${s.evidence||'no route'} · electrical flow unknown`;
+  const ride=TrainCore.createTrainRide({map,geodesy,palette:{SUBSTATION_COLOUR:'#5fbdc2'},reducedMotion:reduced,readPlanEpoch:()=>selected.snapshot().planEpoch,onState:s=>{
+    if(destroyed)return;onRideState(s);const caption=s.unavailable||`${s.playing?'Playing':reduced?'Static reduced-motion view':'Paused'} · stop ${Math.min(s.stops,s.stopIndex+1)} / ${s.stops} · ${s.evidence||'no route'} · electrical flow unknown`;
     pause.disabled=!s.playing;play.setAttribute('aria-pressed',String(s.playing));
   }});
   function say(message){feedback.textContent=message;}
-  function fullIndex(){const features=readFeatures();if(!Array.isArray(features)||!features.length){say('Full substation inventory is not loaded. Use Show physical grid, then search again.');return null;}if(features!==indexedFeatures){index=TrainCore.buildStationIndex(features,{geodesy});indexedFeatures=features;bridge=null;}const s=index.snapshot();inventory.textContent=`${s.sourceRecords} original source features · ${s.indexedRecords} selectable stable station IDs · ${s.invalidRecords} unlocated / missing-ID records · ${s.conflictingIds.length} conflicting IDs. Search is not capped by the nearby list.`;return index;}
-  function invalidate(){ride.pause();plan=null;legs.replaceChildren();progress.textContent='Selections or law changed. Draw again to apply them.';}
+  function fullIndex(){const features=readFeatures();if(!Array.isArray(features)||!features.length){if(index)invalidate();index=null;indexedFeatures=null;bridge?.invalidate();bridge=null;say('Full substation inventory is not loaded. Use Show physical grid, then search again.');return null;}if(features!==indexedFeatures){if(indexedFeatures)invalidate();index=TrainCore.buildStationIndex(features,{geodesy,datasetPin:TRAIN_STATION_SOURCE_PIN});indexedFeatures=features;bridge?.invalidate();bridge=null;}const s=index.snapshot();inventory.textContent=`${s.sourceRecords} original source features · ${s.indexedRecords} selectable stable station IDs · ${s.invalidRecords} unlocated / missing-ID records · ${s.conflictingIds.length} conflicting IDs. Search is not capped by the nearby list.`;return index;}
+  function invalidate(){const state=selected.snapshot();ride.clearPlan({stops:state.stops.filter(stop=>!stop.invalid)});drawnEpoch=null;plan=null;legs.replaceChildren();progress.textContent='Selections or law changed. Draw again to apply them.';}
   function setMode(mode){try{selected.setMode(mode);journeyMode.setAttribute('aria-pressed',String(mode==='journey'));vicinityMode.setAttribute('aria-pressed',String(mode==='vicinity'));invalidate();renderStops();return true;}catch(e){say(e.message+' Your selected stops were kept.');return false;}}
   function add(row){try{const choice=role.value;if(choice==='start')selected.setStart(row);else if(choice==='finish')selected.setFinish(row);else{const count=selected.snapshot().selectedCount;selected.add(row,{index:count>1?count-1:count});}demo=null;role.value=selected.snapshot().selectedCount===1?'finish':'waypoint';invalidate();renderStops();say('Station bound explicitly. The place label, if supplied, stays attached to this choice.');}catch(e){say(e.message);}}
   function renderStops(){const state=selected.snapshot();selectedStatus.textContent=`${state.selectedCount} / ${state.limit} selected stops, including START and FINISH. Intermediate network traversal is not limited by this stop count.`;ordered.replaceChildren();for(const[rowIndex,row]of state.stops.entries()){
-    const li=el('li',null,ordered,{'data-train-stop-id':row.stopId});el('strong',`${rowIndex===0?'START':rowIndex===state.stops.length-1?'FINISH':'WAYPOINT '+rowIndex} · ${row.name}`,li);el('span',`ID ${row.stationId} · ${row.kv.length?row.kv.join(' / ')+' kV':'voltage unknown'}`,li,{class:'vic-row-meta'});
+    const li=el('li',null,ordered,{'data-train-stop-id':row.stopId});el('strong',`${row.proposed?'Proposed ? FEED concept ? ':''}${row.invalid?'INVALID VISIT ? ':''}${rowIndex===0?'START':rowIndex===state.stops.length-1?'FINISH':'WAYPOINT '+rowIndex} · ${row.name}`,li);el('span',`ID ${row.stationId} · ${row.kv.length?row.kv.join(' / ')+' kV':'voltage unknown'}`,li,{class:'vic-row-meta'});
     if(row.place)el('p',`${row.place.label} → ${row.name} · ${row.place.distanceKm.toFixed(2)} km from resolved ${row.place.provider} point (${row.place.precision||'precision unknown'}). Place coordinate ${row.place.at.join(', ')}; station coordinate ${row.at.join(', ')}.`,li,{class:'train-place-binding'});
+    if(!row.kv.includes(chosenVoltage.get(row.stopId)))chosenVoltage.delete(row.stopId);
     const selector=el('select',null,li,{'aria-label':'Journey voltage at '+row.name});el('option','Choose journey voltage',selector,{value:''});for(const kv of row.kv)el('option',kv+' kV',selector,{value:String(kv)});selector.value=String(chosenVoltage.get(row.stopId)??(row.kv.length===1?row.kv[0]:''));on(selector,'change',()=>{selector.value?chosenVoltage.set(row.stopId,Number(selector.value)):chosenVoltage.delete(row.stopId);invalidate();});
     const buttons=el('div',null,li,{class:'vic-actions'});for(const[label,action,disabled]of [['Move up',()=>selected.move(rowIndex,rowIndex-1),rowIndex===0],['Move down',()=>selected.move(rowIndex,rowIndex+1),rowIndex===state.stops.length-1],['Remove',()=>selected.remove(rowIndex),false]]){const b=el('button',label,buttons,{type:'button','aria-label':label+' '+row.name});b.disabled=disabled;on(b,'click',()=>{action();invalidate();renderStops();});}
   }}
   function showChoices(result,binding){searchResults.replaceChildren();say(`${result.matched} matching stations${result.truncated?'; showing the first 30 — refine your search':''}. ${result.ambiguous?'Choose the intended source ID explicitly.':''}`);for(const row of result.rows){const li=el('li',`${row.name} · ID ${row.stationId} · ${row.kv.join(' / ')||'unknown'} kV${row.distanceKm!=null?' · '+row.distanceKm.toFixed(2)+' km':''}`,searchResults);const b=el('button','Use '+row.name,li,{type:'button'});on(b,'click',()=>{try{add(binding?binding(row):row);}catch(e){say(e.message);}});}}
   function searchStations(){searchEpoch++;bridge?.invalidate();const idx=fullIndex();if(idx)showChoices(idx.search(query.value,{limit:30}));}
   async function searchPlaces(){const idx=fullIndex();if(!idx)return;const resolve=globalThis.__GRIDATLAS_PLACE_SEARCH__?.resolveLocations;if(typeof resolve!=='function'){say('The existing place resolver is not ready. Station-name and source-ID search remain available.');return;}if(!bridge||bridgeResolver!==resolve){bridge=TrainCore.createPlaceBridge({resolve:label=>resolve(label),index:idx,geodesy});bridgeResolver=resolve;}const epoch=++searchEpoch;searchResults.replaceChildren();say('Looking up the typed place using the existing Atlas resolver…');try{const result=await bridge.lookup(query.value,{radiusKm:50,limit:30});if(destroyed||epoch!==searchEpoch||result.stale)return;say(result.places.length?'Choose a resolved place, then explicitly choose its station. No nearest station was selected automatically.':'No resolved locations found. Refine the place or search a station name.');for(const place of result.places){const li=el('li',`${place.label} · ${place.resolvedLabel} · ${place.provider} · ${place.precision||'precision unknown'} · ${place.at.join(', ')}`,searchResults),b=el('button','Choose stations near this place',li,{type:'button'});on(b,'click',()=>showChoices(place.nearby,row=>bridge.bind(place.token,row.stationId)));}}catch(e){if(epoch===searchEpoch)say(e.message);}}
-  function law(){return TrainCore.normaliseJourneyLaw({mustVisitStationIds:(demo?.stops||selected.snapshot().stops).map(s=>s.stationId||s.id),allowedVoltageBands:voltageInputs.filter(e=>e.checked).map(e=>e.value),fallback:fallback.checked?'user-opted-hypothetical':'documented-only',allowTransformers:transformers.checked});}
-  function drawPlan(){ride.pause();plan=null;try{fullIndex();const stops=selected.snapshot().stops.map(s=>({...s,selectedVoltageKv:chosenVoltage.get(s.stopId)||null}));plan=TrainCore.buildRoutePlan({...demo,stops:demo?.stops||stops,stationIndex:demo?null:stationIndex,geodesy,law:law(),network:demo?null:registry.gridTrainEvidence||null});ride.setPlan(plan);legs.replaceChildren();for(const leg of plan.legs)el('li',`${leg.index+1}. ${leg.label}${leg.km==null?'':' · '+leg.km.toFixed(2)+' km diagram distance'}`,legs);say(plan.playable?(plan.simulated?'SIMULATED user itinerary drawn. These joins are not source cables or measured power flow.':'Reviewed evidence itinerary drawn.'):'Some legs have no reviewed route. Edit stops or voltages, or explicitly allow simulated fallback. Unknown and mixed-voltage gaps remain unexplained rather than inventing transformers.');return plan.playable;}catch(e){say(e.message);return false;}}
+  function law(){return TrainCore.normaliseJourneyLaw({mustVisitStationIds:(demo?.stops||selected.snapshot().stops).map(s=>s.stationId||s.id),allowedVoltageBands:voltageInputs.every(e=>e.checked)?null:voltageInputs.filter(e=>e.checked).map(e=>e.value),fallback:fallback.checked?'user-opted-hypothetical':'documented-only',allowTransformers:transformers.checked});}
+  function applyLawChange(){ride.pause();try{selected.setLaw(law());invalidate();}catch(e){fallback.checked=selected.snapshot().law.fallback==='user-opted-hypothetical';say(e.message);}}
+  function cancelProposedPick(){proposedPicking=false;propose.setAttribute('aria-pressed','false');}
+  function paintProposed(){
+    if(mapRemoved||destroyed||!map.getStyle?.())return;
+    const rows=scenarioStore.snapshot().stations,pointLayer='gridatlas-train-proposed-point';
+    const current=map.getSource(proposedSourceId),existing=map.getLayer(pointLayer);
+    if(current&&current!==proposedSource||existing&&existing!==proposedLayers.get(pointLayer)){say('A scenario overlay ID is already in use. Existing map objects were preserved.');return;}
+    if(!current){map.addSource(proposedSourceId,{type:'geojson',data:{type:'FeatureCollection',features:[]}});proposedSource=map.getSource(proposedSourceId);}
+    if(!existing){map.addLayer({id:pointLayer,type:'circle',source:proposedSourceId,paint:{'circle-radius':5,'circle-color':'#e0b050','circle-stroke-color':'#000c10','circle-stroke-width':1.5}});proposedLayers.set(pointLayer,map.getLayer(pointLayer));}
+    proposedSource.setData({type:'FeatureCollection',features:rows.map(row=>({type:'Feature',properties:{role:'customer_substation',evidence:'SESSION_ONLY_USER_PROPOSED',label:'Proposed · FEED concept',name:row.name,kv:row.kv[0]},geometry:{type:'Point',coordinates:row.at}}))});
+    const keep=new Set(rows.map(row=>row.id));for(const[id,marker]of proposedMarkers)if(!keep.has(id)){marker.remove();proposedMarkers.delete(id);}
+    for(const row of rows){let marker=proposedMarkers.get(row.id);if(!marker&&globalThis.maplibregl?.Marker){const label=D.createElement('span');label.className='train-proposed-map-label';label.textContent='Proposed · FEED concept';label.style.cssText='color:#e0b050;background:#020809;padding:2px 4px;border:1px dashed #e0b050;font:11px monospace;pointer-events:none';marker=new globalThis.maplibregl.Marker({element:label,anchor:'left',offset:[9,0]}).setLngLat(row.at).addTo(map);proposedMarkers.set(row.id,marker);}marker?.setLngLat(row.at);}
+  }
+  function renderProposed(){proposedList.replaceChildren();for(const row of scenarioStore.snapshot().stations){const li=el('li',null,proposedList);el('strong','Proposed · FEED concept',li);el('p',row.id+' · '+row.at.join(', ')+' · session-only; connection and rights unknown',li);const name=el('input',null,li,{type:'text',value:row.name,maxlength:'80','aria-label':'Edit proposed label '+row.name}),kv=el('select',null,li,{'aria-label':'Edit proposed voltage '+row.name});for(const v of[11,33])el('option',v+' kV',kv,{value:String(v)});kv.value=String(row.kv[0]);const update=el('button','Apply proposed label / voltage',li,{type:'button'}),remove=el('button','Remove proposed pin',li,{type:'button'});on(update,'click',()=>{try{ride.pause();scenarioStore.edit(row.id,{name:name.value,kv:[Number(kv.value)]});invalidate();renderProposed();renderStops();paintProposed();}catch(e){say(e.message);}});on(remove,'click',()=>{scenarioStore.remove(row.id);invalidate();renderProposed();renderStops();paintProposed();say('Proposed pin removed. Any selected visit is marked invalid; remove that visit explicitly before drawing.');});}}
+  function proposedClick(event){if(!proposedPicking||!event.lngLat)return;cancelProposedPick();try{if(!fallback.checked)throw Error('Explicit SIMULATED fallback is required for a proposed station.');selected.setLaw(law());const count=selected.snapshot();if(role.value==='waypoint'&&count.selectedCount>=count.limit)throw Error('Remove a selected visit before adding another proposed stop.');const row=scenarioStore.create({name:proposedName.value,at:[event.lngLat.lng,event.lngLat.lat],kv:[Number(proposedVoltage.value)]});invalidate();renderProposed();paintProposed();add(row);}catch(e){say(e.message);}}
+  const proposedRemoved=()=>{mapRemoved=true;cancelProposedPick();};
+  map.on('click',proposedClick);map.on('remove',proposedRemoved);map.on('style.load',paintProposed);
+  on(propose,'click',()=>{if(!fallback.checked){say('Enable SIMULATED fallback in the journey law before pinning a proposed FEED concept.');return;}proposedPicking=!proposedPicking;propose.setAttribute('aria-pressed',String(proposedPicking));if(proposedPicking){onProposedPick();say('Tap one point on the map for your proposed customer substation. It remains a session-only screening concept.');}});
+  function drawPlan(){ride.clearPlan({stops:selected.snapshot().stops.filter(stop=>!stop.invalid)});drawnEpoch=null;plan=null;try{if(!fullIndex()&&!demo)throw Error('The current full station inventory is unavailable.');const currentLaw=law();if(!demo)selected.setLaw(currentLaw);const state=selected.snapshot();if(!demo&&!state.valid)throw Error('A selected proposed or source station is unavailable. Remove or repair its visit explicitly.');drawnEpoch=state.planEpoch;const stops=state.stops.map(s=>({...s,selectedVoltageKv:chosenVoltage.get(s.stopId)||null}));plan=TrainCore.buildRoutePlan({...demo,stops:demo?.stops||stops,stationIndex:demo?null:stationIndex,scenarioStore,planEpoch:drawnEpoch,geodesy,law:currentLaw,network:demo?null:registry.gridTrainEvidence||null});ride.setPlan(plan);legs.replaceChildren();for(const leg of plan.legs)el('li',`${leg.index+1}. ${leg.label}${leg.km==null?'':' · '+leg.km.toFixed(2)+' km diagram distance'}`,legs);say(plan.playable?(plan.simulated?'SIMULATED user itinerary drawn. These joins are not source cables or measured power flow.':'Reviewed evidence itinerary drawn.'):'Some legs have no reviewed route. Edit stops or voltages, or explicitly allow simulated fallback. Unknown and mixed-voltage gaps remain unexplained rather than inventing transformers.');return plan.playable;}catch(e){say(e.message);return false;}}
+  function planIsCurrent(){const state=selected.snapshot();if(!demo&&(!state.valid||state.planEpoch!==drawnEpoch)){invalidate();say('The station scenario or law changed. Draw a new valid itinerary before moving the cursor.');return false;}return !!plan;}
   function loadDemo(kind){demo=TrainCore.trainLearningFixture(kind==='interchange'?'local':kind);invalidate();legs.replaceChildren();for(const stop of demo.stops)el('li',stop.name,legs);say(demo.title+'. Fictional demonstration loaded separately; your real selected stops are preserved. Explicitly allow SIMULATED fallback, then draw. No physical route is asserted.');}
-  on(searchForm,'submit',e=>{e.preventDefault();searchStations();});on(placeSearch,'click',searchPlaces);on(query,'input',()=>{searchEpoch++;bridge?.invalidate();});on(journeyMode,'click',()=>setMode('journey'));on(vicinityMode,'click',()=>setMode('vicinity'));on(reset,'click',()=>{selected.clear();demo=null;chosenVoltage.clear();invalidate();renderStops();});on(fallback,'change',invalidate);on(transformers,'change',invalidate);on(draw,'click',drawPlan);on(play,'click',()=>{if(!plan&&!drawPlan())return;if(!plan.playable){say('Edit the missing legs before playing.');return;}ride.play({cameraFollow:camera.checked,durationMs:Number(speed.value)*1000});});on(pause,'click',()=>ride.pause());on(step,'click',()=>{if(!plan&&!drawPlan())return;ride.step();});on(previous,'click',()=>ride.seekStop(Math.max(0,ride.snapshot().stopIndex-1)));
-  fullIndex();renderStops();
-  return Object.freeze({element:box,setMode,refreshInventory:fullIndex,pause:()=>ride.pause(),addSourceStation(row){const idx=fullIndex(),station=idx?.get(String(row.id));if(!station){say('Choose a station with a stable ID from the full inventory.');return false;}add(station);return true;},nearContext(row){demo=null;searchEpoch++;bridge?.invalidate();invalidate();const idx=fullIndex();if(idx)showChoices(idx.near(row.at,{radiusKm:50,limit:30}));query.value=row.name||'';box.scrollIntoView({block:'start'});},snapshot:()=>{let currentLaw;try{currentLaw=law();}catch(e){currentLaw={error:e.message};}return{itinerary:selected.snapshot(),law:currentLaw,index:index?.snapshot()||null,plan,ride:ride.snapshot(),demo:demo?.title||null};},destroy(){if(destroyed)return;destroyed=true;searchEpoch++;bridge?.invalidate();ride.destroy();cleanups.forEach(fn=>fn());box.remove();}});
+  on(searchForm,'submit',e=>{e.preventDefault();searchStations();});on(placeSearch,'click',searchPlaces);on(query,'input',()=>{searchEpoch++;bridge?.invalidate();});on(journeyMode,'click',()=>setMode('journey'));on(vicinityMode,'click',()=>setMode('vicinity'));on(reset,'click',()=>{selected.clear();demo=null;chosenVoltage.clear();invalidate();renderStops();});on(fallback,'change',applyLawChange);on(transformers,'change',applyLawChange);on(draw,'click',drawPlan);on(play,'click',()=>{if(!plan&&!drawPlan())return;if(!plan.playable||!planIsCurrent()){say('Edit the missing or changed legs before playing.');return;}ride.play({cameraFollow:camera.checked,durationMs:Number(speed.value)*1000});onMapView();});on(pause,'click',()=>ride.pause());on(step,'click',()=>{if(!plan&&!drawPlan())return;if(!plan.playable||!planIsCurrent()){say('Step is unavailable across a missing or disallowed leg. Edit and draw the itinerary first.');return;}ride.step();});on(previous,'click',()=>{if(!plan?.playable||!planIsCurrent()){say('Draw a valid itinerary before moving to another stop.');return;}ride.seekStop(Math.max(0,ride.snapshot().stopIndex-1));});
+  on(fitJourney,'click',()=>{const stops=demo?.stops||selected.snapshot().stops.filter(stop=>!stop.invalid);if(!stops.length){say('Choose located stops first.');return;}const xs=stops.map(stop=>stop.at[0]),ys=stops.map(stop=>stop.at[1]);onMapView();map.fitBounds([[Math.min(...xs),Math.min(...ys)],[Math.max(...xs),Math.max(...ys)]],{padding:{top:140,bottom:120,left:30,right:30},duration:0,maxZoom:13});});
+  selected.setLaw(law());fullIndex();renderStops();
+  return Object.freeze({element:box,setMode,nextStop:()=>step.click(),previousStop:()=>previous.click(),refreshInventory:fullIndex,pause:()=>{ride.pause();cancelProposedPick();},cancelProposedPick,addSourceStation(row){const idx=fullIndex(),station=idx?.get(String(row.id));if(!station){say('Choose a station with a stable ID from the full inventory.');return false;}add(station);return true;},nearContext(row){demo=null;searchEpoch++;bridge?.invalidate();invalidate();const idx=fullIndex();if(idx)showChoices(idx.near(row.at,{radiusKm:50,limit:30}));query.value=row.name||'';box.scrollIntoView({block:'start'});},snapshot:()=>{let currentLaw;try{currentLaw=law();}catch(e){currentLaw={error:e.message};}return{itinerary:selected.snapshot(),law:currentLaw,index:index?.snapshot()||null,plan,ride:ride.snapshot(),demo:demo?.title||null,proposals:scenarioStore.snapshot(),proposedPicking};},destroy(){if(destroyed)return;destroyed=true;searchEpoch++;bridge?.invalidate();ride.destroy();map.off('click',proposedClick);map.off('remove',proposedRemoved);map.off('style.load',paintProposed);for(const marker of proposedMarkers.values())marker.remove();proposedMarkers.clear();if(!mapRemoved&&map.getStyle?.()){for(const[id,layer]of proposedLayers)if(map.getLayer(id)===layer)map.removeLayer(id);if(map.getSource(proposedSourceId)===proposedSource&&!(map.getStyle().layers||[]).some(layer=>layer.source===proposedSourceId))map.removeSource(proposedSourceId);}cleanups.forEach(fn=>fn());box.remove();}});
 }
 
 const W = window, D = document, NS = W.__GRIDATLAS_MODULES__ = W.__GRIDATLAS_MODULES__ || {};
@@ -804,6 +928,11 @@ if (!NS.gridVicinity) {
     const panel = el('section', null, root, {id: 'gridatlas-vicinity-panel', class: 'vic-panel', 'aria-label': 'Vicinity familiarisation'}); panel.hidden = true;
     const heading = el('div', null, panel, {class: 'vic-head'}); el('h2', 'Explore the nearby grid', heading);
     const close = el('button', 'Close', heading, {type: 'button', 'aria-label': 'Close vicinity explorer'});
+    const compact=el('section',null,root,{class:'vic-train-compact','aria-label':'Journey map controls'});compact.hidden=true;
+    const compactActions=el('div',null,compact,{class:'vic-actions'});
+    const compactPause=el('button','Pause',compactActions,{type:'button','aria-label':'Pause journey'}),compactPrevious=el('button','Previous',compactActions,{type:'button','aria-label':'Previous journey stop'}),compactNext=el('button','Next',compactActions,{type:'button','aria-label':'Next journey stop'}),compactEdit=el('button','Edit',compactActions,{type:'button','aria-label':'Edit journey'});
+    const compactStatus=el('p','Learning cursor; electrical flow unknown.',compact,{role:'status'});
+    const mapLegend=el('p','Solid — reviewed GIS. Long dash — topology (schematic). Dotted — SIMULATED. Proposed pin — FEED concept. Electrical flow and rights unknown.',root,{class:'vic-train-map-legend'});mapLegend.hidden=true;
     const originLabel = el('p', '', panel, {class: 'vic-origin'});
     const originPrecision = el('p', 'Source-provided location; coordinate precision not supplied.', panel, {class: 'vic-origin-precision'});
     el('p', 'Spatial vicinity, connectivity unknown. Mapped points and voltage tags are context, not capacity or an electrical path.', panel, {class: 'vic-caption'});
@@ -837,12 +966,14 @@ if (!NS.gridVicinity) {
     const documents = el('details', null, panel, {class: 'vic-document-context'}); el('summary', 'Documented works and official notices', documents);
     const documentRows = el('div', null, documents);
     panel.insertBefore(energy, list); panel.insertBefore(documents, list);
-    const train = createGreatGridJourney({map,registry:NS,geodesy,parent:panel,readFeatures:()=>{
+    const train = createGreatGridJourney({map,registry:NS,geodesy,parent:panel,onMapView:()=>{panel.hidden=true;compact.hidden=false;},onRideState:state=>{const message=`${state.playing?'Playing':'Paused'} · ${state.evidence||'no route'} · electrical flow unknown`;if(compactStatus.textContent!==message)compactStatus.textContent=message;mapLegend.hidden=!state.evidence;},onProposedPick:()=>{picking=false;pick.setAttribute('aria-pressed','false');pick.textContent='Pick origin on map';},readFeatures:()=>{
       if(!map.getStyle?.())return null;
       const data=map.getSource('src-subs')?.serialize?.().data;
       return data&&typeof data==='object'&&Array.isArray(data.features)?data.features:null;
     }});
     panel.insertBefore(train.element,originLabel);
+    listen(compactPause,'click',()=>train.pause());listen(compactPrevious,'click',()=>train.previousStop());listen(compactNext,'click',()=>train.nextStop());listen(compactEdit,'click',()=>{train.pause();compact.hidden=true;panel.hidden=false;close.focus();});
+    for(const type of ['click','dblclick','pointerdown','touchstart'])listen(compact,type,event=>event.stopPropagation());
 
     function sourceAnchor(parent, title, href) {
       try { const url = new URL(href); if (url.protocol !== 'https:' || url.username || url.password) return; el('a', title, parent, {href: url.href, target: '_blank', rel: 'noopener noreferrer'}); } catch (_) {}
@@ -1000,6 +1131,7 @@ if (!NS.gridVicinity) {
       } catch (e) { showError(e.message); }
     }
     function setOrigin(next) {
+      train.cancelProposedPick();
       try { const validated = normaliseOrigin(next); origin = validated; phase = 'READY'; selectionEpoch++; picking = false; pick.setAttribute('aria-pressed', 'false'); pick.textContent = 'Pick origin on map'; showError(null); refresh(); return true; }
       catch (e) { clearSelectedContext(); phase = 'REFUSED'; originLabel.textContent = 'Origin was not applied.'; showError(e.message); return false; }
     }
@@ -1025,7 +1157,7 @@ if (!NS.gridVicinity) {
     }
     function open(options = {}, invoker = null) {
       if (!alive) return false;
-      returning = invoker || (D.activeElement && D.activeElement !== D.body && D.activeElement !== D.documentElement ? D.activeElement : launch); opened = true; panel.hidden = false; launch.setAttribute('aria-expanded', 'true'); for (const b of controls) b.setAttribute('aria-expanded', 'true');
+      returning = invoker || (D.activeElement && D.activeElement !== D.body && D.activeElement !== D.documentElement ? D.activeElement : launch); opened = true; panel.hidden = false; compact.hidden=true; launch.setAttribute('aria-expanded', 'true'); for (const b of controls) b.setAttribute('aria-expanded', 'true');
       try {
         if(!train.setMode(options.mode||'vicinity')) {showError('Selected stops exceed the requested mode. Remove stops explicitly before changing mode.');close.focus();return false;}
         if (options.error) { clearSelectedContext(); phase = 'REFUSED'; originLabel.textContent = 'Journey link was not applied. Choose an origin to explore.'; status.textContent = ''; showError(options.error); close.focus(); return false; }
@@ -1048,7 +1180,7 @@ if (!NS.gridVicinity) {
     }
     function shut() {
       if (!alive) return;
-      opened = false; picking = false; panel.hidden = true; launch.setAttribute('aria-expanded', 'false'); for (const b of controls) b.setAttribute('aria-expanded', 'false');
+      opened = false; picking = false; panel.hidden = true; compact.hidden=true;mapLegend.hidden=true; launch.setAttribute('aria-expanded', 'false'); for (const b of controls) b.setAttribute('aria-expanded', 'false');
       train.pause(); removeMap(); const candidate = returning?.isConnected && returning.getClientRects().length ? returning : D.getElementById('gridatlas-menu-bar-title-4') || launch; candidate.focus();
     }
     listen(launch, 'click', () => { opened ? shut() : open({mode:'journey'}, launch); }); listen(close, 'click', shut);
@@ -1068,7 +1200,7 @@ if (!NS.gridVicinity) {
       showError(null); status.textContent = 'Existing physical grid layers switched on. Source-mapped corridors are context; crossings and proximity do not establish a connection.';
       fitRadius();
     });
-    listen(pick, 'click', () => { picking = !picking; pick.setAttribute('aria-pressed', String(picking)); pick.textContent = picking ? 'Tap a point on the map' : 'Pick origin on map'; });
+    listen(pick, 'click', () => { train.cancelProposedPick(); picking = !picking; pick.setAttribute('aria-pressed', String(picking)); pick.textContent = picking ? 'Tap a point on the map' : 'Pick origin on map'; });
     listen(slider, 'input', () => { try { radius = radiusKm(slider.value); showError(null); refresh(); } catch (e) { showError(e.message); } });
     listen(panel, 'keydown', event => { if (event.key === 'Escape') { event.preventDefault(); shut(); } });
     for (const type of ['click','dblclick','pointerdown','touchstart']) listen(panel, type, event => event.stopPropagation());
