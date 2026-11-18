@@ -64,10 +64,10 @@ if (stage === 'native') {
   composition.cartridge_order.push(journey.id); composition.cartridges.push(journey); own.push(journey.id);
   write('atlas/' + journey.path, body);
 } else {
-  const {assemble} = await import('../vicinity/build.mjs');
+  const {assemble, BUDGET: vicinityBudget} = await import('../vicinity/build.mjs');
   const result = assemble({generation: G});
   const vicinity = {id: 'grid-vicinity', generation: G, version, type: 'script', slot: 'after-cartridge', after: 'grid-journey-preview',
-    path: `./modules/${G}-grid-vicinity.js`, sha256: result.sha256, bytes: result.bytes, byte_budget: 48000,
+    path: `./modules/${G}-grid-vicinity.js`, sha256: result.sha256, bytes: result.bytes, byte_budget: vicinityBudget,
     immutable_shell_modified: false, capabilities: ['spatial-radius-1-50km', 'source-voltage-context', 'native-layers-launcher', 'validated-origin-intent', 'local-user-model']};
   assert.ok(composition.cartridge_order.includes(vicinity.after), 'Native Journey predecessor required');
   composition.cartridge_order.push(vicinity.id); composition.cartridges.push(vicinity); own.push(vicinity.id);
