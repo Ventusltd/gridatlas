@@ -28,9 +28,6 @@ jobs:
     if: github.event_name == 'pull_request' && (startsWith(github.event.pull_request.head.ref, 'train-conductor/atlas-') || startsWith(github.event.pull_request.head.ref, 'train-conductor/atlas2-') || startsWith(github.event.pull_request.head.ref, 'release/202611'))
     runs-on: ubuntu-latest
     timeout-minutes: 30
-    env:
-      JOURNEY_BROWSER_OUTPUT: ${{ runner.temp }}/gridatlas-gj03-browser-candidate
-      VICINITY_BROWSER_OUTPUT: ${{ runner.temp }}/gridatlas-vicinity-candidate
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
@@ -47,6 +44,8 @@ jobs:
         run: |
           node --input-type=module -e "import fs from 'node:fs'; const rows=fs.readdirSync('atlas/manifests').filter(f=>f.endsWith('-composition.json')).map(f=>JSON.parse(fs.readFileSync('atlas/manifests/'+f))).filter(m=>m.acceptance?.stage==='native'||m.acceptance?.stage==='vicinity').sort((a,b)=>a.generation.localeCompare(b.generation));const latest=rows.at(-1);if(!latest)throw Error('No explorer candidate');const native=rows.filter(m=>m.acceptance.stage==='native').at(-1);fs.appendFileSync(process.env.GITHUB_ENV,'JOURNEY_BROWSER_GENERATION='+native.generation+'\nEXPLORER_GENERATION='+latest.generation+'\n');"
       - name: Source and native map acceptance
+        env:
+          JOURNEY_BROWSER_OUTPUT: ${{ runner.temp }}/gridatlas-gj03-browser-candidate
         run: |
           node --test tools/journey/controller.test.mjs tools/sld/build.test.mjs tools/sld/mobile-arrival-card.test.mjs
           node tools/journey/contract.test.mjs
@@ -56,6 +55,8 @@ jobs:
           if test -d tools/pipeline-lifecycle; then node --test tools/pipeline-lifecycle/*.test.mjs; fi
           if test -f tools/vicinity/model.test.mjs; then node --test tools/vicinity/model.test.mjs tools/vicinity/asset-context.test.mjs tools/vicinity/document-context.test.mjs; fi
       - name: Native vicinity and user-model acceptance
+        env:
+          VICINITY_BROWSER_OUTPUT: ${{ runner.temp }}/gridatlas-vicinity-candidate
         run: |
           if node --input-type=module -e "import fs from 'node:fs';const m=JSON.parse(fs.readFileSync('atlas/manifests/'+process.env.EXPLORER_GENERATION+'-composition.json'));process.exit(m.acceptance?.stage==='vicinity'?0:1)"; then
             VICINITY_BROWSER_GENERATION="$EXPLORER_GENERATION" node tools/vicinity/browser.test.mjs
