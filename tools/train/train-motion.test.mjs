@@ -64,6 +64,7 @@ test('clearPlan atomically removes stale route/cursor, retains current valid pin
  assert.equal(f.sources.get('gridatlas-train-routes').data.features.length,0);assert.equal(f.sources.get('gridatlas-train-cursor').data.features.length,0);
  const pins=f.sources.get('gridatlas-train-stops').data.features;assert.equal(pins.length,1);assert.equal(pins[0].properties.kind,'customer_substation');
  assert.equal(f.layers.get('gridatlas-train-proposals').paint['circle-radius'],5);assert.equal(f.layers.get('gridatlas-train-proposals').paint['circle-stroke-width'],1.5);
+ assert.equal(f.layers.get('gridatlas-train-proposals').paint['circle-color'],'#e0b050');assert.equal(f.layers.get('gridatlas-train-proposals').paint['circle-stroke-color'],'#000c10');
  assert.equal(f.ride.play(),false);assert.equal(f.ride.seekStop(1),false);assert.equal(f.ride.step(),false);assert.equal(f.frames.size,0);
  f.styleReload();assert.equal(f.sources.get('gridatlas-train-cursor').data.features.length,0);assert.equal(f.sources.get('gridatlas-train-stops').data.features.length,1);
 });
