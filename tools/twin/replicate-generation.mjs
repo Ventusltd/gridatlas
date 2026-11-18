@@ -196,6 +196,7 @@ for (const c of own) {
     const tree = path.join(work, `${kind}-source`), rel = `tools/${kind}`;
     fs.mkdirSync(path.join(tree, 'tools'), {recursive: true});
     fs.cpSync(abs(rel), path.join(tree, rel), {recursive: true});
+    if (kind === 'vicinity' && exists('tools/train')) fs.cpSync(abs('tools/train'),path.join(tree,'tools/train'),{recursive:true});
     const out = path.join(work, path.basename(c.file));
     const entry = kind === 'journey' ? 'build-module.mjs' : 'build.mjs';
     const r = run(['node', path.join(tree, rel, entry), '--generation', G, '--out', out]);

@@ -10,7 +10,7 @@ if (!NS.gridVicinity) {
     let alive = true, opened = false, origin = null, radius = 10, picking = false, result = null, records = [], contextSource = 'No loaded substation data', error = null, phase = 'CHOOSE_ORIGIN';
     let source = null, sourceUnavailable = false, selectionEpoch = 0, refreshTimer = null, returning = null, newsBase = null, newsTopic = null, assetContext = null, documentContext = null, assetSignature = null, stationSignature = null, documentSignature = null;
     const categoryElements = new Map();
-    const itinerary = [], bands = new Set(VOLTAGE_BANDS.map(b => b[0])), listeners = [], groups = [], controls = [], ownedLayers = new Map();
+    const bands = new Set(VOLTAGE_BANDS.map(b => b[0])), listeners = [], groups = [], controls = [], ownedLayers = new Map();
     const SOURCE = 'gridatlas-vicinity-context', LAYERS = ['gridatlas-vicinity-radius', 'gridatlas-vicinity-points', 'gridatlas-vicinity-model'];
     const root = D.createElement('div'); root.id = 'gridatlas-vicinity'; host.appendChild(root);
     const style = D.createElement('style'); style.textContent = VICINITY_CSS; root.appendChild(style);
@@ -43,11 +43,6 @@ if (!NS.gridVicinity) {
     }
     const status = el('p', '', panel, {class: 'vic-status', role: 'status', 'aria-live': 'polite'});
     const failure = el('p', '', panel, {class: 'vic-error', role: 'alert'}); failure.hidden = true;
-    const modelBox = el('fieldset', null, panel); el('legend', 'Your local grid model', modelBox);
-    el('p', 'Add mapped assets in your chosen order. Dashed pink joins are your assumed scenario, not source-confirmed cables or power flow.', modelBox);
-    const modelStatus = el('p', 'No stations added.', modelBox, {class: 'vic-model-status'});
-    const modelActions = el('div', null, modelBox, {class: 'vic-actions'});
-    const undo = el('button', 'Undo last station', modelActions, {type: 'button'}), clear = el('button', 'Clear model', modelActions, {type: 'button'});
     el('p', 'Nearby mapped substations · straight-line distance', panel);
     const list = el('ol', null, panel, {class: 'vic-results'});
     el('p', 'Existing Atlas substation layer; source tags and coverage may be incomplete. Reuses the map’s existing data loader.', panel, {class: 'vic-source'});
@@ -57,7 +52,12 @@ if (!NS.gridVicinity) {
     const energyRows = el('div', null, energy, {class: 'vic-energy-categories'});
     const documents = el('details', null, panel, {class: 'vic-document-context'}); el('summary', 'Documented works and official notices', documents);
     const documentRows = el('div', null, documents);
-    panel.insertBefore(energy, modelBox); panel.insertBefore(documents, modelBox);
+    panel.insertBefore(energy, list); panel.insertBefore(documents, list);
+    const train = createGreatGridJourney({map,registry:NS,geodesy,parent:panel,readFeatures:()=>{
+      const data=map.getSource('src-subs')?.serialize?.().data;
+      return data&&typeof data==='object'&&Array.isArray(data.features)?data.features:null;
+    }});
+    panel.insertBefore(train.element,originLabel);
 
     function sourceAnchor(parent, title, href) {
       try { const url = new URL(href); if (url.protocol !== 'https:' || url.username || url.password) return; el('a', title, parent, {href: url.href, target: '_blank', rel: 'noopener noreferrer'}); } catch (_) {}
@@ -97,12 +97,12 @@ if (!NS.gridVicinity) {
             const item = el('li',null,null,{'data-vicinity-asset-id':row.originId || row.id || ''});
             entry = {item, title: el('span','',item), meta: el('span','',item,{class:'vic-row-meta'}), row};
             const buttons = el('div',null,item,{class:'vic-actions'});
-            entry.recenter = el('button','Use as origin',buttons,{type:'button'}); entry.add = el('button','Add to my model',buttons,{type:'button'});
-            entry.recenter.addEventListener('click',()=>setOrigin(rowOrigin(entry.row))); entry.add.addEventListener('click',()=>addStation(entry.row));
+            entry.recenter = el('button','Use as origin',buttons,{type:'button'}); entry.add = el('button','Find stations nearby',buttons,{type:'button'});
+            entry.recenter.addEventListener('click',()=>setOrigin(rowOrigin(entry.row))); entry.add.addEventListener('click',()=>train.nearContext(entry.row));
             view.records.set(key,entry);
           }
           entry.row = row; text(entry.title,row.name);
-          entry.recenter.setAttribute('aria-label','Use '+row.name+' as origin'); entry.add.setAttribute('aria-label','Add '+row.name+' to my model');
+          entry.recenter.setAttribute('aria-label','Use '+row.name+' as origin'); entry.add.setAttribute('aria-label','Find stations near '+row.name);
           const facts = [`${row.km.toFixed(2)} km straight-line`, row.status, row.technology].filter(Boolean);
           const basis = row.capacityBasis === 'REGISTER_STATED_POWER_BASIS_NOT_DECLARED' ? 'register power; basis not supplied' : row.capacityBasis === 'SOURCE_STATED_POWER_NOT_CURRENT_OUTPUT' ? 'source-stated power, not current output' : row.capacityBasis || 'source-stated basis not supplied';
           if (row.capacityMw != null) facts.push(`${row.capacityMw} MW (${basis})`);
@@ -172,7 +172,6 @@ if (!NS.gridVicinity) {
         ];
         for (const spec of specs) if (!map.getLayer(spec.id)) { map.addLayer(spec); ownedLayers.set(spec.id, map.getLayer(spec.id)); }
         const data = vicinityGeoJSON(result, geodesy);
-        if (itinerary.length > 1) data.features.push({type: 'Feature', properties: {kind: 'user-model', evidence: 'USER_ASSUMED_LOCAL_MODEL'}, geometry: {type: 'LineString', coordinates: itinerary.map(row => row.at)}});
         source.setData(data);
       } catch (e) { sourceUnavailable = true; failure.textContent = 'Map overlay not ready. Results remain available below.'; failure.hidden = false; }
     }
@@ -190,12 +189,7 @@ if (!NS.gridVicinity) {
     function showError(message) { error = message; failure.textContent = message; failure.hidden = !message; }
     function clearNews() { newsBase = null; newsTopic = null; news.removeAttribute('href'); news.hidden = newsCaption.hidden = true; }
     function clearSelectedContext() { origin = null; result = null; assetContext = null; documentContext = null; assetSignature = stationSignature = documentSignature = null; categoryElements.clear(); list.replaceChildren(); energyRows.replaceChildren(); documentRows.replaceChildren(); news.hidden = newsCaption.hidden = true; removeMap(); }
-    function updateModel() { modelStatus.textContent = itinerary.length ? `${itinerary.length} selected assets: ${itinerary.map(row => row.name).join(' → ')}. User-assumed joins.` : 'No assets added.'; undo.disabled = clear.disabled = !itinerary.length; }
-    function addStation(row) {
-      if (itinerary.length >= 20) { showError('This local model holds up to 20 assets. Undo or clear to make another choice.'); return; }
-      if (itinerary.at(-1) === row || row.id && itinerary.at(-1)?.id === row.id && itinerary.at(-1)?.kind === row.kind) { showError('That asset is already the last choice.'); return; }
-      itinerary.push({...row, at: row.at.slice()}); showError(null); updateModel(); draw();
-    }
+    function addStation(row) { train.addSourceStation(row); }
     function refresh() {
       if (!alive || !opened) return;
       if (!origin) { rangeLabel.textContent = `${radius} km radius`; slider.value = String(radius); return; }
@@ -217,7 +211,7 @@ if (!NS.gridVicinity) {
           add.addEventListener('click', () => addStation(row));
           }
         }
-        renderAssetContext(); renderDocumentContext(); draw(); updateModel();
+        renderAssetContext(); renderDocumentContext(); draw(); train.refreshInventory();
       } catch (e) { showError(e.message); }
     }
     function setOrigin(next) {
@@ -239,13 +233,16 @@ if (!NS.gridVicinity) {
         if (host.closest?.('#gridatlas-menu-bar-panel-4') && !NS.menuBar?.installed) continue;
         const group = el('div', null, host, {class: 'key-group', 'data-vicinity-group': 'true'}); group.style.gridColumn = '1/-1'; el('div', 'Vicinity familiarisation', group, {class: 'key-title'});
         const button = el('button', 'Explore nearby grid · 1–50 km', group, {type: 'button', class: 'map-ctrl-btn', 'aria-expanded': String(opened), 'aria-controls': panel.id});
-        button.style.minHeight = '44px'; listen(button, 'click', event => { event.stopPropagation(); NS.menuBar?.closeAll?.(); open({}, button); }); groups.push(group); controls.push(button);
+        button.style.minHeight = '44px'; listen(button, 'click', event => { event.stopPropagation(); NS.menuBar?.closeAll?.(); open({mode:'vicinity'}, button); });
+        const journeyButton=el('button','Great Grid Journeys',group,{type:'button',class:'map-ctrl-btn','aria-controls':panel.id});journeyButton.style.minHeight='44px';listen(journeyButton,'click',event=>{event.stopPropagation();NS.menuBar?.closeAll?.();open({mode:'journey'},journeyButton);});
+        groups.push(group); controls.push(button);
       }
     }
     function open(options = {}, invoker = null) {
       if (!alive) return false;
       returning = invoker || (D.activeElement && D.activeElement !== D.body && D.activeElement !== D.documentElement ? D.activeElement : launch); opened = true; panel.hidden = false; launch.setAttribute('aria-expanded', 'true'); for (const b of controls) b.setAttribute('aria-expanded', 'true');
       try {
+        if(!train.setMode(options.mode||'vicinity')) {showError('Selected stops exceed the requested mode. Remove stops explicitly before changing mode.');close.focus();return false;}
         if (options.error) { clearSelectedContext(); phase = 'REFUSED'; originLabel.textContent = 'Journey link was not applied. Choose an origin to explore.'; status.textContent = ''; showError(options.error); close.focus(); return false; }
         let newsError = options.newsContextError || null;
         if (newsError) clearNews();
@@ -267,7 +264,7 @@ if (!NS.gridVicinity) {
     function shut() {
       if (!alive) return;
       opened = false; picking = false; panel.hidden = true; launch.setAttribute('aria-expanded', 'false'); for (const b of controls) b.setAttribute('aria-expanded', 'false');
-      removeMap(); const candidate = returning?.isConnected && returning.getClientRects().length ? returning : D.getElementById('gridatlas-menu-bar-title-4') || launch; candidate.focus();
+      train.pause(); removeMap(); const candidate = returning?.isConnected && returning.getClientRects().length ? returning : D.getElementById('gridatlas-menu-bar-title-4') || launch; candidate.focus();
     }
     listen(launch, 'click', () => { opened ? shut() : open({}, launch); }); listen(close, 'click', shut);
     listen(centre, 'click', () => setOrigin(mapCentre())); listen(fit, 'click', fitRadius);
@@ -288,7 +285,6 @@ if (!NS.gridVicinity) {
     });
     listen(pick, 'click', () => { picking = !picking; pick.setAttribute('aria-pressed', String(picking)); pick.textContent = picking ? 'Tap a point on the map' : 'Pick origin on map'; });
     listen(slider, 'input', () => { try { radius = radiusKm(slider.value); showError(null); refresh(); } catch (e) { showError(e.message); } });
-    listen(undo, 'click', () => { itinerary.pop(); updateModel(); draw(); }); listen(clear, 'click', () => { itinerary.length = 0; updateModel(); draw(); });
     listen(panel, 'keydown', event => { if (event.key === 'Escape') { event.preventDefault(); shut(); } });
     for (const type of ['click','dblclick','pointerdown','touchstart']) listen(panel, type, event => event.stopPropagation());
     const clicked = event => { if (opened && picking && event.lngLat) setOrigin({at: [event.lngLat.lng,event.lngLat.lat], name: 'Chosen map point', type: 'map-point', id: null}); };
@@ -302,14 +298,14 @@ if (!NS.gridVicinity) {
     function destroy(mapRemoved = false) {
       if (!alive) return; alive = false; clearTimeout(refreshTimer); observer.disconnect(); listeners.forEach(off => off());
       map.off('click', clicked); map.off('sourcedata', sourced); map.off('style.load', styled); map.off('remove', removed); removeMap(mapRemoved);
-      groups.forEach(g => g.remove()); root.remove();
+      train.destroy(); groups.forEach(g => g.remove()); root.remove();
     }
     return Object.freeze({open, close: shut, setOrigin, refresh, destroy, snapshot: () => ({alive, opened, phase, generation: VICINITY_GENERATION, radiusKm: radius,
       origin: origin ? {...origin,at: origin.at.slice()} : null, matching: result?.matching ?? null, shown: result?.shown.length ?? 0, loadedRecords: records.length,
       newsContextUrl: newsBase, newsHref: newsBase && origin ? newsContextHref(newsBase, origin, newsTopic) : null,
       assetContext: assetContext ? {...assetContext, categories: assetContext.categories.map(category => ({...category, rows: category.rows.map(({sourceRow, ...row}) => row)}))} : null,
       documentContext,
-      selectedBands: [...bands], contextSource, sourceUnavailable, modelStations: itinerary.map(row => ({name: row.name, id: row.id, at: row.at.slice()})),
+      selectedBands: [...bands], contextSource, sourceUnavailable, train:train.snapshot(), modelStations: train.snapshot().itinerary.stops.map(row => ({name: row.name, id: row.id, at: row.at.slice()})),
       modelEvidence: 'USER_ASSUMED_LOCAL_MODEL', realConnectionsInferred: 0, error, selectionEpoch})});
   }
   function mount(map = W.__GRIDATLAS_V9_MAP__) {
