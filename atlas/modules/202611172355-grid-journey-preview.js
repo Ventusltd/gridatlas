@@ -766,7 +766,7 @@ function createJourneyController({map, document: D, window: W, planner, fixture,
       const button = el('button', 'Open Grid Journey', group, {type: 'button', class: 'map-ctrl-btn', 'aria-controls': NS + '-panel', 'aria-expanded': String(opened)});
       button.style.cssText = 'min-height:44px;min-width:44px;';
       el('p', 'Exploratory only; real routes require reviewed circuit evidence.', group);
-      listen(button, 'click', e => { e.stopPropagation?.(); returnFocus = button; const curtain = D.getElementById('fs-curtain'); if (id === 'fs-curtain-keys' && curtain?.classList?.contains('curtain-open')) D.getElementById('fs-curtain-tab')?.click(); open(); });
+      listen(button, 'click', e => { e.stopPropagation?.(); returnFocus = button; W.__GRIDATLAS_MODULES__?.menuBar?.closeAll?.(); const curtain = D.getElementById('fs-curtain'); if (id === 'fs-curtain-keys' && curtain?.classList?.contains('curtain-open')) D.getElementById('fs-curtain-tab')?.click(); open(); });
       layerGroups.push(group); layerLaunchers.push(button);
     }
   }
