@@ -22,6 +22,12 @@
  *   3. the served homepage (/) carries the GridAtlas row with G's label
  *      (e.g. "V9.176 - 29 October 2026") and links the live route.
  * Retries with cache-busting queries until --timeout-s (Pages/CDN lag).
+ *
+ * KUIPER EDITIONS (report only, never gates GridAtlas; only an HTTP 404 turns PASS to FAIL)
+ *   - /kuiper-editions/ on the domain: its sha256 (against globalgrid2050 main's
+ *     kuiper-editions/index.html) and that it forwards to the editions pointer;
+ *   - the editions pointer on github.io: which dated folder it names;
+ *   - the served homepage (/) carries the kuiper-editions row.
  * Exit 0 PASS, 1 FAIL, 2 cannot reach the domain.
  */
 
@@ -61,6 +67,10 @@ const release = entity.releases.find(r => r.id === entity.operative_release_id);
 const report = { tool: TOOL, base: BASE, generation: G, gridatlas_live: String(live.generation), pin: pin.commit,
   operative_release: entity.operative_release_id, label: release?.label, problems: [], attempts: 0, checks: [] };
 const finish = (status, code) => {
+  for (const k of report.kuiper || []) console.log(`  KUIPER ${k.ok ? 'OK  ' : 'NOTE'}  ${k.path}  HTTP ${k.http}  ${k.live}`);
+  const gone = (report.kuiper || []).filter(k => k.http === 404);
+  if (gone.length && status === 'PASS') { status = 'FAIL'; code = 1; }
+  report.problems.push(...gone.map(k => `${k.path}: HTTP 404`));
   report.status = status;
   if (args.report) writeJson(args.report, report);
   console.log(`${status}: ${report.problems.length ? report.problems.join('; ') : `${BASE} serves the pinned homepage with GridAtlas "${report.label}"`}`);
@@ -69,6 +79,24 @@ const finish = (status, code) => {
 if (entity.operative_release_id !== G) { report.problems.push(`the pinned homepage (${pin.commit.slice(0, 12)}) makes ${entity.operative_release_id} operative, not ${G}`); finish('FAIL', 1); }
 if (String(live.generation) !== G) report.problems.push(`note: gridatlas main serves ${live.generation}, not ${G}`);
 console.log(`pin ${pin.commit.slice(0, 12)}: GridAtlas ${G} "${release.label}"`);
+
+/* ------------------------------------------- Kuiper editions (report only) */
+const KUIPER_EDITIONS = 'https://ventusltd.github.io/kuiper-belt/editions/';
+const doorFile = ghFile(DOMAIN, 'main', 'kuiper-editions/index.html');
+const door = get(`${BASE}kuiper-editions/?served-check=${Date.now()}`);
+const doorHtml = door.body ? door.body.toString('utf8') : '';
+const doorSha = door.body ? sha256(door.body) : null;
+const forwards = doorHtml.includes(`url=${KUIPER_EDITIONS}`) && doorHtml.includes(`location.replace('${KUIPER_EDITIONS}'`);
+const pointer = get(`${KUIPER_EDITIONS}?served-check=${Date.now()}`);
+const folder = ((pointer.body ? pointer.body.toString('utf8') : '').match(/location\.replace\('(\d{12})\//) || [])[1] || null;
+const kuiperRow = { path: '/ kuiper-editions row', http: 0, ok: false, expected: 'row <tr data-entity-id="kuiper-editions">', live: 'not fetched' };
+report.kuiper = [
+  { path: '/kuiper-editions/', http: door.http, ok: door.http === 200 && doorSha === (doorFile && sha256(doorFile)) && forwards,
+    expected: `sha256 ${doorFile ? sha256(doorFile) : 'none on main'}, forwards to ${KUIPER_EDITIONS}`,
+    live: `sha256 ${doorSha}, ${forwards ? 'forwards' : 'does not forward'} to ${KUIPER_EDITIONS}`, sha256: doorSha, forwards },
+  { path: KUIPER_EDITIONS, http: pointer.http, ok: pointer.http === 200 && Boolean(folder), expected: 'names a dated folder',
+    live: folder ? `names ${folder}/` : 'names no dated folder', folder },
+  kuiperRow];
 
 /* --------------------------------------------------------------- served */
 const files = [['homepage-shell/data/homepage.json', 'data/homepage.json'],
@@ -90,6 +118,8 @@ for (;;) {
   if (!home.http) unreachable = home.error;
   const html = home.body ? home.body.toString('utf8') : '';
   const row = (html.match(/<tr data-entity-id="gridatlas">[\s\S]*?<\/tr>/) || [''])[0];
+  Object.assign(kuiperRow, { http: home.http, ok: html.includes('<tr data-entity-id="kuiper-editions">') });
+  kuiperRow.live = kuiperRow.ok ? 'row present' : 'no kuiper-editions row';
   checks.push({ path: '/', http: home.http, ok: home.http === 200 && row.includes(release.label) && row.includes(`${PAGES_BASE}atlas/`),
     expected: `GridAtlas row with "${release.label}" linking ${PAGES_BASE}atlas/`, live: row ? row.slice(0, 120) : 'no GridAtlas row' });
   report.checks = checks;
