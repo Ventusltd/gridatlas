@@ -86,3 +86,38 @@ test('whole-leg verification refuses a provider result that escapes the eligible
  const p=buildRoutePlan({synthetic:true,stops:[stop('A'),stop('B')],network:n,geodesy,rules:{allowedVoltages:[400],allowTransformers:true}});
  assert.equal(p.legs[0].evidence,'MISSING');assert.equal(p.playable,false);
 });
+function busNetwork(nodes,edges){
+ const rows=edges.map(([node_1,node_2,kind='circuit'],i)=>({node_1,node_2,kind,id:'busrow-'+i}));
+ const graph={schema:'gridatlas.module.network-topology.graph.v1',has:n=>!!nodes[n],nodeVoltageKv:n=>nodes[n].kv,
+  nodeSiteCode:n=>nodes[n].site,nodesOfSite:site=>Object.keys(nodes).filter(n=>nodes[n].site===site).sort(),ratingsOf:()=>null,parametersOf:()=>null,
+  edgesAt:n=>rows.filter(r=>r.node_1===n||r.node_2===n).map(row=>({kind:row.kind,row,far:row.node_1===n?'node_2':'node_1'}))};
+ const sites=[...new Set(Object.values(nodes).map(n=>n.site))];
+ return {index:{graph:()=>graph,site:code=>sites.includes(code)?{code,name:code}:null},electricalDistance,isReviewedEdge:()=>true,
+  stationBindings:Object.fromEntries(sites.map(id=>[id,{stationId:id,siteCode:id,reviewed:true,source:'SYNTHETIC_BUS_LEDGER'}]))};
+}
+test('arrival bus survives a waypoint: unconnected B400/B132 cannot teleport, reviewed transformer permits it',()=>{
+ const nodes={a:{site:'A',kv:400},b400:{site:'B',kv:400},b132:{site:'B',kv:132},c:{site:'C',kv:132}};
+ const edges=[['a','b400'],['b132','c']],opts={synthetic:true,stops:[stop('A'),stop('B',[400,132]),stop('C',132)],geodesy,rules:{allowedVoltages:[400,132],allowTransformers:true}};
+ const refused=buildRoutePlan({...opts,network:busNetwork(nodes,edges)});assert.equal(refused.playable,false);assert.equal(refused.legs[1].evidence,'MISSING');
+ const accepted=buildRoutePlan({...opts,network:busNetwork(nodes,[...edges,['b400','b132','transformer']])});assert.equal(accepted.playable,true);
+ assert.equal(accepted.legs[0].toBus,accepted.legs[1].fromBus);assert.ok(accepted.legs.some(l=>l.topology.path.some(h=>h.kind==='transformer')));
+ const reordered=buildRoutePlan({...opts,stops:[stop('A'),stop('B',[132,400]),stop('C',132)],network:busNetwork(nodes,[...edges,['b400','b132','transformer']])});
+ assert.deepEqual(reordered.legs.map(l=>l.topology.path),accepted.legs.map(l=>l.topology.path));
+});
+test('same-voltage distinct waypoint buses still require a documented edge',()=>{
+ const n={a:{site:'A',kv:400},b1:{site:'B',kv:400},b2:{site:'B',kv:400},c:{site:'C',kv:400}};
+ const opts={synthetic:true,stops:[stop('A'),stop('B'),stop('C')],geodesy};
+ assert.equal(buildRoutePlan({...opts,network:busNetwork(n,[['a','b1'],['b2','c']])}).playable,false);
+ assert.equal(buildRoutePlan({...opts,network:busNetwork(n,[['a','b1'],['b2','c'],['b1','b2']])}).playable,true);
+});
+test('whole itinerary keeps a longer reachable alternative bus instead of greedy dead-end arrival',()=>{
+ const n={a:{site:'A',kv:400},dead:{site:'B',kv:400},x:{site:'X',kv:400},good:{site:'B',kv:400},c:{site:'C',kv:400}};
+ const p=buildRoutePlan({synthetic:true,stops:[stop('A'),stop('B'),stop('C')],geodesy,
+  network:busNetwork(n,[['a','dead'],['a','x'],['x','good'],['good','c']])});
+ assert.equal(p.playable,true);assert.equal(p.legs[0].toBus,'good');assert.equal(p.legs[0].topology.hops,2);assert.equal(p.legs[1].fromBus,'good');
+});
+test('untouched null voltage law means all known bands, explicit empty means none',()=>{
+ const opts={synthetic:true,stops:[stop('A'),stop('B')],geodesy,law:{allowedVoltageBands:null,mustVisitStationIds:[],fallback:'user-opted-hypothetical',allowTransformers:true}};
+ assert.equal(buildRoutePlan(opts).playable,true);
+ const none=buildRoutePlan({...opts,law:{...opts.law,allowedVoltageBands:[]}});assert.equal(none.playable,false);assert.equal(none.legs[0].evidence,'MISSING');
+});

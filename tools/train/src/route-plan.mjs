@@ -22,7 +22,7 @@ export function buildRoutePlan({stops, stationIndex = null, synthetic = false, g
       kv, ...(stop.selectedVoltageKv != null ? {selectedVoltageKv: stop.selectedVoltageKv} : {})};
   });
   if (law) {
-    rules = {...rules, allowedVoltages: law.allowedVoltageBands.filter(v => /^\d+$/.test(String(v))).map(Number), allowTransformers: law.allowTransformers !== false};
+    rules = {...rules, allowedVoltages: law.allowedVoltageBands == null ? null : law.allowedVoltageBands.filter(v => /^\d+$/.test(String(v))).map(Number), allowTransformers: law.allowTransformers !== false};
     allowSimulated = law.fallback === 'user-opted-hypothetical';
     let at = 0;
     for (const id of law.mustVisitStationIds || []) {
@@ -31,65 +31,34 @@ export function buildRoutePlan({stops, stationIndex = null, synthetic = false, g
       at++;
     }
   }
-  const allowedVoltages = rules.allowedVoltages || [...new Set(selected.flatMap(stop => stop.kv))];
-  if (!Array.isArray(allowedVoltages) || !allowedVoltages.length || allowedVoltages.some(kv => !Number.isFinite(kv) || kv <= 0)) throw Error('Choose allowed voltage levels.');
+  const allowedVoltages = rules.allowedVoltages === undefined ? null : rules.allowedVoltages;
+  if (allowedVoltages !== null && (!Array.isArray(allowedVoltages) || allowedVoltages.some(kv => !Number.isFinite(kv) || kv <= 0))) throw Error('Choose valid voltage levels.');
   const eligible = network?.index && createEligibleTrainIndex(network.index,
     {allowedVoltages, allowTransformers: rules.allowTransformers === true}, network.isReviewedEdge);
+  const sequence = planTrainBuses(selected, eligible, network, allowedVoltages, allowSimulated);
   const legs = selected.slice(1).map((to, i) => {
     const from = selected[i];
-    const fromKv = from.selectedVoltageKv == null ? from.kv : [from.selectedVoltageKv];
-    const toKv = to.selectedVoltageKv == null ? to.kv : [to.selectedVoltageKv];
-    let evidence = 'MISSING', coordinates = null, topology = null, source = null;
-    // Explicit reviewed identity bindings only; never match station names or coordinates.
-    const a = network?.stationBindings?.[from.id], b = network?.stationBindings?.[to.id];
-    if (a?.stationId === from.id && b?.stationId === to.id && a.reviewed === true && b.reviewed === true
-      && a.source && b.source && typeof a.siteCode === 'string' && typeof b.siteCode === 'string'
-      && typeof network?.electricalDistance?.between === 'function') {
-      const graph = eligible.graph();
-      const perLegGraph = {...graph, nodesOfSite: code => graph.nodesOfSite(code).filter(node =>
-        (code !== a.siteCode || fromKv.includes(graph.nodeVoltageKv(node)))
-        && (code !== b.siteCode || toKv.includes(graph.nodeVoltageKv(node))))};
-      const perLegIndex = {site: key => eligible.site(key), graph: () => perLegGraph};
-      const result = network.electricalDistance.between(perLegIndex, a.siteCode, b.siteCode,
-        {maxHops: Number.isInteger(network.maxHops) && network.maxHops > 0 ? Math.min(10000, network.maxHops) : 10000,
-          ...(fromKv.some(kv => allowedVoltages.includes(kv)) ? {voltageKv: fromKv.find(kv => allowedVoltages.includes(kv))} : {})});
-      if (result?.schema === 'gridatlas.module.electrical-distance.v1' && result.reached === true
-        && result.from?.code === a.siteCode && result.to?.code === b.siteCode && Array.isArray(result.path)
-        && eligible && (result.path.length ? perLegGraph.nodesOfSite(a.siteCode).includes(result.path[0].from_node)
-          && perLegGraph.nodesOfSite(b.siteCode).includes(result.path.at(-1).to_node) : a.siteCode === b.siteCode && perLegGraph.nodesOfSite(a.siteCode).length > 0)
-        && result.path.every((hop, n) => eligible.graph().has(hop.from_node)
-          && eligible.graph().has(hop.to_node) && (!n || result.path[n - 1].to_node === hop.from_node)
-          && eligible.graph().edgesAt(hop.from_node).some(edge => edge.kind === hop.kind && edge.row[edge.far] === hop.to_node))) {
-        const path = result.path.map(hop => {
-          const matches = eligible.graph().edgesAt(hop.from_node).filter(edge => edge.kind === hop.kind && edge.row[edge.far] === hop.to_node);
-          return {...hop, circuit_id: matches.length === 1 ? matches[0].row.circuit_id || matches[0].row.id || null : null};
-        });
-        topology = {...result, path}; source = {from: a.source, to: b.source}; evidence = 'TOPOLOGY_ONLY';
-        // A topology path contains no GIS route by itself. Each hop must carry an
-        // exact circuit ID and a reviewed geometry join for that same identity.
-        const joined = topology.path.map(hop => {
-          const id = hop.circuit_id;
-          const join = id && network.geometryByCircuit?.[id];
-          return join?.reviewed === true && join.source && join.circuitId === id
-            && join.fromNode === hop.from_node && join.toNode === hop.to_node
-            && join.geometry?.type === 'LineString' && validLine(join.geometry.coordinates)
-            ? join.geometry.coordinates.map(at => [...at]) : null;
-        });
-        if (joined.length && joined.every(Boolean) && joined.every((line, n) => !n || same(line[0], joined[n - 1].at(-1)))) {
-          evidence = 'GIS_REVIEWED'; coordinates = joined.flatMap((line, n) => n ? line.slice(1) : line);
-        }
+    const choice = sequence[i];
+    let evidence = choice?.topology ? 'TOPOLOGY_ONLY' : choice?.simulated ? 'SIMULATED' : 'MISSING';
+    let coordinates = choice ? [[...from.at], [...to.at]] : null;
+    const topology = choice?.topology || null, source = choice?.source || null;
+    if (topology) {
+      const joined = topology.path.map(hop => {
+        const id = hop.circuit_id, join = id && network.geometryByCircuit?.[id];
+        return join?.reviewed === true && join.source && join.circuitId === id
+          && join.fromNode === hop.from_node && join.toNode === hop.to_node
+          && join.geometry?.type === 'LineString' && validLine(join.geometry.coordinates)
+          ? join.geometry.coordinates.map(at => [...at]) : null;
+      });
+      if (joined.length && joined.every(Boolean) && joined.every((line, n) => !n || same(line[0], joined[n - 1].at(-1)))) {
+        evidence = 'GIS_REVIEWED'; coordinates = joined.flatMap((line, n) => n ? line.slice(1) : line);
       }
-    }
-    if (!coordinates && evidence === 'TOPOLOGY_ONLY') coordinates = [[...from.at], [...to.at]];
-    const sharedVoltage = fromKv.find(kv => toKv.includes(kv) && allowedVoltages.includes(kv));
-    if (evidence === 'MISSING' && allowSimulated === true && sharedVoltage !== undefined) {
-      evidence = 'SIMULATED'; coordinates = [[...from.at], [...to.at]];
     }
     const km = coordinates ? coordinates.slice(1).reduce((sum, at, n) => sum
       + geodesy.distanceKm(...coordinates[n], ...at), 0) : null;
     if (km !== null && (!Number.isFinite(km) || km < 0)) throw Error('Invalid route distance.');
     return {id: 'leg-' + i, index: i, fromId: from.id, toId: to.id, evidence, coordinates, km,
-      topology, source, simulationVoltageKv: evidence === 'SIMULATED' ? sharedVoltage : null,
+      topology, source, simulationVoltageKv: choice?.simulated ? choice.kv : null, fromBus: choice?.fromBus || null, toBus: choice?.toBus || null,
       electricalTopology: topology ? 'PUBLISHED_REVIEWED_PATH' : 'UNKNOWN',
       geometry: evidence === 'GIS_REVIEWED' ? 'REVIEWED_SOURCE_GIS' : coordinates ? 'SCHEMATIC' : 'UNKNOWN',
       surveyConstructability: 'UNKNOWN', accessStatus: 'UNKNOWN', direction: 'USER_JOURNEY_HEADING_ONLY', electricalFlow: 'UNKNOWN',
@@ -98,15 +67,79 @@ export function buildRoutePlan({stops, stationIndex = null, synthetic = false, g
         : evidence === 'GIS_REVIEWED' ? 'Reviewed circuit identity and source GIS geometry'
         : 'No reviewed route for this leg'};
   });
-  return {schema: 'gridatlas.train.route-plan.v1', rules: {allowedVoltages: [...allowedVoltages], allowTransformers: rules.allowTransformers === true}, stops: selected, legs,
+  return {schema: 'gridatlas.train.route-plan.v1', rules: {allowedVoltages: allowedVoltages === null ? null : [...allowedVoltages], allowTransformers: rules.allowTransformers === true}, stops: selected, legs,
     totalKm: legs.every(leg => leg.km !== null) ? legs.reduce((sum, leg) => sum + leg.km, 0) : null,
     synthetic: !!synthetic, playable: legs.every(leg => leg.coordinates !== null), simulated: legs.some(leg => leg.evidence === 'SIMULATED')};
+}
+function trainVoltageAllowed(kv, allowed) { return Number.isFinite(kv) && kv > 0 && (allowed === null || allowed.includes(kv)); }
+/** Keep every reachable arrival bus, not just the cheapest arrival at a station. */
+function planTrainBuses(stops, eligible, network, allowed, simulate) {
+  const graph = eligible?.graph();
+  const binding = stop => {
+    const row = network?.stationBindings?.[stop.id];
+    return row?.stationId === stop.id && row.reviewed === true && row.source && typeof row.siteCode === 'string'
+      && eligible?.site(row.siteCode)?.code === row.siteCode ? row : null;
+  };
+  const voltages = stop => (stop.selectedVoltageKv == null ? stop.kv : [stop.selectedVoltageKv])
+    .filter(kv => trainVoltageAllowed(kv, allowed)).sort((a,b) => a-b);
+  const statesAt = stop => {
+    const bind = binding(stop), kv = voltages(stop);
+    const buses = bind ? graph.nodesOfSite(bind.siteCode).filter(bus => kv.includes(graph.nodeVoltageKv(bus))).sort() : [];
+    return buses.length ? buses.map(bus => ({bus, kv: graph.nodeVoltageKv(bus), binding: bind}))
+      : kv.map(voltage => ({bus: null, kv: voltage, binding: null}));
+  };
+  const order = (a,b) => a.cost-b.cost || a.key.localeCompare(b.key,'en');
+  let states = statesAt(stops[0]).map(s => ({...s,cost:0,key:s.bus || 'virtual:'+s.kv,choices:[]}));
+  for (let i=0;i<stops.length-1;i++) {
+    const targets = statesAt(stops[i+1]), candidates = new Map();
+    for (const previous of states) for (const target of targets) {
+      let choice = null;
+      if (previous.bus && target.bus && typeof network?.electricalDistance?.between === 'function') {
+        const topology = trainExactBusPath(eligible, network, previous, target);
+        if (topology) choice = {topology,source:{from:previous.binding.source,to:target.binding.source},fromBus:previous.bus,toBus:target.bus};
+      }
+      if (!choice && simulate === true && previous.kv === target.kv) choice = {
+        simulated:true,kv:previous.kv,fromBus:previous.bus,toBus:target.bus};
+      if (!choice) continue;
+      const fingerprint = choice.topology?.path.map(h=>h.from_node+'>'+h.to_node+':'+h.kind).join('|') || 'hypothetical';
+      const candidate = {...target,cost:previous.cost+(choice.simulated?1000000:choice.topology.path.length),
+        key:previous.key+'|'+(target.bus || 'virtual:'+target.kv)+'|'+fingerprint,choices:[...previous.choices,choice]};
+      const key = target.bus || 'virtual:'+target.kv;
+      if (!candidates.has(key) || order(candidate,candidates.get(key))<0) candidates.set(key,candidate);
+    }
+    if (!candidates.size) {
+      const prefix = states.sort(order)[0]?.choices || [];
+      return [...prefix,...Array(stops.length-1-prefix.length).fill(null)];
+    }
+    states = [...candidates.values()];
+  }
+  return states.sort(order)[0]?.choices || Array(stops.length-1).fill(null);
+}
+function trainExactBusPath(eligible, network, from, to) {
+  const graph = eligible.graph(), START='@train-exact-start', END='@train-exact-end';
+  // Query aliases avoid electrical-distance's same-SITE zero-hop shortcut.
+  // They are not source nodes or graph edges: exact source bus IDs remain unchanged.
+  const queryGraph = {...graph,nodesOfSite:code => code===START?[from.bus]:code===END?[to.bus]:graph.nodesOfSite(code)};
+  const index = {graph:()=>queryGraph,site:key=>key===START?{code:START,name:from.binding.siteCode}
+    :key===END?{code:END,name:to.binding.siteCode}:null};
+  const result = network.electricalDistance.between(index,START,END,{voltageKv:from.kv,
+    maxHops:Number.isInteger(network.maxHops)&&network.maxHops>0?Math.min(10000,network.maxHops):10000});
+  if (result?.schema!=='gridatlas.module.electrical-distance.v1'||result.reached!==true
+    ||result.from?.code!==START||result.to?.code!==END||!Array.isArray(result.path)) return null;
+  const path=result.path;
+  if (path.length ? path[0].from_node!==from.bus||path.at(-1).to_node!==to.bus : from.bus!==to.bus) return null;
+  if (!path.every((hop,n)=>graph.has(hop.from_node)&&graph.has(hop.to_node)
+    &&(!n||path[n-1].to_node===hop.from_node)
+    &&graph.edgesAt(hop.from_node).some(edge=>edge.kind===hop.kind&&edge.row[edge.far]===hop.to_node))) return null;
+  return {...result,from:{code:from.binding.siteCode},to:{code:to.binding.siteCode},arrival_node:to.bus,
+    path:path.map(hop=>{const rows=graph.edgesAt(hop.from_node).filter(edge=>edge.kind===hop.kind&&edge.row[edge.far]===hop.to_node);
+      return {...hop,circuit_id:rows.length===1?rows[0].row.circuit_id||rows[0].row.id||null:null};})};
 }
 /** A view over the existing graph, never a new graph or a mutation of it. */
 export function createEligibleTrainIndex(index, {allowedVoltages, allowTransformers}, isReviewedEdge) {
   const graph = index.graph();
   if (graph?.schema !== 'gridatlas.module.network-topology.graph.v1') throw Error('Unsupported network graph.');
-  const permitted = node => graph.has(node) && allowedVoltages.includes(graph.nodeVoltageKv(node));
+  const permitted = node => graph.has(node) && trainVoltageAllowed(graph.nodeVoltageKv(node), allowedVoltages);
   const view = {...graph,
     has: permitted,
     nodesOfSite: code => graph.nodesOfSite(code).filter(permitted),

@@ -47,3 +47,13 @@ test('missing documented route cannot start motion; setting a plan snapshots lat
  assert.equal(f.sources.get('gridatlas-train-stops').data.features[0].geometry.coordinates[0],0);
  p.playable=false;f.ride.setPlan(p);assert.equal(f.ride.play(),false);assert.equal(f.frames.size,0);
 });
+test('step and seek cannot cross a missing leg; later stop pins remain and cursor stays on approved prefix',()=>{
+ const f=fixture(),p=makePlan();p.legs[1]={...p.legs[1],evidence:'MISSING',coordinates:null,km:null};p.playable=false;
+ f.ride.setPlan(p);assert.equal(f.ride.snapshot().approvedThroughStop,1);assert.equal(f.sources.get('gridatlas-train-stops').data.features.length,3);
+ assert.equal(f.sources.get('gridatlas-train-routes').data.features.length,1);assert.equal(f.ride.step(),true);
+ const at=f.sources.get('gridatlas-train-cursor').data.features[0].geometry.coordinates;
+ assert.equal(f.ride.step(),false);assert.equal(f.ride.seekStop(2),false);assert.equal(f.ride.play(),false);
+ assert.deepEqual(f.sources.get('gridatlas-train-cursor').data.features[0].geometry.coordinates,at);
+ const gapFirst=makePlan();gapFirst.legs[0]={...gapFirst.legs[0],evidence:'MISSING',coordinates:null};gapFirst.playable=false;
+ f.ride.setPlan(gapFirst);assert.equal(f.ride.step(),false);assert.equal(f.ride.seekStop(1),false);assert.equal(f.sources.get('gridatlas-train-routes').data.features.length,0);
+});
