@@ -16,7 +16,7 @@ if (!NS.gridVicinity) {
     const style = D.createElement('style'); style.textContent = VICINITY_CSS; root.appendChild(style);
     function el(tag, text, parent, attrs = {}) { const e = D.createElement(tag); if (text != null) e.textContent = text; for (const [k,v] of Object.entries(attrs)) e.setAttribute(k, v); parent?.appendChild(e); return e; }
     function listen(target, type, fn) { target.addEventListener(type, fn); listeners.push(() => target.removeEventListener(type, fn)); }
-    const launch = el('button', 'Vicinity · 1–50 km', root, {type: 'button', class: 'vic-launch', 'aria-expanded': 'false', 'aria-controls': 'gridatlas-vicinity-panel'});
+    const launch = el('button', 'Great Grid Journeys', root, {type: 'button', class: 'vic-launch', 'aria-expanded': 'false', 'aria-controls': 'gridatlas-vicinity-panel'});
     const panel = el('section', null, root, {id: 'gridatlas-vicinity-panel', class: 'vic-panel', 'aria-label': 'Vicinity familiarisation'}); panel.hidden = true;
     const heading = el('div', null, panel, {class: 'vic-head'}); el('h2', 'Explore the nearby grid', heading);
     const close = el('button', 'Close', heading, {type: 'button', 'aria-label': 'Close vicinity explorer'});
@@ -267,7 +267,7 @@ if (!NS.gridVicinity) {
       opened = false; picking = false; panel.hidden = true; launch.setAttribute('aria-expanded', 'false'); for (const b of controls) b.setAttribute('aria-expanded', 'false');
       train.pause(); removeMap(); const candidate = returning?.isConnected && returning.getClientRects().length ? returning : D.getElementById('gridatlas-menu-bar-title-4') || launch; candidate.focus();
     }
-    listen(launch, 'click', () => { opened ? shut() : open({}, launch); }); listen(close, 'click', shut);
+    listen(launch, 'click', () => { opened ? shut() : open({mode:'journey'}, launch); }); listen(close, 'click', shut);
     listen(centre, 'click', () => setOrigin(mapCentre())); listen(fit, 'click', fitRadius);
     listen(loadAssets, 'click', event => {
       event.stopPropagation();
