@@ -310,7 +310,8 @@ if (!NS.gridVicinity) {
     const host = map.getContainer(), prior = D.getElementById('gridatlas-vicinity');
     if (prior) throw new Error('Vicinity UI already mounted.');
     let alive = true, opened = false, origin = null, radius = 10, picking = false, result = null, records = [], contextSource = 'No loaded substation data', error = null, phase = 'CHOOSE_ORIGIN';
-    let source = null, sourceUnavailable = false, selectionEpoch = 0, refreshTimer = null, returning = null, newsBase = null, newsTopic = null, assetContext = null, documentContext = null;
+    let source = null, sourceUnavailable = false, selectionEpoch = 0, refreshTimer = null, returning = null, newsBase = null, newsTopic = null, assetContext = null, documentContext = null, assetSignature = null, stationSignature = null, documentSignature = null;
+    const categoryElements = new Map();
     const itinerary = [], bands = new Set(VOLTAGE_BANDS.map(b => b[0])), listeners = [], groups = [], controls = [], ownedLayers = new Map();
     const SOURCE = 'gridatlas-vicinity-context', LAYERS = ['gridatlas-vicinity-radius', 'gridatlas-vicinity-points', 'gridatlas-vicinity-model'];
     const root = D.createElement('div'); root.id = 'gridatlas-vicinity'; host.appendChild(root);
@@ -366,17 +367,44 @@ if (!NS.gridVicinity) {
     function rowOrigin(row) {
       return {at: row.at, name: row.name, id: row.originId || row.id, type: row.kind === 'datacentre' ? 'datacentre' : ['generation','storage'].includes(row.kind) ? 'repd' : 'context-asset'};
     }
+    function text(node, value) { if (node.textContent !== value) node.textContent = value; }
     function renderAssetContext() {
       assetContext = collectAssetContext({map, registry: NS, origin, radiusKm: radius, geodesy, limit: 40});
-      energyRows.replaceChildren();
+      const originRow = assetContext.categories.flatMap(category => category.rows).find(row => (row.originId || row.id) === origin.id && row.at.every((v,i) => v === origin.at[i]));
+      text(originPrecision, ['map-centre','map-point'].includes(origin.type) ? 'User-chosen map point; no facility identity was inferred.'
+        : originRow?.approximateLocation ? 'Source-provided location is approximate' + (originRow.precision ? ': ' + originRow.precision.replace(/_/g,' ').toLowerCase() : '') + '.'
+        : originRow?.precision ? 'Source location tag: ' + originRow.precision.replace(/_/g,' ').toLowerCase() + '. Facility position has not been independently verified.'
+        : 'Source-provided location; coordinate precision not supplied. A stable ID and coordinates alone do not verify a facility location.');
+      const signature = JSON.stringify(assetContext);
+      if (signature === assetSignature) return;
+      assetSignature = signature;
+      const scroll = panel.scrollTop;
       for (const category of assetContext.categories) {
-        const section = el('details', null, energyRows, {'data-vicinity-category': category.id});
-        el('summary', category.availability === 'LOADED' ? `${category.label}: ${category.count} within ${radius} km · ${category.loadedRecords} loaded records` : `${category.label}: not loaded; nearby count unknown`, section);
-        el('p', `${category.source || 'Existing Atlas layer'}${category.truncated ? ' · showing nearest 40; narrow the radius for more detail.' : ''}`, section);
-        if (category.availability !== 'LOADED') el('p', 'Use Load existing asset layers to request the map’s existing data.', section);
-        const rows = el('ol', null, section);
-        for (const row of category.rows) {
-          const item = el('li', row.name, rows, {'data-vicinity-asset-id': row.originId || row.id || ''});
+        let view = categoryElements.get(category.id);
+        if (!view) {
+          const section = el('details', null, energyRows, {'data-vicinity-category': category.id});
+          view = {section, heading: el('summary','',section), source: el('p','',section), hint: el('p','',section), rows: el('ol',null,section), records: new Map()};
+          categoryElements.set(category.id, view);
+        }
+        text(view.heading, category.availability === 'LOADED' ? `${category.label}: ${category.count} within ${radius} km · ${category.loadedRecords} loaded records` : `${category.label}: not loaded; nearby count unknown`);
+        text(view.source, `${category.source || 'Existing Atlas layer'}${category.truncated ? ' · showing nearest 40; narrow the radius for more detail.' : ''}`);
+        text(view.hint, 'Use Load existing asset layers to request the map’s existing data.'); view.hint.hidden = category.availability === 'LOADED';
+        const retained = new Set();
+        for (const [index,row] of category.rows.entries()) {
+          // A source-row index is a DOM cache key only; it never becomes an asset identity.
+          const key = row.source + '|' + (row.originId || row.id || 'missing-source-id:' + row.sourceRow);
+          retained.add(key);
+          let entry = view.records.get(key);
+          if (!entry) {
+            const item = el('li',null,null,{'data-vicinity-asset-id':row.originId || row.id || ''});
+            entry = {item, title: el('span','',item), meta: el('span','',item,{class:'vic-row-meta'}), row};
+            const buttons = el('div',null,item,{class:'vic-actions'});
+            entry.recenter = el('button','Use as origin',buttons,{type:'button'}); entry.add = el('button','Add to my model',buttons,{type:'button'});
+            entry.recenter.addEventListener('click',()=>setOrigin(rowOrigin(entry.row))); entry.add.addEventListener('click',()=>addStation(entry.row));
+            view.records.set(key,entry);
+          }
+          entry.row = row; text(entry.title,row.name);
+          entry.recenter.setAttribute('aria-label','Use '+row.name+' as origin'); entry.add.setAttribute('aria-label','Add '+row.name+' to my model');
           const facts = [`${row.km.toFixed(2)} km straight-line`, row.status, row.technology].filter(Boolean);
           const basis = row.capacityBasis === 'REGISTER_STATED_POWER_BASIS_NOT_DECLARED' ? 'register power; basis not supplied' : row.capacityBasis === 'SOURCE_STATED_POWER_NOT_CURRENT_OUTPUT' ? 'source-stated power, not current output' : row.capacityBasis || 'source-stated basis not supplied';
           if (row.capacityMw != null) facts.push(`${row.capacityMw} MW (${basis})`);
@@ -387,21 +415,17 @@ if (!NS.gridVicinity) {
           if (row.kind === 'storage') facts.push('Storage energy (MWh) unknown');
           if (row.approximateLocation) facts.push('Approximate source location' + (row.precision ? ': ' + row.precision.replace(/_/g,' ').toLowerCase() : ''));
           else facts.push(row.precision ? 'Source location tag: ' + row.precision.replace(/_/g,' ').toLowerCase() : 'Coordinate precision not supplied');
-          el('span', facts.join(' · '), item, {class: 'vic-row-meta'});
-          const buttons = el('div', null, item, {class: 'vic-actions'});
-          const recenter = el('button', 'Use as origin', buttons, {type: 'button', 'aria-label': 'Use ' + row.name + ' as origin'});
-          const add = el('button', 'Add to my model', buttons, {type: 'button', 'aria-label': 'Add ' + row.name + ' to my model'});
-          recenter.addEventListener('click', () => setOrigin(rowOrigin(row))); add.addEventListener('click', () => addStation(row));
+          text(entry.meta,facts.join(' · '));
+          if (view.rows.children[index] !== entry.item) view.rows.insertBefore(entry.item,view.rows.children[index] || null);
         }
+        for (const [key,entry] of view.records) if (!retained.has(key)) { entry.item.remove(); view.records.delete(key); }
       }
-      const originRow = assetContext.categories.flatMap(category => category.rows).find(row => (row.originId || row.id) === origin.id && row.at.every((v,i) => v === origin.at[i]));
-      originPrecision.textContent = ['map-centre','map-point'].includes(origin.type) ? 'User-chosen map point; no facility identity was inferred.'
-        : originRow?.approximateLocation ? 'Source-provided location is approximate' + (originRow.precision ? ': ' + originRow.precision.replace(/_/g,' ').toLowerCase() : '') + '.'
-        : originRow?.precision ? 'Source location tag: ' + originRow.precision.replace(/_/g,' ').toLowerCase() + '. Facility position has not been independently verified.'
-        : 'Source-provided location; coordinate precision not supplied. A stable ID and coordinates alone do not verify a facility location.';
+      panel.scrollTop = scroll;
     }
     function renderDocumentContext() {
-      documentContext = documentContextFor(origin, {declaredConnections: NS.declaredConnections}); documentRows.replaceChildren();
+      documentContext = documentContextFor(origin, {declaredConnections: NS.declaredConnections});
+      const signature = JSON.stringify(documentContext); if (signature === documentSignature) return; documentSignature = signature;
+      documentRows.replaceChildren();
       el('p', documentContext.matchedRecords?.length ? 'Existing published works context; source citations have not been revalidated in this release.' : 'No exact documentary works context is available for this asset.', documentRows);
       for (const row of (documentContext.matchedRecords || []).slice(0,10)) {
         const box = el('div', null, documentRows); el('strong', row.title || 'Existing source declaration', box);
@@ -467,7 +491,7 @@ if (!NS.gridVicinity) {
     }
     function showError(message) { error = message; failure.textContent = message; failure.hidden = !message; }
     function clearNews() { newsBase = null; newsTopic = null; news.removeAttribute('href'); news.hidden = newsCaption.hidden = true; }
-    function clearSelectedContext() { origin = null; result = null; assetContext = null; documentContext = null; list.replaceChildren(); energyRows.replaceChildren(); documentRows.replaceChildren(); news.hidden = newsCaption.hidden = true; removeMap(); }
+    function clearSelectedContext() { origin = null; result = null; assetContext = null; documentContext = null; assetSignature = stationSignature = documentSignature = null; categoryElements.clear(); list.replaceChildren(); energyRows.replaceChildren(); documentRows.replaceChildren(); news.hidden = newsCaption.hidden = true; removeMap(); }
     function updateModel() { modelStatus.textContent = itinerary.length ? `${itinerary.length} selected assets: ${itinerary.map(row => row.name).join(' → ')}. User-assumed joins.` : 'No assets added.'; undo.disabled = clear.disabled = !itinerary.length; }
     function addStation(row) {
       if (itinerary.length >= 20) { showError('This local model holds up to 20 assets. Undo or clear to make another choice.'); return; }
@@ -483,14 +507,17 @@ if (!NS.gridVicinity) {
         if (newsBase) { news.href = newsContextHref(newsBase, origin, newsTopic); news.hidden = newsCaption.hidden = false; }
         rangeLabel.textContent = `${radius} km radius`; slider.value = String(radius);
         status.textContent = `${result.matching} matching mapped stations within ${radius} km · ${result.loadedRecords} loaded records. ${result.truncated ? 'Showing nearest 200. ' : ''}${contextSource}.`;
-        list.replaceChildren();
-        for (const row of result.shown) {
+        const nextStationSignature = JSON.stringify(result);
+        if (nextStationSignature !== stationSignature) {
+          stationSignature = nextStationSignature; list.replaceChildren();
+          for (const row of result.shown) {
           const item = el('li', row.name, list); el('span', `${row.km.toFixed(2)} km · ${row.kv.length ? row.kv.join(' / ') + ' kV' : 'Voltage not stated'}${row.operator ? ' · ' + row.operator : ''}`, item, {class: 'vic-row-meta'});
           const buttons = el('div', null, item, {class: 'vic-actions'});
           const recenter = el('button', 'Use as origin', buttons, {type: 'button', 'aria-label': 'Use ' + row.name + ' as origin'});
           const add = el('button', 'Add to my model', buttons, {type: 'button', 'aria-label': 'Add ' + row.name + ' to my model'});
           recenter.addEventListener('click', () => setOrigin({at: row.at, name: row.name, id: row.id, type: 'substation'}));
           add.addEventListener('click', () => addStation(row));
+          }
         }
         renderAssetContext(); renderDocumentContext(); draw(); updateModel();
       } catch (e) { showError(e.message); }
@@ -514,12 +541,12 @@ if (!NS.gridVicinity) {
         if (host.closest?.('#gridatlas-menu-bar-panel-4') && !NS.menuBar?.installed) continue;
         const group = el('div', null, host, {class: 'key-group', 'data-vicinity-group': 'true'}); group.style.gridColumn = '1/-1'; el('div', 'Vicinity familiarisation', group, {class: 'key-title'});
         const button = el('button', 'Explore nearby grid · 1–50 km', group, {type: 'button', class: 'map-ctrl-btn', 'aria-expanded': String(opened), 'aria-controls': panel.id});
-        button.style.minHeight = '44px'; listen(button, 'click', event => { event.stopPropagation(); NS.menuBar?.closeAll?.(); returning = button; open(); }); groups.push(group); controls.push(button);
+        button.style.minHeight = '44px'; listen(button, 'click', event => { event.stopPropagation(); NS.menuBar?.closeAll?.(); open({}, button); }); groups.push(group); controls.push(button);
       }
     }
-    function open(options = {}) {
+    function open(options = {}, invoker = null) {
       if (!alive) return false;
-      returning = D.activeElement; opened = true; panel.hidden = false; launch.setAttribute('aria-expanded', 'true'); for (const b of controls) b.setAttribute('aria-expanded', 'true');
+      returning = invoker || (D.activeElement && D.activeElement !== D.body && D.activeElement !== D.documentElement ? D.activeElement : launch); opened = true; panel.hidden = false; launch.setAttribute('aria-expanded', 'true'); for (const b of controls) b.setAttribute('aria-expanded', 'true');
       try {
         if (options.error) { clearSelectedContext(); phase = 'REFUSED'; originLabel.textContent = 'Journey link was not applied. Choose an origin to explore.'; status.textContent = ''; showError(options.error); close.focus(); return false; }
         let newsError = options.newsContextError || null;
@@ -544,7 +571,7 @@ if (!NS.gridVicinity) {
       opened = false; picking = false; panel.hidden = true; launch.setAttribute('aria-expanded', 'false'); for (const b of controls) b.setAttribute('aria-expanded', 'false');
       removeMap(); const candidate = returning?.isConnected && returning.getClientRects().length ? returning : D.getElementById('gridatlas-menu-bar-title-4') || launch; candidate.focus();
     }
-    listen(launch, 'click', () => { opened ? shut() : open(); }); listen(close, 'click', shut);
+    listen(launch, 'click', () => { opened ? shut() : open({}, launch); }); listen(close, 'click', shut);
     listen(centre, 'click', () => setOrigin(mapCentre())); listen(fit, 'click', fitRadius);
     listen(loadAssets, 'click', event => {
       event.stopPropagation();
