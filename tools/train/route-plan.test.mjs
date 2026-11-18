@@ -71,3 +71,18 @@ test('crossed source-looking line geometry cannot establish topology or land rig
  const p=buildRoutePlan({synthetic:true,stops:[stop('A'),stop('B')],geodesy,network:n});
  assert.equal(p.legs[0].evidence,'MISSING');assert.equal(p.legs[0].geometry,'UNKNOWN');assert.equal(p.legs[0].electricalTopology,'UNKNOWN');assert.equal(p.legs[0].accessStatus,'UNKNOWN');
 });
+test('two selected stops may traverse more than ninety source nodes; selected caps are not traversal caps',()=>{
+ const rows=Array.from({length:100},(_,i)=>({node_1:'N'+i,node_2:'N'+(i+1),id:'c'+i}));
+ const graph={schema:'gridatlas.module.network-topology.graph.v1',has:n=>/^N(?:\d|\d\d|100)$/.test(n),
+  nodeVoltageKv:()=>400,nodeSiteCode:n=>n,nodesOfSite:n=>[n],ratingsOf:()=>null,parametersOf:()=>null,
+  edgesAt:n=>rows.filter(r=>r.node_1===n||r.node_2===n).map(row=>({kind:'circuit',row,far:row.node_1===n?'node_2':'node_1'}))};
+ const network={index:{graph:()=>graph,site:code=>({code,name:code})},electricalDistance,isReviewedEdge:()=>true,
+  stationBindings:Object.fromEntries(['N0','N100'].map(id=>[id,{stationId:id,siteCode:id,reviewed:true,source:'SYNTHETIC_LEDGER'}]))};
+ const p=buildRoutePlan({synthetic:true,stops:[stop('N0'),stop('N100')],network,geodesy});
+ assert.equal(p.stops.length,2);assert.equal(p.legs[0].topology.hops,100);
+});
+test('whole-leg verification refuses a provider result that escapes the eligible voltage view',()=>{
+ const n=network();n.electricalDistance={between:()=>({schema:'gridatlas.module.electrical-distance.v1',reached:true,from:{code:'A'},to:{code:'B'},path:[{from_node:'A',to_node:'AL',kind:'transformer'},{from_node:'AL',to_node:'B',kind:'circuit'}]})};
+ const p=buildRoutePlan({synthetic:true,stops:[stop('A'),stop('B')],network:n,geodesy,rules:{allowedVoltages:[400],allowTransformers:true}});
+ assert.equal(p.legs[0].evidence,'MISSING');assert.equal(p.playable,false);
+});
