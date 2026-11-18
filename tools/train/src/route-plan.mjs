@@ -1,5 +1,5 @@
 /** Ordered user itinerary; proximity never establishes electrical connectivity. */
-export function buildRoutePlan({stops, stationIndex = null, synthetic = false, geodesy, allowSimulated = false, network = null, rules = {}, law = null} = {}) {
+export function buildRoutePlan({stops, stationIndex = null, scenarioStore = null, planEpoch = null, synthetic = false, geodesy, allowSimulated = false, network = null, rules = {}, law = null} = {}) {
   if (!Array.isArray(stops) || stops.length < 2 || stops.length > 90) throw Error('Choose 2–90 station stops.');
   if (typeof geodesy?.distanceKm !== 'function') throw Error('Canonical geodesy is required.');
   const ids = new Set();
@@ -8,21 +8,26 @@ export function buildRoutePlan({stops, stationIndex = null, synthetic = false, g
     if (typeof id !== 'string' || !id) throw Error('Each stop needs a stable station identity.');
     if (stop.id != null && stop.id !== id) throw Error('Conflicting station identity.');
     const canonical = stationIndex?.get(id);
-    if (!synthetic && (!canonical || !same(canonical.at, stop.at))) throw Error('Choose an existing canonical station from the station index.');
+    const proposed = !canonical && law?.fallback === 'user-opted-hypothetical' ? scenarioStore?.get(id) : null;
+    if (proposed && (proposed.proposed !== true || proposed.source !== 'SESSION_ONLY_USER_PROPOSED'
+      || !id.startsWith('scenario:') || proposed.kv.length !== 1 || ![11,33].includes(proposed.kv[0]))) throw Error('Invalid session-owned proposal.');
+    const owned = canonical || proposed;
+    if (stop.invalid || !synthetic && (!owned || !same(owned.at, stop.at))) throw Error('Choose an existing canonical station from the station index or an opted-in current session proposal.');
     if (synthetic && !String(stop.source).startsWith('SYNTHETIC')) throw Error('Fictional stops need an explicit synthetic source.');
     const stopId = stop.stopId || 'visit-' + ids.size;
     if (ids.has(stopId)) throw Error('Each visit needs a distinct stop identity.');
     ids.add(stopId);
     if (!Array.isArray(stop.at) || stop.at.length !== 2 || !stop.at.every(Number.isFinite)
       || Math.abs(stop.at[0]) > 180 || Math.abs(stop.at[1]) > 90) throw Error('A station stop is unlocated.');
-    const trusted = canonical || stop;
+    const trusted = owned || stop;
     const kv = (Array.isArray(trusted.kv) ? trusted.kv : [trusted.kv]).filter(kv => Number.isFinite(kv) && kv > 0);
     if (stop.selectedVoltageKv != null && !kv.includes(stop.selectedVoltageKv)) throw Error('Selected journey voltage must belong to the canonical station.');
     return {...trusted, ...(stop.place ? {place: stop.place} : {}), id, stationId: id, stopId, at: [...trusted.at],
       kv, ...(stop.selectedVoltageKv != null ? {selectedVoltageKv: stop.selectedVoltageKv} : {})};
   });
   if (law) {
-    rules = {...rules, allowedVoltages: law.allowedVoltageBands == null ? null : law.allowedVoltageBands.filter(v => /^\d+$/.test(String(v))).map(Number), allowTransformers: law.allowTransformers !== false};
+    rules = {...rules, allowedVoltages: law.allowedVoltageBands == null ? null : law.allowedVoltageBands.filter(v => /^\d+$/.test(String(v))).map(Number),
+      allowOtherVoltage: law.allowedVoltageBands?.includes('other') === true, allowTransformers: law.allowTransformers !== false};
     allowSimulated = law.fallback === 'user-opted-hypothetical';
     let at = 0;
     for (const id of law.mustVisitStationIds || []) {
@@ -34,8 +39,8 @@ export function buildRoutePlan({stops, stationIndex = null, synthetic = false, g
   const allowedVoltages = rules.allowedVoltages === undefined ? null : rules.allowedVoltages;
   if (allowedVoltages !== null && (!Array.isArray(allowedVoltages) || allowedVoltages.some(kv => !Number.isFinite(kv) || kv <= 0))) throw Error('Choose valid voltage levels.');
   const eligible = network?.index && createEligibleTrainIndex(network.index,
-    {allowedVoltages, allowTransformers: rules.allowTransformers === true}, network.isReviewedEdge);
-  const sequence = planTrainBuses(selected, eligible, network, allowedVoltages, allowSimulated);
+    {allowedVoltages, allowOtherVoltage:rules.allowOtherVoltage===true, allowTransformers: rules.allowTransformers === true}, network.isReviewedEdge);
+  const sequence = planTrainBuses(selected, eligible, network, allowedVoltages, allowSimulated,rules.allowOtherVoltage===true);
   const legs = selected.slice(1).map((to, i) => {
     const from = selected[i];
     const choice = sequence[i];
@@ -67,21 +72,23 @@ export function buildRoutePlan({stops, stationIndex = null, synthetic = false, g
         : evidence === 'GIS_REVIEWED' ? 'Reviewed circuit identity and source GIS geometry'
         : 'No reviewed route for this leg'};
   });
-  return {schema: 'gridatlas.train.route-plan.v1', rules: {allowedVoltages: allowedVoltages === null ? null : [...allowedVoltages], allowTransformers: rules.allowTransformers === true}, stops: selected, legs,
+  return {schema: 'gridatlas.train.route-plan.v1', planEpoch, rules: {allowedVoltages: allowedVoltages === null ? null : [...allowedVoltages], allowOtherVoltage:rules.allowOtherVoltage===true, allowTransformers: rules.allowTransformers === true}, stops: selected, legs,
     totalKm: legs.every(leg => leg.km !== null) ? legs.reduce((sum, leg) => sum + leg.km, 0) : null,
     synthetic: !!synthetic, playable: legs.every(leg => leg.coordinates !== null), simulated: legs.some(leg => leg.evidence === 'SIMULATED')};
 }
-function trainVoltageAllowed(kv, allowed) { return Number.isFinite(kv) && kv > 0 && (allowed === null || allowed.includes(kv)); }
+function trainVoltageAllowed(kv, allowed,other=false) { return Number.isFinite(kv) && kv > 0 && (allowed === null || allowed.includes(kv)
+  ||other&&![400,275,220,132,66,33,11].includes(kv)); }
 /** Keep every reachable arrival bus, not just the cheapest arrival at a station. */
-function planTrainBuses(stops, eligible, network, allowed, simulate) {
+function planTrainBuses(stops, eligible, network, allowed, simulate,other) {
   const graph = eligible?.graph();
   const binding = stop => {
+    if (stop.proposed) return null;
     const row = network?.stationBindings?.[stop.id];
     return row?.stationId === stop.id && row.reviewed === true && row.source && typeof row.siteCode === 'string'
       && eligible?.site(row.siteCode)?.code === row.siteCode ? row : null;
   };
   const voltages = stop => (stop.selectedVoltageKv == null ? stop.kv : [stop.selectedVoltageKv])
-    .filter(kv => trainVoltageAllowed(kv, allowed)).sort((a,b) => a-b);
+    .filter(kv => trainVoltageAllowed(kv, allowed,other)).sort((a,b) => a-b);
   const statesAt = stop => {
     const bind = binding(stop), kv = voltages(stop);
     const buses = bind ? graph.nodesOfSite(bind.siteCode).filter(bus => kv.includes(graph.nodeVoltageKv(bus))).sort() : [];
@@ -136,10 +143,10 @@ function trainExactBusPath(eligible, network, from, to) {
       return {...hop,circuit_id:rows.length===1?rows[0].row.circuit_id||rows[0].row.id||null:null};})};
 }
 /** A view over the existing graph, never a new graph or a mutation of it. */
-export function createEligibleTrainIndex(index, {allowedVoltages, allowTransformers}, isReviewedEdge) {
+export function createEligibleTrainIndex(index, {allowedVoltages, allowOtherVoltage=false, allowTransformers}, isReviewedEdge) {
   const graph = index.graph();
   if (graph?.schema !== 'gridatlas.module.network-topology.graph.v1') throw Error('Unsupported network graph.');
-  const permitted = node => graph.has(node) && trainVoltageAllowed(graph.nodeVoltageKv(node), allowedVoltages);
+  const permitted = node => graph.has(node) && trainVoltageAllowed(graph.nodeVoltageKv(node), allowedVoltages,allowOtherVoltage);
   const view = {...graph,
     has: permitted,
     nodesOfSite: code => graph.nodesOfSite(code).filter(permitted),

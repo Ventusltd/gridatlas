@@ -1,5 +1,5 @@
 /** Native MapLibre learning cursor. Travel direction is never electrical flow. */
-export function createTrainRide({map, geodesy, palette = {}, onState = () => {}, reducedMotion = false,
+export function createTrainRide({map, geodesy, palette = {}, onState = () => {}, reducedMotion = false, readPlanEpoch = null,
   requestFrame = globalThis.requestAnimationFrame?.bind(globalThis),
   cancelFrame = globalThis.cancelAnimationFrame?.bind(globalThis)} = {}) {
   if (!map || typeof geodesy?.distanceKm !== 'function') throw Error('Map and canonical geodesy required.');
@@ -10,12 +10,12 @@ export function createTrainRide({map, geodesy, palette = {}, onState = () => {},
   const flowPatterns = Array.from({length: 24}, (_, i) => Object.freeze([0.001,
     Math.max(0.001, i / 24 * 1.5), 0.42, Math.max(0.001, 1.5 - i / 24 * 1.5)]));
   let lastDashIndex = -1;
-  let alive = true, plan = null, playing = false, handle = null, legIndex = 0, fraction = 0, epoch = 0, measures = [], prefixStop = 0;
+  let alive = true, plan = null, pinStops = [], playing = false, handle = null, legIndex = 0, fraction = 0, epoch = 0, measures = [], prefixStop = 0;
   let lastTime = null, lastPaint = -Infinity, cameraFollow = false, durationMs = 2400, unavailable = null;
   const state = () => ({schema: 'gridatlas.train.motion.v1', alive, playing, legIndex, fraction,
     stopIndex: fraction === 1 ? legIndex + 1 : legIndex, reducedMotion: !!reducedMotion,
     cameraFollow, unavailable, approvedThroughStop: prefixStop, evidence: plan?.legs[legIndex]?.evidence || null,
-    electricalFlow: 'UNKNOWN', simulated: !!plan?.simulated, stops: plan?.stops.length || 0});
+    electricalFlow: 'UNKNOWN', simulated: !!plan?.simulated, stops: plan?.stops.length || pinStops.length});
   const notify = () => onState(state());
   const collection = features => ({type: 'FeatureCollection', features});
   const point = (at, properties = {}) => ({type: 'Feature', properties, geometry: {type: 'Point', coordinates: at}});
@@ -23,9 +23,9 @@ export function createTrainRide({map, geodesy, palette = {}, onState = () => {},
   function schedule() { const token = epoch; handle = requestFrame(time => { if (token === epoch) tick(time); }); }
   function pause() { playing = false; cancel(); notify(); return state(); }
   function ensure() {
-    if (!alive || !plan || map.isStyleLoaded?.() === false) return false;
+    if (!alive || !plan && !pinStops.length || map.isStyleLoaded?.() === false) return false;
     const sourceIds = ['routes', 'stops', 'cursor'].map(id => prefix + id);
-    const layerIds = ['route-gis', 'route-schematic', 'flow', 'stops', 'cursor'].map(id => prefix + id);
+    const layerIds = ['route-gis', 'route-topology', 'route-simulated', 'flow', 'stops', 'proposals', 'cursor'].map(id => prefix + id);
     for (const id of sourceIds) {
       const existing = map.getSource(id);
       if (existing && existing !== sources.get(id)) { unavailable = 'Source ID belongs to another module'; pause(); return false; }
@@ -41,13 +41,17 @@ export function createTrainRide({map, geodesy, palette = {}, onState = () => {},
     const line = {type: 'line', source: prefix + 'routes', layout: {'line-cap': 'round', 'line-join': 'round'}};
     add({...line, id: prefix + 'route-gis', filter: ['==', ['get', 'evidence'], 'GIS_REVIEWED'],
       paint: {'line-color': colour, 'line-width': 1.8, 'line-opacity': 0.8}});
-    add({...line, id: prefix + 'route-schematic', filter: ['!=', ['get', 'evidence'], 'GIS_REVIEWED'],
-      paint: {'line-color': colour, 'line-width': 1.4, 'line-opacity': 0.65, 'line-dasharray': [2, 3]}});
+    add({...line, id: prefix + 'route-topology', filter: ['==', ['get', 'evidence'], 'TOPOLOGY_ONLY'],
+      paint: {'line-color': colour, 'line-width': 1.4, 'line-opacity': 0.65, 'line-dasharray': [5, 2]}});
+    add({...line, id: prefix + 'route-simulated', filter: ['==', ['get', 'evidence'], 'SIMULATED'],
+      paint: {'line-color': colour, 'line-width': 1.4, 'line-opacity': 0.65, 'line-dasharray': [1, 3]}});
     // Existing l-neon-flow rhythm, confined to our own overlay.
-    add({...line, id: prefix + 'flow', paint: {'line-color': flowColour, 'line-width': 1.2,
+    add({...line, id: prefix + 'flow',filter:['==',['get','evidence'],'GIS_REVIEWED'], paint: {'line-color': flowColour, 'line-width': 1.2,
       'line-opacity': reducedMotion ? 0 : 0.45, 'line-dasharray': [0.2, 3.2]}});
-    add({id: prefix + 'stops', type: 'circle', source: prefix + 'stops', paint: {
+    add({id: prefix + 'stops', type: 'circle', source: prefix + 'stops', filter:['!=',['get','proposed'],true],paint: {
       'circle-color': colour, 'circle-radius': 3, 'circle-opacity': 0.8}});
+    add({id:prefix+'proposals',type:'circle',source:prefix+'stops',filter:['==',['get','proposed'],true],paint:{
+      'circle-color':'#000c10','circle-radius':5,'circle-stroke-color':colour,'circle-stroke-width':1.5,'circle-opacity':0.9}});
     add({id: prefix + 'cursor', type: 'circle', source: prefix + 'cursor', paint: {
       'circle-color': colour, 'circle-radius': 5, 'circle-stroke-color': '#000c10', 'circle-stroke-width': 1.5}});
     unavailable = null; return true;
@@ -64,9 +68,9 @@ export function createTrainRide({map, geodesy, palette = {}, onState = () => {},
   }
   function paint() {
     if (!ensure()) return;
-    sources.get(prefix + 'routes').setData(collection(plan.legs.slice(0,prefixStop).filter(l => l.coordinates).map(l => ({type: 'Feature',
+    sources.get(prefix + 'routes').setData(collection((plan?.legs||[]).slice(0,prefixStop).filter(l => l.coordinates).map(l => ({type: 'Feature',
       properties: {evidence: l.evidence, label: l.label}, geometry: {type: 'LineString', coordinates: l.coordinates}}))));
-    sources.get(prefix + 'stops').setData(collection(plan.stops.map((stop, i) => point(stop.at, {stationId: stop.id, stopIndex: i}))));
+    sources.get(prefix + 'stops').setData(stopData(plan?.stops||pinStops));
     paintCursor();
   }
   function paintCursor() {
@@ -76,6 +80,7 @@ export function createTrainRide({map, geodesy, palette = {}, onState = () => {},
   }
   function tick(time) {
     handle = null; if (!alive || !playing) return;
+    if (readPlanEpoch && readPlanEpoch() !== plan.planEpoch) { clearPlan(); return; }
     if (map.isStyleLoaded?.() === false) { pause(); return; }
     if (lastTime === null) lastTime = time;
     fraction += Math.max(0, Math.min(250, time - lastTime)) / durationMs; lastTime = time;
@@ -96,11 +101,12 @@ export function createTrainRide({map, geodesy, palette = {}, onState = () => {},
   }
   function setPlan(next) {
     if (!alive) throw Error('Train ride is destroyed.');
+    clearPlan({stops:pinStops});
     if (next?.schema !== 'gridatlas.train.route-plan.v1' || !Array.isArray(next.legs) || !next.legs.length
       || !Array.isArray(next.stops) || next.stops.length !== next.legs.length + 1
       || next.legs.reduce((n, leg) => n + (leg.coordinates?.length || 0), 0) > 20000) throw Error('Invalid or oversized journey plan.');
     // Snapshot input so later UI edits cannot mutate an active ride.
-    const copy = JSON.parse(JSON.stringify(next)); pause(); plan = copy;
+    const copy = JSON.parse(JSON.stringify(next)); plan = copy; pinStops = copy.stops;
     const gap = plan.legs.findIndex(leg => !leg.coordinates || leg.evidence === 'MISSING');
     prefixStop = gap < 0 ? plan.legs.length : gap;
     measures = plan.legs.map(leg => { const cumulative = [0];
@@ -109,6 +115,7 @@ export function createTrainRide({map, geodesy, palette = {}, onState = () => {},
     legIndex = 0; fraction = 0; paint(); notify(); return state();
   }
   function play(options = {}) {
+    if (readPlanEpoch && plan && readPlanEpoch() !== plan.planEpoch) { clearPlan(); return false; }
     if (!alive || !plan?.playable || prefixStop !== plan.legs.length || unavailable) return false;
     cameraFollow = options.cameraFollow === true;
     if (Number.isFinite(options.durationMs)) durationMs = Math.max(500, Math.min(30000, options.durationMs));
@@ -119,12 +126,29 @@ export function createTrainRide({map, geodesy, palette = {}, onState = () => {},
     playing = true; lastTime = null; schedule(); notify(); return true;
   }
   function seekStop(index) {
+    if (readPlanEpoch && plan && readPlanEpoch() !== plan.planEpoch) { clearPlan(); return false; }
     if (!alive || !plan || !Number.isInteger(index) || index < 0 || index > prefixStop || index >= plan.stops.length) return false;
     pause(); legIndex = index === prefixStop && index > 0 ? index - 1 : index;
     fraction = index === prefixStop && index > 0 ? 1 : 0;
     paintCursor(); notify(); return true;
   }
   function step() { const next = state().stopIndex + 1; return next <= prefixStop && seekStop(next); }
+  function stopData(stops) { return collection(stops.map((stop,i)=>point(stop.at,{stationId:stop.id||stop.stationId,stopIndex:i,
+    proposed:stop.proposed===true,kind:stop.proposed?'customer_substation':'source_substation',label:stop.proposed?'PROPOSED SESSION ONLY':stop.name||''}))); }
+  function clearPlan({stops=[]}={}) {
+    if (!alive) return false;
+    if (!Array.isArray(stops) || stops.length>90 || stops.some(stop=>!Array.isArray(stop.at)||stop.at.length!==2
+      ||!stop.at.every(Number.isFinite)||Math.abs(stop.at[0])>180||Math.abs(stop.at[1])>90)) throw Error('Invalid selected station pins.');
+    pause();plan=null;measures=[];prefixStop=0;legIndex=0;fraction=0;
+    pinStops=JSON.parse(JSON.stringify(stops.filter(stop=>!stop.invalid)));
+    if(ensure()) for(const [suffix,data]of [['routes',collection([])],['cursor',collection([])],['stops',stopData(pinStops)]]) {
+      const id=prefix+suffix;if(map.getSource(id)===sources.get(id))sources.get(id).setData(data);
+    }
+    // Empty selections still clear existing owned layers/sources without adding any.
+    if(!pinStops.length)for(const suffix of ['routes','cursor','stops']){const id=prefix+suffix;
+      if(sources.has(id)&&map.getSource(id)===sources.get(id))sources.get(id).setData(collection([]));}
+    notify();return true;
+  }
   function styleReload() { if (!alive) return; pause(); paint(); }
   function removed() { if (!alive) return; alive = false; playing = false; cancel(); sources.clear(); layers.clear(); map.off('style.load', styleReload); notify(); }
   function destroy() {
@@ -135,5 +159,5 @@ export function createTrainRide({map, geodesy, palette = {}, onState = () => {},
     map.off('style.load', styleReload); map.off('remove', removed); notify();
   }
   map.on('style.load', styleReload); map.on('remove', removed);
-  return Object.freeze({setPlan, play, pause, step, seekStop, destroy, snapshot: state});
+  return Object.freeze({setPlan, clearPlan, play, pause, step, seekStop, destroy, snapshot: state});
 }
