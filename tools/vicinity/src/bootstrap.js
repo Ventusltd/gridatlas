@@ -163,6 +163,8 @@ if (!NS.gridVicinity) {
       source = null; ownedLayers.clear();
     }
     function showError(message) { error = message; failure.textContent = message; failure.hidden = !message; }
+    function clearNews() { newsBase = null; newsTopic = null; news.removeAttribute('href'); news.hidden = newsCaption.hidden = true; }
+    function clearSelectedContext() { origin = null; result = null; assetContext = null; documentContext = null; list.replaceChildren(); energyRows.replaceChildren(); documentRows.replaceChildren(); news.hidden = newsCaption.hidden = true; removeMap(); }
     function updateModel() { modelStatus.textContent = itinerary.length ? `${itinerary.length} selected assets: ${itinerary.map(row => row.name).join(' → ')}. User-assumed joins.` : 'No assets added.'; undo.disabled = clear.disabled = !itinerary.length; }
     function addStation(row) {
       if (itinerary.length >= 20) { showError('This local model holds up to 20 assets. Undo or clear to make another choice.'); return; }
@@ -191,7 +193,7 @@ if (!NS.gridVicinity) {
     }
     function setOrigin(next) {
       try { const validated = normaliseOrigin(next); origin = validated; selectionEpoch++; picking = false; pick.setAttribute('aria-pressed', 'false'); pick.textContent = 'Pick origin on map'; showError(null); refresh(); return true; }
-      catch (e) { origin = null; result = null; list.replaceChildren(); originLabel.textContent = 'Origin was not applied.'; removeMap(); showError(e.message); return false; }
+      catch (e) { clearSelectedContext(); originLabel.textContent = 'Origin was not applied.'; showError(e.message); return false; }
     }
     function mapCentre() { const c = map.getCenter(); return {at: [c.lng, c.lat], type: 'map-centre', id: null, name: 'Chosen map centre'}; }
     function fitRadius() {
@@ -215,13 +217,18 @@ if (!NS.gridVicinity) {
       if (!alive) return false;
       returning = D.activeElement; opened = true; panel.hidden = false; launch.setAttribute('aria-expanded', 'true'); for (const b of controls) b.setAttribute('aria-expanded', 'true');
       try {
-        if (options.error) { origin = null; result = null; removeMap(); list.replaceChildren(); originLabel.textContent = 'Journey link was not applied. Choose an origin to explore.'; status.textContent = ''; showError(options.error); close.focus(); return false; }
-        if (options.newsContextUrl !== undefined) { newsBase = validateNewsContextBase(options.newsContextUrl); newsTopic = normaliseNewsTopic(options.newsTopic, options.origin); }
+        if (options.error) { clearSelectedContext(); originLabel.textContent = 'Journey link was not applied. Choose an origin to explore.'; status.textContent = ''; showError(options.error); close.focus(); return false; }
+        let newsError = options.newsContextError || null;
+        if (newsError) clearNews();
+        else if (options.newsContextUrl !== undefined) {
+          try { const base = validateNewsContextBase(options.newsContextUrl), topic = normaliseNewsTopic(options.newsTopic, options.origin); newsBase = base; newsTopic = topic; }
+          catch (e) { clearNews(); newsError = 'News context link was not applied: ' + e.message; }
+        }
         radius = radiusKm(options.radiusKm ?? radius);
         if (!setOrigin(options.origin || origin || mapCentre())) return false;
         try { W.__GRIDATLAS_NEON_LINKS__?.enableSubstationLayer?.(); } catch (_) {}
-        refresh(); close.focus(); return true;
-      } catch (e) { showError(e.message); close.focus(); return false; }
+        refresh(); if (newsError) showError(newsError + ' Grid exploration continues.'); close.focus(); return true;
+      } catch (e) { clearSelectedContext(); originLabel.textContent = 'Journey request was not applied. Choose a valid origin and radius.'; showError(e.message); close.focus(); return false; }
     }
     function shut() {
       if (!alive) return;

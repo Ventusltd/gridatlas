@@ -40,9 +40,14 @@ export function parseVicinityIntent(search) {
   const origin = normaliseOrigin({at: [Number(longitude), Number(latitude)], type: q.get('origin_type'), id: q.get('origin_id'), name: q.get('name')}, {requireIdentity: true});
   const intent = {origin, radiusKm: radiusKm(q.get('radius_km'))};
   if (q.has('news_context_url')) {
-    if (q.getAll('news_context_url').length !== 1 || q.getAll('news_topic').length > 1) throw new Error('Journey link has duplicate news context fields.');
-    intent.newsContextUrl = validateNewsContextBase(q.get('news_context_url'));
-    intent.newsTopic = normaliseNewsTopic(q.get('news_topic'), origin);
+    try {
+      if (q.getAll('news_context_url').length !== 1 || q.getAll('news_topic').length > 1) throw new Error('News context has duplicate fields.');
+      intent.newsContextUrl = validateNewsContextBase(q.get('news_context_url'));
+      intent.newsTopic = normaliseNewsTopic(q.get('news_topic'), origin);
+    } catch (error) {
+      delete intent.newsContextUrl; delete intent.newsTopic;
+      intent.newsContextError = 'News context link was not applied: ' + error.message;
+    }
   }
   return intent;
 }
