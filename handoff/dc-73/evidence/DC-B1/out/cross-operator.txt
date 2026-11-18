@@ -1,0 +1,6 @@
+mutants vs tools/ci/offtakers/overlay-offtakers.test.mjs (dev module, 20:40 UTC); base 30/30
+N3 30->29: 4 fail | R100 100->40: 2 fail | in_nearest_default skip removed: 1 fail | NC/ND licence check removed: 1 fail | data-centre tap -> oc: 10 fail
+nearestCount subs.length->30 (voltage chips from the 30 only): survived, then killed by the 275 kV chip assertion (DC2)
+DZ sized by unlabelled MW: survived, then killed by DC11 (sites with only an unlabelled MW stay size 1)
+label cap 6->9: survives (equivalent: the rule yields at most 3+3 ids)
+cross-operator merges (DC-A7 members traced to DC-A4 operators): 1, dcuk-fde0cde03ff31e52 Digital Realty LHR26 = Digital Realty + Global Technical Realty (DC-A4 DC-OW-0075, flagged there in operator_alternatives; not flagged in DC-A7)

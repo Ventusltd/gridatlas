@@ -1,0 +1,8 @@
+IN PROGRESS DC-B1
+
+# DC-B1 (Team B builder): data-centre category + Grid Engine 30/30/30
+
+- 19:51 started; worktree evidence/DC-B1/wt on origin/main, branch claude/dc-b1-datacentre-303030.
+- 20:13 Inputs absorbed (lead): DC-B3 ENGINE (gridScope.scope for the 30 substations; original nearestSubstations kept as head-5 parity), DC-B2 CARD-SPEC (4 tabs Area/Substations/REPD/Conventional, nearest 10 drawn then Show all, rose/olive/grey + dashes, labels ≤6, camera, CSV), lead decision: conventional ALWAYS 30 listed, lines ≤100 km ("Lines drawn for n of 30"). Data: DC-A4 dc_operational.geojson (178 DCs; 12 cable landing stations excluded) and DC-A6 conventional_power_uk.geojson (301; 290 not closed) committed VERBATIM under data/ (sha 614e6931…, 44b577a1… = producers' hashes), pinned + lazily loaded. Marchwood fix: data/offtakers_filtered_202610292000.geojson = 0945 with one byte-level change (OT-B-0823 subclass biomass -> gas_ccgt_large), script evidence/DC-B1/tools/fix_marchwood.py.
+- 20:13 Source: tools/offtakers/src (01, 02, 04, 05, 06, 06b-dc-engine.js NEW, 07). Dev module 70,423 B (budget 40,000 must rise; lightning's is 64,781) -> owner decision flagged.
+- 20:13 Suite tools/ci/offtakers/overlay-offtakers.test.mjs: 29/29 on the dev module (19 old + 10 DC tests, independent haversine for nearest-30 subs/REPD/conventional, gridScope = real engine source sliced from the cartridge), live 1044 module still 19/19 (new tests skip there). Findings so far: (1) DC-A4 DC-OW-0075 "Digital Realty LHR26" merges Global Technical Realty (flagged in operator_alternatives; the card now shows it) -> DC-A4/lead; (2) a "CC BY-NC" licence passed a prefix check: now refused (NC/ND).
