@@ -5,6 +5,11 @@ export function createTrainRide({map, geodesy, palette = {}, onState = () => {},
   if (!map || typeof geodesy?.distanceKm !== 'function') throw Error('Map and canonical geodesy required.');
   const prefix = 'gridatlas-train-', sources = new Map(), layers = new Map();
   const colour = palette.SUBSTATION_COLOUR || palette.substation || '#5fbdc2'; // Existing SLD substation colour.
+  const flowColour = palette.FLOW_COLOUR || '#bfe9ee';
+  // Same 24 cached dash patterns as the existing SLD neon renderer; no atlas growth per frame.
+  const flowPatterns = Array.from({length: 24}, (_, i) => Object.freeze([0.001,
+    Math.max(0.001, i / 24 * 1.5), 0.42, Math.max(0.001, 1.5 - i / 24 * 1.5)]));
+  let lastDashIndex = -1;
   let alive = true, plan = null, playing = false, handle = null, legIndex = 0, fraction = 0, epoch = 0, measures = [];
   let lastTime = null, lastPaint = -Infinity, cameraFollow = false, durationMs = 2400, unavailable = null;
   const state = () => ({schema: 'gridatlas.train.motion.v1', alive, playing, legIndex, fraction,
@@ -32,14 +37,14 @@ export function createTrainRide({map, geodesy, palette = {}, onState = () => {},
     for (const id of sourceIds) if (!map.getSource(id)) {
       map.addSource(id, {type: 'geojson', data: collection([])}); sources.set(id, map.getSource(id));
     }
-    const add = spec => { if (!map.getLayer(spec.id)) { map.addLayer(spec); layers.set(spec.id, map.getLayer(spec.id)); } };
+    const add = spec => { if (!map.getLayer(spec.id)) { map.addLayer(spec); layers.set(spec.id, map.getLayer(spec.id)); if (spec.id === prefix + 'flow') lastDashIndex = -1; } };
     const line = {type: 'line', source: prefix + 'routes', layout: {'line-cap': 'round', 'line-join': 'round'}};
     add({...line, id: prefix + 'route-gis', filter: ['==', ['get', 'evidence'], 'GIS_REVIEWED'],
       paint: {'line-color': colour, 'line-width': 1.8, 'line-opacity': 0.8}});
     add({...line, id: prefix + 'route-schematic', filter: ['!=', ['get', 'evidence'], 'GIS_REVIEWED'],
       paint: {'line-color': colour, 'line-width': 1.4, 'line-opacity': 0.65, 'line-dasharray': [2, 3]}});
     // Existing l-neon-flow rhythm, confined to our own overlay.
-    add({...line, id: prefix + 'flow', paint: {'line-color': colour, 'line-width': 1.2,
+    add({...line, id: prefix + 'flow', paint: {'line-color': flowColour, 'line-width': 1.2,
       'line-opacity': reducedMotion ? 0 : 0.45, 'line-dasharray': [0.2, 3.2]}});
     add({id: prefix + 'stops', type: 'circle', source: prefix + 'stops', paint: {
       'circle-color': colour, 'circle-radius': 3, 'circle-opacity': 0.8}});
@@ -81,6 +86,10 @@ export function createTrainRide({map, geodesy, palette = {}, onState = () => {},
       lastPaint = time; paintCursor();
       const layer = map.getLayer(prefix + 'cursor');
       if (layer === layers.get(prefix + 'cursor')) map.setPaintProperty(prefix + 'cursor', 'circle-radius', 5 + Math.sin(fraction * Math.PI) * 1.5);
+      const dashIndex = Math.floor(fraction * 24) % 24;
+      if (dashIndex !== lastDashIndex && map.getLayer(prefix + 'flow') === layers.get(prefix + 'flow')) {
+        lastDashIndex = dashIndex; map.setPaintProperty(prefix + 'flow', 'line-dasharray', flowPatterns[dashIndex]);
+      }
       notify();
     }
     if (playing) schedule();
@@ -108,7 +117,7 @@ export function createTrainRide({map, geodesy, palette = {}, onState = () => {},
     playing = true; lastTime = null; schedule(); notify(); return true;
   }
   function seekStop(index) {
-    if (!plan || !Number.isInteger(index) || index < 0 || index >= plan.stops.length) return false;
+    if (!alive || !plan || !Number.isInteger(index) || index < 0 || index >= plan.stops.length) return false;
     pause(); legIndex = Math.min(index, plan.legs.length - 1); fraction = index === plan.stops.length - 1 ? 1 : 0;
     paintCursor(); notify(); return true;
   }
