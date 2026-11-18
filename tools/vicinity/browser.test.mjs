@@ -94,7 +94,7 @@ try{
  const scenario=await snapshot();assert.equal(scenario.modelStations.length,2);assert.ok(scenario.train.itinerary.stops.every(row=>row.stationId.startsWith('grid_substations:')));
  await visibleTap(panel.locator('.train-stops').getByRole('button',{name:/^Remove /}).first());assert.equal((await snapshot()).modelStations.length,1);
  await visibleTap(page.getByRole('button',{name:'Clear selected stops',exact:true}));assert.equal((await snapshot()).modelStations.length,0);
- const trainAcceptance=await runTrainUiAcceptance({page,panel,snapshot,visibleTap,output});
+ const trainAcceptance=await runTrainUiAcceptance({page,panel,snapshot,visibleTap,output,pageErrors:errors});
  assert.equal(await sourceFingerprint(),baselineSource,'native source geometry is never rewritten by a local model');
  await visibleTap(sourceVoltage.getByRole('checkbox',{name:'33 kV',exact:true}));assert.deepEqual((await snapshot()).selectedBands,[]);assert.equal((await snapshot()).matching,0);assert.equal((await assertOwnPoints(50)).length,0);
  await visibleTap(sourceVoltage.getByRole('checkbox',{name:'Voltage not stated',exact:true}));assert.deepEqual((await snapshot()).selectedBands,['unknown']);assert.ok((await assertOwnPoints(50)).every(f=>f.properties.voltage==='Not stated'));
