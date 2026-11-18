@@ -57,6 +57,19 @@ try{
  radiusChecks.push({radius:10,matching:initial.matching,shown:(await assertOwnPoints(10)).length});
  const radiusOneStarted=performance.now();await slider.focus();await page.keyboard.press('Home');assert.equal((await snapshot()).radiusKm,1);radiusChecks.push({radius:1,durationMs:performance.now()-radiusOneStarted,matching:(await snapshot()).matching,shown:(await assertOwnPoints(1)).length});
  const radiusFiftyStarted=performance.now();await page.keyboard.press('End');assert.equal((await snapshot()).radiusKm,50);radiusChecks.push({radius:50,durationMs:performance.now()-radiusFiftyStarted,matching:(await snapshot()).matching,shown:(await assertOwnPoints(50)).length});
+ // Native owner actions load real generation/storage/off-taker context asynchronously.
+ const assetsBefore=(await snapshot()).assetContext;assert.ok(assetsBefore);
+ const assetsStarted=performance.now();await visibleTap(page.getByRole('button',{name:'Load existing asset layers',exact:true}));
+ await page.waitForFunction(()=>{const ns=window.__GRIDATLAS_MODULES__,c=ns.gridVicinity.snapshot().assetContext?.categories,dc=c?.find(x=>x.id==='datacentre');return c?.find(x=>x.id==='generation')?.availability==='LOADED'&&dc?.availability==='LOADED'&&(dc.rows.some(r=>r.source==='ukOfftakers.data-centre-pipeline')||!!ns.ukOfftakers?.state.pe);},null,{timeout:120000});
+ const assetContext=(await snapshot()).assetContext,assetRefreshMs=performance.now()-assetsStarted;
+ for(const id of ['generation','storage','datacentre','conventional','demand-context']){const category=assetContext.categories.find(c=>c.id===id);assert.equal(category.availability,'LOADED',id);assert.ok(category.count>0,id+' actual nearby positive count at50km');assert.ok(category.rows.every(r=>r.km<=50&&r.demandMw===null&&r.facilityVerified===null));assert.ok(category.rows.every(r=>r.capacityMw===null||r.capacityMw>0));}
+ const dcContext=panel.locator('[data-vicinity-category=\"datacentre\"]');await visibleTap(dcContext.locator('summary'));
+ assert.match(await dcContext.innerText(),/Actual electricity demand unknown/);
+ const assetRow=assetContext.categories.find(c=>c.id==='datacentre').rows[0];
+ await visibleTap(dcContext.getByRole('button',{name:/^Add .+ to my model$/}).first());assert.deepEqual((await snapshot()).modelStations.at(-1).at,assetRow.at);
+ await visibleTap(page.getByRole('button',{name:'Clear model',exact:true}));
+ const docs=panel.locator('.vic-document-context');await visibleTap(docs.locator('summary'));assert.match(await docs.innerText(),/Sea Link/);assert.match(await docs.innerText(),/No association|not linked|unassociated/i);
+ assert.equal((await snapshot()).documentContext.verifiedAssetJoins,0);
  // Native Android taps operate voltage labels; no script-driven state changes.
  for(const name of ['400 kV','275 kV','132 kV','66 kV','11 kV','Other stated voltage','Voltage not stated']){const box=page.getByRole('checkbox',{name,exact:true});if(await box.isChecked())await visibleTap(box);}
  assert.deepEqual((await snapshot()).selectedBands,['33']);
@@ -113,7 +126,7 @@ try{
  await page.evaluate(()=>window.__GRIDATLAS_MODULES__.gridVicinity.mount().open({origin:{at:[-0.1,51.5],type:'map-centre',id:null},radiusKm:1}));assert.equal((await snapshot()).opened,true);await page.evaluate(()=>window.__GRIDATLAS_V9_MAP__.remove());assert.equal((await snapshot()).alive,false);assert.equal(await page.locator('#gridatlas-vicinity').count(),0);
  assert.deepEqual(errors,[]);
  const actualModule=injecting?compiled.body:fs.readFileSync(path.join(atlasRoot,'atlas/modules/'+generation+'-grid-vicinity.js'),'utf8').replace(/\r\n/g,'\n');
- const receipt={result:'PASS',startedUTC,finishedUTC:new Date().toISOString(),mode:injecting?'CANDIDATE_MODULE_INJECTION_NOT_PUBLIC_ACCEPTANCE':'LOCAL_FULL_COMPOSITION',browser:browserName,device:browserName==='webkit'?'iPhone 13 software regression':'Pixel 7 Android touch emulation',generation,moduleBytes:Buffer.byteLength(actualModule),moduleSha256:createHash('sha256').update(actualModule).digest('hex'),initial,physicalControls,sourceCoverage,radiusChecks,origins,scenario,layouts,exitedFullscreen,baselineLayers:baselineLayers.length,finalLayers:finalLayers.length,errors,failed,physicalPhone:'UNKNOWN',webKitBinaryAvailable:fs.existsSync(pw.webkit.executablePath())};
+ const receipt={result:'PASS',startedUTC,finishedUTC:new Date().toISOString(),mode:injecting?'CANDIDATE_MODULE_INJECTION_NOT_PUBLIC_ACCEPTANCE':'LOCAL_FULL_COMPOSITION',browser:browserName,device:browserName==='webkit'?'iPhone 13 software regression':'Pixel 7 Android touch emulation',generation,moduleBytes:Buffer.byteLength(actualModule),moduleSha256:createHash('sha256').update(actualModule).digest('hex'),initial,physicalControls,sourceCoverage,assetsBefore,assetContext,assetRefreshMs,radiusChecks,origins,scenario,layouts,exitedFullscreen,baselineLayers:baselineLayers.length,finalLayers:finalLayers.length,errors,failed,physicalPhone:'UNKNOWN',webKitBinaryAvailable:fs.existsSync(pw.webkit.executablePath())};
  fs.writeFileSync(path.join(output,'receipt.json'),JSON.stringify(receipt,null,2)+'\n');console.log(JSON.stringify({result:'PASS',output,generation,matching:initial.matching,loaded:initial.loadedRecords}));
 }catch(e){if(page)await page.screenshot({path:path.join(output,'failure.png')}).catch(()=>{});fs.writeFileSync(path.join(output,'failure.json'),JSON.stringify({error:e.message,stack:e.stack,errors,failed,snapshot:page?await snapshot().catch(()=>null):null},null,2));throw e;}
 finally{await browser?.close();await new Promise(resolve=>server.close(resolve));}
