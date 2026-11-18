@@ -115,6 +115,13 @@ try{
  // Malformed input is explicit, then a native map-centre action recovers without invented identity.
  await page.evaluate(()=>window.__GRIDATLAS_MODULES__.gridVicinity.open({origin:{at:[0,0],id:'bad',type:'repd'},radiusKm:10}));assert.equal((await snapshot()).origin,null);assert.equal((await snapshot()).matching,null);assert.equal(await ownData(),undefined);assert.match(await page.locator('.vic-error').innerText(),/valid located origin/);
  await visibleTap(page.getByRole('button',{name:'Use map centre',exact:true}));assert.equal((await snapshot()).origin.type,'map-centre');assert.equal((await snapshot()).origin.id,null);
+ // Optional news failures degrade independently; the valid physical origin stays useful.
+ await page.evaluate(o=>window.__GRIDATLAS_MODULES__.gridVicinity.open(o),{origin:dc,radiusKm:10,newsContextUrl:'https://globalgrid2050.com/uk_renewables_pipeline/202611171940/',newsTopic:'datacentre'});
+ const goodNews=new URL((await snapshot()).newsHref);assert.equal(goodNews.searchParams.get('news_origin_id'),dc.id);assert.equal(goodNews.hash,'#headlinesHeading');
+ await page.evaluate(o=>window.__GRIDATLAS_MODULES__.gridVicinity.open(o),{origin:dc,radiusKm:10,newsContextUrl:'https://evil.example/not-allowed/',newsTopic:'grid'});
+ assert.equal((await snapshot()).origin.id,dc.id);assert.equal((await snapshot()).phase,'READY');assert.equal((await snapshot()).newsHref,null);assert.ok((await snapshot()).matching>0);
+ await page.evaluate(()=>window.__GRIDATLAS_MODULES__.gridVicinity.open({radiusKm:10}));assert.equal((await snapshot()).phase,'CHOOSE_ORIGIN');assert.equal((await snapshot()).origin,null);assert.equal(await ownData(),undefined);
+ await visibleTap(page.getByRole('button',{name:'Use map centre',exact:true}));assert.equal((await snapshot()).phase,'READY');assert.equal((await snapshot()).origin.type,'map-centre');
  // The same controller handles explicit events; opaque IDs are retained, never interpreted as topology.
  await page.evaluate(()=>window.dispatchEvent(new CustomEvent('gridatlas:vicinity-open',{detail:{origin:{at:[-0.1,51.5],type:'datacentre',id:'DC-WD-Q',name:'Opaque producer contract fixture'},radiusKm:10}})));assert.equal((await snapshot()).origin.id,'DC-WD-Q');
  // Existing source and layer collisions remain byte/object-identical through close and destroy.
