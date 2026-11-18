@@ -10,11 +10,11 @@ export function createTrainRide({map, geodesy, palette = {}, onState = () => {},
   const flowPatterns = Array.from({length: 24}, (_, i) => Object.freeze([0.001,
     Math.max(0.001, i / 24 * 1.5), 0.42, Math.max(0.001, 1.5 - i / 24 * 1.5)]));
   let lastDashIndex = -1;
-  let alive = true, plan = null, playing = false, handle = null, legIndex = 0, fraction = 0, epoch = 0, measures = [];
+  let alive = true, plan = null, playing = false, handle = null, legIndex = 0, fraction = 0, epoch = 0, measures = [], prefixStop = 0;
   let lastTime = null, lastPaint = -Infinity, cameraFollow = false, durationMs = 2400, unavailable = null;
   const state = () => ({schema: 'gridatlas.train.motion.v1', alive, playing, legIndex, fraction,
     stopIndex: fraction === 1 ? legIndex + 1 : legIndex, reducedMotion: !!reducedMotion,
-    cameraFollow, unavailable, evidence: plan?.legs[legIndex]?.evidence || null,
+    cameraFollow, unavailable, approvedThroughStop: prefixStop, evidence: plan?.legs[legIndex]?.evidence || null,
     electricalFlow: 'UNKNOWN', simulated: !!plan?.simulated, stops: plan?.stops.length || 0});
   const notify = () => onState(state());
   const collection = features => ({type: 'FeatureCollection', features});
@@ -64,7 +64,7 @@ export function createTrainRide({map, geodesy, palette = {}, onState = () => {},
   }
   function paint() {
     if (!ensure()) return;
-    sources.get(prefix + 'routes').setData(collection(plan.legs.filter(l => l.coordinates).map(l => ({type: 'Feature',
+    sources.get(prefix + 'routes').setData(collection(plan.legs.slice(0,prefixStop).filter(l => l.coordinates).map(l => ({type: 'Feature',
       properties: {evidence: l.evidence, label: l.label}, geometry: {type: 'LineString', coordinates: l.coordinates}}))));
     sources.get(prefix + 'stops').setData(collection(plan.stops.map((stop, i) => point(stop.at, {stationId: stop.id, stopIndex: i}))));
     paintCursor();
@@ -101,13 +101,15 @@ export function createTrainRide({map, geodesy, palette = {}, onState = () => {},
       || next.legs.reduce((n, leg) => n + (leg.coordinates?.length || 0), 0) > 20000) throw Error('Invalid or oversized journey plan.');
     // Snapshot input so later UI edits cannot mutate an active ride.
     const copy = JSON.parse(JSON.stringify(next)); pause(); plan = copy;
+    const gap = plan.legs.findIndex(leg => !leg.coordinates || leg.evidence === 'MISSING');
+    prefixStop = gap < 0 ? plan.legs.length : gap;
     measures = plan.legs.map(leg => { const cumulative = [0];
       for (let i = 1; i < (leg.coordinates?.length || 0); i++) cumulative.push(cumulative.at(-1) + geodesy.distanceKm(...leg.coordinates[i - 1], ...leg.coordinates[i]));
       return cumulative; });
     legIndex = 0; fraction = 0; paint(); notify(); return state();
   }
   function play(options = {}) {
-    if (!alive || !plan?.playable || unavailable) return false;
+    if (!alive || !plan?.playable || prefixStop !== plan.legs.length || unavailable) return false;
     cameraFollow = options.cameraFollow === true;
     if (Number.isFinite(options.durationMs)) durationMs = Math.max(500, Math.min(30000, options.durationMs));
     if (reducedMotion) { step(); return false; }
@@ -117,11 +119,12 @@ export function createTrainRide({map, geodesy, palette = {}, onState = () => {},
     playing = true; lastTime = null; schedule(); notify(); return true;
   }
   function seekStop(index) {
-    if (!alive || !plan || !Number.isInteger(index) || index < 0 || index >= plan.stops.length) return false;
-    pause(); legIndex = Math.min(index, plan.legs.length - 1); fraction = index === plan.stops.length - 1 ? 1 : 0;
+    if (!alive || !plan || !Number.isInteger(index) || index < 0 || index > prefixStop || index >= plan.stops.length) return false;
+    pause(); legIndex = index === prefixStop && index > 0 ? index - 1 : index;
+    fraction = index === prefixStop && index > 0 ? 1 : 0;
     paintCursor(); notify(); return true;
   }
-  function step() { return seekStop(Math.min(plan?.stops.length - 1 || 0, legIndex + 1)); }
+  function step() { const next = state().stopIndex + 1; return next <= prefixStop && seekStop(next); }
   function styleReload() { if (!alive) return; pause(); paint(); }
   function removed() { if (!alive) return; alive = false; playing = false; cancel(); sources.clear(); layers.clear(); map.off('style.load', styleReload); notify(); }
   function destroy() {
