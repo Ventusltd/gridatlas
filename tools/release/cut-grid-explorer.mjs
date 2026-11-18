@@ -30,11 +30,13 @@ Object.assign(composition, {generation: G, previous_generation: P, superseded_ge
   composition_version: version, composition_id: `${G}-gridatlas-${version}`, composition_manifest: `./manifests/${G}-composition.json`,
   composition_note: stage === 'native' ? 'Mobile arrival summary and native Journey/Layers. Synthetic learning journeys labelled; existing real assets retain factual identity.' : 'Vicinity spatial explorer: 1–50 km, voltage context, local user model; source connections are never inferred.'});
 const own = [];
-if (stage === 'native') {
+const extraSldEdits = stage === 'native' ? 'tools/sld/src/mobile-arrival-card-edits.json' : arg('--sld-edits');
+if (extraSldEdits) {
   const registryPath = 'tools/sld/generations.json', registry = json(registryPath), base = registry.generations[P];
   assert.ok(base, 'Native release requires source-built SLD parent');
   const editsPath = `tools/sld/src/${G}-mobile-arrival-edits.json`;
-  const edits = [...json(base.edits), ...json('tools/sld/src/mobile-arrival-card-edits.json')];
+  assert.ok(extraSldEdits.startsWith('tools/sld/src/') && extraSldEdits.endsWith('.json'), 'SLD edits must be a declared local source recipe');
+  const edits = [...json(base.edits), ...json(extraSldEdits)];
   write(editsPath, JSON.stringify(edits, null, 2) + '\n');
   let source = read(base.base.path);
   for (const [i, edit] of edits.entries()) {
@@ -47,8 +49,10 @@ if (stage === 'native') {
   assert.deepEqual(buildSld(G), bytes);
   const c = composition.cartridges.find(c => c.id === 'sld-sandbox');
   Object.assign(c, {generation: G, version, path: `./cartridges/${G}-sld-sandbox-v9-8.js`, sha256: hash(bytes), bytes: bytes.length});
-  c.capabilities = [...c.capabilities, 'mobile-nearest-summary-before-details', '44px-labelled-details-map-controls'];
+  c.capabilities = [...c.capabilities, ...(stage === 'native' ? ['mobile-nearest-summary-before-details', '44px-labelled-details-map-controls'] : ['map-removal-observer-cleanup'])];
   write('atlas/' + c.path, bytes); own.push(c.id);
+}
+if (stage === 'native') {
   const {assembleModule} = await import('../journey/build.mjs');
   const result = assembleModule({generation: G});
   const body = result.body;

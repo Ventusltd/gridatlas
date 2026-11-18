@@ -49,11 +49,20 @@ jobs:
           node tools/journey/contract.test.mjs
           node tools/journey/browser.test.mjs
           node tools/twin/replicate-generation.mjs --generation "$EXPLORER_GENERATION" --offline
+          if test -f tools/sld/map-removal-cleanup.test.mjs; then node --test tools/sld/map-removal-cleanup.test.mjs; fi
+          if test -f tools/vicinity/model.test.mjs; then node --test tools/vicinity/model.test.mjs; fi
+      - name: Native vicinity and user-model acceptance
+        run: |
+          if node --input-type=module -e "import fs from 'node:fs';const m=JSON.parse(fs.readFileSync('atlas/manifests/'+process.env.EXPLORER_GENERATION+'-composition.json'));process.exit(m.acceptance?.stage==='vicinity'?0:1)"; then
+            VICINITY_BROWSER_GENERATION="$EXPLORER_GENERATION" node tools/vicinity/browser.test.mjs
+          fi
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
           name: grid-explorer-${{ github.event.pull_request.head.sha }}
-          path: ${{ runner.temp }}/gridatlas-gj03-browser-*/
+          path: |
+            ${{ runner.temp }}/gridatlas-gj03-browser-*/
+            ${{ runner.temp }}/gridatlas-vicinity-*/
           retention-days: 14
 
   size-guard:
