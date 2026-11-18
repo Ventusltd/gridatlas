@@ -31,6 +31,10 @@ try {
   await page.waitForFunction(() => window.__GRIDATLAS_V9_MAP__?.getStyle()?.layers?.length > 0, {timeout:90000});
   const native = await page.evaluate(() => {const m=window.__GRIDATLAS_V9_MAP__; return {constructor:m.constructor.name,version:window.maplibregl?.version,canvas:!!m.getCanvas().getContext('webgl2') || !!m.getCanvas().getContext('webgl'),container:m.getContainer().id,existingLayers:m.getStyle().layers.length,existingLayerIds:m.getStyle().layers.map(l=>l.id)};});
   assert.equal(native.version, '3.6.2'); assert.ok(native.canvas); assert.ok(native.existingLayers > 0);
+  await page.waitForFunction(() => {const s=window.__GRIDATLAS_MODULES__?.menuBar; return s?.installed || s?.failure;}, {timeout:90000});
+  const menuState = await page.evaluate(()=>window.__GRIDATLAS_MODULES__.menuBar);
+  assert.equal(menuState.installed,true,JSON.stringify(menuState));
+  assert.equal(menuState.layer_controls,63);
   const nativeGrid = page.locator('#gridatlas-menu-bar-title-4');
   await nativeGrid.click();
   const nativeJourney = page.locator('[data-journey-group="native-grid-menu"] button');
