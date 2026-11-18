@@ -22,7 +22,7 @@ export async function runTrainUiAcceptance({page,panel,snapshot,visibleTap,outpu
  const before=await cursor();const speed=train.getByRole('slider',{name:'Seconds per leg',exact:true});await speed.focus();await page.keyboard.press('End');
  await visibleTap(train.getByRole('button',{name:'Play',exact:true}));const compact=page.getByRole('region',{name:'Journey map controls',exact:true});assert.equal(await compact.isVisible(),true);
  await page.waitForFunction(at=>{const p=window.__GRIDATLAS_V9_MAP__.getSource('gridatlas-train-cursor')?.serialize().data.features[0]?.geometry.coordinates;return p&&p.some((v,i)=>Math.abs(v-at[i])>1e-9);},before,{timeout:15000});
- const moving=await cursor();await visibleTap(compact.getByRole('button',{name:'Pause journey',exact:true}));assert.equal((await state()).ride.playing,false);const paused=await cursor();await page.waitForTimeout(150);assert.deepEqual(await cursor(),paused);
+ const moving=await cursor();await page.screenshot({path:output+'/train-native-playing.png'});await visibleTap(compact.getByRole('button',{name:'Pause journey',exact:true}));assert.equal((await state()).ride.playing,false);const paused=await cursor();await page.waitForTimeout(150);assert.deepEqual(await cursor(),paused);
  await visibleTap(compact.getByRole('button',{name:'Next journey stop',exact:true}));assert.equal((await state()).ride.stopIndex,1);await visibleTap(compact.getByRole('button',{name:'Edit journey',exact:true}));readings.motion={before,moving,paused,afterStep:await cursor(),ride:(await state()).ride};
  await page.screenshot({path:output+'/train-native-drawn.png'});
  // Place lookup uses the existing live provider; failure is retained, never replaced by a fixture.
