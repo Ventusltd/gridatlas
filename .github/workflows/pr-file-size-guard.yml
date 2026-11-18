@@ -39,7 +39,7 @@ jobs:
           node-version: '22.23.4'
           cache: npm
       - run: npm ci
-      - run: npx playwright install --with-deps chromium
+      - run: npx playwright install --with-deps chromium webkit
       - name: Select newest explorer candidate
         run: |
           node --input-type=module -e "import fs from 'node:fs'; const rows=fs.readdirSync('atlas/manifests').filter(f=>f.endsWith('-composition.json')).map(f=>JSON.parse(fs.readFileSync('atlas/manifests/'+f))).filter(m=>m.acceptance?.stage==='native'||m.acceptance?.stage==='vicinity').sort((a,b)=>a.generation.localeCompare(b.generation));const latest=rows.at(-1);if(!latest)throw Error('No explorer candidate');const native=rows.filter(m=>m.acceptance.stage==='native').at(-1);fs.appendFileSync(process.env.GITHUB_ENV,'JOURNEY_BROWSER_GENERATION='+native.generation+'\nEXPLORER_GENERATION='+latest.generation+'\n');"
@@ -53,14 +53,14 @@ jobs:
           node tools/twin/replicate-generation.mjs --generation "$EXPLORER_GENERATION" --offline
           if test -f tools/sld/map-removal-cleanup.test.mjs; then node --test tools/sld/map-removal-cleanup.test.mjs; fi
           if test -d tools/pipeline-lifecycle; then node --test tools/pipeline-lifecycle/*.test.mjs; fi
-          if test -d tools/train; then node --test tools/train/*.test.mjs tools/train/gazetteer/*.test.mjs; fi
+          if test -d tools/train; then node --test tools/train/core.test.mjs tools/train/route-plan.test.mjs tools/train/scenario.test.mjs tools/train/train-motion.test.mjs tools/train/gazetteer/lookup.test.mjs; fi
           if test -f tools/vicinity/model.test.mjs; then node --test tools/vicinity/model.test.mjs tools/vicinity/asset-context.test.mjs tools/vicinity/document-context.test.mjs; fi
-      - name: Native vicinity and user-model acceptance
-        env:
-          VICINITY_BROWSER_OUTPUT: ${{ runner.temp }}/gridatlas-vicinity-candidate
+      - name: Native vicinity and train acceptance in Chromium and WebKit
         run: |
           if node --input-type=module -e "import fs from 'node:fs';const m=JSON.parse(fs.readFileSync('atlas/manifests/'+process.env.EXPLORER_GENERATION+'-composition.json'));process.exit(m.acceptance?.stage==='vicinity'?0:1)"; then
-            VICINITY_BROWSER_GENERATION="$EXPLORER_GENERATION" node tools/vicinity/browser.test.mjs
+            for engine in chromium webkit; do
+              VICINITY_BROWSER_ENGINE="$engine" VICINITY_BROWSER_GENERATION="$EXPLORER_GENERATION" VICINITY_BROWSER_OUTPUT="$RUNNER_TEMP/gridatlas-vicinity-train-$engine" VICINITY_BROWSER_INJECT=0 node tools/vicinity/browser.test.mjs
+            done
           fi
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
