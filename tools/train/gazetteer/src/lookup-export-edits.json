@@ -1,0 +1,6 @@
+[
+  {
+    "before": "  window.__GRIDATLAS_PLACE_SEARCH__ = state;",
+    "after": "  window.__GRIDATLAS_PLACE_SEARCH__ = state;\n  // Lookup-only public seam; existing providers and result shapes, no selection side effects.\n  state.resolveLocations = async function resolveLocations(query, { includeGlobal = false } = {}) {\n    if (typeof query !== 'string' || typeof includeGlobal !== 'boolean') throw new Error('Place lookup requires a typed query and an explicit boolean global option.');\n    const uk = await queryUkGazetteer(query);\n    if (!includeGlobal) return uk;\n    const global = await queryGlobalGazetteer(query);\n    return uk.concat(dedupeGlobalLocations(uk, global));\n  };"
+  }
+]
