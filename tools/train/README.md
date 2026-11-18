@@ -7,8 +7,13 @@ editor, declarative journey law and native learning cursor. The repository's
 backend or power-flow solver is introduced.
 
 `station-index.mjs` reads the original loaded `src-subs` FeatureCollection. A
-display limit never limits that inventory. Every production selected stop must
-resolve to the canonical source ID and point. Journey mode permits 10 selected
+display limit never limits that inventory. Every factual selected stop must
+resolve to the canonical source ID and point. The sole scenario exception is a
+proposed 11/33 kV customer substation owned by the current session store, under an
+explicit hypothetical law. Its existing SLD node symbol is marked “Proposed ·
+FEED concept”; it establishes no official station, transformer, connection or
+rights. Editing/deleting it advances the plan epoch; an unavailable selected
+proposal remains invalid until the user resolves its visit. Journey mode permits 10 selected
 stops; vicinity mode permits 90, including both endpoints. Traversal nodes have
 their own graph-search bound and are not selected stops. A mode downgrade never
 silently removes choices. Non-station generation/demand records stay context.

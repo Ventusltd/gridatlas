@@ -20,6 +20,11 @@ if (!NS.gridVicinity) {
     const panel = el('section', null, root, {id: 'gridatlas-vicinity-panel', class: 'vic-panel', 'aria-label': 'Vicinity familiarisation'}); panel.hidden = true;
     const heading = el('div', null, panel, {class: 'vic-head'}); el('h2', 'Explore the nearby grid', heading);
     const close = el('button', 'Close', heading, {type: 'button', 'aria-label': 'Close vicinity explorer'});
+    const compact=el('section',null,root,{class:'vic-train-compact','aria-label':'Journey map controls'});compact.hidden=true;
+    const compactActions=el('div',null,compact,{class:'vic-actions'});
+    const compactPause=el('button','Pause',compactActions,{type:'button','aria-label':'Pause journey'}),compactPrevious=el('button','Previous',compactActions,{type:'button','aria-label':'Previous journey stop'}),compactNext=el('button','Next',compactActions,{type:'button','aria-label':'Next journey stop'}),compactEdit=el('button','Edit',compactActions,{type:'button','aria-label':'Edit journey'});
+    const compactStatus=el('p','Learning cursor; electrical flow unknown.',compact,{role:'status'});
+    const mapLegend=el('p','Solid — reviewed GIS. Long dash — topology (schematic). Dotted — SIMULATED. Proposed pin — FEED concept. Electrical flow and rights unknown.',root,{class:'vic-train-map-legend'});mapLegend.hidden=true;
     const originLabel = el('p', '', panel, {class: 'vic-origin'});
     const originPrecision = el('p', 'Source-provided location; coordinate precision not supplied.', panel, {class: 'vic-origin-precision'});
     el('p', 'Spatial vicinity, connectivity unknown. Mapped points and voltage tags are context, not capacity or an electrical path.', panel, {class: 'vic-caption'});
@@ -53,12 +58,14 @@ if (!NS.gridVicinity) {
     const documents = el('details', null, panel, {class: 'vic-document-context'}); el('summary', 'Documented works and official notices', documents);
     const documentRows = el('div', null, documents);
     panel.insertBefore(energy, list); panel.insertBefore(documents, list);
-    const train = createGreatGridJourney({map,registry:NS,geodesy,parent:panel,readFeatures:()=>{
+    const train = createGreatGridJourney({map,registry:NS,geodesy,parent:panel,onMapView:()=>{panel.hidden=true;compact.hidden=false;},onRideState:state=>{const message=`${state.playing?'Playing':'Paused'} · ${state.evidence||'no route'} · electrical flow unknown`;if(compactStatus.textContent!==message)compactStatus.textContent=message;mapLegend.hidden=!state.evidence;},onProposedPick:()=>{picking=false;pick.setAttribute('aria-pressed','false');pick.textContent='Pick origin on map';},readFeatures:()=>{
       if(!map.getStyle?.())return null;
       const data=map.getSource('src-subs')?.serialize?.().data;
       return data&&typeof data==='object'&&Array.isArray(data.features)?data.features:null;
     }});
     panel.insertBefore(train.element,originLabel);
+    listen(compactPause,'click',()=>train.pause());listen(compactPrevious,'click',()=>train.previousStop());listen(compactNext,'click',()=>train.nextStop());listen(compactEdit,'click',()=>{train.pause();compact.hidden=true;panel.hidden=false;close.focus();});
+    for(const type of ['click','dblclick','pointerdown','touchstart'])listen(compact,type,event=>event.stopPropagation());
 
     function sourceAnchor(parent, title, href) {
       try { const url = new URL(href); if (url.protocol !== 'https:' || url.username || url.password) return; el('a', title, parent, {href: url.href, target: '_blank', rel: 'noopener noreferrer'}); } catch (_) {}
@@ -216,6 +223,7 @@ if (!NS.gridVicinity) {
       } catch (e) { showError(e.message); }
     }
     function setOrigin(next) {
+      train.cancelProposedPick();
       try { const validated = normaliseOrigin(next); origin = validated; phase = 'READY'; selectionEpoch++; picking = false; pick.setAttribute('aria-pressed', 'false'); pick.textContent = 'Pick origin on map'; showError(null); refresh(); return true; }
       catch (e) { clearSelectedContext(); phase = 'REFUSED'; originLabel.textContent = 'Origin was not applied.'; showError(e.message); return false; }
     }
@@ -241,7 +249,7 @@ if (!NS.gridVicinity) {
     }
     function open(options = {}, invoker = null) {
       if (!alive) return false;
-      returning = invoker || (D.activeElement && D.activeElement !== D.body && D.activeElement !== D.documentElement ? D.activeElement : launch); opened = true; panel.hidden = false; launch.setAttribute('aria-expanded', 'true'); for (const b of controls) b.setAttribute('aria-expanded', 'true');
+      returning = invoker || (D.activeElement && D.activeElement !== D.body && D.activeElement !== D.documentElement ? D.activeElement : launch); opened = true; panel.hidden = false; compact.hidden=true; launch.setAttribute('aria-expanded', 'true'); for (const b of controls) b.setAttribute('aria-expanded', 'true');
       try {
         if(!train.setMode(options.mode||'vicinity')) {showError('Selected stops exceed the requested mode. Remove stops explicitly before changing mode.');close.focus();return false;}
         if (options.error) { clearSelectedContext(); phase = 'REFUSED'; originLabel.textContent = 'Journey link was not applied. Choose an origin to explore.'; status.textContent = ''; showError(options.error); close.focus(); return false; }
@@ -264,7 +272,7 @@ if (!NS.gridVicinity) {
     }
     function shut() {
       if (!alive) return;
-      opened = false; picking = false; panel.hidden = true; launch.setAttribute('aria-expanded', 'false'); for (const b of controls) b.setAttribute('aria-expanded', 'false');
+      opened = false; picking = false; panel.hidden = true; compact.hidden=true;mapLegend.hidden=true; launch.setAttribute('aria-expanded', 'false'); for (const b of controls) b.setAttribute('aria-expanded', 'false');
       train.pause(); removeMap(); const candidate = returning?.isConnected && returning.getClientRects().length ? returning : D.getElementById('gridatlas-menu-bar-title-4') || launch; candidate.focus();
     }
     listen(launch, 'click', () => { opened ? shut() : open({mode:'journey'}, launch); }); listen(close, 'click', shut);
@@ -284,7 +292,7 @@ if (!NS.gridVicinity) {
       showError(null); status.textContent = 'Existing physical grid layers switched on. Source-mapped corridors are context; crossings and proximity do not establish a connection.';
       fitRadius();
     });
-    listen(pick, 'click', () => { picking = !picking; pick.setAttribute('aria-pressed', String(picking)); pick.textContent = picking ? 'Tap a point on the map' : 'Pick origin on map'; });
+    listen(pick, 'click', () => { train.cancelProposedPick(); picking = !picking; pick.setAttribute('aria-pressed', String(picking)); pick.textContent = picking ? 'Tap a point on the map' : 'Pick origin on map'; });
     listen(slider, 'input', () => { try { radius = radiusKm(slider.value); showError(null); refresh(); } catch (e) { showError(e.message); } });
     listen(panel, 'keydown', event => { if (event.key === 'Escape') { event.preventDefault(); shut(); } });
     for (const type of ['click','dblclick','pointerdown','touchstart']) listen(panel, type, event => event.stopPropagation());
