@@ -102,6 +102,7 @@ try{
   const chrome=await page.evaluate(()=>({menu:document.getElementById('gridatlas-menu-bar')?.getBoundingClientRect().bottom||0,layers:document.getElementById('gridatlas-dash-toggle')?.getBoundingClientRect().top||innerHeight}));
   const closeBounds=await close.boundingBox();assert.ok(closeBounds.y>=chrome.menu,'the entire Close touch target clears the native menu');assert.ok(layout.y+layout.height<=chrome.layers,'vicinity panel clears native Layers including its docked-card lift');
   await visibleTap(close);await page.locator('.vic-launch').tap();assert.equal((await snapshot()).opened,true);
+  if(!(await snapshot()).origin){await visibleTap(page.getByRole('button',{name:'Use map centre',exact:true}));assert.equal((await snapshot()).origin.type,'map-centre');await open(dc,10);}
   await page.screenshot({path:path.join(output,'vicinity-'+width+'x'+height+'.png')});layouts.push({width,height,layout,chrome,closeBounds});
   if(height<480){
    await visibleTap(close);await page.evaluate(()=>window.__GRIDATLAS_MODULES__.gridJourneyPreview.open());
