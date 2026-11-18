@@ -66,6 +66,10 @@ if (!NS.gridVicinity) {
     panel.insertBefore(train.element,originLabel);
     listen(compactPause,'click',()=>train.pause());listen(compactPrevious,'click',()=>train.previousStop());listen(compactNext,'click',()=>train.nextStop());listen(compactEdit,'click',()=>{train.pause();compact.hidden=true;panel.hidden=false;close.focus();});
     for(const type of ['click','dblclick','pointerdown','touchstart'])listen(compact,type,event=>event.stopPropagation());
+    // Keep the fixed Close row outside the scrolling content so native scroll-to-focus cannot hide a control behind it.
+    const scroller=el('div',null,null,{class:'vic-panel-body'});
+    for(const child of [...panel.children])if(child!==heading)scroller.appendChild(child);
+    panel.appendChild(scroller);
 
     function sourceAnchor(parent, title, href) {
       try { const url = new URL(href); if (url.protocol !== 'https:' || url.username || url.password) return; el('a', title, parent, {href: url.href, target: '_blank', rel: 'noopener noreferrer'}); } catch (_) {}
@@ -84,7 +88,7 @@ if (!NS.gridVicinity) {
       const signature = JSON.stringify(assetContext);
       if (signature === assetSignature) return;
       assetSignature = signature;
-      const scroll = panel.scrollTop;
+      const scroll = scroller.scrollTop;
       for (const category of assetContext.categories) {
         let view = categoryElements.get(category.id);
         if (!view) {
@@ -126,7 +130,7 @@ if (!NS.gridVicinity) {
         }
         for (const [key,entry] of view.records) if (!retained.has(key)) { entry.item.remove(); view.records.delete(key); }
       }
-      panel.scrollTop = scroll;
+      scroller.scrollTop = scroll;
     }
     function renderDocumentContext() {
       documentContext = documentContextFor(origin, {declaredConnections: NS.declaredConnections});
