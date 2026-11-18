@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import vm from 'node:vm';
 import {validCoordinate, radiusKm, normaliseOrigin, parseVicinityIntent, stationRecords, exploreVicinity, vicinityGeoJSON, VOLTAGE_BANDS, validateNewsContextBase, newsContextHref} from './src/model.mjs';
-import {assemble} from './build.mjs';
+import {assemble, BUDGET} from './build.mjs';
 const context = {window: {}};
 vm.runInNewContext(fs.readFileSync(new URL('../../atlas/modules/202609011950-geodesy.js', import.meta.url), 'utf8'), context);
 const geodesy = context.window.__GRIDATLAS_MODULES__.geodesy;
@@ -64,7 +64,7 @@ test('radius geometry uses canonical destinationPoint and retains actual point c
 });
 test('module source rebuild is deterministic, generation stamped, bounded and syntactically valid', () => {
   const first=assemble({generation:'202611180100'}),second=assemble({generation:'202611180100'});
-  assert.equal(first.body,second.body); assert.equal(first.sha256,second.sha256); assert.ok(first.bytes<48000);
+  assert.equal(first.body,second.body); assert.equal(first.sha256,second.sha256); assert.ok(first.bytes<BUDGET);
   new vm.Script(first.body); assert.match(first.body,/USER_ASSUMED_LOCAL_MODEL/);
   assert.equal(VOLTAGE_BANDS.length,8); assert.throws(()=>assemble({generation:'../bad'}));
 });

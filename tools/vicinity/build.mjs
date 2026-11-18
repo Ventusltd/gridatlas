@@ -4,12 +4,14 @@ import {fileURLToPath} from 'node:url';
 import {createHash} from 'node:crypto';
 
 export const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
-export const BUDGET = 48000;
+export const BUDGET = 64000;
 export function assemble({root = ROOT, generation = 'UNRELEASED'} = {}) {
   if (!/^(?:UNRELEASED|\d{12})$/.test(generation)) throw new Error('Invalid generation');
   const read = p => fs.readFileSync(path.join(root, 'tools/vicinity', p), 'utf8').replace(/\r\n/g, '\n');
   const model = read('src/model.mjs').replace(/^export /gm, '');
-  const body = `/* GridAtlas vicinity ${generation}: source-built spatial context, no inferred circuits. */\n(() => {\n'use strict';\nconst VICINITY_GENERATION=${JSON.stringify(generation)};\nconst VICINITY_CSS=${JSON.stringify(read('src/vicinity.css'))};\n${model}\n${read('src/bootstrap.js')}\n})();\n`;
+  const adapters = [['asset-context.mjs', 'collectAssetContext'], ['document-context.mjs', 'documentContextFor']].map(([file, api]) =>
+    `const ${api} = (() => {\n${read('src/' + file).replace(/^export /gm, '')}\nreturn ${api};\n})();`).join('\n');
+  const body = `/* GridAtlas vicinity ${generation}: source-built spatial context, no inferred circuits. */\n(() => {\n'use strict';\nconst VICINITY_GENERATION=${JSON.stringify(generation)};\nconst VICINITY_CSS=${JSON.stringify(read('src/vicinity.css'))};\n${model}\n${adapters}\n${read('src/bootstrap.js')}\n})();\n`;
   if (Buffer.byteLength(body) > BUDGET) throw new Error(`Vicinity module exceeds ${BUDGET} bytes`);
   return {body, bytes: Buffer.byteLength(body), sha256: createHash('sha256').update(body).digest('hex')};
 }
