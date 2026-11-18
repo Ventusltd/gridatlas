@@ -200,7 +200,7 @@ if (!NS.gridVicinity) {
     function addStation(row) { train.addSourceStation(row); }
     function refresh() {
       if (!alive || !opened) return;
-      if (!origin) { rangeLabel.textContent = `${radius} km radius`; slider.value = String(radius); return; }
+      if (!origin) { rangeLabel.textContent = `${radius} km radius`; slider.value = String(radius); train.refreshInventory(); return; }
       try {
         records = readRecords(); result = exploreVicinity({origin, radius, records, bands, geodesy});
         originLabel.textContent = `Origin: ${origin.name}${origin.id ? ' · source ID ' + origin.id : ''}`;
