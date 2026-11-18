@@ -9,7 +9,7 @@ if (!NS.gridVicinity) {
     if (prior) throw new Error('Vicinity UI already mounted.');
     let alive = true, opened = false, origin = null, radius = 10, picking = false, result = null, records = [], contextSource = 'No loaded substation data', error = null;
     let source = null, sourceUnavailable = false, selectionEpoch = 0, refreshTimer = null, returning = null;
-    const itinerary = [], bands = new Set(VOLTAGE_BANDS.map(b => b[0])), listeners = [], groups = [], controls = [];
+    const itinerary = [], bands = new Set(VOLTAGE_BANDS.map(b => b[0])), listeners = [], groups = [], controls = [], ownedLayers = new Map();
     const SOURCE = 'gridatlas-vicinity-context', LAYERS = ['gridatlas-vicinity-radius', 'gridatlas-vicinity-points', 'gridatlas-vicinity-model'];
     const root = D.createElement('div'); root.id = 'gridatlas-vicinity'; host.appendChild(root);
     const style = D.createElement('style'); style.textContent = VICINITY_CSS; root.appendChild(style);
@@ -63,6 +63,10 @@ if (!NS.gridVicinity) {
       try {
         let current = map.getSource(SOURCE);
         if (current && current !== source) { sourceUnavailable = true; return; }
+        for (const id of LAYERS) {
+          const existing = map.getLayer(id);
+          if (existing && existing !== ownedLayers.get(id)) { sourceUnavailable = true; showError('A map layer ID is already in use. Results remain available; existing layers were preserved.'); return; }
+        }
         if (!current) { map.addSource(SOURCE, {type: 'geojson', data: {type: 'FeatureCollection', features: []}}); source = map.getSource(SOURCE); }
         sourceUnavailable = false;
         const specs = [
@@ -70,16 +74,22 @@ if (!NS.gridVicinity) {
           {id: LAYERS[1], type: 'circle', source: SOURCE, filter: ['in', ['get', 'kind'], ['literal', ['origin','substation']]], paint: {'circle-color': ['case', ['==', ['get', 'kind'], 'origin'], '#ff4fd8', ['get', 'colour']], 'circle-radius': ['case', ['==', ['get', 'kind'], 'origin'], 8, 5], 'circle-stroke-color': '#020809', 'circle-stroke-width': 1.5}},
           {id: LAYERS[2], type: 'line', source: SOURCE, filter: ['==', ['get', 'kind'], 'user-model'], paint: {'line-color': '#ff4fd8', 'line-width': 3, 'line-dasharray': [2,3]}}
         ];
-        for (const spec of specs) if (!map.getLayer(spec.id)) map.addLayer(spec);
+        for (const spec of specs) if (!map.getLayer(spec.id)) { map.addLayer(spec); ownedLayers.set(spec.id, map.getLayer(spec.id)); }
         const data = vicinityGeoJSON(result, geodesy);
         if (itinerary.length > 1) data.features.push({type: 'Feature', properties: {kind: 'user-model', evidence: 'USER_ASSUMED_LOCAL_MODEL'}, geometry: {type: 'LineString', coordinates: itinerary.map(row => row.at)}});
         source.setData(data);
       } catch (e) { sourceUnavailable = true; failure.textContent = 'Map overlay not ready. Results remain available below.'; failure.hidden = false; }
     }
     function removeMap(mapRemoved = false) {
-      if (!source || mapRemoved) { source = null; return; }
-      try { if (map.getSource(SOURCE) === source) { for (const id of [...LAYERS].reverse()) if (map.getLayer(id)?.source === SOURCE) map.removeLayer(id); if (map.getSource(SOURCE) === source) map.removeSource(SOURCE); } } catch (_) {}
-      source = null;
+      if (!source || mapRemoved) { source = null; ownedLayers.clear(); return; }
+      try {
+        if (map.getSource(SOURCE) === source) {
+          for (const id of [...LAYERS].reverse()) if (map.getLayer(id) && map.getLayer(id) === ownedLayers.get(id)) map.removeLayer(id);
+          const foreignDependency = (map.getStyle()?.layers || []).some(layer => layer.source === SOURCE);
+          if (!foreignDependency && map.getSource(SOURCE) === source) map.removeSource(SOURCE);
+        }
+      } catch (_) {}
+      source = null; ownedLayers.clear();
     }
     function showError(message) { error = message; failure.textContent = message; failure.hidden = !message; }
     function updateModel() { modelStatus.textContent = itinerary.length ? `${itinerary.length} selected stations: ${itinerary.map(row => row.name).join(' → ')}. User-assumed joins.` : 'No stations added.'; undo.disabled = clear.disabled = !itinerary.length; }
