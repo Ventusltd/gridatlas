@@ -1,0 +1,71 @@
+/** Native Atlas/MapLibre acceptance. Candidate injection is explicitly distinguished from published composition mode. */
+import fs from 'node:fs';
+import path from 'node:path';
+import os from 'node:os';
+import assert from 'node:assert/strict';
+import {pathToFileURL} from 'node:url';
+import {ROOT, assemble} from './build.mjs';
+const atlasRoot = process.env.VICINITY_ATLAS_ROOT || ROOT;
+const generation = process.env.VICINITY_BROWSER_GENERATION || '202611172355';
+const injecting = process.env.VICINITY_BROWSER_INJECT === '1';
+const output = process.env.VICINITY_BROWSER_OUTPUT || path.join(os.tmpdir(),'gridatlas-vicinity-'+new Date().toISOString().replace(/[:.]/g,'-'));
+fs.mkdirSync(output,{recursive:true});
+const pwModule = process.env.PLAYWRIGHT_MODULE;
+const pw = await import(pwModule && path.isAbsolute(pwModule) ? pathToFileURL(pwModule).href : pwModule || 'playwright');
+const {createPreviewServer} = await import(pathToFileURL(path.join(atlasRoot,'tools/journey/serve.mjs')).href);
+const server = await createPreviewServer(), base = `http://127.0.0.1:${server.address().port}`;
+const errors=[],requests=[],startedUTC=new Date().toISOString(); let browser;
+try {
+  browser = await pw.chromium.launch({headless:true,args:['--use-gl=angle','--use-angle=swiftshader','--enable-webgl','--ignore-gpu-blocklist']});
+  const context=await browser.newContext({...pw.devices['Pixel 7']});
+  const page=await context.newPage(); page.on('pageerror',e=>errors.push(e.message)); page.on('request',r=>requests.push(r.url()));
+  const route=`${base}/atlas/v/${generation}/?journey=vicinity&origin_type=repd&origin_id=repd%3A2470&latitude=51.5&longitude=-0.1&radius_km=10`;
+  await page.goto(route,{waitUntil:'domcontentloaded',timeout:90000});
+  await page.waitForFunction(()=>window.__GRIDATLAS_V9_MAP__&&window.__GRIDATLAS_MODULES__?.geodesy,null,{timeout:90000});
+  if(injecting)await page.addScriptTag({content:assemble({generation}).body});
+  await page.waitForFunction(()=>window.__GRIDATLAS_MODULES__?.gridVicinity?.snapshot().opened,null,{timeout:90000});
+  await page.waitForFunction(()=>window.__GRIDATLAS_MODULES__.gridVicinity.snapshot().matching>1,null,{timeout:90000});
+  const initial=await page.evaluate(()=>window.__GRIDATLAS_MODULES__.gridVicinity.snapshot());
+  assert.equal(initial.origin.id,'repd:2470'); assert.equal(initial.radiusKm,10); assert.equal(initial.realConnectionsInferred,0); assert.ok(initial.loadedRecords>0);
+  const panel=page.getByRole('region',{name:'Vicinity familiarisation'});
+  assert.match(await panel.innerText(),/Spatial vicinity, connectivity unknown/);
+  const slider=page.getByRole('slider',{name:'Vicinity radius in kilometres'});
+  await slider.focus(); await page.keyboard.press('End');
+  assert.equal(await page.evaluate(()=>window.__GRIDATLAS_MODULES__.gridVicinity.snapshot().radiusKm),50);
+  await page.keyboard.press('Home'); assert.equal(await slider.inputValue(),'1');
+  await page.keyboard.press('ArrowRight'); assert.equal(await slider.inputValue(),'2');
+  await page.keyboard.press('End');
+  for(const label of ['400 kV','275 kV','132 kV','66 kV','11 kV','Other stated voltage','Voltage not stated'])await page.getByRole('checkbox',{name:label,exact:true}).uncheck();
+  assert.deepEqual(await page.evaluate(()=>window.__GRIDATLAS_MODULES__.gridVicinity.snapshot().selectedBands),['33']);
+  const add=panel.getByRole('button',{name:/^Add .+ to my model$/});
+  await add.nth(0).tap(); await add.nth(1).tap();
+  const scenario=await page.evaluate(()=>({snapshot:window.__GRIDATLAS_MODULES__.gridVicinity.snapshot(),geo:window.__GRIDATLAS_V9_MAP__.getSource('gridatlas-vicinity-context').serialize().data}));
+  assert.equal(scenario.snapshot.modelStations.length,2);
+  const model=scenario.geo.features.find(f=>f.properties.kind==='user-model'); assert.equal(model.properties.evidence,'USER_ASSUMED_LOCAL_MODEL');
+  assert.deepEqual(model.geometry.coordinates,scenario.snapshot.modelStations.map(s=>s.at));
+  assert.equal(scenario.geo.features.filter(f=>f.geometry.type==='LineString').length,2,'radius boundary plus explicit user-assumed model only');
+  await page.getByRole('button',{name:'Undo last station',exact:true}).tap();
+  assert.equal(await page.evaluate(()=>window.__GRIDATLAS_MODULES__.gridVicinity.snapshot().modelStations.length),1);
+  await page.getByRole('button',{name:'Clear model',exact:true}).tap();
+  assert.equal(await page.evaluate(()=>window.__GRIDATLAS_MODULES__.gridVicinity.snapshot().modelStations.length),0);
+  const layouts=[];
+  for(const [width,height] of [[393,852],[852,393]]) {
+    await page.setViewportSize({width,height}); await page.waitForTimeout(300);
+    const rect=await panel.boundingBox(); assert.ok(rect.x>=0&&rect.y>=0&&rect.x+rect.width<=width+1&&rect.y+rect.height<=height+1,'panel bounded '+JSON.stringify(rect));
+    assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth),false);
+    await page.screenshot({path:path.join(output,`vicinity-${width}x${height}.png`)}); layouts.push({width,height,rect});
+  }
+  await page.getByRole('button',{name:'Close vicinity explorer',exact:true}).tap();
+  assert.equal(await page.evaluate(()=>!!window.__GRIDATLAS_V9_MAP__.getSource('gridatlas-vicinity-context')),false);
+  await page.evaluate(()=>window.__GRIDATLAS_MODULES__.gridVicinity.open({origin:{at:[0,0],id:'bad',type:'repd'},radiusKm:10}));
+  assert.match(await page.locator('.vic-error').innerText(),/valid located origin/);
+  assert.equal(await page.evaluate(()=>window.__GRIDATLAS_MODULES__.gridVicinity.snapshot().origin),null);
+  assert.equal(await page.evaluate(()=>!!window.__GRIDATLAS_V9_MAP__.getSource('gridatlas-vicinity-context')),false);
+  await page.evaluate(()=>window.__GRIDATLAS_MODULES__.gridVicinity.destroy());
+  assert.equal(await page.locator('#gridatlas-vicinity').count(),0);
+  assert.equal(await page.locator('[data-vicinity-group]').count(),0);
+  assert.deepEqual(errors,[]);
+  const result={result:'PASS',startedUTC,finishedUTC:new Date().toISOString(),mode:injecting?'CANDIDATE_MODULE_INJECTION_NOT_PUBLIC_ACCEPTANCE':'LOCAL_FULL_COMPOSITION',generation,initial,scenario:scenario.snapshot,layouts,errors,requestCount:requests.length,physicalPhone:'UNKNOWN; Android Chromium emulation'};
+  fs.writeFileSync(path.join(output,'receipt.json'),JSON.stringify(result,null,2)+'\n');console.log(JSON.stringify({result:'PASS',output,generation,matching:initial.matching,loaded:initial.loadedRecords}));
+}catch(e){fs.writeFileSync(path.join(output,'failure.json'),JSON.stringify({error:e.message,stack:e.stack,errors},null,2));throw e;}
+finally{await browser?.close();await new Promise(resolve=>server.close(resolve));}
