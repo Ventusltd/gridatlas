@@ -8,11 +8,12 @@ import {buildSld} from './build.mjs';
 const ROOT=path.resolve(path.dirname(fileURLToPath(import.meta.url)),'../..');
 const registry=JSON.parse(fs.readFileSync(path.join(ROOT,'tools/sld/generations.json')));
 
-test('rebuilds both accepted generations without the expected cartridge in its source tree',()=>{
+test('rebuilds every registered generation without the expected cartridge in its source tree',()=>{
   const root=fs.mkdtempSync(path.join(os.tmpdir(),'gridatlas-sld-source-'));
   try {
     const entry=registry.generations['202611161720'];
-    for(const rel of ['tools/sld/generations.json',entry.base.path,entry.owner.path,entry.edits]) {
+    const inputs = new Set(['tools/sld/generations.json', ...Object.values(registry.generations).flatMap(e => [e.base.path, e.owner.path, e.edits])]);
+    for(const rel of inputs) {
       const to=path.join(root,rel);fs.mkdirSync(path.dirname(to),{recursive:true});fs.copyFileSync(path.join(ROOT,rel),to);
     }
     for(const generation of Object.keys(registry.generations)) {
