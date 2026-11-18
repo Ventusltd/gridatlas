@@ -26,6 +26,12 @@ test('one URL intent consumer preserves opaque identity and explicitly rejects m
   for (const bad of [link.replace('radius_km=10','radius_km=1.5'),link+'&longitude=1',link.replace('origin_id=repd%3A2470','origin_id='),link.replace('origin_type=repd','origin_type=unknown'),link.replace('latitude=51.5','latitude='),link.replace('longitude=-0.1','longitude=null')]) assert.throws(() => parseVicinityIntent(bad));
   for (const type of ['datacentre','substation']) assert.equal(parseVicinityIntent(link.replace('origin_type=repd','origin_type='+type)).origin.type,type);
 });
+test('originless entry requests explicit manual selection and rejects every partial origin tuple', () => {
+  assert.deepEqual(parseVicinityIntent('?journey=vicinity'),{manual:true,radiusKm:10});
+  assert.deepEqual(parseVicinityIntent('?journey=vicinity&radius_km=50'),{manual:true,radiusKm:50});
+  for (const extra of ['origin_id=x','origin_type=','latitude=51.5','longitude=-0.1','origin_type=repd&origin_id=repd:2470','radius_km=1.5','radius_km=10&radius_km=20']) assert.throws(()=>parseVicinityIntent('?journey=vicinity&'+extra));
+  const optional=parseVicinityIntent('?journey=vicinity&news_context_url=https%3A%2F%2Fevil.test%2F');assert.equal(optional.manual,true);assert.match(optional.newsContextError,/not applied/);
+});
 test('canonical voltage parser keeps explicit units and unknown values; missing IDs remain missing', () => {
   const rows = stationRecords([feature('volts',[-0.11,51.5],'33000;11000'),feature('traction',[-0.12,51.5],'750'),feature('unknown',[-0.13,51.5],null),feature('kv',[-0.14,51.5],null,{kv:'132'}),{geometry:{type:'Point',coordinates:[-0.15,51.5]},properties:{name:'No source ID'}}],geodesy);
   assert.deepEqual(rows[0].kv,[33,11]); assert.deepEqual(rows[0].bands,['33','11']);

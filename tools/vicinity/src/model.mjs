@@ -32,13 +32,18 @@ export function normaliseOrigin(origin, {requireIdentity = false} = {}) {
 export function parseVicinityIntent(search) {
   const q = new URLSearchParams(search);
   if (q.get('journey') !== 'vicinity') return null;
-  const unique = ['journey', 'origin_type', 'origin_id', 'latitude', 'longitude', 'radius_km'];
-  if (unique.some(k => q.getAll(k).length !== 1)) throw new Error('Journey link has missing or duplicate origin fields.');
-  const latitude = q.get('latitude'), longitude = q.get('longitude');
-  const numberText = value => typeof value === 'string' && /^[+-]?(?:\d+(?:\.\d*)?|\.\d+)$/.test(value.trim());
-  if (!numberText(latitude) || !numberText(longitude)) throw new Error('Journey link has invalid coordinates.');
-  const origin = normaliseOrigin({at: [Number(longitude), Number(latitude)], type: q.get('origin_type'), id: q.get('origin_id'), name: q.get('name')}, {requireIdentity: true});
-  const intent = {origin, radiusKm: radiusKm(q.get('radius_km'))};
+  if (q.getAll('journey').length !== 1 || q.getAll('radius_km').length > 1) throw new Error('Journey link has duplicate intent or radius fields.');
+  const fields = ['origin_type', 'origin_id', 'latitude', 'longitude'];
+  const hasOrigin = fields.some(k => q.has(k));
+  let origin = null;
+  if (hasOrigin) {
+    if (fields.some(k => q.getAll(k).length !== 1) || !q.has('radius_km')) throw new Error('Journey link has missing or duplicate origin fields.');
+    const latitude = q.get('latitude'), longitude = q.get('longitude');
+    const numberText = value => typeof value === 'string' && /^[+-]?(?:\d+(?:\.\d*)?|\.\d+)$/.test(value.trim());
+    if (!numberText(latitude) || !numberText(longitude)) throw new Error('Journey link has invalid coordinates.');
+    origin = normaliseOrigin({at: [Number(longitude), Number(latitude)], type: q.get('origin_type'), id: q.get('origin_id'), name: q.get('name')}, {requireIdentity: true});
+  }
+  const intent = origin ? {origin, radiusKm: radiusKm(q.get('radius_km'))} : {manual: true, radiusKm: q.has('radius_km') ? radiusKm(q.get('radius_km')) : 10};
   if (q.has('news_context_url')) {
     try {
       if (q.getAll('news_context_url').length !== 1 || q.getAll('news_topic').length > 1) throw new Error('News context has duplicate fields.');

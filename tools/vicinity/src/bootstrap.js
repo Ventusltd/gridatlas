@@ -7,7 +7,7 @@ if (!NS.gridVicinity) {
     if (!geodesy?.distanceKm || !geodesy?.voltagesKv || !geodesy?.representativePoint) throw new Error('Canonical Atlas geodesy is not ready.');
     const host = map.getContainer(), prior = D.getElementById('gridatlas-vicinity');
     if (prior) throw new Error('Vicinity UI already mounted.');
-    let alive = true, opened = false, origin = null, radius = 10, picking = false, result = null, records = [], contextSource = 'No loaded substation data', error = null;
+    let alive = true, opened = false, origin = null, radius = 10, picking = false, result = null, records = [], contextSource = 'No loaded substation data', error = null, phase = 'CHOOSE_ORIGIN';
     let source = null, sourceUnavailable = false, selectionEpoch = 0, refreshTimer = null, returning = null, newsBase = null, newsTopic = null, assetContext = null, documentContext = null;
     const itinerary = [], bands = new Set(VOLTAGE_BANDS.map(b => b[0])), listeners = [], groups = [], controls = [], ownedLayers = new Map();
     const SOURCE = 'gridatlas-vicinity-context', LAYERS = ['gridatlas-vicinity-radius', 'gridatlas-vicinity-points', 'gridatlas-vicinity-model'];
@@ -56,6 +56,7 @@ if (!NS.gridVicinity) {
     const energyRows = el('div', null, energy, {class: 'vic-energy-categories'});
     const documents = el('details', null, panel, {class: 'vic-document-context'}); el('summary', 'Documented works and official notices', documents);
     const documentRows = el('div', null, documents);
+    panel.insertBefore(energy, modelBox); panel.insertBefore(documents, modelBox);
 
     function sourceAnchor(parent, title, href) {
       try { const url = new URL(href); if (url.protocol !== 'https:' || url.username || url.password) return; el('a', title, parent, {href: url.href, target: '_blank', rel: 'noopener noreferrer'}); } catch (_) {}
@@ -173,6 +174,7 @@ if (!NS.gridVicinity) {
     }
     function refresh() {
       if (!alive || !opened) return;
+      if (!origin) { rangeLabel.textContent = `${radius} km radius`; slider.value = String(radius); return; }
       try {
         records = readRecords(); result = exploreVicinity({origin, radius, records, bands, geodesy});
         originLabel.textContent = `Origin: ${origin.name}${origin.id ? ' · source ID ' + origin.id : ''}`;
@@ -192,8 +194,8 @@ if (!NS.gridVicinity) {
       } catch (e) { showError(e.message); }
     }
     function setOrigin(next) {
-      try { const validated = normaliseOrigin(next); origin = validated; selectionEpoch++; picking = false; pick.setAttribute('aria-pressed', 'false'); pick.textContent = 'Pick origin on map'; showError(null); refresh(); return true; }
-      catch (e) { clearSelectedContext(); originLabel.textContent = 'Origin was not applied.'; showError(e.message); return false; }
+      try { const validated = normaliseOrigin(next); origin = validated; phase = 'READY'; selectionEpoch++; picking = false; pick.setAttribute('aria-pressed', 'false'); pick.textContent = 'Pick origin on map'; showError(null); refresh(); return true; }
+      catch (e) { clearSelectedContext(); phase = 'REFUSED'; originLabel.textContent = 'Origin was not applied.'; showError(e.message); return false; }
     }
     function mapCentre() { const c = map.getCenter(); return {at: [c.lng, c.lat], type: 'map-centre', id: null, name: 'Chosen map centre'}; }
     function fitRadius() {
@@ -217,7 +219,7 @@ if (!NS.gridVicinity) {
       if (!alive) return false;
       returning = D.activeElement; opened = true; panel.hidden = false; launch.setAttribute('aria-expanded', 'true'); for (const b of controls) b.setAttribute('aria-expanded', 'true');
       try {
-        if (options.error) { clearSelectedContext(); originLabel.textContent = 'Journey link was not applied. Choose an origin to explore.'; status.textContent = ''; showError(options.error); close.focus(); return false; }
+        if (options.error) { clearSelectedContext(); phase = 'REFUSED'; originLabel.textContent = 'Journey link was not applied. Choose an origin to explore.'; status.textContent = ''; showError(options.error); close.focus(); return false; }
         let newsError = options.newsContextError || null;
         if (newsError) clearNews();
         else if (options.newsContextUrl !== undefined) {
@@ -225,10 +227,15 @@ if (!NS.gridVicinity) {
           catch (e) { clearNews(); newsError = 'News context link was not applied: ' + e.message; }
         }
         radius = radiusKm(options.radiusKm ?? radius);
-        if (!setOrigin(options.origin || origin || mapCentre())) return false;
+        if (options.manual || !options.origin && !origin) {
+          clearSelectedContext(); phase = 'CHOOSE_ORIGIN'; picking = false; pick.setAttribute('aria-pressed','false'); pick.textContent = 'Pick origin on map';
+          originLabel.textContent = 'Choose an origin to begin.'; originPrecision.textContent = 'Use map centre or pick a point; no location is chosen automatically.';
+          status.textContent = 'Choose a location, then explore the grid within your selected radius.'; refresh(); showError(newsError ? newsError + ' Choose a location to continue grid exploration.' : null); close.focus(); return true;
+        }
+        if (!setOrigin(options.origin || origin)) return false;
         try { W.__GRIDATLAS_NEON_LINKS__?.enableSubstationLayer?.(); } catch (_) {}
         refresh(); if (newsError) showError(newsError + ' Grid exploration continues.'); close.focus(); return true;
-      } catch (e) { clearSelectedContext(); originLabel.textContent = 'Journey request was not applied. Choose a valid origin and radius.'; showError(e.message); close.focus(); return false; }
+      } catch (e) { clearSelectedContext(); phase = 'REFUSED'; originLabel.textContent = 'Journey request was not applied. Choose a valid origin and radius.'; showError(e.message); close.focus(); return false; }
     }
     function shut() {
       if (!alive) return;
@@ -270,7 +277,7 @@ if (!NS.gridVicinity) {
       map.off('click', clicked); map.off('sourcedata', sourced); map.off('style.load', styled); map.off('remove', removed); removeMap(mapRemoved);
       groups.forEach(g => g.remove()); root.remove();
     }
-    return Object.freeze({open, close: shut, setOrigin, refresh, destroy, snapshot: () => ({alive, opened, generation: VICINITY_GENERATION, radiusKm: radius,
+    return Object.freeze({open, close: shut, setOrigin, refresh, destroy, snapshot: () => ({alive, opened, phase, generation: VICINITY_GENERATION, radiusKm: radius,
       origin: origin ? {...origin,at: origin.at.slice()} : null, matching: result?.matching ?? null, shown: result?.shown.length ?? 0, loadedRecords: records.length,
       newsContextUrl: newsBase, newsHref: newsBase && origin ? newsContextHref(newsBase, origin, newsTopic) : null,
       assetContext: assetContext ? {...assetContext, categories: assetContext.categories.map(category => ({...category, rows: category.rows.map(({sourceRow, ...row}) => row)}))} : null,
