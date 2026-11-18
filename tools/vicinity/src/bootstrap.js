@@ -8,7 +8,7 @@ if (!NS.gridVicinity) {
     const host = map.getContainer(), prior = D.getElementById('gridatlas-vicinity');
     if (prior) throw new Error('Vicinity UI already mounted.');
     let alive = true, opened = false, origin = null, radius = 10, picking = false, result = null, records = [], contextSource = 'No loaded substation data', error = null;
-    let source = null, sourceUnavailable = false, selectionEpoch = 0, refreshTimer = null, returning = null;
+    let source = null, sourceUnavailable = false, selectionEpoch = 0, refreshTimer = null, returning = null, newsBase = null, newsTopic = null;
     const itinerary = [], bands = new Set(VOLTAGE_BANDS.map(b => b[0])), listeners = [], groups = [], controls = [], ownedLayers = new Map();
     const SOURCE = 'gridatlas-vicinity-context', LAYERS = ['gridatlas-vicinity-radius', 'gridatlas-vicinity-points', 'gridatlas-vicinity-model'];
     const root = D.createElement('div'); root.id = 'gridatlas-vicinity'; host.appendChild(root);
@@ -26,6 +26,9 @@ if (!NS.gridVicinity) {
     const pick = el('button', 'Pick origin on map', actions, {type: 'button', 'aria-pressed': 'false'});
     const fit = el('button', 'Fit radius', actions, {type: 'button'});
     const physical = el('button', 'Show physical grid', actions, {type: 'button'});
+    const news = el('a', 'News context', actions, {target: '_blank', rel: 'noopener noreferrer', 'aria-label': 'Open news topic context in the supplied dated edition'}); news.hidden = true;
+    news.style.cssText = 'display:inline-flex;align-items:center;min-height:44px;padding:7px 10px;color:#0ff;background:#061216;border:1px solid #367078';
+    const newsCaption = el('p', 'Topic context only; a headline is not an association with this asset.', panel, {class: 'vic-news-caption'}); newsCaption.hidden = true;
     const radial = el('fieldset', null, panel); el('legend', 'Radius in whole kilometres', radial);
     const rangeLabel = el('label', '', radial, {for: 'gridatlas-vicinity-radius-input'});
     const slider = el('input', null, radial, {id: 'gridatlas-vicinity-radius-input', type: 'range', min: '1', max: '50', step: '1', value: '10', 'aria-label': 'Vicinity radius in kilometres'});
@@ -49,8 +52,14 @@ if (!NS.gridVicinity) {
 
     function readRecords() {
       let features = [];
+      try {
+        const data = map.getSource('src-subs')?.serialize?.().data;
+        if (data?.type === 'FeatureCollection' && Array.isArray(data.features) && data.features.length) {
+          contextSource = 'Existing loaded Atlas substation GeoJSON'; return stationRecords(data.features, geodesy);
+        }
+      } catch (_) {}
       try { if (map.getSource('src-subs')) features = map.querySourceFeatures('src-subs') || []; } catch (_) {}
-      if (features.length) { contextSource = 'Loaded Atlas substation source'; return stationRecords(features, geodesy); }
+      if (features.length) { contextSource = 'Loaded viewport subset of Atlas substations; use Fit radius to load this view'; return stationRecords(features, geodesy); }
       const loaded = W.__GRIDATLAS_NEON_LINKS__?.substations || W.__GRIDATLAS_SUBSTATIONS__ || [];
       if (loaded.length) {
         contextSource = 'Loaded Atlas ≥33 kV screening subset; lower voltages are not included';
@@ -104,6 +113,7 @@ if (!NS.gridVicinity) {
       try {
         records = readRecords(); result = exploreVicinity({origin, radius, records, bands, geodesy});
         originLabel.textContent = `Origin: ${origin.name}${origin.id ? ' · source ID ' + origin.id : ''}`;
+        if (newsBase) { news.href = newsContextHref(newsBase, origin, newsTopic); news.hidden = newsCaption.hidden = false; }
         rangeLabel.textContent = `${radius} km radius`; slider.value = String(radius);
         status.textContent = `${result.matching} matching mapped stations within ${radius} km · ${result.loadedRecords} loaded records. ${result.truncated ? 'Showing nearest 200. ' : ''}${contextSource}.`;
         list.replaceChildren();
@@ -145,6 +155,7 @@ if (!NS.gridVicinity) {
       returning = D.activeElement; opened = true; panel.hidden = false; launch.setAttribute('aria-expanded', 'true'); for (const b of controls) b.setAttribute('aria-expanded', 'true');
       try {
         if (options.error) { origin = null; result = null; removeMap(); list.replaceChildren(); originLabel.textContent = 'Journey link was not applied. Choose an origin to explore.'; status.textContent = ''; showError(options.error); close.focus(); return false; }
+        if (options.newsContextUrl !== undefined) { newsBase = validateNewsContextBase(options.newsContextUrl); newsTopic = normaliseNewsTopic(options.newsTopic, options.origin); }
         radius = radiusKm(options.radiusKm ?? radius);
         if (!setOrigin(options.origin || origin || mapCentre())) return false;
         try { W.__GRIDATLAS_NEON_LINKS__?.enableSubstationLayer?.(); } catch (_) {}
@@ -186,6 +197,7 @@ if (!NS.gridVicinity) {
     }
     return Object.freeze({open, close: shut, setOrigin, refresh, destroy, snapshot: () => ({alive, opened, generation: VICINITY_GENERATION, radiusKm: radius,
       origin: origin ? {...origin,at: origin.at.slice()} : null, matching: result?.matching ?? null, shown: result?.shown.length ?? 0, loadedRecords: records.length,
+      newsContextUrl: newsBase, newsHref: newsBase && origin ? newsContextHref(newsBase, origin, newsTopic) : null,
       selectedBands: [...bands], contextSource, sourceUnavailable, modelStations: itinerary.map(row => ({name: row.name, id: row.id, at: row.at.slice()})),
       modelEvidence: 'USER_ASSUMED_LOCAL_MODEL', realConnectionsInferred: 0, error, selectionEpoch})});
   }

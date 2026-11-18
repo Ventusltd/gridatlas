@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import vm from 'node:vm';
-import {validCoordinate, radiusKm, normaliseOrigin, parseVicinityIntent, stationRecords, exploreVicinity, vicinityGeoJSON, VOLTAGE_BANDS} from './src/model.mjs';
+import {validCoordinate, radiusKm, normaliseOrigin, parseVicinityIntent, stationRecords, exploreVicinity, vicinityGeoJSON, VOLTAGE_BANDS, validateNewsContextBase, newsContextHref} from './src/model.mjs';
 import {assemble} from './build.mjs';
 const context = {window: {}};
 vm.runInNewContext(fs.readFileSync(new URL('../../atlas/modules/202609011950-geodesy.js', import.meta.url), 'utf8'), context);
@@ -67,4 +67,14 @@ test('module source rebuild is deterministic, generation stamped, bounded and sy
   assert.equal(first.body,second.body); assert.equal(first.sha256,second.sha256); assert.ok(first.bytes<48000);
   new vm.Script(first.body); assert.match(first.body,/USER_ASSUMED_LOCAL_MODEL/);
   assert.equal(VOLTAGE_BANDS.length,8); assert.throws(()=>assemble({generation:'../bad'}));
+});
+test('news return links accept only supplied dated exact-host bases and build bounded topic context', () => {
+  const base='https://globalgrid2050.com/uk_renewables_pipeline/202611171940/';
+  assert.equal(validateNewsContextBase(base),base); assert.equal(validateNewsContextBase(base+'index.html'),base+'index.html');
+  for(const bad of [base+'?url=https://evil.test',base+'#x',base.replace('https:','http:'),base.replace('.com/','.com:443/'),base.replace('.com/','.com.evil.test/'),base.replace('globalgrid2050.com','user@globalgrid2050.com'),base.replace('202611171940/','latest/'),'javascript:alert(1)'])assert.throws(()=>validateNewsContextBase(bad));
+  const url=new URL(newsContextHref(base,origin,'wind'));
+  assert.equal(url.searchParams.get('news_origin_id'),'repd:2470');assert.equal(url.searchParams.get('news_topic'),'wind');assert.equal(url.hash,'#headlinesHeading');
+  assert.deepEqual([...url.searchParams.keys()],['news_origin_type','news_origin_id','news_topic']);
+  const intent=parseVicinityIntent(link+'&news_context_url='+encodeURIComponent(base)+'&news_topic=wind');assert.equal(intent.newsContextUrl,base);assert.equal(intent.newsTopic,'wind');
+  assert.throws(()=>parseVicinityIntent(link+'&news_context_url='+encodeURIComponent(base)+'&news_topic=bad'));
 });
