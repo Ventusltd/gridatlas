@@ -1,7 +1,7 @@
 {
  "schema": "gridatlas.current.v2",
- "generation": "202611180026",
- "previous_generation": "202611172355",
+ "generation": "202611161720",
+ "previous_generation": "202611132345",
  "architecture": "IMMUTABLE_SHELL_PLUS_HASHED_CARTRIDGES",
  "live_route": "/gridatlas/atlas/",
  "release_id": "202608300453-atlas-v9",
@@ -17,9 +17,7 @@
   "substation-intelligence",
   "sld-sandbox",
   "uk-lightning-overlay",
-  "uk-offtakers-overlay",
-  "grid-journey-preview",
-  "grid-vicinity"
+  "uk-offtakers-overlay"
  ],
  "cartridges": [
   {
@@ -58,13 +56,13 @@
   },
   {
    "id": "uk-gazetteer-flyto",
-   "generation": "202611180026",
-   "version": "v9.193",
+   "generation": "202611132345",
+   "version": "v9.189",
    "type": "script",
    "slot": "replace-script",
    "replace_script": "202608291818-place-postcode-search.js",
-   "path": "./cartridges/202611180026-place-global-search-v9-5.js",
-   "sha256": "575721ea584187c2b9b857408a3e6136879d7f6876f1e6d7a0b925051124a49c",
+   "path": "./cartridges/202611132345-place-global-search-v9-5.js",
+   "sha256": "a27a11c45d4d02c4dbecf09e8ba2acc38215a77fc87bd23b1024f349f8dea619",
    "contract": "../ui/cartridges/202609040337-global-gazetteer-flyto-v9-106.mjs",
    "capabilities": [
     "exact-repd-first",
@@ -72,23 +70,22 @@
     "uk-place",
     "global-address",
     "global-place",
-    "deep-link-publishes-resolved-technology-and-capacity",
-    "lookup-only-place-resolver-without-selection-side-effects"
+    "deep-link-publishes-resolved-technology-and-capacity"
    ],
    "result_class": "LOCATION_ONLY",
    "sets_deep_link": false,
-   "bytes": 41675,
-   "source_recipe": "tools/train/gazetteer/generations.json"
+   "assembled_from": "./manifests/202611132345-place-global-search-v9-5-parts.json",
+   "bytes": 41115
   },
   {
    "id": "sld-sandbox",
-   "generation": "202611180026",
-   "version": "v9.193",
+   "generation": "202611161720",
+   "version": "v9.191",
    "type": "script",
    "slot": "replace-script",
    "replace_script": "202608292126-pre-snapped-config-adapter.js",
-   "path": "./cartridges/202611180026-sld-sandbox-v9-8.js",
-   "sha256": "d8b2e61b4b14f7af456a2c0c1721efc4d0bb2e9d43fbadc8cac6075b8465eccb",
+   "path": "./cartridges/202611161720-sld-sandbox-v9-8.js",
+   "sha256": "b1daa991ca738027a34c465e84d48355cf5d0902e76e7db5b318b6342c55df6d",
    "capabilities": [
     "pre-snapped-config-adapter-carried-forward",
     "project-or-substation-selection",
@@ -227,10 +224,7 @@
     "ordinary-card-styles-returned-when-project-controls-arrive",
     "reader-restore-survives-identity-reconciliation",
     "optional-neso-lookup-bounded-and-explicit",
-    "ventus-owner-observer-at-actual-nearest-calculation",
-    "mobile-nearest-summary-before-details",
-    "44px-labelled-details-map-controls",
-    "map-removal-observer-cleanup"
+    "ventus-owner-observer-at-actual-nearest-calculation"
    ],
    "immutable_shell_modified": false,
    "supersedes_shell_script": {
@@ -568,18 +562,18 @@
      "upstream": "Elexon settlement prices as the owner repository publishes them"
     }
    ],
-   "bytes": 454483,
+   "bytes": 452309,
    "derived_from": "./cartridges/202609200022-sld-sandbox-v9-8.js"
   },
   {
    "id": "substation-intelligence",
-   "generation": "202611180026",
-   "version": "v9.193",
+   "generation": "202609062358",
+   "version": "v9.140",
    "type": "script",
    "slot": "replace-script",
    "replace_script": "ventus-corev8engine.js",
-   "path": "./cartridges/202611180026-substation-intelligence-v9-63.js",
-   "sha256": "88c538b97bf426776cda436151741f17500a2136867d28362407550d72f9038f",
+   "path": "./cartridges/202609062358-substation-intelligence-v9-63.js",
+   "sha256": "d94b0de50deddac77643325b10fbe490ce44b8c406dbc6c67e6e7cadbdaa8ec6",
    "capabilities": [
     "immutable-v8-shell-preserved-with-reviewed-receiver-successor",
     "canonical-deep-link-technology-vocabulary",
@@ -600,8 +594,7 @@
     "scada-panel-restored-branded-head-real-nodes-moved-not-cloned",
     "layer-controls-44px-min-hit-target-via-full-size-invisible-input",
     "panel-anchored-to-its-own-side-group-plus-js-viewport-clamp",
-    "attribution-outranks-every-open-panel-by-z-index",
-    "pipeline-selection-poll-map-removal-cleanup"
+    "attribution-outranks-every-open-panel-by-z-index"
    ],
    "immutable_shell_modified": false,
    "supersedes_shell_script": {
@@ -637,8 +630,8 @@
     "closed_by": "the owner product's per-voltage split, quoted at the connection voltage",
     "still_site_wide": "circuit winter ratings are not split by voltage in the product and are now labelled site-wide (Blackhillock publishes 23-1,995 MVA)"
    },
-   "bytes": 452588,
-   "source_recipe": "tools/pipeline-lifecycle/generations.json"
+   "assembled_from": "./manifests/202609051329-substation-intelligence-v9-63-parts.json",
+   "bytes": 451935
   },
   {
    "id": "uk-lightning-overlay",
@@ -826,56 +819,6 @@
      "spec": "hardening DC-B2 CARD-SPEC.md, DC-B3 ENGINE.md"
     }
    }
-  },
-  {
-   "id": "grid-journey-preview",
-   "generation": "202611172355",
-   "version": "v9.192",
-   "type": "script",
-   "slot": "after-cartridge",
-   "after": "uk-offtakers-overlay",
-   "path": "./modules/202611172355-grid-journey-preview.js",
-   "sha256": "d376c008706faa4a2163778d0757ce7988e95056c06ea3b585735bbff79975f6",
-   "bytes": 68456,
-   "byte_budget": 72000,
-   "immutable_shell_modified": false,
-   "real_routes_accepted": 0,
-   "capabilities": [
-    "native-maplibre",
-    "native-layers-launcher",
-    "explicit-synthetic-learning-cursor",
-    "manual-reduced-motion",
-    "removable-lifecycle"
-   ]
-  },
-  {
-   "id": "grid-vicinity",
-   "generation": "202611180026",
-   "version": "v9.193",
-   "type": "script",
-   "slot": "after-cartridge",
-   "after": "grid-journey-preview",
-   "path": "./modules/202611180026-grid-vicinity.js",
-   "sha256": "b6dab63111d672cacfdd84031ddd8d6d785412e6f0bfe03046fca326a9f6681b",
-   "bytes": 128364,
-   "byte_budget": 140000,
-   "immutable_shell_modified": false,
-   "capabilities": [
-    "spatial-radius-1-50km",
-    "source-voltage-context",
-    "native-layers-launcher",
-    "validated-origin-intent",
-    "local-user-model",
-    "typed-generation-storage-demand-context",
-    "exact-existing-declaration-context",
-    "unassociated-official-notices",
-    "great-grid-journeys",
-    "full-source-station-search",
-    "canonical-station-only-itinerary-10-90",
-    "declarative-per-edge-journey-law",
-    "explicit-user-simulated-fallback",
-    "native-learning-cursor"
-   ]
   }
  ],
  "last_known_green": {
@@ -927,15 +870,15 @@
    "result_class": "LOCATION_ONLY"
   }
  },
- "composition_manifest": "./manifests/202611180026-composition.json",
+ "composition_manifest": "./manifests/202611161720-composition.json",
  "scope_closure": {
   "generation": "202609010726",
   "status": "DONE",
   "scope": "GridAtlas v9.42 the price panel revalidates",
   "schedule_retired": true
  },
- "composition_version": "v9.193",
- "composition_id": "202611180026-gridatlas-v9.193",
+ "composition_version": "v9.191",
+ "composition_id": "202611161720-gridatlas-v9.191",
  "transport": {
   "response_contract": "HEADERS_BEFORE_PARQUET_BODY",
   "engine_timeout_seconds": 15,
@@ -950,8 +893,8 @@
   "fidelity_workflow": ".github/workflows/202608301931-layer-fidelity.yml",
   "payload_cache": "RELEASE_AFTER_SERIALISATION"
  },
- "composition_note": "Great Grid Journeys and vicinity: canonical full-inventory station search, explicit place binding, ordered 10/90-stop itinerary, per-edge voltage/evidence law and user-activated learning cursor; hypothetical legs are explicit and never factual grid connections.",
- "superseded_generation": "202611172355",
- "candidate_predecessor": "202611172355",
+ "composition_note": "Repair release contract: evidence-backed no-full-copy attestation and exact parent lineage; accepted MAP and owned distance calculation bytes unchanged.",
+ "superseded_generation": "202611132345",
+ "candidate_predecessor": "202611132345",
  "loader": "v2"
 }
