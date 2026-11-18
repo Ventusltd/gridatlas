@@ -25,6 +25,7 @@ if (!NS.gridVicinity) {
     const centre = el('button', 'Use map centre', actions, {type: 'button'});
     const pick = el('button', 'Pick origin on map', actions, {type: 'button', 'aria-pressed': 'false'});
     const fit = el('button', 'Fit radius', actions, {type: 'button'});
+    const physical = el('button', 'Show physical grid', actions, {type: 'button'});
     const radial = el('fieldset', null, panel); el('legend', 'Radius in whole kilometres', radial);
     const rangeLabel = el('label', '', radial, {for: 'gridatlas-vicinity-radius-input'});
     const slider = el('input', null, radial, {id: 'gridatlas-vicinity-radius-input', type: 'range', min: '1', max: '50', step: '1', value: '10', 'aria-label': 'Vicinity radius in kilometres'});
@@ -157,6 +158,14 @@ if (!NS.gridVicinity) {
     }
     listen(launch, 'click', () => { opened ? shut() : open(); }); listen(close, 'click', shut);
     listen(centre, 'click', () => setOrigin(mapCentre())); listen(fit, 'click', fitRadius);
+    listen(physical, 'click', event => {
+      event.stopPropagation();
+      const boxes = ['400','275','220','132','66','subs'].map(id => D.querySelector(`#scada-ui-container input[data-layer-id="${id}"]`)).filter(Boolean);
+      if (!boxes.length) { showError('Physical grid controls are loading. Try again when the map controls appear.'); return; }
+      for (const box of boxes) if (!box.checked) box.click();
+      showError(null); status.textContent = 'Existing physical grid layers switched on. Source-mapped corridors are context; crossings and proximity do not establish a connection.';
+      fitRadius();
+    });
     listen(pick, 'click', () => { picking = !picking; pick.setAttribute('aria-pressed', String(picking)); pick.textContent = picking ? 'Tap a point on the map' : 'Pick origin on map'; });
     listen(slider, 'input', () => { try { radius = radiusKm(slider.value); showError(null); refresh(); } catch (e) { showError(e.message); } });
     listen(undo, 'click', () => { itinerary.pop(); updateModel(); draw(); }); listen(clear, 'click', () => { itinerary.length = 0; updateModel(); draw(); });
