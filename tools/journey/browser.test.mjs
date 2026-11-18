@@ -27,11 +27,11 @@ try {
   page.on('requestfailed', r => failed.push({url:r.url(),error:r.failure()?.errorText}));
   page.on('response',r=>{if(r.url()==='https://cdn.jsdelivr.net/npm/maplibre-gl@3.6.2/dist/maplibre-gl.js')assetReads.push(r.body().then(b=>assets.push({url:r.url(),status:r.status(),bytes:b.length,sha256:createHash('sha256').update(b).digest('hex')})));});
   await page.goto(`${origin}/atlas/v/${G}/`, {waitUntil:'domcontentloaded', timeout:90000});
-  await page.waitForFunction(() => window.__GRIDATLAS_V9_MAP__ && document.querySelector('#gridatlas-gj03 .gj-launch'), {timeout:90000});
-  await page.waitForFunction(() => window.__GRIDATLAS_V9_MAP__?.getStyle()?.layers?.length > 0, {timeout:90000});
+  await page.waitForFunction(() => window.__GRIDATLAS_V9_MAP__ && document.querySelector('#gridatlas-gj03 .gj-launch'), null, {timeout:90000});
+  await page.waitForFunction(() => window.__GRIDATLAS_V9_MAP__?.getStyle()?.layers?.length > 0, null, {timeout:90000});
   const native = await page.evaluate(() => {const m=window.__GRIDATLAS_V9_MAP__; return {constructor:m.constructor.name,version:window.maplibregl?.version,canvas:!!m.getCanvas().getContext('webgl2') || !!m.getCanvas().getContext('webgl'),container:m.getContainer().id,existingLayers:m.getStyle().layers.length,existingLayerIds:m.getStyle().layers.map(l=>l.id)};});
   assert.equal(native.version, '3.6.2'); assert.ok(native.canvas); assert.ok(native.existingLayers > 0);
-  await page.waitForFunction(() => {const s=window.__GRIDATLAS_MODULES__?.menuBar; return s?.installed || s?.failure;}, {timeout:90000});
+  await page.waitForFunction(() => {const s=window.__GRIDATLAS_MODULES__?.menuBar; return s?.installed || s?.failure;}, null, {timeout:90000});
   const menuState = await page.evaluate(()=>window.__GRIDATLAS_MODULES__.menuBar);
   assert.equal(menuState.installed,true,JSON.stringify(menuState));
   assert.equal(menuState.layer_controls,63);
@@ -51,7 +51,7 @@ try {
   assert.equal(await page.evaluate(()=>!!window.__GRIDATLAS_V9_MAP__.getSource('gridatlas-gj03-route')), false);
   await page.getByRole('combobox',{name:'Explicit starting node'}).selectOption('A1');
   await page.waitForFunction(()=>window.__GRIDATLAS_MODULES__.gridJourneyPreview.snapshot().steps===8);
-  await page.waitForFunction(()=>!!window.__GRIDATLAS_V9_MAP__.getLayer('gridatlas-gj03-schematic'),{timeout:60000});
+  await page.waitForFunction(()=>!!window.__GRIDATLAS_V9_MAP__.getLayer('gridatlas-gj03-schematic'),null,{timeout:60000});
   await page.getByRole('button',{name:'Next',exact:true}).click();
   assert.equal(await page.evaluate(()=>window.__GRIDATLAS_MODULES__.gridJourneyPreview.snapshot().step),1);
   await page.getByRole('button',{name:'Reset',exact:true}).click();
