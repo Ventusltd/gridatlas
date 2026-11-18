@@ -2,7 +2,7 @@
 
 Source-only module for the next GridAtlas composition. It does not edit a live pointer, immutable release, historical generation, raw dataset or source graph.
 
-`build.mjs` deterministically assembles `src/model.mjs`, `src/bootstrap.js` and `src/vicinity.css` into one bounded module. The source uses the existing native MapLibre map and the existing canonical `geodesy` module. It reuses the loaded `src-subs` source through public `querySourceFeatures`; while that source is not ready it can show the already-loaded ≥33 kV screening subset, explicitly labelled as a subset. Existing source voltage tags retain their units; unknown voltage and missing stable IDs remain unknown. No additional collector or data source is installed.
+`build.mjs` deterministically assembles `src/model.mjs`, `src/bootstrap.js` and `src/vicinity.css` into one bounded module. The source uses the existing native MapLibre map and the existing canonical `geodesy` module. It first reads the complete already-loaded `src-subs.serialize().data` GeoJSON, so changing radius or origin is not restricted to currently visible tiles. Public `querySourceFeatures` is only a labelled viewport-subset fallback; while that source is not ready it can show the already-loaded ≥33 kV screening subset, also explicitly labelled. Existing source voltage tags retain their units; unknown voltage and missing stable IDs remain unknown. No additional collector or data source is installed.
 
 The control appears in the native Grid menu, original Layers and fullscreen controls. It offers an integer radius from 1–50 km, voltage tags, chosen map point/centre or a located source asset, nearby real mapped substations and an optional ordered local user model. Pink dashed model joins are explicitly user-assumed; the spatial radius boundary is not a circuit. No connections, transformers, capacity, energisation, routing or measured power flow are inferred from proximity.
 
@@ -27,6 +27,10 @@ window.dispatchEvent(new CustomEvent('gridatlas:vicinity-open', {detail: {origin
 ```
 
 The module also exposes `mount(nativeMap)`, `setOrigin(origin)`, `snapshot()` and `destroy()`. User models are bounded to 20 selected stations, kept in this page only and never written into a source dataset. Close removes owned map overlays; destroy also removes the DOM, controls and listeners. Foreign map sources with colliding IDs are preserved.
+
+An optional `news_context_url` may supply an HTTPS exact-host `globalgrid2050.com/uk_renewables_pipeline/<12 digits>/` edition base, optionally ending `index.html`. Credentials, ports, query strings, fragments and other hosts/paths are refused. The explorer constructs only `news_origin_type`, `news_origin_id` and one of six `news_topic` values, plus the fixed `#headlinesHeading` anchor. News context opens only on a user click and is explicitly topic context, not an association between a headline and an asset. No unpublished edition is guessed or reserved. A valid base is retained when the user chooses another origin.
+
+This additive module also styles the inherited Journey select dark in WebKit and reserves space for native Layers in short landscape viewports. The original Journey source and its historical rebuild remain unchanged.
 
 ## Verification
 
