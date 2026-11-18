@@ -4,10 +4,12 @@ import path from 'node:path';
 import os from 'node:os';
 import assert from 'node:assert/strict';
 import {createHash} from 'node:crypto';
-import {pathToFileURL} from 'node:url';
-import {ROOT, assemble} from './build.mjs';
-import {parseVicinityIntent} from './src/model.mjs';
-const atlasRoot=process.env.VICINITY_ATLAS_ROOT||ROOT;
+import {pathToFileURL,fileURLToPath} from 'node:url';
+import {execFileSync} from 'node:child_process';
+import {runTrainUiAcceptance} from '../train/browser.test.mjs';
+const atlasRoot=path.resolve(process.env.VICINITY_ATLAS_ROOT||path.join(path.dirname(fileURLToPath(import.meta.url)),'../..'));
+const {assemble}=await import(pathToFileURL(path.join(atlasRoot,'tools/vicinity/build.mjs')).href);
+const {parseVicinityIntent}=await import(pathToFileURL(path.join(atlasRoot,'tools/vicinity/src/model.mjs')).href);
 const generation=process.env.VICINITY_BROWSER_GENERATION||'202611172355';
 const injecting=process.env.VICINITY_BROWSER_INJECT==='1';
 const browserName=process.env.VICINITY_BROWSER_ENGINE||'chromium';
@@ -23,7 +25,9 @@ console.log(JSON.stringify({startedUTC:new Date().toISOString(),output,generatio
 const dc={at:[-0.404504,51.496403],type:'datacentre',id:'dcuk-04bb759f3d52d660',name:'Source-listed London data centre'};
 const repd={at:[2.1708996,52.1374391],type:'repd',id:'repd:2470',name:'East Anglia 3 (EA 3)'};
 const errors=[],failed=[],layouts=[],origins=[],radiusChecks=[],renderChecks=[];
-const startedUTC=new Date().toISOString();let browser,page,baselineLayers=[],baselineSource=null;
+const startedUTC=new Date().toISOString(),coldStarted=performance.now(),runtimeResponses=[],responseReads=[];
+const sourceHead=execFileSync('git',['rev-parse','HEAD'],{cwd:atlasRoot,encoding:'utf8'}).trim();
+let browser,page,baselineLayers=[],baselineSource=null;
 function intent(origin,radius=10){const q=new URLSearchParams({journey:'vicinity',origin_type:origin.type,origin_id:origin.id,latitude:String(origin.at[1]),longitude:String(origin.at[0]),radius_km:String(radius),name:origin.name});return q.toString();}
 async function snapshot(){return page.evaluate(()=>window.__GRIDATLAS_MODULES__.gridVicinity.snapshot());}
 async function visibleTap(locator){await locator.scrollIntoViewIfNeeded();const target=await locator.evaluate(e=>{const r=e.getBoundingClientRect(),points=[[r.left+2,r.top+2],[r.right-2,r.top+2],[r.left+2,r.bottom-2],[r.right-2,r.bottom-2],[r.left+r.width/2,r.top+r.height/2]];return{button:e.tagName==='BUTTON'&&!!e.closest('#gridatlas-vicinity,#gridatlas-gj03'),height:r.height,text:e.textContent,uncovered:points.every(([x,y])=>{const hit=document.elementFromPoint(x,y);return e===hit||e.contains(hit);})};});assert.equal(target.uncovered,true,'whole touch target is uncovered: '+target.text);if(target.button)assert.ok(target.height>=44,'primary touch target is at least44px');await locator.tap();}
@@ -34,15 +38,16 @@ async function sourceFingerprint(){return page.evaluate(()=>{const m=window.__GR
 try{
  browser=await pw[browserName].launch({headless:true,...(browserName==='chromium'?{args:['--use-gl=angle','--use-angle=swiftshader','--enable-webgl','--ignore-gpu-blocklist']}: {})});
  const context=await browser.newContext({...pw.devices[browserName==='webkit'?'iPhone 13':'Pixel 7'],viewport:{width:393,height:852}});
- page=await context.newPage();page.on('pageerror',e=>errors.push({message:e.message,stack:e.stack}));page.on('requestfailed',r=>failed.push({url:r.url(),error:r.failure()?.errorText}));
+ page=await context.newPage();page.on('response',r=>{if(r.url().includes('/atlas/')&&/\.(?:js|json)$/.test(new URL(r.url()).pathname))responseReads.push(r.body().then(b=>runtimeResponses.push({url:r.url(),status:r.status(),bytes:b.length,sha256:createHash('sha256').update(b).digest('hex')})).catch(error=>runtimeResponses.push({url:r.url(),bodyUnavailable:String(error.message)})));});page.on('pageerror',e=>errors.push({message:e.message,stack:e.stack}));page.on('requestfailed',r=>failed.push({url:r.url(),error:r.failure()?.errorText}));
  await page.goto(base+'/atlas/v/'+generation+'/?'+intent(dc),{waitUntil:'domcontentloaded',timeout:90000});
  await page.waitForFunction(()=>window.__GRIDATLAS_V9_MAP__&&window.__GRIDATLAS_MODULES__?.geodesy,null,{timeout:90000});
  await page.waitForFunction(()=>window.__GRIDATLAS_V9_MAP__?.getStyle()?.layers?.length>0,null,{timeout:90000});
- baselineLayers=await page.evaluate(()=>window.__GRIDATLAS_V9_MAP__.getStyle().layers.filter(l=>!l.id.startsWith('gridatlas-vicinity-')).map(l=>l.id));
+ baselineLayers=await page.evaluate(()=>window.__GRIDATLAS_V9_MAP__.getStyle().layers.filter(l=>!l.id.startsWith('gridatlas-vicinity-')&&!l.id.startsWith('gridatlas-train-')).map(l=>l.id));
  if(injecting)await page.addScriptTag({content:compiled.body});
  await page.waitForFunction(()=>window.__GRIDATLAS_MODULES__?.gridVicinity?.snapshot().opened,null,{timeout:90000});
  await page.waitForFunction(()=>window.__GRIDATLAS_MODULES__.gridVicinity.snapshot().matching>1,null,{timeout:90000});
  await page.waitForFunction(()=>{const m=window.__GRIDATLAS_MODULES__?.menuBar;return m?.installed||m?.failure;},null,{timeout:90000});
+ const coldReadyMs=performance.now()-coldStarted;
  const menu=await page.evaluate(()=>window.__GRIDATLAS_MODULES__.menuBar);
  assert.equal(menu.installed,true,JSON.stringify(menu));assert.equal(menu.layer_controls,63);
  const panel=page.getByRole('region',{name:'Vicinity familiarisation'}),close=page.getByRole('button',{name:'Close vicinity explorer',exact:true});
@@ -54,6 +59,8 @@ try{
  await page.screenshot({path:path.join(output,'physical-grid-origin.png')});
  baselineSource=await sourceFingerprint();
  const sourceCoverage=await page.evaluate(()=>{const m=window.__GRIDATLAS_V9_MAP__;return{fullSubstationFeatures:m.getSource('src-subs')?.serialize().data?.features?.length??null,visibleTileFeatures:m.querySourceFeatures('src-subs').length};});
+ assert.equal(sourceCoverage.fullSubstationFeatures,5800);
+ const sourceVoltage=panel.getByRole('group',{name:'Source voltage tags',exact:true});
  const slider=page.getByRole('slider',{name:'Vicinity radius in kilometres'});
  radiusChecks.push({radius:10,matching:initial.matching,shown:(await assertOwnPoints(10)).length});
  const radiusOneStarted=performance.now();await slider.focus();await page.keyboard.press('Home');assert.equal((await snapshot()).radiusKm,1);radiusChecks.push({radius:1,durationMs:performance.now()-radiusOneStarted,matching:(await snapshot()).matching,shown:(await assertOwnPoints(1)).length});
@@ -72,31 +79,36 @@ try{
  await page.waitForTimeout(180);assert.equal(JSON.stringify((await snapshot()).assetContext),assetBeforeRefresh);
  assert.equal(await dcContext.evaluate(e=>e===window.__vicinityCategory&&e.open&&e.querySelector('button')===window.__vicinityAssetButton),true,'unchanged source refresh preserves open controls');
  const assetRow=assetContext.categories.find(c=>c.id==='datacentre').rows[0];
- await visibleTap(dcContext.getByRole('button',{name:/^Add .+ to my model$/}).first());assert.deepEqual((await snapshot()).modelStations.at(-1).at,assetRow.at);
- await visibleTap(page.getByRole('button',{name:'Clear model',exact:true}));
+ await visibleTap(dcContext.getByRole('button',{name:/^Find stations near /}).first());
+ assert.equal((await snapshot()).modelStations.length,0,'context asset does not become a station stop');
+ await visibleTap(panel.locator('.train-search-results').getByRole('button').first());
+ const contextBound=(await snapshot()).train.itinerary.stops.at(-1);assert.ok(contextBound.stationId.startsWith('grid_substations:'));assert.notEqual(contextBound.stationId,assetRow.originId||assetRow.id);
+ await visibleTap(page.getByRole('button',{name:'Clear selected stops',exact:true}));
  const docs=panel.locator('.vic-document-context');await visibleTap(docs.locator('summary'));assert.match(await docs.innerText(),/Sea Link/);assert.match(await docs.innerText(),/No association|not linked|unassociated/i);
  assert.equal((await snapshot()).documentContext.verifiedAssetJoins,0);
  // Native Android taps operate voltage labels; no script-driven state changes.
- for(const name of ['400 kV','275 kV','132 kV','66 kV','11 kV','Other stated voltage','Voltage not stated']){const box=page.getByRole('checkbox',{name,exact:true});if(await box.isChecked())await visibleTap(box);}
+ for(const name of ['400 kV','275 kV','132 kV','66 kV','11 kV','Other stated voltage','Voltage not stated']){const box=sourceVoltage.getByRole('checkbox',{name,exact:true});if(await box.isChecked())await visibleTap(box);}
  assert.deepEqual((await snapshot()).selectedBands,['33']);
  const filtered=await assertOwnPoints(50);assert.ok(filtered.length>1);assert.ok(filtered.every(f=>f.properties.voltage.split(' / ').some(v=>/^33(?: kV)?$/.test(v))));
  const added=panel.locator('.vic-results').getByRole('button',{name:/^Add .+ to my model$/});await visibleTap(added.nth(0));await visibleTap(added.nth(1));
- const scenario=await snapshot(),scenarioData=await ownData(),line=scenarioData.features.find(f=>f.properties.kind==='user-model');assert.equal(scenario.modelStations.length,2);assert.equal(line.properties.evidence,'USER_ASSUMED_LOCAL_MODEL');assert.deepEqual(line.geometry.coordinates,scenario.modelStations.map(s=>s.at));assert.equal(scenarioData.features.filter(f=>f.geometry.type==='LineString').length,2);
- await visibleTap(page.getByRole('button',{name:'Undo last station',exact:true}));assert.equal((await snapshot()).modelStations.length,1);
- await visibleTap(page.getByRole('button',{name:'Clear model',exact:true}));assert.equal((await snapshot()).modelStations.length,0);assert.equal((await ownData()).features.some(f=>f.properties.kind==='user-model'),false);
+ const scenario=await snapshot();assert.equal(scenario.modelStations.length,2);assert.ok(scenario.train.itinerary.stops.every(row=>row.stationId.startsWith('grid_substations:')));
+ await visibleTap(panel.locator('.train-stops').getByRole('button',{name:/^Remove /}).first());assert.equal((await snapshot()).modelStations.length,1);
+ await visibleTap(page.getByRole('button',{name:'Clear selected stops',exact:true}));assert.equal((await snapshot()).modelStations.length,0);
+ const trainAcceptance=await runTrainUiAcceptance({page,panel,snapshot,visibleTap,output});
  assert.equal(await sourceFingerprint(),baselineSource,'native source geometry is never rewritten by a local model');
- await visibleTap(panel.getByRole('checkbox',{name:'33 kV',exact:true}));assert.deepEqual((await snapshot()).selectedBands,[]);assert.equal((await snapshot()).matching,0);assert.equal((await assertOwnPoints(50)).length,0);
- await visibleTap(panel.getByRole('checkbox',{name:'Voltage not stated',exact:true}));assert.deepEqual((await snapshot()).selectedBands,['unknown']);assert.ok((await assertOwnPoints(50)).every(f=>f.properties.voltage==='Not stated'));
+ await visibleTap(sourceVoltage.getByRole('checkbox',{name:'33 kV',exact:true}));assert.deepEqual((await snapshot()).selectedBands,[]);assert.equal((await snapshot()).matching,0);assert.equal((await assertOwnPoints(50)).length,0);
+ await visibleTap(sourceVoltage.getByRole('checkbox',{name:'Voltage not stated',exact:true}));assert.deepEqual((await snapshot()).selectedBands,['unknown']);assert.ok((await assertOwnPoints(50)).every(f=>f.properties.voltage==='Not stated'));
  // Restore every filter before checking origin types.
- for(const box of await panel.getByRole('checkbox').all())if(!(await box.isChecked()))await visibleTap(box);
+ for(const box of await sourceVoltage.getByRole('checkbox').all())if(!(await box.isChecked()))await visibleTap(box);
  for(const origin of [repd,dc]){await open(origin,50);const s=await snapshot();assert.equal(s.origin.id,origin.id);assert.deepEqual(s.origin.at,origin.at);assert.equal(s.realConnectionsInferred,0);if(origin.type==='repd')assert.ok(s.matching>0,'full loaded source includes the known coastal stations within EA3 50 km');origins.push({type:origin.type,id:s.origin.id,at:s.origin.at,matching:s.matching});await assertOwnPoints(50);}
  await open(dc,50);
  const station=(await ownData()).features.find(f=>f.properties.kind==='substation');assert.ok(station);
- await open({at:station.geometry.coordinates,id:'grid_substations:0',name:station.properties.name,type:'substation'},10);assert.equal((await snapshot()).origin.id,'grid_substations:0');origins.push({type:'substation',id:'grid_substations:0',at:station.geometry.coordinates,matching:(await snapshot()).matching});
+ const realStation=await page.evaluate(at=>{const ns=window.__GRIDATLAS_MODULES__,f=window.__GRIDATLAS_V9_MAP__.getSource('src-subs').serialize().data.features.find(f=>{const p=ns.geodesy.representativePoint(f.geometry);return p&&p.every((v,i)=>v===at[i]);});return{id:String(f.id),at:ns.geodesy.representativePoint(f.geometry),name:f.properties.name||'Unnamed mapped substation'};},station.geometry.coordinates);
+ await open({...realStation,type:'substation'},10);assert.equal((await snapshot()).origin.id,realStation.id);origins.push({type:'substation',...realStation,matching:(await snapshot()).matching});
  // Native result control supplies the actual station's coordinates, without a nearest-identity guess.
  const recenter=panel.locator('.vic-results').getByRole('button',{name:/^Use .+ as origin$/}).first();await visibleTap(recenter);assert.equal((await snapshot()).origin.type,'substation');
  await visibleTap(close);assert.equal(await page.evaluate(()=>!!window.__GRIDATLAS_V9_MAP__.getSource('gridatlas-vicinity-context')),false);
- const grid=page.locator('#gridatlas-menu-bar-title-4');await grid.tap();const nativeLaunch=page.locator('#gridatlas-menu-bar-panel-4 [data-vicinity-group] button');await visibleTap(nativeLaunch);assert.equal((await snapshot()).opened,true);await visibleTap(close);assert.equal(await grid.evaluate(e=>e===document.activeElement&&e.getClientRects().length>0),true);
+ const grid=page.locator('#gridatlas-menu-bar-title-4');await grid.tap();const nativeLaunch=page.locator('#gridatlas-menu-bar-panel-4 [data-vicinity-group]').getByRole('button',{name:/^Explore nearby grid/});await visibleTap(nativeLaunch);assert.equal((await snapshot()).opened,true);await visibleTap(close);assert.equal(await grid.evaluate(e=>e===document.activeElement&&e.getClientRects().length>0),true);
  await open(dc,10);
  // Keep both orientations inside the same native map lifecycle. Exit browser Fullscreen API
  // before Chromium's window resize because Windows rejects Browser.setWindowBounds while fullscreen.
@@ -140,9 +152,10 @@ try{
  await page.evaluate(()=>window.__GRIDATLAS_MODULES__.gridVicinity.mount().open({origin:{at:[-0.1,51.5],type:'map-centre',id:null},radiusKm:1}));assert.equal((await snapshot()).opened,true);await page.evaluate(()=>window.__GRIDATLAS_V9_MAP__.remove());assert.equal((await snapshot()).alive,false);assert.equal(await page.locator('#gridatlas-vicinity').count(),0);
  // Span the inherited 1000ms selection poll: immediate assertions miss queued teardown work.
  await page.waitForTimeout(1200);
- assert.deepEqual(errors,[]);
+ assert.deepEqual(errors,[]);await Promise.all(responseReads);
+ if(!injecting){const served=runtimeResponses.find(r=>r.url.endsWith('/atlas/modules/'+generation+'-grid-vicinity.js'));assert.ok(served,'browser actually received candidate module');assert.equal(served.sha256,compiled.sha256);assert.equal(served.bytes,compiled.bytes);}
  const actualModule=injecting?compiled.body:fs.readFileSync(path.join(atlasRoot,'atlas/modules/'+generation+'-grid-vicinity.js'),'utf8').replace(/\r\n/g,'\n');
- const receipt={result:'PASS',postMapRemovalObservationMs:1200,startedUTC,finishedUTC:new Date().toISOString(),mode:injecting?'CANDIDATE_MODULE_INJECTION_NOT_PUBLIC_ACCEPTANCE':'LOCAL_FULL_COMPOSITION',browser:browserName,device:browserName==='webkit'?'iPhone 13 software regression':'Pixel 7 Android touch emulation',generation,moduleBytes:Buffer.byteLength(actualModule),moduleSha256:createHash('sha256').update(actualModule).digest('hex'),initial,physicalControls,sourceCoverage,assetsBefore,assetContext,assetRefreshMs,radiusChecks,origins,scenario,layouts,exitedFullscreen,baselineLayers:baselineLayers.length,finalLayers:finalLayers.length,errors,failed,physicalPhone:'UNKNOWN',webKitBinaryAvailable:fs.existsSync(pw.webkit.executablePath())};
+ const receipt={result:'PASS',postMapRemovalObservationMs:1200,sourceHead,coldReadyMs,runtimeResponses,trainAcceptance,startedUTC,finishedUTC:new Date().toISOString(),mode:injecting?'CANDIDATE_MODULE_INJECTION_NOT_PUBLIC_ACCEPTANCE':'LOCAL_FULL_COMPOSITION',browser:browserName,device:browserName==='webkit'?'iPhone 13 software regression':'Pixel 7 Android touch emulation',generation,moduleBytes:Buffer.byteLength(actualModule),moduleSha256:createHash('sha256').update(actualModule).digest('hex'),initial,physicalControls,sourceCoverage,assetsBefore,assetContext,assetRefreshMs,radiusChecks,origins,scenario,layouts,exitedFullscreen,baselineLayers:baselineLayers.length,finalLayers:finalLayers.length,errors,failed,physicalPhone:'UNKNOWN',webKitBinaryAvailable:fs.existsSync(pw.webkit.executablePath())};
  fs.writeFileSync(path.join(output,'receipt.json'),JSON.stringify(receipt,null,2)+'\n');console.log(JSON.stringify({result:'PASS',output,generation,matching:initial.matching,loaded:initial.loadedRecords}));
 }catch(e){if(page)await page.screenshot({path:path.join(output,'failure.png')}).catch(()=>{});fs.writeFileSync(path.join(output,'failure.json'),JSON.stringify({error:e.message,stack:e.stack,errors,failed,snapshot:page?await snapshot().catch(()=>null):null},null,2));throw e;}
 finally{await browser?.close();await new Promise(resolve=>server.close(resolve));}
