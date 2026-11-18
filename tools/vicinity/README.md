@@ -14,7 +14,7 @@ Vicinity is the sole consumer of:
 ?journey=vicinity&origin_type=repd|datacentre|substation&origin_id=<opaque-source-id>&latitude=<number>&longitude=<number>&radius_km=<integer1..50>
 ```
 
-Existing producer IDs such as `repd:2470`, `grid_substations:0` and data-centre source IDs are retained without deriving identity from a name or coordinates. Existing legacy REPD fields may coexist. Missing, repeated or invalid origin fields explicitly refuse the link. The user can then choose a map centre or point; no substitute point is silently invented.
+Existing producer IDs such as `repd:2470`, `grid_substations:0` and data-centre source IDs are retained without deriving identity from a name or coordinates. Existing legacy REPD fields may coexist. An originless `?journey=vicinity` opens explicit choose-location mode; radius defaults to 10 km if absent. It clears a previous origin and draws no assumed map-centre point. Partial, repeated or invalid origin tuples refuse the link. The user can choose a map centre or point through the same controller.
 
 All native/Layers/event actions use one controller:
 
@@ -26,9 +26,9 @@ window.__GRIDATLAS_MODULES__.gridVicinity.open({
 window.dispatchEvent(new CustomEvent('gridatlas:vicinity-open', {detail: {origin, radiusKm: 10}}));
 ```
 
-The module also exposes `mount(nativeMap)`, `setOrigin(origin)`, `snapshot()` and `destroy()`. User models are bounded to 20 selected stations, kept in this page only and never written into a source dataset. Close removes owned map overlays; destroy also removes the DOM, controls and listeners. Foreign map sources with colliding IDs are preserved.
+The module also exposes `mount(nativeMap)`, `setOrigin(origin)`, `snapshot()` and `destroy()`. User models are bounded to 20 selected assets, kept in this page only and never written into a source dataset. Close removes owned map overlays; destroy also removes the DOM, controls and listeners. Foreign map sources with colliding IDs are preserved.
 
-An optional `news_context_url` may supply an HTTPS exact-host `globalgrid2050.com/uk_renewables_pipeline/<12 digits>/` edition base, optionally ending `index.html`. Credentials, ports, query strings, fragments and other hosts/paths are refused. The explorer constructs only `news_origin_type`, `news_origin_id` and one of six `news_topic` values, plus the fixed `#headlinesHeading` anchor. News context opens only on a user click and is explicitly topic context, not an association between a headline and an asset. No unpublished edition is guessed or reserved. A valid base is retained when the user chooses another origin.
+An optional `news_context_url` may supply an HTTPS exact-host `globalgrid2050.com/uk_renewables_pipeline/<12 digits>/` edition base, optionally ending `index.html`. Credentials, ports, query strings, fragments and other hosts/paths are refused. Invalid optional news fields disable and clear the return link while a valid origin/radius or manual chooser keeps working. The explorer constructs only `news_origin_type`, `news_origin_id` and one of six `news_topic` values, plus the fixed `#headlinesHeading` anchor. News context opens only on a user click and is explicitly topic context, not an association between a headline and an asset. No unpublished edition is guessed or reserved. A valid base is retained when the user chooses another origin.
 
 This additive module also styles the inherited Journey select dark in WebKit and reserves space for native Layers in short landscape viewports. The original Journey source and its historical rebuild remain unchanged.
 
