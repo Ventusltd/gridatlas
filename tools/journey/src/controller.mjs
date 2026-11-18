@@ -123,8 +123,9 @@ export function createJourneyController({map, document: D, window: W, planner, f
     } catch (e) { if (alive && ticket === epoch) report('WITHHELD: ' + e.message); }
   }
   function installLayerControls() {
-    for (const id of ['scada-ui-container', 'fs-curtain-keys']) {
-      const host = D.getElementById(id);
+    const hosts = ['scada-ui-container', 'fs-curtain-keys'].map(id => [id, D.getElementById(id)]);
+    hosts.push(['native-grid-menu', D.querySelector?.('#gridatlas-menu-bar-panel-4 .gm-panel-body')]);
+    for (const [id, host] of hosts) {
       if (!host || layerGroups.some(g => g.parentNode === host || g.parent === host)) continue;
       const group = el('div', null, host, {class: 'key-group', 'data-journey-group': id});
       const title = el('div', 'Grid Journeys', group, {class: 'key-title'});
