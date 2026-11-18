@@ -40,6 +40,10 @@ try {
   const nativeJourney = page.locator('[data-journey-group="native-grid-menu"] button');
   await nativeJourney.tap();
   assert.equal(await page.evaluate(()=>window.__GRIDATLAS_MODULES__.gridJourneyPreview.snapshot().opened),true);
+  await page.getByRole('button',{name:'Close Grid Journey',exact:true}).tap();
+  assert.equal(await nativeGrid.evaluate(e => e === document.activeElement && e.getClientRects().length > 0),true,'Close returns focus to the visible native Grid title');
+  await nativeGrid.tap();
+  await nativeJourney.tap();
   await page.getByRole('button',{name:'Explore real grid nearby',exact:true}).tap();
   assert.equal(await nativeGrid.getAttribute('aria-expanded'),'true');
   assert.equal(await page.evaluate(()=>window.__GRIDATLAS_MODULES__.gridJourneyPreview.snapshot().opened),false);
