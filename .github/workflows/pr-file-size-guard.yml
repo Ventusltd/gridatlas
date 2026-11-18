@@ -28,6 +28,9 @@ jobs:
     if: github.event_name == 'pull_request' && (startsWith(github.event.pull_request.head.ref, 'train-conductor/atlas-') || startsWith(github.event.pull_request.head.ref, 'train-conductor/atlas2-') || startsWith(github.event.pull_request.head.ref, 'release/202611'))
     runs-on: ubuntu-latest
     timeout-minutes: 30
+    env:
+      JOURNEY_BROWSER_OUTPUT: ${{ runner.temp }}/gridatlas-gj03-browser-candidate
+      VICINITY_BROWSER_OUTPUT: ${{ runner.temp }}/gridatlas-vicinity-candidate
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
