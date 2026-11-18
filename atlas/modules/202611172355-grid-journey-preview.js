@@ -757,8 +757,9 @@ function createJourneyController({map, document: D, window: W, planner, fixture,
     } catch (e) { if (alive && ticket === epoch) report('WITHHELD: ' + e.message); }
   }
   function installLayerControls() {
-    for (const id of ['scada-ui-container', 'fs-curtain-keys']) {
-      const host = D.getElementById(id);
+    const hosts = ['scada-ui-container', 'fs-curtain-keys'].map(id => [id, D.getElementById(id)]);
+    hosts.push(['native-grid-menu', D.querySelector?.('#gridatlas-menu-bar-panel-4 .gm-panel-body')]);
+    for (const [id, host] of hosts) {
       if (!host || layerGroups.some(g => g.parentNode === host || g.parent === host)) continue;
       const group = el('div', null, host, {class: 'key-group', 'data-journey-group': id});
       const title = el('div', 'Grid Journeys', group, {class: 'key-title'});
@@ -789,7 +790,14 @@ function createJourneyController({map, document: D, window: W, planner, fixture,
     const vicinity = W.__GRIDATLAS_MODULES__?.gridVicinity;
     if (!vicinity?.open) {
       const grid = D.getElementById('gridatlas-menu-bar-title-4');
-      if (!grid?.click) { report('Grid layers are loading. Try Explore grid again when the map controls appear.'); return; }
+      if (!grid?.click) {
+        const layers = D.getElementById('scada-ui-container');
+        if (!layers?.scrollIntoView) { report('Grid layers are loading. Try Explore grid again when the map controls appear.'); return; }
+        if (originContext?.at) map.flyTo?.({center: [...originContext.at], duration: 0});
+        shut(); layers.scrollIntoView({block: 'start', behavior: 'instant'});
+        layers.querySelector?.('input[data-layer-id]')?.focus();
+        return;
+      }
       if (originContext?.at) map.flyTo?.({center: [...originContext.at], duration: 0});
       shut();
       if (grid.getAttribute?.('aria-expanded') !== 'true') grid.click();
