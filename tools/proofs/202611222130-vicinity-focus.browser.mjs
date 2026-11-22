@@ -82,6 +82,16 @@ try{
  await card.getByRole('button',{name:'Close'}).click();
  await page.waitForFunction(()=>document.documentElement.getAttribute('data-vicinity-focus')!=='on');
  assert.equal(await page.locator('[data-offtakers-card]').count(),0);
+ // The normal Layers UI remains operational even after focused Vicinity closes.
+ const layers=page.locator('#gridatlas-dash-toggle');
+ await layers.waitFor({timeout:10000});
+ const before=await page.evaluate(()=>window.__GRIDATLAS_DASH__?.collapsed);
+ await layers.click();
+ const during=await page.evaluate(()=>window.__GRIDATLAS_DASH__?.collapsed);
+ assert.notEqual(during,before,'Hide Layers button must still toggle');
+ await layers.click();
+ assert.equal(await page.evaluate(()=>window.__GRIDATLAS_DASH__?.collapsed),before);
+ assert.equal(await page.locator('#gridatlas-sld-panel').count(),0,'layout never reappears after VICINITY closes');
  assert.deepEqual(errors,[],'no unhandled browser errors');
  receipt={...receipt,result:'PASS',focusCard:true,layoutSuppressed:true,sourceBackedDetail:true,originalAreaRetained:true,errors};
  console.log('PASS '+engine+' V9.195 '+JSON.stringify(receipt));
