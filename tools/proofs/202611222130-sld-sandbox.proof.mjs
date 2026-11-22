@@ -9,7 +9,11 @@ const read=x=>fs.readFileSync(path.join(root,x),'utf8');
 const manifest=JSON.parse(read('atlas/manifests/202611222130-composition.json'));
 const preview=JSON.parse(read('atlas/v/202611222130/current.json'));
 const live=JSON.parse(read('atlas/current.json'));
-assert.equal(live.generation,'202611222000','do not publish from the candidate branch');
+assert.ok(['202611222000','202611222130'].includes(live.generation),'live must be V9.194 or verified V9.195');
+if(live.generation==='202611222130')for(const c of manifest.cartridges){
+ const active=live.cartridges.find(x=>x.id===c.id);
+ assert.ok(active&&active.sha256===c.sha256,'promoted '+c.id+' must match the accepted source pin');
+}
 assert.equal(manifest.generation,'202611222130');
 assert.equal(manifest.previous_generation,live.generation);
 assert.equal(manifest.acceptance?.full_application_copies_created,0);
