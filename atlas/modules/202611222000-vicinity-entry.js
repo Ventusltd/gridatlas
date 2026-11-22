@@ -9,7 +9,7 @@
  if(!Number.isFinite(lat)||!Number.isFinite(lon)||lon<-11||lon>3||lat<49.5||lat>61.5)return;
  const origin={repdRef:ref,at:[lon,lat],name:(q.get('project')||q.get('name')||'REPD '+ref).slice(0,180),technology:(q.get('technology')||'').slice(0,80)};
  let button,attempts=0;
- function position(){ const stack=D.querySelector('.map-controls');if(stack&&button?.isConnected)stack.removeAttribute('data-gridatlas-menu-emptied');const layers=D.getElementById('gridatlas-dash-toggle');if(layers){layers.style.setProperty('z-index','2147483000','important');layers.style.setProperty('pointer-events','auto','important');} }
+ function position(){ const stack=D.querySelector('.map-controls');if(stack&&button?.isConnected)stack.removeAttribute('data-gridatlas-menu-emptied');const layers=D.getElementById('gridatlas-dash-toggle');if(layers){if(stack&&layers.parentElement!==stack)stack.appendChild(layers);layers.style.setProperty('z-index','2147483000','important');layers.style.setProperty('pointer-events','auto','important');} }
  function mount(){
    if(button?.isConnected)return true;
    const map=W.__GRIDATLAS_V9_MAP__,engine=W.__GRIDATLAS_MODULES__?.ukOfftakers;
