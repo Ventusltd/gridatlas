@@ -1,7 +1,7 @@
 {
  "schema": "gridatlas.current.v2",
- "generation": "202611222130",
- "previous_generation": "202611222000",
+ "generation": "202611222325",
+ "previous_generation": "202611222130",
  "architecture": "IMMUTABLE_SHELL_PLUS_HASHED_CARTRIDGES",
  "live_route": "/gridatlas/atlas/",
  "release_id": "202608300453-atlas-v9",
@@ -19,7 +19,8 @@
   "uk-lightning-overlay",
   "uk-offtakers-overlay",
   "pipeline-vicinity-button",
-  "vicinity-focus"
+  "vicinity-focus",
+  "vicinity-controls-rescue"
  ],
  "cartridges": [
   {
@@ -858,6 +859,25 @@
     "suppress-layout-sandbox-during-vicinity-only",
     "preserve-5-10-20-km-area-analysis"
    ]
+  },
+  {
+   "id": "vicinity-controls-rescue",
+   "generation": "202611222325",
+   "version": "v9.196",
+   "type": "script",
+   "slot": "after-cartridge",
+   "after": "vicinity-focus",
+   "path": "./modules/202611222325-vicinity-controls-rescue.js",
+   "sha256": "26754dc642ff6554bb55d25a65e422a16981141f0af5e0b8df9543498176f0f6",
+   "bytes": 3865,
+   "byte_budget": 6400,
+   "immutable_shell_modified": false,
+   "capabilities": [
+    "pdf-tab-visible-grid-engine-wakeup",
+    "one-shot-original-grid-engine-fallback",
+    "floating-hide-layers-reachable-during-vicinity",
+    "90-point-vicinity-preserved"
+   ]
   }
  ],
  "last_known_green": {
@@ -909,15 +929,15 @@
    "result_class": "LOCATION_ONLY"
   }
  },
- "composition_manifest": "./manifests/202611222130-composition.json",
+ "composition_manifest": "./manifests/202611222325-composition.json",
  "scope_closure": {
   "generation": "202609010726",
   "status": "DONE",
   "scope": "GridAtlas v9.42 the price panel revalidates",
   "schedule_retired": true
  },
- "composition_version": "v9.195",
- "composition_id": "202611222130-gridatlas-v9.195",
+ "composition_version": "v9.196",
+ "composition_id": "202611222325-gridatlas-v9.196",
  "transport": {
   "response_contract": "HEADERS_BEFORE_PARQUET_BODY",
   "engine_timeout_seconds": 15,
@@ -932,8 +952,8 @@
   "fidelity_workflow": ".github/workflows/202608301931-layer-fidelity.yml",
   "payload_cache": "RELEASE_AFTER_SERIALISATION"
  },
- "composition_note": "Owner-authorised V9.195 native GridAtlas project vicinity, asset-first swipeable cards and retirement of unfinished Layout Sandbox UI only. Grid measurement and source engines preserved; baseline V9.194 retained.",
- "superseded_generation": "202611222000",
- "candidate_predecessor": "202611222000",
+ "composition_note": "Owner iPhone screenshot: layers button trapped below Vicinity; A4/PDF MAP Grid Engine deferred. Small wake/position cartridge added; V9.195 original untouched.",
+ "superseded_generation": "202611222130",
+ "candidate_predecessor": "202611222130",
  "loader": "v2"
 }

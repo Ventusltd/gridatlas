@@ -2,7 +2,7 @@
 
 - Master: `done`
 - Active scope: `none`
-- Composition: `202611222130 · 202608300453-atlas-v9 · streaming-parquet-bridge → uk-gazetteer-flyto → substation-intelligence → sld-sandbox → uk-lightning-overlay → uk-offtakers-overlay → pipeline-vicinity-button → vicinity-focus`
+- Composition: `202611222325 · 202608300453-atlas-v9 · streaming-parquet-bridge → uk-gazetteer-flyto → substation-intelligence → sld-sandbox → uk-lightning-overlay → uk-offtakers-overlay → pipeline-vicinity-button → vicinity-focus → vicinity-controls-rescue`
 - Top-level full release copies: `0`
 - Immutable releases under atlas/releases: `8`
 - Active workflows: `9`

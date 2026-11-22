@@ -56,7 +56,7 @@ on:
   # only commits it can judge are the ones that happen to touch something else,
   # which is the same shape as a check that skips when its input is missing.
   push:
-    branches: [main]
+    branches: [main, 'fix/v9196-vicinity-a4-20261122']
     paths:
       - 'atlas/**'
       - 'tools/proofs/**'
@@ -78,6 +78,31 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  vicinity-v9196-mobile:
+    if: startsWith(github.ref_name, 'fix/v9196-') || github.ref_name == 'main'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    strategy:
+      fail-fast: false
+      matrix:
+        browser: [chromium, webkit]
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020
+        with:
+          node-version: '24'
+      - run: npm ci --ignore-scripts --no-audit --no-fund
+      - run: npx --no-install playwright install --with-deps ${{ matrix.browser }}
+      - run: node tools/proofs/202611222325-vicinity-controls-rescue.proof.mjs
+      - name: A4/PDF MAP and real Grid Engine / layers hit-tests
+        run: VICINITY_BROWSER=${{ matrix.browser }} node tools/proofs/202611222325-vicinity-a4.browser.mjs
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: vicinity-v9196-${{ matrix.browser }}-${{ github.run_id }}
+          path: work/vicinity-v9196-${{ matrix.browser }}
+          retention-days: 14
+
   user-layer-clicks:
     runs-on: ubuntu-24.04
     timeout-minutes: 25
