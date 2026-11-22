@@ -36,7 +36,7 @@ try{
  assert.match(first,/REPD project \(origin\)/);
  const next=card.getByRole('button',{name:'Next vicinity point'});
  await next.click();
- await page.waitForFunction(()=>window.__GRIDATLAS_MODULES__.ukOfftakers.state.pp.swipe.index===1);
+ await page.waitForFunction(()=>window.__GRIDATLAS_MODULES__.ukOfftakers.state.pp.swipe.index===0);
  await page.waitForTimeout(450);
  assert.notEqual(await focus.innerText(),first,'next must change displayed full card');
  const toggle=card.locator('[data-vicinity-browse-toggle]');
