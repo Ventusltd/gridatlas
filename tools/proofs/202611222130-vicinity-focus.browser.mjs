@@ -1,0 +1,61 @@
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+import path from 'node:path';
+import {chromium,webkit} from 'playwright';
+import {createPreviewServer} from '../journey/serve.mjs';
+const engine=process.env.VICINITY_BROWSER||'chromium';
+assert.ok(['chromium','webkit'].includes(engine));
+const browser=await (engine==='webkit'?webkit:chromium).launch({headless:true,...(engine==='chromium'?{args:['--use-gl=angle','--use-angle=swiftshader','--enable-webgl','--ignore-gpu-blocklist']}: {})});
+const server=await createPreviewServer();
+const output=path.resolve('work/vicinity-v9195-'+engine);fs.mkdirSync(output,{recursive:true});
+const context=await browser.newContext({viewport:{width:393,height:852},isMobile:true,hasTouch:true});
+const page=await context.newPage(),errors=[];
+page.on('pageerror',e=>errors.push(String(e)));
+const params='repd_ref=12588&latitude=51.8132088&longitude=-1.3489728&project=Botley%20West&technology=solar&journey=vicinity';
+let receipt={engine,softwareEmulation:true,physicalSafari:false};
+try{
+ const url='http://127.0.0.1:'+server.address().port+'/atlas/v/202611222130/?'+params;
+ await page.goto(url,{waitUntil:'domcontentloaded',timeout:90000});
+ await page.waitForFunction(()=>window.__GRIDATLAS_ATLAS__?.generation==='202611222130'&&!!window.__GRIDATLAS_V9_MAP__&&!!window.__GRIDATLAS_MODULES__?.ukOfftakers?.openProjectVicinity,null,{timeout:120000});
+ const button=page.locator('#gridatlas-pipeline-vicinity-button');
+ await button.waitFor({timeout:10000});await (engine==='webkit'?button.tap():button.click());
+ const card=page.locator('[data-offtakers-card]');await card.waitFor({timeout:30000});
+ await page.waitForFunction(()=>window.__GRIDATLAS_MODULES__?.ukOfftakers?.state?.pp?.swipe?.entries?.length>=2,null,{timeout:120000});
+ const focus=card.locator('[data-vicinity-focus-card]');
+ await focus.waitFor({timeout:10000});
+ assert.equal(await page.locator('html[data-vicinity-focus="on"]').count(),1);
+ assert.match(await focus.innerText(),/Substation|REPD project|Conventional power site/);
+ assert.match(await focus.innerText(),/km straight line/);
+ assert.match(await focus.innerText(),/Source:/);
+ const panel=page.locator('#gridatlas-sld-panel');
+ if(await panel.count())assert.equal(await panel.isVisible(),false,'layout must not cover focused asset');
+ assert.equal(await card.locator('[data-vicinity-browse-toggle]').getAttribute('aria-expanded'),'false','full lists secondary');
+ await page.screenshot({path:path.join(output,'01-asset-first.png')});
+ const first=await focus.innerText();
+ const next=card.getByRole('button',{name:'Next vicinity point'});
+ await next.click();
+ await page.waitForFunction(()=>window.__GRIDATLAS_MODULES__.ukOfftakers.state.pp.swipe.index===1);
+ await page.waitForTimeout(450);
+ assert.notEqual(await focus.innerText(),first,'next must change displayed full card');
+ const toggle=card.locator('[data-vicinity-browse-toggle]');
+ await toggle.click();
+ assert.equal(await toggle.getAttribute('aria-expanded'),'true');
+ const rows=card.locator('[data-offtakers-row]');
+ assert.ok(await rows.count()>0,'can browse original source-backed rows');
+ if(await rows.count()>1){
+   await rows.nth(1).click();
+   await page.waitForTimeout(350);
+   assert.equal(await toggle.getAttribute('aria-expanded'),'false','row tap returns to focus card');
+ }
+ await page.screenshot({path:path.join(output,'02-selected-asset.png')});
+ const prev=card.getByRole('button',{name:'Previous vicinity point'});
+ await prev.click();
+ assert.match(await focus.innerText(),/Source:/);
+ await card.getByRole('button',{name:'Close'}).click();
+ await page.waitForFunction(()=>document.documentElement.getAttribute('data-vicinity-focus')!=='on');
+ assert.equal(await page.locator('[data-offtakers-card]').count(),0);
+ assert.deepEqual(errors,[],'no unhandled browser errors');
+ receipt={...receipt,result:'PASS',focusCard:true,layoutSuppressed:true,sourceBackedDetail:true,originalAreaRetained:true,errors};
+ console.log('PASS '+engine+' V9.195 '+JSON.stringify(receipt));
+}catch(e){receipt={...receipt,result:'FAIL',message:String(e),errors};try{await page.screenshot({path:path.join(output,'failure.png')})}catch(_){}throw e}
+finally{fs.writeFileSync(path.join(output,'receipt.json'),JSON.stringify(receipt,null,2));await context.close();await browser.close();await new Promise(resolve=>server.close(resolve))}
