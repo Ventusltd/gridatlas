@@ -81,13 +81,13 @@
     },
     {
       "id": "sld-sandbox",
-      "generation": "202611161720",
-      "version": "v9.191",
+      "generation": "202611222130",
+      "version": "v9.195",
       "type": "script",
       "slot": "replace-script",
       "replace_script": "202608292126-pre-snapped-config-adapter.js",
-      "path": "../../cartridges/202611161720-sld-sandbox-v9-8.js",
-      "sha256": "b1daa991ca738027a34c465e84d48355cf5d0902e76e7db5b318b6342c55df6d",
+      "path": "../../modules/202611222130-sld-without-layout.js",
+      "sha256": "6870cfb365c18b90363b664f89623c9217c3d0111a67b87fdd1b6b3a26aeba6b",
       "capabilities": [
         "pre-snapped-config-adapter-carried-forward",
         "project-or-substation-selection",
@@ -226,7 +226,9 @@
         "ordinary-card-styles-returned-when-project-controls-arrive",
         "reader-restore-survives-identity-reconciliation",
         "optional-neso-lookup-bounded-and-explicit",
-        "ventus-owner-observer-at-actual-nearest-calculation"
+        "ventus-owner-observer-at-actual-nearest-calculation",
+        "no-layout-sandbox-ui",
+        "grid-engine-preserved"
       ],
       "immutable_shell_modified": false,
       "supersedes_shell_script": {
@@ -564,8 +566,9 @@
           "upstream": "Elexon settlement prices as the owner repository publishes them"
         }
       ],
-      "bytes": 452309,
-      "derived_from": "./cartridges/202609200022-sld-sandbox-v9-8.js"
+      "bytes": 451796,
+      "derived_from": "./cartridges/202609200022-sld-sandbox-v9-8.js",
+      "layout_sandbox": "RETIRED_UI_ONLY; GRID_ENGINE_PRESERVED"
     },
     {
       "id": "substation-intelligence",
