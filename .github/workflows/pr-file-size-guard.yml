@@ -56,6 +56,39 @@ jobs:
           path: work/vicinity-v9194-${{ matrix.browser }}
           retention-days: 14
 
+  # V9.195: the asset-first candidate is not a public release. Headless phone
+  # Chromium/WebKit must demonstrate focused detail cards, hidden Layout Sandbox
+  # and restored existing controls before any owner-reviewed promotion.
+  vicinity-v9195-browser:
+    if: startsWith(github.event.pull_request.head.ref, 'feature/v9195-vicinity-focus-')
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    strategy:
+      fail-fast: false
+      matrix:
+        browser: [chromium, webkit]
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          persist-credentials: false
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020
+        with:
+          node-version: '24'
+      - run: npm ci --ignore-scripts --no-audit --no-fund
+      - run: npx --no-install playwright install --with-deps ${{ matrix.browser }}
+      - name: V9.194 preserved and V9.195 focus SHA-256 pinned
+        run: node tools/proofs/202611222130-vicinity-focus.proof.mjs
+      - name: Project and selected asset card on emulated phone
+        run: VICINITY_BROWSER=${{ matrix.browser }} node tools/proofs/202611222130-vicinity-focus.browser.mjs
+      - name: Keep screenshots and receipts
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: vicinity-v9195-${{ matrix.browser }}-${{ github.run_id }}
+          path: work/vicinity-v9195-${{ matrix.browser }}
+          retention-days: 14
+
   grid-explorer-browser:
     if: github.event_name == 'pull_request' && (startsWith(github.event.pull_request.head.ref, 'train-conductor/atlas-') || startsWith(github.event.pull_request.head.ref, 'train-conductor/atlas2-') || startsWith(github.event.pull_request.head.ref, 'release/202611'))
     runs-on: ubuntu-latest
