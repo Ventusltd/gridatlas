@@ -1,7 +1,7 @@
 {
  "schema": "gridatlas.current.v2",
- "generation": "202611222325",
- "previous_generation": "202611222130",
+ "generation": "202611222343",
+ "previous_generation": "202611222325",
  "architecture": "IMMUTABLE_SHELL_PLUS_HASHED_CARTRIDGES",
  "live_route": "/gridatlas/atlas/",
  "release_id": "202608300453-atlas-v9",
@@ -862,21 +862,26 @@
   },
   {
    "id": "vicinity-controls-rescue",
-   "generation": "202611222325",
-   "version": "v9.196",
+   "generation": "202611222343",
+   "version": "v9.197",
    "type": "script",
    "slot": "after-cartridge",
    "after": "vicinity-focus",
-   "path": "./modules/202611222325-vicinity-controls-rescue.js",
-   "sha256": "26754dc642ff6554bb55d25a65e422a16981141f0af5e0b8df9543498176f0f6",
-   "bytes": 3865,
-   "byte_budget": 6400,
+   "path": "./modules/202611222343-vicinity-controls-rescue.js",
+   "sha256": "97cb8d05c7c0855b3bdd02ba614f470fbe2d489ed2db7181ca0b7edd5313c8fc",
+   "bytes": 7367,
+   "byte_budget": 8500,
    "immutable_shell_modified": false,
    "capabilities": [
     "pdf-tab-visible-grid-engine-wakeup",
     "one-shot-original-grid-engine-fallback",
     "floating-hide-layers-reachable-during-vicinity",
-    "90-point-vicinity-preserved"
+    "90-point-vicinity-preserved",
+    "fullscreen-button-opens-real-original-layer-curtain",
+    "iphone-css-fullscreen-native-curtain-dispatch",
+    "real-fullscreen-original-curtain-reparent",
+    "normal-scada-button-unmodified",
+    "visual-open-panel-ci-evidence"
    ]
   }
  ],
@@ -929,15 +934,15 @@
    "result_class": "LOCATION_ONLY"
   }
  },
- "composition_manifest": "./manifests/202611222325-composition.json",
+ "composition_manifest": "./manifests/202611222343-composition.json",
  "scope_closure": {
   "generation": "202609010726",
   "status": "DONE",
   "scope": "GridAtlas v9.42 the price panel revalidates",
   "schedule_retired": true
  },
- "composition_version": "v9.196",
- "composition_id": "202611222325-gridatlas-v9.196",
+ "composition_version": "v9.197",
+ "composition_id": "202611222343-gridatlas-v9.197",
  "transport": {
   "response_contract": "HEADERS_BEFORE_PARQUET_BODY",
   "engine_timeout_seconds": 15,
@@ -952,8 +957,8 @@
   "fidelity_workflow": ".github/workflows/202608301931-layer-fidelity.yml",
   "payload_cache": "RELEASE_AFTER_SERIALISATION"
  },
- "composition_note": "Owner iPhone screenshot: layers button trapped below Vicinity; A4/PDF MAP Grid Engine deferred. Small wake/position cartridge added; V9.195 original untouched.",
- "superseded_generation": "202611222130",
- "candidate_predecessor": "202611222130",
+ "composition_note": "Owner-reported Layers button inert: V9.196 proved only .scada-wrapper state while fullscreen map uses separate native #fs-curtain. V9.197 routes visible button to original fullscreen curtain; retains normal SCADA toggle, original Grid Engine, A4/PDF and 90-point Vicinity.",
+ "superseded_generation": "202611222325",
+ "candidate_predecessor": "202611222325",
  "loader": "v2"
 }

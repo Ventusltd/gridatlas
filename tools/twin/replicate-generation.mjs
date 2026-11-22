@@ -228,13 +228,13 @@ for (const c of own) {
     same(name,out,c.file);
     if(sha256(fs.readFileSync(out))!==c.sha256)
       R.fail(name+' pin','Rebuilt vicinity focus differs from composition SHA-256');
-  } else if (c.id === 'vicinity-controls-rescue' && G === '202611222325') {
+  } else if (c.id === 'vicinity-controls-rescue' && ['202611222325','202611222343'].includes(G)) {
     // A clean tree contains only the small source and deterministic builder.
     // Never copy the committed output as the supposed proof of its own bytes.
     const tree=path.join(work,'vicinity-controls-source');
     for(const rel of [
       'tools/vicinity-controls/build.mjs',
-      'tools/vicinity-controls/src/202611222325-vicinity-controls-rescue.js'
+      'tools/vicinity-controls/src/'+G+'-vicinity-controls-rescue.js'
     ]){
       const to=path.join(tree,rel);
       fs.mkdirSync(path.dirname(to),{recursive:true});

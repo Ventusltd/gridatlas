@@ -24,6 +24,35 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  vicinity-v9197-real-layers:
+    if: startsWith(github.event.pull_request.head.ref, 'fix/v9197-fullscreen-layers-')
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        browser: [chromium, webkit]
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          persist-credentials: false
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020
+        with:
+          node-version: '24'
+      - run: npm ci --ignore-scripts --no-audit --no-fund
+      - run: npx --no-install playwright install --with-deps ${{ matrix.browser }}
+      - name: Exact source, inherited SHA pins and fullscreen event delegation
+        run: node tools/proofs/202611222343-vicinity-controls-rescue.proof.mjs
+      - name: Headless visible Layers - V9.195 working, V9.196 broken, V9.197 fixed in portrait and landscape
+        run: VICINITY_BROWSER=${{ matrix.browser }} node tools/proofs/202611222343-layers-visible.browser.mjs
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: vicinity-v9197-layers-${{ matrix.browser }}-${{ github.run_id }}
+          path: work/vicinity-v9197-${{ matrix.browser }}
+          retention-days: 14
+
   vicinity-v9196-real-receiver:
     if: startsWith(github.event.pull_request.head.ref, 'fix/v9196-vicinity-a4-')
     runs-on: ubuntu-24.04
