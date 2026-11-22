@@ -24,7 +24,16 @@
  const safely=v=>v==null||v===''?'not stated':String(v).slice(0,200);
  const label=(p,txt,attr)=>{const e=D.createElement('div');if(attr)e.dataset[attr]='';e.textContent=txt;p.appendChild(e);return e};
  const asset=(card)=>{
-   const s=card.swipe;if(!s||!s.entries?.length)return null;
+   const s=card.swipe;if(!s)return null;
+   if(card.__vicFocus?.origin){
+     const p=card.r?.p||{};
+     return{title:card.r?.n||'Selected REPD project',kind:'REPD project (origin)',
+       source:'PipelineNews MAP arrival parameters; a location is not a declared grid connection',
+       rows:[['Distance','0 km straight line (origin)'],['REPD reference',safely(p.repd_ref)],
+         ['Technology',safely(p.technology)],['Registered capacity',p.capacity_mw>0?fmt(p.capacity_mw)+' MW':'MW not stated']],
+       index:'origin',count:s.entries?.length||0};
+   }
+   if(!s.entries?.length)return null;
    const r=s.entries[s.index],position=s.entries.slice(0,s.index).filter(x=>x.tab===r.tab).length;
    const rows=[['Distance',fmt(r.km)+' km straight line']];
    let title=r.name,kind='Asset',source='',record;
@@ -61,6 +70,7 @@
    let count=0,target=-1;
    for(let i=0;i<s.entries.length;i++)if(s.entries[i].tab===type){if(count===rank){target=i;break;}count++}
    if(target<0)return false;
+   card.__vicFocus.origin=false;s.label.style.visibility='';
    s.index=(target+s.entries.length-1)%s.entries.length;
    s.next.click();render(card);
    return true;
@@ -82,7 +92,30 @@
    more.addEventListener('click',()=>{const open=more.getAttribute('aria-expanded')!=='true';more.setAttribute('aria-expanded',String(open));more.textContent=open?'Hide nearby sets -':'Browse nearby sets and full records +';groups.forEach(g=>g.style.display=open?'':'none')});
    card.d.open=false;card.d.querySelector('summary')?.setAttribute('title','Show 5/10/20 km area analysis');
    card.setAttribute('aria-label','Project vicinity asset browser');
-   card.__vicFocus={box:panel,more,signature:null};
+   card.__vicFocus={box:panel,more,signature:null,origin:true};
+   // The first card is always the clicked PipelineNews project; the 90
+   // neighbouring locations start only after the first left/right movement.
+   s.label.style.visibility='hidden';
+   for(const [button,direction] of [[s.next,1],[s.prev,-1]]){
+     button.addEventListener('click',()=>{
+       if(!card.__vicFocus?.origin||!s.entries.length)return;
+       card.__vicFocus.origin=false;
+       s.index=direction===1?s.entries.length-1:0;
+       s.label.style.visibility='';
+     },true);
+   }
+   let touchOrigin=null;
+   card.addEventListener('touchstart',e=>{if(e.touches.length===1)touchOrigin={x:e.touches[0].clientX,y:e.touches[0].clientY}},{passive:true,capture:true});
+   card.addEventListener('touchend',e=>{
+     if(!card.__vicFocus?.origin||!s.entries.length||!touchOrigin||!e.changedTouches.length)return;
+     const x=e.changedTouches[0].clientX-touchOrigin.x,y=e.changedTouches[0].clientY-touchOrigin.y;
+     touchOrigin=null;
+     if(Math.abs(x)>54&&Math.abs(x)>1.5*Math.abs(y)){
+       card.__vicFocus.origin=false;
+       s.index=x<0?s.entries.length-1:0;
+       s.label.style.visibility='';
+     }
+   },{passive:true,capture:true});
    card.addEventListener('click',e=>{
      if(!card.__vicFocus||!card.isConnected)return;
      const row=e.target.closest('[data-offtakers-row]');
