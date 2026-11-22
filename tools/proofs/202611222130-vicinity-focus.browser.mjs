@@ -32,6 +32,8 @@ try{
  assert.equal(await card.locator('[data-vicinity-browse-toggle]').getAttribute('aria-expanded'),'false','full lists secondary');
  await page.screenshot({path:path.join(output,'01-asset-first.png')});
  const first=await focus.innerText();
+ assert.match(first,/Botley West/,'first detail card must be the clicked project origin');
+ assert.match(first,/REPD project \(origin\)/);
  const next=card.getByRole('button',{name:'Next vicinity point'});
  await next.click();
  await page.waitForFunction(()=>window.__GRIDATLAS_MODULES__.ukOfftakers.state.pp.swipe.index===1);
