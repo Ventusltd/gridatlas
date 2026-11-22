@@ -184,6 +184,50 @@ for (const c of own) {
     if (r.code !== 0 || !fs.existsSync(out)) { R.fail(name, 'Pipeline lifecycle source rebuild failed: ' + (r.stderr || r.stdout).trim().slice(0, 200)); continue; }
     same(name, out, c.file);
     if (sha256(fs.readFileSync(out)) !== c.sha256) R.fail(name + ' pin', 'Rebuilt substation differs from composition pin');
+  } else if (c.id === 'sld-sandbox' && G === '202611222130') {
+    // Rebuild the full 451 kB carrier from its ORIGINAL immutable V9.191 bytes
+    // and five exact layout-retirement edits. The expected target is absent
+    // from the independent temporary source checkout.
+    const tree=path.join(work,'sld-without-layout-source');
+    for(const rel of [
+      'tools/sld/retire-gridatlas-layout.mjs',
+      'atlas/cartridges/202611161720-sld-sandbox-v9-8.js'
+    ]){
+      const to=path.join(tree,rel);
+      fs.mkdirSync(path.dirname(to),{recursive:true});
+      fs.copyFileSync(abs(rel),to);
+    }
+    fs.mkdirSync(path.join(tree,'atlas/modules'),{recursive:true});
+    const out=path.join(tree,c.file);
+    const r=run(['node',path.join(tree,'tools/sld/retire-gridatlas-layout.mjs')],{cwd:tree});
+    if(r.code!==0||!fs.existsSync(out)){
+      R.fail(name,'Layout retirement source rebuild failed: '+(r.stderr||r.stdout).trim().slice(0,220));
+      continue;
+    }
+    same(name,out,c.file);
+    if(sha256(fs.readFileSync(out))!==c.sha256)
+      R.fail(name+' pin','Rebuilt no-layout carrier differs from the composition SHA-256');
+  } else if (c.id === 'vicinity-focus' && G === '202611222130') {
+    // Source-owned, immutable Vicinity focus: copy only its pinned source
+    // and reproducer into a clean tree, never the expected output file.
+    const tree=path.join(work,'vicinity-focus-source');
+    for(const rel of [
+      'tools/vicinity-focus/build.mjs',
+      'tools/vicinity-focus/src/202611222130-vicinity-focus.js'
+    ]){
+      const to=path.join(tree,rel);
+      fs.mkdirSync(path.dirname(to),{recursive:true});
+      fs.copyFileSync(abs(rel),to);
+    }
+    const out=path.join(work,path.basename(c.file));
+    const r=run(['node',path.join(tree,'tools/vicinity-focus/build.mjs'),'--generation',G,'--out',out],{cwd:tree});
+    if(r.code!==0||!fs.existsSync(out)){
+      R.fail(name,'Vicinity-focus source rebuild failed: '+(r.stderr||r.stdout).trim().slice(0,220));
+      continue;
+    }
+    same(name,out,c.file);
+    if(sha256(fs.readFileSync(out))!==c.sha256)
+      R.fail(name+' pin','Rebuilt vicinity focus differs from composition SHA-256');
   } else if (c.id === 'sld-sandbox' && exists('tools/sld/generations.json') && readJson('tools/sld/generations.json').generations[G]) {
     // Only pinned source inputs enter this empty tree. The expected final cartridge is absent.
     const entry = readJson('tools/sld/generations.json').generations[G];
