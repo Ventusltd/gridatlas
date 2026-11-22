@@ -1,28 +1,31 @@
 {
- "_": "The generations tools/offtakers/src rebuilds byte for byte (node tools/offtakers/build.mjs --check). The newest offtakers generation in atlas/modules/ must be listed; an entry marked historical keeps its record and is not rebuilt (its source is the commit named). docs/OFFTAKERS-SOURCE.md",
- "generations": {
-  "202610290400": {
-   "label": "OT2 (on M4; OT-filter data)",
-   "historical": "1acd1a5 (main 94009a2)"
-  },
-  "202610290949": {
-   "label": "OT3 (paired with lightning M6t 202610290935; R-otdata dataset 202610290945; R-words, R-otsec, R-a11yperf source fixes)",
-   "historical": "1fb2122 (main, PR #68)"
-  },
-  "202610291044": {
-   "label": "OT4 (paired with lightning M6u 202610291043; R-taps tap claim)",
-   "historical": "6bd84eb (main f0f449b, PR #70)"
-  },
-  "202610292044": {
-   "label": "OT5 / DC-B1 (paired with lightning M6u 202610291043; data-centre category from the DC-A7 pipeline + Grid Engine 30/30/30, #73 steps 7-8; Marchwood fix)",
-   "historical": "2f80729 (main, PR #73 lane DC-B1)"
-  },
-  "202610312138": {
-   "label": "OT6 / v9.188 (paired with lightning M6u 202610291043; DC baseline 226/225 (NL-007): data-centre pipeline re-pinned to data-grid-gb 01a4491, Wapseys Wood one site)",
-   "historical": "41729af (main, release v9.188)"
-  },
-  "202611132345": {
-   "label": "R-2026q3 / v9.189 (REPD October 2026 re-pin on 202610312138; source change: the REPD record URL, manifest and parquet hashes and the extract month only)"
+  "_": "The generations tools/offtakers/src rebuilds byte for byte (node tools/offtakers/build.mjs --check). The newest offtakers generation in atlas/modules/ must be listed; an entry marked historical keeps its record and is not rebuilt (its source is the commit named). docs/OFFTAKERS-SOURCE.md",
+  "generations": {
+    "202610290400": {
+      "label": "OT2 (on M4; OT-filter data)",
+      "historical": "1acd1a5 (main 94009a2)"
+    },
+    "202610290949": {
+      "label": "OT3 (paired with lightning M6t 202610290935; R-otdata dataset 202610290945; R-words, R-otsec, R-a11yperf source fixes)",
+      "historical": "1fb2122 (main, PR #68)"
+    },
+    "202610291044": {
+      "label": "OT4 (paired with lightning M6u 202610291043; R-taps tap claim)",
+      "historical": "6bd84eb (main f0f449b, PR #70)"
+    },
+    "202610292044": {
+      "label": "OT5 / DC-B1 (paired with lightning M6u 202610291043; data-centre category from the DC-A7 pipeline + Grid Engine 30/30/30, #73 steps 7-8; Marchwood fix)",
+      "historical": "2f80729 (main, PR #73 lane DC-B1)"
+    },
+    "202610312138": {
+      "label": "OT6 / v9.188 (paired with lightning M6u 202610291043; DC baseline 226/225 (NL-007): data-centre pipeline re-pinned to data-grid-gb 01a4491, Wapseys Wood one site)",
+      "historical": "41729af (main, release v9.188)"
+    },
+    "202611132345": {
+      "label": "R-2026q3 / v9.189 (REPD October 2026 re-pin on 202610312138; source change: the REPD record URL, manifest and parquet hashes and the extract month only)"
+    },
+    "202611222000": {
+      "label": "V9.194 candidate: source-built successor of the official 30/30/30 Grid Engine with exact project-location Vicinity and 90-point swipe; deltas tools/offtakers/202611222000-vicinity-delta.json"
+    }
   }
- }
 }
