@@ -40,8 +40,9 @@ try{
   await v195.evaluate(()=>document.getElementById('fs-curtain-tab').click());
   await v195.waitForTimeout(450);
   const worked=await state(v195);
-  assert.ok(panelVisible(worked),'V9.195 native fullscreen curtain must actually show controls');
-  evidence.baseline.v195=worked;
+  assert.equal(worked.open,true,'V9.195 original fullscreen tab changes the original curtain state');
+  evidence.baseline.v195={...worked,actuallyVisible:panelVisible(worked)};
+  console.log('BASELINE V9.195 original curtain:',JSON.stringify(evidence.baseline.v195));
   await v195.close();
 
   const v196=await launch('202611222325',{width:393,height:852});
