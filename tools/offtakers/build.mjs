@@ -26,7 +26,21 @@ export const GENERATIONS = path.join(HERE, 'generations.json');
 const MODULE_RE = /^(\d{12})-uk-offtakers-overlay\.js$/, VARIANTS = ['base'];
 const sha256 = b => createHash('sha256').update(b).digest('hex');
 export const modulePath = gen => path.join(ROOT, 'atlas', 'modules', `${gen}-uk-offtakers-overlay.js`);
-export const build = gen => assemble({ variant: 'base', gen, variants: VARIANTS, srcDir: SRC_DIR });
+export const build = gen => {
+  if (gen !== '202611222000') return assemble({ variant: 'base', gen, variants: VARIANTS, srcDir: SRC_DIR });
+  // V9.194 is a bounded, explicit change set against the exact source-built
+  // V9.189 offtakers cartridge. Never rebuild an already published edition.
+  const patch = JSON.parse(fs.readFileSync(path.join(HERE, '202611222000-vicinity-delta.json'), 'utf8'));
+  if (patch.schema !== 'gridatlas.offtakers.source-delta.v1' || patch.generation !== gen
+      || patch.source_generation !== '202611132345') throw new Error('V9.194 source recipe not pinned');
+  const lines = assemble({ variant: 'base', gen: patch.source_generation, variants: VARIANTS, srcDir: SRC_DIR }).split('\n');
+  for (const edit of patch.edits.slice().reverse()) {
+    const old = lines.slice(edit.index, edit.index + edit.old.length);
+    if (JSON.stringify(old) !== JSON.stringify(edit.old)) throw new Error('V9.194 predecessor/source delta mismatch at '+edit.index);
+    lines.splice(edit.index, edit.old.length, ...edit.next);
+  }
+  return lines.join('\n');
+};
 
 export function check() {
   const lines = [], bad = [];
