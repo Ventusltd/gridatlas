@@ -1,0 +1,3 @@
+# GridAtlas V9.196 — Vicinity/PDF Grid Engine and Layers
+
+Immutable successor to V9.195. Original Grid Engine, 30/30/30 Vicinity, shell, layout retirement and PipelineNews MAP/A4/PDF URLs unchanged. New 3865-byte cartridge moves the existing Layers toggle out of the obscuring map-controls stacking context and wakes a Safari background PDF-tab arrival. When still unanswered after 20 seconds, it calls the original Grid Engine selectAt once, not a parallel computation. CI must verify full link-to-engine behaviour, touch hit tests, project/90 assets, source pins, mobile portrait/landscape and V9.195 rollback. Physical Safari remains a manual acceptance check.
