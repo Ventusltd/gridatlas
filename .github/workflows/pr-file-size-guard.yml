@@ -89,6 +89,28 @@ jobs:
           path: work/vicinity-v9195-${{ matrix.browser }}
           retention-days: 14
 
+  # V9.195 release preparation: source-only branch verifies the target G
+  # independent of the currently live V9.194 pointer. This avoids a false
+  # green where default twin targets only previous/live data generations.
+  vicinity-v9195-promotion-source:
+    if: startsWith(github.event.pull_request.head.ref, 'prep/v9195-release-forward-compat-')
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          persist-credentials: false
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020
+        with:
+          node-version: '24'
+      - name: Prove both immutable V9.195 cartridges and preview contract
+        run: |
+          node tools/proofs/202611222130-sld-sandbox.proof.mjs
+          node tools/proofs/202611222130-vicinity-focus.proof.mjs
+      - name: Rebuild V9.195 in an independent source-only twin
+        run: node tools/twin/replicate-generation.mjs --offline --generation 202611222130
+
   grid-explorer-browser:
     if: github.event_name == 'pull_request' && (startsWith(github.event.pull_request.head.ref, 'train-conductor/atlas-') || startsWith(github.event.pull_request.head.ref, 'train-conductor/atlas2-') || startsWith(github.event.pull_request.head.ref, 'release/202611'))
     runs-on: ubuntu-latest
