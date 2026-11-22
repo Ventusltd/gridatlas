@@ -15,7 +15,7 @@ if(live.generation==='202611222130')for(const c of manifest.cartridges){
  assert.ok(active&&active.sha256===c.sha256,'promoted '+c.id+' must match the accepted source pin');
 }
 assert.equal(manifest.generation,'202611222130');
-assert.equal(manifest.previous_generation,live.generation);
+assert.equal(manifest.previous_generation,'202611222000','immutable V9.194 predecessor must remain fixed before and after publication');
 assert.equal(manifest.acceptance?.full_application_copies_created,0);
 assert.equal(manifest.composition_manifest,'./manifests/202611222130-composition.json');
 for(const key of ['parent_generation','version','cut_at_utc','note','acceptance','candidate_status'])delete manifest[key];
