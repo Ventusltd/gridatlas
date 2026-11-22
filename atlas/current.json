@@ -1,7 +1,7 @@
 {
  "schema": "gridatlas.current.v2",
- "generation": "202611222000",
- "previous_generation": "202611161720",
+ "generation": "202611222130",
+ "previous_generation": "202611222000",
  "architecture": "IMMUTABLE_SHELL_PLUS_HASHED_CARTRIDGES",
  "live_route": "/gridatlas/atlas/",
  "release_id": "202608300453-atlas-v9",
@@ -18,7 +18,8 @@
   "sld-sandbox",
   "uk-lightning-overlay",
   "uk-offtakers-overlay",
-  "pipeline-vicinity-button"
+  "pipeline-vicinity-button",
+  "vicinity-focus"
  ],
  "cartridges": [
   {
@@ -30,7 +31,7 @@
    "replace_script": "202608292311-maplibre-worker-bridge.js",
    "path": "./cartridges/202609241251-streaming-parquet-bridge-v9-5.js",
    "sha256": "60be8215ba873ac2886786bf6e3fd51e5764e7c5e26684fde71ebe9974a329a2",
-   "contract": "../ui/cartridges/202609241251-streaming-parquet-bridge-v9-5.mjs",
+   "contract": "../../../ui/cartridges/202609241251-streaming-parquet-bridge-v9-5.mjs",
    "capabilities": [
     "response-before-body-reconstruction",
     "duckdb-runtime-prewarm-after-400kv",
@@ -64,7 +65,7 @@
    "replace_script": "202608291818-place-postcode-search.js",
    "path": "./cartridges/202611132345-place-global-search-v9-5.js",
    "sha256": "a27a11c45d4d02c4dbecf09e8ba2acc38215a77fc87bd23b1024f349f8dea619",
-   "contract": "../ui/cartridges/202609040337-global-gazetteer-flyto-v9-106.mjs",
+   "contract": "../../../ui/cartridges/202609040337-global-gazetteer-flyto-v9-106.mjs",
    "capabilities": [
     "exact-repd-first",
     "uk-postcode",
@@ -80,13 +81,13 @@
   },
   {
    "id": "sld-sandbox",
-   "generation": "202611161720",
-   "version": "v9.191",
+   "generation": "202611222130",
+   "version": "v9.195",
    "type": "script",
    "slot": "replace-script",
    "replace_script": "202608292126-pre-snapped-config-adapter.js",
-   "path": "./cartridges/202611161720-sld-sandbox-v9-8.js",
-   "sha256": "b1daa991ca738027a34c465e84d48355cf5d0902e76e7db5b318b6342c55df6d",
+   "path": "./modules/202611222130-sld-without-layout.js",
+   "sha256": "6870cfb365c18b90363b664f89623c9217c3d0111a67b87fdd1b6b3a26aeba6b",
    "capabilities": [
     "pre-snapped-config-adapter-carried-forward",
     "project-or-substation-selection",
@@ -225,7 +226,9 @@
     "ordinary-card-styles-returned-when-project-controls-arrive",
     "reader-restore-survives-identity-reconciliation",
     "optional-neso-lookup-bounded-and-explicit",
-    "ventus-owner-observer-at-actual-nearest-calculation"
+    "ventus-owner-observer-at-actual-nearest-calculation",
+    "no-layout-sandbox-ui",
+    "grid-engine-preserved"
    ],
    "immutable_shell_modified": false,
    "supersedes_shell_script": {
@@ -563,8 +566,9 @@
      "upstream": "Elexon settlement prices as the owner repository publishes them"
     }
    ],
-   "bytes": 452309,
-   "derived_from": "./cartridges/202609200022-sld-sandbox-v9-8.js"
+   "bytes": 451796,
+   "derived_from": "./cartridges/202609200022-sld-sandbox-v9-8.js",
+   "layout_sandbox": "RETIRED_UI_ONLY; GRID_ENGINE_PRESERVED"
   },
   {
    "id": "substation-intelligence",
@@ -836,6 +840,24 @@
     "native-gridatlas-repd-vicinity-launch",
     "independent-of-abandoned-journey"
    ]
+  },
+  {
+   "id": "vicinity-focus",
+   "generation": "202611222130",
+   "version": "v9.195",
+   "type": "script",
+   "slot": "after-cartridge",
+   "after": "pipeline-vicinity-button",
+   "path": "./modules/202611222130-vicinity-focus.js",
+   "sha256": "8ea2546b2a1fab3007d3b7a81aa509baae323051b888afd252edb6bc4726f14e",
+   "bytes": 10350,
+   "capabilities": [
+    "asset-first-repd-vicinity-card",
+    "source-record-fields",
+    "swipe-and-tap-90-nearby-assets",
+    "suppress-layout-sandbox-during-vicinity-only",
+    "preserve-5-10-20-km-area-analysis"
+   ]
   }
  ],
  "last_known_green": {
@@ -887,15 +909,15 @@
    "result_class": "LOCATION_ONLY"
   }
  },
- "composition_manifest": "./manifests/202611222000-release-contract.json",
+ "composition_manifest": "./manifests/202611222130-composition.json",
  "scope_closure": {
   "generation": "202609010726",
   "status": "DONE",
   "scope": "GridAtlas v9.42 the price panel revalidates",
   "schedule_retired": true
  },
- "composition_version": "v9.194",
- "composition_id": "202611222000-gridatlas-v9.194-CANDIDATE",
+ "composition_version": "v9.195",
+ "composition_id": "202611222130-gridatlas-v9.195",
  "transport": {
   "response_contract": "HEADERS_BEFORE_PARQUET_BODY",
   "engine_timeout_seconds": 15,
@@ -910,8 +932,8 @@
   "fidelity_workflow": ".github/workflows/202608301931-layer-fidelity.yml",
   "payload_cache": "RELEASE_AFTER_SERIALISATION"
  },
- "composition_note": "Release of owner-accepted V9.194 native PipelineNews REPD vicinity (30/30/30, 90-point swipe, Hide Layers fix). Explicit owner instruction in ChatGPT on 22 November 2026; V9.191 rollback retained.",
- "superseded_generation": "202611161720",
- "candidate_predecessor": "202611161720",
+ "composition_note": "Owner-authorised V9.195 native GridAtlas project vicinity, asset-first swipeable cards and retirement of unfinished Layout Sandbox UI only. Grid measurement and source engines preserved; baseline V9.194 retained.",
+ "superseded_generation": "202611222000",
+ "candidate_predecessor": "202611222000",
  "loader": "v2"
 }
