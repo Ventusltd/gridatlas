@@ -9,7 +9,12 @@ const root=new URL('../../',import.meta.url),G='202611161720';
 const read=p=>fs.readFileSync(new URL(p,root),'utf8').replace(/\r\n/g,'\n');
 const manifest=read(`atlas/manifests/${G}-composition.json`),candidate=JSON.parse(manifest),live=JSON.parse(read('atlas/current.json'));
 const parent=JSON.parse(read('atlas/manifests/202611132345-composition.json'));
-assert.ok([parent.generation,G].includes(live.generation),'live composition must be the declared parent or promoted candidate');
+// A later live generation may retain this exact source-verified V9.191 SLD.
+const approvedSld=candidate.cartridges.find(c=>c.id==='sld-sandbox');
+const activeSld=live.cartridges.find(c=>c.id==='sld-sandbox');
+assert.ok([parent.generation,G].includes(live.generation)
+ || (activeSld?.generation===G&&activeSld.sha256===approvedSld.sha256&&activeSld.path===approvedSld.path),
+ 'later live compositions must carry the identical approved SLD cartridge');
 assert.equal(candidate.previous_generation,parent.generation);
 assert.equal(candidate.superseded_generation,parent.generation);
 assert.equal(candidate.candidate_predecessor,parent.generation);
