@@ -24,6 +24,38 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  # Native V9.194 vicinity gate uses this existing PR workflow. The Atlas
+  # repository intentionally caps the number of active workflow files at nine.
+  vicinity-v9194-browser:
+    if: startsWith(github.event.pull_request.head.ref, 'feature/v9194-pipeline-vicinity-')
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    strategy:
+      fail-fast: false
+      matrix:
+        browser: [chromium, webkit]
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          persist-credentials: false
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020
+        with:
+          node-version: '24'
+      - run: npm ci --ignore-scripts --no-audit --no-fund
+      - run: npx --no-install playwright install --with-deps ${{ matrix.browser }}
+      - name: Byte-pinned native vicinity source and no Journey
+        run: node tools/proofs/202611222000-vicinity-entry.proof.mjs
+      - name: Real browser MAP, vicinity, 90-point swipe and Hide Layers
+        run: VICINITY_BROWSER=${{ matrix.browser }} node tools/proofs/202611222000-vicinity-entry.browser.mjs
+      - name: Preserve browser images and diagnostic receipts
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: vicinity-v9194-${{ matrix.browser }}-${{ github.run_id }}
+          path: work/vicinity-v9194-${{ matrix.browser }}
+          retention-days: 14
+
   grid-explorer-browser:
     if: github.event_name == 'pull_request' && (startsWith(github.event.pull_request.head.ref, 'train-conductor/atlas-') || startsWith(github.event.pull_request.head.ref, 'train-conductor/atlas2-') || startsWith(github.event.pull_request.head.ref, 'release/202611'))
     runs-on: ubuntu-latest
