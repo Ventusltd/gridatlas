@@ -1,0 +1,11 @@
+import './202611222000-vicinity-entry.proof.mjs';
+import fs from 'node:fs';import path from 'node:path';
+import assert from 'node:assert/strict';import {createHash} from 'node:crypto';
+const root=path.resolve(import.meta.dirname,'../..'),G='202611222000';
+const manifest=JSON.parse(fs.readFileSync(path.join(root,'atlas/v',G,'current.json'),'utf8'));
+const pin=manifest.cartridges.find(x=>x.id==='uk-offtakers-overlay');
+assert.ok(pin&&pin.generation===G);
+const source=fs.readFileSync(path.join(root,'atlas/modules',G+'-uk-offtakers-overlay.js'));
+assert.equal(createHash('sha256').update(source).digest('hex'),pin.sha256);
+assert.match(source.toString('utf8'),/openProjectVicinity/);
+console.log('PASS V9.194 30/30/30 project origin exact source pin');

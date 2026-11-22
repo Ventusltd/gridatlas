@@ -196,6 +196,16 @@ for (const c of own) {
     if (r.code !== 0 || !fs.existsSync(out)) { R.fail(name, 'SLD source rebuild failed: ' + (r.stderr || r.stdout).trim().slice(0, 200)); continue; }
     same(name, out, c.file);
     if (sha256(fs.readFileSync(out)) !== c.sha256) R.fail(name + ' pin', 'rebuilt SLD differs from the composition pin');
+  } else if (c.id === 'pipeline-vicinity-button') {
+    const tree=path.join(work,'pipeline-vicinity-source');
+    for(const rel of ['tools/pipeline-vicinity/build.mjs','tools/pipeline-vicinity/src/202611222000-entry.js']){
+      const dest=path.join(tree,rel);fs.mkdirSync(path.dirname(dest),{recursive:true});fs.copyFileSync(abs(rel),dest);
+    }
+    const out=path.join(work,path.basename(c.file));
+    const r=run(['node',path.join(tree,'tools/pipeline-vicinity/build.mjs'),'--generation',G,'--out',out]);
+    if(r.code!==0||!fs.existsSync(out)){R.fail(name,'source rebuild failed: '+(r.stderr||r.stdout).trim().slice(0,200));continue;}
+    same(name,out,c.file);
+    if(sha256(fs.readFileSync(out))!==c.sha256)R.fail(name+' pin','source-built launcher SHA differs');
   } else if (['grid-journey-preview', 'grid-vicinity'].includes(c.id)) {
     // Rebuild source-owned explorer modules in an empty tree. No expected output enters it.
     const kind = c.id === 'grid-journey-preview' ? 'journey' : 'vicinity';
