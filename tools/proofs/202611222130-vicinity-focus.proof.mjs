@@ -14,10 +14,19 @@ assert.equal(candidate.generation,'202611222130');
 assert.equal(candidate.previous_generation,'202611222000');
 assert.deepEqual(candidate.cartridge_order,[...baseline.cartridge_order,'vicinity-focus']);
 assert.equal(candidate.cartridges.length,baseline.cartridges.length+1);
+// Release preview re-rooting canonicalises descriptive contract paths; these
+// are not fetched by the loader. Preserve every source byte pin, slot and
+// cartridge field, comparing descriptor paths by their repository identity.
+const normalise=value=>Array.isArray(value)?value.map(normalise):
+ value&&typeof value==='object'?Object.fromEntries(Object.entries(value).map(([k,v])=>[k,normalise(v)])):
+ typeof value==='string'&&/^(?:\.\/|\.\.\/)/.test(value)?value.replace(/^(?:\.\.\/|\.\/)+/,''):value;
 for(let i=0;i<baseline.cartridges.length;i++){
  const before=baseline.cartridges[i],after=candidate.cartridges[i];
  if(before.id==='sld-sandbox')continue;
- assert.deepEqual(after,before,'all inherited cartridges must remain unchanged: '+before.id);
+ for(const field of ['id','generation','version','type','slot','replace_script','after','path','sha256'])
+   assert.deepEqual(after[field],before[field],before.id+': runtime field '+field+' must remain unchanged');
+ assert.deepEqual(normalise(after),normalise(before),
+   before.id+': inherited metadata may only differ by relative descriptor path prefix');
 }
 const sld=candidate.cartridges.find(c=>c.id==='sld-sandbox');
 assert.ok(sld&&sld.path.endsWith('/202611222130-sld-without-layout.js'));
