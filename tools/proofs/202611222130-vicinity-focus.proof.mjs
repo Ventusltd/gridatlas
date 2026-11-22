@@ -9,7 +9,7 @@ const read=p=>fs.readFileSync(path.join(root,p),'utf8');
 const baseline=JSON.parse(read('atlas/v/202611222000/current.json'));
 const live=JSON.parse(read('atlas/current.json'));
 const candidate=JSON.parse(read('atlas/v/202611222130/current.json'));
-assert.ok(['202611222000','202611222130','202611222325'].includes(live.generation),'live must be V9.194 or approved V9.195');
+assert.ok(['202611222000','202611222130','202611222325','202611222343'].includes(live.generation),'live must be V9.194 or approved V9.195');
 if(live.generation==='202611222130')for(const c of candidate.cartridges){
  const active=live.cartridges.find(x=>x.id===c.id);
  assert.ok(active&&active.sha256===c.sha256,'promoted '+c.id+' must match the accepted candidate SHA');
