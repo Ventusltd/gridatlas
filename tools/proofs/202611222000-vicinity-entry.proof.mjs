@@ -11,7 +11,7 @@ assert.equal(live.generation,'202611161720','do not alter V9.191 live pointer');
 assert.equal(candidate.generation,gen);
 assert.deepEqual(candidate.cartridge_order.slice(0,6),live.cartridge_order,'preserve accepted cartridge order');
 assert.deepEqual(candidate.cartridge_order.slice(6),['pipeline-vicinity-button'],'no Journey');
-assert.equal(candidate.cartridges.length,8);
+assert.equal(candidate.cartridges.length,live.cartridges.length+1);
 for(const c of candidate.cartridges){
   const p=path.resolve(root,'atlas/v',gen,c.path);
   assert.ok(p.startsWith(root+path.sep),'path confined to checkout');
@@ -34,4 +34,4 @@ const predecessor=live.cartridges.find(c=>c.id==='uk-offtakers-overlay');
 const next=candidate.cartridges.find(c=>c.id==='uk-offtakers-overlay');
 assert.equal(predecessor.path,'./modules/202611132345-uk-offtakers-overlay.js');
 assert.notEqual(next.sha256,predecessor.sha256);
-console.log('PASS V9.194: eight byte-pinned cartridges, 90-point swipe ceiling, unchanged V9.191 and no Journey');
+console.log('PASS V9.194: seven byte-pinned cartridges, 90-point swipe ceiling, unchanged V9.191 and no Journey');
