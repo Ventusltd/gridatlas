@@ -381,7 +381,7 @@ dsv=c=>{let r=c.r,[x,y]=r.a,w=DMW(r.p),M=v=>v==null?'not stated':v,J=q=>S.rc&&Rp
  (c.P||[]).forEach((g,i)=>{for(let q of g.parts){let o=J(q),a=RpP.get(q)||g.a;rows.push(['REPD project',i+1,q.name,o?o.repd_ref:'',q.raw_tech||q.tech,q.status,'','',q.capacity>0?+q.capacity:'not stated','installed (REPD)',k2(g.km),a[0],a[1],i<c.nd.r?'yes':'no',o?'REPD (DESNZ) Oct 2026 extract, exact match':'REPD (DESNZ) Apr 2026 map register','OGL v3.0',o?(o.source_record_updated||'record date not stated'):'Apr 2026 extract'])}});
  (c.cv||[]).forEach(({q,km},i)=>rows.push(['conventional',i+1,q.n,q.id||q.p.id||'',`${q.f} ${q.te}`.trim(),q.st,'','',q.mw||'not stated',`installed (${q.mw?'GPPD':'not stated'})`,k2(km),q.a[0],q.a[1],km<=R100&&i<(c.sh.v?N3:D10)?'yes':'no',(q.p.sources||[]).map(s=>String(s.name||'').split(' (')[0]).join('; ')||'not stated',(q.p.sources||[]).map(s=>String(s.licence||'').split(/[:,]/)[0]).join('; ')||'licence not stated',cs(q.p.status_date||'')]));
  let s=[`# GridAtlas ${c.project?'REPD project':'data-centre'} vicinity sheet · generation ${GEN} · site ${id} ${NM(r).replace(/[\r\n]/g,' ')} · point ${x},${y} · ${new Date().toISOString()}`,'# Straight-line distances from the site point. Not cable routes, capacity, headroom, connection offers or feasibility.',
-  `# Site: IT load ${w.it!=null?w.it+' MW':'not stated'} · grid connection ${w.gc!=null?w.gc+' MW':'not stated'}. Never added together. A pipeline entry is not a commitment.`,'# MW columns are installed capacity as each source states it, not export or connection capacity. "not stated" is unknown, not zero.',
+  c.project?'# REPD project context from PipelineNews MAP URL; MW does not establish connection capacity.':`# Site: IT load ${w.it!=null?w.it+' MW':'not stated'} · grid connection ${w.gc!=null?w.gc+' MW':'not stated'}. Never added together. A pipeline entry is not a commitment.`,'# MW columns are installed capacity as each source states it, not export or connection capacity. "not stated" is unknown, not zero.',
   'set,rank,name,ref,type_or_voltage,status,kv_max,kv_all,mw_stated,mw_basis,km_straight_line,lon,lat,drawn_on_map,source,licence,data_date'].join('\n')+'\n',k=0;
  for(let o of rows){let l=o.map(cq).join(',')+'\n';if(++k>400||s.length+l.length>256e3){s+=`# truncated at ${k>400?'400 rows':'256 kB'}\n`;break}s+=l}return s},
 BTN=(a,t)=>`<button type="button" class="map-ctrl-btn" ${a}>${t}</button>`,
@@ -447,7 +447,7 @@ function initProjectSwipe(map,card){
 function updateProjectSwipe(card){
  const s=card.swipe;if(!s)return;
  const subs=(card.k||[]).map(e=>({tab:'s',at:e.at,km:e.km,name:e.name||'Unnamed substation',detail:e.kv+' kV'}));
- const repd=(card.P||[]).map(e=>({tab:'r',at:e.a,km:e.km,name:e.parts[0]?.name||'REPD project',detail:e.parts[0]?.status||'Status not stated'}));
+ const repd=(card.P||[]).slice(0,N3).map(e=>({tab:'r',at:e.a,km:e.km,name:e.parts[0]?.name||'REPD project',detail:e.parts[0]?.status||'Status not stated'}));
  const power=(card.cv||[]).slice(0,N3).map(e=>({tab:'v',at:e.q.a,km:e.km,name:e.q.n||'Conventional power site',detail:e.q.te||e.q.f||'Power site'}));
  s.entries=[...subs,...repd,...power];s.index=Math.min(s.index,Math.max(0,s.entries.length-1));
  const r=s.entries[s.index];s.label.textContent=r?`${s.index+1} / ${s.entries.length} · ${k2(r.km)} km · ${r.name} · ${r.detail}`:'No nearby assets loaded yet';s.prev.disabled=s.next.disabled=!r;
