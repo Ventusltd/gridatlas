@@ -16,7 +16,7 @@ assert.equal(manifest.acceptance?.full_application_copies_created,0);
 assert.equal(manifest.composition_manifest,'./manifests/202611222130-composition.json');
 for(const key of ['parent_generation','version','cut_at_utc','note','acceptance','candidate_status'])delete manifest[key];
 const canonical=JSON.stringify(manifest,null,1)+'\n';
-const expectedPreview=canonical.replace(/": "(\\.\\/|\\.\\.\\/)/g,'": "../../');
+const expectedPreview=canonical.replace(/": "(\.\/|\.\.\/)/g,'": "../../');
 assert.equal(read('atlas/v/202611222130/current.json'),expectedPreview,'preview must be the exact live pointer re-rooted');
 const sld=manifest.cartridges.find(c=>c.id==='sld-sandbox');
 assert.equal(sld.generation,'202611222130');
