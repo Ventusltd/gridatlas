@@ -1,7 +1,7 @@
 {
  "schema": "gridatlas.current.v2",
- "generation": "202611161720",
- "previous_generation": "202611132345",
+ "generation": "202611222000",
+ "previous_generation": "202611161720",
  "architecture": "IMMUTABLE_SHELL_PLUS_HASHED_CARTRIDGES",
  "live_route": "/gridatlas/atlas/",
  "release_id": "202608300453-atlas-v9",
@@ -17,7 +17,8 @@
   "substation-intelligence",
   "sld-sandbox",
   "uk-lightning-overlay",
-  "uk-offtakers-overlay"
+  "uk-offtakers-overlay",
+  "pipeline-vicinity-button"
  ],
  "cartridges": [
   {
@@ -718,13 +719,13 @@
   },
   {
    "id": "uk-offtakers-overlay",
-   "generation": "202611132345",
-   "version": "v9.189",
+   "generation": "202611222000",
+   "version": "v9.194",
    "type": "script",
    "slot": "after-cartridge",
    "after": "uk-lightning-overlay",
-   "path": "./modules/202611132345-uk-offtakers-overlay.js",
-   "sha256": "eee30014b3c2549455753651ddc9719f179c9cd59db4ae616c08c3a9708bfdb6",
+   "path": "./modules/202611222000-uk-offtakers-overlay.js",
+   "sha256": "badb2745d6e339d0d863e6369ad76139f9d3690e98bf4153ab849154ead38a46",
    "bytes": 71191,
    "byte_budget": 80000,
    "module_generation": "202611132345",
@@ -735,7 +736,9 @@
     "vicinity-15-nearest-repd-sites-and-5-substations",
     "full-repd-record-exact-join-m5",
     "datacentre-category-status-ring-mw-size",
-    "datacentre-grid-engine-30-substations-30-repd-30-conventional"
+    "datacentre-grid-engine-30-substations-30-repd-30-conventional",
+    "repd-project-origin-30-30-30",
+    "swipe-up-to-90-points"
    ],
    "reads_at_runtime": {
     "window.__GRIDATLAS_MODULES__.menuBar": "substation-intelligence; polled until installed",
@@ -819,6 +822,20 @@
      "spec": "hardening DC-B2 CARD-SPEC.md, DC-B3 ENGINE.md"
     }
    }
+  },
+  {
+   "id": "pipeline-vicinity-button",
+   "generation": "202611222000",
+   "version": "v9.194",
+   "type": "script",
+   "slot": "after-cartridge",
+   "after": "uk-offtakers-overlay",
+   "path": "./modules/202611222000-vicinity-entry.js",
+   "sha256": "0c4c7d39433e2ab084bccc159bf5fad963f4014d391a1daa18882896a87ef05d",
+   "capabilities": [
+    "native-gridatlas-repd-vicinity-launch",
+    "independent-of-abandoned-journey"
+   ]
   }
  ],
  "last_known_green": {
@@ -870,15 +887,15 @@
    "result_class": "LOCATION_ONLY"
   }
  },
- "composition_manifest": "./manifests/202611161720-composition.json",
+ "composition_manifest": "./manifests/202611222000-release-contract.json",
  "scope_closure": {
   "generation": "202609010726",
   "status": "DONE",
   "scope": "GridAtlas v9.42 the price panel revalidates",
   "schedule_retired": true
  },
- "composition_version": "v9.191",
- "composition_id": "202611161720-gridatlas-v9.191",
+ "composition_version": "v9.194",
+ "composition_id": "202611222000-gridatlas-v9.194-CANDIDATE",
  "transport": {
   "response_contract": "HEADERS_BEFORE_PARQUET_BODY",
   "engine_timeout_seconds": 15,
@@ -893,8 +910,8 @@
   "fidelity_workflow": ".github/workflows/202608301931-layer-fidelity.yml",
   "payload_cache": "RELEASE_AFTER_SERIALISATION"
  },
- "composition_note": "Repair release contract: evidence-backed no-full-copy attestation and exact parent lineage; accepted MAP and owned distance calculation bytes unchanged.",
- "superseded_generation": "202611132345",
- "candidate_predecessor": "202611132345",
+ "composition_note": "Release of owner-accepted V9.194 native PipelineNews REPD vicinity (30/30/30, 90-point swipe, Hide Layers fix). Explicit owner instruction in ChatGPT on 22 November 2026; V9.191 rollback retained.",
+ "superseded_generation": "202611161720",
+ "candidate_predecessor": "202611161720",
  "loader": "v2"
 }
