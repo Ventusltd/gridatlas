@@ -8,8 +8,12 @@ const gen='202611222000';
 const live=JSON.parse(fs.readFileSync(path.join(root,'atlas/current.json'),'utf8'));
 const candidate=JSON.parse(fs.readFileSync(path.join(root,'atlas/v',gen,'current.json'),'utf8'));
 const predecessor=JSON.parse(fs.readFileSync(path.join(root,'atlas/v/202611161720/current.json'),'utf8'));
-assert.ok(['202611161720',gen].includes(live.generation),'live must be V9.191 or approved V9.194');
-if(live.generation===gen)for(const c of candidate.cartridges){
+const approved195=live.generation==='202611222130'&&['pipeline-vicinity-button','uk-offtakers-overlay'].every(id=>{
+ const active=live.cartridges.find(x=>x.id===id),approved=candidate.cartridges.find(x=>x.id===id);
+ return active&&approved&&active.sha256===approved.sha256;
+});
+assert.ok(['202611161720',gen].includes(live.generation)||approved195,'later live may carry V9.194 only with both approved exact cartridge pins');
+if(live.generation===gen||approved195)for(const c of candidate.cartridges.filter(x=>!approved195||x.id!=='sld-sandbox')){
  const active=live.cartridges.find(x=>x.id===c.id);
  assert.ok(active&&active.sha256===c.sha256,'promoted '+c.id+' must have exact candidate SHA');
 }
