@@ -228,6 +228,27 @@ for (const c of own) {
     same(name,out,c.file);
     if(sha256(fs.readFileSync(out))!==c.sha256)
       R.fail(name+' pin','Rebuilt vicinity focus differs from composition SHA-256');
+  } else if (c.id === 'vicinity-controls-rescue' && G === '202611222325') {
+    // A clean tree contains only the small source and deterministic builder.
+    // Never copy the committed output as the supposed proof of its own bytes.
+    const tree=path.join(work,'vicinity-controls-source');
+    for(const rel of [
+      'tools/vicinity-controls/build.mjs',
+      'tools/vicinity-controls/src/202611222325-vicinity-controls-rescue.js'
+    ]){
+      const to=path.join(tree,rel);
+      fs.mkdirSync(path.dirname(to),{recursive:true});
+      fs.copyFileSync(abs(rel),to);
+    }
+    const out=path.join(work,path.basename(c.file));
+    const r=run(['node',path.join(tree,'tools/vicinity-controls/build.mjs'),'--generation',G,'--out',out],{cwd:tree});
+    if(r.code!==0||!fs.existsSync(out)){
+      R.fail(name,'Vicinity recovery source rebuild failed: '+(r.stderr||r.stdout).trim().slice(0,220));
+      continue;
+    }
+    same(name,out,c.file);
+    if(sha256(fs.readFileSync(out))!==c.sha256)
+      R.fail(name+' pin','V9.196 rebuild differs from composition SHA256');
   } else if (c.id === 'sld-sandbox' && exists('tools/sld/generations.json') && readJson('tools/sld/generations.json').generations[G]) {
     // Only pinned source inputs enter this empty tree. The expected final cartridge is absent.
     const entry = readJson('tools/sld/generations.json').generations[G];
