@@ -1,0 +1,141 @@
+{
+  "schema": "gridatlas.offtakers.source-delta.v1",
+  "generation": "202611222000",
+  "source_generation": "202611132345",
+  "note": "Exact declarative source deltas against byte-reproducible source-built predecessor; changes only native REPD vicinity and swipe; no abandoned Journey",
+  "edits": [
+    {
+      "index": 150,
+      "old": [
+        "pc=()=>{if(S.pp){S.pp.remove();S.pp=null}nc()},"
+      ],
+      "next": [
+        "pc=()=>{if(S.pp){try{S.pp.swipe?.marker?.remove()}catch(_){}S.pp.remove();S.pp=null}nc()},"
+      ]
+    },
+    {
+      "index": 262,
+      "old": [
+        "dcc=(m,r,n=15,o={})=>{let p=r.p,w=DMW(p),c=cd(m,'Data centre','Data centre (screening)',{open:1,hh:1,foot:'Not shown here: electricity use, connection terms, TEC, queue position, consent, viability.'}),h=c.head,dv=c.det,st=DST[r.t],sr=p.sources||[];",
+        " Object.assign(c,{r,tab:o.tab||'a',sh:o.sh||{},vb:o.vb||'all',rst:o.rst||'all'});S.fk=null;c.foot.dataset.tier='screening';",
+        " L(h,`${NM(r)} · ${unk(r.op)?'operator not listed':cs(r.op)}`,'color:#e9dcff;font-weight:bold;margin-top:6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis','record');",
+        " L(h,MWL(w),'color:#9fb3ba;white-space:nowrap;overflow:hidden;text-overflow:ellipsis','record');"
+      ],
+      "next": [
+        "dcc=(m,r,n=15,o={})=>{let p=r.p,project=!!o.project,w=DMW(p),c=cd(m,project?'Vicinity':'Data centre',project?'Project vicinity (screening)':'Data centre (screening)',{open:1,hh:1,foot:'Vicinity only. Not connection, route or capacity assessment.'}),h=c.head,dv=c.det,st=DST[r.t],sr=p.sources||[];",
+        " Object.assign(c,{r,project,tab:o.tab||'a',sh:o.sh||{},vb:o.vb||'all',rst:o.rst||'all'});S.fk=null;c.foot.dataset.tier='screening';",
+        " L(h,project?`${NM(r)} · REPD ${cs(p.repd_ref)}`:`${NM(r)} · ${unk(r.op)?'operator not listed':cs(r.op)}`,'color:#e9dcff;font-weight:bold;margin-top:6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis','record');",
+        " L(h,project?`${cs(p.technology||'Technology not stated')} · ${p.capacity_mw>0?N(p.capacity_mw)+' MW registered':'MW not stated'}`:MWL(w),'color:#9fb3ba;white-space:nowrap;overflow:hidden;text-overflow:ellipsis','record');"
+      ]
+    },
+    {
+      "index": 267,
+      "old": [
+        " L(dv,DHEAD,'color:#c9b3ff;margin-top:4px');"
+      ],
+      "next": [
+        " L(dv,project?'REPD project vicinity. Distances are straight-line; connectivity and capacity unknown.':DHEAD,'color:#c9b3ff;margin-top:4px');",
+        " if(!project){"
+      ]
+    },
+    {
+      "index": 281,
+      "old": [
+        " r.dc||L(dv,'Record · '+LIC(r),'color:#8b9aa1','record');",
+        " c.cam=o.cam;c.row=o.row;dg(m,c,n);return c},"
+      ],
+      "next": [
+        " r.dc||L(dv,'Record · '+LIC(r),'color:#8b9aa1','record');}",
+        " c.cam=o.cam;c.row=o.row;if(project)initProjectSwipe(m,c);dg(m,c,n);return c},"
+      ]
+    },
+    {
+      "index": 296,
+      "old": [
+        "dt=(m,c)=>{sets(c);let T=c.tl,row=el('div','display:flex;gap:3px;margin:6px 0');T.textContent='';ap(T,row);row.setAttribute('role','tablist');row.setAttribute('aria-label','Data-centre vicinity sets');"
+      ],
+      "next": [
+        "dt=(m,c)=>{sets(c);if(c.project)updateProjectSwipe(c);let T=c.tl,row=el('div','display:flex;gap:3px;margin:6px 0');T.textContent='';ap(T,row);row.setAttribute('role','tablist');row.setAttribute('aria-label','Data-centre vicinity sets');"
+      ]
+    },
+    {
+      "index": 303,
+      "old": [
+        " c.sm.textContent=`Data centre · ${c.k?pl(c.k.length,'substation'):'…'}, ${c.P?pl(c.P.length,'REPD site'):'…'} within 40 km, ${c.cv?c.cv.length:'…'} conventional listed · details`;cpos()},"
+      ],
+      "next": [
+        " c.sm.textContent=`${c.project?'Project vicinity':'Data centre'} · ${c.k?pl(c.k.length,'substation'):'…'}, ${c.P?pl(c.P.length,'REPD site'):'…'} within 40 km, ${c.cv?c.cv.length:'…'} conventional listed · details`;cpos()},"
+      ]
+    },
+    {
+      "index": 376,
+      "old": [
+        "  ['data centre',0,NM(r),id,'data centre',sl,'','',M(w.it),'IT load',0,x,y,'site',r.dc?'data-centre dataset':'OpenStreetMap','ODbL 1.0','']];"
+      ],
+      "next": [
+        "  [(c.project?'REPD project':'data centre'),0,NM(r),id,c.project?cs(r.p.technology||'not stated'):'data centre',sl,'','',c.project?(r.p.capacity_mw||'not stated'):M(w.it),c.project?'registered MW':'IT load',0,x,y,'site',c.project?'PipelineNews map origin':r.dc?'data-centre dataset':'OpenStreetMap',c.project?'REPD (DESNZ)':'ODbL 1.0','']];"
+      ]
+    },
+    {
+      "index": 381,
+      "old": [
+        " let s=[`# GridAtlas data-centre vicinity sheet · generation ${GEN} · site ${id} ${NM(r).replace(/[\\r\\n]/g,' ')} · point ${x},${y} · ${new Date().toISOString()}`,'# Straight-line distances from the site point. Not cable routes, capacity, headroom, connection offers or feasibility.',",
+        "  `# Site: IT load ${w.it!=null?w.it+' MW':'not stated'} · grid connection ${w.gc!=null?w.gc+' MW':'not stated'}. Never added together. A pipeline entry is not a commitment.`,'# MW columns are installed capacity as each source states it, not export or connection capacity. \"not stated\" is unknown, not zero.',"
+      ],
+      "next": [
+        " let s=[`# GridAtlas ${c.project?'REPD project':'data-centre'} vicinity sheet · generation ${GEN} · site ${id} ${NM(r).replace(/[\\r\\n]/g,' ')} · point ${x},${y} · ${new Date().toISOString()}`,'# Straight-line distances from the site point. Not cable routes, capacity, headroom, connection offers or feasibility.',",
+        "  c.project?'# REPD project context from PipelineNews MAP URL; MW does not establish connection capacity.':`# Site: IT load ${w.it!=null?w.it+' MW':'not stated'} · grid connection ${w.gc!=null?w.gc+' MW':'not stated'}. Never added together. A pipeline entry is not a commitment.`,'# MW columns are installed capacity as each source states it, not export or connection capacity. \"not stated\" is unknown, not zero.',"
+      ]
+    },
+    {
+      "index": 421,
+      "old": [
+        "NS.ukOfftakers=Object.freeze({schema:S.schema,generation:GEN,state:S,install:ins,setOn:so});"
+      ],
+      "next": [
+        "function openProjectVicinity(input){",
+        " if(!input||typeof input!=='object')return false;",
+        " const ref=String(input.repdRef||''),at=input.at;",
+        " if(!/^[1-9]\\d{0,11}$/.test(ref)||!Array.isArray(at)||at.length!==2||!at.every(Number.isFinite)||at[0]<-11||at[0]>3||at[1]<49.5||at[1]>61.5)return false;",
+        " const map=mh();if(!map||!NS.gridScope||typeof NS.gridScope.scope!=='function')return false;",
+        " try{W.__GRIDATLAS_NEON_LINKS__?.enableSubstationLayer?.()}catch(_){}",
+        " const name=typeof input.name==='string'&&input.name.trim()?input.name.trim().slice(0,180):'REPD '+ref;",
+        " const cap=Number(input.capacityMW);",
+        " const record={id:'repd:'+ref,repd_ref:ref,technology:typeof input.technology==='string'?input.technology.slice(0,80):'',capacity_mw:Number.isFinite(cap)&&cap>0?cap:null,sources:[],status:'unknown'};",
+        " dcc(map,{k:'c',t:'un',dc:0,n:name,op:'',a:at.slice(),p:record},15,{project:true});",
+        " return true;",
+        "}",
+        "function initProjectSwipe(map,card){",
+        " const nav=ap(card.head,el('div','display:flex;align-items:center;gap:4px;margin:8px 0;min-height:46px;touch-action:pan-y;border:1px solid #367078'));",
+        " function b(txt,aria){const q=ap(nav,el('button','min-width:44px;min-height:44px;background:#07191f;border:1px solid #367078;color:#00ffff;font:18px monospace',txt));q.type='button';q.setAttribute('aria-label',aria);return q}",
+        " const prev=b('‹','Previous vicinity point'),label=ap(nav,el('span','flex:1;min-width:0;text-align:center;overflow-wrap:anywhere;color:#bfe9ee','Loading nearby assets')),next=b('›','Next vicinity point');",
+        " label.setAttribute('role','status');label.setAttribute('aria-live','polite');",
+        " card.swipe={entries:[],index:0,prev,next,label,marker:null};",
+        " prev.addEventListener('click',()=>stepProjectSwipe(map,card,-1));next.addEventListener('click',()=>stepProjectSwipe(map,card,1));",
+        " let start=null;",
+        " card.addEventListener('touchstart',e=>{if(e.touches.length===1)start={x:e.touches[0].clientX,y:e.touches[0].clientY}},{passive:true});",
+        " card.addEventListener('touchend',e=>{if(!start||!e.changedTouches.length)return;const t=e.changedTouches[0],x=t.clientX-start.x,y=t.clientY-start.y;start=null;if(Math.abs(x)>54&&Math.abs(x)>1.5*Math.abs(y))stepProjectSwipe(map,card,x<0?1:-1)},{passive:true});",
+        " card.addEventListener('keydown',e=>{if(e.target.closest('button,input,select,textarea,a'))return;if(e.key==='ArrowRight'||e.key==='ArrowLeft'){e.preventDefault();stepProjectSwipe(map,card,e.key==='ArrowRight'?1:-1)}});",
+        "}",
+        "function updateProjectSwipe(card){",
+        " const s=card.swipe;if(!s)return;",
+        " const subs=(card.k||[]).map(e=>({tab:'s',at:e.at,km:e.km,name:e.name||'Unnamed substation',detail:e.kv+' kV'}));",
+        " const repd=(card.P||[]).slice(0,N3).map(e=>({tab:'r',at:e.a,km:e.km,name:e.parts[0]?.name||'REPD project',detail:e.parts[0]?.status||'Status not stated'}));",
+        " const power=(card.cv||[]).slice(0,N3).map(e=>({tab:'v',at:e.q.a,km:e.km,name:e.q.n||'Conventional power site',detail:e.q.te||e.q.f||'Power site'}));",
+        " s.entries=[...subs,...repd,...power];s.index=Math.min(s.index,Math.max(0,s.entries.length-1));",
+        " const r=s.entries[s.index];s.label.textContent=r?`${s.index+1} / ${s.entries.length} · ${k2(r.km)} km · ${r.name} · ${r.detail}`:'No nearby assets loaded yet';s.prev.disabled=s.next.disabled=!r;",
+        "}",
+        "function stepProjectSwipe(map,card,delta){",
+        " if(S.pp!==card||!card.swipe?.entries.length)return;",
+        " const s=card.swipe;s.index=(s.index+delta+s.entries.length)%s.entries.length;",
+        " const r=s.entries[s.index];card.tab=r.tab;card.sh[r.tab]=1;dt(map,card);dl3(map,card);",
+        " try{if(s.marker)s.marker.remove();const dot=el('div','width:15px;height:15px;border-radius:50%;background:#ff4fd8;border:2px solid white;box-shadow:0 0 10px #ff4fd8;pointer-events:none');",
+        "   if(W.maplibregl?.Marker)s.marker=new W.maplibregl.Marker({element:dot,anchor:'center'}).setLngLat(r.at).addTo(map);",
+        "   map.easeTo({center:r.at,zoom:Math.max(map.getZoom?.()||8,8),duration:200});",
+        " }catch(e){note('swipe highlight: '+msg(e))}",
+        "}",
+        "NS.ukOfftakers=Object.freeze({schema:S.schema,generation:GEN,state:S,install:ins,setOn:so,openProjectVicinity});"
+      ]
+    }
+  ]
+}
