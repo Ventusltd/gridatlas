@@ -17,6 +17,32 @@ try{
  const url='http://127.0.0.1:'+server.address().port+'/atlas/v/202611222130/?'+params;
  await page.goto(url,{waitUntil:'domcontentloaded',timeout:90000});
  await page.waitForFunction(()=>window.__GRIDATLAS_ATLAS__?.generation==='202611222130'&&!!window.__GRIDATLAS_V9_MAP__&&!!window.__GRIDATLAS_MODULES__?.ukOfftakers?.openProjectVicinity,null,{timeout:120000});
+
+ // No Layout Sandbox may be launched from a substation OR a project, even
+ // when a client still calls the legacy public method. Grid Engine stays on.
+ const control=await page.evaluate(()=>{
+   const g=window.__GRIDATLAS_MODULES__?.gridScope;
+   const links=window.__GRIDATLAS_NEON_LINKS__;
+   const sld=window.__GRIDATLAS_SLD__;
+   const map=window.__GRIDATLAS_V9_MAP__;
+   return {
+     scope:typeof g?.scope==='function',
+     near:typeof links?.measure?.nearestSubstations==='function',
+     sldPresent:!!sld,
+     openAt:sld?.openAt?.(map,[-1.3489728,51.8132088],'Node','132 kV'),
+     openProject:sld?.openFromProject?.(map,{origin:[-1.3489728,51.8132088],name:'Botley West',links:[]}),
+     active:sld?.active===true
+   };
+ });
+ assert.equal(control.scope,true,'Grid Scope must remain usable');
+ assert.equal(control.near,true,'nearest substation engine must remain usable');
+ assert.equal(control.sldPresent,true,'carrier object remains for compatibility');
+ assert.equal(control.openAt,false,'direct substation Layout entry disabled');
+ assert.equal(control.openProject,false,'project Layout entry disabled');
+ assert.equal(control.active,false,'layout never becomes active');
+ assert.equal(await page.locator('#gridatlas-sld-panel').count(),0,'layout panel must not exist');
+ assert.equal(await page.locator('button.neon-layout').count(),0,'layout button removed');
+
  const button=page.locator('#gridatlas-pipeline-vicinity-button');
  await button.waitFor({timeout:10000});await (engine==='webkit'?button.tap():button.click());
  const card=page.locator('[data-offtakers-card]');await card.waitFor({timeout:30000});
