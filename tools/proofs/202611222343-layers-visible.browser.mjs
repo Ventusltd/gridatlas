@@ -103,6 +103,54 @@ try{
   evidence.candidate[name]={hit,initial,opened,closed,entries,layerId:id,synchronised:true};
   await page.close();
  }
+
+ // Owner 23 November: compare the original Grid menu, not just #fs-curtain,
+ // at the effective CSS viewport produced by ~190% browser zoom.
+ // The previous acceptance only counted inputs inside the fullscreen curtain.
+ async function gridMenuAudit(generation,viewport,label){
+  const page=await launch(generation,viewport);
+  await page.waitForFunction(()=>window.__GRIDATLAS_MODULES__?.menuBar?.installed===true,null,{timeout:30000});
+  const title=page.locator('#gridatlas-menu-bar .gm-title').filter({hasText:/^Grid$/}).first();
+  await title.click({timeout:15000});
+  const result=await page.evaluate(()=>{
+   const menu=document.getElementById('gridatlas-menu-bar');
+   const panel=menu?.querySelector('.gm-panel-grid');
+   const body=panel?.querySelector('.gm-panel-body');
+   const menuState=window.__GRIDATLAS_MODULES__?.menuBar?.inspect?.();
+   const original=document.querySelectorAll('#scada-ui-container input[data-layer-id],#scada-ui-container input[data-pn-layer]').length;
+   const groups=body?Array.from(body.querySelectorAll('.gm-layer-group'),el=>el.textContent.trim()):[];
+   const keys=body?.querySelectorAll('input[data-gridatlas-layer-proxy]').length||0;
+   const rect=body?.getBoundingClientRect();
+   return{generation:window.__GRIDATLAS_ATLAS__?.generation,menuState,original,keys,groups,
+    body:body?{clientWidth:body.clientWidth,scrollWidth:body.scrollWidth,clientHeight:body.clientHeight,scrollHeight:body.scrollHeight,
+     overflowX:getComputedStyle(body).overflowX,columnCount:getComputedStyle(body).columnCount,
+     rect:{left:rect.left,right:rect.right,top:rect.top,bottom:rect.bottom}}:null};
+  });
+  assert.equal(result.original,63,'original layer inventory must remain 63');
+  assert.equal(result.keys,63,'Grid dropdown must retain all 63 engine/pipeline proxies');
+  for(const term of ['REPD','TRANSIT','EV','BASEMAP']){
+   assert.ok(result.groups.some(x=>x.toUpperCase().includes(term)),term+' layer group must remain');
+  }
+  if(result.body){
+   const b=page.locator('#gridatlas-menu-bar .gm-panel-body');
+   await b.evaluate(el=>{el.scrollTop=el.scrollHeight;el.scrollLeft=el.scrollWidth});
+   const last=page.locator('#gridatlas-menu-bar .gm-panel-body .gm-layer').last();
+   await last.scrollIntoViewIfNeeded({timeout:15000});
+   result.lastReachable=await last.isVisible();
+   result.afterScroll=await b.evaluate(el=>({left:el.scrollLeft,top:el.scrollTop}));
+  }
+  await page.screenshot({path:path.join(out,label+'-grid-menu-highzoom.png')});
+  await page.close();
+  return result;
+ }
+ evidence.gridMenuBaseline=await gridMenuAudit('202611222130',{width:640,height:650},'v9195-640x650');
+ evidence.gridMenuCandidate=await gridMenuAudit('202611222343',{width:640,height:650},'v9197-640x650');
+ console.log('V9.195 versus V9.197 Grid menu at 190%-equivalent viewport:',JSON.stringify({old:evidence.gridMenuBaseline,current:evidence.gridMenuCandidate}));
+ const recent=evidence.gridMenuCandidate;
+ assert.ok(recent.lastReachable,'final Basemap switch must be reachable');
+ assert.ok(recent.body.scrollWidth-recent.body.clientWidth<=4,
+   'high-zoom Grid menu must not hide later groups in sideways overflow: '+JSON.stringify(recent.body));
+
  evidence.result='PASS';
  console.log('PASS V9.197 '+engineName+': V9.195 working curtain, V9.196 bug reproduced, candidate visible original curtain, real controls and full screen touch: '+JSON.stringify(evidence));
 }catch(e){evidence.result='FAIL';evidence.error=String(e);throw e}
