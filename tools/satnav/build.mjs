@@ -42,6 +42,9 @@ if(hash(focus)!==composition.cartridges.find(x=>x.id==='vicinity-focus').sha256)
 focus=focus.replace("kind:'REPD project (origin)'", "kind:p.repd_ref?'REPD project (origin)':'Chosen source point (origin)'");
 focus=focus.replace("source:'PipelineNews MAP arrival parameters; a location is not a declared grid connection'", "source:p.repd_ref?'REPD source point; entrance and connection unverified':'Explicit '+(p.origin_kind||'map')+' point; no asset identity inferred'");
 focus=focus.replace("['REPD reference',safely(p.repd_ref)]", "[p.repd_ref?'REPD reference':'Asset identity',p.repd_ref?safely(p.repd_ref):'not asserted']");
+// If the native swipe ran before focus was attached, keep its existing highlight.
+focus=focus.replace("signature:null,origin:true", "signature:null,origin:!s.marker");
+focus=focus.replace("s.label.style.visibility='hidden';", "s.label.style.visibility=card.__vicFocus.origin?'hidden':'';");
 const focusPath='atlas/modules/202611242030-satnav-origin-focus.js';write(focusPath,focus);
 const focusEntry=composition.cartridges.find(x=>x.id==='vicinity-focus');focusEntry.path='./modules/'+path.basename(focusPath);focusEntry.sha256=hash(focus);focusEntry.bytes=Buffer.byteLength(focus);
 const source=read('tools/satnav/handoff.js'),modulePath='atlas/modules/202611242030-satnav-handoff.js';write(modulePath,source);

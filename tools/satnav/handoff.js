@@ -4,21 +4,29 @@ const satnavRoot = new URL('../../../', location.href);
 void async function () {
   const compass = new URL('https://ventusltd.github.io/satnav/preview/9698781539e549deaa6ecaa4a2b34610c1f9fd29/nav/');
   const { buildDestination } = await import(new URL('tools/satnav/place.mjs', satnavRoot));
-  const { normaliseOrigin } = await import(new URL('tools/vicinity/src/model.mjs', satnavRoot));
+  const { normaliseOrigin, validCoordinate } = await import(new URL('tools/vicinity/src/model.mjs', satnavRoot));
   const style = document.createElement('style');
   style.textContent = `
-    #gridatlas-satnav-satnav { position:absolute; z-index:1200; right:12px; top:52px;
-      width:min(380px,calc(100% - 24px)); max-height:calc(100% - 70px); overflow:auto; box-sizing:border-box; padding:12px;
+    #gridatlas-satnav-toggle { position:fixed; z-index:10019; left:12px; top:92px; }
+    #gridatlas-satnav-satnav { position:fixed; z-index:10019; right:12px; top:var(--satnav-panel-top, 144px);
+      width:min(380px,calc(100% - 24px)); max-height:calc(100dvh - var(--satnav-panel-top, 144px) - 12px);
+      overflow:auto; box-sizing:border-box; padding:12px;
       border:1px solid #367078; border-radius:6px; background:#08141bed;
       color:#e4f7f7; font:14px/1.45 ui-monospace,monospace; }
     #gridatlas-satnav-satnav h2 { margin:0 0 8px; font:inherit; font-weight:bold; color:#00ffff; }
     #gridatlas-satnav-satnav p { margin:8px 0 0; overflow-wrap:anywhere; }
     #gridatlas-satnav-satnav .actions { display:flex; flex-wrap:wrap; gap:6px; }
-    #gridatlas-satnav-satnav button { min-height:44px; max-width:100%; padding:6px 9px;
+    #gridatlas-satnav-toggle, #gridatlas-satnav-satnav button { min-height:44px; max-width:100%; padding:6px 9px;
       border:1px solid #367078; border-radius:3px; background:#07191f;
-      color:#bff7f9; font:inherit; cursor:pointer; text-align:left; }
+      color:#bff7f9; font:14px/1.45 ui-monospace,monospace; cursor:pointer; text-align:left; touch-action:manipulation; }
     #gridatlas-satnav-satnav button:disabled { color:#8ba0a2; cursor:default; }
-    #gridatlas-satnav-satnav button:focus-visible { outline:2px solid #fff; outline-offset:1px; }
+    #gridatlas-satnav-toggle:focus-visible, #gridatlas-satnav-satnav button:focus-visible { outline:2px solid #fff; outline-offset:1px; }
+    #gridatlas-satnav-satnav summary { display:flex; align-items:center; min-height:44px; cursor:pointer; }
+    #gridatlas-satnav-satnav summary::before { content:'▸'; margin-right:.5em; }
+    #gridatlas-satnav-satnav details[open] summary::before { content:'▾'; }
+    #gridatlas-satnav-satnav input { display:block; box-sizing:border-box; width:100%; min-height:44px;
+      background:#07191f; color:white; border:1px solid #367078; font-size:16px; }
+    #gridatlas-satnav-pin-label { width:100%; }
     #gridatlas-satnav-satnav [hidden] { display:none; }
   `;
   document.head.append(style);
@@ -27,7 +35,7 @@ void async function () {
   panel.setAttribute('aria-labelledby', 'gridatlas-satnav-satnav-title');
   const heading = document.createElement('h2');
   heading.id = 'gridatlas-satnav-satnav-title';
-  heading.textContent = 'SatNav destination';
+  heading.textContent = 'Where are you going?';
   const actions = document.createElement('div');
   actions.className = 'actions';
   const confirmation = document.createElement('div');
@@ -43,18 +51,27 @@ void async function () {
     parent.append(element);
     return element;
   }
+  const mapSearch = button('map-search', 'Search projects, places or postcodes');
+  const planned = button('planned', 'Use selected search result');
   const pick = button('pick', 'Choose point on satellite');
   const origin = button('origin', 'Use Vicinity origin');
   const asset = button('asset', 'Use highlighted asset');
   const confirm = button('confirm', 'Use in SatNav', confirmation);
   const cancel = button('cancel', 'Cancel', confirmation);
   const vicinity = button('vicinity', 'Explore this point in Vicinity', confirmation);
-  const planned = button('planned', 'Use selected project record');
+  const pinLabel = document.createElement('label');
+  pinLabel.id = 'gridatlas-satnav-pin-label';
+  pinLabel.textContent = 'Name this pin (optional)';
+  const pinName = document.createElement('input');
+  pinName.type = 'text';
+  pinName.maxLength = 120;
+  pinLabel.append(pinName);
+  confirmation.prepend(pinLabel);
   const manual = document.createElement('form');
   const field = (label, id) => {
     const wrap=document.createElement('label');wrap.textContent=label;
     const input=document.createElement('input');input.id='gridatlas-satnav-'+id;
-    input.type='text';input.style.cssText='display:block;box-sizing:border-box;width:100%;min-height:44px;background:#07191f;color:white;border:1px solid #367078';
+    input.type='text';
     wrap.append(input);manual.append(wrap);return input;
   };
   const latitude=field('Latitude (signed WGS84)','latitude');
@@ -62,33 +79,68 @@ void async function () {
   latitude.inputMode=longitude.inputMode='decimal';
   const manualLabel=field('Optional destination label','label');
   const commit=button('manual','Choose coordinates',manual);commit.type='submit';
-  const lookup=document.createElement('div');
+  const lookup=document.createElement('form');
   const searchLabel=document.createElement('label');searchLabel.textContent='Existing substation name or source ID';
-  const search=document.createElement('input');search.type='search';search.style.cssText=latitude.style.cssText;searchLabel.append(search);lookup.append(searchLabel);
+  const search=document.createElement('input');search.type='search';searchLabel.append(search);lookup.append(searchLabel);
   const find=button('search','Find substations',lookup);
+  find.type='submit';
   const results=document.createElement('div');lookup.append(results);
-  const hint=document.createElement('p');hint.textContent='For planned projects use the existing map search, then select the exact project record here. Coordinates are source points, not confirmed entrances. No route or access permission is implied.';
-  const sources=document.createElement('details');
-  const summary=document.createElement('summary');summary.textContent='Search substations or enter coordinates';summary.style.minHeight='44px';
-  sources.append(summary,lookup,manual,hint);
-  panel.append(heading, actions, status, confirmation,sources);
+  function disclosure(id, title, content) {
+    const details = document.createElement('details');
+    details.id = `gridatlas-satnav-${id}-details`;
+    const summary = document.createElement('summary');
+    summary.textContent = title;
+    details.append(summary, content);
+    return details;
+  }
+  panel.append(heading, actions, status, confirmation,
+    disclosure('station', 'Find an existing substation', lookup),
+    disclosure('manual', 'Enter coordinates (advanced)', manual));
   document.body.append(panel);
   panel.hidden = true;
-  const toggle = button('toggle','SatNav destination',document.body);
+  const toggle = button('toggle','SatNav',document.body);
+  toggle.setAttribute('aria-label','SatNav destination');
+  toggle.setAttribute('aria-controls',panel.id);
   toggle.setAttribute('aria-expanded','false');
-  toggle.onclick=()=>{panel.hidden=!panel.hidden;toggle.setAttribute('aria-expanded',String(!panel.hidden));};
   const close=button('close','Close destination panel',panel);
-  close.onclick=()=>{panel.hidden=true;toggle.setAttribute('aria-expanded','false');toggle.focus();};
 
   const samePoint = (a, b) => a?.length === 2 && b?.length === 2 && a[0] === b[0] && a[1] === b[1];
   const satellite = () => document.querySelector('#scada-ui-container input[name="bm"][value="sat"]');
   let map, marker, armed = false, pending = null, searchEpoch=0;
+  const defaultStatus = 'Search for a destination, choose a satellite point or use an open Vicinity card.';
+  const projectRef = () => new URLSearchParams(location.search).get('repd_ref');
+  const placeSearch = () => window.__GRIDATLAS_PLACE_SEARCH__;
+  const projectSelection = () => placeSearch()?.last_selection;
+  const searchInput = () => document.getElementById('search-input');
+
+  function closePanel() {
+    if (armed) reset('Selection cancelled.');
+    panel.hidden = true;
+    toggle.setAttribute('aria-expanded', 'false');
+  }
+
+  toggle.onclick = () => {
+    if (!panel.hidden) { closePanel(); return; }
+    panel.hidden = false;
+    toggle.setAttribute('aria-expanded', 'true');
+  };
+  close.onclick = () => { closePanel(); toggle.focus({ preventScroll: true }); };
+  mapSearch.onclick = () => {
+    closePanel();
+    searchInput()?.focus();
+  };
 
   // Read the exact current project or swiped item from the native Vicinity card.
   function currentCardPoint(kind) {
     const card = window.__GRIDATLAS_MODULES__?.ukOfftakers?.state.pp;
     if (!card?.project) return null;
-    if (kind === 'origin') return { card, name: card.r.n, at: card.r.a };
+    if (kind === 'origin') {
+      const selected = projectSelection();
+      const ref = card.r.p.repd_ref;
+      if (ref && ((selected && String(selected.repd_ref) === String(ref) && selected.mapped !== true) ||
+        samePoint(card.r.a, [-7.55716, 49.766807]))) return null;
+      return { card, name: card.r.n, at: card.r.a };
+    }
     if(card.__vicFocus?.origin) return null;
     const swipe = card.swipe;
     const entry = swipe?.entries[swipe.index];
@@ -100,6 +152,7 @@ void async function () {
   function reset(message) {
     armed = false;
     pending = null;
+    pinName.value = '';
     marker?.remove();
     marker = null;
     status.textContent = message;
@@ -109,6 +162,7 @@ void async function () {
   function render() {
     pick.disabled = !map?.getLayer('l-sat') || !satellite();
     pick.setAttribute('aria-pressed', String(armed));
+    mapSearch.disabled = !searchInput() || !placeSearch()?.ready;
     origin.disabled = !currentCardPoint('origin');
     asset.disabled = !currentCardPoint('asset');
     origin.hidden = origin.disabled;
@@ -116,6 +170,7 @@ void async function () {
     confirmation.hidden = !armed && !pending;
     confirm.hidden = !pending;
     vicinity.hidden = !pending;
+    pinLabel.hidden = pending?.kind !== 'map';
   }
 
   function stage(kind, selection) {
@@ -137,7 +192,9 @@ void async function () {
 
   // Same armed MapLibre click and [longitude, latitude] order as Vicinity bootstrap.
   function mapClick(event) {
-    if (armed && event.lngLat) stage('map', { name: 'Chosen map point', at: [event.lngLat.lng, event.lngLat.lat] });
+    if (!panel.hidden && armed && event.lngLat) {
+      stage('map', { name: 'Chosen map point', at: [event.lngLat.lng, event.lngLat.lat] });
+    }
   }
 
   pick.onclick = () => {
@@ -153,20 +210,42 @@ void async function () {
   origin.onclick = () => stage('origin', currentCardPoint('origin'));
   asset.onclick = () => stage('asset', currentCardPoint('asset'));
   function selectedProject() {
-    const state=window.__GRIDATLAS_PLACE_SEARCH__, selected=state?.last_selection;
-    if(!selected) return null;
-    // Retain the exact search record, not a name/proximity join or summary.
-    const rows=(state.last_results||[]).filter(r=>r.repd_ref===selected.repd_ref&&r.longitude===selected.longitude&&r.latitude===selected.latitude);
-    return rows.length===1?rows[0]:null;
+    const selected = projectSelection();
+    if (selected?.mapped !== true || String(selected.repd_ref) !== projectRef() ||
+      !validCoordinate([selected.longitude, selected.latitude])) return null;
+    // Keep the exact record for source status and address.
+    const rows = placeSearch().last_results.filter(row => row.repd_ref === selected.repd_ref &&
+      row.longitude === selected.longitude && row.latitude === selected.latitude);
+    return rows.length === 1 ? rows[0] : null;
   }
-  planned.onclick=()=>{
-    const record=selectedProject();
-    if(!record){status.textContent='Choose an exact project using the existing map search first.';return;}
-    if(!Number.isFinite(record.longitude)||!Number.isFinite(record.latitude)){
-      status.textContent='This project has no located source point. Choose an explicit pin or enter coordinates; no nearest site is substituted.';return;
+
+  function selectedLocation() {
+    const selected = placeSearch()?.last_location_selection;
+    return projectRef() === null && selected?.mapped === true &&
+      validCoordinate([selected.longitude, selected.latitude]) ? selected : null;
+  }
+
+  planned.onclick = () => {
+    const selected = projectSelection();
+    if (selected && String(selected.repd_ref) === projectRef() && selected.mapped !== true) {
+      reset('This project has no mapped location. Choose a point on satellite or enter known coordinates.');
+      return;
     }
-    stage('planned',{name:record.name,at:[record.longitude,record.latitude],record,signature:JSON.stringify(record)});
-    if(pending)status.textContent+=' · REPD '+record.repd_ref+' · '+(record.status||'status not stated')+' · '+[record.address,record.postcode].filter(Boolean).join(', ')+' · source project point; entrance unverified';
+    const record = selectedProject();
+    if (record) {
+      stage('planned', { name: record.name, at: [record.longitude, record.latitude], record });
+      if (pending) status.textContent += ' · ' + [
+        'REPD ' + record.repd_ref, record.status, record.address, record.postcode, 'Source point; entrance unverified',
+      ].filter(Boolean).join(' · ');
+      return;
+    }
+    const place = selectedLocation();
+    if (place) {
+      stage('location', { name: place.label, at: [place.longitude, place.latitude], place });
+      if (pending) status.textContent += ' · ' + [place.sublabel, place.provider, 'Location only'].filter(Boolean).join(' · ');
+      return;
+    }
+    reset('Select a mapped result in GridAtlas search, or choose a point on satellite.');
   };
   manual.onsubmit=event=>{
     event.preventDefault();
@@ -176,7 +255,12 @@ void async function () {
     stage('manual',{name:manualLabel.value.trim()||'Manual coordinate point',at:[Number(longitude.value),Number(latitude.value)]});
   };
   let stationIndex;
-  find.onclick=async()=>{
+  search.addEventListener('input', () => {
+    searchEpoch++;
+    results.textContent = '';
+  });
+  lookup.onsubmit=async event=>{
+    event.preventDefault();
     const epoch=++searchEpoch;const query=search.value.trim();results.textContent='';
     if(!query)return;
     reset('Loading the existing mapped substation snapshot…');
@@ -200,34 +284,29 @@ void async function () {
   };
   function stillCurrent(){
     if(!pending)return false;
-    if(pending.kind==='planned'&&JSON.stringify(selectedProject())!==pending.selection.signature){reset('Project selection changed. Select it again.');return false;}
+    if(pending.kind==='planned'&&selectedProject()!==pending.selection.record){reset('Project selection changed. Select it again.');return false;}
+    if(pending.kind==='location'&&selectedLocation()!==pending.selection.place){reset('Location selection changed. Select it again.');return false;}
     if(['origin','asset'].includes(pending.kind)){
       const current=currentCardPoint(pending.kind), selection=pending.selection;
       if(!current||current.card!==selection.card||current.index!==selection.index||current.name!==selection.name||!samePoint(current.at,pending.value.at)){reset('The Vicinity selection changed. Select it again.');return false;}
     }
     return true;
   }
+  function destinationName(kind, value) {
+    return kind === 'map' ? pinName.value.trim() || value.name : value.name;
+  }
   vicinity.onclick=()=>{
     if(!stillCurrent())return;
     const {value,selection,kind}=pending;
-    const opened=window.__GRIDATLAS_MODULES__?.ukOfftakers?.openPointVicinity?.({at:value.at,name:value.name,kind,repdRef:kind==='planned'?selection.record.repd_ref:null,status:kind==='planned'?selection.record.status:null});
-    if(opened){reset('Vicinity opened at the selected source point.');panel.hidden=true;toggle.setAttribute('aria-expanded','false');}
+    const opened=window.__GRIDATLAS_MODULES__?.ukOfftakers?.openPointVicinity?.({at:value.at,name:destinationName(kind,value),kind,repdRef:kind==='planned'?selection.record.repd_ref:null,status:kind==='planned'?selection.record.status:null});
+    if(opened){reset('Vicinity opened at the selected source point.');closePanel();}
     else status.textContent='Vicinity engine not ready. Selection retained; retry when loaded.';
   };
   cancel.onclick = () => { searchEpoch++;results.textContent='';reset('Selection cancelled.'); pick.focus(); };
   confirm.onclick = () => {
     if (!stillCurrent()) return;
-    const { kind, selection, value } = pending;
-    if (kind === 'origin' || kind === 'asset') {
-      const current = currentCardPoint(kind);
-      if (!current || current.card !== selection.card || current.index !== selection.index ||
-          current.name !== selection.name || !samePoint(current.at, value.at)) {
-        reset('The Vicinity selection changed. Select it again.');
-        pick.focus();
-        return;
-      }
-    }
-    const query = buildDestination({ name: value.name, coordinates: value.at, mode: 'compass' });
+    const { kind, value } = pending;
+    const query = buildDestination({ name: destinationName(kind, value), coordinates: value.at, mode: 'compass' });
     location.assign(new URL(query, compass));
   };
   panel.addEventListener('keydown', event => {
@@ -237,16 +316,32 @@ void async function () {
     panel.addEventListener(type, event => event.stopPropagation());
   }
 
+  function positionControls() {
+    const host = document.fullscreenElement || document.webkitFullscreenElement || document.body;
+    if (toggle.parentElement !== host) host.append(toggle, panel);
+    const menu = document.getElementById('gridatlas-menu-bar')?.getBoundingClientRect();
+    const mapTop = map?.getContainer().getBoundingClientRect().top ?? 44;
+    let top = Math.max(92, Math.ceil(menu?.height ? menu.bottom : mapTop) + 8);
+    const buttonRect = toggle.getBoundingClientRect();
+    // Leave the existing search and attribution controls accessible on narrow screens.
+    for (const selector of ['.custom-map-attrib', '.search-bar-wrapper']) {
+      const rect = document.querySelector(selector)?.getBoundingClientRect();
+      if (rect?.height && rect.left < buttonRect.right && rect.right > buttonRect.left &&
+        rect.top < top + buttonRect.height && rect.bottom > top) top = Math.ceil(rect.bottom) + 8;
+    }
+    toggle.style.top = `${top}px`;
+    panel.style.setProperty('--satnav-panel-top', `${top + buttonRect.height + 8}px`);
+  }
+
   function refresh() {
     const nativeMap = window.__GRIDATLAS_V9_MAP__;
     if (nativeMap && nativeMap !== map && nativeMap.getLayer('l-sat')) {
       map?.off('click', mapClick);
       map = nativeMap;
-      map.getContainer().append(panel);
-      const stack=document.querySelector('.map-controls');if(stack)stack.append(toggle);
       map.on('click', mapClick);
-      status.textContent = 'Choose a point or use an open Vicinity card.';
+      status.textContent = defaultStatus;
     }
+    positionControls();
     render();
   }
   refresh();
@@ -254,7 +349,7 @@ void async function () {
   window.addEventListener('pagehide', () => {
     clearInterval(timer);
     map?.off('click', mapClick);
-    reset('Choose a point or use an open Vicinity card.');
+    reset(defaultStatus);
     map = null;
   });
   window.addEventListener('pageshow', event => {

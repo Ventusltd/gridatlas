@@ -92,10 +92,10 @@
    more.addEventListener('click',()=>{const open=more.getAttribute('aria-expanded')!=='true';more.setAttribute('aria-expanded',String(open));more.textContent=open?'Hide nearby sets -':'Browse nearby sets and full records +';groups.forEach(g=>g.style.display=open?'':'none')});
    card.d.open=false;card.d.querySelector('summary')?.setAttribute('title','Show 5/10/20 km area analysis');
    card.setAttribute('aria-label','Project vicinity asset browser');
-   card.__vicFocus={box:panel,more,signature:null,origin:true};
+   card.__vicFocus={box:panel,more,signature:null,origin:!s.marker};
    // The first card is always the clicked PipelineNews project; the 90
    // neighbouring locations start only after the first left/right movement.
-   s.label.style.visibility='hidden';
+   s.label.style.visibility=card.__vicFocus.origin?'hidden':'';
    for(const [button,direction] of [[s.next,1],[s.prev,-1]]){
      button.addEventListener('click',()=>{
        if(!card.__vicFocus?.origin||!s.entries.length)return;
