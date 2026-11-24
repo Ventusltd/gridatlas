@@ -36,7 +36,8 @@ def load_map(page, url):
 
 
 def click_launcher(page):
-    hit = page.locator(TOGGLE).evaluate('''button => {
+    hit = page.locator(TOGGLE).evaluate('''async button => {
+        await new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve)));
         const rect = button.getBoundingClientRect();
         const x = rect.left + rect.width / 2;
         const y = rect.top + rect.height / 2;
@@ -61,7 +62,7 @@ def click_launcher(page):
 
 def open_satnav(page):
     click_launcher(page)
-    assert page.locator(PANEL).is_visible()
+    page.locator(PANEL).wait_for(state='visible', timeout=5000)
 
 
 def ready(page, url):
@@ -207,7 +208,7 @@ with sync_playwright() as playwright:
             page.locator('#gridatlas-satnav-close').click()
         else:
             click_launcher(page)
-        assert page.locator(PANEL).is_hidden()
+        page.locator(PANEL).wait_for(state='hidden', timeout=5000)
         assert page.locator(PICK).get_attribute('aria-pressed') == 'false'
         click_uncovered_map(page)
         open_satnav(page)
