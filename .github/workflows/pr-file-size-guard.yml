@@ -24,6 +24,38 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  satnav-practice-line-browser:
+    if: github.event.pull_request.head.ref == 'feature/satnav-practice-line-20261124'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          persist-credentials: false
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020
+        with:
+          node-version: '24'
+      - name: Verify the exact practice preview rebuild
+        run: |
+          node tools/satnav/build-line-preview.mjs
+          git diff --exit-code
+      - name: Install isolated Playwright Chromium
+        run: |
+          python3 -m venv "$RUNNER_TEMP/satnav-line-python"
+          "$RUNNER_TEMP/satnav-line-python/bin/python" -m pip install --require-virtualenv playwright==1.63.0
+          "$RUNNER_TEMP/satnav-line-python/bin/python" -m playwright install --with-deps chromium
+      - name: Real map taps, basemap switches and simulated line tracking
+        env:
+          LINE_TEST_BROWSERS: chromium
+        run: |
+          node tools/satnav/serve.mjs 8873 > "$RUNNER_TEMP/satnav-line-server.log" 2>&1 &
+          server_pid=$!
+          trap 'kill "$server_pid" 2>/dev/null || true' EXIT
+          curl --fail --silent --show-error --retry-connrefused --retry 8 --output /dev/null \
+            http://127.0.0.1:8873/atlas/v/satnav-line-preview/
+          "$RUNNER_TEMP/satnav-line-python/bin/python" tools/satnav/line-browser.py
+
   satnav-native-browser:
     if: github.event.pull_request.head.ref == 'feature/satnav-native-vicinity-m1-20261124'
     runs-on: ubuntu-24.04
