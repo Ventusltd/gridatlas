@@ -1,0 +1,31 @@
+name: Published Android lightning smoke test
+on:
+  pull_request:
+    paths:
+      - 'tools/proofs/uk-lightning-published-android.browser.mjs'
+      - '.github/workflows/uk-lightning-published-android.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  android-chrome-live:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020
+        with:
+          node-version: '24'
+      - run: npm ci --ignore-scripts --no-audit --no-fund
+      - run: npx --no-install playwright install chromium
+      - name: Probe real GitHub Pages in Android Chrome emulation
+        run: node tools/proofs/uk-lightning-published-android.browser.mjs
+      - name: Preserve browser screenshots, network and menu diagnostics
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: published-android-lightning-probe
+          path: work/published-android-lightning
+          retention-days: 7
