@@ -3,7 +3,7 @@ import math
 import os
 from urllib.parse import parse_qs, urlencode, urlparse
 
-from playwright.sync_api import sync_playwright
+from playwright.sync_api import TimeoutError as PlaywrightTimeoutError, sync_playwright
 
 BASE = f"http://127.0.0.1:{os.environ.get('SATNAV_PORT', '8768')}/"
 DEMO = BASE + 'atlas/v/satnav-native-m1/'
@@ -38,6 +38,23 @@ def load_map(page, url):
 def click_launcher(page):
     hit = page.locator(TOGGLE).evaluate('''async button => {
         await new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve)));
+        window.__satnavTapEvents = [];
+        const types = ['pointerdown', 'pointerup', 'pointercancel', 'touchstart',
+            'touchend', 'touchcancel', 'click', 'fullscreenchange'];
+        window.__satnavTapTrace?.abort();
+        window.__satnavTapTrace = new AbortController();
+        const record = event => {
+            const point = event.changedTouches?.[0] || event;
+            window.__satnavTapEvents.push({
+                type: event.type, target: event.target.id || event.target.tagName,
+                x: point.clientX, y: point.clientY,
+                launcherTop: button.getBoundingClientRect().top,
+                expanded: button.getAttribute('aria-expanded'),
+            });
+        };
+        for (const type of types) {
+            window.addEventListener(type, record, {capture: true, signal: window.__satnavTapTrace.signal});
+        }
         const rect = button.getBoundingClientRect();
         const x = rect.left + rect.width / 2;
         const y = rect.top + rect.height / 2;
@@ -48,6 +65,11 @@ def click_launcher(page):
                 rect.right <= innerWidth && rect.bottom <= innerHeight,
             reachable: button.contains(target),
             coveredBy: target && (target.id || target.className || target.tagName),
+            viewport: {
+                width: innerWidth, height: innerHeight, scale: visualViewport.scale,
+                offsetLeft: visualViewport.offsetLeft, offsetTop: visualViewport.offsetTop,
+                fullscreen: Boolean(document.fullscreenElement),
+            },
         };
     }''')
     assert hit['width'] >= 44 and hit['height'] >= 44, hit
@@ -58,11 +80,21 @@ def click_launcher(page):
     else:
         page.mouse.click(hit['x'], hit['y'])
     assert page.evaluate('[scrollX, scrollY]') == scroll
+    return hit
 
 
 def open_satnav(page):
-    click_launcher(page)
-    page.locator(PANEL).wait_for(state='visible', timeout=5000)
+    hit = click_launcher(page)
+    try:
+        page.locator(PANEL).wait_for(state='visible', timeout=5000)
+    except PlaywrightTimeoutError:
+        print(json.dumps({
+            'missedLauncherTap': hit,
+            'events': page.evaluate('window.__satnavTapEvents'),
+            'expanded': page.locator(TOGGLE).get_attribute('aria-expanded'),
+        }), flush=True)
+        page.screenshot(path='launcher-missed.png')
+        raise
 
 
 def ready(page, url):
