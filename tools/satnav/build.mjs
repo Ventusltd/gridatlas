@@ -1,0 +1,57 @@
+import fs from 'node:fs';
+import path from 'node:path';
+import {createHash} from 'node:crypto';
+import {fileURLToPath} from 'node:url';
+import {rerootForPreview} from '../release/lib.mjs';
+const root=path.resolve(path.dirname(fileURLToPath(import.meta.url)),'../..');
+const read=p=>fs.readFileSync(path.join(root,p),'utf8').replace(/\r\n/g,'\n');
+const hash=s=>createHash('sha256').update(s).digest('hex');
+const write=(p,s)=>{fs.mkdirSync(path.dirname(path.join(root,p)),{recursive:true});fs.writeFileSync(path.join(root,p),s);};
+const composition=JSON.parse(read('atlas/current.json'));
+if(composition.generation!=='202611222343')throw Error('Re-review a changed live baseline before building');
+let engine=read('atlas/modules/202611222000-uk-offtakers-overlay.js');
+if(hash(engine)!==composition.cartridges.find(x=>x.id==='uk-offtakers-overlay').sha256)throw Error('Engine source differs from live composition pin');
+const insertion=`function openPointVicinity(input){
+ if(!input||!Array.isArray(input.at)||input.at.length!==2||!input.at.every(Number.isFinite)||Math.abs(input.at[0])>180||Math.abs(input.at[1])>90||input.at.every(v=>v===0))return false;
+ const map=mh();if(!map||typeof NS.gridScope?.scope!=='function')return false;
+ const name=String(input.name||'Chosen map point').slice(0,180);
+ const record={sources:[],status:String(input.status||'not stated'),origin_kind:input.kind||'map'};
+ if(input.repdRef&&/^[1-9]\\d{0,11}$/.test(input.repdRef))record.repd_ref=String(input.repdRef);
+ const card=dcc(map,{k:'c',t:'un',dc:0,n:name,op:'',a:input.at.slice(),p:record},15,{project:true});
+ card.dataset.satnavOriginKind=record.origin_kind;return true;
+}
+`;
+if(!engine.includes('function openProjectVicinity(input){'))throw Error('Missing reviewed engine seam');
+engine=engine.replace('function openProjectVicinity(input){',insertion+'function openProjectVicinity(input){');
+engine=engine.replace('install:ins,setOn:so,openProjectVicinity','install:ins,setOn:so,openProjectVicinity,openPointVicinity');
+engine=engine.replace("project?`${NM(r)} · REPD ${cs(p.repd_ref)}`","project?`${NM(r)}${p.repd_ref?' · REPD '+cs(p.repd_ref):' · chosen source point'}`");
+engine=engine.replace("c.project?'REPD project':'data-centre'","c.project?(c.r.p.repd_ref?'REPD project':'chosen point'):'data-centre'");
+engine=engine.replace("c.project?'REPD project':'data centre'","c.project?(c.r.p.repd_ref?'REPD project':'chosen point'):'data centre'");
+engine=engine.replace("project?'Project vicinity (screening)'", "project?(p.repd_ref?'Project vicinity (screening)':'Point vicinity (screening)')");
+engine=engine.replace("project?'REPD project vicinity. Distances are straight-line; connectivity and capacity unknown.'", "project?(p.repd_ref?'REPD project vicinity. Distances are straight-line; connectivity and capacity unknown.':'Chosen-point vicinity. No asset identity or connection is inferred.')");
+// Generic origins remain anonymous in CSV; no synthetic data-centre identity.
+engine=engine.replace("['data centre',0,NM(r),id,'data centre',sl", "[c.project?(r.p.repd_ref?'REPD project':'chosen point'):'data centre',0,NM(r),id,c.project?'source point':'data centre',sl");
+engine=engine.replace("c.project?'PipelineNews map origin'", "c.project?(r.p.repd_ref?'REPD source point':'Explicitly selected '+(r.p.origin_kind||'map')+' point')");
+engine=engine.replace("c.project?'REPD (DESNZ)'", "c.project?(r.p.repd_ref?'REPD (DESNZ)':'not applicable to chosen point')");
+engine=engine.replace("c.project?'# REPD project context from PipelineNews MAP URL; MW does not establish connection capacity.'", "c.project?(r.p.repd_ref?'# REPD source point; not a confirmed entrance or connection.':'# Explicit chosen point; no asset identity, capacity or entrance is inferred.')");
+const enginePath='atlas/modules/202611242030-satnav-point-vicinity.js';write(enginePath,engine);
+const engineEntry=composition.cartridges.find(x=>x.id==='uk-offtakers-overlay');
+engineEntry.path='./modules/'+path.basename(enginePath);engineEntry.sha256=hash(engine);engineEntry.bytes=Buffer.byteLength(engine);
+let focus=read('atlas/modules/202611222130-vicinity-focus.js');
+if(hash(focus)!==composition.cartridges.find(x=>x.id==='vicinity-focus').sha256)throw Error('Focus source differs from live composition pin');
+focus=focus.replace("kind:'REPD project (origin)'", "kind:p.repd_ref?'REPD project (origin)':'Chosen source point (origin)'");
+focus=focus.replace("source:'PipelineNews MAP arrival parameters; a location is not a declared grid connection'", "source:p.repd_ref?'REPD source point; entrance and connection unverified':'Explicit '+(p.origin_kind||'map')+' point; no asset identity inferred'");
+focus=focus.replace("['REPD reference',safely(p.repd_ref)]", "[p.repd_ref?'REPD reference':'Asset identity',p.repd_ref?safely(p.repd_ref):'not asserted']");
+const focusPath='atlas/modules/202611242030-satnav-origin-focus.js';write(focusPath,focus);
+const focusEntry=composition.cartridges.find(x=>x.id==='vicinity-focus');focusEntry.path='./modules/'+path.basename(focusPath);focusEntry.sha256=hash(focus);focusEntry.bytes=Buffer.byteLength(focus);
+const source=read('tools/satnav/handoff.js'),modulePath='atlas/modules/202611242030-satnav-handoff.js';write(modulePath,source);
+composition.cartridge_order.push('satnav-handoff');
+composition.cartridges.push({id:'satnav-handoff',type:'script',slot:'after-cartridge',after:'vicinity-controls-rescue',path:'./modules/'+path.basename(modulePath),sha256:hash(source),preview_only:true});
+composition.generation='202611242030';composition.composition_id='satnav-native-m1-candidate';
+composition.composition_note='Isolated M1 candidate. No live selection, release or acceptance.';
+// The existing geodesy module supplies the station index canonical geometry.
+if(!read('atlas/modules/202609011950-geodesy.js'))throw Error('Missing geodesy');
+const loader=read('atlas/index.html');
+const route='atlas/v/satnav-native-m1/';
+write(route+'index.html',loader);write(route+'current.json',rerootForPreview(JSON.stringify(composition,null,1))+'\n');
+console.log('Candidate /atlas/v/satnav-native-m1/; handoff SHA256 '+hash(source));

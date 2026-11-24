@@ -1,0 +1,47 @@
+Native GridAtlas M1 isolated candidate
+
+Owner: Train Conductor; feature/satnav-native-vicinity-m1-20261124.
+Baseline: 1c9ed251ea31de67cc9d7e3b3d7908ea6aa39779 (V9.197).
+Entry: node tools/satnav/serve.mjs 8768
+Open: http://127.0.0.1:8768/atlas/v/satnav-native-m1/
+Rebuild: node tools/satnav/build.mjs
+Browser check: Python with Playwright Chromium, tools/satnav/browser.py.
+The browser check expects that server and the existing Playwright installation.
+
+One appended native cartridge adapts Agent33's tested handoff blob
+c07f23de34d555058403e35ff6f1fe62fb303519 from Neural commit
+f624bfeed8c8a0cb5c1d5f9cf0c812f87ce9fe96. The unchanged destination codec
+comes from SatNav 19737b9975495aebb4bd247e39c6509151fb576f,
+preview/9698781539e549deaa6ecaa4a2b34610c1f9fd29/nav/place.mjs.
+Explicit confirmation opens that immutable HTTPS P1 compass. GPS is not
+requested by the sender and no device fix is put in a URL.
+
+Select a native satellite point, enter signed coordinates, select an existing
+substation using the unchanged source station index, use an exact project
+selected by the existing map search, or choose the origin/current highlighted
+item of the native Vicinity card. Anonymous pins retain no asset identity.
+Project status/address are read from the exact existing search result when
+available; missing project coordinates require a separately selected pin.
+Confirmation rechecks card/highlight/project identity. Valid manual choice
+invalidates pending async station results; invalid coordinates retain selection.
+
+Point Vicinity uses the existing engine with an additive preview-only module
+that exposes openPointVicinity. The existing REPD-only entry is preserved.
+It keeps the 5/10/20 km analysis and nearby/CSV paths; generic-origin wording
+does not assert a REPD reference. The focus module gets corresponding labels.
+Build checks original engine/focus against the selected composition hashes.
+No immutable release, live pointer, STATE, existing module or loader is edited.
+
+Executed local desktop Chromium: real satellite imagery (15 HTTP200 responses),
+map click/cancel, explicit signed P1 handoff and no GPS before Start; manual
+coordinates/invalid edit; anonymous native point Vicinity; distinct same-name
+Iver station results; exact selected project; original and highlighted asset;
+stale highlighted item refusal. Existing station-index suite: 16/16 PASS.
+Repository lint PASS; generated STATE payload equals STATE.md (the existing
+state --stdout command additionally prints its scope-ledger diagnostic).
+
+This is the FIRST CANDIDATE, not M1 acceptance or a production release.
+Independent Chromium/WebKit, responsive/keyboard/touch, actual iPhone/Android
+walking and full MAP/A4/PDF/Layers/CSV regression remain review gates.
+No physical GPS/device acceptance, CVAA pass, hosted CI pass, source rights
+upgrade, connection/route/access/entrance claim or M2 integration is asserted.
