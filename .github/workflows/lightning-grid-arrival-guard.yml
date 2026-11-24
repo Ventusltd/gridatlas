@@ -1,0 +1,54 @@
+name: Lightning Grid stale optical-arrival review (ChatGPT only)
+on:
+  pull_request:
+    paths:
+      - 'atlas/labs/lightning-grid/app.mjs'
+      - 'tools/proofs/lightning-grid-browser-arrival-guard.mjs'
+      - '.github/workflows/lightning-grid-arrival-guard.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  synthetic-chromium-arrival:
+    runs-on: ubuntu-latest
+    timeout-minutes: 14
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Prove this branch cannot touch original Atlas or published previews
+        run: |
+          node --input-type=module -e "import fs from 'node:fs'; import assert from 'node:assert/strict'; assert.equal(JSON.parse(fs.readFileSync('atlas/current.json','utf8')).generation,'202609241334');"
+          node --check atlas/labs/lightning-grid/app.mjs
+          git diff --name-only origin/main...HEAD | tee /tmp/changed.txt
+          if grep -Ev '^(atlas/labs/lightning-grid/app.mjs|tools/proofs/lightning-grid-browser-arrival-guard.mjs|.github/workflows/lightning-grid-arrival-guard.yml)$' /tmp/changed.txt; then
+            echo 'Unexpected path changed; stop review'
+            exit 1
+          fi
+      - name: Install one Chromium worker (synthetic upstream fixture)
+        run: |
+          npm install --no-save playwright@1.54.2
+          npx playwright install --with-deps chromium
+      - name: Start local static server (no deployment)
+        run: |
+          python3 -m http.server 8765 --bind 127.0.0.1 > /tmp/lightning-grid-http.log 2>&1 &
+          sleep 3
+          curl -fsS http://127.0.0.1:8765/atlas/labs/lightning-grid/ > /dev/null
+      - name: Browser optical click, absent flash_id refusal, manual recovery
+        run: node tools/proofs/lightning-grid-browser-arrival-guard.mjs
+      - name: Upload synthetic browser evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: chatgpt-lightning-grid-arrival-review
+          path: artifacts/lightning-grid-browser/
+          if-no-files-found: warn
+      - name: Scope limitations
+        if: always()
+        run: |
+          echo 'Synthetic optical and asset fixtures; real pinned Grid Engine module and MapLibre Chromium rendering.'
+          echo 'NOT iPhone Safari, EUMETSAT archive provenance, actual asset fault, numerical electrical solver, release approval or deployment.'
