@@ -1,0 +1,401 @@
+{
+ "dc": {
+  "rest": {
+   "otLayers": [],
+   "otSources": [],
+   "card": false,
+   "inspect": "{\"engine\":60,\"pipeline\":3,\"total\":63,\"unique\":63,\"complete\":true}",
+   "nLayers": 100,
+   "docW": 393,
+   "otErr": [],
+   "mapErr": []
+  },
+  "onMs": 2782,
+  "on": {
+   "status": "1,382 sites drawn (Industry 813 · Power stations 358 · Data centres 203 · Water (large) 8) · tap a site for its 15 nearest REPD sites and 5 nearest substations, a data centre for 30 substations, 30 REPD sites and 30 conventional power sites (straight line) · data centres: 203 from the open pipeline (operational 180, consented 4, in planning 6, announced 12, status not stated 1)",
+   "c": 203,
+   "dc": 203,
+   "pe": null
+  },
+  "site": {
+   "n": "VIRTUS Slough London 3 and 4",
+   "op": "VIRTUS",
+   "id": "dcuk-3c73413a6422bd56",
+   "a": [
+    -0.622141,
+    51.52214
+   ]
+  },
+  "shotBefore": "dc-slough-before.png",
+  "tapPx": [
+   197,
+   424
+  ],
+  "cardMs": 179,
+  "allSetsMs": 480,
+  "area": {
+   "label": "Data centre",
+   "rect": [
+    13,
+    384,
+    367,
+    377
+   ],
+   "maxH": "377px",
+   "docW": 393,
+   "tabs": [
+    "Area / 5·10·20 km *",
+    "Substations / 30 · ≤11.6 km",
+    "REPD / 30 · ≤8.9 km",
+    "Conventional / 30 · ≤66.3 km"
+   ],
+   "rows": [],
+   "lines": {
+    "s": 10,
+    "r": 10,
+    "v": 10
+   },
+   "labels": "pin-halo | pin | dc-ring | dc-glow | dc-core-s [\"==\",[\"get\",\"s\"],\"s\"] | dc-core-r [\"==\",[\"get\",\"s\"],\"r\"] | dc-core-v [\"==\",[\"get\",\"s\"],\"v\"] | dc-node",
+   "perf": {
+    "links": 30,
+    "ms": 16.8,
+    "search_ms": 377.3
+   },
+   "zoom": 10.11,
+   "sitePx": [
+    197,
+    257,
+    "ctr",
+    5,
+    838
+   ],
+   "pad": {
+    "top": 0,
+    "bottom": 0,
+    "left": 0,
+    "right": 0
+   },
+   "center": [
+    -0.6221,
+    51.4562
+   ],
+   "mapH": 838,
+   "labelErr": [],
+   "smallTargets": 0,
+   "text": "Data centre (screening)\n−\n×\nVIRTUS Slough London 3 and 4 · VIRTUS\nIT load and grid connection not stated\nArea\n5·10·20 km\nSubstations\n30 · ≤11.6 km\nREPD\n30 · ≤8.9 km\nConventional\n30 · ≤66.3 km\nWithin (straight line)\n5 km\n10 km\n20 km\nSubstations ≥33 kV\n13\n23\n90\nof which ≥275 kV\n0\n1\n4\nREPD projects\n11\n35\n117\nMW stated\n104.94 MW\n277.6 MW\n1,265.59 MW\nnot stated\n0\n7\n24\nConventional sites\n1\n2\n4\nMW stated\n35 MW\n35 MW\n35 MW\nnot stated\n0\n1\n3\nREPD at 20 km: operational 159.69 MW · consented 344.24 MW · planning 761.66 MW\nConventional at 20 km: operating 35 MW · closing/closed –\nNearest 400 kV 8.92 km · Iver Substation\nNearest 275 kV 14.83 km · North Hyde Substation\nNearest 132 kV 0.28 km · unnamed substation\nNearest 33–66 kV 0.12 km · unnamed substation\n━ Substations (rose, solid)\n╍ REPD sites (olive, dashed)\n┈ Conventional power sites (grey, dotted)\n◯ 5 · 10 · 20 km rings\nCounts within straight-line circles around the site point. Not cable routes, capacity, headroom or connection offers.\nMW is installed capacity as each register states it, not export or connection capacity. Generation MW is never added to the site's MW.\nNot stated is unknown, not zero.\nDraw all 90 links\nDownload all 93 as CSV (vicinity sheet)\nData centre · 30 substations, 30 REPD sites within 40 km, 30 conventional listed · details\nA listing or pipeline entry (screening): not a confirmed demand, contract, commitment or connection.\nStatus: operational · DC-A4:OpenStreetMap via globalgrid2050 datacentres.geojson:gg2050-dc-145\nIT load is what the computing equipment draws. Grid connection is the import capacity agreed with the network operator, which also covers cooling and losses. Neither is derived from the other here.\nNot stated is unknown, not zero.\nListed in OpenStreetMap; no open IT-load or connection figure found.\nRecord · OpenStreetMap via globalgrid2050 datacentres.geojson (ODbL-1.0, licence unverified)\nRecord · OpenStreetMap via globalgrid2050 datacentres.geojson (ODbL-1.0, licence unverified)\nRecord · OpenStreetMap via globalgrid2050 datacentres.geojson (ODbL-1.0, licence unverified)\nRecord · OpenStreetMap via globalgrid2050 datacentres.geojson (ODbL-1.0, licence unverified)\nNot shown here: electricity use, connection terms, TEC, queue position, consent, viability."
+  },
+  "shotArea": "dc-slough-area.png",
+  "tab_s": {
+   "label": "Data centre",
+   "rect": [
+    13,
+    384,
+    367,
+    377
+   ],
+   "maxH": "377px",
+   "docW": 393,
+   "tabs": [
+    "Area / 5·10·20 km",
+    "Substations / 30 · ≤11.6 km *",
+    "REPD / 30 · ≤8.9 km",
+    "Conventional / 30 · ≤66.3 km"
+   ],
+   "rows": [
+    "1. 0.12 km · 33 kV · unnamed substation | single voltage · OSM ▸",
+    "2. 0.13 km · 33 kV · unnamed substation | single voltage · OSM ▸",
+    "3. 0.24 km · 33 kV · unnamed substation | single voltage · OSM ▸",
+    "4. 0.24 km · 33 kV · unnamed substation | single voltage · OSM ▸",
+    "5. 0.28 km · 132 kV · unnamed substation | single voltage · OSM ▸",
+    "6. 0.52 km · 132 kV · unnamed substation | single voltage · OSM ▸",
+    "7. 0.55 km · 33 kV · unnamed substation | single voltage · OSM ▸",
+    "8. 1.61 km · 33 kV · unnamed substation | single voltage · OSM ▸",
+    "9. 1.72 km · 132 kV · unnamed substation | single voltage · OSM ▸",
+    "10. 2.23 km · 132 kV · unnamed substation | single voltage · OSM ▸"
+   ],
+   "lines": {
+    "s": 10,
+    "r": 10,
+    "v": 10
+   },
+   "labels": "pin-halo | pin | dc-ring | dc-glow | dc-core-s [\"==\",[\"get\",\"s\"],\"s\"] | dc-core-r [\"==\",[\"get\",\"s\"],\"r\"] | dc-core-v [\"==\",[\"get\",\"s\"],\"v\"] | dc-node",
+   "perf": {
+    "links": 30,
+    "ms": 16.8,
+    "search_ms": 377.3
+   },
+   "zoom": 10.11,
+   "sitePx": [
+    197,
+    257,
+    "ctr",
+    5,
+    838
+   ],
+   "pad": {
+    "top": 0,
+    "bottom": 0,
+    "left": 0,
+    "right": 0
+   },
+   "center": [
+    -0.6221,
+    51.4562
+   ],
+   "mapH": 838,
+   "labelErr": [],
+   "smallTargets": 0,
+   "text": "Data centre (screening)\n−\n×\nVIRTUS Slough London 3 and 4 · VIRTUS\nIT load and grid connection not stated\nArea\n5·10·20 km\nSubstations\n30 · ≤11.6 km\nREPD\n30 · ≤8.9 km\nConventional\n30 · ≤66.3 km\nScreening · 30 nearest substations ≥33 kV (straight line)\nAll\n400\n275\n132\n33–66 kV\n1. 0.12 km · 33 kV · unnamed substation\nsingle voltage · OSM ▸\n2. 0.13 km · 33 kV · unnamed substation\nsingle voltage · OSM ▸\n3. 0.24 km · 33 kV · unnamed substation\nsingle voltage · OSM ▸\n4. 0.24 km · 33 kV · unnamed substation\nsingle voltage · OSM ▸\n5. 0.28 km · 132 kV · unnamed substation\nsingle voltage · OSM ▸\n6. 0.52 km · 132 kV · unnamed substation\nsingle voltage · OSM ▸\n7. 0.55 km · 33 kV · unnamed substation\nsingle voltage · OSM ▸\n8. 1.61 km · 33 kV · unnamed substation\nsingle voltage · OSM ▸\n9. 1.72 km · 132 kV · unnamed substation\nsingle voltage · OSM ▸\n10. 2.23 km · 132 kV · unnamed substation\nsingle voltage · OSM ▸\nShow all 30 on the map and in this list\nMapped substations (OpenStreetMap, ODbL 1.0). Not capacity, headroom or a connection point.\nDownload all 93 as CSV (vicinity sheet)\nData centre · 30 substations, 30 REPD sites within 40 km, 30 conventional listed · details\nA listing or pipeline entry (screening): not a confirmed demand, contract, commitment or connection.\nStatus: operational · DC-A4:OpenStreetMap via globalgrid2050 datacentres.geojson:gg2050-dc-145\nIT load is what the computing equipment draws. Grid connection is the import capacity agreed with the network operator, which also covers cooling and losses. Neither is derived from the other here.\nNot stated is unknown, not zero.\nListed in OpenStreetMap; no open IT-load or connection figure found.\nRecord · OpenStreetMap via globalgrid2050 datacentres.geojson (ODbL-1.0, licence unverified)\nRecord · OpenStreetMap via globalgrid2050 datacentres.geojson (ODbL-1.0, licence unverified)\nRecord · OpenStreetMap via globalgrid2050 datacentres.geojson (ODbL-1.0, licence unverified)\nRecord · OpenStreetMap via globalgrid2050 datacentres.geojson (ODbL-1.0, licence unverified)\nNot shown here: electricity use, connection terms, TEC, queue position, consent, viability.\nSubstations: 10 of 30 shown on the map, nearest 0.12 km."
+  },
+  "shot_s": "dc-slough-tab-s.png",
+  "tab_r": {
+   "label": "Data centre",
+   "rect": [
+    13,
+    384,
+    367,
+    377
+   ],
+   "maxH": "377px",
+   "docW": 393,
+   "tabs": [
+    "Area / 5·10·20 km",
+    "Substations / 30 · ≤11.6 km",
+    "REPD / 30 · ≤8.9 km *",
+    "Conventional / 30 · ≤66.3 km"
+   ],
+   "rows": [
+    "1. 0.38 km · EfW Incineration 49.9 MW · under construction | Slough Heat & Power Station ▸",
+    "2. 0.46 km · EfW Incineration 50 MW · operational | Fibrepower, Slough ▸",
+    "3. 1.00 km · Rooftop solar 0.32 MW · awaiting construction | Twinches Lane - Solar photovoltaic ▸",
+    "4. 1.01 km · Rooftop solar 0.19 MW · awaiting construction | Unit 2a, Slough Retail Park - Solar Panels ▸",
+    "5. 1.73 km · Rooftop solar 0.26 MW · awaiting construction | Lynch Hill School Primary Academy, Garrard Road - Solar Panels ▸",
+    "6. 2.03 km · Sewage Sludge Digestion 1.2 MW · operational | Slough Sewage Treatment Works ▸",
+    "7. 2.60 km · Rooftop solar 0.37 MW · awaiting construction | Slough Interchange Industrial Estate, Units 1-3, Whittenham Close - Solar Panels ▸",
+    "8. 3.51 km · Rooftop solar 1.8 MW · 2 projects | Wexham Park Hospital, Wexham Street - Solar Panels; Wexham Park Hospital, Wexham Street - Solar PV Panels ▸",
+    "9. 4.38 km · Rooftop solar 0.49 MW · awaiting construction | The Windsor Boys School, Maidenhead Road - Solar Panels ▸",
+    "10. 4.52 km · Rooftop solar 0.41 MW · awaiting construction | Waitrose, King Edward Court - Solar Panel Array ▸"
+   ],
+   "lines": {
+    "s": 10,
+    "r": 10,
+    "v": 10
+   },
+   "labels": "pin-halo | pin | dc-ring | dc-glow | dc-core-s [\"==\",[\"get\",\"s\"],\"s\"] | dc-core-r [\"==\",[\"get\",\"s\"],\"r\"] | dc-core-v [\"==\",[\"get\",\"s\"],\"v\"] | dc-node",
+   "perf": {
+    "links": 30,
+    "ms": 16.8,
+    "search_ms": 377.3
+   },
+   "zoom": 10.11,
+   "sitePx": [
+    197,
+    257,
+    "ctr",
+    5,
+    838
+   ],
+   "pad": {
+    "top": 0,
+    "bottom": 0,
+    "left": 0,
+    "right": 0
+   },
+   "center": [
+    -0.6221,
+    51.4562
+   ],
+   "mapH": 838,
+   "labelErr": [],
+   "smallTargets": 0,
+   "text": "Data centre (screening)\n−\n×\nVIRTUS Slough London 3 and 4 · VIRTUS\nIT load and grid connection not stated\nArea\n5·10·20 km\nSubstations\n30 · ≤11.6 km\nREPD\n30 · ≤8.9 km\nConventional\n30 · ≤66.3 km\nScreening · 30 nearest REPD sites (33 projects; those at one point grouped), straight line\nAll\nOperational\nConsented\nPlanning\n1. 0.38 km · EfW Incineration 49.9 MW · under construction\nSlough Heat & Power Station ▸\n2. 0.46 km · EfW Incineration 50 MW · operational\nFibrepower, Slough ▸\n3. 1.00 km · Rooftop solar 0.32 MW · awaiting construction\nTwinches Lane - Solar photovoltaic ▸\n4. 1.01 km · Rooftop solar 0.19 MW · awaiting construction\nUnit 2a, Slough Retail Park - Solar Panels ▸\n5. 1.73 km · Rooftop solar 0.26 MW · awaiting construction\nLynch Hill School Primary Academy, Garrard Road - Solar Panels ▸\n6. 2.03 km · Sewage Sludge Digestion 1.2 MW · operational\nSlough Sewage Treatment Works ▸\n7. 2.60 km · Rooftop solar 0.37 MW · awaiting construction\nSlough Interchange Industrial Estate, Units 1-3, Whittenham Close - Solar Panels ▸\n8. 3.51 km · Rooftop solar 1.8 MW · 2 projects\nWexham Park Hospital, Wexham Street - Solar Panels; Wexham Park Hospital, Wexham Street - Solar PV Panels ▸\n9. 4.38 km · Rooftop solar 0.49 MW · awaiting construction\nThe Windsor Boys School, Maidenhead Road - Solar Panels ▸\n10. 4.52 km · Rooftop solar 0.41 MW · awaiting construction\nWaitrose, King Edward Court - Solar Panel Array ▸\nShow all 30 on the map and in this list\nREPD (DESNZ, OGL v3.0). Status as registered, not as built. MW is installed capacity as registered, not export or connection capacity.\nDownload all 93 as CSV (vicinity sheet)\nData centre · 30 substations, 30 REPD sites within 40 km, 30 conventional listed · details\nA listing or pipeline entry (screening): not a confirmed demand, contract, commitment or connection.\nStatus: operational · DC-A4:OpenStreetMap via globalgrid2050 datacentres.geojson:gg2050-dc-145\nIT load is what the computing equipment draws. Grid connection is the import capacity agreed with the network operator, which also covers cooling and losses. Neither is derived from the other here.\nNot stated is unknown, not zero.\nListed in OpenStreetMap; no open IT-load or connection figure found.\nRecord · OpenStreetMap via globalgrid2050 datacentres.geojson (ODbL-1.0, licence unverified)\nRecord · OpenStreetMap via globalgrid2050 datacentres.geojson (ODbL-1.0, licence unverified)\nRecord · OpenStreetMap via globalgrid2050 datacentres.geojson (ODbL-1.0, licence unverified)\nRecord · OpenStreetMap via globalgrid2050 datacentres.geojson (ODbL-1.0, licence unverified)\nNot shown here: electricity use, connection terms, TEC, queue position, consent, viability.\nREPD sites: 10 of 30 shown on the map, nearest 0.38 km."
+  },
+  "shot_r": "dc-slough-tab-r.png",
+  "tab_v": {
+   "label": "Data centre",
+   "rect": [
+    13,
+    384,
+    367,
+    377
+   ],
+   "maxH": "377px",
+   "docW": 393,
+   "tabs": [
+    "Area / 5·10·20 km",
+    "Substations / 30 · ≤11.6 km",
+    "REPD / 30 · ≤8.9 km",
+    "Conventional / 30 · ≤66.3 km *"
+   ],
+   "rows": [
+    "1. 0.46 km · CHP · 35 MW · operating | Slough · WRI ▸",
+    "2. 7.09 km · thermal (fuel and type not stated) · MW not stated · operating | Fair Oak Generation Scheme · NAEI ▸",
+    "3. 14.25 km · thermal (fuel and type not stated) · MW not stated · operating | Peak Gen Bracknell · NAEI ▸",
+    "4. 15.53 km · peaking/reserve (engines or OCGT; fuel not stated) · MW not stated · operating | Bracknell Power Station · NAEI ▸",
+    "5. 25.19 km · gas (CCGT/OCGT/engines not stated) · 144 MW · operating | Taylors Lane Power Station · WRI ▸",
+    "6. 28.47 km · oil (GT/engine/diesel split not stated) · 45 MW · operating | Burghfield · WRI ▸",
+    "7. 29.05 km · thermal (fuel and type not stated) · MW not stated · operating | Harbourne Power Station · NAEI ▸",
+    "8. 29.05 km · thermal (fuel and type not stated) · MW not stated · operating | Tillingham Power Station · NAEI ▸",
+    "9. 30.25 km · peaking/reserve (engines or OCGT; fuel not stated) · MW not stated · operating | Hemel Hempstead Power Station · NAEI ▸",
+    "10. 33.57 km · CHP (fuel not stated) · MW not stated · operating | Pimlico District Heating Scheme · NAEI ▸"
+   ],
+   "lines": {
+    "s": 10,
+    "r": 10,
+    "v": 10
+   },
+   "labels": "pin-halo | pin | dc-ring | dc-glow | dc-core-s [\"==\",[\"get\",\"s\"],\"s\"] | dc-core-r [\"==\",[\"get\",\"s\"],\"r\"] | dc-core-v [\"==\",[\"get\",\"s\"],\"v\"] | dc-node",
+   "perf": {
+    "links": 30,
+    "ms": 16.8,
+    "search_ms": 377.3
+   },
+   "zoom": 10.11,
+   "sitePx": [
+    197,
+    257,
+    "ctr",
+    5,
+    838
+   ],
+   "pad": {
+    "top": 0,
+    "bottom": 0,
+    "left": 0,
+    "right": 0
+   },
+   "center": [
+    -0.6221,
+    51.4562
+   ],
+   "mapH": 838,
+   "labelErr": [],
+   "smallTargets": 0,
+   "text": "Data centre (screening)\n−\n×\nVIRTUS Slough London 3 and 4 · VIRTUS\nIT load and grid connection not stated\nArea\n5·10·20 km\nSubstations\n30 · ≤11.6 km\nREPD\n30 · ≤8.9 km\nConventional\n30 · ≤66.3 km\nScreening · 30 nearest conventional power sites, straight line\nLines drawn for 30 of 30 (≤100 km); the nearest 30 are listed at any distance, out to 66.3 km.\n1. 0.46 km · CHP · 35 MW · operating\nSlough · WRI ▸\n2. 7.09 km · thermal (fuel and type not stated) · MW not stated · operating\nFair Oak Generation Scheme · NAEI ▸\n3. 14.25 km · thermal (fuel and type not stated) · MW not stated · operating\nPeak Gen Bracknell · NAEI ▸\n4. 15.53 km · peaking/reserve (engines or OCGT; fuel not stated) · MW not stated · operating\nBracknell Power Station · NAEI ▸\n5. 25.19 km · gas (CCGT/OCGT/engines not stated) · 144 MW · operating\nTaylors Lane Power Station · WRI ▸\n6. 28.47 km · oil (GT/engine/diesel split not stated) · 45 MW · operating\nBurghfield · WRI ▸\n7. 29.05 km · thermal (fuel and type not stated) · MW not stated · operating\nHarbourne Power Station · NAEI ▸\n8. 29.05 km · thermal (fuel and type not stated) · MW not stated · operating\nTillingham Power Station · NAEI ▸\n9. 30.25 km · peaking/reserve (engines or OCGT; fuel not stated) · MW not stated · operating\nHemel Hempstead Power Station · NAEI ▸\n10. 33.57 km · CHP (fuel not stated) · MW not stated · operating\nPimlico District Heating Scheme · NAEI ▸\nShow all 30 on the map and in this list\nUK conventional power assets (NAEI 2023 OGL v3.0, GPPD v1.3.0 CC BY 4.0, OpenStreetMap ODbL 1.0). MW is installed capacity as stated by the source, not export or connection capacity. Proximity to a power station is not access to its output or its grid connection.\nDownload all 93 as CSV (vicinity sheet)\nData centre · 30 substations, 30 REPD sites within 40 km, 30 conventional listed · details\nA listing or pipeline entry (screening): not a confirmed demand, contract, commitment or connection.\nStatus: operational · DC-A4:OpenStreetMap via globalgrid2050 datacentres.geojson:gg2050-dc-145\nIT load is what the computing equipment draws. Grid connection is the import capacity agreed with the network operator, which also covers cooling and losses. Neither is derived from the other here.\nNot stated is unknown, not zero.\nListed in OpenStreetMap; no open IT-load or connection figure found.\nRecord · OpenStreetMap via globalgrid2050 datacentres.geojson (ODbL-1.0, licence unverified)\nRecord · OpenStreetMap via globalgrid2050 datacentres.geojson (ODbL-1.0, licence unverified)\nRecord · OpenStreetMap via globalgrid2050 datacentres.geojson (ODbL-1.0, licence unverified)\nRecord · OpenStreetMap via globalgrid2050 datacentres.geojson (ODbL-1.0, licence unverified)\nNot shown here: electricity use, connection terms, TEC, queue position, consent, viability.\nConventional power sites: 10 of 30 shown on the map, nearest 0.46 km."
+  },
+  "shot_v": "dc-slough-tab-v.png",
+  "frames10": null,
+  "drawAllMs": 117,
+  "all": {
+   "label": "Data centre",
+   "rect": [
+    13,
+    384,
+    367,
+    377
+   ],
+   "maxH": "377px",
+   "docW": 393,
+   "tabs": [
+    "Area / 5·10·20 km *",
+    "Substations / 30 · ≤11.6 km",
+    "REPD / 30 · ≤8.9 km",
+    "Conventional / 30 · ≤66.3 km"
+   ],
+   "rows": [],
+   "lines": {
+    "s": 30,
+    "r": 30,
+    "v": 30
+   },
+   "labels": "pin-halo | pin | dc-ring | dc-glow | dc-core-s [\"==\",[\"get\",\"s\"],\"s\"] | dc-core-r [\"==\",[\"get\",\"s\"],\"r\"] | dc-core-v [\"==\",[\"get\",\"s\"],\"v\"] | dc-node",
+   "perf": {
+    "links": 90,
+    "ms": 1.3,
+    "search_ms": 377.3
+   },
+   "zoom": 8.75,
+   "sitePx": [
+    197,
+    257,
+    "ctr",
+    5,
+    838
+   ],
+   "pad": {
+    "top": 0,
+    "bottom": 0,
+    "left": 0,
+    "right": 0
+   },
+   "center": [
+    -0.6221,
+    51.3523
+   ],
+   "mapH": 838,
+   "labelErr": [],
+   "smallTargets": 0,
+   "text": "Data centre (screening)\n−\n×\nVIRTUS Slough London 3 and 4 · VIRTUS\nIT load and grid connection not stated\nArea\n5·10·20 km\nSubstations\n30 · ≤11.6 km\nREPD\n30 · ≤8.9 km\nConventional\n30 · ≤66.3 km\nWithin (straight line)\n5 km\n10 km\n20 km\nSubstations ≥33 kV\n13\n23\n90\nof which ≥275 kV\n0\n1\n4\nREPD projects\n11\n35\n117\nMW stated\n104.94 MW\n277.6 MW\n1,265.59 MW\nnot stated\n0\n7\n24\nConventional sites\n1\n2\n4\nMW stated\n35 MW\n35 MW\n35 MW\nnot stated\n0\n1\n3\nREPD at 20 km: operational 159.69 MW · consented 344.24 MW · planning 761.66 MW\nConventional at 20 km: operating 35 MW · closing/closed –\nNearest 400 kV 8.92 km · Iver Substation\nNearest 275 kV 14.83 km · North Hyde Substation\nNearest 132 kV 0.28 km · unnamed substation\nNearest 33–66 kV 0.12 km · unnamed substation\n━ Substations (rose, solid)\n╍ REPD sites (olive, dashed)\n┈ Conventional power sites (grey, dotted)\n◯ 5 · 10 · 20 km rings\nCounts within straight-line circles around the site point. Not cable routes, capacity, headroom or connection offers.\nMW is installed capacity as each register states it, not export or connection capacity. Generation MW is never added to the site's MW.\nNot stated is unknown, not zero.\nDownload all 93 as CSV (vicinity sheet)\nData centre · 30 substations, 30 REPD sites within 40 km, 30 conventional listed · details\nA listing or pipeline entry (screening): not a confirmed demand, contract, commitment or connection.\nStatus: operational · DC-A4:OpenStreetMap via globalgrid2050 datacentres.geojson:gg2050-dc-145\nIT load is what the computing equipment draws. Grid connection is the import capacity agreed with the network operator, which also covers cooling and losses. Neither is derived from the other here.\nNot stated is unknown, not zero.\nListed in OpenStreetMap; no open IT-load or connection figure found.\nRecord · OpenStreetMap via globalgrid2050 datacentres.geojson (ODbL-1.0, licence unverified)\nRecord · OpenStreetMap via globalgrid2050 datacentres.geojson (ODbL-1.0, licence unverified)\nRecord · OpenStreetMap via globalgrid2050 datacentres.geojson (ODbL-1.0, licence unverified)\nRecord · OpenStreetMap via globalgrid2050 datacentres.geojson (ODbL-1.0, licence unverified)\nNot shown here: electricity use, connection terms, TEC, queue position, consent, viability.\nConventional power sites: 10 of 30 shown on the map, nearest 0.46 km."
+  },
+  "shotAll": "dc-slough-all-links.png",
+  "framesAll": null,
+  "heap": 148,
+  "csv": {
+   "name": "datacentre-vicinity-202610292044-dcuk-3c73413a6422bd56.csv",
+   "lines": 99,
+   "head": [
+    "# GridAtlas data-centre vicinity sheet · generation 202610292044 · site dcuk-3c73413a6422bd56 VIRTUS Slough London 3 and 4 · point -0.622141,51.52214 · 2026-10-29T20:47:47.766Z",
+    "# Straight-line distances from the site point. Not cable routes, capacity, headroom, connection offers or feasibility.",
+    "# Site: IT load not stated · grid connection not stated. Never added together. A pipeline entry is not a commitment.",
+    "# MW columns are installed capacity as each source states it, not export or connection capacity. \"not stated\" is unknown, not zero.",
+    "set,rank,name,ref,type_or_voltage,status,kv_max,kv_all,mw_stated,mw_basis,km_straight_line,lon,lat,drawn_on_map,source,licence,data_date"
+   ],
+   "sets": [
+    "data centre 1",
+    "substation 30",
+    "REPD project 33",
+    "conventional 30"
+   ]
+  },
+  "project": {
+   "label": "REPD project",
+   "rect": [
+    13,
+    325,
+    367,
+    436
+   ],
+   "maxH": "436px",
+   "docW": 393,
+   "tabs": [],
+   "rows": [],
+   "lines": {
+    "s": null,
+    "r": null,
+    "v": null
+   },
+   "labels": "glow | core | flow | node | pin-halo | pin",
+   "perf": {
+    "links": 90,
+    "ms": 1.3,
+    "search_ms": 377.3
+   },
+   "zoom": 12,
+   "sitePx": "no r",
+   "pad": {
+    "top": 0,
+    "bottom": 0,
+    "left": 0,
+    "right": 0
+   },
+   "center": [
+    -0.6245,
+    51.5029
+   ],
+   "mapH": 838,
+   "labelErr": [],
+   "smallTargets": 0,
+   "text": "REPD · EfW Incineration 49.9 MW\n−\n×\n◀ back to data centre\n0.38 km from VIRTUS Slough London 3 and 4 (straight line) · details\nEfW Incineration 49.9 MW · under construction · Slough Heat & Power Station\nSlough Heat & Power Station, Edinburgh Avenue, Slough · SL1 4TU · Berkshire · South East\nRecord · REPD 4699 · under construction\nOperator: Scottish and Southern Energy (SSE)\nSlough · P/00987/024 · record updated 02/01/2022\nScreening · nearest substations to this project, straight line. Not its declared connection or capacity.\n0.10 km · 132 kV · unnamed substation\n0.13 km · 33 kV · unnamed substation\n0.15 km · 33 kV · unnamed substation\n0.39 km · 132 kV · unnamed substation\n0.45 km · 33 kV · unnamed substation\nRecord · REPD (DESNZ, Apr 2026, OGL v3.0). Status as registered, not as built. Not shown here: electricity use, connection terms, TEC, consent, viability."
+  },
+  "shotProject": "dc-slough-repd-project.png",
+  "error": "page.evaluate: Target page, context or browser has been closed\nBrowser logs:\n\n<launching> /opt/pw-browsers/chromium_headless_shell-1243/chrome-headless-shell-linux64/chrome-headless-shell --disable-field-trial-config --disable-background-networking --disable-background-timer-throttling --disable-backgrounding-occluded-windows --disable-back-forward-cache --disable-breakpad --disable-client-side-phishing-detection --disable-component-extensions-with-background-pages --disable-component-update --no-default-browser-check --disable-default-apps --disable-dev-shm-usage --disable-edgeupdater --disable-extensions --disable-features=AvoidUnnecessaryBeforeUnloadCheckSync,DestroyProfileOnBrowserClose,DialMediaRouteProvider,GlobalMediaControls,HttpsUpgrades,LensOverlay,MediaRouter,PaintHolding,ThirdPartyStoragePartitioning,BlockOriginHeaderModificationOnRedirect,Translate,AutoDeElevate,OptimizationHints,msForceBrowserSignIn,msEdgeUpdateLaunchServicesPreferredVersion --enable-features=CDPScreenshotNewSurface --allow-pre-commit-input --disable-hang-monitor --disable-ipc-flooding-protection --disable-popup-blocking --disable-prompt-on-repost --disable-renderer-backgrounding --disable-updater-scheduler --force-color-profile=srgb --metrics-recording-only --no-first-run --password-store=basic --use-mock-keychain --no-service-autorun --export-tagged-pdf --disable-search-engine-choice-screen --unsafely-disable-devtools-self-xss-warnings --edge-skip-compat-layer-relaunch --disable-infobars --disable-search-engine-choice-screen --disable-sync --enable-unsafe-swiftshader --headless --hide-scrollbars --mute-audio --blink-settings=primaryHoverType=2,availableHoverTypes=2,primaryPointerType=4,availablePointerTypes=4 --no-sandbox --user-data-dir=/tmp/playwright_chromiumdev_profile-ot36dF --remote-debugging-pipe --no-startup-window\n<launched> pid=13386\n[pid=13386][err] [1029/204718.124256:ERROR:dbus/bus.cc:405] Failed to connect to the bus: Failed to connect to socket /run/dbus/system_bus_socket: No such file or directory\n[pid=13386][err] [1029/204718.124319:ERROR:dbus/bus.cc:405] Failed to connect to the bus: Could not parse server address: Unknown address type (examples of valid types are \"tcp\" and on UNIX \"unix\")\n[pid=13386][err] [1029/204718.134248:ERROR:dbus/bus.cc:405] Failed to connect to the bus: Failed to connect to socket /run/dbus/system_bus_socket: No such file or directory\n[pid=13386][err] [1029/204718.134285:ERROR:dbus/bus.cc:405] Failed to connect to the bus: Failed to connect to socket /run/dbus/system_bus_socket: No such file or directory\n[pid=13386][err] [1029/204718.139720:ERROR:dbus/object_proxy.cc:572] Failed to call method: org.freedesktop.DBus.NameHasOwner: object_path= /org/freedesktop/DBus: unknown error type: \n[pid=13386][err] [1029/204718.141839:WARNING:device/bluetooth/dbus/bluez_dbus_manager.cc:209] Floss manager service not available, cannot set Floss enable/disable.\n[pid=13386][err] [1029/204718.142387:ERROR:dbus/bus.cc:405] Failed to connect to the bus: Could not parse server address: Unknown address type (examples of valid types are \"tcp\" and on UNIX \"unix\")\n[pid=13386][err] [1029/204718.146633:ERROR:dbus/object_proxy.cc:572] Failed to call method: org.freedesktop.DBus.NameHasOwner: object_path= /org/freedesktop/DBus: unknown error type: \n[pid=13386][err] [1029/204718.189268:WARNING:media/gpu/vaapi/vaapi_wrapper.cc:1660] drmGetDevices2() has not found any devices\n[pid=13386][err] [1029/204718.198798:WARNING:sandbox/policy/linux/sandbox_linux.cc:405] InitializeSandbox() called with multiple threads in process gpu-process.\n[pid=13386][err] [1029/204718.395494:INFO:CONSOLE:117] \"A parser-blocking, cross site (i.e. different eTLD+1) script, https://cdn.jsdelivr.net/npm/maplibre-gl@3.6.2/dist/maplibre-gl.js, is invoked via document.write. The network request for this script MAY be blocked by the browser in this or a future page load due to poor network connectivity. If blocked in this page load, it will be confirmed in a subsequent console message. See https://www.chromestatus.com/feature/5718547946799104 for more details.\", source: http://127.0.0.1:8471/wt/atlas/v/202610292044/ (117)\n[pid=13386][err] [1029/204718.400025:INFO:CONSOLE:117] \"A parser-blocking, cross site (i.e. different eTLD+1) script, https://cdn.jsdelivr.net/npm/maplibre-gl@3.6.2/dist/maplibre-gl.js, is invoked via document.write. The network request for this script MAY be blocked by the browser in this or a future page load due to poor network connectivity. If blocked in this page load, it will be confirmed in a subsequent console message. See https://www.chromestatus.com/feature/5718547946799104 for more details.\", source: http://127.0.0.1:8471/wt/atlas/v/202610292044/ (117)\n[pid=13386][err] [1029/204718.600200:ERROR:gpu/command_buffer/service/gl_utils.cc:427] [.WebGL-0x16fc0017b400]GL Driver Message (OpenGL, Performance, GL_CLOSE_PATH_NV, High): GPU stall due to ReadPixels\n[pid=13386][err] [1029/204718.610295:INFO:CONSOLE:0] \"[.WebGL-0x16fc0017b400]GL Driver Message (OpenGL, Performance, GL_CLOSE_PATH_NV, High): GPU stall due to ReadPixels\", source: http://127.0.0.1:8471/wt/atlas/v/202610292044/ (0)\n[pid=13386][err] [1029/204718.674963:ERROR:gpu/command_buffer/service/gl_utils.cc:427] [.WebGL-0x16fc0017b400]GL Driver Message (OpenGL, Performance, GL_CLOSE_PATH_NV, High): GPU stall due to ReadPixels\n[pid=13386][err] [1029/204718.724176:INFO:CONSOLE:0] \"[.WebGL-0x16fc0017b400]GL Driver Message (OpenGL, Performance, GL_CLOSE_PATH_NV, High): GPU stall due to ReadPixels\", source: http://127.0.0.1:8471/wt/atlas/v/202610292044/ (0)\n[pid=13386][err] [1029/204718.733981:ERROR:gpu/command_buffer/service/gl_utils.cc:427] [.WebGL-0x16fc0017b400]GL Driver Message (OpenGL, Performance, GL_CLOSE_PATH_NV, High): GPU stall due to ReadPixels\n[pid=13386][err] [1029/204718.775241:INFO:CONSOLE:0] \"[.WebGL-0x16fc0017b400]GL Driver Message (OpenGL, Performance, GL_CLOSE_PATH_NV, High): GPU stall due to ReadPixels\", source: http://127.0.0.1:8471/wt/atlas/v/202610292044/ (0)\n[pid=13386][err] [1029/204718.797488:ERROR:gpu/command_buffer/service/gl_utils.cc:427] [.WebGL-0x16fc0017b400]GL Driver Message (OpenGL, Performance, GL_CLOSE_PATH_NV, High): GPU stall due to ReadPixels (this message will no longer repeat)\n[pid=13386][err] [1029/204718.813659:INFO:CONSOLE:0] \"[.WebGL-0x16fc0017b400]GL Driver Message (OpenGL, Performance, GL_CLOSE_PATH_NV, High): GPU stall due to ReadPixels (this message will no longer repeat)\", source: http://127.0.0.1:8471/wt/atlas/v/202610292044/ (0)\n[pid=13386][err] [1029/204719.142093:INFO:CONSOLE:727] \"[DATA LOADED] data/grid_275kv.geojson: 2935 features\", source: blob:http://127.0.0.1:8471/c518820a-6b9e-444a-97a5-4dc17f3146c6 (727)\n[pid=13386][err] [1029/204719.182765:INFO:CONSOLE:727] \"[DATA LOADED] data/grid_220kv.geojson: 126 features\", source: blob:http://127.0.0.1:8471/c518820a-6b9e-444a-97a5-4dc17f3146c6 (727)\n[pid=13386][err] [1029/204719.246722:INFO:CONSOLE:727] \"[DATA LOADED] data/grid_66kv.geojson: 1171 features\", source: blob:http://127.0.0.1:8471/c518820a-6b9e-444a-97a5-4dc17f3146c6 (727)\n[pid=13386][err] [1029/204719.254038:INFO:CONSOLE:727] \"[DATA LOADED] data/grid_132kv.geojson: 6227 features\", source: blob:http://127.0.0.1:8471/c518820a-6b9e-444a-97a5-4dc17f3146c6 (727)\n[pid=13386][err] [1029/204719.516830:INFO:CONSOLE:727] \"[DATA LOADED] data/grid_substations.geojson: 5800 features\", source: blob:http://127.0.0.1:8471/c518820a-6b9e-444a-97a5-4dc17f3146c6 (727)\n[pid=13386][err] [1029/204719.525786:INFO:CONSOLE:727] \"[DATA LOADED] data/power_plants.geojson: 178 features\", source: blob:http://127.0.0.1:8471/c518820a-6b9e-444a-97a5-4dc17f3146c6 (727)\n[pid=13386][err] [1029/204719.532489:INFO:CONSOLE:727] \"[DATA LOADED] data/industrial_offtakers.geojson: 5878 features\", source: blob:http://127.0.0.1:8471/c518820a-6b9e-444a-97a5-4dc17f3146c6 (727)\n[pid=13386][err] [1029/204719.664810:INFO:CONSOLE:727] \"[DATA LOADED] data/datacentres.geojson: 240 features\", source: blob:http://127.0.0.1:8471/c518820a-6b9e-444a-97a5-4dc17f3146c6 (727)\n[pid=13386][err] [1029/204719.669042:INFO:CONSOLE:727] \"[DATA LOADED] data/airports.geojson: 810 features\", source: blob:http://127.0.0.1:8471/c518820a-6b9e-444a-97a5-4dc17f3146c6 (727)\n[pid=13386][err] [1029/204719.672334:INFO:CONSOLE:727] \"[DATA LOADED] data/railways.geojson: 3596 features\", source: blob:http://127.0.0.1:8471/c518820a-6b9e-444a-97a5-4dc17f3146c6 (727)\n[pid=13386] <gracefully close start>\n[pid=13386][err] [1029/204753.833180:ERROR:content/common/zygote/zygote_communication_linux.cc:291] Failed to send GetTerminationStatus message to zygote\n[pid=13386][err] [1029/204753.833225:WARNING:content/common/zygote/zygote_communication_linux.cc:303] Socket closed prematurely.\n    at /tmp/claude-0/-home-claude/9d39ad54-8b77-5d0b-8e49-a2fb538211db/scratchpad/hardening/evidence/DC-B1/browser/dc-probe.mjs:87:18",
+  "errors": [],
+  "nErrors": 2,
+  "reqs": [
+   "/wt/atlas/modules/202610291043-uk-lightning-overlay.js",
+   "/wt/atlas/modules/202610292044-uk-offtakers-overlay.js",
+   "/gridatlas/data/offtakers_filtered_202610292000.geojson",
+   "/gridatlas/data/conventional_power_uk_202610292000.geojson"
+  ]
+ }
+}

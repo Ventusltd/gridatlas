@@ -1,0 +1,36 @@
+inputs: 5800 qualifying substations (>=33 kV), 9636 REPD sites (10784 projects), 358 conventional-proxy sites (offtakers class B), 164 data-centre sites (offtakers class C)
+compute: 608.9 ms for 164 taps (3 brute-force scans each) = 3.71 ms per tap in node
+10th substation km                   median 5.4  P90 11.2  max 23.0  (n=164)
+30th substation km                   median 11.9  P90 20.7  max 39.8  (n=163)
+10th REPD site km                    median 4.2  P90 7.5  max 23.0  (n=164)
+30th REPD site km                    median 8.9  P90 13.6  max 39.6  (n=164)
+10th conventional km (40 km cap)     median 21.7  P90 35.4  max 39.2  (n=120)
+nearest conventional km              median 4.6  P90 20.9  max 65.7  (n=164)
+30th conventional km (no cap)        median 51.6  P90 120.7  max 275.8  (n=164)
+farthest of all drawn (40 km cap)    median 38.3  P90 39.8  max 40.0  (n=164)
+P90 radius of 90 drawn               median 26.3  P90 33.6  max 37.4  (n=164)
+radius of nearest-10 x3              median 23.9  P90 38.8  max 40.0  (n=164)
+P80 radius of the 30 drawn (10 per set) median 11.7  P90 24.9  max 30.9  (n=164)
+framing radius: 10th sub,10th REPD,1st conv median 6.8  P90 20.3  max 37.7  (n=164)
+sites with <30 substations within 40 km: 1; <30 REPD sites: 0; <30 conventional within 40 km: 137 (median count 19)
+sites whose 30th substation is beyond 20 km: 21
+within 5 km (median subs/REPD/conv): 8 / 12 / 1
+within 10 km (median subs/REPD/conv): 22 / 30 / 1
+within 20 km (median subs/REPD/conv): 30 / 30 / 5
+nearest 400 kV substation km: median 7.8  P90 18.9
+nearest 275 kV substation km: median 8.1  P90 59.9
+nearest 132 kV substation km: median 2.3  P90 7.6
+nearest 33-66 kV substation km: median 1.2  P90 4.0
+camera zoom (centre-held, 156 px half-band, clamp 7.5-13): nearest-10 median 8.31 min 7.50; P80-of-30 median 9.33 P10 8.22; sub10+repd10+conv1 median 10.08 P10 8.56 max 11.46; P90-of-90 median 8.17 min 7.68; all-90 median 7.62 min 7.50
+example Digital Realty London LON3: conv-1st 1.6 km; subs 30 (10th 1.6, 30th 3.8 km), REPD 30 (30th 6.7), conv 28 within 40 (30th uncapped 40.3), zoom n10 9.17 / P90 8.32 / all 7.59
+example OT-C-1284: conv-1st 65.7 km; subs 29 (10th 23.0, 30th n/a km), REPD 30 (30th 39.6), conv 0 within 40 (30th uncapped 236.5), zoom n10 8.41 / P90 7.71 / all 7.62
+CSV vicinity sheet: largest 16831 bytes across all 164 sites (rows incl. expanded REPD projects), header + 3 comment lines ~900 B
+map payload for 90 links: 22618 bytes GeoJSON (90 lines + 90 nodes), 2 sources
+palette: 526 sRGB candidates (step 17) are >= 12 dE2000 from every existing map colour and >= 7:1 on black; top: #999977 23.0, #88aa55 22.7, #999988 22.7, #88aa66 22.4, #88aa44 22.2, #88aa00 22.2, #88aa11 22.1, #88aa22 22.0, #88aa33 22.0, #999999 22.0, #eebbbb 21.9, #77aa55 21.8
+triple search best: #999988 #88aa00 #ffccee worst-case dE 20.2
+proposed substations #ffccee: contrast on #000 15.1:1; nearest existing #e8eef9 dE 20.2
+proposed repd #88aa00: contrast on #000 7.8:1; nearest existing #39ff14 dE 22.2
+proposed conventional #999988: contrast on #000 7.3:1; nearest existing #5fbdc2 dE 22.7
+proposed pairwise dE: #ffccee/#88aa00 58.0, #ffccee/#999988 34.8, #88aa00/#999988 22.5
+protan: #cdd6ef #b59e00 #9c9787 pairwise dE 42.5, 25.5, 21.8
+deutan: #d9ddec #b09d20 #9d9889 pairwise dE 38.5, 23.5, 20.7
