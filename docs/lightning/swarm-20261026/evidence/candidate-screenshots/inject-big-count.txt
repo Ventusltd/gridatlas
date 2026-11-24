@@ -1,0 +1,260 @@
+{
+ "beforePoints": {
+  "stateText": "PARTIAL · 120,000 ARCHIVED · SEARCHED 13%",
+  "caption": [
+   "Window  2026-09-26 19:41 UTC → 2026-10-26 19:41 UTC (30 days, latest)",
+   "Actual  on the 31 overlapping UTC dates: first 2026-10-21 12:32:19 UTC · last 2026-10-25 11:15:58 UTC (day-level; may lie outside a mid-day window edge)",
+   "Flashes 120,000 archived on 31 overlapping UTC dates · none drawn (summary mode; index sum 120,000 flashes, 48,000,000 bytes exceeds the budget; LOAD POINTS draws the newest 40,000)",
+   "Refresh archive 2026-10-26 18:37 UTC (1h 5min ago; expected every 1 h)",
+   "Searched EUMETSAT 13% of window · 17 successful runs · 2026-10-20 22:41 UTC → 2026-10-26 13:00 UTC",
+   "Not yet ingested: last 6h 42min of window (unknown, not zero) · Unknown: 2026-09-26 to 2026-10-20 precede archive start 2026-10-20 22:41 UTC (not zero) · Unknown: 24 of 31 UTC dates have no collection run",
+   "Times UTC · Optical flashes seen by MTG Lightning Imager (EUMETSAT L2-LFL), not confirmed ground strikes · Missing days are unknown, not zero · UK box −11.0,49.5 → 3.0,61.5"
+  ],
+  "features": 0
+ },
+ "boot": {
+  "engine": 120,
+  "pn": 6,
+  "scada": true,
+  "curtain": true,
+  "menuInstalled": true,
+  "map": true,
+  "waitedMs": 4295
+ },
+ "before": {
+  "inspect": {
+   "engine": 60,
+   "pipeline": 3,
+   "total": 63,
+   "unique": 63,
+   "complete": true
+  },
+  "proxies": 63,
+  "groups": 13,
+  "first": "Topology (GeoJSON)"
+ },
+ "off": {
+  "inspect": {
+   "engine": 60,
+   "pipeline": 3,
+   "total": 63,
+   "unique": 63,
+   "complete": true
+  },
+  "proxies": 63,
+  "keys": 63,
+  "groups": 14,
+  "last": "Weather · EUMETSAT Lightning Imager",
+  "toggles": [
+   {
+    "checked": false,
+    "where": "fs",
+    "bad": []
+   },
+   {
+    "checked": false,
+    "where": "menu",
+    "bad": []
+   },
+   {
+    "checked": false,
+    "where": "main",
+    "bad": []
+   }
+  ],
+  "labels": [
+   "Lightning flashes (optical) [WAIT]",
+   "Lightning flashes (optical) [WAIT]",
+   "Lightning flashes (optical) [WAIT]"
+  ],
+  "layer": false,
+  "source": false,
+  "styleLayers": 100,
+  "styleCount": 8,
+  "requests": 0,
+  "state": {
+   "installed": true,
+   "waiting_for": [],
+   "on": false,
+   "requests": 0,
+   "errors": [],
+   "last": null
+  },
+  "menuFooterOrder": [
+   "gm-panel-head",
+   "gm-panel-body",
+   "menu",
+   "fs-curtain-tab"
+  ],
+  "storage": []
+ },
+ "on": {
+  "toggles": [
+   {
+    "checked": true,
+    "where": "fs",
+    "bad": []
+   },
+   {
+    "checked": true,
+    "where": "menu",
+    "bad": []
+   },
+   {
+    "checked": true,
+    "where": "main",
+    "bad": []
+   }
+  ],
+  "labels": [
+   "Lightning flashes (optical) [310 | 30d]",
+   "Lightning flashes (optical) [310 | 30d]",
+   "Lightning flashes (optical) [310 | 30d]"
+  ],
+  "layer": true,
+  "visibility": "visible",
+  "features": 310,
+  "cluster": true,
+  "state": {
+   "installed": true,
+   "waiting_for": [],
+   "on": true,
+   "requests": 4,
+   "errors": [],
+   "last": {
+    "state": "PARTIAL",
+    "stale": false,
+    "mode": "detail",
+    "period": "30d",
+    "drawn": 310,
+    "cluster": true,
+    "cap": 40000,
+    "cap_source": "index",
+    "index_count": 119902,
+    "failures": 0,
+    "reasons": [
+     "tail not yet ingested",
+     "head before archive start",
+     "24 dates without a scan window"
+    ]
+   }
+  },
+  "stateText": "PARTIAL · 310 FLASHES CLUSTERED · SEARCHED 13%",
+  "dot": "rgb(255, 204, 0)",
+  "caption": [
+   "Window  2026-09-26 19:41 UTC → 2026-10-26 19:41 UTC (30 days, latest)",
+   "Actual  first 2026-10-23 01:53:48 UTC · last 2026-10-25 11:15:58 UTC",
+   "Flashes 120,000 archived in window (index) · 310 downloaded from the newest 3 of 5 days (budget 40,000; 2 older days not loaded) · 310 drawn as clusters (above the 40,000-point cap for this desktop, from index count)",
+   "Refresh archive 2026-10-26 18:37 UTC (1h 5min ago; expected every 1 h)",
+   "Searched EUMETSAT 13% of window · 17 successful runs · 2026-10-20 22:41 UTC → 2026-10-26 13:00 UTC",
+   "Not yet ingested: last 6h 42min of window (unknown, not zero) · Unknown: 2026-09-26 to 2026-10-20 precede archive start 2026-10-20 22:41 UTC (not zero) · Unknown: 24 of 31 UTC dates have no collection run",
+   "Times UTC · Optical flashes seen by MTG Lightning Imager (EUMETSAT L2-LFL), not confirmed ground strikes · Missing days are unknown, not zero · UK box −11.0,49.5 → 3.0,61.5"
+  ],
+  "bridge": {
+   "intercepted": 0,
+   "failures": 0
+  },
+  "requests": [
+   "https://raw.githubusercontent.com/Ventusltd/lightning/main/data/history/index.json",
+   "https://raw.githubusercontent.com/Ventusltd/lightning/main/data/history/days/2026/10/25.json",
+   "https://raw.githubusercontent.com/Ventusltd/lightning/main/data/history/days/2026/10/24.json",
+   "https://raw.githubusercontent.com/Ventusltd/lightning/main/data/history/days/2026/10/23.json"
+  ],
+  "controlsHidden": [
+   false,
+   false
+  ],
+  "inspect": {
+   "engine": 60,
+   "pipeline": 3,
+   "total": 63,
+   "unique": 63,
+   "complete": true
+  },
+  "proxies": 63
+ },
+ "mutations8s": {
+  "baselineOff": {
+   "all": 24,
+   "lightning": 0
+  },
+  "on": {
+   "all": 24,
+   "lightning": 0
+  }
+ },
+ "menu": {
+  "box": {
+   "x": 953.3038940429688,
+   "y": 555.4000244140625,
+   "width": 471.18902587890625,
+   "height": 57.199951171875
+  },
+  "panelOpen": true,
+  "afterMenuClick": {
+   "on": false,
+   "toggles": [
+    {
+     "checked": false,
+     "where": "fs",
+     "bad": []
+    },
+    {
+     "checked": false,
+     "where": "menu",
+     "bad": []
+    },
+    {
+     "checked": false,
+     "where": "main",
+     "bad": []
+    }
+   ],
+   "layer": false
+  },
+  "firstFocusable": "engine:400",
+  "onFromMenu": {
+   "on": true,
+   "features": 0
+  }
+ },
+ "offAgain": {
+  "toggles": [
+   {
+    "checked": false,
+    "where": "fs",
+    "bad": []
+   },
+   {
+    "checked": false,
+    "where": "menu",
+    "bad": []
+   },
+   {
+    "checked": false,
+    "where": "main",
+    "bad": []
+   }
+  ],
+  "labels": [
+   "Lightning flashes (optical) [WAIT]",
+   "Lightning flashes (optical) [WAIT]",
+   "Lightning flashes (optical) [WAIT]"
+  ],
+  "layer": false,
+  "source": false,
+  "styleLayers": 100,
+  "inspect": {
+   "engine": 60,
+   "pipeline": 3,
+   "total": 63,
+   "unique": 63,
+   "complete": true
+  },
+  "proxies": 63,
+  "groups": 14
+ },
+ "pageErrors": [],
+ "aborted": 2,
+ "missing": []
+}

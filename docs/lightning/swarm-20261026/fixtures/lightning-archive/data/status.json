@@ -1,0 +1,49 @@
+{
+ "schema": "uk-lightning-status.v1",
+ "written_utc": "2026-10-26T18:37:03.000Z",
+ "health": "ok",
+ "last_attempt_utc": "2026-10-26T13:05:58.649Z",
+ "last_attempt_outcome": "success",
+ "last_error": null,
+ "consecutive_failures": 0,
+ "last_successful_run_utc": "2026-10-26T13:05:58.649Z",
+ "last_successful_scan_start_utc": "2026-10-26T10:05:58.649Z",
+ "last_successful_scan_end_utc": "2026-10-26T13:00:09.000Z",
+ "last_query_start_utc": "2026-10-26T10:05:58.649Z",
+ "last_query_end_utc": "2026-10-26T13:05:58.649Z",
+ "last_lookback_hours": 3.0,
+ "last_lookback_source": "explicit",
+ "last_lookback_capped": false,
+ "last_products_examined": 18,
+ "last_slots_examined": 18,
+ "last_slots_examined_utc": [],
+ "last_scanned_ranges": [
+  {
+   "start_utc": "2026-10-26T10:05:58.649Z",
+   "end_utc": "2026-10-26T13:00:09.000Z"
+  }
+ ],
+ "last_unscanned_ranges": [],
+ "last_tail_unobserved_seconds": 349,
+ "feed": {
+  "features": 408,
+  "total_before_display_cap": 408,
+  "latest_detection_utc": "2026-10-25T11:15:58.149Z",
+  "incoming_features": 0
+ },
+ "archive": {
+  "outcome": "success",
+  "error": null,
+  "archived_observations": 408,
+  "files_changed": 6,
+  "dropped_before_cutoff": null,
+  "split_days": null,
+  "index_generated_utc": "2026-10-26T18:37:03.000Z"
+ },
+ "thresholds_hours": {
+  "warn": 6,
+  "stale": 12,
+  "stopped": 24
+ },
+ "note": "A failed run leaves the feed and archive unchanged. Time not covered by a successful scan is unknown, not zero. Flashes are optical satellite detections, not confirmed ground strikes."
+}

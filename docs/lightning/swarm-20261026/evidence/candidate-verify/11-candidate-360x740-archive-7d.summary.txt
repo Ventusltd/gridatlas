@@ -1,0 +1,107 @@
+{
+ "identity_gen": "202610261949",
+ "boot": 4440,
+ "orderPreserved": true,
+ "off": {
+  "inspect": {
+   "engine": 60,
+   "pipeline": 3,
+   "total": 63,
+   "unique": 63,
+   "complete": true
+  },
+  "proxies": 63,
+  "keys": 63,
+  "groups": 14,
+  "last": "Weather · EUMETSAT Lightning Imager",
+  "layer": false,
+  "source": false,
+  "styleLayers": 100,
+  "styleCount": 9,
+  "requests": 0,
+  "storage": []
+ },
+ "baselineStyle": [
+  9,
+  100
+ ],
+ "on": {
+  "labels": [
+   "Lightning flashes (optical) [408 | 7d]",
+   "Lightning flashes (optical) [408 | 7d]",
+   "Lightning flashes (optical) [408 | 7d]"
+  ],
+  "features": 408,
+  "visibility": "visible",
+  "cluster": false,
+  "stateText": "PARTIAL · 408 FLASHES DRAWN · SEARCHED 56%",
+  "chips": [
+   [
+    "12H",
+    44,
+    44
+   ],
+   [
+    "24H",
+    44,
+    44
+   ],
+   [
+    "48H",
+    44,
+    44
+   ]
+  ],
+  "toggleRow": [
+   314,
+   30
+  ],
+  "bridge": {
+   "intercepted": 0,
+   "failures": 0
+  }
+ },
+ "flashesLine": "Flashes 408 archived in window · 408 drawn as points (index count 408 within the 10,000-point cap for this phone)",
+ "mutations": {
+  "baselineOff": {
+   "all": 24,
+   "lightning": 0
+  },
+  "on": {
+   "all": 24,
+   "lightning": 0
+  }
+ },
+ "menu": {
+  "box": {
+   "x": -33.19999694824219,
+   "y": 628.4000244140625,
+   "width": 426.40000915527344,
+   "height": 57.199951171875
+  },
+  "panelOpen": true,
+  "firstFocusable": "engine:400",
+  "onFromMenu": {
+   "on": true,
+   "features": 408,
+   "keysScrollTop": 2192
+  }
+ },
+ "offAgain": {
+  "layer": false,
+  "source": false,
+  "styleLayers": 100,
+  "groups": 14
+ },
+ "afterReload": {
+  "toggles": [
+   false,
+   false,
+   false
+  ],
+  "layer": false,
+  "storage": []
+ },
+ "pageErrors": [],
+ "missing": []
+}

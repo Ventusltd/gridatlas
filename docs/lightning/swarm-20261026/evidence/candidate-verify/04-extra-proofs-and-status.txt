@@ -1,0 +1,20 @@
+### node tools/proofs/v8-layers-panel-restored.proof.mjs
+v8 layers panel restored: PASS — 9 checks against the composed bytes of generation 202609241334
+exit=0
+### node tools/proofs/menu-bar-dom.proof.mjs
+exit=0
+### git status
+ D .github/workflows/uk-lightning-preview.yml
+?? atlas/cartridges/202610261949-sld-sandbox-v9-8.js
+?? atlas/manifests/202610261949-composition.json
+?? atlas/modules/202610261949-uk-lightning-overlay.js
+?? atlas/v/202610261949/
+?? tools/proofs/202610261949-sld-sandbox.proof.mjs
+### diff stat vs origin/main
+remove '.github/workflows/uk-lightning-preview.yml'
+add 'atlas/cartridges/202610261949-sld-sandbox-v9-8.js'
+add 'atlas/manifests/202610261949-composition.json'
+add 'atlas/modules/202610261949-uk-lightning-overlay.js'
+add 'atlas/v/202610261949/current.json'
+add 'atlas/v/202610261949/index.html'
+add 'tools/proofs/202610261949-sld-sandbox.proof.mjs'
