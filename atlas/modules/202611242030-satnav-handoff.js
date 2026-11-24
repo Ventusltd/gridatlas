@@ -7,9 +7,12 @@ void async function () {
   const { normaliseOrigin, validCoordinate } = await import(new URL('tools/vicinity/src/model.mjs', satnavRoot));
   const style = document.createElement('style');
   style.textContent = `
-    #gridatlas-satnav-toggle { position:fixed; z-index:10019; left:12px; top:92px; }
-    #gridatlas-satnav-satnav { position:fixed; z-index:10019; right:12px; top:var(--satnav-panel-top, 144px);
-      width:min(380px,calc(100% - 24px)); max-height:calc(100dvh - var(--satnav-panel-top, 144px) - 12px);
+    :root { --gridatlas-satnav-top:128px; }
+    @media (max-width:600px) { :root { --gridatlas-satnav-top:136px; } }
+    @media (max-width:359px) { :root { --gridatlas-satnav-top:214px; } }
+    #gridatlas-satnav-toggle { position:fixed; z-index:10019; left:12px; top:var(--gridatlas-satnav-top); }
+    #gridatlas-satnav-satnav { position:fixed; z-index:10019; right:12px; top:calc(var(--gridatlas-satnav-top) + 52px);
+      width:min(380px,calc(100% - 24px)); max-height:calc(100dvh - var(--gridatlas-satnav-top) - 64px);
       overflow:auto; box-sizing:border-box; padding:12px;
       border:1px solid #367078; border-radius:6px; background:#08141bed;
       color:#e4f7f7; font:14px/1.45 ui-monospace,monospace; }
@@ -316,21 +319,9 @@ void async function () {
     panel.addEventListener(type, event => event.stopPropagation());
   }
 
-  function positionControls() {
+  function syncFullscreenHost() {
     const host = document.fullscreenElement || document.webkitFullscreenElement || document.body;
     if (toggle.parentElement !== host) host.append(toggle, panel);
-    const menu = document.getElementById('gridatlas-menu-bar')?.getBoundingClientRect();
-    const mapTop = map?.getContainer().getBoundingClientRect().top ?? 44;
-    let top = Math.max(92, Math.ceil(menu?.height ? menu.bottom : mapTop) + 8);
-    const buttonRect = toggle.getBoundingClientRect();
-    // Leave the existing search and attribution controls accessible on narrow screens.
-    for (const selector of ['.custom-map-attrib', '.search-bar-wrapper']) {
-      const rect = document.querySelector(selector)?.getBoundingClientRect();
-      if (rect?.height && rect.left < buttonRect.right && rect.right > buttonRect.left &&
-        rect.top < top + buttonRect.height && rect.bottom > top) top = Math.ceil(rect.bottom) + 8;
-    }
-    toggle.style.top = `${top}px`;
-    panel.style.setProperty('--satnav-panel-top', `${top + buttonRect.height + 8}px`);
   }
 
   function refresh() {
@@ -341,7 +332,7 @@ void async function () {
       map.on('click', mapClick);
       status.textContent = defaultStatus;
     }
-    positionControls();
+    syncFullscreenHost();
     render();
   }
   refresh();

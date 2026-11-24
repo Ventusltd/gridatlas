@@ -97,6 +97,20 @@ def open_satnav(page):
         raise
 
 
+def check_launcher_during_search_reflow(page):
+    top = page.locator(TOGGLE).evaluate('button => button.getBoundingClientRect().top')
+    wrapper = page.locator('.search-bar-wrapper')
+    old_top = wrapper.evaluate('element => element.style.top')
+    try:
+        # Exercise the two native search positions observed during mobile boot.
+        for search_top in ['164px', '72px']:
+            wrapper.evaluate('(element, top) => { element.style.top = top; }', search_top)
+            page.wait_for_timeout(350)
+            assert page.locator(TOGGLE).evaluate('button => button.getBoundingClientRect().top') == top
+    finally:
+        wrapper.evaluate('(element, top) => { element.style.top = top; }', old_top)
+
+
 def ready(page, url):
     load_map(page, url)
     open_satnav(page)
@@ -224,6 +238,9 @@ with sync_playwright() as playwright:
             open_native_card(hit_page)
         else:
             load_map(hit_page, DEMO)
+        if width == 320:
+            check_launcher_during_search_reflow(hit_page)
+            print('PASS narrow launcher position stays stable as native search reflows', flush=True)
         open_satnav(hit_page)
         print(f'PASS launcher screen hit {width}x{height}, vicinity card open={card_open}', flush=True)
         hit_page.close()
