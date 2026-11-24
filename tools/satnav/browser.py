@@ -1,10 +1,11 @@
 import json
 import math
+import os
 from urllib.parse import parse_qs, urlencode, urlparse
 
 from playwright.sync_api import sync_playwright
 
-BASE = 'http://127.0.0.1:8768/'
+BASE = f"http://127.0.0.1:{os.environ.get('SATNAV_PORT', '8768')}/"
 DEMO = BASE + 'atlas/v/satnav-native-m1/'
 COMPASS = 'https://ventusltd.github.io/satnav/preview/9698781539e549deaa6ecaa4a2b34610c1f9fd29/nav/'
 CARD = DEMO + '?' + urlencode({
@@ -18,12 +19,54 @@ MOCK_GPS = '''
         watchPosition() { window.__gpsRequests++; return 1; }, clearWatch() {},
     }});
 '''
+POSTCODE = 'SW1A 2AA'
+POSTCODE_ENDPOINT = 'https://api.postcodes.io/postcodes/SW1A2AA'
+POSTCODE_POINT = [-0.12767, 51.503541]
+PANEL = '#gridatlas-satnav-satnav'
+TOGGLE = '#gridatlas-satnav-toggle'
+CONFIRM = '#gridatlas-satnav-confirm'
+VICINITY = '#gridatlas-satnav-vicinity'
+PICK = '#gridatlas-satnav-pick'
+USE_SEARCH_RESULT = '#gridatlas-satnav-planned'
+
+
+def load_map(page, url):
+    page.goto(url, wait_until='domcontentloaded')
+    page.wait_for_function("document.querySelector('#gridatlas-satnav-pick:not(:disabled)')", timeout=45000)
+
+
+def click_launcher(page):
+    hit = page.locator(TOGGLE).evaluate('''button => {
+        const rect = button.getBoundingClientRect();
+        const x = rect.left + rect.width / 2;
+        const y = rect.top + rect.height / 2;
+        const target = document.elementFromPoint(x, y);
+        return {
+            x, y, width: rect.width, height: rect.height,
+            inViewport: rect.left >= 0 && rect.top >= 0 &&
+                rect.right <= innerWidth && rect.bottom <= innerHeight,
+            reachable: button.contains(target),
+            coveredBy: target && (target.id || target.className || target.tagName),
+        };
+    }''')
+    assert hit['width'] >= 44 and hit['height'] >= 44, hit
+    assert hit['inViewport'] and hit['reachable'], hit
+    scroll = page.evaluate('[scrollX, scrollY]')
+    if page.evaluate("navigator.maxTouchPoints > 0"):
+        page.touchscreen.tap(hit['x'], hit['y'])
+    else:
+        page.mouse.click(hit['x'], hit['y'])
+    assert page.evaluate('[scrollX, scrollY]') == scroll
+
+
+def open_satnav(page):
+    click_launcher(page)
+    assert page.locator(PANEL).is_visible()
 
 
 def ready(page, url):
-    page.goto(url, wait_until='domcontentloaded')
-    page.wait_for_function("document.querySelector('#gridatlas-satnav-pick:not(:disabled)')", timeout=45000)
-    page.locator('#gridatlas-satnav-toggle').click()
+    load_map(page, url)
+    open_satnav(page)
 
 
 def choose_compass(page, name, point):
@@ -39,15 +82,87 @@ def choose_compass(page, name, point):
     assert page.locator('#start').is_enabled()
 
 
-def open_card(page):
-    ready(page, CARD)
-    page.locator('#gridatlas-satnav-close').click()
+def open_native_card(page):
+    load_map(page, CARD)
     page.locator('#gridatlas-pipeline-vicinity-button').click(timeout=45000)
     page.wait_for_function('''() => {
         const card = window.__GRIDATLAS_MODULES__.ukOfftakers.state.pp;
-        return card?.swipe?.entries?.length >= 2;
+        return card?.__vicFocus?.origin === true && card.swipe?.entries?.length >= 2;
     }''', timeout=45000)
-    page.locator('#gridatlas-satnav-toggle').click()
+
+
+def open_card(page):
+    open_native_card(page)
+    open_satnav(page)
+
+
+def click_uncovered_map(page):
+    point = page.evaluate('''() => {
+        const canvas = window.__GRIDATLAS_V9_MAP__.getCanvas();
+        const rect = canvas.getBoundingClientRect();
+        for (const [fx, fy] of [[.55, .40], [.60, .55], [.46, .68]]) {
+            const x = rect.left + fx * rect.width;
+            const y = rect.top + fy * rect.height;
+            if (document.elementFromPoint(x, y) === canvas) return [x, y];
+        }
+        return null;
+    }''')
+    assert point is not None, 'Expected a genuinely uncovered canvas point'
+    page.mouse.click(*point)
+
+
+def pick_search_result(page, query, result_selector):
+    search = page.locator('#search-input')
+    search.fill(query)
+    search.press('Enter')
+    page.locator(result_selector).click(timeout=45000)
+
+
+def stale_project_refused(page, action):
+    ready(page, DEMO)
+    map_search = page.locator('#gridatlas-satnav-map-search')
+    map_search.click()
+    pick_search_result(page, '12588', '#search-results [data-repd-ref="12588"]')
+    open_satnav(page)
+    page.locator(USE_SEARCH_RESULT).click()
+    assert page.locator(CONFIRM).is_visible()
+
+    map_search.click()
+    pick_search_result(page, '10603', '#search-results [data-repd-ref="10603"]')
+    open_satnav(page)
+    url = page.url
+    page.locator(action).click()
+    assert 'selection changed' in page.locator(PANEL + ' [role=status]').inner_text()
+    assert page.url == url
+    assert not page.evaluate("Boolean(window.__GRIDATLAS_MODULES__.ukOfftakers.state.pp?.project)")
+    assert page.locator(CONFIRM).is_hidden()
+    assert page.locator(VICINITY).is_hidden()
+
+
+def postcode_handoff(page, use_live_provider):
+    if not use_live_provider:
+        page.route(POSTCODE_ENDPOINT, lambda route: route.fulfill(
+            headers={'Access-Control-Allow-Origin': '*'},
+            json={'status': 200, 'result': {
+                'postcode': POSTCODE, 'longitude': POSTCODE_POINT[0], 'latitude': POSTCODE_POINT[1],
+                'admin_district': 'Westminster', 'region': 'London',
+            }},
+        ))
+    ready(page, DEMO)
+    page.locator('#gridatlas-satnav-map-search').click()
+    assert page.locator(PANEL).is_hidden()
+    assert page.locator('#search-input').evaluate('(input) => document.activeElement === input')
+    pick_search_result(page, POSTCODE, '#search-results [data-location-kind="postcode"]')
+    location = page.evaluate('window.__GRIDATLAS_PLACE_SEARCH__.last_location_selection')
+    assert location['label'] == POSTCODE and location['mapped'] is True, location
+    point = [location['longitude'], location['latitude']]
+    if not use_live_provider:
+        assert point == POSTCODE_POINT
+    open_satnav(page)
+    page.locator(USE_SEARCH_RESULT).click()
+    choose_compass(page, POSTCODE, point)
+    source = 'live Postcodes.io' if use_live_provider else 'deterministic Postcodes.io response'
+    print(f'PASS postcode handoff through GridAtlas search ({source})', flush=True)
 
 
 def selected(page, kind):
@@ -63,9 +178,69 @@ with sync_playwright() as playwright:
     browser = playwright.chromium.launch(headless=True, args=[
         '--enable-webgl', '--use-gl=angle', '--use-angle=swiftshader', '--enable-unsafe-swiftshader',
     ])
+    for width, height, is_mobile, card_open in [
+        (1440, 900, False, False),
+        (390, 844, True, True),
+        (844, 390, True, False),
+        (320, 568, True, False),
+    ]:
+        hit_page = browser.new_page(
+            viewport={'width': width, 'height': height}, is_mobile=is_mobile, has_touch=is_mobile,
+        )
+        if card_open:
+            open_native_card(hit_page)
+        else:
+            load_map(hit_page, DEMO)
+        open_satnav(hit_page)
+        print(f'PASS launcher screen hit {width}x{height}, vicinity card open={card_open}', flush=True)
+        hit_page.close()
+
     context = browser.new_context(viewport={'width': 1024, 'height': 740})
     context.add_init_script(MOCK_GPS)
     page = context.new_page()
+
+    ready(page, DEMO)
+    for use_close_button in [True, False]:
+        page.locator(PICK).click()
+        assert page.locator(PICK).get_attribute('aria-pressed') == 'true'
+        if use_close_button:
+            page.locator('#gridatlas-satnav-close').click()
+        else:
+            click_launcher(page)
+        assert page.locator(PANEL).is_hidden()
+        assert page.locator(PICK).get_attribute('aria-pressed') == 'false'
+        click_uncovered_map(page)
+        open_satnav(page)
+        assert page.locator(CONFIRM).is_hidden()
+        assert page.locator(VICINITY).is_hidden()
+    print('PASS both panel close actions disarm map selection and prevent hidden staging', flush=True)
+
+    ready(page, DEMO)
+    page.locator('#gridatlas-satnav-map-search').click()
+    pick_search_result(page, '10603', '#search-results [data-repd-ref="10603"]')
+    unmapped = page.evaluate('window.__GRIDATLAS_PLACE_SEARCH__.last_selection')
+    assert str(unmapped['repd_ref']) == '10603' and unmapped['mapped'] is False, unmapped
+    open_satnav(page)
+    page.locator(USE_SEARCH_RESULT).click()
+    assert 'has no mapped location' in page.locator(PANEL + ' [role=status]').inner_text()
+    assert page.locator(CONFIRM).is_hidden()
+    assert page.locator(VICINITY).is_hidden()
+    assert page.locator(PICK).is_enabled()
+    assert page.url.startswith(DEMO)
+    print('PASS genuine unmapped REPD 10603 refused for SatNav and Vicinity with pin fallback', flush=True)
+
+    stale_project_refused(page, CONFIRM)
+    stale_project_refused(page, VICINITY)
+    print('PASS both confirmations refuse stale mapped project after selection changes to unmapped 10603', flush=True)
+
+    postcode_page = context.new_page()
+    postcode_handoff(postcode_page, use_live_provider=False)
+    postcode_page.close()
+    if os.environ.get('SATNAV_LIVE_POSTCODE') == '1':
+        postcode_page = context.new_page()
+        postcode_handoff(postcode_page, use_live_provider=True)
+        postcode_page.close()
+
     tile_responses = []
     page.on('response', lambda response: tile_responses.append(response.status)
             if 'World_Imagery/MapServer/tile/' in response.url else None)
@@ -93,14 +268,16 @@ with sync_playwright() as playwright:
     page.mouse.click(x, y)
     page.locator('#gridatlas-satnav-confirm:visible').wait_for()
     assert page.evaluate('window.__gpsRequests') == 0
+    pin_name = 'Future substation field point'
+    page.locator('#gridatlas-satnav-pin-label input').fill(pin_name)
     page.screenshot(path='satellite-selection.png')
     assert 200 in tile_responses
     print(json.dumps({'satelliteTileResponses': tile_responses, 'nativeLayerVisible': True}), flush=True)
-    choose_compass(page, 'Chosen map point', expected)
-    print('PASS native satellite click, cancel, explicit confirmation, signed compass handoff and GPS opt-in', flush=True)
+    choose_compass(page, pin_name, expected)
+    print('PASS native satellite click, cancel, named pin, signed compass handoff and GPS opt-in', flush=True)
 
     ready(page, DEMO)
-    page.locator('#gridatlas-satnav-satnav summary').click()
+    page.locator('#gridatlas-satnav-manual-details summary').click()
     page.locator('#gridatlas-satnav-latitude').fill('51.5')
     page.locator('#gridatlas-satnav-longitude').fill('-0.4')
     page.locator('#gridatlas-satnav-label').fill('Manual field point')
@@ -112,7 +289,7 @@ with sync_playwright() as playwright:
     print('PASS signed manual destination and invalid edit retains pending selection', flush=True)
 
     ready(page, DEMO)
-    page.locator('#gridatlas-satnav-satnav summary').click()
+    page.locator('#gridatlas-satnav-manual-details summary').click()
     page.locator('#gridatlas-satnav-latitude').fill('51.5')
     page.locator('#gridatlas-satnav-longitude').fill('-0.4')
     page.locator('#gridatlas-satnav-manual').click()
@@ -124,16 +301,17 @@ with sync_playwright() as playwright:
     assert page.locator('[data-vicinity-focus-title]').inner_text() == 'Manual coordinate point'
     print('PASS anonymous plain-point native Vicinity without fabricated REPD reference', flush=True)
 
-    ready(page, DEMO)
-    page.locator('#gridatlas-satnav-satnav summary').click()
-    page.get_by_label('Existing substation name or source ID').fill('Iver')
-    page.locator('#gridatlas-satnav-search').click()
-    station=page.locator('#gridatlas-satnav-station-0')
-    station.wait_for(timeout=30000)
-    assert page.locator('#gridatlas-satnav-station-1').is_visible()
-    station.click()
-    assert page.locator('#gridatlas-satnav-confirm').is_visible()
-    print('PASS native source station index keeps same-name Iver records separately selectable', flush=True)
+    for source_id, point in [
+        ('grid_substations:212', [-0.4978855, 51.5434023]),
+        ('grid_substations:213', [-0.4973463, 51.5416778]),
+    ]:
+        ready(page, DEMO)
+        page.locator('#gridatlas-satnav-station-details summary').click()
+        page.get_by_label('Existing substation name or source ID').fill('Iver')
+        page.locator('#gridatlas-satnav-search').click()
+        page.get_by_role('button', name=f'Iver Substation · {source_id}', exact=False).click(timeout=30000)
+        choose_compass(page, 'Iver Substation', point)
+    print('PASS same-name Iver substations open the compass at their distinct mapped points', flush=True)
 
     open_card(page)
     page.wait_for_function('''() => {
@@ -161,13 +339,13 @@ with sync_playwright() as playwright:
     next_asset.click()
     first = selected(page, 'asset')
     assert first['at'] != origin['at']
-    page.locator('#gridatlas-satnav-toggle').click()
+    open_satnav(page)
     page.locator('#gridatlas-satnav-asset').click()
     page.locator('#gridatlas-satnav-close').click()
     next_asset.click()
     current = selected(page, 'asset')
     assert current['at'] != first['at']
-    page.locator('#gridatlas-satnav-toggle').click()
+    open_satnav(page)
     page.locator('#gridatlas-satnav-confirm').click()
     assert 'selection changed' in page.locator('#gridatlas-satnav-satnav [role=status]').inner_text()
     assert page.url.startswith(DEMO)

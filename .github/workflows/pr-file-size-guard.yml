@@ -1,6 +1,6 @@
 name: PR file size guard and cartridge gate
 
-# Two jobs, one workflow file, because the active-workflow budget in
+# One workflow file, because the active-workflow budget in
 # tools/scope/lib.mjs (ACTIVE_WORKFLOWS) is exact and every other entry on it is
 # disabled in the repository settings, 202608312212-cartridge-proof.yml
 # included. This is the one workflow that runs on every pull request, so the
@@ -24,6 +24,49 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  satnav-native-browser:
+    if: github.event.pull_request.head.ref == 'feature/satnav-native-vicinity-m1-20261124'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          persist-credentials: false
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020
+        with:
+          node-version: '24'
+      - name: Verify the preview rebuild and existing station index
+        run: |
+          node tools/satnav/build.mjs
+          git diff --exit-code
+          node --test tools/train/core.test.mjs
+      - name: Install isolated Playwright Chromium
+        run: |
+          python3 -m venv "$RUNNER_TEMP/satnav-python"
+          "$RUNNER_TEMP/satnav-python/bin/python" -m pip install --require-virtualenv playwright==1.63.0
+          "$RUNNER_TEMP/satnav-python/bin/python" -m playwright install --with-deps chromium
+      - name: Run actual native SatNav and pinned compass handoff
+        run: |
+          repo="$PWD"
+          node tools/satnav/serve.mjs 8768 > "$RUNNER_TEMP/satnav-server.log" 2>&1 &
+          server_pid=$!
+          trap 'kill "$server_pid" 2>/dev/null || true' EXIT
+          curl --fail --silent --show-error --retry-connrefused --retry 8 --output /dev/null \
+            http://127.0.0.1:8768/atlas/v/satnav-native-m1/
+          mkdir -p "$RUNNER_TEMP/satnav-browser"
+          cd "$RUNNER_TEMP/satnav-browser"
+          "$RUNNER_TEMP/satnav-python/bin/python" "$repo/tools/satnav/browser.py"
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: satnav-native-chromium-${{ github.event.pull_request.head.sha }}
+          path: |
+            ${{ runner.temp }}/satnav-server.log
+            ${{ runner.temp }}/satnav-browser/
+          if-no-files-found: ignore
+          retention-days: 14
+
   vicinity-v9197-real-layers:
     if: startsWith(github.event.pull_request.head.ref, 'fix/v9197-fullscreen-layers-')
     runs-on: ubuntu-24.04
