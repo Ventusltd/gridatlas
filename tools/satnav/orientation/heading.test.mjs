@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
-import { geodesicCircle } from '../vendor/grid-distance-maths/src/geodesy.mjs';
+import { geodesicCircle } from '../vendor/9698781539e549deaa6ecaa4a2b34610c1f9fd29/vendor/grid-distance-maths/src/geodesy.mjs';
 import { compactTargetBearing, deviceHeading, formatDegrees } from './heading.mjs';
 
 const point = (role, coordinates) => ({ properties: { role }, geometry: { type: 'Point', coordinates } });

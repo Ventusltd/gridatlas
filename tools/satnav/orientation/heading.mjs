@@ -1,5 +1,5 @@
-import { distanceKm, initialBearingDeg } from '../vendor/grid-distance-maths/src/geodesy.mjs';
-import { MAX_ACCURACY_M } from '../core/compass.mjs';
+import { distanceKm, initialBearingDeg } from '../vendor/9698781539e549deaa6ecaa4a2b34610c1f9fd29/vendor/grid-distance-maths/src/geodesy.mjs';
+import { MAX_ACCURACY_M } from '../vendor/9698781539e549deaa6ecaa4a2b34610c1f9fd29/nav/compass.mjs';
 
 const radians = Math.PI / 180;
 const normalise = degrees => (degrees % 360 + 360) % 360;
