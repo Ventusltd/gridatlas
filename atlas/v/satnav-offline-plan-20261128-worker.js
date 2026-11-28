@@ -10,7 +10,9 @@ self.addEventListener('activate', event => event.waitUntil(self.clients.claim())
 async function openPlan(request) {
   let response;
   try {
-    response = await fetch(request);
+    // The online entry is only a loader. A cached HTTP 200 for that loader
+    // would conceal a disconnected origin and leave its dependencies unavailable.
+    response = await fetch(request, {cache: 'no-store'});
     if (response.status < 500) return response;
   } catch {
     // Offline navigation can still open the user's last explicitly saved copy.

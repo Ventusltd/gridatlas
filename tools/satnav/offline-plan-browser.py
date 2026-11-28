@@ -58,7 +58,10 @@ def test_site(geodesy):
                 pass
 
             def end_headers(self):
-                self.send_header("Cache-Control", "no-store")
+                # Pages can keep its small HTML loader fresh after the network
+                # goes away. The worker still needs to detect a disconnected origin.
+                entry = self.path.split("?", 1)[0]
+                self.send_header("Cache-Control", "public, max-age=600" if entry.endswith(("/", "/index.html")) else "no-store")
                 super().end_headers()
 
             def do_GET(self):
@@ -141,11 +144,12 @@ def exercise(browser, origin, unavailable):
         # emulation during navigation. The WebKit inspector switch cancels even
         # navigation handled by a worker returning a constant, before fetch fires.
         unavailable.set()
-        if browser.browser_type.name == "chromium":
-            context.set_offline(True)
         pages[0].reload(wait_until="domcontentloaded")
         expect(pages[0].get_by_role("heading", name="Saved field plan")).to_be_visible()
         fresh = context.new_page()
+        expect_plan(fresh, urls[0], PLAN_A)
+        if browser.browser_type.name == "chromium":
+            context.set_offline(True)
         plan = expect_plan(fresh, urls[0] + "index.html?field=1", PLAN_A)
         assert plan["legs"] == [[111, 90], [111, 0]] and plan["totalM"] == 223
         expect(fresh.locator("#coordinate")).to_have_text("0.00000°, 0.00000°")
