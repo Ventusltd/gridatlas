@@ -17,18 +17,26 @@ spec.loader.exec_module(compact)
 SITE = os.environ.get('LINE_TEST_URL', 'http://127.0.0.1:8873/atlas/v/satnav-compass-202611281255/')
 SENSOR = """(() => {
   let answer = 'granted';
+  let resolvePending;
   const requests = [];
+  for (const type of ['deviceorientation', 'deviceorientationabsolute']) {
+    window.addEventListener(type, event => { if (event.isTrusted) event.stopImmediatePropagation(); }, true);
+  }
   const Orientation = window.DeviceOrientationEvent || class extends Event {};
   if (!window.DeviceOrientationEvent) {
     Object.defineProperty(window, 'DeviceOrientationEvent', {configurable: true, value: Orientation});
   }
   Object.defineProperty(Orientation, 'requestPermission', {
     configurable: true,
-    value(absolute) { requests.push(absolute); return Promise.resolve(answer); },
+    value(absolute) {
+      requests.push(absolute);
+      return answer === 'pending' ? new Promise(resolve => { resolvePending = resolve; }) : Promise.resolve(answer);
+    },
   });
   window.__fieldSensorTest = {
     requests,
     permission(value) { answer = value; },
+    release() { resolvePending('granted'); },
     sample(type, properties) {
       const event = new Event(type);
       for (const [key, value] of Object.entries(properties)) {
@@ -151,16 +159,30 @@ def check_viewport(browser, label, width, height):
         expect(bearing).to_contain_text(re.compile('accurate GPS fix', re.I))
         page.evaluate('at => window.__lineGpsTest.emit(at, 8)', end)
         expect(bearing).to_contain_text(re.compile('within GPS accuracy', re.I))
-        page.locator('#field-compass-toggle').tap()
-        expect(page.locator('#field-compass-toggle')).to_have_attribute('aria-pressed', 'false')
+        # A fresh heading has its own expiry, independent of the existing GPS watch.
         reading = page.locator('#field-compass-reading')
-        before = reading.inner_text()
-        sample(page, 'deviceorientation', webkitCompassHeading=247, webkitCompassAccuracy=2)
-        expect(reading).to_have_text(before)
+        page.clock.install()
+        sample(page, 'deviceorientation', webkitCompassHeading=15, webkitCompassAccuracy=3)
+        expect(reading).to_contain_text('magnetic')
+        page.clock.fast_forward(10001)
+        expect(reading).to_have_text('Waiting for a fresh heading')
         assert page.evaluate('window.__lineGpsTest.records') == {'starts': [1, 2], 'stops': [1]}
         page.locator('#satnav-stop').tap()
+        expect(page.locator('#field-compass-toggle')).to_have_attribute('aria-pressed', 'false')
+        sample(page, 'deviceorientation', webkitCompassHeading=247, webkitCompassAccuracy=2)
+        expect(reading).to_have_text('')
         assert page.evaluate('window.__lineGpsTest.records.stops') == [1, 2]
         compact.overlay_roles(page, ['start-point', 'destination-point'], absent=[compact.MEASURED, compact.RING])
+        # The same cartridge subscribes to the successor panel's non-bubbling Stop.
+        page.evaluate("window.__fieldSensorTest.permission('pending')")
+        page.locator('#field-compass-toggle').tap()
+        page.evaluate("""() => {
+          document.querySelector('#satnav-compact').dispatchEvent(new Event('satnav:stop'));
+          window.__fieldSensorTest.release();
+        }""")
+        expect(page.locator('#field-compass-toggle')).to_have_attribute('aria-pressed', 'false')
+        sample(page, 'deviceorientation', webkitCompassHeading=247, webkitCompassAccuracy=2)
+        expect(reading).to_have_text('')
         assert not errors, errors
         print(f'{label} {width}x{height}: real map taps, access notice, opt-in heading, bearing, accuracy and Stop passed', flush=True)
 
