@@ -8,7 +8,7 @@ const gen='202611222000';
 const live=JSON.parse(fs.readFileSync(path.join(root,'atlas/current.json'),'utf8'));
 const candidate=JSON.parse(fs.readFileSync(path.join(root,'atlas/v',gen,'current.json'),'utf8'));
 const predecessor=JSON.parse(fs.readFileSync(path.join(root,'atlas/v/202611161720/current.json'),'utf8'));
-const approved195=['202611222130','202611222325','202611222343'].includes(live.generation)&&['pipeline-vicinity-button','uk-offtakers-overlay'].every(id=>{
+const approved195=['202611222130','202611222325','202611222343','202611280016'].includes(live.generation)&&['pipeline-vicinity-button','uk-offtakers-overlay'].every(id=>{
  const active=live.cartridges.find(x=>x.id===id),approved=candidate.cartridges.find(x=>x.id===id);
  return active&&approved&&active.sha256===approved.sha256;
 });

@@ -4,7 +4,20 @@ import crypto from 'node:crypto';
 import vm from 'node:vm';
 import path from 'node:path';
 const root=path.resolve(import.meta.dirname,'../..'),read=p=>fs.readFileSync(path.join(root,p),'utf8');
-const current=JSON.parse(read('atlas/current.json'));
+const live=JSON.parse(read('atlas/current.json'));
+const {parent_generation,version,cut_at_utc,note,acceptance,candidate_status,...current} =
+ JSON.parse(read('atlas/manifests/202611222343-composition.json'));
+if(live.generation==='202611280016'){
+ assert.equal(live.previous_generation,current.generation);
+ assert.deepEqual(live.cartridges.slice(0,-1),current.cartridges,'all nine predecessor cartridge descriptors stay exact');
+ assert.deepEqual(live.cartridge_order,[...current.cartridge_order,'vicinity-legal-evidence']);
+ const addition=live.cartridges.at(-1);
+ assert.equal(addition.id,'vicinity-legal-evidence');
+ assert.equal(addition.after,'vicinity-controls-rescue');
+ assert.equal(addition.sha256,'82a99b2522164a3ea928b3a3434728fd1191d0032bdc77ef850e15a6c48226c7');
+}else{
+ assert.deepEqual(live,current,'V9.197 live pointer agrees with its immutable cut');
+}
 const old=JSON.parse(read('atlas/v/202611222325/current.json'));
 assert.equal(current.generation,'202611222343');
 assert.equal(current.previous_generation,'202611222325');
