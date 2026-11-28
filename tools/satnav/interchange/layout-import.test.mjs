@@ -23,6 +23,47 @@ test('reads the GIS snapshot route and preserves the finance model', () => {
   }
 });
 
+test('walks the export cable in a full GIS SLD engineering file without connecting equipment points', () => {
+  const equipments = Array.from({length: 52}, () => feature('Point', C, {type: 'central_inverter'}));
+  const data = collection(
+    ...equipments,
+    feature('Point', A, {type: 'poi', selected_substation_name: 'Test grid node'}),
+    feature('LineString', [B, C], {type: '33kv_radial', role: 'collector_trunk'}),
+    feature('LineString', [A, B], {type: '33kv_radial', role: 'block_branch'}),
+    feature('Point', C, {type: 'export_cable_pin', pin_index: 1, committed_to_route: true}),
+    feature('Polygon', [[A, B, C, A]], {type: 'array_boundary', fin_total_capex_gbp: 100}),
+    feature('LineString', [A, C, B], {type: 'export_cable', routed_by_pins: true}),
+    fix(B, 100),
+  );
+  const before = structuredClone(data);
+  const result = readLayout(data);
+  const choices = layoutChoices(result);
+  assert.equal(choices[0].label, 'Export cable 1');
+  assert.equal(choices.some(c => c.role === 'waypoints'), false);
+  const names = choices.map(c => c.label);
+  for (const label of ['Test grid node', 'Central inverter 52', '33 kV collector trunk 1',
+           '33 kV block branch 1', 'Cable pin 1', 'Array boundary 1']) assert.ok(names.includes(label));
+  let selected;
+  walkLayoutChoice({replacePlan: points => { selected = points; }}, result, choices[0]);
+  assert.deepEqual(selected, [A, C, B]);
+  assert.deepEqual(readLayout(JSON.stringify(result)), result);
+  assert.deepEqual(data, before);
+  assert.ok(!JSON.stringify(result).includes('fin_total_capex_gbp'));
+});
+
+test('recognised GIS electrical roles cannot promote a measured track or bypass other role checks', () => {
+  const measured = feature('LineString', [A, B], {
+    type: '33kv_radial', role: 'collector_trunk', satnavRole: 'walked-track',
+    timestampMs: [5, 8],
+  });
+  assert.deepEqual(layoutChoices(readLayout(measured)), []);
+  for (const props of [
+    {type: '33kv_radial', role: 'walked-track', satnavRole: 'planned-route'},
+    {type: 'export_cable', role: 'collector_trunk'},
+    {type: '33kv_radial', role: 'unrecognised'},
+  ]) assert.throws(() => readLayout(feature('LineString', [A, B], props)));
+});
+
 test('ordered waypoints, selected cable and perimeter become plans; individual point changes TO', () => {
   const layout = readLayout(collection(feature('Point', A, { name: 'Start' }), feature('Point', B),
     feature('LineString', [B,C]), feature('Polygon', [[A,B,C,A]])));
