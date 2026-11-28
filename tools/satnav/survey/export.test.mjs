@@ -32,6 +32,7 @@ test('a design and two recorded segments retain their own geometry and metadata'
   assert.deepEqual(features[6].geometry.coordinates, coordinates[2]);
   assert.equal(features[6].properties.timestampMs, 88000);
   assert.equal(features[6].properties.accuracyM, 3);
+  assert.equal(features[6].properties.order, 0);
   features[5].geometry.coordinates[0][0] = 20;
   assert.deepEqual({ track, perimeter, pins }, original);
 });

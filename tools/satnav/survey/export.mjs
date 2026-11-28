@@ -15,6 +15,7 @@ function measuredFeatures(track) {
   }
 
   let count = 0;
+  let singletons = 0;
   let previousTime = -Infinity;
   const features = [];
   for (const segment of track.segments) {
@@ -38,7 +39,7 @@ function measuredFeatures(track) {
       const geometry = normaliseGeoJSON({ type: 'Point', coordinates: coordinates[0] }).features[0].geometry;
       features.push(feature(geometry, 'walked-fix', {
         timestampMs: timestampMs[0], accuracyM: accuracyM[0],
-        timestamp: timestampMs[0], accuracy: accuracyM[0], order: count,
+        timestamp: timestampMs[0], accuracy: accuracyM[0], order: singletons++,
       }));
     } else {
       const geometry = normaliseGeoJSON({ type: 'LineString', coordinates }).features[0].geometry;
