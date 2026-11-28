@@ -119,6 +119,8 @@ def check_viewport(browser, label, width, height):
         context.add_init_script(compact.GPS_SPY)
         context.add_init_script(SENSOR)
         page = context.new_page()
+        # Heading expiry and Stop must use the same timer implementation.
+        page.clock.install()
         errors = []
         page.on('pageerror', lambda error: errors.append(str(error)))
         page.goto(SITE, wait_until='domcontentloaded')
@@ -161,7 +163,6 @@ def check_viewport(browser, label, width, height):
         expect(bearing).to_contain_text(re.compile('within GPS accuracy', re.I))
         # A fresh heading has its own expiry, independent of the existing GPS watch.
         reading = page.locator('#field-compass-reading')
-        page.clock.install()
         sample(page, 'deviceorientation', webkitCompassHeading=15, webkitCompassAccuracy=3)
         expect(reading).to_contain_text('magnetic')
         page.clock.fast_forward(10001)
