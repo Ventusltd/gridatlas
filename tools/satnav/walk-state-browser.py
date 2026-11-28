@@ -147,8 +147,11 @@ def gps_first_and_fixed_from(page):
     watches(page, 3, 3)
 
 
-def check(browser, url, prepare_context=None):
-    for scenario in (to_first, gps_first_and_fixed_from):
+SCENARIOS = (to_first, gps_first_and_fixed_from)
+
+
+def check(browser, url, prepare_context=None, scenarios=SCENARIOS):
+    for scenario in scenarios:
         with browser.new_context(viewport={"width": 390, "height": 664},
                                  is_mobile=True, has_touch=True) as context:
             context.add_init_script(waypoint["GPS_SPY"])
@@ -173,5 +176,7 @@ if __name__ == "__main__":
         options = {"executable_path": args.executable} if args.executable else {}
         if args.browser == "chromium":
             options["args"] = ["--use-gl=angle", "--use-angle=swiftshader", "--enable-unsafe-swiftshader"]
-        with getattr(playwright, args.browser).launch(**options) as browser:
-            check(browser, args.url)
+        # Release the previous WebGL renderer before loading the next map.
+        for scenario in SCENARIOS:
+            with getattr(playwright, args.browser).launch(**options) as browser:
+                check(browser, args.url, scenarios=(scenario,))
