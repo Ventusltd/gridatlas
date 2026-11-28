@@ -23,7 +23,8 @@ HIT = """el => {
 
 
 def check_header(page, action):
-    page.wait_for_function(f'() => ({GAP})() >= 7.5', timeout=15000)
+    # These emulated viewports have no hardware inset. Wait for both resize observers.
+    page.wait_for_function(f'() => Math.abs(({GAP})() - 8) <= 0.5', timeout=15000)
     gap = page.evaluate(GAP)
     brand = page.locator(BAR + ' .gm-brand-slot .ventus-main')
     expect(brand).to_be_visible()
