@@ -96,6 +96,8 @@ void (async function () {
     if (event.sourceId === sourceId) updateBearing();
   }
   function attachMap() {
+    // The waypoint maps have their own access notice inside the field tools.
+    access.hidden = Boolean(document.getElementById('satnav-access'));
     const current = window.__GRIDATLAS_V9_MAP__;
     if (current && current !== map) {
       map?.off('sourcedata', sourceChanged);
