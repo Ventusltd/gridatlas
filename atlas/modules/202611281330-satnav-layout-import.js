@@ -48,18 +48,13 @@ void async function () {
       const nextMap = survey.getMap();
       if (map !== nextMap) {
         map?.off('style.load', drawLayout);
-        map?.off('idle', drawLayout);
         map = nextMap;
         renderedLayout = null;
         map?.on('style.load', drawLayout);
       }
       if (!map || !layout) return;
       if (!map.getSource(sourceId)) {
-        if (!map.isStyleLoaded()) {
-          map.off('idle', drawLayout);
-          map.once('idle', drawLayout);
-          return;
-        }
+        if (!map.getLayer('l-sat') && !map.isStyleLoaded()) return;
         map.addSource(sourceId, { type: 'geojson', data: layout });
         renderedLayout = layout;
       } else if (renderedLayout !== layout) {

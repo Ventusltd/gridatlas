@@ -53,6 +53,12 @@ def check_browser(browser, name, width, height):
         ]}
         local_file(picker, data)
         expect(status).to_contain_text("2 design · 2 recorded")
+        page.wait_for_function("""() => {
+            const map = window.__GRIDATLAS_V9_MAP__;
+            const features = map?.getSource('satnav-imported-layout')?.serialize()?.data?.features;
+            return features?.length === 4 && map.getLayer('satnav-imported-layout-design') &&
+                   map.getLayer('satnav-imported-layout-fix');
+        }""")
         assert panel.locator("select option").count() == 2
         assert page.evaluate(survey + ".getEndpoints()") == [A, None]
         panel.get_by_role("combobox").select_option(label=marker)
@@ -72,16 +78,39 @@ def check_browser(browser, name, width, height):
         expect(status).to_contain_text("Import failed")
         assert page.evaluate(survey + ".getEndpoints()") == [A, C]
         assert panel.locator("select option").count() == 2
+        assert page.evaluate("window.__GRIDATLAS_V9_MAP__.getSource('satnav-imported-layout').serialize().data") == data
         local_file(picker, data["features"][2])
         expect(status).to_contain_text("0 design · 1 recorded")
         expect(walk).to_be_hidden()
         assert page.evaluate(survey + ".getEndpoints()") == [A, C]
+        panel.get_by_role("button", name="Show layout on map").tap()
+        centre = page.evaluate("window.__GRIDATLAS_V9_MAP__.getCenter().toArray()")
+        assert all(abs(x-y) < 0.00001 for x, y in zip(centre, A)), centre
 
         local_file(picker, {"schema": "ventus.gis-route.v1", "status": "available", "committed": True,
                             "route": feature("LineString", [C, B], type="export_cable"), "pins": []})
         expect(status).to_contain_text("1 design · 0 recorded")
         walk.tap()
         assert page.evaluate(survey + ".getEndpoints()") == [C, B]
+
+        native_fixture = Path(__file__).parent / "fixtures/native-gis-sld.geojson"
+        native = json.loads(native_fixture.read_text())
+        cable = next(f["geometry"]["coordinates"] for f in native["features"] if f["properties"]["type"] == "export_cable")
+        picker.set_input_files(native_fixture)
+        expect(status).to_contain_text("15 design · 0 recorded")
+        options = panel.locator("select option").all_text_contents()
+        assert options[0] == "Export cable 1" and "33 kV collector trunk 1" in options and "33 kV block branch 2" in options, options
+        assert all("Ordered waypoints" not in item for item in options)
+        walk.tap()
+        assert page.evaluate(survey + ".getPins().map(pin => pin.coordinate)") == cable
+        with page.expect_download() as native_export:
+            panel.get_by_role("button", name="Save layout GeoJSON").tap()
+        converted = json.loads(native_export.value.path().read_text())
+        assert {f["properties"]["gisRole"] for f in converted["features"] if "gisRole" in f["properties"]} == {"collector_trunk", "block_branch"}
+        assert "fin_total_capex_gbp" not in json.dumps(converted)
+        local_file(picker, converted)
+        expect(status).to_contain_text("field.geojson · 15 design")
+        assert panel.locator("select option").all_text_contents() == options
         page.locator("#satnav-stop").tap()
         assert page.evaluate("window.__lineGpsTest.records") == {"starts": [1], "stops": [1]}
         assert not leaks, leaks

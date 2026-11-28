@@ -1,5 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import { readFileSync } from 'node:fs';
 import { readLayout, layoutChoices, walkLayoutChoice } from './layout-import.mjs';
 import { exportGeoJSON as legacySurvey } from './geojson-interchange.mjs';
 
@@ -15,12 +16,77 @@ const fix = (coords, timestampMs) => feature('Point', coords, { satnavRole: 'wal
 test('reads the GIS snapshot route and preserves the finance model', () => {
   const original = structuredClone(snapshot);
   const result = readLayout(snapshot);
-  assert.deepEqual(result.features[0], feature('LineString',[A,B],{satnavRole:'planned-route'}));
+  assert.deepEqual(result.features[0], feature('LineString',[A,B],{satnavRole:'planned-route', type:'export_cable'}));
   result.features[0].geometry.coordinates[0][0] = 0;
   assert.deepEqual(snapshot, original);
   for (const status of ['empty','editing','ambiguous','invalid','unavailable']) {
     assert.throws(() => readLayout({ ...snapshot, status }));
   }
+});
+
+test('walks the export cable in a full GIS SLD engineering file without connecting equipment points', () => {
+  const equipments = Array.from({length: 52}, () => feature('Point', C, {type: 'central_inverter'}));
+  const data = collection(
+    ...equipments,
+    feature('Point', A, {type: 'poi', selected_substation_name: 'Test grid node'}),
+    feature('LineString', [B, C], {type: '33kv_radial', role: 'collector_trunk'}),
+    feature('LineString', [A, B], {type: '33kv_radial', role: 'block_branch'}),
+    feature('Point', C, {type: 'export_cable_pin', pin_index: 1, committed_to_route: true}),
+    feature('Polygon', [[A, B, C, A]], {type: 'array_boundary', fin_total_capex_gbp: 100}),
+    feature('LineString', [A, C, B], {type: 'export_cable', routed_by_pins: true}),
+    fix(B, 100),
+  );
+  const before = structuredClone(data);
+  const result = readLayout(data);
+  const choices = layoutChoices(result);
+  assert.equal(choices[0].label, 'Export cable 1');
+  assert.equal(choices.some(c => c.role === 'waypoints'), false);
+  const names = choices.map(c => c.label);
+  for (const label of ['Test grid node', 'Central inverter 52', '33 kV collector trunk 1',
+           '33 kV block branch 1', 'Cable pin 1', 'Array boundary 1']) assert.ok(names.includes(label));
+  let selected;
+  walkLayoutChoice({replacePlan: points => { selected = points; }}, result, choices[0]);
+  assert.deepEqual(selected, [A, C, B]);
+  assert.deepEqual(readLayout(JSON.stringify(result)), result);
+  assert.deepEqual(data, before);
+  assert.ok(!JSON.stringify(result).includes('fin_total_capex_gbp'));
+});
+
+test('recognised GIS electrical roles cannot promote a measured track or bypass other role checks', () => {
+  const measured = feature('LineString', [A, B], {
+    type: '33kv_radial', role: 'collector_trunk', satnavRole: 'walked-track',
+    timestampMs: [5, 8],
+  });
+  assert.deepEqual(layoutChoices(readLayout(measured)), []);
+  for (const props of [
+    {type: '33kv_radial', role: 'walked-track', satnavRole: 'planned-route'},
+    {type: 'export_cable', role: 'collector_trunk'},
+    {type: '33kv_radial', role: 'unrecognised'},
+  ]) assert.throws(() => readLayout(feature('LineString', [A, B], props)));
+});
+
+test('round-trips a financial sandbox drawing exported by the native pinned scripts', () => {
+  // Synthetic controls, two central inverter blocks and one committed cable pin.
+  // gis-sld-v5-drawing.js fd8e16f and gis-sld-v5-export.js 619f4f9, release 202609052024.
+  const raw = JSON.parse(readFileSync(new URL('./fixtures/native-gis-sld.geojson', import.meta.url), 'utf8'));
+  const cable = raw.features.find(f=>f.properties.type === 'export_cable');
+  assert.equal(raw.features.length, 15);
+  const result = readLayout(raw);
+  const choices = layoutChoices(result);
+  assert.deepEqual(choices[0], {index:2, label:'Export cable 1', role:'planned-route'});
+  assert.ok(choices.some(c=>c.label === '33 kV collector trunk 1'));
+  assert.ok(choices.some(c=>c.label === '33 kV block branch 2'));
+  assert.ok(choices.some(c=>c.label === 'Central inverter 2'));
+  assert.equal(choices.some(c=>c.role === 'waypoints'), false);
+  let plan;
+  walkLayoutChoice({replacePlan: points=>{plan=points;}},result,choices[0]);
+  assert.deepEqual(plan,cable.geometry.coordinates);
+  assert.deepEqual(readLayout(JSON.stringify(result)),result);
+  assert.ok(!JSON.stringify(result).includes('fin_total_capex_gbp'));
+  raw.features.push(feature('LineString',[A,C],{type:'33kv_projection_only'}),feature('Point',B));
+  const extended = readLayout(raw);
+  assert.equal(layoutChoices(extended).some(c=>c.index === 15 || c.role === 'waypoints'),false);
+  assert.throws(()=>walkLayoutChoice({},extended,{index:15}),/design/);
 });
 
 test('ordered waypoints, selected cable and perimeter become plans; individual point changes TO', () => {
@@ -53,7 +119,7 @@ test('imports original ordered-fix survey codec without promoting fixes to desig
   file.features.reverse();
   const got = readLayout(file);
   assert.deepEqual(got.features.map(f=>f.properties.satnavRole),['waypoint','waypoint','planned-route','walked-fix','walked-fix']);
-  assert.deepEqual(got.features[3], feature('Point',A,{ satnavRole:'walked-fix',timestampMs:10,accuracyM:3 }));
+  assert.deepEqual(got.features[3], feature('Point',A,{ satnavRole:'walked-fix',timestampMs:10,accuracyM:3,order:0 }));
   assert.deepEqual(readLayout(JSON.stringify(got)), got);
 });
 
@@ -65,7 +131,7 @@ test('rejects ambiguous or invalid geometry, roles, IDs, measurement and referen
     feature('Polygon',[[A,B,C,A],[A,B,C,A]]),
     collection({...item,id:4},{...item,id:4}),
     feature('Point',A,{ satnavRole:'waypoint',role:'walked-fix',timestamp:1,accuracy:4 }),
-    feature('Point',A,{ satnavRole:'walked-fix',accuracyM:4 }),
+    feature('Point',A,{ satnavRole:'walked-fix',accuracyM:-1 }),
     feature('LineString',[A,B],{ satnavRole:'walked-track',timestampMs:[20,10],accuracyM:[1,1] }),
     { ...item, crs:projected }, {...snapshot, route:{...snapshot.route,crs:projected}},
     { ...item,geometry:{...item.geometry,crs:projected}},
@@ -74,10 +140,31 @@ test('rejects ambiguous or invalid geometry, roles, IDs, measurement and referen
   assert.deepEqual(readLayout({...item,crs:{type:'name',properties:{name:'OGC:CRS84'}}}), readLayout(item));
 });
 
-test('combined survey file may exceed 20,000 positions without exceeding the 64,000 total', () => {
+test('a measured fix with unknown accuracy remains a recorded point', () => {
+  const recorded = readLayout(feature('Point', A, { role: 'walked-fix', timestamp: 230 }));
+  assert.deepEqual(recorded.features[0].properties, {satnavRole:'walked-fix',timestampMs:230});
+  assert.deepEqual(layoutChoices(recorded), []);
+});
+
+test('orders source pins by explicit order and a singleton by its global recorded sample index', () => {
+  const data = collection(feature('Point',B,{role:'waypoint',order:1}),feature('Point',A,{role:'waypoint',order:0}),
+    feature('LineString',[A,B],{role:'walked-track'}),feature('Point',C,{role:'walked-fix',order:2,timestamp:40,accuracy:3}));
+  const result = readLayout(data);
+  assert.deepEqual(result.features.slice(0,2).map(f=>f.geometry.coordinates),[A,B]);
+  assert.deepEqual(result.features[3].properties, {satnavRole:'walked-fix',order:2,timestampMs:40,accuracyM:3});
+});
+
+test('labels the separate GIS export cable and radial circuit for selection', () => {
+  const result = readLayout(collection(feature('LineString',[A,B],{type:'export_cable'}),
+    feature('LineString',[B,C],{type:'33kv_radial'})));
+  assert.deepEqual(layoutChoices(result).map(choice=>choice.label), ['Export cable 1','33 kV radial 1']);
+});
+
+test('supports the full 20,000-pin design, its line and 20,000 recorded positions together', () => {
   const route = Array.from({length:20000},(_,i)=>[i/1000,50]);
   const track = feature('LineString',route,{satnavRole:'walked-track'});
-  const layout = readLayout(collection(feature('LineString',route),track,track));
-  assert.equal(layout.features.length,3);
-  assert.throws(() => readLayout(collection(...layout.features, feature('LineString',route))), /64,000/);
+  const pins = route.map(at => feature('Point', at));
+  const layout = readLayout(collection(...pins,feature('LineString',route),track));
+  assert.equal(layout.features.length,20002);
+  assert.throws(() => readLayout(collection(...layout.features, track)), /20,000/);
 });

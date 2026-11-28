@@ -1,4 +1,4 @@
-import { fromGisSnapshot, normaliseGeoJSON } from './geojson.mjs';
+import { readSurveyLayout, editableCoordinates, GIS_TYPES, RADIAL_NAMES } from '../survey/interchange.mjs';
 import {
   importGeoJSON as readLegacySurvey,
   exportGeoJSON as writeLegacySurvey,
@@ -21,33 +21,21 @@ function checkReferenceSystem(value) {
   }
 }
 
-function measuredPoint(feature, properties) {
-  const stamp = properties.timestampMs ?? properties.timestamp;
-  const accuracy = properties.accuracyM ?? properties.accuracy;
-  if (![stamp, accuracy].every(number => Number.isFinite(number) && number >= 0)) {
-    throw Error('A recorded fix needs its original timestamp and accuracy.');
-  }
-  if (feature.geometry?.type !== 'Point') throw Error('A recorded fix must be a point.');
-  const { geometry } = normaliseGeoJSON(feature.geometry).features[0];
-  return { type: 'Feature', geometry, properties: { satnavRole: 'walked-fix', timestampMs: stamp, accuracyM: accuracy } };
-}
-
-function normaliseFeature(feature) {
+// Preserve an engineering layer label when the GIS exporter only supplies its type.
+function sourceFeature(feature, nativeLayout = false) {
   if (feature?.type !== 'Feature' || !feature.geometry) throw Error('Each layout feature needs a geometry.');
   checkReferenceSystem(feature);
   checkReferenceSystem(feature.geometry);
   const props = feature.properties ?? {};
   if (typeof props !== 'object' || Array.isArray(props)) throw Error('Invalid feature properties.');
-  if (props.satnavRole !== undefined && props.role !== undefined && props.satnavRole !== props.role) {
-    throw Error('A feature declares two different navigation roles.');
+  const known = Object.hasOwn(GIS_TYPES, props.type);
+  const extra = {};
+  const hasName = typeof props.name === 'string' && props.name.trim();
+  if (typeof props.label === 'string' && props.label.trim() && !hasName) extra.name = props.label.trim().slice(0, 200);
+  if (nativeLayout && !known && feature.geometry.type === 'LineString' && !props.satnavRole && !props.role) {
+    extra.gisReferenceOnly = true;
   }
-  const role = props.satnavRole ?? props.role;
-  const item = role === 'walked-fix'
-    ? measuredPoint(feature, props)
-    : normaliseGeoJSON({ ...feature, properties: { ...props, satnavRole: role } }).features[0];
-  if (typeof props.name === 'string') item.properties.name = props.name.trim().slice(0, 200);
-  if (typeof feature.id === 'string' && feature.id.length <= 200 || Number.isFinite(feature.id)) item.id = feature.id;
-  return item;
+  return { ...feature, properties: { ...props, ...extra } };
 }
 
 function readFeatures(doc) {
@@ -55,7 +43,11 @@ function readFeatures(doc) {
   if (doc?.schema === 'ventus.gis-route.v1') {
     checkReferenceSystem(doc.route);
     checkReferenceSystem(doc.route?.geometry);
-    return fromGisSnapshot(doc).features;
+    const [route] = readSurveyLayout(doc).features;
+    route.properties.type = 'export_cable';
+    const name = doc.route.properties?.name;
+    if (typeof name === 'string' && name.trim()) route.properties.name = name.trim().slice(0, 200);
+    return [route];
   }
   if (doc?.schema === 'ventus.satnav.geojson.v1') {
     if (!Array.isArray(doc.features) || doc.features.length > MAX_COORDINATES) throw Error('Too many features.');
@@ -81,43 +73,45 @@ export function readLayout(input) {
   if (!Array.isArray(features) || !features.length || features.length > MAX_COORDINATES) {
     throw Error('The layout is empty or exceeds the feature limit.');
   }
+  const nativeLayout = features.some(f => Object.hasOwn(GIS_TYPES, f?.properties?.type));
+  const result = readSurveyLayout({ type: 'FeatureCollection', features: features.map(f => sourceFeature(f, nativeLayout)) });
   let count = 0;
-  const ids = new Set();
-  const normalised = features.map(feature => {
-    const item = normaliseFeature(feature);
-    const { type, coordinates } = item.geometry;
-    count += type === 'Point' ? 1 : type === 'Polygon' ? coordinates[0].length : coordinates.length;
+  for (const { geometry } of result.features) {
+    const coordinates = geometry.coordinates;
+    count += geometry.type === 'Point' ? 1 : geometry.type === 'Polygon' ? coordinates[0].length : coordinates.length;
     if (count > MAX_COORDINATES) throw Error('The layout exceeds 64,000 coordinates.');
-    if (item.id !== undefined) {
-      if (ids.has(item.id)) throw Error('The layout contains duplicate feature IDs.');
-      ids.add(item.id);
-    }
-    return item;
-  });
-  return { type: 'FeatureCollection', features: normalised };
+  }
+  return result;
 }
 
 export function layoutChoices(layout) {
   const choices = [];
+  const cables = [];
   const pins = [];
   const counts = Object.create(null);
+  const nativeLayout = layout.features.some(f => Object.hasOwn(GIS_TYPES, f.properties.type));
   for (const [index, feature] of layout.features.entries()) {
-    const role = feature.properties.satnavRole;
-    counts[role] = (counts[role] ?? 0) + 1;
-    if (role === 'walked-track' || role === 'walked-fix') continue;
-    const label = feature.properties.name || ROLE_NAMES[role] + ' ' + counts[role];
-    choices.push({ index, label, role });
-    if (role === 'waypoint') pins.push(index);
+    const {satnavRole:role, type, gisRole, gisReferenceOnly} = feature.properties;
+    if (role === 'walked-track' || role === 'walked-fix' || gisReferenceOnly) continue;
+    const sourceLabel = Object.hasOwn(GIS_TYPES, type) ? GIS_TYPES[type][1] : '';
+    const kind = Object.hasOwn(RADIAL_NAMES, gisRole) ? RADIAL_NAMES[gisRole] :
+      sourceLabel || (nativeLayout && role === 'waypoint' ? 'Site point' : ROLE_NAMES[role]);
+    counts[kind] = (counts[kind] ?? 0) + 1;
+    const label = feature.properties.name?.trim() || kind + ' ' + counts[kind];
+    const target = type === 'export_cable' ? cables : choices;
+    target.push({index, label, role});
+    if (role === 'waypoint' && !nativeLayout) pins.push(index);
   }
   if (pins.length > 1 && pins.length <= MAX_ROUTE_PINS) {
     choices.unshift({ index: -1, label: 'Ordered waypoints (' + pins.length + ')', role: 'waypoints', pins });
   }
-  return choices;
+  return cables.concat(choices);
 }
 
 export function walkLayoutChoice(survey, layout, choice) {
   if (!choice) throw Error('Select a design feature for the walk.');
   if (choice.role === 'waypoints') {
+    if (layout.features.some(f => Object.hasOwn(GIS_TYPES, f.properties.type))) throw Error('Select a design line or individual site point.');
     const coordinates = choice.pins.map(index => {
       const pin = layout.features[index];
       if (pin?.properties.satnavRole !== 'waypoint') throw Error('Invalid waypoint selection.');
@@ -127,8 +121,9 @@ export function walkLayoutChoice(survey, layout, choice) {
   }
   const selected = layout.features[choice.index];
   const role = selected?.properties.satnavRole;
-  if (role === 'waypoint') return survey.setDestination([...selected.geometry.coordinates]);
-  if (role !== 'planned-route' && role !== 'perimeter') throw Error('Choose a design feature for the walk.');
-  const coords = role === 'perimeter' ? selected.geometry.coordinates[0] : selected.geometry.coordinates;
-  return survey.replacePlan(coords.map(point => [...point]));
+  const points = editableCoordinates(selected);
+  if (!points) throw Error('Choose a design feature for the walk.');
+  if (role === 'waypoint') return survey.setDestination(points[0]);
+  if (role === 'perimeter') points.push([...points[0]]);
+  return survey.replacePlan(points);
 }
