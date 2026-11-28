@@ -16,7 +16,8 @@ ROOT = Path(__file__).resolve().parents[2]
 CARTRIDGE = "atlas/modules/202611281256-satnav-offline-plan.js"
 MODULE = "tools/satnav/field-reliability/offline-plan.mjs"
 PINNED = "tools/satnav/vendor/9698781539e549deaa6ecaa4a2b34610c1f9fd29/vendor/grid-distance-maths/src/geodesy.mjs"
-WORKER = "atlas/v/satnav-offline-plan-20261128-worker.js"
+WORKER = "atlas/v/satnav-offline-plan-202611281311-worker.js"
+PREVIOUS_WORKER = "atlas/v/satnav-offline-plan-20261128-worker.js"
 CACHE = "ventus-satnav-offline-plans-v1"
 VERSIONS = ("satnav-field-test-a", "satnav-field-test-b")
 PLAN_A = [[0, 0], [0.001, 0], [0.001, 0.001]]
@@ -42,7 +43,7 @@ FIXTURE = """<!doctype html><html lang="en"><meta charset="utf-8"><title>Live pl
 def test_site(geodesy):
     with TemporaryDirectory() as directory:
         root = Path(directory)
-        for path in (CARTRIDGE, MODULE, WORKER, PINNED):
+        for path in (CARTRIDGE, MODULE, WORKER, PREVIOUS_WORKER, PINNED):
             destination = root / path
             destination.parent.mkdir(parents=True, exist_ok=True)
             copyfile(geodesy if path == PINNED else ROOT / path, destination)
@@ -129,8 +130,13 @@ def exercise(browser, origin, unavailable):
             page.goto(url)
             page.get_by_text("Offline plan", exact=True).click()
         assert scopes_and_keys(pages[0]) == {"scopes": [], "keys": [], "local": 0, "session": 0}
+        # Upgrading a previously saved version must take over its original scope.
+        legacy_url = f"{origin}/{PREVIOUS_WORKER}"
+        pages[1].evaluate("url => navigator.serviceWorker.register(url, {scope: './'}).then(() => navigator.serviceWorker.ready).then(() => true)", legacy_url)
         save(pages[0], PLAN_A)
         save(pages[1], PLAN_B)
+        pages[1].wait_for_function("url => navigator.serviceWorker.controller?.scriptURL === url",
+                                   arg=f"{origin}/{WORKER}")
 
         # Ordinary basemap fetches, unread GPS and unrelated metadata never enter the cache.
         assert pages[0].evaluate("async () => (await fetch('/sample-tile.pbf')).ok")
