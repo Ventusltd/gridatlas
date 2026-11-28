@@ -24,6 +24,39 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  satnav-compact-browser:
+    if: github.event.pull_request.head.ref == 'integration/satnav-owner-20261128'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        browser: [chromium, webkit]
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          persist-credentials: false
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020
+        with:
+          node-version: '24'
+      - name: Verify compact preview cartridge hash
+        run: node -e "const fs=require('fs'),c=require('crypto'),m=JSON.parse(fs.readFileSync('atlas/v/satnav-compact-202611281237/current.json'));for(const a of m.cartridges){const p=require('path').resolve('atlas/v/satnav-compact-202611281237',a.path);if(c.createHash('sha256').update(fs.readFileSync(p)).digest('hex')!==a.sha256)throw Error(a.id)}"
+      - name: Install browser harness
+        run: |
+          python3 -m venv "$RUNNER_TEMP/satnav-compact-python"
+          "$RUNNER_TEMP/satnav-compact-python/bin/python" -m pip install --require-virtualenv playwright==1.63.0
+          "$RUNNER_TEMP/satnav-compact-python/bin/python" -m playwright install --with-deps ${{ matrix.browser }}
+      - name: Real GridAtlas phone selection and GPS
+        env:
+          LINE_TEST_BROWSERS: ${{ matrix.browser }}
+        run: |
+          node tools/satnav/serve.mjs 8873 > "$RUNNER_TEMP/satnav-compact-server.log" 2>&1 &
+          server_pid=$!
+          trap 'kill "$server_pid" 2>/dev/null || true' EXIT
+          curl --fail --silent --show-error --retry-connrefused --retry 8 --output /dev/null http://127.0.0.1:8873/atlas/v/satnav-compact-202611281237/
+          "$RUNNER_TEMP/satnav-compact-python/bin/python" tools/satnav/compact-browser.py
+
   satnav-practice-line-browser:
     if: github.event.pull_request.head.ref == 'feature/satnav-practice-line-20261124'
     runs-on: ubuntu-24.04
