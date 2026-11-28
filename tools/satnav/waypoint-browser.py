@@ -36,7 +36,7 @@ READ_PINS = '''({source, count, previous}) => {
   const points = data.features.filter(f => f.geometry.type === 'Point' &&
     ['start-point', 'waypoint', 'destination-point'].includes(f.properties.role));
   const pins = points.map(f => ({id:f.properties.pinId, role:f.properties.role, at:f.geometry.coordinates}));
-  if (count !== null && pins.length !== count) return null;
+  if (Number.isInteger(count) && pins.length !== count) return null;
   if (previous && JSON.stringify(previous) === JSON.stringify(pins)) return null;
   return pins;
 }'''
@@ -80,12 +80,14 @@ def emit_fix(page, at, accuracy=5, age=0):
 
 
 def measured(page, at):
-    page.wait_for_function('''({source,at}) => {
-      const features = window.__GRIDATLAS_V9_MAP__.getSource(source)?.serialize()?.data?.features || [];
+    page.wait_for_function('''({source,at,present}) => {
+      const features = window.__GRIDATLAS_V9_MAP__.getSource(source)?.serialize()?.data?.features;
+      if (!Array.isArray(features)) return false;
       const fix = features.find(f => f.properties.role === 'measured-gps');
       const ring = features.some(f => f.properties.role === 'gps-accuracy');
-      return at === null ? !fix && !ring : ring && JSON.stringify(fix?.geometry.coordinates) === JSON.stringify(at);
-    }''', arg={'source': POSITION, 'at': at}, timeout=10000)
+      if (!present) return !fix && !ring;
+      return ring && !!fix && JSON.stringify(fix.geometry.coordinates) === JSON.stringify(at);
+    }''', arg={'source': POSITION, 'at': at, 'present': at is not None}, timeout=10000)
 
 
 def check_bearing(page, planned, at):
