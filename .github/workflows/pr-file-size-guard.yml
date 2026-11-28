@@ -81,6 +81,8 @@ jobs:
         run: |
           node --test tools/satnav/waypoints/state.test.mjs tools/satnav/guidance/ordered.test.mjs tools/satnav/orientation/heading.test.mjs
           node --test tools/satnav/perimeter/perimeter.test.mjs tools/satnav/track/recorder.test.mjs tools/satnav/interchange/geojson.test.mjs tools/satnav/survey/model.test.mjs
+          node --test tools/satnav/interchange/geojson-interchange.test.mjs tools/satnav/interchange/layout-import.test.mjs tools/satnav/survey/interchange.test.mjs
+          SATNAV_GEODESY_FILE=tools/satnav/vendor/9698781539e549deaa6ecaa4a2b34610c1f9fd29/vendor/grid-distance-maths/src/geodesy.mjs node --test tools/satnav/pedestrian/mapped-footpaths.test.mjs
           node tools/satnav/field-reliability/state.test.mjs tools/satnav/vendor/9698781539e549deaa6ecaa4a2b34610c1f9fd29/nav/compass.mjs
       - name: Install the mobile browser harness
         run: |
@@ -97,6 +99,8 @@ jobs:
           curl --fail --silent --show-error --retry-connrefused --retry 8 --output /dev/null http://127.0.0.1:8873/atlas/v/satnav-waypoints-202611281300/
           "$RUNNER_TEMP/satnav-field/bin/python" tools/satnav/waypoint-browser.py
           SURVEY_BROWSERS="$LINE_TEST_BROWSERS" "$RUNNER_TEMP/satnav-field/bin/python" tools/satnav/survey/browser.py
+          "$RUNNER_TEMP/satnav-field/bin/python" tools/satnav/interchange/layout-browser.py
+          "$RUNNER_TEMP/satnav-field/bin/python" tools/satnav/pedestrian-pilot/bristol-browser.py
           "$RUNNER_TEMP/satnav-field/bin/python" tools/satnav/offline-plan-browser.py "$LINE_TEST_BROWSERS"
           "$RUNNER_TEMP/satnav-field/bin/python" tools/satnav/compass-browser.py
 
