@@ -87,6 +87,21 @@ function validatePointOrder(features, role) {
   }
 }
 
+function validateMeasuredOrder(features) {
+  if (!features.some(feature => feature.properties.satnavRole === 'walked-track')) {
+    validatePointOrder(features, 'walked-fix');
+    return;
+  }
+  // V3 counts every recorded sample, including samples in preceding line segments.
+  let sampleIndex = 0;
+  for (const {geometry, properties} of features) {
+    if (properties.satnavRole === 'walked-track') sampleIndex += geometry.coordinates.length;
+    if (properties.satnavRole !== 'walked-fix') continue;
+    if (properties.order !== undefined && properties.order !== sampleIndex) throw new Error('Invalid measured sample order');
+    sampleIndex++;
+  }
+}
+
 export function readSurveyLayout(input) {
   const data = typeof input === 'string' ? JSON.parse(input) : input;
   if (data?.schema === 'ventus.gis-route.v1') return fromGisSnapshot(data);
@@ -94,19 +109,24 @@ export function readSurveyLayout(input) {
     throw new Error('Reproject the layout to WGS84 longitude and latitude before importing');
   }
   const features = featuresOf(data);
-  if (!Array.isArray(features) || features.length > MAX_COORDINATES) throw new Error('GeoJSON feature limit is 20,000');
+  // SV02 pins and SV06 recorded fixes have independent limits. The V3 exporter
+  // can include both, the planned line repeating the pins, and a closed perimeter.
+  if (!Array.isArray(features) || features.length > 4 * MAX_COORDINATES) throw new Error('GeoJSON feature limit exceeded');
   const ids = new Set();
-  let size = 0;
+  const counts = new Map();
   const result = features.map(feature => {
     const clean = normaliseFeature(feature);
-    size += countCoordinates(clean);
-    if (size > MAX_COORDINATES) throw new Error('GeoJSON coordinate limit is 20,000');
+    const role = clean.properties.satnavRole;
+    const group = role === 'walked-fix' ? 'walked-track' : role;
+    const count = (counts.get(group) ?? 0) + countCoordinates(clean);
+    if (count > MAX_COORDINATES) throw new Error('GeoJSON limit is 20,000 coordinates per layer');
+    counts.set(group, count);
     if (clean.id !== undefined && ids.has(clean.id)) throw new Error('Duplicate GeoJSON feature ID');
     if (clean.id !== undefined) ids.add(clean.id);
     return clean;
   });
   validatePointOrder(result, 'waypoint');
-  validatePointOrder(result, 'walked-fix');
+  validateMeasuredOrder(result);
   return {type: 'FeatureCollection', features: result};
 }
 

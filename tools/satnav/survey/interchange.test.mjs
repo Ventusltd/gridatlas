@@ -72,9 +72,30 @@ test('read-only committed GIS SLD routes import without financial metadata', () 
 test('cross-feature cap, geographic coordinates, ring and duplicate IDs are validated', () => {
   const first=feature('Point',a), second=feature('Point',b);
   const long=feature('LineString',Array.from({length:20000},()=>a));
-  assert.throws(()=>readSurveyLayout(collection(long,first)),/20,000/);
+  assert.throws(()=>readSurveyLayout(collection(long,feature('LineString',[a,b]))),/20,000/);
   assert.throws(()=>readSurveyLayout(collection({...first,id:1},{...second,id:1})),/Duplicate/);
   assert.throws(()=>readSurveyLayout({...collection(first),crs:{properties:{name:'EPSG:27700'}}}),/WGS84/);
   assert.throws(()=>readSurveyLayout(feature('Point',[40,91])),/WGS84/);
   assert.throws(()=>readSurveyLayout(feature('Polygon',[[a,b,c,b]])),/CLOSED/);
+});
+
+test('V3 singleton order counts the preceding samples in retained track segments', () => {
+  const line = feature('LineString',[a,b],{satnavRole:'walked-track',role:'walked-track',timestampMs:[10,20],accuracyM:[3,4]});
+  const point = feature('Point', c, {satnavRole:'walked-fix',role:'walked-fix',timestamp:30,timestampMs:30,accuracy:2,accuracyM:2,order:2});
+  const result=readSurveyLayout(collection(line,point));
+  assert.equal(result.features[1].properties.order,2);
+  assert.deepEqual(result.features.map(editableCoordinates),[null,null]);
+  assert.deepEqual(readSurveyLayout(JSON.stringify(result)),result);
+  assert.throws(()=>readSurveyLayout(collection(line,{...point,properties:{...point.properties,order:0}})),/order/);
+});
+
+test('a full field recording can be imported together with its independent design', () => {
+  const points=Array.from({length:20000},(_,i)=>[a[0]-i/100000000,a[1]]);
+  const pins=points.map((p,i)=>feature('Point',p,{role:'waypoint',order:i}));
+  const design=feature('LineString',points,{role:'planned-route'});
+  const trace=feature('LineString',points,{satnavRole:'walked-track'});
+  const combined=readSurveyLayout(collection(...pins,design,trace));
+  assert.equal(combined.features.length,20002);
+  assert.equal(editableCoordinates(combined.features.at(-1)),null);
+  assert.throws(()=>readSurveyLayout(collection(trace,legacyFix(a,0,45000))),/20,000/);
 });
