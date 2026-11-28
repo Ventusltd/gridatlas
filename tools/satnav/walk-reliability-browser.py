@@ -3,6 +3,7 @@ import argparse
 from importlib.util import module_from_spec, spec_from_file_location
 import re
 from pathlib import Path
+from urllib.parse import urlsplit
 
 from playwright.sync_api import expect, sync_playwright
 
@@ -206,6 +207,82 @@ def check(browser, url, tap_map, prepare_context=None):
         context.close()
 
 
+def check_browser_location(browser, url, tap_map, prepare_context=None):
+    """Keep the browser's permission and geolocation implementations in the loop."""
+    context = browser.new_context(viewport={"width": 390, "height": 664}, is_mobile=True,
+                                  has_touch=True, permissions=["geolocation"],
+                                  geolocation={"latitude": 0, "longitude": 0, "accuracy": 4})
+    try:
+        context.add_init_script("""(() => {
+          const geo = navigator.geolocation;
+          const start = geo.watchPosition.bind(geo), stop = geo.clearWatch.bind(geo);
+          const audit = window.__nativeWatches = {started: [], cleared: [], fixes: 0, errors: []};
+          geo.watchPosition = (success, failure, options) => {
+            const id = start(pos => {
+              audit.fixes++;
+              audit.receivedAt = Date.now();
+              audit.timestamp = pos.timestamp;
+              success(pos);
+            }, err => { audit.errors.push(err.code); failure(err); }, options);
+            audit.started.push(id);
+            return id;
+          };
+          geo.clearWatch = id => { audit.cleared.push(id); return stop(id); };
+        })()""")
+        if prepare_context:
+            prepare_context(context)
+        # Measure the browser's position timestamp on a page without GridAtlas
+        # scripts. Some Playwright/WebKit builds scale their synthetic clock.
+        origin = urlsplit(url)
+        probe_url = f"{origin.scheme}://{origin.netloc}/__satnav_geo_clock__"
+        context.route(probe_url, lambda route: route.fulfill(
+            content_type="text/html", body="<!doctype html><title>Location clock</title>"))
+        probe = context.new_page()
+        probe.goto(probe_url)
+        clock = probe.evaluate("""() => new Promise((resolve, reject) =>
+          navigator.geolocation.getCurrentPosition(
+            p => resolve([Date.now(), p.timestamp]), e => reject(Error(e.message)),
+            {maximumAge: 0, timeout: 10000}))""")
+        probe.close()
+        scaled_clock = abs(clock[1] / 1000 - clock[0]) < 10000
+        page = context.new_page()
+        page.goto(url, wait_until="domcontentloaded", timeout=75000)
+        to = page.locator("#satnav-to")
+        expect(to).to_be_enabled(timeout=75000)
+        page.evaluate("() => { window.__GRIDATLAS_V9_MAP__.jumpTo({center:[0,0], zoom:17}); }")
+        to.tap()
+        lon, lat = tap_map(page)["coordinates"]
+        assert page.evaluate("window.__nativeWatches.started") == []
+
+        context.set_geolocation({"longitude": lon - 0.000565, "latitude": lat, "accuracy": 4})
+        page.locator("#satnav-walk-start").tap()
+        context.set_geolocation({"longitude": lon - 0.000565, "latitude": lat, "accuracy": 4})
+        guide = page.locator("#satnav-walk-guidance")
+        page.wait_for_function("window.__nativeWatches.fixes > 0", timeout=12000)
+        if scaled_clock:
+            audit = page.evaluate("window.__nativeWatches")
+            assert abs(audit["timestamp"] / 1000 - audit["receivedAt"]) < 10000
+            expect(guide).to_contain_text("Waiting for a fresh GPS fix")
+            expect_no_bearing(page)
+        else:
+            expect(guide).to_contain_text("63 m", timeout=12000)
+            expect(guide).to_contain_text("90° true")
+            context.set_geolocation({"longitude": lon - 0.000315, "latitude": lat, "accuracy": 4})
+            expect(guide).to_contain_text("35 m", timeout=12000)
+            expect(guide).to_contain_text("90° true")
+        ids = page.evaluate("window.__nativeWatches.started")
+        assert len(ids) == 1
+        page.locator("#satnav-walk-stop").tap()
+        expect(guide).to_have_text("Walk stopped")
+        assert page.evaluate("window.__nativeWatches.cleared") == ids
+        outcome = ("emulated timestamps 1000 times the page clock on both the blank control "
+                   "and map; future fixes rejected, native fresh movement unverified"
+                   if scaled_clock else "browser-granted location delivered 63 to 35 m")
+        print(f"{browser.browser_type.name}: {outcome}; Stop cleared the one native watch")
+    finally:
+        context.close()
+
+
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("browser", choices=("chromium", "webkit"))
@@ -223,5 +300,6 @@ if __name__ == "__main__":
         browser = getattr(playwright, args.browser).launch(**options)
         try:
             check(browser, args.url, compact.map_canvas_tap)
+            check_browser_location(browser, args.url, compact.map_canvas_tap)
         finally:
             browser.close()
