@@ -161,7 +161,47 @@ def check(browser, url, tap_map, prepare_context=None):
         assert counts(page) == [3, 2, 1]
         stop.tap()
         assert counts(page) == [3, 3, 0]
-        print(f"{browser.browser_type.name}: denied/retry, weak/stale, rotation, foreground, late fixes, running watch reuse passed")
+
+        # A user can press My location and Start while the system is still
+        # waiting for permission or the first fix, then stop before it arrives.
+        page.locator("#satnav-location").tap()
+        assert counts(page) == [4, 3, 1]
+        start.tap()
+        assert counts(page) == [4, 3, 1]
+        expect_no_bearing(page)
+        stop.tap()
+        assert counts(page) == [4, 4, 0]
+        emit(page, origin, watch=4)
+        page.evaluate("window.__walkAudit.error(1, 4)")
+        expect(page.locator("#satnav-walk-guidance")).to_have_text("Walk stopped")
+        assert "measured-gps" not in measured_points(page)
+
+        # Start a new walk. A late success or denial from the previous watch
+        # must neither install its position nor clear the replacement watch.
+        start.tap()
+        assert counts(page) == [5, 4, 1]
+        emit(page, closer, watch=4)
+        page.evaluate("window.__walkAudit.error(1, 4)")
+        assert counts(page) == [5, 4, 1]
+        expect_no_bearing(page)
+        assert "measured-gps" not in measured_points(page)
+        emit(page, origin, watch=5)
+        expect_message(page, BEARING)
+        guide = page.locator("#satnav-walk-guidance")
+        current_guidance = guide.inner_text()
+        for old_watch in (1, 2, 3, 4):
+            emit(page, closer, watch=old_watch)
+            page.evaluate("id => window.__walkAudit.error(1, id)", old_watch)
+        assert counts(page) == [5, 4, 1]
+        expect(guide).to_have_text(current_guidance)
+        points = measured_points(page)
+        assert points["measured-gps"] == origin
+        assert points["destination-point"] == destination
+        stop.tap()
+        assert counts(page) == [5, 5, 0]
+        print(f"{browser.browser_type.name}: 5 watch starts, 5 clears, 0 active; "
+              "cold Start 1, Start with existing or pending GPS 0 additional; "
+              "denial/retry, weak/stale, rotation, resume and retired callbacks passed")
     finally:
         context.close()
 
