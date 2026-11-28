@@ -25,7 +25,7 @@ concurrency:
 
 jobs:
   satnav-compact-browser:
-    if: github.event.pull_request.head.ref == 'integration/satnav-owner-20261128'
+    if: github.event.pull_request.head.ref == 'integration/satnav-owner-20261128' || github.event.pull_request.head.ref == 'satnav/sv04-handset-compass-20261128'
     runs-on: ubuntu-24.04
     timeout-minutes: 20
     strategy:
@@ -56,6 +56,10 @@ jobs:
           trap 'kill "$server_pid" 2>/dev/null || true' EXIT
           curl --fail --silent --show-error --retry-connrefused --retry 8 --output /dev/null http://127.0.0.1:8873/atlas/v/satnav-compact-202611281237/
           "$RUNNER_TEMP/satnav-compact-python/bin/python" tools/satnav/compact-browser.py
+          if [[ "$GITHUB_HEAD_REF" == satnav/sv04-handset-compass-20261128 ]]; then
+            node --test tools/satnav/orientation/heading.test.mjs
+            "$RUNNER_TEMP/satnav-compact-python/bin/python" tools/satnav/compass-browser.py
+          fi
 
   satnav-field-browser:
     if: startsWith(github.event.pull_request.head.ref, 'integration/satnav-field-')
@@ -75,7 +79,8 @@ jobs:
           node-version: '24'
       - name: Check waypoint editing, guidance and GPS lifecycle
         run: |
-          node --test tools/satnav/waypoints/state.test.mjs tools/satnav/guidance/ordered.test.mjs
+          node --test tools/satnav/waypoints/state.test.mjs tools/satnav/guidance/ordered.test.mjs tools/satnav/orientation/heading.test.mjs
+          node --test tools/satnav/perimeter/perimeter.test.mjs tools/satnav/track/recorder.test.mjs tools/satnav/interchange/geojson.test.mjs tools/satnav/survey/model.test.mjs
           node tools/satnav/field-reliability/state.test.mjs tools/satnav/vendor/9698781539e549deaa6ecaa4a2b34610c1f9fd29/nav/compass.mjs
       - name: Install the mobile browser harness
         run: |
@@ -91,6 +96,9 @@ jobs:
           trap 'kill "$server_pid" 2>/dev/null || true' EXIT
           curl --fail --silent --show-error --retry-connrefused --retry 8 --output /dev/null http://127.0.0.1:8873/atlas/v/satnav-waypoints-202611281300/
           "$RUNNER_TEMP/satnav-field/bin/python" tools/satnav/waypoint-browser.py
+          SURVEY_BROWSERS="$LINE_TEST_BROWSERS" "$RUNNER_TEMP/satnav-field/bin/python" tools/satnav/survey/browser.py
+          "$RUNNER_TEMP/satnav-field/bin/python" tools/satnav/offline-plan-browser.py "$LINE_TEST_BROWSERS"
+          "$RUNNER_TEMP/satnav-field/bin/python" tools/satnav/compass-browser.py
 
   satnav-practice-line-browser:
     if: github.event.pull_request.head.ref == 'feature/satnav-practice-line-20261124'

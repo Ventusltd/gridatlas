@@ -1,0 +1,30 @@
+import {buildPerimeter} from './perimeter.mjs';
+function runTests(build) {
+  const rad=Math.PI/180,R=6378.137;
+  const maths={distanceKm(a,b,c,d){const h=Math.sin((d-b)*rad/2)**2+Math.cos(b*rad)*Math.cos(d*rad)*Math.sin((c-a)*rad/2)**2;return 2*R*Math.asin(Math.sqrt(Math.min(1,h)));}};
+  const p=[[0,0],[0.001,0],[0.001,0.001],[0,0.001]], original=JSON.stringify(p);
+  let passed=0;
+  const check=(v,m)=>{if(!v)throw Error(m);passed++;};
+  const rejects=(v,code)=>{let got;try{build(v,maths)}catch(e){got=e.message;}check(got===code,`expected ${code}, got ${got}`);};
+  const a=build(p,maths),b=build([...p,p[0]],maths),c=build([...p].reverse(),maths);
+  check(a.plannedWalk.coordinates.length===5,"closure count");
+  check(JSON.stringify(a.plannedWalk.coordinates[0])===JSON.stringify(a.plannedWalk.coordinates.at(-1)),"return to start");
+  check(Math.abs(a.perimeterM-445.278)<0.01,"known equatorial perimeter");
+  check(Math.abs(a.areaM2-12392.029)<0.1,"known equatorial area");
+  check(a.areaM2===b.areaM2&&a.perimeterM===b.perimeterM,"normalise existing closure");
+  check(Math.abs(a.areaM2-c.areaM2)<1e-6,"orientation independent area");
+  check(JSON.stringify(p)===original,"input immutable");
+  a.polygon.coordinates[0][0][0]=50;
+  check(a.plannedWalk.coordinates[0][0]===0&&p[0][0]===0,"outputs independent");
+  check(!a.exceedsFollowerSegmentLimit&&a.plannedOnly&&a.approximate,"planned semantics");
+  check(build([[0,0],[0.02,0],[0.02,0.02],[0,0.02]],maths).exceedsFollowerSegmentLimit,"long leg flag");
+  rejects([[0,0],[1,1],[0,1],[1,0]],"SELF_INTERSECTION");
+  rejects([[0,0],[1,0],[0,0],[0,1]],"DUPLICATE_VERTEX");
+  rejects([[0,0],[1,0],[0.5,0],[0,1]],"BACKTRACKING_EDGE");
+  rejects([[179,0],[-179,0],[-179,1]],"UNSUPPORTED_LONGITUDE_SPAN");
+  rejects([[0,0],[1,0],[1,90]],"INVALID_COORDINATE");
+  rejects([[0,0],[1,0]],"INVALID_VERTEX_COUNT");
+  rejects([[0,0],[1,0],[2,0]],"BACKTRACKING_EDGE");
+  return passed;
+}
+console.log(`${runTests(buildPerimeter)} perimeter assertions passed`);

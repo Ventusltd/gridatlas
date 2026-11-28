@@ -109,14 +109,12 @@ button:focus-visible{outline:2px solid white}button:disabled{opacity:.48}small{c
 }
 
 async function activateWorker(scope) {
-  const workerURL = new URL('../satnav-offline-plan-202611281311-worker.js', scope);
-  const previousURL = new URL('../satnav-offline-plan-20261128-worker.js', scope);
+  const workerURL = new URL('../satnav-offline-plan-202611281315-worker.js', scope);
+  const previousWorkerURL = new URL('../satnav-offline-plan-20261128-worker.js', scope);
   const existing = await navigator.serviceWorker.getRegistration(scope);
   if (existing?.scope === scope.href) {
     for (const worker of [existing.active, existing.installing, existing.waiting]) {
-      if (worker && worker.scriptURL !== workerURL.href && worker.scriptURL !== previousURL.href) {
-        throw new Error('This version uses a different offline map.');
-      }
+      if (worker && worker.scriptURL !== workerURL.href && worker.scriptURL !== previousWorkerURL.href) throw new Error('This version uses a different offline map.');
     }
     if (existing.active?.state === 'activated' && existing.active.scriptURL === workerURL.href) return;
   }
