@@ -106,6 +106,7 @@ jobs:
           if [[ "$GITHUB_HEAD_REF" == integration/satnav-field-20261128-walk ]]; then
             node --test tools/satnav/walk/direct.test.mjs
             "$RUNNER_TEMP/satnav-field/bin/python" tools/satnav/walk/layers-browser.py
+            "$RUNNER_TEMP/satnav-field/bin/python" tools/satnav/walk/saved-plan-browser.py
           fi
 
   satnav-practice-line-browser:

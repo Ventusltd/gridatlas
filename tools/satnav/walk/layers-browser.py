@@ -7,7 +7,7 @@ from runpy import run_path
 from playwright.sync_api import expect, sync_playwright
 
 compact = run_path(str(Path(__file__).resolve().parents[1] / 'compact-browser.py'))
-SITE = os.environ.get('WALK_TEST_URL', 'http://127.0.0.1:8873/atlas/v/satnav-walk-202611281340/')
+SITE = os.environ.get('WALK_TEST_URL', 'http://127.0.0.1:8873/atlas/v/satnav-walk-202611281345/')
 
 
 def check(browser, engine, width, height):
