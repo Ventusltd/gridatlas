@@ -86,7 +86,9 @@ test('V3 singleton order counts the preceding samples in retained track segments
   assert.equal(result.features[1].properties.order,2);
   assert.deepEqual(result.features.map(editableCoordinates),[null,null]);
   assert.deepEqual(readSurveyLayout(JSON.stringify(result)),result);
-  assert.throws(()=>readSurveyLayout(collection(line,{...point,properties:{...point.properties,order:0}})),/order/);
+  const successorFile=collection(line,{...point,properties:{...point.properties,order:0}});
+  assert.equal(readSurveyLayout(successorFile).features[1].properties.order,0);
+  assert.throws(()=>readSurveyLayout(collection(line,{...point,properties:{...point.properties,order:1}})),/order/);
 });
 
 test('a full field recording can be imported together with its independent design', () => {
