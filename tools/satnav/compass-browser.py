@@ -19,9 +19,6 @@ SENSOR = """(() => {
   let answer = 'granted';
   let resolvePending;
   const requests = [];
-  for (const type of ['deviceorientation', 'deviceorientationabsolute']) {
-    window.addEventListener(type, event => { if (event.isTrusted) event.stopImmediatePropagation(); }, true);
-  }
   const Orientation = window.DeviceOrientationEvent || class extends Event {};
   if (!window.DeviceOrientationEvent) {
     Object.defineProperty(window, 'DeviceOrientationEvent', {configurable: true, value: Orientation});
@@ -35,6 +32,11 @@ SENSOR = """(() => {
   });
   window.__fieldSensorTest = {
     requests,
+    isolate() {
+      for (const type of ['deviceorientation', 'deviceorientationabsolute']) {
+        window.addEventListener(type, event => { if (event.isTrusted) event.stopImmediatePropagation(); }, true);
+      }
+    },
     permission(value) { answer = value; },
     release() { resolvePending('granted'); },
     sample(type, properties) {
@@ -90,6 +92,8 @@ def sample(page, event_type, **properties):
 
 
 def check_heading(page):
+    # The composer replaces the document and clears listeners installed on the loader.
+    page.evaluate("window.__fieldSensorTest.isolate()")
     toggle = page.locator('#field-compass-toggle')
     reading = page.locator('#field-compass-reading')
     angle = page.evaluate('screen.orientation?.angle ?? window.orientation ?? 0')
