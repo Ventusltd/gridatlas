@@ -124,6 +124,6 @@ if __name__ == "__main__":
         if args.browser == "chromium":
             options["args"] = ["--enable-webgl", "--use-gl=angle", "--use-angle=swiftshader",
                                "--enable-unsafe-swiftshader"]
-        with getattr(playwright, args.browser).launch(**options) as browser:
-            for viewport in [(390, 664), (664, 390)]:
+        for viewport in [(390, 664), (664, 390)]:
+            with getattr(playwright, args.browser).launch(**options) as browser:
                 check(browser, args.url, *viewport)
