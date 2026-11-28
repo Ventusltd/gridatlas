@@ -173,7 +173,8 @@ void async function () {
       const isPath = mode.value === 'walking';
       const label = isPath ? 'Walking route' : 'Direct to pin';
       let text = '';
-      if (isPath && routeState === 'unavailable') text = 'Walking route unavailable here · choose Direct to pin';
+      if (stopped && !active) text = 'Walk stopped';
+      else if (isPath && routeState === 'unavailable') text = 'Walking route unavailable here · choose Direct to pin';
       else if (isPath && routeState === 'loading') text = 'Checking mapped footpaths';
       else if (active) {
         const sample = api.getFix();
@@ -191,8 +192,7 @@ void async function () {
             text = parts.join(' · ');
           } else text = label + ' · Waiting for a fresh GPS fix';
         }
-      } else if (stopped) text = 'Walk stopped';
-      else if (isPath && routeState === 'mapped') text = 'Walking route ready · check current access';
+      } else if (isPath && routeState === 'mapped') text = 'Walking route ready · check current access';
       if (message.textContent !== text) message.textContent = text;
     }
     start.onclick = () => {
@@ -204,11 +204,13 @@ void async function () {
       syncPlan();
     };
     function stopWalk() {
-      active = false;stopped = true;arrived = false;walkingOrigin = null;direct.restart();render();
+      active = false;stopped = true;walkingOrigin = null;
+      request++;key = '';clearRoute('none');direct.restart();render();
     }
     stop.onclick = () => {stopWalk();if (api.isTracking()) stopGps.click();};
     mode.onchange = () => {walkingOrigin = null;stopped = false;arrived = false;direct.restart();syncPlan();};
     panel.addEventListener('satnav:fix',() => {
+      if (stopped && !active) {render();return;}
       if (mode.value === 'walking' && !walkingOrigin && !api.getEndpoints()[0]) syncPlan();
       else render();
     });
