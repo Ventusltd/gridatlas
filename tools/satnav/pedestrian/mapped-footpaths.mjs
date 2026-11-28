@@ -109,7 +109,13 @@ function locate(point, chains, maths) {
 // The caller supplies the pinned Ventus distanceKm/distanceToSegmentKm functions.
 // Pins select positions on the mapped line. The measured GPS fix stays independent.
 export function createBristolFootpathRouter(collection, maths) {
-  const chains = chainsFor(readSections(collection), maths);
+  return createMappedFootpathRouter(readSections(collection), maths, COUNCIL_LAYER);
+}
+
+// A source-specific reader must have verified foot access, chain membership
+// and section order before passing its mapped sections to the shared clipper.
+export function createMappedFootpathRouter(sections, maths, source) {
+  const chains = chainsFor(sections, maths);
   return function route(from, to, excludedSections = []) {
     if (!Array.isArray(excludedSections) || !excludedSections.every(x => typeof x === 'string')) {
       return unavailable('invalid-closures');
@@ -149,7 +155,7 @@ export function createBristolFootpathRouter(collection, maths) {
       fromOffsetM: start.offsetM,
       toOffsetM: finish.offsetM,
       currentAccess: 'unverified',
-      source: COUNCIL_LAYER,
+      source,
     };
   };
 }

@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import { createHash } from 'node:crypto';
 import { readFile } from 'node:fs/promises';
 import test from 'node:test';
+import { createPedestrianRouter, loadPedestrianRouter } from './council-router.mjs';
 import { createBristolFootpathRouter } from './mapped-footpaths.mjs';
 
 const revision = '8e91b07d8312acca5bcaef43e839f06a3b1d642a';
@@ -15,6 +16,8 @@ assert.equal(blob, '5a0320ca6db05273fae14f786b20223b088bc60b');
 const maths = await import('data:text/javascript;base64,' + bytes.toString('base64'));
 const bundle = JSON.parse(await readFile(new URL('bristol-footpaths.geojson', import.meta.url)));
 const route = createBristolFootpathRouter(bundle, maths);
+const surreyBytes = await readFile(new URL('mickleham-footpaths-20260907.geojson', import.meta.url));
+const surrey = JSON.parse(surreyBytes);
 const source = code => bundle.features.find(f => f.properties.ROUTE_CODE === code).geometry.coordinates;
 const endpoints = (first, last) => [source(first)[0], source(last).at(-1)];
 const route21 = endpoints('BCC/21/10', 'BCC/21/30');
@@ -104,4 +107,71 @@ test('snapshot validation and output do not corrupt input or future routes', () 
   const first=route(...route21);
   first.geometry.coordinates[1][0]=0;
   assert.notEqual(route(...route21).geometry.coordinates[1][0],0);
+});
+
+const councilRoute = createPedestrianRouter({ bristol: bundle, mickleham: surrey }, maths);
+const sourceRecord = id => surrey.features.find(f => f.id === id).geometry.coordinates;
+const example = [sourceRecord(5309)[0], sourceRecord(6637).at(-1)];
+function middleOfSection(id) {
+  const coordinates = sourceRecord(id), i = Math.floor((coordinates.length - 1) / 2);
+  return coordinates[i].map((n, axis) => (n + coordinates[i + 1][axis]) / 2);
+}
+
+test('Mickleham FP 588 follows four official sections and preserves publication details', () => {
+  const answer = councilRoute(...example);
+  assert.equal(answer.status, 'mapped');
+  assert.equal(answer.route, 'Mickleham FP 588');
+  assert.deepEqual(answer.sectionCodes, [5309, 7905, 9689, 6637].map(id => 'Mickleham/' + id));
+  assert.deepEqual(answer.geometry.coordinates[0], example[0]);
+  assert.deepEqual(answer.geometry.coordinates.at(-1), example[1]);
+  assert.equal(answer.geometry.coordinates.length, 15);
+  assert.ok(Math.abs(answer.distanceM - 513.475) < .01);
+  assert.deepEqual(councilRoute(example[1], example[0]).geometry.coordinates, [...answer.geometry.coordinates].reverse());
+  assert.equal(answer.currentAccess, 'unverified');
+  assert.equal(answer.attribution, surrey.attribution);
+  assert.equal(answer.closureNotices, surrey.closureNotices);
+  assert.equal(councilRoute(...example, ['Mickleham/7905']).reason, 'excluded-section');
+});
+
+test('different footpath numbers and disconnected sections with the same number stay separate', () => {
+  assert.equal(councilRoute(middleOfSection(6637), middleOfSection(742)).reason, 'no-mapped-connection');
+  assert.equal(councilRoute(middleOfSection(72), middleOfSection(3809)).reason, 'no-mapped-connection');
+  assert.equal(councilRoute(example[0], [0, 52]).reason, 'outside-coverage');
+  assert.equal(councilRoute(example[0], route21[1]).reason, 'outside-coverage');
+});
+
+test('a removed access flag creates an unroutable gap even on the same numbered footpath', () => {
+  const changed = structuredClone(surrey);
+  changed.features.find(f => f.id === 7905).properties.accessCode = 'unknown';
+  const gated = createPedestrianRouter({ mickleham: changed }, maths);
+  assert.equal(gated(...example).reason, 'no-mapped-connection');
+  assert.throws(() => createPedestrianRouter({ mickleham: { ...surrey, source: 'user-layout' } }, maths));
+});
+
+test('the shared entry preserves Bristol distances, sections and source attribution', () => {
+  const forward = route(...route25), combined = councilRoute(...route25);
+  assert.equal(combined.status, 'mapped');
+  assert.deepEqual(combined.geometry, forward.geometry);
+  assert.equal(combined.distanceM, forward.distanceM);
+  assert.equal(combined.attribution, bundle.source.attribution);
+});
+
+test('the loader requests two fixed files and rejects altered bytes independently', async t => {
+  const urls = [];
+  let broken = false;
+  t.mock.method(globalThis, 'fetch', async url => {
+    urls.push(String(url));
+    if (url.pathname.endsWith('bristol-footpaths.geojson')) return new Response('modified');
+    if (broken) return new Response('', { status: 404 });
+    return new Response(surreyBytes);
+  });
+  const available = await loadPedestrianRouter(maths);
+  assert.equal(available(...example).status, 'mapped');
+  assert.equal(available(...route21).reason, 'outside-coverage');
+  broken = true;
+  const unavailable = await loadPedestrianRouter(maths);
+  assert.equal(unavailable(...example).reason, 'footpath-data-unavailable');
+  assert.deepEqual([...new Set(urls.map(raw => new URL(raw).pathname.split('/').at(-1)))].sort(),
+    ['bristol-footpaths.geojson', 'mickleham-footpaths-20260907.geojson']);
+  assert.ok(urls.every(raw => !new URL(raw).search));
 });
