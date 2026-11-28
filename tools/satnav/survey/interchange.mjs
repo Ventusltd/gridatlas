@@ -92,13 +92,22 @@ function validateMeasuredOrder(features) {
     validatePointOrder(features, 'walked-fix');
     return;
   }
-  // V3 counts every recorded sample, including samples in preceding line segments.
+  // The first V3 exporter counted all samples; its successor counted isolated fixes.
+  // Both encodings retain segment order in the FeatureCollection.
   let sampleIndex = 0;
+  let singletonIndex = 0;
+  let globalOrder = true;
+  let singletonOrder = true;
   for (const {geometry, properties} of features) {
     if (properties.satnavRole === 'walked-track') sampleIndex += geometry.coordinates.length;
     if (properties.satnavRole !== 'walked-fix') continue;
-    if (properties.order !== undefined && properties.order !== sampleIndex) throw new Error('Invalid measured sample order');
+    if (properties.order !== undefined) {
+      globalOrder = globalOrder && properties.order === sampleIndex;
+      singletonOrder = singletonOrder && properties.order === singletonIndex;
+      if (!globalOrder && !singletonOrder) throw new Error('Invalid measured sample order');
+    }
     sampleIndex++;
+    singletonIndex++;
   }
 }
 
