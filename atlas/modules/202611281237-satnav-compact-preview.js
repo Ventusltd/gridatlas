@@ -30,7 +30,7 @@ void async function () {
   panel.innerHTML='<button type="button" id="satnav-from" aria-pressed="false"><b>FROM</b><span>My location</span></button><button type="button" id="satnav-to" aria-pressed="false"><b>TO</b><span>Tap map</span></button><div id="satnav-gps-row"><button type="button" id="satnav-location">My location</button><button type="button" id="satnav-stop" disabled>Stop</button></div><p id="satnav-status" role="status">Loading map</p>';
   document.body.append(panel);
   const fromButton=panel.querySelector('#satnav-from'), toButton=panel.querySelector('#satnav-to'), locate=panel.querySelector('#satnav-location'), stop=panel.querySelector('#satnav-stop'), status=panel.querySelector('#satnav-status');
-  let map, source, first=null, end=null, picking=null, fix=null, watch=null, generation=0, useLocation=true, notice='';
+  let map, source, first=null, end=null, picking=null, fix=null, watch=null, generation=0, useLocation=true, pendingLocation=false, notice='', drawnKey=null;
   const sourceId='gridatlas-satnav-compact';
   const layers=[
     ['accuracy','gps-accuracy','fill',{'fill-color':'#ffdf61','fill-opacity':.22}],
@@ -54,13 +54,14 @@ void async function () {
   }
   function render() {
     const {out,distance}=features();
-    if(map&&source&&map.getSource(sourceId)===source)source.setData({type:'FeatureCollection',features:out});
+    const key=JSON.stringify(out);
+    if(map&&source&&map.getSource(sourceId)===source&&key!==drawnKey){source.setData({type:'FeatureCollection',features:out});drawnKey=key;}
     fromButton.disabled=toButton.disabled=!map;
     fromButton.querySelector('span').textContent=picking==='from'?'Tap map':useLocation?'My location':first?'Selected point':'Tap map';
     toButton.querySelector('span').textContent=picking==='to'?'Tap map':end?'Selected point':'Tap map';
     fromButton.setAttribute('aria-pressed',String(picking==='from'));
     toButton.setAttribute('aria-pressed',String(picking==='to'));
-    locate.disabled=!map||watch!==null;
+    locate.disabled=!map;
     stop.disabled=watch===null;
     const parts=[];
     if(!map)parts.push('Loading map');
@@ -77,7 +78,7 @@ void async function () {
     if(!picking||!event.lngLat)return;
     const at=[event.lngLat.lng,event.lngLat.lat];
     if(!validCoordinate(at))return;
-    if(picking==='from'){first=at;useLocation=false;}else end=at;
+    if(picking==='from'){first=at;useLocation=false;pendingLocation=false;}else end=at;
     picking=null;
     render();
   }
@@ -85,20 +86,28 @@ void async function () {
   function stopTracking(message){
     generation++;
     if(watch!==null)navigator.geolocation.clearWatch(watch);
-    watch=null;fix=null;notice=message;render();
+    watch=null;fix=null;pendingLocation=false;notice=message;render();
+  }
+  function applyLocation(){
+    if(!pendingLocation||!fix||!validCoordinate([fix.longitude,fix.latitude]))return;
+    first=[fix.longitude,fix.latitude];useLocation=true;pendingLocation=false;
+    map?.jumpTo({center:first,zoom:Math.max(15,map.getZoom())});
   }
   locate.onclick=()=>{
-    if(watch!==null)return;
     if(!isSecureContext||!navigator.geolocation){notice='Location needs HTTPS';render();return;}
-    useLocation=true;first=null;picking=null;
-    const active=++generation;notice='Waiting for GPS';
+    pendingLocation=true;picking=null;notice='Waiting for GPS';
+    if(watch!==null){
+      if(fix&&fixQuality(fix)==='usable'&&Date.now()-fix.timestampMs<=MAX_AGE_MS){applyLocation();notice='';}
+      render();return;
+    }
+    const active=++generation;
     try {
       watch=navigator.geolocation.watchPosition(position=>{
         if(active!==generation)return;
         const {longitude,latitude,accuracy:accuracyM}=position.coords;
         fix={longitude,latitude,accuracyM,timestampMs:position.timestamp};
         if(fixQuality(fix)==='usable'&&Date.now()-fix.timestampMs<=MAX_AGE_MS&&validCoordinate([longitude,latitude])){
-          if(useLocation&&!first){first=[longitude,latitude];map?.jumpTo({center:first,zoom:Math.max(15,map.getZoom())});}
+          applyLocation();
           notice='';
         }else notice='Waiting for a usable GPS fix';
         render();
@@ -118,11 +127,11 @@ void async function () {
     if(panel.parentElement!==host)host.append(panel);
     const next=window.__GRIDATLAS_V9_MAP__;
     if(next&&next.getLayer('l-sat')&&next!==map){
-      map?.off('click',mapClick);map=next;source=null;map.on('click',mapClick);map.resize();
+      map?.off('click',mapClick);map=next;source=null;drawnKey=null;map.on('click',mapClick);map.resize();
     }
     if(map&&!map.getSource(sourceId)){
       map.addSource(sourceId,{type:'geojson',data:{type:'FeatureCollection',features:[]}});
-      source=map.getSource(sourceId);
+      source=map.getSource(sourceId);drawnKey=null;
       for(const [id,role,type,paint] of layers)map.addLayer({id:sourceId+'-'+id,source:sourceId,type,paint,filter:['==',['get','role'],role]});
     }
     if(fix&&Date.now()-fix.timestampMs>MAX_AGE_MS){fix=null;notice='GPS fix is stale';}
