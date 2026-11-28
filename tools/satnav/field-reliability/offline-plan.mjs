@@ -116,7 +116,7 @@ async function activateWorker(scope) {
     for (const worker of [existing.active, existing.installing, existing.waiting]) {
       if (worker && worker.scriptURL !== workerURL.href && worker.scriptURL !== previousWorkerURL.href) throw new Error('This version uses a different offline map.');
     }
-    if (existing.active?.state === 'activated') return;
+    if (existing.active?.state === 'activated' && existing.active.scriptURL === workerURL.href) return;
   }
   const registration = await navigator.serviceWorker.register(workerURL, {scope: scope.pathname});
   const worker = registration.installing || registration.waiting || registration.active;
