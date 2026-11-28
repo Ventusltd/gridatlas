@@ -65,6 +65,22 @@ def check(browser, label, width, height):
             ?.serialize().data.features.filter(f => f.properties.satnavRole === 'walked-fix').length === 2""")
         scope.get_by_role('button', name='Open perimeter').tap()
         expect(scope.locator('[data-plan]')).to_be_empty()
+        # The follower bounds lateral deviation on long legs. Ordered compass guidance still returns to FROM.
+        long_ring = [[0, 51], [.02, 51], [.02, 51.001]]
+        guidance = page.locator('#satnav-guide')
+        page.locator('#satnav-location').tap()
+        page.evaluate('at => window.__lineGpsTest.emit(at, 3)', long_ring[0])
+        page.evaluate("pins => document.querySelector('#satnav-compact').satnavSurvey.replacePlan(pins)", long_ring)
+        scope.get_by_role('button', name='Close perimeter').tap()
+        expect(scope.locator('[data-plan]')).to_contain_text('Deviation unavailable on legs over 1 km')
+        for point, expected_target in zip(long_ring, ['Pin 2', 'Pin 3', 'Return to FROM']):
+            page.evaluate('at => window.__lineGpsTest.emit(at, 3)', point)
+            expect(guidance).to_contain_text(expected_target)
+        expect(guidance).to_contain_text('true')
+        expect(guidance).to_contain_text('remaining')
+        page.evaluate('at => window.__lineGpsTest.emit(at, 3)', long_ring[0])
+        expect(guidance).to_have_text('Arrived at the final pin')
+        page.locator('#satnav-stop').tap()
         assert not errors, errors
         print(f'{label} {width}×{height} · perimeter, watch, pause, gaps, actual GeoJSON download passed', flush=True)
     finally:
