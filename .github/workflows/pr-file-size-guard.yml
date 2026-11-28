@@ -103,6 +103,11 @@ jobs:
           "$RUNNER_TEMP/satnav-field/bin/python" tools/satnav/pedestrian-pilot/bristol-browser.py
           "$RUNNER_TEMP/satnav-field/bin/python" tools/satnav/offline-plan-browser.py "$LINE_TEST_BROWSERS"
           "$RUNNER_TEMP/satnav-field/bin/python" tools/satnav/compass-browser.py
+          if [[ "$GITHUB_HEAD_REF" == integration/satnav-field-20261128-walk ]]; then
+            node --test tools/satnav/walk/direct.test.mjs
+            "$RUNNER_TEMP/satnav-field/bin/python" tools/satnav/walk/layers-browser.py
+            "$RUNNER_TEMP/satnav-field/bin/python" tools/satnav/walk/saved-plan-browser.py
+          fi
 
   satnav-practice-line-browser:
     if: github.event.pull_request.head.ref == 'feature/satnav-practice-line-20261124'
