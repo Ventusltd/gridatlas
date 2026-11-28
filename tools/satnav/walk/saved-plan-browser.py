@@ -6,6 +6,7 @@ import os
 import re
 from pathlib import Path
 from runpy import run_path
+from tempfile import TemporaryDirectory
 
 from playwright.sync_api import expect, sync_playwright
 
@@ -43,8 +44,13 @@ def feature(kind, coordinates, role, **properties):
             "properties": {"satnavRole": role, **properties}}
 
 
-def check_browser(browser, name, width, height):
-    with browser.new_context(viewport={"width": width, "height": height}, is_mobile=True, has_touch=True) as context:
+def check_browser(engine, name, width, height):
+    options = {"args": ["--enable-webgl", "--use-gl=angle", "--use-angle=swiftshader",
+                        "--enable-unsafe-swiftshader"]} if name == "chromium" else {}
+    # An ephemeral WebKit context discards its cache when its last tab closes.
+    with TemporaryDirectory() as profile, engine.launch_persistent_context(
+        profile, viewport={"width": width, "height": height}, is_mobile=True, has_touch=True, **options
+    ) as context:
         context.add_init_script(helpers["GPS_SPY"])
         page = context.new_page()
         open_map(page)
@@ -134,8 +140,5 @@ if __name__ == "__main__":
     with sync_playwright() as driver:
         for engine in os.environ.get("LINE_TEST_BROWSERS", "chromium,webkit").split(","):
             engine = engine.strip()
-            options = {"args": ["--enable-webgl", "--use-gl=angle", "--use-angle=swiftshader",
-                                "--enable-unsafe-swiftshader"]} if engine == "chromium" else {}
-            with getattr(driver, engine).launch(**options) as browser:
-                for size in [(390, 664), (664, 390)]:
-                    check_browser(browser, engine, *size)
+            for size in [(390, 664), (664, 390)]:
+                check_browser(getattr(driver, engine), engine, *size)
