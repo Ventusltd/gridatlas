@@ -19,9 +19,6 @@ SENSOR = """(() => {
   let answer = 'granted';
   let resolvePending;
   const requests = [];
-  for (const type of ['deviceorientation', 'deviceorientationabsolute']) {
-    window.addEventListener(type, event => { if (event.isTrusted) event.stopImmediatePropagation(); }, true);
-  }
   const Orientation = window.DeviceOrientationEvent || class extends Event {};
   if (!window.DeviceOrientationEvent) {
     Object.defineProperty(window, 'DeviceOrientationEvent', {configurable: true, value: Orientation});
@@ -35,6 +32,11 @@ SENSOR = """(() => {
   });
   window.__fieldSensorTest = {
     requests,
+    isolate() {
+      for (const type of ['deviceorientation', 'deviceorientationabsolute']) {
+        window.addEventListener(type, event => { if (event.isTrusted) event.stopImmediatePropagation(); }, true);
+      }
+    },
     permission(value) { answer = value; },
     release() { resolvePending('granted'); },
     sample(type, properties) {
@@ -125,6 +127,9 @@ def check_viewport(browser, label, width, height):
         page.wait_for_function("window.__GRIDATLAS_V9_MAP__?.getLayer('l-sat')", timeout=90000)
         expect(page.locator('#satnav-from')).to_be_enabled(timeout=30000)
         expect(page.locator('#field-compass-toggle')).to_be_visible()
+        # The composer replaces the document. Install the hardware-event filter
+        # on the final Window listeners before delivering deterministic samples.
+        page.evaluate('window.__fieldSensorTest.isolate()')
         canvas = page.locator('#map canvas.maplibregl-canvas').first.bounding_box()
         assert canvas and canvas['width'] * canvas['height'] >= width * height * .85, canvas
         check_notice(page)
