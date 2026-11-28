@@ -1,0 +1,17 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {exportGeoJSON,importGeoJSON,importGisRouteSnapshot} from './geojson-interchange.mjs';
+const a=[-0.3,51.5],b=[-0.31,51.51],c=[-0.32,51.5];
+const data={pins:[a,b,c],plannedRoute:[a,b,c],perimeter:[a,b,c,a],walkedTrack:[{coordinate:b,timestamp:1000,accuracy:5},{coordinate:c,timestamp:2000,accuracy:8}]};
+const raw=(type,coordinates,properties={})=>({type:'FeatureCollection',features:[{type:'Feature',geometry:{type,coordinates},properties}]});
+test('full roundtrip retains independent planned and measured geometry',()=>assert.deepEqual(importGeoJSON(exportGeoJSON(data)),data));
+test('one recorded fix survives',()=>assert.deepEqual(importGeoJSON(exportGeoJSON({walkedTrack:[data.walkedTrack[0]]})).walkedTrack,[data.walkedTrack[0]]));
+test('untagged point is never measured GPS',()=>assert.deepEqual(importGeoJSON(raw('Point',a)).walkedTrack,[]));
+test('generic line becomes planned route',()=>assert.deepEqual(importGeoJSON(raw('LineString',[a,b])).plannedRoute,[a,b]));
+test('reject invalid coordinate and open polygon',()=>{assert.throws(()=>exportGeoJSON({pins:[[181,0]]}));assert.throws(()=>exportGeoJSON({perimeter:[a,b,c,b]}));});
+test('reject unsupported holes rather than discard them',()=>assert.throws(()=>importGeoJSON(raw('Polygon',[[a,b,c,a],[a,b,c,a]]))));
+test('reject bad GPS metadata and reverse time',()=>{assert.throws(()=>exportGeoJSON({walkedTrack:[{coordinate:a,timestamp:1,accuracy:-1}]}));assert.throws(()=>exportGeoJSON({walkedTrack:[...data.walkedTrack].reverse()}));});
+test('reject duplicate waypoint order',()=>{const d=exportGeoJSON({pins:[a,b]});d.features[1].properties.order=0;assert.throws(()=>importGeoJSON(d));});
+test('committed GIS route copied, source not mutated',()=>{const snap={schema:'ventus.gis-route.v1',status:'available',committed:true,route:{geometry:{type:'LineString',coordinates:[a,b]},properties:{export_cable_length_km:42}}};const before=JSON.stringify(snap);const out=importGisRouteSnapshot(snap);out.pins[0][0]=0;assert.deepEqual(out.plannedRoute,[a,b]);assert.equal(JSON.stringify(snap),before);});
+test('editing, unavailable and uncommitted snapshots rejected',()=>{for(const status of ['editing','unavailable','invalid','ambiguous'])assert.throws(()=>importGisRouteSnapshot({schema:'ventus.gis-route.v1',status,committed:true}));assert.throws(()=>importGisRouteSnapshot({schema:'ventus.gis-route.v1',status:'available',committed:false}));});
+test('export strips unrelated private properties',()=>assert.equal(JSON.stringify(exportGeoJSON({...data,account:'secret'})).includes('secret'),false));
