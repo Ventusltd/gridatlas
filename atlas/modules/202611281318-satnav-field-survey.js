@@ -84,7 +84,7 @@
         if (polygon) {
           const area = polygon.areaM2 < 10_000 ? Math.round(polygon.areaM2) + ' m²' : polygon.areaHa.toFixed(2) + ' ha';
           planText.textContent = 'Planned perimeter ' + length(polygon.perimeterM) + ' · ' + area +
-            (polygon.exceedsFollowerSegmentLimit ? ' · Deviation unavailable on legs over 1 km.' : '');
+            (polygon.exceedsFollowerSegmentLimit ? ' · Use legs of 1 km or less for guidance.' : '');
         } else planText.textContent = '';
         const progress = { recording: 'Recording', paused: 'Paused', stopped: 'Stopped' }[survey.status];
         if (survey.full) trackText.textContent = '20,000 fixes recorded. Export your track.';
@@ -94,8 +94,10 @@
 
       function applyLoop() {
         try {
-          survey.close(api.getPins());
-          if (api.setClosedLoop(true) === false) message.textContent = 'Perimeter drawn. Return guidance unavailable.';
+          const polygon = survey.close(api.getPins());
+          const canFollow = !polygon.exceedsFollowerSegmentLimit;
+          const accepted = api.setClosedLoop(canFollow);
+          if (canFollow && accepted === false) message.textContent = 'Perimeter drawn. Return guidance unavailable.';
         } catch (error) {
           survey.reopen();
           api.setClosedLoop(false);
