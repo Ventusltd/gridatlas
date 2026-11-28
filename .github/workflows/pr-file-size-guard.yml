@@ -25,7 +25,7 @@ concurrency:
 
 jobs:
   satnav-compact-browser:
-    if: github.event.pull_request.head.ref == 'integration/satnav-owner-20261128'
+    if: github.event.pull_request.head.ref == 'integration/satnav-owner-20261128' || github.event.pull_request.head.ref == 'satnav/sv04-handset-compass-20261128'
     runs-on: ubuntu-24.04
     timeout-minutes: 20
     strategy:
@@ -56,6 +56,10 @@ jobs:
           trap 'kill "$server_pid" 2>/dev/null || true' EXIT
           curl --fail --silent --show-error --retry-connrefused --retry 8 --output /dev/null http://127.0.0.1:8873/atlas/v/satnav-compact-202611281237/
           "$RUNNER_TEMP/satnav-compact-python/bin/python" tools/satnav/compact-browser.py
+          if [[ "$GITHUB_HEAD_REF" == satnav/sv04-handset-compass-20261128 ]]; then
+            node --test tools/satnav/orientation/heading.test.mjs
+            "$RUNNER_TEMP/satnav-compact-python/bin/python" tools/satnav/compass-browser.py
+          fi
 
   satnav-field-browser:
     if: startsWith(github.event.pull_request.head.ref, 'integration/satnav-field-')
