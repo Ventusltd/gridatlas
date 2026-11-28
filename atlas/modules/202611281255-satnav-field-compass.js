@@ -19,6 +19,7 @@ void (async function () {
   const style = document.createElement('style');
   style.textContent = `
     #field-compass { position:fixed; z-index:10029; left:max(8px,env(safe-area-inset-left)); bottom:max(27px,calc(env(safe-area-inset-bottom) + 17px)); max-width:calc(100vw - 24px); color:#e4f7f7; font:13px/1.3 system-ui,sans-serif; }
+    #satnav-field-tools > #field-compass { position:static; max-width:none; }
     .field-compass-row { display:flex; gap:5px; align-items:end; }
     #field-compass button,#field-compass summary { min-height:44px; box-sizing:border-box; padding:10px 9px; background:#081820; border:1px solid #367078; border-radius:6px; color:inherit; font:inherit; cursor:pointer; touch-action:manipulation; }
     #field-compass summary { display:flex; align-items:center; }
@@ -96,8 +97,17 @@ void (async function () {
     if (event.sourceId === sourceId) updateBearing();
   }
   function attachMap() {
-    // The waypoint maps have their own access notice inside the field tools.
     access.hidden = Boolean(document.getElementById('satnav-access'));
+    const fieldTools = document.getElementById('satnav-field-tools');
+    if (fieldTools) {
+      // Successor maps own the waypoint bearing and the access notice.
+      if (panel.parentElement !== fieldTools) fieldTools.append(panel);
+      bearing.textContent = '';
+      clearInterval(discovery);
+      map?.off('sourcedata', sourceChanged);
+      map = null;
+      return;
+    }
     const current = window.__GRIDATLAS_V9_MAP__;
     if (current && current !== map) {
       map?.off('sourcedata', sourceChanged);
@@ -110,9 +120,16 @@ void (async function () {
   }
   function resume() {
     clearInterval(discovery);
-    attachMap();
     discovery = setInterval(attachMap, 1000);
+    attachMap();
   }
+  document.addEventListener('satnav:ready', attachMap);
+  // The waypoints panel dispatches this event even when permission is lost.
+  document.addEventListener('satnav:stop', () => stop(), true);
+  // The two-endpoint map has the same Stop button and no custom stop event.
+  document.addEventListener('click', event => {
+    if (event.target.closest?.('#satnav-stop')) stop();
+  }, true);
   document.addEventListener('visibilitychange', () => {
     if (document.hidden) stop();
   });

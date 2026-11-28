@@ -241,6 +241,7 @@ void async function () {
     controls.from.disabled = controls.to.disabled = controls.location.disabled = !map;
     controls.add.disabled = !map || count >= snapshot.maxPins;
     controls.stop.disabled = watch === null;
+    updateText(controls.location, watch !== null ? 'Centre GPS' : roles.from ? 'Start GPS' : 'My location');
     controls.undo.disabled = !history.length;
     controls.edit.disabled = !count;
     controls.edit.setAttribute('aria-expanded', String(!controls.editor.hidden));
@@ -329,11 +330,13 @@ void async function () {
     notify('stop');
     render();
   }
-  function captureOrigin() {
+  function centreOnFix() {
     if (!pendingLocation || compass.fixQuality(fix) !== 'usable') return;
     pendingLocation = false;
     const at = [fix.longitude,fix.latitude];
-    try { setPin('from', at, true); }
+    // An imported or hand-picked start belongs to the plan. Starting the GPS
+    // centres the map. Only an empty FROM field takes this first measured fix.
+    try { if (!roles.from) setPin('from', at, true); }
     catch (error) { notice = error.message; return; }
     map?.jumpTo({center:at,zoom:Math.max(15,map.getZoom())});
   }
@@ -344,7 +347,7 @@ void async function () {
     picking = null;
     notice = 'Waiting for GPS';
     if (watch !== null) {
-      if (compass.fixQuality(fix) === 'usable') {notice = '';captureOrigin();}
+      if (compass.fixQuality(fix) === 'usable') {notice = '';centreOnFix();}
       render();
       return;
     }
@@ -362,7 +365,7 @@ void async function () {
           lastFixMs = next.timestampMs;
           setFix(next);
           notice = quality === 'poor' ? 'Low GPS accuracy' : '';
-          captureOrigin();
+          centreOnFix();
         } else {
           setFix(null);
           notice = quality === 'stale' ? 'GPS fix is stale' : 'Waiting for a fresh GPS fix';
